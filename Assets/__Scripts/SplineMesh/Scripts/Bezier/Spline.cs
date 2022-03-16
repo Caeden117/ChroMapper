@@ -15,6 +15,7 @@ namespace SplineMesh {
     [DisallowMultipleComponent]
     [ExecuteInEditMode]
     public class Spline : MonoBehaviour {
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
         /// <summary>
         /// The spline nodes.
         /// Warning, this collection shouldn't be changed manualy. Use specific methods to add and remove nodes.
@@ -27,7 +28,7 @@ namespace SplineMesh {
         /// </summary>
         [HideInInspector]
         public List<CubicBezierCurve> curves = new List<CubicBezierCurve>();
-
+#pragma warning restore IDE1006 // Naming Styles. SplinMesh is imported
         /// <summary>
         /// The spline length in world units.
         /// </summary>
@@ -242,10 +243,11 @@ namespace SplineMesh {
             UpdateAfterCurveChanged();
             updateLoopBinding();
         }
-
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
         SplineNode start, end;
         private void updateLoopBinding() {
-            if(start != null) {
+#pragma warning restore IDE1006 // Naming Styles. SplinMesh is imported
+            if (start != null) {
                 start.Changed -= StartNodeChanged;
             }
             if(end != null) {
@@ -309,12 +311,14 @@ namespace SplineMesh {
         Remove,
         clear,
     }
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
     public class ListChangedEventArgs<T> : EventArgs {
         public ListChangeType type;
         public List<T> newItems;
         public List<T> removedItems;
         public int insertIndex, removeIndex;
     }
+#pragma warning restore IDE1006 // Naming Styles. SplinMesh is imported
     public delegate void ListChangeHandler<T2>(object sender, ListChangedEventArgs<T2> args);
 
 }

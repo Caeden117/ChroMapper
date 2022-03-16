@@ -17,9 +17,9 @@ namespace SplineMesh {
                 return spline;
             }
         }
-
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
         [Range(0, 1f)] public float curvature = 0.3f;
-
+#pragma warning restore IDE1006 // Naming Styles. SplinMesh is imported
         private void OnValidate() {
             SmoothAll();
         }

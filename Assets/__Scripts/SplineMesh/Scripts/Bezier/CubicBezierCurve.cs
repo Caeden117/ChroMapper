@@ -14,14 +14,14 @@ namespace SplineMesh {
     /// </summary>
     [Serializable]
     public class CubicBezierCurve {
-
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
         private const int STEP_COUNT = 30;
         private const float T_STEP = 1.0f / STEP_COUNT;
 
         private readonly List<CurveSample> samples = new List<CurveSample>(STEP_COUNT);
 
         public SplineNode n1, n2;
-
+#pragma warning restore IDE1006 // Naming Styles. SplinMesh is imported
         /// <summary>
         /// Length of the curve in world unit.
         /// </summary>

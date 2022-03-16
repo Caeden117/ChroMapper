@@ -10,6 +10,7 @@ namespace SplineMesh {
     /// </summary>
     public struct CurveSample
     {
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
         public readonly Vector3 location;
         public readonly Vector3 tangent;
         public readonly Vector3 up;
@@ -18,7 +19,7 @@ namespace SplineMesh {
         public readonly float distanceInCurve;
         public readonly float timeInCurve;
         public readonly CubicBezierCurve curve;
-
+#pragma warning restore IDE1006 // Naming Styles. SplinMesh is imported
         private Quaternion rotation;
 
         /// <summary>

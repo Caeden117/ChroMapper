@@ -27,12 +27,12 @@ namespace SplineMesh {
         private Spline spline;
         private bool toUpdate = true;
         private GameObject generated;
-
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
         public List<ExtrusionSegment.Vertex> shapeVertices = new List<ExtrusionSegment.Vertex>();
         public Material material;
         public float textureScale = 1;
         public float sampleSpacing = 0.1f;
-
+#pragma warning restore IDE1006 // Naming Styles. SplinMesh is imported
         /// <summary>
         /// Clear shape vertices, then create three vertices with three normals for the extrusion to be visible
         /// </summary>

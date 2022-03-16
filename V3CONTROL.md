@@ -29,4 +29,4 @@ Chain can be color-inverted(`mouse mid`), tweaked note count(`alt` + `scroll`), 
 - Chain display seems not in consitent with game play when the chain is taking a U-turn.
 - Order of selecting chains' two notes is imporatant, a note with direction could only be at **head**(not tail). Therefore if you happened to seem like making a note as a tail, it probably behaves not correct in the game.
 - `Counters` is not precise. I haven't considered the case when a chain doesn't have head note. (So in fact it's using the old logic)
-- Chain doesn't fade when passing the threshold. That is because chain is using `Chunkload`(same as obstacles, so you won't experience obstacle fading), not the same logic as note.
+- Chain & Slider don't fade when passing the threshold. That is because they are using `Chunkload`(same as obstacles, since you won't experience obstacle fading), not the same logic as note.

@@ -209,10 +209,11 @@ namespace SplineMesh {
 
         [Serializable]
         public class Vertex {
+#pragma warning disable IDE1006 // Naming Styles. SplinMesh is imported
             public Vector2 point;
             public Vector2 normal;
             public float uCoord;
-
+#pragma warning restore IDE1006 // Naming Styles. SplinMesh is imported
             public Vertex(Vector2 point, Vector2 normal, float uCoord) {
                 this.point = point;
                 this.normal = normal;
