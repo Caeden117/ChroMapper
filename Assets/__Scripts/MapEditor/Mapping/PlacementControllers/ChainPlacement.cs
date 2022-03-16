@@ -51,8 +51,8 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
         var chainContainer = objectContainerCollection;
         chainContainer.SpawnObject(chainData, false);
         SelectionController.Deselect(headNote);
-        selectionController.Delete(false);
         var conflict = new List<BeatmapObject>(SelectedObjects);
+        selectionController.Delete(false);
         BeatmapActionContainer.AddAction(GenerateAction(chainData, conflict));
     }
 
