@@ -23,7 +23,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     public List<BeatmapChain> Chains = new List<BeatmapChain>();
     public new List<JSONNode> Waypoints = new List<JSONNode>();
     public List<MapEventV3> BasicBeatmapEvents = new List<MapEventV3>();
-    public List<JSONNode> ColorBoostBeatmapEvents = new List<JSONNode>();
+    public List<ColorBoostEvent> ColorBoostBeatmapEvents = new List<ColorBoostEvent>();
     public List<JSONNode> LightColorEventBoxGroups = new List<JSONNode>();
     public List<JSONNode> LightRotationEventBoxGroups = new List<JSONNode>();
     public List<JSONNode> BasicEventTypesWithKeywords = new List<JSONNode>();
@@ -97,7 +97,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             foreach (var b in BasicBeatmapEvents) basicBeatmapEvents.Add(b.ConvertToJson());
 
             var colorBoostBeatmapEvents = new JSONArray();
-            foreach (var c in ColorBoostBeatmapEvents) colorBoostBeatmapEvents.Add(c);
+            foreach (var c in ColorBoostBeatmapEvents) colorBoostBeatmapEvents.Add(c.ConvertToJson());
 
             var lightColorEventBoxGroups = new JSONArray();
             foreach (var l in LightColorEventBoxGroups) lightColorEventBoxGroups.Add(l);
@@ -116,8 +116,8 @@ public class BeatSaberMapV3 : BeatSaberMap
             MainNode["sliders"] = CleanupArray(sliders, "b");
             MainNode["burstSliders"] = CleanupArray(chains, "b");
             MainNode["waypoints"] = waypoints;
-            MainNode["basicBeatmapEvents"] = basicBeatmapEvents;
-            MainNode["colorBoostBeatmapEvents"] = colorBoostBeatmapEvents;
+            MainNode["basicBeatmapEvents"] = CleanupArray(basicBeatmapEvents, "b");
+            MainNode["colorBoostBeatmapEvents"] = CleanupArray(colorBoostBeatmapEvents, "b");
             MainNode["lightColorEventBoxGroups"] = lightColorEventBoxGroups;
             MainNode["lightRotationEventBoxGroups"] = lightRotationEventBoxGroups;
             MainNode["basicEventTypesWithKeywords"] = basicEventTypesWithKeywords;
@@ -167,7 +167,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             var chainsList = new List<BeatmapChain>();
             var waypointsList = new List<JSONNode>();
             var basicBeatmapEventsList = new List<MapEventV3>();
-            var colorBoostBeatmapEventsList = new List<JSONNode>();
+            var colorBoostBeatmapEventsList = new List<ColorBoostEvent>();
             var lightColorEventBoxGroupsList = new List<JSONNode>();
             var lightRotationEventBoxGroupsList = new List<JSONNode>();
             var basicEventTypesWithKeywordsList = new List<JSONNode>();
@@ -212,7 +212,7 @@ public class BeatSaberMapV3 : BeatSaberMap
                         foreach (JSONNode n in node) basicBeatmapEventsList.Add(new MapEventV3(n));
                         break;
                     case "colorBoostBeatmapEvents":
-                        foreach (JSONNode n in node) colorBoostBeatmapEventsList.Add(n);
+                        foreach (JSONNode n in node) colorBoostBeatmapEventsList.Add(new ColorBoostEvent(n));
                         break;
                     case "lightColorEventBoxGroups":
                         foreach (JSONNode n in node) lightColorEventBoxGroupsList.Add(n);
@@ -289,8 +289,22 @@ public class BeatSaberMapV3 : BeatSaberMap
 
         ObstaclesV3.Clear();
         foreach (var o in Obstacles) ObstaclesV3.Add(new BeatmapObstacleV3(o));
+
         BasicBeatmapEvents.Clear();
-        foreach (var e in Events) BasicBeatmapEvents.Add(new MapEventV3(e));
+        ColorBoostBeatmapEvents.Clear();
+        foreach (var e in Events)
+        {
+            switch (e.Type)
+            {
+                case MapEvent.EventTypeBoostLights:
+                    ColorBoostBeatmapEvents.Add(new ColorBoostEvent(e));
+                    break;
+                default:
+                    BasicBeatmapEvents.Add(new MapEventV3(e));
+                    break;
+            }
+
+        }
     }
 
     public void ParseNoteV3ToBase()
@@ -303,5 +317,7 @@ public class BeatSaberMapV3 : BeatSaberMap
 
         Obstacles = ObstaclesV3.OfType<BeatmapObstacle>().ToList();
         Events = BasicBeatmapEvents.OfType<MapEvent>().ToList();
+        Events.AddRange(ColorBoostBeatmapEvents.OfType<MapEvent>().ToList());
+        Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
     }
 }

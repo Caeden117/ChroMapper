@@ -1,31 +1,27 @@
-using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SimpleJSON;
 using UnityEngine;
 
-public class MapEventV3 : MapEvent
+public class ColorBoostEvent : MapEvent
 {
     public float B { get => Time; set => Time = value; }
-    public int Et { get => Type; set => Type = value; }
-    public int I { get => Value; set => Value = value; }
-    public float F = 1.0f;
-
-    public MapEventV3(JSONNode node)
+    public bool O { get => Value == 1; set => Value = value ? 1 : 0; }
+    public ColorBoostEvent(JSONNode node)
     {
         B = RetrieveRequiredNode(node, "b").AsFloat;
-        Et = RetrieveRequiredNode(node, "et").AsInt;
-        I = RetrieveRequiredNode(node, "i").AsInt;
-        F = RetrieveRequiredNode(node, "f").AsFloat;
+        O = RetrieveRequiredNode(node, "o").AsBool;
+        Type = EventTypeBoostLights;
         CustomData = node["_customData"];
         if (node["_customData"]["_lightGradient"] != null)
             LightGradient = new ChromaGradient(node["_customData"]["_lightGradient"]);
     }
-
-    public MapEventV3(MapEvent m) :
+    public ColorBoostEvent(MapEvent m) :
         base(m.Time, m.Type, m.Value, m.CustomData)
     {
+        Type = EventTypeBoostLights;
     }
 
     public override JSONNode ConvertToJson()
@@ -33,9 +29,7 @@ public class MapEventV3 : MapEvent
         if (!Settings.Instance.Load_MapV3) return base.ConvertToJson();
         JSONNode node = new JSONObject();
         node["b"] = Math.Round(B, DecimalPrecision);
-        node["et"] = Et;
-        node["i"] = I;
-        node["f"] = F;
+        node["o"] = O;
         if (CustomData != null)
         {
             node["_customData"] = CustomData;
@@ -48,4 +42,5 @@ public class MapEventV3 : MapEvent
         }
         return node;
     }
+
 }

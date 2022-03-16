@@ -27,6 +27,7 @@ public class MapLoader : MonoBehaviour
                 Chains = new List<BeatmapChain>((map as BeatSaberMapV3).Chains),
                 Events = new List<MapEvent>(map.Events),
                 BpmChanges = new List<BeatmapBPMChange>(map.BpmChanges),
+                ColorBoostBeatmapEvents = new List<ColorBoostEvent>((map as BeatSaberMapV3).ColorBoostBeatmapEvents),
                 CustomEvents = new List<BeatmapCustomEvent>(map.CustomEvents)
             };
             this.map = copy;
