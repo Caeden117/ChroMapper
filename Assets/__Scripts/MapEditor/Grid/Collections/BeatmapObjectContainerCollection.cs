@@ -15,7 +15,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public event Action<BeatmapObject> ObjectSpawnedEvent;
     public event Action<BeatmapObject> ObjectDeletedEvent;
-
+    public event Action<BeatmapObject> ContainerSpawnedEvent;
+    public event Action<BeatmapObject> ContainerDespawnedEvent;
     public AudioTimeSyncController AudioTimeSyncController;
 
     /// <summary>
@@ -30,6 +31,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
+
     public Transform GridTransform;
     public Transform PoolTransform;
     public bool UseChunkLoadingWhenPlaying;
@@ -243,6 +245,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         LoadedContainers.Add(obj, dequeued);
         obj.HasAttachedContainer = true;
         OnContainerSpawn(dequeued, obj);
+        ContainerSpawnedEvent?.Invoke(obj);
     }
 
     /// <summary>
@@ -262,6 +265,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         pooledContainers.Enqueue(container);
         OnContainerDespawn(container, obj);
         obj.HasAttachedContainer = false;
+        ContainerDespawnedEvent?.Invoke(obj);
     }
 
     private void CreateNewObject()

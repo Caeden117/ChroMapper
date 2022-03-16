@@ -9,6 +9,7 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
     public const int ChainDefaultSpawnCount = 3;
     private static HashSet<BeatmapObject> SelectedObjects => SelectionController.SelectedObjects;
     [SerializeField] private SelectionController selectionController;
+    [SerializeField] private NotesContainer notesContainer;
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => 
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a chain.");
@@ -27,7 +28,7 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
         }
         var n1 = objects[0] as BeatmapNote;
         var n2 = objects[1] as BeatmapNote;
-        if (n1.Time > n2.Time) { var t = n1; n1 = n2; n2 = t; }
+        if (n1.Time > n2.Time) (n1, n2) = (n2, n1);
         if (n1.CutDirection == BeatmapNote.NoteCutDirectionAny) { return; }
         var chainData = new BeatmapChain
         {
@@ -42,15 +43,17 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
             Sc = ChainDefaultSpawnCount,
             S = 1.0f
         };
-        SpawnChain(chainData);
+        SpawnChain(chainData, n1, n2);
     }
 
-    public void SpawnChain(BeatmapChain chainData)
+    public void SpawnChain(BeatmapChain chainData, BeatmapNote headNote, BeatmapNote toDeleteNote)
     {
         var chainContainer = objectContainerCollection;
         chainContainer.SpawnObject(chainData, false);
-        BeatmapActionContainer.AddAction(GenerateAction(chainData, new List<BeatmapObject>(SelectedObjects)));
-        selectionController.Delete(false); 
+        SelectionController.Deselect(headNote);
+        selectionController.Delete(false);
+        var conflict = new List<BeatmapObject>(SelectedObjects);
+        BeatmapActionContainer.AddAction(GenerateAction(chainData, conflict));
     }
 
     public override void TransferQueuedToDraggedObject(ref BeatmapChain dragged, BeatmapChain queued) => throw new System.NotImplementedException();
@@ -64,4 +67,5 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
     {
 
     }
+
 }

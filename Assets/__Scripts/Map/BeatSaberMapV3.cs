@@ -248,7 +248,6 @@ public class BeatSaberMapV3 : BeatSaberMap
 
             var mapV2 = mapV3 as BeatSaberMap;
             LoadCustomDataNode(ref mapV2, ref mainNode);
-
             mapV3.ParseNoteV3ToBase();
             return mapV3;
         }
@@ -287,17 +286,6 @@ public class BeatSaberMapV3 : BeatSaberMap
                     break;
             }
         }
-        foreach (var chain in Chains)
-        {
-            ColorNotes.Add(new BeatmapColorNote(chain));
-        }
-        ColorNotes.Sort((lhs, rhs) =>
-        {
-            if (!Mathf.Approximately(lhs.B, rhs.B)) return lhs.B.CompareTo(rhs.B);
-            if (lhs.X != rhs.X) return lhs.X.CompareTo(rhs.X);
-            if (lhs.Y != rhs.Y) return lhs.Y.CompareTo(rhs.Y);
-            return lhs.C.CompareTo(rhs.C);
-        });
 
         ObstaclesV3.Clear();
         foreach (var o in Obstacles) ObstaclesV3.Add(new BeatmapObstacleV3(o));
@@ -310,20 +298,6 @@ public class BeatSaberMapV3 : BeatSaberMap
         BpmChanges.AddRange(BpmEvents.OfType<BeatmapBPMChange>().ToList());
         BpmChanges.DistinctBy(x => x.Time).ToList();
 
-        var newNote = new List<BeatmapColorNote>();
-        var h = new HashSet<Tuple<float, int, int>>(); // I don't know whether directly comparison between float is viable here
-        foreach (var chain in Chains)
-        {
-            h.Add(new Tuple<float, int, int>(chain.B, chain.X, chain.Y));
-        }
-        foreach (var note in ColorNotes)
-        {
-            if (!h.Contains(new Tuple<float, int, int>(note.Time, note.LineIndex, note.LineLayer)))
-            {
-                newNote.Add(note);
-            }
-        }
-        ColorNotes = newNote;
         Notes = ColorNotes.OfType<BeatmapNote>().ToList();
         Notes.AddRange(BombNotes.OfType<BeatmapNote>().ToList());
 

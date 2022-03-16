@@ -101,8 +101,6 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         foreach (var renderer in noteRenderer) renderer.SetPropertyBlock(MaterialPropertyBlock);
         if (SplineRenderer != null)
             SplineRenderer.SetPropertyBlock(MaterialPropertyBlock);
-        else
-            Debug.Log("Spline Renderer is null, color may not be set");
         foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
     }
 

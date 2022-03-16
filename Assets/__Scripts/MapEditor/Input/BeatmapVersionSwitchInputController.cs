@@ -11,7 +11,7 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
         if (context.performed || context.canceled) return;
         var v1 = Settings.Instance.Load_MapV3 ? "3" : "2";
         var v2 = Settings.Instance.Load_MapV3 ? "2" : "3";
-        PersistentUI.Instance.ShowDialogBox($"Do you want to change map version from map v{v1} to v{v2}?\nPlease manually backup your map before conversion.", (res) =>
+        PersistentUI.Instance.ShowDialogBox($"Do you want to change map version from map v{v1} to v{v2}?\nPlease manually backup(copy and rename) your map before conversion.", (res) =>
         {
             if (res != 0) return;
 

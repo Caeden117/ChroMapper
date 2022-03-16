@@ -39,14 +39,16 @@ public class CountersPlusController : MonoBehaviour
     [FormerlySerializedAs("minutes")] [HideInInspector] public int minutes;
     [FormerlySerializedAs("seconds")] [HideInInspector] public int seconds;
 
-    public int NotesCount
-        => notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type != BeatmapNote.NoteTypeBomb).Count();
+
+    public int NotesCount =>
+       notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type != BeatmapNote.NoteTypeBomb).Count();
+
 
     public float NPSCount => NotesCount / cameraAudioSource.clip.length;
 
     public int NotesSelected
         => SelectionController.SelectedObjects
-            .Where(x => x is BeatmapNote note && note.Type != BeatmapNote.NoteTypeBomb).Count();
+            .Where(x => (x is BeatmapNote note && note.Type != BeatmapNote.NoteTypeBomb) || x is BeatmapChain).Count();
 
     public float NPSselected
     {

@@ -7,10 +7,11 @@ using UnityEngine.Serialization;
 
 public class BeatmapChain : BeatmapObject
 {
-    public const int MinChainCount = 2;
+    public const int MinChainCount = 3;
     public const int MaxChainCount = 999;
     public const float MinChainSquish = 0.1f;
     public const float MaxChainSquish = 999;
+    public static Vector3 ChainScale = new Vector3(1.0f, 0.2f, 1.0f);
     // private float b;
     public int C;
     public int X;
@@ -24,7 +25,7 @@ public class BeatmapChain : BeatmapObject
     public float S = 1.0f;
 
     public override ObjectType BeatmapType { get; set; } = ObjectType.Chain;
-    public float B { get => Time; set => Time = value; }
+    public float B { get => Time; set => Time = value;  }
 
     public BeatmapChain() { }
 
@@ -82,6 +83,7 @@ public class BeatmapChain : BeatmapObject
         Ty = other.Ty;
         Sc = other.Sc;
         S = other.S;
+        CustomData = other.CustomData;
     }
 
     public override void Apply(BeatmapObject originalData)
@@ -92,4 +94,5 @@ public class BeatmapChain : BeatmapObject
             CopyHelper(chain);
         }
     }
+   
 }

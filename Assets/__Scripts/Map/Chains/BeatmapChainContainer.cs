@@ -8,9 +8,13 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     [FormerlySerializedAs("chainData")] public BeatmapChain ChainData;
     public override BeatmapObject ObjectData { get => ChainData; set => ChainData = (BeatmapChain)value; }
 
-    [SerializeField] private GameObject headNode;
     [SerializeField] private GameObject tailNode;
     private List<GameObject> nodes = new List<GameObject>();
+    public BeatmapNoteContainer AttachedHead = null;
+    private Vector3 circleCenter;
+    private bool headTailInALine;
+    private Vector3 tailTangent;
+    private const float epsilon = 1e-2f;
 
     public static BeatmapChainContainer SpawnChain(BeatmapChain data, ref GameObject prefab)
     {
@@ -36,46 +40,123 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     public void GenerateChain(BeatmapChain chainData = null)
     {
         if (chainData != null) ChainData = chainData;
-        headNode.transform.localPosition = new Vector3(ChainData.X, ChainData.Y, 0);
-        headNode.transform.localRotation = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.D));
+        var headTrans = new Vector3(ChainData.X, ChainData.Y, 0); 
+        var headRot = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.D));
         tailNode.transform.localPosition = new Vector3(ChainData.Tx, ChainData.Ty, (ChainData.Tb - ChainData.B) * EditorScaleController.EditorScale);
-        var tailRotationDegree = -90 + Mathf.Atan2(ChainData.Y - ChainData.Ty, ChainData.X - ChainData.Tx) * Mathf.Rad2Deg;
-        tailNode.transform.localRotation = Quaternion.Euler(0, 0, tailRotationDegree);
+        Colliders.Clear();
+        SelectionRenderers.Clear();
+        var cutDirection = NotesContainer.Direction(new BeatmapColorNote(ChainData));
+        ComputeCircleCenter(headTrans, headRot, new Vector3(cutDirection.x, cutDirection.y, 
+            (ChainData.Tb - ChainData.B) * EditorScaleController.EditorScale), tailNode.transform);
         int i = 0;
-        for (; i < ChainData.Sc - 1; ++i)
+        for (; i < ChainData.Sc - 2; ++i)
         {
             if (i >= nodes.Count) break;
             nodes[i].SetActive(true);
-            Interpolate(ChainData.Sc, i + 1, headNode, tailNode, nodes[i]);
+            Interpolate(ChainData.Sc - 1, i + 1, headTrans, headRot, tailNode, nodes[i]);
+            Colliders.Add(nodes[i].GetComponent<IntersectionCollider>());
+            SelectionRenderers.Add(nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer);
         }
         for (; i < nodes.Count; ++i)
         {
             nodes[i].SetActive(false);
         }
-        for (; i < ChainData.Sc - 1; ++i)
+        for (; i < ChainData.Sc - 2; ++i)
         {
             var newNode = Instantiate(tailNode, transform);
             newNode.SetActive(true);
             newNode.GetComponent<MeshRenderer>().material.CopyPropertiesFromMaterial(tailNode.GetComponent<MeshRenderer>().material);
-            Interpolate(ChainData.Sc, i + 1, headNode, tailNode, newNode);
+            Interpolate(ChainData.Sc - 1, i + 1, headTrans, headRot, tailNode, newNode);
             nodes.Add(newNode);
+            Colliders.Add(nodes[i].GetComponent<IntersectionCollider>());
+            SelectionRenderers.Add(nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer);
         }
-        Interpolate(ChainData.Sc, ChainData.Sc, headNode, tailNode, tailNode);
+        Interpolate(ChainData.Sc - 1, ChainData.Sc - 1, headTrans, headRot, tailNode, tailNode);
+        Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
+        SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
+        UpdateMaterials();
     }
 
     /// <summary>
-    /// Interpolate between head and tail. The algorithm may not be correct since official chain seems archer than this.
+    /// Compute Circle center for interpolation(and by the way compute tail rotation & tail tangent)
+    /// </summary>
+    /// <param name="headPos"></param>
+    /// <param name="headRot"></param>
+    /// <param name="headTangent"></param>
+    /// <param name="tailTrans"></param>
+    private void ComputeCircleCenter(in Vector3 headPos, in Quaternion headRot, in Vector3 headTangent, in Transform tailTrans)
+    {
+        //Debug.Log("headpos" + headPos);
+        //Debug.Log("headTangent" + headTangent);
+        var tailPos = tailTrans.localPosition;
+        //Debug.Log("tailPos" + tailPos);
+        var headToTail = tailPos - headPos;
+        if (Mathf.Abs((headTangent.x * headToTail.y - headTangent.y * headToTail.x) / headTangent.magnitude / headToTail.magnitude) < epsilon)
+        {
+            // cross product = 0, indicate in a line
+            headTailInALine = true;
+            tailTrans.localRotation = headRot;
+            return;
+        }
+        /// compute circle center
+        headTailInALine = false;
+        Vector3 circleNormal = Vector3.Cross(headTangent, headToTail); // normal vector perpendicular to circle plane
+        Vector3 headToCenter = Vector3.Cross(circleNormal, headTangent);
+        //Debug.Log("headTOcenter" + headToCenter);
+        Vector3 midPoint = (headPos + tailPos) / 2.0f;
+        Vector3 midToCenter = Vector3.Cross(circleNormal, headToTail);
+        //Debug.Log("midtocenter" + midToCenter);
+
+        var headToMid = midPoint - headPos;
+        Vector3 crossVec1and2 = Vector3.Cross(headToCenter, midToCenter);
+        Vector3 crossVec3and2 = Vector3.Cross(headToMid, midToCenter);
+
+        float planarFactor = Vector3.Dot(headToMid, crossVec1and2);
+
+        float s = Vector3.Dot(crossVec3and2, crossVec1and2)
+                / crossVec1and2.sqrMagnitude;
+        circleCenter = headPos + (headToCenter * s);
+        //Debug.Log("circleCenter" + circleCenter);
+
+        /// compute tail angle and tail tangent;
+        var centerToTail = tailTrans.localPosition - circleCenter;
+        tailTangent = Vector3.Cross(circleNormal, centerToTail).normalized * centerToTail.magnitude;
+        var tailToCenter = -centerToTail;
+        var centerDegree = Mathf.Acos(Vector3.Dot(headToCenter, midToCenter) / headToCenter.magnitude / midToCenter.magnitude) * Mathf.Rad2Deg * 2;
+        if (headToCenter.x * tailToCenter.y - headToCenter.y * tailToCenter.x < -epsilon) centerDegree -= 180;
+        tailTrans.localRotation = Quaternion.Euler(0, 0, centerDegree) * headRot;
+
+        if (Mathf.Abs(Vector3.Dot(headToTail.normalized, tailTangent.normalized)) < epsilon)
+        {
+            tailTrans.localPosition -= tailTangent * epsilon; // move tail back a little bit to avoid head-tail-center in a line
+        }
+        //Debug.Log("tail tangent" + tailTangent);
+    }
+
+    /// <summary>
+    /// Interpolate between head and tail. The algorithm may not be correct.
     /// </summary>
     /// <param name="n"></param>
     /// <param name="i"></param>
     /// <param name="t0"></param>
     /// <param name="t1"></param>
     /// <param name="t"></param>
-    private void Interpolate(int n, int i, in GameObject t0, in GameObject t1, in GameObject t)
+    private void Interpolate(int n, int i, in Vector3 trans0, in Quaternion rot0, in GameObject t1, in GameObject t)
     {
         float p0 = (float)i / n;
-        t.transform.localPosition = Vector3.LerpUnclamped(t0.transform.localPosition, t1.transform.localPosition, p0 * ChainData.S);
-        t.transform.localRotation = Quaternion.Slerp(t0.transform.localRotation, t1.transform.localRotation, p0);
+        if (headTailInALine)
+        {
+            t.transform.localPosition = Vector3.LerpUnclamped(trans0, t1.transform.localPosition, p0 * ChainData.S);
+
+        }
+        else
+        {
+            t.transform.localPosition = Vector3.Slerp(trans0 - circleCenter, t1.transform.localPosition - circleCenter, p0 * ChainData.S)
+                + circleCenter;
+            if (p0 * ChainData.S > 1.0f)
+                t.transform.localPosition += tailTangent * (p0 * ChainData.S - 1.0f);
+        }
+        t.transform.localRotation = Quaternion.Slerp(rot0, t1.transform.localRotation, p0 * ChainData.S);
     }
 
     public void SetColor(Color color)
@@ -86,11 +167,61 @@ public class BeatmapChainContainer : BeatmapObjectContainer
 
     internal override void UpdateMaterials()
     {
-        var renderers = GetComponentsInChildren<MeshRenderer>();
-        foreach (var renderer in renderers)
+        foreach (var collider in Colliders)
         {
+            var renderer = collider.GetComponent<MeshRenderer>();
             renderer.SetPropertyBlock(MaterialPropertyBlock);
         }
         foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
+    }
+
+    public void DetectHeadNote(bool detect = true)
+    {
+        if (ChainData == null) return;
+        if (detect && AttachedHead == null)
+        {
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.ObjectType.Note);
+            var notes = collection.GetBetween(ChainData.B - ChainsContainer.ViewEpsilon, ChainData.B + ChainsContainer.ViewEpsilon);
+            foreach (BeatmapNote note in notes)
+            {
+                if (note.Type == BeatmapNote.NoteTypeBomb || !note.HasAttachedContainer) continue;
+                if (IsHeadNote(note))
+                {
+                    collection.LoadedContainers.TryGetValue(note, out var container);
+                    AttachedHead = container as BeatmapNoteContainer;
+                    AttachedHead.transform.localScale = BeatmapChain.ChainScale;
+                    break;
+                }
+            }
+        }
+        else if (AttachedHead != null)
+        {
+            if (!IsHeadNote(AttachedHead.MapNoteData))
+            {
+                if (AttachedHead.MapNoteData != null)
+                {
+                    AttachedHead.UpdateGridPosition();
+                }
+                AttachedHead = null;
+                DetectHeadNote();
+            }
+            else
+            {
+                AttachedHead.transform.localScale = BeatmapChain.ChainScale;
+            }
+        }
+    }
+
+    public void ResetHeadNoteScale()
+    {
+        if (AttachedHead == null || AttachedHead.MapNoteData == null) return;
+        AttachedHead.UpdateGridPosition();
+    }
+
+    public bool IsHeadNote(BeatmapNote note)
+    {
+        if (note is null) return false;
+        return Mathf.Approximately(note.Time, ChainData.B) && note.LineIndex == ChainData.X && note.LineLayer == ChainData.Y
+            && note.CutDirection == ChainData.D && note.Type == ChainData.C;
     }
 }
