@@ -3831,7 +3831,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""58313530-3763-4263-95ce-fc5d9c62505b"",
-                    ""path"": ""<Keyboard>/t"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -3858,7 +3858,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5e1cf217-3ad9-4837-9882-e0f01041cd71"",
-                    ""path"": ""<Keyboard>/g"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

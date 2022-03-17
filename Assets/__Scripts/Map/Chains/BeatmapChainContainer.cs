@@ -121,7 +121,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         float s = Vector3.Dot(crossVec3and2, crossVec1and2)
                 / crossVec1and2.sqrMagnitude;
         circleCenter = headPos + (headToCenter * s);
-        Debug.Log("circleCenter" + circleCenter);
+        //Debug.Log("circleCenter" + circleCenter);
 
         /// compute tail angle and tail tangent;
         var tailRot = Quaternion.FromToRotation(headTangent, tailTangent); // do not take u-turn, it will not be correct
