@@ -14,7 +14,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     /// <summary>
     /// All Lists of type JSONNode are unsupported
     /// </summary>
-    public List<BeatmapBPMChangeV3> BpmEvents = new List<BeatmapBPMChangeV3>();
+    public List<JSONNode> BpmEvents = new List<JSONNode>(); // disable supprot for bpm change
     public List<JSONNode> RotationEvents = new List<JSONNode>();
     public List<BeatmapColorNote> ColorNotes = new List<BeatmapColorNote>();
     public List<BeatmapBombNote> BombNotes = new List<BeatmapBombNote>();
@@ -69,7 +69,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             ParseBaseNoteToV3();
             /// official nodes
             var bpmEvents = new JSONArray();
-            foreach (var b in BpmEvents) bpmEvents.Add(b.ConvertToJson());
+            foreach (var b in BpmEvents) bpmEvents.Add(b);
 
             var rotationEvents = new JSONArray();
             foreach (var b in RotationEvents) RotationEvents.Add(b);
@@ -107,7 +107,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             var basicEventTypesWithKeywords = new JSONArray();
             foreach (var b in BasicEventTypesWithKeywords) basicEventTypesWithKeywords.Add(b);
 
-            MainNode["bpmEvents"] = CleanupArray(bpmEvents, "b");
+            MainNode["bpmEvents"] = bpmEvents;
             MainNode["rotationEvents"] = rotationEvents;
             MainNode["colorNotes"] = CleanupArray(colorNotes, "b");
             MainNode["bombNotes"] = CleanupArray(bombNotes, "b");
@@ -157,7 +157,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             var mapV3 = new BeatSaberMapV3 { MainNode = mainNode, DirectoryAndFile = directoryAndFile };
 
             var eventsList = new List<MapEvent>();
-            var bpmEventsList = new List<BeatmapBPMChangeV3>();
+            var bpmEventsList = new List<JSONNode>();
             var rotationEventsList = new List<JSONNode>();
             var colorNotesList = new List<BeatmapColorNote>();
             var bombNotesList = new List<BeatmapBombNote>();
@@ -184,7 +184,7 @@ public class BeatSaberMapV3 : BeatSaberMap
                         mapV3.Version = node.Value;
                         break;
                     case "bpmEvents":
-                        foreach (JSONNode n in node) bpmEventsList.Add(new BeatmapBPMChangeV3(n));
+                        foreach (JSONNode n in node) bpmEventsList.Add(n);
                         break;
                     case "rotationEvents":
                         foreach (JSONNode n in node) rotationEventsList.Add(n);
@@ -231,7 +231,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             }
 
 
-            mapV3.BpmEvents = bpmEventsList.DistinctBy(x => x.Time).ToList();
+            mapV3.BpmEvents = bpmEventsList;
             mapV3.RotationEvents = rotationEventsList;
             mapV3.ColorNotes = colorNotesList;
             mapV3.BombNotes = bombNotesList;
@@ -262,14 +262,6 @@ public class BeatSaberMapV3 : BeatSaberMap
     /// </summary>
     public void ParseBaseNoteToV3()
     {
-        BpmEvents.Clear();
-        foreach (var b in BpmChanges) BpmEvents.Add(new BeatmapBPMChangeV3(b));
-        if (BpmEvents.Count != 0 && !Mathf.Approximately(BpmEvents[0].Time, 0)) 
-        {
-            BpmEvents.Insert(0, new BeatmapBPMChangeV3(new BeatmapBPMChange(BeatSaberSongContainer.Instance.Song.BeatsPerMinute, 0)));
-        }
-        BpmChanges.Clear(); // Add this line to avoid saving bpmchagnes to customdata
-
         ColorNotes.Clear();
         BombNotes.Clear();
         foreach (var note in Notes)
@@ -315,9 +307,6 @@ public class BeatSaberMapV3 : BeatSaberMap
     /// </summary>
     public void ParseNoteV3ToBase()
     {
-        BpmChanges.AddRange(BpmEvents.OfType<BeatmapBPMChange>().ToList());
-        BpmChanges.DistinctBy(x => x.Time).ToList();
-
         Notes = ColorNotes.OfType<BeatmapNote>().ToList();
         Notes.AddRange(BombNotes.OfType<BeatmapNote>().ToList());
 

@@ -5,7 +5,7 @@ using SimpleJSON;
 using UnityEngine;
 
 /// <summary>
-/// <see cref="BeatmapBPMChangeV3"/> now could be an official feature in map v3
+/// <see cref="BeatmapBPMChangeV3"/> currently disabled
 /// </summary>
 public class BeatmapBPMChangeV3 : BeatmapBPMChange
 {
