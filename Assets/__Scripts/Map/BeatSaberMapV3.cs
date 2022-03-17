@@ -29,6 +29,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     public List<JSONNode> BasicEventTypesWithKeywords = new List<JSONNode>();
     public bool UseNormalEventsAsCompatibleEvents = false;
 
+    public const string BeatSaberMapV3CustomDatakey = "customData";
     public BeatSaberMapV3() { }
     public BeatSaberMapV3(BeatSaberMap other)
     {
@@ -122,7 +123,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             MainNode["basicEventTypesWithKeywords"] = basicEventTypesWithKeywords;
             MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
 
-            SaveCustomDataNode();
+            SaveCustomDataNode(BeatSaberMapV3CustomDatakey);
 
             // I *believe* this automatically creates the file if it doesn't exist. Needs more experiementation
             if (Settings.Instance.AdvancedShit)

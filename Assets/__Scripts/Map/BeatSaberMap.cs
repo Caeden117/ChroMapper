@@ -95,7 +95,7 @@ public class BeatSaberMap
     /// <summary>
     /// Split save custom data logic for child class' use
     /// </summary>
-    protected void SaveCustomDataNode()
+    protected void SaveCustomDataNode(string customDataKey = "_customData")
     {
         var bpm = new JSONArray();
         foreach (var b in BpmChanges) bpm.Add(b.ConvertToJson());
@@ -118,34 +118,34 @@ public class BeatSaberMap
         * 
         * Since these are editor only things, it's fine if I implement them now. Besides, CM reads both versions anyways.
         */
-        if (!MainNode.HasKey("_customData") || MainNode["_customData"] is null ||
-            !MainNode["_customData"].Children.Any())
+        if (!MainNode.HasKey(customDataKey) || MainNode[customDataKey] is null ||
+            !MainNode[customDataKey].Children.Any())
         {
-            MainNode["_customData"] = CustomData;
+            MainNode[customDataKey] = CustomData;
         }
 
         if (BpmChanges.Any())
-            MainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
+            MainNode[customDataKey]["_BPMChanges"] = CleanupArray(bpm);
         else
-            MainNode["_customData"].Remove("_BPMChanges");
+            MainNode[customDataKey].Remove("_BPMChanges");
 
         if (Bookmarks.Any())
-            MainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
+            MainNode[customDataKey]["_bookmarks"] = CleanupArray(bookmarks);
         else
-            MainNode["_customData"].Remove("_bookmarks");
+            MainNode[customDataKey].Remove("_bookmarks");
 
         if (CustomEvents.Any())
-            MainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);
+            MainNode[customDataKey]["_customEvents"] = CleanupArray(customEvents);
         else
-            MainNode["_customData"].Remove("_customEvents");
+            MainNode[customDataKey].Remove("_customEvents");
 
         if (EnvEnhancements.Any())
-            MainNode["_customData"]["_environment"] = envEnhancements;
+            MainNode[customDataKey]["_environment"] = envEnhancements;
         else
-            MainNode["_customData"].Remove("_environment");
-        if (Time > 0) MainNode["_customData"]["_time"] = Math.Round(Time, 3);
-        BeatSaberSong.CleanObject(MainNode["_customData"]);
-        if (!MainNode["_customData"].Children.Any()) MainNode.Remove("_customData");
+            MainNode[customDataKey].Remove("_environment");
+        if (Time > 0) MainNode[customDataKey]["_time"] = Math.Round(Time, 3);
+        BeatSaberSong.CleanObject(MainNode[customDataKey]);
+        if (!MainNode[customDataKey].Children.Any()) MainNode.Remove(customDataKey);
     }
 
     // Cleans an array by filtering out null elements, or objects with invalid time.
@@ -253,6 +253,7 @@ public class BeatSaberMap
 
             switch (key)
             {
+                case BeatSaberMapV3.BeatSaberMapV3CustomDatakey:
                 case "_customData":
                     map.CustomData = node;
 
