@@ -40,7 +40,7 @@ public class BeatmapSlider : BeatmapObject
         TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "tmu").AsFloat;
         TailCutDirection = RetrieveRequiredNode(node, "tc").AsInt;
         SliderMidAnchorMode = RetrieveRequiredNode(node, "m").AsInt;
-        CustomData = node["_customData"];
+        CustomData = node[BeatmapObjectV3CustomDataKey];
     }
 
     public BeatmapSlider(BeatmapSlider other)
@@ -63,7 +63,7 @@ public class BeatmapSlider : BeatmapObject
         node["tmu"] = TailControlPointLengthMultiplier;
         node["tc"] = TailCutDirection;
         node["m"] = SliderMidAnchorMode;
-        if (CustomData != null) node["_customData"] = CustomData;
+        if (CustomData != null) node[BeatmapObjectV3CustomDataKey] = CustomData;
         return node;
     }
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false)

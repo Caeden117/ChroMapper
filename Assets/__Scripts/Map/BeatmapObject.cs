@@ -24,6 +24,8 @@ public abstract class BeatmapObject
         Chain // introduced in v3
     }
 
+    public const string BeatmapObjectV3CustomDataKey = "cd";
+
     public abstract ObjectType BeatmapType { get; set; }
 
     /// <summary>

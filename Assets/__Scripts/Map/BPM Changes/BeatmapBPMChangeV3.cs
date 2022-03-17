@@ -28,7 +28,7 @@ public class BeatmapBPMChangeV3 : BeatmapBPMChange
         JSONNode node = new JSONObject();
         node["b"] = Math.Round(Time, DecimalPrecision);
         node["m"] = Bpm;
-        if (CustomData != null) node["_customData"] = CustomData;
+        if (CustomData != null) node[BeatmapObjectV3CustomDataKey] = CustomData;
         return node;
     }
 }

@@ -18,9 +18,9 @@ public class MapEventV3 : MapEvent
         EventType = RetrieveRequiredNode(node, "et").AsInt;
         Value = RetrieveRequiredNode(node, "i").AsInt;
         FloatValue = RetrieveRequiredNode(node, "f").AsFloat;
-        CustomData = node["_customData"];
-        if (node["_customData"]["_lightGradient"] != null)
-            LightGradient = new ChromaGradient(node["_customData"]["_lightGradient"]);
+        CustomData = node[BeatmapObjectV3CustomDataKey];
+        if (node[BeatmapObjectV3CustomDataKey]["_lightGradient"] != null)
+            LightGradient = new ChromaGradient(node[BeatmapObjectV3CustomDataKey]["_lightGradient"]);
     }
 
     public MapEventV3(MapEvent m) :
@@ -38,12 +38,12 @@ public class MapEventV3 : MapEvent
         node["f"] = FloatValue;
         if (CustomData != null)
         {
-            node["_customData"] = CustomData;
+            node[BeatmapObjectV3CustomDataKey] = CustomData;
             if (LightGradient != null)
             {
                 var lightGradient = LightGradient.ToJsonNode();
                 if (lightGradient != null && lightGradient.Children.Count() > 0)
-                    node["_customData"]["_lightGradient"] = lightGradient;
+                    node[BeatmapObjectV3CustomDataKey]["_lightGradient"] = lightGradient;
             }
         }
         return node;

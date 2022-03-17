@@ -32,7 +32,7 @@ public class BeatmapColorNote : BeatmapNote
         AngleOffset = RetrieveRequiredNode(node, "a").AsInt;
         Color = RetrieveRequiredNode(node, "c").AsInt;
         CutDirection = RetrieveRequiredNode(node, "d").AsInt;
-        CustomData = node["_customData"];
+        CustomData = node[BeatmapObjectV3CustomDataKey];
     }
 
     public BeatmapColorNote(BeatmapNote note):
@@ -61,7 +61,7 @@ public class BeatmapColorNote : BeatmapNote
         node["a"] = AngleOffset;
         node["c"] = Color;
         node["d"] = CutDirection;
-        if (CustomData != null) node["_customData"] = CustomData;
+        if (CustomData != null) node[BeatmapObjectV3CustomDataKey] = CustomData;
         return node;
     }
 

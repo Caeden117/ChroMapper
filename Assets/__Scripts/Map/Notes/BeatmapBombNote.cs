@@ -23,7 +23,7 @@ public class BeatmapBombNote : BeatmapNote
         Time = RetrieveRequiredNode(node, "b").AsFloat;
         LineIndex = RetrieveRequiredNode(node, "x").AsInt;
         LineLayer = RetrieveRequiredNode(node, "y").AsInt;
-        CustomData = node["_customData"];
+        CustomData = node[BeatmapObjectV3CustomDataKey];
         Type = NoteTypeBomb;
     }
 
@@ -39,7 +39,7 @@ public class BeatmapBombNote : BeatmapNote
         node["b"] = Math.Round(Time, DecimalPrecision);
         node["x"] = LineIndex;
         node["y"] = LineLayer;
-        if (CustomData != null) node["_customData"] = CustomData;
+        if (CustomData != null) node[BeatmapObjectV3CustomDataKey] = CustomData;
         return node;
     }
 

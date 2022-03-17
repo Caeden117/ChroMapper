@@ -41,7 +41,7 @@ public class BeatmapChain : BeatmapObject
         TailY = RetrieveRequiredNode(node, "ty").AsInt;
         SliceCount = RetrieveRequiredNode(node, "sc").AsInt;
         SquishAmount = RetrieveRequiredNode(node, "s").AsFloat;
-        CustomData = node["_customData"];
+        CustomData = node[BeatmapObjectV3CustomDataKey];
     }
 
     public BeatmapChain(BeatmapChain other)
@@ -62,7 +62,7 @@ public class BeatmapChain : BeatmapObject
         node["ty"] = TailY;
         node["sc"] = SliceCount;
         node["s"] = SquishAmount;
-        if (CustomData != null) node["_customData"] = CustomData;
+        if (CustomData != null) node[BeatmapObjectV3CustomDataKey] = CustomData;
         return node;
     }
 

@@ -46,7 +46,7 @@ public class BeatmapObstacleV3 : BeatmapObstacle
         Duration = RetrieveRequiredNode(node, "d").AsFloat;
         Width = RetrieveRequiredNode(node, "w").AsInt;
         Height = RetrieveRequiredNode(node, "h").AsInt;
-        CustomData = node["_customData"];
+        CustomData = node[BeatmapObjectV3CustomDataKey];
     }
 
     public BeatmapObstacleV3(BeatmapObstacle o):
@@ -64,7 +64,7 @@ public class BeatmapObstacleV3 : BeatmapObstacle
         node["d"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
         node["w"] = Width;
         node["h"] = Height;
-        if (CustomData != null) node["_customData"] = CustomData;
+        if (CustomData != null) node[BeatmapObjectV3CustomDataKey] = CustomData;
         return node;
     }
 
