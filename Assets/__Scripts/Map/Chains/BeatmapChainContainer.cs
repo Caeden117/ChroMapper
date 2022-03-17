@@ -124,6 +124,8 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         //Debug.Log("circleCenter" + circleCenter);
 
         /// compute tail angle and tail tangent;
+        var centerToTail = tailTrans.localPosition - circleCenter;
+        tailTangent = Vector3.Cross(circleNormal, centerToTail).normalized * centerToTail.magnitude;
         var tailRot = Quaternion.FromToRotation(headTangent, tailTangent); // do not take u-turn, it will not be correct
         tailTrans.localRotation = tailRot * headRot;
 
