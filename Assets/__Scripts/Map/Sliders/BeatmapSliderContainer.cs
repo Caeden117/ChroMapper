@@ -11,6 +11,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     [FormerlySerializedAs("sliderData")] public BeatmapSlider SliderData;
     [SerializeField] private GameObject indicatorMu;
     [SerializeField] private GameObject indicatorTmu;
+    private const float splineYScaleFactor = 3.0f;
 
     private MeshRenderer splineRenderer;
     internal MeshRenderer SplineRenderer { get => splineRenderer; set
@@ -20,7 +21,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         } }
     [SerializeField] private List<MeshRenderer> noteRenderer;
 
-    private const float partition = 0.25f;
+    private const float partition = 0.00f;
     public override BeatmapObject ObjectData { get => SliderData; set => SliderData = (BeatmapSlider)value; }
 
     public static BeatmapSliderContainer SpawnSlider(BeatmapSlider data, ref GameObject prefab)
@@ -41,7 +42,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     public override void UpdateGridPosition()
     {
         transform.localPosition = new Vector3(-1.5f, 0.5f, SliderData.Time * EditorScaleController.EditorScale);
-        RecomputePosition();
+        //RecomputePosition();
         UpdateCollisionGroups();
     }
     public void SetScale(Vector3 scale)
@@ -64,16 +65,16 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         var n2 = spline.nodes[1];
         n1.Position = new Vector3(SliderData.X, SliderData.Y, 0);
         n2.Position = new Vector3(SliderData.TailX, SliderData.TailY, (SliderData.TailTime - SliderData.Time) * EditorScaleController.EditorScale);
-        var distance = SliderData.TailTime - SliderData.Time;
+        //var distance = EditorScaleController.EditorScale;
         var d1 = Vector3.zero;
-        d1.z += distance * partition;
-        d1.y += distance * SliderData.HeadControlPointLengthMultiplier;
+        //d1.z += distance * partition;
+        d1.y += splineYScaleFactor * SliderData.HeadControlPointLengthMultiplier;
         var rot1 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(SliderData.Direction).z - 180);
         d1 = rot1 * d1;
         n1.Direction = n1.Position + d1;
         var d2 = Vector3.zero;
-        d2.z += distance * partition;
-        d2.y += distance * SliderData.TailControlPointLengthMultiplier;
+        //d2.z += distance * partition;
+        d2.y += splineYScaleFactor * SliderData.TailControlPointLengthMultiplier;
         var rot2 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(SliderData.TailCutDirection).z - 180);
         d2 = rot2 * d2;
         n2.Direction = n2.Position + d2;
