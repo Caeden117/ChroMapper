@@ -14,6 +14,9 @@ public class SlidersContainer : BeatmapObjectContainerCollection
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
     private bool isPlaying;
+
+    private Queue<BeatmapSliderContainer> queuedUpdatingSliders = new Queue<BeatmapSliderContainer>();
+    private const int maxRecomputePerFrame = 2;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.Slider;
 
     public override BeatmapObjectContainer CreateContainer()
@@ -34,7 +37,11 @@ public class SlidersContainer : BeatmapObjectContainerCollection
 
     internal override void LateUpdate()
     {
-        if (Settings.Instance.Load_MapV3) base.LateUpdate();
+        if (Settings.Instance.Load_MapV3)
+        {
+            base.LateUpdate();
+            ScheduleRecomputePosition();
+        }
     }
 
     private void SpawnCallback(bool initial, int index, BeatmapObject objectData)
@@ -67,11 +74,34 @@ public class SlidersContainer : BeatmapObjectContainerCollection
     {
         var slider = con as BeatmapSliderContainer;
         var sliderData = obj as BeatmapSlider;
-        slider.RecomputePosition(sliderData);
-        slider.SetIndicatorBlocksActive(!isPlaying);
+        slider.NotifySplineChanged(sliderData);
         sliderAppearanceSO.SetSliderAppearance(slider);
         slider.Setup();
+        slider.SetIndicatorBlocksActive(false);
         var track = tracksManager.GetTrackAtTime(sliderData.Time);
         track.AttachContainer(con);
+    }
+
+    /// <summary>
+    /// Push a container into waiting queue to recompute.
+    /// </summary>
+    /// <param name="container"></param>
+    public void RequestForSplineRecompute(BeatmapSliderContainer container)
+    {
+        queuedUpdatingSliders.Enqueue(container);
+    }
+
+    /// <summary>
+    /// Only compute several splines per frame, avoid burst stuck.   
+    /// </summary>
+    /// <returns></returns>
+    private void ScheduleRecomputePosition()
+    {
+        for (int i = 0; i < maxRecomputePerFrame && queuedUpdatingSliders.Count != 0; ++i)
+        {
+            var container = queuedUpdatingSliders.Dequeue();
+            container.RecomputePosition();
+            container.SetIndicatorBlocksActive(!isPlaying);
+        }
     }
 }

@@ -24,7 +24,7 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
     {
         var original = BeatmapObject.GenerateCopy(s.SliderData);
         s.ChangeMu(modifier);
-        s.RecomputePosition();
+        s.NotifySplineChanged();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
     }
 
@@ -66,7 +66,7 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
     {
         var original = BeatmapObject.GenerateCopy(s.SliderData);
         s.ChangeTmu(modifier);
-        s.RecomputePosition();
+        s.NotifySplineChanged();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
     }
 }

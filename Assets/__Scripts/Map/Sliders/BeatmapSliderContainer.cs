@@ -17,9 +17,11 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     internal MeshRenderer SplineRenderer { get => splineRenderer; set
         {
             splineRenderer = value;
+            splineRenderer.enabled = splineRendererEnabled;
             splineRenderer.SetPropertyBlock(MaterialPropertyBlock);
         } }
     [SerializeField] private List<MeshRenderer> noteRenderer;
+    private bool splineRendererEnabled;
 
     private const float partition = 0.00f;
     public override BeatmapObject ObjectData { get => SliderData; set => SliderData = (BeatmapSlider)value; }
@@ -53,13 +55,27 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         //UpdateMaterials();
     }
 
+    public void NotifySplineChanged(BeatmapSlider sliderData = null)
+    {
+        if (sliderData != null)
+        {
+            SliderData = sliderData;
+        }
+        if (splineRenderer != null) // since curve has been changed, firstly disable it until it is computed.
+        {
+            splineRenderer.enabled = false;
+        }
+        splineRendererEnabled = false;
+        var sliderCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Slider) as SlidersContainer;
+        sliderCollection.RequestForSplineRecompute(this);
+    }
+
     /// <summary>
     /// Defer Bezier Curve based on slider data. Not the official algorithm I guess?
     /// </summary>
-    /// <param name="sliderData"></param>
-    public void RecomputePosition(BeatmapSlider sliderData = null)
+    public void RecomputePosition()
     {
-        if (sliderData != null) SliderData = sliderData;
+        if (SliderData == null) return; // in case that this container has already been recycled when about to compute
         var spline = GetComponent<SplineMesh.Spline>();
         var n1 = spline.nodes[0];
         var n2 = spline.nodes[1];
@@ -79,6 +95,8 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         d2 = rot2 * d2;
         n2.Direction = n2.Position + d2;
         spline.RefreshCurves();
+        splineRendererEnabled = true;
+        if (splineRenderer != null) splineRenderer.enabled = true;
         ResetIndicatorsPosition();
     }
 
