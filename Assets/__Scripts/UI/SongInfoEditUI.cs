@@ -543,7 +543,6 @@ public class SongInfoEditUI : MenuBase
                 Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
                 BeatSaberSongContainer.Instance.Map = map;
                 Settings.Instance.Load_MapV3 = map.Version[0] == '3';
-                if (Settings.Instance.Load_MapV3) Settings.Instance.GridTransparency = 0.75f;
                 SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
             }
         }
