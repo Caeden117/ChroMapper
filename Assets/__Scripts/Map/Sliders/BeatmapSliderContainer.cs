@@ -12,6 +12,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     [SerializeField] private GameObject indicatorMu;
     [SerializeField] private GameObject indicatorTmu;
     private const float splineYScaleFactor = 3.0f;
+    private const float directionZPerturbation = 1e-3f; // a small value to avoid 'look rotation viewing vector is zero'
 
     private MeshRenderer splineRenderer;
     internal MeshRenderer SplineRenderer { get => splineRenderer; set
@@ -82,15 +83,11 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         n1.Position = new Vector3(SliderData.X, SliderData.Y, 0);
         n2.Position = new Vector3(SliderData.TailX, SliderData.TailY, (SliderData.TailTime - SliderData.Time) * EditorScaleController.EditorScale);
         //var distance = EditorScaleController.EditorScale;
-        var d1 = Vector3.zero;
-        //d1.z += distance * partition;
-        d1.y += splineYScaleFactor * SliderData.HeadControlPointLengthMultiplier;
+        var d1 = new Vector3(0, splineYScaleFactor * SliderData.HeadControlPointLengthMultiplier, directionZPerturbation);
         var rot1 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(SliderData.Direction).z - 180);
         d1 = rot1 * d1;
         n1.Direction = n1.Position + d1;
-        var d2 = Vector3.zero;
-        //d2.z += distance * partition;
-        d2.y += splineYScaleFactor * SliderData.TailControlPointLengthMultiplier;
+        var d2 = new Vector3(0, splineYScaleFactor * SliderData.TailControlPointLengthMultiplier, directionZPerturbation);
         var rot2 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(SliderData.TailCutDirection).z - 180);
         d2 = rot2 * d2;
         n2.Direction = n2.Position + d2;
