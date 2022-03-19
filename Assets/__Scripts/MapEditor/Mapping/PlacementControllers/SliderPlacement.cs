@@ -65,15 +65,5 @@ public class SliderPlacement : PlacementController<BeatmapSlider, BeatmapSliderC
     {
         return;
     }
-    public override void TransferQueuedToDraggedObject(ref BeatmapSlider dragged, BeatmapSlider queued) => throw new System.NotImplementedException();
-
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-        
-    }
+    public override void TransferQueuedToDraggedObject(ref BeatmapSlider dragged, BeatmapSlider queued) { }
 }

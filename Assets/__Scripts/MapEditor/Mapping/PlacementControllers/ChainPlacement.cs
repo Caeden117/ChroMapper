@@ -13,7 +13,7 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => 
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a chain.");
-    public override BeatmapChain GenerateOriginalData() => throw new System.NotImplementedException();
+    public override BeatmapChain GenerateOriginalData() => new BeatmapChain();
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint) => throw new System.NotImplementedException();
 
     /// <summary>
@@ -60,16 +60,5 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
         BeatmapActionContainer.AddAction(GenerateAction(chainData, conflict));
     }
 
-    public override void TransferQueuedToDraggedObject(ref BeatmapChain dragged, BeatmapChain queued) => throw new System.NotImplementedException();
-
-
-    private void Start()
-    {
-        
-    }
-    private void Update()
-    {
-
-    }
-
+    public override void TransferQueuedToDraggedObject(ref BeatmapChain dragged, BeatmapChain queued) { }
 }
