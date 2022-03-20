@@ -14,6 +14,8 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     private const float splineYScaleFactor = 3.0f;
     private const float directionZPerturbation = 1e-3f; // a small value to avoid 'look rotation viewing vector is zero'
 
+    private MaterialPropertyBlock indicatorMaterialPropertyBlock;
+
     private MeshRenderer splineRenderer;
     internal MeshRenderer SplineRenderer { get => splineRenderer; set
         {
@@ -21,7 +23,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
             splineRenderer.enabled = splineRendererEnabled;
             splineRenderer.SetPropertyBlock(MaterialPropertyBlock);
         } }
-    [SerializeField] private List<MeshRenderer> noteRenderer;
+    [SerializeField] private List<GameObject> indicators;
     private bool splineRendererEnabled;
 
     private const float partition = 0.00f;
@@ -38,7 +40,9 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     {
         base.Setup();
         MaterialPropertyBlock.SetFloat("_Lit", 1);
-        MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1);
+        MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1f);
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().Setup();
+
         UpdateMaterials();
     }
 
@@ -46,6 +50,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     {
         transform.localPosition = new Vector3(-1.5f, 0.5f, SliderData.Time * EditorScaleController.EditorScale);
         //RecomputePosition();
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().UpdateGridPosition();
         UpdateCollisionGroups();
     }
     public void SetScale(Vector3 scale)
@@ -99,11 +104,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
 
     private void ResetIndicatorsPosition()
     {
-        var spline = GetComponent<SplineMesh.Spline>();
-        var n1 = spline.nodes[0];
-        var n2 = spline.nodes[1];
-        indicatorMu.transform.localPosition = n1.Direction;
-        indicatorTmu.transform.localPosition = 2 * n2.Position - n2.Direction; // symetric to n2 to make it comprehensible
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().UpdateGridPosition();
     }
 
     public void SetColor(Color color)
@@ -114,7 +115,8 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
 
     internal override void UpdateMaterials()
     {
-        foreach (var renderer in noteRenderer) renderer.SetPropertyBlock(MaterialPropertyBlock);
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().UpdateMaterials(MaterialPropertyBlock);
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().OutlineVisible = OutlineVisible;
         if (SplineRenderer != null)
             SplineRenderer.SetPropertyBlock(MaterialPropertyBlock);
         foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
@@ -122,7 +124,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
 
     public void SetIndicatorBlocksActive(bool visible)
     {
-        foreach (var renderer in noteRenderer) renderer.gameObject.SetActive(visible);
+        foreach (var gameObject in indicators) gameObject.SetActive(visible);
     }
 
     public void ChangeMu(float modifier)

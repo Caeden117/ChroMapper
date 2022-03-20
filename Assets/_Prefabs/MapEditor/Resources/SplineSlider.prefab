@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 8931760231891507723}
   - component: {fileID: 4161038953135867400}
   - component: {fileID: 6926796285610875710}
+  - component: {fileID: 8842177106240009305}
   m_Layer: 9
   m_Name: Tmu
   m_TagString: Untagged
@@ -186,6 +187,28 @@ MonoBehaviour:
   MeshVertices: []
   CollisionLayer: 0
   CollisionGroups: 00000000
+--- !u!114 &8842177106240009305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2557363893090272133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7787a6c0cb8ba57488d29cebf27efff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dragging: 0
+  Colliders:
+  - {fileID: 6025665846232342334}
+  - {fileID: 6926796285610875710}
+  SelectionRenderers:
+  - {fileID: 1658300574675627679}
+  - {fileID: 2193227773376228232}
+  BoxCollider: {fileID: 0}
+  IndicatorType: 1
+  ParentSlider: {fileID: 8584166480014179833}
 --- !u!1 &2800143464783224911
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,9 +334,9 @@ MonoBehaviour:
   manager: {fileID: 0}
   indicatorMu: {fileID: 2851274061448878421}
   indicatorTmu: {fileID: 2557363893090272133}
-  noteRenderer:
-  - {fileID: 3964795494407880451}
-  - {fileID: 4161038953135867400}
+  indicators:
+  - {fileID: 2851274061448878421}
+  - {fileID: 2557363893090272133}
 --- !u!1 &2851274061448878421
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,6 +349,7 @@ GameObject:
   - component: {fileID: 266754658782816864}
   - component: {fileID: 3964795494407880451}
   - component: {fileID: 6025665846232342334}
+  - component: {fileID: 5265443898185752176}
   m_Layer: 9
   m_Name: Mu
   m_TagString: Untagged
@@ -418,6 +442,28 @@ MonoBehaviour:
   MeshVertices: []
   CollisionLayer: 0
   CollisionGroups: 00000000
+--- !u!114 &5265443898185752176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2851274061448878421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7787a6c0cb8ba57488d29cebf27efff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dragging: 0
+  Colliders:
+  - {fileID: 6025665846232342334}
+  - {fileID: 6926796285610875710}
+  SelectionRenderers:
+  - {fileID: 1658300574675627679}
+  - {fileID: 2193227773376228232}
+  BoxCollider: {fileID: 0}
+  IndicatorType: 0
+  ParentSlider: {fileID: 8584166480014179833}
 --- !u!1 &7979261080399059397
 GameObject:
   m_ObjectHideFlags: 0
