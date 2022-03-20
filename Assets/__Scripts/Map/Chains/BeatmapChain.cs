@@ -11,7 +11,7 @@ public class BeatmapChain : BeatmapObject
     public const int MaxChainCount = 999;
     public const float MinChainSquish = 0.1f;
     public const float MaxChainSquish = 999;
-    public static Vector3 ChainScale = new Vector3(1.5f, 0.4f, 1.5f);
+    public static Vector3 ChainScale = new Vector3(1.5f, 0.8f, 1.5f);
     // private float b;
     public int Color;
     public int X;
