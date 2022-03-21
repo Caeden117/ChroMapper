@@ -158,7 +158,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             });
             if (Settings.Instance.Load_MapV3)
             {
-                clearTypes.AddRange(new[] { BeatmapObject.ObjectType.Slider, BeatmapObject.ObjectType.Chain });
+                clearTypes.AddRange(new[] { BeatmapObject.ObjectType.Arc, BeatmapObject.ObjectType.Chain });
             }
         }
 
@@ -680,8 +680,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             if (Settings.Instance.Load_MapV3)
             {
-                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Sliders = 
-                    newObjects[BeatmapObject.ObjectType.Slider].Cast<BeatmapSlider>().ToList();
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Arcs = 
+                    newObjects[BeatmapObject.ObjectType.Arc].Cast<BeatmapArc>().ToList();
                 (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Chains =
                     newObjects[BeatmapObject.ObjectType.Chain].Cast<BeatmapChain>().ToList();
             }

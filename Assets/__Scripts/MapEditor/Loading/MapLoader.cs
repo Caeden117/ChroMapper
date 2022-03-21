@@ -23,7 +23,7 @@ public class MapLoader : MonoBehaviour
                 CustomData = map.CustomData.Clone(),
                 Notes = new List<BeatmapNote>(map.Notes),
                 Obstacles = new List<BeatmapObstacle>(map.Obstacles),
-                Sliders = new List<BeatmapSlider>((map as BeatSaberMapV3).Sliders),
+                Arcs = new List<BeatmapArc>((map as BeatSaberMapV3).Arcs),
                 Chains = new List<BeatmapChain>((map as BeatSaberMapV3).Chains),
                 Events = new List<MapEvent>(map.Events),
                 BpmChanges = new List<BeatmapBPMChange>(map.BpmChanges),
@@ -60,7 +60,7 @@ public class MapLoader : MonoBehaviour
         }
         if (Settings.Instance.Load_MapV3)
         {
-            yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Sliders));
+            yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Arcs));
             yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Chains));
         }
 

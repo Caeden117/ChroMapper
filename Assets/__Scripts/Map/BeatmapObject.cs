@@ -20,7 +20,7 @@ public abstract class BeatmapObject
         CustomNote,
         CustomEvent,
         BpmChange,
-        Slider, // introduced in v3
+        Arc, // introduced in v3
         Chain // introduced in v3
     }
 
@@ -70,8 +70,8 @@ public abstract class BeatmapObject
                 objectData = new BeatmapNote(note.Time, note.LineIndex, note.LineLayer, note.Type,
                     note.CutDirection, originalData.CustomData?.Clone()) as T;
                 break;
-            case BeatmapSlider slider:
-                objectData = new BeatmapSlider(slider) as T;
+            case BeatmapArc arc:
+                objectData = new BeatmapArc(arc) as T;
                 break;
             default:
                 objectData =

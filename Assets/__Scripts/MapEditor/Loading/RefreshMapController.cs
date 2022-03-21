@@ -78,7 +78,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map.CustomEvents));
         if ((notes || full) && Settings.Instance.Load_MapV3)
         {
-            yield return StartCoroutine(loader.LoadObjects((map as BeatSaberMapV3).Sliders));
+            yield return StartCoroutine(loader.LoadObjects((map as BeatSaberMapV3).Arcs));
             yield return StartCoroutine(loader.LoadObjects((map as BeatSaberMapV3).Chains));
         }
         if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SliderAppearanceSO", menuName = "Map/Appearance/Slider Appearance SO")]
-public class SliderAppearanceSO : ScriptableObject
+[CreateAssetMenu(fileName = "ArcAppearanceSO", menuName = "Map/Appearance/Arc Appearance SO")]
+public class ArcAppearanceSO : ScriptableObject
 {
 
     public Color RedColor { get; private set; } = BeatSaberSong.DefaultLeftNote;
@@ -15,15 +15,15 @@ public class SliderAppearanceSO : ScriptableObject
         BlueColor = blue;
     }
     
-    public void SetSliderAppearance(BeatmapSliderContainer slider)
+    public void SetArcAppearance(BeatmapArcContainer arc)
     {
-        switch (slider.SliderData.Color)
+        switch (arc.ArcData.Color)
         {
             case BeatmapNote.NoteTypeA:
-                slider.SetColor(RedColor);
+                arc.SetColor(RedColor);
                 break;
             case BeatmapNote.NoteTypeB:
-                slider.SetColor(BlueColor);
+                arc.SetColor(BlueColor);
                 break;
             default:
                 break;

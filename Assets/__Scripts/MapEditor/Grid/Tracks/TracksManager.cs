@@ -28,7 +28,7 @@ public class TracksManager : MonoBehaviour
             BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle));
         if (Settings.Instance.Load_MapV3)
         {
-            objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Slider));
+            objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Arc));
             objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Chain));
         }
         BeatmapObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;

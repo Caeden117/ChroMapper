@@ -86,7 +86,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             TestForType<BPMChangePlacement>(hit, BeatmapObject.ObjectType.BpmChange);
             if (Settings.Instance.Load_MapV3)
             {
-                TestForType<SliderPlacement>(hit, BeatmapObject.ObjectType.Slider);
+                TestForType<ArcPlacement>(hit, BeatmapObject.ObjectType.Arc);
                 TestForType<ChainPlacement>(hit, BeatmapObject.ObjectType.Chain);
             }
 

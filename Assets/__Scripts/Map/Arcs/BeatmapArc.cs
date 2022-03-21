@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class BeatmapSlider : BeatmapObject
+public class BeatmapArc : BeatmapObject
 {
     // private float b;
     public int Color;
@@ -20,13 +20,13 @@ public class BeatmapSlider : BeatmapObject
     public float HeadControlPointLengthMultiplier;
     public float TailControlPointLengthMultiplier;
     public int TailCutDirection;
-    public int SliderMidAnchorMode; // haven't figured out its usage
-    public override ObjectType BeatmapType { get; set; } = ObjectType.Slider;
+    public int ArcMidAnchorMode; // haven't figured out its usage
+    public override ObjectType BeatmapType { get; set; } = ObjectType.Arc;
     //public float Time { get => base.Time; set => base.Time = value; }
 
-    public BeatmapSlider() { }
+    public BeatmapArc() { }
 
-    public BeatmapSlider(JSONNode node)
+    public BeatmapArc(JSONNode node)
     {
         Time = RetrieveRequiredNode(node, "b").AsFloat;
         Color = RetrieveRequiredNode(node, "c").AsInt;
@@ -39,11 +39,11 @@ public class BeatmapSlider : BeatmapObject
         HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "mu").AsFloat;
         TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "tmu").AsFloat;
         TailCutDirection = RetrieveRequiredNode(node, "tc").AsInt;
-        SliderMidAnchorMode = RetrieveRequiredNode(node, "m").AsInt;
+        ArcMidAnchorMode = RetrieveRequiredNode(node, "m").AsInt;
         CustomData = node[BeatmapObjectV3CustomDataKey];
     }
 
-    public BeatmapSlider(BeatmapSlider other)
+    public BeatmapArc(BeatmapArc other)
     {
         CopyHelper(other);
     }
@@ -62,7 +62,7 @@ public class BeatmapSlider : BeatmapObject
         node["mu"] = HeadControlPointLengthMultiplier;
         node["tmu"] = TailControlPointLengthMultiplier;
         node["tc"] = TailCutDirection;
-        node["m"] = SliderMidAnchorMode;
+        node["m"] = ArcMidAnchorMode;
         if (CustomData != null) node[BeatmapObjectV3CustomDataKey] = CustomData;
         return node;
     }
@@ -80,13 +80,13 @@ public class BeatmapSlider : BeatmapObject
     public override void Apply(BeatmapObject originalData)
     {
         base.Apply(originalData);
-        if (originalData is BeatmapSlider slider)
+        if (originalData is BeatmapArc arc)
         {
-            CopyHelper(slider);
+            CopyHelper(arc);
         }
     }
 
-    public void CopyHelper(BeatmapSlider other)
+    public void CopyHelper(BeatmapArc other)
     {
         Time = other.Time;
         Color = other.Color;
@@ -99,7 +99,7 @@ public class BeatmapSlider : BeatmapObject
         HeadControlPointLengthMultiplier = other.HeadControlPointLengthMultiplier;
         TailControlPointLengthMultiplier = other.TailControlPointLengthMultiplier;
         TailCutDirection = other.TailCutDirection;
-        SliderMidAnchorMode = other.SliderMidAnchorMode;
+        ArcMidAnchorMode = other.ArcMidAnchorMode;
         CustomData = other.CustomData;
     }
 }

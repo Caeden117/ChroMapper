@@ -26,7 +26,7 @@ public class ChainPlacement : PlacementController<BeatmapChain, BeatmapChainCont
         if (!Settings.Instance.Load_MapV3) return;
         var objects = SelectedObjects.ToList();
         if (objects.Count != 2) { return; }
-        if (!SliderPlacement.IsColorNote(objects[0]) || !SliderPlacement.IsColorNote(objects[1]))
+        if (!ArcPlacement.IsColorNote(objects[0]) || !ArcPlacement.IsColorNote(objects[1]))
         {
             return;
         }

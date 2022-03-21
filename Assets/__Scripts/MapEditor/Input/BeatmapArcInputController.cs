@@ -5,10 +5,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class BeatmapSliderInputController : BeatmapInputController<BeatmapSliderContainer>, CMInput.ISliderObjectsActions
+public class BeatmapArcInputController : BeatmapInputController<BeatmapArcContainer>, CMInput.IArcObjectsActions
 {
     public const float MuChangeSpeed = 0.1f;
-    [FormerlySerializedAs("sliderAppearanceSO")] [SerializeField] private SliderAppearanceSO sliderAppearanceSo;
+    [FormerlySerializedAs("arcAppearanceSO")] [SerializeField] private ArcAppearanceSO arcAppearanceSo;
     public void OnChangingMu(InputAction.CallbackContext context)
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
@@ -20,15 +20,15 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
         ChangeMu(e, modifier);
     }
 
-    public void ChangeMu(BeatmapSliderContainer s, float modifier)
+    public void ChangeMu(BeatmapArcContainer s, float modifier)
     {
-        var original = BeatmapObject.GenerateCopy(s.SliderData);
+        var original = BeatmapObject.GenerateCopy(s.ArcData);
         s.ChangeMu(modifier);
         s.NotifySplineChanged();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
     }
 
-    public void OnInvertSliderColor(InputAction.CallbackContext context)
+    public void OnInvertArcColor(InputAction.CallbackContext context)
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
             !KeybindsController.IsMouseInWindow || !context.performed)
@@ -36,19 +36,19 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
             return;
         }
 
-        RaycastFirstObject(out var slider);
-        if (slider != null && !slider.Dragging) InvertSlider(slider);
+        RaycastFirstObject(out var arc);
+        if (arc != null && !arc.Dragging) InvertArc(arc);
     }
 
-    public void InvertSlider(BeatmapSliderContainer slider)
+    public void InvertArc(BeatmapArcContainer arc)
     {
-        var original = BeatmapObject.GenerateCopy(slider.SliderData);
-        var newType = slider.SliderData.Color == BeatmapNote.NoteTypeA
+        var original = BeatmapObject.GenerateCopy(arc.ArcData);
+        var newType = arc.ArcData.Color == BeatmapNote.NoteTypeA
             ? BeatmapNote.NoteTypeB
             : BeatmapNote.NoteTypeA;
-        slider.SliderData.Color = newType;
-        sliderAppearanceSo.SetSliderAppearance(slider);
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(slider.ObjectData, slider.ObjectData, original, "invert slider color"));
+        arc.ArcData.Color = newType;
+        arcAppearanceSo.SetArcAppearance(arc);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(arc.ObjectData, arc.ObjectData, original, "invert arc color"));
     }
 
     public void OnChangingTmu(InputAction.CallbackContext context)
@@ -62,9 +62,9 @@ public class BeatmapSliderInputController : BeatmapInputController<BeatmapSlider
         ChangeTmu(e, modifier);
     }
 
-    public void ChangeTmu(BeatmapSliderContainer s, float modifier)
+    public void ChangeTmu(BeatmapArcContainer s, float modifier)
     {
-        var original = BeatmapObject.GenerateCopy(s.SliderData);
+        var original = BeatmapObject.GenerateCopy(s.ArcData);
         s.ChangeTmu(modifier);
         s.NotifySplineChanged();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));

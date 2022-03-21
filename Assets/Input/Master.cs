@@ -3649,11 +3649,11 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""Slider Objects"",
+            ""name"": ""Arc Objects"",
             ""id"": ""805b5d1e-e501-4fd7-944e-66b474176ee7"",
             ""actions"": [
                 {
-                    ""name"": ""InvertSliderColor"",
+                    ""name"": ""InvertArcColor"",
                     ""type"": ""Button"",
                     ""id"": ""ee16de4f-c84f-40f4-bf15-2ed62d872ec4"",
                     ""expectedControlType"": ""Button"",
@@ -3685,7 +3685,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""InvertSliderColor"",
+                    ""action"": ""InvertArcColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -3867,11 +3867,11 @@ public class @CMInput : IInputActionCollection, IDisposable
             ]
         },
         {
-            ""name"": ""Slider Placement"",
+            ""name"": ""Arc Placement"",
             ""id"": ""a2c01a0e-254e-48e2-a9fc-2d93467bf911"",
             ""actions"": [
                 {
-                    ""name"": ""SpawnSlider"",
+                    ""name"": ""SpawnArc"",
                     ""type"": ""Button"",
                     ""id"": ""4d226cfd-3abc-43ea-86e9-73299a8e46f5"",
                     ""expectedControlType"": ""Button"",
@@ -3887,7 +3887,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpawnSlider"",
+                    ""action"": ""SpawnArc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -4187,19 +4187,19 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Audio
         m_Audio = asset.FindActionMap("Audio", throwIfNotFound: true);
         m_Audio_ToggleHitsoundMute = m_Audio.FindAction("Toggle Hitsound Mute", throwIfNotFound: true);
-        // Slider Objects
-        m_SliderObjects = asset.FindActionMap("Slider Objects", throwIfNotFound: true);
-        m_SliderObjects_InvertSliderColor = m_SliderObjects.FindAction("InvertSliderColor", throwIfNotFound: true);
-        m_SliderObjects_ChangingMu = m_SliderObjects.FindAction("ChangingMu", throwIfNotFound: true);
-        m_SliderObjects_ChangingTmu = m_SliderObjects.FindAction("ChangingTmu", throwIfNotFound: true);
+        // Arc Objects
+        m_ArcObjects = asset.FindActionMap("Arc Objects", throwIfNotFound: true);
+        m_ArcObjects_InvertArcColor = m_ArcObjects.FindAction("InvertArcColor", throwIfNotFound: true);
+        m_ArcObjects_ChangingMu = m_ArcObjects.FindAction("ChangingMu", throwIfNotFound: true);
+        m_ArcObjects_ChangingTmu = m_ArcObjects.FindAction("ChangingTmu", throwIfNotFound: true);
         // Chain Objects
         m_ChainObjects = asset.FindActionMap("Chain Objects", throwIfNotFound: true);
         m_ChainObjects_TweakChainCount = m_ChainObjects.FindAction("TweakChainCount", throwIfNotFound: true);
         m_ChainObjects_InvertChainColor = m_ChainObjects.FindAction("InvertChainColor", throwIfNotFound: true);
         m_ChainObjects_TweakChainSquish = m_ChainObjects.FindAction("TweakChainSquish", throwIfNotFound: true);
-        // Slider Placement
-        m_SliderPlacement = asset.FindActionMap("Slider Placement", throwIfNotFound: true);
-        m_SliderPlacement_SpawnSlider = m_SliderPlacement.FindAction("SpawnSlider", throwIfNotFound: true);
+        // Arc Placement
+        m_ArcPlacement = asset.FindActionMap("Arc Placement", throwIfNotFound: true);
+        m_ArcPlacement_SpawnArc = m_ArcPlacement.FindAction("SpawnArc", throwIfNotFound: true);
         // Chain Placement
         m_ChainPlacement = asset.FindActionMap("Chain Placement", throwIfNotFound: true);
         m_ChainPlacement_SpawnChain = m_ChainPlacement.FindAction("SpawnChain", throwIfNotFound: true);
@@ -6178,44 +6178,44 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public AudioActions @Audio => new AudioActions(this);
 
-    // Slider Objects
-    private readonly InputActionMap m_SliderObjects;
-    private ISliderObjectsActions m_SliderObjectsActionsCallbackInterface;
-    private readonly InputAction m_SliderObjects_InvertSliderColor;
-    private readonly InputAction m_SliderObjects_ChangingMu;
-    private readonly InputAction m_SliderObjects_ChangingTmu;
-    public struct SliderObjectsActions
+    // Arc Objects
+    private readonly InputActionMap m_ArcObjects;
+    private IArcObjectsActions m_ArcObjectsActionsCallbackInterface;
+    private readonly InputAction m_ArcObjects_InvertArcColor;
+    private readonly InputAction m_ArcObjects_ChangingMu;
+    private readonly InputAction m_ArcObjects_ChangingTmu;
+    public struct ArcObjectsActions
     {
         private @CMInput m_Wrapper;
-        public SliderObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @InvertSliderColor => m_Wrapper.m_SliderObjects_InvertSliderColor;
-        public InputAction @ChangingMu => m_Wrapper.m_SliderObjects_ChangingMu;
-        public InputAction @ChangingTmu => m_Wrapper.m_SliderObjects_ChangingTmu;
-        public InputActionMap Get() { return m_Wrapper.m_SliderObjects; }
+        public ArcObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InvertArcColor => m_Wrapper.m_ArcObjects_InvertArcColor;
+        public InputAction @ChangingMu => m_Wrapper.m_ArcObjects_ChangingMu;
+        public InputAction @ChangingTmu => m_Wrapper.m_ArcObjects_ChangingTmu;
+        public InputActionMap Get() { return m_Wrapper.m_ArcObjects; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SliderObjectsActions set) { return set.Get(); }
-        public void SetCallbacks(ISliderObjectsActions instance)
+        public static implicit operator InputActionMap(ArcObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(IArcObjectsActions instance)
         {
-            if (m_Wrapper.m_SliderObjectsActionsCallbackInterface != null)
+            if (m_Wrapper.m_ArcObjectsActionsCallbackInterface != null)
             {
-                @InvertSliderColor.started -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnInvertSliderColor;
-                @InvertSliderColor.performed -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnInvertSliderColor;
-                @InvertSliderColor.canceled -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnInvertSliderColor;
-                @ChangingMu.started -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnChangingMu;
-                @ChangingMu.performed -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnChangingMu;
-                @ChangingMu.canceled -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnChangingMu;
-                @ChangingTmu.started -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnChangingTmu;
-                @ChangingTmu.performed -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnChangingTmu;
-                @ChangingTmu.canceled -= m_Wrapper.m_SliderObjectsActionsCallbackInterface.OnChangingTmu;
+                @InvertArcColor.started -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnInvertArcColor;
+                @InvertArcColor.performed -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnInvertArcColor;
+                @InvertArcColor.canceled -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnInvertArcColor;
+                @ChangingMu.started -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingMu;
+                @ChangingMu.performed -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingMu;
+                @ChangingMu.canceled -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingMu;
+                @ChangingTmu.started -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingTmu;
+                @ChangingTmu.performed -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingTmu;
+                @ChangingTmu.canceled -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingTmu;
             }
-            m_Wrapper.m_SliderObjectsActionsCallbackInterface = instance;
+            m_Wrapper.m_ArcObjectsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @InvertSliderColor.started += instance.OnInvertSliderColor;
-                @InvertSliderColor.performed += instance.OnInvertSliderColor;
-                @InvertSliderColor.canceled += instance.OnInvertSliderColor;
+                @InvertArcColor.started += instance.OnInvertArcColor;
+                @InvertArcColor.performed += instance.OnInvertArcColor;
+                @InvertArcColor.canceled += instance.OnInvertArcColor;
                 @ChangingMu.started += instance.OnChangingMu;
                 @ChangingMu.performed += instance.OnChangingMu;
                 @ChangingMu.canceled += instance.OnChangingMu;
@@ -6225,7 +6225,7 @@ public class @CMInput : IInputActionCollection, IDisposable
             }
         }
     }
-    public SliderObjectsActions @SliderObjects => new SliderObjectsActions(this);
+    public ArcObjectsActions @ArcObjects => new ArcObjectsActions(this);
 
     // Chain Objects
     private readonly InputActionMap m_ChainObjects;
@@ -6276,38 +6276,38 @@ public class @CMInput : IInputActionCollection, IDisposable
     }
     public ChainObjectsActions @ChainObjects => new ChainObjectsActions(this);
 
-    // Slider Placement
-    private readonly InputActionMap m_SliderPlacement;
-    private ISliderPlacementActions m_SliderPlacementActionsCallbackInterface;
-    private readonly InputAction m_SliderPlacement_SpawnSlider;
-    public struct SliderPlacementActions
+    // Arc Placement
+    private readonly InputActionMap m_ArcPlacement;
+    private IArcPlacementActions m_ArcPlacementActionsCallbackInterface;
+    private readonly InputAction m_ArcPlacement_SpawnArc;
+    public struct ArcPlacementActions
     {
         private @CMInput m_Wrapper;
-        public SliderPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @SpawnSlider => m_Wrapper.m_SliderPlacement_SpawnSlider;
-        public InputActionMap Get() { return m_Wrapper.m_SliderPlacement; }
+        public ArcPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SpawnArc => m_Wrapper.m_ArcPlacement_SpawnArc;
+        public InputActionMap Get() { return m_Wrapper.m_ArcPlacement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(SliderPlacementActions set) { return set.Get(); }
-        public void SetCallbacks(ISliderPlacementActions instance)
+        public static implicit operator InputActionMap(ArcPlacementActions set) { return set.Get(); }
+        public void SetCallbacks(IArcPlacementActions instance)
         {
-            if (m_Wrapper.m_SliderPlacementActionsCallbackInterface != null)
+            if (m_Wrapper.m_ArcPlacementActionsCallbackInterface != null)
             {
-                @SpawnSlider.started -= m_Wrapper.m_SliderPlacementActionsCallbackInterface.OnSpawnSlider;
-                @SpawnSlider.performed -= m_Wrapper.m_SliderPlacementActionsCallbackInterface.OnSpawnSlider;
-                @SpawnSlider.canceled -= m_Wrapper.m_SliderPlacementActionsCallbackInterface.OnSpawnSlider;
+                @SpawnArc.started -= m_Wrapper.m_ArcPlacementActionsCallbackInterface.OnSpawnArc;
+                @SpawnArc.performed -= m_Wrapper.m_ArcPlacementActionsCallbackInterface.OnSpawnArc;
+                @SpawnArc.canceled -= m_Wrapper.m_ArcPlacementActionsCallbackInterface.OnSpawnArc;
             }
-            m_Wrapper.m_SliderPlacementActionsCallbackInterface = instance;
+            m_Wrapper.m_ArcPlacementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @SpawnSlider.started += instance.OnSpawnSlider;
-                @SpawnSlider.performed += instance.OnSpawnSlider;
-                @SpawnSlider.canceled += instance.OnSpawnSlider;
+                @SpawnArc.started += instance.OnSpawnArc;
+                @SpawnArc.performed += instance.OnSpawnArc;
+                @SpawnArc.canceled += instance.OnSpawnArc;
             }
         }
     }
-    public SliderPlacementActions @SliderPlacement => new SliderPlacementActions(this);
+    public ArcPlacementActions @ArcPlacement => new ArcPlacementActions(this);
 
     // Chain Placement
     private readonly InputActionMap m_ChainPlacement;
@@ -6619,9 +6619,9 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnToggleHitsoundMute(InputAction.CallbackContext context);
     }
-    public interface ISliderObjectsActions
+    public interface IArcObjectsActions
     {
-        void OnInvertSliderColor(InputAction.CallbackContext context);
+        void OnInvertArcColor(InputAction.CallbackContext context);
         void OnChangingMu(InputAction.CallbackContext context);
         void OnChangingTmu(InputAction.CallbackContext context);
     }
@@ -6631,9 +6631,9 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnInvertChainColor(InputAction.CallbackContext context);
         void OnTweakChainSquish(InputAction.CallbackContext context);
     }
-    public interface ISliderPlacementActions
+    public interface IArcPlacementActions
     {
-        void OnSpawnSlider(InputAction.CallbackContext context);
+        void OnSpawnArc(InputAction.CallbackContext context);
     }
     public interface IChainPlacementActions
     {

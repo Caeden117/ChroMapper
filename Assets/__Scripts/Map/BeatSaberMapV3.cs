@@ -19,7 +19,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     public List<BeatmapColorNote> ColorNotes = new List<BeatmapColorNote>();
     public List<BeatmapBombNote> BombNotes = new List<BeatmapBombNote>();
     public List<BeatmapObstacleV3> ObstaclesV3 = new List<BeatmapObstacleV3>();
-    public List<BeatmapSlider> Sliders = new List<BeatmapSlider>();
+    public List<BeatmapArc> Arcs = new List<BeatmapArc>();
     public List<BeatmapChain> Chains = new List<BeatmapChain>();
     public new List<JSONNode> Waypoints = new List<JSONNode>();
     public List<MapEventV3> BasicBeatmapEvents = new List<MapEventV3>();
@@ -84,8 +84,8 @@ public class BeatSaberMapV3 : BeatSaberMap
             var obstacles = new JSONArray();
             foreach (var o in ObstaclesV3) obstacles.Add(o.ConvertToJson());
 
-            var sliders = new JSONArray();
-            foreach (var s in Sliders) sliders.Add(s.ConvertToJson());
+            var arcs = new JSONArray();
+            foreach (var s in Arcs) arcs.Add(s.ConvertToJson());
 
             var chains = new JSONArray();
             foreach (var c in Chains) chains.Add(c.ConvertToJson());
@@ -113,7 +113,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             MainNode["colorNotes"] = CleanupArray(colorNotes, "b");
             MainNode["bombNotes"] = CleanupArray(bombNotes, "b");
             MainNode["obstacles"] = CleanupArray(obstacles, "b");
-            MainNode["sliders"] = CleanupArray(sliders, "b");
+            MainNode["sliders"] = CleanupArray(arcs, "b");
             MainNode["burstSliders"] = CleanupArray(chains, "b");
             MainNode["waypoints"] = waypoints;
             MainNode["basicBeatmapEvents"] = CleanupArray(basicBeatmapEvents, "b");
@@ -162,7 +162,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             var rotationEventsList = new List<JSONNode>();
             var colorNotesList = new List<BeatmapColorNote>();
             var bombNotesList = new List<BeatmapBombNote>();
-            var slidersList = new List<BeatmapSlider>();
+            var arcsList = new List<BeatmapArc>();
             var obstaclesList = new List<BeatmapObstacleV3>();
             var chainsList = new List<BeatmapChain>();
             var waypointsList = new List<JSONNode>();
@@ -200,7 +200,7 @@ public class BeatSaberMapV3 : BeatSaberMap
                         foreach (JSONNode n in node) obstaclesList.Add(new BeatmapObstacleV3(n));
                         break;
                     case "sliders":
-                        foreach (JSONNode n in node) slidersList.Add(new BeatmapSlider(n));
+                        foreach (JSONNode n in node) arcsList.Add(new BeatmapArc(n));
                         break;
                     case "burstSliders":
                         foreach (JSONNode n in node) chainsList.Add(new BeatmapChain(n));
@@ -238,7 +238,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             mapV3.BombNotes = bombNotesList;
             mapV3.ObstaclesV3 = obstaclesList;
             mapV3.Waypoints = waypointsList; // TODO: Add formal support
-            mapV3.Sliders = slidersList;
+            mapV3.Arcs = arcsList;
             mapV3.Chains = chainsList;
             mapV3.BasicBeatmapEvents = basicBeatmapEventsList;
             mapV3.ColorBoostBeatmapEvents = colorBoostBeatmapEventsList;

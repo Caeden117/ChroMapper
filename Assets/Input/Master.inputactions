@@ -3636,11 +3636,11 @@
             ]
         },
         {
-            "name": "Slider Objects",
+            "name": "Arc Objects",
             "id": "805b5d1e-e501-4fd7-944e-66b474176ee7",
             "actions": [
                 {
-                    "name": "InvertSliderColor",
+                    "name": "InvertArcColor",
                     "type": "Button",
                     "id": "ee16de4f-c84f-40f4-bf15-2ed62d872ec4",
                     "expectedControlType": "Button",
@@ -3672,7 +3672,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "InvertSliderColor",
+                    "action": "InvertArcColor",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -3854,11 +3854,11 @@
             ]
         },
         {
-            "name": "Slider Placement",
+            "name": "Arc Placement",
             "id": "a2c01a0e-254e-48e2-a9fc-2d93467bf911",
             "actions": [
                 {
-                    "name": "SpawnSlider",
+                    "name": "SpawnArc",
                     "type": "Button",
                     "id": "4d226cfd-3abc-43ea-86e9-73299a8e46f5",
                     "expectedControlType": "Button",
@@ -3874,7 +3874,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SpawnSlider",
+                    "action": "SpawnArc",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -4,13 +4,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SliderPlacement : PlacementController<BeatmapSlider, BeatmapSliderContainer, SlidersContainer>,
-    CMInput.ISliderPlacementActions
+public class ArcPlacement : PlacementController<BeatmapArc, BeatmapArcContainer, ArcsContainer>,
+    CMInput.IArcPlacementActions
 {
     private static HashSet<BeatmapObject> SelectedObjects => SelectionController.SelectedObjects;
     
 
-    public void OnSpawnSlider(InputAction.CallbackContext context)
+    public void OnSpawnArc(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;
         if (!Settings.Instance.Load_MapV3) return;
@@ -24,7 +24,7 @@ public class SliderPlacement : PlacementController<BeatmapSlider, BeatmapSliderC
         var n2 = objects[1] as BeatmapNote;
         if (n1.Time > n2.Time) { var t = n1; n1 = n2; n2 = t; }
         if (n1.CutDirection == BeatmapNote.NoteCutDirectionAny || n2.CutDirection == BeatmapNote.NoteCutDirectionAny) { return; }
-        var sliderData = new BeatmapSlider
+        var arcData = new BeatmapArc
         {
             Time = n1.Time,
             Color = n1.Type,
@@ -37,9 +37,9 @@ public class SliderPlacement : PlacementController<BeatmapSlider, BeatmapSliderC
             HeadControlPointLengthMultiplier = 1.0f,
             TailControlPointLengthMultiplier = 1.0f,
             TailCutDirection = n2.CutDirection,
-            SliderMidAnchorMode = 0
+            ArcMidAnchorMode = 0
         };
-        SpawnSlider(sliderData);
+        SpawnArc(arcData);
     }
 
     public static bool IsColorNote(BeatmapObject o)
@@ -47,15 +47,15 @@ public class SliderPlacement : PlacementController<BeatmapSlider, BeatmapSliderC
         return o is BeatmapNote && !(o is BeatmapBombNote);
     }
 
-    public override BeatmapSlider GenerateOriginalData() => new BeatmapSlider();
+    public override BeatmapArc GenerateOriginalData() => new BeatmapArc();
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
-        => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a slider.");
+        => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
-    public void SpawnSlider(BeatmapSlider sliderData)
+    public void SpawnArc(BeatmapArc arcData)
     {
-        var sliderContainer = objectContainerCollection;
-        sliderContainer.SpawnObject(sliderData, false);
-        BeatmapActionContainer.AddAction(GenerateAction(sliderData, new List<BeatmapObject>()));
+        var arcContainer = objectContainerCollection;
+        arcContainer.SpawnObject(arcData, false);
+        BeatmapActionContainer.AddAction(GenerateAction(arcData, new List<BeatmapObject>()));
     }
 
 
@@ -65,5 +65,5 @@ public class SliderPlacement : PlacementController<BeatmapSlider, BeatmapSliderC
     {
         return;
     }
-    public override void TransferQueuedToDraggedObject(ref BeatmapSlider dragged, BeatmapSlider queued) { }
+    public override void TransferQueuedToDraggedObject(ref BeatmapArc dragged, BeatmapArc queued) { }
 }

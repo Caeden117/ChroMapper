@@ -5,23 +5,23 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 /// <summary>
-/// Note that <see cref="SlidersContainer"></see> uses `UseChunkLoadingWhenPlaying`. Therefore slider doesn't fade after passing through.
+/// Note that <see cref="ArcsContainer"></see> uses `UseChunkLoadingWhenPlaying`. Therefore arc doesn't fade after passing through.
 /// </summary>
-public class SlidersContainer : BeatmapObjectContainerCollection
+public class ArcsContainer : BeatmapObjectContainerCollection
 {
-    [SerializeField] private GameObject sliderPrefab;
-    [FormerlySerializedAs("sliderAppearanceSO")] [SerializeField] private SliderAppearanceSO sliderAppearanceSO;
+    [SerializeField] private GameObject arcPrefab;
+    [FormerlySerializedAs("arcAppearanceSO")] [SerializeField] private ArcAppearanceSO arcAppearanceSO;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
     private bool isPlaying;
 
-    private Queue<BeatmapSliderContainer> queuedUpdatingSliders = new Queue<BeatmapSliderContainer>();
+    private Queue<BeatmapArcContainer> queuedUpdatingArcs = new Queue<BeatmapArcContainer>();
     private const int maxRecomputePerFrame = 2;
-    public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.Slider;
+    public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.Arc;
 
     public override BeatmapObjectContainer CreateContainer()
     {
-        return BeatmapSliderContainer.SpawnSlider(null, ref sliderPrefab);
+        return BeatmapArcContainer.SpawnArc(null, ref arcPrefab);
     }
     internal override void SubscribeToCallbacks() 
     {
@@ -62,23 +62,23 @@ public class SlidersContainer : BeatmapObjectContainerCollection
     {
         this.isPlaying = isPlaying;
         if (isPlaying) RefreshPool(true);
-        foreach (BeatmapSliderContainer obj in LoadedContainers.Values)
+        foreach (BeatmapArcContainer obj in LoadedContainers.Values)
         {
             obj.SetIndicatorBlocksActive(!this.isPlaying);
         }
     }
 
-    public void UpdateColor(Color red, Color blue) => sliderAppearanceSO.UpdateColor(red, blue);
+    public void UpdateColor(Color red, Color blue) => arcAppearanceSO.UpdateColor(red, blue);
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        var slider = con as BeatmapSliderContainer;
-        var sliderData = obj as BeatmapSlider;
-        slider.NotifySplineChanged(sliderData);
-        sliderAppearanceSO.SetSliderAppearance(slider);
-        slider.Setup();
-        slider.SetIndicatorBlocksActive(false);
-        var track = tracksManager.GetTrackAtTime(sliderData.Time);
+        var arc = con as BeatmapArcContainer;
+        var arcData = obj as BeatmapArc;
+        arc.NotifySplineChanged(arcData);
+        arcAppearanceSO.SetArcAppearance(arc);
+        arc.Setup();
+        arc.SetIndicatorBlocksActive(false);
+        var track = tracksManager.GetTrackAtTime(arcData.Time);
         track.AttachContainer(con);
     }
 
@@ -86,9 +86,9 @@ public class SlidersContainer : BeatmapObjectContainerCollection
     /// Push a container into waiting queue to recompute.
     /// </summary>
     /// <param name="container"></param>
-    public void RequestForSplineRecompute(BeatmapSliderContainer container)
+    public void RequestForSplineRecompute(BeatmapArcContainer container)
     {
-        queuedUpdatingSliders.Enqueue(container);
+        queuedUpdatingArcs.Enqueue(container);
     }
 
     /// <summary>
@@ -97,9 +97,9 @@ public class SlidersContainer : BeatmapObjectContainerCollection
     /// <returns></returns>
     private void ScheduleRecomputePosition()
     {
-        for (int i = 0; i < maxRecomputePerFrame && queuedUpdatingSliders.Count != 0; ++i)
+        for (int i = 0; i < maxRecomputePerFrame && queuedUpdatingArcs.Count != 0; ++i)
         {
-            var container = queuedUpdatingSliders.Dequeue();
+            var container = queuedUpdatingArcs.Dequeue();
             container.RecomputePosition();
             container.SetIndicatorBlocksActive(!isPlaying);
         }

@@ -208,7 +208,7 @@ MonoBehaviour:
   - {fileID: 2193227773376228232}
   BoxCollider: {fileID: 0}
   IndicatorType: 1
-  ParentSlider: {fileID: 8584166480014179833}
+  ParentArc: {fileID: 8584166480014179833}
 --- !u!1 &2800143464783224911
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 2639069289876581842}
   - component: {fileID: 8584166480014179833}
   m_Layer: 9
-  m_Name: SplineSlider
+  m_Name: SplineArc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -463,7 +463,7 @@ MonoBehaviour:
   - {fileID: 2193227773376228232}
   BoxCollider: {fileID: 0}
   IndicatorType: 0
-  ParentSlider: {fileID: 8584166480014179833}
+  ParentArc: {fileID: 8584166480014179833}
 --- !u!1 &7979261080399059397
 GameObject:
   m_ObjectHideFlags: 0

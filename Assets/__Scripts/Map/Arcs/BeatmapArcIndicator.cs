@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeatmapSliderIndicator : BeatmapObjectContainer
+public class BeatmapArcIndicator : BeatmapObjectContainer
 {
     public IndicatorType IndicatorType;
-    public BeatmapSliderContainer ParentSlider;
+    public BeatmapArcContainer ParentArc;
 
     public override BeatmapObject ObjectData { get; set; }
 
     public override void UpdateGridPosition()
     {
-        var spline = ParentSlider.GetComponent<SplineMesh.Spline>();
+        var spline = ParentArc.GetComponent<SplineMesh.Spline>();
         var n1 = spline.nodes[0];
         var n2 = spline.nodes[1];
 

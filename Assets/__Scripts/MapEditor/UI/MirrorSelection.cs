@@ -221,19 +221,19 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (Settings.Instance.Load_MapV3)
             {
-                if (con is BeatmapSlider slider)
+                if (con is BeatmapArc arc)
                 {
                     if (moveNotes)
                     {
-                        slider.X = Mathf.RoundToInt(((slider.X - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(slider.Direction))
-                            slider.Direction = cutDirectionToMirrored[slider.Direction];
+                        arc.X = Mathf.RoundToInt(((arc.X - 1.5f) * -1) + 1.5f);
+                        if (cutDirectionToMirrored.ContainsKey(arc.Direction))
+                            arc.Direction = cutDirectionToMirrored[arc.Direction];
 
-                        slider.TailX = Mathf.RoundToInt(((slider.TailX - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(slider.TailCutDirection))
-                            slider.TailCutDirection = cutDirectionToMirrored[slider.TailCutDirection];
+                        arc.TailX = Mathf.RoundToInt(((arc.TailX - 1.5f) * -1) + 1.5f);
+                        if (cutDirectionToMirrored.ContainsKey(arc.TailCutDirection))
+                            arc.TailCutDirection = cutDirectionToMirrored[arc.TailCutDirection];
                     }
-                    slider.Color = slider.Color == BeatmapNote.NoteTypeA
+                    arc.Color = arc.Color == BeatmapNote.NoteTypeA
                         ? BeatmapNote.NoteTypeB
                         : BeatmapNote.NoteTypeA;
 

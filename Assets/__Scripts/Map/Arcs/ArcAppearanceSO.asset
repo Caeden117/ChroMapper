@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e1ce6dc908c17745ae513b51524cba1, type: 3}
-  m_Name: SliderAppearanceSO
+  m_Name: ArcAppearanceSO
   m_EditorClassIdentifier: 

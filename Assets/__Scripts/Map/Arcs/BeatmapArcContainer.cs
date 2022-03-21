@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class BeatmapSliderContainer : BeatmapObjectContainer
+public class BeatmapArcContainer : BeatmapObjectContainer
 {
     private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 
     [SerializeField] private TracksManager manager;
-    [FormerlySerializedAs("sliderData")] public BeatmapSlider SliderData;
+    [FormerlySerializedAs("arcData")] public BeatmapArc ArcData;
     [SerializeField] private GameObject indicatorMu;
     [SerializeField] private GameObject indicatorTmu;
     private const float splineYScaleFactor = 3.0f;
@@ -27,12 +27,12 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
     private bool splineRendererEnabled;
 
     private const float partition = 0.00f;
-    public override BeatmapObject ObjectData { get => SliderData; set => SliderData = (BeatmapSlider)value; }
+    public override BeatmapObject ObjectData { get => ArcData; set => ArcData = (BeatmapArc)value; }
 
-    public static BeatmapSliderContainer SpawnSlider(BeatmapSlider data, ref GameObject prefab)
+    public static BeatmapArcContainer SpawnArc(BeatmapArc data, ref GameObject prefab)
     {
-        var container = Instantiate(prefab).GetComponent<BeatmapSliderContainer>();
-        container.SliderData = data;
+        var container = Instantiate(prefab).GetComponent<BeatmapArcContainer>();
+        container.ArcData = data;
         return container;
     }
 
@@ -41,16 +41,16 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         base.Setup();
         MaterialPropertyBlock.SetFloat("_Lit", 1);
         MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1f);
-        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().Setup();
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapArcIndicator>().Setup();
 
         UpdateMaterials();
     }
 
     public override void UpdateGridPosition()
     {
-        transform.localPosition = new Vector3(-1.5f, 0.5f, SliderData.Time * EditorScaleController.EditorScale);
+        transform.localPosition = new Vector3(-1.5f, 0.5f, ArcData.Time * EditorScaleController.EditorScale);
         //RecomputePosition();
-        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().UpdateGridPosition();
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapArcIndicator>().UpdateGridPosition();
         UpdateCollisionGroups();
     }
     public void SetScale(Vector3 scale)
@@ -61,39 +61,39 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
         //UpdateMaterials();
     }
 
-    public void NotifySplineChanged(BeatmapSlider sliderData = null)
+    public void NotifySplineChanged(BeatmapArc arcData = null)
     {
-        if (sliderData != null)
+        if (arcData != null)
         {
-            SliderData = sliderData;
+            ArcData = arcData;
         }
         if (splineRenderer != null) // since curve has been changed, firstly disable it until it is computed.
         {
             splineRenderer.enabled = false;
         }
         splineRendererEnabled = false;
-        var sliderCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Slider) as SlidersContainer;
-        sliderCollection.RequestForSplineRecompute(this);
+        var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Arc) as ArcsContainer;
+        arcCollection.RequestForSplineRecompute(this);
     }
 
     /// <summary>
-    /// Defer Bezier Curve based on slider data. Not the official algorithm I guess?
+    /// Defer Bezier Curve based on arc data. Not the official algorithm I guess?
     /// </summary>
     public void RecomputePosition()
     {
-        if (SliderData == null) return; // in case that this container has already been recycled when about to compute
+        if (ArcData == null) return; // in case that this container has already been recycled when about to compute
         var spline = GetComponent<SplineMesh.Spline>();
         var n1 = spline.nodes[0];
         var n2 = spline.nodes[1];
-        n1.Position = new Vector3(SliderData.X, SliderData.Y, 0);
-        n2.Position = new Vector3(SliderData.TailX, SliderData.TailY, (SliderData.TailTime - SliderData.Time) * EditorScaleController.EditorScale);
+        n1.Position = new Vector3(ArcData.X, ArcData.Y, 0);
+        n2.Position = new Vector3(ArcData.TailX, ArcData.TailY, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
         //var distance = EditorScaleController.EditorScale;
-        var d1 = new Vector3(0, splineYScaleFactor * SliderData.HeadControlPointLengthMultiplier, directionZPerturbation);
-        var rot1 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(SliderData.Direction).z - 180);
+        var d1 = new Vector3(0, splineYScaleFactor * ArcData.HeadControlPointLengthMultiplier, directionZPerturbation);
+        var rot1 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(ArcData.Direction).z - 180);
         d1 = rot1 * d1;
         n1.Direction = n1.Position + d1;
-        var d2 = new Vector3(0, splineYScaleFactor * SliderData.TailControlPointLengthMultiplier, directionZPerturbation);
-        var rot2 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(SliderData.TailCutDirection).z - 180);
+        var d2 = new Vector3(0, splineYScaleFactor * ArcData.TailControlPointLengthMultiplier, directionZPerturbation);
+        var rot2 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(ArcData.TailCutDirection).z - 180);
         d2 = rot2 * d2;
         n2.Direction = n2.Position + d2;
         spline.RefreshCurves();
@@ -104,7 +104,7 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
 
     private void ResetIndicatorsPosition()
     {
-        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().UpdateGridPosition();
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapArcIndicator>().UpdateGridPosition();
     }
 
     public void SetColor(Color color)
@@ -115,8 +115,8 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
 
     internal override void UpdateMaterials()
     {
-        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().UpdateMaterials(MaterialPropertyBlock);
-        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapSliderIndicator>().OutlineVisible = OutlineVisible;
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapArcIndicator>().UpdateMaterials(MaterialPropertyBlock);
+        foreach (var gameObject in indicators) gameObject.GetComponent<BeatmapArcIndicator>().OutlineVisible = OutlineVisible;
         if (SplineRenderer != null)
             SplineRenderer.SetPropertyBlock(MaterialPropertyBlock);
         foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
@@ -129,11 +129,11 @@ public class BeatmapSliderContainer : BeatmapObjectContainer
 
     public void ChangeMu(float modifier)
     {
-        SliderData.HeadControlPointLengthMultiplier += modifier;
+        ArcData.HeadControlPointLengthMultiplier += modifier;
     }
 
     public void ChangeTmu(float modifier)
     {
-        SliderData.TailControlPointLengthMultiplier += modifier;
+        ArcData.TailControlPointLengthMultiplier += modifier;
     }
 }

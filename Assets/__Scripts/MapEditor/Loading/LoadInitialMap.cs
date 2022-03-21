@@ -15,7 +15,7 @@ public class LoadInitialMap : MonoBehaviour
     [Space] [SerializeField] private NotesContainer notesContainer;
 
     [SerializeField] private ObstaclesContainer obstaclesContainer;
-    [SerializeField] private SlidersContainer slidersContainer;
+    [SerializeField] private ArcsContainer arcsContainer;
     [SerializeField] private ChainsContainer chainsContainer;
     [SerializeField] private MapLoader loader;
 
@@ -94,7 +94,7 @@ public class LoadInitialMap : MonoBehaviour
         obstaclesContainer.UpdateColor(diff.ObstacleColor ?? BeatSaberSong.DefaultLeftColor);
         if (Settings.Instance.Load_MapV3)
         {
-            slidersContainer.UpdateColor(leftNote, rightNote);
+            arcsContainer.UpdateColor(leftNote, rightNote);
             chainsContainer.UpdateColor(leftNote, rightNote);
         }
         if (diff.ColorLeft != null) descriptor.Colors.RedNoteColor = diff.ColorLeft ?? descriptor.Colors.RedNoteColor;
