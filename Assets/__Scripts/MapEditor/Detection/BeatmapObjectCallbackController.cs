@@ -223,7 +223,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         {
             if (natural) ChainPassedThreshold?.Invoke(init, nextChainIndex, newlyAdded);
             nextChains.Remove(newlyAdded);
-            if (allEvents.Count > 0 && natural) QueueNextObject(allChains, nextChains);
+            if (allChains.Count > 0 && natural) QueueNextObject(allChains, nextChains);
             nextChainIndex++;
         }
     }
