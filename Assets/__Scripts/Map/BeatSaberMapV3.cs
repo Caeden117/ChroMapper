@@ -26,7 +26,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     public List<ColorBoostEvent> ColorBoostBeatmapEvents = new List<ColorBoostEvent>();
     public List<JSONNode> LightColorEventBoxGroups = new List<JSONNode>();
     public List<JSONNode> LightRotationEventBoxGroups = new List<JSONNode>();
-    public List<JSONNode> BasicEventTypesWithKeywords = new List<JSONNode>();
+    public Dictionary<string, JSONNode> BasicEventTypesWithKeywords = new Dictionary<string, JSONNode>(); // although idk what it is used for, save as a dict first
     public bool UseNormalEventsAsCompatibleEvents = false;
 
     public const string BeatSaberMapV3CustomDatakey = "customData";
@@ -105,8 +105,8 @@ public class BeatSaberMapV3 : BeatSaberMap
             var lightRotationEventBoxGroups = new JSONArray();
             foreach (var l in lightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l);
 
-            var basicEventTypesWithKeywords = new JSONArray();
-            foreach (var b in BasicEventTypesWithKeywords) basicEventTypesWithKeywords.Add(b);
+            var basicEventTypesWithKeywords = new JSONObject();
+            foreach (var k in BasicEventTypesWithKeywords.Keys) basicEventTypesWithKeywords[k] = BasicEventTypesWithKeywords[k];
 
             MainNode["bpmEvents"] = bpmEvents;
             MainNode["rotationEvents"] = rotationEvents;
@@ -170,7 +170,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             var colorBoostBeatmapEventsList = new List<ColorBoostEvent>();
             var lightColorEventBoxGroupsList = new List<JSONNode>();
             var lightRotationEventBoxGroupsList = new List<JSONNode>();
-            var basicEventTypesWithKeywordsList = new List<JSONNode>();
+            var basicEventTypesWithKeywordsDict = new Dictionary<string, JSONNode>();
 
 
             var nodeEnum = mainNode.GetEnumerator();
@@ -221,7 +221,10 @@ public class BeatSaberMapV3 : BeatSaberMap
                         foreach (JSONNode n in node) lightRotationEventBoxGroupsList.Add(n);
                         break;
                     case "basicEventTypesWithKeywords":
-                        foreach (JSONNode n in node) basicEventTypesWithKeywordsList.Add(n);
+                        foreach (var k in node.Keys)
+                        {
+                            basicEventTypesWithKeywordsDict[k] = node[k];
+                        }
                         break;
                     case "useNormalEventsAsCompatibleEvents":
                         mapV3.UseNormalEventsAsCompatibleEvents = node.AsBool;
@@ -244,7 +247,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             mapV3.ColorBoostBeatmapEvents = colorBoostBeatmapEventsList;
             mapV3.LightColorEventBoxGroups = lightColorEventBoxGroupsList;
             mapV3.LightRotationEventBoxGroups = lightRotationEventBoxGroupsList;
-            mapV3.BasicEventTypesWithKeywords = basicEventTypesWithKeywordsList;
+            mapV3.BasicEventTypesWithKeywords = basicEventTypesWithKeywordsDict;
 
             var mapV2 = mapV3 as BeatSaberMap;
             LoadCustomDataNode(ref mapV2, ref mainNode);
