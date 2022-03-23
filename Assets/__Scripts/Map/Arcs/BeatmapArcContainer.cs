@@ -13,6 +13,8 @@ public class BeatmapArcContainer : BeatmapObjectContainer
     [SerializeField] private GameObject indicatorTmu;
     private const float splineYScaleFactor = 3.0f;
     private const float directionZPerturbation = 1e-3f; // a small value to avoid 'look rotation viewing vector is zero'
+    internal static readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
+    internal const float arcEmissionIntensity = 6;
 
     private MaterialPropertyBlock indicatorMaterialPropertyBlock;
 
@@ -110,6 +112,7 @@ public class BeatmapArcContainer : BeatmapObjectContainer
     public void SetColor(Color color)
     {
         MaterialPropertyBlock.SetColor(BeatmapObjectContainer.color, color);
+        MaterialPropertyBlock.SetColor(emissionColor, color * arcEmissionIntensity);
         UpdateMaterials();
     }
 
