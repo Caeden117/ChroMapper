@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale
   - m_GUID: 5a8a5bd10c31a5f49a24b9e8f261aecf
-    m_Address: New Locale
+    m_Address: owospeak (en-OWO)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale

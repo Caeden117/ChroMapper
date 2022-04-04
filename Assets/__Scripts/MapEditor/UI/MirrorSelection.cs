@@ -219,6 +219,40 @@ public class MirrorSelection : MonoBehaviour
                     else if (e.Value > 0 && e.Value <= 4) e.Value += 4;
                 }
             }
+            else if (Settings.Instance.Load_MapV3)
+            {
+                if (con is BeatmapArc arc)
+                {
+                    if (moveNotes)
+                    {
+                        arc.X = Mathf.RoundToInt(((arc.X - 1.5f) * -1) + 1.5f);
+                        if (cutDirectionToMirrored.ContainsKey(arc.Direction))
+                            arc.Direction = cutDirectionToMirrored[arc.Direction];
+
+                        arc.TailX = Mathf.RoundToInt(((arc.TailX - 1.5f) * -1) + 1.5f);
+                        if (cutDirectionToMirrored.ContainsKey(arc.TailCutDirection))
+                            arc.TailCutDirection = cutDirectionToMirrored[arc.TailCutDirection];
+                    }
+                    arc.Color = arc.Color == BeatmapNote.NoteTypeA
+                        ? BeatmapNote.NoteTypeB
+                        : BeatmapNote.NoteTypeA;
+
+                }
+                else if (con is BeatmapChain chain)
+                {
+                    if (moveNotes)
+                    {
+                        chain.X = Mathf.RoundToInt(((chain.X - 1.5f) * -1) + 1.5f);
+                        if (cutDirectionToMirrored.ContainsKey(chain.Direction))
+                            chain.Direction = cutDirectionToMirrored[chain.Direction];
+
+                        chain.TailX = Mathf.RoundToInt(((chain.TailX - 1.5f) * -1) + 1.5f);
+                    }
+                    chain.Color = chain.Color == BeatmapNote.NoteTypeA
+                        ? BeatmapNote.NoteTypeB
+                        : BeatmapNote.NoteTypeA;
+                }
+            }
 
             allActions.Add(new BeatmapObjectModifiedAction(con, con, original, "e", true));
         }

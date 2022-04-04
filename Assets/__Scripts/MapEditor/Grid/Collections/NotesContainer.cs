@@ -193,7 +193,7 @@ public class NotesContainer : BeatmapObjectContainerCollection
     }
 
     // Grab a Vector2 plane based on the cut direction
-    private Vector2 Direction(BeatmapNote obj)
+    public static Vector2 Direction(BeatmapNote obj)
     {
         return obj.CutDirection switch
         {

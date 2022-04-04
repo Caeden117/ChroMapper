@@ -474,7 +474,7 @@ public class BeatSaberSong
             return null;
         }
 
-        return BeatSaberMap.GetBeatSaberMapFromJson(mainNode, fullPath);
+        return BeatSaberMapFactory.GetBeatSaberMapFromJson(mainNode, fullPath);
     }
 
     private static JSONNode GetNodeFromFile(string file)

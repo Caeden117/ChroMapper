@@ -156,6 +156,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 BeatmapObject.ObjectType.Note, BeatmapObject.ObjectType.Obstacle, BeatmapObject.ObjectType.CustomNote
             });
+            if (Settings.Instance.Load_MapV3)
+            {
+                clearTypes.AddRange(new[] { BeatmapObject.ObjectType.Arc, BeatmapObject.ObjectType.Chain });
+            }
         }
 
         if (hasNoteOrObstacle && !hasEvent)
@@ -672,6 +676,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     newObjects[BeatmapObject.ObjectType.BpmChange].Cast<BeatmapBPMChange>().ToList();
                 BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[BeatmapObject.ObjectType.CustomEvent]
                     .Cast<BeatmapCustomEvent>().ToList();
+            }
+
+            if (Settings.Instance.Load_MapV3)
+            {
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Arcs = 
+                    newObjects[BeatmapObject.ObjectType.Arc].Cast<BeatmapArc>().ToList();
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Chains =
+                    newObjects[BeatmapObject.ObjectType.Chain].Cast<BeatmapChain>().ToList();
             }
         }
     }

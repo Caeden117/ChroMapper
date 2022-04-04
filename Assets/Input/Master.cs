@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/__Scripts/Input/Master.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Input/Master.inputactions'
 
 using System;
 using System.Collections;
@@ -1871,6 +1871,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Precisely Change Time and Precision"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6493d05-ae82-41a4-8f68-aa3424334d49"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -1906,6 +1914,50 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Change Precision Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""18d2a700-a1fa-47b3-90b6-e1fd89b3de3a"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Precisely Change Time and Precision"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""0718a13c-bc12-40af-85ce-96c81b8fd8a9"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Precisely Change Time and Precision"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""63944c8c-b254-4b3a-83db-6b7535b94d15"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Precisely Change Time and Precision"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""00941ee4-945a-4b33-9126-1da74f6e6924"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Precisely Change Time and Precision"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -3595,6 +3647,338 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Arc Objects"",
+            ""id"": ""805b5d1e-e501-4fd7-944e-66b474176ee7"",
+            ""actions"": [
+                {
+                    ""name"": ""InvertArcColor"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee16de4f-c84f-40f4-bf15-2ed62d872ec4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangingMu"",
+                    ""type"": ""Button"",
+                    ""id"": ""5ecf55da-5762-4a6c-921f-2b702e9078da"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangingTmu"",
+                    ""type"": ""Button"",
+                    ""id"": ""c37b5919-0bb5-4248-a944-50d9a28f9f9f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6219d243-e063-43d0-bc27-e5025a77f281"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InvertArcColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""bdb70de1-9017-48f5-9a56-a7cbc3e8b6d5"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangingMu"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e25bae57-8ba5-4bc3-8f4f-a85d16689882"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangingMu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""e9e80f81-e46a-410f-8ede-772001402513"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangingMu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""4e9815d9-195d-42b0-beee-c5dbbe007881"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangingTmu"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""13be3721-d736-47fb-996f-37a6a7f691b7"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangingTmu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""9cbbc1b6-0ba7-4515-b623-618c9186acc3"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangingTmu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Chain Objects"",
+            ""id"": ""08122fed-0d6b-4568-96df-eecf068a7222"",
+            ""actions"": [
+                {
+                    ""name"": ""TweakChainCount"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c7ce6e2-975c-4349-ad23-ec3d12a4c640"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""InvertChainColor"",
+                    ""type"": ""Button"",
+                    ""id"": ""1b3dedb1-d750-438f-b20f-2226fd1f83f7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""TweakChainSquish"",
+                    ""type"": ""Button"",
+                    ""id"": ""afed819c-0511-4541-be42-2272b16fd4cb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""1ad09872-ef84-423c-b7f6-6c123f28c38f"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainCount"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""03792ffb-15ab-40e3-aba5-0203e1c73c53"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainCount"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""a315ed00-b449-4c42-b26d-86edd9418c56"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainCount"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8090b872-0daa-4936-b436-6861bbf1bd6e"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InvertChainColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""cc108959-3e88-4e89-916e-3ab53746fa3e"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainSquish"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a559ede2-9e25-4701-a5a7-6227ebfbe571"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainSquish"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""bc2e6b3e-eb7c-4595-8219-3658277c5093"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TweakChainSquish"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Arc Placement"",
+            ""id"": ""a2c01a0e-254e-48e2-a9fc-2d93467bf911"",
+            ""actions"": [
+                {
+                    ""name"": ""SpawnArc"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d226cfd-3abc-43ea-86e9-73299a8e46f5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""58313530-3763-4263-95ce-fc5d9c62505b"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpawnArc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Chain Placement"",
+            ""id"": ""536d935e-f538-461a-802f-948261ee73c3"",
+            ""actions"": [
+                {
+                    ""name"": ""SpawnChain"",
+                    ""type"": ""Button"",
+                    ""id"": ""8332b2c6-9345-4508-8f4e-af7eeb7ebc7e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5e1cf217-3ad9-4837-9882-e0f01041cd71"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpawnChain"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Switch Version"",
+            ""id"": ""de1a703f-7892-4a54-9acf-417af3e6a8f1"",
+            ""actions"": [
+                {
+                    ""name"": ""SwitchingVersion"",
+                    ""type"": ""Button"",
+                    ""id"": ""b1ec0be6-4853-4fc6-bbe0-f3e05393d2c1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Button With Two Modifiers"",
+                    ""id"": ""9a06374b-8ea8-4b21-81df-d5ec7cf0d603"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchingVersion"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""bc7ee81a-d782-4041-8827-eb1bdb660df3"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchingVersion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""bce9263e-b1dd-4bc8-9309-8cce771a45c9"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchingVersion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""8b3aa145-76eb-4922-abd7-2405c88177be"",
+                    ""path"": ""<Keyboard>/period"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchingVersion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -3707,6 +4091,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Timeline_ChangeTimeandPrecision = m_Timeline.FindAction("+Change Time and Precision", throwIfNotFound: true);
         m_Timeline_ChangePrecisionModifier = m_Timeline.FindAction("Change Precision Modifier", throwIfNotFound: true);
         m_Timeline_PreciseSnapModification = m_Timeline.FindAction("Precise Snap Modification", throwIfNotFound: true);
+        m_Timeline_PreciselyChangeTimeandPrecision = m_Timeline.FindAction("Precisely Change Time and Precision", throwIfNotFound: true);
         // Editor Scale
         m_EditorScale = asset.FindActionMap("Editor Scale", throwIfNotFound: true);
         m_EditorScale_DecreaseEditorScale = m_EditorScale.FindAction("Decrease Editor Scale", throwIfNotFound: true);
@@ -3802,6 +4187,25 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Audio
         m_Audio = asset.FindActionMap("Audio", throwIfNotFound: true);
         m_Audio_ToggleHitsoundMute = m_Audio.FindAction("Toggle Hitsound Mute", throwIfNotFound: true);
+        // Arc Objects
+        m_ArcObjects = asset.FindActionMap("Arc Objects", throwIfNotFound: true);
+        m_ArcObjects_InvertArcColor = m_ArcObjects.FindAction("InvertArcColor", throwIfNotFound: true);
+        m_ArcObjects_ChangingMu = m_ArcObjects.FindAction("ChangingMu", throwIfNotFound: true);
+        m_ArcObjects_ChangingTmu = m_ArcObjects.FindAction("ChangingTmu", throwIfNotFound: true);
+        // Chain Objects
+        m_ChainObjects = asset.FindActionMap("Chain Objects", throwIfNotFound: true);
+        m_ChainObjects_TweakChainCount = m_ChainObjects.FindAction("TweakChainCount", throwIfNotFound: true);
+        m_ChainObjects_InvertChainColor = m_ChainObjects.FindAction("InvertChainColor", throwIfNotFound: true);
+        m_ChainObjects_TweakChainSquish = m_ChainObjects.FindAction("TweakChainSquish", throwIfNotFound: true);
+        // Arc Placement
+        m_ArcPlacement = asset.FindActionMap("Arc Placement", throwIfNotFound: true);
+        m_ArcPlacement_SpawnArc = m_ArcPlacement.FindAction("SpawnArc", throwIfNotFound: true);
+        // Chain Placement
+        m_ChainPlacement = asset.FindActionMap("Chain Placement", throwIfNotFound: true);
+        m_ChainPlacement_SpawnChain = m_ChainPlacement.FindAction("SpawnChain", throwIfNotFound: true);
+        // Switch Version
+        m_SwitchVersion = asset.FindActionMap("Switch Version", throwIfNotFound: true);
+        m_SwitchVersion_SwitchingVersion = m_SwitchVersion.FindAction("SwitchingVersion", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -4756,6 +5160,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Timeline_ChangeTimeandPrecision;
     private readonly InputAction m_Timeline_ChangePrecisionModifier;
     private readonly InputAction m_Timeline_PreciseSnapModification;
+    private readonly InputAction m_Timeline_PreciselyChangeTimeandPrecision;
     public struct TimelineActions
     {
         private @CMInput m_Wrapper;
@@ -4763,6 +5168,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @ChangeTimeandPrecision => m_Wrapper.m_Timeline_ChangeTimeandPrecision;
         public InputAction @ChangePrecisionModifier => m_Wrapper.m_Timeline_ChangePrecisionModifier;
         public InputAction @PreciseSnapModification => m_Wrapper.m_Timeline_PreciseSnapModification;
+        public InputAction @PreciselyChangeTimeandPrecision => m_Wrapper.m_Timeline_PreciselyChangeTimeandPrecision;
         public InputActionMap Get() { return m_Wrapper.m_Timeline; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -4781,6 +5187,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @PreciseSnapModification.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
                 @PreciseSnapModification.performed -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
                 @PreciseSnapModification.canceled -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciseSnapModification;
+                @PreciselyChangeTimeandPrecision.started -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciselyChangeTimeandPrecision;
+                @PreciselyChangeTimeandPrecision.performed -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciselyChangeTimeandPrecision;
+                @PreciselyChangeTimeandPrecision.canceled -= m_Wrapper.m_TimelineActionsCallbackInterface.OnPreciselyChangeTimeandPrecision;
             }
             m_Wrapper.m_TimelineActionsCallbackInterface = instance;
             if (instance != null)
@@ -4794,6 +5203,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @PreciseSnapModification.started += instance.OnPreciseSnapModification;
                 @PreciseSnapModification.performed += instance.OnPreciseSnapModification;
                 @PreciseSnapModification.canceled += instance.OnPreciseSnapModification;
+                @PreciselyChangeTimeandPrecision.started += instance.OnPreciselyChangeTimeandPrecision;
+                @PreciselyChangeTimeandPrecision.performed += instance.OnPreciselyChangeTimeandPrecision;
+                @PreciselyChangeTimeandPrecision.canceled += instance.OnPreciselyChangeTimeandPrecision;
             }
         }
     }
@@ -5765,6 +6177,203 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public AudioActions @Audio => new AudioActions(this);
+
+    // Arc Objects
+    private readonly InputActionMap m_ArcObjects;
+    private IArcObjectsActions m_ArcObjectsActionsCallbackInterface;
+    private readonly InputAction m_ArcObjects_InvertArcColor;
+    private readonly InputAction m_ArcObjects_ChangingMu;
+    private readonly InputAction m_ArcObjects_ChangingTmu;
+    public struct ArcObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public ArcObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InvertArcColor => m_Wrapper.m_ArcObjects_InvertArcColor;
+        public InputAction @ChangingMu => m_Wrapper.m_ArcObjects_ChangingMu;
+        public InputAction @ChangingTmu => m_Wrapper.m_ArcObjects_ChangingTmu;
+        public InputActionMap Get() { return m_Wrapper.m_ArcObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ArcObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(IArcObjectsActions instance)
+        {
+            if (m_Wrapper.m_ArcObjectsActionsCallbackInterface != null)
+            {
+                @InvertArcColor.started -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnInvertArcColor;
+                @InvertArcColor.performed -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnInvertArcColor;
+                @InvertArcColor.canceled -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnInvertArcColor;
+                @ChangingMu.started -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingMu;
+                @ChangingMu.performed -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingMu;
+                @ChangingMu.canceled -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingMu;
+                @ChangingTmu.started -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingTmu;
+                @ChangingTmu.performed -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingTmu;
+                @ChangingTmu.canceled -= m_Wrapper.m_ArcObjectsActionsCallbackInterface.OnChangingTmu;
+            }
+            m_Wrapper.m_ArcObjectsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @InvertArcColor.started += instance.OnInvertArcColor;
+                @InvertArcColor.performed += instance.OnInvertArcColor;
+                @InvertArcColor.canceled += instance.OnInvertArcColor;
+                @ChangingMu.started += instance.OnChangingMu;
+                @ChangingMu.performed += instance.OnChangingMu;
+                @ChangingMu.canceled += instance.OnChangingMu;
+                @ChangingTmu.started += instance.OnChangingTmu;
+                @ChangingTmu.performed += instance.OnChangingTmu;
+                @ChangingTmu.canceled += instance.OnChangingTmu;
+            }
+        }
+    }
+    public ArcObjectsActions @ArcObjects => new ArcObjectsActions(this);
+
+    // Chain Objects
+    private readonly InputActionMap m_ChainObjects;
+    private IChainObjectsActions m_ChainObjectsActionsCallbackInterface;
+    private readonly InputAction m_ChainObjects_TweakChainCount;
+    private readonly InputAction m_ChainObjects_InvertChainColor;
+    private readonly InputAction m_ChainObjects_TweakChainSquish;
+    public struct ChainObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public ChainObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TweakChainCount => m_Wrapper.m_ChainObjects_TweakChainCount;
+        public InputAction @InvertChainColor => m_Wrapper.m_ChainObjects_InvertChainColor;
+        public InputAction @TweakChainSquish => m_Wrapper.m_ChainObjects_TweakChainSquish;
+        public InputActionMap Get() { return m_Wrapper.m_ChainObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ChainObjectsActions set) { return set.Get(); }
+        public void SetCallbacks(IChainObjectsActions instance)
+        {
+            if (m_Wrapper.m_ChainObjectsActionsCallbackInterface != null)
+            {
+                @TweakChainCount.started -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainCount;
+                @TweakChainCount.performed -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainCount;
+                @TweakChainCount.canceled -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainCount;
+                @InvertChainColor.started -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnInvertChainColor;
+                @InvertChainColor.performed -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnInvertChainColor;
+                @InvertChainColor.canceled -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnInvertChainColor;
+                @TweakChainSquish.started -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainSquish;
+                @TweakChainSquish.performed -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainSquish;
+                @TweakChainSquish.canceled -= m_Wrapper.m_ChainObjectsActionsCallbackInterface.OnTweakChainSquish;
+            }
+            m_Wrapper.m_ChainObjectsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @TweakChainCount.started += instance.OnTweakChainCount;
+                @TweakChainCount.performed += instance.OnTweakChainCount;
+                @TweakChainCount.canceled += instance.OnTweakChainCount;
+                @InvertChainColor.started += instance.OnInvertChainColor;
+                @InvertChainColor.performed += instance.OnInvertChainColor;
+                @InvertChainColor.canceled += instance.OnInvertChainColor;
+                @TweakChainSquish.started += instance.OnTweakChainSquish;
+                @TweakChainSquish.performed += instance.OnTweakChainSquish;
+                @TweakChainSquish.canceled += instance.OnTweakChainSquish;
+            }
+        }
+    }
+    public ChainObjectsActions @ChainObjects => new ChainObjectsActions(this);
+
+    // Arc Placement
+    private readonly InputActionMap m_ArcPlacement;
+    private IArcPlacementActions m_ArcPlacementActionsCallbackInterface;
+    private readonly InputAction m_ArcPlacement_SpawnArc;
+    public struct ArcPlacementActions
+    {
+        private @CMInput m_Wrapper;
+        public ArcPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SpawnArc => m_Wrapper.m_ArcPlacement_SpawnArc;
+        public InputActionMap Get() { return m_Wrapper.m_ArcPlacement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ArcPlacementActions set) { return set.Get(); }
+        public void SetCallbacks(IArcPlacementActions instance)
+        {
+            if (m_Wrapper.m_ArcPlacementActionsCallbackInterface != null)
+            {
+                @SpawnArc.started -= m_Wrapper.m_ArcPlacementActionsCallbackInterface.OnSpawnArc;
+                @SpawnArc.performed -= m_Wrapper.m_ArcPlacementActionsCallbackInterface.OnSpawnArc;
+                @SpawnArc.canceled -= m_Wrapper.m_ArcPlacementActionsCallbackInterface.OnSpawnArc;
+            }
+            m_Wrapper.m_ArcPlacementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SpawnArc.started += instance.OnSpawnArc;
+                @SpawnArc.performed += instance.OnSpawnArc;
+                @SpawnArc.canceled += instance.OnSpawnArc;
+            }
+        }
+    }
+    public ArcPlacementActions @ArcPlacement => new ArcPlacementActions(this);
+
+    // Chain Placement
+    private readonly InputActionMap m_ChainPlacement;
+    private IChainPlacementActions m_ChainPlacementActionsCallbackInterface;
+    private readonly InputAction m_ChainPlacement_SpawnChain;
+    public struct ChainPlacementActions
+    {
+        private @CMInput m_Wrapper;
+        public ChainPlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SpawnChain => m_Wrapper.m_ChainPlacement_SpawnChain;
+        public InputActionMap Get() { return m_Wrapper.m_ChainPlacement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ChainPlacementActions set) { return set.Get(); }
+        public void SetCallbacks(IChainPlacementActions instance)
+        {
+            if (m_Wrapper.m_ChainPlacementActionsCallbackInterface != null)
+            {
+                @SpawnChain.started -= m_Wrapper.m_ChainPlacementActionsCallbackInterface.OnSpawnChain;
+                @SpawnChain.performed -= m_Wrapper.m_ChainPlacementActionsCallbackInterface.OnSpawnChain;
+                @SpawnChain.canceled -= m_Wrapper.m_ChainPlacementActionsCallbackInterface.OnSpawnChain;
+            }
+            m_Wrapper.m_ChainPlacementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SpawnChain.started += instance.OnSpawnChain;
+                @SpawnChain.performed += instance.OnSpawnChain;
+                @SpawnChain.canceled += instance.OnSpawnChain;
+            }
+        }
+    }
+    public ChainPlacementActions @ChainPlacement => new ChainPlacementActions(this);
+
+    // Switch Version
+    private readonly InputActionMap m_SwitchVersion;
+    private ISwitchVersionActions m_SwitchVersionActionsCallbackInterface;
+    private readonly InputAction m_SwitchVersion_SwitchingVersion;
+    public struct SwitchVersionActions
+    {
+        private @CMInput m_Wrapper;
+        public SwitchVersionActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SwitchingVersion => m_Wrapper.m_SwitchVersion_SwitchingVersion;
+        public InputActionMap Get() { return m_Wrapper.m_SwitchVersion; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SwitchVersionActions set) { return set.Get(); }
+        public void SetCallbacks(ISwitchVersionActions instance)
+        {
+            if (m_Wrapper.m_SwitchVersionActionsCallbackInterface != null)
+            {
+                @SwitchingVersion.started -= m_Wrapper.m_SwitchVersionActionsCallbackInterface.OnSwitchingVersion;
+                @SwitchingVersion.performed -= m_Wrapper.m_SwitchVersionActionsCallbackInterface.OnSwitchingVersion;
+                @SwitchingVersion.canceled -= m_Wrapper.m_SwitchVersionActionsCallbackInterface.OnSwitchingVersion;
+            }
+            m_Wrapper.m_SwitchVersionActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SwitchingVersion.started += instance.OnSwitchingVersion;
+                @SwitchingVersion.performed += instance.OnSwitchingVersion;
+                @SwitchingVersion.canceled += instance.OnSwitchingVersion;
+            }
+        }
+    }
+    public SwitchVersionActions @SwitchVersion => new SwitchVersionActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -5890,6 +6499,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnChangeTimeandPrecision(InputAction.CallbackContext context);
         void OnChangePrecisionModifier(InputAction.CallbackContext context);
         void OnPreciseSnapModification(InputAction.CallbackContext context);
+        void OnPreciselyChangeTimeandPrecision(InputAction.CallbackContext context);
     }
     public interface IEditorScaleActions
     {
@@ -6008,5 +6618,29 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IAudioActions
     {
         void OnToggleHitsoundMute(InputAction.CallbackContext context);
+    }
+    public interface IArcObjectsActions
+    {
+        void OnInvertArcColor(InputAction.CallbackContext context);
+        void OnChangingMu(InputAction.CallbackContext context);
+        void OnChangingTmu(InputAction.CallbackContext context);
+    }
+    public interface IChainObjectsActions
+    {
+        void OnTweakChainCount(InputAction.CallbackContext context);
+        void OnInvertChainColor(InputAction.CallbackContext context);
+        void OnTweakChainSquish(InputAction.CallbackContext context);
+    }
+    public interface IArcPlacementActions
+    {
+        void OnSpawnArc(InputAction.CallbackContext context);
+    }
+    public interface IChainPlacementActions
+    {
+        void OnSpawnChain(InputAction.CallbackContext context);
+    }
+    public interface ISwitchVersionActions
+    {
+        void OnSwitchingVersion(InputAction.CallbackContext context);
     }
 }

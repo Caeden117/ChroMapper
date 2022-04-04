@@ -39,8 +39,23 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
     internal static Vector3 Directionalize(BeatmapNote mapNoteData)
     {
         if (mapNoteData is null) return Vector3.zero;
+        int cutDirection = mapNoteData.CutDirection;
+        var directionEuler = Directionalize(cutDirection);
+        if (mapNoteData.CustomData?.HasKey("_cutDirection") ?? false)
+        {
+            directionEuler = new Vector3(0, 0, mapNoteData.CustomData["_cutDirection"]?.AsFloat ?? 0);
+        }
+        else
+        {
+            if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
+        }
+
+        return directionEuler;
+    }
+
+    internal static Vector3 Directionalize(int cutDirection)
+    {
         var directionEuler = Vector3.zero;
-        var cutDirection = mapNoteData.CutDirection;
         switch (cutDirection)
         {
             case BeatmapNote.NoteCutDirectionUp:
@@ -67,17 +82,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
             case BeatmapNote.NoteCutDirectionDownRight:
                 directionEuler += new Vector3(0, 0, 45);
                 break;
+            default:
+                break;
         }
-
-        if (mapNoteData.CustomData?.HasKey("_cutDirection") ?? false)
-        {
-            directionEuler = new Vector3(0, 0, mapNoteData.CustomData["_cutDirection"]?.AsFloat ?? 0);
-        }
-        else
-        {
-            if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
-        }
-
         return directionEuler;
     }
 

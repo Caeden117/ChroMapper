@@ -42,12 +42,25 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     public Action<bool, int> RecursiveEventCheckFinished;
     public Action<bool, int> RecursiveNoteCheckFinished;
 
+    /// v3 version fields
+    [SerializeField] private ChainsContainer chainsContainer; // Now it should be useless. Does chain have sound?
+    [SerializeField] private int nextChainIndex;
+    private readonly HashSet<BeatmapObject> nextChains = new HashSet<BeatmapObject>();
+    private HashSet<BeatmapObject> allChains = new HashSet<BeatmapObject>();
+    public Action<bool, int, BeatmapObject> ChainPassedThreshold;
+    public Action<bool, int> RecursiveChainCheckFinished;
+
     private void Start()
     {
         notesContainer.ObjectSpawnedEvent += NotesContainer_ObjectSpawnedEvent;
         notesContainer.ObjectDeletedEvent += NotesContainer_ObjectDeletedEvent;
         eventsContainer.ObjectSpawnedEvent += EventsContainer_ObjectSpawnedEvent;
         eventsContainer.ObjectDeletedEvent += EventsContainer_ObjectDeletedEvent;
+        if (Settings.Instance.Load_MapV3 && chainsContainer != null)
+        {
+            chainsContainer.ObjectSpawnedEvent += ChainsContainer_ObjectSpawnedEvent;
+            chainsContainer.ObjectDeletedEvent += ChainsContainer_ObjectDeletedEvent;
+        }
     }
 
     private void LateUpdate()
@@ -92,6 +105,14 @@ public class BeatmapObjectCallbackController : MonoBehaviour
                     allEvents.Remove(toClear);
                     nextEvents.Remove(toClear);
                 }
+                else if (Settings.Instance.Load_MapV3)
+                {
+                    if (toClear is BeatmapChain)
+                    {
+                        allChains.Remove(toClear);
+                        nextChains.Remove(toClear);
+                    }
+                }
             }
 
             queuedToClear.Clear();
@@ -102,6 +123,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour
             curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
             RecursiveCheckNotes(true, true);
             RecursiveCheckEvents(true, true);
+            if (Settings.Instance.Load_MapV3 && chainsContainer != null)
+            {
+                RecursiveCheckChains(true, true);
+            }
         }
     }
 
@@ -115,6 +140,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         {
             CheckAllNotes(false);
             CheckAllEvents(false);
+            if (Settings.Instance.Load_MapV3 && chainsContainer != null) CheckAllChains(false);
         }
     }
 
@@ -124,7 +150,6 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
         allNotes.Clear();
         allNotes = new HashSet<BeatmapObject>(notesContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
-
         nextNoteIndex = notesContainer.LoadedObjects.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
         nextNotes.Clear();
@@ -147,6 +172,22 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         for (var i = 0; i < eventsToLookAhead; i++)
         {
             if (allEvents.Count > 0) QueueNextObject(allEvents, nextEvents);
+        }
+    }
+
+    private void CheckAllChains(bool natural)
+    {
+        if (chainsContainer == null) return; // currently only use for sound effect
+        curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
+        allChains.Clear();
+        allChains = new HashSet<BeatmapObject>(chainsContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
+        nextChainIndex = chainsContainer.LoadedObjects.Count - allChains.Count;
+        RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
+        nextChains.Clear();
+
+        for (var i = 0; i < notesToLookAhead; i++)
+        {
+            if (allChains.Count > 0) QueueNextObject(allChains, nextChains);
         }
     }
 
@@ -174,6 +215,19 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         }
     }
 
+    private void RecursiveCheckChains(bool init, bool natural)
+    {
+        if (chainsContainer == null) return; // currently only use for sound effect
+        var passed = nextChains.Where(x => x.Time <= curTime + Offset).ToArray();
+        foreach (var newlyAdded in passed)
+        {
+            if (natural) ChainPassedThreshold?.Invoke(init, nextChainIndex, newlyAdded);
+            nextChains.Remove(newlyAdded);
+            if (allChains.Count > 0 && natural) QueueNextObject(allChains, nextChains);
+            nextChainIndex++;
+        }
+    }
+
     private void NotesContainer_ObjectSpawnedEvent(BeatmapObject obj) => OnObjSpawn(obj, nextNotes);
 
     private void NotesContainer_ObjectDeletedEvent(BeatmapObject obj) => OnObjDeleted(obj);
@@ -181,6 +235,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     private void EventsContainer_ObjectSpawnedEvent(BeatmapObject obj) => OnObjSpawn(obj, nextEvents);
 
     private void EventsContainer_ObjectDeletedEvent(BeatmapObject obj) => OnObjDeleted(obj);
+
+    private void ChainsContainer_ObjectSpawnedEvent(BeatmapObject obj) => OnObjSpawn(obj, nextChains);
+
+    private void ChainsContainer_ObjectDeletedEvent(BeatmapObject obj) => OnObjDeleted(obj);
 
     private void OnObjSpawn(BeatmapObject obj, HashSet<BeatmapObject> nextObjects)
     {
@@ -216,5 +274,11 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         notesContainer.ObjectDeletedEvent -= NotesContainer_ObjectDeletedEvent;
         eventsContainer.ObjectSpawnedEvent -= EventsContainer_ObjectSpawnedEvent;
         eventsContainer.ObjectDeletedEvent -= EventsContainer_ObjectDeletedEvent;
+        if (Settings.Instance.Load_MapV3 && chainsContainer != null)
+        {
+            chainsContainer.ObjectSpawnedEvent -= ChainsContainer_ObjectSpawnedEvent;
+            chainsContainer.ObjectDeletedEvent -= ChainsContainer_ObjectDeletedEvent;
+
+        }
     }
 }

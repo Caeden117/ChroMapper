@@ -55,12 +55,20 @@ public class DingOnNotePassingGrid : MonoBehaviour
 
         beatSaberCutCallbackController.NotePassedThreshold += PlaySound;
         defaultCallbackController.NotePassedThreshold += TriggerBongoCat;
+        if (Settings.Instance.Load_MapV3)
+        {
+            beatSaberCutCallbackController.ChainPassedThreshold += PlaySound;
+        }
     }
 
     private void OnDisable()
     {
         beatSaberCutCallbackController.NotePassedThreshold -= PlaySound;
         defaultCallbackController.NotePassedThreshold -= TriggerBongoCat;
+        if (Settings.Instance.Load_MapV3)
+        {
+            beatSaberCutCallbackController.ChainPassedThreshold -= PlaySound;
+        }
 
         Settings.ClearSettingNotifications("Ding_Red_Notes");
         Settings.ClearSettingNotifications("Ding_Blue_Notes");
@@ -127,16 +135,26 @@ public class DingOnNotePassingGrid : MonoBehaviour
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
         if (objectData.Time - container.AudioTimeSyncController.CurrentBeat <= -0.5f) return;
 
-        //actual ding stuff
-        if (objectData.Time == lastCheckedTime || !NoteTypeToDing[((BeatmapNote)objectData).Type]) return;
-        /*
-         * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
-         * the same time that are supposed to ding from triggering the sound effects.
-         */
+        bool shortCut;
+        if (Settings.Instance.Load_MapV3 && objectData is BeatmapChain)
+        {
+            if (objectData.Time == lastCheckedTime) return;
+            shortCut = false;
+        }
+        else
+        {
+            //actual ding stuff
+            if (objectData.Time == lastCheckedTime || !NoteTypeToDing[((BeatmapNote)objectData).Type]) return;
+            /*
+             * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
+             * the same time that are supposed to ding from triggering the sound effects.
+             */
 
-        var shortCut = objectData.Time - lastCheckedTime < thresholdInNoteTime;
+            shortCut = objectData.Time - lastCheckedTime < thresholdInNoteTime;
 
+        }
         lastCheckedTime = objectData.Time;
+
         var soundListId = Settings.Instance.NoteHitSound;
         var list = soundLists[soundListId];
 
