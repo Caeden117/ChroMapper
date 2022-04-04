@@ -1014,6 +1014,51 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 1698793607168
+    m_Localized: Quest ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1897456816128
+    m_Localized: Adds special Quest functionality if ADB is installed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3768991576559616
+    m_Localized: Successfully exported files to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Localized: Export to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Localized: Failed to download ADB. Error {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Localized: "ADB does not seem to be installed or could not be found. Would
+      you\n      like to download it? This will allow Quest functionality."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635263
+    m_Localized: Downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Localized: Finished downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Localized: Extacting ADB from zip. This may take a while.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21544433260560384
+    m_Localized: Install ADB for Quest functionality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71906481403138048
+    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

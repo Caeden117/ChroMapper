@@ -691,6 +691,14 @@ MonoBehaviour:
     m_Key: map.quickedit.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 1698793607168
+    m_Key: misc.questadb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1897456816128
+    m_Key: misc.questadb.tooltip
+    m_Metadata:
+      m_Items: []
   - m_Id: 1345062612992
     m_Key: countersplus.heading
     m_Metadata:
@@ -861,6 +869,42 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 67494721340747776
     m_Key: graphics.renderscale.info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3768991576559616
+    m_Key: quest.success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Key: quest.export
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Key: quest.adb_error_download
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Key: quest.adb_not_found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635263
+    m_Key: quest.downloading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Key: quest.adb_finished_downloading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Key: quest.extracting_download
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21544433260560384
+    m_Key: quest.install_adb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71906481403138048
+    m_Key: quest.downloading_progress
     m_Metadata:
       m_Items: []
   m_Metadata:
