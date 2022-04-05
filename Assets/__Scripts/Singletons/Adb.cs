@@ -57,12 +57,12 @@ namespace QuestDumper
 #if UNITY_STANDALONE_WIN
             return platformToolsDownloadGeneric + "windows.zip";
 #elif UNITY_STANDALONE_OSX
-            return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "darwin.zip";
+            return platformToolsDownloadGeneric + "darwin.zip";
 #elif UNITY_STANDALONE_LINUX
-            return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "linux.zip";
+            return platformToolsDownloadGeneric + "linux.zip";
             // Obviously Android is required
 #elif PLATFORM_ANDROID
-            return PLATFORM_TOOLS_DOWNLOAD_GENERIC + "linux.zip";
+            return platformToolsDownloadGeneric + "linux.zip";
 #endif
             // ReSharper disable once HeuristicUnreachableCode
 #pragma warning disable CS0162
@@ -311,5 +311,7 @@ namespace QuestDumper
         /// <param name="serial">device serial</param>
         public static async Task<AdbOutput> Pull(string devicePath, string localPath, string serial) 
             => await RunADBCommand($"-s {serial} pull \"{devicePath}\" \"{localPath}\"");
+
+        public static async Task<AdbOutput> Initialize() => await RunADBCommand($"start-server");
     }
 }

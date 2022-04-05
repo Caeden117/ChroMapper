@@ -68,7 +68,7 @@ namespace QuestDumper
             try
             {
                 // Initialize and dispose to make sure ADB works, catch any exceptions and notify the user.
-                Adb.Initialize();
+                Adb.Initialize().ConfigureAwait(false);
             }
             catch (AssertionException e)
             {
@@ -77,8 +77,7 @@ namespace QuestDumper
                 OnDownloadFail(null, e);
                 yield break;
             }
-            
-            yield return Adb.Dispose().AsCoroutine();
+
             
             dialog.Clear();
             
@@ -96,8 +95,6 @@ namespace QuestDumper
             var dialog = PersistentUI.Instance.CreateNewDialogBox();
             dialog.WithTitle("Options", "quest.uninstalling_adb");
             dialog.Open();
-            
-            yield return Adb.Dispose().AsCoroutine();
 
             yield return Adb.RemoveADB();
             
