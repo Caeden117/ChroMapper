@@ -70,7 +70,7 @@ namespace QuestDumper
             var initialize = Adb.Initialize();
             yield return initialize.AsCoroutine();
 
-            if (!initialize.IsCompleted || initialize.Exception != null || string.IsNullOrEmpty(initialize.Result.ErrorOut?.Trim()))
+            if (!initialize.IsCompleted || initialize.Exception != null || !string.IsNullOrEmpty(initialize.Result.ErrorOut?.Trim()))
             {
                 // close before opening new dialog
                 dialog.Close();
