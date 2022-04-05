@@ -65,18 +65,19 @@ namespace QuestDumper
             yield return downloadCoro;
 
             Debug.Log("Finished extracting, starting ADB");
-            try
-            {
-                // Initialize and dispose to make sure ADB works, catch any exceptions and notify the user.
-                Adb.Initialize().ConfigureAwait(false);
-            }
-            catch (AssertionException e)
+
+            // Initialize and dispose to make sure ADB works, catch any exceptions and notify the user.
+            var initialize = Adb.Initialize();
+            yield return initialize.AsCoroutine();
+
+            if (!initialize.IsCompleted || initialize.Exception != null || string.IsNullOrEmpty(initialize.Result.ErrorOut?.Trim()))
             {
                 // close before opening new dialog
                 dialog.Close();
-                OnDownloadFail(null, e);
+                OnDownloadFail(null, initialize.Exception);
                 yield break;
             }
+
 
             
             dialog.Clear();
