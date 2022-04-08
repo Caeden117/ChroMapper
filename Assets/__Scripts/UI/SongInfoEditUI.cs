@@ -615,11 +615,6 @@ public class SongInfoEditUI : MenuBase
             {
                 archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
             }
-            
-            archive.CreateEntryFromFile(infoFileLocation,
-                "Info.dat"); //oh yeah lolpants is gonna kill me if it isnt packaged as "Info.dat"
-
-
         }
 
         OpenSelectedMapInFileBrowser();
