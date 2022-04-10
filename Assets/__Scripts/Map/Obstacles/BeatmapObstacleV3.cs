@@ -17,7 +17,23 @@ public class BeatmapObstacleV3 : BeatmapObstacle
 
     //public float Time { get => base.Time; set => base.Time = value; }
     //public int LineIndex { get => base.LineIndex; set => base.LineIndex = value; }
-    public int LineLayer { get => lineLayer; set => lineLayer = value; }
+    public int LineLayer
+    {
+        get
+        {
+            return Type switch
+            {
+                ValueFullBarrier => 0,
+                ValueHighBarrier => 2,
+                _ => lineLayer,
+            };
+        }
+        set
+        {
+            lineLayer = value;
+            CheckTypeCompatibility();
+        }
+    }
     //public float Duration { get => base.Duration; set => base.Duration = value; }
     //public int Width { get => base.Width; set => base.Width = value; }
     public int Height { get {
@@ -29,14 +45,18 @@ public class BeatmapObstacleV3 : BeatmapObstacle
             };
         }
         set {
-            if (value == 3) Type = ValueHighBarrier;
-            else if (value == 5) Type = ValueFullBarrier;
-            else
-            {
-                height = value;
-                Type = ValueUnknownBarrier;
-            }
-        } }
+            height = value;
+            CheckTypeCompatibility();
+        } 
+    }
+
+    private static readonly float[] startHeightMap = { 0.0f, 0.6f, 1.5f }; // may not be the correct height
+    private static readonly float[,] heightMap = new float[3, 5] 
+    {
+        { 0.9f, 1.8f, 2.7f, 3.6f, 4.2f},
+        { 0.9f, 1.8f, 2.7f, 3.6f, 3.6f},
+        { 0.9f, 1.8f, 2.7f, 2.7f, 2.7f},
+    };
 
     public BeatmapObstacleV3(JSONNode node)
     {
@@ -49,11 +69,23 @@ public class BeatmapObstacleV3 : BeatmapObstacle
         CustomData = node[BeatmapObjectV3CustomDataKey];
     }
 
-    public BeatmapObstacleV3(BeatmapObstacle o):
-        base(o.Time, o.LineIndex, o.Type, o.Duration, o.Width, o.CustomData)
+    public BeatmapObstacleV3(BeatmapObstacle o)
     {
-        LineLayer = 5 - Height;
+        Time = o.Time;
+        LineIndex = o.LineIndex;
+        Duration = o.Duration;
+        Width = o.Width;
+        CustomData = o.CustomData;
+        Type = o.Type;
+        if (o is BeatmapObstacleV3)
+        {
+            var ov3 = o as BeatmapObstacleV3;
+            LineLayer = ov3.LineLayer;
+            Height = ov3.Height;
+        }
     }
+
+
     public override JSONNode ConvertToJson()
     {
         if (!Settings.Instance.Load_MapV3) return base.ConvertToJson();
@@ -80,6 +112,22 @@ public class BeatmapObstacleV3 : BeatmapObstacle
             Duration = obs.Duration;
             Width = obs.Width;
             Height = obs.Height;
+        }
+    }
+
+    private void CheckTypeCompatibility()
+    {
+        if (lineLayer == 2 && height == 3) Type = ValueHighBarrier;
+        else if (lineLayer == 0 && height == 5) Type = ValueFullBarrier;
+        else if (Type <= ValueHighBarrier) Type = ValueUnknownBarrier;
+    }
+
+    public void GetHeights(ref float height, ref float startHeight)
+    {
+        if (Type == ValueUnknownBarrier || Type == ValueFullBarrier || Type == ValueHighBarrier)
+        {
+            startHeight = startHeightMap[Mathf.Clamp(LineLayer, 0, 2)];
+            height = heightMap[Mathf.Clamp(LineLayer, 0, 2), Mathf.Clamp(Height, 1, 5) - 1];
         }
     }
 }

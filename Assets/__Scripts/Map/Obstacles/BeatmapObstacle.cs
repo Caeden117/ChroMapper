@@ -107,6 +107,8 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
         var startHeight = Type == ValueFullBarrier ? 0 : 1.5f;
         var height = Type == ValueFullBarrier ? 3.5f : 2;
         float width = Width;
+        if (Settings.Instance.Load_MapV3 && this is BeatmapObstacleV3) 
+            (this as BeatmapObstacleV3).GetHeights(ref height, ref startHeight);
 
         // ME
 
