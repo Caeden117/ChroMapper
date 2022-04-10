@@ -48,8 +48,15 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
-    public override BeatmapObstacle GenerateOriginalData() =>
-        new BeatmapObstacle(0, 0, BeatmapObstacle.ValueFullBarrier, 0, 1);
+    public override BeatmapObstacle GenerateOriginalData()
+    {
+        if (Settings.Instance.Load_MapV3)
+        {
+            return new BeatmapObstacleV3(new BeatmapObstacle(0, 0, BeatmapObstacle.ValueFullBarrier, 0, 1));
+        }
+        else
+            return new BeatmapObstacle(0, 0, BeatmapObstacle.ValueFullBarrier, 0, 1);
+    }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {

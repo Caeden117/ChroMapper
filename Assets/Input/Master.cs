@@ -2356,6 +2356,22 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Change Wall Upper Bound"",
+                    ""type"": ""Button"",
+                    ""id"": ""c96a86f2-ac04-4573-9564-edcfb6f556a0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Change Wall Lower Bound"",
+                    ""type"": ""Button"",
+                    ""id"": ""f6f09066-b710-48d1-ab68-306ecdc7306a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -2400,6 +2416,72 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""+Change Wall Duration"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""accab0fd-2215-4d2f-a015-576b545ad8d5"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Wall Upper Bound"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c9a699c4-d208-4e0c-b4ae-bbb3ed64f100"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Wall Upper Bound"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""e011347e-5c6b-4ff9-9bc1-cf915f4a0355"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Wall Upper Bound"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""4f8d3770-bbac-4f08-a010-71389fd120e1"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Wall Lower Bound"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""1c4bb16a-952e-42a4-a4c3-6eb4988c9856"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Wall Lower Bound"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""07d29f55-28c6-41a3-9a51-a4afc172ffe1"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Wall Lower Bound"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -4113,6 +4195,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_ObstacleObjects = asset.FindActionMap("Obstacle Objects", throwIfNotFound: true);
         m_ObstacleObjects_ToggleHyperWall = m_ObstacleObjects.FindAction("Toggle Hyper Wall", throwIfNotFound: true);
         m_ObstacleObjects_ChangeWallDuration = m_ObstacleObjects.FindAction("+Change Wall Duration", throwIfNotFound: true);
+        m_ObstacleObjects_ChangeWallUpperBound = m_ObstacleObjects.FindAction("Change Wall Upper Bound", throwIfNotFound: true);
+        m_ObstacleObjects_ChangeWallLowerBound = m_ObstacleObjects.FindAction("Change Wall Lower Bound", throwIfNotFound: true);
         // Event Objects
         m_EventObjects = asset.FindActionMap("Event Objects", throwIfNotFound: true);
         m_EventObjects_InvertEventValue = m_EventObjects.FindAction("Invert Event Value", throwIfNotFound: true);
@@ -5379,12 +5463,16 @@ public class @CMInput : IInputActionCollection, IDisposable
     private IObstacleObjectsActions m_ObstacleObjectsActionsCallbackInterface;
     private readonly InputAction m_ObstacleObjects_ToggleHyperWall;
     private readonly InputAction m_ObstacleObjects_ChangeWallDuration;
+    private readonly InputAction m_ObstacleObjects_ChangeWallUpperBound;
+    private readonly InputAction m_ObstacleObjects_ChangeWallLowerBound;
     public struct ObstacleObjectsActions
     {
         private @CMInput m_Wrapper;
         public ObstacleObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ToggleHyperWall => m_Wrapper.m_ObstacleObjects_ToggleHyperWall;
         public InputAction @ChangeWallDuration => m_Wrapper.m_ObstacleObjects_ChangeWallDuration;
+        public InputAction @ChangeWallUpperBound => m_Wrapper.m_ObstacleObjects_ChangeWallUpperBound;
+        public InputAction @ChangeWallLowerBound => m_Wrapper.m_ObstacleObjects_ChangeWallLowerBound;
         public InputActionMap Get() { return m_Wrapper.m_ObstacleObjects; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -5400,6 +5488,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ChangeWallDuration.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
                 @ChangeWallDuration.performed -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
                 @ChangeWallDuration.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallDuration;
+                @ChangeWallUpperBound.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallUpperBound;
+                @ChangeWallUpperBound.performed -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallUpperBound;
+                @ChangeWallUpperBound.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallUpperBound;
+                @ChangeWallLowerBound.started -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallLowerBound;
+                @ChangeWallLowerBound.performed -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallLowerBound;
+                @ChangeWallLowerBound.canceled -= m_Wrapper.m_ObstacleObjectsActionsCallbackInterface.OnChangeWallLowerBound;
             }
             m_Wrapper.m_ObstacleObjectsActionsCallbackInterface = instance;
             if (instance != null)
@@ -5410,6 +5504,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ChangeWallDuration.started += instance.OnChangeWallDuration;
                 @ChangeWallDuration.performed += instance.OnChangeWallDuration;
                 @ChangeWallDuration.canceled += instance.OnChangeWallDuration;
+                @ChangeWallUpperBound.started += instance.OnChangeWallUpperBound;
+                @ChangeWallUpperBound.performed += instance.OnChangeWallUpperBound;
+                @ChangeWallUpperBound.canceled += instance.OnChangeWallUpperBound;
+                @ChangeWallLowerBound.started += instance.OnChangeWallLowerBound;
+                @ChangeWallLowerBound.performed += instance.OnChangeWallLowerBound;
+                @ChangeWallLowerBound.canceled += instance.OnChangeWallLowerBound;
             }
         }
     }
@@ -6525,6 +6625,8 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnToggleHyperWall(InputAction.CallbackContext context);
         void OnChangeWallDuration(InputAction.CallbackContext context);
+        void OnChangeWallUpperBound(InputAction.CallbackContext context);
+        void OnChangeWallLowerBound(InputAction.CallbackContext context);
     }
     public interface IEventObjectsActions
     {
