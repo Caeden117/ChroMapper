@@ -16,9 +16,9 @@ public class BeatmapColorNote : BeatmapNote
     // private int d;
 
     //public float Time { get => base.Time; set => base.Time = value; }
-   // public int LineIndex { get => base.LineIndex; set => base.LineIndex = value; }
+    // public int LineIndex { get => base.LineIndex; set => base.LineIndex = value; }
     //public int LineLayer { get => base.LineLayer; set => base.LineLayer = value; }
-    public int AngleOffset { get => angleOffset; set => angleOffset = value; }
+    public int AngleOffset { get; set; }
     public int Color { get => Type; set => Type = value; }
     //public int CutDirection { get => base.CutDirection; set => base.CutDirection = value; }
 
@@ -46,7 +46,6 @@ public class BeatmapColorNote : BeatmapNote
         Time = chain.Time;
         LineIndex = chain.X;
         LineLayer = chain.Y;
-        AngleOffset = 0;
         Color = chain.Color;
         CutDirection = chain.Direction;
     }
