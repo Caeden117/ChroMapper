@@ -50,8 +50,8 @@ public class BeatmapObstacleV3 : BeatmapObstacle
         } 
     }
 
-    private static readonly float[] startHeightMap = { 0.0f, 0.6f, 1.5f }; // may not be the correct height
-    private static readonly float[,] heightMap = new float[3, 5] 
+    internal static readonly float[] startHeightMap = { 0.0f, 0.6f, 1.5f }; // may not be the correct height
+    internal static readonly float[,] heightMap = new float[3, 5] 
     {
         { 0.9f, 1.8f, 2.7f, 3.6f, 4.2f},
         { 0.9f, 1.8f, 2.7f, 3.6f, 3.6f},
