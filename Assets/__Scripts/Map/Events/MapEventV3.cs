@@ -23,7 +23,7 @@ public class MapEventV3 : MapEvent
     }
 
     public MapEventV3(MapEvent m) :
-        base(m.Time, m.Type, m.Value, m.CustomData)
+        base(m.Time, m.Type, m.Value, m.CustomData, m.FloatValue)
     {
     }
 
