@@ -30460,12 +30460,12 @@ PrefabInstance:
     - target: {fileID: 4143766582454679867, guid: b9c90f90d2774a745b8640678e8f78df,
         type: 3}
       propertyPath: m_Name
-      value: Chroma Alpha Height Toggle
+      value: Event Alpha Height Toggle
       objectReference: {fileID: 0}
     - target: {fileID: 4143766582547552333, guid: b9c90f90d2774a745b8640678e8f78df,
         type: 3}
       propertyPath: m_text
-      value: Visualize Chroma event alpha using the height of the event
+      value: Visualize event alpha using the height of the event
       objectReference: {fileID: 0}
     - target: {fileID: 4143766582547552333, guid: b9c90f90d2774a745b8640678e8f78df,
         type: 3}
