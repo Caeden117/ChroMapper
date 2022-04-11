@@ -271,7 +271,7 @@ public class BeatSaberMapV3 : BeatSaberMap
         foreach (var note in Notes)
         {
             if (note is BeatmapColorNote colorNote) ColorNotes.Add(colorNote);
-            //else if (note is BeatmapBombNote bombNote) BombNotes.Add(bombNote)
+            else if (note is BeatmapBombNote bombNote) BombNotes.Add(bombNote);
             else
             {
                 switch (note.Type)
