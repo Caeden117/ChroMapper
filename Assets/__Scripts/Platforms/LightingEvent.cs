@@ -108,7 +108,7 @@ public class LightingEvent : MonoBehaviour
     public void UpdateMultiplyAlpha(float target = 1)
     {
         if (!CanBeTurnedOff) return;
-        multiplyAlpha = Mathf.Clamp01(target);
+        multiplyAlpha = Mathf.Clamp(target, 0f, 1.5f);
     }
 
     public void UpdateBoostState(bool boost)
