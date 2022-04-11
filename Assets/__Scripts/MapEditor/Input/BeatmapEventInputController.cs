@@ -31,6 +31,16 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         TweakValue(e, modifier);
     }
 
+    public void OnTweakEventFloatValue(InputAction.CallbackContext context)
+    {
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        RaycastFirstObject(out var e);
+        if (e == null || e.Dragging || !context.performed) return;
+
+        var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+        TweakFloatValue(e, modifier);
+    }
+
     public void InvertEvent(BeatmapEventContainer e)
     {
         var original = BeatmapObject.GenerateCopy(e.ObjectData);
@@ -91,6 +101,20 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
 
         if (e.EventData.IsRotationEvent)
             tracksManager.RefreshTracks();
+        eventAppearanceSo.SetEventAppearance(e);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original));
+    }
+
+    public void TweakFloatValue(BeatmapEventContainer e, int modifier)
+    {
+        var original = BeatmapObject.GenerateCopy(e.ObjectData);
+        
+        if (!e.EventData.IsUtilityEvent)
+        {
+            e.EventData.FloatValue += 0.1f * modifier;
+            if (e.EventData.FloatValue < 0) e.EventData.FloatValue = 0;
+        }
+
         eventAppearanceSo.SetEventAppearance(e);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original));
     }
