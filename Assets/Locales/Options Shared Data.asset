@@ -863,6 +863,14 @@ MonoBehaviour:
     m_Key: graphics.renderscale.info
     m_Metadata:
       m_Items: []
+  - m_Id: 90253772483395584
+    m_Key: graphics.display.floatvalue.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90254225048797184
+    m_Key: graphics.display.floatvalue.info
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
