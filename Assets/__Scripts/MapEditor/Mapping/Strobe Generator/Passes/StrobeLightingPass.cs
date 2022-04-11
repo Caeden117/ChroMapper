@@ -10,15 +10,17 @@ public class StrobeLightingPass : StrobeGeneratorPass
     private readonly Func<float, float> easingFunc;
     private readonly float precision;
     private readonly IEnumerable<int> values;
+    private readonly bool easeValue;
 
     public StrobeLightingPass(IEnumerable<int> alternatingValues, bool switchColors, bool dynamicStrobe,
-        float strobePrecision, string strobeEasing)
+        float strobePrecision, string strobeEasing, bool easingSwitch)
     {
         values = alternatingValues;
         alternateColors = switchColors;
         dynamic = dynamicStrobe;
         precision = strobePrecision;
         easingFunc = Easing.Named(strobeEasing);
+        easeValue = easingSwitch;
     }
 
     public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent && !@event.IsLegacyChromaEvent;
@@ -30,6 +32,10 @@ public class StrobeLightingPass : StrobeGeneratorPass
 
         var startTime = original.First().Time;
         var endTime = original.Last().Time;
+
+        var startFloatValue = original.First().FloatValue;
+        var endFloatValue = original.Last().FloatValue;
+        var floatValueDiff = endFloatValue - startFloatValue;
 
         var alternatingTypes = new List<int>(values);
         var typeIndex = 0;
@@ -58,8 +64,21 @@ public class StrobeLightingPass : StrobeGeneratorPass
 
             var value = alternatingTypes[typeIndex];
             var progress = (originalDistance - distanceInBeats) / originalDistance;
-            var newTime = (easingFunc(progress) * originalDistance) + startTime;
-            var data = new MapEvent(newTime, type, value);
+
+            float newTime;
+            float newFloatValue;
+            if (easeValue)
+            {
+                newTime = (progress * originalDistance) + startTime;
+                newFloatValue = (easingFunc(progress) * floatValueDiff) + startFloatValue;
+            }
+            else
+            {
+                newTime = (easingFunc(progress) * originalDistance) + startTime;
+                newFloatValue = (progress * floatValueDiff) + startFloatValue;
+            }
+
+            var data = new MapEvent(newTime, type, value, null, newFloatValue);
             if (propMode != EventsContainer.PropMode.Off)
             {
                 data.CustomData = new JSONObject();

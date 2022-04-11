@@ -13,6 +13,7 @@ public class BasicStrobePassUI : StrobeGeneratorPassUIController
     [FormerlySerializedAs("Values")] [SerializeField] private StrobeGeneratorEventSelector values;
     [SerializeField] private TMP_InputField strobeInterval;
     [SerializeField] private TMP_Dropdown regularEventEasings;
+    [SerializeField] private Toggle easingSwitch;
 
     // The following functions are filtered from this Pass for the following reasons:
     // "Back" results in times outside the bounds set by the user
@@ -36,7 +37,7 @@ public class BasicStrobePassUI : StrobeGeneratorPassUIController
         foreach (var selector in eventTypes) values.Add(GetTypeFromEventIds(selector.SelectedNum, this.values.SelectedNum));
         var precision = float.Parse(strobeInterval.text);
         var internalName = Easing.DisplayNameToInternalName[regularEventEasings.captionText.text];
-        return new StrobeLightingPass(values, swapColors.isOn, dynamicallyChangeTypeA.isOn, precision, internalName);
+        return new StrobeLightingPass(values, swapColors.isOn, dynamicallyChangeTypeA.isOn, precision, internalName, easingSwitch.isOn);
     }
 
     private int GetTypeFromEventIds(int eventValue, int eventColor)

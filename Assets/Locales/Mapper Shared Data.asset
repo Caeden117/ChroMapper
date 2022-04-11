@@ -643,6 +643,18 @@ MonoBehaviour:
     m_Key: bookmark.dialog.color
     m_Metadata:
       m_Items: []
+  - m_Id: 42585459012075520
+    m_Key: bar.events.transition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988137944907776
+    m_Key: gradient.easingswitch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988345160302592
+    m_Key: gradient.easingswitch.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
