@@ -260,7 +260,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             return null;
         }
     }
-    
+
     /// <summary>
     /// Parse all compatible <see cref="BeatmapObject"/> to v3 children classes. It is only used when saving.
     /// </summary>
@@ -270,18 +270,23 @@ public class BeatSaberMapV3 : BeatSaberMap
         BombNotes.Clear();
         foreach (var note in Notes)
         {
-            switch (note.Type)
+            if (note is BeatmapColorNote colorNote) ColorNotes.Add(colorNote);
+            //else if (note is BeatmapBombNote bombNote) BombNotes.Add(bombNote)
+            else
             {
-                case BeatmapNote.NoteTypeBomb:
-                    BombNotes.Add(new BeatmapBombNote(note));
-                    break;
-                case BeatmapNote.NoteTypeA:
-                case BeatmapNote.NoteTypeB:
-                    ColorNotes.Add(new BeatmapColorNote(note));
-                    break;
-                default:
-                    Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
-                    break;
+                switch (note.Type)
+                {
+                    case BeatmapNote.NoteTypeBomb:
+                        BombNotes.Add(new BeatmapBombNote(note));
+                        break;
+                    case BeatmapNote.NoteTypeA:
+                    case BeatmapNote.NoteTypeB:
+                        ColorNotes.Add(new BeatmapColorNote(note));
+                        break;
+                    default:
+                        Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
+                        break;
+                }
             }
         }
 

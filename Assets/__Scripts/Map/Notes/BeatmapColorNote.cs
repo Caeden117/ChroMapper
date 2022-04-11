@@ -35,10 +35,17 @@ public class BeatmapColorNote : BeatmapNote
         CustomData = node[BeatmapObjectV3CustomDataKey];
     }
 
-    public BeatmapColorNote(BeatmapNote note):
+    public BeatmapColorNote(BeatmapNote note) :
         base(note.Time, note.LineIndex, note.LineLayer, note.Type, note.CutDirection, note.CustomData)
     {
+        if (note is BeatmapColorNote colorNote) AngleOffset = colorNote.angleOffset;
+    }
 
+    public BeatmapColorNote(float time, int lineIndex, int lineLayer, int type, int cutDirection, int angleOffset,
+            JSONNode customData = null) :
+        base(time, lineIndex, lineLayer, type, cutDirection, customData)
+    {
+        AngleOffset = angleOffset;
     }
 
     public BeatmapColorNote(BeatmapChain chain)

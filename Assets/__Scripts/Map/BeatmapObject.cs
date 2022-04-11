@@ -67,7 +67,11 @@ public abstract class BeatmapObject
                 objectData = ev as T;
                 break;
             case BeatmapNote note:
-                objectData = new BeatmapNote(note.Time, note.LineIndex, note.LineLayer, note.Type,
+                if (note is BeatmapColorNote colorNote)
+                    objectData = new BeatmapColorNote(note.Time, note.LineIndex, note.LineLayer, note.Type,
+                    note.CutDirection, colorNote.AngleOffset, originalData.CustomData?.Clone()) as T;
+                else
+                    objectData = new BeatmapNote(note.Time, note.LineIndex, note.LineLayer, note.Type,
                     note.CutDirection, originalData.CustomData?.Clone()) as T;
                 break;
             case BeatmapArc arc:
