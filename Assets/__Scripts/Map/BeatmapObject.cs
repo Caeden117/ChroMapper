@@ -60,7 +60,7 @@ public abstract class BeatmapObject
         switch (originalData)
         {
             case MapEvent evt:
-                var ev = new MapEvent(evt.Time, evt.Type, evt.Value, originalData.CustomData?.Clone())
+                var ev = new MapEvent(evt.Time, evt.Type, evt.Value, originalData.CustomData?.Clone(), evt.FloatValue)
                 {
                     LightGradient = evt.LightGradient?.Clone()
                 };

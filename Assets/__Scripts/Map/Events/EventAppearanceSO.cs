@@ -50,6 +50,12 @@ public class EventAppearanceSO : ScriptableObject
                 e.UpdateTextDisplay(true, speed.ToString());
             }
         }
+        // Display floatValue only where used
+        else if (Settings.Instance.DisplayFloatValueText && !e.EventData.IsUtilityEvent
+                && e.EventData.Value != 0 && Mathf.Abs(e.EventData.FloatValue - 1f) > 0.0001f)
+        {
+            e.UpdateTextDisplay(true, e.EventData.FloatValue.ToString("n2"));
+        }
         else
         {
             e.UpdateTextDisplay(false);
@@ -106,10 +112,6 @@ public class EventAppearanceSO : ScriptableObject
         else if (e.EventData.Value <= 7 && e.EventData.Value >= 5)
         {
             color = boost ? RedBoostColor : RedColor;
-        }
-        else if (e.EventData.Value == 4)
-        {
-            color = offColor;
         }
         if (Settings.Instance.EmulateChromaLite && e.EventData.CustomData?["_color"] != null && e.EventData.Value > 0)
             color = e.EventData.CustomData["_color"];

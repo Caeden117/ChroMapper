@@ -643,6 +643,26 @@ MonoBehaviour:
     m_Key: bookmark.dialog.color
     m_Metadata:
       m_Items: []
+  - m_Id: 42585459012075520
+    m_Key: bar.events.transition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988137944907776
+    m_Key: gradient.easingtime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988345160302592
+    m_Key: gradient.easingtime.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247577315082240
+    m_Key: gradient.easingfloatvalue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247628972130304
+    m_Key: gradient.easingfloatvalue.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

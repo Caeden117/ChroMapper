@@ -2504,6 +2504,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Tweak Event Float Value",
+                    "type": "Button",
+                    "id": "276c98b6-1db9-4975-be8c-23de8b862b07",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -2548,6 +2556,50 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Tweak Event Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Button With Two Modifiers",
+                    "id": "08225278-9593-41d5-9404-abbd4a8f8da7",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak Event Float Value",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "d92defbb-5e41-45c0-ba76-5d8b2af07c04",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak Event Float Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "7256dfca-e2f1-428f-9540-c89f3403be4b",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak Event Float Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "6e14fadd-b5e4-4740-b25b-e1e13e929eb8",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak Event Float Value",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

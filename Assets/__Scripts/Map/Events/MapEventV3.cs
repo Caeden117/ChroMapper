@@ -10,7 +10,6 @@ public class MapEventV3 : MapEvent
     //public float Time { get => base.Time; set => base.Time = value; }
     public int EventType { get => Type; set => Type = value; }
     //public int Value { get => base.Value; set => base.Value = value; }
-    public float FloatValue = 1.0f;
 
     public MapEventV3(JSONNode node)
     {
@@ -24,7 +23,7 @@ public class MapEventV3 : MapEvent
     }
 
     public MapEventV3(MapEvent m) :
-        base(m.Time, m.Type, m.Value, m.CustomData)
+        base(m.Time, m.Type, m.Value, m.CustomData, m.FloatValue)
     {
     }
 
