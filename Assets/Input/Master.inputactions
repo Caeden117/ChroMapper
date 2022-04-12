@@ -2441,8 +2441,8 @@
                 },
                 {
                     "name": "Keyboard",
-                    "id": "4f8d3770-bbac-4f08-a010-71389fd120e1",
-                    "path": "ButtonWithOneModifier",
+                    "id": "996db20f-761b-47ba-9e35-670377d3e452",
+                    "path": "ButtonWithTwoModifiers",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -2451,9 +2451,20 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
-                    "id": "1c4bb16a-952e-42a4-a4c3-6eb4988c9856",
-                    "path": "<Keyboard>/ctrl",
+                    "name": "modifier1",
+                    "id": "6bd7d2e5-36c5-4c35-a9fb-c1e21cd0f1e3",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Wall Lower Bound",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "f264b555-2c62-47ee-96c3-6193cf838c9f",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -2463,7 +2474,7 @@
                 },
                 {
                     "name": "button",
-                    "id": "07d29f55-28c6-41a3-9a51-a4afc172ffe1",
+                    "id": "2a388f57-fd6a-406d-b135-786d73146b9e",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
