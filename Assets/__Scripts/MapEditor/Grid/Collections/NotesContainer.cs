@@ -169,8 +169,8 @@ public class NotesContainer : BeatmapObjectContainerCollection
             }
             else
             {
-                var originalA = BeatmapNoteContainer.Directionalize(a);
-                var originalB = BeatmapNoteContainer.Directionalize(b);
+                var originalA = (a is BeatmapColorNote newA) ? BeatmapNoteContainer.Directionalize(a) + new Vector3(0,0,-newA.AngleOffset) : BeatmapNoteContainer.Directionalize(a);
+                var originalB = (b is BeatmapColorNote newB) ? BeatmapNoteContainer.Directionalize(b) + new Vector3(0, 0, -newB.AngleOffset) : BeatmapNoteContainer.Directionalize(b);
                 // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
                 if (Mathf.Abs(angle) <= 40)
                 {
