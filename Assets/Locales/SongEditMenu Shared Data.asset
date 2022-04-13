@@ -215,6 +215,16 @@ MonoBehaviour:
     m_Key: jumpOffset.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 44795657592176640
+    m_Key: reactionTime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44793699250667520
+    m_Key: 'reactionTime.tooltip
+
+'
+    m_Metadata:
+      m_Items: []
   - m_Id: 51
     m_Key: zip
     m_Metadata:

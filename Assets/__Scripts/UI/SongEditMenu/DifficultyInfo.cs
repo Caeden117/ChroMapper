@@ -5,6 +5,8 @@ public class DifficultyInfo : MonoBehaviour
 {
     [SerializeField] private TMP_InputField bpmField;
 
+    [SerializeField] private TMP_InputField reactionTimeField;
+
     [SerializeField] private TMP_InputField halfJumpDurationField;
     [SerializeField] private TMP_InputField jumpDistanceField;
 
@@ -29,7 +31,11 @@ public class DifficultyInfo : MonoBehaviour
         var num = 60 / bpm;
         var jumpDistance = songNoteJumpSpeed * num * halfJumpDuration * 2;
 
+        var beatms = 60000 / bpm;
+        var reactionTime = beatms * halfJumpDuration;
+
         halfJumpDurationField.text = halfJumpDuration.ToString();
         jumpDistanceField.text = jumpDistance.ToString("0.00");
+        reactionTimeField.text = reactionTime.ToString("N0") + " ms";
     }
 }

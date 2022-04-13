@@ -359,5 +359,15 @@ MonoBehaviour:
       it instead?
     m_Metadata:
       m_Items: []
+  - m_Id: 44793699250667520
+    m_Localized: 'How much time the the player has to react
+
+      (in milliseconds)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44795657592176640
+    m_Localized: Reaction Time
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
