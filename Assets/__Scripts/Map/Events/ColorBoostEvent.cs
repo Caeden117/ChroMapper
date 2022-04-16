@@ -17,6 +17,7 @@ public class ColorBoostEvent : MapEvent
         Time = RetrieveRequiredNode(node, "b").AsFloat;
         Boost = RetrieveRequiredNode(node, "o").AsBool;
         Type = EventTypeBoostLights;
+        FloatValue = 1f;
         CustomData = node[BeatmapObjectV3CustomDataKey];
         if (node[BeatmapObjectV3CustomDataKey]["_lightGradient"] != null)
             LightGradient = new ChromaGradient(node[BeatmapObjectV3CustomDataKey]["_lightGradient"]);

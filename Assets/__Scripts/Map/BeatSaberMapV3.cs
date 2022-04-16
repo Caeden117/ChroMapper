@@ -328,7 +328,6 @@ public class BeatSaberMapV3 : BeatSaberMap
         Events = BasicBeatmapEvents.OfType<MapEvent>().ToList();
         Events.AddRange(ColorBoostBeatmapEvents.OfType<MapEvent>().ToList());
         Events.AddRange(RotationEvents.OfType<MapEvent>().ToList());
-        foreach(var e in Events) {if (e is RotationEvent ee) Debug.Log($"Rotation {ee.RotationAmount} has event value is {ee.Value}");}
         Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
     }
 }

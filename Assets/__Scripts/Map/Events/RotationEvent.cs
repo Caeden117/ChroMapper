@@ -37,6 +37,7 @@ public class RotationEvent : MapEvent
         Time = RetrieveRequiredNode(node, "b").AsFloat;
         RotationAmount = RetrieveRequiredNode(node, "r").AsInt;
         RotationType = RetrieveRequiredNode(node, "e").AsInt;
+        FloatValue = 1f;
         CustomData = node[BeatmapObjectV3CustomDataKey];
         if (node[BeatmapObjectV3CustomDataKey]["_lightGradient"] != null)
             LightGradient = new ChromaGradient(node[BeatmapObjectV3CustomDataKey]["_lightGradient"]);
