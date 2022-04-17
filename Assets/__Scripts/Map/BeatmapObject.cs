@@ -60,15 +60,25 @@ public abstract class BeatmapObject
         switch (originalData)
         {
             case MapEvent evt:
-                var ev = new MapEvent(evt.Time, evt.Type, evt.Value, originalData.CustomData?.Clone())
+                var ev = new MapEvent(evt.Time, evt.Type, evt.Value, originalData.CustomData?.Clone(), evt.FloatValue)
                 {
                     LightGradient = evt.LightGradient?.Clone()
                 };
                 objectData = ev as T;
                 break;
             case BeatmapNote note:
-                objectData = new BeatmapNote(note.Time, note.LineIndex, note.LineLayer, note.Type,
-                    note.CutDirection, originalData.CustomData?.Clone()) as T;
+                if (note is BeatmapColorNote colorNote)
+                    objectData = new BeatmapColorNote(
+                        note.Time, note.LineIndex, note.LineLayer, note.Type,
+                        note.CutDirection, colorNote.AngleOffset, originalData.CustomData?.Clone()
+                    ) as T;
+                else if (note is BeatmapBombNote)
+                    objectData = new BeatmapBombNote(note.Time, note.LineIndex, note.LineLayer, originalData.CustomData?.Clone()) as T;
+                else
+                    objectData = new BeatmapNote(
+                        note.Time, note.LineIndex, note.LineLayer, note.Type,
+                        note.CutDirection, originalData.CustomData?.Clone()
+                    ) as T;
                 break;
             case BeatmapArc arc:
                 objectData = new BeatmapArc(arc) as T;

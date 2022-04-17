@@ -32,6 +32,15 @@ public class BeatmapBombNote : BeatmapNote
     {
     }
 
+    public BeatmapBombNote(float time, int lineIndex, int lineLayer, JSONNode customData = null)
+    {
+        Time = time;
+        LineIndex = lineIndex;
+        LineLayer = lineLayer;
+        CustomData = customData;
+        Type = NoteTypeBomb;
+    }
+
     public override JSONNode ConvertToJson()
     {
         if (!Settings.Instance.Load_MapV3) return base.ConvertToJson();

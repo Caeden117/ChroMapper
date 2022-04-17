@@ -343,6 +343,7 @@ public class PlatformDescriptor : MonoBehaviour
         foreach (var light in allLights)
         {
             var color = light.UseInvertedPlatformColors ? invertedColor : mainColor;
+            var floatValue = e.FloatValue;
 
             switch (value)
             {
@@ -352,21 +353,21 @@ public class PlatformDescriptor : MonoBehaviour
                     break;
                 case MapEvent.LightValueBlueON:
                 case MapEvent.LightValueRedON:
-                    light.UpdateMultiplyAlpha(color.a);
+                    light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(1, 0);
                     break;
                 case MapEvent.LightValueBlueFlash:
                 case MapEvent.LightValueRedFlash:
                     light.UpdateTargetAlpha(1, 0);
-                    light.UpdateMultiplyAlpha(color.a);
+                    light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
                     break;
                 case MapEvent.LightValueBlueFade:
                 case MapEvent.LightValueRedFade:
                     light.UpdateTargetAlpha(1, 0);
-                    light.UpdateMultiplyAlpha(color.a);
+                    light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     if (light.CanBeTurnedOff)
                     {

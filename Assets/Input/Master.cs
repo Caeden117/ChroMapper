@@ -2517,6 +2517,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Tweak Event Float Value"",
+                    ""type"": ""Button"",
+                    ""id"": ""276c98b6-1db9-4975-be8c-23de8b862b07"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -2561,6 +2569,50 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Tweak Event Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Button With Two Modifiers"",
+                    ""id"": ""08225278-9593-41d5-9404-abbd4a8f8da7"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak Event Float Value"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""d92defbb-5e41-45c0-ba76-5d8b2af07c04"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak Event Float Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""7256dfca-e2f1-428f-9540-c89f3403be4b"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak Event Float Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""6e14fadd-b5e4-4740-b25b-e1e13e929eb8"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak Event Float Value"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -4212,6 +4264,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventObjects = asset.FindActionMap("Event Objects", throwIfNotFound: true);
         m_EventObjects_InvertEventValue = m_EventObjects.FindAction("Invert Event Value", throwIfNotFound: true);
         m_EventObjects_TweakEventValue = m_EventObjects.FindAction("Tweak Event Value", throwIfNotFound: true);
+        m_EventObjects_TweakEventFloatValue = m_EventObjects.FindAction("Tweak Event Float Value", throwIfNotFound: true);
         // Custom Events Container
         m_CustomEventsContainer = asset.FindActionMap("Custom Events Container", throwIfNotFound: true);
         m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
@@ -5531,12 +5584,14 @@ public class @CMInput : IInputActionCollection, IDisposable
     private IEventObjectsActions m_EventObjectsActionsCallbackInterface;
     private readonly InputAction m_EventObjects_InvertEventValue;
     private readonly InputAction m_EventObjects_TweakEventValue;
+    private readonly InputAction m_EventObjects_TweakEventFloatValue;
     public struct EventObjectsActions
     {
         private @CMInput m_Wrapper;
         public EventObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @InvertEventValue => m_Wrapper.m_EventObjects_InvertEventValue;
         public InputAction @TweakEventValue => m_Wrapper.m_EventObjects_TweakEventValue;
+        public InputAction @TweakEventFloatValue => m_Wrapper.m_EventObjects_TweakEventFloatValue;
         public InputActionMap Get() { return m_Wrapper.m_EventObjects; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -5552,6 +5607,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @TweakEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
                 @TweakEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
                 @TweakEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
+                @TweakEventFloatValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventFloatValue;
+                @TweakEventFloatValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventFloatValue;
+                @TweakEventFloatValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventFloatValue;
             }
             m_Wrapper.m_EventObjectsActionsCallbackInterface = instance;
             if (instance != null)
@@ -5562,6 +5620,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @TweakEventValue.started += instance.OnTweakEventValue;
                 @TweakEventValue.performed += instance.OnTweakEventValue;
                 @TweakEventValue.canceled += instance.OnTweakEventValue;
+                @TweakEventFloatValue.started += instance.OnTweakEventFloatValue;
+                @TweakEventFloatValue.performed += instance.OnTweakEventFloatValue;
+                @TweakEventFloatValue.canceled += instance.OnTweakEventFloatValue;
             }
         }
     }
@@ -6643,6 +6704,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     {
         void OnInvertEventValue(InputAction.CallbackContext context);
         void OnTweakEventValue(InputAction.CallbackContext context);
+        void OnTweakEventFloatValue(InputAction.CallbackContext context);
     }
     public interface ICustomEventsContainerActions
     {

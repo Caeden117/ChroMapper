@@ -13,7 +13,7 @@ public class BeatSaberMap
 {
     [FormerlySerializedAs("directoryAndFile")] public string DirectoryAndFile;
 
-    [FormerlySerializedAs("_version")] public string Version = "2.2.0";
+    [FormerlySerializedAs("_version")] public string Version = "2.5.0";
 
     /// <summary>
     ///     Time (in Minutes) that the user has worked on this map.
@@ -194,7 +194,7 @@ public class BeatSaberMap
                 switch (key)
                 {
                     case "_version":
-                        map.Version = node.Value;
+                        map.Version = (node.Value.CompareTo("2.5.0") < 0) ? "2.5.0" : node.Value; // Force upgrade
                         break;
                     case "_events":
                         foreach (JSONNode n in node) eventsList.Add(new MapEvent(n));

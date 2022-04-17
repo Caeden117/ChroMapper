@@ -45,6 +45,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
         {
             directionEuler = new Vector3(0, 0, mapNoteData.CustomData["_cutDirection"]?.AsFloat ?? 0);
         }
+        else if ((mapNoteData is BeatmapColorNote newMapNoteData) && (newMapNoteData?.AngleOffset != 0)) directionEuler += new Vector3(0, 0, newMapNoteData.AngleOffset);
         else
         {
             if (cutDirection >= 1000) directionEuler += new Vector3(0, 0, 360 - (cutDirection - 1000));
