@@ -32,6 +32,14 @@ public class RotationEvent : MapEvent
         }
     }
 
+    public override int? GetRotationDegreeFromValue()
+    {
+        //Mapping Extensions should have no effect on V3 rotation event
+        return (CustomData != null && CustomData.HasKey("_queuedRotation"))
+            ? CustomData["_queuedRotation"].AsInt
+            : RotationAmount;
+    }
+
     public RotationEvent(JSONNode node)
     {
         Time = RetrieveRequiredNode(node, "b").AsFloat;

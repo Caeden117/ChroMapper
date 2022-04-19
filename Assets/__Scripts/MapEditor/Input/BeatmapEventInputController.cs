@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -49,14 +49,21 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
             var rotation = e.EventData.GetRotationDegreeFromValue();
             if (rotation != null)
             {
-                if (e.EventData.Value >= 0 && e.EventData.Value < MapEvent.LightValueToRotationDegrees.Length)
+                if (e.EventData is RotationEvent)
                 {
-                    e.EventData.Value =
-                        MapEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
+                    (e.EventData as RotationEvent).RotationAmount *= -1;
                 }
-                else if (e.EventData.Value >= 1000 && e.EventData.Value <= 1720) //Invert Mapping Extensions rotation
+                else
                 {
-                    e.EventData.Value = 1720 - (e.EventData.Value - 1000);
+                    if (e.EventData.Value >= 0 && e.EventData.Value < MapEvent.LightValueToRotationDegrees.Length)
+                    {
+                        e.EventData.Value =
+                            MapEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
+                    }
+                    else if (e.EventData.Value >= 1000 && e.EventData.Value <= 1720) //Invert Mapping Extensions rotation
+                    {
+                        e.EventData.Value = 1720 - (e.EventData.Value - 1000);
+                    }
                 }
 
                 tracksManager.RefreshTracks();
@@ -86,17 +93,25 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
     public void TweakValue(BeatmapEventContainer e, int modifier)
     {
         var original = BeatmapObject.GenerateCopy(e.ObjectData);
-        e.EventData.Value += modifier;
 
-        if (e.EventData.Value == 4 && !e.EventData.IsUtilityEvent)
+        if (e.EventData is RotationEvent)
+        {
+            (e.EventData as RotationEvent).RotationAmount += modifier;
+        }
+        else 
+        {
             e.EventData.Value += modifier;
 
-        if (e.EventData.Value < 0) e.EventData.Value = 0;
+            if (e.EventData.Value == 4 && !e.EventData.IsUtilityEvent)
+                e.EventData.Value += modifier;
 
-        if (!e.EventData.IsLaserSpeedEvent)
-        {
-            if (e.EventData.Value > 7)
-                e.EventData.Value = 7;
+            if (e.EventData.Value < 0) e.EventData.Value = 0;
+
+            if (!e.EventData.IsLaserSpeedEvent)
+            {
+                if (e.EventData.Value > 7)
+                    e.EventData.Value = 7;
+            }
         }
 
         if (e.EventData.IsRotationEvent)
