@@ -75,4 +75,13 @@ public class RotationEvent : MapEvent
         return node;
     }
 
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+
+        if (originalData is RotationEvent rotEvt)
+        {
+            RotationAmount = rotEvt.RotationAmount;
+        }
+    }
 }

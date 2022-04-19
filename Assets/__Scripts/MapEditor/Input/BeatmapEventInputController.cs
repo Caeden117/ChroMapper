@@ -98,7 +98,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         {
             (e.EventData as RotationEvent).RotationAmount += modifier;
         }
-        else 
+        else
         {
             e.EventData.Value += modifier;
 
@@ -123,7 +123,7 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
     public void TweakFloatValue(BeatmapEventContainer e, int modifier)
     {
         var original = BeatmapObject.GenerateCopy(e.ObjectData);
-        
+
         if (!e.EventData.IsUtilityEvent)
         {
             e.EventData.FloatValue += 0.1f * modifier;
