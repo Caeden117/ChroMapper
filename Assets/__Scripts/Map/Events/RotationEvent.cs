@@ -1,6 +1,7 @@
 using System;
 using SimpleJSON;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// <see cref="RotationEvent"/> is seperated from basic <see cref="MapEvent"/> in map v3.
@@ -19,16 +20,10 @@ public class RotationEvent : MapEvent
         get => degrees;
         set {
             degrees = value;
-            // This sets it to the corresponding Value closest to the precise rotation
-            // (-60, -45, -30, -15, 15, 30, 45, 60)
-            if (value <= -53) Value = 0;
-            else if (value <= -38) Value = 1;
-            else if (value <= -23) Value = 2;
-            else if (value <= 0) Value = 3;
-            else if (value <= 22) Value = 4;
-            else if (value <= 37) Value = 5;
-            else if (value <= 52) Value = 6;
-            else Value = 7;
+            var index = Array.IndexOf(LightValueToRotationDegrees, value);
+            Value = (index != -1) 
+                ? index 
+                : value + 1360; // ME value
         }
     }
 
@@ -57,33 +52,15 @@ public class RotationEvent : MapEvent
         if (m is RotationEvent rotEvent)
             RotationAmount = rotEvent.RotationAmount;
         else
-            switch (m.Value)
-            {
-                case 0:
-                    RotationAmount = -60;
-                    break;
-                case 1:
-                    RotationAmount = -45;
-                    break;
-                case 2:
-                    RotationAmount = -30;
-                    break;
-                case 3:
-                    RotationAmount = -15;
-                    break;
-                case 4:
-                    RotationAmount = 15;
-                    break;
-                case 5:
-                    RotationAmount = 30;
-                    break;
-                case 6:
-                    RotationAmount = 45;
-                    break;
-                case 7:
-                    RotationAmount = 60;
-                    break;
-            }
+        {
+            var val = m.Value;
+            if (val >= 0 && val < LightValueToRotationDegrees.Length)
+                RotationAmount = LightValueToRotationDegrees[val];
+            else if (val >= 1000 && val <= 1720)
+                RotationAmount = val - 1360;
+            else
+                RotationAmount = 0;
+        }
     }
 
     public override JSONNode ConvertToJson()
