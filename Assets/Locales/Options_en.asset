@@ -1175,6 +1175,14 @@ MonoBehaviour:
     m_Localized: Saves the difficulty file as more than a single line.
     m_Metadata:
       m_Items: []
+  - m_Id: 94731652719513600
+    m_Localized: Use ADB in path if found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731842968948736
+    m_Localized: If ADB is in the system environment path, it will use it if enabled.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

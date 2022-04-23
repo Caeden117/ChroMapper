@@ -116,6 +116,7 @@ public class Settings
     public bool QuickNoteEditing = false;
     public int AudioLatencyCompensation = 0;
     public int MaximumFPS = 9999;
+    public bool IncludePathForADB = true;
     public bool VSync = true;
 
     public int NodeEditorTextSize = 10;

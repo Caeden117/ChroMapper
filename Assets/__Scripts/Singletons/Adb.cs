@@ -39,13 +39,15 @@ namespace QuestDumper
     {
         private const string platformToolsDownloadGeneric =
             "https://dl.google.com/android/repository/platform-tools-latest-";
-        
+
         private static string GetFullPath(string fileName)
         {
             if (File.Exists(fileName))
                 return Path.GetFullPath(fileName);
 
             fileName = Path.GetFileName(fileName);
+
+            if (!Settings.Instance.IncludePathForADB) return null;
 
             var values = Environment.GetEnvironmentVariable("PATH");
 
