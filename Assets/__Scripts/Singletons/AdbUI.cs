@@ -70,7 +70,10 @@ namespace QuestDumper
             var initialize = Adb.Initialize();
             yield return initialize.AsCoroutine();
 
-            if (!initialize.IsCompleted || initialize.Exception != null || !string.IsNullOrEmpty(initialize.Result.ErrorOut?.Trim()))
+            string error = initialize.Result.ErrorOut?.Trim()
+                .Replace("* daemon not running; starting now at tcp:5037\n* daemon started successfully", "");
+            
+            if (!initialize.IsCompleted || initialize.Exception != null || !string.IsNullOrEmpty(error))
             {
                 // close before opening new dialog
                 dialog.Close();
