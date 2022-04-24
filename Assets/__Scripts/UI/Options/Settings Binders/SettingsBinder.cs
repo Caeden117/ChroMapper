@@ -8,10 +8,10 @@ public abstract class SettingsBinder : MonoBehaviour
     public enum SettingsType
     {
         All,
-        String,
+        STRING,
         INT,
-        Single,
-        Bool
+        SINGLE,
+        BOOL
     }
 
     [HideInInspector] public SettingsType BindedSettingSearchType = SettingsType.All;
