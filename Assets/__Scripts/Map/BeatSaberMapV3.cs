@@ -27,7 +27,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     public List<JSONNode> LightColorEventBoxGroups = new List<JSONNode>();
     public List<JSONNode> LightRotationEventBoxGroups = new List<JSONNode>();
     public Dictionary<string, JSONNode> BasicEventTypesWithKeywords = new Dictionary<string, JSONNode>(); // although idk what it is used for, save as a dict first
-    public bool UseNormalEventsAsCompatibleEvents = false;
+    public bool UseNormalEventsAsCompatibleEvents => Events.Any();
 
     public const string BeatSaberMapV3CustomDatakey = "customData";
     public BeatSaberMapV3() { }
@@ -225,9 +225,6 @@ public class BeatSaberMapV3 : BeatSaberMap
                         {
                             basicEventTypesWithKeywordsDict[k] = node[k];
                         }
-                        break;
-                    case "useNormalEventsAsCompatibleEvents":
-                        mapV3.UseNormalEventsAsCompatibleEvents = node.AsBool;
                         break;
                     default:
                         break;
