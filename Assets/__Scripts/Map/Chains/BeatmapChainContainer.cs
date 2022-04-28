@@ -149,8 +149,10 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         float p0 = (float)i / n;
         if (headTailInALine)
         {
-            t.transform.localPosition = Vector3.LerpUnclamped(trans0, t1.transform.localPosition, p0 * ChainData.SquishAmount);
-
+            var xPos = Mathf.LerpUnclamped(trans0.x, t1.transform.localPosition.x, p0  * ChainData.SquishAmount);
+            var yPos = Mathf.LerpUnclamped(trans0.y, t1.transform.localPosition.y, p0  * ChainData.SquishAmount);
+            var zPos = Mathf.Lerp(trans0.z, t1.transform.localPosition.z, p0);
+            t.transform.localPosition = new Vector3(xPos, yPos, zPos);
         }
         else
         {
