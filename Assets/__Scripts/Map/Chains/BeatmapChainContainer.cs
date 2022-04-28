@@ -153,6 +153,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
             var yPos = Mathf.LerpUnclamped(trans0.y, t1.transform.localPosition.y, p0  * ChainData.SquishAmount);
             var zPos = Mathf.Lerp(trans0.z, t1.transform.localPosition.z, p0);
             t.transform.localPosition = new Vector3(xPos, yPos, zPos);
+            t.transform.localRotation = rot0;
         }
         else
         {
@@ -160,8 +161,9 @@ public class BeatmapChainContainer : BeatmapObjectContainer
                 + circleCenter;
             if (p0 * ChainData.SquishAmount > 1.0f)
                 t.transform.localPosition += tailTangent * (p0 * ChainData.SquishAmount - 1.0f);
+            t.transform.localRotation = Quaternion.Slerp(rot0, t1.transform.localRotation, p0 * ChainData.SquishAmount);
         }
-        t.transform.localRotation = Quaternion.Slerp(rot0, t1.transform.localRotation, p0 * ChainData.SquishAmount);
+        
     }
 
     public void SetColor(Color color)
