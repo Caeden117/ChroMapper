@@ -2250,6 +2250,14 @@
                     "interactions": "Press"
                 },
                 {
+                    "name": "Update Note Precise Direction",
+                    "type": "Button",
+                    "id": "d86ce8a1-fd6d-4d89-9d96-e3202280feb7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Invert Note Colors",
                     "type": "Button",
                     "id": "5bf4f065-0e9f-4166-a219-7ec603ae88c6",
@@ -2321,6 +2329,50 @@
                     "action": "Quick Direction Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Button With Two Modifiers",
+                    "id": "d27bc266-bae4-4dec-a2d4-7b61e92c0b5f",
+                    "path": "ButtonWithTwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Update Note Precise Direction",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "c099da4f-9504-44d3-8898-767779661db8",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Update Note Precise Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "39243ea3-36b9-4638-b4b1-8ca849c1db56",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Update Note Precise Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "6c4a7451-e1d4-48e7-a85a-13884dbbed3b",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Update Note Precise Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
