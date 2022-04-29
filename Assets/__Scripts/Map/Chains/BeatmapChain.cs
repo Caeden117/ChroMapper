@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class BeatmapChain : BeatmapObject
 {
-    public const int MinChainCount = 3;
+    public const int MinChainCount = 2;
     public const int MaxChainCount = 999;
     public const float MinChainSquish = 0.1f;
     public const float MaxChainSquish = 999;
