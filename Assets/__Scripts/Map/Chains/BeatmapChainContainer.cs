@@ -11,9 +11,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     [SerializeField] private GameObject tailNode;
     private List<GameObject> nodes = new List<GameObject>();
     public BeatmapNoteContainer AttachedHead = null;
-    private Vector3 circleCenter;
     private bool headTailInALine;
-    private Vector3 tailTangent;
     private const float epsilon = 1e-2f;
     private Vector3 interPoint;
 
@@ -56,7 +54,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         Colliders.Clear();
         SelectionRenderers.Clear();
         var cutDirection = NotesContainer.Direction(new BeatmapColorNote(ChainData));
-        ComputeCircleCenter(headTrans, headRot, new Vector3(cutDirection.x, cutDirection.y, 
+        ComputeHeadTailInALine(headTrans, new Vector3(cutDirection.x, cutDirection.y, 
             (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale), tailNode.transform);
         int i = 0;
         for (; i < ChainData.SliceCount - 2; ++i)
@@ -88,58 +86,20 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     }
 
     /// <summary>
-    /// Compute Circle center for interpolation(and by the way compute tail rotation & tail tangent)
-    /// The basic idea is giving a head point and its tangent vector and a tail point, compute the circle.
+    /// Compute if the chain path is a straight line.
     /// </summary>
     /// <param name="headPos"></param>
     /// <param name="headRot"></param>
-    /// <param name="headTangent"></param>
     /// <param name="tailTrans"></param>
-    private void ComputeCircleCenter(in Vector3 headPos, in Quaternion headRot, in Vector3 headTangent, in Transform tailTrans)
+    private void ComputeHeadTailInALine(in Vector3 headPos, in Vector3 headTangent, in Transform tailTrans)
     {
         //Debug.Log("headpos" + headPos);
         //Debug.Log("headTangent" + headTangent);
         var tailPos = tailTrans.localPosition;
         //Debug.Log("tailPos" + tailPos);
         var headToTail = tailPos - headPos;
-        if (Mathf.Abs((headTangent.x * headToTail.y - headTangent.y * headToTail.x) / headTangent.magnitude / headToTail.magnitude) < epsilon)
-        {
-            // cross product = 0, indicate in a line
-            headTailInALine = true;
-            tailTrans.localRotation = headRot;
-            return;
-        }
-        /// compute circle center
-        headTailInALine = false;
-        Vector3 circleNormal = Vector3.Cross(headTangent, headToTail); // normal vector perpendicular to circle plane
-        Vector3 headToCenter = Vector3.Cross(circleNormal, headTangent);
-        //Debug.Log("headTOcenter" + headToCenter);
-        Vector3 midPoint = (headPos + tailPos) / 2.0f;
-        Vector3 midToCenter = Vector3.Cross(circleNormal, headToTail);
-        //Debug.Log("midtocenter" + midToCenter);
-
-        var headToMid = midPoint - headPos;
-        Vector3 crossVec1and2 = Vector3.Cross(headToCenter, midToCenter);
-        Vector3 crossVec3and2 = Vector3.Cross(headToMid, midToCenter);
-
-        float planarFactor = Vector3.Dot(headToMid, crossVec1and2);
-
-        float s = Vector3.Dot(crossVec3and2, crossVec1and2)
-                / crossVec1and2.sqrMagnitude;
-        circleCenter = headPos + (headToCenter * s);
-        //Debug.Log("circleCenter" + circleCenter);
-
-        /// compute tail angle and tail tangent;
-        var centerToTail = tailTrans.localPosition - circleCenter;
-        tailTangent = Vector3.Cross(circleNormal, centerToTail).normalized * centerToTail.magnitude;
-        var tailRot = Quaternion.FromToRotation(headTangent, tailTangent); // do not take u-turn, it will not be correct
-        tailTrans.localRotation = tailRot * headRot;
-
-        if (Mathf.Abs(Vector3.Dot(headToTail.normalized, tailTangent.normalized)) < epsilon)
-        {
-            tailTrans.localPosition -= tailTangent * epsilon; // move tail back a little bit to avoid head-tail-center in a line
-        }
-        //Debug.Log("tail tangent" + tailTangent);
+        // cross product = 0, indicate in a line
+        headTailInALine = (Mathf.Abs((headTangent.x * headToTail.y - headTangent.y * headToTail.x) / headTangent.magnitude / headToTail.magnitude) < epsilon);
     }
 
     /// <summary>
