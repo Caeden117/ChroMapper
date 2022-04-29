@@ -15,6 +15,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     private bool headTailInALine;
     private Vector3 tailTangent;
     private const float epsilon = 1e-2f;
+    private Vector3 interPoint;
 
     public static BeatmapChainContainer SpawnChain(BeatmapChain data, ref GameObject prefab)
     {
@@ -47,6 +48,11 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         var headTrans = new Vector3(ChainData.X, ChainData.Y, 0); 
         var headRot = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.Direction));
         tailNode.transform.localPosition = new Vector3(ChainData.TailX, ChainData.TailY, (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale);
+
+        interPoint = new Vector3(ChainData.X, ChainData.Y, ChainData.Time); 
+        var zRads = Mathf.Deg2Rad * BeatmapNoteContainer.Directionalize(ChainData.Direction).z;
+        interPoint += new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
+
         Colliders.Clear();
         SelectionRenderers.Clear();
         var cutDirection = NotesContainer.Direction(new BeatmapColorNote(ChainData));
@@ -137,33 +143,43 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     }
 
     /// <summary>
-    /// Interpolate between head and tail. The algorithm may not be correct.
+    /// Interpolate between head and tail.
     /// </summary>
-    /// <param name="n"></param>
-    /// <param name="i"></param>
-    /// <param name="t0"></param>
-    /// <param name="t1"></param>
-    /// <param name="t"></param>
-    private void Interpolate(int n, int i, in Vector3 trans0, in Quaternion rot0, in GameObject t1, in GameObject t)
+    /// <param name="n">Number of segments (excluding head)</param>
+    /// <param name="i">Segment index</param>
+    /// <param name="head">Head</param>
+    /// <param name="headRot"></param>
+    /// <param name="tail"></param>
+    /// <param name="linkSegment"></param>
+    private void Interpolate(int n, int i, in Vector3 head, in Quaternion headRot, in GameObject tail, in GameObject linkSegment)
     {
-        float p0 = (float)i / n;
+        float t = (float)i / n;
+        float tSquish = t * ChainData.SquishAmount;
+
+        var P0 = head;
+        var P1 = interPoint;
+        var P2 = tail.transform.localPosition;
+
+        var lerpZPos = Mathf.Lerp(head.z, tail.transform.localPosition.z, t);
+
         if (headTailInALine)
         {
-            var xPos = Mathf.LerpUnclamped(trans0.x, t1.transform.localPosition.x, p0  * ChainData.SquishAmount);
-            var yPos = Mathf.LerpUnclamped(trans0.y, t1.transform.localPosition.y, p0  * ChainData.SquishAmount);
-            var zPos = Mathf.Lerp(trans0.z, t1.transform.localPosition.z, p0);
-            t.transform.localPosition = new Vector3(xPos, yPos, zPos);
-            t.transform.localRotation = rot0;
+            var lerpPos = Vector3.LerpUnclamped(head, tail.transform.localPosition, tSquish);
+            linkSegment.transform.localPosition = new Vector3(lerpPos.x, lerpPos.y, lerpZPos);
+            linkSegment.transform.localRotation = headRot;
         }
         else
         {
-            t.transform.localPosition = Vector3.Slerp(trans0 - circleCenter, t1.transform.localPosition - circleCenter, p0 * ChainData.SquishAmount)
-                + circleCenter;
-            if (p0 * ChainData.SquishAmount > 1.0f)
-                t.transform.localPosition += tailTangent * (p0 * ChainData.SquishAmount - 1.0f);
-            t.transform.localRotation = Quaternion.Slerp(rot0, t1.transform.localRotation, p0 * ChainData.SquishAmount);
+            // Quadratic bezier curve
+            // B(t) = (1-t)^2 P0 + 2(1-t)t P1 + t^2 P2, 0 < t < 1
+            var bezierLerp = (Mathf.Pow((1 - tSquish), 2) * P0) + (2 * (1 - tSquish) * tSquish * P1) + (Mathf.Pow(tSquish, 2) * P2);   
+            linkSegment.transform.localPosition = new Vector3(bezierLerp.x, bezierLerp.y, lerpZPos);
+
+            // Bezier derivative gives tangent line
+            // B(t) = 2(1-t)(P1-P0) + 2t(P2-P1), 0 < t < 1
+            var bezierDervLerp = 2 * (1 - tSquish) * (P1 - P0) + 2 * tSquish * (P2 - P1);
+            linkSegment.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90 + Mathf.Rad2Deg * Mathf.Atan2(bezierDervLerp.y, bezierDervLerp.x)));
         }
-        
     }
 
     public void SetColor(Color color)
