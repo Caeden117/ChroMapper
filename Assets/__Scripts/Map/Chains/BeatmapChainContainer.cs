@@ -15,6 +15,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     private const float epsilon = 1e-2f;
     private Vector3 interPoint;
     private const float interMult = 1.5f;
+    private Vector3 headDirection;
 
     public static BeatmapChainContainer SpawnChain(BeatmapChain data, ref GameObject prefab)
     {
@@ -48,14 +49,17 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         var headRot = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.Direction));
         tailNode.transform.localPosition = new Vector3(ChainData.TailX, ChainData.TailY, (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale);
 
-        interPoint = new Vector3(ChainData.X, ChainData.Y, ChainData.Time); 
         var zRads = Mathf.Deg2Rad * BeatmapNoteContainer.Directionalize(ChainData.Direction).z;
-        interPoint += new Vector3(interMult * Mathf.Sin(zRads), -interMult * Mathf.Cos(zRads), 0f);
+        headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
+        
+        interPoint = new Vector3(ChainData.X, ChainData.Y, ChainData.Time); 
+        interPoint += interMult * headDirection;
 
         Colliders.Clear();
         SelectionRenderers.Clear();
         var cutDirection = NotesContainer.Direction(new BeatmapColorNote(ChainData));
         ComputeHeadPointsToTail(ChainData);
+        headTrans -= BeatmapChain.posOffsetFactor / 2 * headDirection;
         int i = 0;
         for (; i < ChainData.SliceCount - 2; ++i)
         {
@@ -164,6 +168,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as BeatmapNoteContainer;
                     AttachedHead.transform.localScale = BeatmapChain.ChainScale;
+                    AttachedHead.transform.localPosition -= BeatmapChain.posOffsetFactor * headDirection;
                     break;
                 }
             }
@@ -182,6 +187,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
             else
             {
                 AttachedHead.transform.localScale = BeatmapChain.ChainScale;
+                AttachedHead.transform.localPosition -= BeatmapChain.posOffsetFactor * headDirection;
             }
         }
     }
