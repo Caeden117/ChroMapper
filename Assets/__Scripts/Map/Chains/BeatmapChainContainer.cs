@@ -11,7 +11,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     [SerializeField] private GameObject tailNode;
     private List<GameObject> nodes = new List<GameObject>();
     public BeatmapNoteContainer AttachedHead = null;
-    private bool headTailInALine;
+    private bool headPointsToTail;
     private const float epsilon = 1e-2f;
     private Vector3 interPoint;
     private const float interMult = 1.5f;
@@ -55,8 +55,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         Colliders.Clear();
         SelectionRenderers.Clear();
         var cutDirection = NotesContainer.Direction(new BeatmapColorNote(ChainData));
-        ComputeHeadTailInALine(headTrans, new Vector3(cutDirection.x, cutDirection.y, 
-            (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale), tailNode.transform);
+        ComputeHeadPointsToTail(ChainData);
         int i = 0;
         for (; i < ChainData.SliceCount - 2; ++i)
         {
@@ -86,21 +85,12 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         UpdateMaterials();
     }
 
-    /// <summary>
-    /// Compute if the chain path is a straight line.
-    /// </summary>
-    /// <param name="headPos"></param>
-    /// <param name="headRot"></param>
-    /// <param name="tailTrans"></param>
-    private void ComputeHeadTailInALine(in Vector3 headPos, in Vector3 headTangent, in Transform tailTrans)
-    {
-        //Debug.Log("headpos" + headPos);
-        //Debug.Log("headTangent" + headTangent);
-        var tailPos = tailTrans.localPosition;
-        //Debug.Log("tailPos" + tailPos);
-        var headToTail = tailPos - headPos;
-        // cross product = 0, indicate in a line
-        headTailInALine = (Mathf.Abs((headTangent.x * headToTail.y - headTangent.y * headToTail.x) / headTangent.magnitude / headToTail.magnitude) < epsilon);
+    private void ComputeHeadPointsToTail(BeatmapChain chainData) {
+        Vector2 path = new Vector2(ChainData.TailX - ChainData.X, ChainData.TailY - ChainData.Y);
+        var pathAngle = Vector2.SignedAngle(Vector2.down, path);
+        var cutAngle = BeatmapNoteContainer.Directionalize(ChainData.Direction).z;
+
+        headPointsToTail = (Mathf.Abs(pathAngle - cutAngle) < 0.01f);
     }
 
     /// <summary>
@@ -123,7 +113,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
 
         var lerpZPos = Mathf.Lerp(head.z, tail.transform.localPosition.z, t);
 
-        if (headTailInALine)
+        if (headPointsToTail)
         {
             var lerpPos = Vector3.LerpUnclamped(head, tail.transform.localPosition, tSquish);
             linkSegment.transform.localPosition = new Vector3(lerpPos.x, lerpPos.y, lerpZPos);
