@@ -14,7 +14,6 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     private bool headPointsToTail;
     private const float epsilon = 1e-2f;
     private Vector3 interPoint;
-    private const float interMult = 1.5f;
     private Vector3 headDirection;
 
     public static BeatmapChainContainer SpawnChain(BeatmapChain data, ref GameObject prefab)
@@ -53,6 +52,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
         
         interPoint = new Vector3(ChainData.X, ChainData.Y, ChainData.Time); 
+        var interMult = (new Vector2(ChainData.X - ChainData.TailX, ChainData.Y - ChainData.TailY)).magnitude / 2;
         interPoint += interMult * headDirection;
 
         Colliders.Clear();
