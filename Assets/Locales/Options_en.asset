@@ -1059,6 +1059,14 @@ MonoBehaviour:
     m_Localized: 'Downloading ADB Progess: {0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 99345867617796096
+    m_Localized: Saves the difficulty file as more than a single line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99346517827190784
+    m_Localized: Save As Formatted Json
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

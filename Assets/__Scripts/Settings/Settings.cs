@@ -58,6 +58,7 @@ public class Settings
     public bool Reminder_Loading360Levels = true;
     public bool Reminder_SettingsFailed = true;
     public bool AdvancedShit = false;
+    public bool FormatJson = false;
     public bool InstantEscapeMenuTransitions = false;
     public bool ChromaticAberration = true;
     public int Offset_Spawning = 4;

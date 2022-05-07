@@ -907,6 +907,14 @@ MonoBehaviour:
     m_Key: quest.downloading_progress
     m_Metadata:
       m_Items: []
+  - m_Id: 99345867617796096
+    m_Key: general.formatjson.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99346517827190784
+    m_Key: general.formatjson
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
