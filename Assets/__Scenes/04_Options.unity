@@ -7797,6 +7797,8 @@ MonoBehaviour:
   - {fileID: 835319597}
   - {fileID: 1407207582}
   - {fileID: 551127356}
+  - {fileID: 1734840256}
+  - {fileID: 570413201}
 --- !u!1001 &361038649
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12871,6 +12873,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb10ad3ad7f83f14a9f0b5542dc859fb, type: 3}
+--- !u!1 &570413200 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4895064087087539622, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
+    type: 3}
+  m_PrefabInstance: {fileID: 570413199}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &570413201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570413200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb2a8adee904bd894bfe1936410f850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Keywords:
+  - camera
+  - render
+  - scale
+  - resolution
 --- !u!1001 &576093525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40432,10 +40457,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Keywords:
-  - event
-  - pyramid
-  - block
-  - model
+  - camera
+  - aa
+  - anti
+  - aliasing
+  - jaggies
 --- !u!1 &1738448713
 GameObject:
   m_ObjectHideFlags: 0
