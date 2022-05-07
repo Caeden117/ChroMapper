@@ -23,7 +23,6 @@ public class ArcPlacement : PlacementController<BeatmapArc, BeatmapArcContainer,
         var n1 = objects[0] as BeatmapNote;
         var n2 = objects[1] as BeatmapNote;
         if (n1.Time > n2.Time) { var t = n1; n1 = n2; n2 = t; }
-        if (n1.CutDirection == BeatmapNote.NoteCutDirectionAny || n2.CutDirection == BeatmapNote.NoteCutDirectionAny) { return; }
         var arcData = new BeatmapArc
         {
             Time = n1.Time,
