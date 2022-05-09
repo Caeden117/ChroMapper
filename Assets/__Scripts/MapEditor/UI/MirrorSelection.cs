@@ -115,6 +115,7 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (con is BeatmapNote note)
             {
+                if (note is BeatmapColorNote cnote) cnote.AngleOffset *= -1;
                 if (moveNotes)
                 {
                     if (note.CustomData != null)

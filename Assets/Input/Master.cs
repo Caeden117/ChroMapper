@@ -2263,6 +2263,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
+                    ""name"": ""Update Note Precise Direction"",
+                    ""type"": ""Button"",
+                    ""id"": ""d86ce8a1-fd6d-4d89-9d96-e3202280feb7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Invert Note Colors"",
                     ""type"": ""Button"",
                     ""id"": ""5bf4f065-0e9f-4166-a219-7ec603ae88c6"",
@@ -2334,6 +2342,50 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Quick Direction Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Button With Two Modifiers"",
+                    ""id"": ""d27bc266-bae4-4dec-a2d4-7b61e92c0b5f"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Update Note Precise Direction"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""c099da4f-9504-44d3-8898-767779661db8"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Update Note Precise Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""39243ea3-36b9-4638-b4b1-8ca849c1db56"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Update Note Precise Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""6c4a7451-e1d4-48e7-a85a-13884dbbed3b"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Update Note Precise Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -4252,6 +4304,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Note Objects
         m_NoteObjects = asset.FindActionMap("Note Objects", throwIfNotFound: true);
         m_NoteObjects_UpdateNoteDirection = m_NoteObjects.FindAction("Update Note Direction", throwIfNotFound: true);
+        m_NoteObjects_UpdateNotePreciseDirection = m_NoteObjects.FindAction("Update Note Precise Direction", throwIfNotFound: true);
         m_NoteObjects_InvertNoteColors = m_NoteObjects.FindAction("Invert Note Colors", throwIfNotFound: true);
         m_NoteObjects_QuickDirectionModifier = m_NoteObjects.FindAction("Quick Direction Modifier", throwIfNotFound: true);
         // Obstacle Objects
@@ -5477,6 +5530,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_NoteObjects;
     private INoteObjectsActions m_NoteObjectsActionsCallbackInterface;
     private readonly InputAction m_NoteObjects_UpdateNoteDirection;
+    private readonly InputAction m_NoteObjects_UpdateNotePreciseDirection;
     private readonly InputAction m_NoteObjects_InvertNoteColors;
     private readonly InputAction m_NoteObjects_QuickDirectionModifier;
     public struct NoteObjectsActions
@@ -5484,6 +5538,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         private @CMInput m_Wrapper;
         public NoteObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @UpdateNoteDirection => m_Wrapper.m_NoteObjects_UpdateNoteDirection;
+        public InputAction @UpdateNotePreciseDirection => m_Wrapper.m_NoteObjects_UpdateNotePreciseDirection;
         public InputAction @InvertNoteColors => m_Wrapper.m_NoteObjects_InvertNoteColors;
         public InputAction @QuickDirectionModifier => m_Wrapper.m_NoteObjects_QuickDirectionModifier;
         public InputActionMap Get() { return m_Wrapper.m_NoteObjects; }
@@ -5498,6 +5553,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @UpdateNoteDirection.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
                 @UpdateNoteDirection.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
                 @UpdateNoteDirection.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNoteDirection;
+                @UpdateNotePreciseDirection.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNotePreciseDirection;
+                @UpdateNotePreciseDirection.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNotePreciseDirection;
+                @UpdateNotePreciseDirection.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnUpdateNotePreciseDirection;
                 @InvertNoteColors.started -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
                 @InvertNoteColors.performed -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
                 @InvertNoteColors.canceled -= m_Wrapper.m_NoteObjectsActionsCallbackInterface.OnInvertNoteColors;
@@ -5511,6 +5569,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @UpdateNoteDirection.started += instance.OnUpdateNoteDirection;
                 @UpdateNoteDirection.performed += instance.OnUpdateNoteDirection;
                 @UpdateNoteDirection.canceled += instance.OnUpdateNoteDirection;
+                @UpdateNotePreciseDirection.started += instance.OnUpdateNotePreciseDirection;
+                @UpdateNotePreciseDirection.performed += instance.OnUpdateNotePreciseDirection;
+                @UpdateNotePreciseDirection.canceled += instance.OnUpdateNotePreciseDirection;
                 @InvertNoteColors.started += instance.OnInvertNoteColors;
                 @InvertNoteColors.performed += instance.OnInvertNoteColors;
                 @InvertNoteColors.canceled += instance.OnInvertNoteColors;
@@ -6690,6 +6751,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface INoteObjectsActions
     {
         void OnUpdateNoteDirection(InputAction.CallbackContext context);
+        void OnUpdateNotePreciseDirection(InputAction.CallbackContext context);
         void OnInvertNoteColors(InputAction.CallbackContext context);
         void OnQuickDirectionModifier(InputAction.CallbackContext context);
     }

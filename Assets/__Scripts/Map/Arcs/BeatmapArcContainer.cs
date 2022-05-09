@@ -90,11 +90,13 @@ public class BeatmapArcContainer : BeatmapObjectContainer
         n1.Position = new Vector3(ArcData.X, ArcData.Y, 0);
         n2.Position = new Vector3(ArcData.TailX, ArcData.TailY, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
         //var distance = EditorScaleController.EditorScale;
-        var d1 = new Vector3(0, splineYScaleFactor * ArcData.HeadControlPointLengthMultiplier, directionZPerturbation);
+        var headPointMultiplier = (ArcData.Direction == BeatmapNote.NoteCutDirectionAny) ? 0f : ArcData.HeadControlPointLengthMultiplier;
+        var d1 = new Vector3(0, splineYScaleFactor * headPointMultiplier, directionZPerturbation);
         var rot1 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(ArcData.Direction).z - 180);
         d1 = rot1 * d1;
         n1.Direction = n1.Position + d1;
-        var d2 = new Vector3(0, splineYScaleFactor * ArcData.TailControlPointLengthMultiplier, directionZPerturbation);
+        var tailPointMultiplier = (ArcData.TailCutDirection == BeatmapNote.NoteCutDirectionAny) ? 0f : ArcData.TailControlPointLengthMultiplier;
+        var d2 = new Vector3(0, splineYScaleFactor * tailPointMultiplier, directionZPerturbation);
         var rot2 = Quaternion.Euler(0, 0, BeatmapNoteContainer.Directionalize(ArcData.TailCutDirection).z - 180);
         d2 = rot2 * d2;
         n2.Direction = n2.Position + d2;

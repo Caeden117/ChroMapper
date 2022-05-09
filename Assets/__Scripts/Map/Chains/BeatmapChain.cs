@@ -7,11 +7,12 @@ using UnityEngine.Serialization;
 
 public class BeatmapChain : BeatmapObject
 {
-    public const int MinChainCount = 3;
+    public const int MinChainCount = 2;
     public const int MaxChainCount = 999;
     public const float MinChainSquish = 0.1f;
     public const float MaxChainSquish = 999;
     public static Vector3 ChainScale = new Vector3(1.5f, 0.8f, 1.5f);
+    public static float posOffsetFactor = 0.17333f; // Hardcorded because haven't found exact relationship between ChainScale yet
     // private float b;
     public int Color;
     public int X;
