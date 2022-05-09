@@ -355,6 +355,7 @@ public class PlatformDescriptor : MonoBehaviour
                     light.UpdateMultiplyAlpha(color.a);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(1, 0);
+                    light.UpdateEasing("easeLinear");
                     break;
                 case MapEvent.LightValueBlueFlash:
                 case MapEvent.LightValueRedFlash:
@@ -362,12 +363,14 @@ public class PlatformDescriptor : MonoBehaviour
                     light.UpdateMultiplyAlpha(color.a);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
+                    light.UpdateEasing("easeOutCubic");
                     break;
                 case MapEvent.LightValueBlueFade:
                 case MapEvent.LightValueRedFade:
                     light.UpdateTargetAlpha(1, 0);
                     light.UpdateMultiplyAlpha(color.a);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
+                    light.UpdateEasing("easeOutExpo");
                     if (light.CanBeTurnedOff)
                     {
                         light.UpdateTargetAlpha(0, LightsManager.FadeTime);
