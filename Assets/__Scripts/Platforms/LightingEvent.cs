@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class LightingEvent : MonoBehaviour
@@ -31,6 +32,8 @@ public class LightingEvent : MonoBehaviour
 
     private bool isLightEnabled = true;
 
+    private Func<float, float> easing = Easing.ByName["easeLinear"];
+
     private void Start()
     {
         lightPropertyBlock = new MaterialPropertyBlock();
@@ -62,7 +65,7 @@ public class LightingEvent : MonoBehaviour
         if (multiplyAlpha == float.NaN) multiplyAlpha = 0;
 
         colorTime += Time.deltaTime;
-        var color = Color.Lerp(currentColor, targetColor, colorTime / timeToTransitionColor);
+        var color = Color.Lerp(currentColor, targetColor, easing(colorTime / timeToTransitionColor));
 
         if (!CanBeTurnedOff)
         {
@@ -74,7 +77,7 @@ public class LightingEvent : MonoBehaviour
         }
 
         alphaTime += Time.deltaTime;
-        var alpha = Mathf.Lerp(currentAlpha, targetAlpha, alphaTime / timeToTransitionAlpha) * multiplyAlpha;
+        var alpha = Mathf.Lerp(currentAlpha, targetAlpha, easing(alphaTime / timeToTransitionAlpha)) * multiplyAlpha;
 
         SetEmission(alpha > 0);
 
@@ -85,6 +88,8 @@ public class LightingEvent : MonoBehaviour
             lightRenderer.SetPropertyBlock(lightPropertyBlock);
         }
     }
+
+    public void UpdateEasing(string easingName) => easing = Easing.ByName[easingName];
 
     public void UpdateTargetColor(Color target, float timeToTransition)
     {
