@@ -915,6 +915,14 @@ MonoBehaviour:
     m_Key: trackappearance.heading
     m_Metadata:
       m_Items: []
+  - m_Id: 101773637585141760
+    m_Key: misc.instantloadingtransitions.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773995594153984
+    m_Key: misc.instantloadingtransitions
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

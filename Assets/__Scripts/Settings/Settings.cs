@@ -59,6 +59,7 @@ public class Settings
     public bool Reminder_SettingsFailed = true;
     public bool AdvancedShit = false;
     public bool InstantEscapeMenuTransitions = false;
+    public bool InstantLoadingTransitions = false;
     public bool ChromaticAberration = true;
     public int Offset_Spawning = 4;
     public int Offset_Despawning = 1;
