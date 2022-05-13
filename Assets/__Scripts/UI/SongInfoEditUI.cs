@@ -539,8 +539,8 @@ public class SongInfoEditUI : MenuBase
         
         dialog.Open();
         
-        // TODO: Add WIP export?
-        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_LOCATION, Song.CleanSongName).Replace("\\", @"/");
+        // We should always be exporting to WIP Levels. CustomLevels are for downloaded BeatSaver songs.
+        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_WIP_LOCATION, Song.CleanSongName).Replace("\\", @"/");
         var exportedFiles = ExportedFiles();
 
         if (exportedFiles == null) return;
