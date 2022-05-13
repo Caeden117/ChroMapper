@@ -100,6 +100,7 @@ public class Settings
     public CameraPosition[] SavedPositions = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;
     public bool PyramidEventModels = false;
+    public float PastNoteModelAlpha = 0.4f;
     public EventModelType EventModel = EventModelType.Block;
     public int ReleaseChannel = 0;
     public string ReleaseServer = "https://cm.topc.at";

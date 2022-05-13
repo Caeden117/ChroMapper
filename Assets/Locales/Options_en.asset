@@ -1091,6 +1091,14 @@ MonoBehaviour:
     m_Localized: Hides disableable platform objects on load
     m_Metadata:
       m_Items: []
+  - m_Id: 101802902695378944
+    m_Localized: Passed Note Transparency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802838346366976
+    m_Localized: Changes the transparency of passed notes
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
