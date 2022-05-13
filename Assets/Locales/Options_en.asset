@@ -1059,6 +1059,14 @@ MonoBehaviour:
     m_Localized: 'Downloading ADB Progess: {0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 91579491578740736
+    m_Localized: Appearance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101771971410460672
+    m_Localized: Track Appearance
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
