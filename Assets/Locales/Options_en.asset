@@ -1099,6 +1099,26 @@ MonoBehaviour:
     m_Localized: Changes the transparency of passed notes
     m_Metadata:
       m_Items: []
+  - m_Id: 101855016515731456
+    m_Localized: Editor Map Info Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855392124043264
+    m_Localized: Display Difficulty Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855382842048512
+    m_Localized: Display difficulty name and value in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855374591852544
+    m_Localized: Display Song Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855364424859648
+    m_Localized: Display artist and song name in top right corner.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

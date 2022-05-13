@@ -10,9 +10,23 @@ public class CurrentDifficultyDisplay : MonoBehaviour
     {
         textMesh = GetComponent<TextMeshProUGUI>();
         BeatSaberSong.DifficultyBeatmap data = BeatSaberSongContainer.Instance.DifficultyData;
-        string diffStr = data.Difficulty;
-        textMesh.text = (data.CustomData != null && data.CustomData.HasKey("_difficultyLabel"))
-            ? $"{data.CustomData["_difficultyLabel"].Value} - [{diffStr}]"
-            : $"[{diffStr}]";
+        BeatSaberSong song = BeatSaberSongContainer.Instance.Song;
+
+        string songStr = (song.SongSubName != "")
+            ? $"{song.SongAuthorName} - {song.SongName} {song.SongSubName}\n"
+            : $"{song.SongAuthorName} - {song.SongName}\n";
+
+        string diffStr = (data.CustomData != null && data.CustomData.HasKey("_difficultyLabel"))
+            ? $"{data.CustomData["_difficultyLabel"].Value} - [{data.Difficulty}]"
+            : $"[{data.Difficulty}]";
+
+        string display = "";
+
+        if (Settings.Instance.DisplaySongDetailsInEditor)
+            display += songStr;
+        if (Settings.Instance.DisplayDiffDetailsInEditor)
+            display += diffStr;
+
+        textMesh.text = display;
     }
 }

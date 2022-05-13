@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -76,6 +76,8 @@ public class Settings
     public bool Load_Notes = true;
     public bool Load_Obstacles = true;
     public bool Load_Others = true;
+    public bool DisplayDiffDetailsInEditor = true;
+    public bool DisplaySongDetailsInEditor = true;
     public bool ShowMoreAccurateFastWalls = false;
     public int TimeValueDecimalPrecision = 3;
     public bool Ding_Red_Notes = true;

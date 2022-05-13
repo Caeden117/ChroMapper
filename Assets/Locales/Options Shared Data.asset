@@ -947,6 +947,26 @@ MonoBehaviour:
     m_Key: graphics.passednotetransparency
     m_Metadata:
       m_Items: []
+  - m_Id: 101855016515731456
+    m_Key: editormapinfo.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855364424859648
+    m_Key: mapping.displaysongdetails.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855374591852544
+    m_Key: mapping.displaysongdetails
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855382842048512
+    m_Key: mapping.displaydiffdetails.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855392124043264
+    m_Key: mapping.displaydiffdetails
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
