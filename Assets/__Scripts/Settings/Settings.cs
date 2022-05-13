@@ -70,6 +70,7 @@ public class Settings
     public float CameraFOV = 60f;
     public int CameraAA = 0;
     public int RenderScale = 100;
+    public bool HideDisablableObjectsOnLoad = false;
     public bool WaveformWorkflow = true;
     public bool Load_Events = true;
     public bool Load_Notes = true;

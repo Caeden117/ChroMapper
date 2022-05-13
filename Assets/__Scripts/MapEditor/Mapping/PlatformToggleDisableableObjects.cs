@@ -15,7 +15,10 @@ public class PlatformToggleDisableableObjects : MonoBehaviour, CMInput.IPlatform
         if (context.performed) UpdateDisableableObjects();
     }
 
-    private void PlatformLoaded(PlatformDescriptor obj) => descriptor = obj;
+    private void PlatformLoaded(PlatformDescriptor obj) {
+        descriptor = obj;
+        if (Settings.Instance.HideDisablableObjectsOnLoad) UpdateDisableableObjects();
+    }
 
     public void UpdateDisableableObjects() => descriptor.ToggleDisablableObjects();
 }

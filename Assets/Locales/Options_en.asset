@@ -1083,6 +1083,14 @@ MonoBehaviour:
     m_Localized: Length of the track in beats
     m_Metadata:
       m_Items: []
+  - m_Id: 101795765399257088
+    m_Localized: Hide Disableable Objects On Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795760294789120
+    m_Localized: Hides disableable platform objects on load
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

@@ -931,6 +931,14 @@ MonoBehaviour:
     m_Key: graphics.tracklength
     m_Metadata:
       m_Items: []
+  - m_Id: 101795760294789120
+    m_Key: graphics.hideplatformobjects.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795765399257088
+    m_Key: graphics.hideplatformobjects
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
