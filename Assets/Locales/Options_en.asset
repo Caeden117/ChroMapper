@@ -1075,6 +1075,14 @@ MonoBehaviour:
     m_Localized: Instant Loading Transitions
     m_Metadata:
       m_Items: []
+  - m_Id: 101788529759289344
+    m_Localized: Track Length
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788523392335872
+    m_Localized: Length of the track in beats
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

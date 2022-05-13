@@ -923,6 +923,14 @@ MonoBehaviour:
     m_Key: misc.instantloadingtransitions
     m_Metadata:
       m_Items: []
+  - m_Id: 101788523392335872
+    m_Key: graphics.tracklength.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788529759289344
+    m_Key: graphics.tracklength
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

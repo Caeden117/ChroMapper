@@ -29,6 +29,7 @@ public class Settings
     public float EditorScale = 4;
     public bool EditorScaleBPMIndependent = false;
     public int ChunkDistance = 5;
+    public int TrackLength = 8;
     public int AutoSaveInterval = 5;
     public bool InvertNoteControls = false; // Hidden setting, does nothing
     public int Waveform = 1;

@@ -22,6 +22,7 @@ public class GridRenderingController : MonoBehaviour
     [SerializeField] private Renderer[] preciseBeatSegment;
     [SerializeField] private Renderer[] opaqueGrids;
     [SerializeField] private Renderer[] transparentGrids;
+    [SerializeField] private Transform[] gridFrontTransforms;
 
     private readonly List<Renderer> allRenderers = new List<Renderer>();
 
@@ -40,6 +41,7 @@ public class GridRenderingController : MonoBehaviour
         allRenderers.AddRange(preciseBeatSegment);
         Settings.NotifyBySettingName(nameof(Settings.HighContrastGrids), UpdateGridColors);
         Settings.NotifyBySettingName(nameof(Settings.GridTransparency), UpdateGridColors);
+        Settings.NotifyBySettingName(nameof(Settings.TrackLength), UpdateTrackLength);
     }
 
     private void OnDestroy()
@@ -47,6 +49,7 @@ public class GridRenderingController : MonoBehaviour
         atsc.GridMeasureSnappingChanged -= GridMeasureSnappingChanged;
         Settings.ClearSettingNotifications(nameof(Settings.HighContrastGrids));
         Settings.ClearSettingNotifications(nameof(Settings.GridTransparency));
+        Settings.ClearSettingNotifications(nameof(Settings.TrackLength));
     }
 
     public void UpdateOffset(float offset)
@@ -103,6 +106,14 @@ public class GridRenderingController : MonoBehaviour
         {
             g.SetPropertyBlock(beatColorPropertyBlock);
             g.enabled = newColor.a == 1f;
+        }
+    }
+
+    private void UpdateTrackLength(object _) {
+        foreach (var trans in gridFrontTransforms)
+        {
+            var scale = trans.localScale;
+            trans.localScale = new Vector3(scale.x, scale.y, Settings.Instance.TrackLength * 4);
         }
     }
 
