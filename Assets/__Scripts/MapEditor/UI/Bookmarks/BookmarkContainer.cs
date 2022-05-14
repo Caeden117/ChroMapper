@@ -81,6 +81,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
 
         Data.Name = res;
+        manager.BookmarksUpdated.Invoke();
         UpdateUI();
     }
 
@@ -88,6 +89,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
     {
         if (res == null) return;
         Data.Color = (Color)res;
+        manager.BookmarksUpdated.Invoke();
         UpdateUI();
     }
 

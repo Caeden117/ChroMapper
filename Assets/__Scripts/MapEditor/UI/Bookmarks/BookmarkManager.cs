@@ -65,6 +65,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             container.RefreshPosition(timelineCanvas.sizeDelta.x + canvasWidthOffset);
             return container;
         }).OrderBy(it => it.Data.Time).ToList();
+
+        BookmarksUpdated.Invoke();
     }
 
     private void LateUpdate()

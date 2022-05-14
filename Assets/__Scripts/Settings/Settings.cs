@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -98,6 +98,8 @@ public class Settings
     public string Language = "en";
     public bool HighContrastGrids = false;
     public float GridTransparency = 0f;
+    public bool DisplayGridBookmarks = true;
+    public bool GridBookmarksHasLine = true;
     public float UIScale = 1;
     public CameraPosition[] SavedPositions = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;

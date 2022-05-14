@@ -1119,6 +1119,22 @@ MonoBehaviour:
     m_Localized: Display artist and song name in top right corner.
     m_Metadata:
       m_Items: []
+  - m_Id: 102096015523512320
+    m_Localized: Display Bookmarks On Track
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096011425677312
+    m_Localized: Displays bookmarks line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186255848243200
+    m_Localized: Display Bookmark Grid Line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186250655694848
+    m_Localized: Displays an additional grid line on the bookmark.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
