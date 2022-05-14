@@ -30,6 +30,7 @@ public class Settings
     public bool EditorScaleBPMIndependent = false;
     public int ChunkDistance = 5;
     public int TrackLength = 8;
+    public float OneBeatWidth = 0.1f;
     public int AutoSaveInterval = 5;
     public bool InvertNoteControls = false; // Hidden setting, does nothing
     public int Waveform = 1;

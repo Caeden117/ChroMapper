@@ -983,6 +983,14 @@ MonoBehaviour:
     m_Key: graphics.displaybookmarkgridline
     m_Metadata:
       m_Items: []
+  - m_Id: 102193073215438848
+    m_Key: graphics.mainbeatlinewidth.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193078810640384
+    m_Key: graphics.mainbeatlinewidth
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

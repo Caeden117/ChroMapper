@@ -42,6 +42,9 @@ public class GridRenderingController : MonoBehaviour
         Settings.NotifyBySettingName(nameof(Settings.HighContrastGrids), UpdateGridColors);
         Settings.NotifyBySettingName(nameof(Settings.GridTransparency), UpdateGridColors);
         Settings.NotifyBySettingName(nameof(Settings.TrackLength), UpdateTrackLength);
+        Settings.NotifyBySettingName(nameof(Settings.OneBeatWidth), UpdateOneBeat);
+
+        UpdateOneBeat(Settings.Instance.OneBeatWidth);
     }
 
     private void OnDestroy()
@@ -50,6 +53,7 @@ public class GridRenderingController : MonoBehaviour
         Settings.ClearSettingNotifications(nameof(Settings.HighContrastGrids));
         Settings.ClearSettingNotifications(nameof(Settings.GridTransparency));
         Settings.ClearSettingNotifications(nameof(Settings.TrackLength));
+        Settings.ClearSettingNotifications(nameof(Settings.OneBeatWidth));
     }
 
     public void UpdateOffset(float offset)
@@ -115,6 +119,12 @@ public class GridRenderingController : MonoBehaviour
             var scale = trans.localScale;
             trans.localScale = new Vector3(scale.x, scale.y, Settings.Instance.TrackLength * 4);
         }
+    }
+
+    private void UpdateOneBeat(object value)
+    {
+        foreach (var renderer in oneBeat)
+            foreach (var mat in renderer.materials) mat.SetFloat("_GridThickness", (float)value);
     }
 
     private int GetLowestDenominator(int a)

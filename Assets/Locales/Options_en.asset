@@ -1135,6 +1135,14 @@ MonoBehaviour:
     m_Localized: Displays an additional grid line on the bookmark.
     m_Metadata:
       m_Items: []
+  - m_Id: 102193078810640384
+    m_Localized: Main Beat Line Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193073215438848
+    m_Localized: How thick the beat line is
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
