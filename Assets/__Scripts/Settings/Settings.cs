@@ -101,6 +101,8 @@ public class Settings
     public float GridTransparency = 0f;
     public bool DisplayGridBookmarks = true;
     public bool GridBookmarksHasLine = true;
+    public int BookmarkTimelineWidth = 10;
+    public bool BookmarkTooltipTimeInfo = false;
     public float UIScale = 1;
     public CameraPosition[] SavedPositions = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;

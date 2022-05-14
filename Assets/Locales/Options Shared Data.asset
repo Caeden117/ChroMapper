@@ -991,6 +991,22 @@ MonoBehaviour:
     m_Key: graphics.mainbeatlinewidth
     m_Metadata:
       m_Items: []
+  - m_Id: 102206124970934272
+    m_Key: graphics.bookmarktooltiptimeinfo.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206129182015488
+    m_Key: graphics.bookmarktooltiptimeinfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206134429089792
+    m_Key: graphics.bookmarkuiwidth.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206140842180608
+    m_Key: graphics.bookmarkuiwidth
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

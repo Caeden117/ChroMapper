@@ -1143,6 +1143,22 @@ MonoBehaviour:
     m_Localized: How thick the beat line is
     m_Metadata:
       m_Items: []
+  - m_Id: 102206140842180608
+    m_Localized: Bookmark UI Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206134429089792
+    m_Localized: How thick the bookmarks on the timeline are.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206129182015488
+    m_Localized: Bookmark Tooltip Time Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206124970934272
+    m_Localized: Display the beat and song time on the bookmark tooltip.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

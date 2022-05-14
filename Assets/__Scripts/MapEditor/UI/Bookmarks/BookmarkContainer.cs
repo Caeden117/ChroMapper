@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -19,7 +20,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         UpdateUI();
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         var name = Data.Name.StripTMPTags();
 
@@ -28,8 +29,19 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
             name = $"<i>(This Bookmark has no name)</i>";
         }
 
+        if (Settings.Instance.BookmarkTooltipTimeInfo){
+            var beat = Data.Time;
+            var span = TimeSpan.FromSeconds(manager.Atsc.GetSecondsFromBeat(beat));
+            name += $" [{Math.Round(beat, 2)} | {span:mm':'ss}]";
+        }
+
         GetComponent<Tooltip>().TooltipOverride = name;
         GetComponent<Image>().color = Data.Color;
+    }
+
+    public void UpdateUIWidth() {
+        var bookRect = this.transform as RectTransform;
+        bookRect.sizeDelta = new Vector2(Settings.Instance.BookmarkTimelineWidth, bookRect.sizeDelta.y);
     }
 
     // This fixes position of bookmarks to match aspect ratios
