@@ -1167,6 +1167,14 @@ MonoBehaviour:
     m_Localized: Camera
     m_Metadata:
       m_Items: []
+  - m_Id: 102447938869067776
+    m_Localized: Save As Formatted Json
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447908275814400
+    m_Localized: Saves the difficulty file as more than a single line.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

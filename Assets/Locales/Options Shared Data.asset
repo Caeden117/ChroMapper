@@ -1015,6 +1015,14 @@ MonoBehaviour:
     m_Key: camera.heading
     m_Metadata:
       m_Items: []
+  - m_Id: 102447908275814400
+    m_Key: general.formatjson.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447938869067776
+    m_Key: general.formatjson
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
