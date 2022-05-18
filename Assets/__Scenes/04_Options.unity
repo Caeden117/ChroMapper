@@ -22506,7 +22506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BindedSettingSearchType: 3
-  BindedSetting: None
+  BindedSetting: UIScale
   PopupEditorWarning: 0
   DecimalPrecision: 1
   Multiple: 1
