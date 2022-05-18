@@ -102,6 +102,8 @@ public class PersistentUI : MonoBehaviour
 
         centerDisplay.Host = this;
         bottomDisplay.Host = this;
+
+        EnableTransitions = !Settings.Instance.InstantLoadingTransitions;
     }
 
     private void LateUpdate()

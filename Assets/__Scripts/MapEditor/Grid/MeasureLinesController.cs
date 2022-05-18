@@ -13,6 +13,7 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform measureLineGrid;
     [SerializeField] private BPMChangesContainer bpmChangesContainer;
     [SerializeField] private GridChild measureLinesGridChild;
+    [SerializeField] private BookmarkRenderingController bookmarkRenderingController;
     private readonly List<(float, TextMeshProUGUI)> measureTextsByBeat = new List<(float, TextMeshProUGUI)>();
     private readonly Dictionary<float, bool> previousEnabledByBeat = new Dictionary<float, bool>();
 
@@ -98,6 +99,8 @@ public class MeasureLinesController : MonoBehaviour
                 previousEnabledByBeat[time] = enabled;
             }
         }
+
+        bookmarkRenderingController.RefreshVisibility(currentBeat, beatsAhead, beatsBehind);
     }
 
     private void RefreshPositions()
