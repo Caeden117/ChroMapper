@@ -52473,7 +52473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BindedSettingSearchType: 3
-  BindedSetting: None
+  BindedSetting: CameraFOV
   PopupEditorWarning: 0
   DecimalPrecision: 3
   Multiple: 1
