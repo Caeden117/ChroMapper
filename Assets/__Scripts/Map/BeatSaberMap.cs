@@ -68,7 +68,7 @@ public class BeatSaberMap
             SaveCustomDataNode();
 
             // I *believe* this automatically creates the file if it doesn't exist. Needs more experiementation
-            if (Settings.Instance.AdvancedShit)
+            if (Settings.Instance.FormatJson)
                 File.WriteAllText(DirectoryAndFile, MainNode.ToString(2));
             else
                 File.WriteAllText(DirectoryAndFile, MainNode.ToString());

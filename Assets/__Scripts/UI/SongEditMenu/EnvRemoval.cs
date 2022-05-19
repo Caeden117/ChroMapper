@@ -24,6 +24,9 @@ public class EnvRemoval : MonoBehaviour
         envRemovalContainer.SetActive(!oldActive);
         diffInfoContainer.SetActive(oldActive);
         envRemovalToggle.enabled = !oldActive;
+        envRemovalToggle.transform.localPosition += (oldActive)
+            ? new Vector3(-152, 0, 0)
+            : new Vector3(152, 0, 0);
     }
 
     public void AddItem()

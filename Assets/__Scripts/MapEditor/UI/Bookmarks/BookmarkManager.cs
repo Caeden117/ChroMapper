@@ -65,6 +65,26 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             container.RefreshPosition(timelineCanvas.sizeDelta.x + canvasWidthOffset);
             return container;
         }).OrderBy(it => it.Data.Time).ToList();
+
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineWidth), UpdateBookmarkWidth);
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTooltipTimeInfo), UpdateBookmarkTooltip);
+        UpdateBookmarkWidth(true);
+
+        BookmarksUpdated.Invoke();
+    }
+
+    private void UpdateBookmarkTooltip(object _) {
+        foreach (BookmarkContainer bookContainer in bookmarkContainers)
+        {
+            bookContainer.UpdateUI();
+        }
+    }
+
+    private void UpdateBookmarkWidth(object _) {
+        foreach (BookmarkContainer bookContainer in bookmarkContainers)
+        {
+            bookContainer.UpdateUIWidth();
+        }
     }
 
     private void LateUpdate()
@@ -150,6 +170,11 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             Atsc.MoveToTimeInBeats(bookmark.Data.Time);
             Tipc.PointerUp();
         }
+    }
+
+    private void OnDestroy() {
+        Settings.ClearSettingNotifications(nameof(Settings.BookmarkTimelineWidth));
+        Settings.ClearSettingNotifications(nameof(Settings.BookmarkTooltipTimeInfo));
     }
 
     public void OnColorBookmarkModifier(InputAction.CallbackContext context) => ShiftContext = context;
