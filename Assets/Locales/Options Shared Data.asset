@@ -1023,6 +1023,14 @@ MonoBehaviour:
     m_Key: general.formatjson
     m_Metadata:
       m_Items: []
+  - m_Id: 94731652719513600
+    m_Key: quest.adb_include_path
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731842968948736
+    m_Key: quest.adb_include_path.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
