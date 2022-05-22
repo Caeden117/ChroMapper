@@ -104,6 +104,8 @@ public class PlatformDescriptor : MonoBehaviour
 
         callbackController.EventPassedThreshold += EventPassed;
         RefreshLightingManagers();
+        
+        if (Settings.Instance.HideDisablableObjectsOnLoad) ToggleDisablableObjects(); 
     }
 
     public void RefreshLightingManagers()
