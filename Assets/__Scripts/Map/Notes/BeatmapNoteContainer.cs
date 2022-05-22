@@ -29,6 +29,7 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
             complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
 
             MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
+            MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
 
             UpdateMaterials();
         }

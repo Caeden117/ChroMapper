@@ -11,10 +11,10 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     [SerializeField] private GameObject tailNode;
     private List<GameObject> nodes = new List<GameObject>();
     public BeatmapNoteContainer AttachedHead = null;
-    private Vector3 circleCenter;
-    private bool headTailInALine;
-    private Vector3 tailTangent;
+    private bool headPointsToTail;
     private const float epsilon = 1e-2f;
+    private Vector3 interPoint;
+    private Vector3 headDirection;
 
     public static BeatmapChainContainer SpawnChain(BeatmapChain data, ref GameObject prefab)
     {
@@ -47,11 +47,19 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         var headTrans = new Vector3(ChainData.X, ChainData.Y, 0); 
         var headRot = Quaternion.Euler(BeatmapNoteContainer.Directionalize(ChainData.Direction));
         tailNode.transform.localPosition = new Vector3(ChainData.TailX, ChainData.TailY, (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale);
+
+        var zRads = Mathf.Deg2Rad * BeatmapNoteContainer.Directionalize(ChainData.Direction).z;
+        headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
+        
+        interPoint = new Vector3(ChainData.X, ChainData.Y, ChainData.Time); 
+        var interMult = (new Vector2(ChainData.X - ChainData.TailX, ChainData.Y - ChainData.TailY)).magnitude / 2;
+        interPoint += interMult * headDirection;
+
         Colliders.Clear();
         SelectionRenderers.Clear();
         var cutDirection = NotesContainer.Direction(new BeatmapColorNote(ChainData));
-        ComputeCircleCenter(headTrans, headRot, new Vector3(cutDirection.x, cutDirection.y, 
-            (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale), tailNode.transform);
+        ComputeHeadPointsToTail(ChainData);
+        headTrans -= BeatmapChain.posOffsetFactor / 2 * headDirection;
         int i = 0;
         for (; i < ChainData.SliceCount - 2; ++i)
         {
@@ -81,85 +89,52 @@ public class BeatmapChainContainer : BeatmapObjectContainer
         UpdateMaterials();
     }
 
-    /// <summary>
-    /// Compute Circle center for interpolation(and by the way compute tail rotation & tail tangent)
-    /// The basic idea is giving a head point and its tangent vector and a tail point, compute the circle.
-    /// </summary>
-    /// <param name="headPos"></param>
-    /// <param name="headRot"></param>
-    /// <param name="headTangent"></param>
-    /// <param name="tailTrans"></param>
-    private void ComputeCircleCenter(in Vector3 headPos, in Quaternion headRot, in Vector3 headTangent, in Transform tailTrans)
-    {
-        //Debug.Log("headpos" + headPos);
-        //Debug.Log("headTangent" + headTangent);
-        var tailPos = tailTrans.localPosition;
-        //Debug.Log("tailPos" + tailPos);
-        var headToTail = tailPos - headPos;
-        if (Mathf.Abs((headTangent.x * headToTail.y - headTangent.y * headToTail.x) / headTangent.magnitude / headToTail.magnitude) < epsilon)
-        {
-            // cross product = 0, indicate in a line
-            headTailInALine = true;
-            tailTrans.localRotation = headRot;
-            return;
-        }
-        /// compute circle center
-        headTailInALine = false;
-        Vector3 circleNormal = Vector3.Cross(headTangent, headToTail); // normal vector perpendicular to circle plane
-        Vector3 headToCenter = Vector3.Cross(circleNormal, headTangent);
-        //Debug.Log("headTOcenter" + headToCenter);
-        Vector3 midPoint = (headPos + tailPos) / 2.0f;
-        Vector3 midToCenter = Vector3.Cross(circleNormal, headToTail);
-        //Debug.Log("midtocenter" + midToCenter);
+    private void ComputeHeadPointsToTail(BeatmapChain chainData) {
+        Vector2 path = new Vector2(ChainData.TailX - ChainData.X, ChainData.TailY - ChainData.Y);
+        var pathAngle = Vector2.SignedAngle(Vector2.down, path);
+        var cutAngle = BeatmapNoteContainer.Directionalize(ChainData.Direction).z;
 
-        var headToMid = midPoint - headPos;
-        Vector3 crossVec1and2 = Vector3.Cross(headToCenter, midToCenter);
-        Vector3 crossVec3and2 = Vector3.Cross(headToMid, midToCenter);
-
-        float planarFactor = Vector3.Dot(headToMid, crossVec1and2);
-
-        float s = Vector3.Dot(crossVec3and2, crossVec1and2)
-                / crossVec1and2.sqrMagnitude;
-        circleCenter = headPos + (headToCenter * s);
-        //Debug.Log("circleCenter" + circleCenter);
-
-        /// compute tail angle and tail tangent;
-        var centerToTail = tailTrans.localPosition - circleCenter;
-        tailTangent = Vector3.Cross(circleNormal, centerToTail).normalized * centerToTail.magnitude;
-        var tailRot = Quaternion.FromToRotation(headTangent, tailTangent); // do not take u-turn, it will not be correct
-        tailTrans.localRotation = tailRot * headRot;
-
-        if (Mathf.Abs(Vector3.Dot(headToTail.normalized, tailTangent.normalized)) < epsilon)
-        {
-            tailTrans.localPosition -= tailTangent * epsilon; // move tail back a little bit to avoid head-tail-center in a line
-        }
-        //Debug.Log("tail tangent" + tailTangent);
+        headPointsToTail = (Mathf.Abs(pathAngle - cutAngle) < 0.01f);
     }
 
     /// <summary>
-    /// Interpolate between head and tail. The algorithm may not be correct.
+    /// Interpolate between head and tail.
     /// </summary>
-    /// <param name="n"></param>
-    /// <param name="i"></param>
-    /// <param name="t0"></param>
-    /// <param name="t1"></param>
-    /// <param name="t"></param>
-    private void Interpolate(int n, int i, in Vector3 trans0, in Quaternion rot0, in GameObject t1, in GameObject t)
+    /// <param name="n">Number of segments (excluding head)</param>
+    /// <param name="i">Segment index</param>
+    /// <param name="head">Head</param>
+    /// <param name="headRot"></param>
+    /// <param name="tail"></param>
+    /// <param name="linkSegment"></param>
+    private void Interpolate(int n, int i, in Vector3 head, in Quaternion headRot, in GameObject tail, in GameObject linkSegment)
     {
-        float p0 = (float)i / n;
-        if (headTailInALine)
-        {
-            t.transform.localPosition = Vector3.LerpUnclamped(trans0, t1.transform.localPosition, p0 * ChainData.SquishAmount);
+        float t = (float)i / n;
+        float tSquish = t * ChainData.SquishAmount;
 
+        var P0 = head;
+        var P1 = interPoint;
+        var P2 = tail.transform.localPosition;
+
+        var lerpZPos = Mathf.Lerp(head.z, tail.transform.localPosition.z, t);
+
+        if (headPointsToTail)
+        {
+            var lerpPos = Vector3.LerpUnclamped(head, tail.transform.localPosition, tSquish);
+            linkSegment.transform.localPosition = new Vector3(lerpPos.x, lerpPos.y, lerpZPos);
+            linkSegment.transform.localRotation = headRot;
         }
         else
         {
-            t.transform.localPosition = Vector3.Slerp(trans0 - circleCenter, t1.transform.localPosition - circleCenter, p0 * ChainData.SquishAmount)
-                + circleCenter;
-            if (p0 * ChainData.SquishAmount > 1.0f)
-                t.transform.localPosition += tailTangent * (p0 * ChainData.SquishAmount - 1.0f);
+            // Quadratic bezier curve
+            // B(t) = (1-t)^2 P0 + 2(1-t)t P1 + t^2 P2, 0 < t < 1
+            var bezierLerp = (Mathf.Pow((1 - tSquish), 2) * P0) + (2 * (1 - tSquish) * tSquish * P1) + (Mathf.Pow(tSquish, 2) * P2);   
+            linkSegment.transform.localPosition = new Vector3(bezierLerp.x, bezierLerp.y, lerpZPos);
+
+            // Bezier derivative gives tangent line
+            // B(t) = 2(1-t)(P1-P0) + 2t(P2-P1), 0 < t < 1
+            var bezierDervLerp = 2 * (1 - tSquish) * (P1 - P0) + 2 * tSquish * (P2 - P1);
+            linkSegment.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90 + Mathf.Rad2Deg * Mathf.Atan2(bezierDervLerp.y, bezierDervLerp.x)));
         }
-        t.transform.localRotation = Quaternion.Slerp(rot0, t1.transform.localRotation, p0 * ChainData.SquishAmount);
     }
 
     public void SetColor(Color color)
@@ -193,6 +168,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as BeatmapNoteContainer;
                     AttachedHead.transform.localScale = BeatmapChain.ChainScale;
+                    AttachedHead.transform.localPosition -= BeatmapChain.posOffsetFactor * headDirection;
                     break;
                 }
             }
@@ -211,6 +187,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
             else
             {
                 AttachedHead.transform.localScale = BeatmapChain.ChainScale;
+                AttachedHead.transform.localPosition -= BeatmapChain.posOffsetFactor * headDirection;
             }
         }
     }

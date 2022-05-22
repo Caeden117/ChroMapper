@@ -5,6 +5,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.Win32;
+using QuestDumper;
 using SFB;
 using TMPro;
 using UnityEngine;
@@ -64,6 +65,9 @@ public class FirstBootMenu : MonoBehaviour
 
         directoryCanvas.SetActive(true);
     }
+
+    public void InstallAdb() => StartCoroutine(AdbUI.DoDownload());
+
 
     private void SetFromTextbox()
     {

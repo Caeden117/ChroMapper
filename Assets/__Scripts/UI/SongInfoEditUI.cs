@@ -6,9 +6,13 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using JetBrains.Annotations;
+using QuestDumper;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -91,12 +95,34 @@ public class SongInfoEditUI : MenuBase
     private BeatSaberSong Song => BeatSaberSongContainer.Instance.Song;
     private GameObject ContributorWrapper => contributorController.transform.parent.gameObject;
 
+    [SerializeField] private GameObject questExportButton;
+    private List<string> questCandidates = new List<string>();
+    
     private void Start()
     {
         if (BeatSaberSongContainer.Instance == null)
         {
             SceneManager.LoadScene(0);
             return;
+        }
+
+        questExportButton.SetActive(false);
+
+        try
+        {
+            if (Adb.IsAdbInstalled(out _))
+            {
+                StartCoroutine(CheckIfQuestIsConnected());
+            }
+        }
+        catch (AssertionException e)
+        {
+            Debug.LogError($"ADB error? {e}");
+        }
+        catch (Exception e)
+        {
+            // There should be no other exceptions, but in the case there is handle it so no bugs
+            Debug.LogError(e);
         }
 
         // Make sure the contributor panel has been initialised
@@ -115,6 +141,71 @@ public class SongInfoEditUI : MenuBase
     }
 
     public static string GetEnvironmentNameFromID(int id) => VanillaEnvironments[id].JsonName;
+
+
+    private IEnumerator CheckIfQuestIsConnected()
+    {
+        while (true)
+        {
+            // I wish I could reduce this boilerplate
+            var task = Adb.GetDevices();
+            yield return task.AsCoroutine();
+            var (devices, output) = task.Result;
+
+            if (devices == null)
+            {
+                Debug.LogError($"Unable to get quest devices: {output.ToString()}");
+            }
+            else
+            {
+                questCandidates = new List<string>();
+                foreach (var device in devices)
+                {
+                    // I wish I could reduce this boilerplate
+                    var task2 = Adb.IsQuest(device);
+                    yield return task2.AsCoroutine();
+                    var (result, error) = task2.Result;
+
+                    if (!string.IsNullOrEmpty(error.ErrorOut))
+                    {
+                        Debug.LogError($"Got error with {error.ToString()}");
+                    }
+
+                    if (result)
+                        questCandidates.Add(device);
+                }
+            }
+
+            try
+            {
+                // Only set active if different state previously
+                var isActive = questExportButton.activeSelf;
+
+
+                if (questCandidates.Count > 0)
+                {
+                    if (!isActive)
+                    {
+                        Debug.Log("Quest found!");
+                        questExportButton.SetActive(true);
+                    }
+                }
+                else if (isActive)
+                {
+                    Debug.Log("Quest not found ;(");
+                    questExportButton.SetActive(false);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+
+            yield return new WaitForSecondsRealtime(5.0f);
+        }
+    }
+
+
 
     /// <summary>
     ///     Default object to select when pressing Tab and nothing is selected
@@ -374,10 +465,120 @@ public class SongInfoEditUI : MenuBase
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
-    private void AddToZip(ZipArchive archive, string fileLocation)
+    // Maps a dictionary as [fullFilePath] -> [location of file relative to the song directory]
+    private void AddToFileDictionary(IDictionary<string, string> fileMap, string fileLocation)
     {
         var fullPath = Path.Combine(Song.Directory, fileLocation);
-        if (File.Exists(fullPath)) archive.CreateEntryFromFile(fullPath, fileLocation);
+        if (File.Exists(fullPath))
+        {
+            fileMap.Add(fullPath, fileLocation);
+        }
+    }
+
+    [CanBeNull]
+    private Dictionary<string, string> ExportedFiles()
+    {
+        // path:entry_name
+        var exportedFiles = new Dictionary<string, string>();
+
+        var infoFileLocation = "";
+        if (Song.Directory != null)
+        {
+            infoFileLocation = Path.Combine(Song.Directory, "info.dat");
+        }
+
+        if (!File.Exists(infoFileLocation))
+        {
+            Debug.LogError(":hyperPepega: :mega: WHY TF ARE YOU TRYING TO PACKAGE A MAP WITH NO INFO.DAT FILE");
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "zip.warning", null, PersistentUI.DialogBoxPresetType.Ok);
+            return null;
+        }
+
+        exportedFiles.Add(infoFileLocation, "Info.dat");
+        AddToFileDictionary(exportedFiles, Song.CoverImageFilename);
+        AddToFileDictionary(exportedFiles, Song.SongFilename);
+        AddToFileDictionary(exportedFiles, "cinema-video.json");
+
+        foreach (var contributor in Song.Contributors.DistinctBy(it => it.LocalImageLocation))
+        {
+            var imageLocation = Path.Combine(Song.Directory!, contributor.LocalImageLocation);
+            if (contributor.LocalImageLocation != Song.CoverImageFilename &&
+                File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
+            {
+                exportedFiles.Add(imageLocation, contributor.LocalImageLocation);
+            }
+        }
+        
+        foreach (var map in Song.DifficultyBeatmapSets.SelectMany(set => set.DifficultyBeatmaps))
+        {
+            AddToFileDictionary(exportedFiles, map.BeatmapFilename);
+        }
+
+        return exportedFiles;
+    }
+
+    // TODO: Move this to a proper location or make configurable with a default
+    private const string QUEST_CUSTOM_SONGS_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
+    // I added this so the non-quest maintainers can use it as a reference for adding WIP uploads
+    // this does indeed exist and work, please don't refrain from asking me. 
+    private const string QUEST_CUSTOM_SONGS_WIP_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels"; 
+    
+    /// <summary>
+    /// Exports the files to the Quest using adb
+    /// </summary>
+    public async void ExportToQuest()
+    {
+        var dialog = PersistentUI.Instance.CreateNewDialogBox();
+        dialog.WithTitle("SongInfoEdit", "quest.exporting");
+
+        var progressBar = dialog.AddComponent<ProgressBarComponent>();
+        progressBar.WithCustomLabelFormatter(f =>
+            LocalizationSettings.StringDatabase
+                .GetLocalizedString("SongInfoEdit", "quest.exporting_progress",
+                new object[] { f }));
+        
+        dialog.Open();
+        
+        // We should always be exporting to WIP Levels. CustomLevels are for downloaded BeatSaver songs.
+        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_WIP_LOCATION, Song.CleanSongName).Replace("\\", @"/");
+        var exportedFiles = ExportedFiles();
+
+        if (exportedFiles == null) return;
+
+
+        Debug.Log($"Creating folder if needed at {songExportPath}");
+
+        var totalFiles = questCandidates.Count * exportedFiles.Count;
+        var fCount = 0;
+        
+        foreach (var questCandidate in questCandidates)
+        {
+            var createDir = await Adb.Mkdir(songExportPath, questCandidate);
+            Debug.Log($"ADB Create dir: {createDir}");
+
+
+            foreach (var fileNamePair in exportedFiles)
+            {
+                var locationRelativeToSongDir = fileNamePair.Value;
+                
+                var questPath = Path.Combine(songExportPath, locationRelativeToSongDir).Replace("\\", @"/");
+
+                Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
+
+                var log = await Adb.Push(fileNamePair.Key, questPath, questCandidate);
+                Debug.Log(log.ToString());
+
+                fCount++;
+                progressBar.UpdateProgressBar((float) fCount / totalFiles);
+            }
+        }
+        
+        dialog.Clear();
+        
+        Debug.Log("EXPORTED TO QUEST SUCCESSFULLY YAYAAYAYA");
+        
+        dialog.WithTitle("Options", "quest.success");
+        dialog.AddFooterButton(null, "PersistentUI", "ok");
     }
 
     /// <summary>
@@ -403,30 +604,16 @@ public class SongInfoEditUI : MenuBase
                 PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
+        
+        var exportedFiles = ExportedFiles();
+
+        if (exportedFiles == null) return;
 
         using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
         {
-            archive.CreateEntryFromFile(infoFileLocation,
-                "Info.dat"); //oh yeah lolpants is gonna kill me if it isnt packaged as "Info.dat"
-
-            AddToZip(archive, Song.CoverImageFilename);
-            AddToZip(archive, Song.SongFilename);
-            AddToZip(archive, "cinema-video.json");
-
-            foreach (var contributor in Song.Contributors.DistinctBy(it => it.LocalImageLocation))
+            foreach (var pathFileEntryPair in exportedFiles)
             {
-                var imageLocation = Path.Combine(Song.Directory, contributor.LocalImageLocation);
-                if (contributor.LocalImageLocation != Song.CoverImageFilename &&
-                    File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
-                {
-                    archive.CreateEntryFromFile(imageLocation, contributor.LocalImageLocation);
-                }
-            }
-
-            foreach (var set in Song.DifficultyBeatmapSets)
-            {
-                foreach (var map in set.DifficultyBeatmaps)
-                    AddToZip(archive, map.BeatmapFilename);
+                archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
             }
         }
 

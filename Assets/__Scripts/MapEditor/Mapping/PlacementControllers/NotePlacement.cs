@@ -189,6 +189,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (DraggedObjectContainer != null && DraggedObjectContainer.MapNoteData != null)
         {
             DraggedObjectContainer.MapNoteData.CutDirection = value;
+            if (DraggedObjectContainer.MapNoteData is BeatmapColorNote colorNote) colorNote.AngleOffset = 0;
             noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
         }
         else if (beatmapNoteInputController.QuickModificationActive && Settings.Instance.QuickNoteEditing)
@@ -198,6 +199,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             {
                 var newData = BeatmapObject.GenerateCopy(noteData);
                 newData.CutDirection = value;
+                if (newData is BeatmapColorNote colorNote) colorNote.AngleOffset = 0;
 
                 BeatmapActionContainer.AddAction(
                     new BeatmapObjectModifiedAction(newData, noteData, noteData, "Quick edit"), true);

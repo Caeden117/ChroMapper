@@ -18,10 +18,19 @@ public class Settings
     public string CustomWIPSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomWIPLevels");
     public string CustomPlatformsFolder => Path.Combine(BeatSaberInstallation, "CustomPlatforms");
 
+    #if UNITY_STANDALONE_OSX
+    // TODO: Test
+    public static string AndroidPlatformTools => Path.Combine(Application.dataPath,"../../", "quest-utils");
+    #else
+    public static string AndroidPlatformTools => Path.Combine(Directory.GetParent(Application.dataPath)!.FullName, "quest-utils");
+    #endif
+
     public bool DiscordRPCEnabled = true;
     public float EditorScale = 4;
     public bool EditorScaleBPMIndependent = false;
     public int ChunkDistance = 5;
+    public int TrackLength = 8;
+    public float OneBeatWidth = 0.1f;
     public int AutoSaveInterval = 5;
     public bool InvertNoteControls = false; // Hidden setting, does nothing
     public int Waveform = 1;
@@ -51,7 +60,9 @@ public class Settings
     public bool Reminder_Loading360Levels = true;
     public bool Reminder_SettingsFailed = true;
     public bool AdvancedShit = false;
+    public bool FormatJson = false;
     public bool InstantEscapeMenuTransitions = false;
+    public bool InstantLoadingTransitions = false;
     public bool ChromaticAberration = true;
     public int Offset_Spawning = 4;
     public int Offset_Despawning = 1;
@@ -61,12 +72,15 @@ public class Settings
     public float CameraFOV = 60f;
     public int CameraAA = 0;
     public int RenderScale = 100;
+    public bool HideDisablableObjectsOnLoad = false;
     public bool WaveformWorkflow = true;
     public bool Load_Events = true;
     public bool Load_Notes = true;
     public bool Load_Obstacles = true;
     public bool Load_Others = true;
     public bool Load_MapV3 = false;
+    public bool DisplayDiffDetailsInEditor = true;
+    public bool DisplaySongDetailsInEditor = true;
     public bool ShowMoreAccurateFastWalls = false;
     public int TimeValueDecimalPrecision = 3;
     public bool Ding_Red_Notes = true;
@@ -88,10 +102,15 @@ public class Settings
     public string Language = "en";
     public bool HighContrastGrids = false;
     public float GridTransparency = 0f;
+    public bool DisplayGridBookmarks = true;
+    public bool GridBookmarksHasLine = true;
+    public int BookmarkTimelineWidth = 10;
+    public bool BookmarkTooltipTimeInfo = false;
     public float UIScale = 1;
     public CameraPosition[] SavedPositions = new CameraPosition[8];
     public bool Reminder_UnsupportedEditorOffset = true;
     public bool PyramidEventModels = false;
+    public float PastNoteModelAlpha = 0.4f;
     public EventModelType EventModel = EventModelType.Block;
     public int ReleaseChannel = 0;
     public string ReleaseServer = "https://cm.topc.at";
@@ -99,6 +118,7 @@ public class Settings
     public bool QuickNoteEditing = false;
     public int AudioLatencyCompensation = 0;
     public int MaximumFPS = 9999;
+    public bool IncludePathForADB = true;
     public bool VSync = true;
 
     public int NodeEditorTextSize = 10;

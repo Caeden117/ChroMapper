@@ -15,7 +15,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     /// All Lists of type JSONNode are unsupported
     /// </summary>
     public List<JSONNode> BpmEvents = new List<JSONNode>(); // disable supprot for bpm change
-    public List<JSONNode> RotationEvents = new List<JSONNode>();
+    public List<RotationEvent> RotationEvents = new List<RotationEvent>();
     public List<BeatmapColorNote> ColorNotes = new List<BeatmapColorNote>();
     public List<BeatmapBombNote> BombNotes = new List<BeatmapBombNote>();
     public List<BeatmapObstacleV3> ObstaclesV3 = new List<BeatmapObstacleV3>();
@@ -27,7 +27,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     public List<JSONNode> LightColorEventBoxGroups = new List<JSONNode>();
     public List<JSONNode> LightRotationEventBoxGroups = new List<JSONNode>();
     public Dictionary<string, JSONNode> BasicEventTypesWithKeywords = new Dictionary<string, JSONNode>(); // although idk what it is used for, save as a dict first
-    public bool UseNormalEventsAsCompatibleEvents = false;
+    public bool UseNormalEventsAsCompatibleEvents => Events.Any();
 
     public const string BeatSaberMapV3CustomDatakey = "customData";
     public BeatSaberMapV3() { }
@@ -73,7 +73,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             foreach (var b in BpmEvents) bpmEvents.Add(b);
 
             var rotationEvents = new JSONArray();
-            foreach (var b in RotationEvents) RotationEvents.Add(b);
+            foreach (var r in RotationEvents) rotationEvents.Add(r.ConvertToJson());
 
             var colorNotes = new JSONArray();
             foreach (var n in ColorNotes) colorNotes.Add(n.ConvertToJson());
@@ -103,7 +103,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             foreach (var l in LightColorEventBoxGroups) lightColorEventBoxGroups.Add(l);
 
             var lightRotationEventBoxGroups = new JSONArray();
-            foreach (var l in lightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l);
+            foreach (var l in LightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l);
 
             var basicEventTypesWithKeywords = new JSONObject();
             foreach (var k in BasicEventTypesWithKeywords.Keys) basicEventTypesWithKeywords[k] = BasicEventTypesWithKeywords[k];
@@ -159,7 +159,7 @@ public class BeatSaberMapV3 : BeatSaberMap
 
             var eventsList = new List<MapEvent>();
             var bpmEventsList = new List<JSONNode>();
-            var rotationEventsList = new List<JSONNode>();
+            var rotationEventsList = new List<RotationEvent>();
             var colorNotesList = new List<BeatmapColorNote>();
             var bombNotesList = new List<BeatmapBombNote>();
             var arcsList = new List<BeatmapArc>();
@@ -188,7 +188,7 @@ public class BeatSaberMapV3 : BeatSaberMap
                         foreach (JSONNode n in node) bpmEventsList.Add(n);
                         break;
                     case "rotationEvents":
-                        foreach (JSONNode n in node) rotationEventsList.Add(n);
+                        foreach (JSONNode n in node) rotationEventsList.Add(new RotationEvent(n));
                         break;
                     case "colorNotes":
                         foreach (JSONNode n in node) colorNotesList.Add(new BeatmapColorNote(n));
@@ -225,9 +225,6 @@ public class BeatSaberMapV3 : BeatSaberMap
                         {
                             basicEventTypesWithKeywordsDict[k] = node[k];
                         }
-                        break;
-                    case "useNormalEventsAsCompatibleEvents":
-                        mapV3.UseNormalEventsAsCompatibleEvents = node.AsBool;
                         break;
                     default:
                         break;
@@ -295,12 +292,17 @@ public class BeatSaberMapV3 : BeatSaberMap
 
         BasicBeatmapEvents.Clear();
         ColorBoostBeatmapEvents.Clear();
+        RotationEvents.Clear();
         foreach (var e in Events)
         {
             switch (e.Type)
             {
                 case MapEvent.EventTypeBoostLights:
                     ColorBoostBeatmapEvents.Add(new ColorBoostEvent(e));
+                    break;
+                case MapEvent.EventTypeEarlyRotation:
+                case MapEvent.EventTypeLateRotation:
+                    RotationEvents.Add(new RotationEvent(e));
                     break;
                 default:
                     BasicBeatmapEvents.Add(new MapEventV3(e));
@@ -322,6 +324,7 @@ public class BeatSaberMapV3 : BeatSaberMap
         Obstacles = ObstaclesV3.OfType<BeatmapObstacle>().ToList();
         Events = BasicBeatmapEvents.OfType<MapEvent>().ToList();
         Events.AddRange(ColorBoostBeatmapEvents.OfType<MapEvent>().ToList());
+        Events.AddRange(RotationEvents.OfType<MapEvent>().ToList());
         Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
     }
 }
