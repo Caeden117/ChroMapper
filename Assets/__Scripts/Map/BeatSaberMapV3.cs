@@ -103,7 +103,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             foreach (var l in LightColorEventBoxGroups) lightColorEventBoxGroups.Add(l);
 
             var lightRotationEventBoxGroups = new JSONArray();
-            foreach (var l in lightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l);
+            foreach (var l in LightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l);
 
             var basicEventTypesWithKeywords = new JSONObject();
             foreach (var k in BasicEventTypesWithKeywords.Keys) basicEventTypesWithKeywords[k] = BasicEventTypesWithKeywords[k];
