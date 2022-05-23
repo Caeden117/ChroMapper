@@ -105,16 +105,27 @@ public class EventAppearanceSO : ScriptableObject
             color = ColourManager.ColourFromInt(e.EventData.Value);
             e.UpdateAlpha(final ? 0.9f : 0.6f, false);
         }
-        else if (e.EventData.Value <= 3)
+        else if (e.EventData.Value <= 4)
         {
             color = boost ? BlueBoostColor : BlueColor;
         }
-        else if (e.EventData.Value <= 7 && e.EventData.Value >= 5)
+        else if (e.EventData.Value <= 8 && e.EventData.Value >= 5)
         {
             color = boost ? RedBoostColor : RedColor;
         }
         if (Settings.Instance.EmulateChromaLite && e.EventData.CustomData?["_color"] != null && e.EventData.Value > 0)
             color = e.EventData.CustomData["_color"];
+
+        if (e.EventData.Value == 4 || e.EventData.Value == 8 || e.EventData.Value == 12) // Transition Event in event v3
+        {
+            color = Color.Lerp(offColor, color, e.EventData.FloatValue);
+            e.UpdateTextDisplay(true, "T" + (Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1)));
+        }
+
+        if (e.EventData.Value == 1 || e.EventData.Value == 5 || e.EventData.Value == 9) // On event
+        {
+            e.UpdateTextDisplay(true, Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1));
+        }
 
         e.EventModel = Settings.Instance.EventModel;
         e.ChangeColor(color, false);
@@ -145,6 +156,26 @@ public class EventAppearanceSO : ScriptableObject
                 break;
             case MapEvent.LightValueRedFade:
                 e.UpdateOffset(e.FadeShaderOffset, false);
+                break;
+
+            case MapEventV3.LightValueBlueTransition:
+                e.ChangeBaseColor(color, false);
+                break;
+            case MapEventV3.LightValueRedTransition:
+                e.ChangeBaseColor(color, false);
+                break;
+            case MapEventV3.LightValueWhiteON:
+                e.UpdateOffset(Vector3.zero, false);
+                e.ChangeBaseColor(color, false);
+                break;
+            case MapEventV3.LightValueWhiteFlash:
+                e.UpdateOffset(e.FlashShaderOffset, false);
+                break;
+            case MapEventV3.LightValueWhiteFade:
+                e.UpdateOffset(e.FadeShaderOffset, false);
+                break;
+            case MapEventV3.LightValueWhiteTransition:
+                e.ChangeBaseColor(color, false);
                 break;
         }
 

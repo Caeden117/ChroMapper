@@ -11,6 +11,15 @@ public class MapEventV3 : MapEvent
     public int EventType { get => Type; set => Type = value; }
     //public int Value { get => base.Value; set => base.Value = value; }
 
+    // some newly introduced light behaviour
+    public const int LightValueBlueTransition = 4;
+    public const int LightValueRedTransition = 8;
+    public const int LightValueWhiteON = 9;
+    public const int LightValueWhiteFlash = 10;
+    public const int LightValueWhiteFade = 11;
+    public const int LightValueWhiteTransition = 12;
+
+
     public MapEventV3(JSONNode node)
     {
         Time = RetrieveRequiredNode(node, "b").AsFloat;
