@@ -180,24 +180,21 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             
             if (Settings.Instance.Load_MapV3 && obj is MapEventV3 e3)
             {
-                if (e3.IsTransitionEvent)
+                var list = AllLightEvents[e3.Type];
+                var idx = list.IndexOf(e3);
+                if (idx == list.Count - 1)
                 {
-                    var list = AllLightEvents[e3.Type];
-                    var idx = list.IndexOf(e3);
-                    if (idx == list.Count - 1)
-                    {
-                        list.RemoveAt(idx);
-                        if (idx != 0) list[idx - 1].Next = null;
-                    }
-                    else if (idx == 0)
-                    {
-                        list.RemoveAt(idx);
-                    }
-                    else
-                    {
-                        list.RemoveAt(idx);
-                        list[idx - 1].Next = list[idx];
-                    }
+                    list.RemoveAt(idx);
+                    if (idx != 0) list[idx - 1].Next = null;
+                }
+                else if (idx == 0)
+                {
+                    list.RemoveAt(idx);
+                }
+                else
+                {
+                    list.RemoveAt(idx);
+                    list[idx - 1].Next = list[idx];
                 }
             }
         }
@@ -213,29 +210,27 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
                 AllRotationEvents.Add(e);
             else if (e.Type == MapEvent.EventTypeBoostLights) AllBoostEvents.Add(e);
 
-            if (Settings.Instance.Load_MapV3 && obj is MapEventV3 e3)
+            if (Settings.Instance.Load_MapV3 && obj is MapEventV3 e3 && e3.IsControlLight) 
             {
-                if (e3.IsTransitionEvent)
+                if (!AllLightEvents.ContainsKey(e3.Type)) AllLightEvents[e3.Type] = new List<MapEventV3>();
+                var list = AllLightEvents[e3.Type];
+                var idx = list.FindLastIndex(x => x.Time < e3.Time);
+                if (idx == -1)
                 {
-                    var list = AllLightEvents[e3.Type];
-                    var idx = list.FindLastIndex(x => x.Time < e3.Time);
-                    if (idx == -1)
-                    {
-                        list.Insert(0, e3);
-                        if (list.Count > 2) e3.Next = list[1];
+                    list.Insert(0, e3);
+                    if (list.Count > 2) e3.Next = list[1];
                         
-                    }
-                    else if (idx == list.Count - 1)
-                    {
-                        list.Add(e3);
-                        list[idx].Next = e3;
-                    }
-                    else
-                    {
-                        list[idx].Next = e3;
-                        e3.Next = list[idx + 1];
-                        list.Insert(idx + 1, e3);
-                    }
+                }
+                else if (idx == list.Count - 1)
+                {
+                    list.Add(e3);
+                    list[idx].Next = e3;
+                }
+                else
+                {
+                    list[idx].Next = e3;
+                    e3.Next = list[idx + 1];
+                    list.Insert(idx + 1, e3);
                 }
             }
         }

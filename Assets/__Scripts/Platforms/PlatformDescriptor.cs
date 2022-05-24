@@ -358,8 +358,8 @@ public class PlatformDescriptor : MonoBehaviour
                     light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(1, 0);
-                    TrySetTransition(light, e);
                     light.UpdateEasing("easeLinear");
+                    TrySetTransition(light, e);
                     break;
                 case MapEvent.LightValueBlueFlash:
                 case MapEvent.LightValueRedFlash:
@@ -391,6 +391,9 @@ public class PlatformDescriptor : MonoBehaviour
                 case MapEventV3.LightValueBlueTransition:
                 case MapEventV3.LightValueRedTransition:
                 case MapEventV3.LightValueWhiteTransition:
+                    light.UpdateMultiplyAlpha(color.a * floatValue);
+                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
+                    light.UpdateTargetAlpha(1, 0);
                     TrySetTransition(light, e);
                     break;
             }
@@ -444,6 +447,7 @@ public class PlatformDescriptor : MonoBehaviour
             var targetColor = InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);
+            light.UpdateEasing(Mathf.Approximately(targetAlpha, 0) ? "easeOutExpo" : "easeLinear"); // may not be the correct easing function
         }
     }
 
