@@ -126,6 +126,8 @@ public class EventAppearanceSO : ScriptableObject
         {
             e.UpdateTextDisplay(true, Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1));
         }
+        if (color == Color.white) e.UpdateTextColor(Color.black);
+        else e.UpdateTextColor(Color.white); // this may overwrite some configs
 
         e.EventModel = Settings.Instance.EventModel;
         e.ChangeColor(color, false);
