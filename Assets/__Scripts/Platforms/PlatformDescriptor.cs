@@ -294,12 +294,12 @@ public class PlatformDescriptor : MonoBehaviour
         }
 
         //Set initial light values
-        if (value <= 3)
+        if (value <= 4)
         {
             mainColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
             invertedColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
         }
-        else if (value <= 7)
+        else if (value <= 8)
         {
             mainColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
             invertedColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
@@ -350,16 +350,20 @@ public class PlatformDescriptor : MonoBehaviour
                 case MapEvent.LightValueOff:
                     light.UpdateTargetAlpha(0, 0);
                     light.UpdateMultiplyAlpha();
+                    TrySetTransition(light, e);
                     break;
                 case MapEvent.LightValueBlueON:
                 case MapEvent.LightValueRedON:
+                case MapEventV3.LightValueWhiteON:
                     light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(1, 0);
+                    TrySetTransition(light, e);
                     light.UpdateEasing("easeLinear");
                     break;
                 case MapEvent.LightValueBlueFlash:
                 case MapEvent.LightValueRedFlash:
+                case MapEventV3.LightValueWhiteFlash:
                     light.UpdateTargetAlpha(1, 0);
                     light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
@@ -368,6 +372,7 @@ public class PlatformDescriptor : MonoBehaviour
                     break;
                 case MapEvent.LightValueBlueFade:
                 case MapEvent.LightValueRedFade:
+                case MapEventV3.LightValueWhiteFade:
                     light.UpdateTargetAlpha(1, 0);
                     light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
@@ -383,10 +388,63 @@ public class PlatformDescriptor : MonoBehaviour
                     }
 
                     break;
+                case MapEventV3.LightValueBlueTransition:
+                case MapEventV3.LightValueRedTransition:
+                case MapEventV3.LightValueWhiteTransition:
+                    TrySetTransition(light, e);
+                    break;
             }
         }
 
         group.SetValue(value);
+    }
+
+
+    private bool TryGetNextTransitionNote(in MapEvent e, out MapEvent transitionEvent)
+    {
+        transitionEvent = null;
+        if (!(e is MapEventV3)) return false;
+        var e3 = e as MapEventV3;
+        if (e3.Next != null && e3.Next.IsTransitionEvent)
+        {
+            transitionEvent = e3.Next;
+            return true;
+        }
+        return false;
+    }
+
+    private Color InferColorFromValue(bool useInvertedPlatformColors, int value)
+    {
+        if (value <= 4)
+        {
+            if (!useInvertedPlatformColors) return ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
+            else return ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
+        }
+        else if (value <= 8)
+        {
+            if (!useInvertedPlatformColors) return ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
+            else return ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
+        }
+        else if (value <= 12)
+        {
+            return Color.white;
+        }
+        else
+        {
+            return Color.white;
+        }
+    }
+
+    private void TrySetTransition(LightingEvent light, MapEvent e)
+    {
+        if (TryGetNextTransitionNote(e, out var transition))
+        {
+            var targetAlpha = transition.FloatValue;
+            var transitionTime = atsc.GetSecondsFromBeat(transition.Time - e.Time);
+            var targetColor = InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
+            light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
+            light.UpdateTargetAlpha(targetAlpha, transitionTime);
+        }
     }
 
     private IEnumerator GradientRoutine(MapEvent gradientEvent, LightsManager group)

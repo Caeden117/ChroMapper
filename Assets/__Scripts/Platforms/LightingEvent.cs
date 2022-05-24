@@ -93,7 +93,7 @@ public class LightingEvent : MonoBehaviour
 
     public void UpdateTargetColor(Color target, float timeToTransition)
     {
-        currentColor = targetColor;
+        // currentColor = targetColor;
         targetColor = target;
         timeToTransitionColor = timeToTransition;
         colorTime = 0;
@@ -103,7 +103,7 @@ public class LightingEvent : MonoBehaviour
     public void UpdateTargetAlpha(float target, float timeToTransition)
     {
         if (!CanBeTurnedOff) return;
-        currentAlpha = targetAlpha; //I do not believe this is needed, but will leave it just incase.
+        // currentAlpha = targetAlpha; //I do not believe this is needed, but will leave it just incase.
         targetAlpha = target;
         timeToTransitionAlpha = timeToTransition;
         alphaTime = 0;

@@ -28,6 +28,18 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     public List<MapEvent> AllRotationEvents = new List<MapEvent>();
     public List<MapEvent> AllBoostEvents = new List<MapEvent>();
 
+    private Dictionary<int, List<MapEventV3>> allLightEvents = new Dictionary<int, List<MapEventV3>>();
+    public Dictionary<int, List<MapEventV3>> AllLightEvents { get => allLightEvents;
+        set {
+            allLightEvents = value;
+            foreach (var p in allLightEvents)
+            {
+                var lightList = p.Value;
+                for (var i = 0; i < lightList.Count - 1; ++i)
+                    lightList[i].Next = lightList[i + 1];
+            }
+        } }
+
     internal PlatformDescriptor platformDescriptor;
     private PropMode propagationEditing = PropMode.Off;
 

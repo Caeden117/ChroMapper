@@ -19,6 +19,9 @@ public class MapEventV3 : MapEvent
     public const int LightValueWhiteFade = 11;
     public const int LightValueWhiteTransition = 12;
 
+    public bool IsTransitionEvent => Value == LightValueBlueTransition || Value == LightValueRedTransition || Value == LightValueWhiteTransition;
+
+    public MapEventV3 Next = null;
 
     public MapEventV3(JSONNode node)
     {
