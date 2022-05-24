@@ -24498,7 +24498,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
-      m_KeyId: 148
+      m_KeyId: 42585459012075520
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1
@@ -29137,7 +29137,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13585791}
   m_HandleRect: {fileID: 13585789}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
