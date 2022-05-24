@@ -1445,6 +1445,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Type Transition",
+                    "type": "Button",
+                    "id": "d0e2fa9c-2582-4133-8e7a-ff118fea77ff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -1511,6 +1519,17 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Swap Cursor Interval",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b6c5489-c82d-4db6-be8f-365ad1f7b9db",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Type Transition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

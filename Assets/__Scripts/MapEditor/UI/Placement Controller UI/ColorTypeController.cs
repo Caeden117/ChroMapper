@@ -53,6 +53,11 @@ public class ColorTypeController : MonoBehaviour
         if (active) UpdateValue(BeatmapNote.NoteTypeB);
     }
 
+    public void BombNote(bool active)
+    {
+        if (active) UpdateValue(BeatmapNote.NoteTypeBomb);
+    }
+
     public void UpdateValue(int type)
     {
         notePlacement.UpdateType(type);
@@ -67,4 +72,5 @@ public class ColorTypeController : MonoBehaviour
     }
 
     public bool LeftSelectedEnabled() => leftSelected.enabled;
+    public bool RightSelectEnalbed() => rightSelected.enabled;
 }

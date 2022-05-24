@@ -1458,6 +1458,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Type Transition"",
+                    ""type"": ""Button"",
+                    ""id"": ""d0e2fa9c-2582-4133-8e7a-ff118fea77ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1524,6 +1532,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Swap Cursor Interval"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3b6c5489-c82d-4db6-be8f-365ad1f7b9db"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Type Transition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -4261,6 +4280,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventUI_TypeFade = m_EventUI.FindAction("Type Fade", throwIfNotFound: true);
         m_EventUI_TogglePrecisionRotation = m_EventUI.FindAction("Toggle Precision Rotation", throwIfNotFound: true);
         m_EventUI_SwapCursorInterval = m_EventUI.FindAction("Swap Cursor Interval", throwIfNotFound: true);
+        m_EventUI_TypeTransition = m_EventUI.FindAction("Type Transition", throwIfNotFound: true);
         // Saving
         m_Saving = asset.FindActionMap("Saving", throwIfNotFound: true);
         m_Saving_Save = m_Saving.FindAction("Save", throwIfNotFound: true);
@@ -5061,6 +5081,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_EventUI_TypeFade;
     private readonly InputAction m_EventUI_TogglePrecisionRotation;
     private readonly InputAction m_EventUI_SwapCursorInterval;
+    private readonly InputAction m_EventUI_TypeTransition;
     public struct EventUIActions
     {
         private @CMInput m_Wrapper;
@@ -5071,6 +5092,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @TypeFade => m_Wrapper.m_EventUI_TypeFade;
         public InputAction @TogglePrecisionRotation => m_Wrapper.m_EventUI_TogglePrecisionRotation;
         public InputAction @SwapCursorInterval => m_Wrapper.m_EventUI_SwapCursorInterval;
+        public InputAction @TypeTransition => m_Wrapper.m_EventUI_TypeTransition;
         public InputActionMap Get() { return m_Wrapper.m_EventUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -5098,6 +5120,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @SwapCursorInterval.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
                 @SwapCursorInterval.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
                 @SwapCursorInterval.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnSwapCursorInterval;
+                @TypeTransition.started -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeTransition;
+                @TypeTransition.performed -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeTransition;
+                @TypeTransition.canceled -= m_Wrapper.m_EventUIActionsCallbackInterface.OnTypeTransition;
             }
             m_Wrapper.m_EventUIActionsCallbackInterface = instance;
             if (instance != null)
@@ -5120,6 +5145,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @SwapCursorInterval.started += instance.OnSwapCursorInterval;
                 @SwapCursorInterval.performed += instance.OnSwapCursorInterval;
                 @SwapCursorInterval.canceled += instance.OnSwapCursorInterval;
+                @TypeTransition.started += instance.OnTypeTransition;
+                @TypeTransition.performed += instance.OnTypeTransition;
+                @TypeTransition.canceled += instance.OnTypeTransition;
             }
         }
     }
@@ -6698,6 +6726,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnTypeFade(InputAction.CallbackContext context);
         void OnTogglePrecisionRotation(InputAction.CallbackContext context);
         void OnSwapCursorInterval(InputAction.CallbackContext context);
+        void OnTypeTransition(InputAction.CallbackContext context);
     }
     public interface ISavingActions
     {

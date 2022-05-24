@@ -87,9 +87,18 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
 
-    public override MapEvent GenerateOriginalData() =>
+    public override MapEvent GenerateOriginalData()
+    {
         //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
-        new MapEvent(0, 0, MapEvent.LightValueRedON);
+        if (Settings.Instance.Load_MapV3)
+        {
+            return new MapEventV3(new MapEvent(0, 0, MapEvent.LightValueRedON));
+        }
+        else
+        {
+            return new MapEvent(0, 0, MapEvent.LightValueRedON);
+        }
+    }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
