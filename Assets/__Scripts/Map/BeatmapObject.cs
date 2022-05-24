@@ -68,7 +68,15 @@ public abstract class BeatmapObject
                     {
                         LightGradient = evt.LightGradient?.Clone()
                     };
-                    objectData = ev as T;
+                    if (evt is MapEventV3)
+                    {
+                        var ev3 = new MapEventV3(ev);
+                        objectData = ev3 as T;
+                    }
+                    else
+                    {
+                        objectData = ev as T;
+                    }
                 }
                 break;
             case BeatmapNote note:
