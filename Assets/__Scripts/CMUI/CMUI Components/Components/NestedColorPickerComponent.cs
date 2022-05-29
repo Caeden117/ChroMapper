@@ -48,7 +48,7 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>
         if (nestedDialogBox == null)
         {
             nestedDialogBox = PersistentUI.Instance.CreateNewDialogBox()
-                .DontDestroyOnClose()
+                //.DontDestroyOnClose() // Commented out because this causes bug where color picker dialogue appears underneath new bookmark
                 .WithNoTitle();
 
             nestedColorPicker = nestedDialogBox.AddComponent<ColorPickerComponent>()

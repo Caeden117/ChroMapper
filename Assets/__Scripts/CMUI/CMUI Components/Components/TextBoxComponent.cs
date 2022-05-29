@@ -80,6 +80,8 @@ public class TextBoxComponent : CMUIComponentWithLabel<string>
         return this.WithInitialValue(str);
     }
 
+    public void Select() => inputField.Select();
+
     private void Start()
     {
         OnValueUpdated(Value);

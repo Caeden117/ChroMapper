@@ -26,6 +26,8 @@ public class HexColorField : DisableActionsField
         Hsvpicker.ONValueChanged.RemoveListener(UpdateHex);
     }
 
+    private void OnEnable() => hexInputField.Select();
+
     private void UpdateHex(Color newColor) => hexInputField.text = ColorToHex(newColor);
 
     private void UpdateColor(string newHex)
