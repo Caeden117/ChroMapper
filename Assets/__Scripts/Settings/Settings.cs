@@ -61,6 +61,7 @@ public class Settings
     public bool Reminder_SettingsFailed = true;
     public bool AdvancedShit = false;
     public bool FormatJson = false;
+    public bool VanillaOnlyShift = true;
     public bool InstantEscapeMenuTransitions = false;
     public bool InstantLoadingTransitions = false;
     public bool ChromaticAberration = true;

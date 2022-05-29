@@ -512,9 +512,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     else
                     {
                         note.LineIndex += leftRight;
+                        if (Settings.Instance.VanillaOnlyShift) Mathf.Clamp(note.LineIndex, 0, 4);
                     }
 
                     note.LineLayer += upDown;
+                    if (Settings.Instance.VanillaOnlyShift) Mathf.Clamp(note.LineLayer, 0, 3);
                 }
                 else
                 {
