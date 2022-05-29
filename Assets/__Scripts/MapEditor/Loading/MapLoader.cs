@@ -122,10 +122,7 @@ public class MapLoader : MonoBehaviour
 
             if (Settings.Instance.Load_MapV3)
             {
-                events.AllLightEvents = objects.OfType<MapEventV3>().
-                    Where(x => x.Type <= 4).
-                    GroupBy(x => x.Type).
-                    ToDictionary(g => g.Key, g => g.ToList());
+                events.LinkAllLightEvents();
             }
         }
 
