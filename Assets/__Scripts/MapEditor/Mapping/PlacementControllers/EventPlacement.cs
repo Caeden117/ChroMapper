@@ -22,8 +22,12 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     private bool earlyRotationPlaceNow;
     private bool negativeRotations;
+    private bool halfFloatValue;
+    private bool zeroFloatValue;
+
 
     internal int queuedValue = MapEvent.LightValueRedON;
+    internal float queuedFloatValue = 1.0f;
     public static bool CanPlaceChromaEvents => Settings.Instance.PlaceChromaColor;
 
     public void OnRotation15Degrees(InputAction.CallbackContext context)
@@ -48,6 +52,18 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void OnNegativeRotationModifier(InputAction.CallbackContext context) =>
         negativeRotations = context.performed;
+
+    public void OnHalfFloatValueModifier(InputAction.CallbackContext context)
+    {
+        halfFloatValue = context.performed;
+        UpdateFloatValue(halfFloatValue ? 0.5f : 1.0f);
+    }
+
+    public void OnZeroFloatValueModifier(InputAction.CallbackContext context)
+    {
+        zeroFloatValue = context.performed;
+        UpdateFloatValue(zeroFloatValue ? 0 : 1);
+    }
 
     public void OnRotateInPlaceLeft(InputAction.CallbackContext context)
     {
@@ -159,6 +175,21 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         UpdateAppearance();
     }
 
+    public void UpdateQueuedFloatValue(float value)
+    {
+        if (Settings.Instance.Load_MapV3 && (queuedData as MapEventV3).IsControlLight)
+        {
+            queuedData.FloatValue = value;
+        }
+    }
+
+    public void UpdateFloatValue(float value)
+    {
+        queuedFloatValue = value;
+        UpdateQueuedFloatValue(queuedFloatValue);
+        UpdateAppearance();
+    }
+
     private void UpdateQueuedRotation(int value)
     {
         if (queuedData.IsRotationEvent)
@@ -220,6 +251,11 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         else if (mapEvent.IsRotationEvent) mapEvent.Value = 1360 + PrecisionRotationValue;
 
         if (mapEvent.CustomData?.Count <= 0) mapEvent.CustomData = null;
+        
+        if (mapEvent is MapEventV3 e3 && !e3.IsControlLight) // in case we are placing rotation/boost when pressing half/zero modifier
+        {
+            e3.FloatValue = 1;
+        }
 
         base.ApplyToMap();
 

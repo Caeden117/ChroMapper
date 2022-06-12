@@ -1031,6 +1031,22 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Half Float Value Modifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a30f614-a6c1-4e78-8548-4a6f830a1f42"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Zero Float Value Modifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""2bf1eac9-7e28-479f-8095-bdf4caf9cee3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1119,6 +1135,28 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Rotate In Place Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""787b6834-2808-4529-b772-241426af0307"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Half Float Value Modifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f2b6fa6c-088b-4604-bb73-3ffe37d91771"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Zero Float Value Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -4259,6 +4297,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_EventPlacement_RotateInPlaceLeft = m_EventPlacement.FindAction("Rotate In Place Left", throwIfNotFound: true);
         m_EventPlacement_RotateInPlaceRight = m_EventPlacement.FindAction("Rotate In Place Right", throwIfNotFound: true);
         m_EventPlacement_RotateInPlaceModifier = m_EventPlacement.FindAction("Rotate In Place Modifier", throwIfNotFound: true);
+        m_EventPlacement_HalfFloatValueModifier = m_EventPlacement.FindAction("Half Float Value Modifier", throwIfNotFound: true);
+        m_EventPlacement_ZeroFloatValueModifier = m_EventPlacement.FindAction("Zero Float Value Modifier", throwIfNotFound: true);
         // Workflows
         m_Workflows = asset.FindActionMap("Workflows", throwIfNotFound: true);
         m_Workflows_ToggleRightButtonPanel = m_Workflows.FindAction("Toggle Right Button Panel", throwIfNotFound: true);
@@ -4881,6 +4921,8 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_EventPlacement_RotateInPlaceLeft;
     private readonly InputAction m_EventPlacement_RotateInPlaceRight;
     private readonly InputAction m_EventPlacement_RotateInPlaceModifier;
+    private readonly InputAction m_EventPlacement_HalfFloatValueModifier;
+    private readonly InputAction m_EventPlacement_ZeroFloatValueModifier;
     public struct EventPlacementActions
     {
         private @CMInput m_Wrapper;
@@ -4893,6 +4935,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @RotateInPlaceLeft => m_Wrapper.m_EventPlacement_RotateInPlaceLeft;
         public InputAction @RotateInPlaceRight => m_Wrapper.m_EventPlacement_RotateInPlaceRight;
         public InputAction @RotateInPlaceModifier => m_Wrapper.m_EventPlacement_RotateInPlaceModifier;
+        public InputAction @HalfFloatValueModifier => m_Wrapper.m_EventPlacement_HalfFloatValueModifier;
+        public InputAction @ZeroFloatValueModifier => m_Wrapper.m_EventPlacement_ZeroFloatValueModifier;
         public InputActionMap Get() { return m_Wrapper.m_EventPlacement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -4926,6 +4970,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @RotateInPlaceModifier.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
                 @RotateInPlaceModifier.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
                 @RotateInPlaceModifier.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnRotateInPlaceModifier;
+                @HalfFloatValueModifier.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnHalfFloatValueModifier;
+                @HalfFloatValueModifier.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnHalfFloatValueModifier;
+                @HalfFloatValueModifier.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnHalfFloatValueModifier;
+                @ZeroFloatValueModifier.started -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnZeroFloatValueModifier;
+                @ZeroFloatValueModifier.performed -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnZeroFloatValueModifier;
+                @ZeroFloatValueModifier.canceled -= m_Wrapper.m_EventPlacementActionsCallbackInterface.OnZeroFloatValueModifier;
             }
             m_Wrapper.m_EventPlacementActionsCallbackInterface = instance;
             if (instance != null)
@@ -4954,6 +5004,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @RotateInPlaceModifier.started += instance.OnRotateInPlaceModifier;
                 @RotateInPlaceModifier.performed += instance.OnRotateInPlaceModifier;
                 @RotateInPlaceModifier.canceled += instance.OnRotateInPlaceModifier;
+                @HalfFloatValueModifier.started += instance.OnHalfFloatValueModifier;
+                @HalfFloatValueModifier.performed += instance.OnHalfFloatValueModifier;
+                @HalfFloatValueModifier.canceled += instance.OnHalfFloatValueModifier;
+                @ZeroFloatValueModifier.started += instance.OnZeroFloatValueModifier;
+                @ZeroFloatValueModifier.performed += instance.OnZeroFloatValueModifier;
+                @ZeroFloatValueModifier.canceled += instance.OnZeroFloatValueModifier;
             }
         }
     }
@@ -6703,6 +6759,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnRotateInPlaceLeft(InputAction.CallbackContext context);
         void OnRotateInPlaceRight(InputAction.CallbackContext context);
         void OnRotateInPlaceModifier(InputAction.CallbackContext context);
+        void OnHalfFloatValueModifier(InputAction.CallbackContext context);
+        void OnZeroFloatValueModifier(InputAction.CallbackContext context);
     }
     public interface IWorkflowsActions
     {
