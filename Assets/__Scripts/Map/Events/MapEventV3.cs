@@ -20,7 +20,8 @@ public class MapEventV3 : MapEvent
     public const int LightValueWhiteTransition = 12;
 
     public bool IsTransitionEvent => Value == LightValueBlueTransition || Value == LightValueRedTransition || Value == LightValueWhiteTransition;
-    public bool IsControlLight => Type >= 0 && Type <= 4;
+    // public bool IsControlLight => Type >= 0 && Type <= 4;
+    public bool IsControlLight => !IsUtilityEvent; // assume there is no other event type...
 
     public MapEventV3 Next = null;
 
