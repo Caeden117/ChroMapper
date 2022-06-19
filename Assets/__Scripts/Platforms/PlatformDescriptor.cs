@@ -357,15 +357,15 @@ public class PlatformDescriptor : MonoBehaviour
                 case MapEventV3.LightValueWhiteON:
                     // light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
-                    light.UpdateTargetAlpha(floatValue, 0);
+                    light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateEasing("easeLinear");
                     TrySetTransition(light, e);
                     break;
                 case MapEvent.LightValueBlueFlash:
                 case MapEvent.LightValueRedFlash:
                 case MapEventV3.LightValueWhiteFlash:
-                    light.UpdateTargetAlpha(1, 0);
-                    light.UpdateMultiplyAlpha(color.a * floatValue);
+                    // light.UpdateMultiplyAlpha(color.a * floatValue);
+                    light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
                     light.UpdateEasing("easeOutCubic");
@@ -373,8 +373,8 @@ public class PlatformDescriptor : MonoBehaviour
                 case MapEvent.LightValueBlueFade:
                 case MapEvent.LightValueRedFade:
                 case MapEventV3.LightValueWhiteFade:
-                    light.UpdateTargetAlpha(1, 0);
-                    light.UpdateMultiplyAlpha(color.a * floatValue);
+                    // light.UpdateMultiplyAlpha(color.a * floatValue);
+                    light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     light.UpdateEasing("easeOutExpo");
                     if (light.CanBeTurnedOff)
@@ -393,7 +393,7 @@ public class PlatformDescriptor : MonoBehaviour
                 case MapEventV3.LightValueWhiteTransition:
                     // light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
-                    light.UpdateTargetAlpha(floatValue, 0);
+                    light.UpdateTargetAlpha(color.a * floatValue, 0);
                     TrySetTransition(light, e);
                     break;
             }
