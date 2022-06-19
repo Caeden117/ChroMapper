@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "EventAppearanceSO", menuName = "Map/Appearance/Event Appearance SO")]
@@ -49,12 +49,6 @@ public class EventAppearanceSO : ScriptableObject
 
                 e.UpdateTextDisplay(true, speed.ToString());
             }
-        }
-        // Display floatValue only where used
-        else if (Settings.Instance.DisplayFloatValueText && !e.EventData.IsUtilityEvent
-                && e.EventData.Value != 0 && Mathf.Abs(e.EventData.FloatValue - 1f) > 0.0001f)
-        {
-            e.UpdateTextDisplay(true, e.EventData.FloatValue.ToString("n2"));
         }
         else
         {
@@ -116,18 +110,22 @@ public class EventAppearanceSO : ScriptableObject
         if (Settings.Instance.EmulateChromaLite && e.EventData.CustomData?["_color"] != null && e.EventData.Value > 0)
             color = e.EventData.CustomData["_color"];
 
-        if (e.EventData.Value == 4 || e.EventData.Value == 8 || e.EventData.Value == 12) // Transition Event in event v3
+        // Display floatValue only where used
+        if (Settings.Instance.DisplayFloatValueText && !e.EventData.IsUtilityEvent && e.EventData.Value != 0)
         {
+            if (e.EventData.Value == 4 || e.EventData.Value == 8 || e.EventData.Value == 12) // Transition Event in event v3
+            {
+                e.UpdateTextDisplay(true, "T" + (Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1)));
+            }
+            else
+            {
+                e.UpdateTextDisplay(true, Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1));
+            }
+            
             color = Color.Lerp(offColor, color, e.EventData.FloatValue);
-            e.UpdateTextDisplay(true, "T" + (Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1)));
+            if (color == Color.white) e.UpdateTextColor(Color.black);
+            else e.UpdateTextColor(Color.white); // this may overwrite some configs
         }
-
-        if (e.EventData.Value == 1 || e.EventData.Value == 5 || e.EventData.Value == 9) // On event
-        {
-            e.UpdateTextDisplay(true, Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1));
-        }
-        if (color == Color.white) e.UpdateTextColor(Color.black);
-        else e.UpdateTextColor(Color.white); // this may overwrite some configs
 
         e.EventModel = Settings.Instance.EventModel;
         e.ChangeColor(color, false);
