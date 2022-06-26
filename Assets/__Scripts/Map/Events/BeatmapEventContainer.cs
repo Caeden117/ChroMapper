@@ -177,5 +177,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer
         valueDisplay.text = text;
     }
 
+    public void UpdateTextColor(Color color)
+    {
+        valueDisplay.color = color;
+    }
     public void RefreshAppearance() => eventAppearance.SetEventAppearance(this);
 }

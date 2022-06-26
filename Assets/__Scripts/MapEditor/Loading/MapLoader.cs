@@ -119,6 +119,11 @@ public class MapLoader : MonoBehaviour
             events.AllRotationEvents = objects.Cast<MapEvent>().Where(x => x.IsRotationEvent).ToList();
             events.AllBoostEvents = objects.Cast<MapEvent>().Where(x => x.Type == MapEvent.EventTypeBoostLights)
                 .ToList();
+
+            if (Settings.Instance.Load_MapV3)
+            {
+                events.LinkAllLightEvents();
+            }
         }
 
         collection.RefreshPool(true);

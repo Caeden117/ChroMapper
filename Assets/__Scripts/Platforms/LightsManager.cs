@@ -139,7 +139,7 @@ public class LightsManager : MonoBehaviour
         else
         {
             light.UpdateTargetColor(a * HDRIntensity, 0);
-            light.UpdateTargetAlpha(a.a);
+            // light.UpdateTargetAlpha(a.a); // commented for v2 light system because on/transition note may have float value other than 1.0
         }
     }
 

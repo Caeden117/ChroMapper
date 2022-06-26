@@ -28,6 +28,19 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
     public List<MapEvent> AllRotationEvents = new List<MapEvent>();
     public List<MapEvent> AllBoostEvents = new List<MapEvent>();
 
+    private Dictionary<int, List<MapEventV3>> allLightEvents = new Dictionary<int, List<MapEventV3>>();
+    public Dictionary<int, List<MapEventV3>> AllLightEvents { get => allLightEvents;
+        set {
+            allLightEvents = value;
+            foreach (var p in allLightEvents)
+            {
+                var lightList = p.Value;
+                for (var i = 0; i < lightList.Count - 1; ++i)
+                    lightList[i].Next = lightList[i + 1];
+                lightList[lightList.Count - 1].Next = null;
+            }
+        } }
+
     internal PlatformDescriptor platformDescriptor;
     private PropMode propagationEditing = PropMode.Off;
 
@@ -253,6 +266,10 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             StopCoroutine(nameof(WaitForGradientThenRecycle));
             RefreshPool();
         }
+        else
+        {
+            LinkAllLightEvents();
+        }
     }
 
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex)
@@ -271,5 +288,13 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             AllBoostEvents.FindLast(x => x.Time <= obj.Time)?.Value == 1);
         var e = obj as MapEvent;
         if (PropagationEditing != PropMode.Off && e.Type != EventTypeToPropagate) con.SafeSetActive(false);
+    }
+
+    public void LinkAllLightEvents()
+    {
+        AllLightEvents = LoadedObjects.OfType<MapEventV3>().
+                    Where(x => x.IsControlLight).
+                    GroupBy(x => x.Type).
+                    ToDictionary(g => g.Key, g => g.ToList());
     }
 }

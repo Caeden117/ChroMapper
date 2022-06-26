@@ -22,8 +22,12 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     private bool earlyRotationPlaceNow;
     private bool negativeRotations;
+    private bool halfFloatValue;
+    private bool zeroFloatValue;
+
 
     internal int queuedValue = MapEvent.LightValueRedON;
+    internal float queuedFloatValue = 1.0f;
     public static bool CanPlaceChromaEvents => Settings.Instance.PlaceChromaColor;
 
     public void OnRotation15Degrees(InputAction.CallbackContext context)
@@ -48,6 +52,18 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void OnNegativeRotationModifier(InputAction.CallbackContext context) =>
         negativeRotations = context.performed;
+
+    public void OnHalfFloatValueModifier(InputAction.CallbackContext context)
+    {
+        halfFloatValue = context.performed;
+        UpdateFloatValue(halfFloatValue ? 0.5f : 1.0f);
+    }
+
+    public void OnZeroFloatValueModifier(InputAction.CallbackContext context)
+    {
+        zeroFloatValue = context.performed;
+        UpdateFloatValue(zeroFloatValue ? 0 : 1);
+    }
 
     public void OnRotateInPlaceLeft(InputAction.CallbackContext context)
     {
@@ -87,9 +103,18 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
 
-    public override MapEvent GenerateOriginalData() =>
+    public override MapEvent GenerateOriginalData()
+    {
         //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
-        new MapEvent(0, 0, MapEvent.LightValueRedON);
+        if (Settings.Instance.Load_MapV3)
+        {
+            return new MapEventV3(new MapEvent(0, 0, MapEvent.LightValueRedON));
+        }
+        else
+        {
+            return new MapEvent(0, 0, MapEvent.LightValueRedON);
+        }
+    }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
@@ -147,6 +172,21 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     {
         queuedValue = value;
         UpdateQueuedValue(queuedValue);
+        UpdateAppearance();
+    }
+
+    public void UpdateQueuedFloatValue(float value)
+    {
+        if (Settings.Instance.Load_MapV3 && (queuedData as MapEventV3).IsControlLight)
+        {
+            queuedData.FloatValue = value;
+        }
+    }
+
+    public void UpdateFloatValue(float value)
+    {
+        queuedFloatValue = value;
+        UpdateQueuedFloatValue(queuedFloatValue);
         UpdateAppearance();
     }
 
@@ -211,6 +251,11 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         else if (mapEvent.IsRotationEvent) mapEvent.Value = 1360 + PrecisionRotationValue;
 
         if (mapEvent.CustomData?.Count <= 0) mapEvent.CustomData = null;
+        
+        if (mapEvent is MapEventV3 e3 && !e3.IsControlLight) // in case we are placing rotation/boost when pressing half/zero modifier
+        {
+            e3.FloatValue = 1;
+        }
 
         base.ApplyToMap();
 

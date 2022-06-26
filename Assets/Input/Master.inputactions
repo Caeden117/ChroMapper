@@ -1018,6 +1018,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Half Float Value Modifier",
+                    "type": "Button",
+                    "id": "6a30f614-a6c1-4e78-8548-4a6f830a1f42",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
+                },
+                {
+                    "name": "Zero Float Value Modifier",
+                    "type": "Button",
+                    "id": "2bf1eac9-7e28-479f-8095-bdf4caf9cee3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -1106,6 +1122,28 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Rotate In Place Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "787b6834-2808-4529-b772-241426af0307",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Half Float Value Modifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f2b6fa6c-088b-4604-bb73-3ffe37d91771",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Zero Float Value Modifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1445,6 +1483,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Type Transition",
+                    "type": "Button",
+                    "id": "d0e2fa9c-2582-4133-8e7a-ff118fea77ff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -1511,6 +1557,17 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Swap Cursor Interval",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b6c5489-c82d-4db6-be8f-365ad1f7b9db",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Type Transition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

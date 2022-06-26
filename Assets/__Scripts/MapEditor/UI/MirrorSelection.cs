@@ -216,8 +216,9 @@ public class MirrorSelection : MonoBehaviour
                         e.CustomData["_lightID"] = labels.EditorToLightID(e.Type, mirroredIdx);
                     }
 
-                    if (e.Value > 4 && e.Value < 8) e.Value -= 4;
+                    if (e.Value > 4 && e.Value <= 8) e.Value -= 4;
                     else if (e.Value > 0 && e.Value <= 4) e.Value += 4;
+                    else if (e.Value > 8 && e.Value <= 12) e.Value -= 4; // white to red
                 }
             }
             else if (Settings.Instance.Load_MapV3)

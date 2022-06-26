@@ -79,8 +79,9 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         }
         else
         {
-            if (e.EventData.Value > 4 && e.EventData.Value < 8) e.EventData.Value -= 4;
+            if (e.EventData.Value > 4 && e.EventData.Value <= 8) e.EventData.Value -= 4;
             else if (e.EventData.Value > 0 && e.EventData.Value <= 4) e.EventData.Value += 4;
+            else if (e.EventData.Value > 8 && e.EventData.Value <= 12) e.EventData.Value -= 4; // white to red
         }
 
         eventAppearanceSo.SetEventAppearance(e);
