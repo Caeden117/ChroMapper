@@ -111,15 +111,18 @@ public class EventAppearanceSO : ScriptableObject
             color = e.EventData.CustomData["_color"];
 
         // Display floatValue only where used
-        if (Settings.Instance.DisplayFloatValueText && !e.EventData.IsUtilityEvent && e.EventData.Value != 0)
+        if (!e.EventData.IsUtilityEvent && e.EventData.Value != 0)
         {
-            if (e.EventData.Value == 4 || e.EventData.Value == 8 || e.EventData.Value == 12) // Transition Event in event v3
+            if (Settings.Instance.DisplayFloatValueText)
             {
-                e.UpdateTextDisplay(true, "T" + (Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1)));
-            }
-            else
-            {
-                e.UpdateTextDisplay(true, Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1));
+                if (e.EventData.Value == 4 || e.EventData.Value == 8 || e.EventData.Value == 12) // Transition Event in event v3
+                {
+                    e.UpdateTextDisplay(true, "T" + (Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1)));
+                }
+                else
+                {
+                    e.UpdateTextDisplay(true, Mathf.Approximately(e.EventData.FloatValue, 1) ? "1" : e.EventData.FloatValue.ToString("n2").Substring(1));
+                }
             }
             
             color = Color.Lerp(offColor, color, e.EventData.FloatValue);
