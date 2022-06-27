@@ -20,6 +20,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     private float t;
 
+    private float maxBeatTime; // Does not account for official bpm changes. V3 sounds like fun
+
     // Use this for initialization
     private void Start()
     {
@@ -32,6 +34,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             foreach (var dir in Directory.EnumerateDirectories(autoSavesDir))
                 currentAutoSaves.Add(new DirectoryInfo(dir));
         }
+
+        maxBeatTime = BeatSaberSongContainer.Instance.LoadedSong.length * BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 60;
 
         CleanAutosaves();
     }
@@ -96,6 +100,12 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                         var newDirectoryInfo = new DirectoryInfo(autoSaveDir);
                         currentAutoSaves.Add(newDirectoryInfo);
                         CleanAutosaves();
+                    }
+                    else // Only check on manual save
+                    {
+                        if (Settings.Instance.RemoveNotesOutsideMap) BeatSaberSongContainer.Instance.Map.Notes.RemoveAll(note => note.Time >= maxBeatTime);
+                        if (Settings.Instance.RemoveEventsOutsideMap) BeatSaberSongContainer.Instance.Map.Events.RemoveAll(evt => evt.Time >= maxBeatTime);
+                        if (Settings.Instance.RemoveObstaclesOutsideMap) BeatSaberSongContainer.Instance.Map.Obstacles.RemoveAll(obst => obst.Time >= maxBeatTime);
                     }
 
                     BeatSaberSongContainer.Instance.Map.Save();
