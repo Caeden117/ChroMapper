@@ -33755,9 +33755,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1524038332}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: Save
-        m_Mode: 6
+        m_TargetAssemblyTypeName: AutoSaveController, Main
+        m_MethodName: CheckAndSave
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -45334,6 +45334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoSaveToggle: {fileID: 1207263925}
+  pauseManager: {fileID: 614713889}
 --- !u!114 &1524038333
 MonoBehaviour:
   m_ObjectHideFlags: 0
