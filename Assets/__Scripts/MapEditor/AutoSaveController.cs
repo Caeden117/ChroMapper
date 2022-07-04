@@ -13,12 +13,28 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 {
     private const int maximumAutosaveCount = 15;
     [SerializeField] private Toggle autoSaveToggle;
+    [SerializeField] private PauseManager pauseManager;
 
     private List<DirectoryInfo> currentAutoSaves = new List<DirectoryInfo>();
 
     private Thread savingThread;
 
     private float t;
+
+    private float maxBeatTime; // Does not account for official bpm changes. V3 sounds like fun
+    private const int FALSE = 0; // Because Interlocked.Exchange(bool) doesn't exist
+    private const int TRUE = 1;
+    private Thread objectCheckingThread;
+    private int objectsOutsideMap = FALSE;
+    private int objectsCheckIsComplete = FALSE;
+    private int saveFlag = (int)SaveType.None;
+
+    public enum SaveType
+    {
+        None,
+        Menu,
+        Quit
+    }
 
     // Use this for initialization
     private void Start()
@@ -33,12 +49,30 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 currentAutoSaves.Add(new DirectoryInfo(dir));
         }
 
+        maxBeatTime = BeatSaberSongContainer.Instance.LoadedSong.length * BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 60;
+
         CleanAutosaves();
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (Interlocked.Exchange(ref objectsCheckIsComplete, FALSE) == TRUE)
+        {
+            if (Interlocked.Exchange(ref objectsOutsideMap, FALSE) == TRUE)
+            {
+                if (saveFlag == (int)SaveType.None) PersistentUI.Instance.ShowDialogBox("Mapper", "save.objects.outside", CleanAndSave, PersistentUI.DialogBoxPresetType.YesNo);
+                if (saveFlag == (int)SaveType.Menu) PersistentUI.Instance.ShowDialogBox("Mapper", "save.objects.outside", CleanAndMenu, PersistentUI.DialogBoxPresetType.YesNo);
+                if (saveFlag == (int)SaveType.Quit) PersistentUI.Instance.ShowDialogBox("Mapper", "save.objects.outside", CleanAndQuit, PersistentUI.DialogBoxPresetType.YesNo);
+            }
+            else
+            {
+                if (saveFlag == (int)SaveType.None) Save();
+                if (saveFlag == (int)SaveType.Menu) pauseManager.SaveAndExitToMenu();
+                if (saveFlag == (int)SaveType.Quit) pauseManager.SaveAndQuitCM();
+            }
+        }
+
         if (!Settings.Instance.AutoSave || !Application.isFocused) return;
         t += Time.deltaTime;
         if (t > Settings.Instance.AutoSaveInterval * 60)
@@ -50,7 +84,96 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     public void OnSave(InputAction.CallbackContext context)
     {
-        if (context.performed) Save();
+        if (context.performed) CheckAndSave();
+    }
+
+    public void CheckAndSave(int _) => CheckAndSave(); // So it shows up in Unity
+    public void CheckAndSave(SaveType saveType = SaveType.None)
+    {
+        if (objectCheckingThread != null && objectCheckingThread.IsAlive)
+        {
+            Debug.LogError(":hyperPepega: :mega: PLEASE BE PATIENT THANKS");
+            return;
+        }
+
+        SelectionController.RefreshMap();
+        objectCheckingThread = new Thread(() =>
+        {
+            if (ObjectIsOutsideMap())
+            {
+                Debug.Log("Found object outside of the map.");
+                Interlocked.Exchange(ref saveFlag, (int)saveType);
+                Interlocked.Exchange(ref objectsOutsideMap, TRUE);
+            }
+            Interlocked.Exchange(ref objectsCheckIsComplete, TRUE);
+        });
+        objectCheckingThread.Start();
+    }
+
+    private void CleanAndSave(int res)
+    {
+        if (res == 0) CleanObjectsOutsideMap();
+        Save();
+    }
+
+    private void CleanAndMenu(int res)
+    {
+        if (res == 0) CleanObjectsOutsideMap();
+        pauseManager.SaveAndExitToMenu();
+    }
+
+    private void CleanAndQuit(int res)
+    {
+        if (res == 0) CleanObjectsOutsideMap();
+        pauseManager.SaveAndQuitCM();
+    }
+
+    private void CleanObjectsOutsideMap()
+    {
+        if (Settings.Instance.RemoveNotesOutsideMap)
+        {
+            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note);
+            foreach (var note in BeatSaberSongContainer.Instance.Map.Notes.Where(note => note.Time >= maxBeatTime))
+            {
+                noteCollection.DeleteObject(note);
+            }
+        }
+        if (Settings.Instance.RemoveEventsOutsideMap)
+        {
+            var eventCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
+            foreach (var evt in BeatSaberSongContainer.Instance.Map.Events.Where(evt => evt.Time >= maxBeatTime))
+            {
+                eventCollection.DeleteObject(evt);
+            }
+        }
+        if (Settings.Instance.RemoveObstaclesOutsideMap)
+        {
+            var obstacleCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle);
+            foreach (var obst in BeatSaberSongContainer.Instance.Map.Obstacles.Where(obst => obst.Time >= maxBeatTime))
+            {
+                obstacleCollection.DeleteObject(obst);
+            }
+        }
+    }
+
+    private bool ObjectIsOutsideMap()
+    {
+        if (Settings.Instance.RemoveNotesOutsideMap)
+        {
+            if (BeatSaberSongContainer.Instance.Map.Notes.Any(note => note.Time >= maxBeatTime))
+                return true;
+        }
+        if (Settings.Instance.RemoveEventsOutsideMap)
+        {
+            if (BeatSaberSongContainer.Instance.Map.Events.Any(evt => evt.Time >= maxBeatTime))
+                return true;
+        }
+        if (Settings.Instance.RemoveObstaclesOutsideMap)
+        {
+            if (BeatSaberSongContainer.Instance.Map.Obstacles.Any(obst => obst.Time >= maxBeatTime))
+                return true;
+        }
+        return false;
     }
 
     public void ToggleAutoSave(bool enabled) => Settings.Instance.AutoSave = enabled;
@@ -96,6 +219,12 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                         var newDirectoryInfo = new DirectoryInfo(autoSaveDir);
                         currentAutoSaves.Add(newDirectoryInfo);
                         CleanAutosaves();
+                    }
+                    else // Only check on manual save
+                    {
+                        if (Settings.Instance.RemoveNotesOutsideMap) BeatSaberSongContainer.Instance.Map.Notes.RemoveAll(note => note.Time >= maxBeatTime);
+                        if (Settings.Instance.RemoveEventsOutsideMap) BeatSaberSongContainer.Instance.Map.Events.RemoveAll(evt => evt.Time >= maxBeatTime);
+                        if (Settings.Instance.RemoveObstaclesOutsideMap) BeatSaberSongContainer.Instance.Map.Obstacles.RemoveAll(obst => obst.Time >= maxBeatTime);
                     }
 
                     BeatSaberSongContainer.Instance.Map.Save();
