@@ -102,9 +102,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             if (ObjectIsOutsideMap())
             {
                 Debug.Log("Found object outside of the map.");
-                Interlocked.Exchange(ref saveFlag, (int)saveType);
                 Interlocked.Exchange(ref objectsOutsideMap, TRUE);
             }
+            Interlocked.Exchange(ref saveFlag, (int)saveType);
             Interlocked.Exchange(ref objectsCheckIsComplete, TRUE);
         });
         objectCheckingThread.Start();
