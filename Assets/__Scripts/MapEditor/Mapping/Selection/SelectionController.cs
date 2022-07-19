@@ -627,7 +627,34 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                 if (data.CustomData?.Count <= 0) data.CustomData = null;
             }
-
+            else if (data is BeatmapArc arc)
+            {
+                arc.X += leftRight;
+                arc.Y += upDown;
+                arc.TailX += leftRight;
+                arc.TailY += upDown;
+                // Uncomment when merged with dev
+                // if (Settings.Instance.VanillaOnlyShift) {
+                //     Mathf.Clamp(arc.X, 0, 4);
+                //     Mathf.Clamp(arc.Y, 0, 3);
+                //     Mathf.Clamp(arc.TailX, 0, 4);
+                //     Mathf.Clamp(arc.TailY, 0, 3);
+                // }
+            }
+            else if (data is BeatmapChain chain)
+            {
+                chain.X += leftRight;
+                chain.Y += upDown;
+                chain.TailX += leftRight;
+                chain.TailY += upDown;
+                // Uncomment when merged with dev
+                // if (Settings.Instance.VanillaOnlyShift) {
+                //     Mathf.Clamp(chain.X, 0, 4);
+                //     Mathf.Clamp(chain.Y, 0, 3);
+                //     Mathf.Clamp(chain.TailX, 0, 4);
+                //     Mathf.Clamp(chain.TailY, 0, 3);
+                // }
+            }
             return new BeatmapObjectModifiedAction(data, data, original, "", true);
         }).ToList();
 
@@ -680,7 +707,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             if (Settings.Instance.Load_MapV3)
             {
-                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Arcs = 
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Arcs =
                     newObjects[BeatmapObject.ObjectType.Arc].Cast<BeatmapArc>().ToList();
                 (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Chains =
                     newObjects[BeatmapObject.ObjectType.Chain].Cast<BeatmapChain>().ToList();
