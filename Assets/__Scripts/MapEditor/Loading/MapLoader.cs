@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -99,6 +99,7 @@ public class MapLoader : MonoBehaviour
                 }
                 else if (data is BeatmapObstacle obstacleData)
                 {
+                    if (data is BeatmapObstacleV3) continue;
                     if (obstacleData.LineIndex >= 1000 || obstacleData.LineIndex <= -1000) continue;
                     if (2 - obstacleData.LineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData.LineIndex;
                     if (obstacleData.LineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData.LineIndex - 1;
