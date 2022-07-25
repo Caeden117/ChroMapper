@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -267,9 +267,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         {
             if (CurrentSeconds >= SongAudioSource.clip.length - 0.1f)
             {
-                Debug.LogError(":hyperPepega: :mega: STOP TRYING TO PLAY THE SONG AT THE VERY END");
-                IsPlaying = false;
-                return;
+                ResetTime();
             }
 
             playStartTime = CurrentSeconds;
