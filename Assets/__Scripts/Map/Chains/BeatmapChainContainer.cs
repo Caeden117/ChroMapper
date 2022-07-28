@@ -26,7 +26,7 @@ public class BeatmapChainContainer : BeatmapObjectContainer
     public override void Setup()
     {
         base.Setup();
-        MaterialPropertyBlock.SetFloat("_Lit", 1);
+        MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
         MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1);
         UpdateMaterials();
     }
