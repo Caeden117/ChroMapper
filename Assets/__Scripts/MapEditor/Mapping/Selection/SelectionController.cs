@@ -631,17 +631,19 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
             else if (data is BeatmapArc arc)
             {
+                // TODO: Do ME and NE
                 arc.X += leftRight;
                 arc.Y += upDown;
                 arc.TailX += leftRight;
                 arc.TailY += upDown;
-                // Uncomment when merged with dev
-                // if (Settings.Instance.VanillaOnlyShift) {
-                //     Mathf.Clamp(arc.X, 0, 4);
-                //     Mathf.Clamp(arc.Y, 0, 3);
-                //     Mathf.Clamp(arc.TailX, 0, 4);
-                //     Mathf.Clamp(arc.TailY, 0, 3);
-                // }
+                if (Settings.Instance.VanillaOnlyShift)
+                {
+                    // While x is unbounded, you probably want to keep within the grid for vanilla mapping
+                    arc.X = Mathf.Clamp(arc.X, 0, 3);
+                    arc.Y = Mathf.Clamp(arc.Y, 0, 2);
+                    arc.TailX = Mathf.Clamp(arc.TailX, 0, 3);
+                    arc.TailY = Mathf.Clamp(arc.TailY, 0, 2);
+                }
             }
             else if (data is BeatmapChain chain)
             {
@@ -649,13 +651,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 chain.Y += upDown;
                 chain.TailX += leftRight;
                 chain.TailY += upDown;
-                // Uncomment when merged with dev
-                // if (Settings.Instance.VanillaOnlyShift) {
-                //     Mathf.Clamp(chain.X, 0, 4);
-                //     Mathf.Clamp(chain.Y, 0, 3);
-                //     Mathf.Clamp(chain.TailX, 0, 4);
-                //     Mathf.Clamp(chain.TailY, 0, 3);
-                // }
+                if (Settings.Instance.VanillaOnlyShift)
+                {
+                    chain.X = Mathf.Clamp(chain.X, 0, 3);
+                    chain.Y = Mathf.Clamp(chain.Y, 0, 2);
+                    chain.TailX = Mathf.Clamp(chain.TailX, 0, 3);
+                    chain.TailY = Mathf.Clamp(chain.TailY, 0, 2);
+                }
             }
             return new BeatmapObjectModifiedAction(data, data, original, "", true);
         }).ToList();
