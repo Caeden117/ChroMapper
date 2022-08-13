@@ -663,6 +663,10 @@ MonoBehaviour:
     m_Key: gradient.easingfloatvalue.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 118373130107551744
+    m_Key: save.objects.outside
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

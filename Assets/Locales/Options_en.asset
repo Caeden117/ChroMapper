@@ -1191,6 +1191,14 @@ MonoBehaviour:
     m_Localized: If ADB is in the system environment path, it will use it if enabled.
     m_Metadata:
       m_Items: []
+  - m_Id: 105008044110446592
+    m_Localized: Vanilla Only Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008036237737984
+    m_Localized: Whether objects can be shifted outside the normal 3x4 grid.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

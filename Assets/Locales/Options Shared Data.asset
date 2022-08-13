@@ -1039,6 +1039,14 @@ MonoBehaviour:
     m_Key: quest.adb_include_path.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 105008036237737984
+    m_Key: general.vanillaonlyshift.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008044110446592
+    m_Key: general.vanillaonlyshift
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

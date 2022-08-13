@@ -160,7 +160,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
-                DraggedObjectContainer.ObjectData.Time = placementZ / EditorScaleController.EditorScale;
                 if (DraggedObjectContainer != null) DraggedObjectContainer.UpdateGridPosition();
             }
         }

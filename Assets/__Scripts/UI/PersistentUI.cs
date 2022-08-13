@@ -521,6 +521,7 @@ public class PersistentUI : MonoBehaviour
                 LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "submit"));
 
         dialogBox.Open();
+        textBox.Select();
     }
 
 
