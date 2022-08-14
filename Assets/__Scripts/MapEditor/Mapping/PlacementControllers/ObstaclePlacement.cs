@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using SimpleJSON;
 using UnityEngine;
@@ -157,7 +157,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 vanillaType * 1.5f,
                 wallTransform.localPosition.z);
 
-            instantiatedContainer.SetScale(new Vector3(1, wallTransform.localPosition.y == 0 ? 3.5f : 2, 0));
+            instantiatedContainer.SetScale(new Vector3(1, wallTransform.localPosition.y == 0 ? 3.75f : 2.25f, 0));
 
             queuedData.CustomData = null;
             queuedData.LineIndex = Mathf.RoundToInt(wallTransform.localPosition.x + 2);
@@ -201,7 +201,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.75f : 2.25f, 0);
         }
         else
         {
@@ -226,7 +226,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.75f : 2.25f, 0);
         }
     }
 }
