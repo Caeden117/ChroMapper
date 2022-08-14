@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using SimpleJSON;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class BeatmapObstacleV3 : BeatmapObstacle
 {
@@ -36,7 +33,10 @@ public class BeatmapObstacleV3 : BeatmapObstacle
     }
     //public float Duration { get => base.Duration; set => base.Duration = value; }
     //public int Width { get => base.Width; set => base.Width = value; }
-    public int Height { get {
+    public int Height
+    {
+        get
+        {
             return Type switch
             {
                 ValueFullBarrier => 5,
@@ -44,19 +44,15 @@ public class BeatmapObstacleV3 : BeatmapObstacle
                 _ => height,
             };
         }
-        set {
+        set
+        {
             height = value;
             CheckTypeCompatibility();
-        } 
+        }
     }
 
-    internal static readonly float[] startHeightMap = { 0.0f, 0.6f, 1.5f }; // may not be the correct height
-    internal static readonly float[,] heightMap = new float[3, 5] 
-    {
-        { 0.9f, 1.8f, 2.7f, 3.6f, 4.2f},
-        { 0.9f, 1.8f, 2.7f, 3.6f, 3.6f},
-        { 0.9f, 1.8f, 2.7f, 2.7f, 2.7f},
-    };
+    // Editor walls heights are squished compared to in game as 1.5f is accurate-ish but y=0 wall and y=0 note base is different.
+    private const float heightStep = 0.75f;
 
     public BeatmapObstacleV3(JSONNode node)
     {
@@ -126,8 +122,8 @@ public class BeatmapObstacleV3 : BeatmapObstacle
     {
         if (Type == ValueUnknownBarrier || Type == ValueFullBarrier || Type == ValueHighBarrier)
         {
-            startHeight = startHeightMap[Mathf.Clamp(LineLayer, 0, 2)];
-            height = heightMap[Mathf.Clamp(LineLayer, 0, 2), Mathf.Clamp(Height, 1, 5) - 1];
+            startHeight = heightStep * Mathf.Clamp(LineLayer, 0, 2);
+            height = Mathf.Min(Height * heightStep, 5 * heightStep - LineLayer * heightStep);
         }
     }
 }
