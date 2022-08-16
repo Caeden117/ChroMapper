@@ -22,7 +22,7 @@ public class BeatmapLightRotationEventData : BeatmapObject
         RotationValue = RetrieveRequiredNode(node, "r").AsInt;
         RotationDirection = RetrieveRequiredNode(node, "o").AsInt;
     }
-    public override ObjectType BeatmapType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public override ObjectType BeatmapType { get; set; } = ObjectType.LightEvent;
 
     public override JSONNode ConvertToJson()
     {
