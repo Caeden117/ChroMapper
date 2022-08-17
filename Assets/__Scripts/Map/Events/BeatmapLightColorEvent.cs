@@ -94,7 +94,7 @@ public class BeatmapLightColorEvent : BeatmapObject
         }
     }
 
-    public override ObjectType BeatmapType { get; set; } = ObjectType.LightEvent;
+    public override ObjectType BeatmapType { get; set; } = ObjectType.LightColorEvent;
 
     public override JSONNode ConvertToJson()
     {

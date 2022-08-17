@@ -5,7 +5,7 @@ using UnityEngine;
 public class BeatmapLightColorEventContainer : BeatmapObjectContainer
 {
     public BeatmapLightColorEvent LightEventData;
-    public LightEventsContainer LightEventsContainer;
+    public LightColorEventsContainer LightEventsContainer;
 
     public override BeatmapObject ObjectData { get => LightEventData; set => LightEventData = (BeatmapLightColorEvent)value; }
 
@@ -19,7 +19,7 @@ public class BeatmapLightColorEventContainer : BeatmapObjectContainer
             );
     }
 
-    public static BeatmapLightColorEventContainer SpawnLightColorEvent(LightEventsContainer lightEventsContainer, BeatmapLightColorEvent data, 
+    public static BeatmapLightColorEventContainer SpawnLightColorEvent(LightColorEventsContainer lightEventsContainer, BeatmapLightColorEvent data, 
         ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
     {
         var container = Instantiate(prefab).GetComponent<BeatmapLightColorEventContainer>();
