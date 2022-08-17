@@ -253,7 +253,7 @@ public class EventAppearanceSO : ScriptableObject
         text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType) 
             + "/" + GenerateDistributionString(eb.BrightnessDistribution, eb.BrightnessDistributionType);
 
-
+        text += "\n";
 
         e.UpdateTextDisplay(true, text);
 

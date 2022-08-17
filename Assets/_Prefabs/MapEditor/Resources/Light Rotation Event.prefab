@@ -198,6 +198,26 @@ MonoBehaviour:
   Colliders: []
   SelectionRenderers: []
   BoxCollider: {fileID: 0}
+  EventData:
+    HasAttachedContainer: 0
+    Time: 0
+    PropId: -1
+    Type: 0
+    Value: 0
+    LightGradient:
+      Duration: 0
+      StartColor: {r: 0, g: 0, b: 0, a: 0}
+      EndColor: {r: 0, g: 0, b: 0, a: 0}
+      EasingType: 
+    FloatValue: 0
+  EventsContainer: {fileID: 0}
+  eventAppearance: {fileID: 0}
+  eventRenderer: []
+  tracksManager: {fileID: 0}
+  valueDisplay: {fileID: 0}
+  eventGradientController: {fileID: 0}
+  eventModels: []
+  labels: {fileID: 0}
   RotationEventsContainer: {fileID: 0}
 --- !u!1 &881673596562385731
 GameObject:
@@ -444,13 +464,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4436489048970686252}
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.51}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 491220374944492547}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &8641652952078813317
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -504,11 +524,11 @@ TextMesh:
   m_Text: 0
   m_OffsetZ: 0
   m_CharacterSize: 0.05
-  m_LineSpacing: 1
+  m_LineSpacing: 0.6
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 460
+  m_FontSize: 220
   m_FontStyle: 1
   m_RichText: 0
   m_Font: {fileID: 12800000, guid: f2be00e696aba7942abcc131ccc4eff6, type: 3}
