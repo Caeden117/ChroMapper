@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeatmapLightRotationEventContainer : BeatmapObjectContainer
+public class BeatmapLightRotationEventContainer : BeatmapEventContainer
 {
     public BeatmapLightRotationEvent RotationEventData;
     public LightRotationEventsContainer RotationEventsContainer;
@@ -27,16 +27,5 @@ public class BeatmapLightRotationEventContainer : BeatmapObjectContainer
         container.RotationEventsContainer = rotationEventsContainer;
         container.transform.localEulerAngles = Vector3.zero;
         return container;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

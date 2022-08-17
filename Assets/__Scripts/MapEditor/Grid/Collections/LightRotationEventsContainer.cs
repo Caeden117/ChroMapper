@@ -21,4 +21,8 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
 
     }
 
+    protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
+    {
+        eventAppearanceSo.SetLightRotationEventAppearance(con as BeatmapLightRotationEventContainer);
+    }
 }

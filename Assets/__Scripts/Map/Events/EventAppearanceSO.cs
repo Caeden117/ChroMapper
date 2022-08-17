@@ -23,6 +23,8 @@ public class EventAppearanceSO : ScriptableObject
     [SerializeField]
     private Color otherColor;
 
+    private readonly string[] rotationDirectionMark = { "", "↻", "↺" };
+
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false)
     {
         var color = Color.white;
@@ -232,7 +234,7 @@ public class EventAppearanceSO : ScriptableObject
         }
         color = Color.Lerp(offColor, color, eb.EventDatas[0].Brightness);
 
-        // first line: filter & color 
+        // first line: transition + filter 
         var text = GenerateFilterString(eb.Filter);
         var prefix = "";
         switch (eb.EventDatas[0].TransitionType)
@@ -261,6 +263,33 @@ public class EventAppearanceSO : ScriptableObject
         e.ChangeBaseColor(Color.black, false);
         if (color == Color.white) e.UpdateTextColor(Color.black);
         else e.UpdateTextColor(Color.white);
+    }
+
+    public void SetLightRotationEventAppearance(BeatmapLightRotationEventContainer e)
+    {
+        var eb = e.RotationEventData.EventBoxes[0];
+        var ebd = eb.EventDatas[0];
+        var text = GenerateFilterString(eb.Filter);
+        var prefix = "";
+        switch (ebd.Transition)
+        {
+            case 0:
+                prefix = "T";
+                break;
+            case 1:
+                prefix = "E";
+                break;
+            default:
+                break;
+        }
+        text = prefix + text;
+
+        text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
+            + "/" + GenerateDistributionString(eb.RotationDistribution, eb.RotationDistributionType);
+        text += "\n" + rotationDirectionMark[ebd.RotationDirection] + ebd.AdditionalLoop + "+" + ebd.RotationValue + "°";
+
+        e.UpdateTextDisplay(true, text);
+        e.ChangeColor(offColor, false);
     }
 }
 
