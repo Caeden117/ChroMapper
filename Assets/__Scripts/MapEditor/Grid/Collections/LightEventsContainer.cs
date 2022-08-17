@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class LightEventsContainer : BeatmapObjectContainerCollection
 {
+
+    [SerializeField] private GameObject colorPrefab;
+    [SerializeField] private EventAppearanceSO eventAppearanceSo;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightEvent;
 
-    public override BeatmapObjectContainer CreateContainer() => throw new System.NotImplementedException();
-    internal override void SubscribeToCallbacks() => throw new System.NotImplementedException();
-    internal override void UnsubscribeToCallbacks() => throw new System.NotImplementedException();
-
-    // Start is called before the first frame update
-    void Start()
+    public override BeatmapObjectContainer CreateContainer()
     {
-        
+        return BeatmapLightColorEventContainer.SpawnLightColorEvent(this, null, ref colorPrefab, ref eventAppearanceSo);
+    }
+    internal override void SubscribeToCallbacks()
+    {
+
+    }
+    internal override void UnsubscribeToCallbacks()
+    {
+
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        
     }
 }

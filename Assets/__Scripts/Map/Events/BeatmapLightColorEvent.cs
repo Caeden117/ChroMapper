@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
-
+using UnityEngine;
 
 public class BeatmapLightColorEventData: BeatmapObject
 {
@@ -78,9 +78,9 @@ public class BeatmapLightColorEventBox: BeatmapObject
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false) => throw new System.NotImplementedException();
 }
 
-public class BeatmapLightColorEvent: BeatmapObject
+public class BeatmapLightColorEvent : BeatmapObject
 {
-    public float Beat; // b
+    public float Beat { get => Time; set => Time = value; } // b
     public int Group; // g
     public List<BeatmapLightColorEventBox> EventBoxes = new List<BeatmapLightColorEventBox>(); // e
 
@@ -108,4 +108,9 @@ public class BeatmapLightColorEvent: BeatmapObject
         return node;
     }
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false) => throw new System.NotImplementedException();
+
+    public Vector2 GetPosition()
+    {
+        return new Vector2(Group + 0.5f, 0.5f);
+    }
 }
