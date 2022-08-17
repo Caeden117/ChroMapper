@@ -65,6 +65,7 @@ public class MapLoader : MonoBehaviour
             yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Arcs));
             yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Chains));
             yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).LightColorEventBoxGroups));
+            yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).LightRotationEventBoxGroups));
         }
 
         PersistentUI.Instance.LevelLoadSliderLabel.text = "Finishing up...";

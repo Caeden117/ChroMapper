@@ -88,7 +88,7 @@ public class BeatmapLightRotationEventBox : BeatmapObject
 
 public class BeatmapLightRotationEvent : BeatmapObject
 {
-    public float Beat; // b
+    public float Beat { get => Time; set => Time = value; } // b
     public int Group; // g
     public List<BeatmapLightRotationEventBox> EventBoxes = new List<BeatmapLightRotationEventBox>(); // e
 
@@ -102,7 +102,7 @@ public class BeatmapLightRotationEvent : BeatmapObject
         }
     }
 
-    public override ObjectType BeatmapType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public override ObjectType BeatmapType { get; set; } = ObjectType.LightRotationEvent;
 
     public override JSONNode ConvertToJson()
     {
@@ -116,4 +116,9 @@ public class BeatmapLightRotationEvent : BeatmapObject
         return node;
     }
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false) => throw new System.NotImplementedException();
+
+    public Vector2 GetPosition()
+    {
+        return new Vector2(Group + 0.5f, 0.5f);
+    }
 }
