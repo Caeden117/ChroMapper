@@ -2,42 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeatmapLightColorEventContainer : BeatmapObjectContainer
+/// <summary>
+/// It's strange to inherit from <see cref="BeatmapEventContainer"/>, but I need to use those shader properties to reuse <see cref="EventAppearanceSO"/>
+/// </summary>
+public class BeatmapLightColorEventContainer : BeatmapEventContainer
 {
-    public BeatmapLightColorEvent LightEventData;
-    public LightColorEventsContainer LightEventsContainer;
+    public BeatmapLightColorEvent ColorEventData;
+    public LightColorEventsContainer ColorEventsContainer;
 
-    public override BeatmapObject ObjectData { get => LightEventData; set => LightEventData = (BeatmapLightColorEvent)value; }
+    public override BeatmapObject ObjectData { get => ColorEventData; set => ColorEventData = (BeatmapLightColorEvent)value; }
 
     public override void UpdateGridPosition()
     {
-        var position = LightEventData.GetPosition();
+        var position = ColorEventData.GetPosition();
         transform.localPosition = new Vector3(
             position.x,
             position.y,
-            LightEventData.Time * EditorScaleController.EditorScale
+            ColorEventData.Time * EditorScaleController.EditorScale
             );
     }
 
-    public static BeatmapLightColorEventContainer SpawnLightColorEvent(LightColorEventsContainer lightEventsContainer, BeatmapLightColorEvent data, 
+    public static BeatmapLightColorEventContainer SpawnLightColorEvent(LightColorEventsContainer lightEventsContainer, BeatmapLightColorEvent data,
         ref GameObject prefab, ref EventAppearanceSO eventAppearanceSO)
     {
         var container = Instantiate(prefab).GetComponent<BeatmapLightColorEventContainer>();
-        container.LightEventData = data;
-        container.LightEventsContainer = lightEventsContainer;
+        container.ColorEventData = data;
+        container.ColorEventsContainer = lightEventsContainer;
         container.transform.localEulerAngles = Vector3.zero;
         return container;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

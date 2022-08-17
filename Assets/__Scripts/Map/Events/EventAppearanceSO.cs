@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -187,6 +188,79 @@ public class EventAppearanceSO : ScriptableObject
         if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
 
         e.UpdateMaterials();
+    }
+
+    private string GenerateFilterString(BeatmapLightEventFilter filter)
+    {
+        switch (filter.FilterType)
+        {
+            case 1: // fraction like text, but default will be ignored for better viewing
+                if (filter.Section == 0 && filter.Partition == 1) return "";
+                return (filter.Reverse != 0 ? "-" : "") + (filter.Section + 1) + "/" + filter.Partition;
+            case 2: // python indexing like text
+                return filter.Section + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Partition;
+            default:
+                Debug.LogError("Unexpected filter type " + filter.FilterType);
+                return "";
+        }
+    }
+
+    private string GenerateDistributionString(float w, int d)
+    {
+        if (w == 0.0f) return "";
+        switch (d)
+        {
+            case 1: // Wave
+                return "->" + w.ToString("n1");
+            case 2: // Step
+                return w.ToString("n1") + "->";
+            default:
+                Debug.LogError("Unexpected distribution type " + d);
+                return "";
+        }
+    }
+
+    public void SetLightColorEventAppearance(BeatmapLightColorEventContainer e, bool boost = false)
+    {
+        var color = Color.white;
+        var eb = e.ColorEventData.EventBoxes[0];
+        if (eb.EventDatas[0].Color <= 1)
+        {
+            color = eb.EventDatas[0].Color == 1
+                ? (boost ? RedBoostColor : RedColor)
+                : (boost ? BlueBoostColor : BlueColor);
+        }
+        color = Color.Lerp(offColor, color, eb.EventDatas[0].Brightness);
+
+        // first line: filter & color 
+        var text = GenerateFilterString(eb.Filter);
+        var prefix = "";
+        switch (eb.EventDatas[0].TransitionType)
+        {
+            case 1:
+                prefix = "T";
+                break;
+            case 2:
+                prefix = "E";
+                break;
+            default:
+                break;
+        }
+        text = prefix + text;
+        // second line: two distributions
+        text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType) 
+            + "/" + GenerateDistributionString(eb.BrightnessDistribution, eb.BrightnessDistributionType);
+
+
+
+        e.UpdateTextDisplay(true, text);
+
+
+        e.EventModel = Settings.Instance.EventModel;
+        e.ChangeColor(color, false);
+        e.ChangeBaseColor(Color.black, false);
+        if (color == Color.white) e.UpdateTextColor(Color.black);
+        else e.UpdateTextColor(Color.white);
     }
 }
 

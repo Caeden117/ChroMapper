@@ -24,5 +24,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
+        eventAppearanceSo.SetLightColorEventAppearance(con as BeatmapLightColorEventContainer, false);
     }
+
 }
