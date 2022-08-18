@@ -22,9 +22,26 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
 
     }
 
+    private void Start() => LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
+    private void OnDestroy() => LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
         eventAppearanceSo.SetLightColorEventAppearance(con as BeatmapLightColorEventContainer, false);
     }
 
+    private void PlatformLoaded(PlatformDescriptor descriptor)
+    {
+        StartCoroutine(AfterPlatformLoaded());
+    }
+    
+    private IEnumerator AfterPlatformLoaded()
+    {
+        yield return null;
+        UpdateGrids();
+    }
+
+    public void UpdateGrids()
+    {
+
+    }
 }
