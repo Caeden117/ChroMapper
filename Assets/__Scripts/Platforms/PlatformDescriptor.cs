@@ -49,7 +49,7 @@ public class PlatformDescriptor : MonoBehaviour
 
     public bool ColorBoost { get; private set; }
 
-    private void Start()
+    protected void Start()
     {
         var eventHandlers = GetComponentsInChildren<PlatformEventHandler>();
 
@@ -71,7 +71,7 @@ public class PlatformDescriptor : MonoBehaviour
         UpdateShinyMaterialSettings();
     }
 
-    private void OnDestroy()
+    protected void OnDestroy()
     {
         if (callbackController != null) callbackController.EventPassedThreshold -= EventPassed;
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
