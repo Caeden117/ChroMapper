@@ -51,4 +51,9 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (idx < 0 || idx >= LightsManagersV3.Length) return -1;
         return LightsManagersV3[idx].GroupId;
     }
+
+    public void LightColorEventPassed(BeatmapLightColorEvent e)
+    {
+
+    }
 }
