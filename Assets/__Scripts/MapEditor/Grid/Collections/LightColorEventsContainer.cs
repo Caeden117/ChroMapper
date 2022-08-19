@@ -8,6 +8,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject colorPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private LightColorEventPlacement lightColorEventPlacement;
+    private PlatformDescriptorV3 platformDescriptor;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightColorEvent;
 
     public override BeatmapObjectContainer CreateContainer()
@@ -32,6 +33,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
 
     private void PlatformLoaded(PlatformDescriptor descriptor)
     {
+        platformDescriptor = descriptor as PlatformDescriptorV3;
         StartCoroutine(AfterPlatformLoaded());
     }
     
@@ -43,6 +45,6 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
 
     public void UpdateGrids()
     {
-        lightColorEventPlacement.SetGridSize();
+        lightColorEventPlacement.SetGridSize(platformDescriptor.LightsManagersV3.Length);
     }
 }
