@@ -7,6 +7,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
 
     [SerializeField] private GameObject colorPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSo;
+    [SerializeField] private LightColorEventPlacement lightColorEventPlacement;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightColorEvent;
 
     public override BeatmapObjectContainer CreateContainer()
@@ -42,6 +43,6 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
 
     public void UpdateGrids()
     {
-
+        lightColorEventPlacement.SetGridSize();
     }
 }
