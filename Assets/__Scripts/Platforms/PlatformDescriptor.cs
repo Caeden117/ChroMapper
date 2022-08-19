@@ -133,7 +133,7 @@ public class PlatformDescriptor : MonoBehaviour
         foreach (var go in DisablableObjects) go.SetActive(!go.activeInHierarchy);
     }
 
-    public void KillLights()
+    public virtual void KillLights()
     {
         foreach (var manager in LightingManagers)
         {

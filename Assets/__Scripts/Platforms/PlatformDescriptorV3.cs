@@ -13,6 +13,8 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private Dictionary<int, int> groupIdToLaneIdx = new Dictionary<int, int>();
 
     private LightColorEventCallbackController lightColorEventCallback;
+    private AudioTimeSyncController atsc;
+
     protected new void Start()
     {
         base.Start();
@@ -25,6 +27,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         {
             Debug.LogError("Unable to find callback, maybe prerequisite is not met?");
         }
+        atsc = FindObjectOfType<AudioTimeSyncController>();
         lightColorEventCallback.ObjectPassedThreshold += LightColorEventPassed;
     }
 
@@ -60,8 +63,80 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         return LightsManagersV3[idx].GroupId;
     }
 
+    public static IEnumerable<T> Partition<T>(IEnumerable<T> list, int section, int partition, bool reverse = false)
+    {
+        if (reverse) list = list.Reverse();
+        var binSize = list.Count() / partition;
+        return list.Where((x, i) => i / binSize == section);
+    }
+
+    public static IEnumerable<T> Range<T>(IEnumerable<T> list, int start, int step, bool reverse = false)
+    {
+        if (reverse) list = list.Reverse();
+        return list.Where((x, i) => i % step == start);
+    }
+
     public void LightColorEventPassed(bool natural, int idx, BeatmapLightColorEvent e)
     {
-        Debug.Log("passed at beat " + e.Time);
+        var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingLights;
+        var color = Color.white;
+        var eb = e.EventBoxes[0];
+        if (eb.EventDatas[0].Color <= 1)
+        {
+            color = eb.EventDatas[0].Color == 1
+                ? (Colors.RedColor)
+                : (Colors.BlueColor);
+        }
+        var filteredLights = eb.Filter.FilterType == 1 
+            ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)
+            : Range(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1);
+        if (filteredLights.Count() == 0) return;
+        float deltaAlpha = eb.BrightnessDistribution;
+        if (eb.BrightnessDistributionType == 1) deltaAlpha /= filteredLights.Count();
+
+        float brightness = eb.EventDatas[0].Brightness;
+        if (eb.Distribution == 0)
+        {
+            // instantly takes affect
+            foreach (var light in filteredLights)
+            {
+                light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
+                light.UpdateTargetAlpha(brightness, 0);
+                brightness += deltaAlpha;
+            }
+        }
+        else
+        {
+            Debug.Log("filtered " + filteredLights.Count());
+            float deltaTime = atsc.GetSecondsFromBeat(eb.Distribution);
+            if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
+            StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, color.Multiply(LightsManager.HDRIntensity), brightness));
+        }
+
     }
+
+    public override void KillLights()
+    {
+        base.KillLights();
+        StopAllCoroutines();
+        foreach (var manager in LightsManagersV3)
+        {
+            if (manager != null)
+                manager.ChangeAlpha(0, 1, manager.ControllingLights);
+        }
+    }
+
+    private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, Color color, float brightness)
+    {
+        Debug.Log("delta time" + deltaTime);
+        foreach (var light in lights)
+        {
+            light.UpdateTargetColor(color, 0);
+            light.UpdateTargetAlpha(brightness, 0);
+            yield return new WaitForSeconds(deltaTime);
+            brightness += deltaAlpha;
+        }
+        yield return null;
+    }
+
 }
