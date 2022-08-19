@@ -6,6 +6,7 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject rotationPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSo;
+    internal PlatformDescriptorV3 platformDescriptor;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightRotationEvent;
 
     public override BeatmapObjectContainer CreateContainer()
@@ -24,5 +25,13 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
         eventAppearanceSo.SetLightRotationEventAppearance(con as BeatmapLightRotationEventContainer);
+    }
+
+    private void Start() => LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
+    private void OnDestroy() => LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
+
+    private void PlatformLoaded(PlatformDescriptor descriptor)
+    {
+        platformDescriptor = descriptor as PlatformDescriptorV3;
     }
 }

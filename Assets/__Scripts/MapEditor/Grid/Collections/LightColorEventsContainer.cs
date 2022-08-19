@@ -8,7 +8,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject colorPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private LightColorEventPlacement lightColorEventPlacement;
-    private PlatformDescriptorV3 platformDescriptor;
+    internal PlatformDescriptorV3 platformDescriptor;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightColorEvent;
 
     public override BeatmapObjectContainer CreateContainer()

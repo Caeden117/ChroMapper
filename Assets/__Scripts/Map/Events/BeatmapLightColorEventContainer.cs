@@ -14,10 +14,9 @@ public class BeatmapLightColorEventContainer : BeatmapEventContainer
 
     public override void UpdateGridPosition()
     {
-        var position = ColorEventData.GetPosition();
         transform.localPosition = new Vector3(
-            position.x,
-            position.y,
+            ColorEventsContainer.platformDescriptor.GroupIdToLaneIndex(ColorEventData.Group) + 0.5f,
+            0.5f,
             ColorEventData.Time * EditorScaleController.EditorScale
             );
     }
