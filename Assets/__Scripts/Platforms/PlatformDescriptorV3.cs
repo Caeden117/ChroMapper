@@ -79,38 +79,20 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     public void LightColorEventPassed(bool natural, int idx, BeatmapLightColorEvent e)
     {
         var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingLights;
-        var color = Color.white;
         var eb = e.EventBoxes[0];
-        if (eb.EventDatas[0].Color <= 1)
-        {
-            color = eb.EventDatas[0].Color == 1
-                ? (Colors.RedColor)
-                : (Colors.BlueColor);
-        }
+
         var filteredLights = eb.Filter.FilterType == 1 
             ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)
             : Range(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1);
         if (filteredLights.Count() == 0) return;
+
         float deltaAlpha = eb.BrightnessDistribution;
         if (eb.BrightnessDistributionType == 1) deltaAlpha /= filteredLights.Count();
-
-        float brightness = eb.EventDatas[0].Brightness;
-        if (eb.Distribution == 0)
+        float deltaTime = atsc.GetSecondsFromBeat(eb.Distribution);
+        if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
+        foreach (var ebd in eb.EventDatas)
         {
-            // instantly takes affect
-            foreach (var light in filteredLights)
-            {
-                light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
-                light.UpdateTargetAlpha(brightness, 0);
-                brightness += deltaAlpha;
-            }
-        }
-        else
-        {
-            Debug.Log("filtered " + filteredLights.Count());
-            float deltaTime = atsc.GetSecondsFromBeat(eb.Distribution);
-            if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
-            StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, color.Multiply(LightsManager.HDRIntensity), brightness));
+            StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, ebd));
         }
 
     }
@@ -126,14 +108,22 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         }
     }
 
-    private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, Color color, float brightness)
+    private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, 
+        BeatmapLightColorEventData data)
     {
-        Debug.Log("delta time" + deltaTime);
+        float afterSeconds = atsc.GetSecondsFromBeat(data.AddedBeat);
+        if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
+        var color = Color.white;
+        if (data.Color == 1) color = Colors.BlueColor;
+        else if (data.Color == 0) color = Colors.RedColor;
+        color = color.Multiply(LightsManager.HDRIntensity);
+        var brightness = data.Brightness;
         foreach (var light in lights)
         {
             light.UpdateTargetColor(color, 0);
             light.UpdateTargetAlpha(brightness, 0);
-            yield return new WaitForSeconds(deltaTime);
+            if (deltaTime != 0.0f)
+                yield return new WaitForSeconds(deltaTime);
             brightness += deltaAlpha;
         }
         yield return null;

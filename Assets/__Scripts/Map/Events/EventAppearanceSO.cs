@@ -229,8 +229,8 @@ public class EventAppearanceSO : ScriptableObject
         if (eb.EventDatas[0].Color <= 1)
         {
             color = eb.EventDatas[0].Color == 1
-                ? (boost ? RedBoostColor : RedColor)
-                : (boost ? BlueBoostColor : BlueColor);
+                ? (boost ? BlueBoostColor : BlueColor)
+                : (boost ? RedBoostColor : RedColor);
         }
         color = Color.Lerp(offColor, color, eb.EventDatas[0].Brightness);
 
