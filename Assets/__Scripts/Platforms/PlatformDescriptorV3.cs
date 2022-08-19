@@ -12,6 +12,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     public LightsManagerV3[] LightsManagersV3;
     private Dictionary<int, int> groupIdToLaneIdx = new Dictionary<int, int>();
 
+    private LightColorEventCallbackController lightColorEventCallback;
     protected new void Start()
     {
         base.Start();
@@ -19,10 +20,17 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         {
             groupIdToLaneIdx[LightsManagersV3[i].GroupId] = i;
         }
+        lightColorEventCallback = GameObject.Find("Vertical Grid Callback").GetComponent<LightColorEventCallbackController>();
+        if (lightColorEventCallback == null)
+        {
+            Debug.LogError("Unable to find callback, maybe prerequisite is not met?");
+        }
+        lightColorEventCallback.ObjectPassedThreshold += LightColorEventPassed;
     }
 
     protected new void OnDestroy()
     {
+        lightColorEventCallback.ObjectPassedThreshold -= LightColorEventPassed;
         groupIdToLaneIdx.Clear();
         base.OnDestroy();
     }
@@ -52,8 +60,8 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         return LightsManagersV3[idx].GroupId;
     }
 
-    public void LightColorEventPassed(BeatmapLightColorEvent e)
+    public void LightColorEventPassed(bool natural, int idx, BeatmapLightColorEvent e)
     {
-
+        Debug.Log("passed at beat " + e.Time);
     }
 }
