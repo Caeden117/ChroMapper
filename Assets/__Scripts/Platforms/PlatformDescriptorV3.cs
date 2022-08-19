@@ -9,5 +9,5 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 {
     [Header("V3 Configurations")]
     [Tooltip("V3 LightsMangaers, which supports lightColorEvent/LightRotationEvent")]
-    public LightsManager[] LightsManagersV3;
+    public LightsManagerV3[] LightsManagersV3;
 }
