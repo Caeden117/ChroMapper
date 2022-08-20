@@ -43,7 +43,7 @@ public class PrefabEditorData : MonoBehaviour
 
     private void Clone(GameObject child)
     {
-        for (int i = 0; i < RepeatTimes; ++i)
+        for (int i = 0; i < RepeatTimes - 1; ++i)
         {
             Instantiate(child, transform);
         }
