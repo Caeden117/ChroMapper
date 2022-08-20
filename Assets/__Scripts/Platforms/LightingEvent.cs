@@ -34,6 +34,8 @@ public class LightingEvent : MonoBehaviour
 
     private Func<float, float> easing = Easing.ByName["easeLinear"];
 
+    public int LightIdx = -1; // each light in the group has its unique LightIdx. This is used in LightsManagerV3
+
     private void Start()
     {
         lightPropertyBlock = new MaterialPropertyBlock();

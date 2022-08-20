@@ -17,6 +17,12 @@ public class LightsManagerV3 : LightsManager
     protected new IEnumerator Start()
     {
         yield return base.Start();
+        var lights = GetComponentsInChildren<LightingEvent>();
+        for (int i = 0; i < lights.Length; ++i)
+        {
+            lights[i].LightIdx = i;
+        }
+
         foreach (var rot in GetComponentsInChildren<RotatingEvent>())
         {
             ControllingRotations.Add(rot);
