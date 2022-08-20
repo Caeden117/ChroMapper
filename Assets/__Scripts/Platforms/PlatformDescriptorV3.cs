@@ -88,6 +88,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
     public void LightColorEventPassed(bool natural, int idx, BeatmapLightColorEvent e)
     {
+        if (GroupIdToLaneIndex(e.Group) == -1) return;
         var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingLights;
         var eb = e.EventBoxes[0];
 
@@ -141,6 +142,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
     public void LightRotationEventPassed(bool natural, int idx, BeatmapLightRotationEvent e)
     {
+        if (GroupIdToLaneIndex(e.Group) == -1) return;
         var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingRotations;
         var eb = e.EventBoxes[0];
 
@@ -166,12 +168,20 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     {
         float afterSeconds = atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
+        float rotation = data.RotationValue;
         foreach (var light in lights)
         {
-            if (axis == 0) light.UpdateXRotation();
-            else light.UpdateYRotation();
+            if (axis == 0)
+            {
+                light.UpdateXRotation(rotation, 0);
+            }
+            else
+            {
+                light.UpdateYRotation(rotation, 0);
+            }
             if (deltaTime != 0)
                 yield return new WaitForSeconds(deltaTime);
+            rotation += deltaRotation;
         }
         yield return null;
     }

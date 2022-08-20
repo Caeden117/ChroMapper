@@ -1,3 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +20,7 @@ public class RotatingEvent : MonoBehaviour
         Easing.Quadratic.InOut,
     };
 
-    private Func<float, float> currentEasingFn;
+    private Func<float, float> currentEasingFn = easingFunctions[0];
 
     private float rotatingTime;
     private float timeToTransitionX;
@@ -25,6 +29,8 @@ public class RotatingEvent : MonoBehaviour
     private float currentYDegree;
     private float targetXDegree;
     private float targetYDegree;
+
+    internal LightsManagerV3 lightsManager;
 
     protected void Update()
     {
@@ -42,13 +48,20 @@ public class RotatingEvent : MonoBehaviour
         return easingFunctions[i];
     }
 
-    public void UpdateXRotation()
+    public void UpdateXRotation(float rotation, float timeToTransition)
     {
-
+        if (lightsManager.XFlip) rotation = -rotation;
+        targetXDegree = rotation;
+        timeToTransitionX = timeToTransition;
+        if (timeToTransition == 0) currentXDegree = rotation;
     }
 
-    public void UpdateYRotation()
+    public void UpdateYRotation(float rotation, float timeToTransition)
     {
-
+        if (lightsManager.YFlip) rotation = -rotation;
+        targetYDegree = rotation;
+        timeToTransitionY = timeToTransition;
+        if (timeToTransition == 0) currentYDegree = rotation;
     }
 }
+

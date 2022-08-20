@@ -20,6 +20,7 @@ public class LightsManagerV3 : LightsManager
         foreach (var rot in GetComponentsInChildren<RotatingEvent>())
         {
             ControllingRotations.Add(rot);
+            rot.lightsManager = this;
         }
     }
 
