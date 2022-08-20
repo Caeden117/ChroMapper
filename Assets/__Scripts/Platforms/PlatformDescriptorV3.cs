@@ -13,6 +13,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private Dictionary<int, int> groupIdToLaneIdx = new Dictionary<int, int>();
 
     private LightColorEventCallbackController lightColorEventCallback;
+    private LightRotationEventCallbackController lightRotationEventCallback;
     private AudioTimeSyncController atsc;
 
     protected new void Start()
@@ -22,13 +23,22 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         {
             groupIdToLaneIdx[LightsManagersV3[i].GroupId] = i;
         }
+
         lightColorEventCallback = GameObject.Find("Vertical Grid Callback").GetComponent<LightColorEventCallbackController>();
         if (lightColorEventCallback == null)
         {
             Debug.LogError("Unable to find callback, maybe prerequisite is not met?");
         }
-        atsc = FindObjectOfType<AudioTimeSyncController>();
         lightColorEventCallback.ObjectPassedThreshold += LightColorEventPassed;
+
+        lightRotationEventCallback = GameObject.Find("Vertical Grid Callback").GetComponent<LightRotationEventCallbackController>();
+        if (lightColorEventCallback == null)
+        {
+            Debug.LogError("Unable to find callback, maybe prerequisite is not met?");
+        }
+        lightRotationEventCallback.ObjectPassedThreshold += LightRotationEventPassed;
+
+        atsc = FindObjectOfType<AudioTimeSyncController>();
     }
 
     protected new void OnDestroy()
@@ -129,4 +139,8 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         yield return null;
     }
 
+    public void LightRotationEventPassed(bool natural, int idx, BeatmapLightRotationEvent e)
+    {
+        Debug.Log("rotation passed at" + e.Time);
+    }
 }
