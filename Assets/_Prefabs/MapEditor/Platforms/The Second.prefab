@@ -2708,7 +2708,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 3
-  Rotatable: 0
+  XRotatable: 0
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!1 &1429818570591515062
 GameObject:
   m_ObjectHideFlags: 0
@@ -3427,7 +3430,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 6
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 1
+  YFlip: 0
 --- !u!114 &1411987913984771504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3654,7 +3660,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 9
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 1
+  YFlip: 0
 --- !u!114 &9118687697134094378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4588,7 +4597,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 2
-  Rotatable: 0
+  XRotatable: 0
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!1 &2328252276135081718
 GameObject:
   m_ObjectHideFlags: 0
@@ -4809,7 +4821,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 10
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 1
+  YFlip: 0
 --- !u!114 &4729124049626198144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6815,7 +6830,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 8
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!114 &6893769157565222583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7334,7 +7352,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 11
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!114 &2008150125767906746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7509,7 +7530,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 13
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 1
+  YFlip: 0
 --- !u!114 &6701766998509832972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8763,7 +8787,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 5
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!114 &5115877847189192098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9903,7 +9930,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 1
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!1 &4859091779695705872
 GameObject:
   m_ObjectHideFlags: 0
@@ -9959,7 +9989,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 12
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!114 &2174725314347328403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11871,7 +11904,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 4
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 1
+  YFlip: 0
 --- !u!114 &783420839946309185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16074,7 +16110,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 7
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!114 &5170811344687907213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16976,7 +17015,10 @@ MonoBehaviour:
   GroupingMultiplier: 1
   GroupingOffset: 0.001
   GroupId: 0
-  Rotatable: 1
+  XRotatable: 1
+  YRotatable: 0
+  XFlip: 0
+  YFlip: 0
 --- !u!1 &7663217289046600023
 GameObject:
   m_ObjectHideFlags: 0
