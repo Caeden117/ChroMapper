@@ -141,6 +141,38 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
     public void LightRotationEventPassed(bool natural, int idx, BeatmapLightRotationEvent e)
     {
-        Debug.Log("rotation passed at" + e.Time);
+        var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingRotations;
+        var eb = e.EventBoxes[0];
+
+        if (eb.Axis == 0 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].XRotatable) return;
+        if (eb.Axis == 1 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].YRotatable) return;
+
+        var filteredLights = eb.Filter.FilterType == 1
+            ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)
+            : Range(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1);
+        if (filteredLights.Count() == 0) return;
+        float deltaRotation = eb.RotationDistribution;
+        if (eb.RotationDistributionType == 1) deltaRotation /= filteredLights.Count();
+        float deltaTime = atsc.GetSecondsFromBeat(eb.Distribution);
+        if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
+        foreach (var ebd in eb.EventDatas)
+        {
+            StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, ebd));
+        }
+    }
+
+    private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis,
+        BeatmapLightRotationEventData data)
+    {
+        float afterSeconds = atsc.GetSecondsFromBeat(data.AddedBeat);
+        if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
+        foreach (var light in lights)
+        {
+            if (axis == 0) light.UpdateXRotation();
+            else light.UpdateYRotation();
+            if (deltaTime != 0)
+                yield return new WaitForSeconds(deltaTime);
+        }
+        yield return null;
     }
 }

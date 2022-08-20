@@ -25,7 +25,7 @@ public class LightsManager : MonoBehaviour
     public Dictionary<int, int> LightIDPlacementMapReverse;
     private int previousValue;
 
-    private IEnumerator Start()
+    protected IEnumerator Start()
     {
         yield return null;
         LoadOldLightOrder();
