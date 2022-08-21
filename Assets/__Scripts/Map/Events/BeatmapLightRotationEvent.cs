@@ -10,7 +10,7 @@ public class BeatmapLightRotationEventData : BeatmapObject
     public int Transition; // p
     public int EaseType; // e
     public int AdditionalLoop; // l
-    public int RotationValue; // r
+    public float RotationValue; // r
     public int RotationDirection; // o
 
     public BeatmapLightRotationEventData(JSONNode node)
@@ -19,7 +19,7 @@ public class BeatmapLightRotationEventData : BeatmapObject
         Transition = RetrieveRequiredNode(node, "p").AsInt;
         EaseType = RetrieveRequiredNode(node, "e").AsInt;
         AdditionalLoop = RetrieveRequiredNode(node, "l").AsInt;
-        RotationValue = RetrieveRequiredNode(node, "r").AsInt;
+        RotationValue = RetrieveRequiredNode(node, "r").AsFloat;
         RotationDirection = RetrieveRequiredNode(node, "o").AsInt;
     }
     public override ObjectType BeatmapType { get; set; } = ObjectType.LightColorEvent;
