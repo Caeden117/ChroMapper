@@ -101,11 +101,11 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         return list.Where((x, i) => i % step == start);
     }
 
-    public Color InferColor(int c, bool boost = false)
+    public Color InferColor(int c)
     {
         var color = Color.white;
-        if (c == 1) color = Colors.BlueColor;
-        else if (c == 0) color = Colors.RedColor;
+        if (c == 1) color = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
+        else if (c == 0) color = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
         return color;
     }
 
