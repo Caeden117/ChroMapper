@@ -110,7 +110,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
         var filteredLights = eb.Filter.FilterType == 1 
             ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)
-            : Range(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1);
+            : Range(allLights, eb.Filter.Partition, eb.Filter.Section, eb.Filter.Reverse == 1);
         if (filteredLights.Count() == 0) return;
 
         float deltaAlpha = eb.BrightnessDistribution;
@@ -178,7 +178,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
         var filteredLights = eb.Filter.FilterType == 1
             ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)
-            : Range(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1);
+            : Range(allLights, eb.Filter.Partition, eb.Filter.Section, eb.Filter.Reverse == 1);
         if (filteredLights.Count() == 0) return;
         float deltaRotation = eb.RotationDistribution;
         if (eb.RotationDistributionType == 1) deltaRotation /= filteredLights.Count();

@@ -200,7 +200,7 @@ public class EventAppearanceSO : ScriptableObject
                 if (filter.Section == 0 && filter.Partition == 1) return "";
                 return (filter.Reverse != 0 ? "-" : "") + (filter.Section + 1) + "/" + filter.Partition;
             case 2: // python indexing like text
-                return filter.Section + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Partition;
+                return filter.Partition + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Section;
             default:
                 Debug.LogError("Unexpected filter type " + filter.FilterType);
                 return "";
