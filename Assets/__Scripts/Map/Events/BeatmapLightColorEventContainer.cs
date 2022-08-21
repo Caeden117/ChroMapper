@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -14,9 +15,14 @@ public class BeatmapLightColorEventContainer : BeatmapEventContainer
 
     public override void UpdateGridPosition()
     {
+        var stackList = ColorEventsContainer.GetBetween(ColorEventData.Time - 1e-3f, ColorEventData.Time + 1e-3f)
+            .Cast<BeatmapLightColorEvent>()
+            .Where(x => x.Group == ColorEventData.Group)
+            .ToList();
+        int y = stackList.IndexOf(ColorEventData);
         transform.localPosition = new Vector3(
             ColorEventsContainer.platformDescriptor.GroupIdToLaneIndex(ColorEventData.Group) + 0.5f,
-            0.5f,
+            y + 0.5f,
             ColorEventData.Time * EditorScaleController.EditorScale
             );
     }

@@ -215,7 +215,8 @@ public class BeatSaberMapV3 : BeatSaberMap
                         foreach (JSONNode n in node) colorBoostBeatmapEventsList.Add(new ColorBoostEvent(n));
                         break;
                     case "lightColorEventBoxGroups":
-                        foreach (JSONNode n in node) lightColorEventBoxGroupsList.Add(new BeatmapLightColorEvent(n));
+                        foreach (JSONNode n in node) 
+                            lightColorEventBoxGroupsList.AddRange(BeatmapLightColorEvent.SplitEventBoxes(new BeatmapLightColorEvent(n)));
                         break;
                     case "lightRotationEventBoxGroups":
                         foreach (JSONNode n in node) lightRotationEventBoxGroupsList.Add(new BeatmapLightRotationEvent(n));

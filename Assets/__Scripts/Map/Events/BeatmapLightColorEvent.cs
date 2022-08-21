@@ -104,6 +104,23 @@ public class BeatmapLightColorEvent : BeatmapObject
         }
     }
 
+    public BeatmapLightColorEvent(float b, int g, BeatmapLightColorEventBox e)
+    {
+        Beat = b;
+        Group = g;
+        EventBoxes.Add(e);
+    }
+
+    public static List<BeatmapLightColorEvent> SplitEventBoxes(BeatmapLightColorEvent e)
+    {
+        var ret = new List<BeatmapLightColorEvent>();
+        foreach (var eb in e.EventBoxes)
+        {
+            ret.Add(new BeatmapLightColorEvent(e.Time, e.Group, eb));
+        }
+        return ret;
+    }
+
     public override ObjectType BeatmapType { get; set; } = ObjectType.LightColorEvent;
 
     public override JSONNode ConvertToJson()
