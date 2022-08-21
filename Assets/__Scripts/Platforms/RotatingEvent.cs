@@ -37,11 +37,12 @@ public class RotatingEvent : MonoBehaviour
     {
         rotatingTime += Time.deltaTime;
         transform.rotation = Quaternion.Euler(
-            Mathf.LerpAngle(currentYDegree, targetYDegree, currentEasingFn(rotatingTime / timeToTransitionX)),
+            Mathf.LerpAngle(currentYDegree, targetYDegree, currentEasingFn(rotatingTime / timeToTransitionY)),
             0,
-            Mathf.LerpAngle(currentXDegree, targetXDegree, currentEasingFn(rotatingTime / timeToTransitionY))
+            Mathf.LerpAngle(currentXDegree, targetXDegree, currentEasingFn(rotatingTime / timeToTransitionX))
             );
     }
+
 
     private Func<float, float> GetEasingFunction(int i)
     {
@@ -51,15 +52,19 @@ public class RotatingEvent : MonoBehaviour
 
     public void UpdateXRotation(float rotation, float timeToTransition)
     {
+        Debug.Log("X update " + rotation + " " +timeToTransition);
         if (lightsManager.XFlip) rotation = -rotation;
+        rotatingTime = 0;
         targetXDegree = rotation;
         timeToTransitionX = timeToTransition;
         if (timeToTransition == 0) currentXDegree = rotation;
+        Debug.Log($"current X is {currentXDegree}, next is {targetXDegree}, transition {timeToTransitionX}");
     }
 
     public void UpdateYRotation(float rotation, float timeToTransition)
     {
         if (lightsManager.YFlip) rotation = -rotation;
+        rotatingTime = 0;
         targetYDegree = rotation;
         timeToTransitionY = timeToTransition;
         if (timeToTransition == 0) currentYDegree = rotation;

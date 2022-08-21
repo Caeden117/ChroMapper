@@ -147,14 +147,17 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
             if (i < 0)
             {
                 i = ~i;
-                if (i < list.Count - 1)
+                if (i < list.Count)
                 {
-                    data = list[i + 1];
-                    return true;
+                    if (Mathf.Approximately(list[i].Time, time)) ++i;
+                    if (i < list.Count)
+                    {
+                        data = list[i];
+                        return true;
+                    }
                 }
-                return false;
             }
-            if (i != list.Count - 1)
+            else if (i < list.Count - 1)
             {
                 data = list[i + 1];
                 return true;

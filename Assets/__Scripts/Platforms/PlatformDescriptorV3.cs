@@ -17,6 +17,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private AudioTimeSyncController atsc;
 
     private LightColorEventsContainer lightColorEventsContainer;
+    private LightRotationEventsContainer lightRotationEventsContainer;
 
     protected new void Start()
     {
@@ -46,6 +47,12 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (lightColorEventsContainer == null)
         {
             Debug.LogError("Unable to find lightColorEventsContainer");
+        }
+
+        lightRotationEventsContainer = FindObjectOfType<LightRotationEventsContainer>();
+        if (lightRotationEventsContainer == null)
+        {
+            Debug.LogError("Unable to find lightRotationEventsContainer");
         }
     }
 
@@ -186,29 +193,50 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
         foreach (var ebd in eb.EventDatas)
         {
-            StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, ebd));
+            StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, e.Group, e.Time, ebd));
         }
     }
 
     private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis,
-        BeatmapLightRotationEventData data)
+        int group, float baseTime, BeatmapLightRotationEventData data)
     {
         float afterSeconds = atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
         float rotation = data.RotationValue;
+        float extraTime = 0;
         foreach (var light in lights)
         {
             if (axis == 0)
             {
                 light.UpdateXRotation(rotation, 0);
+                if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
+                    baseTime + extraTime + data.Time, out var nextData))
+                {
+                    Debug.Log($"{baseTime},({group}, {light.RotationIdx}) get {nextData.Time}");
+                    if (nextData.Transition == 0)
+                    {
+                        var timeToTransition = atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                        light.UpdateXRotation(nextData.RotationValue, timeToTransition);
+                    }
+                }
             }
             else
             {
                 light.UpdateYRotation(rotation, 0);
+                if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx,
+                    baseTime + extraTime + data.Time, out var nextData))
+                {
+                    if (nextData.Transition == 0)
+                    {
+                        var timeToTransition = atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                        light.UpdateYRotation(nextData.RotationValue, timeToTransition);
+                    }
+                }
             }
             if (deltaTime != 0)
                 yield return new WaitForSeconds(deltaTime);
             rotation += deltaRotation;
+            extraTime += deltaTime;
         }
         yield return null;
     }

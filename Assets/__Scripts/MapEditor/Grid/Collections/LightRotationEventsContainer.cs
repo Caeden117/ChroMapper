@@ -105,4 +105,41 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
             }
         }
     }
+
+    /// <summary>
+    /// Giving group and rotation index, return next data that has effect on this object
+    /// </summary>
+    /// <param name="group"></param>
+    /// <param name="idx"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public bool TryGetNextLightRotationEventData(int group, int idx, float time, out BeatmapLightRotationEventData data)
+    {
+        data = null;
+        if (nextEventDict.TryGetValue((group, idx), out var list))
+        {
+            var fakeData = new BeatmapLightRotationEventData(time, 0, 0, 0, 0, 0);
+            int i = list.BinarySearch(fakeData, new BeatmapObjectComparer());
+            if (i < 0)
+            {
+                i = ~i;
+                if (i < list.Count)
+                {
+                    if (Mathf.Approximately(list[i].Time, time)) ++i;
+                    if (i < list.Count)
+                    {
+                        data = list[i];
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else if (i < list.Count - 1)
+            {
+                data = list[i + 1];
+                return true;
+            }
+        }
+        return false;
+    }
 }
