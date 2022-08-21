@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BeatmapLightColorEventData: BeatmapObject
 {
-    public float AddedBeat; // b
+    public float AddedBeat { get => Time; set => Time = value; } // b, actually it shouldn't be Time, but for simply comparison just make it as Time
     public int TransitionType; // i
     public int Color; // c
     public float Brightness; // s
@@ -20,6 +20,16 @@ public class BeatmapLightColorEventData: BeatmapObject
         Brightness = RetrieveRequiredNode(node, "s").AsFloat;
         FlickerFrequency = RetrieveRequiredNode(node, "f").AsInt;
     }
+
+    public BeatmapLightColorEventData(float b, int i, int c, float s, int f)
+    {
+        AddedBeat = b;
+        TransitionType = i;
+        Color = c;
+        Brightness = s;
+        FlickerFrequency = f;
+    }
+
     public override ObjectType BeatmapType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public override JSONNode ConvertToJson()

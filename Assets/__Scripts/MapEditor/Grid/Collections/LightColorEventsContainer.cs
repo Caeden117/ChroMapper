@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +72,8 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     }
 
     /// <summary>
-    /// Group all events based on group. Then for each group, group them based on lightIndex
+    /// Group all events based on group. Then for each group, group them based on lightIndex.
+    /// Actually the whole lights are precomputed and saved, so that we could get the next event with right brightness and time
     /// </summary>
     public void LinkAllLightColorEventDatas()
     {
@@ -88,22 +90,35 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
 
             foreach (var colorEvent in group)
             {
+                float baseTime = colorEvent.Time;
                 foreach (var colorEventBox in colorEvent.EventBoxes)
                 {
                     var filteredLights = colorEventBox.Filter.FilterType == 1
                         ? PlatformDescriptorV3.Partition(lights, colorEventBox.Filter.Section, colorEventBox.Filter.Partition)
                         : PlatformDescriptorV3.Range(lights, colorEventBox.Filter.Section, colorEventBox.Filter.Partition);
+
+                    float deltaAlpha = colorEventBox.BrightnessDistribution;
+                    if (colorEventBox.BrightnessDistributionType == 1) deltaAlpha /= filteredLights.Count();
+                    float deltaTime = colorEventBox.Distribution;
+                    if (colorEventBox.DistributionType == 1) deltaTime /= filteredLights.Count();
+
                     foreach (var colorEventData in colorEventBox.EventDatas)
                     {
+                        var brightness = colorEventData.Brightness;
+                        float extraTime = 0.0f;
                         foreach (var singleLight in filteredLights)
                         {
                             int lightIdx = singleLight.LightIdx;
-                            while (lists[lightIdx].Count > 0 && lists[lightIdx].Last().Time > colorEventData.Time + 1e-3)
+                            var thisData = new BeatmapLightColorEventData(baseTime + extraTime + colorEventData.Time, 
+                                colorEventData.TransitionType, colorEventData.Color, brightness, colorEventData.FlickerFrequency);
+                            while (lists[lightIdx].Count > 0 && lists[lightIdx].Last().Time > thisData.Time + 1e-3)
                             {
                                 lists[lightIdx].RemoveAt(lists[lightIdx].Count - 1);
                             }
-                            lists[lightIdx].Add(colorEventData);
+                            lists[lightIdx].Add(thisData);
+                            brightness += deltaAlpha;
                         }
+                        extraTime += deltaTime;
                     }
                 }
             }
@@ -122,9 +137,29 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     /// <param name="idx"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public bool TryGetNextLightColorEventData(int group, int idx, in BeatmapLightColorEventData inData, out BeatmapLightColorEventData data)
+    public bool TryGetNextLightColorEventData(int group, int idx, float time, out BeatmapLightColorEventData data)
     {
         data = null;
+        if (nextEventDict.TryGetValue((group, idx), out var list))
+        {
+            var fakeData = new BeatmapLightColorEventData(time, 0, 0, 0, 0);
+            int i = list.BinarySearch(fakeData, new BeatmapObjectComparer());
+            if (i < 0)
+            {
+                i = ~i;
+                if (i < list.Count - 1)
+                {
+                    data = list[i + 1];
+                    return true;
+                }
+                return false;
+            }
+            if (i != list.Count - 1)
+            {
+                data = list[i + 1];
+                return true;
+            }
+        }
         return false;
     }
 }

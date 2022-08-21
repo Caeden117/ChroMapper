@@ -16,6 +16,8 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private LightRotationEventCallbackController lightRotationEventCallback;
     private AudioTimeSyncController atsc;
 
+    private LightColorEventsContainer lightColorEventsContainer;
+
     protected new void Start()
     {
         base.Start();
@@ -39,6 +41,12 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         lightRotationEventCallback.ObjectPassedThreshold += LightRotationEventPassed;
 
         atsc = FindObjectOfType<AudioTimeSyncController>();
+
+        lightColorEventsContainer = FindObjectOfType<LightColorEventsContainer>();
+        if (lightColorEventsContainer == null)
+        {
+            Debug.LogError("Unable to find lightColorEventsContainer");
+        }
     }
 
     protected new void OnDestroy()
@@ -86,6 +94,14 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         return list.Where((x, i) => i % step == start);
     }
 
+    public Color InferColor(int c, bool boost = false)
+    {
+        var color = Color.white;
+        if (c == 1) color = Colors.BlueColor;
+        else if (c == 0) color = Colors.RedColor;
+        return color;
+    }
+
     public void LightColorEventPassed(bool natural, int idx, BeatmapLightColorEvent e)
     {
         if (GroupIdToLaneIndex(e.Group) == -1) return;
@@ -103,7 +119,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
         foreach (var ebd in eb.EventDatas)
         {
-            StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, ebd));
+            StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, e.Group, e.Time, ebd));
         }
 
     }
@@ -120,22 +136,33 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     }
 
     private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, 
-        BeatmapLightColorEventData data)
+        int group, float baseTime, BeatmapLightColorEventData data)
     {
         float afterSeconds = atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
-        var color = Color.white;
-        if (data.Color == 1) color = Colors.BlueColor;
-        else if (data.Color == 0) color = Colors.RedColor;
+        var color = InferColor(data.Color);
         color = color.Multiply(LightsManager.HDRIntensity);
         var brightness = data.Brightness;
+        float extraTime = 0;
         foreach (var light in lights)
         {
             light.UpdateTargetColor(color, 0);
             light.UpdateTargetAlpha(brightness, 0);
+            if (lightColorEventsContainer.TryGetNextLightColorEventData(group, light.LightIdx, baseTime + extraTime + data.Time, out var nextData))
+            {
+                if (nextData.TransitionType == 1)
+                {
+                    var nextColor = InferColor(nextData.Color);
+                    var nextAlpha = nextData.Brightness;
+                    var timeToTransition = atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
+                    light.UpdateTargetColor(nextColor.Multiply(LightsManager.HDRIntensity), timeToTransition);
+                    light.UpdateTargetAlpha(nextAlpha, timeToTransition);
+                }
+            }
             if (deltaTime != 0.0f)
                 yield return new WaitForSeconds(deltaTime);
             brightness += deltaAlpha;
+            extraTime += deltaTime;
         }
         yield return null;
     }
