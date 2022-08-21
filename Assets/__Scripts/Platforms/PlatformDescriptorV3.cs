@@ -14,7 +14,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
     private LightColorEventCallbackController lightColorEventCallback;
     private LightRotationEventCallbackController lightRotationEventCallback;
-    private AudioTimeSyncController atsc;
 
     private LightColorEventsContainer lightColorEventsContainer;
     private LightRotationEventsContainer lightRotationEventsContainer;
@@ -40,8 +39,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             Debug.LogError("Unable to find callback, maybe prerequisite is not met?");
         }
         lightRotationEventCallback.ObjectPassedThreshold += LightRotationEventPassed;
-
-        atsc = FindObjectOfType<AudioTimeSyncController>();
 
         lightColorEventsContainer = FindObjectOfType<LightColorEventsContainer>();
         if (lightColorEventsContainer == null)
@@ -122,7 +119,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
         float deltaAlpha = eb.BrightnessDistribution;
         if (eb.BrightnessDistributionType == 1) deltaAlpha /= filteredLights.Count();
-        float deltaTime = atsc.GetSecondsFromBeat(eb.Distribution);
+        float deltaTime = Atsc.GetSecondsFromBeat(eb.Distribution);
         if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
         foreach (var ebd in eb.EventDatas)
         {
@@ -145,7 +142,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, 
         int group, float baseTime, BeatmapLightColorEventData data)
     {
-        float afterSeconds = atsc.GetSecondsFromBeat(data.AddedBeat);
+        float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
         var color = InferColor(data.Color);
         color = color.Multiply(LightsManager.HDRIntensity);
@@ -161,7 +158,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 {
                     var nextColor = InferColor(nextData.Color);
                     var nextAlpha = nextData.Brightness;
-                    var timeToTransition = atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
+                    var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
                     light.UpdateTargetColor(nextColor.Multiply(LightsManager.HDRIntensity), timeToTransition);
                     light.UpdateTargetAlpha(nextAlpha, timeToTransition);
                 }
@@ -189,7 +186,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (filteredLights.Count() == 0) return;
         float deltaRotation = eb.RotationDistribution;
         if (eb.RotationDistributionType == 1) deltaRotation /= filteredLights.Count();
-        float deltaTime = atsc.GetSecondsFromBeat(eb.Distribution);
+        float deltaTime = Atsc.GetSecondsFromBeat(eb.Distribution);
         if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
         foreach (var ebd in eb.EventDatas)
         {
@@ -200,7 +197,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis,
         int group, float baseTime, BeatmapLightRotationEventData data)
     {
-        float afterSeconds = atsc.GetSecondsFromBeat(data.AddedBeat);
+        float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
         float rotation = data.RotationValue;
         float extraTime = 0;
@@ -214,7 +211,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 {
                     if (nextData.Transition == 0)
                     {
-                        var timeToTransition = atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                        var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
                         light.UpdateXRotation(nextData.RotationValue, timeToTransition);
                     }
                 }
@@ -227,7 +224,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 {
                     if (nextData.Transition == 0)
                     {
-                        var timeToTransition = atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                        var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
                         light.UpdateYRotation(nextData.RotationValue, timeToTransition);
                     }
                 }

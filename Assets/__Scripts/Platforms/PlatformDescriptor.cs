@@ -39,7 +39,7 @@ public class PlatformDescriptor : MonoBehaviour
     private readonly Dictionary<int, List<PlatformEventHandler>> platformEventHandlers =
         new Dictionary<int, List<PlatformEventHandler>>();
 
-    private AudioTimeSyncController atsc;
+    protected AudioTimeSyncController Atsc;
 
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
@@ -95,7 +95,7 @@ public class PlatformDescriptor : MonoBehaviour
     {
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
-        atsc = rotationCallback.Atsc;
+        Atsc = rotationCallback.Atsc;
         if (RotationController != null)
         {
             RotationController.RotationCallback = rotationCallback;
@@ -243,7 +243,7 @@ public class PlatformDescriptor : MonoBehaviour
                 break;
         }
 
-        if (atsc != null && atsc.IsPlaying && platformEventHandlers.TryGetValue(e.Type, out var eventHandlers))
+        if (Atsc != null && Atsc.IsPlaying && platformEventHandlers.TryGetValue(e.Type, out var eventHandlers))
         {
             foreach (var handler in eventHandlers)
                 handler.OnEventTrigger(e.Type, e);
@@ -272,7 +272,7 @@ public class PlatformDescriptor : MonoBehaviour
         if (chromaGradients.ContainsKey(group))
         {
             var gradientEvent = chromaGradients[group].GradientEvent;
-            if (atsc.CurrentBeat >= gradientEvent.LightGradient.Duration + gradientEvent.Time ||
+            if (Atsc.CurrentBeat >= gradientEvent.LightGradient.Duration + gradientEvent.Time ||
                 !Settings.Instance.EmulateChromaLite)
             {
                 StopCoroutine(chromaGradients[group].Routine);
@@ -445,7 +445,7 @@ public class PlatformDescriptor : MonoBehaviour
         if (TryGetNextTransitionNote(e, out var transition))
         {
             var targetAlpha = transition.FloatValue;
-            var transitionTime = atsc.GetSecondsFromBeat(transition.Time - e.Time);
+            var transitionTime = Atsc.GetSecondsFromBeat(transition.Time - e.Time);
             var targetColor = InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);
@@ -459,7 +459,7 @@ public class PlatformDescriptor : MonoBehaviour
         var easingFunc = Easing.ByName[gradient.EasingType];
 
         float progress;
-        while ((progress = (atsc.CurrentBeat - gradientEvent.Time) / gradient.Duration) < 1)
+        while ((progress = (Atsc.CurrentBeat - gradientEvent.Time) / gradient.Duration) < 1)
         {
             var lerped = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             if (!SoloAnEventType || gradientEvent.Type == SoloEventType)
