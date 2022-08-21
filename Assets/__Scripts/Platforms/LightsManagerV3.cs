@@ -23,10 +23,12 @@ public class LightsManagerV3 : LightsManager
             lights[i].LightIdx = i;
         }
 
-        foreach (var rot in GetComponentsInChildren<RotatingEvent>())
+        var rotations = GetComponentsInChildren<RotatingEvent>();
+        for (int i = 0; i < rotations.Length; ++i)
         {
-            ControllingRotations.Add(rot);
-            rot.lightsManager = this;
+            ControllingRotations.Add(rotations[i]);
+            rotations[i].lightsManager = this;
+            rotations[i].RotationIdx = i;
         }
     }
 

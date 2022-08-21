@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BeatmapLightRotationEventData : BeatmapObject
 {
-    public float AddedBeat; // b
+    public float AddedBeat { get => Time; set => Time = value; } // b
     public int Transition; // p
     public int EaseType; // e
     public int AdditionalLoop; // l
@@ -22,6 +22,17 @@ public class BeatmapLightRotationEventData : BeatmapObject
         RotationValue = RetrieveRequiredNode(node, "r").AsFloat;
         RotationDirection = RetrieveRequiredNode(node, "o").AsInt;
     }
+
+    public BeatmapLightRotationEventData(float b, int p, int e, int l, float r, int o)
+    {
+        AddedBeat = b;
+        Transition = p;
+        EaseType = e;
+        AdditionalLoop = l;
+        RotationValue = r;
+        RotationDirection = o;
+    }
+
     public override ObjectType BeatmapType { get; set; } = ObjectType.LightColorEvent;
 
     public override JSONNode ConvertToJson()

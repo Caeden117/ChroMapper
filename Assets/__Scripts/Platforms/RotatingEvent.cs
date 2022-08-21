@@ -31,6 +31,7 @@ public class RotatingEvent : MonoBehaviour
     private float targetYDegree;
 
     internal LightsManagerV3 lightsManager;
+    public int RotationIdx;
 
     protected void Update()
     {

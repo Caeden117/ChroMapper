@@ -15,7 +15,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject label;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightColorEvent;
 
-    // (groupId, laneIdx) => ordered list
+    // (groupId, lightIdx) => ordered list
     private Dictionary<(int, int), List<BeatmapLightColorEventData>> nextEventDict = new Dictionary<(int, int), List<BeatmapLightColorEventData>>();
 
     public override BeatmapObjectContainer CreateContainer()
@@ -117,8 +117,8 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
                             }
                             lists[lightIdx].Add(thisData);
                             brightness += deltaAlpha;
+                            extraTime += deltaTime;
                         }
-                        extraTime += deltaTime;
                     }
                 }
             }
