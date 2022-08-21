@@ -199,13 +199,14 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     {
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
-        float rotation = data.RotationValue;
+        float rotation = data.RotationValue + (data.AdditionalLoop * 360.0f);
         float extraTime = 0;
         foreach (var light in lights)
         {
             if (axis == 0)
             {
                 light.UpdateXRotation(rotation, 0);
+                light.SetEaseFunction(data.EaseType);
                 if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
                     baseTime + extraTime + data.Time, out var nextData))
                 {
@@ -219,6 +220,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             else
             {
                 light.UpdateYRotation(rotation, 0);
+                light.SetEaseFunction(data.EaseType);
                 if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx,
                     baseTime + extraTime + data.Time, out var nextData))
                 {

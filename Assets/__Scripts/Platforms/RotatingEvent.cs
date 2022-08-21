@@ -50,6 +50,11 @@ public class RotatingEvent : MonoBehaviour
         return easingFunctions[i];
     }
 
+    public void SetEaseFunction(int type)
+    {
+        currentEasingFn = GetEasingFunction(type);
+    }
+
     public void UpdateXRotation(float rotation, float timeToTransition)
     {
         if (lightsManager.XFlip) rotation = -rotation;
