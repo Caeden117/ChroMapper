@@ -68,6 +68,15 @@ public class BeatSaberMapV3 : BeatSaberMap
 
             MainNode["version"] = Version;
             ParseBaseNoteToV3();
+            LightColorEventBoxGroups.Sort((lhs, rhs) =>
+            {
+                if (lhs.Time != rhs.Time) return lhs.Time.CompareTo(rhs.Time);
+                if (lhs.Group != rhs.Group) return lhs.Group.CompareTo(rhs.Group);
+                return lhs.GetHashCode().CompareTo(rhs.GetHashCode());
+            });
+            LightColorEventBoxGroups = MergeSplittedNotes(LightColorEventBoxGroups, 
+                (lhs, rhs) => Mathf.Approximately(lhs.Time, rhs.Time) && lhs.Group == rhs.Group,
+                (lhs, rhs) => lhs.EventBoxes.AddRange(rhs.EventBoxes));
             /// official nodes
             var bpmEvents = new JSONArray();
             foreach (var b in BpmEvents) bpmEvents.Add(b);
@@ -327,5 +336,30 @@ public class BeatSaberMapV3 : BeatSaberMap
         Events.AddRange(ColorBoostBeatmapEvents.OfType<MapEvent>().ToList());
         Events.AddRange(RotationEvents.OfType<MapEvent>().ToList());
         Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
+    }
+
+    /// <summary>
+    /// Merge an ordered list neighbor items based on the giving function.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <param name="sameFn"></param>
+    /// <param name="mergeFn"></param>
+    /// <returns></returns>
+    private List<T> MergeSplittedNotes<T>(List<T> list, Func<T, T, bool> sameFn, Action<T, T> mergeFn)
+    {
+        var ret = new List<T>();
+        for (int i = 0; i < list.Count;)
+        {
+            int j = i + 1;
+            while (j < list.Count && sameFn(list[i], list[j]))
+            {
+                mergeFn(list[i], list[j]);
+                ++j;
+            }
+            ret.Add(list[i]);
+            i = j;
+        }
+        return ret;
     }
 }

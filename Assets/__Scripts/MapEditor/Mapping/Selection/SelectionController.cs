@@ -715,6 +715,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     newObjects[BeatmapObject.ObjectType.Arc].Cast<BeatmapArc>().ToList();
                 (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Chains =
                     newObjects[BeatmapObject.ObjectType.Chain].Cast<BeatmapChain>().ToList();
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).LightColorEventBoxGroups =
+                    newObjects[BeatmapObject.ObjectType.LightColorEvent].Cast<BeatmapLightColorEvent>().ToList();
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).LightRotationEventBoxGroups =
+                    newObjects[BeatmapObject.ObjectType.LightRotationEvent].Cast<BeatmapLightRotationEvent>().ToList();
             }
         }
     }
