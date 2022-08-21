@@ -9,6 +9,8 @@ public class PrefabEditorData : MonoBehaviour
     public Vector3 PositionDelta = new Vector3(0, 0, 1);
     [Tooltip("Doesn't take affect under RearrangeAll option")]
     public int RepeatTimes = 24;
+    [Tooltip("If cloned objects' indices are greater or equal than this range, their light component will be deleted.")]
+    public int LightRange = 999;
     public enum CloneOptions
     {
         CloneFirstAndDeleteOthers,
@@ -45,7 +47,14 @@ public class PrefabEditorData : MonoBehaviour
     {
         for (int i = 0; i < RepeatTimes - 1; ++i)
         {
-            Instantiate(child, transform);
+            var obj = Instantiate(child, transform);
+            if (i >= LightRange)
+            {
+                foreach (var light in obj.GetComponentsInChildren<LightingEvent>())
+                {
+                    DestroyImmediate(light.gameObject);
+                }
+            }
         }
     }
 
