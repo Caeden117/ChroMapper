@@ -11,6 +11,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject colorPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private LightColorEventPlacement lightColorEventPlacement;
+    [SerializeField] private EventsContainer eventsContainer;
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private GameObject label;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightColorEvent;
@@ -35,7 +36,8 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     private void OnDestroy() => LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        eventAppearanceSo.SetLightColorEventAppearance(con as BeatmapLightColorEventContainer, false);
+        eventAppearanceSo.SetLightColorEventAppearance(con as BeatmapLightColorEventContainer, 
+            eventsContainer.AllBoostEvents.FindLast(x => x.Time <= obj.Time)?.Value == 1);
     }
 
     private void PlatformLoaded(PlatformDescriptor descriptor)

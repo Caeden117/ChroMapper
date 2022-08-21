@@ -212,7 +212,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
                     baseTime + extraTime + data.Time, out var nextData))
                 {
-                    Debug.Log($"{baseTime},({group}, {light.RotationIdx}) get {nextData.Time}");
                     if (nextData.Transition == 0)
                     {
                         var timeToTransition = atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
