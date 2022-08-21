@@ -68,6 +68,7 @@ public class BeatSaberMapV3 : BeatSaberMap
 
             MainNode["version"] = Version;
             ParseBaseNoteToV3();
+
             LightColorEventBoxGroups.Sort((lhs, rhs) =>
             {
                 if (lhs.Time != rhs.Time) return lhs.Time.CompareTo(rhs.Time);
@@ -77,6 +78,16 @@ public class BeatSaberMapV3 : BeatSaberMap
             LightColorEventBoxGroups = MergeSplittedNotes(LightColorEventBoxGroups, 
                 (lhs, rhs) => Mathf.Approximately(lhs.Time, rhs.Time) && lhs.Group == rhs.Group,
                 (lhs, rhs) => lhs.EventBoxes.AddRange(rhs.EventBoxes));
+            LightRotationEventBoxGroups.Sort((lhs, rhs) =>
+            {
+                if (lhs.Time != rhs.Time) return lhs.Time.CompareTo(rhs.Time);
+                if (lhs.Group != rhs.Group) return lhs.Group.CompareTo(rhs.Group);
+                return lhs.GetHashCode().CompareTo(rhs.GetHashCode());
+            });
+            LightRotationEventBoxGroups = MergeSplittedNotes(LightRotationEventBoxGroups,
+                (lhs, rhs) => Mathf.Approximately(lhs.Time, rhs.Time) && lhs.Group == rhs.Group,
+                (lhs, rhs) => lhs.EventBoxes.AddRange(rhs.EventBoxes));
+
             /// official nodes
             var bpmEvents = new JSONArray();
             foreach (var b in BpmEvents) bpmEvents.Add(b);
@@ -228,7 +239,8 @@ public class BeatSaberMapV3 : BeatSaberMap
                             lightColorEventBoxGroupsList.AddRange(BeatmapLightColorEvent.SplitEventBoxes(new BeatmapLightColorEvent(n)));
                         break;
                     case "lightRotationEventBoxGroups":
-                        foreach (JSONNode n in node) lightRotationEventBoxGroupsList.Add(new BeatmapLightRotationEvent(n));
+                        foreach (JSONNode n in node) 
+                            lightRotationEventBoxGroupsList.AddRange(BeatmapLightRotationEvent.SplitEventBoxes(new BeatmapLightRotationEvent(n)));
                         break;
                     case "basicEventTypesWithKeywords":
                         foreach (var k in node.Keys)

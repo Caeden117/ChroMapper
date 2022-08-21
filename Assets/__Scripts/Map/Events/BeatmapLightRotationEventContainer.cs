@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BeatmapLightRotationEventContainer : BeatmapEventContainer
@@ -11,9 +12,14 @@ public class BeatmapLightRotationEventContainer : BeatmapEventContainer
 
     public override void UpdateGridPosition()
     {
+        var stackList = RotationEventsContainer.GetBetween(RotationEventData.Time - 1e-3f, RotationEventData.Time + 1e-3f)
+            .Cast<BeatmapLightRotationEvent>()
+            .Where(x => x.Group == RotationEventData.Group)
+            .ToList();
+        int y = stackList.IndexOf(RotationEventData);
         transform.localPosition = new Vector3(
             RotationEventsContainer.platformDescriptor.GroupIdToLaneIndex(RotationEventData.Group) + 0.5f,
-            -0.5f,
+            -(y + 0.5f),
             RotationEventData.Time * EditorScaleController.EditorScale
             );
     }
