@@ -14,14 +14,17 @@ public class MultiNetListener : INetEventListener
 
     protected List<MapperIdentityPacket> Identities = new List<MapperIdentityPacket>();
 
-    private Dictionary<MapperIdentityPacket, GameObject> remotePlayers = new Dictionary<MapperIdentityPacket, GameObject>();
+    private Dictionary<MapperIdentityPacket, RemotePlayerContainer> remotePlayers = new Dictionary<MapperIdentityPacket, RemotePlayerContainer>();
 
     private Transform cameraTransform;
     private AudioTimeSyncController audioTimeSyncController;
+    private TracksManager tracksManager;
+    private RemotePlayerContainer remotePlayerPrefab;
 
     public MultiNetListener()
     {
         NetManager = new NetManager(this);
+        remotePlayerPrefab = Resources.Load<RemotePlayerContainer>("Remote Player");
     }
 
     public virtual void OnConnectionRequest(ConnectionRequest request) { }
@@ -121,11 +124,23 @@ public class MultiNetListener : INetEventListener
                 remotePlayers.Remove(identity);
             }
 
-            remotePlayer = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            remotePlayer = Object.Instantiate(remotePlayerPrefab);
             remotePlayers.Add(identity, remotePlayer);
+
+            var container = remotePlayer.GetComponent<RemotePlayerContainer>();
+            container.AssignIdentity(identity);
         }
 
-        remotePlayer.transform.SetPositionAndRotation(pose.Position, pose.Rotation);
+        var track = tracksManager.GetTrackAtTime(pose.SongPosition).ObjectParentTransform;
+        
+        if (!remotePlayer.transform.IsChildOf(track))
+        {
+            remotePlayer.transform.SetParent(track, true);
+        }
+
+        remotePlayer.transform.localPosition = EditorScaleController.EditorScale * pose.SongPosition * Vector3.forward;
+        remotePlayer.CameraTransform.localPosition = pose.Position;
+        remotePlayer.CameraTransform.localRotation = pose.Rotation;
     }
 
     public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, Packets packetId, INetSerializable serializable)
@@ -208,6 +223,7 @@ public class MultiNetListener : INetEventListener
 
         audioTimeSyncController = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).AudioTimeSyncController;
         cameraTransform = Camera.main.transform;
+        tracksManager = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).GetComponent<TracksManager>();
     }
 
     public void UnsubscribeFromCollectionEvents()

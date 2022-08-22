@@ -28,11 +28,4 @@ public class MultiClientNetListener : MultiNetListener
     {
         MapData = mapData;
     }
-
-    public override void OnMapperPose(MapperIdentityPacket identity, NetPeer peer, MapperPosePacket pose)
-    {
-        Debug.LogError($"Recieve pose from client {identity.ConnectionId}: {pose.Position}");
-
-        base.OnMapperPose(identity, peer, pose);
-    }
 }
