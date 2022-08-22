@@ -1,4 +1,5 @@
 ﻿using System;
+using LiteNetLib.Utils;
 using SimpleJSON;
 
 public class BeatmapBPMChange : BeatmapObject
@@ -11,6 +12,8 @@ public class BeatmapBPMChange : BeatmapObject
     public float BeatsPerBar;
     public float Bpm;
     public float MetronomeOffset;
+
+    public BeatmapBPMChange() { }
 
     public BeatmapBPMChange(JSONNode node)
     {
@@ -39,6 +42,20 @@ public class BeatmapBPMChange : BeatmapObject
         node["_metronomeOffset"] = MetronomeOffset;
         if (CustomData != null) node["_customData"] = CustomData;
         return node;
+    }
+
+    public override void Serialize(NetDataWriter writer)
+    {
+        writer.Put(Time);
+        writer.Put(Bpm);
+        writer.Put(CustomData?.ToString() ?? "null");
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Time = reader.GetFloat();
+        Bpm = reader.GetFloat();
+        CustomData = JSON.Parse(reader.GetString());
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;

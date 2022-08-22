@@ -246,22 +246,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             ? Path.GetExtension(song.SongFilename.ToLower()).Replace(".", "")
             : "";
 
-        if (!string.IsNullOrEmpty(extension) && SongInfoEditUI.ExtensionToAudio.ContainsKey(extension))
-        {
-            var audioType = SongInfoEditUI.ExtensionToAudio[extension];
-
-            yield return null;
-
-            var www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{fullPath}")}",
-                audioType);
-            yield return www.SendWebRequest();
-
-            var clip = DownloadHandlerAudioClip.GetContent(www);
-            if (clip == null)
-                yield break;
-
-            SetDuration(cacheKey, clip.length);
-        }
+        yield return song.LoadAudio((clip) => SetDuration(cacheKey, clip.length), 0, null);
     }
 
     private static bool FindBytes(Stream fs, BinaryReader br, byte[] bytes, int searchLength)

@@ -1,4 +1,5 @@
 ﻿using System;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 using Random = System.Random;
@@ -35,6 +36,24 @@ public class BeatmapBookmark : BeatmapObject
         node["_name"] = Name;
         node["_color"] = Color;
         return node;
+    }
+    public override void Serialize(NetDataWriter writer)
+    {
+        writer.Put(Time);
+        writer.Put(Name);
+        writer.Put(ColorUtility.ToHtmlStringRGBA(Color));
+        writer.Put(CustomData?.ToString() ?? "null");
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Time = reader.GetFloat();
+        Name = reader.GetString();
+        ColorUtility.TryParseHtmlString(reader.GetString(), out Color);
+        if (reader.TryGetString(out var customData))
+        {
+            CustomData = JSON.Parse(customData);
+        }
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
