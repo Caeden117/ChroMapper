@@ -17,7 +17,7 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     protected Dictionary<MapperIdentityPacket, RemotePlayerContainer> RemotePlayers = new Dictionary<MapperIdentityPacket, RemotePlayerContainer>();
 
-    private Transform cameraTransform;
+    private CameraController cameraController;
     private AudioTimeSyncController audioTimeSyncController;
     private TracksManager tracksManager;
     private RemotePlayerContainer remotePlayerPrefab;
@@ -211,8 +211,8 @@ public class MultiNetListener : INetEventListener, IDisposable
     {
         NetManager?.PollEvents();
 
-        if (audioTimeSyncController != null && cameraTransform != null
-            && (cameraTransform.hasChanged || audioTimeSyncController.CurrentBeat != previousCursorBeat))
+        if (audioTimeSyncController != null && cameraController != null
+            && (cameraController.MovingCamera || audioTimeSyncController.CurrentBeat != previousCursorBeat))
         {
             previousCursorBeat = audioTimeSyncController.CurrentBeat;
 
@@ -222,8 +222,8 @@ public class MultiNetListener : INetEventListener, IDisposable
             poseWriter.Put((byte)Packets.MapperPose);
             poseWriter.Put(new MapperPosePacket()
             {
-                Position = cameraTransform.position,
-                Rotation = cameraTransform.rotation,
+                Position = cameraController.transform.position,
+                Rotation = cameraController.transform.rotation,
                 SongPosition = previousCursorBeat
             });
 
@@ -246,7 +246,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         }
 
         audioTimeSyncController = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).AudioTimeSyncController;
-        cameraTransform = Camera.main.transform;
+        cameraController = Camera.main.GetComponent<CameraController>();
         tracksManager = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).GetComponent<TracksManager>();
     }
 
