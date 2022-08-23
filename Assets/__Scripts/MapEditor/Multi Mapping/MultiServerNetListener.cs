@@ -89,13 +89,13 @@ public class MultiServerNetListener : MultiNetListener
             {
                 if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
                 {
-                    SendPacketTo(mapper.MapperPeer, Packets.MapperDisconnect, new byte[] { (byte)disconnectedIdentity.ConnectionId });
+                    SendPacketFrom(disconnectedIdentity, mapper.MapperPeer, Packets.MapperDisconnect, null);
                 }
             }
 
             if (RemotePlayers.TryGetValue(disconnectedIdentity, out var disconnectedPlayer))
             {
-                UnityEngine.Object.Destroy(disconnectedPlayer);
+                UnityEngine.Object.Destroy(disconnectedPlayer.gameObject);
                 RemotePlayers.Remove(disconnectedIdentity);
             }
         }

@@ -22,6 +22,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     private TracksManager tracksManager;
     private RemotePlayerContainer remotePlayerPrefab;
     private float previousCursorBeat = 0;
+    private List<BeatmapObjectContainerCollection> containerCollections = new List<BeatmapObjectContainerCollection>();
 
     public MultiNetListener()
     {
@@ -29,7 +30,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         remotePlayerPrefab = Resources.Load<RemotePlayerContainer>("Remote Player");
     }
 
-    public virtual void Dispose() => NetManager.Stop(true);
+    public virtual void Dispose() => NetManager.Stop();
 
     public virtual void OnConnectionRequest(ConnectionRequest request) { }
 
@@ -71,18 +72,14 @@ public class MultiNetListener : INetEventListener, IDisposable
                 break;
 
             case (byte)Packets.MapperDisconnect:
-                var identityId = reader.GetByte();
-
-                var disconnectedIdentity = Identities.Find(x => x.ConnectionId == identityId);
-
-                if (disconnectedIdentity != null)
+                if (identity != null)
                 {
-                    Identities.Remove(disconnectedIdentity);
+                    Identities.Remove(identity);
                     
-                    if (RemotePlayers.TryGetValue(disconnectedIdentity, out var disconnectedPlayer))
+                    if (RemotePlayers.TryGetValue(identity, out var disconnectedPlayer))
                     {
-                        UnityEngine.Object.Destroy(disconnectedPlayer);
-                        RemotePlayers.Remove(disconnectedIdentity);
+                        UnityEngine.Object.Destroy(disconnectedPlayer.gameObject);
+                        RemotePlayers.Remove(identity);
                     }
                 }
                 break;
@@ -138,7 +135,7 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     public virtual void OnMapperPose(MapperIdentityPacket identity, NetPeer peer, MapperPosePacket pose)
     {
-        if (identity is null) return;
+        if (identity is null || tracksManager == null) return;
 
         if (!RemotePlayers.TryGetValue(identity, out var remotePlayer) || remotePlayer == null)
         {
@@ -236,17 +233,17 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     public void SubscribeToCollectionEvents()
     {
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).ObjectSpawnedEvent += MultiNetListener_ObjectSpawnedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle).ObjectSpawnedEvent += MultiNetListener_ObjectSpawnedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event).ObjectSpawnedEvent += MultiNetListener_ObjectSpawnedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.CustomEvent).ObjectSpawnedEvent += MultiNetListener_ObjectSpawnedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.BpmChange).ObjectSpawnedEvent += MultiNetListener_ObjectSpawnedEvent;
+        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note));
+        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle));
+        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event));
+        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.CustomEvent));
+        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.BpmChange));
 
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).ObjectDeletedEvent += MultiNetListener_ObjectDeletedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle).ObjectDeletedEvent += MultiNetListener_ObjectDeletedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event).ObjectDeletedEvent += MultiNetListener_ObjectDeletedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.CustomEvent).ObjectDeletedEvent += MultiNetListener_ObjectDeletedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.BpmChange).ObjectDeletedEvent += MultiNetListener_ObjectDeletedEvent;
+        foreach (var collection in containerCollections)
+        {
+            collection.ObjectSpawnedEvent += MultiNetListener_ObjectSpawnedEvent;
+            collection.ObjectDeletedEvent += MultiNetListener_ObjectDeletedEvent;
+        }
 
         audioTimeSyncController = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).AudioTimeSyncController;
         cameraTransform = Camera.main.transform;
@@ -255,17 +252,13 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     public void UnsubscribeFromCollectionEvents()
     {
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).ObjectSpawnedEvent -= MultiNetListener_ObjectSpawnedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle).ObjectSpawnedEvent -= MultiNetListener_ObjectSpawnedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event).ObjectSpawnedEvent -= MultiNetListener_ObjectSpawnedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.CustomEvent).ObjectSpawnedEvent -= MultiNetListener_ObjectSpawnedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.BpmChange).ObjectSpawnedEvent -= MultiNetListener_ObjectSpawnedEvent;
+        foreach (var collection in containerCollections)
+        {
+            collection.ObjectSpawnedEvent -= MultiNetListener_ObjectSpawnedEvent;
+            collection.ObjectDeletedEvent -= MultiNetListener_ObjectDeletedEvent;
+        }
 
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).ObjectDeletedEvent -= MultiNetListener_ObjectDeletedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle).ObjectDeletedEvent -= MultiNetListener_ObjectDeletedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event).ObjectDeletedEvent -= MultiNetListener_ObjectDeletedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.CustomEvent).ObjectDeletedEvent -= MultiNetListener_ObjectDeletedEvent;
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.BpmChange).ObjectDeletedEvent -= MultiNetListener_ObjectDeletedEvent;
+        containerCollections.Clear();
     }
 
     private void MultiNetListener_ObjectSpawnedEvent(BeatmapObject obj)
