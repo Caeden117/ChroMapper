@@ -224,6 +224,12 @@ public class EventAppearanceSO : ScriptableObject
 
     public void SetLightColorEventAppearance(BeatmapLightColorEventContainer e, bool boost = false, int dataIdx = 0)
     {
+        if (dataIdx == 0 && e.ColorEventData.EventBoxes[0].EventDatas.Count == 0)
+        {
+            e.ChangeColor(offColor);
+            e.UpdateTextDisplay(true, "??????"); // why would this happen?
+            return;
+        }
         var color = Color.white;
         var eb = e.ColorEventData.EventBoxes[0];
         if (eb.EventDatas[dataIdx].Color <= 1)
