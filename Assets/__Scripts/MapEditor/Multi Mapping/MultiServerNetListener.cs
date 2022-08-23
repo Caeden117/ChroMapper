@@ -89,7 +89,7 @@ public class MultiServerNetListener : MultiNetListener
             {
                 if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
                 {
-                    SendPacketFrom(disconnectedIdentity, mapper.MapperPeer, Packets.MapperDisconnect, null);
+                    SendPacketFrom(disconnectedIdentity, mapper.MapperPeer, Packets.MapperDisconnect);
                 }
             }
 

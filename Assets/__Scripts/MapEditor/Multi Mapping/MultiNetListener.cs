@@ -175,6 +175,16 @@ public class MultiNetListener : INetEventListener, IDisposable
         toPeer.Send(writer, DeliveryMethod.ReliableOrdered);
     }
 
+    public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, Packets packetId)
+    {
+        var writer = new NetDataWriter();
+
+        writer.Put(fromPeer.ConnectionId);
+        writer.Put((byte)packetId);
+
+        toPeer.Send(writer, DeliveryMethod.ReliableOrdered);
+    }
+
     public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, byte[] rawPacketData)
     {
         var writer = new NetDataWriter();
