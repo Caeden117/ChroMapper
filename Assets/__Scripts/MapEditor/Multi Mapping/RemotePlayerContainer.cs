@@ -18,7 +18,7 @@ public class RemotePlayerContainer : MonoBehaviour
     {
         nameMesh.text = gridNameMesh.text = identity.Name;
 
-        gridSprite.color = gridNameMesh.color = Random.ColorHSV(0, 1, 1, 1, 1, 1);
+        gridSprite.color = gridNameMesh.color = identity.Color;
     }
 
     private void Start() => lookAt = Camera.main.transform;
