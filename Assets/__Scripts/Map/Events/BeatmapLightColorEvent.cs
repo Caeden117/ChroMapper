@@ -140,4 +140,12 @@ public class BeatmapLightColorEvent : BeatmapObject
     {
         return new Vector2(Group + 0.5f, 0.5f);
     }
+
+    public override void Apply(BeatmapObject originalData)
+    {
+        var obj = originalData as BeatmapLightColorEvent;
+        Beat = obj.Beat;
+        Group = obj.Group;
+        EventBoxes = obj.EventBoxes;
+    }
 }

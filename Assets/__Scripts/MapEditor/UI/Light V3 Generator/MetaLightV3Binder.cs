@@ -75,4 +75,25 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
             Toggles[i].SetIsOnWithoutNotify(ToggleDumpFn[i](obj));
         }
     }
+
+    public void Load(T obj)
+    {
+        if (obj == null) obj = ObjectData;
+        // dropdown needs to be loaded first
+        for (int i = 0; i < Dropdowns.Length; ++i)
+        {
+            DropdownLoadFn[i](obj, Dropdowns[i].value);
+        }
+
+        for (int i = 0; i < InputFields.Length; ++i)
+        {
+            InputLoadFn[i](obj, InputFields[i].text);
+        }
+
+
+        for (int i = 0; i < Toggles.Length; ++i)
+        {
+            ToggleLoadFn[i](obj, Toggles[i].isOn);
+        }
+    }
 }
