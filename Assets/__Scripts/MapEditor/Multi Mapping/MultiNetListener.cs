@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +9,19 @@ using LiteNetLib.Utils;
 using TMPro;
 using UnityEngine;
 
-public class MultiNetListener : INetEventListener
+public class MultiNetListener : INetEventListener, IDisposable
 {
     protected NetManager NetManager;
 
     protected List<MapperIdentityPacket> Identities = new List<MapperIdentityPacket>();
 
-    private Dictionary<MapperIdentityPacket, RemotePlayerContainer> remotePlayers = new Dictionary<MapperIdentityPacket, RemotePlayerContainer>();
+    protected Dictionary<MapperIdentityPacket, RemotePlayerContainer> RemotePlayers = new Dictionary<MapperIdentityPacket, RemotePlayerContainer>();
 
     private Transform cameraTransform;
     private AudioTimeSyncController audioTimeSyncController;
     private TracksManager tracksManager;
     private RemotePlayerContainer remotePlayerPrefab;
+    private float previousCursorBeat = 0;
 
     public MultiNetListener()
     {
@@ -27,10 +29,14 @@ public class MultiNetListener : INetEventListener
         remotePlayerPrefab = Resources.Load<RemotePlayerContainer>("Remote Player");
     }
 
+    public virtual void Dispose() => NetManager.Stop(true);
+
     public virtual void OnConnectionRequest(ConnectionRequest request) { }
 
-    // TODO: Gracefully handle a network error
-    public virtual void OnNetworkError(IPEndPoint endPoint, SocketError socketError) { }
+    public virtual void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
+    {
+        PersistentUI.Instance.ShowDialogBox($"A networking error occured: {socketError}.", null, PersistentUI.DialogBoxPresetType.Ok);
+    }
     
     // TODO: Maybe ping list in the future?
     public virtual void OnNetworkLatencyUpdate(NetPeer peer, int latency) { }
@@ -62,6 +68,23 @@ public class MultiNetListener : INetEventListener
 
             case (byte)Packets.MapperPose:
                 OnMapperPose(identity, peer, reader.Get<MapperPosePacket>());
+                break;
+
+            case (byte)Packets.MapperDisconnect:
+                var identityId = reader.GetByte();
+
+                var disconnectedIdentity = Identities.Find(x => x.ConnectionId == identityId);
+
+                if (disconnectedIdentity != null)
+                {
+                    Identities.Remove(disconnectedIdentity);
+                    
+                    if (RemotePlayers.TryGetValue(disconnectedIdentity, out var disconnectedPlayer))
+                    {
+                        UnityEngine.Object.Destroy(disconnectedPlayer);
+                        RemotePlayers.Remove(disconnectedIdentity);
+                    }
+                }
                 break;
 
             case (byte)Packets.SendZip:
@@ -117,15 +140,15 @@ public class MultiNetListener : INetEventListener
     {
         if (identity is null) return;
 
-        if (!remotePlayers.TryGetValue(identity, out var remotePlayer) || remotePlayer == null)
+        if (!RemotePlayers.TryGetValue(identity, out var remotePlayer) || remotePlayer == null)
         {
-            if (remotePlayers.ContainsKey(identity))
+            if (RemotePlayers.ContainsKey(identity))
             {
-                remotePlayers.Remove(identity);
+                RemotePlayers.Remove(identity);
             }
 
-            remotePlayer = Object.Instantiate(remotePlayerPrefab);
-            remotePlayers.Add(identity, remotePlayer);
+            remotePlayer = UnityEngine.Object.Instantiate(remotePlayerPrefab);
+            RemotePlayers.Add(identity, remotePlayer);
 
             var container = remotePlayer.GetComponent<RemotePlayerContainer>();
             container.AssignIdentity(identity);
@@ -141,6 +164,7 @@ public class MultiNetListener : INetEventListener
         remotePlayer.transform.localPosition = EditorScaleController.EditorScale * pose.SongPosition * Vector3.forward;
         remotePlayer.CameraTransform.localPosition = pose.Position;
         remotePlayer.CameraTransform.localRotation = pose.Rotation;
+        remotePlayer.GridTransform.localEulerAngles = track.localEulerAngles;
     }
 
     public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, Packets packetId, INetSerializable serializable)
@@ -190,8 +214,11 @@ public class MultiNetListener : INetEventListener
     {
         NetManager?.PollEvents();
 
-        if (audioTimeSyncController != null && cameraTransform != null)
+        if (audioTimeSyncController != null && cameraTransform != null
+            && (cameraTransform.hasChanged || audioTimeSyncController.CurrentBeat != previousCursorBeat))
         {
+            previousCursorBeat = audioTimeSyncController.CurrentBeat;
+
             var poseWriter = new NetDataWriter();
 
             poseWriter.Put(0);
@@ -200,7 +227,7 @@ public class MultiNetListener : INetEventListener
             {
                 Position = cameraTransform.position,
                 Rotation = cameraTransform.rotation,
-                SongPosition = audioTimeSyncController.CurrentBeat
+                SongPosition = previousCursorBeat
             });
 
             NetManager.SendToAll(poseWriter, DeliveryMethod.ReliableOrdered);

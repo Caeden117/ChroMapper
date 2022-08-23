@@ -6,6 +6,7 @@ using UnityEngine;
 public class RemotePlayerContainer : MonoBehaviour
 {
     public Transform CameraTransform;
+    public Transform GridTransform;
 
     [SerializeField] private TextMeshPro nameMesh;
     [SerializeField] private TextMeshPro gridNameMesh;

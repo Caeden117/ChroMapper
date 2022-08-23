@@ -14,5 +14,8 @@ public class MultiClientSubscribeBroadcaster : MonoBehaviour
         var client = BeatSaberSongContainer.Instance.MultiMapperConnection;
 
         client?.UnsubscribeFromCollectionEvents();
+        client?.Dispose();
+
+        BeatSaberSongContainer.Instance.MultiMapperConnection = null;
     }
 }

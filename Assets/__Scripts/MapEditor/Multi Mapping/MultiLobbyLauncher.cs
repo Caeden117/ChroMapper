@@ -40,4 +40,6 @@ public class MultiLobbyLauncher : MonoBehaviour
     }
 
     private void Update() => serverNetListener?.ManualUpdate();
+
+    private void OnDestroy() => serverNetListener?.Dispose();
 }
