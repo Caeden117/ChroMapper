@@ -222,17 +222,17 @@ public class EventAppearanceSO : ScriptableObject
         }
     }
 
-    public void SetLightColorEventAppearance(BeatmapLightColorEventContainer e, bool boost = false)
+    public void SetLightColorEventAppearance(BeatmapLightColorEventContainer e, bool boost = false, int dataIdx = 0)
     {
         var color = Color.white;
         var eb = e.ColorEventData.EventBoxes[0];
-        if (eb.EventDatas[0].Color <= 1)
+        if (eb.EventDatas[dataIdx].Color <= 1)
         {
-            color = eb.EventDatas[0].Color == 1
+            color = eb.EventDatas[dataIdx].Color == 1
                 ? (boost ? BlueBoostColor : BlueColor)
                 : (boost ? RedBoostColor : RedColor);
         }
-        color = Color.Lerp(offColor, color, eb.EventDatas[0].Brightness);
+        color = Color.Lerp(offColor, color, eb.EventDatas[dataIdx].Brightness);
 
         // first line: transition + filter 
         var text = GenerateFilterString(eb.Filter);
@@ -259,8 +259,8 @@ public class EventAppearanceSO : ScriptableObject
 
 
         e.EventModel = Settings.Instance.EventModel;
-        e.ChangeColor(color, false);
-        e.ChangeBaseColor(Color.black, false);
+        e.ChangeColor(color, dataIdx != 0); // idk why we have to update materials for sub notes
+        e.ChangeBaseColor(Color.black, dataIdx != 0);
         if (color == Color.white) e.UpdateTextColor(Color.black);
         else e.UpdateTextColor(Color.white);
     }

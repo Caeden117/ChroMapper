@@ -10,6 +10,8 @@ public class BeatmapLightColorEventContainer : BeatmapEventContainer
 {
     public BeatmapLightColorEvent ColorEventData;
     public LightColorEventsContainer ColorEventsContainer;
+    [SerializeField] GameObject extraNote;
+    private List<BeatmapLightColorEventContainer> extraNotes = new List<BeatmapLightColorEventContainer>();
 
     public override BeatmapObject ObjectData { get => ColorEventData; set => ColorEventData = (BeatmapLightColorEvent)value; }
 
@@ -35,5 +37,38 @@ public class BeatmapLightColorEventContainer : BeatmapEventContainer
         container.ColorEventsContainer = lightEventsContainer;
         container.transform.localEulerAngles = Vector3.zero;
         return container;
+    }
+
+
+    public void SpawnEventDatas(EventAppearanceSO so, EventsContainer eventsContainer)
+    {
+        var eb = ColorEventData.EventBoxes[0];
+        int i = 1, j = i - 1;
+        for (; i < eb.EventDatas.Count; ++i, ++j)
+        {
+            if (j >= extraNotes.Count)
+            {
+                var note = Instantiate(extraNote, transform);
+                var noteCon = note.GetComponent<BeatmapLightColorEventContainer>();
+                noteCon.gameObject.SetActive(false);
+                noteCon.Setup();
+                extraNotes.Add(noteCon);
+            }
+            extraNotes[j].SafeSetActive(true);
+            var con = extraNotes[j];
+            con.ColorEventData = ColorEventData;
+            var time = ColorEventData.Beat + eb.EventDatas[i].AddedBeat;
+            so.SetLightColorEventAppearance(con, eventsContainer.AllBoostEvents.FindLast(x => x.Time <= time)?.Value == 1, i);
+            con.transform.localScale = transform.localScale; // by default, it will be 0.75 size of main note
+            con.transform.localPosition = new Vector3(
+                0,
+                0,
+                eb.EventDatas[i].AddedBeat * EditorScaleController.EditorScale / transform.localScale.z
+                );
+        }
+        for (; j < extraNotes.Count; ++j)
+        {
+            extraNotes[j].gameObject.SetActive(false);
+        }
     }
 }

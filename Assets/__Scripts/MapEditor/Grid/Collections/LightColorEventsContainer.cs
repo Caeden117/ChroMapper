@@ -36,8 +36,10 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     private void OnDestroy() => LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        eventAppearanceSo.SetLightColorEventAppearance(con as BeatmapLightColorEventContainer, 
+        var lightContainer = con as BeatmapLightColorEventContainer;
+        eventAppearanceSo.SetLightColorEventAppearance(lightContainer, 
             eventsContainer.AllBoostEvents.FindLast(x => x.Time <= obj.Time)?.Value == 1);
+        lightContainer.SpawnEventDatas(eventAppearanceSo, eventsContainer);
     }
 
     private void PlatformLoaded(PlatformDescriptor descriptor)
