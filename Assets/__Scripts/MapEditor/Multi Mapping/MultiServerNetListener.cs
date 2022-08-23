@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using LiteNetLib;
 using LiteNetLib.Utils;
+using UnityEngine;
 
 public class MultiServerNetListener : MultiNetListener
 {
@@ -70,32 +71,9 @@ public class MultiServerNetListener : MultiNetListener
         base.OnPacketReceived(peer, identity, reader);
     }
 
+    // This is absolutely NOT a good way to go about this, but I can't think of anything else!
     public override void OnPeerConnected(NetPeer peer)
-    {
-        // Save and zip song in its current state, then send it to the player
-        //autoSave.Save(false);
-
-        var song = BeatSaberSongContainer.Instance.Song;
-        var diff = BeatSaberSongContainer.Instance.DifficultyData;
-        var characteristic = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet;
-
-        var zipPath = Path.Combine(song.Directory, song.CleanSongName + ".zip");
-        File.Delete(zipPath);
-
-        var exportedFiles = song.GetFilesForArchiving();
-
-        using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
-        {
-            foreach (var pathFileEntryPair in exportedFiles)
-            {
-                archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
-            }
-        }
-
-        var zipBytes = File.ReadAllBytes(zipPath);
-
-        SendPacketTo(peer, Packets.SendZip, new MapDataPacket(zipBytes, characteristic.BeatmapCharacteristicName, diff.Difficulty));
-    }
+        => PersistentUI.Instance.StartCoroutine(SaveAndSendMapToPeer(peer));
 
     // For the host, a peer disconnecting is one of the clients, so we broadcast to everyone else that the client is gone.
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
@@ -121,5 +99,38 @@ public class MultiServerNetListener : MultiNetListener
                 RemotePlayers.Remove(disconnectedIdentity);
             }
         }
+    }
+
+    private IEnumerator SaveAndSendMapToPeer(NetPeer peer)
+    {
+        // Save the map
+        autoSave.Save(false);
+
+        // Wait until saving operation is completed
+        yield return new WaitWhile(() => autoSave.IsSaving);
+
+        // Zip the song in its current state, then send to the player.
+        // I'm aware that there's a little bit of time in between saving and zipping where changes made *arent* sent to the client,
+        //   but I'm hoping its small enough to not be a big worry.
+        var song = BeatSaberSongContainer.Instance.Song;
+        var diff = BeatSaberSongContainer.Instance.DifficultyData;
+        var characteristic = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet;
+
+        var zipPath = Path.Combine(song.Directory, song.CleanSongName + ".zip");
+        File.Delete(zipPath);
+
+        var exportedFiles = song.GetFilesForArchiving();
+
+        using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
+        {
+            foreach (var pathFileEntryPair in exportedFiles)
+            {
+                archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
+            }
+        }
+
+        var zipBytes = File.ReadAllBytes(zipPath);
+
+        SendPacketTo(peer, Packets.SendZip, new MapDataPacket(zipBytes, characteristic.BeatmapCharacteristicName, diff.Difficulty));
     }
 }

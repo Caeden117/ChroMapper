@@ -686,6 +686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTransform: {fileID: 1995542136857141739}
+  GridTransform: {fileID: 256544470157590598}
   nameMesh: {fileID: 2994269570188824537}
   gridNameMesh: {fileID: 2643294385983468501}
   gridSprite: {fileID: 4371054547145347042}
