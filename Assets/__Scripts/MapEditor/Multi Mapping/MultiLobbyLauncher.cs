@@ -17,11 +17,14 @@ public class MultiLobbyLauncher : MonoBehaviour
 
         portTextBox = dialogBox.AddComponent<TextBoxComponent>()
                 .WithLabel("Port")
-                .WithInitialValue("6969")
+                .WithInitialValue(Settings.Instance.LastHostedPort)
+                .OnChanged<TextBoxComponent, string>((port) => Settings.Instance.LastHostedPort = port)
                 .WithContentType(TMP_InputField.ContentType.IntegerNumber);
 
         nameTextBox = dialogBox.AddComponent<TextBoxComponent>()
-            .WithLabel("Display Name");
+            .WithLabel("Display Name")
+            .WithInitialValue(Settings.Instance.DisplayName)
+            .OnChanged<TextBoxComponent, string>((name) => Settings.Instance.DisplayName = name);
 
         dialogBox.AddFooterButton(null, "Cancel");
 

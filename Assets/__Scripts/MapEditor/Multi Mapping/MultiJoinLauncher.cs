@@ -13,15 +13,20 @@ public class MultiJoinLauncher : MonoBehaviour
 
         ipTextBox = dialogBox.AddComponent<TextBoxComponent>()
                 .WithLabel("IP")
+                .WithInitialValue(Settings.Instance.LastConnectedIp)
+                .OnChanged<TextBoxComponent, string>((port) => Settings.Instance.LastConnectedIp = port)
                 .WithInitialValue("127.0.0.1");
 
         portTextBox = dialogBox.AddComponent<TextBoxComponent>()
                 .WithLabel("Port")
-                .WithInitialValue("6969")
+                .WithInitialValue(Settings.Instance.LastConnectedPort)
+                .OnChanged<TextBoxComponent, string>((port) => Settings.Instance.LastConnectedPort = port)
                 .WithContentType(TMP_InputField.ContentType.IntegerNumber);
 
         nameTextBox = dialogBox.AddComponent<TextBoxComponent>()
-            .WithLabel("Display Name");
+            .WithLabel("Display Name")
+            .WithInitialValue(Settings.Instance.DisplayName)
+            .OnChanged<TextBoxComponent, string>((name) => Settings.Instance.DisplayName = name);
 
         dialogBox.AddFooterButton(null, "Cancel");
 

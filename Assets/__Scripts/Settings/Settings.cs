@@ -135,6 +135,11 @@ public class Settings
 
     public int LastSongSortType = (int)SongList.SongSortType.Name;
 
+    public string DisplayName = "";
+    public string LastConnectedIp = "127.0.0.1";
+    public string LastConnectedPort = "6969";
+    public string LastHostedPort = "6969";
+
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
 
