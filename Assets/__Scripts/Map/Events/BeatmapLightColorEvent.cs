@@ -166,9 +166,4 @@ public class BeatmapLightColorEvent : BeatmapObject
         Group = obj.Group;
         EventBoxes = obj.EventBoxes;
     }
-
-    public BeatmapLightColorEvent()
-    {
-
-    }
 }

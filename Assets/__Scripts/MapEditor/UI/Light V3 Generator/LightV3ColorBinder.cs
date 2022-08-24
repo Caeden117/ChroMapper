@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>
+public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMInput.IEventUIActions
 {
     public int DataIdx = 0;
     protected override void InitBindings()
     {
+        ObjectData = new BeatmapLightColorEvent();
+
         InputDumpFn.Add(x => (x.EventBoxes[0].Filter.FilterType == 1 ? x.EventBoxes[0].Filter.Section + 1 : x.EventBoxes[0].Filter.Section).ToString());
         InputDumpFn.Add(x => x.EventBoxes[0].Filter.Partition.ToString());
         InputDumpFn.Add(x => x.EventBoxes[0].Distribution.ToString());
@@ -47,12 +50,34 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>
     protected override void Dump(BeatmapLightColorEvent obj)
     {
         var col = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(obj.BeatmapType);
-        if (!col.LoadedContainers.TryGetValue(obj, out var con))
+        if (col.LoadedContainers.TryGetValue(obj, out var con))
         {
-            Debug.LogError("cannot find container");
+            var colorCon = con as BeatmapLightColorEventContainer;
+            DataIdx = colorCon.GetRaycastedIdx();
         }
-        var colorCon = con as BeatmapLightColorEventContainer;
-        DataIdx = colorCon.GetRaycastedIdx();
         base.Dump(obj);
+    }
+
+    public void OnTypeOn(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !Settings.Instance.Load_MapV3) return;
+        DropdownLoadFn[3](ObjectData, 0);
+        if (!DisplayingSelectedObject) Dump(ObjectData);
+    }
+    public void OnTypeFlash(InputAction.CallbackContext context) { }
+    public void OnTypeOff(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !Settings.Instance.Load_MapV3) return;
+        DropdownLoadFn[3](ObjectData, 0);
+        if (!DisplayingSelectedObject) Dump(ObjectData);
+    }
+    public void OnTypeFade(InputAction.CallbackContext context) { }
+    public void OnTogglePrecisionRotation(InputAction.CallbackContext context) { }
+    public void OnSwapCursorInterval(InputAction.CallbackContext context) { }
+    public void OnTypeTransition(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !Settings.Instance.Load_MapV3) return;
+        DropdownLoadFn[3](ObjectData, 1);
+        if (!DisplayingSelectedObject) Dump(ObjectData);
     }
 }

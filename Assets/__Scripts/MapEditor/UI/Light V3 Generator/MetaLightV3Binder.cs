@@ -24,6 +24,7 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
     protected List<Action<T, bool>> ToggleLoadFn = new List<Action<T, bool>>();
 
     public T ObjectData;
+    protected bool DisplayingSelectedObject;
     protected void Awake()
     {
         InitBindings();
@@ -31,6 +32,7 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
+        Dump(ObjectData);
         SelectionController.SelectionChangedEvent += OnSelectionChanged;
     }
 
@@ -43,11 +45,13 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
 
     private void OnSelectionChanged()
     {
+        DisplayingSelectedObject = false;
         if (SelectionController.SelectedObjects.Count == 1)
         {
             var obj = SelectionController.SelectedObjects.First();
             if (obj is T o)
             {
+                DisplayingSelectedObject = true;
                 ObjectData = o;
                 Dump(o);
             }
