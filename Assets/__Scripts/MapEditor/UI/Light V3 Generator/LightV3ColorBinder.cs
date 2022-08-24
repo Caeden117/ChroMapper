@@ -43,4 +43,16 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>
 
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
     }
+
+    protected override void Dump(BeatmapLightColorEvent obj)
+    {
+        var col = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(obj.BeatmapType);
+        if (!col.LoadedContainers.TryGetValue(obj, out var con))
+        {
+            Debug.LogError("cannot find container");
+        }
+        var colorCon = con as BeatmapLightColorEventContainer;
+        DataIdx = colorCon.GetRaycastedIdx();
+        base.Dump(obj);
+    }
 }

@@ -48,12 +48,13 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
             var obj = SelectionController.SelectedObjects.First();
             if (obj is T o)
             {
+                ObjectData = o;
                 Dump(o);
             }
         }
     }
 
-    protected void Dump(T obj)
+    protected virtual void Dump(T obj)
     {
         for (int i = 0; i < InputFields.Length; ++i)
         {

@@ -71,4 +71,17 @@ public class BeatmapLightColorEventContainer : BeatmapEventContainer
             extraNotes[j].gameObject.SetActive(false);
         }
     }
+    
+    /// <summary>
+    /// Infer the raycasted object's idx in the list of <see cref="BeatmapLightColorEventData"/>. return 0 by default
+    /// </summary>
+    public int GetRaycastedIdx()
+    {
+        var con = GlobalIntersectionCache.firstHit.GetComponentInParent<BeatmapObjectContainer>();
+        for (int i = 0; i < extraNotes.Count && extraNotes[i].gameObject.activeSelf; ++i)
+        {
+            if (extraNotes[i] == con) return i + 1;
+        }
+        return 0;
+    }
 }
