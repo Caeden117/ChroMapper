@@ -30,6 +30,11 @@ public class BeatmapLightColorEventData: BeatmapObject
         FlickerFrequency = f;
     }
 
+    public BeatmapLightColorEventData()
+    {
+        Brightness = 1;
+    }
+
     public override ObjectType BeatmapType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public override JSONNode ConvertToJson()
@@ -68,6 +73,9 @@ public class BeatmapLightColorEventBox: BeatmapObject
             EventDatas.Add(new BeatmapLightColorEventData(n));
         }
     }
+
+    public BeatmapLightColorEventBox() { }
+
     public override ObjectType BeatmapType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public override JSONNode ConvertToJson()
@@ -111,6 +119,16 @@ public class BeatmapLightColorEvent : BeatmapObject
         EventBoxes.Add(e);
     }
 
+    public BeatmapLightColorEvent()
+    {
+        var filter = new BeatmapLightEventFilter();
+        var eb = new BeatmapLightColorEventBox();
+        var ebd = new BeatmapLightColorEventData();
+        eb.Filter = filter;
+        eb.EventDatas.Add(ebd);
+        EventBoxes.Add(eb);
+    }
+
     public static List<BeatmapLightColorEvent> SplitEventBoxes(BeatmapLightColorEvent e)
     {
         var ret = new List<BeatmapLightColorEvent>();
@@ -147,5 +165,10 @@ public class BeatmapLightColorEvent : BeatmapObject
         Beat = obj.Beat;
         Group = obj.Group;
         EventBoxes = obj.EventBoxes;
+    }
+
+    public BeatmapLightColorEvent()
+    {
+
     }
 }
