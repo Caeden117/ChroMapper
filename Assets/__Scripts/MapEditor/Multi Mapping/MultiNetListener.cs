@@ -17,6 +17,8 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     protected Dictionary<MapperIdentityPacket, RemotePlayerContainer> RemotePlayers = new Dictionary<MapperIdentityPacket, RemotePlayerContainer>();
 
+    protected Dictionary<MapperIdentityPacket, MapperPosePacket> CachedPosePackets = new Dictionary<MapperIdentityPacket, MapperPosePacket>();
+
     private CameraController cameraController;
     private AudioTimeSyncController audioTimeSyncController;
     private TracksManager tracksManager;
@@ -135,6 +137,8 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     public virtual void OnMapperPose(MapperIdentityPacket identity, NetPeer peer, MapperPosePacket pose)
     {
+        CachedPosePackets[identity] = pose;
+
         if (identity is null || tracksManager == null) return;
 
         if (!RemotePlayers.TryGetValue(identity, out var remotePlayer) || remotePlayer == null)
@@ -162,6 +166,14 @@ public class MultiNetListener : INetEventListener, IDisposable
         remotePlayer.CameraTransform.localPosition = pose.Position;
         remotePlayer.CameraTransform.localRotation = pose.Rotation;
         remotePlayer.GridTransform.localEulerAngles = track.localEulerAngles;
+    }
+
+    public void UpdateCachedPoses()
+    {
+        foreach (var kvp in CachedPosePackets)
+        {
+            OnMapperPose(kvp.Key, null, kvp.Value);
+        }
     }
 
     public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, Packets packetId, INetSerializable serializable)
@@ -226,18 +238,30 @@ public class MultiNetListener : INetEventListener, IDisposable
         {
             previousCursorBeat = audioTimeSyncController.CurrentBeat;
 
-            var poseWriter = new NetDataWriter();
+            BroadcastPose();
+        }
+    }
 
-            poseWriter.Put(0);
-            poseWriter.Put((byte)Packets.MapperPose);
-            poseWriter.Put(new MapperPosePacket()
-            {
-                Position = cameraController.transform.position,
-                Rotation = cameraController.transform.rotation,
-                SongPosition = previousCursorBeat
-            });
+    public void BroadcastPose(NetPeer? targetPeer = null)
+    {
+        var poseWriter = new NetDataWriter();
 
+        poseWriter.Put(0);
+        poseWriter.Put((byte)Packets.MapperPose);
+        poseWriter.Put(new MapperPosePacket()
+        {
+            Position = cameraController.transform.position,
+            Rotation = cameraController.transform.rotation,
+            SongPosition = previousCursorBeat
+        });
+
+        if (targetPeer == null)
+        {
             NetManager.SendToAll(poseWriter, DeliveryMethod.ReliableOrdered);
+        }
+        else
+        {
+            targetPeer.Send(poseWriter, DeliveryMethod.ReliableOrdered);
         }
     }
 
@@ -258,6 +282,8 @@ public class MultiNetListener : INetEventListener, IDisposable
         audioTimeSyncController = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).AudioTimeSyncController;
         cameraController = Camera.main.GetComponent<CameraController>();
         tracksManager = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).GetComponent<TracksManager>();
+
+        EditorScaleController.EditorScaleChangedEvent += OnEditorScaleChanged;
     }
 
     public void UnsubscribeFromCollectionEvents()
@@ -269,7 +295,11 @@ public class MultiNetListener : INetEventListener, IDisposable
         }
 
         containerCollections.Clear();
+
+        EditorScaleController.EditorScaleChangedEvent -= OnEditorScaleChanged;
     }
+
+    private void OnEditorScaleChanged(float editorScale) => UpdateCachedPoses();
 
     private void MultiNetListener_ObjectSpawnedEvent(BeatmapObject obj)
     {

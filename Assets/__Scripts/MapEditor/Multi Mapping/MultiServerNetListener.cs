@@ -48,7 +48,15 @@ public class MultiServerNetListener : MultiNetListener
             }
 
             SendPacketFrom(mapper, peer, Packets.MapperIdentity, mapper);
+
+            if (CachedPosePackets.TryGetValue(mapper, out var lastKnownPose))
+            {
+                SendPacketFrom(mapper, peer, Packets.MapperPose, lastKnownPose);
+            }
         }
+
+        // Finally, provide host pose to new user
+        BroadcastPose(peer);
     }
 
     public override void OnPacketReceived(NetPeer peer, MapperIdentityPacket identity, NetDataReader reader)

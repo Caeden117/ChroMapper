@@ -14,8 +14,7 @@ public class MultiJoinLauncher : MonoBehaviour
         ipTextBox = dialogBox.AddComponent<TextBoxComponent>()
                 .WithLabel("IP")
                 .WithInitialValue(Settings.Instance.LastConnectedIp)
-                .OnChanged<TextBoxComponent, string>((port) => Settings.Instance.LastConnectedIp = port)
-                .WithInitialValue("127.0.0.1");
+                .OnChanged<TextBoxComponent, string>((port) => Settings.Instance.LastConnectedIp = port);
 
         portTextBox = dialogBox.AddComponent<TextBoxComponent>()
                 .WithLabel("Port")

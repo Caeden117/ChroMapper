@@ -7,6 +7,8 @@ public class MultiClientSubscribeBroadcaster : MonoBehaviour
         var client = BeatSaberSongContainer.Instance.MultiMapperConnection;
 
         client?.SubscribeToCollectionEvents();
+        client?.BroadcastPose();
+        client?.UpdateCachedPoses();
     }
 
     private void OnDestroy()
