@@ -6,6 +6,7 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
 {
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
+    private int objectGroup = -1;
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a LightColorEvent.");
     public override BeatmapLightColorEvent GenerateOriginalData() => new BeatmapLightColorEvent();
@@ -15,7 +16,7 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
             instantiatedContainer.transform.localPosition.x,
             0.5f,
             instantiatedContainer.transform.localPosition.z);
-        queuedData.Group = platformDescriptor.LaneIndexToGroupId(Mathf.FloorToInt(transform.localPosition.x));
+        objectGroup = platformDescriptor.LaneIndexToGroupId(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x));
     }
     public override void TransferQueuedToDraggedObject(ref BeatmapLightColorEvent dragged, BeatmapLightColorEvent queued) => throw new System.NotImplementedException();
 
@@ -56,5 +57,12 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
     {
         queuedData = e;
         UpdateAppearance();
+    }
+
+    internal override void ApplyToMap()
+    {
+        queuedData.Group = objectGroup;
+        Debug.Log($"Apply group {objectGroup} to map");
+        base.ApplyToMap();
     }
 }
