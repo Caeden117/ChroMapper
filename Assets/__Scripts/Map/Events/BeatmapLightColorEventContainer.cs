@@ -77,7 +77,9 @@ public class BeatmapLightColorEventContainer : BeatmapEventContainer
     /// </summary>
     public int GetRaycastedIdx()
     {
-        var con = GlobalIntersectionCache.firstHit.GetComponentInParent<BeatmapObjectContainer>();
+        var hit = GlobalIntersectionCache.firstHit;
+        if (hit == null) return 0;
+        var con = hit.GetComponentInParent<BeatmapObjectContainer>();
         for (int i = 0; i < extraNotes.Count && extraNotes[i].gameObject.activeSelf; ++i)
         {
             if (extraNotes[i] == con) return i + 1;

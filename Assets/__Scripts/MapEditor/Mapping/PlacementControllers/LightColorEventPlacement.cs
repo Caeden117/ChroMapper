@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LightColorEventPlacement : PlacementController<BeatmapLightColorEvent, BeatmapLightColorEventContainer, LightColorEventsContainer>
 {
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
+    [SerializeField] private EventsContainer eventsContainer;
     private int objectGroup = -1;
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a LightColorEvent.");
@@ -61,8 +63,30 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
 
     internal override void ApplyToMap()
     {
-        queuedData.Group = objectGroup;
-        Debug.Log($"Apply group {objectGroup} to map");
-        base.ApplyToMap();
+        if (SelectionController.SelectedObjects.Count == 1 
+            && SelectionController.SelectedObjects.First() is BeatmapLightColorEvent obj
+            && obj.Group == objectGroup
+            && obj.Time < RoundedTime)
+        {
+            // If we are placing subnotes, basically we will not use base.ApplyToMap()
+            // because we need to manually insert the note
+            var ebd = BeatmapObject.GenerateCopy(queuedData.EventBoxes[0].EventDatas[0]);
+            ebd.AddedBeat = RoundedTime - obj.Time;
+            var originData = BeatmapObject.GenerateCopy(obj);
+            var newData = obj;
+            var idx = newData.EventBoxes[0].EventDatas.FindLastIndex(x => x.AddedBeat < ebd.AddedBeat);
+            newData.EventBoxes[0].EventDatas.Insert(idx + 1, ebd);
+            if (objectContainerCollection.LoadedContainers.TryGetValue(newData, out var con))
+            {
+                (con as BeatmapLightColorEventContainer).SpawnEventDatas(eventAppearanceSO, eventsContainer);
+            }
+            BeatmapActionContainer.AddAction(GenerateAction(newData, new[] { originData }));
+        }
+        else
+        {
+            queuedData = BeatmapObject.GenerateCopy(queuedData); // before copy, queued data is referencing binder's data
+            queuedData.Group = objectGroup;
+            base.ApplyToMap();
+        }
     }
 }

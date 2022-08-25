@@ -52,7 +52,6 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
             if (obj is T o)
             {
                 DisplayingSelectedObject = true;
-                ObjectData = o;
                 Dump(o);
             }
         }
