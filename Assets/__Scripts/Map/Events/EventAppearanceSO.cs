@@ -225,7 +225,8 @@ public class EventAppearanceSO : ScriptableObject
     public void SetLightColorEventAppearance(BeatmapLightColorEventContainer e, bool boost = false, int dataIdx = 0, bool final = true)
     {
         e.UpdateAlpha(final ? 1.0f : 0.6f, true);
-        // e.UpdateScale(final ? 0.75f : 0.6f);
+        if (!final)
+            e.transform.localScale = Vector3.one * 0.6f;
         if (dataIdx == 0 && e.ColorEventData.EventBoxes[0].EventDatas.Count == 0)
         {
             e.ChangeColor(offColor);
