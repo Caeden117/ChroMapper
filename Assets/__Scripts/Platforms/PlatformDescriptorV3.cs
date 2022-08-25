@@ -51,6 +51,8 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         {
             Debug.LogError("Unable to find lightRotationEventsContainer");
         }
+
+        foreach (var lighColorPlacement in FindObjectsOfType<LightColorEventPlacement>()) lighColorPlacement.platformDescriptor = this;
     }
 
     protected new void OnDestroy()

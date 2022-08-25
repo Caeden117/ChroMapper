@@ -15,7 +15,11 @@ public class BeatmapLightEventFilter: BeatmapObject
         Reverse = RetrieveRequiredNode(node, "r").AsInt;
     }
 
-    public BeatmapLightEventFilter() { }
+    public BeatmapLightEventFilter() 
+    {
+        FilterType = 1;
+        Partition = 1;
+    }
     public override ObjectType BeatmapType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public override JSONNode ConvertToJson()

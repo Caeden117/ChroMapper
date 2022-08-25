@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class LightColorEventPlacement : PlacementController<BeatmapLightColorEvent, BeatmapLightColorEventContainer, LightColorEventsContainer>
 {
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => throw new System.NotImplementedException();
-    public override BeatmapLightColorEvent GenerateOriginalData() => throw new System.NotImplementedException();
-    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint) => throw new System.NotImplementedException();
+    internal PlatformDescriptorV3 platformDescriptor;
+    [SerializeField] private EventAppearanceSO eventAppearanceSO;
+    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
+        => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a LightColorEvent.");
+    public override BeatmapLightColorEvent GenerateOriginalData() => new BeatmapLightColorEvent();
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
+    {
+        instantiatedContainer.transform.localPosition = new Vector3(
+            instantiatedContainer.transform.localPosition.x,
+            0.5f,
+            instantiatedContainer.transform.localPosition.z);
+        queuedData.Group = platformDescriptor.LaneIndexToGroupId(Mathf.FloorToInt(transform.localPosition.x));
+    }
     public override void TransferQueuedToDraggedObject(ref BeatmapLightColorEvent dragged, BeatmapLightColorEvent queued) => throw new System.NotImplementedException();
-
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-        
-    }
 
     /// <summary>
     /// exactly same as <see cref="EventPlacement.SetGridSize(int)"/>
@@ -43,5 +43,18 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
         }
 
         GridChild.Size = gridSize;
+    }
+
+    public void UpdateAppearance()
+    {
+        if (instantiatedContainer is null) RefreshVisuals();
+        instantiatedContainer.ColorEventData = queuedData;
+        eventAppearanceSO.SetLightColorEventAppearance(instantiatedContainer, false, 0, false);
+    }
+
+    public void UpdateData(BeatmapLightColorEvent e)
+    {
+        queuedData = e;
+        UpdateAppearance();
     }
 }

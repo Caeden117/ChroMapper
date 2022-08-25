@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMInput.IEventUIActions, CMInput.IWorkflowsActions
 {
     public int DataIdx = 0;
+    [SerializeField] private LightColorEventPlacement lightColorEventPlacement;
     protected override void InitBindings()
     {
         ObjectData = new BeatmapLightColorEvent();
@@ -45,6 +46,36 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].TransitionType = i);
 
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
+
+        for (int i = 0; i < InputFields.Length; ++i)
+        {
+            var currentIdx = new int();
+            currentIdx = i;
+            InputFields[currentIdx].onEndEdit.AddListener((t) => {
+                InputLoadFn[currentIdx](ObjectData, t);
+                UpdateToPlacement();
+            });
+        }
+
+        for (int i = 0; i < Dropdowns.Length; ++i)
+        {
+            var currentIdx = new int();
+            currentIdx = i;
+            Dropdowns[currentIdx].onValueChanged.AddListener((t) => { 
+                DropdownLoadFn[currentIdx](ObjectData, t); 
+                UpdateToPlacement(); 
+            });
+
+        }
+        for (int i = 0; i < Toggles.Length; ++i)
+        {
+            var currentIdx = new int();
+            currentIdx = i;
+            Toggles[currentIdx].onValueChanged.AddListener((t) => { 
+                ToggleLoadFn[currentIdx](ObjectData, t); 
+                UpdateToPlacement(); 
+            });
+        }
     }
 
     protected override void Dump(BeatmapLightColorEvent obj)
@@ -58,12 +89,19 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         base.Dump(obj);
     }
 
+    public void UpdateToPlacement()
+    {
+        lightColorEventPlacement.UpdateData(ObjectData);
+    }
+
+    #region Input Hook
     public void OnTypeOn(InputAction.CallbackContext context)
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
         DropdownLoadFn[3](ObjectData, 0);
         InputLoadFn[6](ObjectData, "1");
         if (!DisplayingSelectedObject) Dump(ObjectData);
+        UpdateToPlacement();
     }
     public void OnTypeFlash(InputAction.CallbackContext context) { }
     public void OnTypeOff(InputAction.CallbackContext context)
@@ -72,6 +110,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         DropdownLoadFn[3](ObjectData, 0);
         InputLoadFn[6](ObjectData, "0");
         if (!DisplayingSelectedObject) Dump(ObjectData);
+        UpdateToPlacement();
     }
     public void OnTypeFade(InputAction.CallbackContext context) { }
     public void OnTogglePrecisionRotation(InputAction.CallbackContext context) { }
@@ -81,6 +120,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
         DropdownLoadFn[3](ObjectData, 1);
         if (!DisplayingSelectedObject) Dump(ObjectData);
+        UpdateToPlacement();
     }
 
 
@@ -92,22 +132,26 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
         InputLoadFn[5](ObjectData, "0");
         if (!DisplayingSelectedObject) Dump(ObjectData);
+        UpdateToPlacement();
     }
     public void OnPlaceBlueNoteorEvent(InputAction.CallbackContext context) 
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
         InputLoadFn[5](ObjectData, "1");
         if (!DisplayingSelectedObject) Dump(ObjectData);
+        UpdateToPlacement();
     }
     public void OnPlaceBomb(InputAction.CallbackContext context)
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
         InputLoadFn[5](ObjectData, "2");
         if (!DisplayingSelectedObject) Dump(ObjectData);
+        UpdateToPlacement();
     }
     public void OnPlaceObstacle(InputAction.CallbackContext context) { }
     public void OnToggleDeleteTool(InputAction.CallbackContext context) { }
     public void OnMirror(InputAction.CallbackContext context) { }
     public void OnMirrorinTime(InputAction.CallbackContext context) { }
     public void OnMirrorColoursOnly(InputAction.CallbackContext context) { }
+    #endregion
 }

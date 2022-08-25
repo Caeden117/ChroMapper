@@ -74,7 +74,11 @@ public class BeatmapLightColorEventBox: BeatmapObject
         }
     }
 
-    public BeatmapLightColorEventBox() { }
+    public BeatmapLightColorEventBox() 
+    {
+        DistributionType = 1;
+        BrightnessDistributionType = 1;
+    }
 
     public override ObjectType BeatmapType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 

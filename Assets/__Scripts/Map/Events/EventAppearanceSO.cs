@@ -222,8 +222,10 @@ public class EventAppearanceSO : ScriptableObject
         }
     }
 
-    public void SetLightColorEventAppearance(BeatmapLightColorEventContainer e, bool boost = false, int dataIdx = 0)
+    public void SetLightColorEventAppearance(BeatmapLightColorEventContainer e, bool boost = false, int dataIdx = 0, bool final = true)
     {
+        e.UpdateAlpha(final ? 1.0f : 0.6f, true);
+        // e.UpdateScale(final ? 0.75f : 0.6f);
         if (dataIdx == 0 && e.ColorEventData.EventBoxes[0].EventDatas.Count == 0)
         {
             e.ChangeColor(offColor);
@@ -265,8 +267,8 @@ public class EventAppearanceSO : ScriptableObject
 
 
         e.EventModel = Settings.Instance.EventModel;
-        e.ChangeColor(color, dataIdx != 0); // idk why we have to update materials for sub notes
-        e.ChangeBaseColor(Color.black, dataIdx != 0);
+        e.ChangeColor(color, dataIdx != 0 || !final); // idk why we have to update materials for sub notes
+        e.ChangeBaseColor(Color.black, dataIdx != 0 || !final);
         if (color == Color.white) e.UpdateTextColor(Color.black);
         else e.UpdateTextColor(Color.white);
     }
