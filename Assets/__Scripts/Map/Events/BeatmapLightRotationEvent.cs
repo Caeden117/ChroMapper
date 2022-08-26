@@ -33,6 +33,11 @@ public class BeatmapLightRotationEventData : BeatmapObject
         RotationDirection = o;
     }
 
+    public BeatmapLightRotationEventData()
+    {
+        EaseType = -1;
+    }
+
     public override ObjectType BeatmapType { get; set; } = ObjectType.LightColorEvent;
 
     public override JSONNode ConvertToJson()
@@ -75,6 +80,13 @@ public class BeatmapLightRotationEventBox : BeatmapObject
             EventDatas.Add(new BeatmapLightRotationEventData(n));
         }
     }
+
+    public BeatmapLightRotationEventBox()
+    {
+        DistributionType = 1;
+        RotationDistributionType = 1;
+    }
+
     public override ObjectType BeatmapType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public override JSONNode ConvertToJson()
@@ -118,6 +130,16 @@ public class BeatmapLightRotationEvent : BeatmapObject
         Beat = b;
         Group = g;
         EventBoxes.Add(e);
+    }
+
+    public BeatmapLightRotationEvent()
+    {
+        var filter = new BeatmapLightEventFilter();
+        var eb = new BeatmapLightRotationEventBox();
+        var ebd = new BeatmapLightRotationEventData();
+        eb.Filter = filter;
+        eb.EventDatas.Add(ebd);
+        EventBoxes.Add(eb);
     }
 
     public static List<BeatmapLightRotationEvent> SplitEventBoxes(BeatmapLightRotationEvent e)
