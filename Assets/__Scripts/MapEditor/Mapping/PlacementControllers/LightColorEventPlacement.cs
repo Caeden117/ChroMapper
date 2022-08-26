@@ -15,6 +15,34 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a LightColorEvent.");
     public override BeatmapLightColorEvent GenerateOriginalData() => new BeatmapLightColorEvent();
+
+    internal override void Start()
+    {
+        base.Start();
+        uiGenerator.OnToggleUIPanelSwitch += ChangeActivate;
+    }
+
+
+    protected void OnDestroy()
+    {
+        uiGenerator.OnToggleUIPanelSwitch -= ChangeActivate;
+    }
+
+    private void ChangeActivate(LightV3GeneratorAppearance.LightV3UIPanel currentState)
+    {
+        enabled = currentState == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel;
+    }
+
+    private void OnEnable()
+    {
+        instantiatedContainer.SafeSetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        instantiatedContainer.SafeSetActive(false);
+    }
+
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
         instantiatedContainer.transform.localPosition = new Vector3(
