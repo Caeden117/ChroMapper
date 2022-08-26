@@ -41,6 +41,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
         var lightContainer = con as BeatmapLightColorEventContainer;
+        lightContainer.ColorEventData = obj as BeatmapLightColorEvent;
         eventAppearanceSo.SetLightColorEventAppearance(lightContainer, 
             eventsContainer.AllBoostEvents.FindLast(x => x.Time <= obj.Time)?.Value == 1);
         lightContainer.SpawnEventDatas(eventAppearanceSo, eventsContainer);

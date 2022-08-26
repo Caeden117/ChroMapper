@@ -10,7 +10,7 @@ public class BeatmapLightColorEventContainer : BeatmapEventContainer
 {
     public BeatmapLightColorEvent ColorEventData;
     public LightColorEventsContainer ColorEventsContainer;
-    [SerializeField] GameObject extraNote;
+    [SerializeField] private GameObject extraNote;
     private List<BeatmapLightColorEventContainer> extraNotes = new List<BeatmapLightColorEventContainer>();
 
     public override BeatmapObject ObjectData { get => ColorEventData; set => ColorEventData = (BeatmapLightColorEvent)value; }

@@ -31,7 +31,11 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
     {
-        eventAppearanceSo.SetLightRotationEventAppearance(con as BeatmapLightRotationEventContainer);
+        var rotCon = con as BeatmapLightRotationEventContainer;
+        rotCon.RotationEventData = obj as BeatmapLightRotationEvent;
+        eventAppearanceSo.SetLightRotationEventAppearance(rotCon);
+        rotCon.SpawnEventDatas(eventAppearanceSo);
+        
     }
 
     private void Start() => LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
