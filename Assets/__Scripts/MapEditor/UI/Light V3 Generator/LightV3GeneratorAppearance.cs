@@ -31,6 +31,8 @@ public class LightV3GeneratorAppearance : MonoBehaviour
         OnToggleUIPanelSwitch -= SwitchColorRotation;
     }
 
+    public void ToggleDropdown() => ToggleDropdown(!IsActive);
+
     public void ToggleDropdown(bool visible) => StartCoroutine(UpdateGroup(visible, lightV3GenUIRect));
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
