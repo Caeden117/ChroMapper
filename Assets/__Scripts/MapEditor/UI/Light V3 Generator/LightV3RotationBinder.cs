@@ -5,6 +5,7 @@ using UnityEngine;
 public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent>
 {
     public int DataIdx = 0;
+    [SerializeField] private LightRotationEventPlacement lightRotationEventPlacement;
     protected override void InitBindings()
     {
         ObjectData = new BeatmapLightRotationEvent();
@@ -52,6 +53,36 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].RotationAffectFirst = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].ReverseRotation = b ? 1 : 0);
+
+        for (int i = 0; i < InputFields.Length; ++i)
+        {
+            var currentIdx = new int();
+            currentIdx = i;
+            InputFields[currentIdx].onEndEdit.AddListener((t) => {
+                InputLoadFn[currentIdx](ObjectData, t);
+                UpdateToPlacement();
+            });
+        }
+
+        for (int i = 0; i < Dropdowns.Length; ++i)
+        {
+            var currentIdx = new int();
+            currentIdx = i;
+            Dropdowns[currentIdx].onValueChanged.AddListener((t) => {
+                DropdownLoadFn[currentIdx](ObjectData, t);
+                UpdateToPlacement();
+            });
+
+        }
+        for (int i = 0; i < Toggles.Length; ++i)
+        {
+            var currentIdx = new int();
+            currentIdx = i;
+            Toggles[currentIdx].onValueChanged.AddListener((t) => {
+                ToggleLoadFn[currentIdx](ObjectData, t);
+                UpdateToPlacement();
+            });
+        }
     }
 
     protected override void Dump(BeatmapLightRotationEvent obj)
@@ -63,5 +94,10 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
             DataIdx = rotCon.GetRaycastedIdx();
         }
         base.Dump(obj);
+    }
+
+    public void UpdateToPlacement()
+    {
+        lightRotationEventPlacement.UpdateData(ObjectData);
     }
 }
