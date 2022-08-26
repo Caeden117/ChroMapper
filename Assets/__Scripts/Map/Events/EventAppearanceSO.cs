@@ -274,8 +274,11 @@ public class EventAppearanceSO : ScriptableObject
         else e.UpdateTextColor(Color.white);
     }
 
-    public void SetLightRotationEventAppearance(BeatmapLightRotationEventContainer e, int dataIdx = 0)
+    public void SetLightRotationEventAppearance(BeatmapLightRotationEventContainer e, int dataIdx = 0, bool final = true)
     {
+        e.UpdateAlpha(final ? 1.0f : 0.6f, true);
+        if (!final)
+            e.transform.localScale = Vector3.one * 0.6f;
         var eb = e.RotationEventData.EventBoxes[0];
         var ebd = eb.EventDatas[dataIdx];
         var text = GenerateFilterString(eb.Filter);
@@ -298,7 +301,7 @@ public class EventAppearanceSO : ScriptableObject
         text += "\n" + rotationDirectionMark[ebd.RotationDirection] + ebd.AdditionalLoop + "+" + ebd.RotationValue + "°";
 
         e.UpdateTextDisplay(true, text);
-        e.ChangeColor(offColor, dataIdx != 0);
+        e.ChangeColor(offColor, dataIdx != 0 || !final);
     }
 }
 

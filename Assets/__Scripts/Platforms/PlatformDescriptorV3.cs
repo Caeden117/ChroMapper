@@ -53,6 +53,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         }
 
         foreach (var lighColorPlacement in FindObjectsOfType<LightColorEventPlacement>()) lighColorPlacement.platformDescriptor = this;
+        foreach (var lighRotationPlacement in FindObjectsOfType<LightRotationEventPlacement>()) lighRotationPlacement.platformDescriptor = this;
     }
 
     protected new void OnDestroy()

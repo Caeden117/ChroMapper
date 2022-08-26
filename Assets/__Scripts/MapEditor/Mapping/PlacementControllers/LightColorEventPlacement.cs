@@ -19,6 +19,7 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
     internal override void Start()
     {
         base.Start();
+        UpdateAppearance();
         uiGenerator.OnToggleUIPanelSwitch += ChangeActivate;
     }
 
