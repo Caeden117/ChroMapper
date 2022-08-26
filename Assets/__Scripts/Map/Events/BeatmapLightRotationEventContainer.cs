@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,5 +66,17 @@ public class BeatmapLightRotationEventContainer : BeatmapEventContainer
         {
             extraNotes[j].gameObject.SetActive(false);
         }
+    }
+
+    public int GetRaycastedIdx()
+    {
+        var hit = GlobalIntersectionCache.firstHit;
+        if (hit == null) return 0;
+        var con = hit.GetComponentInParent<BeatmapObjectContainer>();
+        for (int i = 0; i < extraNotes.Count && extraNotes[i].gameObject.activeSelf; ++i)
+        {
+            if (extraNotes[i] == con) return i + 1;
+        }
+        return 0;
     }
 }

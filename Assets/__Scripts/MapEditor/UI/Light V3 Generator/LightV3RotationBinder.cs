@@ -29,6 +29,10 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         ToggleDumpFn.Add(x => x.EventBoxes[0].RotationAffectFirst == 1);
         ToggleDumpFn.Add(x => x.EventBoxes[0].ReverseRotation == 1);
 
+        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Start");
+        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Step");
+        TextsDumpFn.Add(x => $"{DataIdx + 1}/{x.EventBoxes[0].EventDatas.Count}");
+
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Section = x.EventBoxes[0].Filter.FilterType == 1 ? int.Parse(s) - 1 : int.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Partition = int.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Distribution = float.Parse(s));
@@ -48,5 +52,16 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].RotationAffectFirst = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].ReverseRotation = b ? 1 : 0);
+    }
+
+    protected override void Dump(BeatmapLightRotationEvent obj)
+    {
+        var col = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(obj.BeatmapType);
+        if (col.LoadedContainers.TryGetValue(obj, out var con))
+        {
+            var rotCon = con as BeatmapLightRotationEventContainer;
+            DataIdx = rotCon.GetRaycastedIdx();
+        }
+        base.Dump(obj);
     }
 }
