@@ -10,7 +10,7 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private EventsContainer eventsContainer;
-    [SerializeField] private LightV3Generator uiGenerator;
+    [SerializeField] private LightV3GeneratorAppearance uiGenerator;
     private int objectGroup = -1;
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a LightColorEvent.");
@@ -95,11 +95,12 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
 
     public void OnSwapColorRotation(InputAction.CallbackContext context)
     {
-
+        if (!context.performed || !Settings.Instance.Load_MapV3) return;
+        uiGenerator.OnToggleColorRotationSwitch();
     }
     public void OnToggleUI(InputAction.CallbackContext context)
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
-        uiGenerator.OnToggle();
+        uiGenerator.ToggleDropdown();
     }
 }
