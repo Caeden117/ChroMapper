@@ -86,10 +86,27 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
         }
         else
         {
+            if (!SanityCheck()) return;
             queuedData = BeatmapObject.GenerateCopy(queuedData); // before copy, queued data is referencing binder's data
             queuedData.Group = objectGroup;
             base.ApplyToMap();
         }
+    }
+
+    private bool SanityCheck()
+    {
+        var groupLight = platformDescriptor.LightsManagersV3[platformDescriptor.GroupIdToLaneIndex(objectGroup)];
+        if (queuedData.EventBoxes[0].Axis == 0 && !groupLight.XRotatable)
+        {
+            PersistentUI.Instance.ShowDialogBox("This lane cannot rotate around X axis", null, PersistentUI.DialogBoxPresetType.Ok);
+            return false;
+        }
+        if (queuedData.EventBoxes[0].Axis == 1 && !groupLight.YRotatable)
+        {
+            PersistentUI.Instance.ShowDialogBox("This lane cannot rotate around Y axis", null, PersistentUI.DialogBoxPresetType.Ok);
+            return false;
+        }
+        return true;
     }
 
 }

@@ -165,7 +165,7 @@ public class BeatmapLightRotationEvent : BeatmapObject
         node["e"] = eventBoxes;
         return node;
     }
-    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false) => throw new System.NotImplementedException();
+    protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false) => false;
 
     public Vector2 GetPosition()
     {
