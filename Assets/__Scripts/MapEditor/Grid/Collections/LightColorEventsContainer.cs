@@ -14,6 +14,8 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private EventsContainer eventsContainer;
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private GameObject label;
+    [SerializeField] private LightV3GeneratorAppearance uiGenerator;
+    internal bool containersUP = true;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightColorEvent;
 
     // (groupId, lightIdx) => ordered list
@@ -26,10 +28,12 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     internal override void SubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
     }
     internal override void UnsubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
     }
 
     private void Start() => LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
@@ -74,6 +78,12 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
             LinkAllLightColorEventDatas();
         }
     }
+    private void FlipAllContainers(LightV3GeneratorAppearance.LightV3UIPanel currentPanel)
+    {
+        containersUP = currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel;
+        RefreshPool(true);
+    }
+
 
     /// <summary>
     /// Group all events based on group. Then for each group, group them based on lightIndex.

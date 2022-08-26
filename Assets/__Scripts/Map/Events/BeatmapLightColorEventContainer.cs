@@ -24,7 +24,7 @@ public class BeatmapLightColorEventContainer : BeatmapEventContainer
         int y = stackList.IndexOf(ColorEventData);
         transform.localPosition = new Vector3(
             ColorEventsContainer.platformDescriptor.GroupIdToLaneIndex(ColorEventData.Group) + 0.5f,
-            y + 0.5f,
+            (ColorEventsContainer.containersUP ? 1 : -1) * (y + 0.5f),
             ColorEventData.Time * EditorScaleController.EditorScale
             );
     }

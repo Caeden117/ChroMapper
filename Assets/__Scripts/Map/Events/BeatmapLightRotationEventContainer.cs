@@ -19,7 +19,7 @@ public class BeatmapLightRotationEventContainer : BeatmapEventContainer
         int y = stackList.IndexOf(RotationEventData);
         transform.localPosition = new Vector3(
             RotationEventsContainer.platformDescriptor.GroupIdToLaneIndex(RotationEventData.Group) + 0.5f,
-            -(y + 0.5f),
+            (RotationEventsContainer.containersUP ? 1 : -1) * (y + 0.5f),
             RotationEventData.Time * EditorScaleController.EditorScale
             );
     }

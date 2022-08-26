@@ -8,6 +8,8 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private GameObject rotationPrefab;
     [SerializeField] private EventAppearanceSO eventAppearanceSo;
     internal PlatformDescriptorV3 platformDescriptor;
+    [SerializeField] private LightV3GeneratorAppearance uiGenerator;
+    internal bool containersUP = false;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightRotationEvent;
 
     private Dictionary<(int, int), List<BeatmapLightRotationEventData>> nextEventDict = new Dictionary<(int, int), List<BeatmapLightRotationEventData>>();
@@ -19,10 +21,12 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
     internal override void SubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
     }
     internal override void UnsubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
     }
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
@@ -44,6 +48,12 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
         {
             LinkAllLightRotationEventDatas();
         }
+    }
+
+    private void FlipAllContainers(LightV3GeneratorAppearance.LightV3UIPanel currentPanel)
+    {
+        containersUP = currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel;
+        RefreshPool(true);
     }
 
     /// <summary>
