@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class LightV3Buttons : MonoBehaviour
 {
     [SerializeField] private LightV3ColorBinder colorBinder;
+    [SerializeField] private LightV3RotationBinder rotationBinder;
 
     [SerializeField] private Button applyButton;
     private void Awake()
@@ -24,12 +25,21 @@ public class LightV3Buttons : MonoBehaviour
         if (SelectionController.SelectedObjects.Count == 1)
         {
             var obj = SelectionController.SelectedObjects.First();
-            if (obj is BeatmapLightColorEvent o)
+            if (obj is BeatmapLightColorEvent color)
             {
-                colorBinder.Load(o);
-                if (o.HasAttachedContainer)
+                colorBinder.Load(color);
+                if (color.HasAttachedContainer)
                 {
                     var col = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
+                    col.RefreshPool(true);
+                }
+            }
+            if (obj is BeatmapLightRotationEvent rot)
+            {
+                rotationBinder.Load(rot);
+                if (rot.HasAttachedContainer)
+                {
+                    var col = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
                     col.RefreshPool(true);
                 }
             }
