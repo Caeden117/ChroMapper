@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class LightColorEventPlacement : PlacementController<BeatmapLightColorEvent, BeatmapLightColorEventContainer, LightColorEventsContainer>
+public class LightColorEventPlacement : PlacementController<BeatmapLightColorEvent, BeatmapLightColorEventContainer, LightColorEventsContainer>, 
+    CMInput.ILightV3PlacementActions
 {
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private EventsContainer eventsContainer;
+    [SerializeField] private LightV3Generator uiGenerator;
     private int objectGroup = -1;
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a LightColorEvent.");
@@ -88,5 +91,15 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
             queuedData.Group = objectGroup;
             base.ApplyToMap();
         }
+    }
+
+    public void OnSwapColorRotation(InputAction.CallbackContext context)
+    {
+
+    }
+    public void OnToggleUI(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !Settings.Instance.Load_MapV3) return;
+        uiGenerator.OnToggle();
     }
 }
