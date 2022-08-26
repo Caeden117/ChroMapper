@@ -317,8 +317,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
             RecycleContainer(obj);
             if (refreshesPool) RefreshPool();
-            if (triggersEvent) OnObjectDelete(obj);
-            ObjectDeletedEvent?.Invoke(obj);
+            OnObjectDelete(obj);
+            if (triggersEvent) ObjectDeletedEvent?.Invoke(obj);
         }
         else
         {

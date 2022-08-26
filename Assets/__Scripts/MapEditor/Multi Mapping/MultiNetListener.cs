@@ -70,7 +70,9 @@ public class MultiNetListener : INetEventListener, IDisposable
                 break;
 
             case (byte)Packets.MapperPose:
-                OnMapperPose(identity, peer, reader.Get<MapperPosePacket>());
+                var pose = reader.Get<MapperPosePacket>();
+                CachedPosePackets[identity] = pose;
+                OnMapperPose(identity, peer, pose);
                 break;
 
             case (byte)Packets.MapperDisconnect:
@@ -137,8 +139,6 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     public virtual void OnMapperPose(MapperIdentityPacket identity, NetPeer peer, MapperPosePacket pose)
     {
-        CachedPosePackets[identity] = pose;
-
         if (identity is null || tracksManager == null) return;
 
         if (!RemotePlayers.TryGetValue(identity, out var remotePlayer) || remotePlayer == null)

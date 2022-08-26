@@ -31,6 +31,7 @@ public class MultiClientNetListener : MultiNetListener
 
     public override void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
     {
+        SceneTransitionManager.Instance.CancelInvoke();
         SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
 
         base.OnNetworkError(endPoint, socketError);
@@ -42,6 +43,7 @@ public class MultiClientNetListener : MultiNetListener
         PersistentUI.Instance.ShowDialogBox($"Connection with the host lost: {disconnectInfo.Reason}.\n\nReturning to song list...",
             null, PersistentUI.DialogBoxPresetType.Ok);
 
+        SceneTransitionManager.Instance.CancelInvoke();
         SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
     }
 }
