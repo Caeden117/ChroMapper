@@ -8,6 +8,8 @@ using UnityEngine;
 public class LightV3GeneratorAppearance : MonoBehaviour
 {
     [SerializeField] private RectTransform lightV3GenUIRect;
+    [SerializeField] private GameObject colorPanel;
+    [SerializeField] private GameObject rotationPanel;
 
     public bool IsActive { get; private set; }
 
@@ -28,5 +30,19 @@ public class LightV3GeneratorAppearance : MonoBehaviour
         }
 
         group.anchoredPosition = new Vector2(dest, group.anchoredPosition.y);
+    }
+
+    public void OnToggleColorRotationSwitch()
+    {
+        if (colorPanel.activeSelf)
+        {
+            colorPanel.SetActive(false);
+            rotationPanel.SetActive(true);
+        }
+        else
+        {
+            colorPanel.SetActive(true);
+            rotationPanel.SetActive(false);
+        }
     }
 }
