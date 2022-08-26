@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +11,25 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     [SerializeField] private RectTransform lightV3GenUIRect;
     [SerializeField] private GameObject colorPanel;
     [SerializeField] private GameObject rotationPanel;
+    public enum LightV3UIPanel
+    {
+        LightColorPanel,
+        LightRotationPanel
+    };
+    public Action<LightV3UIPanel> OnToggleUIPanelSwitch;
+    private LightV3UIPanel currentPanel = LightV3UIPanel.LightColorPanel;
 
     public bool IsActive { get; private set; }
+
+    private void Start()
+    {
+        OnToggleUIPanelSwitch += SwitchColorRotation;
+    }
+
+    private void OnDestroy()
+    {
+        OnToggleUIPanelSwitch -= SwitchColorRotation;
+    }
 
     public void ToggleDropdown(bool visible) => StartCoroutine(UpdateGroup(visible, lightV3GenUIRect));
 
@@ -34,15 +52,21 @@ public class LightV3GeneratorAppearance : MonoBehaviour
 
     public void OnToggleColorRotationSwitch()
     {
-        if (colorPanel.activeSelf)
+        switch (currentPanel)
         {
-            colorPanel.SetActive(false);
-            rotationPanel.SetActive(true);
+            case LightV3UIPanel.LightColorPanel:
+                currentPanel = LightV3UIPanel.LightRotationPanel;
+                break;
+            case LightV3UIPanel.LightRotationPanel:
+                currentPanel = LightV3UIPanel.LightColorPanel;
+                break;
         }
-        else
-        {
-            colorPanel.SetActive(true);
-            rotationPanel.SetActive(false);
-        }
+        OnToggleUIPanelSwitch.Invoke(currentPanel);
+    }
+
+    private void SwitchColorRotation(LightV3UIPanel currentPanel)
+    {
+        colorPanel.SetActive(currentPanel == LightV3UIPanel.LightColorPanel);
+        rotationPanel.SetActive(currentPanel == LightV3UIPanel.LightRotationPanel);
     }
 }
