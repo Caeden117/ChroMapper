@@ -32,16 +32,7 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
     private void ChangeActivate(LightV3GeneratorAppearance.LightV3UIPanel currentState)
     {
         enabled = currentState == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel;
-    }
-
-    private void OnEnable()
-    {
-        instantiatedContainer.SafeSetActive(true);
-    }
-
-    private void OnDisable()
-    {
-        instantiatedContainer.SafeSetActive(false);
+        instantiatedContainer.SafeSetActive(enabled);
     }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)

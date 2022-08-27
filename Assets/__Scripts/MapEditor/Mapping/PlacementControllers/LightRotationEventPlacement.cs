@@ -27,7 +27,7 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
         base.Start();
         UpdateAppearance();
         uiGenerator.OnToggleUIPanelSwitch += ChangeActivate;
-        enabled = false;
+        ChangeActivate(LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel);
     }
     protected void OnDestroy()
     {
@@ -36,16 +36,7 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
     private void ChangeActivate(LightV3GeneratorAppearance.LightV3UIPanel currentState)
     {
         enabled = currentState == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel; // maybe I should use isActive...
-    }
-
-    private void OnEnable()
-    {
-        instantiatedContainer.SafeSetActive(true);
-    }
-
-    private void OnDisable()
-    {
-        instantiatedContainer.SafeSetActive(false);
+        instantiatedContainer.SafeSetActive(enabled);
     }
 
     public override void TransferQueuedToDraggedObject(ref BeatmapLightRotationEvent dragged, BeatmapLightRotationEvent queued) => throw new System.NotImplementedException();
