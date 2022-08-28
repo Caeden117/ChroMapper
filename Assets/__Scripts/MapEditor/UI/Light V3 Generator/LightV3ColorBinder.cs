@@ -78,13 +78,17 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         }
     }
 
-    protected override void Dump(BeatmapLightColorEvent obj)
+    public override void Dump(BeatmapLightColorEvent obj)
     {
         var col = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(obj.BeatmapType);
         if (col.LoadedContainers.TryGetValue(obj, out var con))
         {
             var colorCon = con as BeatmapLightColorEventContainer;
             DataIdx = colorCon.GetRaycastedIdx();
+        }
+        else
+        {
+            DataIdx = 0;
         }
         base.Dump(obj);
     }

@@ -85,7 +85,7 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         }
     }
 
-    protected override void Dump(BeatmapLightRotationEvent obj)
+    public override void Dump(BeatmapLightRotationEvent obj)
     {
         var col = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(obj.BeatmapType);
         if (col.LoadedContainers.TryGetValue(obj, out var con))

@@ -24,6 +24,10 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
     protected List<Action<T, bool>> ToggleLoadFn = new List<Action<T, bool>>();
 
     public T ObjectData;
+
+
+    private T selectingData;
+    public T DisplayingData => DisplayingSelectedObject ? selectingData : ObjectData;
     protected bool DisplayingSelectedObject;
     protected void Awake()
     {
@@ -51,13 +55,14 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
             var obj = SelectionController.SelectedObjects.First();
             if (obj is T o)
             {
+                selectingData = o;
                 DisplayingSelectedObject = true;
                 Dump(o);
             }
         }
     }
 
-    protected virtual void Dump(T obj)
+    public virtual void Dump(T obj)
     {
         for (int i = 0; i < InputFields.Length; ++i)
         {
@@ -100,4 +105,5 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
             ToggleLoadFn[i](obj, Toggles[i].isOn);
         }
     }
+
 }

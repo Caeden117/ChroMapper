@@ -173,6 +173,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             extraTime += deltaTime;
         }
         yield return null;
+
     }
 
     public void LightRotationEventPassed(bool natural, int idx, BeatmapLightRotationEvent e)

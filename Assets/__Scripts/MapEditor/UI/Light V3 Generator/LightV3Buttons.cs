@@ -8,17 +8,38 @@ public class LightV3Buttons : MonoBehaviour
     [SerializeField] private LightV3ColorBinder colorBinder;
     [SerializeField] private LightV3RotationBinder rotationBinder;
 
-    [SerializeField] private Button applyButton;
-    private void Awake()
-    {
-        applyButton.onClick.AddListener(Apply);
-    }
+    [SerializeField] private LightV3ColorTemplateSaver colorTemplate;
+    private DialogBox createTemplatedialogBox;
+    private TextBoxComponent createTemplateTextBox;
 
-    private void OnDestroy()
+    private DialogBox renameTemplatedialogBox;
+    private TextBoxComponent renameTemplateTextBox;
+    private Button currentButton;
+    private void Start()
     {
-        applyButton.onClick.RemoveListener(Apply);
-    }
+        createTemplatedialogBox = PersistentUI.Instance
+            .CreateNewDialogBox()
+            .WithTitle("Create Template Note")
+            .DontDestroyOnClose();
+        createTemplateTextBox = createTemplatedialogBox
+            .AddComponent<TextBoxComponent>()
+            .WithLabel("name");
 
+        createTemplatedialogBox.AddFooterButton(null, "PersistentUI", "cancel");
+        createTemplatedialogBox.AddFooterButton(() => AddTemplate(createTemplateTextBox.Value), "PersistentUI", "ok");
+
+        renameTemplatedialogBox = PersistentUI.Instance
+            .CreateNewDialogBox()
+            .WithTitle("Rename Template Note")
+            .DontDestroyOnClose();
+        renameTemplateTextBox = renameTemplatedialogBox
+            .AddComponent<TextBoxComponent>()
+            .WithLabel("name");
+
+        renameTemplatedialogBox.AddFooterButton(null, "PersistentUI", "cancel");
+        renameTemplatedialogBox.AddFooterButton(() => RenameTemplateCallback(renameTemplateTextBox.Value), "PersistentUI", "ok");
+
+    }
 
     public void Apply()
     {
@@ -44,5 +65,38 @@ public class LightV3Buttons : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void GenerateTemplate()
+    {
+        createTemplatedialogBox.Open();
+    }
+    
+    private void AddTemplate(string name)
+    {
+        colorTemplate.AddObject(colorBinder.DisplayingData, name);
+    }
+
+    public void RestoreTemplate(Button button)
+    {
+        colorTemplate.ApplyObject(colorBinder.ObjectData, button);
+        colorBinder.Dump(colorBinder.ObjectData);
+        colorBinder.UpdateToPlacement();
+    }
+
+    public void DeleteTemplate(Button button)
+    {
+        colorTemplate.RemoveObject(button);
+    }
+
+    public void RenameTemplate(Button button)
+    {
+        currentButton = button;
+        renameTemplatedialogBox.Open();
+    }
+
+    private void RenameTemplateCallback(string name)
+    {
+        colorTemplate.UpdateObject(currentButton, name);
     }
 }
