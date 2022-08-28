@@ -171,4 +171,15 @@ public class BeatmapLightRotationEvent : BeatmapObject
     {
         return new Vector2(Group + 0.5f, 0.5f);
     }
+
+    public override void Apply(BeatmapObject originalData)
+    {
+        base.Apply(originalData);
+        if (originalData is BeatmapLightRotationEvent rotData)
+        {
+            Beat = rotData.Beat;
+            Group = rotData.Group;
+            EventBoxes = rotData.EventBoxes;
+        }
+    }
 }

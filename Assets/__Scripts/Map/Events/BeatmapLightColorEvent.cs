@@ -165,9 +165,12 @@ public class BeatmapLightColorEvent : BeatmapObject
 
     public override void Apply(BeatmapObject originalData)
     {
-        var obj = originalData as BeatmapLightColorEvent;
-        Beat = obj.Beat;
-        Group = obj.Group;
-        EventBoxes = obj.EventBoxes;
+        base.Apply(originalData);
+        if (originalData is BeatmapLightColorEvent obj)
+        {
+            Beat = obj.Beat;
+            Group = obj.Group;
+            EventBoxes = obj.EventBoxes;
+        }
     }
 }

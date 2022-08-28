@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,11 @@ public class LightV3Buttons : MonoBehaviour
     [SerializeField] private LightV3RotationBinder rotationBinder;
 
     [SerializeField] private LightV3ColorTemplateSaver colorTemplate;
+    [SerializeField] private LightV3RotationTemplateSaver rotationTemplate;
+    [SerializeField] private LightV3GeneratorAppearance uiGenerator;
     private DialogBox createTemplatedialogBox;
     private TextBoxComponent createTemplateTextBox;
+    private LightV3GeneratorAppearance.LightV3UIPanel currentPanel;
 
     private DialogBox renameTemplatedialogBox;
     private TextBoxComponent renameTemplateTextBox;
@@ -39,8 +43,15 @@ public class LightV3Buttons : MonoBehaviour
         renameTemplatedialogBox.AddFooterButton(null, "PersistentUI", "cancel");
         renameTemplatedialogBox.AddFooterButton(() => RenameTemplateCallback(renameTemplateTextBox.Value), "PersistentUI", "ok");
 
+        uiGenerator.OnToggleUIPanelSwitch += StoreCurrentPanel;
     }
 
+    private void StoreCurrentPanel(LightV3GeneratorAppearance.LightV3UIPanel obj) => currentPanel = obj;
+
+    private void OnDestroy()
+    {
+        uiGenerator.OnToggleUIPanelSwitch -= StoreCurrentPanel;
+    }
     public void Apply()
     {
         if (SelectionController.SelectedObjects.Count == 1)
@@ -74,19 +85,42 @@ public class LightV3Buttons : MonoBehaviour
     
     private void AddTemplate(string name)
     {
-        colorTemplate.AddObject(colorBinder.DisplayingData, name);
+        if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel)
+        {
+            colorTemplate.AddObject(colorBinder.DisplayingData, name);
+        }
+        else
+        {
+            rotationTemplate.AddObject(rotationBinder.DisplayingData, name);
+        }
     }
 
     public void RestoreTemplate(Button button)
     {
-        colorTemplate.ApplyObject(colorBinder.ObjectData, button);
-        colorBinder.Dump(colorBinder.ObjectData);
-        colorBinder.UpdateToPlacement();
+        if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel)
+        {
+            colorTemplate.ApplyObject(colorBinder.ObjectData, button);
+            colorBinder.Dump(colorBinder.ObjectData);
+            colorBinder.UpdateToPlacement();
+        }
+        else
+        {
+            rotationTemplate.ApplyObject(rotationBinder.ObjectData, button);
+            rotationBinder.Dump(rotationBinder.ObjectData);
+            rotationBinder.UpdateToPlacement();
+        }
     }
 
     public void DeleteTemplate(Button button)
     {
-        colorTemplate.RemoveObject(button);
+        if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel)
+        {
+            colorTemplate.RemoveObject(button);
+        }
+        else
+        {
+            rotationTemplate.RemoveObject(button);
+        }
     }
 
     public void RenameTemplate(Button button)
@@ -97,6 +131,13 @@ public class LightV3Buttons : MonoBehaviour
 
     private void RenameTemplateCallback(string name)
     {
-        colorTemplate.UpdateObject(currentButton, name);
+        if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel)
+        {
+            colorTemplate.UpdateObject(currentButton, name);
+        }
+        else
+        {
+            rotationTemplate.UpdateObject(currentButton, name);
+        }
     }
 }

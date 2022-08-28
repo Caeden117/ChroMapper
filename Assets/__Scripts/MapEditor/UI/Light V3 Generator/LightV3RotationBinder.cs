@@ -93,6 +93,10 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
             var rotCon = con as BeatmapLightRotationEventContainer;
             DataIdx = rotCon.GetRaycastedIdx();
         }
+        else
+        {
+            DataIdx = 0;
+        }
         base.Dump(obj);
     }
 
