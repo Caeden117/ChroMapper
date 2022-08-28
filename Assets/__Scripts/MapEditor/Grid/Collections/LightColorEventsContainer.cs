@@ -15,6 +15,8 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private GameObject label;
     [SerializeField] private LightV3GeneratorAppearance uiGenerator;
+    public LightColorEventCallbackController RealSpawnCallbackController;
+    public LightColorEventCallbackController RealDespawnCallbackController;
     internal bool containersUP = true;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightColorEvent;
 
@@ -29,11 +31,28 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     {
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
+        RealSpawnCallbackController.ObjectPassedThreshold += SpawnCallback;
+        RealSpawnCallbackController.RecursiveObjectCheckFinished += RecursiveCheckFinished;
+        RealDespawnCallbackController.ObjectPassedThreshold += DespawnCallback;
     }
+
+    private void DespawnCallback(bool initial, int index, BeatmapObject objectData)
+    {
+        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
+    }
+    private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
+    private void SpawnCallback(bool initial, int index, BeatmapObject objectData)
+    {
+        if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
+    }
+
     internal override void UnsubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
+        RealSpawnCallbackController.ObjectPassedThreshold -= SpawnCallback;
+        RealSpawnCallbackController.RecursiveObjectCheckFinished -= RecursiveCheckFinished;
+        RealDespawnCallbackController.ObjectPassedThreshold -= DespawnCallback;
     }
 
     private void Start() => LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;

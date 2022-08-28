@@ -6,7 +6,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 /// <summary>
-/// This is a template for callback controller, to avoid filling various BeatmapObjects into one class
+/// This is a template for callback controller, to avoid filling various BeatmapObjects into one class.
+/// It's a little difficult to integrate since most of the exisitng codes are relying on <see cref="BeatmapObjectCallbackController"/>
 /// </summary>
 public class MetaBeatmapObjectCallbackController<TBo, TBocc> : MonoBehaviour
     where TBo: BeatmapObject

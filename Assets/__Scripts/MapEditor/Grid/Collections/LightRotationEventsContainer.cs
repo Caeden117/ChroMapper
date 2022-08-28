@@ -10,6 +10,8 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private LightV3GeneratorAppearance uiGenerator;
     internal bool containersUP = false;
+    public LightRotationEventCallbackController RealSpawnCallbackController;
+    public LightRotationEventCallbackController RealDespawnCallbackController;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightRotationEvent;
 
     private Dictionary<(int, int), List<BeatmapLightRotationEventData>> nextEventDict = new Dictionary<(int, int), List<BeatmapLightRotationEventData>>();
@@ -22,11 +24,28 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
     {
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
+        RealSpawnCallbackController.ObjectPassedThreshold += SpawnCallback;
+        RealSpawnCallbackController.RecursiveObjectCheckFinished += RecursiveCheckFinished;
+        RealDespawnCallbackController.ObjectPassedThreshold += DespawnCallback;
     }
+
+    private void DespawnCallback(bool initial, int index, BeatmapObject objectData)
+    {
+        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
+    }
+    private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
+    private void SpawnCallback(bool initial, int index, BeatmapObject objectData)
+    {
+        if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
+    }
+
     internal override void UnsubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
+        RealSpawnCallbackController.ObjectPassedThreshold -= SpawnCallback;
+        RealSpawnCallbackController.RecursiveObjectCheckFinished -= RecursiveCheckFinished;
+        RealDespawnCallbackController.ObjectPassedThreshold -= DespawnCallback;
     }
 
     protected override void UpdateContainerData(BeatmapObjectContainer con, BeatmapObject obj)
