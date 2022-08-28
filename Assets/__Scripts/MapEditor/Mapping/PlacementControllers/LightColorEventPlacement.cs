@@ -55,12 +55,12 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
         {
             switch (eachChild.name)
             {
-                case "Event Grid Front Scaling Offset":
+                case "Light Event Grid Front Scaling Offset":
                     var newFrontScale = eachChild.transform.localScale;
                     newFrontScale.x = gridSize / 10f;
                     eachChild.transform.localScale = newFrontScale;
                     break;
-                case "Event Interface Scaling Offset":
+                case "Light Event Interface Scaling Offset":
                     var newInterfaceScale = eachChild.transform.localScale;
                     newInterfaceScale.x = gridSize / 10f;
                     eachChild.transform.localScale = newInterfaceScale;
