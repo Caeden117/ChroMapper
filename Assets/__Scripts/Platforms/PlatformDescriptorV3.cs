@@ -216,7 +216,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 if (data.Transition != 1)
                 {
                     light.UpdateXRotation(rotation, 0);
-                    light.SetEaseFunction(data.EaseType);
                 }
                 if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
                     baseTime + extraTime + data.Time, out var nextData))
@@ -225,6 +224,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                     {
                         var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
                         light.UpdateXRotation(nextData.RotationValue, timeToTransition);
+                        light.SetEaseFunction(nextData.EaseType);
                     }
                 }
             }
@@ -233,7 +233,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 if (data.Transition != 1)
                 {
                     light.UpdateYRotation(rotation, 0);
-                    light.SetEaseFunction(data.EaseType);
                 }
                 if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx,
                     baseTime + extraTime + data.Time, out var nextData))
@@ -242,6 +241,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                     {
                         var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
                         light.UpdateYRotation(nextData.RotationValue, timeToTransition);
+                        light.SetEaseFunction(nextData.EaseType);
                     }
                 }
             }
