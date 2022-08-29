@@ -24,6 +24,7 @@ public class EventAppearanceSO : ScriptableObject
     private Color otherColor;
 
     private readonly string[] rotationDirectionMark = { "", "↻", "↺" };
+    private readonly string[] rotationTransitionMark = { "", "T", "TI", "TO", "TIO" };
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false)
     {
@@ -283,22 +284,19 @@ public class EventAppearanceSO : ScriptableObject
         var ebd = eb.EventDatas[dataIdx];
         var text = GenerateFilterString(eb.Filter);
         var prefix = "";
-        switch (ebd.Transition)
+        if (ebd.Transition == 1)
         {
-            case 0:
-                prefix = "T";
-                break;
-            case 1:
-                prefix = "E";
-                break;
-            default:
-                break;
+            prefix = "E";
+        }
+        else
+        {
+            prefix = rotationTransitionMark[ebd.EaseType + 1];
         }
         text = prefix + text;
 
         text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
             + "/" + GenerateDistributionString(eb.RotationDistribution, eb.RotationDistributionType);
-        text += "\n" + rotationDirectionMark[ebd.RotationDirection] + ebd.AdditionalLoop + "+" + ebd.RotationValue + "°";
+        text += "\n" + rotationDirectionMark[ebd.RotationDirection] + ebd.AdditionalLoop + (eb.ReverseRotation == 1 ? "-" : "+") + ebd.RotationValue + "°";
 
         e.UpdateTextDisplay(true, text);
         e.ChangeColor(offColor, dataIdx != 0 || !final);
