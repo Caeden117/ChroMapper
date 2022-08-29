@@ -14,6 +14,7 @@ public class RotatingEvent : MonoBehaviour
 {
     private static readonly Func<float, float>[] easingFunctions =
     {
+        NoneTransition,
         Easing.Linear,
         Easing.Quadratic.In,
         Easing.Quadratic.Out,
@@ -52,7 +53,7 @@ public class RotatingEvent : MonoBehaviour
 
     public void SetEaseFunction(int type)
     {
-        currentEasingFn = GetEasingFunction(type);
+        currentEasingFn = GetEasingFunction(type + 1);
     }
 
     public void UpdateXRotation(float rotation, float timeToTransition)
@@ -72,5 +73,7 @@ public class RotatingEvent : MonoBehaviour
         timeToTransitionY = timeToTransition;
         if (timeToTransition == 0) currentYDegree = rotation;
     }
+
+    private static float NoneTransition(float _) => 0;
 }
 
