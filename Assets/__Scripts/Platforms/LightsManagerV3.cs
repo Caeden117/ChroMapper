@@ -29,6 +29,8 @@ public class LightsManagerV3 : LightsManager
             ControllingRotations.Add(rotations[i]);
             rotations[i].lightsManager = this;
             rotations[i].RotationIdx = i;
+            rotations[i].XData.flip = XFlip;
+            rotations[i].YData.flip = YFlip;
         }
     }
 

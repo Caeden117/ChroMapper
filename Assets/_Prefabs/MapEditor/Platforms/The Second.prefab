@@ -1461,7 +1461,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 344424843432844662}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6574,7 +6574,7 @@ MonoBehaviour:
   GroupingOffset: 0.001
   GroupId: 9
   XRotatable: 1
-  YRotatable: 0
+  YRotatable: 1
   XFlip: 1
   YFlip: 0
   ControllingRotations: []
@@ -10123,7 +10123,6 @@ MonoBehaviour:
   - {fileID: 1917936343521285411}
   - {fileID: 356092958153417033}
   - {fileID: 5813944156616412307}
-  zoomRingManager: {fileID: 5332211868260429322}
 --- !u!1 &3014899842950054991
 GameObject:
   m_ObjectHideFlags: 0
@@ -10637,7 +10636,7 @@ MonoBehaviour:
   GroupingOffset: 0.001
   GroupId: 8
   XRotatable: 1
-  YRotatable: 0
+  YRotatable: 1
   XFlip: 0
   YFlip: 0
   ControllingRotations: []

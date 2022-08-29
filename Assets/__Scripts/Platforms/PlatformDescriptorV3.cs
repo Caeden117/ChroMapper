@@ -207,42 +207,25 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     {
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
-        float rotation = data.RotationValue + (data.AdditionalLoop * 360.0f);
+        float rotation = data.RotationValue;
         float extraTime = 0;
         foreach (var light in lights)
         {
-            if (axis == 0)
+            var axisData = axis == 0 ? light.XData : light.YData;
+            if (data.Transition != 1)
             {
-                if (data.Transition != 1)
-                {
-                    light.UpdateXRotation(rotation, 0);
-                }
-                if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
-                    baseTime + extraTime + data.Time, out var nextData))
-                {
-                    if (nextData.Transition == 0)
-                    {
-                        var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
-                        light.UpdateXRotation(nextData.RotationValue, timeToTransition);
-                        light.SetEaseFunction(nextData.EaseType);
-                    }
-                }
+                axisData.UpdateRotation(rotation, 0);
             }
-            else
+            if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
+                baseTime + extraTime + data.Time, out var nextData))
             {
-                if (data.Transition != 1)
+                if (nextData.Transition == 0)
                 {
-                    light.UpdateYRotation(rotation, 0);
-                }
-                if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx,
-                    baseTime + extraTime + data.Time, out var nextData))
-                {
-                    if (nextData.Transition == 0)
-                    {
-                        var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
-                        light.UpdateYRotation(nextData.RotationValue, timeToTransition);
-                        light.SetEaseFunction(nextData.EaseType);
-                    }
+                    var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                    axisData.UpdateRotation(nextData.RotationValue, timeToTransition);
+                    axisData.SetEaseFunction(nextData.EaseType);
+                    axisData.SetLoop(nextData.AdditionalLoop);
+                    axisData.SetDirection(nextData.RotationDirection);
                 }
             }
             if (deltaTime != 0)

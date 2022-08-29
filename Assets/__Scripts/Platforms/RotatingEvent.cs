@@ -7,10 +7,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Although there are <see cref="TrackLaneRing"/> and <see cref="RotatingLights"/>, they could not perfectly meet v3 rotation needs.
-/// </summary>
-public class RotatingEvent : MonoBehaviour
+
+public class RotatingEventData
 {
     private static readonly Func<float, float>[] easingFunctions =
     {
@@ -20,30 +18,14 @@ public class RotatingEvent : MonoBehaviour
         Easing.Quadratic.Out,
         Easing.Quadratic.InOut,
     };
-
-    private Func<float, float> currentEasingFn = easingFunctions[0];
-
     private float rotatingTime;
-    private float timeToTransitionX;
-    private float timeToTransitionY;
-    private float currentXDegree;
-    private float currentYDegree;
-    private float targetXDegree;
-    private float targetYDegree;
-
-    internal LightsManagerV3 lightsManager;
-    public int RotationIdx;
-
-    protected void Update()
-    {
-        rotatingTime += Time.deltaTime;
-        transform.rotation = Quaternion.Euler(
-            Mathf.LerpAngle(currentYDegree, targetYDegree, currentEasingFn(rotatingTime / timeToTransitionY)),
-            0,
-            Mathf.LerpAngle(currentXDegree, targetXDegree, currentEasingFn(rotatingTime / timeToTransitionX))
-            );
-    }
-
+    private float timeToTransition;
+    private float currentDegree;
+    private float targetDegree;
+    private int loop;
+    private int direction;
+    internal bool flip;
+    private Func<float, float> currentEasingFn = easingFunctions[0]; 
 
     private Func<float, float> GetEasingFunction(int i)
     {
@@ -56,24 +38,78 @@ public class RotatingEvent : MonoBehaviour
         currentEasingFn = GetEasingFunction(type + 1);
     }
 
-    public void UpdateXRotation(float rotation, float timeToTransition)
+    public void UpdateRotation(float rotation, float timeToTransition)
     {
-        if (lightsManager.XFlip) rotation = -rotation;
+        if (flip) rotation = -rotation;
         rotatingTime = 0;
-        targetXDegree = rotation;
-        timeToTransitionX = timeToTransition;
-        if (timeToTransition == 0) currentXDegree = rotation;
+        targetDegree = rotation;
+        this.timeToTransition = timeToTransition;
+        if (timeToTransition == 0) currentDegree = rotation;
     }
 
-    public void UpdateYRotation(float rotation, float timeToTransition)
-    {
-        if (lightsManager.YFlip) rotation = -rotation;
-        rotatingTime = 0;
-        targetYDegree = rotation;
-        timeToTransitionY = timeToTransition;
-        if (timeToTransition == 0) currentYDegree = rotation;
-    }
+    public void SetLoop(int loop) => this.loop = loop;
 
+    public void SetDirection(int direction) => this.direction = direction;
     private static float NoneTransition(float _) => 0;
+
+    private float LerpAngleWithDirection(float a, float b, float t)
+    {
+        t = Mathf.Clamp01(t);
+        if (direction == 0) return Mathf.LerpAngle(a, b + 360 * loop, t);
+        if (direction == 1) // CW
+        {
+            if (flip)
+            {
+                b -= loop * 360;
+            }
+            else
+            {
+                b += loop * 360;
+            }
+        }
+        else // CCW
+        {
+            if (flip)
+            {
+                a -= 360;
+                b += loop * 360;
+            }
+            else
+            {
+                a += 360;
+                b -= loop * 360;
+            }
+        }
+        return (1 - t) * a + t * b;
+    }
+
+    public float LerpAngle(float deltaTime)
+    {
+        rotatingTime += deltaTime;
+        return LerpAngleWithDirection(currentDegree, targetDegree, currentEasingFn(rotatingTime / timeToTransition));
+    }
+}
+
+
+/// <summary>
+/// Although there are <see cref="TrackLaneRing"/> and <see cref="RotatingLights"/>, they could not perfectly meet v3 rotation needs.
+/// </summary>
+public class RotatingEvent : MonoBehaviour
+{
+
+    internal LightsManagerV3 lightsManager;
+    public int RotationIdx;
+    public RotatingEventData XData = new RotatingEventData();
+    public RotatingEventData YData = new RotatingEventData();
+
+    protected void Update()
+    {
+        var dt = Time.deltaTime;
+        transform.rotation = Quaternion.Euler(
+            YData.LerpAngle(dt),
+            0,
+            XData.LerpAngle(dt)
+            );
+    }
 }
 
