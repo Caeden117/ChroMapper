@@ -154,8 +154,11 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         float extraTime = 0;
         foreach (var light in lights)
         {
-            light.UpdateTargetColor(color, 0);
-            light.UpdateTargetAlpha(brightness, 0);
+            if (data.TransitionType != 1)
+            {
+                light.UpdateTargetColor(color, 0);
+                light.UpdateTargetAlpha(brightness, 0);
+            }
             if (lightColorEventsContainer.TryGetNextLightColorEventData(group, light.LightIdx, baseTime + extraTime + data.Time, out var nextData))
             {
                 if (nextData.TransitionType == 1)
@@ -210,8 +213,11 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         {
             if (axis == 0)
             {
-                light.UpdateXRotation(rotation, 0);
-                light.SetEaseFunction(data.EaseType);
+                if (data.Transition != 1)
+                {
+                    light.UpdateXRotation(rotation, 0);
+                    light.SetEaseFunction(data.EaseType);
+                }
                 if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
                     baseTime + extraTime + data.Time, out var nextData))
                 {
@@ -224,8 +230,11 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             }
             else
             {
-                light.UpdateYRotation(rotation, 0);
-                light.SetEaseFunction(data.EaseType);
+                if (data.Transition != 1)
+                {
+                    light.UpdateYRotation(rotation, 0);
+                    light.SetEaseFunction(data.EaseType);
+                }
                 if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx,
                     baseTime + extraTime + data.Time, out var nextData))
                 {
