@@ -102,8 +102,8 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                 foreach (var rotationEventBox in rotationEvent.EventBoxes)
                 {
                     var filteredRotations = rotationEventBox.Filter.FilterType == 1
-                        ? PlatformDescriptorV3.Partition(rotations, rotationEventBox.Filter.Section, rotationEventBox.Filter.Partition)
-                        : PlatformDescriptorV3.Range(rotations, rotationEventBox.Filter.Partition, rotationEventBox.Filter.Section);
+                        ? PlatformDescriptorV3.Partition(rotations, rotationEventBox.Filter.Section, rotationEventBox.Filter.Partition, rotationEventBox.Filter.Reverse == 1)
+                        : PlatformDescriptorV3.Range(rotations, rotationEventBox.Filter.Partition, rotationEventBox.Filter.Section, rotationEventBox.Filter.Reverse == 1);
 
                     float deltaDegree = rotationEventBox.RotationDistribution;
                     if (rotationEventBox.RotationDistributionType == 1) deltaDegree /= filteredRotations.Count();

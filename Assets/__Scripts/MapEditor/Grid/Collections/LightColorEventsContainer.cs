@@ -128,8 +128,8 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
                 foreach (var colorEventBox in colorEvent.EventBoxes)
                 {
                     var filteredLights = colorEventBox.Filter.FilterType == 1
-                        ? PlatformDescriptorV3.Partition(lights, colorEventBox.Filter.Section, colorEventBox.Filter.Partition)
-                        : PlatformDescriptorV3.Range(lights, colorEventBox.Filter.Partition, colorEventBox.Filter.Section);
+                        ? PlatformDescriptorV3.Partition(lights, colorEventBox.Filter.Section, colorEventBox.Filter.Partition, colorEventBox.Filter.Reverse == 1)
+                        : PlatformDescriptorV3.Range(lights, colorEventBox.Filter.Partition, colorEventBox.Filter.Section, colorEventBox.Filter.Reverse == 1);
 
                     float deltaAlpha = colorEventBox.BrightnessDistribution;
                     if (colorEventBox.BrightnessDistributionType == 1) deltaAlpha /= filteredLights.Count();
