@@ -99,7 +99,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     public static IEnumerable<T> Range<T>(IEnumerable<T> list, int start, int step, bool reverse = false)
     {
         if (reverse) list = list.Reverse();
-        return list.Where((x, i) => i % step == start);
+        return list.Where((x, i) => i >= start && (i - start)  % step == 0);
     }
 
     public Color InferColor(int c)
