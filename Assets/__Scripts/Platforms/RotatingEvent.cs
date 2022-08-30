@@ -25,6 +25,7 @@ public class RotatingEventData
     private int loop;
     private int direction;
     internal bool flip;
+    private bool reverse;
     private Func<float, float> currentEasingFn = easingFunctions[0]; 
 
     private Func<float, float> GetEasingFunction(int i)
@@ -40,7 +41,6 @@ public class RotatingEventData
 
     public void UpdateRotation(float rotation, float timeToTransition)
     {
-        if (flip) rotation = -rotation;
         rotatingTime = 0;
         targetDegree = rotation;
         this.timeToTransition = timeToTransition;
@@ -50,6 +50,8 @@ public class RotatingEventData
     public void SetLoop(int loop) => this.loop = loop;
 
     public void SetDirection(int direction) => this.direction = direction;
+
+    public void SetReverse(bool reverse) => this.reverse = reverse;
     private static float NoneTransition(float _) => 0;
 
     private float LerpAngleWithDirection(float a, float b, float t)
@@ -58,27 +60,12 @@ public class RotatingEventData
         if (direction == 0) return Mathf.LerpAngle(a, b + 360 * loop, t);
         if (direction == 1) // CW
         {
-            if (flip)
-            {
-                b -= loop * 360;
-            }
-            else
-            {
-                b += loop * 360;
-            }
+            b += loop * 360;
         }
         else // CCW
         {
-            if (flip)
-            {
-                a -= 360;
-                b += loop * 360;
-            }
-            else
-            {
-                a += 360;
-                b -= loop * 360;
-            }
+            a += 360;
+            b -= loop * 360;
         }
         return (1 - t) * a + t * b;
     }
@@ -86,7 +73,12 @@ public class RotatingEventData
     public float LerpAngle(float deltaTime)
     {
         rotatingTime += deltaTime;
-        return LerpAngleWithDirection(currentDegree, targetDegree, currentEasingFn(rotatingTime / timeToTransition));
+        var angle = LerpAngleWithDirection(currentDegree, targetDegree, currentEasingFn(rotatingTime / timeToTransition));
+        if (flip ^ reverse)
+        {
+            angle = -angle;
+        }
+        return angle;
     }
 }
 

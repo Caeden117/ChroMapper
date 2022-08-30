@@ -198,11 +198,11 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
         foreach (var ebd in eb.EventDatas)
         {
-            StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, e.Group, e.Time, ebd));
+            StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, ebd));
         }
     }
 
-    private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis,
+    private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis, bool reverse,
         int group, float baseTime, BeatmapLightRotationEventData data)
     {
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
@@ -215,6 +215,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             if (data.Transition != 1)
             {
                 axisData.UpdateRotation(rotation, 0);
+                axisData.SetReverse(reverse);
             }
             if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
                 baseTime + extraTime + data.Time, out var nextData))
