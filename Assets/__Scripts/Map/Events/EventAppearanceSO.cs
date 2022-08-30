@@ -24,7 +24,7 @@ public class EventAppearanceSO : ScriptableObject
     private Color otherColor;
 
     private readonly string[] rotationDirectionMark = { "", "↻", "↺" };
-    private readonly string[] rotationTransitionMark = { "", "T", "TI", "TO", "TIO" };
+    private readonly string[] rotationTransitionMark = { "", "T", "Ti", "To", "Tio" };
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false)
     {
@@ -198,7 +198,7 @@ public class EventAppearanceSO : ScriptableObject
         switch (filter.FilterType)
         {
             case 1: // fraction like text, but default will be ignored for better viewing
-                if (filter.Section == 0 && filter.Partition == 1) return "";
+                if (filter.Section == 0 && filter.Partition == 1 && filter.Reverse == 0) return "";
                 return (filter.Reverse != 0 ? "-" : "") + (filter.Section + 1) + "/" + filter.Partition;
             case 2: // python indexing like text
                 return filter.Partition + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Section;
@@ -208,15 +208,16 @@ public class EventAppearanceSO : ScriptableObject
         }
     }
 
-    private string GenerateDistributionString(float w, int d)
+    private string GenerateDistributionString(float w, int d, bool actuallyAffect = true)
     {
+        var connector = actuallyAffect ? "->" : "|>";
         if (w == 0.0f) return "";
         switch (d)
         {
             case 1: // Wave
-                return "->" + w.ToString("n1");
+                return connector + w.ToString("n1");
             case 2: // Step
-                return w.ToString("n1") + "->";
+                return w.ToString("n1") + connector;
             default:
                 Debug.LogError("Unexpected distribution type " + d);
                 return "";
@@ -261,7 +262,7 @@ public class EventAppearanceSO : ScriptableObject
         text = prefix + text;
         // second line: two distributions
         text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType) 
-            + "/" + GenerateDistributionString(eb.BrightnessDistribution, eb.BrightnessDistributionType);
+            + "/" + GenerateDistributionString(eb.BrightnessDistribution, eb.BrightnessDistributionType, dataIdx != 0 || eb.BrightnessAffectFirst == 1);
 
         text += "\n";
 
@@ -295,7 +296,7 @@ public class EventAppearanceSO : ScriptableObject
         text = prefix + text;
 
         text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
-            + "/" + GenerateDistributionString(eb.RotationDistribution, eb.RotationDistributionType);
+            + "/" + GenerateDistributionString(eb.RotationDistribution, eb.RotationDistributionType, dataIdx != 0 || eb.RotationAffectFirst == 1);
         text += "\n" + rotationDirectionMark[ebd.RotationDirection] + ebd.AdditionalLoop + (eb.ReverseRotation == 1 ? "-" : "+") + ebd.RotationValue + "°";
 
         e.UpdateTextDisplay(true, text);
