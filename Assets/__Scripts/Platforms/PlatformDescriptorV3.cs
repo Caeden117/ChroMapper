@@ -129,9 +129,9 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         {
             var ebd = eb.EventDatas[i];
             if (i == 0 && eb.BrightnessAffectFirst == 0)
-                StartCoroutine(LightColorRoutine(filteredLights, deltaTime, 0, e.Group, e.Time, ebd));
+                StartCoroutine(LightColorRoutine(filteredLights, deltaTime, 0, e.Group, e.Time, idx, ebd));
             else
-                StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, e.Group, e.Time, ebd));
+                StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, e.Group, e.Time, idx, ebd));
         }
 
     }
@@ -145,10 +145,21 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             if (manager != null)
                 manager.ChangeAlpha(0, 1, manager.ControllingLights);
         }
+        ResetNoteIndex();
     }
 
+    private void ResetNoteIndex()
+    {
+        foreach (var lightManager in LightsManagersV3)
+        {
+            if (lightManager != null)
+                lightManager.ResetNoteIndex();
+        }
+    }
+
+
     private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, 
-        int group, float baseTime, BeatmapLightColorEventData data)
+        int group, float baseTime, int noteIdx, BeatmapLightColorEventData data)
     {
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
@@ -158,7 +169,8 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         float extraTime = 0;
         foreach (var light in lights)
         {
-            if (data.TransitionType != 1)
+            if (!light.SetNoteIndex(noteIdx)) continue;
+            if (data.TransitionType != 2)
             {
                 light.UpdateTargetColor(color, 0);
                 light.UpdateTargetAlpha(brightness, 0);
@@ -204,14 +216,14 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         {
             var ebd = eb.EventDatas[i];
             if (i == 0 && eb.RotationAffectFirst == 0)
-                StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, 0, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, ebd));
+                StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, 0, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, idx, ebd));
             else
-                StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, ebd));
+                StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, idx, ebd));
         }
     }
 
     private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis, bool reverse,
-        int group, float baseTime, BeatmapLightRotationEventData data)
+        int group, float baseTime, int noteIdx, BeatmapLightRotationEventData data)
     {
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
@@ -220,6 +232,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         foreach (var light in lights)
         {
             var axisData = axis == 0 ? light.XData : light.YData;
+            if (!axisData.SetNoteIndex(noteIdx)) continue;
             if (data.Transition != 1)
             {
                 axisData.UpdateRotation(rotation, 0);

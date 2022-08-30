@@ -34,4 +34,9 @@ public class LightsManagerV3 : LightsManager
         }
     }
 
+    public void ResetNoteIndex()
+    {
+        foreach (var light in ControllingLights) light.SetNoteIndex(-1, true);
+        foreach (var rot in ControllingRotations) rot.ResetNoteIndex();
+    }
 }

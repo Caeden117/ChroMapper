@@ -26,7 +26,8 @@ public class RotatingEventData
     private int direction;
     internal bool flip;
     private bool reverse;
-    private Func<float, float> currentEasingFn = easingFunctions[0]; 
+    private Func<float, float> currentEasingFn = easingFunctions[0];
+    private int currentNoteIdx = -1;
 
     private Func<float, float> GetEasingFunction(int i)
     {
@@ -53,6 +54,16 @@ public class RotatingEventData
 
     public void SetReverse(bool reverse) => this.reverse = reverse;
     private static float NoneTransition(float _) => 0;
+
+    public bool SetNoteIndex(int noteIdx, bool force = false)
+    {
+        if (!force && noteIdx < currentNoteIdx)
+        {
+            return false;
+        }
+        currentNoteIdx = noteIdx;
+        return true;
+    }
 
     private float LerpAngleWithDirection(float a, float b, float t)
     {
@@ -102,6 +113,12 @@ public class RotatingEvent : MonoBehaviour
             0,
             XData.LerpAngle(dt)
             );
+    }
+
+    public void ResetNoteIndex()
+    {
+        XData.SetNoteIndex(-1, true);
+        YData.SetNoteIndex(-1, true);
     }
 }
 

@@ -35,6 +35,7 @@ public class LightingEvent : MonoBehaviour
     private Func<float, float> easing = Easing.ByName["easeLinear"];
 
     public int LightIdx = -1; // each light in the group has its unique LightIdx. This is used in LightsManagerV3
+    private int currentNoteIdx = -1;
 
     private void Start()
     {
@@ -138,5 +139,16 @@ public class LightingEvent : MonoBehaviour
         {
             lightRenderer.enabled = isLightEnabled = enabled;
         }
+    }
+
+
+    public bool SetNoteIndex(int noteIdx, bool force = false)
+    {
+        if (!force && noteIdx < currentNoteIdx)
+        {
+            return false;
+        }
+        currentNoteIdx = noteIdx;
+        return true;
     }
 }
