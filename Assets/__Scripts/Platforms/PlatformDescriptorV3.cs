@@ -231,7 +231,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis, bool reverse,
         int group, float baseTime, int noteIdx, BeatmapLightRotationEventData data)
     {
-        Debug.Log($"delta time is {deltaTime}");
         var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
@@ -251,9 +250,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             {
                 if (nextData.Transition == 0)
                 {
-                    Debug.Log($"next {nextData.Time}, base {baseTime}, extra {extraTime}, data {data.Time}");
                     var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
-                    Debug.Log($"transit time is {timeToTransition} target Rotation is {nextData.RotationValue}, cur rotation is {rotation}");
                     axisData.UpdateRotation(nextData.RotationValue, timeToTransition);
                     axisData.SetEaseFunction(nextData.EaseType);
                     axisData.SetLoop(nextData.AdditionalLoop);

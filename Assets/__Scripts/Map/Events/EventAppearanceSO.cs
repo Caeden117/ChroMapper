@@ -248,7 +248,7 @@ public class EventAppearanceSO : ScriptableObject
         // first line: transition + filter 
         var text = GenerateFilterString(eb.Filter);
         var prefix = "";
-        switch (eb.EventDatas[0].TransitionType)
+        switch (eb.EventDatas[dataIdx].TransitionType)
         {
             case 1:
                 prefix = "T";
