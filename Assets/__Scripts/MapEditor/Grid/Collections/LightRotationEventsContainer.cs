@@ -106,9 +106,9 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                         : PlatformDescriptorV3.Range(rotations, rotationEventBox.Filter.Partition, rotationEventBox.Filter.Section, rotationEventBox.Filter.Reverse == 1);
 
                     float deltaDegree = rotationEventBox.RotationDistribution;
-                    if (rotationEventBox.RotationDistributionType == 1) deltaDegree /= filteredRotations.Count();
+                    if (rotationEventBox.RotationDistributionType == 1) deltaDegree /= PlatformDescriptorV3.Intervals(filteredRotations);
                     float deltaTime = rotationEventBox.Distribution;
-                    if (rotationEventBox.DistributionType == 1) deltaTime /= filteredRotations.Count();
+                    if (rotationEventBox.DistributionType == 1) deltaTime /= PlatformDescriptorV3.Intervals(filteredRotations);
 
                     for (int i = 0; i < rotationEventBox.EventDatas.Count; ++i)
                     {

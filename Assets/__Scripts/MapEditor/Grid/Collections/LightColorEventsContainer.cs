@@ -132,9 +132,9 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
                         : PlatformDescriptorV3.Range(lights, colorEventBox.Filter.Partition, colorEventBox.Filter.Section, colorEventBox.Filter.Reverse == 1);
 
                     float deltaAlpha = colorEventBox.BrightnessDistribution;
-                    if (colorEventBox.BrightnessDistributionType == 1) deltaAlpha /= filteredLights.Count();
+                    if (colorEventBox.BrightnessDistributionType == 1) deltaAlpha /= PlatformDescriptorV3.Intervals(filteredLights);
                     float deltaTime = colorEventBox.Distribution;
-                    if (colorEventBox.DistributionType == 1) deltaTime /= filteredLights.Count();
+                    if (colorEventBox.DistributionType == 1) deltaTime /= PlatformDescriptorV3.Intervals(filteredLights);
 
                     for (int i = 0; i < colorEventBox.EventDatas.Count; ++i)
                     {

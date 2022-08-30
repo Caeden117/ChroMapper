@@ -102,6 +102,11 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         return list.Where((x, i) => i >= start && (i - start)  % step == 0);
     }
 
+    public static int Intervals<T>(IEnumerable<T> list)
+    {
+        return Mathf.Max(list.Count() - 1, 1);
+    }
+
     public Color InferColor(int c)
     {
         var color = Color.white;
@@ -122,9 +127,9 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (filteredLights.Count() == 0) return;
 
         float deltaAlpha = eb.BrightnessDistribution;
-        if (eb.BrightnessDistributionType == 1) deltaAlpha /= filteredLights.Count();
-        float deltaTime = Atsc.GetSecondsFromBeat(eb.Distribution);
-        if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
+        if (eb.BrightnessDistributionType == 1) deltaAlpha /= Intervals(filteredLights);
+        float deltaTime = eb.Distribution;
+        if (eb.DistributionType == 1) deltaTime /= Intervals(filteredLights);
         for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
             var ebd = eb.EventDatas[i];
@@ -161,6 +166,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, 
         int group, float baseTime, int noteIdx, BeatmapLightColorEventData data)
     {
+        var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
         var color = InferColor(data.Color);
@@ -187,7 +193,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 }
             }
             if (deltaTime != 0.0f)
-                yield return new WaitForSeconds(deltaTime);
+                yield return new WaitForSeconds(deltaSecond);
             brightness += deltaAlpha;
             extraTime += deltaTime;
         }
@@ -209,9 +215,9 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             : Range(allLights, eb.Filter.Partition, eb.Filter.Section, eb.Filter.Reverse == 1);
         if (filteredLights.Count() == 0) return;
         float deltaRotation = eb.RotationDistribution;
-        if (eb.RotationDistributionType == 1) deltaRotation /= filteredLights.Count();
-        float deltaTime = Atsc.GetSecondsFromBeat(eb.Distribution);
-        if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
+        if (eb.RotationDistributionType == 1) deltaRotation /= Intervals(filteredLights);
+        float deltaTime = eb.Distribution;
+        if (eb.DistributionType == 1) deltaTime /= Intervals(filteredLights);
         for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
             var ebd = eb.EventDatas[i];
@@ -225,6 +231,8 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis, bool reverse,
         int group, float baseTime, int noteIdx, BeatmapLightRotationEventData data)
     {
+        Debug.Log($"delta time is {deltaTime}");
+        var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
         float rotation = data.RotationValue;
@@ -243,7 +251,9 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             {
                 if (nextData.Transition == 0)
                 {
+                    Debug.Log($"next {nextData.Time}, base {baseTime}, extra {extraTime}, data {data.Time}");
                     var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                    Debug.Log($"transit time is {timeToTransition} target Rotation is {nextData.RotationValue}, cur rotation is {rotation}");
                     axisData.UpdateRotation(nextData.RotationValue, timeToTransition);
                     axisData.SetEaseFunction(nextData.EaseType);
                     axisData.SetLoop(nextData.AdditionalLoop);
@@ -251,7 +261,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 }
             }
             if (deltaTime != 0)
-                yield return new WaitForSeconds(deltaTime);
+                yield return new WaitForSeconds(deltaSecond);
             rotation += deltaRotation;
             extraTime += deltaTime;
         }
