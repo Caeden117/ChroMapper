@@ -110,8 +110,9 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                     float deltaTime = rotationEventBox.Distribution;
                     if (rotationEventBox.DistributionType == 1) deltaTime /= filteredRotations.Count();
 
-                    foreach (var rotationEventData in rotationEventBox.EventDatas)
+                    for (int i = 0; i < rotationEventBox.EventDatas.Count; ++i)
                     {
+                        var rotationEventData = rotationEventBox.EventDatas[i];
                         float degree = rotationEventData.RotationValue;
                         float extraTime = 0.0f;
                         foreach (var singleRotation in filteredRotations)
@@ -125,7 +126,7 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                                 lists[rotationIdx].RemoveAt(lists[rotationIdx].Count - 1);
                             }
                             lists[rotationIdx].Add(thisData);
-                            degree += deltaDegree;
+                            degree += (i == 0 && rotationEventBox.RotationAffectFirst == 0) ? 0 : deltaDegree;
                             extraTime += deltaTime;
                         }
                     }

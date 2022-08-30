@@ -125,9 +125,13 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.BrightnessDistributionType == 1) deltaAlpha /= filteredLights.Count();
         float deltaTime = Atsc.GetSecondsFromBeat(eb.Distribution);
         if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
-        foreach (var ebd in eb.EventDatas)
+        for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
-            StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, e.Group, e.Time, ebd));
+            var ebd = eb.EventDatas[i];
+            if (i == 0 && eb.BrightnessAffectFirst == 0)
+                StartCoroutine(LightColorRoutine(filteredLights, deltaTime, 0, e.Group, e.Time, ebd));
+            else
+                StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, e.Group, e.Time, ebd));
         }
 
     }
@@ -196,9 +200,13 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.RotationDistributionType == 1) deltaRotation /= filteredLights.Count();
         float deltaTime = Atsc.GetSecondsFromBeat(eb.Distribution);
         if (eb.DistributionType == 1) deltaTime /= filteredLights.Count();
-        foreach (var ebd in eb.EventDatas)
+        for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
-            StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, ebd));
+            var ebd = eb.EventDatas[i];
+            if (i == 0 && eb.RotationAffectFirst == 0)
+                StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, 0, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, ebd));
+            else
+                StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, ebd));
         }
     }
 

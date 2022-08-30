@@ -136,8 +136,9 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
                     float deltaTime = colorEventBox.Distribution;
                     if (colorEventBox.DistributionType == 1) deltaTime /= filteredLights.Count();
 
-                    foreach (var colorEventData in colorEventBox.EventDatas)
+                    for (int i = 0; i < colorEventBox.EventDatas.Count; ++i)
                     {
+                        var colorEventData = colorEventBox.EventDatas[i];
                         var brightness = colorEventData.Brightness;
                         float extraTime = 0.0f;
                         foreach (var singleLight in filteredLights)
@@ -150,7 +151,7 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
                                 lists[lightIdx].RemoveAt(lists[lightIdx].Count - 1);
                             }
                             lists[lightIdx].Add(thisData);
-                            brightness += deltaAlpha;
+                            brightness += (i == 0 && colorEventBox.BrightnessAffectFirst == 0) ? 0 : deltaAlpha;
                             extraTime += deltaTime;
                         }
                     }
