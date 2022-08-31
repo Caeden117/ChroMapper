@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,6 +53,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
             var currentIdx = new int();
             currentIdx = i;
             InputFields[currentIdx].onEndEdit.AddListener((t) => {
+                if (DisplayingSelectedObject) return;
                 InputLoadFn[currentIdx](ObjectData, t);
                 UpdateToPlacement();
             });
@@ -62,6 +64,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
             var currentIdx = new int();
             currentIdx = i;
             Dropdowns[currentIdx].onValueChanged.AddListener((t) => { 
+                if (DisplayingSelectedObject) return;
                 DropdownLoadFn[currentIdx](ObjectData, t); 
                 UpdateToPlacement(); 
             });
@@ -72,6 +75,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
             var currentIdx = new int();
             currentIdx = i;
             Toggles[currentIdx].onValueChanged.AddListener((t) => { 
+                if (DisplayingSelectedObject) return;
                 ToggleLoadFn[currentIdx](ObjectData, t); 
                 UpdateToPlacement(); 
             });
@@ -98,12 +102,23 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         lightColorEventPlacement.UpdateData(ObjectData);
     }
 
+    private void DataidxSwitchDecorator(Action callback)
+    {
+        var cur = DataIdx;
+        DataIdx = 0;
+        callback();
+        DataIdx = cur;
+    }
+
     #region Input Hook
     public void OnTypeOn(InputAction.CallbackContext context)
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
-        DropdownLoadFn[3](ObjectData, 0);
-        InputLoadFn[6](ObjectData, "1");
+        DataidxSwitchDecorator(() =>
+        {
+            DropdownLoadFn[3](ObjectData, 0);
+            InputLoadFn[6](ObjectData, "1");
+        });
         if (!DisplayingSelectedObject) Dump(ObjectData);
         UpdateToPlacement();
     }
@@ -111,8 +126,11 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
     public void OnTypeOff(InputAction.CallbackContext context)
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
-        DropdownLoadFn[3](ObjectData, 0);
-        InputLoadFn[6](ObjectData, "0");
+        DataidxSwitchDecorator(() =>
+        {
+            DropdownLoadFn[3](ObjectData, 0);
+            InputLoadFn[6](ObjectData, "0");
+        });
         if (!DisplayingSelectedObject) Dump(ObjectData);
         UpdateToPlacement();
     }
@@ -122,7 +140,10 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
     public void OnTypeTransition(InputAction.CallbackContext context)
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
-        DropdownLoadFn[3](ObjectData, 1);
+        DataidxSwitchDecorator(() =>
+        {
+            DropdownLoadFn[3](ObjectData, 1);
+        });
         if (!DisplayingSelectedObject) Dump(ObjectData);
         UpdateToPlacement();
     }
@@ -134,21 +155,27 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
     public void OnPlaceRedNoteorEvent(InputAction.CallbackContext context) 
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
-        InputLoadFn[5](ObjectData, "0");
+        DataidxSwitchDecorator(() =>
+            InputLoadFn[5](ObjectData, "0")
+        );
         if (!DisplayingSelectedObject) Dump(ObjectData);
         UpdateToPlacement();
     }
     public void OnPlaceBlueNoteorEvent(InputAction.CallbackContext context) 
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
-        InputLoadFn[5](ObjectData, "1");
+        DataidxSwitchDecorator(() =>
+            InputLoadFn[5](ObjectData, "1")
+        );
         if (!DisplayingSelectedObject) Dump(ObjectData);
         UpdateToPlacement();
     }
     public void OnPlaceBomb(InputAction.CallbackContext context)
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
-        InputLoadFn[5](ObjectData, "2");
+        DataidxSwitchDecorator(() =>
+            InputLoadFn[5](ObjectData, "2")
+        );
         if (!DisplayingSelectedObject) Dump(ObjectData);
         UpdateToPlacement();
     }

@@ -59,6 +59,7 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
             var currentIdx = new int();
             currentIdx = i;
             InputFields[currentIdx].onEndEdit.AddListener((t) => {
+                if (DisplayingSelectedObject) return;
                 InputLoadFn[currentIdx](ObjectData, t);
                 UpdateToPlacement();
             });
@@ -69,6 +70,7 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
             var currentIdx = new int();
             currentIdx = i;
             Dropdowns[currentIdx].onValueChanged.AddListener((t) => {
+                if (DisplayingSelectedObject) return;
                 DropdownLoadFn[currentIdx](ObjectData, t);
                 UpdateToPlacement();
             });
@@ -79,6 +81,7 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
             var currentIdx = new int();
             currentIdx = i;
             Toggles[currentIdx].onValueChanged.AddListener((t) => {
+                if (DisplayingSelectedObject) return;
                 ToggleLoadFn[currentIdx](ObjectData, t);
                 UpdateToPlacement();
             });
