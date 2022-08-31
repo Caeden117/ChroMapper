@@ -31,6 +31,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         TextsDumpFn.Add(x => $"{DataIdx + 1}/{x.EventBoxes[0].EventDatas.Count}");
 
         ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.Reverse == 1);
+        ToggleDumpFn.Add(x => x.EventBoxes[0].BrightnessAffectFirst == 1);
 
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Section = x.EventBoxes[0].Filter.FilterType == 1 ? int.Parse(s) - 1 : int.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Partition = int.Parse(s));
@@ -47,6 +48,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].TransitionType = i);
 
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
+        ToggleLoadFn.Add((x, b) => x.EventBoxes[0].BrightnessAffectFirst = b ? 1 : 0);
 
         for (int i = 0; i < InputFields.Length; ++i)
         {
