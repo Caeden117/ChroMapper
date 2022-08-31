@@ -60,6 +60,10 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
                 Dump(o);
             }
         }
+        else if (SelectionController.SelectedObjects.Count == 0)
+        {
+            Dump(ObjectData);
+        }
     }
 
     public virtual void Dump(T obj)
