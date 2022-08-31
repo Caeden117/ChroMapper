@@ -33,7 +33,11 @@ public class LightV3GeneratorAppearance : MonoBehaviour
 
     public void ToggleDropdown() => ToggleDropdown(!IsActive);
 
-    public void ToggleDropdown(bool visible) => StartCoroutine(UpdateGroup(visible, lightV3GenUIRect));
+    public void ToggleDropdown(bool visible)
+    {
+        if (gameObject.activeInHierarchy)
+            StartCoroutine(UpdateGroup(visible, lightV3GenUIRect));
+    }
 
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {

@@ -17,6 +17,9 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     [SerializeField] private LightV3GeneratorAppearance uiGenerator;
     public LightColorEventCallbackController RealSpawnCallbackController;
     public LightColorEventCallbackController RealDespawnCallbackController;
+
+    [Tooltip("if this environment is not using v3 light system, disable all these objects")]
+    [SerializeField] private GameObject[] disableGameObjects;
     internal bool containersUP = true;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightColorEvent;
 
@@ -75,7 +78,14 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
     private IEnumerator AfterPlatformLoaded()
     {
         yield return null;
-        UpdateGrids();
+        if (platformDescriptor == null)
+        {
+            foreach (var obj in disableGameObjects) obj.SetActive(false);
+        }
+        else
+        {
+            UpdateGrids();
+        }
     }
 
     public void UpdateGrids()
