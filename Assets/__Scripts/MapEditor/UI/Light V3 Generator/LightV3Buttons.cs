@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class LightV3Buttons : MonoBehaviour
@@ -12,6 +13,8 @@ public class LightV3Buttons : MonoBehaviour
     [SerializeField] private LightV3ColorTemplateSaver colorTemplate;
     [SerializeField] private LightV3RotationTemplateSaver rotationTemplate;
     [SerializeField] private LightV3GeneratorAppearance uiGenerator;
+
+    [SerializeField] private TMP_Text switchText;
     private DialogBox createTemplatedialogBox;
     private TextBoxComponent createTemplateTextBox;
     private LightV3GeneratorAppearance.LightV3UIPanel currentPanel;
@@ -46,7 +49,11 @@ public class LightV3Buttons : MonoBehaviour
         uiGenerator.OnToggleUIPanelSwitch += StoreCurrentPanel;
     }
 
-    private void StoreCurrentPanel(LightV3GeneratorAppearance.LightV3UIPanel obj) => currentPanel = obj;
+    private void StoreCurrentPanel(LightV3GeneratorAppearance.LightV3UIPanel obj)
+    {
+        currentPanel = obj;
+        switchText.text = "Switch to " + (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel ? "Rotation" : "Color");
+    }
 
     private void OnDestroy()
     {
