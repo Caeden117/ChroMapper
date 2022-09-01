@@ -75,18 +75,27 @@ public class BeatSaberMapV3 : BeatSaberMap
                 if (lhs.Group != rhs.Group) return lhs.Group.CompareTo(rhs.Group);
                 return lhs.GetHashCode().CompareTo(rhs.GetHashCode());
             });
-            LightColorEventBoxGroups = MergeSplittedNotes(LightColorEventBoxGroups, 
+            var mergedLightColorEventBoxGroups = MergeSplittedNotes(LightColorEventBoxGroups, 
                 (lhs, rhs) => Mathf.Approximately(lhs.Time, rhs.Time) && lhs.Group == rhs.Group,
-                (lhs, rhs) => lhs.EventBoxes.AddRange(rhs.EventBoxes));
+                (lhs, rhs) => {
+                    var ret = BeatmapObject.GenerateCopy(lhs);
+                    ret.EventBoxes.AddRange(new List<BeatmapLightColorEventBox>(rhs.EventBoxes));
+                    return ret;
+                });
+            Debug.Log($"length is {LightColorEventBoxGroups.Count}");
             LightRotationEventBoxGroups.Sort((lhs, rhs) =>
             {
                 if (lhs.Time != rhs.Time) return lhs.Time.CompareTo(rhs.Time);
                 if (lhs.Group != rhs.Group) return lhs.Group.CompareTo(rhs.Group);
                 return lhs.GetHashCode().CompareTo(rhs.GetHashCode());
             });
-            LightRotationEventBoxGroups = MergeSplittedNotes(LightRotationEventBoxGroups,
+            var mergedLightRotationEventBoxGroups = MergeSplittedNotes(LightRotationEventBoxGroups,
                 (lhs, rhs) => Mathf.Approximately(lhs.Time, rhs.Time) && lhs.Group == rhs.Group,
-                (lhs, rhs) => lhs.EventBoxes.AddRange(rhs.EventBoxes));
+                (lhs, rhs) => {
+                    var ret = BeatmapObject.GenerateCopy(lhs);
+                    ret.EventBoxes.AddRange(new List<BeatmapLightRotationEventBox>(rhs.EventBoxes));
+                    return ret;
+                });
 
             /// official nodes
             var bpmEvents = new JSONArray();
@@ -120,10 +129,10 @@ public class BeatSaberMapV3 : BeatSaberMap
             foreach (var c in ColorBoostBeatmapEvents) colorBoostBeatmapEvents.Add(c.ConvertToJson());
 
             var lightColorEventBoxGroups = new JSONArray();
-            foreach (var l in LightColorEventBoxGroups) lightColorEventBoxGroups.Add(l.ConvertToJson());
+            foreach (var l in mergedLightColorEventBoxGroups) lightColorEventBoxGroups.Add(l.ConvertToJson());
 
             var lightRotationEventBoxGroups = new JSONArray();
-            foreach (var l in LightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l.ConvertToJson());
+            foreach (var l in mergedLightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l.ConvertToJson());
 
             var basicEventTypesWithKeywords = new JSONObject();
             foreach (var k in BasicEventTypesWithKeywords.Keys) basicEventTypesWithKeywords[k] = BasicEventTypesWithKeywords[k];
@@ -358,18 +367,19 @@ public class BeatSaberMapV3 : BeatSaberMap
     /// <param name="sameFn"></param>
     /// <param name="mergeFn"></param>
     /// <returns></returns>
-    private List<T> MergeSplittedNotes<T>(List<T> list, Func<T, T, bool> sameFn, Action<T, T> mergeFn)
+    private List<T> MergeSplittedNotes<T>(List<T> list, Func<T, T, bool> sameFn, Func<T, T, T> mergeFn)
     {
         var ret = new List<T>();
         for (int i = 0; i < list.Count;)
         {
             int j = i + 1;
+            var newObj = list[i];
             while (j < list.Count && sameFn(list[i], list[j]))
             {
-                mergeFn(list[i], list[j]);
+                newObj = mergeFn(list[i], list[j]);
                 ++j;
             }
-            ret.Add(list[i]);
+            ret.Add(newObj);
             i = j;
         }
         return ret;
