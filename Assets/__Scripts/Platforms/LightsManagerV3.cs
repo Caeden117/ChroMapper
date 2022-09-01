@@ -24,7 +24,6 @@ public class LightsManagerV3 : LightsManager
         }
 
         var rotations = GetComponentsInChildren<RotatingEvent>();
-        Debug.Log($"group {GroupId} has {rotations.Length} rotations");
         for (int i = 0; i < rotations.Length; ++i)
         {
             ControllingRotations.Add(rotations[i]);

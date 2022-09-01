@@ -88,6 +88,8 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
             {
                 TestForType<ArcPlacement>(hit, BeatmapObject.ObjectType.Arc);
                 TestForType<ChainPlacement>(hit, BeatmapObject.ObjectType.Chain);
+                TestForType<LightColorEventPlacement>(hit, BeatmapObject.ObjectType.LightColorEvent);
+                TestForType<LightRotationEventPlacement>(hit, BeatmapObject.ObjectType.LightRotationEvent);
             }
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;

@@ -170,6 +170,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 BeatmapObject.ObjectType.Event, BeatmapObject.ObjectType.CustomEvent, BeatmapObject.ObjectType.BpmChange
             });
+            if (Settings.Instance.Load_MapV3)
+            {
+                clearTypes.AddRange(new[] { BeatmapObject.ObjectType.LightColorEvent, BeatmapObject.ObjectType.LightRotationEvent });
+            }
         }
 
         var epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
