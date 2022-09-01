@@ -87,7 +87,7 @@ public class MultiNetListener : INetEventListener, IDisposable
                 break;
 
             case (byte)Packets.MapperDisconnect:
-                OnMapperDisconnected(reader.Get<MapperIdentityPacket>());
+                OnMapperDisconnected(identity);
                 break;
 
             case (byte)Packets.SendZip:
