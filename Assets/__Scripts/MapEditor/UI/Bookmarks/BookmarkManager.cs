@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
+// TODO: Refactor all this Bookmark bullshit to fit every other object in ChroMapper (using BeatmapObjectContainerCollection, BeatmapObjectContainer, etc. etc.)
 public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 {
     private static readonly System.Random rng = new System.Random();
@@ -22,6 +23,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
 
     public Action BookmarksUpdated;
+    public event Action<BeatmapObject> BookmarkAdded;
+    public event Action<BeatmapObject> BookmarkDeleted;
 
     private float previousCanvasWidth;
 
@@ -134,21 +137,40 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             newBookmark.Color = color.Value;
         }
 
+        AddBookmark(newBookmark);
+    }
+
+    internal void AddBookmark(BeatmapBookmark bookmark, bool triggerEvent = true)
+    {
         var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
-        container.name = newBookmark.Name;
-        container.Init(this, newBookmark);
+        container.name = bookmark.Name;
+        container.Init(this, bookmark);
         container.RefreshPosition(timelineCanvas.sizeDelta.x + canvasWidthOffset);
 
         bookmarkContainers = bookmarkContainers.Append(container).OrderBy(it => it.Data.Time).ToList();
         BeatSaberSongContainer.Instance.Map.Bookmarks = bookmarkContainers.Select(x => x.Data).ToList();
         BookmarksUpdated.Invoke();
+
+        if (triggerEvent) BookmarkAdded?.Invoke(bookmark);
     }
 
-    internal void DeleteBookmark(BookmarkContainer container)
+    internal void DeleteBookmark(BookmarkContainer container, bool triggerEvent = true)
     {
         bookmarkContainers.Remove(container);
         BeatSaberSongContainer.Instance.Map.Bookmarks = bookmarkContainers.Select(x => x.Data).ToList();
         BookmarksUpdated.Invoke();
+
+        if (triggerEvent) BookmarkDeleted?.Invoke(container.Data);
+    }
+
+    internal void DeleteBookmarkAtTime(float time, bool triggerEvent = true)
+    {
+        var container = bookmarkContainers.Find(it => Mathf.Abs(it.Data.Time - time) < 0.01f);
+
+        if (container != null)
+        {
+            DeleteBookmark(container, triggerEvent);
+        }
     }
 
     internal void OnNextBookmark()

@@ -20,7 +20,8 @@ public abstract class BeatmapObject : INetSerializable
         Obstacle,
         CustomNote,
         CustomEvent,
-        BpmChange
+        BpmChange,
+        Bookmark
     }
 
     public abstract ObjectType BeatmapType { get; set; }

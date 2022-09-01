@@ -11,6 +11,8 @@ public class BeatmapBookmark : BeatmapObject
     public string Name = "Invalid Bookmark";
     public Color Color;
 
+    public BeatmapBookmark() { }
+
     public BeatmapBookmark(JSONNode node)
     {
         Time = RetrieveRequiredNode(node, "_time").AsFloat;
@@ -27,7 +29,7 @@ public class BeatmapBookmark : BeatmapObject
         Color = Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
     }
 
-    public override ObjectType BeatmapType { get; set; } = ObjectType.BpmChange;
+    public override ObjectType BeatmapType { get; set; } = ObjectType.Bookmark;
 
     public override JSONNode ConvertToJson()
     {
@@ -41,19 +43,22 @@ public class BeatmapBookmark : BeatmapObject
     {
         writer.Put(Time);
         writer.Put(Name);
-        writer.Put(ColorUtility.ToHtmlStringRGBA(Color));
-        writer.Put(CustomData?.ToString() ?? "null");
+        writer.Put(Color.r);
+        writer.Put(Color.g);
+        writer.Put(Color.b);
+        writer.Put(Color.a);
+        writer.Put(CustomData?.ToString());
     }
 
     public override void Deserialize(NetDataReader reader)
     {
         Time = reader.GetFloat();
         Name = reader.GetString();
-        ColorUtility.TryParseHtmlString(reader.GetString(), out Color);
-        if (reader.TryGetString(out var customData))
-        {
-            CustomData = JSON.Parse(customData);
-        }
+        Color.r = reader.GetFloat();
+        Color.g = reader.GetFloat();
+        Color.b = reader.GetFloat();
+        Color.a = reader.GetFloat();
+        CustomData = JSON.Parse(reader.GetString());
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;

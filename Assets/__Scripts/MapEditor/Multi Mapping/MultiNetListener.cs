@@ -22,6 +22,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     private CameraController cameraController;
     private AudioTimeSyncController audioTimeSyncController;
     private TracksManager tracksManager;
+    private BookmarkManager bookmarkManager;
     private RemotePlayerContainer remotePlayerPrefab;
     private float previousCursorBeat = 0;
     private List<BeatmapObjectContainerCollection> containerCollections = new List<BeatmapObjectContainerCollection>();
@@ -105,10 +106,18 @@ public class MultiNetListener : INetEventListener, IDisposable
                     BeatmapObject.ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
                     BeatmapObject.ObjectType.CustomEvent => reader.Get<BeatmapCustomEvent>(),
                     BeatmapObject.ObjectType.BpmChange => reader.Get<BeatmapBPMChange>(),
+                    BeatmapObject.ObjectType.Bookmark => reader.Get<BeatmapBookmark>(),
                     _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
                 };
 
-                creationCollection.SpawnObject(creationObject, out _, true, true, false);
+                if (creationObject is BeatmapBookmark creationBookmark)
+                {
+                    bookmarkManager.AddBookmark(creationBookmark, false);
+                }
+                else
+                {
+                    creationCollection.SpawnObject(creationObject, out _, true, true, false);
+                }
                 break;
 
             case (byte)Packets.BeatmapObjectDelete:
@@ -123,12 +132,20 @@ public class MultiNetListener : INetEventListener, IDisposable
                     BeatmapObject.ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
                     BeatmapObject.ObjectType.CustomEvent => reader.Get<BeatmapCustomEvent>(),
                     BeatmapObject.ObjectType.BpmChange => reader.Get<BeatmapBPMChange>(),
+                    BeatmapObject.ObjectType.Bookmark => reader.Get<BeatmapBookmark>(),
                     _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
                 };
 
-                // We abuse the conflict check system to remotely delete an object without having the exact instance.
-                deletionCollection.SpawnObject(deletionObject, out _, true, true, false);
-                deletionCollection.DeleteObject(deletionObject, false, true, null, false);
+                if (deletionObject is BeatmapBookmark deletionBookmark)
+                {
+                    bookmarkManager.DeleteBookmarkAtTime(deletionBookmark.Time, false);
+                }
+                else
+                {
+                    // We abuse the conflict check system to remotely delete an object without having the exact instance.
+                    deletionCollection.SpawnObject(deletionObject, out _, true, true, false);
+                    deletionCollection.DeleteObject(deletionObject, false, true, null, false);
+                }
                 break;
         }
     }
@@ -283,6 +300,11 @@ public class MultiNetListener : INetEventListener, IDisposable
         cameraController = Camera.main.GetComponent<CameraController>();
         tracksManager = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).GetComponent<TracksManager>();
 
+        // sigh
+        bookmarkManager = UnityEngine.Object.FindObjectOfType<BookmarkManager>();
+        bookmarkManager.BookmarkAdded += MultiNetListener_ObjectSpawnedEvent;
+        bookmarkManager.BookmarkDeleted += MultiNetListener_ObjectDeletedEvent;
+
         EditorScaleController.EditorScaleChangedEvent += OnEditorScaleChanged;
     }
 
@@ -295,6 +317,9 @@ public class MultiNetListener : INetEventListener, IDisposable
         }
 
         containerCollections.Clear();
+
+        bookmarkManager.BookmarkAdded -= MultiNetListener_ObjectSpawnedEvent;
+        bookmarkManager.BookmarkDeleted -= MultiNetListener_ObjectDeletedEvent;
 
         EditorScaleController.EditorScaleChangedEvent -= OnEditorScaleChanged;
     }
