@@ -25,6 +25,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     private BookmarkManager bookmarkManager;
     private RemotePlayerContainer remotePlayerPrefab;
     private float previousCursorBeat = 0;
+    private float localSongSpeed = 1;
     private List<BeatmapObjectContainerCollection> containerCollections = new List<BeatmapObjectContainerCollection>();
 
     public MultiNetListener()
@@ -72,21 +73,21 @@ public class MultiNetListener : INetEventListener, IDisposable
 
             case (byte)Packets.MapperPose:
                 var pose = reader.Get<MapperPosePacket>();
+
+                // We apply cached song position to an incoming pose packet if the mapper is playing through the song.
+                //    This eliminates jittering when clients move the camera while playing the song.
+                if (pose.IsPlayingSong)
+                {
+                    pose.SongPosition = CachedPosePackets[identity].SongPosition;
+                }
+
                 CachedPosePackets[identity] = pose;
+
                 OnMapperPose(identity, peer, pose);
                 break;
 
             case (byte)Packets.MapperDisconnect:
-                if (identity != null)
-                {
-                    Identities.Remove(identity);
-                    
-                    if (RemotePlayers.TryGetValue(identity, out var disconnectedPlayer))
-                    {
-                        UnityEngine.Object.Destroy(disconnectedPlayer.gameObject);
-                        RemotePlayers.Remove(identity);
-                    }
-                }
+                OnMapperDisconnected(reader.Get<MapperIdentityPacket>());
                 break;
 
             case (byte)Packets.SendZip:
@@ -185,6 +186,22 @@ public class MultiNetListener : INetEventListener, IDisposable
         remotePlayer.GridTransform.localEulerAngles = track.localEulerAngles;
     }
 
+    public void OnMapperDisconnected(MapperIdentityPacket identity)
+    {
+        if (identity != null)
+        {
+            Identities.Remove(identity);
+
+            if (RemotePlayers.TryGetValue(identity, out var disconnectedPlayer))
+            {
+                UnityEngine.Object.Destroy(disconnectedPlayer.gameObject);
+                RemotePlayers.Remove(identity);
+            }
+
+            CachedPosePackets.Remove(identity);
+        }
+    }
+
     public void UpdateCachedPoses()
     {
         foreach (var kvp in CachedPosePackets)
@@ -250,12 +267,29 @@ public class MultiNetListener : INetEventListener, IDisposable
     {
         NetManager?.PollEvents();
 
-        if (audioTimeSyncController != null && cameraController != null
-            && (cameraController.MovingCamera || audioTimeSyncController.CurrentBeat != previousCursorBeat))
+        if (audioTimeSyncController != null && cameraController != null &&
+            (cameraController.MovingCamera || (!audioTimeSyncController.IsPlaying && audioTimeSyncController.CurrentBeat != previousCursorBeat)))
         {
             previousCursorBeat = audioTimeSyncController.CurrentBeat;
 
             BroadcastPose();
+        }
+
+        foreach (var kvp in CachedPosePackets)
+        {
+            var mapper = kvp.Key;
+            var pose = kvp.Value;
+
+            // If a client is playing through the song, we calculate their new song position locally.
+            // This eliminates sending Pose packets every frame, while also smoothly moving clients.
+            // This *will* desync over time due to floating point precision, but song position will
+            //    be corrected when playback stops.
+            if (pose.IsPlayingSong)
+            {
+                pose.SongPosition += BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 60 * Time.deltaTime * pose.PlayingSongSpeed;
+
+                OnMapperPose(mapper, null, pose);
+            }
         }
     }
 
@@ -269,7 +303,9 @@ public class MultiNetListener : INetEventListener, IDisposable
         {
             Position = cameraController.transform.position,
             Rotation = cameraController.transform.rotation,
-            SongPosition = previousCursorBeat
+            SongPosition = audioTimeSyncController.CurrentBeat,
+            IsPlayingSong = audioTimeSyncController.IsPlaying,
+            PlayingSongSpeed = localSongSpeed
         });
 
         if (targetPeer == null)
@@ -297,6 +333,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         }
 
         audioTimeSyncController = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).AudioTimeSyncController;
+        audioTimeSyncController.PlayToggle += OnTogglePlaying;
         cameraController = Camera.main.GetComponent<CameraController>();
         tracksManager = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).GetComponent<TracksManager>();
 
@@ -304,6 +341,8 @@ public class MultiNetListener : INetEventListener, IDisposable
         bookmarkManager = UnityEngine.Object.FindObjectOfType<BookmarkManager>();
         bookmarkManager.BookmarkAdded += MultiNetListener_ObjectSpawnedEvent;
         bookmarkManager.BookmarkDeleted += MultiNetListener_ObjectDeletedEvent;
+
+        Settings.NotifyBySettingName("SongSpeed", UpdateLocalSongSpeed);
 
         EditorScaleController.EditorScaleChangedEvent += OnEditorScaleChanged;
     }
@@ -318,13 +357,26 @@ public class MultiNetListener : INetEventListener, IDisposable
 
         containerCollections.Clear();
 
+        audioTimeSyncController.PlayToggle -= OnTogglePlaying;
+
         bookmarkManager.BookmarkAdded -= MultiNetListener_ObjectSpawnedEvent;
         bookmarkManager.BookmarkDeleted -= MultiNetListener_ObjectDeletedEvent;
+
+        Settings.ClearSettingNotifications("SongSpeed");
 
         EditorScaleController.EditorScaleChangedEvent -= OnEditorScaleChanged;
     }
 
     private void OnEditorScaleChanged(float editorScale) => UpdateCachedPoses();
+
+    private void OnTogglePlaying(bool isPlaying) => BroadcastPose();
+
+    private void UpdateLocalSongSpeed(object obj)
+    {
+        localSongSpeed = (float)obj / 10f;
+
+        BroadcastPose();
+    }
 
     private void MultiNetListener_ObjectSpawnedEvent(BeatmapObject obj)
     {

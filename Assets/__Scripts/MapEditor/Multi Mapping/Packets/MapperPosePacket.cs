@@ -6,6 +6,8 @@ public class MapperPosePacket : INetSerializable
     public Vector3 Position;
     public Quaternion Rotation;
     public float SongPosition;
+    public bool IsPlayingSong;
+    public float PlayingSongSpeed;
 
     public void Serialize(NetDataWriter writer)
     {
@@ -17,6 +19,8 @@ public class MapperPosePacket : INetSerializable
         writer.Put(Rotation.z);
         writer.Put(Rotation.w);
         writer.Put(SongPosition);
+        writer.Put(IsPlayingSong);
+        writer.Put(PlayingSongSpeed);
     }
 
     public void Deserialize(NetDataReader reader)
@@ -31,5 +35,7 @@ public class MapperPosePacket : INetSerializable
         Rotation.z = reader.GetFloat();
         Rotation.w = reader.GetFloat();
         SongPosition = reader.GetFloat();
+        IsPlayingSong = reader.GetBool();
+        PlayingSongSpeed = reader.GetFloat();
     }
 }

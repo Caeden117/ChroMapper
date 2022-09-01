@@ -86,27 +86,18 @@ public class MultiServerNetListener : MultiNetListener
     // For the host, a peer disconnecting is one of the clients, so we broadcast to everyone else that the client is gone.
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
-        var disconnectedIdentity = Identities.Find(x => x.MapperPeer == peer);
+        var identity = Identities.Find(x => x.MapperPeer == peer);
 
-        if (disconnectedIdentity != null)
+        // Send disconnect packet to everyone
+        foreach (var mapper in Identities)
         {
-            Identities.Remove(disconnectedIdentity);
-
-            // Send disconnect packet to everyone
-            foreach (var mapper in Identities)
+            if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
             {
-                if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
-                {
-                    SendPacketFrom(disconnectedIdentity, mapper.MapperPeer, Packets.MapperDisconnect);
-                }
-            }
-
-            if (RemotePlayers.TryGetValue(disconnectedIdentity, out var disconnectedPlayer))
-            {
-                UnityEngine.Object.Destroy(disconnectedPlayer.gameObject);
-                RemotePlayers.Remove(disconnectedIdentity);
+                SendPacketFrom(identity, mapper.MapperPeer, Packets.MapperDisconnect);
             }
         }
+
+        OnMapperDisconnected(identity);
     }
 
     private IEnumerator SaveAndSendMapToPeer(NetPeer peer)
