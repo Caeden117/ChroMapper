@@ -12,6 +12,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
     [FormerlySerializedAs("customCollection")] public CustomEventsContainer CustomCollection;
     [FormerlySerializedAs("eventsContainer")] public EventsContainer EventsContainer;
     [FormerlySerializedAs("labels")] public CreateEventTypeLabels Labels;
+    [SerializeField] private LightColorEventsContainer lightColorEventsContainer;
 
     private readonly HashSet<BeatmapObject> selected = new HashSet<BeatmapObject>();
 
@@ -150,6 +151,16 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 if (bo is IBeatmapObjectBounds obj)
                 {
                     p = obj.GetCenter();
+                }
+                else if (bo is BeatmapLightColorEvent colorEvent)
+                {
+                    var pos = colorEvent.GetPosition(lightColorEventsContainer.platformDescriptor);
+                    p = new Vector2(pos.x + Bounds.min.x, pos.y);
+                }
+                else if (bo is BeatmapLightRotationEvent rotationEvent)
+                {
+                    var pos = rotationEvent.GetPosition(lightColorEventsContainer.platformDescriptor);
+                    p = new Vector2(pos.x + Bounds.min.x, pos.y);
                 }
                 else if (bo is MapEvent evt)
                 {

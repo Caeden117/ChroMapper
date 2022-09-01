@@ -167,9 +167,9 @@ public class BeatmapLightRotationEvent : BeatmapObject
     }
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false) => false;
 
-    public Vector2 GetPosition()
+    public Vector2 GetPosition(PlatformDescriptorV3 platformDescriptor)
     {
-        return new Vector2(Group + 0.5f, 0.5f);
+        return new Vector2(platformDescriptor.GroupIdToLaneIndex(Group) + 0.5f, 0.5f);
     }
 
     public override void Apply(BeatmapObject originalData)
