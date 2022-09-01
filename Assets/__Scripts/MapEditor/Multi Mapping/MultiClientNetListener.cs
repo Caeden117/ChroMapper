@@ -19,7 +19,7 @@ public class MultiClientNetListener : MultiNetListener
         NetManager.Start();
 
         var identityWriter = new NetDataWriter();
-        identityWriter.Put(new MapperIdentityPacket(name, 0));
+        identityWriter.Put(new MapperIdentityPacket(name.StripTMPTags(), 0));
 
         NetManager.Connect(ip, port, identityWriter);
     }

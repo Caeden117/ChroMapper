@@ -17,7 +17,7 @@ public class MultiServerNetListener : MultiNetListener
 
         NetManager.Start(port);
 
-        Identities.Add(new MapperIdentityPacket(displayName, 0));
+        Identities.Add(new MapperIdentityPacket($"<b>[Host]</b>\n{displayName.StripTMPTags()}", 0));
 
         SubscribeToCollectionEvents();
     }
