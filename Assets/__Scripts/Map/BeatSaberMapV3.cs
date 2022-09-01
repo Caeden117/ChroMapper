@@ -82,7 +82,6 @@ public class BeatSaberMapV3 : BeatSaberMap
                     ret.EventBoxes.AddRange(new List<BeatmapLightColorEventBox>(rhs.EventBoxes));
                     return ret;
                 });
-            Debug.Log($"length is {LightColorEventBoxGroups.Count}");
             LightRotationEventBoxGroups.Sort((lhs, rhs) =>
             {
                 if (lhs.Time != rhs.Time) return lhs.Time.CompareTo(rhs.Time);
