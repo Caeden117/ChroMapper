@@ -6797,7 +6797,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8640127401906334697}
   - component: {fileID: 4711027275305735087}
-  - component: {fileID: 1411987913984771504}
+  - component: {fileID: 1164419721355760269}
   m_Layer: 0
   m_Name: Left Bottom(Top Laser)
   m_TagString: Untagged
@@ -6847,7 +6847,7 @@ MonoBehaviour:
   XFlip: 1
   YFlip: 0
   ControllingRotations: []
---- !u!114 &1411987913984771504
+--- !u!114 &1164419721355760269
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6856,7 +6856,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1797283114555377851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -7076,7 +7076,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8824346195888484628}
   - component: {fileID: 1400925840923440536}
-  - component: {fileID: 9118687697134094378}
+  - component: {fileID: 536250508573160518}
   m_Layer: 0
   m_Name: Right Top(Top Laser)
   m_TagString: Untagged
@@ -7126,7 +7126,7 @@ MonoBehaviour:
   XFlip: 1
   YFlip: 0
   ControllingRotations: []
---- !u!114 &9118687697134094378
+--- !u!114 &536250508573160518
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7135,7 +7135,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1879920685311660919}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -8251,7 +8251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 756454650951490628}
   - component: {fileID: 3722207750045983186}
-  - component: {fileID: 4729124049626198144}
+  - component: {fileID: 7012874800844918073}
   m_Layer: 0
   m_Name: Left Bottom(Bottom Laser)
   m_TagString: Untagged
@@ -8301,7 +8301,7 @@ MonoBehaviour:
   XFlip: 1
   YFlip: 0
   ControllingRotations: []
---- !u!114 &4729124049626198144
+--- !u!114 &7012874800844918073
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8310,7 +8310,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2394377864488456300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -10885,7 +10885,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7630507711201798313}
   - component: {fileID: 992812996359708436}
-  - component: {fileID: 6893769157565222583}
+  - component: {fileID: 157547433444424444}
   m_Layer: 0
   m_Name: Left Top(Top Laser)
   m_TagString: Untagged
@@ -10935,7 +10935,7 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ControllingRotations: []
---- !u!114 &6893769157565222583
+--- !u!114 &157547433444424444
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10944,7 +10944,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3170349160105262389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -11760,7 +11760,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4904581285638231824}
   - component: {fileID: 2260895287456000500}
-  - component: {fileID: 2008150125767906746}
+  - component: {fileID: 4396540557116037934}
   m_Layer: 0
   m_Name: Right Bottom(Bottom Laser)
   m_TagString: Untagged
@@ -11810,7 +11810,7 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ControllingRotations: []
---- !u!114 &2008150125767906746
+--- !u!114 &4396540557116037934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11819,7 +11819,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3460772309164006828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -11837,7 +11837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6602889756210477205}
   - component: {fileID: 4194785614043554661}
-  - component: {fileID: 6701766998509832972}
+  - component: {fileID: 8044230933158800797}
   m_Layer: 0
   m_Name: Right Top(Bottom Laser)
   m_TagString: Untagged
@@ -11887,7 +11887,7 @@ MonoBehaviour:
   XFlip: 1
   YFlip: 0
   ControllingRotations: []
---- !u!114 &6701766998509832972
+--- !u!114 &8044230933158800797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11896,7 +11896,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3498296915645600483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -16488,8 +16488,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4879298024993336130}
   - component: {fileID: 6743656467302444300}
-  - component: {fileID: 2989321316002586246}
   - component: {fileID: 5332211868260429322}
+  - component: {fileID: 5213215459384372206}
   m_Layer: 0
   m_Name: Small Ring
   m_TagString: Untagged
@@ -16559,23 +16559,6 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ControllingRotations: []
---- !u!114 &2989321316002586246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4844201319948040268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartPosition: {x: 0, y: 0, z: 0}
-  PositionDelta: {x: 0, y: 0, z: 3}
-  RepeatTimes: 24
-  LightRange: 12
-  Option: 0
 --- !u!114 &5332211868260429322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16598,6 +16581,23 @@ MonoBehaviour:
   PropagationSpeed: 0
   FlexySpeed: 0
   RotationEffect: {fileID: 0}
+--- !u!114 &5213215459384372206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4844201319948040268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartPosition: {x: 0, y: 0, z: 0}
+  PositionDelta: {x: 0, y: 0, z: 3}
+  RepeatTimes: 24
+  LightRange: 12
+  Option: 0
 --- !u!1 &4859091779695705872
 GameObject:
   m_ObjectHideFlags: 0
@@ -16608,7 +16608,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4519240422514179027}
   - component: {fileID: 5971999734979632045}
-  - component: {fileID: 2174725314347328403}
+  - component: {fileID: 7449010348995987616}
   m_Layer: 0
   m_Name: Left Top(Bottom Laser)
   m_TagString: Untagged
@@ -16658,7 +16658,7 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ControllingRotations: []
---- !u!114 &2174725314347328403
+--- !u!114 &7449010348995987616
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16667,7 +16667,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4859091779695705872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -19115,7 +19115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4008630531517457878}
   - component: {fileID: 126677285961883117}
-  - component: {fileID: 4460122019159787431}
+  - component: {fileID: 3126044336233559593}
   m_Layer: 0
   m_Name: Spotlight Right
   m_TagString: Untagged
@@ -19173,7 +19173,7 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ControllingRotations: []
---- !u!114 &4460122019159787431
+--- !u!114 &3126044336233559593
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19182,7 +19182,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5472718077110854349}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -19445,7 +19445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4663064409002555630}
   - component: {fileID: 356092958153417033}
-  - component: {fileID: 783420839946309185}
+  - component: {fileID: 3092097547939539691}
   m_Layer: 0
   m_Name: Spotlight Left
   m_TagString: Untagged
@@ -19503,7 +19503,7 @@ MonoBehaviour:
   XFlip: 1
   YFlip: 0
   ControllingRotations: []
---- !u!114 &783420839946309185
+--- !u!114 &3092097547939539691
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19512,7 +19512,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5575335054089811388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -25096,7 +25096,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7287480326190555073}
   - component: {fileID: 1522161274536008492}
-  - component: {fileID: 5170811344687907213}
+  - component: {fileID: 4271620027394527505}
   m_Layer: 0
   m_Name: Right Bottom(Top Laser)
   m_TagString: Untagged
@@ -25146,7 +25146,7 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ControllingRotations: []
---- !u!114 &5170811344687907213
+--- !u!114 &4271620027394527505
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -25155,7 +25155,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7130516365923029548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
@@ -27615,7 +27615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4713115764514822892}
   - component: {fileID: 8388769884939060645}
-  - component: {fileID: 2337553237790582065}
+  - component: {fileID: 5272897387689834418}
   m_Layer: 0
   m_Name: Big Ring
   m_TagString: Untagged
@@ -27676,7 +27676,7 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ControllingRotations: []
---- !u!114 &2337553237790582065
+--- !u!114 &5272897387689834418
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -27685,7 +27685,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7646881389945923043}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f89f5759bf90e44ab5ff076dfa5282, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b85c027ccba77642acfe4e09e8d2c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartPosition: {x: 0, y: 0, z: 0}
