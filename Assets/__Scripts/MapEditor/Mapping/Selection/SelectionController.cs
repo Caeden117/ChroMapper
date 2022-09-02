@@ -563,6 +563,20 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
+            else if (data is BeatmapLightColorEvent colorEvent)
+            {
+                var col = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
+                var dscrpt = col.platformDescriptor;
+                colorEvent.Group = dscrpt.LaneIndexToGroupId(dscrpt.GroupIdToLaneIndex(colorEvent.Group) + leftRight);
+                colorEvent.Time += upDown;
+            }
+            else if (data is BeatmapLightRotationEvent rotEvent)
+            {
+                var col = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
+                var dscrpt = col.platformDescriptor;
+                rotEvent.Group = dscrpt.LaneIndexToGroupId(dscrpt.GroupIdToLaneIndex(rotEvent.Group) + leftRight);
+                rotEvent.Time += upDown;
+            }
             else if (data is MapEvent e)
             {
                 var events = eventPlacement.objectContainerCollection;
