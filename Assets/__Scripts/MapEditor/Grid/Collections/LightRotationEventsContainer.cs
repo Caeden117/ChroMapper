@@ -14,7 +14,7 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
     public LightRotationEventCallbackController RealDespawnCallbackController;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightRotationEvent;
 
-    private Dictionary<(int, int), List<BeatmapLightRotationEventData>> nextEventDict = new Dictionary<(int, int), List<BeatmapLightRotationEventData>>();
+    private Dictionary<(int, int, int), List<BeatmapLightRotationEventData>> nextEventDict = new Dictionary<(int, int, int), List<BeatmapLightRotationEventData>>();
 
     public override BeatmapObjectContainer CreateContainer()
     {
@@ -93,8 +93,13 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
             if (laneIdx == -1) continue;
             var rotations = platformDescriptor.LightsManagersV3[laneIdx].ControllingRotations;
 
-            var lists = new List<BeatmapLightRotationEventData>[rotations.Count];
-            for (int i = 0; i < lists.Length; ++i) lists[i] = new List<BeatmapLightRotationEventData>();
+            var lists = new List<BeatmapLightRotationEventData>[rotations.Count, 2];
+            for (int i = 0; i < rotations.Count; ++i)
+            {
+                lists[i, 0] = new List<BeatmapLightRotationEventData>();
+                lists[i, 1] = new List<BeatmapLightRotationEventData>();
+            }
+
 
             foreach (var rotationEvent in group)
             {
@@ -109,6 +114,7 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                     if (rotationEventBox.RotationDistributionType == 1) deltaDegree /= PlatformDescriptorV3.Intervals(filteredRotations);
                     float deltaTime = rotationEventBox.Distribution;
                     if (rotationEventBox.DistributionType == 1) deltaTime /= PlatformDescriptorV3.Intervals(filteredRotations);
+                    int axis = rotationEventBox.Axis;
 
                     for (int i = 0; i < rotationEventBox.EventDatas.Count; ++i)
                     {
@@ -121,11 +127,11 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                             var thisData = new BeatmapLightRotationEventData(baseTime + extraTime + rotationEventData.Time,
                                 rotationEventData.Transition, rotationEventData.EaseType, rotationEventData.AdditionalLoop,
                                 degree, rotationEventData.RotationDirection);
-                            while (lists[rotationIdx].Count > 0 && lists[rotationIdx].Last().Time > thisData.Time + 1e-3)
+                            while (lists[rotationIdx, axis].Count > 0 && lists[rotationIdx, axis].Last().Time > thisData.Time + 1e-3)
                             {
-                                lists[rotationIdx].RemoveAt(lists[rotationIdx].Count - 1);
+                                lists[rotationIdx, axis].RemoveAt(lists[rotationIdx, axis].Count - 1);
                             }
-                            lists[rotationIdx].Add(thisData);
+                            lists[rotationIdx, axis].Add(thisData);
                             degree += (i == 0 && rotationEventBox.RotationAffectFirst == 0) ? 0 : deltaDegree;
                             extraTime += deltaTime;
                         }
@@ -133,24 +139,25 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                 }
             }
 
-            for (int rotationIdx = 0; rotationIdx < lists.Length; ++rotationIdx)
+            for (int rotationIdx = 0; rotationIdx < rotations.Count; ++rotationIdx)
             {
-                nextEventDict[(groupId, rotationIdx)] = lists[rotationIdx];
+                nextEventDict[(groupId, rotationIdx, 0)] = lists[rotationIdx, 0];
+                nextEventDict[(groupId, rotationIdx, 1)] = lists[rotationIdx, 1];
             }
         }
     }
 
     /// <summary>
-    /// Giving group and rotation index, return next data that has effect on this object
+    /// Giving group, rotation index and axis, return next data that has effect on this object
     /// </summary>
     /// <param name="group"></param>
     /// <param name="idx"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public bool TryGetNextLightRotationEventData(int group, int idx, float time, out BeatmapLightRotationEventData data)
+    public bool TryGetNextLightRotationEventData(int group, int idx, int axis, float time, out BeatmapLightRotationEventData data)
     {
         data = null;
-        if (nextEventDict.TryGetValue((group, idx), out var list))
+        if (nextEventDict.TryGetValue((group, idx, axis), out var list))
         {
             var fakeData = new BeatmapLightRotationEventData(time, 0, 0, 0, 0, 0);
             int i = list.BinarySearch(fakeData, new BeatmapObjectComparer());

@@ -246,7 +246,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 axisData.UpdateRotation(rotation, 0);
                 axisData.SetReverse(reverse);
             }
-            if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, 
+            if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, axis,
                 baseTime + extraTime + data.Time, out var nextData))
             {
                 if (nextData.Transition == 0)
