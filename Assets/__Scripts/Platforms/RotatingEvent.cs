@@ -82,7 +82,7 @@ public class RotatingEventData
         {
             if (a < b)
             {
-                int diff = Mathf.CeilToInt((b - a) / 360);
+                int diff = Mathf.CeilToInt((b - a) / 360); 
                 a += diff * 360;
             }
             b -= loop * 360;

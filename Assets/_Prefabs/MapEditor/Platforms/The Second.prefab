@@ -7122,7 +7122,7 @@ MonoBehaviour:
   GroupingOffset: 0.001
   GroupId: 9
   XRotatable: 1
-  YRotatable: 1
+  YRotatable: 0
   XFlip: 1
   YFlip: 0
   ControllingRotations: []
@@ -10931,7 +10931,7 @@ MonoBehaviour:
   GroupingOffset: 0.001
   GroupId: 8
   XRotatable: 1
-  YRotatable: 1
+  YRotatable: 0
   XFlip: 0
   YFlip: 0
   ControllingRotations: []
