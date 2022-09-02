@@ -71,11 +71,20 @@ public class RotatingEventData
         if (direction == 0) return Mathf.LerpAngle(a, b + 360 * loop, t);
         if (direction == 1) // CW
         {
+            if (a > b)
+            {
+                int diff = Mathf.CeilToInt((a - b) / 360);
+                a -= diff * 360;
+            }
             b += loop * 360;
         }
         else // CCW
         {
-            a += 360;
+            if (a < b)
+            {
+                int diff = Mathf.CeilToInt((b - a) / 360);
+                a += diff * 360;
+            }
             b -= loop * 360;
         }
         return (1 - t) * a + t * b;
