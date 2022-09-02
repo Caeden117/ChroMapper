@@ -29,6 +29,17 @@ public class MultiClientNetListener : MultiNetListener
         MapData = mapData;
     }
 
+    // For the client, we just update the host latency (everyone else is updated via MapperLatency packets)
+    public override void OnNetworkLatencyUpdate(NetPeer peer, int latency)
+    {
+        var host = Identities.Find(it => it.ConnectionId == 0);
+
+        if (RemotePlayers.TryGetValue(host, out var remoteHost))
+        {
+            remoteHost.UpdateLatency(latency);
+        }
+    }
+
     public override void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
     {
         SceneTransitionManager.Instance.CancelLoading(string.Empty);

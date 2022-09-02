@@ -17,7 +17,7 @@ public class MultiServerNetListener : MultiNetListener
 
         NetManager.Start(port);
 
-        Identities.Add(new MapperIdentityPacket($"<b>[Host]</b>\n{displayName.StripTMPTags()}", 0));
+        Identities.Add(new MapperIdentityPacket(displayName.StripTMPTags(), 0));
 
         SubscribeToCollectionEvents();
     }
@@ -77,6 +77,21 @@ public class MultiServerNetListener : MultiNetListener
         }
 
         base.OnPacketReceived(peer, identity, reader);
+    }
+
+    // For the server, we broadcast the clients latency to everyone. Just something fun.
+    public override void OnNetworkLatencyUpdate(NetPeer peer, int latency)
+    {
+        foreach (var mapper in Identities)
+        {
+            if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
+            {
+                SendPacketTo(mapper.MapperPeer, Packets.MapperLatency, new MapperLatencyPacket()
+                { 
+                    Latency = latency
+                });
+            }
+        }
     }
 
     // This is absolutely NOT a good way to go about this, but I can't think of anything else!

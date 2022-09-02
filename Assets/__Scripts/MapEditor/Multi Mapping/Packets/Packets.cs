@@ -8,5 +8,6 @@ public enum Packets
     BeatmapObjectCreate,
     BeatmapObjectDelete,
 
-    MapperDisconnect
+    MapperDisconnect,
+    MapperLatency
 }

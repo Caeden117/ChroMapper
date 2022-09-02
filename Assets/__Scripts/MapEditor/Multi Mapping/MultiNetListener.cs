@@ -86,6 +86,15 @@ public class MultiNetListener : INetEventListener, IDisposable
                 OnMapperPose(identity, peer, pose);
                 break;
 
+            case (byte)Packets.MapperLatency:
+                var latencyPacket = reader.Get<MapperLatencyPacket>();
+
+                if (RemotePlayers.TryGetValue(identity, out var remotePlayer))
+                {
+                    remotePlayer.UpdateLatency(latencyPacket.Latency);
+                }
+                break;
+
             case (byte)Packets.MapperDisconnect:
                 OnMapperDisconnected(identity);
                 break;
