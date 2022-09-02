@@ -90,6 +90,11 @@ public class MultiServerNetListener : MultiNetListener
                 { 
                     Latency = latency
                 });
+            } 
+            // Don't forget to update latency for the host
+            else if (mapper.MapperPeer == peer && RemotePlayers.TryGetValue(mapper, out var remotePeer))
+            {
+                remotePeer.UpdateLatency(latency);
             }
         }
     }
