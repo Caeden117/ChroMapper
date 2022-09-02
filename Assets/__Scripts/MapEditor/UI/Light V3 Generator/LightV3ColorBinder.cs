@@ -26,8 +26,8 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         DropdownDumpFn.Add(x => x.EventBoxes[0].BrightnessDistributionType - 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].TransitionType);
 
-        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Start");
-        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Step");
+        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Step");
+        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Start");
         TextsDumpFn.Add(x => $"{DataIdx + 1}/{x.EventBoxes[0].EventDatas.Count}");
 
         ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.Reverse == 1);
@@ -70,8 +70,13 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
                 DropdownLoadFn[currentIdx](ObjectData, t); 
                 UpdateToPlacement(); 
             });
-
         }
+        Dropdowns[0].onValueChanged.AddListener((t) =>
+        {
+            Texts[0].text = t == 0 ? "Section" : "Step";
+            Texts[1].text = t == 0 ? "Partition" : "Start";
+        });
+
         for (int i = 0; i < Toggles.Length; ++i)
         {
             var currentIdx = new int();

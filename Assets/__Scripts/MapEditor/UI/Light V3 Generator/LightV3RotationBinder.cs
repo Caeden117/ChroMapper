@@ -30,8 +30,8 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         ToggleDumpFn.Add(x => x.EventBoxes[0].RotationAffectFirst == 1);
         ToggleDumpFn.Add(x => x.EventBoxes[0].ReverseRotation == 1);
 
-        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Start");
-        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Step");
+        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Step");
+        TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Start");
         TextsDumpFn.Add(x => $"{DataIdx + 1}/{x.EventBoxes[0].EventDatas.Count}");
 
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Section = x.EventBoxes[0].Filter.FilterType == 1 ? int.Parse(s) - 1 : int.Parse(s));
@@ -74,8 +74,13 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
                 DropdownLoadFn[currentIdx](ObjectData, t);
                 UpdateToPlacement();
             });
-
         }
+        Dropdowns[0].onValueChanged.AddListener((t) =>
+        {
+            Texts[0].text = t == 0 ? "Section" : "Step";
+            Texts[1].text = t == 0 ? "Partition" : "Start";
+        });
+
         for (int i = 0; i < Toggles.Length; ++i)
         {
             var currentIdx = new int();
