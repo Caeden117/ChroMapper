@@ -9,6 +9,7 @@ public class BeatmapLightRotationEventContainer : BeatmapEventContainer
     public BeatmapLightRotationEvent RotationEventData;
     public LightRotationEventsContainer RotationEventsContainer;
     [SerializeField] private GameObject extraNote;
+    [SerializeField] private MeshRenderer axisMark;
     private List<BeatmapLightRotationEventContainer> extraNotes = new List<BeatmapLightRotationEventContainer>();
 
     public override BeatmapObject ObjectData { get => RotationEventData; set => RotationEventData = (BeatmapLightRotationEvent)value; }
@@ -78,5 +79,14 @@ public class BeatmapLightRotationEventContainer : BeatmapEventContainer
             if (extraNotes[i] == con) return i + 1;
         }
         return 0;
+    }
+
+    public void SetRotationAxisAppearance(int axis)
+    {
+        axisMark.transform.localRotation = Quaternion.Euler(
+            0,
+            axis == 0 ? 0 : 90,
+            0
+            );
     }
 }

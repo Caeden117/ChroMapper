@@ -301,6 +301,8 @@ public class EventAppearanceSO : ScriptableObject
 
         e.UpdateTextDisplay(true, text);
         e.ChangeColor(offColor, dataIdx != 0 || !final);
+
+        e.SetRotationAxisAppearance(eb.Axis);
     }
 }
 
