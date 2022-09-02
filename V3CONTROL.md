@@ -14,6 +14,32 @@ Chain can be color-inverted(`mouse mid`), tweaked note count(`alt` + `scroll`), 
 **Note 1**: Head note of a chain is still a note, but not chain. Therefore modification on chain doesn't go along with head note, and vice versa.  
 **Note 2**: Placing chain in a weird anlge may not behave same in the real game.  
 
+## Transition Event Note & White Note
+Transition event notes and white notes are introduced before map v3, but I will combine them together as v3 feature.   
+To place a transition event note, press `C` and left click on the event grid.    
+To place a white note, press `3` and left click on the event grid.  
+### Half & Zero Modifier
+After transition has been introduced, we will often place half alpha light and zero alpha light. To place a half alpha light, hold `X` and left click. To place a zero alpha light, hold `Z` and left click.
+
+## V3 Light System
+V3 Light system is implemented(roughly). Currently `The Second` plaform is supported. You will see the v3 light grids after entering this platform.
+### Display UI Panel
+The v3 light configuration panel is one of the items in the right panel. You can press `tab` and you will see a light aperture displaying `Add V3 Lights` on hover.  You can click the button to show v3 light UI panel. There is also a keybind for displaying the panel. The default keybind is `Shift + T`.  
+Initially on the light grid, `lightColorEvent` is above the plane and `lightRotationEvent` is under the plane. The event above the plane could be placed. Clicking `Switch To Rotation/Color` will change the current panel and flip the light grid as well. There is also a keybind for this button. The default keybind is `Shift + R`.   
+### Change parameters & Placement
+You can change the parameter inside the UI panel to change the hovering note's data. Besides, the key bindings for old events may also affect the data. For example, changing to blue color will also change the color field in the UI.      
+`Left click` will place the note on the grid. Placing multiple notes on the same position will stack them. This is possible because they may have different filters.  
+
+### Interact with Selection
+When there is exactly one light event selected, UI will display the data inside this note. During the selection, you can change the data inside the UI, and finally click `Apply to note` to store the data to the note. If you place a note after the selected note, the new placed note will be treated as a subnote of the selected note(in the json format, it will be the additonal EventData).   
+After unselecting all, UI will display the hover note 's data again.    
+For box selection, it will automatically select all the `lightColorEvent` and `lightRotationEvent` within the time and lanes, regardless of their heights(or Y-axis).
+
+### Create Template
+Manually input various parameters is boring. In such case, you can click `Create Template` to storage a note to the template. If non selected, hover note will be the template. If one selected, the selected note will be the template. `Left click` the button will restore the template to the UI panel.    
+Renaming and deleting the template button is same as the bookmark, by `right clicking` and `middle clicking`, respectively.   
+**Note**: Currently the storage is not persistent, which means it will get lost after exiting the map. I'm not sure where to store if we want it to be persistent.
+
 ## Some Feature could be introduced
 - ~~Undo for new introduced actions~~
 - ~~Set transparency correctly~~(But not in consistent with previous notes' behaviour, I just set `TranslucentAlpha` to 1, which may not be the correct logic)
