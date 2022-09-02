@@ -11,13 +11,13 @@ public class MultiServerNetListener : MultiNetListener
 {
     private AutoSaveController autoSave;
 
-    public MultiServerNetListener(string displayName, int port, AutoSaveController autoSave) : base()
+    public MultiServerNetListener(MapperIdentityPacket hostIdentity, int port, AutoSaveController autoSave) : base()
     {
         this.autoSave = autoSave;
 
         NetManager.Start(port);
 
-        Identities.Add(new MapperIdentityPacket(displayName.StripTMPTags(), 0));
+        Identities.Add(hostIdentity);
 
         SubscribeToCollectionEvents();
     }
@@ -82,19 +82,23 @@ public class MultiServerNetListener : MultiNetListener
     // For the server, we broadcast the clients latency to everyone. Just something fun.
     public override void OnNetworkLatencyUpdate(NetPeer peer, int latency)
     {
+        var identity = Identities.Find(x => x.MapperPeer == peer);
+
+        // Update client latency for the host
+        if (RemotePlayers.TryGetValue(identity, out var remotePeer))
+        {
+            remotePeer.UpdateLatency(latency);
+        }
+
+        // Rebroadcast latency to everyone else
         foreach (var mapper in Identities)
         {
             if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
             {
-                SendPacketTo(mapper.MapperPeer, Packets.MapperLatency, new MapperLatencyPacket()
+                SendPacketFrom(identity, mapper.MapperPeer, Packets.MapperLatency, new MapperLatencyPacket()
                 { 
                     Latency = latency
                 });
-            } 
-            // Don't forget to update latency for the host
-            else if (mapper.MapperPeer == peer && RemotePlayers.TryGetValue(mapper, out var remotePeer))
-            {
-                remotePeer.UpdateLatency(latency);
             }
         }
     }

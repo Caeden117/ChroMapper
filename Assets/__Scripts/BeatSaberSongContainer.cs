@@ -29,9 +29,9 @@ public class BeatSaberSongContainer : MonoBehaviour
         SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
     }
 
-    public void ConnectToMultiSession(string ip, int port, string name)
+    public void ConnectToMultiSession(string ip, int port, MapperIdentityPacket identity)
     {
-        MultiMapperConnection = new MultiClientNetListener(ip, port, name);
+        MultiMapperConnection = new MultiClientNetListener(ip, port, identity);
 
         SceneTransitionManager.Instance.LoadScene("03_Mapper", DownloadAndLaunchMap());
     }

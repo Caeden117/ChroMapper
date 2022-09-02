@@ -12,11 +12,13 @@ public class MapperIdentityPacket : INetSerializable
 
     public MapperIdentityPacket() { }
 
-    public MapperIdentityPacket(string name, int id)
+    public MapperIdentityPacket(string name, int id) : this(name, id, Random.ColorHSV(0, 1, 1, 1, 1, 1)) { }
+
+    public MapperIdentityPacket(string name, int id, Color color)
     {
         Name = name;
         ConnectionId = id;
-        Color = Random.ColorHSV(0, 1, 1, 1, 1, 1);
+        Color = color;
     }
 
     public void Deserialize(NetDataReader reader)

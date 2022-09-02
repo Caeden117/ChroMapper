@@ -14,12 +14,12 @@ public class MultiClientNetListener : MultiNetListener
 
     public MapDataPacket? MapData { get; private set; }
 
-    public MultiClientNetListener(string ip, int port, string name) : base()
+    public MultiClientNetListener(string ip, int port, MapperIdentityPacket identity) : base()
     {
         NetManager.Start();
 
         var identityWriter = new NetDataWriter();
-        identityWriter.Put(new MapperIdentityPacket(name.StripTMPTags(), 0));
+        identityWriter.Put(identity);
 
         NetManager.Connect(ip, port, identityWriter);
     }

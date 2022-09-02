@@ -76,9 +76,9 @@ public class MultiNetListener : INetEventListener, IDisposable
 
                 // We apply cached song position to an incoming pose packet if the mapper is playing through the song.
                 //    This eliminates jittering when clients move the camera while playing the song.
-                if (pose.IsPlayingSong)
+                if (pose.IsPlayingSong && CachedPosePackets.TryGetValue(identity, out var remotePose))
                 {
-                    pose.SongPosition = CachedPosePackets[identity].SongPosition;
+                    pose.SongPosition = remotePose.SongPosition;
                 }
 
                 CachedPosePackets[identity] = pose;
@@ -199,7 +199,9 @@ public class MultiNetListener : INetEventListener, IDisposable
     {
         if (identity != null)
         {
-            Identities.Remove(identity);
+            // Null out the mapper peer; we can't remove Identity entirely, or
+            //    else some people can share the same connection id
+            identity.MapperPeer = null;
 
             if (RemotePlayers.TryGetValue(identity, out var disconnectedPlayer))
             {

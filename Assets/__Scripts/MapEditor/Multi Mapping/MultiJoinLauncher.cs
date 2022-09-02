@@ -6,6 +6,7 @@ public class MultiJoinLauncher : MonoBehaviour
     private TextBoxComponent ipTextBox;
     private TextBoxComponent portTextBox;
     private TextBoxComponent nameTextBox;
+    private NestedColorPickerComponent color;
 
     public void JoinLobby()
     {
@@ -25,7 +26,12 @@ public class MultiJoinLauncher : MonoBehaviour
         nameTextBox = dialogBox.AddComponent<TextBoxComponent>()
             .WithLabel("Display Name")
             .WithInitialValue(Settings.Instance.DisplayName)
+            .WithMaximumLength(64)
             .OnChanged<TextBoxComponent, string>((name) => Settings.Instance.DisplayName = name);
+        
+        color = dialogBox.AddComponent<NestedColorPickerComponent>()
+            .WithLabel("Grid Color")
+            .WithInitialValue(Random.ColorHSV(0, 1, 1, 1, 1, 1));
 
         dialogBox.AddFooterButton(null, "Cancel");
 
@@ -36,6 +42,6 @@ public class MultiJoinLauncher : MonoBehaviour
 
     private void JoinMultiSession()
     {
-        BeatSaberSongContainer.Instance.ConnectToMultiSession(ipTextBox.Value, int.Parse(portTextBox.Value), nameTextBox.Value);
+        BeatSaberSongContainer.Instance.ConnectToMultiSession(ipTextBox.Value, int.Parse(portTextBox.Value), new MapperIdentityPacket(nameTextBox.Value.StripTMPTags(), 0, color.Value));
     }
 }
