@@ -1,15 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 {
+    public static event Action<BeatmapAction> ActionCreatedEvent;
+    public static event Action<BeatmapAction> ActionUndoEvent;
+    public static event Action<BeatmapAction> ActionRedoEvent;
+
     private static BeatmapActionContainer instance;
     [SerializeField] private GameObject moveableGridTransform;
     [SerializeField] private SelectionController selection;
     [SerializeField] private NodeEditorController nodeEditor;
     [SerializeField] private TracksManager tracksManager;
+
     private readonly List<BeatmapAction> beatmapActions = new List<BeatmapAction>();
 
     private void Start() => instance = this;
@@ -29,7 +35,11 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     /// </param>
     public static void AddAction(BeatmapAction action, bool perform = false)
     {
-        instance.beatmapActions.RemoveAll(x => !x.Active);
+        if (!action.Networked)
+        {
+            instance.beatmapActions.RemoveAll(x => !x.Networked && !x.Active);
+            ActionCreatedEvent?.Invoke(action);
+        }
         instance.beatmapActions.Add(action);
         if (perform) instance.DoRedo(action);
         Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
@@ -38,30 +48,46 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     public static void RemoveAllActionsOfType<T>() where T : BeatmapAction =>
         instance.beatmapActions.RemoveAll(x => x is T);
 
-    //Idk what these do but I started getting warnings about them since updating to Visual Studio 2019 v16.6
-    public static BeatmapAction GetLastAction() =>
-        instance.beatmapActions.Any() ? instance.beatmapActions.LastOrDefault(x => x.Active) : null;
+    public static void Undo(Guid actionGuid)
+    {
+        var action = instance.beatmapActions.Find(x => x.Guid == actionGuid);
+        if (action == null) return;
+        Debug.Log($"Undid a {action.GetType().Name}. ({action.Comment})");
+        instance.DoUndo(action);
+    }
+
+    public static void Redo(Guid actionGuid)
+    {
+        var action = instance.beatmapActions.Find(x => x.Guid == actionGuid);
+        if (action == null) return;
+        Debug.Log($"Redid a {action.GetType().Name}. ({action.Comment})");
+        instance.DoRedo(action);
+    }
 
     public void Undo()
     {
-        if (!beatmapActions.Any(x => x.Active)) return;
-        var lastActive = beatmapActions.LastOrDefault(x => x.Active);
+        var lastActive = beatmapActions.FindLast(x => !x.Networked && x.Active);
         if (lastActive == null) return;
-        Debug.Log($"Undid a {lastActive?.GetType()?.Name ?? "UNKNOWN"}. ({lastActive?.Comment ?? "Unknown comment."})");
-        var param = new BeatmapActionParams(this);
-        lastActive.Undo(param);
-        lastActive.Active = false;
-        nodeEditor.ObjectWasSelected();
+        Debug.Log($"Undid a {lastActive.GetType().Name}. ({lastActive.Comment})");
+        DoUndo(lastActive);
+        ActionUndoEvent?.Invoke(lastActive);
     }
 
     public void Redo()
     {
-        if (!beatmapActions.Any(x => !x.Active)) return;
-        var firstNotActive = beatmapActions.Find(x => !x.Active);
+        var firstNotActive = beatmapActions.Find(x => !x.Networked && !x.Active);
         if (firstNotActive == null) return;
-        Debug.Log(
-            $"Redid a {firstNotActive?.GetType()?.Name ?? "UNKNOWN"}. ({firstNotActive?.Comment ?? "Unknown comment."})");
+        Debug.Log($"Redid a {firstNotActive.GetType().Name}. ({firstNotActive.Comment})");
         DoRedo(firstNotActive);
+        ActionRedoEvent?.Invoke(firstNotActive);
+    }
+
+    private void DoUndo(BeatmapAction action)
+    {
+        var param = new BeatmapActionParams(this);
+        action.Undo(param);
+        action.Active = false;
+        nodeEditor.ObjectWasSelected();
     }
 
     private void DoRedo(BeatmapAction action)

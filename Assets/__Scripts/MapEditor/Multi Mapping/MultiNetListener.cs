@@ -26,7 +26,6 @@ public class MultiNetListener : INetEventListener, IDisposable
     private RemotePlayerContainer remotePlayerPrefab;
     private float previousCursorBeat = 0;
     private float localSongSpeed = 1;
-    private List<BeatmapObjectContainerCollection> containerCollections = new List<BeatmapObjectContainerCollection>();
 
     public MultiNetListener()
     {
@@ -42,7 +41,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     {
         PersistentUI.Instance.ShowDialogBox($"A networking error occured: {socketError}.", null, PersistentUI.DialogBoxPresetType.Ok);
     }
-    
+
     // TODO: Maybe ping list in the future?
     public virtual void OnNetworkLatencyUpdate(NetPeer peer, int latency) { }
 
@@ -104,58 +103,33 @@ public class MultiNetListener : INetEventListener, IDisposable
                 break;
 
             case (byte)Packets.BeatmapObjectCreate:
-                var creationBeatmapObjectType = (BeatmapObject.ObjectType)reader.GetByte();
-                var creationCollection = BeatmapObjectContainerCollection.GetCollectionForType(creationBeatmapObjectType);
-
-                // Yes switch in switch, i know
-                var creationObject = creationBeatmapObjectType switch
-                {
-                    BeatmapObject.ObjectType.Note => reader.Get<BeatmapNote>() as BeatmapObject,
-                    BeatmapObject.ObjectType.Event => reader.Get<MapEvent>(),
-                    BeatmapObject.ObjectType.Obstacle => reader.Get<BeatmapObstacle>(),
-                    BeatmapObject.ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
-                    BeatmapObject.ObjectType.CustomEvent => reader.Get<BeatmapCustomEvent>(),
-                    BeatmapObject.ObjectType.BpmChange => reader.Get<BeatmapBPMChange>(),
-                    BeatmapObject.ObjectType.Bookmark => reader.Get<BeatmapBookmark>(),
-                    _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
-                };
+                var creationObject = reader.GetBeatmapObject();
 
                 if (creationObject is BeatmapBookmark creationBookmark)
                 {
                     bookmarkManager.AddBookmark(creationBookmark, false);
                 }
-                else
-                {
-                    creationCollection.SpawnObject(creationObject, out _, true, true, false);
-                }
                 break;
 
             case (byte)Packets.BeatmapObjectDelete:
-                var deletionBeatmapObjectType = (BeatmapObject.ObjectType)reader.GetByte();
-                var deletionCollection = BeatmapObjectContainerCollection.GetCollectionForType(deletionBeatmapObjectType);
-
-                var deletionObject = deletionBeatmapObjectType switch
-                {
-                    BeatmapObject.ObjectType.Note => reader.Get<BeatmapNote>() as BeatmapObject,
-                    BeatmapObject.ObjectType.Event => reader.Get<MapEvent>(),
-                    BeatmapObject.ObjectType.Obstacle => reader.Get<BeatmapObstacle>(),
-                    BeatmapObject.ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
-                    BeatmapObject.ObjectType.CustomEvent => reader.Get<BeatmapCustomEvent>(),
-                    BeatmapObject.ObjectType.BpmChange => reader.Get<BeatmapBPMChange>(),
-                    BeatmapObject.ObjectType.Bookmark => reader.Get<BeatmapBookmark>(),
-                    _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
-                };
+                var deletionObject = reader.GetBeatmapObject();
 
                 if (deletionObject is BeatmapBookmark deletionBookmark)
                 {
                     bookmarkManager.DeleteBookmarkAtTime(deletionBookmark.Time, false);
                 }
-                else
-                {
-                    // We abuse the conflict check system to remotely delete an object without having the exact instance.
-                    deletionCollection.SpawnObject(deletionObject, out _, true, true, false);
-                    deletionCollection.DeleteObject(deletionObject, false, true, null, false);
-                }
+                break;
+            case (byte)Packets.ActionCreated:
+                var action = reader.GetBeatmapAction(identity);
+                BeatmapActionContainer.AddAction(action, true);
+                break;
+            case (byte)Packets.ActionUndo:
+                var undoGuid = Guid.Parse(reader.GetString());
+                BeatmapActionContainer.Undo(undoGuid);
+                break;
+            case (byte)Packets.ActionRedo:
+                var redoGuid = Guid.Parse(reader.GetString());
+                BeatmapActionContainer.Redo(redoGuid);
                 break;
         }
     }
@@ -183,7 +157,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         }
 
         var track = tracksManager.GetTrackAtTime(pose.SongPosition).ObjectParentTransform;
-        
+
         if (!remotePlayer.transform.IsChildOf(track))
         {
             remotePlayer.transform.SetParent(track, true);
@@ -331,18 +305,6 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     public void SubscribeToCollectionEvents()
     {
-        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note));
-        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle));
-        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event));
-        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.CustomEvent));
-        containerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.BpmChange));
-
-        foreach (var collection in containerCollections)
-        {
-            collection.ObjectSpawnedEvent += MultiNetListener_ObjectSpawnedEvent;
-            collection.ObjectDeletedEvent += MultiNetListener_ObjectDeletedEvent;
-        }
-
         audioTimeSyncController = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).AudioTimeSyncController;
         audioTimeSyncController.PlayToggle += OnTogglePlaying;
         cameraController = Camera.main.GetComponent<CameraController>();
@@ -356,18 +318,14 @@ public class MultiNetListener : INetEventListener, IDisposable
         Settings.NotifyBySettingName("SongSpeed", UpdateLocalSongSpeed);
 
         EditorScaleController.EditorScaleChangedEvent += OnEditorScaleChanged;
+
+        BeatmapActionContainer.ActionCreatedEvent += BeatmapActionContainer_ActionCreatedEvent;
+        BeatmapActionContainer.ActionUndoEvent += BeatmapActionContainer_ActionUndoEvent;
+        BeatmapActionContainer.ActionRedoEvent += BeatmapActionContainer_ActionRedoEvent;
     }
 
     public void UnsubscribeFromCollectionEvents()
     {
-        foreach (var collection in containerCollections)
-        {
-            collection.ObjectSpawnedEvent -= MultiNetListener_ObjectSpawnedEvent;
-            collection.ObjectDeletedEvent -= MultiNetListener_ObjectDeletedEvent;
-        }
-
-        containerCollections.Clear();
-
         audioTimeSyncController.PlayToggle -= OnTogglePlaying;
 
         bookmarkManager.BookmarkAdded -= MultiNetListener_ObjectSpawnedEvent;
@@ -376,6 +334,10 @@ public class MultiNetListener : INetEventListener, IDisposable
         Settings.ClearSettingNotifications("SongSpeed");
 
         EditorScaleController.EditorScaleChangedEvent -= OnEditorScaleChanged;
+
+        BeatmapActionContainer.ActionCreatedEvent -= BeatmapActionContainer_ActionCreatedEvent;
+        BeatmapActionContainer.ActionUndoEvent -= BeatmapActionContainer_ActionUndoEvent;
+        BeatmapActionContainer.ActionRedoEvent -= BeatmapActionContainer_ActionRedoEvent;
     }
 
     private void OnEditorScaleChanged(float editorScale) => UpdateCachedPoses();
@@ -409,6 +371,39 @@ public class MultiNetListener : INetEventListener, IDisposable
         writer.Put((byte)Packets.BeatmapObjectDelete);
         writer.Put((byte)obj.BeatmapType);
         writer.Put(obj);
+
+        NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
+    }
+
+    private void BeatmapActionContainer_ActionCreatedEvent(BeatmapAction obj)
+    {
+        var writer = new NetDataWriter();
+
+        writer.Put(0);
+        writer.Put((byte)Packets.ActionCreated);
+        writer.PutBeatmapAction(obj);
+
+        NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
+    }
+
+    private void BeatmapActionContainer_ActionUndoEvent(BeatmapAction obj)
+    {
+        var writer = new NetDataWriter();
+
+        writer.Put(0);
+        writer.Put((byte)Packets.ActionUndo);
+        writer.Put(obj.Guid.ToString());
+
+        NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
+    }
+
+    private void BeatmapActionContainer_ActionRedoEvent(BeatmapAction obj)
+    {
+        var writer = new NetDataWriter();
+
+        writer.Put(0);
+        writer.Put((byte)Packets.ActionRedo);
+        writer.Put(obj.Guid.ToString());
 
         NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
     }

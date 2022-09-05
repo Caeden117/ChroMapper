@@ -31,7 +31,8 @@ public class MultiJoinLauncher : MonoBehaviour
         
         color = dialogBox.AddComponent<NestedColorPickerComponent>()
             .WithLabel("Grid Color")
-            .WithInitialValue(Random.ColorHSV(0, 1, 1, 1, 1, 1));
+            .WithInitialValue(Random.ColorHSV(0, 1, 1, 1, 1, 1))
+            .WithConstantAlpha(1f);
 
         dialogBox.AddFooterButton(null, "Cancel");
 

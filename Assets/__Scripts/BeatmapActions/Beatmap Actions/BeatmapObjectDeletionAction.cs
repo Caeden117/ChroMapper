@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using LiteNetLib.Utils;
 
 public class BeatmapObjectDeletionAction : BeatmapAction
 {
+    public BeatmapObjectDeletionAction() : base() { }
+
     public BeatmapObjectDeletionAction(IEnumerable<BeatmapObject> objs, string comment) : base(objs, comment) { }
 
     public BeatmapObjectDeletionAction(BeatmapObject obj, string comment) : base(new[] { obj }, comment) { }
@@ -10,7 +13,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
     {
         foreach (var obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).SpawnObject(obj, refreshesPool: false);
+            SpawnObject(obj, true);
         }
 
         RefreshPools(Data);
@@ -20,9 +23,13 @@ public class BeatmapObjectDeletionAction : BeatmapAction
     {
         foreach (var obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false, false);
+            DeleteObject(obj, false);
         }
 
         RefreshPools(Data);
     }
+
+    public override void Serialize(NetDataWriter writer) => SerializeBeatmapObjectList(writer, Data);
+
+    public override void Deserialize(NetDataReader reader) => Data = DeserializeBeatmapObjectList(reader);
 }

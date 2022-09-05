@@ -9,5 +9,9 @@ public enum Packets
     BeatmapObjectDelete,
 
     MapperDisconnect,
-    MapperLatency
+    MapperLatency,
+
+    ActionCreated,
+    ActionUndo,
+    ActionRedo
 }
