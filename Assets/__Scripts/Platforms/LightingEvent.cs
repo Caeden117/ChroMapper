@@ -154,4 +154,10 @@ public class LightingEvent : MonoBehaviour
         currentNoteIdx = noteIdx;
         return true;
     }
+
+    public void SetCurrentTimeRatio(float t)
+    {
+        colorTime = t * timeToTransitionColor;
+        alphaTime = t * timeToTransitionAlpha;
+    }
 }

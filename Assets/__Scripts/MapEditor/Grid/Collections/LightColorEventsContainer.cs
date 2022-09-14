@@ -210,4 +210,33 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
         }
         return false;
     }
+
+    public bool TryGetPreviousLightColorEventData(int group, int idx, float time, out BeatmapLightColorEventData data)
+    {
+        data = null;
+        if (nextEventDict.TryGetValue((group, idx), out var list))
+        {
+            if (list.Count == 0) return false;
+            var fakeData = new BeatmapLightColorEventData(time, 0, 0, 0, 0);
+            int i = list.BinarySearch(fakeData, new BeatmapObjectComparer());
+            if (i < 0)
+            {
+                i = ~i;
+                if (i > 0)
+                {
+                    i--;
+                    data = list[i];
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                if (i == list.Count) i--;
+                data = list[i];
+                return true;
+            }
+        }
+        return false;
+    }
 }

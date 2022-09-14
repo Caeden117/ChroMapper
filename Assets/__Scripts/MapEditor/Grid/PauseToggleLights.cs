@@ -137,6 +137,56 @@ public class PauseToggleLights : MonoBehaviour
             descriptor.KillChromaLights();
             descriptor.KillLights();
         }
+
+        if (descriptor is PlatformDescriptorV3) PlayToggleV3(isPlaying);
+    }
+
+    private void PlayToggleV3(bool isPlaying)
+    {
+        if (!isPlaying) return;
+        var descriptorV3 = descriptor as PlatformDescriptorV3;
+        var colorCol = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
+        var rotCol = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
+        var time = atsc.CurrentBeat;
+        for (int i = 0; i < descriptorV3.LightsManagersV3.Length; ++i)
+        {
+            int group = descriptorV3.LaneIndexToGroupId(i);
+            for (int lightIdx = 0; lightIdx < descriptorV3.LightsManagersV3[i].ControllingLights.Count; ++lightIdx)
+            {
+                var light = descriptorV3.LightsManagersV3[i].ControllingLights[lightIdx];
+                if (colorCol.TryGetPreviousLightColorEventData(group, lightIdx, time, out var prev))
+                {
+                    descriptorV3.SetLightColorFromData(light, prev, 0);
+                    if (colorCol.TryGetNextLightColorEventData(group, lightIdx, time, out var next) && next.TransitionType == 2)
+                    {
+                        float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
+                        descriptorV3.SetLightColorFromData(light, next, timeToTransition);
+                        light.SetCurrentTimeRatio((time - prev.Time) / (next.Time - prev.Time));
+                    }
+                }
+            }
+
+            for (int rotIdx = 0; rotIdx < descriptorV3.LightsManagersV3[i].ControllingRotations.Count; ++rotIdx)
+            {
+                var rot = descriptorV3.LightsManagersV3[i].ControllingRotations[rotIdx];
+                for (int axis = 0; axis < 2; ++axis)
+                {
+                    var axisData = rot.GetAxisData(axis);
+                    if (rotCol.TryGetPreviousLightRotationEventData(group, rotIdx, axis, time, out var prev))
+                    {
+                        axisData.UpdateRotation(prev.RotationValue, 0);
+                        // TODO: we should some how set reverse...
+
+                        if (rotCol.TryGetNextLightRotationEventData(group, rotIdx, axis, time, out var next))
+                        {
+                            float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
+                            descriptorV3.SetLightRotationFromData(rot, next, timeToTransition, axis);
+                            axisData.SetCurrentTimeRatio((time - prev.Time) / (next.Time - prev.Time));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private class LastEvents

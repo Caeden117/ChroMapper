@@ -164,6 +164,15 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     }
 
 
+    public void SetLightColorFromData(LightingEvent light, BeatmapLightColorEventData data, float timeToTransition)
+    {
+        light.TargetColorId = data.Color;
+        var color = InferColor(data.Color);
+        var brightness = data.Brightness;
+        light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), timeToTransition);
+        light.UpdateTargetAlpha(brightness, timeToTransition);
+    }
+
     private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, 
         int group, float baseTime, int noteIdx, BeatmapLightColorEventData data)
     {
@@ -187,12 +196,15 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             {
                 if (nextData.TransitionType == 1)
                 {
+                    var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
+                    /*
                     light.TargetColorId = nextData.Color;
                     var nextColor = InferColor(nextData.Color);
                     var nextAlpha = nextData.Brightness;
-                    var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
                     light.UpdateTargetColor(nextColor.Multiply(LightsManager.HDRIntensity), timeToTransition);
                     light.UpdateTargetAlpha(nextAlpha, timeToTransition);
+                    */
+                    SetLightColorFromData(light, nextData, timeToTransition);
                 }
             }
             if (deltaTime != 0.0f)
@@ -231,6 +243,15 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         }
     }
 
+    public void SetLightRotationFromData(RotatingEvent rot, BeatmapLightRotationEventData data, float timeToTransition, int axis)
+    {
+        var axisData = rot.GetAxisData(axis);
+        axisData.UpdateRotation(data.RotationValue, timeToTransition);
+        axisData.SetEaseFunction(data.EaseType);
+        axisData.SetLoop(data.AdditionalLoop);
+        axisData.SetDirection(data.RotationDirection);
+    }
+
     private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis, bool reverse,
         int group, float baseTime, int noteIdx, BeatmapLightRotationEventData data)
     {
@@ -241,7 +262,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         float extraTime = 0;
         foreach (var light in lights)
         {
-            var axisData = axis == 0 ? light.XData : light.YData;
+            var axisData = light.GetAxisData(axis);
             if (!axisData.SetNoteIndex(noteIdx)) continue;
             if (data.Transition != 1)
             {
@@ -254,10 +275,13 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 if (nextData.Transition == 0)
                 {
                     var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                    /*
                     axisData.UpdateRotation(nextData.RotationValue, timeToTransition);
                     axisData.SetEaseFunction(nextData.EaseType);
                     axisData.SetLoop(nextData.AdditionalLoop);
                     axisData.SetDirection(nextData.RotationDirection);
+                    */
+                    SetLightRotationFromData(light, nextData, timeToTransition, axis);
                 }
             }
             if (deltaTime != 0)

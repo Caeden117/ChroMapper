@@ -55,6 +55,7 @@ public class RotatingEventData
     public void SetReverse(bool reverse) => this.reverse = reverse;
     private static float NoneTransition(float _) => 0;
 
+    public void SetCurrentTimeRatio(float t) => rotatingTime = t * timeToTransition;
     public bool SetNoteIndex(int noteIdx, bool force = false)
     {
         if (!force && noteIdx < currentNoteIdx)
@@ -124,6 +125,10 @@ public class RotatingEvent : MonoBehaviour
             );
     }
 
+    public RotatingEventData GetAxisData(int axis)
+    {
+        return axis == 0 ? XData : YData;
+    }
     public void ResetNoteIndex()
     {
         XData.SetNoteIndex(-1, true);
