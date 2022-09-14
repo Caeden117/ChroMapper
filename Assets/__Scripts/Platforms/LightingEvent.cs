@@ -36,6 +36,7 @@ public class LightingEvent : MonoBehaviour
 
     public int LightIdx = -1; // each light in the group has its unique LightIdx. This is used in LightsManagerV3
     private int currentNoteIdx = -1;
+    public int TargetColor = 0;
 
     private void Start()
     {
@@ -102,6 +103,8 @@ public class LightingEvent : MonoBehaviour
         colorTime = 0;
         if (timeToTransition == 0) currentColor = target;
     }
+
+    public void SetTargetColor(Color target) => targetColor = target;
 
     public void UpdateTargetAlpha(float target, float timeToTransition)
     {

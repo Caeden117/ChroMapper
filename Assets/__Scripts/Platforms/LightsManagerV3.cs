@@ -40,4 +40,13 @@ public class LightsManagerV3 : LightsManager
         foreach (var light in ControllingLights) light.SetNoteIndex(-1, true);
         foreach (var rot in ControllingRotations) rot.ResetNoteIndex();
     }
+
+    public override void Boost(bool boost, Color red, Color blue)
+    {
+        foreach (var light in ControllingLights)
+        {
+            light.UpdateBoostState(boost);
+            light.SetTargetColor((light.TargetColor == 0 ? red : blue) * HDRIntensity);
+        }
+    }
 }

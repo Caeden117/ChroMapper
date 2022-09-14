@@ -235,6 +235,15 @@ public class PlatformDescriptor : MonoBehaviour
                     manager.Boost(ColorBoost, ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
                         ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor);
                 }
+                if (this is PlatformDescriptorV3 descriptorV3)
+                {
+                    foreach(var manager in descriptorV3.LightsManagersV3)
+                    {
+                        if (manager == null) continue;
+                        manager.Boost(ColorBoost, ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
+                            ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor);
+                    }
+                }
 
                 break;
             default:
