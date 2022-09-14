@@ -46,7 +46,7 @@ public class LightsManagerV3 : LightsManager
         foreach (var light in ControllingLights)
         {
             light.UpdateBoostState(boost);
-            light.SetTargetColor((light.TargetColor == 0 ? red : blue) * HDRIntensity);
+            light.SetTargetColor((light.TargetColorId == 0 ? red : blue) * HDRIntensity);
         }
     }
 }

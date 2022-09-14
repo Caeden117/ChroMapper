@@ -179,7 +179,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             if (!light.SetNoteIndex(noteIdx)) continue;
             if (data.TransitionType != 2)
             {
-                light.TargetColor = data.Color;
+                light.TargetColorId = data.Color;
                 light.UpdateTargetColor(color, 0);
                 light.UpdateTargetAlpha(brightness, 0);
             }
@@ -187,7 +187,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             {
                 if (nextData.TransitionType == 1)
                 {
-                    light.TargetColor = nextData.Color;
+                    light.TargetColorId = nextData.Color;
                     var nextColor = InferColor(nextData.Color);
                     var nextAlpha = nextData.Brightness;
                     var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
