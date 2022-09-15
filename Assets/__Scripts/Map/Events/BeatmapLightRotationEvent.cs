@@ -73,6 +73,7 @@ public class BeatmapLightRotationEventBox : BeatmapObject
         DistributionType = RetrieveRequiredNode(node, "d").AsInt;
         RotationDistribution = RetrieveRequiredNode(node, "s").AsFloat;
         RotationDistributionType = RetrieveRequiredNode(node, "t").AsInt;
+        RotationAffectFirst = RetrieveRequiredNode(node, "b").AsInt;
         Axis = RetrieveRequiredNode(node, "a").AsInt;
         ReverseRotation = RetrieveRequiredNode(node, "r").AsInt;
         foreach (var n in RetrieveRequiredNode(node, "l"))
