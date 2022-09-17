@@ -47,6 +47,9 @@ public class LightV3Buttons : MonoBehaviour
         renameTemplatedialogBox.AddFooterButton(() => RenameTemplateCallback(renameTemplateTextBox.Value), "PersistentUI", "ok");
 
         uiGenerator.OnToggleUIPanelSwitch += StoreCurrentPanel;
+
+        colorTemplate.AddObject(colorBinder.ObjectData, "default");
+        rotationTemplate.AddObject(rotationBinder.ObjectData, "default").SetActive(false);
     }
 
     private void StoreCurrentPanel(LightV3GeneratorAppearance.LightV3UIPanel obj)

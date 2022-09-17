@@ -30,7 +30,7 @@ public class MetaLightV3TemplateSaver<T> : MonoBehaviour
         uiGenerator.OnToggleUIPanelSwitch -= SwitchDisplayingItems;
     }
 
-    public void AddObject(T objectData, string name)
+    public GameObject AddObject(T objectData, string name)
     {
         var newButton = Instantiate(buttonTemplate, buttonsParent);
         newButton.GetComponent<LightV3TemplateButton>().SetText(name);
@@ -41,6 +41,7 @@ public class MetaLightV3TemplateSaver<T> : MonoBehaviour
             ObjectData = BeatmapObject.GenerateCopy(objectData)
         });
         AdjustScrollbar(objectTemplates);
+        return newButton.gameObject;
     }
 
     public void ApplyObject(T receiver, Button triggeredButton)
