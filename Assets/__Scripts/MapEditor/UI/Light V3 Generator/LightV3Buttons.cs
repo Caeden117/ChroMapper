@@ -64,6 +64,7 @@ public class LightV3Buttons : MonoBehaviour
     }
     public void Apply()
     {
+        /*
         if (SelectionController.SelectedObjects.Count == 1)
         {
             var obj = SelectionController.SelectedObjects.First();
@@ -86,6 +87,27 @@ public class LightV3Buttons : MonoBehaviour
                 }
             }
         }
+        */
+        if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel)
+        {
+            GroupApply<BeatmapLightColorEvent, LightColorEventsContainer>(colorBinder, BeatmapObject.ObjectType.LightColorEvent);
+        }
+        else
+        {
+            GroupApply<BeatmapLightRotationEvent, LightRotationEventsContainer>(rotationBinder, BeatmapObject.ObjectType.LightRotationEvent);
+        }
+    }
+
+    private void GroupApply<T, TBocc>(MetaLightV3Binder<T> binder, BeatmapObject.ObjectType objectType)
+        where T : BeatmapObject
+        where TBocc: BeatmapObjectContainerCollection
+    {
+        foreach (var obj in SelectionController.SelectedObjects.OfType<T>())
+        {
+            binder.Load(obj);
+        }
+        var col = BeatmapObjectContainerCollection.GetCollectionForType<TBocc>(objectType);
+        col.RefreshPool(true);
     }
 
     public void GenerateTemplate()
