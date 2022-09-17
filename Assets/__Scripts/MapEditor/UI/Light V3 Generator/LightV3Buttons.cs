@@ -102,12 +102,16 @@ public class LightV3Buttons : MonoBehaviour
         where T : BeatmapObject
         where TBocc: BeatmapObjectContainerCollection
     {
+        var allActions = new List<BeatmapAction>(); 
         foreach (var obj in SelectionController.SelectedObjects.OfType<T>())
         {
+            var original = BeatmapObject.GenerateCopy(obj);
             binder.Load(obj);
+            allActions.Add(new BeatmapObjectModifiedAction(obj, obj, original, "", true));
         }
         var col = BeatmapObjectContainerCollection.GetCollectionForType<TBocc>(objectType);
         col.RefreshPool(true);
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, $"apply {objectType} to selected notes"));
     }
 
     public void GenerateTemplate()
