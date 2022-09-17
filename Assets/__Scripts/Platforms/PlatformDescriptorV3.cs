@@ -179,13 +179,13 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
-        var color = InferColor(data.Color);
-        color = color.Multiply(LightsManager.HDRIntensity);
         var brightness = data.Brightness;
         float extraTime = 0;
         foreach (var light in lights)
         {
             if (!light.SetNoteIndex(noteIdx)) continue;
+            var color = InferColor(data.Color);
+            color = color.Multiply(LightsManager.HDRIntensity);
             if (data.TransitionType != 2)
             {
                 light.TargetColorId = data.Color;
