@@ -25,7 +25,6 @@ public class RotatingEventData
     private int loop;
     private int direction;
     internal bool flip;
-    private bool reverse;
     private Func<float, float> currentEasingFn = easingFunctions[0];
     private int currentNoteIdx = -1;
 
@@ -52,7 +51,6 @@ public class RotatingEventData
 
     public void SetDirection(int direction) => this.direction = direction;
 
-    public void SetReverse(bool reverse) => this.reverse = reverse;
     private static float NoneTransition(float _) => 0;
 
     public void SetCurrentTimeRatio(float t) => rotatingTime = t * timeToTransition;
@@ -95,7 +93,7 @@ public class RotatingEventData
     {
         rotatingTime += deltaTime;
         var angle = LerpAngleWithDirection(currentDegree, targetDegree, currentEasingFn(rotatingTime / timeToTransition));
-        if (flip ^ reverse)
+        if (flip)
         {
             angle = -angle;
         }

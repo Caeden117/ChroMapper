@@ -230,6 +230,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             : Range(allLights, eb.Filter.Partition, eb.Filter.Section, eb.Filter.Reverse == 1);
         if (filteredLights.Count() == 0) return;
         float deltaRotation = eb.RotationDistribution;
+        if (eb.ReverseRotation == 1) deltaRotation = -deltaRotation;
         if (eb.RotationDistributionType == 1) deltaRotation /= Intervals(filteredLights);
         float deltaTime = eb.Distribution;
         if (eb.DistributionType == 1) deltaTime /= Intervals(filteredLights);
@@ -259,6 +260,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
         float rotation = data.RotationValue;
+        if (reverse) rotation = -rotation;
         float extraTime = 0;
         foreach (var light in lights)
         {
@@ -267,7 +269,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             if (data.Transition != 1)
             {
                 axisData.UpdateRotation(rotation, 0);
-                axisData.SetReverse(reverse);
             }
             if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, axis,
                 baseTime + extraTime + data.Time, out var nextData))

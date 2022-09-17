@@ -111,6 +111,7 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                         : PlatformDescriptorV3.Range(rotations, rotationEventBox.Filter.Partition, rotationEventBox.Filter.Section, rotationEventBox.Filter.Reverse == 1);
 
                     float deltaDegree = rotationEventBox.RotationDistribution;
+                    if (rotationEventBox.ReverseRotation == 1) deltaDegree = -deltaDegree;
                     if (rotationEventBox.RotationDistributionType == 1) deltaDegree /= PlatformDescriptorV3.Intervals(filteredRotations);
                     float deltaTime = rotationEventBox.Distribution;
                     if (rotationEventBox.DistributionType == 1) deltaTime /= PlatformDescriptorV3.Intervals(filteredRotations);
@@ -120,6 +121,7 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                     {
                         var rotationEventData = rotationEventBox.EventDatas[i];
                         float degree = rotationEventData.RotationValue;
+                        if (rotationEventBox.ReverseRotation == 1) degree = -degree; 
                         float extraTime = 0.0f;
                         foreach (var singleRotation in filteredRotations)
                         {
