@@ -29,9 +29,18 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
     private T selectingData;
     public T DisplayingData => DisplayingSelectedObject ? selectingData : ObjectData;
     protected bool DisplayingSelectedObject;
+
+    protected const string MixedMark = "-";
+    [SerializeField] protected Sprite CheckMark;
+    [SerializeField] protected Sprite MixedIcon;
+
     protected void Awake()
     {
         InitBindings();
+        foreach (var toggle in Toggles)
+        {
+            toggle.onValueChanged.AddListener(_ => toggle.GetComponent<LightV3ToggleCheckmark>().SetSprite(CheckMark));
+        }
     }
     // Start is called before the first frame update
     protected void Start()
@@ -50,19 +59,86 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
     private void OnSelectionChanged()
     {
         DisplayingSelectedObject = false;
-        if (SelectionController.SelectedObjects.Count == 1)
+        foreach (var toggle in Toggles) toggle.GetComponent<LightV3ToggleCheckmark>().SetSprite(CheckMark);
+        if (SelectionController.SelectedObjects.Count > 0)
         {
+            DumpGroup(SelectionController.SelectedObjects.OfType<T>());
+            /*
             var obj = SelectionController.SelectedObjects.First();
             if (obj is T o)
             {
                 selectingData = o;
-                DisplayingSelectedObject = true;
                 Dump(o);
             }
+            */
         }
         else if (SelectionController.SelectedObjects.Count == 0)
         {
             Dump(ObjectData);
+        }
+    }
+
+    public virtual void DumpGroup(IEnumerable<T> objects)
+    {
+        if (!objects.Any()) return;
+        Dump(objects.Last()); // dump the last to get the correct idx
+
+        selectingData = objects.First();
+        DisplayingSelectedObject = true;
+        for (int i = 0; i < InputFields.Length; ++i)
+        {
+            string prev = null;
+            foreach (var obj in objects)
+            {
+                InputFields[i].SetTextWithoutNotify(InputDumpFn[i](obj));
+                if (prev == null)
+                    prev = InputFields[i].text;
+                else if (prev != InputFields[i].text)
+                {
+                    InputFields[i].SetTextWithoutNotify(MixedMark);
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < Dropdowns.Length; ++i)
+        {
+            int? prev = null;
+            foreach (var obj in objects)
+            {
+                Dropdowns[i].SetValueWithoutNotify(DropdownDumpFn[i](obj));
+                if (prev == null)
+                    prev = Dropdowns[i].value;
+                else if (prev != Dropdowns[i].value)
+                {
+                    Dropdowns[i].SetValueWithoutNotify(Dropdowns[i].options.Count - 1);
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < Texts.Length; ++i)
+        {
+            foreach (var obj in objects)
+                Texts[i].text = TextsDumpFn[i](obj);
+        }
+
+        for (int i = 0; i < Toggles.Length; ++i)
+        {
+            bool? prev = null;
+            // maybe we need a mixed state for toggle?
+            foreach (var obj in objects)
+            {
+                Toggles[i].SetIsOnWithoutNotify(ToggleDumpFn[i](obj));
+                if (prev == null)
+                    prev = Toggles[i].isOn;
+                else if (prev != Toggles[i].isOn)
+                {
+                    Toggles[i].SetIsOnWithoutNotify(true);
+                    Toggles[i].GetComponent<LightV3ToggleCheckmark>().SetSprite(MixedIcon);
+                    break;
+                }
+            }
         }
     }
 
@@ -95,18 +171,21 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
         // dropdown needs to be loaded first
         for (int i = 0; i < Dropdowns.Length; ++i)
         {
-            DropdownLoadFn[i](obj, Dropdowns[i].value);
+            if (Dropdowns[i].value != Dropdowns[i].options.Count - 1)
+                DropdownLoadFn[i](obj, Dropdowns[i].value);
         }
 
         for (int i = 0; i < InputFields.Length; ++i)
         {
-            InputLoadFn[i](obj, InputFields[i].text);
+            if (InputFields[i].text != MixedMark)
+                InputLoadFn[i](obj, InputFields[i].text);
         }
 
 
         for (int i = 0; i < Toggles.Length; ++i)
         {
-            ToggleLoadFn[i](obj, Toggles[i].isOn);
+            if (Toggles[i].GetComponent<LightV3ToggleCheckmark>().GetSprite() != MixedIcon)
+                ToggleLoadFn[i](obj, Toggles[i].isOn);
         }
     }
 
