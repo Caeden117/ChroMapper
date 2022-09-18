@@ -162,6 +162,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &81930987471729789
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,6 +367,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &152369095743768449
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,6 +531,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &207144351395703993
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,6 +650,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &208116311933690772
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,6 +853,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &230193051951928726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,6 +1054,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &275856297795119304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,6 +1173,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &282628423600870764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,6 +1368,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &325410078923928127
 GameObject:
   m_ObjectHideFlags: 0
@@ -1479,6 +1487,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &327566674773833027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1597,6 +1606,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &328831107550394082
 GameObject:
   m_ObjectHideFlags: 0
@@ -1867,6 +1877,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &415716150213313174
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,6 +2394,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &576723797032021417
 GameObject:
   m_ObjectHideFlags: 0
@@ -2675,6 +2687,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &661100751316417695
 GameObject:
   m_ObjectHideFlags: 0
@@ -2793,6 +2806,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &694169072454128756
 GameObject:
   m_ObjectHideFlags: 0
@@ -3001,6 +3015,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &754876775466480478
 GameObject:
   m_ObjectHideFlags: 0
@@ -3254,6 +3269,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &797241033791473692
 GameObject:
   m_ObjectHideFlags: 0
@@ -3587,6 +3603,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &844965532415668248
 GameObject:
   m_ObjectHideFlags: 0
@@ -3832,6 +3849,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1026728920381039281
 GameObject:
   m_ObjectHideFlags: 0
@@ -3950,6 +3968,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1034629360723932713
 GameObject:
   m_ObjectHideFlags: 0
@@ -4113,6 +4132,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1072993569761678347
 GameObject:
   m_ObjectHideFlags: 0
@@ -4231,6 +4251,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1073955398016837097
 GameObject:
   m_ObjectHideFlags: 0
@@ -4349,6 +4370,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1100429715923745952
 GameObject:
   m_ObjectHideFlags: 0
@@ -4511,6 +4533,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1110216552694190817
 GameObject:
   m_ObjectHideFlags: 0
@@ -4615,6 +4638,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1158834086863539793
 GameObject:
   m_ObjectHideFlags: 0
@@ -4805,6 +4829,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1174947635909764965
 GameObject:
   m_ObjectHideFlags: 0
@@ -5005,6 +5030,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1271140723801382618
 GameObject:
   m_ObjectHideFlags: 0
@@ -5154,6 +5180,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1288437651282293475
 GameObject:
   m_ObjectHideFlags: 0
@@ -5691,6 +5718,7 @@ MonoBehaviour:
   LightID: 5
   PropGroup: 4
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1477484005008473866
 GameObject:
   m_ObjectHideFlags: 0
@@ -5795,6 +5823,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1489040231627193272
 GameObject:
   m_ObjectHideFlags: 0
@@ -5995,6 +6024,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1534764037854405336
 GameObject:
   m_ObjectHideFlags: 0
@@ -6158,6 +6188,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1614857164530658090
 GameObject:
   m_ObjectHideFlags: 0
@@ -6276,6 +6307,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1645433965006477622
 GameObject:
   m_ObjectHideFlags: 0
@@ -6394,6 +6426,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1664450047629949868
 GameObject:
   m_ObjectHideFlags: 0
@@ -6498,6 +6531,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1710426248721004901
 GameObject:
   m_ObjectHideFlags: 0
@@ -6787,6 +6821,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1797283114555377851
 GameObject:
   m_ObjectHideFlags: 0
@@ -6962,6 +6997,7 @@ MonoBehaviour:
   LightID: 12
   PropGroup: 5
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1879197109112728015
 GameObject:
   m_ObjectHideFlags: 0
@@ -7066,6 +7102,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1879920685311660919
 GameObject:
   m_ObjectHideFlags: 0
@@ -7261,6 +7298,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &1910809662719060864
 GameObject:
   m_ObjectHideFlags: 0
@@ -7550,6 +7588,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2002798972652441948
 GameObject:
   m_ObjectHideFlags: 0
@@ -7758,6 +7797,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2060931292446833092
 GameObject:
   m_ObjectHideFlags: 0
@@ -7862,6 +7902,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2206602467103927973
 GameObject:
   m_ObjectHideFlags: 0
@@ -7980,6 +8021,7 @@ MonoBehaviour:
   LightID: 6
   PropGroup: 5
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2275225150276238088
 GameObject:
   m_ObjectHideFlags: 0
@@ -8210,6 +8252,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2374019394826822589
 GameObject:
   m_ObjectHideFlags: 0
@@ -8436,6 +8479,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2430408118928506362
 GameObject:
   m_ObjectHideFlags: 0
@@ -8554,6 +8598,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2449024266822010889
 GameObject:
   m_ObjectHideFlags: 0
@@ -8672,6 +8717,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2449878190930553065
 GameObject:
   m_ObjectHideFlags: 0
@@ -8790,6 +8836,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2461429380795578901
 GameObject:
   m_ObjectHideFlags: 0
@@ -9024,6 +9071,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2539989403482532264
 GameObject:
   m_ObjectHideFlags: 0
@@ -9320,6 +9368,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2605540259647426519
 GameObject:
   m_ObjectHideFlags: 0
@@ -9469,6 +9518,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2670897759581184797
 GameObject:
   m_ObjectHideFlags: 0
@@ -9700,6 +9750,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2749228989088554133
 GameObject:
   m_ObjectHideFlags: 0
@@ -9893,6 +9944,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2802714595763549128
 GameObject:
   m_ObjectHideFlags: 0
@@ -10042,6 +10094,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2955981017619938133
 GameObject:
   m_ObjectHideFlags: 0
@@ -10211,6 +10264,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2987825986554678746
 GameObject:
   m_ObjectHideFlags: 0
@@ -10315,6 +10369,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &2999360802276877848
 GameObject:
   m_ObjectHideFlags: 0
@@ -10409,11 +10464,11 @@ MonoBehaviour:
   SmallRingManager: {fileID: 5332211868260429322}
   BigRingManager: {fileID: 0}
   LightingManagers:
+  - {fileID: 2235209769284118972}
   - {fileID: 7551015017233040522}
-  - {fileID: 4610076868830585770}
   - {fileID: 4928555714965222309}
   - {fileID: 5602681767065639600}
-  - {fileID: 2235209769284118972}
+  - {fileID: 4610076868830585770}
   RotationController: {fileID: 0}
   Colors:
     RedColor: {r: 1, g: 0, b: 0, a: 1}
@@ -10875,6 +10930,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3170349160105262389
 GameObject:
   m_ObjectHideFlags: 0
@@ -11132,6 +11188,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3248428653420375730
 GameObject:
   m_ObjectHideFlags: 0
@@ -11336,6 +11393,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3287938013270649230
 GameObject:
   m_ObjectHideFlags: 0
@@ -11588,6 +11646,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3437317719095909780
 GameObject:
   m_ObjectHideFlags: 0
@@ -11706,6 +11765,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3460695561874821935
 GameObject:
   m_ObjectHideFlags: 0
@@ -12053,6 +12113,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3588693385872866362
 GameObject:
   m_ObjectHideFlags: 0
@@ -12216,6 +12277,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3621073457168924053
 GameObject:
   m_ObjectHideFlags: 0
@@ -12334,6 +12396,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3676704424182939165
 GameObject:
   m_ObjectHideFlags: 0
@@ -12602,6 +12665,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3768954294752054976
 GameObject:
   m_ObjectHideFlags: 0
@@ -12720,6 +12784,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3815733675646926665
 GameObject:
   m_ObjectHideFlags: 0
@@ -12924,6 +12989,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3830693065517513872
 GameObject:
   m_ObjectHideFlags: 0
@@ -13258,6 +13324,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3978543901525745053
 GameObject:
   m_ObjectHideFlags: 0
@@ -13376,6 +13443,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &3997921574797639370
 GameObject:
   m_ObjectHideFlags: 0
@@ -13525,6 +13593,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4048185874449574788
 GameObject:
   m_ObjectHideFlags: 0
@@ -13733,6 +13802,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4067172102676147710
 GameObject:
   m_ObjectHideFlags: 0
@@ -13982,6 +14052,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4195020845743173667
 GameObject:
   m_ObjectHideFlags: 0
@@ -14302,6 +14373,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4280548867799583109
 GameObject:
   m_ObjectHideFlags: 0
@@ -14406,6 +14478,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4289920751714672906
 GameObject:
   m_ObjectHideFlags: 0
@@ -14600,6 +14673,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4408264260367765294
 GameObject:
   m_ObjectHideFlags: 0
@@ -14704,6 +14778,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4409490282363368748
 GameObject:
   m_ObjectHideFlags: 0
@@ -14822,6 +14897,7 @@ MonoBehaviour:
   LightID: 7
   PropGroup: 5
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4427096376157492558
 GameObject:
   m_ObjectHideFlags: 0
@@ -14940,6 +15016,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4444505988374867709
 GameObject:
   m_ObjectHideFlags: 0
@@ -15102,6 +15179,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4459561409118240774
 GameObject:
   m_ObjectHideFlags: 0
@@ -15206,6 +15284,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4472406682628334094
 GameObject:
   m_ObjectHideFlags: 0
@@ -15324,6 +15403,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4517665800558934358
 GameObject:
   m_ObjectHideFlags: 0
@@ -15474,6 +15554,7 @@ MonoBehaviour:
   LightID: 5
   PropGroup: 4
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4537434257914310033
 GameObject:
   m_ObjectHideFlags: 0
@@ -15592,6 +15673,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4552610356581128329
 GameObject:
   m_ObjectHideFlags: 0
@@ -15799,6 +15881,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4729926960445081007
 GameObject:
   m_ObjectHideFlags: 0
@@ -15917,6 +16000,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4739741444219738583
 GameObject:
   m_ObjectHideFlags: 0
@@ -16035,6 +16119,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4743084453167168571
 GameObject:
   m_ObjectHideFlags: 0
@@ -16315,6 +16400,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4832269503942250290
 GameObject:
   m_ObjectHideFlags: 0
@@ -16433,6 +16519,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4838136852293413374
 GameObject:
   m_ObjectHideFlags: 0
@@ -16793,6 +16880,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4870067476956941034
 GameObject:
   m_ObjectHideFlags: 0
@@ -16956,6 +17044,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &4927349590769845359
 GameObject:
   m_ObjectHideFlags: 0
@@ -17105,6 +17194,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5018550424286014069
 GameObject:
   m_ObjectHideFlags: 0
@@ -17307,6 +17397,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5061030407571908488
 GameObject:
   m_ObjectHideFlags: 0
@@ -17470,6 +17561,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5127340210822422639
 GameObject:
   m_ObjectHideFlags: 0
@@ -17523,6 +17615,7 @@ MonoBehaviour:
   LightID: 11
   PropGroup: 5
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5150494702968378643
 GameObject:
   m_ObjectHideFlags: 0
@@ -17641,6 +17734,7 @@ MonoBehaviour:
   LightID: 8
   PropGroup: 5
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5155091173240824452
 GameObject:
   m_ObjectHideFlags: 0
@@ -17803,6 +17897,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5169862572401385803
 GameObject:
   m_ObjectHideFlags: 0
@@ -17966,6 +18061,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5184409780888564378
 GameObject:
   m_ObjectHideFlags: 0
@@ -18084,6 +18180,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5218003604520933768
 GameObject:
   m_ObjectHideFlags: 0
@@ -18247,6 +18344,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5282561525955161157
 GameObject:
   m_ObjectHideFlags: 0
@@ -18409,6 +18507,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5328895234686650782
 GameObject:
   m_ObjectHideFlags: 0
@@ -18527,6 +18626,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5330270756886958596
 GameObject:
   m_ObjectHideFlags: 0
@@ -18690,6 +18790,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5361620843142075334
 GameObject:
   m_ObjectHideFlags: 0
@@ -18839,6 +18940,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5434333902776553564
 GameObject:
   m_ObjectHideFlags: 0
@@ -18943,6 +19045,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5459384998339823005
 GameObject:
   m_ObjectHideFlags: 0
@@ -19105,6 +19208,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5472718077110854349
 GameObject:
   m_ObjectHideFlags: 0
@@ -19308,6 +19412,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5567517150453709975
 GameObject:
   m_ObjectHideFlags: 0
@@ -19720,6 +19825,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5761681370645680559
 GameObject:
   m_ObjectHideFlags: 0
@@ -19883,6 +19989,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5778694090219862070
 GameObject:
   m_ObjectHideFlags: 0
@@ -20001,6 +20108,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5781994137421331853
 GameObject:
   m_ObjectHideFlags: 0
@@ -20119,6 +20227,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5796065400315567147
 GameObject:
   m_ObjectHideFlags: 0
@@ -20377,6 +20486,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5902062174319164163
 GameObject:
   m_ObjectHideFlags: 0
@@ -20495,6 +20605,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5927833755375508228
 GameObject:
   m_ObjectHideFlags: 0
@@ -20613,6 +20724,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &5974223423389138218
 GameObject:
   m_ObjectHideFlags: 0
@@ -20815,6 +20927,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6007781110787965784
 GameObject:
   m_ObjectHideFlags: 0
@@ -21094,6 +21207,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6161326981573475249
 GameObject:
   m_ObjectHideFlags: 0
@@ -21212,6 +21326,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6189846195360158687
 GameObject:
   m_ObjectHideFlags: 0
@@ -21375,6 +21490,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6265591084188269142
 GameObject:
   m_ObjectHideFlags: 0
@@ -21493,6 +21609,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6295881585041743253
 GameObject:
   m_ObjectHideFlags: 0
@@ -21611,6 +21728,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6296150792157246121
 GameObject:
   m_ObjectHideFlags: 0
@@ -21729,6 +21847,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6312363763911181089
 GameObject:
   m_ObjectHideFlags: 0
@@ -21833,6 +21952,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6334270894839816583
 GameObject:
   m_ObjectHideFlags: 0
@@ -22126,6 +22246,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6500649374190787254
 GameObject:
   m_ObjectHideFlags: 0
@@ -22351,6 +22472,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6563005384789405617
 GameObject:
   m_ObjectHideFlags: 0
@@ -22558,6 +22680,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6580650981505039397
 GameObject:
   m_ObjectHideFlags: 0
@@ -22676,6 +22799,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6596888783050971603
 GameObject:
   m_ObjectHideFlags: 0
@@ -22794,6 +22918,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6642513586701575928
 GameObject:
   m_ObjectHideFlags: 0
@@ -23074,6 +23199,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6685122735826579173
 GameObject:
   m_ObjectHideFlags: 0
@@ -23178,6 +23304,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6721484885258663267
 GameObject:
   m_ObjectHideFlags: 0
@@ -23296,6 +23423,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6745643024685038895
 GameObject:
   m_ObjectHideFlags: 0
@@ -23584,6 +23712,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6816246246769813610
 GameObject:
   m_ObjectHideFlags: 0
@@ -23702,6 +23831,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6856161108767543832
 GameObject:
   m_ObjectHideFlags: 0
@@ -23865,6 +23995,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6931771480785314965
 GameObject:
   m_ObjectHideFlags: 0
@@ -23983,6 +24114,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6934312451743031174
 GameObject:
   m_ObjectHideFlags: 0
@@ -24101,6 +24233,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6945619851866970356
 GameObject:
   m_ObjectHideFlags: 0
@@ -24205,6 +24338,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6968986548850755163
 GameObject:
   m_ObjectHideFlags: 0
@@ -24323,6 +24457,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &6988320118299895706
 GameObject:
   m_ObjectHideFlags: 0
@@ -24441,6 +24576,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7011100383483458462
 GameObject:
   m_ObjectHideFlags: 0
@@ -24641,6 +24777,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7043152821690928005
 GameObject:
   m_ObjectHideFlags: 0
@@ -24804,6 +24941,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7120889669099616261
 GameObject:
   m_ObjectHideFlags: 0
@@ -24922,6 +25060,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7122479444889293618
 GameObject:
   m_ObjectHideFlags: 0
@@ -25281,6 +25420,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7220283318406323447
 GameObject:
   m_ObjectHideFlags: 0
@@ -25399,6 +25539,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7262546402606903792
 GameObject:
   m_ObjectHideFlags: 0
@@ -25517,6 +25658,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7290370221097797660
 GameObject:
   m_ObjectHideFlags: 0
@@ -25703,6 +25845,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7364815525552460200
 GameObject:
   m_ObjectHideFlags: 0
@@ -25821,6 +25964,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7368676939970259044
 GameObject:
   m_ObjectHideFlags: 0
@@ -26015,6 +26159,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7393748460743612988
 GameObject:
   m_ObjectHideFlags: 0
@@ -26217,6 +26362,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7396807503691317603
 GameObject:
   m_ObjectHideFlags: 0
@@ -26568,6 +26714,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7488926232808511662
 GameObject:
   m_ObjectHideFlags: 0
@@ -26717,6 +26864,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7495163267231875893
 GameObject:
   m_ObjectHideFlags: 0
@@ -26880,6 +27028,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7523548545514857965
 GameObject:
   m_ObjectHideFlags: 0
@@ -26998,6 +27147,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7546403089874804853
 GameObject:
   m_ObjectHideFlags: 0
@@ -27202,6 +27352,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7589277989246185987
 GameObject:
   m_ObjectHideFlags: 0
@@ -27320,6 +27471,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7613932712780063325
 GameObject:
   m_ObjectHideFlags: 0
@@ -27487,6 +27639,7 @@ MonoBehaviour:
   LightID: 3
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7636838510493355298
 GameObject:
   m_ObjectHideFlags: 0
@@ -27605,6 +27758,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7646881389945923043
 GameObject:
   m_ObjectHideFlags: 0
@@ -28075,6 +28229,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7913646302386933994
 GameObject:
   m_ObjectHideFlags: 0
@@ -28224,6 +28379,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &7942623694471480743
 GameObject:
   m_ObjectHideFlags: 0
@@ -28432,6 +28588,7 @@ MonoBehaviour:
   LightID: 2
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8024276217632849287
 GameObject:
   m_ObjectHideFlags: 0
@@ -28595,6 +28752,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8067584192567327020
 GameObject:
   m_ObjectHideFlags: 0
@@ -28713,6 +28871,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8105830477955955340
 GameObject:
   m_ObjectHideFlags: 0
@@ -28876,6 +29035,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8257251311343823227
 GameObject:
   m_ObjectHideFlags: 0
@@ -29242,6 +29402,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8422560636393346394
 GameObject:
   m_ObjectHideFlags: 0
@@ -29360,6 +29521,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8485866836612639811
 GameObject:
   m_ObjectHideFlags: 0
@@ -29562,6 +29724,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8525985509416371523
 GameObject:
   m_ObjectHideFlags: 0
@@ -29891,6 +30054,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8657236285436165003
 GameObject:
   m_ObjectHideFlags: 0
@@ -30097,6 +30261,7 @@ MonoBehaviour:
   LightID: 6
   PropGroup: 5
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8788343478129043343
 GameObject:
   m_ObjectHideFlags: 0
@@ -30246,6 +30411,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8832054087044552959
 GameObject:
   m_ObjectHideFlags: 0
@@ -30409,6 +30575,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8861887066042743479
 GameObject:
   m_ObjectHideFlags: 0
@@ -30674,6 +30841,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8933677692650240829
 GameObject:
   m_ObjectHideFlags: 0
@@ -30792,6 +30960,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8939784514938409726
 GameObject:
   m_ObjectHideFlags: 0
@@ -30955,6 +31124,7 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &8970590588334574154
 GameObject:
   m_ObjectHideFlags: 0
@@ -31073,6 +31243,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &9086856871385631480
 GameObject:
   m_ObjectHideFlags: 0
@@ -31281,6 +31452,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &9151570485904693674
 GameObject:
   m_ObjectHideFlags: 0
@@ -31444,6 +31616,7 @@ MonoBehaviour:
   LightID: 4
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
 --- !u!1 &9196938311522173210
 GameObject:
   m_ObjectHideFlags: 0
@@ -31562,3 +31735,4 @@ MonoBehaviour:
   LightID: 1
   PropGroup: 0
   LightIdx: -1
+  TargetColorId: 0
