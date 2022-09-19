@@ -156,6 +156,7 @@ public class DialogBox : MonoBehaviour
         CMInputCallbackInstaller.DisableActionMaps(typeof(DialogBox), disabledActionMaps);
         CameraController.ClearCameraMovement();
         gameObject.SetActive(true);
+        transform.SetSiblingIndex(transform.parent.childCount);
     }
 
     /// <summary>
