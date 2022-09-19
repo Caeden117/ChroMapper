@@ -52,6 +52,18 @@ public class PrecisionStepDisplayController : DisableActionsField
     public void UpdateManualPrecisionStep(string result)
     {
         if (int.TryParse(result, out var newGridMeasureSnapping))
+        {
+            if (newGridMeasureSnapping < 0)
+            {
+                Debug.LogError(":hyperPepega: :mega: WHY ARE YOU USING NEGATIVE PRECISION");
+                newGridMeasureSnapping = Mathf.Abs(newGridMeasureSnapping);
+            }
+            if (newGridMeasureSnapping == 0)
+            {
+                Debug.LogError(":hyperPepega: :mega: WHY ARE YOU USING 1/0 PRECISION");
+                newGridMeasureSnapping = 1;
+            }
             atsc.GridMeasureSnapping = newGridMeasureSnapping;
+        }
     }
 }
