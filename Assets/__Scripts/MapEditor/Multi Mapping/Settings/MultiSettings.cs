@@ -8,7 +8,7 @@ public class MultiSettings : IJsonSetting
     public string DisplayName = "Mapper";
     public Color GridColor = Random.ColorHSV(0, 1, 1, 1, 1, 1);
 
-    public string ChroMapTogetherServerUrl = "https://chromaptogether.azurewebsites.net";
+    public string ChroMapTogetherServerUrl = "http://chromapper.caeden.dev";
 
     public string LastHostedPort = "6969";
     public string LastJoinedIP = "127.0.0.1";

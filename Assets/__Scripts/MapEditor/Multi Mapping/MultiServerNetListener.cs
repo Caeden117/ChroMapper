@@ -15,6 +15,8 @@ public class MultiServerNetListener : MultiNetListener
     {
         this.autoSave = autoSave;
 
+        NetManager.NatPunchEnabled = true;
+        NetManager.NatPunchModule.Init(new EventBasedNatPunchListener());
         NetManager.Start(port);
 
         Identities.Add(hostIdentity);
@@ -55,8 +57,11 @@ public class MultiServerNetListener : MultiNetListener
             }
         }
 
-        // Finally, provide host pose to new user
+        // Provide host pose to new user
         BroadcastPose(peer);
+
+        // This is absolutely NOT a good way to go about this, but I can't think of anything else!
+        PersistentUI.Instance.StartCoroutine(SaveAndSendMapToPeer(peer));
     }
 
     public override void OnPacketReceived(NetPeer peer, MapperIdentityPacket identity, NetDataReader reader)
@@ -84,6 +89,8 @@ public class MultiServerNetListener : MultiNetListener
     {
         var identity = Identities.Find(x => x.MapperPeer == peer);
 
+        if (identity == null) return;
+
         // Update client latency for the host
         if (RemotePlayers.TryGetValue(identity, out var remotePeer))
         {
@@ -103,14 +110,21 @@ public class MultiServerNetListener : MultiNetListener
         }
     }
 
-    // This is absolutely NOT a good way to go about this, but I can't think of anything else!
-    public override void OnPeerConnected(NetPeer peer)
-        => PersistentUI.Instance.StartCoroutine(SaveAndSendMapToPeer(peer));
-
     // For the host, a peer disconnecting is one of the clients, so we broadcast to everyone else that the client is gone.
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
+        if (Settings.Instance.MultiSettings.ChroMapTogetherServerUrl.Contains(peer.EndPoint.Address.ToString()))
+        {
+            PersistentUI.Instance.ShowDialogBox($"Connection with ChroMapTogether server lost: {disconnectInfo.Reason}\n\n" +
+                "New users may no longer be able to join your session with the room code.", null,
+                PersistentUI.DialogBoxPresetType.Ok);
+
+            return;
+        }
+
         var identity = Identities.Find(x => x.MapperPeer == peer);
+
+        if (identity == null) return;
 
         // Send disconnect packet to everyone
         foreach (var mapper in Identities)

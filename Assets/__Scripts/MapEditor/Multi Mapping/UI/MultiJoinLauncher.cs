@@ -1,13 +1,16 @@
 using System;
-using TMPro;
+using System.Net;
+using LiteNetLib;
+using LiteNetLib.Utils;
 using UnityEngine;
 
-public class MultiJoinLauncher : MonoBehaviour
+public class MultiJoinLauncher : MonoBehaviour, INatPunchListener
 {
     [SerializeField] private MultiDirectConnectLauncher multiDirectConnectLauncher;
 
     private DialogBox dialogBox;
     private TextBoxComponent roomCodeTextBox;
+    private MultiClientNetListener multiClientNetListener;
 
     public void JoinLobby()
     {
@@ -23,7 +26,7 @@ public class MultiJoinLauncher : MonoBehaviour
 
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(OpenDirectConnect)
-                .WithLabel("Use Direct Connection");                
+                .WithLabel("Use Direct Connection");
 
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(MultiCustomizationLauncher.OpenMultiCustomization)
@@ -38,18 +41,41 @@ public class MultiJoinLauncher : MonoBehaviour
     }
 
     private void JoinMultiSession()
-        => ChroMapTogetherApi.TryRoomCode(roomCodeTextBox.Value, JoinMultiSession, CodeFailed);
+    {
+        multiClientNetListener = new MultiClientNetListener();
+        multiClientNetListener.NetManager.NatPunchEnabled = true;
+        multiClientNetListener.NetManager.NatPunchModule.Init(this);
+        multiClientNetListener.NetManager.Start();
+
+        var serverUri = new Uri(Settings.Instance.MultiSettings.ChroMapTogetherServerUrl);
+        var domain = serverUri.Host;
+
+        Debug.Log($"Attempting to contact ChroMapTogether server at {domain}:6969...");
+
+        multiClientNetListener.NetManager.NatPunchModule.SendNatIntroduceRequest(domain, 6969, roomCodeTextBox.Value);
+    }
 
     private void JoinMultiSession(string ip, int port)
-        => BeatSaberSongContainer.Instance.ConnectToMultiSession(ip, port, Settings.Instance.MultiSettings.LocalIdentity);
-
-    private void CodeFailed(int responseCode, string errorMsg)
-        => PersistentUI.Instance.ShowDialogBox($"Could not connect to room code (HTTP {responseCode}): {errorMsg}",
-            null, PersistentUI.DialogBoxPresetType.Ok);
+    {
+        Debug.Log($"Attempting to connect to {ip}:{port}...");
+        BeatSaberSongContainer.Instance.ConnectToMultiSession(multiClientNetListener,
+            ip, port, Settings.Instance.MultiSettings.LocalIdentity);
+    }
 
     private void OpenDirectConnect()
     {
         dialogBox.Close();
         multiDirectConnectLauncher.OpenDirectConnect();
     }
+
+    private void Update()
+    {
+        multiClientNetListener?.NetManager.PollEvents();
+        multiClientNetListener?.NetManager.NatPunchModule.PollEvents();
+    }
+
+    public void OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, string token) { }
+
+    public void OnNatIntroductionSuccess(IPEndPoint targetEndPoint, NatAddressType type, string token)
+        => JoinMultiSession(targetEndPoint.Address.MapToIPv4().ToString(), targetEndPoint.Port);
 }

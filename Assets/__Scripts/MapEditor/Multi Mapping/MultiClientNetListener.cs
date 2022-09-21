@@ -14,20 +14,23 @@ public class MultiClientNetListener : MultiNetListener
 
     public MapDataPacket? MapData { get; private set; }
 
+    public MultiClientNetListener() : base() { }
+
     public MultiClientNetListener(string ip, int port, MapperIdentityPacket identity) : base()
     {
         NetManager.Start();
+        Connect(ip, port, identity);
+    }
 
+    public void Connect(string ip, int port, MapperIdentityPacket identity)
+    {
         var identityWriter = new NetDataWriter();
         identityWriter.Put(identity);
 
         NetManager.Connect(ip, port, identityWriter);
     }
 
-    public override void OnZipData(NetPeer peer, MapDataPacket mapData)
-    {
-        MapData = mapData;
-    }
+    public override void OnZipData(NetPeer peer, MapDataPacket mapData) => MapData = mapData;
 
     // For the client, we just update the host latency (everyone else is updated via MapperLatency packets)
     public override void OnNetworkLatencyUpdate(NetPeer peer, int latency)

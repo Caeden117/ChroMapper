@@ -30,9 +30,12 @@ public class BeatSaberSongContainer : MonoBehaviour
     }
 
     public void ConnectToMultiSession(string ip, int port, MapperIdentityPacket identity)
-    {
-        MultiMapperConnection = new MultiClientNetListener(ip, port, identity);
+        => ConnectToMultiSession(new MultiClientNetListener(), ip, port, identity);
 
+    public void ConnectToMultiSession(MultiClientNetListener client, string ip, int port, MapperIdentityPacket identity)
+    {
+        MultiMapperConnection = client;
+        client.Connect(ip, port, identity);
         SceneTransitionManager.Instance.LoadScene("03_Mapper", DownloadAndLaunchMap());
     }
 

@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class MultiNetListener : INetEventListener, IDisposable
 {
-    protected NetManager NetManager;
+    protected internal NetManager NetManager;
 
     protected List<MapperIdentityPacket> Identities = new List<MapperIdentityPacket>();
 
@@ -251,6 +251,11 @@ public class MultiNetListener : INetEventListener, IDisposable
     public void ManualUpdate()
     {
         NetManager?.PollEvents();
+
+        if (NetManager.NatPunchEnabled)
+        {
+            NetManager.NatPunchModule.PollEvents();
+        }
 
         if (audioTimeSyncController != null && cameraController != null &&
             (cameraController.MovingCamera || (!audioTimeSyncController.IsPlaying && audioTimeSyncController.CurrentBeat != previousCursorBeat)))
