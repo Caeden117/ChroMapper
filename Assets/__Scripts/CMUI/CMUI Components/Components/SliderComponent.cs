@@ -3,13 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SliderComponent : CMUIComponentWithLabel<float>
+public class SliderComponent : CMUIComponentWithLabel<float>, INavigable
 {
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI display;
 
     private float precision = 0;
     private Func<float, string> sliderTextFormatter;
+
+    [field: SerializeField] public Selectable Selectable { get; set; }
 
     /// <summary>
     /// Define slider parameters, such as the bounds and snapping precision.

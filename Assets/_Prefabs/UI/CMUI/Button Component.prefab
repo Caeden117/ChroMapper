@@ -52,6 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 2296610398946181645}
   label: {fileID: 6917372225738419362}
+  <Selectable>k__BackingField: {fileID: 2296610398946181645}
 --- !u!114 &5894676707699347859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,8 +173,8 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    m_SelectedColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

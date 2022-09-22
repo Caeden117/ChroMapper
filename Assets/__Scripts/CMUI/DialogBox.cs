@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
-public class DialogBox : MonoBehaviour
+public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
 {
     private const float roundness = 4;
 
-    // TODO: Make a IDialogBoxActions for navigation purposes
-    // (yes it would essentially be a MenuBase re-implementation which would be bad *BUT* we do need it to be separate
-    //   from MenuBase anyways since IMenusExtendedActtions is getting blocked here.
-    //   Prevents scene transitions while inside a box.)
     private static readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes()
-        .Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions));
+        .Where(t => t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IDialogBoxActions));
 
     [SerializeField] private GameObject raycastBlocker;
     [SerializeField] private GameObject titleGameObject;
@@ -24,7 +22,13 @@ public class DialogBox : MonoBehaviour
     [SerializeField] private GameObject footerGameObject;
     [SerializeField] private Transform footerTransform;
 
+    private LinkedList<INavigable> navigableComponents = new LinkedList<INavigable>();
+    private LinkedList<INavigable> navigableFooterButtons = new LinkedList<INavigable>();
+    private Selectable currentSelectable;
+
     private bool destroyOnClose = true;
+    private bool callbacksInstalled = false;
+    private DialogBox parent = null;
 
     /// <summary>
     /// Assigns the specified title to the dialog box.
@@ -106,7 +110,16 @@ public class DialogBox : MonoBehaviour
     /// <param name="componentType">CMUI Component type</param>
     /// <returns>The instantiated CMUI Component</returns>
     public CMUIComponentBase AddComponent(Type componentType)
-        => ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType(bodyTransform, componentType);
+    {
+        var component = ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType(bodyTransform, componentType);
+
+        if (component is INavigable navigable)
+        {
+            navigableComponents.AddLast(navigable);
+        }
+
+        return component;
+    }
 
     /// <summary>
     /// Add a button to the footer of the dialog box with an unlocalized label.
@@ -122,9 +135,13 @@ public class DialogBox : MonoBehaviour
     {
         footerGameObject.SetActive(true);
 
-        return ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType<ButtonComponent>(footerTransform)
+        var button = ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType<ButtonComponent>(footerTransform)
             .WithLabel(label)
             .OnClick(() => CloseAndInvokeCallback(onClick));
+
+        navigableFooterButtons.AddLast(button);
+
+        return button;
     }
 
     /// <summary>
@@ -143,19 +160,36 @@ public class DialogBox : MonoBehaviour
     {
         footerGameObject.SetActive(true);
 
-        return ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType<ButtonComponent>(footerTransform)
+        var button = ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType<ButtonComponent>(footerTransform)
             .WithLabel(table, key, args)
             .OnClick(() => CloseAndInvokeCallback(onClick));
+
+        navigableFooterButtons.AddLast(button);
+
+        return button;
     }
 
     /// <summary>
     /// Explicitly opens this dialog box.
     /// </summary>
-    public void Open()
+    public void Open(DialogBox parent = null)
     {
-        CMInputCallbackInstaller.DisableActionMaps(typeof(DialogBox), disabledActionMaps);
+        this.parent = parent;
+
+        if (!callbacksInstalled)
+        {
+            callbacksInstalled = true;
+
+            if (parent != null) CMInputCallbackInstaller.FindAndRemoveCallbacksRecursive(parent.transform);
+            CMInputCallbackInstaller.FindAndInstallCallbacksRecursive(transform);
+        }
+
+        if (parent == null) CMInputCallbackInstaller.DisableActionMaps(typeof(DialogBox), disabledActionMaps);
         CameraController.ClearCameraMovement();
+
         gameObject.SetActive(true);
+
+        ReconstructDialogBoxNavigation();
     }
 
     /// <summary>
@@ -163,9 +197,16 @@ public class DialogBox : MonoBehaviour
     /// </summary>
     public void Close()
     {
+        if (callbacksInstalled)
+        {
+            callbacksInstalled = false;
+            CMInputCallbackInstaller.FindAndRemoveCallbacksRecursive(transform);
+            if (parent != null) CMInputCallbackInstaller.FindAndInstallCallbacksRecursive(parent.transform);
+        }
+
         // TODO: With multiple dialog boxes open at the same time, closing one box might enable inputs for the rest.
         //   Perhaps tie the blocking type to the calling method's type, rather than the Dialog Box type itself?
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(DialogBox), disabledActionMaps);
+        if (parent == null) CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(DialogBox), disabledActionMaps);
         gameObject.SetActive(false);
 
         if (destroyOnClose)
@@ -181,6 +222,39 @@ public class DialogBox : MonoBehaviour
     {
         RemoveAllChildren(bodyTransform);
         RemoveAllChildren(footerTransform);
+        navigableComponents.Clear();
+        navigableFooterButtons.Clear();
+    }
+
+    public void OnCloseDialogBox(InputAction.CallbackContext context)
+    {
+        if (context.performed) Close();
+    }
+
+    public void OnNavigateDown(InputAction.CallbackContext context)
+    {
+        if (context.performed && currentSelectable != null)
+        {
+            var oldSelectable = currentSelectable;
+            currentSelectable = currentSelectable.FindSelectableOnDown();
+
+            if (currentSelectable == null) currentSelectable = oldSelectable;
+
+            currentSelectable.Select();
+        }
+    }
+
+    public void OnNavigateUp(InputAction.CallbackContext context)
+    {
+        if (context.performed && currentSelectable != null)
+        {
+            var oldSelectable = currentSelectable;
+            currentSelectable = currentSelectable.FindSelectableOnUp();
+
+            if (currentSelectable == null) currentSelectable = oldSelectable;
+
+            currentSelectable.Select();
+        }
     }
 
     private void UpdateRoundedCorners()
@@ -210,6 +284,59 @@ public class DialogBox : MonoBehaviour
 
             DestroyImmediate(child.gameObject);
         }
+    }
+
+    private void ReconstructDialogBoxNavigation()
+    {
+        var navigableNode = navigableComponents.First;
+
+        if (navigableNode != null)
+        {
+            if (currentSelectable == null) currentSelectable = navigableNode.Value.Selectable;
+
+            IterateNavigableList(ref navigableNode);
+
+            SetNavigation(navigableNode.Value, navigableNode.Previous?.Value, navigableFooterButtons.First?.Value);
+        }
+
+        navigableNode = navigableFooterButtons.First;
+
+        if (navigableNode != null)
+        {
+            if (currentSelectable == null) currentSelectable = navigableNode.Value.Selectable;
+
+            SetNavigation(navigableNode.Value, navigableComponents.Last?.Value, navigableNode.Next?.Value);
+            navigableNode = navigableNode.Next;
+
+            if (navigableNode != null)
+            {
+                IterateNavigableList(ref navigableNode);
+                SetNavigation(navigableNode.Value, navigableNode.Previous?.Value, null);
+            }
+        }
+
+        if (currentSelectable != null) currentSelectable.Select();
+    }
+
+    private void IterateNavigableList(ref LinkedListNode<INavigable> navigableNode)
+    {
+        while (navigableNode.Next != null)
+        {
+            SetNavigation(navigableNode.Value, navigableNode.Previous?.Value, navigableNode.Next?.Value);
+            navigableNode = navigableNode.Next;
+        }
+    }
+
+    private void SetNavigation(INavigable navigable, INavigable up, INavigable down)
+    {
+        navigable.Selectable.navigation = new Navigation()
+        {
+            mode = Navigation.Mode.Explicit,
+            selectOnUp = up?.Selectable,
+            selectOnDown = down?.Selectable,
+            selectOnLeft = null,
+            selectOnRight = null
+        };
     }
 
     private void Start() => UpdateRoundedCorners();

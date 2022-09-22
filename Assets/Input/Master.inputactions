@@ -3582,6 +3582,93 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Dialog Box",
+            "id": "2a349f23-472c-42a3-9f03-cf4c85cb8088",
+            "actions": [
+                {
+                    "name": "Close Dialog Box",
+                    "type": "Button",
+                    "id": "e1e777e1-a6f9-4429-9ec7-e7ebdbe200b3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Navigate Down",
+                    "type": "Button",
+                    "id": "7b483cd8-c327-447e-8dff-8fe9a024f605",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Navigate Up",
+                    "type": "Button",
+                    "id": "6f021b79-389c-4d77-bcf9-4a70e1029024",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c5809fae-546d-4d0f-909e-2512d18e721e",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Close Dialog Box",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2618fb1f-c083-4d22-bf80-6a5b46057b33",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Navigate Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Button With One Modifier",
+                    "id": "1f387462-c7ff-4ee0-b1ec-20f094c87c44",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate Up",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "8b8ce66e-b018-45a3-8463-fe7bd4cd5e5e",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Navigate Up",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "1102f902-7e64-46ca-98c3-b14c7bc9ac39",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Navigate Up",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": [

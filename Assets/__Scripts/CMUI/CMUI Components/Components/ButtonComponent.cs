@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class ButtonComponent : CMUIComponentBase
+public class ButtonComponent : CMUIComponentBase, INavigable
 {
     [SerializeField] private Button button;
     [SerializeField] private TextMeshProUGUI label;
 
     private Action onClick;
+
+    [field: SerializeField] public Selectable Selectable { get; set; }
 
     /// <summary>
     /// Assigns a callback when this button is clicked.

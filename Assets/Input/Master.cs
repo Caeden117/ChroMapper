@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/__Scripts/Input/Master.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Input/Master.inputactions'
 
 using System;
 using System.Collections;
@@ -3595,6 +3595,93 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Dialog Box"",
+            ""id"": ""2a349f23-472c-42a3-9f03-cf4c85cb8088"",
+            ""actions"": [
+                {
+                    ""name"": ""Close Dialog Box"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1e777e1-a6f9-4429-9ec7-e7ebdbe200b3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Navigate Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b483cd8-c327-447e-8dff-8fe9a024f605"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Navigate Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f021b79-389c-4d77-bcf9-4a70e1029024"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c5809fae-546d-4d0f-909e-2512d18e721e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Close Dialog Box"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2618fb1f-c083-4d22-bf80-6a5b46057b33"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Navigate Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""1f387462-c7ff-4ee0-b1ec-20f094c87c44"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate Up"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""8b8ce66e-b018-45a3-8463-fe7bd4cd5e5e"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Navigate Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""1102f902-7e64-46ca-98c3-b14c7bc9ac39"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Navigate Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -3802,6 +3889,11 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Audio
         m_Audio = asset.FindActionMap("Audio", throwIfNotFound: true);
         m_Audio_ToggleHitsoundMute = m_Audio.FindAction("Toggle Hitsound Mute", throwIfNotFound: true);
+        // Dialog Box
+        m_DialogBox = asset.FindActionMap("Dialog Box", throwIfNotFound: true);
+        m_DialogBox_CloseDialogBox = m_DialogBox.FindAction("Close Dialog Box", throwIfNotFound: true);
+        m_DialogBox_NavigateDown = m_DialogBox.FindAction("Navigate Down", throwIfNotFound: true);
+        m_DialogBox_NavigateUp = m_DialogBox.FindAction("Navigate Up", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -5765,6 +5857,55 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public AudioActions @Audio => new AudioActions(this);
+
+    // Dialog Box
+    private readonly InputActionMap m_DialogBox;
+    private IDialogBoxActions m_DialogBoxActionsCallbackInterface;
+    private readonly InputAction m_DialogBox_CloseDialogBox;
+    private readonly InputAction m_DialogBox_NavigateDown;
+    private readonly InputAction m_DialogBox_NavigateUp;
+    public struct DialogBoxActions
+    {
+        private @CMInput m_Wrapper;
+        public DialogBoxActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CloseDialogBox => m_Wrapper.m_DialogBox_CloseDialogBox;
+        public InputAction @NavigateDown => m_Wrapper.m_DialogBox_NavigateDown;
+        public InputAction @NavigateUp => m_Wrapper.m_DialogBox_NavigateUp;
+        public InputActionMap Get() { return m_Wrapper.m_DialogBox; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DialogBoxActions set) { return set.Get(); }
+        public void SetCallbacks(IDialogBoxActions instance)
+        {
+            if (m_Wrapper.m_DialogBoxActionsCallbackInterface != null)
+            {
+                @CloseDialogBox.started -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnCloseDialogBox;
+                @CloseDialogBox.performed -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnCloseDialogBox;
+                @CloseDialogBox.canceled -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnCloseDialogBox;
+                @NavigateDown.started -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateDown;
+                @NavigateDown.performed -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateDown;
+                @NavigateDown.canceled -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateDown;
+                @NavigateUp.started -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateUp;
+                @NavigateUp.performed -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateUp;
+                @NavigateUp.canceled -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateUp;
+            }
+            m_Wrapper.m_DialogBoxActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @CloseDialogBox.started += instance.OnCloseDialogBox;
+                @CloseDialogBox.performed += instance.OnCloseDialogBox;
+                @CloseDialogBox.canceled += instance.OnCloseDialogBox;
+                @NavigateDown.started += instance.OnNavigateDown;
+                @NavigateDown.performed += instance.OnNavigateDown;
+                @NavigateDown.canceled += instance.OnNavigateDown;
+                @NavigateUp.started += instance.OnNavigateUp;
+                @NavigateUp.performed += instance.OnNavigateUp;
+                @NavigateUp.canceled += instance.OnNavigateUp;
+            }
+        }
+    }
+    public DialogBoxActions @DialogBox => new DialogBoxActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -6008,5 +6149,11 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IAudioActions
     {
         void OnToggleHitsoundMute(InputAction.CallbackContext context);
+    }
+    public interface IDialogBoxActions
+    {
+        void OnCloseDialogBox(InputAction.CallbackContext context);
+        void OnNavigateDown(InputAction.CallbackContext context);
+        void OnNavigateUp(InputAction.CallbackContext context);
     }
 }

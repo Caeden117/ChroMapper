@@ -2,14 +2,17 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
-public class TextBoxComponent : CMUIComponentWithLabel<string>
+public class TextBoxComponent : CMUIComponentWithLabel<string>, INavigable
 {
     [SerializeField] private TMP_InputField inputField;
 
     private Action<string> onEndEdit;
     private Action<string> onSelect;
     private Action<string> onDeselect;
+    
+    [field: SerializeField] public Selectable Selectable { get; set; }
 
     /// <summary>
     /// Assigns a callback when the user deselects the textbox after making changes.

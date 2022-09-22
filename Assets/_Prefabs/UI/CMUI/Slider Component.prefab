@@ -112,6 +112,7 @@ MonoBehaviour:
   labelContainer: {fileID: 1206463318136510268}
   slider: {fileID: 1206463317639089437}
   display: {fileID: 1206463317837085441}
+  <Selectable>k__BackingField: {fileID: 1206463317639089437}
 --- !u!114 &1206463316992754108
 MonoBehaviour:
   m_ObjectHideFlags: 0

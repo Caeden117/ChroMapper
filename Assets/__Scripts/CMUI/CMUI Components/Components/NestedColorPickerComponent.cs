@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>
+public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>, INavigable
 {
     // Cached dialog box
     private static DialogBox nestedDialogBox;
@@ -14,6 +14,8 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>
 
     private bool useAlpha = true;
     private float constantAlpha = 1f;
+    
+    [field: SerializeField] public Selectable Selectable { get; set; }
 
     /// <summary>
     /// Hides the Alpha slider, and holds the Alpha of the color at the specified value.
@@ -73,7 +75,8 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>
             nestedColorPicker.Value = Value;
         }
 
-        nestedDialogBox.Open();
+        // TODO: Expose DialogBox container to components
+        nestedDialogBox.Open(GetComponentInParent<DialogBox>());
     }
 
     protected override void OnValueUpdated(Color updatedValue)
