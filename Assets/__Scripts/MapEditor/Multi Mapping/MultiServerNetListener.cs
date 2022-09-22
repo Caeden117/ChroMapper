@@ -15,8 +15,6 @@ public class MultiServerNetListener : MultiNetListener
     {
         this.autoSave = autoSave;
 
-        NetManager.NatPunchEnabled = true;
-        NetManager.NatPunchModule.Init(new EventBasedNatPunchListener());
         NetManager.Start(port);
 
         Identities.Add(hostIdentity);
@@ -113,15 +111,6 @@ public class MultiServerNetListener : MultiNetListener
     // For the host, a peer disconnecting is one of the clients, so we broadcast to everyone else that the client is gone.
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
-        if (Settings.Instance.MultiSettings.ChroMapTogetherServerUrl.Contains(peer.EndPoint.Address.ToString()))
-        {
-            PersistentUI.Instance.ShowDialogBox($"Connection with ChroMapTogether server lost: {disconnectInfo.Reason}\n\n" +
-                "New users may no longer be able to join your session with the room code.", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-
-            return;
-        }
-
         var identity = Identities.Find(x => x.MapperPeer == peer);
 
         if (identity == null) return;

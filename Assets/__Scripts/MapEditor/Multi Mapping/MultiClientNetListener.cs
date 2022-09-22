@@ -65,8 +65,16 @@ public class MultiClientNetListener : MultiNetListener
     // For the client, however, a peer disconnected means the Host has lost connection, so we should kick our clients back to the song list screen.
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
-        PersistentUI.Instance.ShowDialogBox($"Connection with the host lost: {disconnectInfo.Reason}.\n\nReturning to song list...",
-            null, PersistentUI.DialogBoxPresetType.Ok);
+        if (disconnectInfo.Reason == DisconnectReason.ConnectionRejected)
+        {
+            PersistentUI.Instance.ShowDialogBox("Connection rejected.\n\nIf you used a room code, ensure the code was entered correctly.",
+                null, PersistentUI.DialogBoxPresetType.Ok);
+        }
+        else
+        {
+            PersistentUI.Instance.ShowDialogBox($"Connection with the host lost: {disconnectInfo.Reason}.\n\nReturning to song list...",
+                null, PersistentUI.DialogBoxPresetType.Ok);
+        }
 
         SceneTransitionManager.Instance.CancelLoading(string.Empty);
         SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");

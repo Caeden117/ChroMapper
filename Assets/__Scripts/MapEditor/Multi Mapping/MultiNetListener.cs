@@ -260,11 +260,6 @@ public class MultiNetListener : INetEventListener, IDisposable
     {
         NetManager?.PollEvents();
 
-        if (NetManager.NatPunchEnabled)
-        {
-            NetManager.NatPunchModule.PollEvents();
-        }
-
         if (audioTimeSyncController != null && cameraController != null &&
             (cameraController.MovingCamera || (!audioTimeSyncController.IsPlaying && audioTimeSyncController.CurrentBeat != previousCursorBeat)))
         {

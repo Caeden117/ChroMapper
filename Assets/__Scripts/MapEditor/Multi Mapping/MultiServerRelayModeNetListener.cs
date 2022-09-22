@@ -1,5 +1,6 @@
 using LiteNetLib;
 
+// When using ChroMapTogether, the session host is effectively another client of the ChroMapTogether server.
 public class MultiServerRelayModeNetListener : MultiClientNetListener
 {
     private AutoSaveController autoSave;

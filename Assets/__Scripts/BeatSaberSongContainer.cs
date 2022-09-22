@@ -45,7 +45,7 @@ public class BeatSaberSongContainer : MonoBehaviour
     {
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         PersistentUI.Instance.LevelLoadSlider.value = 0;
-        PersistentUI.Instance.LevelLoadSliderLabel.text = "Downloading song...";
+        PersistentUI.Instance.LevelLoadSliderLabel.text = "Downloading song... this can take several moments.";
 
         yield return new WaitUntil(() => MultiMapperConnection?.MapData != null);
 
