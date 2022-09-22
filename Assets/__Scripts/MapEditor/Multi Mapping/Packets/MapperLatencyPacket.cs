@@ -1,6 +1,6 @@
 ﻿using LiteNetLib.Utils;
 
-internal class MapperLatencyPacket : INetSerializable
+public class MapperLatencyPacket : INetSerializable
 {
     public int Latency;
 

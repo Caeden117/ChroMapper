@@ -33,7 +33,15 @@ public class MultiNetListener : INetEventListener, IDisposable
         remotePlayerPrefab = Resources.Load<RemotePlayerContainer>("Remote Player");
     }
 
-    public virtual void Dispose() => NetManager.Stop();
+    public virtual void Dispose()
+    {
+        var disconnectPacketWriter = new NetDataWriter();
+        disconnectPacketWriter.Put(0);
+        disconnectPacketWriter.Put((byte)Packets.MapperDisconnect);
+        NetManager.SendToAll(disconnectPacketWriter, DeliveryMethod.ReliableOrdered);
+
+        NetManager.Stop();
+    }
 
     public virtual void OnConnectionRequest(ConnectionRequest request) { }
 

@@ -61,7 +61,7 @@ public class MultiServerNetListener : MultiNetListener
         BroadcastPose(peer);
 
         // This is absolutely NOT a good way to go about this, but I can't think of anything else!
-        PersistentUI.Instance.StartCoroutine(SaveAndSendMapToPeer(peer));
+        PersistentUI.Instance.StartCoroutine(SaveAndSendMapToPeer(this, autoSave, peer));
     }
 
     public override void OnPacketReceived(NetPeer peer, MapperIdentityPacket identity, NetDataReader reader)
@@ -138,7 +138,7 @@ public class MultiServerNetListener : MultiNetListener
         OnMapperDisconnected(identity);
     }
 
-    private IEnumerator SaveAndSendMapToPeer(NetPeer peer)
+    internal static IEnumerator SaveAndSendMapToPeer(MultiNetListener listener, AutoSaveController autoSave, NetPeer peer)
     {
         // Save the map
         autoSave.Save(false);
@@ -168,6 +168,6 @@ public class MultiServerNetListener : MultiNetListener
 
         var zipBytes = File.ReadAllBytes(zipPath);
 
-        SendPacketTo(peer, Packets.SendZip, new MapDataPacket(zipBytes, characteristic.BeatmapCharacteristicName, diff.Difficulty));
+        listener.SendPacketTo(peer, Packets.SendZip, new MapDataPacket(zipBytes, characteristic.BeatmapCharacteristicName, diff.Difficulty));
     }
 }

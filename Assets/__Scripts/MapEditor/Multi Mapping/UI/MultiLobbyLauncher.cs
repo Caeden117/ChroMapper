@@ -1,6 +1,4 @@
 using System;
-using LiteNetLib.Utils;
-using TMPro;
 using UnityEngine;
 
 public class MultiLobbyLauncher : MonoBehaviour
@@ -9,7 +7,7 @@ public class MultiLobbyLauncher : MonoBehaviour
     [SerializeField] private MultiDirectLobbyLauncher multiDirectLobbyLauncher;
 
     private DialogBox dialogBox;
-    internal MultiServerNetListener serverNetListener;
+    internal MultiServerRelayModeNetListener serverNetListener;
 
     private string? roomCode = null;
     private Guid? roomId = null;
@@ -68,15 +66,7 @@ public class MultiLobbyLauncher : MonoBehaviour
         PersistentUI.Instance.ShowDialogBox($"The room code for this session is: {roomCode}",
             null, PersistentUI.DialogBoxPresetType.Ok);
 
-        serverNetListener = new MultiServerNetListener(Settings.Instance.MultiSettings.LocalIdentity, 6969, autoSave);
-
-        // Connect to the ChroMapTogether server to perform UDP hole punching
-        var serverUri = new Uri(Settings.Instance.MultiSettings.ChroMapTogetherServerUrl);
-        var domain = serverUri.Host;
-
-        Debug.Log($"Attempting to contact ChroMapTogether server at {domain}:6969...");
-
-        serverNetListener.NetManager.NatPunchModule.SendNatIntroduceRequest(domain, 6969, roomCode);
+        serverNetListener = new MultiServerRelayModeNetListener(roomCode, Settings.Instance.MultiSettings.LocalIdentity, autoSave);
     }
 
     private void OnFail(int statusCode, string message)

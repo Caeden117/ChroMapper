@@ -1,16 +1,11 @@
-using System;
-using System.Net;
-using LiteNetLib;
-using LiteNetLib.Utils;
 using UnityEngine;
 
-public class MultiJoinLauncher : MonoBehaviour, INatPunchListener
+public class MultiJoinLauncher : MonoBehaviour
 {
     [SerializeField] private MultiDirectConnectLauncher multiDirectConnectLauncher;
 
     private DialogBox dialogBox;
     private TextBoxComponent roomCodeTextBox;
-    private MultiClientNetListener multiClientNetListener;
 
     public void JoinLobby()
     {
@@ -41,41 +36,12 @@ public class MultiJoinLauncher : MonoBehaviour, INatPunchListener
     }
 
     private void JoinMultiSession()
-    {
-        multiClientNetListener = new MultiClientNetListener();
-        multiClientNetListener.NetManager.NatPunchEnabled = true;
-        multiClientNetListener.NetManager.NatPunchModule.Init(this);
-        multiClientNetListener.NetManager.Start();
-
-        var serverUri = new Uri(Settings.Instance.MultiSettings.ChroMapTogetherServerUrl);
-        var domain = serverUri.Host;
-
-        Debug.Log($"Attempting to contact ChroMapTogether server at {domain}:6969...");
-
-        multiClientNetListener.NetManager.NatPunchModule.SendNatIntroduceRequest(domain, 6969, roomCodeTextBox.Value);
-    }
-
-    private void JoinMultiSession(string ip, int port)
-    {
-        Debug.Log($"Attempting to connect to {ip}:{port}...");
-        BeatSaberSongContainer.Instance.ConnectToMultiSession(multiClientNetListener,
-            ip, port, Settings.Instance.MultiSettings.LocalIdentity);
-    }
+        => BeatSaberSongContainer.Instance.ConnectToMultiSession(roomCodeTextBox.Value,
+            Settings.Instance.MultiSettings.LocalIdentity);
 
     private void OpenDirectConnect()
     {
         dialogBox.Close();
         multiDirectConnectLauncher.OpenDirectConnect();
     }
-
-    private void Update()
-    {
-        multiClientNetListener?.NetManager.PollEvents();
-        multiClientNetListener?.NetManager.NatPunchModule.PollEvents();
-    }
-
-    public void OnNatIntroductionRequest(IPEndPoint localEndPoint, IPEndPoint remoteEndPoint, string token) { }
-
-    public void OnNatIntroductionSuccess(IPEndPoint targetEndPoint, NatAddressType type, string token)
-        => JoinMultiSession(targetEndPoint.Address.MapToIPv4().ToString(), targetEndPoint.Port);
 }

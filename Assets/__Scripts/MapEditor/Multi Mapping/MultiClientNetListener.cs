@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -14,20 +15,30 @@ public class MultiClientNetListener : MultiNetListener
 
     public MapDataPacket? MapData { get; private set; }
 
-    public MultiClientNetListener() : base() { }
-
     public MultiClientNetListener(string ip, int port, MapperIdentityPacket identity) : base()
     {
         NetManager.Start();
-        Connect(ip, port, identity);
-    }
 
-    public void Connect(string ip, int port, MapperIdentityPacket identity)
-    {
         var identityWriter = new NetDataWriter();
         identityWriter.Put(identity);
 
         NetManager.Connect(ip, port, identityWriter);
+    }
+
+    public MultiClientNetListener(string roomCode, MapperIdentityPacket identity) : base()
+    {
+        NetManager.Start();
+
+        var identityWriter = new NetDataWriter();
+        identityWriter.Put(roomCode);
+        identityWriter.Put(identity);
+        
+        var serverUri = new Uri(Settings.Instance.MultiSettings.ChroMapTogetherServerUrl);
+        var domain = serverUri.Host;
+
+        Debug.Log($"Attempting to contact ChroMapTogether server at {domain}:6969...");
+
+        NetManager.Connect(domain, 6969, identityWriter);
     }
 
     public override void OnZipData(NetPeer peer, MapDataPacket mapData) => MapData = mapData;
