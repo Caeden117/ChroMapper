@@ -35,7 +35,7 @@ public class MultiServerRelayModeNetListener : MultiClientNetListener
     // The ChroMapTogether server lost connection. As the host, don't return to song select.
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
-        PersistentUI.Instance.ShowDialogBox($"Connection with the ChroMapTogether server lost: {disconnectInfo.Reason}.",
-            null, PersistentUI.DialogBoxPresetType.Ok);
+        PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.connection.server-lost", null,
+            PersistentUI.DialogBoxPresetType.Ok, new object[] { disconnectInfo.Reason });
     }
 }

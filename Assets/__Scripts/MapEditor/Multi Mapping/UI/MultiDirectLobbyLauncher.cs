@@ -18,14 +18,14 @@ public class MultiDirectLobbyLauncher : MonoBehaviour
         if (dialogBox == null)
         {
             dialogBox = PersistentUI.Instance.CreateNewDialogBox()
-                .WithTitle("Host Session")
+                .WithTitle("MultiMapping", "multi.session.host")
                 .DontDestroyOnClose();
 
             dialogBox.AddComponent<TextComponent>()
                 .WithInitialValue("Port forwarding is required for clients to connect.");
 
             portTextBox = dialogBox.AddComponent<TextBoxComponent>()
-                .WithLabel("Port")
+                .WithLabel("MultiMapping", "multi.session.port")
                 .WithInitialValue(Settings.Instance.MultiSettings.LastHostedPort)
                 .OnChanged<TextBoxComponent, string>((port) => Settings.Instance.MultiSettings.LastHostedPort = port)
                 .WithContentType(TMP_InputField.ContentType.IntegerNumber)
@@ -33,14 +33,14 @@ public class MultiDirectLobbyLauncher : MonoBehaviour
 
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(OpenRoomCodeLauncher)
-                .WithLabel("Use Room Code");
+                .WithLabel("MultiMapping", "multi.session.use-code");
 
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(MultiCustomizationLauncher.OpenMultiCustomization)
-                .WithLabel("Mapper Customization");
+                .WithLabel("MultiMapping", "multi.customize");
 
-            dialogBox.AddFooterButton(null, "Cancel");
-            dialogBox.AddFooterButton(StartMultiSession, "Start Session");
+            dialogBox.AddFooterButton(null, "PersistentUI", "cancel");
+            dialogBox.AddFooterButton(StartMultiSession, "MultiMapping", "multi.session.host");
         }
 
         dialogBox.Open();

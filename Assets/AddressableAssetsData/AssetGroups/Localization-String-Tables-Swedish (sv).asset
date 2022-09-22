@@ -52,6 +52,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-sv-SE
+  - m_GUID: 257515d5c69571f40bf899c20aaa7e60
+    m_Address: MultiMapping_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:

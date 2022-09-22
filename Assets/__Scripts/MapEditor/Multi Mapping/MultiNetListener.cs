@@ -47,10 +47,10 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     public virtual void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
     {
-        PersistentUI.Instance.ShowDialogBox($"A networking error occured: {socketError}.", null, PersistentUI.DialogBoxPresetType.Ok);
+        PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.connection.network-error", null,
+            PersistentUI.DialogBoxPresetType.Ok, new object[] { socketError });
     }
 
-    // TODO: Maybe ping list in the future?
     public virtual void OnNetworkLatencyUpdate(NetPeer peer, int latency) { }
 
     public virtual void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)

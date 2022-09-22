@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MultiMapping_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 4bc9586dd75931946bdf2f3334dc9397, type: 2}
+  m_Metadata:
+    m_Items:
+    - id: 0
+  m_TableData:
+  - m_Id: 34914570240
+    m_Localized: Join Session
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104179306496
+    m_Localized: Host Session
+    m_Metadata:
+      m_Items: []
+  - m_Id: 757656064000
+    m_Localized: Downloading song... this can take several moments.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1057586548736
+    m_Localized: Loading song...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753480302592
+    m_Localized: Use Direct Connection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1870388137984
+    m_Localized: Room Code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2715376816128
+    m_Localized: Use Room Code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3327472570368
+    m_Localized: IP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3409345384448
+    m_Localized: Port
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3460121628672
+    m_Localized: Mapper Customization
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4051690459136
+    m_Localized: Display Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4114886037504
+    m_Localized: Grid Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4175602782208
+    m_Localized: ChroMapTogether Server URL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4250194284544
+    m_Localized: Apply Changes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4642059718656
+    m_Localized: Connection rejected.\n\nIf you used a room code, ensure the code
+      was entered correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4885769752576
+    m_Localized: 'Connection with the host lost: {0}.\n\nReturning to song list...'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 5357561843712
+    m_Localized: 'A networking error occured: {0}.'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 5800807501824
+    m_Localized: 'Connection with the ChroMapTogether server lost: {0}.'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 6140520960000
+    m_Localized: United Mapping
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6238239854592
+    m_Localized: Map with friends!
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0010928e7104000000109267df0400000010129b46050000

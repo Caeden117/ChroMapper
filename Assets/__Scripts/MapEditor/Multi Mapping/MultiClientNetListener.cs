@@ -62,18 +62,19 @@ public class MultiClientNetListener : MultiNetListener
         base.OnNetworkError(endPoint, socketError);
     }
 
-    // For the client, however, a peer disconnected means the Host has lost connection, so we should kick our clients back to the song list screen.
+    // For the client, however, a peer disconnected means the Host has lost connection,
+    //   so we should kick our clients back to the song list screen.
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         if (disconnectInfo.Reason == DisconnectReason.ConnectionRejected)
         {
-            PersistentUI.Instance.ShowDialogBox("Connection rejected.\n\nIf you used a room code, ensure the code was entered correctly.",
-                null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.connection.reject", null,
+                PersistentUI.DialogBoxPresetType.Ok);
         }
         else
         {
-            PersistentUI.Instance.ShowDialogBox($"Connection with the host lost: {disconnectInfo.Reason}.\n\nReturning to song list...",
-                null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.connection.host-lost", null,
+                PersistentUI.DialogBoxPresetType.Ok, new object[] { disconnectInfo.Reason });
         }
 
         SceneTransitionManager.Instance.CancelLoading(string.Empty);

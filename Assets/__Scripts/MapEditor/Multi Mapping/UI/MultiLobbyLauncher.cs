@@ -28,19 +28,19 @@ public class MultiLobbyLauncher : MonoBehaviour
         if (dialogBox == null)
         {
             dialogBox = PersistentUI.Instance.CreateNewDialogBox()
-                .WithTitle("Host Session")
+                .WithTitle("MultiMapping", "multi.session.host")
                 .DontDestroyOnClose();
             
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(OpenDirectLauncher)
-                .WithLabel("Use Direct Connection");
+                .WithLabel("MultiMapping", "multi.session.use-direct");
 
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(MultiCustomizationLauncher.OpenMultiCustomization)
-                .WithLabel("Mapper Customization");
+                .WithLabel("MultiMapping", "multi.customize");
 
-            dialogBox.AddFooterButton(null, "Cancel");
-            dialogBox.AddFooterButton(AttemptStartMultiSession, "Start Session");
+            dialogBox.AddFooterButton(null, "PersistentUI", "cancel");
+            dialogBox.AddFooterButton(AttemptStartMultiSession, "MultiMapping", "multi.session.host");
         }
 
         dialogBox.Open();

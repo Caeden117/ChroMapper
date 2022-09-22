@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.IO.Compression;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Serialization;
 
 public class BeatSaberSongContainer : MonoBehaviour
@@ -45,7 +46,8 @@ public class BeatSaberSongContainer : MonoBehaviour
     {
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         PersistentUI.Instance.LevelLoadSlider.value = 0;
-        PersistentUI.Instance.LevelLoadSliderLabel.text = "Downloading song... this can take several moments.";
+        PersistentUI.Instance.LevelLoadSliderLabel.text = 
+            LocalizationSettings.StringDatabase.GetLocalizedString("MultiMapping", "multi.session.downloading");
 
         yield return new WaitUntil(() => MultiMapperConnection?.MapData != null);
 
@@ -65,7 +67,8 @@ public class BeatSaberSongContainer : MonoBehaviour
         var song = BeatSaberSong.GetSongFromFolder(directory);
         if (song != null)
         {
-            PersistentUI.Instance.LevelLoadSliderLabel.text = "Loading song...";
+            PersistentUI.Instance.LevelLoadSliderLabel.text =
+                LocalizationSettings.StringDatabase.GetLocalizedString("MultiMapping", "multi.session.loading");
             Song = song;
 
             // Find characteristic and difficulty
@@ -82,10 +85,4 @@ public class BeatSaberSongContainer : MonoBehaviour
     }
 
     private void Update() => MultiMapperConnection?.ManualUpdate();
-
-    public class MultiMapperParams
-    {
-        public string IP;
-        public int Port;
-    }
 }

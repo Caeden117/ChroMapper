@@ -12,24 +12,24 @@ public class MultiJoinLauncher : MonoBehaviour
         if (dialogBox == null)
         {
             dialogBox = PersistentUI.Instance.CreateNewDialogBox()
-                .WithTitle("Join Session")
+                .WithTitle("MultiMapping", "multi.session.join")
                 .DontDestroyOnClose();
 
             roomCodeTextBox = dialogBox.AddComponent<TextBoxComponent>()
-                .WithLabel("Room Code")
+                .WithLabel("MultiMapping", "multi.session.code")
                 .WithInitialValue(string.Empty);
 
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(OpenDirectConnect)
-                .WithLabel("Use Direct Connection");
+                .WithLabel("MultiMapping", "multi.session.use-direct");
 
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(MultiCustomizationLauncher.OpenMultiCustomization)
-                .WithLabel("Mapper Customization");
+                .WithLabel("MultiMapping", "multi.customize");
 
-            dialogBox.AddFooterButton(null, "Cancel");
+            dialogBox.AddFooterButton(null, "PersistentUI", "cancel");
 
-            dialogBox.AddFooterButton(JoinMultiSession, "Join Session");
+            dialogBox.AddFooterButton(JoinMultiSession, "MultiMapping", "multi.session.join");
         }
 
         dialogBox.Open();
