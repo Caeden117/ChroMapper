@@ -108,7 +108,6 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             // Randomize color and open dialog box
             bookmarkColor.Value = Color.HSVToRGB((float)rng.NextDouble(), 0.75f, 1);
             createBookmarkDialogBox.Open();
-            bookmarkName.Select();
         }
     }
 
