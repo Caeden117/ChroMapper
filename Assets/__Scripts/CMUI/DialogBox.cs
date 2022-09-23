@@ -29,6 +29,7 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
     private bool destroyOnClose = true;
     private bool callbacksInstalled = false;
     private DialogBox parent = null;
+    private Action quickSubmitCallback = null;
 
     /// <summary>
     /// Assigns the specified title to the dialog box.
@@ -92,6 +93,22 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
     public DialogBox DontDestroyOnClose()
     {
         destroyOnClose = false;
+        return this;
+    }
+
+    /// <summary>
+    /// On supported CMUI components, pressing the Quick Submit key ("Enter" by default) with the CMUI component selected
+    ///   can prematurely close the dialog box.
+    /// To enable this behavior, register a callback with <paramref name="onQuickSubmit"/>.
+    /// </summary>
+    /// <remarks>
+    /// The Quick Submit behavior is not active by default. A callback *must* be given for Quick Submit to work.
+    /// </remarks>
+    /// <param name="onQuickSubmit">Callback on quick submit</param>
+    /// <returns>Itself, for method chaining.</returns>
+    public DialogBox OnQuickSubmit(Action onQuickSubmit)
+    {
+        quickSubmitCallback = onQuickSubmit;
         return this;
     }
 
@@ -205,8 +222,6 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
             if (parent != null) CMInputCallbackInstaller.FindAndInstallCallbacksRecursive(parent.transform);
         }
 
-        // TODO: With multiple dialog boxes open at the same time, closing one box might enable inputs for the rest.
-        //   Perhaps tie the blocking type to the calling method's type, rather than the Dialog Box type itself?
         if (parent == null) CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(DialogBox), disabledActionMaps);
         gameObject.SetActive(false);
 
@@ -255,6 +270,19 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
             if (currentSelectable == null) currentSelectable = oldSelectable;
 
             currentSelectable.Select();
+        }
+    }
+
+    public void OnAttemptQuickSubmit(InputAction.CallbackContext context)
+    {
+        if (context.performed
+            && currentSelectable != null
+            // TODO: meh i'm not the biggest fan of this GetComponentInParent call.
+            && currentSelectable.GetComponentInParent<CMUIComponentBase>() is IQuickSubmitComponent
+            && quickSubmitCallback != null)
+        {
+            quickSubmitCallback.Invoke();
+            Close();
         }
     }
 

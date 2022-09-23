@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class TextBoxComponent : CMUIComponentWithLabel<string>, INavigable
+public class TextBoxComponent : CMUIComponentWithLabel<string>, INavigable, IQuickSubmitComponent
 {
     [SerializeField] private TMP_InputField inputField;
 

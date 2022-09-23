@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ColorPickerComponent : CMUIComponent<Color>, INavigable
+public class ColorPickerComponent : CMUIComponent<Color>, INavigable, IQuickSubmitComponent
 {
     [SerializeField] private ColorPicker picker;
 

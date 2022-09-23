@@ -47,6 +47,9 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             .WithLabel("Mapper", "bookmark.dialog.color")
             .WithConstantAlpha(1f);
 
+        // Enable quick submit
+        createBookmarkDialogBox.OnQuickSubmit(() => CreateNewBookmark(bookmarkName.Value, bookmarkColor.Value));
+
         // Cancel button
         createBookmarkDialogBox.AddFooterButton(null, "PersistentUI", "cancel");
 

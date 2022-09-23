@@ -520,6 +520,7 @@ public class PersistentUI : MonoBehaviour
             .AddFooterButton(() => result?.Invoke(textBox.Value),
                 LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "submit"));
 
+        dialogBox.OnQuickSubmit(() => result?.Invoke(textBox.Value));
         dialogBox.Open();
     }
 
@@ -558,6 +559,7 @@ public class PersistentUI : MonoBehaviour
             .AddFooterButton(() => result?.Invoke(colorPicker.Value),
                 LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "submit"));
 
+        dialogBox.OnQuickSubmit(() => result?.Invoke(colorPicker.Value));
         dialogBox.Open();
     }
 

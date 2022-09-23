@@ -3623,6 +3623,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Attempt Quick Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""89d37833-7319-4153-bba8-764383b9fb70"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -3680,6 +3688,17 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""action"": ""Navigate Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ddd471a-44ab-4885-a45f-acbfd4369889"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Attempt Quick Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -3894,6 +3913,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_DialogBox_CloseDialogBox = m_DialogBox.FindAction("Close Dialog Box", throwIfNotFound: true);
         m_DialogBox_NavigateDown = m_DialogBox.FindAction("Navigate Down", throwIfNotFound: true);
         m_DialogBox_NavigateUp = m_DialogBox.FindAction("Navigate Up", throwIfNotFound: true);
+        m_DialogBox_AttemptQuickSubmit = m_DialogBox.FindAction("Attempt Quick Submit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -5864,6 +5884,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_DialogBox_CloseDialogBox;
     private readonly InputAction m_DialogBox_NavigateDown;
     private readonly InputAction m_DialogBox_NavigateUp;
+    private readonly InputAction m_DialogBox_AttemptQuickSubmit;
     public struct DialogBoxActions
     {
         private @CMInput m_Wrapper;
@@ -5871,6 +5892,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @CloseDialogBox => m_Wrapper.m_DialogBox_CloseDialogBox;
         public InputAction @NavigateDown => m_Wrapper.m_DialogBox_NavigateDown;
         public InputAction @NavigateUp => m_Wrapper.m_DialogBox_NavigateUp;
+        public InputAction @AttemptQuickSubmit => m_Wrapper.m_DialogBox_AttemptQuickSubmit;
         public InputActionMap Get() { return m_Wrapper.m_DialogBox; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -5889,6 +5911,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @NavigateUp.started -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateUp;
                 @NavigateUp.performed -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateUp;
                 @NavigateUp.canceled -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnNavigateUp;
+                @AttemptQuickSubmit.started -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnAttemptQuickSubmit;
+                @AttemptQuickSubmit.performed -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnAttemptQuickSubmit;
+                @AttemptQuickSubmit.canceled -= m_Wrapper.m_DialogBoxActionsCallbackInterface.OnAttemptQuickSubmit;
             }
             m_Wrapper.m_DialogBoxActionsCallbackInterface = instance;
             if (instance != null)
@@ -5902,6 +5927,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @NavigateUp.started += instance.OnNavigateUp;
                 @NavigateUp.performed += instance.OnNavigateUp;
                 @NavigateUp.canceled += instance.OnNavigateUp;
+                @AttemptQuickSubmit.started += instance.OnAttemptQuickSubmit;
+                @AttemptQuickSubmit.performed += instance.OnAttemptQuickSubmit;
+                @AttemptQuickSubmit.canceled += instance.OnAttemptQuickSubmit;
             }
         }
     }
@@ -6155,5 +6183,6 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnCloseDialogBox(InputAction.CallbackContext context);
         void OnNavigateDown(InputAction.CallbackContext context);
         void OnNavigateUp(InputAction.CallbackContext context);
+        void OnAttemptQuickSubmit(InputAction.CallbackContext context);
     }
 }

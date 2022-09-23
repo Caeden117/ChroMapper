@@ -69,6 +69,8 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>, INaviga
             var cancel = nestedDialogBox.AddFooterButton(null, "PersistentUI", "cancel");
 
             var submit = nestedDialogBox.AddFooterButton(() => Value = nestedColorPicker.Value, "PersistentUI", "ok");
+
+            nestedDialogBox.OnQuickSubmit(() => OnValueUpdated(nestedColorPicker.Value));
         }
         else
         {

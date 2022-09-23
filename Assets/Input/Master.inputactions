@@ -3610,6 +3610,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Attempt Quick Submit",
+                    "type": "Button",
+                    "id": "89d37833-7319-4153-bba8-764383b9fb70",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -3667,6 +3675,17 @@
                     "action": "Navigate Up",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1ddd471a-44ab-4885-a45f-acbfd4369889",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Attempt Quick Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
