@@ -188,6 +188,7 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
         CameraController.ClearCameraMovement();
 
         gameObject.SetActive(true);
+        transform.SetSiblingIndex(transform.parent.childCount);
 
         ReconstructDialogBoxNavigation();
     }
