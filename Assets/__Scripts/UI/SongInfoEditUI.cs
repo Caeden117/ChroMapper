@@ -106,24 +106,7 @@ public class SongInfoEditUI : MenuBase
             return;
         }
 
-        questExportButton.SetActive(false);
-
-        try
-        {
-            if (Adb.IsAdbInstalled(out _))
-            {
-                StartCoroutine(CheckIfQuestIsConnected());
-            }
-        }
-        catch (AssertionException e)
-        {
-            Debug.LogError($"ADB error? {e}");
-        }
-        catch (Exception e)
-        {
-            // There should be no other exceptions, but in the case there is handle it so no bugs
-            Debug.LogError(e);
-        }
+        questExportButton.SetActive(Adb.IsAdbInstalled(out _));
 
         // Make sure the contributor panel has been initialised
         ContributorWrapper.SetActive(true);
@@ -141,71 +124,6 @@ public class SongInfoEditUI : MenuBase
     }
 
     public static string GetEnvironmentNameFromID(int id) => VanillaEnvironments[id].JsonName;
-
-
-    private IEnumerator CheckIfQuestIsConnected()
-    {
-        while (true)
-        {
-            // I wish I could reduce this boilerplate
-            var task = Adb.GetDevices();
-            yield return task.AsCoroutine();
-            var (devices, output) = task.Result;
-
-            if (devices == null)
-            {
-                Debug.LogError($"Unable to get quest devices: {output.ToString()}");
-            }
-            else
-            {
-                questCandidates = new List<string>();
-                foreach (var device in devices)
-                {
-                    // I wish I could reduce this boilerplate
-                    var task2 = Adb.IsQuest(device);
-                    yield return task2.AsCoroutine();
-                    var (result, error) = task2.Result;
-
-                    if (!string.IsNullOrEmpty(error.ErrorOut))
-                    {
-                        Debug.LogError($"Got error with {error.ToString()}");
-                    }
-
-                    if (result)
-                        questCandidates.Add(device);
-                }
-            }
-
-            try
-            {
-                // Only set active if different state previously
-                var isActive = questExportButton.activeSelf;
-
-
-                if (questCandidates.Count > 0)
-                {
-                    if (!isActive)
-                    {
-                        Debug.Log("Quest found!");
-                        questExportButton.SetActive(true);
-                    }
-                }
-                else if (isActive)
-                {
-                    Debug.Log("Quest not found ;(");
-                    questExportButton.SetActive(false);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-
-            yield return new WaitForSecondsRealtime(5.0f);
-        }
-    }
-
-
 
     /// <summary>
     ///     Default object to select when pressing Tab and nothing is selected
@@ -518,23 +436,48 @@ public class SongInfoEditUI : MenuBase
     }
 
     // TODO: Move this to a proper location or make configurable with a default
-    private const string QUEST_CUSTOM_SONGS_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
+    public const string QUEST_CUSTOM_SONGS_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
     // I added this so the non-quest maintainers can use it as a reference for adding WIP uploads
     // this does indeed exist and work, please don't refrain from asking me. 
-    private const string QUEST_CUSTOM_SONGS_WIP_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels"; 
+    public const string QUEST_CUSTOM_SONGS_WIP_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels"; 
     
     /// <summary>
     /// Exports the files to the Quest using adb
     /// </summary>
     public async void ExportToQuest()
     {
+        var (devices, output) = await Adb.GetDevices();
+        var questCandidates = new List<string>();
+
+        if (devices == null || !string.IsNullOrEmpty(output.ErrorOut))
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.no-devices", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+
+        foreach (var device in devices)
+        {
+            var (result, error) = await Adb.IsQuest(device);
+
+            if (result && string.IsNullOrEmpty(error.ErrorOut))
+            {
+                questCandidates.Add(device);
+            }    
+        }
+
+        if (questCandidates.Count == 0)
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.no-quest", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+
         var dialog = PersistentUI.Instance.CreateNewDialogBox();
-        dialog.WithTitle("SongInfoEdit", "quest.exporting");
+        dialog.WithTitle("SongEditMenu", "quest.exporting");
 
         var progressBar = dialog.AddComponent<ProgressBarComponent>();
         progressBar.WithCustomLabelFormatter(f =>
             LocalizationSettings.StringDatabase
-                .GetLocalizedString("SongInfoEdit", "quest.exporting_progress",
+                .GetLocalizedString("SongEditMenu", "quest.exporting_progress",
                 new object[] { f }));
         
         dialog.Open();

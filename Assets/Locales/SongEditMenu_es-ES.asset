@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: es-ES
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - id: 0
   m_TableData:
   - m_Id: 1
     m_Localized: "Datos de la canci\xF3n"
@@ -336,5 +337,14 @@ MonoBehaviour:
       la canci\xF3n! \xBFUsarlo en su lugar?"
     m_Metadata:
       m_Items: []
+  - m_Id: 104117528192749568
+    m_Localized: 
+    m_Metadata:
+      m_Items:
+      - id: 0
   references:
     version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0010d21a57e67101

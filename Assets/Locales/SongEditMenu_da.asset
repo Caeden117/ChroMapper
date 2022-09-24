@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: da
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - id: 0
   m_TableData:
   - m_Id: 1
     m_Localized: Sang Info
@@ -333,5 +334,18 @@ MonoBehaviour:
       brug den i stedet?
     m_Metadata:
       m_Items: []
+  - m_Id: 104117395359141888
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104117528192749568
+    m_Localized: 
+    m_Metadata:
+      m_Items:
+      - id: 0
   references:
     version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0010d21a57e67101

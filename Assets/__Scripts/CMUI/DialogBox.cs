@@ -135,6 +135,11 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
             navigableComponents.AddLast(navigable);
         }
 
+        if (gameObject.activeSelf)
+        {
+            ReconstructDialogBoxNavigation();
+        }
+
         return component;
     }
 
@@ -157,6 +162,11 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
             .OnClick(() => CloseAndInvokeCallback(onClick));
 
         navigableFooterButtons.AddLast(button);
+        
+        if (gameObject.activeSelf)
+        {
+            ReconstructDialogBoxNavigation();
+        }
 
         return button;
     }
@@ -182,6 +192,11 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
             .OnClick(() => CloseAndInvokeCallback(onClick));
 
         navigableFooterButtons.AddLast(button);
+        
+        if (gameObject.activeSelf)
+        {
+            ReconstructDialogBoxNavigation();
+        }
 
         return button;
     }
@@ -315,7 +330,7 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
         }
     }
 
-    private void ReconstructDialogBoxNavigation()
+    public void ReconstructDialogBoxNavigation()
     {
         var navigableNode = navigableComponents.First;
 

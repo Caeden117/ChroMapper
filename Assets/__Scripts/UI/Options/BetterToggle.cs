@@ -52,7 +52,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
 
         if (!notifyChange) return;
         OnValueChanged?.Invoke(IsOn);
-        SendMessage("SendValueToSettings", IsOn);
+        SendMessage("SendValueToSettings", IsOn, SendMessageOptions.DontRequireReceiver);
     }
     
     public void OnPointerClick(PointerEventData eventData) => SetUiOn(!IsOn);
