@@ -61,13 +61,25 @@ public class OptionsKeybindsLoader : MonoBehaviour
     {
         if (res == 0)
         {
-            foreach (var action in CMInputCallbackInstaller.InputInstance) action.RemoveAllBindingOverrides();
+            foreach (var action in CMInputCallbackInstaller.InputInstance)
+            {
+                action.RemoveAllBindingOverrides();
+            }
+
             isInit = false;
-            foreach (var map in allActionMaps) Destroy(map.gameObject);
+            
+            foreach (var map in allActionMaps)
+            {
+                Destroy(map.gameObject);
+                searchableTab.RemoveSection(map.SearchableSection);
+            }
+
             prefab.gameObject.SetActive(true);
             allActionMaps.Clear();
+            
             LoadKeybindsController.AllOverrides.Clear();
             CMInputCallbackInstaller.InputInstance = new CMInput();
+            
             OnTabSelected();
         }
     }
