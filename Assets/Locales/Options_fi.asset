@@ -326,7 +326,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Time Value Decimal Precision
+    m_Localized: Aika-arvon desimaalitarkkuus
     m_Metadata:
       m_Items: []
   - m_Id: 73
@@ -362,11 +362,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 83
-    m_Localized: Change how often Auto Save will trigger.
+    m_Localized: "Muuta automaattitallennusten aikav\xE4li\xE4."
     m_Metadata:
       m_Items: []
   - m_Id: 84
-    m_Localized: Highlight the most recently placed notes magenta.
+    m_Localized: "Korosta viimeisimm\xE4t nuotit magentan v\xE4risen\xE4."
     m_Metadata:
       m_Items: []
   - m_Id: 85
@@ -380,7 +380,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Should we load map events?
+    m_Localized: "Pit\xE4isik\xF6 mappieventit ladata?"
     m_Metadata:
       m_Items: []
   - m_Id: 88
@@ -392,24 +392,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Rotates map objects and the editor to better visualize a 360 degree
-      level.
+    m_Localized: "K\xE4\xE4nt\xE4\xE4 mapin objekteja ja editoria paremman 360-tason
+      visualisoimiseksi."
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: Should we load other map items?
+    m_Localized: "Pit\xE4isik\xF6 muita mappiobjekteja ladata?"
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Invert mouse scroll direction on changing time.
+    m_Localized: "K\xE4yt\xE4 k\xE4\xE4nteist\xE4 hiiren rullan suuntaa."
     m_Metadata:
       m_Items: []
   - m_Id: 93
-    m_Localized: Show loading messages when switching screens.
+    m_Localized: "N\xE4yt\xE4 latausviestit ruutujen vaihtuessa."
     m_Metadata:
       m_Items: []
   - m_Id: 94
-    m_Localized: How far notes and events will spawn.
+    m_Localized: "Kuinka kaukana nuotit ja eventit ilmestyv\xE4t."
     m_Metadata:
       m_Items: []
   - m_Id: 95
@@ -433,7 +433,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 99
-    m_Localized: How much space in between measures?
+    m_Localized: "Kuinka paljon tilaa tahtien v\xE4lill\xE4?"
     m_Metadata:
       m_Items: []
   - m_Id: 100
@@ -445,30 +445,30 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 102
-    m_Localized: Toggles Bombs dinging when they pass.
+    m_Localized: "Kytkee pommien \xE4\xE4net ohitettaessa."
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding Shift while placing walls or notes, an extended grid
-      will appear with snapping disabled.
+    m_Localized: "Pidett\xE4ess\xE4 Vaihto-n\xE4pp\xE4int\xE4 asettaessa seini\xE4
+      tai nuotteja, pidennetty ruudukko ilmestyy ilman lukitusta."
     m_Metadata:
       m_Items: []
   - m_Id: 104
-    m_Localized: Toggles reflections caused by lights and objects.
+    m_Localized: Kytkee valojen ja objektien aiheuttamat heijastukset.
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
-      cause some jankiness when looking through a note.
+    m_Localized: "Aiheuttaa Tahtiviivojen tekstin piirron <i>kaiken</i> p\xE4\xE4lle.
+      Voi aiheuttaa j\xE4nni\xE4 asioita katsoessa nuotin l\xE4pi."
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Each event with a Chroma 2.0 gradient attached will generate a preview
-      on the 3D grid.
+    m_Localized: "Jokainen eventti, joka k\xE4ytt\xE4\xE4 Chroma 2.0-gradientteja,
+      luo esikatselun 3D-ruudukossa."
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song waveform
+    m_Localized: "N\xE4yt\xE4 kappaleen visualisointi."
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -476,68 +476,70 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 109
-    m_Localized: Change how many lanes your map uses.
+    m_Localized: "Vaihda kuinka monta kaistaa mappisi k\xE4ytt\xE4\xE4."
     m_Metadata:
       m_Items: []
   - m_Id: 110
-    m_Localized: Make the transition to the Escape menu instant.
+    m_Localized: "Tee siirtymist\xE4 v\xE4litt\xF6mi\xE4."
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
-      keeping it at full resolution.
+    m_Localized: "Render\xF6i Bloom-efektin t\xE4ydell\xE4 tai puolikkaalla resoluutiolla.
+      Suosittelemme pit\xE4m\xE4\xE4n sen t\xE4ydell\xE4."
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Enables or disables Chroma features, such as Ring Propagation
+    m_Localized: "Ottaa k\xE4ytt\xF6\xF6n tai poistaa k\xE4yt\xF6st\xE4 Chroma-ominaisuudet,
+      kuten Renkaiden Etenemisen."
     m_Metadata:
       m_Items: []
   - m_Id: 113
-    m_Localized: 'Toggles Dark Theme.
+    m_Localized: 'Vaihtaa tumman teeman.
 
-      (Does not affect Options Menu)'
+      (ei vaikuta Asetukset-valikkoon)'
     m_Metadata:
       m_Items: []
   - m_Id: 114
-    m_Localized: How far notes and events will despawn.
+    m_Localized: Kuinka kaukana nuotit ja eventit katoavat.
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
+    m_Localized: "Ota k\xE4ytt\xF6\xF6n Node-editori. Kokeile objektin valitsemista!"
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Enables or disables Chroma RGB lighting
+    m_Localized: "Ottaa k\xE4ytt\xF6\xF6n tai poistaa k\xE4yt\xF6st\xE4 Chroma RGB
+      -valaistuksen"
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Change Field of View of the camera
+    m_Localized: Muuta kameran FOV:ta
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Color negative width and negative duration walls differently than
-      standard walls.
+    m_Localized: "V\xE4rit\xE4 negatiivinen leveys ja negatiivisen keston sein\xE4t
+      eri tavalla kuin tavalliset sein\xE4t."
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Allow the Waveform to switch sides when toggling workspaces.
+    m_Localized: "Salli kappalevisualisoinnin puolta vaihtaessa ty\xF6tilaa."
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Change how fast the camera moves.
+    m_Localized: Muuta kuinka nopeasti kamera liikkuu.
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Ctrl-Click to draw a box and select rather than painting your
-      selection.
+    m_Localized: "K\xE4yt\xE4 Ctrl-Click-n\xE4pp\xE4int\xE4 piirt\xE4\xE4ksesi laatikon
+      ja valitaksesi valintasi maalaamisen sijaan."
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: How fast the camera rotates.
+    m_Localized: "Kuinka nopeasti kamera k\xE4\xE4ntyy."
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Change the sound you hear when a note passes through the grid.
+    m_Localized: "Muuta \xE4\xE4nt\xE4, jonka kuulet nuotin ohittaessa ruudukon."
     m_Metadata:
       m_Items: []
   - m_Id: 124
@@ -686,11 +688,11 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 157
-    m_Localized: Event Models
+    m_Localized: Eventtimallit
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: Change lighting event models.
+    m_Localized: Muuta valaistustapahtumien mallia.
     m_Metadata:
       m_Items: []
   - m_Id: 159
@@ -761,7 +763,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 175
-    m_Localized: Quick Note Editing
+    m_Localized: Pikainen Nuottimuokkaus
     m_Metadata:
       m_Items: []
   - m_Id: 176
@@ -773,103 +775,104 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2783503364096
-    m_Localized: Show stats about your map.
+    m_Localized: "N\xE4yt\xE4 mappisi tilastot."
     m_Metadata:
       m_Items: []
   - m_Id: 4183771754496
-    m_Localized: Show Note count in Counters+
+    m_Localized: "N\xE4yt\xE4 Nuottien m\xE4\xE4r\xE4 Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 4556741849088
-    m_Localized: Show Notes Per Second in Counters+
+    m_Localized: "N\xE4yt\xE4 NPS Counter+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 4756105506816
-    m_Localized: Show Swings Per Second in Counters+
+    m_Localized: "N\xE4yt\xE4 SPS Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 4923839918080
-    m_Localized: Show Red/Blue Note Ratio in Counters+
+    m_Localized: "N\xE4yt\xE4 Punaisten Ja Sinisten Nuottien Suhde Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 5194288640000
-    m_Localized: Show Obstacle count in Counters+
+    m_Localized: "N\xE4yt\xE4 Seinien M\xE4\xE4r\xE4 Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 5433380745216
-    m_Localized: Show Event count in Counters+
+    m_Localized: "N\xE4yt\xE4 Eventtim\xE4\xE4r\xE4 Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 5576540729344
-    m_Localized: Show BPM Change count in Counters+
+    m_Localized: "N\xE4yt\xE4 BPM-muutosten m\xE4\xE4r\xE4 Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 5797878345728
-    m_Localized: Show Current BPM in Counters+
+    m_Localized: "N\xE4yt\xE4 Nykyinen BPM Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 6094344335360
-    m_Localized: Show Time Spent Mapping in Counters+
+    m_Localized: "N\xE4yt\xE4 K\xE4tetty Aika Editorissa Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 7740667375616
-    m_Localized: Enabled
+    m_Localized: "K\xE4yt\xF6ss\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 7946528010240
-    m_Localized: Show Note Count
+    m_Localized: "N\xE4yt\xE4 Nuottien M\xE4\xE4r\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 8101331382272
-    m_Localized: Show Notes Per Second
+    m_Localized: "N\xE4yt\xE4 NPS"
     m_Metadata:
       m_Items: []
   - m_Id: 8262946304000
-    m_Localized: Show Swings Per Second
+    m_Localized: "N\xE4yt\xE4 SPS"
     m_Metadata:
       m_Items: []
   - m_Id: 8468374925312
-    m_Localized: Show Red/Blue Ratio
+    m_Localized: "N\xE4yt\xE4 Punaisen/Sinisen Suhde"
     m_Metadata:
       m_Items: []
   - m_Id: 8718720348160
-    m_Localized: Show Obstacle Count
+    m_Localized: "N\xE4yt\xE4 Seinien M\xE4\xE4r\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 8904158916608
-    m_Localized: Show Event Count
+    m_Localized: "N\xE4yt\xE4 Valoeventtien M\xE4\xE4r\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 9070869917696
-    m_Localized: Show BPM Change Count
+    m_Localized: "N\xE4yt\xE4 BPM-Muutosten M\xE4\xE4r\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 9291620331520
-    m_Localized: Show Current BPM
+    m_Localized: "N\xE4yt\xE4 Nykyinen BPM"
     m_Metadata:
       m_Items: []
   - m_Id: 9443374444544
-    m_Localized: Show Time Spent Mapping
+    m_Localized: "N\xE4yt\xE4 K\xE4ytetty Aika Mappaamisessa"
     m_Metadata:
       m_Items: []
   - m_Id: 1564790530682880
-    m_Localized: Show Bomb count in Counters+
+    m_Localized: "N\xE4yt\xE4 Pommien M\xE4\xE4r\xE4 Counters+:ssa"
     m_Metadata:
       m_Items: []
   - m_Id: 1565145339441152
-    m_Localized: Show Bomb Count
+    m_Localized: "N\xE4yt\xE4 Pommien M\xE4\xE4r\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 1062316191744
-    m_Localized: Advanced
+    m_Localized: "Lis\xE4asetukset"
     m_Metadata:
       m_Items: []
   - m_Id: 3517145853952
-    m_Localized: Compensates for audio latency by offsetting visuals during playback
+    m_Localized: "Kompensoi \xE4\xE4nen latenssia siirt\xE4m\xE4ll\xE4 visuaalista
+      kuvaa toiston aikana"
     m_Metadata:
       m_Items: []
   - m_Id: 4573925912576
-    m_Localized: Audio Latency Compensation
+    m_Localized: "\xC4\xE4nen Latenssikompensaatio"
     m_Metadata:
       m_Items: []
   - m_Id: 5147308240896
@@ -878,7 +881,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 3301721636864
-    m_Localized: Changes the transparency of the grid background
+    m_Localized: "Muuttaa ruudukon taustan l\xE4pin\xE4kyvyytt\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 4978382077952
@@ -887,15 +890,15 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 23812497342464
-    m_Localized: Grid Transparency
+    m_Localized: "Ruudukon L\xE4pin\xE4kyvyys"
     m_Metadata:
       m_Items: []
   - m_Id: 1664580264005632
-    m_Localized: Maximum FPS
+    m_Localized: Maksimi FPS
     m_Metadata:
       m_Items: []
   - m_Id: 1664599280979968
-    m_Localized: Tweak the maximum framerate that CM will run at.
+    m_Localized: "S\xE4\xE4d\xE4 enimm\xE4iskuvanopeutta, jolla CM toimii."
     m_Metadata:
       m_Items: []
   - m_Id: 1894945813565440
@@ -903,31 +906,226 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1894950121115648
-    m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
+    m_Localized: "Lukitse ChroMapperin kuvataajuus n\xE4yt\xF6n virkistystaajuuteen."
     m_Metadata:
       m_Items: []
   - m_Id: 4089437985878016
-    m_Localized: Makes Editor Scale independent of map BPM
+    m_Localized: "Muuttaa editorin mittakaavan riippumattomaksi kartan BPM:st\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 4090246341505024
-    m_Localized: BPM Independent Editor Scale
+    m_Localized: "BPM:st\xE4 Riippumaton Editoriskaala"
     m_Metadata:
       m_Items: []
   - m_Id: 9689541752557568
-    m_Localized: Visualize Chroma event alpha using the height of the event
+    m_Localized: Visualisoi Chroma-eventtien alfa-arvoa eventin korkeudella
     m_Metadata:
       m_Items: []
   - m_Id: 9689824679333888
-    m_Localized: Visualize Chroma Alpha
+    m_Localized: Visualisoi Chroma-alfaa
     m_Metadata:
       m_Items: []
   - m_Id: 16675690602758144
-    m_Localized: Smooths out jagged lines
+    m_Localized: Tasoittaa reunoja
     m_Metadata:
       m_Items: []
   - m_Id: 16676035970138112
-    m_Localized: Anti-Aliasing
+    m_Localized: Reunanpehmennys
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 67492742661058560
+    m_Localized: Scales the (total) rendering resolution for performance or visual
+      improvements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Localized: Render Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1698793607168
+    m_Localized: Quest ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1897456816128
+    m_Localized: Adds special Quest functionality if ADB is installed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3768991576559616
+    m_Localized: Successfully exported files to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Localized: Export to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Localized: Failed to download ADB. Error {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Localized: "ADB does not seem to be installed or could not be found. Would
+      you\n      like to download it? This will allow Quest functionality."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635263
+    m_Localized: Downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Localized: Finished downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Localized: Extracting ADB from zip. This may take a while.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21544433260560384
+    m_Localized: Install ADB for Quest functionality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71906481403138048
+    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91579491578740736
+    m_Localized: Appearance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101771971410460672
+    m_Localized: Track and Grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773637585141760
+    m_Localized: Makes the transitions between scenes instant.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773995594153984
+    m_Localized: Instant Loading Transitions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788523392335872
+    m_Localized: Length of the track in beats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788529759289344
+    m_Localized: Track Length
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795760294789120
+    m_Localized: Hides disableable platform objects on load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795765399257088
+    m_Localized: Hide Disableable Objects On Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802838346366976
+    m_Localized: Changes the transparency of passed notes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802902695378944
+    m_Localized: Passed Note Transparency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855016515731456
+    m_Localized: Editor Map Info Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855364424859648
+    m_Localized: Display artist and song name in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855374591852544
+    m_Localized: Display Song Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855382842048512
+    m_Localized: Display difficulty name and value in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855392124043264
+    m_Localized: Display Difficulty Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096011425677312
+    m_Localized: Displays bookmarks line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096015523512320
+    m_Localized: Display Bookmarks On Track
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186250655694848
+    m_Localized: Displays an additional grid line on the bookmark.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186255848243200
+    m_Localized: Display Bookmark Grid Line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193073215438848
+    m_Localized: How thick the beat line is
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193078810640384
+    m_Localized: Main Beat Line Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206124970934272
+    m_Localized: Display the beat and song time on the bookmark tooltip.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206129182015488
+    m_Localized: Bookmark Tooltip Time Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206134429089792
+    m_Localized: How thick the bookmarks on the timeline are.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206140842180608
+    m_Localized: Bookmark UI Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102395595171495936
+    m_Localized: Bookmarks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102396931141206016
+    m_Localized: Camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447908275814400
+    m_Localized: Saves the difficulty file as more than a single line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447938869067776
+    m_Localized: Save As Formatted Json
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731652719513600
+    m_Localized: Use ADB in path if found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731842968948736
+    m_Localized: If ADB is in the system environment path, it will use it if enabled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008036237737984
+    m_Localized: Whether objects can be shifted outside the normal 3x4 grid.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008044110446592
+    m_Localized: Vanilla Only Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150232748497440768
+    m_Localized: Uninstalling ADB...
     m_Metadata:
       m_Items: []
   references:
@@ -935,4 +1133,4 @@ MonoBehaviour:
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e87040000
+        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00

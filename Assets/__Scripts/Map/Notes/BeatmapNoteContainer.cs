@@ -6,8 +6,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
 {
     private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 
-    private static readonly int alwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
-
     [FormerlySerializedAs("mapNoteData")] public BeatmapNote MapNoteData;
 
     [SerializeField] private GameObject simpleBlock;
@@ -18,8 +16,6 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
     [SerializeField] private MeshRenderer dotRenderer;
     [SerializeField] private MeshRenderer arrowRenderer;
     [SerializeField] private SpriteRenderer swingArcRenderer;
-
-    private bool currentState;
 
     public override BeatmapObject ObjectData { get => MapNoteData; set => MapNoteData = (BeatmapNote)value; }
 
@@ -33,12 +29,12 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
             complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
 
             MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
+            MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
 
             UpdateMaterials();
         }
 
         SetArcVisible(NotesContainer.ShowArcVisualizer);
-        CheckTranslucent();
     }
 
     internal static Vector3 Directionalize(BeatmapNote mapNoteData)
@@ -117,34 +113,18 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
         transform.localPosition = (Vector3)MapNoteData.GetPosition() +
                                   new Vector3(0, 0.5f, MapNoteData.Time * EditorScaleController.EditorScale);
         transform.localScale = MapNoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
-        UpdateCollisionGroups();
-        SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0);
-    }
 
-    public void CheckTranslucent()
-    {
-        var newState = transform.parent != null && transform.localPosition.z + transform.parent.localPosition.z <=
-            BeatmapObjectContainerCollection.TranslucentCull;
-        if (newState != currentState)
-        {
-            MaterialPropertyBlock.SetFloat(alwaysTranslucent, newState ? 1 : 0);
-            UpdateMaterials();
-            currentState = newState;
-        }
+        UpdateCollisionGroups();
+
+        MaterialPropertyBlock.SetFloat("_ObjectTime", MapNoteData.Time);
+        SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0);
+        UpdateMaterials();
     }
 
     public void SetColor(Color? color)
     {
         MaterialPropertyBlock.SetColor(BeatmapObjectContainer.color, color ?? unassignedColor);
         UpdateMaterials();
-    }
-
-    public override void AssignTrack(Track track)
-    {
-        if (AssignedTrack != null) AssignedTrack.TimeChanged -= CheckTranslucent;
-
-        base.AssignTrack(track);
-        track.TimeChanged += CheckTranslucent;
     }
 
     internal override void UpdateMaterials()

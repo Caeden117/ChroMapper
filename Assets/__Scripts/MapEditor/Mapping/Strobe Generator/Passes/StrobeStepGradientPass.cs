@@ -54,20 +54,28 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             }
         }
 
-        var distanceInBeats = endTime - startTime;
-        var originalDistance = distanceInBeats;
-
         if (colorPoints.Count < 2) return Enumerable.Empty<MapEvent>();
+
+        var distanceInBeats = endTime - startTime;
 
         var lastPoint = colorPoints.ElementAt(0);
         var nextPoint = colorPoints.ElementAt(1);
 
-        while (distanceInBeats >= -0.01f)
+        // Because precision is still denominator, we simply multiply to get the steps needed
+        // And to ensure we will always have enough steps, we will overestimate a little bit.
+        var numberOfSteps = Mathf.CeilToInt(distanceInBeats * precision);
+
+        // I'm getting tired of duplicate event issues so I'll do this all in one for loop.
+        // Remove the jank.
+        for (var i = 0; i < numberOfSteps + 1; i++)
         {
-            var anyLast = colorPoints.Where(x => x.Key <= endTime - distanceInBeats).LastOrDefault();
+            var localDistance = Mathf.Clamp(i / precision, 0, distanceInBeats);
+            var newTime = startTime + localDistance;
+
+            var anyLast = colorPoints.Where(x => x.Key <= newTime).LastOrDefault();
             if (anyLast.Key != lastPoint.Key)
             {
-                var nextPoints = colorPoints.Where(x => x.Key > endTime - distanceInBeats);
+                var nextPoints = colorPoints.Where(x => x.Key > newTime);
 
                 // Don't progress if this is the last gradient
                 if (nextPoints.Any())
@@ -77,30 +85,18 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
                 }
             }
 
-            var progress = (originalDistance - distanceInBeats) / originalDistance;
-            var newTime = (progress * originalDistance) + startTime;
-
             var lerp = easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
 
             var data = new MapEvent(newTime, type, value, new JSONObject());
             data.CustomData.Add("_color", color);
+
             if (propMode != EventsContainer.PropMode.Off)
             {
-                if (value != MapEvent.LightValueBlueON && value != MapEvent.LightValueRedON &&
-                    value != MapEvent.LightValueOff)
-                {
-                    data.Value = value < 5
-                        ? MapEvent.LightValueBlueON
-                        : MapEvent.LightValueRedON;
-                }
-
                 data.CustomData.Add("_lightID", propID);
             }
 
             generatedObjects.Add(data);
-
-            distanceInBeats -= 1 / precision;
 
             if (alternateColors) value = InvertColors(value);
         }

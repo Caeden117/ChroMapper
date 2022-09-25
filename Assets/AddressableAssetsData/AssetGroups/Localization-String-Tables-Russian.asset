@@ -15,11 +15,11 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Russian
   m_Data:
     m_SerializedData: []
-  m_GUID: f285045c13ac119448200c5d8fccc279
+  m_GUID: 1959ada9b7c3ff7448c14d8c7a0ab454
   m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 343c08ce5d7d9a64eb4c4bdbf93e90ba, type: 2}
-    - {fileID: 11400000, guid: 244e35ca82868ff4f9c268e7aa793b9f, type: 2}
+    - {fileID: 11400000, guid: a27dce2b213727748b17378add4d08ea, type: 2}
+    - {fileID: 11400000, guid: 7730da103f33bec45bcb3c23cd1d7bf7, type: 2}

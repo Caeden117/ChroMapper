@@ -215,7 +215,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Flikker generator
+    m_Localized: Stroboscoop generator
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -415,7 +415,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Voer de naam van deze nieuwe bladwijzer in.
+    m_Localized: Voer de naam van de nieuwe bladwijzer in.
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -451,13 +451,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: "Rotatiegebeurtenissen zijn uitgeschakeld voor de 360 graden, 90
-      graden en Lawless mode.\n\nAls je deze evenementen wilt plaatsen, cre\xEBer
-      dan difficulties voor de bovengenoemde modes."
+    m_Localized: "Rotatie evenementen zijn uitgeschakeld voor de 360 graden, 90 graden
+      en Lawless modes.\n\nAls je deze evenementen wilt plaatsen, cre\xEBer dan moeilijkheids
+      graden voor de bovengenoemde modes."
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Ben je zeker dat je deze bladwijzer wilt verwijderen?
+    m_Localized: Ben je er zeker van dat je deze bladwijzer wilt verwijderen?
     m_Metadata:
       m_Items: []
   - m_Id: 107
@@ -679,7 +679,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 154
-    m_Localized: Wisselt aan welke kant het spectrogram staat
+    m_Localized: Verandered aan welke kant het spectrogram staat
     m_Metadata:
       m_Items: []
   - m_Id: 155
@@ -687,26 +687,38 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 234935484416
-    m_Localized: 'Current BPM: {CurrentBPM:0.###}'
+    m_Localized: 'Huidige BPM: {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 1123800776704
-    m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
+    m_Localized: 'Rood/Blauw Verhouding: {RedBlueRatio:F2}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 3209883108945920
-    m_Localized: 'Bombs: {BombCount}'
+    m_Localized: 'Bommen: {BombCount}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 12803634470490112
-    m_Localized: Select the new color for this bookmark.
+    m_Localized: Selecteer een nieuwe kleur voor deze bladwijzer.
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
     m_Localized: Selecteer eerst dingen!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889908591489024
+    m_Localized: Bookmark Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889912282476544
+    m_Localized: Bookmark Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118373130107551744
+    m_Localized: Objects found outside map. Do you want to remove them?
     m_Metadata:
       m_Items: []
   references:

@@ -104,6 +104,8 @@ public class PlatformDescriptor : MonoBehaviour
 
         callbackController.EventPassedThreshold += EventPassed;
         RefreshLightingManagers();
+        
+        if (Settings.Instance.HideDisablableObjectsOnLoad) ToggleDisablableObjects(); 
     }
 
     public void RefreshLightingManagers()
@@ -297,12 +299,12 @@ public class PlatformDescriptor : MonoBehaviour
         if (value <= 3)
         {
             mainColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-            invertedColor = Colors.RedColor;
+            invertedColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
         }
         else if (value <= 7)
         {
             mainColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-            invertedColor = Colors.BlueColor;
+            invertedColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
         }
 
         //Check if it is a PogU new Chroma event
@@ -355,19 +357,22 @@ public class PlatformDescriptor : MonoBehaviour
                     light.UpdateMultiplyAlpha(color.a);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(1, 0);
+                    light.UpdateEasing("easeLinear");
                     break;
                 case MapEvent.LightValueBlueFlash:
                 case MapEvent.LightValueRedFlash:
                     light.UpdateTargetAlpha(1, 0);
                     light.UpdateMultiplyAlpha(color.a);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FadeTime);
+                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
+                    light.UpdateEasing("easeOutCubic");
                     break;
                 case MapEvent.LightValueBlueFade:
                 case MapEvent.LightValueRedFade:
                     light.UpdateTargetAlpha(1, 0);
                     light.UpdateMultiplyAlpha(color.a);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
+                    light.UpdateEasing("easeOutExpo");
                     if (light.CanBeTurnedOff)
                     {
                         light.UpdateTargetAlpha(0, LightsManager.FadeTime);

@@ -22,25 +22,25 @@ public class CMInputCallbackInstaller : MonoBehaviour
     public static CMInput InputInstance;
     private static CMInputCallbackInstaller instance;
 
-    private readonly List<EventHandler> allEventHandlers = new List<EventHandler>();
+    private static readonly List<EventHandler> allEventHandlers = new List<EventHandler>();
 
-    private readonly BindingFlags
+    private static readonly BindingFlags
         bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
-    private readonly List<EventHandler> disabledEventHandlers = new List<EventHandler>();
+    private static readonly List<EventHandler> disabledEventHandlers = new List<EventHandler>();
 
-    private readonly Dictionary<string, object>
+    private static readonly Dictionary<string, object>
         interfaceNameToReference = new Dictionary<string, object>(); //Interface names to action map references
 
-    private readonly Dictionary<string, Type>
+    private static readonly Dictionary<string, Type>
         interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
 
-    private readonly List<Transform> persistentObjects = new List<Transform>();
+    private static readonly List<Transform> persistentObjects = new List<Transform>();
 
     //Because I would like all actions to fully complete before being disabled,
     //we will use a queue that will then be cleared and processed on the next frame.
-    private readonly List<QueueInfo> queuedToDisable = new List<QueueInfo>();
-    private readonly List<QueueInfo> queuedToEnable = new List<QueueInfo>();
+    private static readonly List<QueueInfo> queuedToDisable = new List<QueueInfo>();
+    private static readonly List<QueueInfo> queuedToEnable = new List<QueueInfo>();
 
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
 
@@ -141,13 +141,13 @@ public class CMInputCallbackInstaller : MonoBehaviour
     public static void DisableActionMaps(Type you, IEnumerable<Type> interfaceTypesToDisable) =>
         //To preserve actions occuring on the same frame, we
         //add it to a queue thats cleared and processed on the next frame.
-        instance.queuedToDisable.Add(new QueueInfo(you, interfaceTypesToDisable));
+        queuedToDisable.Add(new QueueInfo(you, interfaceTypesToDisable));
 
     public static void ClearDisabledActionMaps(Type you, IEnumerable<Type> interfaceTypesToEnable) =>
-        instance.queuedToEnable.Add(new QueueInfo(you, interfaceTypesToEnable));
+        queuedToEnable.Add(new QueueInfo(you, interfaceTypesToEnable));
 
     public static bool IsActionMapDisabled(Type actionMap) =>
-        instance.disabledEventHandlers.Any(x => x.InterfaceType == actionMap);
+        disabledEventHandlers.Any(x => x.InterfaceType == actionMap);
 
     // Here we find our GameObjects that need our input map, install it, and then enable the input map.
     // Then we wait to re-enable our input map.
@@ -194,11 +194,11 @@ public class CMInputCallbackInstaller : MonoBehaviour
         return true;
     }
 
-    public static void PersistentObject(Transform obj) => instance.persistentObjects.Add(obj);
+    public static void PersistentObject(Transform obj) => persistentObjects.Add(obj);
 
     // Here we find all MonoBehaviours with an Input Map interface and set its callbacks.
     // Looping through each monobehaviour on each object might be time consuming, but this is done only once when a scene loads.
-    private void FindAndInstallCallbacksRecursive(Transform obj)
+    public static void FindAndInstallCallbacksRecursive(Transform obj)
     {
         foreach (var behaviour in obj.GetComponents<MonoBehaviour>())
         {
@@ -227,6 +227,26 @@ public class CMInputCallbackInstaller : MonoBehaviour
         foreach (Transform child in obj) FindAndInstallCallbacksRecursive(child);
     }
 
+    public static void FindAndRemoveCallbacksRecursive(Transform obj)
+    {
+        foreach (var behaviour in obj.GetComponents<MonoBehaviour>())
+        {
+            if (behaviour is null || behaviour.GetType() is null) continue;
+            foreach (var interfaceType in behaviour.GetType().GetInterfaces())
+            {
+                var eventHandlers = allEventHandlers.FindAll(it => it.InterfaceType == interfaceType);
+
+                foreach (var eventHandler in eventHandlers)
+                {
+                    eventHandler.DisableEventHandler(true);
+                    allEventHandlers.Remove(eventHandler);
+                }
+            }
+        }
+
+        foreach (Transform child in obj) FindAndInstallCallbacksRecursive(child);
+    }
+
     private void ClearAllEvents()
     {
         foreach (var handler in allEventHandlers) handler.DisableEventHandler(true);
@@ -245,7 +265,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
      * Thanks to Serj-Tm on StackOverflow for base code:
      * https://stackoverflow.com/questions/9753366/subscribing-an-action-to-any-event-type-via-reflection
     */
-    private void AddEventHandler(EventInfo eventInfo, object eventObject, object item, MethodInfo action,
+    private static void AddEventHandler(EventInfo eventInfo, object eventObject, object item, MethodInfo action,
         Type interfaceType)
     {
         var parameters = eventInfo.EventHandlerType

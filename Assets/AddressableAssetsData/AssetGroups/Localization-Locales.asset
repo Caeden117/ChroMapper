@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale
   - m_GUID: 5a8a5bd10c31a5f49a24b9e8f261aecf
-    m_Address: New Locale
+    m_Address: owospeak (en-OWO)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
@@ -79,6 +79,16 @@ MonoBehaviour:
     - Locale
   - m_GUID: ef33195f650642a45becc62a705db195
     m_Address: Estonian (et)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: bbfbdebec15a4ae4e9c4484725124374
+    m_Address: Korean (ko)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 74ed30667b69fcc47a5ccfef2133f474
+    m_Address: Chinese (Simplified) (zh-CN)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale

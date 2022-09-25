@@ -402,10 +402,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 95
-    m_Localized: 'Toggles Red Notes dinging when they pass.
+    m_Localized: 'Alterna el sonido de las notas rojas cuando pasan.
 
-      (Includes ChromaToggle
-      variants)'
+      (Incluye
+      variantes ChromaToggle)'
     m_Metadata:
       m_Items: []
   - m_Id: 96
@@ -679,7 +679,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 157
-    m_Localized: Event Models
+    m_Localized: Modelo de eventos
     m_Metadata:
       m_Items: []
   - m_Id: 158
@@ -808,15 +808,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7740667375616
-    m_Localized: Enabled
+    m_Localized: Habilitado
     m_Metadata:
       m_Items: []
   - m_Id: 7946528010240
-    m_Localized: Show Note Count
+    m_Localized: "Mostrar n\xFAmero de notas"
     m_Metadata:
       m_Items: []
   - m_Id: 8101331382272
-    m_Localized: Show Notes Per Second
+    m_Localized: Mostrar notas por segundo
     m_Metadata:
       m_Items: []
   - m_Id: 8262946304000
@@ -824,15 +824,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8468374925312
-    m_Localized: Show Red/Blue Ratio
+    m_Localized: "Mostrar proproci\xF3n Rojo/Azul"
     m_Metadata:
       m_Items: []
   - m_Id: 8718720348160
-    m_Localized: Show Obstacle Count
+    m_Localized: Mostrar contador de obstaculos
     m_Metadata:
       m_Items: []
   - m_Id: 8904158916608
-    m_Localized: Show Event Count
+    m_Localized: Mostrar contador de eventos
     m_Metadata:
       m_Items: []
   - m_Id: 9070869917696
@@ -840,7 +840,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9291620331520
-    m_Localized: Show Current BPM
+    m_Localized: Mostrar los BPM actuales
     m_Metadata:
       m_Items: []
   - m_Id: 9443374444544
@@ -852,11 +852,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1565145339441152
-    m_Localized: Show Bomb Count
+    m_Localized: "Mostrar n\xFAmero de bombas"
     m_Metadata:
       m_Items: []
   - m_Id: 1062316191744
-    m_Localized: Advanced
+    m_Localized: Avanzado
     m_Metadata:
       m_Items: []
   - m_Id: 3517145853952
@@ -864,7 +864,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4573925912576
-    m_Localized: Audio Latency Compensation
+    m_Localized: "Compensaci\xF3n de la latencia de audio"
     m_Metadata:
       m_Items: []
   - m_Id: 5147308240896
@@ -882,11 +882,11 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 23812497342464
-    m_Localized: Grid Transparency
+    m_Localized: "Trasparencia de la cuadr\xEDcula"
     m_Metadata:
       m_Items: []
   - m_Id: 1664580264005632
-    m_Localized: Maximum FPS
+    m_Localized: "FPS M\xE1ximos"
     m_Metadata:
       m_Items: []
   - m_Id: 1664599280979968
@@ -898,7 +898,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1894950121115648
-    m_Localized: Lock ChroMapper's framerate to the refresh rate of your display.
+    m_Localized: Fijar la velocidad de fotogramas de ChroMapper a la tasa de refresco
+      de tu pantalla.
     m_Metadata:
       m_Items: []
   - m_Id: 4089437985878016
@@ -925,9 +926,204 @@ MonoBehaviour:
     m_Localized: Anti-Aliasing
     m_Metadata:
       m_Items: []
+  - m_Id: 67494721340747776
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 67492742661058560
+    m_Localized: Scales the (total) rendering resolution for performance or visual
+      improvements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Localized: Render Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1698793607168
+    m_Localized: Quest ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1897456816128
+    m_Localized: Adds special Quest functionality if ADB is installed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3768991576559616
+    m_Localized: Successfully exported files to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Localized: Export to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Localized: Failed to download ADB. Error {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Localized: "ADB does not seem to be installed or could not be found. Would
+      you\n      like to download it? This will allow Quest functionality."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635263
+    m_Localized: Downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Localized: Finished downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Localized: Extracting ADB from zip. This may take a while.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21544433260560384
+    m_Localized: Install ADB for Quest functionality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71906481403138048
+    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91579491578740736
+    m_Localized: Appearance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101771971410460672
+    m_Localized: Track and Grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773637585141760
+    m_Localized: Makes the transitions between scenes instant.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773995594153984
+    m_Localized: Instant Loading Transitions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788523392335872
+    m_Localized: Length of the track in beats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788529759289344
+    m_Localized: Track Length
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795760294789120
+    m_Localized: Hides disableable platform objects on load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795765399257088
+    m_Localized: Hide Disableable Objects On Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802838346366976
+    m_Localized: Changes the transparency of passed notes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802902695378944
+    m_Localized: Passed Note Transparency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855016515731456
+    m_Localized: Editor Map Info Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855364424859648
+    m_Localized: Display artist and song name in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855374591852544
+    m_Localized: Display Song Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855382842048512
+    m_Localized: Display difficulty name and value in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855392124043264
+    m_Localized: Display Difficulty Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096011425677312
+    m_Localized: Displays bookmarks line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096015523512320
+    m_Localized: Display Bookmarks On Track
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186250655694848
+    m_Localized: Displays an additional grid line on the bookmark.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186255848243200
+    m_Localized: Display Bookmark Grid Line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193073215438848
+    m_Localized: How thick the beat line is
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193078810640384
+    m_Localized: Main Beat Line Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206124970934272
+    m_Localized: Display the beat and song time on the bookmark tooltip.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206129182015488
+    m_Localized: Bookmark Tooltip Time Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206134429089792
+    m_Localized: How thick the bookmarks on the timeline are.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206140842180608
+    m_Localized: Bookmark UI Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102395595171495936
+    m_Localized: Bookmarks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102396931141206016
+    m_Localized: Camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447908275814400
+    m_Localized: Saves the difficulty file as more than a single line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447938869067776
+    m_Localized: Save As Formatted Json
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731652719513600
+    m_Localized: Use ADB in path if found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731842968948736
+    m_Localized: If ADB is in the system environment path, it will use it if enabled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008036237737984
+    m_Localized: Whether objects can be shifted outside the normal 3x4 grid.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008044110446592
+    m_Localized: Vanilla Only Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150232748497440768
+    m_Localized: Uninstalling ADB...
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e87040000
+        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00

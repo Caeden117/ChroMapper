@@ -14,7 +14,7 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
     [FormerlySerializedAs("switchTransform")] public RectTransform SwitchTransform;
     [FormerlySerializedAs("description")] public TextMeshProUGUI Description;
 
-    [FormerlySerializedAs("isOn")] public bool IsOn;
+    [FormerlySerializedAs("isOn")] public bool IsOn; // TODO: Make this property update UI?
 
     [FormerlySerializedAs("OnColor")] [HideInInspector] public Color Color;
     [HideInInspector] public Color OffColor;
@@ -32,21 +32,30 @@ public class BetterToggle : UIBehaviour, IPointerClickHandler
         if (TryGetComponent<SettingsBinder>(out var settingsBinder))
         {
             IsOn = (bool?)settingsBinder.RetrieveValueFromSettings() ?? false;
-            SwitchTransform.localPosition = IsOn ? onPos : offPos;
-            Background.color = IsOn ? Color : OffColor;
+            UpdateUI();
         }
 
         base.Start();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void UpdateUI()
     {
-        IsOn = !IsOn;
+        SwitchTransform.localPosition = IsOn ? onPos : offPos;
+        Background.color = IsOn ? Color : OffColor;
+    }
+
+    public void SetUiOn(bool isOn, bool notifyChange = true)
+    {
+        IsOn = isOn;
         slideButtonCoroutine = StartCoroutine(SlideToggle());
         slideColorCoroutine = StartCoroutine(SlideColor());
+
+        if (!notifyChange) return;
         OnValueChanged?.Invoke(IsOn);
-        SendMessage("SendValueToSettings", IsOn);
+        SendMessage("SendValueToSettings", IsOn, SendMessageOptions.DontRequireReceiver);
     }
+    
+    public void OnPointerClick(PointerEventData eventData) => SetUiOn(!IsOn);
 
     private IEnumerator SlideToggle()
     {

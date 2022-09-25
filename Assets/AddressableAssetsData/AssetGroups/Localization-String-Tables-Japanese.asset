@@ -15,16 +15,11 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Japanese
   m_Data:
     m_SerializedData: []
-  m_GUID: bbae587ec9d4abc4696e6bec38122245
-  m_SerializeEntries:
-  - m_GUID: d1b3f7a3abba3984db2ba200fbfc319d
-    m_Address: PersistentUI_ja
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-ja
+  m_GUID: 52544d0fb68a23241bc7a4074024b2fa
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: bb79247ded2f5774f889893fd9776a42, type: 2}
-    - {fileID: 11400000, guid: 80bccef935f7ccd4ab51a7a58f133922, type: 2}
+    - {fileID: 11400000, guid: c5054254f10eef24b81e5658da7d6229, type: 2}
+    - {fileID: 11400000, guid: deb3943cf65bc4e4dbe7d5300ca48b33, type: 2}

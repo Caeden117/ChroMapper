@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
   m_Name: Localization-String-Tables-Finnish_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  m_Group: {fileID: 11400000, guid: 2ecf16f28d4a868439b3de1a9ebecc96, type: 2}
+  m_Group: {fileID: 11400000, guid: ac06d931c6080944abb8f6b890acbde6, type: 2}
   m_StaticContent: 0

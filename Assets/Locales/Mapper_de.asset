@@ -670,26 +670,38 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 234935484416
-    m_Localized: 'Current BPM: {CurrentBPM:0.###}'
+    m_Localized: 'Momentaner BPM: {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 1123800776704
-    m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
+    m_Localized: "Rot/Blau Verh\xE4ltnis: {RedBlueRatio:F2}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 3209883108945920
-    m_Localized: 'Bombs: {BombCount}'
+    m_Localized: Bomben:{BombCount}
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 12803634470490112
-    m_Localized: Select the new color for this bookmark.
+    m_Localized: "W\xE4hle die neue Farbe f\xFCr dieses Lesezeichen aus."
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
     m_Localized: "W\xE4hle zuerst etwas aus!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889908591489024
+    m_Localized: Lesezeichenname
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889912282476544
+    m_Localized: Lesezeichenfarbe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118373130107551744
+    m_Localized: Objects found outside map. Do you want to remove them?
     m_Metadata:
       m_Items: []
   references:

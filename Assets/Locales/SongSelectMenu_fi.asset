@@ -122,15 +122,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Sort by Song Name
+    m_Localized: Lajittele kappaleen nimen mukaan
     m_Metadata:
       m_Items: []
   - m_Id: 28
-    m_Localized: Sort by Song Artist
+    m_Localized: "Lajittele kappaleen esitt\xE4j\xE4n mukaan"
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Sort by Date Modified
+    m_Localized: "Lajittele muokkausp\xE4iv\xE4m\xE4\xE4r\xE4n perusteella"
     m_Metadata:
       m_Items: []
   references:

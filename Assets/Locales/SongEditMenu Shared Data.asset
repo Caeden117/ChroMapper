@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: SongEditMenu Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 78
   m_TableCollectionName: SongEditMenu
   m_TableCollectionNameGuidString: b86ac019838731d46842f98842efbe60
   m_Entries:
@@ -216,6 +215,16 @@ MonoBehaviour:
     m_Key: jumpOffset.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 44795657592176640
+    m_Key: reactionTime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44793699250667520
+    m_Key: 'reactionTime.tooltip
+
+'
+    m_Metadata:
+      m_Items: []
   - m_Id: 51
     m_Key: zip
     m_Metadata:
@@ -254,10 +263,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 61
     m_Key: preview.length
-    m_Metadata:
-      m_Items: []
-  - m_Id: 62
-    m_Key: songtimeoffset.warning
     m_Metadata:
       m_Items: []
   - m_Id: 63
@@ -320,7 +325,38 @@ MonoBehaviour:
     m_Key: files.conflict
     m_Metadata:
       m_Items: []
+  - m_Id: 56342565678678016
+    m_Key: environmentremoval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56344581129830400
+    m_Key: environmentremoval.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104117395359141888
+    m_Key: quest.exporting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104117528192749568
+    m_Key: quest.exporting_progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104118050203242496
+    m_Key: quest.no-devices
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104118270903324672
+    m_Key: quest.no-quest
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
+  m_KeyGenerator:
+    id: 0
   references:
     version: 1
+    00000000:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1639157567260

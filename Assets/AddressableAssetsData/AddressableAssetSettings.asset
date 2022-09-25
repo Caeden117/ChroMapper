@@ -55,14 +55,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 89885db7f04344d46ad3175d1aa8ed08, type: 2}
   - {fileID: 11400000, guid: 242106b41a72fd54f964492b5126216b, type: 2}
   - {fileID: 11400000, guid: 08f4d039278572d4884a12eecd542c00, type: 2}
-  - {fileID: 11400000, guid: 222441cc57128f74a95cc543fc7d1102, type: 2}
-  - {fileID: 11400000, guid: 3c1ac01216b1517408336aacd481ae76, type: 2}
-  - {fileID: 11400000, guid: 6d0dc327a8510d74fa39d7ec8bbec5e8, type: 2}
-  - {fileID: 11400000, guid: 0074cb7f8e162514e9dc16795152a39d, type: 2}
-  - {fileID: 11400000, guid: 4fac31b6fddf13c42bf853fa8f9c9a4b, type: 2}
-  - {fileID: 11400000, guid: 839a0188f394b214f9e9b39d46dca278, type: 2}
-  - {fileID: 11400000, guid: 973c0ca82326ee74e945fd3827f403cf, type: 2}
-  - {fileID: 11400000, guid: 2ecf16f28d4a868439b3de1a9ebecc96, type: 2}
+  - {fileID: 11400000, guid: 393165d6e57947b468f09debea568b3a, type: 2}
+  - {fileID: 11400000, guid: e95cbf4067bdb7b41be02f9da61e10f1, type: 2}
+  - {fileID: 11400000, guid: c0e0863c1c6e57349be4055f80c3c34d, type: 2}
+  - {fileID: 11400000, guid: ac3231f31671ae54a9cc4114cbdea89e, type: 2}
+  - {fileID: 11400000, guid: 684bd3f8d4e04cf42beb4a44db396bf9, type: 2}
+  - {fileID: 11400000, guid: ac06d931c6080944abb8f6b890acbde6, type: 2}
+  - {fileID: 11400000, guid: c0e8ea91202fc564cbccb29b9e3551ce, type: 2}
+  - {fileID: 11400000, guid: d7cea6391e2a8ef47aec38315d5e840d, type: 2}
+  - {fileID: 11400000, guid: d4f36b942c783ad4bb27f7e250e25070, type: 2}
+  - {fileID: 11400000, guid: 9625a4947b7830d4f8bd1c62f5ec98b3, type: 2}
+  - {fileID: 11400000, guid: d3050478cecee1e4d9cf16895345ae9c, type: 2}
+  - {fileID: 11400000, guid: 0f99fb9f07a68c045a40f4e60b689b6d, type: 2}
+  - {fileID: 11400000, guid: a4fd4bbc8cf2223448bb1b3c032420d2, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -118,6 +123,8 @@ MonoBehaviour:
     - Locale-en-PT
     - Locale-es-ES
     - Locale-sv-SE
+    - Locale-ko
+    - Locale-zh-CN
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 3d15de3f04647aa4d8a8dbdfb4685e52, type: 2}

@@ -23,6 +23,27 @@ public class ImageWithIndependentRoundedCorners : MonoBehaviour
     // Vector2.right rotated counter-clockwise by 45 degrees
     private static readonly Vector2 hNorm = new Vector2(.7071068f, .7071068f);
 
+    public void Refresh()
+    {
+        if (cloneMaterial)
+        {
+            mat = new Material(material);
+            Image i = GetComponent<Image>();
+            i.material = mat;
+            i.material.name = "Inherited From Round Corners";
+        }
+        else
+        {
+            mat = material;
+        }
+
+        Rect rect = ((RectTransform)transform).rect;
+        RecalculateProps(rect.size);
+        mat.SetVector(prop_rect2props, rect2props);
+        mat.SetVector(prop_halfSize, rect.size * .5f);
+        mat.SetVector(prop_radiuses, r);
+    }
+
     private void OnRectTransformDimensionsChange()
     {
         Refresh();
@@ -65,26 +86,4 @@ public class ImageWithIndependentRoundedCorners : MonoBehaviour
         rect2props.x = origin.x;
         rect2props.y = origin.y;
     }
-
-    private void Refresh()
-    {
-        if (cloneMaterial)
-        {
-            mat = new Material(material);
-            Image i = GetComponent<Image>();
-            i.material = mat;
-            i.material.name = "Inherited From Round Corners";
-        }
-        else
-        {
-            mat = material;
-        }
-
-        Rect rect = ((RectTransform)transform).rect;
-        RecalculateProps(rect.size);
-        mat.SetVector(prop_rect2props, rect2props);
-        mat.SetVector(prop_halfSize, rect.size * .5f);
-        mat.SetVector(prop_radiuses, r);
-    }
-
 }

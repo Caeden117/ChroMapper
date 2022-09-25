@@ -15,16 +15,11 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Estonian
   m_Data:
     m_SerializedData: []
-  m_GUID: 36d61a25332e13d4ebe45cce9d8bb0b0
-  m_SerializeEntries:
-  - m_GUID: 5821b4d1a0fe58d4ba6d85e9e1e6481a
-    m_Address: PersistentUI_et
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-et
+  m_GUID: 32d2181c2354f8449b708994cc1ccf06
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 1d4cba40167765d4cbbd22cf2b561056, type: 2}
-    - {fileID: 11400000, guid: ab6b8ebd57ec08c4a9972161f8ac8254, type: 2}
+    - {fileID: 11400000, guid: a7fff970297d4f54da1a3f7207aa1ab5, type: 2}
+    - {fileID: 11400000, guid: cc9f38982ee15b94bb7223b6a29c32b2, type: 2}

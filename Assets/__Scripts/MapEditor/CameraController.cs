@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     [FormerlySerializedAs("_rotationCallbackController")] public RotationCallbackController RotationCallbackController;
 
     [FormerlySerializedAs("camera")] public Camera Camera;
+    [SerializeField] private UniversalRenderPipelineAsset urpAsset;
 
     [Header("Debug")] [SerializeField] private float x;
 
@@ -39,6 +41,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         typeof(CMInput.ICustomEventsContainerActions), typeof(CMInput.IBPMTapperActions),
         typeof(CMInput.IEventUIActions), typeof(CMInput.IUIModeActions)
     };
+
+    private Vector2 savedMousePos = Vector2.zero;
 
     private UniversalAdditionalCameraData cameraExtraData;
 
@@ -67,7 +71,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         Camera.fieldOfView = Settings.Instance.CameraFOV;
         cameraExtraData = Camera.GetUniversalAdditionalCameraData();
         UpdateAA(Settings.Instance.CameraAA);
+        UpdateRenderScale(Settings.Instance.RenderScale);
         Settings.NotifyBySettingName(nameof(Settings.CameraAA), UpdateAA);
+        Settings.NotifyBySettingName(nameof(Settings.RenderScale), UpdateRenderScale);
         OnLocation(0);
         LockedOntoNoteGrid = true;
     }
@@ -81,10 +87,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
         if (UIMode.SelectedMode == UIModeType.Playing)
         {
-            z = z < 0 ? 0.25f : 1.8f;
-            x = x < 0 ? -2f : x > 0 ? 2f : 0;
+            var posY = z < 0 ? 0.25f : 1.8f;
+            var posX = x < 0 ? -2f : x > 0 ? 2f : 0;
 
-            transform.SetPositionAndRotation(new Vector3(x, z, -7), Quaternion.Euler(new Vector3(0, -x, 0)));
+            transform.SetPositionAndRotation(new Vector3(posX, posY, -6), Quaternion.Euler(new Vector3(0, -posX, 0)));
 
             return;
         }
@@ -151,10 +157,34 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         }
     }
 
+    private void UpdateRenderScale(object renderScale)
+    {
+        urpAsset.renderScale = Mathf.Sqrt((int)renderScale / 100f); // Sqrt to get scale per dimension
+    }
+
     public void SetLockState(bool lockMouse)
     {
-        Cursor.lockState = lockMouse ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !lockMouse;
+        var mouseLocked = Cursor.lockState == CursorLockMode.Locked;
+        if (lockMouse && !mouseLocked)
+        {
+            savedMousePos = Mouse.current.position.ReadValue();
+
+            // Locked state automatically hides the cursor, so no need to set visibility
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else if (!lockMouse && mouseLocked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+
+            // Apparently these bugs are fixed in more recent Unity versions, so remove this when we upgrade
+#if UNITY_STANDALONE_WIN
+            Mouse.current.WarpCursorPosition(new Vector2(savedMousePos.x, Screen.height - savedMousePos.y));
+#elif UNITY_STANDALONE_OSX
+            // it's extra broken on macOS so just don't move the cursor I guess
+#else
+            Mouse.current.WarpCursorPosition(savedMousePos);
+#endif
+        }
     }
 
     //Oh boy new Unity Input System POGCHAMP

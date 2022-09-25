@@ -691,6 +691,14 @@ MonoBehaviour:
     m_Key: map.quickedit.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 1698793607168
+    m_Key: misc.questadb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1897456816128
+    m_Key: misc.questadb.tooltip
+    m_Metadata:
+      m_Items: []
   - m_Id: 1345062612992
     m_Key: countersplus.heading
     m_Metadata:
@@ -849,6 +857,190 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 16676035970138112
     m_Key: graphics.antialiasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67492742661058560
+    m_Key: graphics.renderscaletooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Key: graphics.renderscale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67494721340747776
+    m_Key: graphics.renderscale.info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3768991576559616
+    m_Key: quest.success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Key: quest.export
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Key: quest.adb_error_download
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Key: quest.adb_not_found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635263
+    m_Key: quest.downloading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Key: quest.adb_finished_downloading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Key: quest.extracting_download
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21544433260560384
+    m_Key: quest.install_adb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71906481403138048
+    m_Key: quest.downloading_progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91579491578740736
+    m_Key: tab.appearance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101771971410460672
+    m_Key: trackappearance.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773637585141760
+    m_Key: misc.instantloadingtransitions.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773995594153984
+    m_Key: misc.instantloadingtransitions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788523392335872
+    m_Key: graphics.tracklength.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788529759289344
+    m_Key: graphics.tracklength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795760294789120
+    m_Key: graphics.hideplatformobjects.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795765399257088
+    m_Key: graphics.hideplatformobjects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802838346366976
+    m_Key: graphics.passednotetransparency.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802902695378944
+    m_Key: graphics.passednotetransparency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855016515731456
+    m_Key: editormapinfo.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855364424859648
+    m_Key: mapping.displaysongdetails.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855374591852544
+    m_Key: mapping.displaysongdetails
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855382842048512
+    m_Key: mapping.displaydiffdetails.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855392124043264
+    m_Key: mapping.displaydiffdetails
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096011425677312
+    m_Key: graphics.displaybookmarks.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096015523512320
+    m_Key: graphics.displaybookmarks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186250655694848
+    m_Key: graphics.displaybookmarkgridline.toolip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186255848243200
+    m_Key: graphics.displaybookmarkgridline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193073215438848
+    m_Key: graphics.mainbeatlinewidth.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193078810640384
+    m_Key: graphics.mainbeatlinewidth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206124970934272
+    m_Key: graphics.bookmarktooltiptimeinfo.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206129182015488
+    m_Key: graphics.bookmarktooltiptimeinfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206134429089792
+    m_Key: graphics.bookmarkuiwidth.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206140842180608
+    m_Key: graphics.bookmarkuiwidth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102395595171495936
+    m_Key: bookmarkappearance.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102396931141206016
+    m_Key: camera.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447908275814400
+    m_Key: general.formatjson.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447938869067776
+    m_Key: general.formatjson
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731652719513600
+    m_Key: quest.adb_include_path
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731842968948736
+    m_Key: quest.adb_include_path.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008036237737984
+    m_Key: general.vanillaonlyshift.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008044110446592
+    m_Key: general.vanillaonlyshift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150232748497440768
+    m_Key: quest.uninstalling_adb
     m_Metadata:
       m_Items: []
   m_Metadata:

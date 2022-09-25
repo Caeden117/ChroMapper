@@ -66,19 +66,37 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         StartCoroutine(TransitionMenu());
     }
 
-    public void Quit(bool save)
+    public void Quit(bool save) 
     {
-        if (save)
+        if (save) // Save and Quit button
         {
-            saveController.Save();
-            SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
+            saveController.CheckAndSave(AutoSaveController.SaveType.Menu);
         }
-        else
+        else // Quit button
         {
             PersistentUI.Instance.ShowDialogBox("Mapper", "save", SaveAndExitResult,
                 PersistentUI.DialogBoxPresetType.YesNoCancel);
         }
     }
+
+    public void SaveAndExitToMenu() 
+    {
+        saveController.Save();
+        SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
+    }
+
+    public void SaveAndQuitCM()
+    {
+        saveController.Save();
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+                Application.Quit();
+#endif
+    }
+
+    public void ExitToMenu() => PersistentUI.Instance.ShowDialogBox("Mapper", "save", 
+            SaveAndExitResult, PersistentUI.DialogBoxPresetType.YesNoCancel);
 
     public void CloseCM() =>
         PersistentUI.Instance.ShowDialogBox("Mapper", "quit.save",
@@ -88,8 +106,7 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
     {
         if (result == 0) //Left button (ID 0) clicked; the user wants to Save before exiting.
         {
-            saveController.Save();
-            SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
+            saveController.CheckAndSave(AutoSaveController.SaveType.Menu);
         }
         else if (result == 1) //Middle button (ID 1) clicked; the user does not want to save before exiting.
         {
@@ -102,12 +119,7 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
     {
         if (result == 0) //Left button (ID 0) clicked; the user wants to Save before exiting.
         {
-            saveController.Save();
-#if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
-#else
-                Application.Quit();
-#endif
+            saveController.CheckAndSave(AutoSaveController.SaveType.Quit);
         }
         else if (result == 1) //Middle button (ID 1) clicked; the user does not want to save before exiting.
 #if UNITY_EDITOR

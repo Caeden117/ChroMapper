@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: fr
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - id: 0
   m_TableData:
   - m_Id: 1
     m_Localized: Infos du morceau
@@ -95,7 +96,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "D\xE9place le morceau vers l'avant de ce montant\n(en millisecondes)"
+    m_Localized: "D\xE9place le morceau vers l'avant de ce montant\n(en secondes)"
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -107,7 +108,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: "Le temps (en secondes) o\xF9 l'aper\xE7u du morceau d\xE9marre."
+    m_Localized: "Le temps (en secondes) o\xF9 l'aper\xE7u de la musique d\xE9marre."
     m_Metadata:
       m_Items: []
   - m_Id: 24
@@ -119,7 +120,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: "Dur\xE9e de l'aper\xE7u du morceau (en secondes)."
+    m_Localized: "Dur\xE9e de l'aper\xE7u de la musique (en secondes)."
     m_Metadata:
       m_Items: []
   - m_Id: 27
@@ -167,7 +168,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: "S\xE9lectionnez parmi une liste de plateformes custom install\xE9es."
+    m_Localized: "S\xE9lectionnez depui une liste de plateformes customes install\xE9es."
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -271,12 +272,6 @@ MonoBehaviour:
       votre aper\xE7u ne continuent pas apr\xE8s la fin de la chanson."
     m_Metadata:
       m_Items: []
-  - m_Id: 62
-    m_Localized: "L'utilisation de l'offset temporel peut entra\xEEner des sons d\xE9synchronis\xE9s
-      dans le jeu.\n\nIl est recommand\xE9 d'appliquer vos d\xE9calages \xE0 l'aide
-      d'un manipulateur audio tel qu'Audacity."
-    m_Metadata:
-      m_Items: []
   - m_Id: 63
     m_Localized: "Voulez-vous vraiment supprimer {0}?\n\nLes infos du morceau seront
       \xE9galement sauvegard\xE9es, cela dispara\xEEtra donc pour toujours!"
@@ -341,13 +336,55 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76
     m_Localized: "Les fichiers r\xE9f\xE9renc\xE9s doivent se trouver dans le dossier
-      du morceau. Copier ce fichier dans le dossier du morceau?"
+      du morceau. Voulez-vous copier ce fichier dans le dossier du morceau?"
     m_Metadata:
       m_Items: []
   - m_Id: 77
     m_Localized: "Un autre fichier portant ce nom existe d\xE9j\xE0 dans le dossier
-      du morceau ! L'utiliser \xE0 la place?"
+      de la musique! L'utiliser \xE0 la place?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104117528192749568
+    m_Localized: '{0}% complete.'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 44795657592176640
+    m_Localized: Reaction Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44793699250667520
+    m_Localized: 'How much time the the player has to react
+
+      (in milliseconds)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56342565678678016
+    m_Localized: Environment Removal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56344581129830400
+    m_Localized: 'Removes objects using Contains lookup.
+
+      (Does not effect
+      the editor environment.)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104117395359141888
+    m_Localized: Exporting song to your Quest...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104118050203242496
+    m_Localized: Could not find any connected devices.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104118270903324672
+    m_Localized: Could not find a connected Quest.
     m_Metadata:
       m_Items: []
   references:
     version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0010d21a57e67101

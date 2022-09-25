@@ -123,6 +123,9 @@ public class OptionsInputActionController : MonoBehaviour
             keybindNameToInputField.Add(name, field);
             keys++;
         }
+
+        // Finalize a rebind iff rebind operation was successful (keys == maxKeys || enter key pressed)
+        CompleteRebind();
     }
 
     private void CompleteRebind()
@@ -136,7 +139,7 @@ public class OptionsInputActionController : MonoBehaviour
         action.Disable();
         LoadKeybindsController.AddKeybindOverride(keybindOverride);
         action.Enable();
-        rebinding = false;
+        Reinitialize();
     }
 
     public void CancelKeybindRebind(string _)
@@ -144,9 +147,37 @@ public class OptionsInputActionController : MonoBehaviour
         if (!rebinding) return;
         Debug.Log($"Cancelling rebinding for {action.name}");
         StopAllCoroutines();
+        Reinitialize();
+    }
 
-        if (overrideKeybindPaths.Count > 0) CompleteRebind();
+    // this code totally not yoinked from ChromaToggle reloaded
+    public string PrettifyName(string name)
+    {
+        var gamemodeCharacters = name.ToCharArray();
+        var builtFormat = new StringBuilder();
+        for (var i = 0; i < gamemodeCharacters.Length; i++)
+        {
+            if (i == 0)
+            {
+                builtFormat.Append(gamemodeCharacters[i].ToString().ToUpper());
+                continue;
+            }
 
+            if (gamemodeCharacters[i].ToString().ToUpper() == gamemodeCharacters[i].ToString() &&
+                !char.IsNumber(gamemodeCharacters[i]))
+            {
+                builtFormat.Append(" ");
+            }
+
+            builtFormat.Append(gamemodeCharacters[i]);
+        }
+
+        return builtFormat.ToString();
+    }
+
+    private void Reinitialize()
+    {
+        rebinding = false;
         binds.Clear();
         keybindNameToInputField.Clear();
 
@@ -175,30 +206,5 @@ public class OptionsInputActionController : MonoBehaviour
         {
             Init(sectionName, action, action.bindings.ToList());
         }
-    }
-
-    // this code totally not yoinked from ChromaToggle reloaded
-    public string PrettifyName(string name)
-    {
-        var gamemodeCharacters = name.ToCharArray();
-        var builtFormat = new StringBuilder();
-        for (var i = 0; i < gamemodeCharacters.Length; i++)
-        {
-            if (i == 0)
-            {
-                builtFormat.Append(gamemodeCharacters[i].ToString().ToUpper());
-                continue;
-            }
-
-            if (gamemodeCharacters[i].ToString().ToUpper() == gamemodeCharacters[i].ToString() &&
-                !char.IsNumber(gamemodeCharacters[i]))
-            {
-                builtFormat.Append(" ");
-            }
-
-            builtFormat.Append(gamemodeCharacters[i]);
-        }
-
-        return builtFormat.ToString();
     }
 }

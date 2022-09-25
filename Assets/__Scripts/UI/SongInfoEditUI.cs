@@ -6,9 +6,13 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using JetBrains.Annotations;
+using QuestDumper;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -91,6 +95,9 @@ public class SongInfoEditUI : MenuBase
     private BeatSaberSong Song => BeatSaberSongContainer.Instance.Song;
     private GameObject ContributorWrapper => contributorController.transform.parent.gameObject;
 
+    [SerializeField] private GameObject questExportButton;
+    private List<string> questCandidates = new List<string>();
+    
     private void Start()
     {
         if (BeatSaberSongContainer.Instance == null)
@@ -98,6 +105,8 @@ public class SongInfoEditUI : MenuBase
             SceneManager.LoadScene(0);
             return;
         }
+
+        questExportButton.SetActive(Adb.IsAdbInstalled(out _));
 
         // Make sure the contributor panel has been initialised
         ContributorWrapper.SetActive(true);
@@ -147,12 +156,6 @@ public class SongInfoEditUI : MenuBase
         Song.PreviewStartTime = GetTextValue(prevStartField);
         Song.PreviewDuration = GetTextValue(prevDurField);
         Song.SongTimeOffset = GetTextValue(offset);
-
-        if (Song.SongTimeOffset != 0)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-        }
 
         Song.EnvironmentName = GetEnvironmentNameFromID(environmentDropdown.value);
 
@@ -207,11 +210,6 @@ public class SongInfoEditUI : MenuBase
         audioPath.text = Song.SongFilename;
 
         offset.text = Song.SongTimeOffset.ToString(CultureInfo.InvariantCulture);
-        if (Song.SongTimeOffset != 0)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-        }
 
         bpmField.text = Song.BeatsPerMinute.ToString(CultureInfo.InvariantCulture);
         prevStartField.text = Song.PreviewStartTime.ToString(CultureInfo.InvariantCulture);
@@ -264,7 +262,7 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     /// <param name="useTemp">Should we load the song the user has updated in the UI or from the saved song data</param>
     /// <returns>Coroutine IEnumerator</returns>
-    private IEnumerator LoadAudio(bool useTemp = true)
+    private IEnumerator LoadAudio(bool useTemp = true, bool applySongTimeOffset = false)
     {
         if (Song.Directory == null) yield break;
 
@@ -302,11 +300,13 @@ public class SongInfoEditUI : MenuBase
 
                 clip.name = "Song";
 
-                if (float.Parse(offset.text) != 0)
+                if (GetTextValue(offset) != 0 && applySongTimeOffset)
                 {
                     // Take songTimeOffset into account by adjusting clip data forward/backward
+
+                    // Guaranteed to always be an integer multiple of the number of channels
                     var songTimeOffsetSamples =
-                        Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency * clip.channels);
+                        Mathf.CeilToInt(float.Parse(offset.text) * clip.frequency) * clip.channels;
                     var samples = new float[clip.samples * clip.channels];
 
                     clip.GetData(samples, 0);
@@ -333,9 +333,14 @@ public class SongInfoEditUI : MenuBase
                             samples[i] = shiftIndex >= samples.Length ? 0 : samples[shiftIndex];
                         }
 
-                        Array.Resize(ref samples, samples.Length - songTimeOffsetSamples);
+                        // Bit of a hacky workaround, since you can't create an AudioClip with 0 length,
+                        // and something in the spectrogram code doesn't like too short lengths either
+                        // This just sets a minimum of 4096 samples per channel
+                        Array.Resize(ref samples, Math.Max(samples.Length - songTimeOffsetSamples, clip.channels * 4096));
                     }
 
+                    // Create a new AudioClip because apparently you can't change the length of an existing one
+                    clip = AudioClip.Create(clip.name, samples.Length / clip.channels, clip.channels, clip.frequency, false);
                     clip.SetData(samples, 0);
                 }
 
@@ -378,10 +383,145 @@ public class SongInfoEditUI : MenuBase
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
-    private void AddToZip(ZipArchive archive, string fileLocation)
+    // Maps a dictionary as [fullFilePath] -> [location of file relative to the song directory]
+    private void AddToFileDictionary(IDictionary<string, string> fileMap, string fileLocation)
     {
         var fullPath = Path.Combine(Song.Directory, fileLocation);
-        if (File.Exists(fullPath)) archive.CreateEntryFromFile(fullPath, fileLocation);
+        if (File.Exists(fullPath))
+        {
+            fileMap.Add(fullPath, fileLocation);
+        }
+    }
+
+    [CanBeNull]
+    private Dictionary<string, string> ExportedFiles()
+    {
+        // path:entry_name
+        var exportedFiles = new Dictionary<string, string>();
+
+        var infoFileLocation = "";
+        if (Song.Directory != null)
+        {
+            infoFileLocation = Path.Combine(Song.Directory, "info.dat");
+        }
+
+        if (!File.Exists(infoFileLocation))
+        {
+            Debug.LogError(":hyperPepega: :mega: WHY TF ARE YOU TRYING TO PACKAGE A MAP WITH NO INFO.DAT FILE");
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "zip.warning", null, PersistentUI.DialogBoxPresetType.Ok);
+            return null;
+        }
+
+        exportedFiles.Add(infoFileLocation, "Info.dat");
+        AddToFileDictionary(exportedFiles, Song.CoverImageFilename);
+        AddToFileDictionary(exportedFiles, Song.SongFilename);
+        AddToFileDictionary(exportedFiles, "cinema-video.json");
+
+        foreach (var contributor in Song.Contributors.DistinctBy(it => it.LocalImageLocation))
+        {
+            var imageLocation = Path.Combine(Song.Directory!, contributor.LocalImageLocation);
+            if (contributor.LocalImageLocation != Song.CoverImageFilename &&
+                File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
+            {
+                exportedFiles.Add(imageLocation, contributor.LocalImageLocation);
+            }
+        }
+        
+        foreach (var map in Song.DifficultyBeatmapSets.SelectMany(set => set.DifficultyBeatmaps))
+        {
+            AddToFileDictionary(exportedFiles, map.BeatmapFilename);
+        }
+
+        return exportedFiles;
+    }
+
+    // TODO: Move this to a proper location or make configurable with a default
+    public const string QUEST_CUSTOM_SONGS_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
+    // I added this so the non-quest maintainers can use it as a reference for adding WIP uploads
+    // this does indeed exist and work, please don't refrain from asking me. 
+    public const string QUEST_CUSTOM_SONGS_WIP_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels"; 
+    
+    /// <summary>
+    /// Exports the files to the Quest using adb
+    /// </summary>
+    public async void ExportToQuest()
+    {
+        var (devices, output) = await Adb.GetDevices();
+        var questCandidates = new List<string>();
+
+        if (devices == null || !string.IsNullOrEmpty(output.ErrorOut))
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.no-devices", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+
+        foreach (var device in devices)
+        {
+            var (result, error) = await Adb.IsQuest(device);
+
+            if (result && string.IsNullOrEmpty(error.ErrorOut))
+            {
+                questCandidates.Add(device);
+            }    
+        }
+
+        if (questCandidates.Count == 0)
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.no-quest", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+
+        var dialog = PersistentUI.Instance.CreateNewDialogBox();
+        dialog.WithTitle("SongEditMenu", "quest.exporting");
+
+        var progressBar = dialog.AddComponent<ProgressBarComponent>();
+        progressBar.WithCustomLabelFormatter(f =>
+            LocalizationSettings.StringDatabase
+                .GetLocalizedString("SongEditMenu", "quest.exporting_progress",
+                new object[] { f }));
+        
+        dialog.Open();
+        
+        // We should always be exporting to WIP Levels. CustomLevels are for downloaded BeatSaver songs.
+        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_WIP_LOCATION, Song.CleanSongName).Replace("\\", @"/");
+        var exportedFiles = ExportedFiles();
+
+        if (exportedFiles == null) return;
+
+
+        Debug.Log($"Creating folder if needed at {songExportPath}");
+
+        var totalFiles = questCandidates.Count * exportedFiles.Count;
+        var fCount = 0;
+        
+        foreach (var questCandidate in questCandidates)
+        {
+            var createDir = await Adb.Mkdir(songExportPath, questCandidate);
+            Debug.Log($"ADB Create dir: {createDir}");
+
+
+            foreach (var fileNamePair in exportedFiles)
+            {
+                var locationRelativeToSongDir = fileNamePair.Value;
+                
+                var questPath = Path.Combine(songExportPath, locationRelativeToSongDir).Replace("\\", @"/");
+
+                Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
+
+                var log = await Adb.Push(fileNamePair.Key, questPath, questCandidate);
+                Debug.Log(log.ToString());
+
+                fCount++;
+                progressBar.UpdateProgressBar((float) fCount / totalFiles);
+            }
+        }
+        
+        dialog.Clear();
+        
+        Debug.Log("EXPORTED TO QUEST SUCCESSFULLY YAYAAYAYA");
+        
+        dialog.WithTitle("Options", "quest.success");
+        dialog.AddFooterButton(null, "PersistentUI", "ok");
     }
 
     /// <summary>
@@ -407,30 +547,16 @@ public class SongInfoEditUI : MenuBase
                 PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
+        
+        var exportedFiles = ExportedFiles();
+
+        if (exportedFiles == null) return;
 
         using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
         {
-            archive.CreateEntryFromFile(infoFileLocation,
-                "Info.dat"); //oh yeah lolpants is gonna kill me if it isnt packaged as "Info.dat"
-
-            AddToZip(archive, Song.CoverImageFilename);
-            AddToZip(archive, Song.SongFilename);
-            AddToZip(archive, "cinema-video.json");
-
-            foreach (var contributor in Song.Contributors.DistinctBy(it => it.LocalImageLocation))
+            foreach (var pathFileEntryPair in exportedFiles)
             {
-                var imageLocation = Path.Combine(Song.Directory, contributor.LocalImageLocation);
-                if (contributor.LocalImageLocation != Song.CoverImageFilename &&
-                    File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
-                {
-                    archive.CreateEntryFromFile(imageLocation, contributor.LocalImageLocation);
-                }
-            }
-
-            foreach (var set in Song.DifficultyBeatmapSets)
-            {
-                foreach (var map in set.DifficultyBeatmaps)
-                    AddToZip(archive, map.BeatmapFilename);
+                archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
             }
         }
 
@@ -546,7 +672,7 @@ public class SongInfoEditUI : MenuBase
                     .BeatmapCharacteristicName;
                 Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
                 BeatSaberSongContainer.Instance.Map = map;
-                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false));
+                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
             }
         }
     }

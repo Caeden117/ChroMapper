@@ -191,7 +191,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: RGB Lighting
+    m_Localized: "RGB-\u043E\u0441\u0432\u0435\u0449\u0435\u043D\u0438\u0435"
     m_Metadata:
       m_Items: []
   - m_Id: 41
@@ -204,7 +204,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Measure Lines Render Over Everything
+    m_Localized: "\u041E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435
+      \u043B\u0438\u043D\u0438\u0439 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u044F
+      \u043F\u043E\u0432\u0435\u0440\u0445 \u0432\u0441\u0435\u0433\u043E"
     m_Metadata:
       m_Items: []
   - m_Id: 44
@@ -285,54 +287,89 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'To rebind keys, click on any textbox relating to the keybind you
-      want to rebind. Then, press each key in order of modifiers (Ctrl, Shift, Alt),
-      then the base key as the last one.
-
-
-      Most keybinds restrict you to a
-      3-key composite: One base, and two modifiers. You can press the Enter key at
-      any time to complete rebinding with two keys, or just one.
-
-
-      Pay attention
-      to how each keybind is setup. Some keybinds, like "Move Camera", require all
-      composites to be filled out in order for rebinding to be complete. These keybinds
-      would usually look like they were made for movement, or with one distinct "positive"
-      and "negative" button.'
+    m_Localized: "\u0427\u0442\u043E\u0431\u044B \u043F\u0435\u0440\u0435\u043F\u0440\u0438\u0432\u044F\u0437\u0430\u0442\u044C
+      \u043A\u043B\u0430\u0432\u0438\u0448\u0438, \u043D\u0430\u0436\u043C\u0438\u0442\u0435
+      \u043D\u0430 \u043B\u044E\u0431\u043E\u0435 \u0442\u0435\u043A\u0441\u0442\u043E\u0432\u043E\u0435
+      \u043F\u043E\u043B\u0435, \u043E\u0442\u043D\u043E\u0441\u044F\u0449\u0435\u0435\u0441\u044F
+      \u043A \u043F\u0440\u0438\u0432\u044F\u0437\u043A\u0435 \u043A\u043B\u0430\u0432\u0438\u0448,
+      \u043A\u043E\u0442\u043E\u0440\u0443\u044E \u0432\u044B \u0445\u043E\u0442\u0438\u0442\u0435
+      \u043F\u0435\u0440\u0435\u043F\u0440\u0438\u0432\u044F\u0437\u0430\u0442\u044C.
+      \u0417\u0430\u0442\u0435\u043C \u043D\u0430\u0436\u043C\u0438\u0442\u0435 \u043A\u0430\u0436\u0434\u0443\u044E
+      \u043A\u043B\u0430\u0432\u0438\u0448\u0443 \u043F\u043E \u043F\u043E\u0440\u044F\u0434\u043A\u0443
+      \u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u043C \u043E\u0431\u0440\u0430\u0437\u043E\u043C:
+      \u043A\u043B\u0430\u0432\u0438\u0448\u0430-\u043C\u043E\u0434\u0438\u0444\u0438\u043A\u0430\u0442\u043E\u0440
+      (Ctrl, Shift, Alt), \u0437\u0430\u0442\u0435\u043C - \u043B\u044E\u0431\u044B\u0435
+      \u0434\u0440\u0443\u0433\u0438\u0435.\n\n\u0411\u043E\u043B\u044C\u0448\u0438\u043D\u0441\u0442\u0432\u043E
+      \u043F\u0440\u0438\u0432\u044F\u0437\u043E\u043A \u043E\u0433\u0440\u0430\u043D\u0438\u0447\u0438\u0432\u0430\u044E\u0442\u0441\u044F
+      \u043A\u043E\u043C\u0431\u0438\u043D\u0430\u0446\u0438\u0435\u0439 \u0438\u0437
+      \u0442\u0440\u0435\u0445 \u043A\u043B\u0430\u0432\u0438\u0448: \u043E\u0434\u043D\u0430
+      \u043B\u044E\u0431\u0430\u044F \u0438 \u0434\u0432\u0435 \u043A\u043B\u0430\u0432\u0438\u0448\u0438-\u043C\u043E\u0434\u0438\u0444\u0438\u043A\u0430\u0442\u043E\u0440\u044B.
+      \u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u0432 \u043B\u044E\u0431\u043E\u0439
+      \u043C\u043E\u043C\u0435\u043D\u0442 \u043D\u0430\u0436\u0430\u0442\u044C \u043A\u043B\u0430\u0432\u0438\u0448\u0443
+      Enter, \u0447\u0442\u043E\u0431\u044B \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u044C
+      \u043F\u0440\u0438\u0432\u044F\u0437\u043A\u0443 \u043D\u0430 \u043E\u0434\u043D\u043E\u0439
+      \u0438\u043B\u0438 \u0434\u0432\u0443\u0445 \u043A\u043B\u0430\u0432\u0438\u0448\u0430\u0445.\n\n\u041E\u0431\u0440\u0430\u0442\u0438\u0442\u0435
+      \u0432\u043D\u0438\u043C\u0430\u043D\u0438\u0435 \u043D\u0430 \u0442\u043E,
+      \u043A\u0430\u043A \u043D\u0430\u0441\u0442\u0440\u043E\u0435\u043D\u0430 \u043A\u0430\u0436\u0434\u0430\u044F
+      \u043F\u0440\u0438\u0432\u044F\u0437\u043A\u0430. \u041D\u0435\u043A\u043E\u0442\u043E\u0440\u044B\u0435,
+      \u043D\u0430\u043F\u0440\u0438\u043C\u0435\u0440 \"\u041F\u0435\u0440\u0435\u043C\u0435\u0441\u0442\u0438\u0442\u044C
+      \u043A\u0430\u043C\u0435\u0440\u0443\", \u0442\u0440\u0435\u0431\u0443\u044E\u0442
+      \u0437\u0430\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F \u0432\u0441\u0435\u0445
+      \u043F\u043E\u043B\u0435\u0439 \u0441 \u043A\u043B\u0430\u0432\u0438\u0448\u0430\u043C\u0438
+      \u0434\u043B\u044F \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u0438\u044F
+      \u043F\u0440\u0438\u0432\u044F\u0437\u043A\u0438. \u0422\u0430\u043A\u0438\u0435
+      \u0441\u0432\u044F\u0437\u043A\u0438 \u043A\u043B\u0430\u0432\u0438\u0448 \u043E\u0431\u044B\u0447\u043D\u043E
+      \u0438\u043B\u0438 \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u0443\u044E\u0442\u0441\u044F
+      \u0434\u043B\u044F \u043F\u0435\u0440\u0435\u0434\u0432\u0438\u0436\u0435\u043D\u0438\u044F,
+      \u0438\u043B\u0438 \u0441 \u043E\u0442\u0434\u0435\u043B\u044C\u043D\u043E\u0439
+      \u043A\u043D\u043E\u043F\u043A\u043E\u0439 \"\u043F\u043B\u044E\u0441\" \u0438
+      \"\u043C\u0438\u043D\u0443\u0441\"."
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Reset Keybinds to Default
+    m_Localized: "\u0421\u0431\u0440\u043E\u0441\u0438\u0442\u044C \u0441\u043E\u0447\u0435\u0442\u0430\u043D\u0438\u044F
+      \u043A\u043B\u0430\u0432\u0438\u0448"
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: Loaded Plugins
+    m_Localized: "\u0417\u0430\u0433\u0440\u0443\u0436\u0435\u043D\u043D\u044B\u0435
+      \u043F\u043B\u0430\u0433\u0438\u043D\u044B"
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: 'Loaded Plugins: {Count}'
+    m_Localized: "\u0417\u0430\u0433\u0440\u0443\u0436\u0435\u043D\u043D\u044B\u0445
+      \u043F\u043B\u0430\u0433\u0438\u043D\u043E\u0432: {Count}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 67
-    m_Localized: Plugin Info
+    m_Localized: "\u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E
+      \u043F\u043B\u0430\u0433\u0438\u043D\u0430\u0445"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: 'ChroMapper supports the ability for developers to create and share
-      plugins.
-
-
-      ChroMapper developers will not be held liable for any damage
-      caused by loaded plugins. It is up to the user to decide which plugins they
-      want to install.
-
-
-      We recommend finding plugins made by trustworthy developers.
-      For example, look for ChroMapper plugins that are open source, where its internal
-      source code is available for all to look through and make their own informed
-      decisions.'
+    m_Localized: "ChroMapper \u043F\u043E\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442
+      \u0432\u043E\u0437\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u044C \u0441\u043E\u0437\u0434\u0430\u0432\u0430\u0442\u044C
+      \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u0438 \u043E\u0431\u043C\u0435\u043D\u0438\u0432\u0430\u0442\u044C\u0441\u044F
+      \u0438\u043C\u0438.\n\n\u0420\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u0447\u0438\u043A\u0438
+      ChroMapper \u043D\u0435 \u043D\u0435\u0441\u0443\u0442 \u043E\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043D\u043D\u043E\u0441\u0442\u0438
+      \u0437\u0430 \u043B\u044E\u0431\u043E\u0439 \u0443\u0449\u0435\u0440\u0431,
+      \u043F\u0440\u0438\u0447\u0438\u043D\u0435\u043D\u043D\u044B\u0439 \u0437\u0430\u0433\u0440\u0443\u0436\u0435\u043D\u043D\u044B\u043C\u0438
+      \u043F\u043B\u0430\u0433\u0438\u043D\u0430\u043C\u0438. \u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C
+      \u0441\u0430\u043C \u0440\u0435\u0448\u0430\u0435\u0442, \u043A\u0430\u043A\u0438\u0435
+      \u043F\u043B\u0430\u0433\u0438\u043D\u044B \u043E\u043D \u0445\u043E\u0447\u0435\u0442
+      \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C.\n\n\u041C\u044B
+      \u0440\u0435\u043A\u043E\u043C\u0435\u043D\u0434\u0443\u0435\u043C \u0438\u0441\u043A\u0430\u0442\u044C
+      \u043F\u043B\u0430\u0433\u0438\u043D\u044B, \u0441\u043E\u0437\u0434\u0430\u043D\u043D\u044B\u0435
+      \u043D\u0430\u0434\u0435\u0436\u043D\u044B\u043C\u0438 \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u0447\u0438\u043A\u0430\u043C\u0438.
+      \u041D\u0430\u043F\u0440\u0438\u043C\u0435\u0440, \u0438\u0449\u0438\u0442\u0435
+      \u043F\u043B\u0430\u0433\u0438\u043D\u044B ChroMapper \u0441 \u043E\u0442\u043A\u0440\u044B\u0442\u044B\u043C
+      \u0438\u0441\u0445\u043E\u0434\u043D\u044B\u043C \u043A\u043E\u0434\u043E\u043C,
+      \u0433\u0434\u0435 \u0438\u0441\u0445\u043E\u0434\u043D\u044B\u0439 \u043A\u043E\u0434
+      \u0434\u043E\u0441\u0442\u0443\u043F\u0435\u043D \u0434\u043B\u044F \u0432\u0441\u0435\u0445,
+      \u0447\u0442\u043E\u0431\u044B \u043F\u0440\u043E\u0441\u043C\u043E\u0442\u0440\u0435\u0442\u044C
+      \u0438 \u043F\u0440\u0438\u043D\u044F\u0442\u044C \u0441\u043E\u0431\u0441\u0442\u0432\u0435\u043D\u043D\u043E\u0435
+      \u043E\u0431\u043E\u0441\u043D\u043E\u0432\u0430\u043D\u043D\u043E\u0435 \u0440\u0435\u0448\u0435\u043D\u0438\u0435."
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -340,17 +377,25 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'The following settings are not 100% complete. They can change,
-      or be removed completely. If you are looking for a bug-free ChroMapper experience,
-      this is not the place for you.
-
-
-      Or these are new options and I just
-      haven''t given them a proper place to stay. One of the two.'
+    m_Localized: "\u041F\u0440\u0438\u0432\u0435\u0434\u0435\u043D\u043D\u044B\u0435
+      \u043D\u0438\u0436\u0435 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438
+      \u043D\u0435 \u0437\u0430\u043A\u043E\u043D\u0447\u0435\u043D\u044B \u0434\u043E
+      \u043A\u043E\u043D\u0446\u0430. \u041E\u043D\u0438 \u043C\u043E\u0433\u0443\u0442
+      \u0438\u0437\u043C\u0435\u043D\u0438\u0442\u044C\u0441\u044F \u0438\u043B\u0438
+      \u0431\u044B\u0442\u044C \u043F\u043E\u043B\u043D\u043E\u0441\u0442\u044C\u044E
+      \u0443\u0434\u0430\u043B\u0435\u043D\u044B. \u0415\u0441\u043B\u0438 \u0432\u044B
+      \u0438\u0449\u0435\u0442\u0435 ChroMapper \u0431\u0435\u0437 \u0431\u0430\u0433\u043E\u0432,
+      \u044D\u0442\u043E \u043D\u0435 \u043C\u0435\u0441\u0442\u043E \u0434\u043B\u044F
+      \u0432\u0430\u0441.\n\n\u041B\u0438\u0431\u043E \u0436\u0435 \u044D\u0442\u043E
+      \u043D\u043E\u0432\u044B\u0435 \u043E\u043F\u0446\u0438\u0438, \u0438 \u044F
+      \u043F\u0440\u043E\u0441\u0442\u043E \u043D\u0435 \u0434\u0430\u043B \u0438\u043C
+      \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0435\u0433\u043E \u043C\u0435\u0441\u0442\u0430.
+      \u041E\u0434\u043D\u043E \u0438\u0437 \u0434\u0432\u0443\u0445."
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: Experimental Settings
+    m_Localized: "\u042D\u043A\u0441\u043F\u0435\u0440\u0438\u043C\u0435\u043D\u0442\u0430\u043B\u044C\u043D\u044B\u0435
+      \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
     m_Metadata:
       m_Items: []
   - m_Id: 72
@@ -393,11 +438,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 83
-    m_Localized: Change how often Auto Save will trigger.
+    m_Localized: "\u041A\u0430\u043A \u0447\u0430\u0441\u0442\u043E \u0431\u0443\u0434\u0435\u0442
+      \u0437\u0430\u043F\u0443\u0441\u043A\u0430\u0442\u044C\u0441\u044F \u0430\u0432\u0442\u043E\u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u0435."
     m_Metadata:
       m_Items: []
   - m_Id: 84
-    m_Localized: Highlight the most recently placed notes magenta.
+    m_Localized: "\u0412\u044B\u0434\u0435\u043B\u044F\u0442\u044C \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0435
+      \u0440\u0430\u0437\u043C\u0435\u0449\u0435\u043D\u043D\u044B\u0435 \u043D\u043E\u0442\u044B
+      \u043F\u0443\u0440\u043F\u0443\u0440\u043D\u044B\u043C \u0446\u0432\u0435\u0442\u043E\u043C."
     m_Metadata:
       m_Items: []
   - m_Id: 85
@@ -415,24 +463,33 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Should we load map events?
+    m_Localized: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0441\u043E\u0431\u044B\u0442\u0438\u044F
+      \u043E\u0441\u0432\u0435\u0449\u0435\u043D\u0438\u044F?"
     m_Metadata:
       m_Items: []
   - m_Id: 88
-    m_Localized: Less fancy and higher contrast block rendering
+    m_Localized: "\u041C\u0435\u043D\u0435\u0435 \u043F\u0440\u0438\u0447\u0443\u0434\u043B\u0438\u0432\u044B\u0439
+      \u0438 \u0431\u043E\u043B\u0435\u0435 \u043A\u043E\u043D\u0442\u0440\u0430\u0441\u0442\u043D\u044B\u0439
+      \u0440\u0435\u043D\u0434\u0435\u0440\u0438\u043D\u0433 \u0431\u043B\u043E\u043A\u043E\u0432"
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: Amount of 5 beat intervals to show when editing.
+    m_Localized: "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0438\u043D\u0442\u0435\u0440\u0432\u0430\u043B\u043E\u0432
+      \u0432 5 \u0431\u0438\u0442\u043E\u0432 \u0434\u043B\u044F \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F
+      \u043F\u0440\u0438 \u0440\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0438."
     m_Metadata:
       m_Items: []
   - m_Id: 90
-    m_Localized: Rotates map objects and the editor to better visualize a 360 degree
-      level.
+    m_Localized: "\u041F\u043E\u0432\u043E\u0440\u0430\u0447\u0438\u0432\u0430\u0435\u0442
+      \u043E\u0431\u044A\u0435\u043A\u0442\u044B \u043A\u0430\u0440\u0442\u044B \u0438
+      \u0440\u0435\u0434\u0430\u043A\u0442\u043E\u0440, \u0447\u0442\u043E\u0431\u044B
+      \u043B\u0443\u0447\u0448\u0435 \u0432\u0438\u0437\u0443\u0430\u043B\u0438\u0437\u0438\u0440\u043E\u0432\u0430\u0442\u044C
+      360-\u0433\u0440\u0430\u0434\u0443\u0441\u043D\u044B\u0439 \u0443\u0440\u043E\u0432\u0435\u043D\u044C."
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: Should we load other map items?
+    m_Localized: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0434\u0440\u0443\u0433\u0438\u0435
+      \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u043A\u0430\u0440\u0442\u044B?"
     m_Metadata:
       m_Items: []
   - m_Id: 92
@@ -963,9 +1020,204 @@ MonoBehaviour:
     m_Localized: Anti-Aliasing
     m_Metadata:
       m_Items: []
+  - m_Id: 67494721340747776
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 67492742661058560
+    m_Localized: Scales the (total) rendering resolution for performance or visual
+      improvements.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 67493661524013056
+    m_Localized: Render Scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1698793607168
+    m_Localized: Quest ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1897456816128
+    m_Localized: Adds special Quest functionality if ADB is installed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3768991576559616
+    m_Localized: Successfully exported files to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Localized: Export to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Localized: Failed to download ADB. Error {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Localized: "ADB does not seem to be installed or could not be found. Would
+      you\n      like to download it? This will allow Quest functionality."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635263
+    m_Localized: Downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Localized: Finished downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Localized: Extracting ADB from zip. This may take a while.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21544433260560384
+    m_Localized: Install ADB for Quest functionality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71906481403138048
+    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91579491578740736
+    m_Localized: Appearance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101771971410460672
+    m_Localized: Track and Grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773637585141760
+    m_Localized: Makes the transitions between scenes instant.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773995594153984
+    m_Localized: Instant Loading Transitions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788523392335872
+    m_Localized: Length of the track in beats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788529759289344
+    m_Localized: Track Length
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795760294789120
+    m_Localized: Hides disableable platform objects on load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795765399257088
+    m_Localized: Hide Disableable Objects On Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802838346366976
+    m_Localized: Changes the transparency of passed notes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802902695378944
+    m_Localized: Passed Note Transparency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855016515731456
+    m_Localized: Editor Map Info Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855364424859648
+    m_Localized: Display artist and song name in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855374591852544
+    m_Localized: Display Song Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855382842048512
+    m_Localized: Display difficulty name and value in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855392124043264
+    m_Localized: Display Difficulty Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096011425677312
+    m_Localized: Displays bookmarks line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096015523512320
+    m_Localized: Display Bookmarks On Track
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186250655694848
+    m_Localized: Displays an additional grid line on the bookmark.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186255848243200
+    m_Localized: Display Bookmark Grid Line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193073215438848
+    m_Localized: How thick the beat line is
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193078810640384
+    m_Localized: Main Beat Line Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206124970934272
+    m_Localized: Display the beat and song time on the bookmark tooltip.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206129182015488
+    m_Localized: Bookmark Tooltip Time Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206134429089792
+    m_Localized: How thick the bookmarks on the timeline are.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206140842180608
+    m_Localized: Bookmark UI Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102395595171495936
+    m_Localized: Bookmarks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102396931141206016
+    m_Localized: Camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447908275814400
+    m_Localized: Saves the difficulty file as more than a single line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447938869067776
+    m_Localized: Save As Formatted Json
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731652719513600
+    m_Localized: Use ADB in path if found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731842968948736
+    m_Localized: If ADB is in the system environment path, it will use it if enabled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008036237737984
+    m_Localized: Whether objects can be shifted outside the normal 3x4 grid.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008044110446592
+    m_Localized: Vanilla Only Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150232748497440768
+    m_Localized: Uninstalling ADB...
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e87040000
+        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00

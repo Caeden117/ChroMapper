@@ -11,6 +11,8 @@ public class SearchableTab : MonoBehaviour
 
     public void RegisterSection(SearchableSection section) => sections.Add(section);
 
+    public void RemoveSection(SearchableSection section) => sections.Remove(section);
+
     public bool UpdateSearch(string text)
     {
         var result = sections.Select(it => it.UpdateSearch(text)).ToList().Any(it => it);

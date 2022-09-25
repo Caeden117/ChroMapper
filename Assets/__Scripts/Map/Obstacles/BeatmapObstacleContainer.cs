@@ -48,17 +48,11 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
         //Take half jump duration into account if the setting is enabled.
         if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls)
         {
-            var num = 60f / BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            float halfJumpDuration = 4;
+            var bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var songNoteJumpSpeed = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
             var songStartBeatOffset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
 
-            while (songNoteJumpSpeed * num * halfJumpDuration > 18)
-                halfJumpDuration /= 2;
-
-            halfJumpDuration += songStartBeatOffset;
-
-            if (halfJumpDuration < 0.25f) halfJumpDuration = 0.25f;
+            var halfJumpDuration = SpawnParameterHelper.CalculateHalfJumpDuration(songNoteJumpSpeed, songStartBeatOffset, bpm);
 
             duration -= duration * Mathf.Abs(duration / halfJumpDuration);
         }

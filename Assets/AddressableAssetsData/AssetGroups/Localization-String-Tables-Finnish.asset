@@ -15,16 +15,11 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Finnish
   m_Data:
     m_SerializedData: []
-  m_GUID: 9b243e79ddd3e244d8ff667a983a2a35
-  m_SerializeEntries:
-  - m_GUID: 5961a2eba174fd54d89687bbce8d7d21
-    m_Address: PersistentUI_fi
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-fi
+  m_GUID: e5906e6aba19aea4d80cf9d3a868fe3e
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: c6f208997f002204c8300cf61f82c893, type: 2}
-    - {fileID: 11400000, guid: 8ebd47e8616b6574591cbd4f602c7fbb, type: 2}
+    - {fileID: 11400000, guid: 1d833b6f852eba6469ee816e92b447cb, type: 2}
+    - {fileID: 11400000, guid: c7d20697314530744a2280d7a3969f0d, type: 2}

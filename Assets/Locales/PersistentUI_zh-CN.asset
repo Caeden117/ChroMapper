@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: PersistentUI_zh-CN
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: zh-CN
+  m_SharedData: {fileID: 11400000, guid: b957287237cbbe24ead8a48b8517579e, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1
+    m_Localized: "\u662F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2
+    m_Localized: "\u5426"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3
+    m_Localized: "\u597D\u7684"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4
+    m_Localized: "\u53D6\u6D88"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5
+    m_Localized: "ChroMapper \u68C0\u6D4B\u5230\u60A8\u7684info\u6587\u4EF6\u5DF2\u88AB\u6807\u8BB0\u4E3A\u53EA\u8BFB\u3002\n\u8BF7\u5220\u9664\u53EA\u8BFB\u6807\u8BB0\u5E76\u91CD\u8BD5\uFF0C\u6216\u7EE7\u7EED\u4F7F\u7528EditSaber\u7CFB\u5217\u7684\u6700\u65B0\u7F16\u8F91\u5668\u3002\n\u5C06\u4F60\u7684\u4FE1\u606F\u6587\u4EF6\u6807\u8BB0\u4E3A\u53EA\u8BFB\u4EE5\u9632\u6B62MM\u6216CM\u8986\u76D6\u662F\u4E0D\u660E\u667A\u7684\uFF0C\u8BF7\u64A4\u9500\u53EA\u8BFB\u6216\u4F7F\u7528\u5176\u5B83\u9014\u5F84\u7F16\u8F91\u4F60\u7684\u8C31\u9762\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6
+    m_Localized: "360\u5EA6\u8C31\u9762\u8F83\u65B0\uFF0C\u5982\u679C\u4E0D\u8FDB\u884C\u6D4B\u8BD5\uFF0C\u5F88\u5BB9\u6613\u4F7F\u8C31\u9762\u65E0\u6CD5\u6E38\u73A9\u3002\n\u4E3A\u4E86\u5BF9\u6240\u4EE5\u795E\u5723\u4E8B\u7269\u7684\u7231\uFF0C\u8BF7\u4EB2\u81EA\u4EE5\u53CA\u8BA9\u5176\u4ED6\u4EBA\u591A\u6B21\u6D4B\u8BD5\u4F60\u7684\u8C31\u9762\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7
+    m_Localized: "\u4E0D\u518D\u63D0\u9192"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8
+    m_Localized: "\u4F60\u786E\u5B9A\u8981\u53D6\u6D88\u6B4C\u66F2\u52A0\u8F7D\u5417\uFF1F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9
+    m_Localized: "\u67D0\u4E9B ChroMapper \u8BBE\u7F6E\u65E0\u6CD5\u52A0\u8F7D\u3002\n\n\u5982\u679C\u542F\u52A8
+      ChroMapper \u65F6\u6B64\u5BF9\u8BDD\u6846\u4E00\u76F4\u663E\u793A\uFF0C\u8BF7\u5C1D\u8BD5\u5220\u9664\u4F4D\u4E8E\u4EE5\u4E0B\u4F4D\u7F6E\u7684\u914D\u7F6E\u6587\u4EF6\uFF1A\n{0}/ChroMapperSettings.json"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10
+    m_Localized: "Discord RPC \u9047\u5230\u9519\u8BEF\uFF1A {0}\u3002\nDiscord RPC
+      \u5C06\u88AB\u7981\u7528\uFF0C\u76F4\u5230 ChroMapper \u91CD\u65B0\u542F\u52A8\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11
+    m_Localized: "\u63D0\u4EA4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3718944288768
+    m_Localized: "\u751F\u6210\u9519\u8BEF\u62A5\u544A"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

@@ -50,19 +50,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Erste Seite
+    m_Localized: Erste
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: Vorherige Seite
+    m_Localized: Vorherige
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: "N\xE4chste Seite"
+    m_Localized: "N\xE4chste"
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: Letzte Seite
+    m_Localized: Letzte
     m_Metadata:
       m_Items: []
   - m_Id: 12
@@ -92,7 +92,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 19
     m_Localized: Bitte gebe die BeatSaver ID einer Map oder einen direkten Link zu
-      einer gezippten Map ein.
+      einer gezippten Map ein
     m_Metadata:
       m_Items: []
   - m_Id: 20
@@ -117,7 +117,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: "Aktualisierung verf\xFCgbar"
+    m_Localized: "Neue Version verf\xFCgbar"
     m_Metadata:
       m_Items: []
   - m_Id: 26

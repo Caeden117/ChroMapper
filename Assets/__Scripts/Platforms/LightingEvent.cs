@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class LightingEvent : MonoBehaviour
@@ -28,6 +29,10 @@ public class LightingEvent : MonoBehaviour
     private float timeToTransitionColor;
 
     private BoostSprite boostSprite;
+
+    private bool isLightEnabled = true;
+
+    private Func<float, float> easing = Easing.ByName["easeLinear"];
 
     private void Start()
     {
@@ -60,27 +65,31 @@ public class LightingEvent : MonoBehaviour
         if (multiplyAlpha == float.NaN) multiplyAlpha = 0;
 
         colorTime += Time.deltaTime;
-        var color = Color.Lerp(currentColor, targetColor, colorTime / timeToTransitionColor);
-
-        lightPropertyBlock.SetColor("_EmissionColor", color);
+        var color = Color.Lerp(currentColor, targetColor, easing(colorTime / timeToTransitionColor));
 
         if (!CanBeTurnedOff)
         {
             lightPropertyBlock.SetColor("_BaseColor", Color.white);
+            lightPropertyBlock.SetColor("_EmissionColor", color);
             SetEmission(true);
             lightRenderer.SetPropertyBlock(lightPropertyBlock);
             return;
         }
 
         alphaTime += Time.deltaTime;
-        var alpha = Mathf.Lerp(currentAlpha, targetAlpha, alphaTime / timeToTransitionAlpha) * multiplyAlpha;
-
-        lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
+        var alpha = Mathf.Lerp(currentAlpha, targetAlpha, easing(alphaTime / timeToTransitionAlpha)) * multiplyAlpha;
 
         SetEmission(alpha > 0);
 
-        lightRenderer.SetPropertyBlock(lightPropertyBlock);
+        if (isLightEnabled)
+        {
+            lightPropertyBlock.SetColor("_EmissionColor", color);
+            lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
+            lightRenderer.SetPropertyBlock(lightPropertyBlock);
+        }
     }
+
+    public void UpdateEasing(string easingName) => easing = Easing.ByName[easingName];
 
     public void UpdateTargetColor(Color target, float timeToTransition)
     {
@@ -123,15 +132,9 @@ public class LightingEvent : MonoBehaviour
 
     private void SetEmission(bool enabled)
     {
-        /*if (enabled)
+        if (isLightEnabled != enabled)
         {
-            LightMaterial.EnableKeyword("_EMISSION");
-            LightMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.AnyEmissive;
+            lightRenderer.enabled = isLightEnabled = enabled;
         }
-        else
-        {
-            LightMaterial.DisableKeyword("_EMISSION");
-            LightMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-        }*/
     }
 }

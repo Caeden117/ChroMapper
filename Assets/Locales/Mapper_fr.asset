@@ -415,7 +415,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Entrez le nom de ce nouveau marque-page.
+    m_Localized: Entrez le nom de ce nouveau signet.
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -515,7 +515,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Easing Chroma
+    m_Localized: Assouplissement Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 120
@@ -551,7 +551,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Easing de la vitesse des laser
+    m_Localized: Assouplissement de la vitesse des lasers
     m_Metadata:
       m_Items: []
   - m_Id: 129
@@ -592,7 +592,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: "Veille \xE0 ce que les lasers de gauche et de droite tournent dans
+    m_Localized: "Assurer \xE0 ce que les lasers gauches et droites tournent dans
       des directions oppos\xE9es."
     m_Metadata:
       m_Items: []
@@ -610,7 +610,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 143
-    m_Localized: "D\xE9grad\xE9 Chroma \xE9chelonn\xE9"
+    m_Localized: "Les \xC9tapes du D\xE9grad\xE9 Chroma"
     m_Metadata:
       m_Items: []
   - m_Id: 32
@@ -652,11 +652,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: "\xC9teint"
+    m_Localized: "D\xE9sactiv\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: "Allum\xE9"
+    m_Localized: "Activ\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 153
@@ -688,7 +688,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Entrez un nouveau nom pour ce marque-page.
+    m_Localized: Entrez un nouveau nom pour ce signet.
     m_Metadata:
       m_Items: []
   - m_Id: 234935484416
@@ -707,11 +707,23 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 12803634470490112
-    m_Localized: "S\xE9lectionnez la nouvelle couleur pour ce marque-page."
+    m_Localized: "S\xE9lectionnez la nouvelle couleur pour ce signet."
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
     m_Localized: "S\xE9lectionnez d'abord quelque-chose !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889908591489024
+    m_Localized: Nom du signet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 68889912282476544
+    m_Localized: Couleur du signet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118373130107551744
+    m_Localized: Objects found outside map. Do you want to remove them?
     m_Metadata:
       m_Items: []
   references:

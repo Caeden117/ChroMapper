@@ -15,16 +15,11 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Dutch
   m_Data:
     m_SerializedData: []
-  m_GUID: e62f659b1f527b044a635d927238be20
-  m_SerializeEntries:
-  - m_GUID: 5282ae513b6e95c439517a14b44cb1f2
-    m_Address: PersistentUI_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
+  m_GUID: e5277bae54c1ce04bbe6c4841e4353e8
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 8e6a8558ec44c5b4d87c179a2a650dd2, type: 2}
-    - {fileID: 11400000, guid: 3998ba05529fad142b62f43e0b094a74, type: 2}
+    - {fileID: 11400000, guid: ca2b8ac3238376b4f80bf2b865cf80c9, type: 2}
+    - {fileID: 11400000, guid: 4eee3e0863989a84e8ea0597f04bc829, type: 2}

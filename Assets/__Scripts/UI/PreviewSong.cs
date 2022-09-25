@@ -33,11 +33,11 @@ public class PreviewSong : MonoBehaviour
             PlayClip();
         else if (timeRemaining < 1.25)
             // Quadratic ease
-            audioSource.volume = 0.64f * timeRemaining * timeRemaining;
+            audioSource.volume = Settings.Instance.SongVolume * 0.64f * timeRemaining * timeRemaining;
         else if (time < 0.2)
-            audioSource.volume = 5f * time;
+            audioSource.volume = Settings.Instance.SongVolume * 5f * time;
         else
-            audioSource.volume = 1;
+            audioSource.volume = Settings.Instance.SongVolume;
 
         var position = time > length ? 0 : time / length;
         progressBar.fillAmount = position;
