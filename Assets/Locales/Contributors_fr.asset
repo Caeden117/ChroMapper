@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "S\xE9lectionnez-en un dans la liste !"
+    m_Localized: "S\xE9lectionnez-en un dans la liste!"
     m_Metadata:
       m_Items: []
   - m_Id: 9

@@ -37,7 +37,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: "\u706F\u5149\u4F1A\u53D8\u9ED1\u3002"
+    m_Localized: "\u706F\u5149\u4F1A\u4ECE\u4EAE\u5230\u6697\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 151
@@ -45,7 +45,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: "\u706F\u5149\u4F1A\u53D8\u9ED1\u3002"
+    m_Localized: "\u706F\u5149\u4F1A\u4ECE\u6697\u5230\u4EAE\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 48
@@ -81,7 +81,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: "\u70B8\u5F39\uFF1A"
+    m_Localized: "\u70B8\u5F39."
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -154,8 +154,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: "\u65E0\u6548\u53F7\u7801\u3002\n\n\u8BF7\u8F93\u5165\u6B64 BPM
-      \u66F4\u6539\u7684 BPM\u3002"
+    m_Localized: "\u65E0\u6548\u7684\u6570\u5B57\u3002\n\n\u8BF7\u8F93\u5165\u8981\u4FEE\u6539\u7684
+      BPM\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 50
@@ -687,11 +687,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68889908591489024
-    m_Localized: Bookmark Name
+    m_Localized: "\u4E66\u7B7E\u540D\u79F0"
     m_Metadata:
       m_Items: []
   - m_Id: 68889912282476544
-    m_Localized: Bookmark Color
+    m_Localized: "\u4E66\u7B7E\u989C\u8272"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118373130107551744
+    m_Localized: Objects found outside map. Do you want to remove them?
     m_Metadata:
       m_Items: []
   references:

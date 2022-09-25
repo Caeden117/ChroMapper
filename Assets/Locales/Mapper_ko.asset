@@ -727,6 +727,10 @@ MonoBehaviour:
     m_Localized: Bookmark Color
     m_Metadata:
       m_Items: []
+  - m_Id: 118373130107551744
+    m_Localized: Objects found outside map. Do you want to remove them?
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

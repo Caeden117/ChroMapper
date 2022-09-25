@@ -24,7 +24,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: "\u5730\u56FE\u96BE\u5EA6"
+    m_Localized: "\u8C31\u9762\u96BE\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -124,7 +124,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: "\u5C01\u9762\u56FE\u50CF"
+    m_Localized: "\u5C01\u9762\u56FE"
     m_Metadata:
       m_Items: []
   - m_Id: 28
@@ -322,10 +322,43 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104117528192749568
-    m_Localized: 
+    m_Localized: '{0}% complete.'
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 44795657592176640
+    m_Localized: Reaction Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44793699250667520
+    m_Localized: 'How much time the the player has to react
+
+      (in milliseconds)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56342565678678016
+    m_Localized: Environment Removal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56344581129830400
+    m_Localized: 'Removes objects using Contains lookup.
+
+      (Does not effect
+      the editor environment.)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104117395359141888
+    m_Localized: Exporting song to your Quest...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104118050203242496
+    m_Localized: Could not find any connected devices.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104118270903324672
+    m_Localized: Could not find a connected Quest.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
