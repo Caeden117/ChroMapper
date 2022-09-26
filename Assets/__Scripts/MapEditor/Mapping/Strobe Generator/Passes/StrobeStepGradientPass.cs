@@ -42,7 +42,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             }
             else if (e.IsChromaEvent) // This already checks customData, so if this is true then customData exists.
             {
-                colorPoints.Add(e.Time, e.CustomData["_color"]);
+                colorPoints.Add(e.Time, e.CustomColor);
             }
             else if (e.Value == MapEvent.LightValueOff)
             {
@@ -89,11 +89,11 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
 
             var data = new MapEvent(newTime, type, value, new JSONObject());
-            data.CustomData.Add("_color", color);
+            data.CustomColor = color;
 
             if (propMode != EventsContainer.PropMode.Off)
             {
-                data.CustomData.Add("_lightID", propID);
+                data.CustomLightID = propID;
             }
 
             generatedObjects.Add(data);

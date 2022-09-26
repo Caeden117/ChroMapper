@@ -24,7 +24,7 @@ public class ColourPicker : MonoBehaviour
     private void SelectedObject(BeatmapObject obj)
     {
         if (!Settings.Instance.PickColorFromChromaEvents || !dropdown.Visible) return;
-        if (obj.CustomData?.HasKey("_color") ?? false) picker.CurrentColor = obj.CustomData["_color"];
+        if (obj.CustomData?.HasKey("_color") ?? obj.CustomData?.HasKey("color") ?? false) picker.CurrentColor = obj.CustomData["_color"] ?? obj.CustomData["color"];
         if (!(obj is MapEvent e)) return;
         if (e.Value >= ColourManager.RgbintOffset)
             picker.CurrentColor = ColourManager.ColourFromInt(e.Value);

@@ -142,9 +142,12 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null)
             {
-                queuedData.CustomData.Remove("_color");
+                if (queuedData.CustomData.HasKey("_color"))
+                    queuedData.CustomData.Remove("_color");
+                if (queuedData.CustomData.HasKey("color"))
+                    queuedData.CustomData.Remove("color");
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
@@ -161,6 +164,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
             queuedData.GetOrCreateCustomData()["_position"] = position;
+            queuedData.GetOrCreateCustomData()["position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -168,9 +172,12 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
+            if (queuedData.CustomData != null)
             {
-                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+                if (queuedData.CustomData.HasKey("_position"))
+                    queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+                if (queuedData.CustomData.HasKey("position"))
+                    queuedData.CustomData.Remove("position");
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;

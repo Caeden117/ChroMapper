@@ -11,17 +11,13 @@ public class MapEventV3 : MapEvent
     public int EventType { get => Type; set => Type = value; }
     //public int Value { get => base.Value; set => base.Value = value; }
 
-    // some newly introduced light behaviour
-    public const int LightValueBlueTransition = 4;
-    public const int LightValueRedTransition = 8;
-    public const int LightValueWhiteON = 9;
-    public const int LightValueWhiteFlash = 10;
-    public const int LightValueWhiteFade = 11;
-    public const int LightValueWhiteTransition = 12;
-
-    public bool IsTransitionEvent => Value == LightValueBlueTransition || Value == LightValueRedTransition || Value == LightValueWhiteTransition;
     // public bool IsControlLight => Type >= 0 && Type <= 4;
     public bool IsControlLight => !IsUtilityEvent; // assume there is no other event type...
+    public override bool IsChromaEvent => CustomData?.HasKey("color") ?? false;
+    public override bool IsLightIdEvent => CustomData?.HasKey("lightID") ?? false;
+    public override int[] LightId => !CustomData["lightID"].IsArray
+        ? new[] { CustomData["lightID"].AsInt }
+        : CustomData["lightID"].AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
 
     public MapEventV3 Next = null;
 
@@ -32,8 +28,6 @@ public class MapEventV3 : MapEvent
         Value = RetrieveRequiredNode(node, "i").AsInt;
         FloatValue = RetrieveRequiredNode(node, "f").AsFloat;
         CustomData = node[BeatmapObjectV3CustomDataKey];
-        if (node[BeatmapObjectV3CustomDataKey]["_lightGradient"] != null)
-            LightGradient = new ChromaGradient(node[BeatmapObjectV3CustomDataKey]["_lightGradient"]);
     }
 
     public MapEventV3(MapEvent m) :
@@ -52,13 +46,33 @@ public class MapEventV3 : MapEvent
         if (CustomData != null)
         {
             node[BeatmapObjectV3CustomDataKey] = CustomData;
-            if (LightGradient != null)
-            {
-                var lightGradient = LightGradient.ToJsonNode();
-                if (lightGradient != null && lightGradient.Children.Count() > 0)
-                    node[BeatmapObjectV3CustomDataKey]["_lightGradient"] = lightGradient;
-            }
         }
         return node;
+    }
+
+    public override JSONNode CustomColor
+    {
+        get => CustomData?["color"];
+        set => CustomData["color"] = value;
+    }
+    public override JSONNode CustomLightID
+    {
+        get => CustomData?["lightID"];
+        set => CustomData["lightID"] = value;
+    }
+    public override JSONNode CustomSpeed
+    {
+        get => CustomData?["speed"];
+        set => CustomData["speed"] = value;
+    }
+    public override JSONNode CustomLockRotation
+    {
+        get => CustomData?["lockRotation"];
+        set => CustomData["lockRotation"] = value;
+    }
+    public override JSONNode CustomDirection
+    {
+        get => CustomData?["direction"];
+        set => CustomData["direction"] = value;
     }
 }

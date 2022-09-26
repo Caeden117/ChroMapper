@@ -43,9 +43,9 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
     }
 
     public bool IsNoodleExtensionsWall => CustomData != null &&
-                                          (CustomData.HasKey("_position") || CustomData.HasKey("_scale")
-                                                                           || CustomData.HasKey("_localRotation") ||
-                                                                           CustomData.HasKey("_rotation"));
+                                          (CustomPosition || CustomSize
+                                                                           || CustomLocalRotation ||
+                                                                           CustomRotation);
 
     public override ObjectType BeatmapType { get; set; } = ObjectType.Obstacle;
 
@@ -143,21 +143,47 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
         //Hot damn.
         if (CustomData != null)
         {
-            if (CustomData.HasKey("_position"))
+            if (CustomPosition != null)
             {
-                var wallPos = CustomData["_position"]?.ReadVector2() ?? Vector2.zero;
+                var wallPos = CustomPosition?.ReadVector2() ?? Vector2.zero;
                 position = wallPos.x;
                 startHeight = wallPos.y;
             }
 
-            if (CustomData.HasKey("_scale"))
+            if (CustomSize != null)
             {
-                var wallSize = CustomData["_scale"]?.ReadVector2() ?? Vector2.one;
+                var wallSize = CustomSize?.ReadVector2() ?? Vector2.one;
                 width = wallSize.x;
                 height = wallSize.y;
             }
         }
 
         return new ObstacleBounds(width, height, position, startHeight);
+    }
+
+    public virtual JSONNode CustomColor
+    {
+        get => CustomData?["_color"];
+        set => CustomData["_color"] = value;
+    }
+    public virtual JSONNode CustomPosition
+    {
+        get => CustomData?["_position"];
+        set => CustomData["_position"] = value;
+    }
+    public virtual JSONNode CustomSize
+    {
+        get => CustomData?["_scale"];
+        set => CustomData["_scale"] = value;
+    }
+    public virtual JSONNode CustomRotation
+    {
+        get => CustomData?["_rotation"];
+        set => CustomData["_rotation"] = value;
+    }
+    public virtual JSONNode CustomLocalRotation
+    {
+        get => CustomData?["_localRotation"];
+        set => CustomData["_localRotation"] = value;
     }
 }

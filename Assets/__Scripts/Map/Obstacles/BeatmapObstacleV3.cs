@@ -126,4 +126,30 @@ public class BeatmapObstacleV3 : BeatmapObstacle
             height = Mathf.Min(Height * heightStep, 5 * heightStep - LineLayer * heightStep);
         }
     }
+
+    public override JSONNode CustomColor
+    {
+        get => CustomData?["color"];
+        set => CustomData["color"] = value;
+    }
+    public override JSONNode CustomPosition
+    {
+        get => CustomData?["position"];
+        set => CustomData["position"] = value;
+    }
+    public override JSONNode CustomSize
+    {
+        get => CustomData?["size"];
+        set => CustomData["size"] = value;
+    }
+    public override JSONNode CustomRotation
+    {
+        get => CustomData?["rotation"];
+        set => CustomData["rotation"] = value;
+    }
+    public override JSONNode CustomLocalRotation
+    {
+        get => CustomData?["localRotation"];
+        set => CustomData["localRotation"] = value;
+    }
 }

@@ -23,14 +23,15 @@ public class StrobeChromaPass : StrobeGeneratorPass
 
             var generated = BeatmapObject.GenerateCopy(currentChroma);
             generated.LightGradient = new MapEvent.ChromaGradient(
-                currentChroma.CustomData["_color"], //Start color
-                nextChroma.CustomData["_color"], //End color
+                currentChroma.CustomColor, //Start color
+                nextChroma.CustomColor, //End color
                 nextChroma.Time - currentChroma.Time, //Duration
                 easing); //Duration
 
             // Don't forget to replace our Chroma color with a Light Gradient in _customData
             generated.CustomData.Add("_lightGradient", generated.LightGradient.ToJsonNode());
             generated.CustomData.Remove("_color");
+            generated.CustomData.Remove("color");
 
             generatedObjects.Add(generated);
         }

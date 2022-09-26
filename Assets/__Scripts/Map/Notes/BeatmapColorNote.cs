@@ -85,4 +85,20 @@ public class BeatmapColorNote : BeatmapNote
             CutDirection = note.CutDirection;
         }
     }
+
+    public override JSONNode CustomColor
+    {
+        get => CustomData?["color"];
+        set => CustomData["color"] = value;
+    }
+    public override JSONNode CustomPosition
+    {
+        get => CustomData?["position"];
+        set => CustomData["position"] = value;
+    }
+    public override JSONNode CustomScale
+    {
+        get => CustomData?["scale"];
+        set => CustomData["scale"] = value;
+    }
 }

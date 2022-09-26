@@ -42,9 +42,9 @@ public class BeatmapNoteContainer : BeatmapObjectContainer
         if (mapNoteData is null) return Vector3.zero;
         int cutDirection = mapNoteData.CutDirection;
         var directionEuler = Directionalize(cutDirection);
-        if (mapNoteData.CustomData?.HasKey("_cutDirection") ?? false)
+        if (mapNoteData.CustomCutDirection != null)
         {
-            directionEuler = new Vector3(0, 0, mapNoteData.CustomData["_cutDirection"]?.AsFloat ?? 0);
+            directionEuler = new Vector3(0, 0, mapNoteData.CustomCutDirection?.AsFloat ?? 0);
         }
         else if ((mapNoteData is BeatmapColorNote newMapNoteData) && (newMapNoteData?.AngleOffset != 0)) directionEuler += new Vector3(0, 0, newMapNoteData.AngleOffset);
         else

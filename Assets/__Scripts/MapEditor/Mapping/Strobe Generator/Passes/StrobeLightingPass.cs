@@ -79,7 +79,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
             if (propMode != EventsContainer.PropMode.Off)
             {
                 data.CustomData = new JSONObject();
-                data.CustomData.Add("_lightID", propID);
+                data.CustomLightID = propID;
             }
 
             generatedObjects.Add(data);

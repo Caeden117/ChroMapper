@@ -126,6 +126,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             queuedData.Type =
                 labels.LaneIdToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x));
             queuedData.CustomData?.Remove("_lightID");
+            queuedData.CustomData?.Remove("lightID");
         }
         else
         {
@@ -138,17 +139,23 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                     ? labels.PropIdToLightIdsJ(objectContainerCollection.EventTypeToPropagate, propID)
                     : (JSONNode)labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID);
                 queuedData.GetOrCreateCustomData().Add("_lightID", lightIdToApply);
+                queuedData.GetOrCreateCustomData().Add("lightID", lightIdToApply);
             }
             else
             {
                 queuedData.GetOrCreateCustomData().Remove("_lightID");
+                queuedData.GetOrCreateCustomData().Remove("lightID");
             }
         }
 
         if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && queuedData.Value != MapEvent.LightValueOff)
+        {
             queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()["color"] = colorPicker.CurrentColor;
+        }
         else
             queuedData.CustomData?.Remove("_color");
+            queuedData.CustomData?.Remove("color");
 
         UpdateQueuedValue(queuedValue);
         UpdateAppearance();
@@ -269,9 +276,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         // Instead of copying the whole custom data, only copy prop ID
         if (dragged.CustomData != null && queued.CustomData != null)
         {
-            if (queued.CustomData.HasKey("_propID")) dragged.CustomData["_propID"] = queued.CustomData["_propID"];
+            if (queued.CustomPropID) dragged.CustomPropID = queued.CustomPropID;
 
-            if (queued.CustomData.HasKey("_lightID")) dragged.CustomData["_lightID"] = queued.CustomData["_lightID"];
+            if (queued.CustomLightID) dragged.CustomLightID = queued.CustomLightID;
         }
     }
 

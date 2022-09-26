@@ -86,22 +86,22 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
             // Bit cheeky but hopefully a bit more readable
             if (Math.Abs(decimalPreciseSpeed - roundedPreciseSpeed) > 0.01f)
-                data.CustomData["_preciseSpeed"] = decimalPreciseSpeed;
+                data.CustomPreciseSpeed = decimalPreciseSpeed;
 
             if (overrideDirection)
             {
                 switch (type)
                 {
                     case MapEvent.EventTypeLeftLasersSpeed:
-                        data.CustomData["_direction"] = Convert.ToInt32(leftRotatesClockwise);
+                        data.CustomDirection = Convert.ToInt32(leftRotatesClockwise);
                         break;
                     case MapEvent.EventTypeRightLasersSpeed:
-                        data.CustomData["_direction"] = Convert.ToInt32(rightRotatesClockwise);
+                        data.CustomDirection = Convert.ToInt32(rightRotatesClockwise);
                         break;
                 }
             }
 
-            if (lockLaserRotation) data.CustomData["_lockPosition"] = true;
+            if (lockLaserRotation) data.CustomLockRotation = true;
 
             generatedObjects.Add(data);
             distanceInBeats -= 1 / interval;
@@ -113,14 +113,14 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
     private float GetLaserSpeedFromEvent(MapEvent @event)
     {
         if (@event.CustomData == null || @event.CustomData.Children.Count() == 0
-                                       || (!@event.CustomData.HasKey("_preciseSpeed") &&
-                                           !@event.CustomData.HasKey("_speed")))
+                                       || (!@event.CustomPreciseSpeed &&
+                                           !@event.CustomSpeed))
         {
             return @event.Value;
         }
 
-        return @event.CustomData.HasKey("_preciseSpeed")
-            ? @event.CustomData["_preciseSpeed"].AsFloat
-            : @event.CustomData["_speed"].AsFloat;
+        return @event.CustomPreciseSpeed
+            ? @event.CustomPreciseSpeed.AsFloat
+            : @event.CustomSpeed.AsFloat;
     }
 }

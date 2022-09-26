@@ -19,8 +19,6 @@ public class ColorBoostEvent : MapEvent
         Type = EventTypeBoostLights;
         FloatValue = 1f;
         CustomData = node[BeatmapObjectV3CustomDataKey];
-        if (node[BeatmapObjectV3CustomDataKey]["_lightGradient"] != null)
-            LightGradient = new ChromaGradient(node[BeatmapObjectV3CustomDataKey]["_lightGradient"]);
     }
     public ColorBoostEvent(MapEvent m) :
         base(m.Time, m.Type, m.Value, m.CustomData)
@@ -37,12 +35,6 @@ public class ColorBoostEvent : MapEvent
         if (CustomData != null)
         {
             node[BeatmapObjectV3CustomDataKey] = CustomData;
-            if (LightGradient != null)
-            {
-                var lightGradient = LightGradient.ToJsonNode();
-                if (lightGradient != null && lightGradient.Children.Count() > 0)
-                    node[BeatmapObjectV3CustomDataKey]["_lightGradient"] = lightGradient;
-            }
         }
         return node;
     }

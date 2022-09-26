@@ -39,17 +39,24 @@ public class MapEvent : BeatmapObject
     public const int LightValueBlueON = 1;
     public const int LightValueBlueFlash = 2;
     public const int LightValueBlueFade = 3;
+    public const int LightValueBlueTransition = 4;
 
     public const int LightValueRedON = 5;
     public const int LightValueRedFlash = 6;
     public const int LightValueRedFade = 7;
+    public const int LightValueRedTransition = 8;
+
+    public const int LightValueWhiteON = 9;
+    public const int LightValueWhiteFlash = 10;
+    public const int LightValueWhiteFade = 11;
+    public const int LightValueWhiteTransition = 12;
 
     public static readonly int[] LightValueToRotationDegrees = { -60, -45, -30, -15, 15, 30, 45, 60 };
     public int PropId = -1;
     [FormerlySerializedAs("_type")] public int Type;
     [FormerlySerializedAs("_value")] public int Value;
     [FormerlySerializedAs("_lightGradient")] public ChromaGradient LightGradient;
-    public float FloatValue;
+    [FormerlySerializedAs("_floatValue")] public float FloatValue;
 
     /*
      * MapEvent logic
@@ -62,7 +69,7 @@ public class MapEvent : BeatmapObject
         Type = RetrieveRequiredNode(node, "_type").AsInt;
         Value = RetrieveRequiredNode(node, "_value").AsInt;
         if (!node.HasKey("_floatValue")) { // Convert from version "<2.5.0"
-            FloatValue = 1f; 
+            FloatValue = 1f;
         } else {
             FloatValue = node["_floatValue"].AsFloat;
         }
@@ -78,7 +85,7 @@ public class MapEvent : BeatmapObject
         Value = value;
         CustomData = customData;
         FloatValue = floatValue;
-        
+
         if (CustomData != null && CustomData.HasKey("_lightGradient"))
             LightGradient = new ChromaGradient(CustomData["_lightGradient"]);
     }
@@ -90,13 +97,14 @@ public class MapEvent : BeatmapObject
     public bool IsUtilityEvent => IsRotationEvent || IsRingEvent || IsLaserSpeedEvent ||
                                   Type == EventTypeBoostLights || IsInterscopeEvent;
 
+    public bool IsTransitionEvent => Value == LightValueBlueTransition || Value == LightValueRedTransition || Value == LightValueWhiteTransition;
     public bool IsInterscopeEvent => Type == EventTypeCustomEvent1 || Type == EventTypeCustomEvent2;
     public bool IsLegacyChromaEvent => Value >= ColourManager.RgbintOffset;
-    public bool IsChromaEvent => CustomData?.HasKey("_color") ?? false;
+    public virtual bool IsChromaEvent => CustomData?.HasKey("_color") ?? false;
     public bool IsPropogationEvent => PropId > -1; //_customData["_lightID"].IsArray
-    public bool IsLightIdEvent => CustomData?.HasKey("_lightID") ?? false;
+    public virtual bool IsLightIdEvent => CustomData?.HasKey("_lightID") ?? false;
 
-    public int[] LightId => !CustomData["_lightID"].IsArray
+    public virtual int[] LightId => !CustomData["_lightID"].IsArray
         ? new[] { CustomData["_lightID"].AsInt }
         : CustomData["_lightID"].AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
 
@@ -104,7 +112,8 @@ public class MapEvent : BeatmapObject
 
     public static bool IsBlueEventFromValue(int value) => value == LightValueBlueON ||
                                                            value == LightValueBlueFlash ||
-                                                           value == LightValueBlueFade;
+                                                           value == LightValueBlueFade ||
+                                                           value == LightValueBlueTransition;
 
     public virtual int? GetRotationDegreeFromValue()
     {
@@ -197,6 +206,48 @@ public class MapEvent : BeatmapObject
             FloatValue = obs.FloatValue;
             LightGradient = obs.LightGradient?.Clone();
         }
+    }
+
+    // imagine getter setter for customData
+    public virtual JSONNode CustomColor
+    {
+        get => CustomData?["_color"];
+        set => CustomData["_color"] = value;
+    }
+    public virtual JSONNode CustomPropID
+    {
+        get => CustomData?["_propID"];
+        set => CustomData["_propID"] = value;
+    }
+    public virtual JSONNode CustomLightID
+    {
+        get => CustomData?["_lightID"];
+        set => CustomData["_lightID"] = value;
+    }
+    public virtual JSONNode CustomLightGradient
+    {
+        get => CustomData?["_lightGradient"];
+        set => CustomData["_lightGradient"] = value;
+    }
+    public virtual JSONNode CustomSpeed
+    {
+        get => CustomData?["_speed"];
+        set => CustomData["_speed"] = value;
+    }
+    public virtual JSONNode CustomPreciseSpeed
+    {
+        get => CustomData?["_preciseSpeed"];
+        set => CustomData["_preciseSpeed"] = value;
+    }
+    public virtual JSONNode CustomLockRotation
+    {
+        get => CustomData?["_lockPosition"];
+        set => CustomData["_lockPosition"] = value;
+    }
+    public virtual JSONNode CustomDirection
+    {
+        get => CustomData?["_direction"];
+        set => CustomData["_direction"] = value;
     }
 
     [Serializable]

@@ -62,4 +62,20 @@ public class BeatmapBombNote : BeatmapNote
             LineLayer = note.LineLayer;
         }
     }
+
+    public override JSONNode CustomColor
+    {
+        get => CustomData?["color"];
+        set => CustomData["color"] = value;
+    }
+    public override JSONNode CustomPosition
+    {
+        get => CustomData?["position"];
+        set => CustomData["position"] = value;
+    }
+    public override JSONNode CustomScale
+    {
+        get => CustomData?["scale"];
+        set => CustomData["scale"] = value;
+    }
 }

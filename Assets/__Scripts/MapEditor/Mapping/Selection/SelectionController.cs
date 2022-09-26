@@ -501,7 +501,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var original = BeatmapObject.GenerateCopy(data);
             if (data is BeatmapNote note)
             {
-                if (note.CustomData is null || !note.CustomData.HasKey("_position"))
+                if (note.CustomData is null || !note.CustomPosition)
                 {
                     if (note.LineIndex >= 1000)
                     {
@@ -609,20 +609,21 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                     e.Type = labels.LaneIdToEventType(modified);
 
-                    if (e.IsLightIdEvent && !e.CustomData["_lightID"].IsArray)
+                    if (e.IsLightIdEvent && !e.CustomLightID.IsArray)
                     {
                         var editorID = labels.LightIDToEditor(oldType, e.LightId[0]);
-                        e.CustomData["_lightID"] = labels.EditorToLightID(e.Type, editorID);
+                        e.CustomLightID = labels.EditorToLightID(e.Type, editorID);
                     }
                     else if (e.IsLightIdEvent)
                     {
-                        e.CustomData["_lightID"] = labels.PropIdToLightIdsJ(e.Type, e.PropId);
+                        e.CustomLightID = labels.PropIdToLightIdsJ(e.Type, e.PropId);
                     }
 
-                    if (e.CustomData != null && e.CustomData.HasKey("_lightID") &&
-                        e.CustomData["_lightID"].IsArray &&
-                        e.CustomData["_lightID"].Count == 0)
+                    if (e.CustomLightID != null &&
+                        e.CustomLightID.IsArray &&
+                        e.CustomLightID.Count == 0)
                     {
+                        e.CustomData.Remove("lightID");
                         e.CustomData.Remove("_lightID");
                     }
                 }

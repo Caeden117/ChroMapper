@@ -70,16 +70,17 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.CustomData["_position"] = position;
+            queuedData.CustomPosition = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
+            if (queuedData.CustomData != null && queuedData.CustomPosition)
             {
                 queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+                queuedData.CustomData.Remove("position"); //Remove NE position since we are no longer working with it.
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
