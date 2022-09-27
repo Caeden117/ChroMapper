@@ -108,7 +108,7 @@ public class DifficultySettings
     {
         NoteJumpMovementSpeed = DifficultyBeatmap.NoteJumpMovementSpeed;
         NoteJumpStartBeatOffset = DifficultyBeatmap.NoteJumpStartBeatOffset;
-        CustomName = DifficultyBeatmap.CustomData["_difficultyLabel"].Value;
+        CustomName = DifficultyBeatmap.CustomData?["_difficultyLabel"]?.Value ?? "";
 
         envEnhancements = null;
     }
