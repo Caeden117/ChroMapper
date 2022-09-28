@@ -402,7 +402,7 @@ public class SongInfoEditUI : MenuBase
         var infoFileLocation = "";
         if (Song.Directory != null)
         {
-            infoFileLocation = Path.Combine(Song.Directory, "info.dat");
+            infoFileLocation = Path.Combine(Song.Directory, "Info.dat");
         }
 
         if (!File.Exists(infoFileLocation))
