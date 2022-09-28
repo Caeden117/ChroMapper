@@ -1039,6 +1039,10 @@ MonoBehaviour:
     m_Key: general.vanillaonlyshift
     m_Metadata:
       m_Items: []
+  - m_Id: 150232748497440768
+    m_Key: quest.uninstalling_adb
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

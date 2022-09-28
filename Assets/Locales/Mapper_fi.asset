@@ -698,11 +698,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68889908591489024
-    m_Localized: Bookmark Name
+    m_Localized: Kirjanmerkin Nimi
     m_Metadata:
       m_Items: []
   - m_Id: 68889912282476544
-    m_Localized: Bookmark Color
+    m_Localized: "Kirjanmerkin V\xE4ri"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118373130107551744
+    m_Localized: Objects found outside map. Do you want to remove them?
     m_Metadata:
       m_Items: []
   references:

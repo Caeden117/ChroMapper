@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ColorPickerComponent : CMUIComponent<Color>
+public class ColorPickerComponent : CMUIComponent<Color>, INavigable, IQuickSubmitComponent
 {
     [SerializeField] private ColorPicker picker;
+
+    [field:SerializeField] public Selectable Selectable { get; set; }
 
     private bool firstUpdate = true;
     private bool useAlpha = true;

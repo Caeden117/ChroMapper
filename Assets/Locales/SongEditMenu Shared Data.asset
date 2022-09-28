@@ -333,6 +333,22 @@ MonoBehaviour:
     m_Key: environmentremoval.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 104117395359141888
+    m_Key: quest.exporting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104117528192749568
+    m_Key: quest.exporting_progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104118050203242496
+    m_Key: quest.no-devices
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104118270903324672
+    m_Key: quest.no-quest
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

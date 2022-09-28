@@ -50,6 +50,9 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             .WithLabel("Mapper", "bookmark.dialog.color")
             .WithConstantAlpha(1f);
 
+        // Enable quick submit
+        createBookmarkDialogBox.OnQuickSubmit(() => CreateNewBookmark(bookmarkName.Value, bookmarkColor.Value));
+
         // Cancel button
         createBookmarkDialogBox.AddFooterButton(null, "PersistentUI", "cancel");
 
@@ -76,14 +79,16 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         BookmarksUpdated.Invoke();
     }
 
-    private void UpdateBookmarkTooltip(object _) {
+    private void UpdateBookmarkTooltip(object _)
+    {
         foreach (BookmarkContainer bookContainer in bookmarkContainers)
         {
             bookContainer.UpdateUI();
         }
     }
 
-    private void UpdateBookmarkWidth(object _) {
+    private void UpdateBookmarkWidth(object _)
+    {
         foreach (BookmarkContainer bookContainer in bookmarkContainers)
         {
             bookContainer.UpdateUIWidth();
@@ -102,12 +107,13 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     public void OnCreateNewBookmark(InputAction.CallbackContext context)
     {
+        if (Atsc.IsPlaying) return;
+
         if (context.performed)
         {
             // Randomize color and open dialog box
             bookmarkColor.Value = Color.HSVToRGB((float)rng.NextDouble(), 0.75f, 1);
             createBookmarkDialogBox.Open();
-            bookmarkName.Select();
         }
     }
 
@@ -195,7 +201,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         }
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTimelineWidth));
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTooltipTimeInfo));
     }

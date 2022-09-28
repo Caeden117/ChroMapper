@@ -22,19 +22,6 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
 
     internal override void ApplyToMap()
     {
-        if (objectContainerCollection.LoadedObjects.Count >= BPMChangesContainer.MaxBpmChangesInShader)
-        {
-            if (!PersistentUI.Instance.DialogBoxIsEnabled)
-            {
-                PersistentUI.Instance.ShowDialogBox(
-                    "Mapper", "maxbpm",
-                    null,
-                    PersistentUI.DialogBoxPresetType.Ok, new object[] { BPMChangesContainer.MaxBpmChangesInShader - 1 });
-            }
-
-            return;
-        }
-
         var lastBpm = objectContainerCollection.FindLastBpm(RoundedTime, false)?.Bpm ??
                       BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
         PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBpmChange,

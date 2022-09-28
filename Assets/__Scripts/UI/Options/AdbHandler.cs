@@ -7,17 +7,17 @@ using UnityEngine;
 [RequireComponent(typeof(BetterToggle))]
 public class AdbHandler : MonoBehaviour
 {
-    private BetterToggle _betterToggle;
+    private BetterToggle betterToggle;
 
     private void Start()
     {
-        _betterToggle = GetComponent<BetterToggle>();
+        betterToggle = GetComponent<BetterToggle>();
         // Set toggle
 
-        _betterToggle.IsOn = Adb.IsAdbInstalled(out _);
+        betterToggle.IsOn = Adb.IsAdbInstalled(out _);
         
         // Force Update UI ugh
-        _betterToggle.UpdateUI();
+        betterToggle.UpdateUI();
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class AdbHandler : MonoBehaviour
     {
         yield return enumerator;
         
-        _betterToggle.SetUiOn(Adb.IsAdbInstalled(out _), false);
+        betterToggle.SetUiOn(Adb.IsAdbInstalled(out _), false);
     }
 }
 

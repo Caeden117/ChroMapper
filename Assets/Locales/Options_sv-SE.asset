@@ -942,6 +942,187 @@ MonoBehaviour:
     m_Localized: Render Scale
     m_Metadata:
       m_Items: []
+  - m_Id: 1698793607168
+    m_Localized: Quest ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1897456816128
+    m_Localized: Adds special Quest functionality if ADB is installed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3768991576559616
+    m_Localized: Successfully exported files to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769025302958080
+    m_Localized: Export to Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769067959029760
+    m_Localized: Failed to download ADB. Error {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3769095658213376
+    m_Localized: "ADB does not seem to be installed or could not be found. Would
+      you\n      like to download it? This will allow Quest functionality."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635263
+    m_Localized: Downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3777059370635264
+    m_Localized: Finished downloading ADB
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3779515244679168
+    m_Localized: Extracting ADB from zip. This may take a while.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21544433260560384
+    m_Localized: Install ADB for Quest functionality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71906481403138048
+    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 91579491578740736
+    m_Localized: Appearance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101771971410460672
+    m_Localized: Track and Grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773637585141760
+    m_Localized: Makes the transitions between scenes instant.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101773995594153984
+    m_Localized: Instant Loading Transitions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788523392335872
+    m_Localized: Length of the track in beats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101788529759289344
+    m_Localized: Track Length
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795760294789120
+    m_Localized: Hides disableable platform objects on load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101795765399257088
+    m_Localized: Hide Disableable Objects On Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802838346366976
+    m_Localized: Changes the transparency of passed notes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101802902695378944
+    m_Localized: Passed Note Transparency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855016515731456
+    m_Localized: Editor Map Info Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855364424859648
+    m_Localized: Display artist and song name in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855374591852544
+    m_Localized: Display Song Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855382842048512
+    m_Localized: Display difficulty name and value in top right corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101855392124043264
+    m_Localized: Display Difficulty Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096011425677312
+    m_Localized: Displays bookmarks line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102096015523512320
+    m_Localized: Display Bookmarks On Track
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186250655694848
+    m_Localized: Displays an additional grid line on the bookmark.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102186255848243200
+    m_Localized: Display Bookmark Grid Line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193073215438848
+    m_Localized: How thick the beat line is
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102193078810640384
+    m_Localized: Main Beat Line Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206124970934272
+    m_Localized: Display the beat and song time on the bookmark tooltip.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206129182015488
+    m_Localized: Bookmark Tooltip Time Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206134429089792
+    m_Localized: How thick the bookmarks on the timeline are.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102206140842180608
+    m_Localized: Bookmark UI Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102395595171495936
+    m_Localized: Bookmarks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102396931141206016
+    m_Localized: Camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447908275814400
+    m_Localized: Saves the difficulty file as more than a single line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 102447938869067776
+    m_Localized: Save As Formatted Json
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731652719513600
+    m_Localized: Use ADB in path if found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94731842968948736
+    m_Localized: If ADB is in the system environment path, it will use it if enabled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008036237737984
+    m_Localized: Whether objects can be shifted outside the normal 3x4 grid.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105008044110446592
+    m_Localized: Vanilla Only Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150232748497440768
+    m_Localized: Uninstalling ADB...
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

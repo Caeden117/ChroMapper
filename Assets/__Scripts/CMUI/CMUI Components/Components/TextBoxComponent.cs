@@ -2,14 +2,17 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
-public class TextBoxComponent : CMUIComponentWithLabel<string>
+public class TextBoxComponent : CMUIComponentWithLabel<string>, INavigable, IQuickSubmitComponent
 {
     [SerializeField] private TMP_InputField inputField;
 
     private Action<string> onEndEdit;
     private Action<string> onSelect;
     private Action<string> onDeselect;
+    
+    [field: SerializeField] public Selectable Selectable { get; set; }
 
     /// <summary>
     /// Assigns a callback when the user deselects the textbox after making changes.
@@ -79,8 +82,6 @@ public class TextBoxComponent : CMUIComponentWithLabel<string>
         var str = LocalizationSettings.StringDatabase.GetLocalizedString(table, key, args);
         return this.WithInitialValue(str);
     }
-
-    public void Select() => inputField.Select();
 
     private void Start()
     {

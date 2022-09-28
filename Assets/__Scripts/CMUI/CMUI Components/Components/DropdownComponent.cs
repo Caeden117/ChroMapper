@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Dropdown Component that handles an integer, whether that be the index into a list of options,
 /// or the numerical representation of an enum.
 /// </summary>
-public class DropdownComponent : CMUIComponentWithLabel<int>
+public class DropdownComponent : CMUIComponentWithLabel<int>, INavigable
 {
     [SerializeField] private TMP_Dropdown dropdown;
+
+    [field: SerializeField] public Selectable Selectable { get; set; }
 
     /// <summary>
     /// Populates the dropdown list with the provided values.

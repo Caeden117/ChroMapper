@@ -187,12 +187,28 @@ namespace QuestDumper
             return process;
         }
 
+        private static bool listeningToShutdown;
+        private static void ListenToUnityShutdown()
+        {
+            if (!listeningToShutdown) return;
+            
+            listeningToShutdown = true;
+            Application.quitting += async () =>
+            {
+                if (!IsAdbInstalled(out _)) return;
+
+                await KillServer().ConfigureAwait(false);
+            };
+        }
+
         // surrounds the string as "\"{s}\""
         private static string EscapeStringFix(string s) => $"\"\\\"{s}\\\"";
 
         private static Task<AdbOutput> RunADBCommand(string arguments) =>
             Task.Run( () =>
             {
+                ListenToUnityShutdown();
+
                 using var process = BuildProcess(arguments);
                 
                 process.Start();

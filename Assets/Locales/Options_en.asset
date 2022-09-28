@@ -501,8 +501,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding Shift while placing walls or notes, an extended grid
-      will appear with snapping disabled.
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -1048,7 +1048,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3779515244679168
-    m_Localized: Extacting ADB from zip. This may take a while.
+    m_Localized: Extracting ADB from zip. This may take a while.
     m_Metadata:
       m_Items: []
   - m_Id: 21544433260560384
@@ -1189,6 +1189,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 105008036237737984
     m_Localized: Whether objects can be shifted outside the normal 3x4 grid.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 150232748497440768
+    m_Localized: Uninstalling ADB...
     m_Metadata:
       m_Items: []
   references:
