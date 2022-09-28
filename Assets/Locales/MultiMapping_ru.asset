@@ -76,12 +76,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: Connection rejected.\n\nIf you used a room code, ensure the code
-      was entered correctly.
+    m_Localized: Connection rejected. If you used a room code, ensure the code was
+      entered correctly.
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
-    m_Localized: 'Connection with the host lost: {0}.\n\nReturning to song list...'
+    m_Localized: 'Connection with the host lost: {0}. Returning to song list...'
     m_Metadata:
       m_Items:
       - id: 0
@@ -101,6 +101,16 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6238239854592
     m_Localized: Map with friends!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1970900842393600
+    m_Localized: Friends will need to connect using your Public IP and Port. Port
+      forwarding is required for clients to connect.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1970841337802752
+    m_Localized: "The ChroMapTogether server will be used to host this session. You
+      will be given a short room code to pass to friends.\t"
     m_Metadata:
       m_Items: []
   references:

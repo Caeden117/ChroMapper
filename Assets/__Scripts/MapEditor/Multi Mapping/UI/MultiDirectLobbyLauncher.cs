@@ -22,7 +22,7 @@ public class MultiDirectLobbyLauncher : MonoBehaviour
                 .DontDestroyOnClose();
 
             dialogBox.AddComponent<TextComponent>()
-                .WithInitialValue("Port forwarding is required for clients to connect.");
+                .WithInitialValue("MultiMapping", "multi.session.direct-connect-info");
 
             portTextBox = dialogBox.AddComponent<TextBoxComponent>()
                 .WithLabel("MultiMapping", "multi.session.port")

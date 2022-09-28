@@ -97,6 +97,14 @@ MonoBehaviour:
     m_Key: multi.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 1970841337802752
+    m_Key: multi.session.room-code-info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1970900842393600
+    m_Key: multi.session.direct-connect-info
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

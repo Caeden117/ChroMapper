@@ -30,7 +30,10 @@ public class MultiLobbyLauncher : MonoBehaviour
             dialogBox = PersistentUI.Instance.CreateNewDialogBox()
                 .WithTitle("MultiMapping", "multi.session.host")
                 .DontDestroyOnClose();
-            
+
+            dialogBox.AddComponent<TextComponent>()
+                .WithInitialValue("MultiMapping", "multi.session.room-code-info");
+
             dialogBox.AddComponent<ButtonComponent>()
                 .OnClick(OpenDirectLauncher)
                 .WithLabel("MultiMapping", "multi.session.use-direct");
