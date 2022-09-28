@@ -479,6 +479,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""User Trace"",
+                    ""type"": ""Button"",
+                    ""id"": ""576418be-2d18-4d65-b217-11a268d3756f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -633,6 +641,39 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Redo (Method 2)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""32385cbd-8e24-4cfd-8324-4ae68a7b87ea"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""User Trace"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""d0ce861e-2025-42ea-84f4-ebdd8d69f620"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""User Trace"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""d13c359c-8e82-45b6-b018-00664f660341"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""User Trace"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -3737,6 +3778,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_Actions_UndoMethod2 = m_Actions.FindAction("Undo (Method 2)", throwIfNotFound: true);
         m_Actions_RedoMethod1 = m_Actions.FindAction("Redo (Method 1)", throwIfNotFound: true);
         m_Actions_RedoMethod2 = m_Actions.FindAction("Redo (Method 2)", throwIfNotFound: true);
+        m_Actions_UserTrace = m_Actions.FindAction("User Trace", throwIfNotFound: true);
         // Placement Controllers
         m_PlacementControllers = asset.FindActionMap("Placement Controllers", throwIfNotFound: true);
         m_PlacementControllers_PlaceObject = m_PlacementControllers.FindAction("Place Object", throwIfNotFound: true);
@@ -4145,6 +4187,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Actions_UndoMethod2;
     private readonly InputAction m_Actions_RedoMethod1;
     private readonly InputAction m_Actions_RedoMethod2;
+    private readonly InputAction m_Actions_UserTrace;
     public struct ActionsActions
     {
         private @CMInput m_Wrapper;
@@ -4153,6 +4196,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         public InputAction @UndoMethod2 => m_Wrapper.m_Actions_UndoMethod2;
         public InputAction @RedoMethod1 => m_Wrapper.m_Actions_RedoMethod1;
         public InputAction @RedoMethod2 => m_Wrapper.m_Actions_RedoMethod2;
+        public InputAction @UserTrace => m_Wrapper.m_Actions_UserTrace;
         public InputActionMap Get() { return m_Wrapper.m_Actions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -4174,6 +4218,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @RedoMethod2.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
                 @RedoMethod2.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
                 @RedoMethod2.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnRedoMethod2;
+                @UserTrace.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUserTrace;
+                @UserTrace.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUserTrace;
+                @UserTrace.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUserTrace;
             }
             m_Wrapper.m_ActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -4190,6 +4237,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @RedoMethod2.started += instance.OnRedoMethod2;
                 @RedoMethod2.performed += instance.OnRedoMethod2;
                 @RedoMethod2.canceled += instance.OnRedoMethod2;
+                @UserTrace.started += instance.OnUserTrace;
+                @UserTrace.performed += instance.OnUserTrace;
+                @UserTrace.canceled += instance.OnUserTrace;
             }
         }
     }
@@ -5971,6 +6021,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnUndoMethod2(InputAction.CallbackContext context);
         void OnRedoMethod1(InputAction.CallbackContext context);
         void OnRedoMethod2(InputAction.CallbackContext context);
+        void OnUserTrace(InputAction.CallbackContext context);
     }
     public interface IPlacementControllersActions
     {

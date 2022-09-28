@@ -113,9 +113,23 @@ MonoBehaviour:
       will be given a short room code to pass to friends.
     m_Metadata:
       m_Items: []
+  - m_Id: 2018274558160896
+    m_Localized: User Trace
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2018332712185856
+    m_Localized: This object was first created/modified by {0}.
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 2018498240393216
+    m_Localized: This object was last modified by {0}.
+    m_Metadata:
+      m_Items:
+      - id: 0
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00109267df0400000010928e710400000010129b46050000
+        m_Entries: 00109267df0400000010928e710400000010129b46050000003059b4a92b07000030993ed02b0700

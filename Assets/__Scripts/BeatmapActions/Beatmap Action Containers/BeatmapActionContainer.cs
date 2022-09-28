@@ -108,6 +108,59 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
         if (context.performed) Redo();
     }
 
+    public void OnUserTrace(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        var ray = Camera.main.ScreenPointToRay(KeybindsController.MousePosition);
+
+        if (Intersections.Raycast(ray, 9, out var hit))
+        {
+            var container = hit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
+
+            if (container != null)
+            {
+                var objectData = container.ObjectData;
+
+                var lastLocatedActionIndex = beatmapActions.FindLastIndex(it => it.Active && it.DoesInvolveObject(objectData) != null);
+
+                if (lastLocatedActionIndex == -1) return;
+
+                var lastLocatedAction = beatmapActions[lastLocatedActionIndex];
+                var firstLocatedAction = lastLocatedAction;
+
+                for (var i = lastLocatedActionIndex; i >= 0; i--)
+                {
+                    var involvedObj = beatmapActions[i].DoesInvolveObject(objectData);
+
+                    if (involvedObj != null)
+                    {
+                        objectData = involvedObj;
+                        firstLocatedAction = beatmapActions[i];
+                    }
+                }
+
+                if (firstLocatedAction != null && firstLocatedAction.Identity != null)
+                {
+                    var dialogBox = PersistentUI.Instance.CreateNewDialogBox()
+                        .WithTitle("MultiMapping", "multi.trace");
+
+                    dialogBox.AddComponent<TextComponent>()
+                        .WithInitialValue("MultiMapping", "multi.trace.first", firstLocatedAction.Identity.Name);
+
+                    if (lastLocatedAction != firstLocatedAction && lastLocatedAction.Identity != null)
+                    {
+                        dialogBox.AddComponent<TextComponent>()
+                            .WithInitialValue("MultiMapping", "multi.trace.last", firstLocatedAction.Identity.Name);
+                    }
+
+                    dialogBox.AddFooterButton(null, "PersistentUI", "ok");
+                    dialogBox.Open();
+                }
+            }
+        }
+    }
+
     public class BeatmapActionParams
     {
         public NodeEditorController NodeEditor;

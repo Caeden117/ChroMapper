@@ -31,7 +31,7 @@ public static class NetDataExtensions
 
     private static Dictionary<string, Func<object>> compiledActionCtors = new Dictionary<string, Func<object>>();
 
-    public static BeatmapAction GetBeatmapAction(this NetDataReader reader)
+    public static BeatmapAction GetBeatmapAction(this NetDataReader reader, MapperIdentityPacket identity)
     {
         var actionTypeName = reader.GetString();
         var actionGuid = reader.GetString();
@@ -40,7 +40,7 @@ public static class NetDataExtensions
         {
             var actionType = Type.GetType(actionTypeName);
 
-            if (actionType != null)
+            if (actionType != null && typeof(BeatmapAction).IsAssignableFrom(actionType))
             {
                 var ctor = actionType.GetConstructor(Type.EmptyTypes);
 
@@ -57,18 +57,11 @@ public static class NetDataExtensions
         }
 
         var beatmapAction = compiledCtor() as BeatmapAction;
+        beatmapAction.Identity = identity;
         beatmapAction.Guid = Guid.Parse(actionGuid);
-        beatmapAction.Comment = reader.GetString();
+        beatmapAction.Comment = $"[{identity.Name}] {reader.GetString()}";
         beatmapAction.Deserialize(reader);
-
         return beatmapAction;
-    }
-
-    public static BeatmapAction GetBeatmapAction(this NetDataReader reader, MapperIdentityPacket identity)
-    {
-        var action = GetBeatmapAction(reader);
-        action.Comment = $"[{identity.Name}] {action.Comment}";
-        return action;
     }
 
     public static void PutBeatmapAction(this NetDataWriter writer, BeatmapAction action)

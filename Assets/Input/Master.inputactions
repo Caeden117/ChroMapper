@@ -466,6 +466,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "User Trace",
+                    "type": "Button",
+                    "id": "576418be-2d18-4d65-b217-11a268d3756f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -620,6 +628,39 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Redo (Method 2)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "32385cbd-8e24-4cfd-8324-4ae68a7b87ea",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "User Trace",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "d0ce861e-2025-42ea-84f4-ebdd8d69f620",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "User Trace",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "d13c359c-8e82-45b6-b018-00664f660341",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "User Trace",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

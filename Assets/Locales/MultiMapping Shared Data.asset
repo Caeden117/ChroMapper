@@ -24,9 +24,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 757656064000
-    m_Key: 'multi.session.downloading
-
-'
+    m_Key: multi.session.downloading
     m_Metadata:
       m_Items: []
   - m_Id: 1057586548736
@@ -103,6 +101,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1970900842393600
     m_Key: multi.session.direct-connect-info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2018274558160896
+    m_Key: multi.trace
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2018332712185856
+    m_Key: multi.trace.first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2018498240393216
+    m_Key: multi.trace.last
     m_Metadata:
       m_Items: []
   m_Metadata:

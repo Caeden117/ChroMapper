@@ -385,6 +385,8 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     private void BeatmapActionContainer_ActionCreatedEvent(BeatmapAction obj)
     {
+        obj.Identity = Settings.Instance.MultiSettings.LocalIdentity;
+
         var writer = new NetDataWriter();
 
         writer.Put(0);

@@ -29,6 +29,18 @@ public class ActionCollectionAction : BeatmapAction
         forceRefreshesPool = forceRefreshPool;
     }
 
+    public override BeatmapObject DoesInvolveObject(BeatmapObject obj)
+    {
+        foreach (var action in actions)
+        {
+            var involvedObject = action.DoesInvolveObject(obj);
+
+            if (involvedObject != null) return involvedObject;
+        }
+
+        return null;
+    }
+
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         if (clearSelection && !Networked) SelectionController.DeselectAll();
@@ -69,7 +81,7 @@ public class ActionCollectionAction : BeatmapAction
 
         for (var i = 0; i < count; i++)
         {
-            var action = reader.GetBeatmapAction();
+            var action = reader.GetBeatmapAction(Identity);
             action.inCollection = true;
             deserializedActions.Add(action);
         }

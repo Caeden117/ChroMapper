@@ -12,7 +12,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction
     public BeatmapObjectModifiedAction() : base() { }
 
     public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject originalObject, BeatmapObject originalData,
-        string comment = "No comment.", bool keepSelection = false) : base(new[] { edited }, comment)
+        string comment = "No comment.", bool keepSelection = false) : base(new[] { edited, originalObject }, comment)
     {
         editedObject = edited;
         editedData = BeatmapObject.GenerateCopy(edited);
@@ -21,6 +21,8 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         this.originalObject = originalObject;
         addToSelection = keepSelection;
     }
+
+    public override BeatmapObject DoesInvolveObject(BeatmapObject obj) => obj == editedObject ? originalObject : null;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
@@ -81,6 +83,6 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         originalData = reader.GetBeatmapObject();
         originalObject = BeatmapObject.GenerateCopy(originalData);
 
-        Data = new[] { editedObject };
+        Data = new[] { editedObject, originalObject };
     }
 }

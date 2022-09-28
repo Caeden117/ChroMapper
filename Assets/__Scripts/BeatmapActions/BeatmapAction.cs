@@ -15,6 +15,7 @@ public abstract class BeatmapAction : INetSerializable
     public string Comment = "No comment.";
     public Guid Guid = Guid.NewGuid();
     public IEnumerable<BeatmapObject> Data;
+    public MapperIdentityPacket Identity; // Only used in United Mapping, assume local user if null
 
     internal bool inCollection = false;
 
@@ -49,6 +50,8 @@ public abstract class BeatmapAction : INetSerializable
     /// </summary>
     /// <param name="reader"></param>
     public abstract void Deserialize(NetDataReader reader);
+
+    public virtual BeatmapObject DoesInvolveObject(BeatmapObject obj) => Data.Any(it => it.IsConflictingWith(obj)) ? obj : null;
 
     protected void RefreshPools(IEnumerable<BeatmapObject> data)
     {

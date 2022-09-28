@@ -1,4 +1,6 @@
-﻿using LiteNetLib.Utils;
+﻿using System;
+using System.Linq;
+using LiteNetLib.Utils;
 
 public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedAction
 {
@@ -38,5 +40,6 @@ public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedA
     {
         base.Deserialize(reader);
         conflictingObject = reader.GetBeatmapObject();
+        Data = Data.Append(conflictingObject);
     }
 }
