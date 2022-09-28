@@ -13,5 +13,7 @@ public enum PacketId
 
     ActionCreated,
     ActionUndo,
-    ActionRedo
+    ActionRedo,
+
+    MapColorUpdated
 }

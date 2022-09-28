@@ -2,9 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-//TODO for the love of god please refactor this to not use BeatmapObjectContainerCollection.LoadedContainers.Values
 public class CustomColorsUIController : MonoBehaviour
 {
+    public event Action CustomColorsUpdatedEvent;
+
     [SerializeField] private ColorPicker picker;
 
     [Space] [SerializeField] private Image redNote;
@@ -29,7 +30,44 @@ public class CustomColorsUIController : MonoBehaviour
     private void Start() => LoadInitialMap.PlatformLoadedEvent += LoadedPlatform;
 
     private void OnDestroy() => LoadInitialMap.PlatformLoadedEvent -= LoadedPlatform;
-    public event Action CustomColorsUpdatedEvent;
+
+    public void UpdateCustomColorsFromPacket(MapColorUpdatePacket packet)
+    {
+        BeatSaberSongContainer.Instance.DifficultyData.ColorLeft = redNote.color = packet.NoteLeft;
+        BeatSaberSongContainer.Instance.DifficultyData.ColorRight = blueNote.color = packet.NoteRight;
+        noteAppearance.UpdateColor(packet.NoteLeft, packet.NoteRight);
+
+        BeatSaberSongContainer.Instance.DifficultyData.EnvColorLeft = redLight.color =
+            eventAppearance.RedColor = platform.Colors.RedColor = packet.LightLeft;
+        BeatSaberSongContainer.Instance.DifficultyData.EnvColorRight = eventAppearance.BlueColor =
+            platform.Colors.BlueColor = blueLight.color = packet.LightRight;
+
+        BeatSaberSongContainer.Instance.DifficultyData.ObstacleColor = obstacle.color =
+            obstacleAppearance.DefaultObstacleColor = packet.Obstacle;
+
+
+        BeatSaberSongContainer.Instance.DifficultyData.BoostColorLeft = redBoost.color =
+            eventAppearance.RedBoostColor = platform.Colors.RedBoostColor = packet.BoostLeft;
+        BeatSaberSongContainer.Instance.DifficultyData.BoostColorRight = blueBoost.color =
+            eventAppearance.BlueBoostColor = platform.Colors.BlueBoostColor = packet.BoostRight;
+
+        // Little dangerous but should be OK
+        BeatmapObjectContainerCollection.RefreshAllPools(true);
+    }
+
+    public MapColorUpdatePacket CreatePacketFromColors()
+    {
+        return new MapColorUpdatePacket()
+        {
+            NoteLeft = BeatSaberSongContainer.Instance.DifficultyData.ColorLeft ?? platform.DefaultColors.RedNoteColor,
+            NoteRight = BeatSaberSongContainer.Instance.DifficultyData.ColorRight ?? platform.DefaultColors.BlueNoteColor,
+            LightLeft = BeatSaberSongContainer.Instance.DifficultyData.EnvColorLeft ?? platform.DefaultColors.RedColor,
+            LightRight = BeatSaberSongContainer.Instance.DifficultyData.EnvColorRight ?? platform.DefaultColors.BlueColor,
+            Obstacle = BeatSaberSongContainer.Instance.DifficultyData.ObstacleColor ?? platform.DefaultColors.ObstacleColor,
+            BoostLeft = BeatSaberSongContainer.Instance.DifficultyData.BoostColorLeft ?? platform.DefaultColors.RedBoostColor,
+            BoostRight = BeatSaberSongContainer.Instance.DifficultyData.BoostColorRight ?? platform.DefaultColors.BlueBoostColor
+        };
+    }
 
     private void LoadedPlatform(PlatformDescriptor obj)
     {

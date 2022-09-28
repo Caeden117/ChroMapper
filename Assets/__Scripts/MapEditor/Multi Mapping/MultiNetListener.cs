@@ -24,6 +24,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     private AudioTimeSyncController audioTimeSyncController;
     private TracksManager tracksManager;
     private BookmarkManager bookmarkManager;
+    private CustomColorsUIController customColors;
     private RemotePlayerContainer remotePlayerPrefab;
     private float previousCursorBeat = 0;
     private float localSongSpeed = 1;
@@ -303,6 +304,11 @@ public class MultiNetListener : INetEventListener, IDisposable
         RegisterPacketHandler(PacketId.BeatmapObjectCreate, new BookmarkCreatePacketHandler(bookmarkManager));
         RegisterPacketHandler(PacketId.BeatmapObjectDelete, new BookmarkDeletePacketHandler(bookmarkManager));
 
+        // double sigh
+        customColors = UnityEngine.Object.FindObjectOfType<CustomColorsUIController>();
+        customColors.CustomColorsUpdatedEvent += CustomColors_CustomColorsUpdatedEvent;
+        RegisterPacketHandler(PacketId.MapColorUpdated, new MapColorUpdatePacketHandler(customColors));
+
         Settings.NotifyBySettingName("SongSpeed", UpdateLocalSongSpeed);
 
         EditorScaleController.EditorScaleChangedEvent += OnEditorScaleChanged;
@@ -321,6 +327,8 @@ public class MultiNetListener : INetEventListener, IDisposable
 
         bookmarkManager.BookmarkAdded -= MultiNetListener_ObjectSpawnedEvent;
         bookmarkManager.BookmarkDeleted -= MultiNetListener_ObjectDeletedEvent;
+        
+        customColors.CustomColorsUpdatedEvent -= CustomColors_CustomColorsUpdatedEvent;
 
         Settings.ClearSettingNotifications("SongSpeed");
 
@@ -397,6 +405,17 @@ public class MultiNetListener : INetEventListener, IDisposable
         writer.Put(0);
         writer.Put((byte)PacketId.ActionRedo);
         writer.Put(obj.Guid.ToString());
+
+        NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
+    }
+
+    private void CustomColors_CustomColorsUpdatedEvent()
+    {
+        var writer = new NetDataWriter();
+
+        writer.Put(0);
+        writer.Put((byte)PacketId.MapColorUpdated);
+        writer.Put(customColors.CreatePacketFromColors());
 
         NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
     }
