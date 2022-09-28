@@ -6,11 +6,12 @@ using System.Net;
 using System.Net.Sockets;
 using LiteNetLib;
 using LiteNetLib.Utils;
-using TMPro;
 using UnityEngine;
 
 public class MultiNetListener : INetEventListener, IDisposable
 {
+    public const int PoseUpdateFramerate = 24;
+
     protected internal NetManager NetManager;
 
     protected List<MapperIdentityPacket> Identities = new List<MapperIdentityPacket>();
@@ -28,6 +29,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     private RemotePlayerContainer remotePlayerPrefab;
     private float previousCursorBeat = 0;
     private float localSongSpeed = 1;
+    private float lastPoseUpdateTime = 0;
 
     public MultiNetListener()
     {
@@ -240,8 +242,10 @@ public class MultiNetListener : INetEventListener, IDisposable
         NetManager?.PollEvents();
 
         if (audioTimeSyncController != null && cameraController != null &&
-            (cameraController.MovingCamera || (!audioTimeSyncController.IsPlaying && audioTimeSyncController.CurrentBeat != previousCursorBeat)))
+            (cameraController.MovingCamera || (!audioTimeSyncController.IsPlaying && audioTimeSyncController.CurrentBeat != previousCursorBeat))
+            && Time.time - lastPoseUpdateTime >= 1f / PoseUpdateFramerate)
         {
+            lastPoseUpdateTime = Time.time;
             previousCursorBeat = audioTimeSyncController.CurrentBeat;
 
             BroadcastPose();
