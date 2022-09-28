@@ -6,7 +6,7 @@ public class MapperIdentityPacket : INetSerializable
 {
     public string Name;
     public int ConnectionId;
-    public Color Color;
+    public ColorSerializable Color;
 
     public NetPeer? MapperPeer;
 
@@ -25,18 +25,13 @@ public class MapperIdentityPacket : INetSerializable
     {
         ConnectionId = reader.GetInt();
         Name = reader.GetString();
-        Color.r = reader.GetFloat();
-        Color.g = reader.GetFloat();
-        Color.b = reader.GetFloat();
-        Color.a = 1;
+        Color = reader.Get<ColorSerializable>();
     }
 
     public void Serialize(NetDataWriter writer)
     {
         writer.Put(ConnectionId);
         writer.Put(Name);
-        writer.Put(Color.r);
-        writer.Put(Color.g);
-        writer.Put(Color.b);
+        writer.Put(Color);
     }
 }
