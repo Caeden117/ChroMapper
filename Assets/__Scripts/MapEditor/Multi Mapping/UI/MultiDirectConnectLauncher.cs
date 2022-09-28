@@ -34,9 +34,10 @@ public class MultiDirectConnectLauncher : MonoBehaviour
                 .WithLabel("MultiMapping", "multi.session.use-code");
 
             dialogBox.AddComponent<ButtonComponent>()
-                .OnClick(MultiCustomizationLauncher.OpenMultiCustomization)
+                .OnClick(() => MultiCustomizationLauncher.OpenMultiCustomization(dialogBox))
                 .WithLabel("MultiMapping", "multi.customize");
 
+            dialogBox.OnQuickSubmit(JoinMultiSession);
             dialogBox.AddFooterButton(null, "PersistentUI", "cancel");
             dialogBox.AddFooterButton(JoinMultiSession, "MultiMapping", "multi.session.join");
         }

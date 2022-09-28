@@ -9,7 +9,7 @@ public static class MultiCustomizationLauncher
     private static NestedColorPickerComponent color;
     private static TextBoxComponent serverUrlTextBox;
 
-    public static void OpenMultiCustomization()
+    public static void OpenMultiCustomization(DialogBox parent)
     {
         if (dialogBox == null)
         {
@@ -32,11 +32,10 @@ public static class MultiCustomizationLauncher
                 .WithInitialValue(Settings.Instance.MultiSettings.ChroMapTogetherServerUrl);
 
             dialogBox.AddFooterButton(null, "PersistentUI", "cancel");
-
             dialogBox.AddFooterButton(ApplyChanges, "MultiMapping", "multi.customize.apply");
         }
 
-        dialogBox.Open();
+        dialogBox.Open(parent);
     }
 
     private static void ApplyChanges()

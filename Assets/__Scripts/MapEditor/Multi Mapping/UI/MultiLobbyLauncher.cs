@@ -9,7 +9,7 @@ public class MultiLobbyLauncher : MonoBehaviour
     private DialogBox dialogBox;
     internal MultiServerRelayModeNetListener serverNetListener;
 
-    private string? roomCode = null;
+    private string roomCode = null;
     private Guid? roomId = null;
 
     public void StartLobby()
@@ -36,7 +36,7 @@ public class MultiLobbyLauncher : MonoBehaviour
                 .WithLabel("MultiMapping", "multi.session.use-direct");
 
             dialogBox.AddComponent<ButtonComponent>()
-                .OnClick(MultiCustomizationLauncher.OpenMultiCustomization)
+                .OnClick(() => MultiCustomizationLauncher.OpenMultiCustomization(dialogBox))
                 .WithLabel("MultiMapping", "multi.customize");
 
             dialogBox.AddFooterButton(null, "PersistentUI", "cancel");

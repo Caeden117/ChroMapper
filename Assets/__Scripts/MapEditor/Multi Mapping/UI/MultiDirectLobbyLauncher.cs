@@ -36,9 +36,10 @@ public class MultiDirectLobbyLauncher : MonoBehaviour
                 .WithLabel("MultiMapping", "multi.session.use-code");
 
             dialogBox.AddComponent<ButtonComponent>()
-                .OnClick(MultiCustomizationLauncher.OpenMultiCustomization)
+                .OnClick(() => MultiCustomizationLauncher.OpenMultiCustomization(dialogBox))
                 .WithLabel("MultiMapping", "multi.customize");
 
+            dialogBox.OnQuickSubmit(StartLobby);
             dialogBox.AddFooterButton(null, "PersistentUI", "cancel");
             dialogBox.AddFooterButton(StartMultiSession, "MultiMapping", "multi.session.host");
         }
