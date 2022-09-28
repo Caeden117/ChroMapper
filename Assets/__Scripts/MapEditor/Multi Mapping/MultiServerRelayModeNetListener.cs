@@ -1,4 +1,5 @@
 using LiteNetLib;
+using LiteNetLib.Utils;
 
 // When using ChroMapTogether, the session host is effectively another client of the ChroMapTogether server.
 public class MultiServerRelayModeNetListener : MultiClientNetListener
@@ -19,14 +20,16 @@ public class MultiServerRelayModeNetListener : MultiClientNetListener
         base.Dispose();
     }
 
-    public override void OnMapperIdentity(NetPeer peer, MapperIdentityPacket identity)
+    public override void OnMapperIdentity(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
     {
-        base.OnMapperIdentity(peer, identity);
+        base.OnMapperIdentity(this, identity, reader);
 
-        BroadcastPose(peer);
+        var newMapper = Identities[Identities.Count - 1];
+
+        BroadcastPose(newMapper.MapperPeer);
 
         // This is absolutely NOT a good way to go about this, but I can't think of anything else!
-        PersistentUI.Instance.StartCoroutine(MultiServerNetListener.SaveAndSendMapToPeer(this, autoSave, peer));
+        PersistentUI.Instance.StartCoroutine(MultiServerNetListener.SaveAndSendMapToPeer(this, autoSave, newMapper.MapperPeer));
     }
 
     // No longer doing anything since latency is updated completely via MapperLatencyPackets

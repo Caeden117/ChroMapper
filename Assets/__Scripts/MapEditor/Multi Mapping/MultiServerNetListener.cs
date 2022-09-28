@@ -44,14 +44,14 @@ public class MultiServerNetListener : MultiNetListener
         {
             if (mapper.MapperPeer != null)
             {
-                SendPacketFrom(identity, mapper.MapperPeer, Packets.MapperIdentity, identity);
+                SendPacketFrom(identity, mapper.MapperPeer, PacketId.MapperIdentity, identity);
             }
 
-            SendPacketFrom(mapper, peer, Packets.MapperIdentity, mapper);
+            SendPacketFrom(mapper, peer, PacketId.MapperIdentity, mapper);
 
             if (CachedPosePackets.TryGetValue(mapper, out var lastKnownPose))
             {
-                SendPacketFrom(mapper, peer, Packets.MapperPose, lastKnownPose);
+                SendPacketFrom(mapper, peer, PacketId.MapperPose, lastKnownPose);
             }
         }
 
@@ -100,7 +100,7 @@ public class MultiServerNetListener : MultiNetListener
         {
             if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
             {
-                SendPacketFrom(identity, mapper.MapperPeer, Packets.MapperLatency, new MapperLatencyPacket()
+                SendPacketFrom(identity, mapper.MapperPeer, PacketId.MapperLatency, new MapperLatencyPacket()
                 { 
                     Latency = latency
                 });
@@ -120,11 +120,11 @@ public class MultiServerNetListener : MultiNetListener
         {
             if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
             {
-                SendPacketFrom(identity, mapper.MapperPeer, Packets.MapperDisconnect);
+                SendPacketFrom(identity, mapper.MapperPeer, PacketId.MapperDisconnect);
             }
         }
 
-        OnMapperDisconnected(identity);
+        OnMapperDisconnected(this, identity, null);
     }
 
     internal static IEnumerator SaveAndSendMapToPeer(MultiNetListener listener, AutoSaveController autoSave, NetPeer peer)
@@ -157,6 +157,6 @@ public class MultiServerNetListener : MultiNetListener
 
         var zipBytes = File.ReadAllBytes(zipPath);
 
-        listener.SendPacketTo(peer, Packets.SendZip, new MapDataPacket(zipBytes, characteristic.BeatmapCharacteristicName, diff.Difficulty));
+        listener.SendPacketTo(peer, PacketId.SendZip, new MapDataPacket(zipBytes, characteristic.BeatmapCharacteristicName, diff.Difficulty));
     }
 }

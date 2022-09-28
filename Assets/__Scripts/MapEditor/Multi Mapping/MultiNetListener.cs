@@ -19,6 +19,7 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     protected Dictionary<MapperIdentityPacket, MapperPosePacket> CachedPosePackets = new Dictionary<MapperIdentityPacket, MapperPosePacket>();
 
+    private Dictionary<PacketId, IPacketHandler> registeredPacketHandlers = new Dictionary<PacketId, IPacketHandler>();
     private CameraController cameraController;
     private AudioTimeSyncController audioTimeSyncController;
     private TracksManager tracksManager;
@@ -31,17 +32,30 @@ public class MultiNetListener : INetEventListener, IDisposable
     {
         NetManager = new NetManager(this);
         remotePlayerPrefab = Resources.Load<RemotePlayerContainer>("Remote Player");
+        RegisterPacketHandler(PacketId.MapperIdentity, OnMapperIdentity);
+        RegisterPacketHandler(PacketId.MapperPose, OnMapperPose);
+        RegisterPacketHandler(PacketId.MapperDisconnect, OnMapperDisconnected);
+        RegisterPacketHandler(PacketId.MapperLatency, OnMapperLatency);
     }
 
     public virtual void Dispose()
     {
         var disconnectPacketWriter = new NetDataWriter();
         disconnectPacketWriter.Put(0);
-        disconnectPacketWriter.Put((byte)Packets.MapperDisconnect);
+        disconnectPacketWriter.Put((byte)PacketId.MapperDisconnect);
         NetManager.SendToAll(disconnectPacketWriter, DeliveryMethod.ReliableOrdered);
 
         NetManager.Stop();
     }
+
+    public void RegisterPacketHandler<THandler>(PacketId packetId) where THandler : IPacketHandler, new()
+        => registeredPacketHandlers[packetId] = new THandler();
+
+    public void RegisterPacketHandler<THandler>(PacketId packetId, THandler instance) where THandler : IPacketHandler
+        => registeredPacketHandlers[packetId] = instance;
+
+    public void RegisterPacketHandler(PacketId packetId, Action<MultiNetListener, MapperIdentityPacket, NetDataReader> onHandlePacket)
+        => RegisterPacketHandler(packetId, new DelegatePacketHandler(onHandlePacket));
 
     public virtual void OnConnectionRequest(ConnectionRequest request) { }
 
@@ -61,7 +75,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         OnPacketReceived(peer, identity, reader);
     }
 
-    public virtual void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType) => throw new System.NotImplementedException();
+    public virtual void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType) { }
 
     public virtual void OnPeerConnected(NetPeer peer) { }
 
@@ -71,82 +85,36 @@ public class MultiNetListener : INetEventListener, IDisposable
     {
         var packetId = reader.GetByte();
 
-        // Handle packets
-        switch (packetId)
+        if (registeredPacketHandlers.TryGetValue((PacketId)packetId, out var handler))
         {
-            case (byte)Packets.MapperIdentity:
-                OnMapperIdentity(peer, reader.Get<MapperIdentityPacket>());
-                break;
-
-            case (byte)Packets.MapperPose:
-                var pose = reader.Get<MapperPosePacket>();
-
-                // We apply cached song position to an incoming pose packet if the mapper is playing through the song.
-                //    This eliminates jittering when clients move the camera while playing the song.
-                if (pose.IsPlayingSong && CachedPosePackets.TryGetValue(identity, out var remotePose))
-                {
-                    pose.SongPosition = remotePose.SongPosition;
-                }
-
-                CachedPosePackets[identity] = pose;
-
-                OnMapperPose(identity, peer, pose);
-                break;
-
-            case (byte)Packets.MapperLatency:
-                var latencyPacket = reader.Get<MapperLatencyPacket>();
-
-                if (RemotePlayers.TryGetValue(identity, out var remotePlayer))
-                {
-                    remotePlayer.UpdateLatency(latencyPacket.Latency);
-                }
-                break;
-
-            case (byte)Packets.MapperDisconnect:
-                OnMapperDisconnected(identity);
-                break;
-
-            case (byte)Packets.SendZip:
-                OnZipData(peer, reader.Get<MapDataPacket>());
-                break;
-
-            case (byte)Packets.BeatmapObjectCreate:
-                var creationObject = reader.GetBeatmapObject();
-
-                if (creationObject is BeatmapBookmark creationBookmark)
-                {
-                    bookmarkManager.AddBookmark(creationBookmark, false);
-                }
-                break;
-
-            case (byte)Packets.BeatmapObjectDelete:
-                var deletionObject = reader.GetBeatmapObject();
-
-                if (deletionObject is BeatmapBookmark deletionBookmark)
-                {
-                    bookmarkManager.DeleteBookmarkAtTime(deletionBookmark.Time, false);
-                }
-                break;
-            case (byte)Packets.ActionCreated:
-                var action = reader.GetBeatmapAction(identity);
-                BeatmapActionContainer.AddAction(action, true);
-                break;
-            case (byte)Packets.ActionUndo:
-                var undoGuid = Guid.Parse(reader.GetString());
-                BeatmapActionContainer.Undo(undoGuid);
-                break;
-            case (byte)Packets.ActionRedo:
-                var redoGuid = Guid.Parse(reader.GetString());
-                BeatmapActionContainer.Redo(redoGuid);
-                break;
+            handler.HandlePacket(this, identity, reader);
+        }
+        else
+        {
+            Debug.LogWarning($"No handler for packet {packetId}");
         }
     }
 
-    public virtual void OnZipData(NetPeer peer, MapDataPacket mapData) => throw new System.NotImplementedException();
+    public virtual void OnMapperIdentity(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
+        => Identities.Add(reader.Get<MapperIdentityPacket>());
 
-    public virtual void OnMapperIdentity(NetPeer peer, MapperIdentityPacket identity) => Identities.Add(identity);
+    public void OnMapperPose(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
+    {
+        var pose = reader.Get<MapperPosePacket>();
 
-    public virtual void OnMapperPose(MapperIdentityPacket identity, NetPeer peer, MapperPosePacket pose)
+        // We apply cached song position to an incoming pose packet if the mapper is playing through the song.
+        //    This eliminates jittering when clients move the camera while playing the song.
+        if (pose.IsPlayingSong && CachedPosePackets.TryGetValue(identity, out var remotePose))
+        {
+            pose.SongPosition = remotePose.SongPosition;
+        }
+
+        CachedPosePackets[identity] = pose;
+
+        UpdateMapperPose(identity, pose);
+    }
+
+    public void UpdateMapperPose(MapperIdentityPacket identity, MapperPosePacket pose)
     {
         if (identity is null || tracksManager == null) return;
 
@@ -177,7 +145,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         remotePlayer.GridTransform.localEulerAngles = track.localEulerAngles;
     }
 
-    public void OnMapperDisconnected(MapperIdentityPacket identity)
+    public void OnMapperDisconnected(MultiNetListener _, MapperIdentityPacket identity, NetDataReader __)
     {
         if (identity != null)
         {
@@ -195,15 +163,25 @@ public class MultiNetListener : INetEventListener, IDisposable
         }
     }
 
+    public void OnMapperLatency(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
+    {
+        var latencyPacket = reader.Get<MapperLatencyPacket>();
+
+        if (RemotePlayers.TryGetValue(identity, out var remotePlayer))
+        {
+            remotePlayer.UpdateLatency(latencyPacket.Latency);
+        }
+    }
+
     public void UpdateCachedPoses()
     {
         foreach (var kvp in CachedPosePackets)
         {
-            OnMapperPose(kvp.Key, null, kvp.Value);
+            UpdateMapperPose(kvp.Key, kvp.Value);
         }
     }
 
-    public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, Packets packetId, INetSerializable serializable)
+    public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, PacketId packetId, INetSerializable serializable)
     {
         var writer = new NetDataWriter();
 
@@ -214,7 +192,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         toPeer.Send(writer, DeliveryMethod.ReliableOrdered);
     }
 
-    public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, Packets packetId)
+    public void SendPacketFrom(MapperIdentityPacket fromPeer, NetPeer toPeer, PacketId packetId)
     {
         var writer = new NetDataWriter();
 
@@ -234,7 +212,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         toPeer.Send(writer, DeliveryMethod.ReliableOrdered);
     }
 
-    public void SendPacketTo(NetPeer toPeer, Packets packetId, INetSerializable serializable)
+    public void SendPacketTo(NetPeer toPeer, PacketId packetId, INetSerializable serializable)
     {
         var writer = new NetDataWriter();
 
@@ -245,7 +223,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         toPeer.Send(writer, DeliveryMethod.ReliableOrdered);
     }
 
-    public void SendPacketTo(NetPeer toPeer, Packets packetId, byte[] data)
+    public void SendPacketTo(NetPeer toPeer, PacketId packetId, byte[] data)
     {
         var writer = new NetDataWriter();
 
@@ -281,7 +259,7 @@ public class MultiNetListener : INetEventListener, IDisposable
             {
                 pose.SongPosition += BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 60 * Time.deltaTime * pose.PlayingSongSpeed;
 
-                OnMapperPose(mapper, null, pose);
+                UpdateMapperPose(mapper, pose);
             }
         }
     }
@@ -291,7 +269,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         var poseWriter = new NetDataWriter();
 
         poseWriter.Put(0);
-        poseWriter.Put((byte)Packets.MapperPose);
+        poseWriter.Put((byte)PacketId.MapperPose);
         poseWriter.Put(new MapperPosePacket()
         {
             Position = cameraController.transform.position,
@@ -322,14 +300,19 @@ public class MultiNetListener : INetEventListener, IDisposable
         bookmarkManager = UnityEngine.Object.FindObjectOfType<BookmarkManager>();
         bookmarkManager.BookmarkAdded += MultiNetListener_ObjectSpawnedEvent;
         bookmarkManager.BookmarkDeleted += MultiNetListener_ObjectDeletedEvent;
+        RegisterPacketHandler(PacketId.BeatmapObjectCreate, new BookmarkCreatePacketHandler(bookmarkManager));
+        RegisterPacketHandler(PacketId.BeatmapObjectDelete, new BookmarkDeletePacketHandler(bookmarkManager));
 
         Settings.NotifyBySettingName("SongSpeed", UpdateLocalSongSpeed);
 
         EditorScaleController.EditorScaleChangedEvent += OnEditorScaleChanged;
 
         BeatmapActionContainer.ActionCreatedEvent += BeatmapActionContainer_ActionCreatedEvent;
+        RegisterPacketHandler<ActionCreatedPacketHandler>(PacketId.ActionCreated);
         BeatmapActionContainer.ActionUndoEvent += BeatmapActionContainer_ActionUndoEvent;
+        RegisterPacketHandler<ActionUndoPacketHandler>(PacketId.ActionUndo);
         BeatmapActionContainer.ActionRedoEvent += BeatmapActionContainer_ActionRedoEvent;
+        RegisterPacketHandler<ActionRedoPacketHandler>(PacketId.ActionRedo);
     }
 
     public void UnsubscribeFromCollectionEvents()
@@ -364,7 +347,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         var writer = new NetDataWriter();
 
         writer.Put(0);
-        writer.Put((byte)Packets.BeatmapObjectCreate);
+        writer.Put((byte)PacketId.BeatmapObjectCreate);
         writer.Put((byte)obj.BeatmapType);
         writer.Put(obj);
 
@@ -376,7 +359,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         var writer = new NetDataWriter();
 
         writer.Put(0);
-        writer.Put((byte)Packets.BeatmapObjectDelete);
+        writer.Put((byte)PacketId.BeatmapObjectDelete);
         writer.Put((byte)obj.BeatmapType);
         writer.Put(obj);
 
@@ -390,7 +373,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         var writer = new NetDataWriter();
 
         writer.Put(0);
-        writer.Put((byte)Packets.ActionCreated);
+        writer.Put((byte)PacketId.ActionCreated);
         writer.PutBeatmapAction(obj);
 
         NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
@@ -401,7 +384,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         var writer = new NetDataWriter();
 
         writer.Put(0);
-        writer.Put((byte)Packets.ActionUndo);
+        writer.Put((byte)PacketId.ActionUndo);
         writer.Put(obj.Guid.ToString());
 
         NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
@@ -412,7 +395,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         var writer = new NetDataWriter();
 
         writer.Put(0);
-        writer.Put((byte)Packets.ActionRedo);
+        writer.Put((byte)PacketId.ActionRedo);
         writer.Put(obj.Guid.ToString());
 
         NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);

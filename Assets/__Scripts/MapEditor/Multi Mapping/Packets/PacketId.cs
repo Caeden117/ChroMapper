@@ -1,4 +1,4 @@
-public enum Packets
+public enum PacketId
 {
     MapperIdentity,
     MapperPose,

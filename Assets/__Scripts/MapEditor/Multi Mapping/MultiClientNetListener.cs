@@ -11,9 +11,7 @@ using UnityEngine;
 
 public class MultiClientNetListener : MultiNetListener
 {
-    public int ClientId { get; private set; } = 0;
-
-    public MapDataPacket? MapData { get; private set; }
+    public MapDataPacket MapData { get; private set; } = null;
 
     public MultiClientNetListener(string ip, int port, MapperIdentityPacket identity) : base()
     {
@@ -23,6 +21,8 @@ public class MultiClientNetListener : MultiNetListener
         identityWriter.Put(identity);
 
         NetManager.Connect(ip, port, identityWriter);
+
+        RegisterPacketHandler(PacketId.SendZip, OnZipData);
     }
 
     public MultiClientNetListener(string roomCode, MapperIdentityPacket identity) : base()
@@ -39,9 +39,12 @@ public class MultiClientNetListener : MultiNetListener
         Debug.Log($"Attempting to contact ChroMapTogether server at {domain}:6969...");
 
         NetManager.Connect(domain, 6969, identityWriter);
+
+        RegisterPacketHandler(PacketId.SendZip, OnZipData);
     }
 
-    public override void OnZipData(NetPeer peer, MapDataPacket mapData) => MapData = mapData;
+    public void OnZipData(MultiNetListener _, MapperIdentityPacket __, NetDataReader reader)
+        => MapData = reader.Get<MapDataPacket>();
 
     // For the client, we just update the host latency (everyone else is updated via MapperLatency packets)
     public override void OnNetworkLatencyUpdate(NetPeer peer, int latency)
