@@ -27,6 +27,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     private BookmarkManager bookmarkManager;
     private CustomColorsUIController customColors;
     private RemotePlayerContainer remotePlayerPrefab;
+    private MultiTimelineController multiTimelineController;
     private float previousCursorBeat = 0;
     private float localSongSpeed = 1;
     private float lastPoseUpdateTime = 0;
@@ -146,6 +147,8 @@ public class MultiNetListener : INetEventListener, IDisposable
         remotePlayer.CameraTransform.localPosition = pose.Position;
         remotePlayer.CameraTransform.localRotation = pose.Rotation;
         remotePlayer.GridTransform.localEulerAngles = track.localEulerAngles;
+
+        multiTimelineController.UpdatePose(identity, pose);
     }
 
     public void OnMapperDisconnected(MultiNetListener _, MapperIdentityPacket identity, NetDataReader __)
@@ -240,6 +243,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     public void ManualUpdate()
     {
         NetManager?.PollEvents();
+        multiTimelineController?.ManualUpdate();
 
         if (audioTimeSyncController != null && cameraController != null &&
             (cameraController.MovingCamera || (!audioTimeSyncController.IsPlaying && audioTimeSyncController.CurrentBeat != previousCursorBeat))
@@ -323,6 +327,8 @@ public class MultiNetListener : INetEventListener, IDisposable
         RegisterPacketHandler<ActionUndoPacketHandler>(PacketId.ActionUndo);
         BeatmapActionContainer.ActionRedoEvent += BeatmapActionContainer_ActionRedoEvent;
         RegisterPacketHandler<ActionRedoPacketHandler>(PacketId.ActionRedo);
+
+        multiTimelineController = new MultiTimelineController(this, bookmarkManager);
 
         BroadcastPose();
     }
