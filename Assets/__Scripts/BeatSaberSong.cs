@@ -278,7 +278,7 @@ public class BeatSaberSong
                 Debug.LogError(":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
             }
 
-            Debug.Log("Saved song info.dat for " + SongName);
+            Debug.Log("Saved song Info.dat for " + SongName);
         }
         catch (Exception e)
         {
