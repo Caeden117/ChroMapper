@@ -15,5 +15,11 @@ public enum PacketId
     ActionUndo,
     ActionRedo,
 
-    MapColorUpdated
+    MapColorUpdated,
+
+    CMT_RequestZip,
+
+    CMT_IncomingMapper,
+    CMT_AcceptMapper,
+    CMT_KickMapper
 }

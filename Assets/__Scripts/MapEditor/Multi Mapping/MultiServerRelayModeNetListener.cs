@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net;
 using LiteNetLib;
 using LiteNetLib.Utils;
 
@@ -5,6 +7,7 @@ using LiteNetLib.Utils;
 public class MultiServerRelayModeNetListener : MultiClientNetListener
 {
     private AutoSaveController autoSave;
+    private List<string> tempBannedIps = new List<string>();
 
     public MultiServerRelayModeNetListener(string roomCode, MapperIdentityPacket identity, AutoSaveController autoSave)
         : base(roomCode, identity)
@@ -12,6 +15,9 @@ public class MultiServerRelayModeNetListener : MultiClientNetListener
         this.autoSave = autoSave;
 
         SubscribeToCollectionEvents();
+
+        RegisterPacketHandler(PacketId.CMT_RequestZip, OnRequestZip);
+        RegisterPacketHandler(PacketId.CMT_IncomingMapper, OnIncomingMapper);
     }
 
     public override void Dispose()
@@ -20,16 +26,33 @@ public class MultiServerRelayModeNetListener : MultiClientNetListener
         base.Dispose();
     }
 
-    public override void OnMapperIdentity(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
+    // This is absolutely NOT a good way to go about this, but I can't think of anything else!
+    //   At least this time, we are only doing it when ChroMapTogether requests a zip
+    public void OnRequestZip(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
+        => PersistentUI.Instance.StartCoroutine(MultiServerNetListener.SaveAndSendMapToPeer(this, autoSave, NetManager.FirstPeer));
+
+    public void OnIncomingMapper(MultiNetListener listener, MapperIdentityPacket identity, NetDataReader reader)
     {
-        base.OnMapperIdentity(this, identity, reader);
+        var ip = reader.GetString();
 
-        var newMapper = Identities[Identities.Count - 1];
+        var writer = new NetDataWriter();
 
-        BroadcastPose(newMapper.MapperPeer);
+        writer.Put(identity.ConnectionId);
 
-        // This is absolutely NOT a good way to go about this, but I can't think of anything else!
-        PersistentUI.Instance.StartCoroutine(MultiServerNetListener.SaveAndSendMapToPeer(this, autoSave, newMapper.MapperPeer));
+        if (!IPAddress.TryParse(ip, out _))
+        {
+            writer.Put("IP Address was invalid.");
+            SendPacketTo(NetManager.FirstPeer, PacketId.CMT_KickMapper, writer.Data);
+            return;
+        }
+        else if (tempBannedIps.Contains(ip))
+        {
+            writer.Put("The host has banned you.");
+            SendPacketTo(NetManager.FirstPeer, PacketId.CMT_KickMapper, writer.Data);
+            return;
+        }
+
+        SendPacketTo(NetManager.FirstPeer, PacketId.CMT_AcceptMapper, writer.Data);
     }
 
     // No longer doing anything since latency is updated completely via MapperLatencyPackets

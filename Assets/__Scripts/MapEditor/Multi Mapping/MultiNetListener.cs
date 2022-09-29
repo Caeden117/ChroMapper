@@ -98,7 +98,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         }
     }
 
-    public virtual void OnMapperIdentity(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
+    public void OnMapperIdentity(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
         => Identities.Add(reader.Get<MapperIdentityPacket>());
 
     public void OnMapperPose(MultiNetListener _, MapperIdentityPacket identity, NetDataReader reader)
@@ -323,6 +323,8 @@ public class MultiNetListener : INetEventListener, IDisposable
         RegisterPacketHandler<ActionUndoPacketHandler>(PacketId.ActionUndo);
         BeatmapActionContainer.ActionRedoEvent += BeatmapActionContainer_ActionRedoEvent;
         RegisterPacketHandler<ActionRedoPacketHandler>(PacketId.ActionRedo);
+
+        BroadcastPose();
     }
 
     public void UnsubscribeFromCollectionEvents()
