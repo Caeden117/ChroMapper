@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using LiteNetLib;
@@ -273,7 +271,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         }
     }
 
-    public void BroadcastPose(NetPeer? targetPeer = null)
+    public void BroadcastPose(NetPeer targetPeer = null)
     {
         var poseWriter = new NetDataWriter();
 

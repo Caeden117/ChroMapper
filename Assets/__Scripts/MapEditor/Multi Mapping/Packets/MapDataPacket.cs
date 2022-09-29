@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using LiteNetLib.Utils;
-using UnityEngine;
 
 public class MapDataPacket : INetSerializable
 {
