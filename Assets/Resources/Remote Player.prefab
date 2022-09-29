@@ -718,3 +718,4 @@ MonoBehaviour:
   nameMesh: {fileID: 2994269570188824537}
   gridNameMesh: {fileID: 2643294385983468501}
   gridSprite: {fileID: 4371054547145347042}
+  faceSprite: {fileID: 3341725980746055274}

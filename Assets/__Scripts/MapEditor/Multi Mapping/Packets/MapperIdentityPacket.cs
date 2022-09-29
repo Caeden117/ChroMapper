@@ -7,6 +7,7 @@ public class MapperIdentityPacket : INetSerializable
     public string Name;
     public int ConnectionId;
     public ColorSerializable Color;
+    public long DiscordId = -1;
 
     public NetPeer? MapperPeer;
     public string? Ip;
@@ -20,6 +21,11 @@ public class MapperIdentityPacket : INetSerializable
         Name = name;
         ConnectionId = id;
         Color = color;
+    
+        if (DiscordController.IsActive && DiscordController.UserManager != null)
+        {
+            DiscordId = DiscordController.UserManager.GetCurrentUser().Id;
+        }
     }
 
     public void Deserialize(NetDataReader reader)
@@ -27,6 +33,7 @@ public class MapperIdentityPacket : INetSerializable
         ConnectionId = reader.GetInt();
         Name = reader.GetString();
         Color = reader.Get<ColorSerializable>();
+        DiscordId = reader.GetLong();
     }
 
     public void Serialize(NetDataWriter writer)
@@ -34,5 +41,6 @@ public class MapperIdentityPacket : INetSerializable
         writer.Put(ConnectionId);
         writer.Put(Name);
         writer.Put(Color);
+        writer.Put(DiscordId);
     }
 }

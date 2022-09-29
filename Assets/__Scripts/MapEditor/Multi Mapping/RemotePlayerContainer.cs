@@ -13,6 +13,7 @@ public class RemotePlayerContainer : MonoBehaviour
     [SerializeField] private TextMeshPro nameMesh;
     [SerializeField] private TextMeshPro gridNameMesh;
     [SerializeField] private SpriteRenderer gridSprite;
+    [SerializeField] private SpriteRenderer faceSprite;
 
     private Transform lookAt;
     private MultiNetListener source;
@@ -27,6 +28,19 @@ public class RemotePlayerContainer : MonoBehaviour
         nameMesh.text = identity.Name;
 
         gridSprite.color = gridNameMesh.color = identity.Color;
+        
+        if (identity.DiscordId > 0 && DiscordController.IsActive)
+        {
+            var handle = Discord.ImageHandle.User(identity.DiscordId, 128);
+
+            DiscordController.ImageManager.Fetch(handle, true, (res, updatedHandle) =>
+            {
+                var texture = DiscordController.ImageManager.GetTexture(updatedHandle);
+
+                faceSprite.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), 0.5f * Vector2.one);
+                faceSprite.flipY = true;
+            });
+        }
 
         UpdateGridText();
     }
@@ -51,6 +65,11 @@ public class RemotePlayerContainer : MonoBehaviour
     private void Start() => lookAt = Camera.main.transform;
 
     private void Update() => nameMesh.transform.LookAt(lookAt);
+
+    private void OnDestroy()
+    {
+        if (faceSprite.flipY) Destroy(faceSprite.sprite);
+    }
 
     private void UpdateGridText()
     {
