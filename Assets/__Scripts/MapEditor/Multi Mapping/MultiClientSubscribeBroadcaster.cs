@@ -8,7 +8,11 @@ public class MultiClientSubscribeBroadcaster : MonoBehaviour
 
         client?.SubscribeToCollectionEvents();
         client?.UpdateCachedPoses();
+
+        LoadInitialMap.LevelLoadedEvent += LevelLoadedEvent;
     }
+
+    private void LevelLoadedEvent() => ActionCachingPacketHandler.FlushCache();
 
     private void OnDestroy()
     {
@@ -18,5 +22,7 @@ public class MultiClientSubscribeBroadcaster : MonoBehaviour
         client?.Dispose();
 
         BeatSaberSongContainer.Instance.MultiMapperConnection = null;
+
+        LoadInitialMap.LevelLoadedEvent -= LevelLoadedEvent;
     }
 }

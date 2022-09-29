@@ -19,6 +19,11 @@ public class MultiClientNetListener : MultiNetListener
         NetManager.Connect(ip, port, identityWriter);
 
         RegisterPacketHandler(PacketId.SendZip, OnZipData);
+
+        // It will take a while to get to the editor scene, so we register caching handlers in the meantime
+        RegisterPacketHandler<ActionCreateCachingPacketHandler>(PacketId.ActionCreated);
+        RegisterPacketHandler<ActionUndoCachingPacketHandler>(PacketId.ActionUndo);
+        RegisterPacketHandler<ActionRedoCachingPacketHandler>(PacketId.ActionRedo);
     }
 
     public MultiClientNetListener(string roomCode, MapperIdentityPacket identity) : base()
@@ -37,6 +42,10 @@ public class MultiClientNetListener : MultiNetListener
         NetManager.Connect(domain, 6969, identityWriter);
 
         RegisterPacketHandler(PacketId.SendZip, OnZipData);
+        // It will take a while to get to the editor scene, so we register caching handlers in the meantime
+        RegisterPacketHandler<ActionCreateCachingPacketHandler>(PacketId.ActionCreated);
+        RegisterPacketHandler<ActionUndoCachingPacketHandler>(PacketId.ActionUndo);
+        RegisterPacketHandler<ActionRedoCachingPacketHandler>(PacketId.ActionRedo);
     }
 
     public void OnZipData(MultiNetListener _, MapperIdentityPacket __, NetDataReader reader)
