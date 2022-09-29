@@ -113,7 +113,6 @@ GameObject:
   m_Component:
   - component: {fileID: 256544470157590598}
   - component: {fileID: 4371054547145347042}
-  - component: {fileID: 6361156014396691160}
   m_Layer: 13
   m_Name: Grid
   m_TagString: Untagged
@@ -187,26 +186,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6361156014396691160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762901326755394319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  BoundsRenderer: {fileID: 4371054547145347042}
-  Center: {x: 0, y: 0, z: 0}
-  Size: {x: 40, y: 30, z: 0}
-  MeshTriangles: 
-  MeshVertices: []
-  CollisionLayer: 0
-  CollisionGroups: 00000000
 --- !u!1 &3268039751249730786
 GameObject:
   m_ObjectHideFlags: 0
