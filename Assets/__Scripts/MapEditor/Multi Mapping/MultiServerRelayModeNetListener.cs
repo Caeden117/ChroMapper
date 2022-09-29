@@ -53,6 +53,7 @@ public class MultiServerRelayModeNetListener : MultiClientNetListener, INetAdmin
         }
 
         SendPacketTo(NetManager.FirstPeer, PacketId.CMT_AcceptMapper, writer.Data);
+        BroadcastPose();
     }
 
     // No longer doing anything since latency is updated completely via MapperLatencyPackets
