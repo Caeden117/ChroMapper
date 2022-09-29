@@ -7,9 +7,10 @@ using LiteNetLib;
 using LiteNetLib.Utils;
 using UnityEngine;
 
-public class MultiServerNetListener : MultiNetListener
+public class MultiServerNetListener : MultiNetListener, INetAdmin
 {
     private AutoSaveController autoSave;
+    private List<string> tempBannedIps = new List<string>();
 
     public MultiServerNetListener(MapperIdentityPacket hostIdentity, int port, AutoSaveController autoSave) : base()
     {
@@ -31,6 +32,14 @@ public class MultiServerNetListener : MultiNetListener
 
     public override void OnConnectionRequest(ConnectionRequest request)
     {
+        if (tempBannedIps.Contains(request.RemoteEndPoint.Address.MapToIPv4().ToString()))
+        {
+            var writer = new NetDataWriter();
+            writer.Put("You have been banned by the host.");
+            request.Reject(writer);
+            return;
+        }
+
         var identity = request.Data.Get<MapperIdentityPacket>();
         identity.ConnectionId = Identities.Count;
 
@@ -125,6 +134,35 @@ public class MultiServerNetListener : MultiNetListener
         }
 
         OnMapperDisconnected(this, identity, null);
+    }
+
+    public void Kick(MapperIdentityPacket identity)
+        => PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.kick",
+            res => HandleKick(res, identity), PersistentUI.DialogBoxPresetType.YesNo, new[] { identity.Name });
+
+    public void Ban(MapperIdentityPacket identity)
+        => PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.ban",
+            res => HandleBan(res, identity), PersistentUI.DialogBoxPresetType.YesNo, new[] { identity.Name });
+
+    private void HandleKick(int res, MapperIdentityPacket identity)
+    {
+        if (res == 0 && identity.MapperPeer != null)
+        {
+            var writer = new NetDataWriter();
+            writer.Put("You have been kicked by the host.");
+            identity.MapperPeer.Disconnect(writer);
+        }
+    }
+
+    private void HandleBan(int res, MapperIdentityPacket identity)
+    {
+        if (res == 0 && identity.MapperPeer != null)
+        {
+            tempBannedIps.Add(identity.MapperPeer.EndPoint.Address.MapToIPv4().ToString());
+            var writer = new NetDataWriter();
+            writer.Put("You have been banned by the host.");
+            identity.MapperPeer.Disconnect(writer);
+        }
     }
 
     internal static IEnumerator SaveAndSendMapToPeer(MultiNetListener listener, AutoSaveController autoSave, NetPeer peer)

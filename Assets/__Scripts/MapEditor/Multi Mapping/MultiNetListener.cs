@@ -132,7 +132,7 @@ public class MultiNetListener : INetEventListener, IDisposable
             RemotePlayers.Add(identity, remotePlayer);
 
             var container = remotePlayer.GetComponent<RemotePlayerContainer>();
-            container.AssignIdentity(identity);
+            container.AssignIdentity(this, identity);
         }
 
         var track = tracksManager.GetTrackAtTime(pose.SongPosition).ObjectParentTransform;

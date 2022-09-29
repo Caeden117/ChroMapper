@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RemotePlayerContainer : MonoBehaviour
 {
@@ -14,12 +15,14 @@ public class RemotePlayerContainer : MonoBehaviour
     [SerializeField] private SpriteRenderer gridSprite;
 
     private Transform lookAt;
+    private MultiNetListener source;
     private MapperIdentityPacket identity;
     private int latency;
 
-    public void AssignIdentity(MapperIdentityPacket identity)
+    public void AssignIdentity(MultiNetListener source, MapperIdentityPacket identity)
     {
         this.identity = identity;
+        this.source = source;
 
         nameMesh.text = identity.Name;
 
@@ -33,6 +36,16 @@ public class RemotePlayerContainer : MonoBehaviour
         this.latency = latency;
 
         UpdateGridText();
+    }
+
+    public void Kick()
+    {
+        if (source is INetAdmin admin) admin.Kick(identity);
+    }
+
+    public void Ban()
+    {
+        if (source is INetAdmin admin) admin.Ban(identity);
     }
 
     private void Start() => lookAt = Camera.main.transform;

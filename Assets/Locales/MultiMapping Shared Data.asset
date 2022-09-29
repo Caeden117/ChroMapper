@@ -115,6 +115,14 @@ MonoBehaviour:
     m_Key: multi.trace.last
     m_Metadata:
       m_Items: []
+  - m_Id: 2336103375384576
+    m_Key: multi.ban
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2336237542780928
+    m_Key: multi.kick
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

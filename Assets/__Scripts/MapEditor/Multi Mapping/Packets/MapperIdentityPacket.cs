@@ -9,6 +9,7 @@ public class MapperIdentityPacket : INetSerializable
     public ColorSerializable Color;
 
     public NetPeer? MapperPeer;
+    public string? Ip;
 
     public MapperIdentityPacket() { }
 

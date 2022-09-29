@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8547987608048310236}
   - component: {fileID: 509000175073363021}
   - component: {fileID: 1433778604663159900}
-  - component: {fileID: 7220083286780771801}
-  m_Layer: 0
+  - component: {fileID: 48973711713084182}
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,19 +83,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7220083286780771801
-BoxCollider:
+--- !u!114 &48973711713084182
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172528267504906803}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  BoundsRenderer: {fileID: 1433778604663159900}
+  Center: {x: 0, y: 0, z: 0}
+  Size: {x: 1, y: 1, z: 1}
+  MeshTriangles: 
+  MeshVertices: []
+  CollisionLayer: 0
+  CollisionGroups: 00000000
 --- !u!1 &1762901326755394319
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,7 +113,8 @@ GameObject:
   m_Component:
   - component: {fileID: 256544470157590598}
   - component: {fileID: 4371054547145347042}
-  m_Layer: 0
+  - component: {fileID: 6361156014396691160}
+  m_Layer: 13
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,6 +187,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6361156014396691160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762901326755394319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  BoundsRenderer: {fileID: 4371054547145347042}
+  Center: {x: 0, y: 0, z: 0}
+  Size: {x: 40, y: 30, z: 0}
+  MeshTriangles: 
+  MeshVertices: []
+  CollisionLayer: 0
+  CollisionGroups: 00000000
 --- !u!1 &3268039751249730786
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1995542136857141739}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Moving
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +251,7 @@ GameObject:
   - component: {fileID: 7393086876794433035}
   - component: {fileID: 3830333761312467430}
   - component: {fileID: 2643294385983468501}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -395,7 +423,7 @@ GameObject:
   - component: {fileID: 4096257301836052368}
   - component: {fileID: 5477847562608835754}
   - component: {fileID: 2994269570188824537}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -566,7 +594,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3749194089216494944}
   - component: {fileID: 3341725980746055274}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -649,7 +677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6756866760583000472}
   - component: {fileID: 4122710911374816857}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Remote Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}

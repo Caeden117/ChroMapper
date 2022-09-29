@@ -4,7 +4,7 @@ using LiteNetLib;
 using LiteNetLib.Utils;
 
 // When using ChroMapTogether, the session host is effectively another client of the ChroMapTogether server.
-public class MultiServerRelayModeNetListener : MultiClientNetListener
+public class MultiServerRelayModeNetListener : MultiClientNetListener, INetAdmin
 {
     private AutoSaveController autoSave;
     private List<string> tempBannedIps = new List<string>();
@@ -34,9 +34,9 @@ public class MultiServerRelayModeNetListener : MultiClientNetListener
     public void OnIncomingMapper(MultiNetListener listener, MapperIdentityPacket identity, NetDataReader reader)
     {
         var ip = reader.GetString();
+        identity.Ip = ip;
 
         var writer = new NetDataWriter();
-
         writer.Put(identity.ConnectionId);
 
         if (!IPAddress.TryParse(ip, out _))
@@ -63,5 +63,36 @@ public class MultiServerRelayModeNetListener : MultiClientNetListener
     {
         PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.connection.server-lost", null,
             PersistentUI.DialogBoxPresetType.Ok, new object[] { disconnectInfo.Reason });
+    }
+
+    public void Kick(MapperIdentityPacket identity)
+        => PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.kick",
+            res => HandleKick(res, identity), PersistentUI.DialogBoxPresetType.YesNo, new[] { identity.Name });
+
+    public void Ban(MapperIdentityPacket identity)
+        => PersistentUI.Instance.ShowDialogBox("MultiMapping", "multi.ban",
+            res => HandleBan(res, identity), PersistentUI.DialogBoxPresetType.YesNo, new[] { identity.Name });
+
+    private void HandleKick(int res, MapperIdentityPacket identity)
+    {
+        if (res == 0)
+        {
+            var writer = new NetDataWriter();
+            writer.Put(identity.ConnectionId);
+            writer.Put("You have been kicked by the host.");
+            SendPacketTo(NetManager.FirstPeer, PacketId.CMT_KickMapper, writer.Data);
+        }
+    }
+
+    private void HandleBan(int res, MapperIdentityPacket identity)
+    {
+        if (res == 0)
+        {
+            tempBannedIps.Add(identity.Ip);
+            var writer = new NetDataWriter();
+            writer.Put(identity.ConnectionId);
+            writer.Put("You have been banned by the host.");
+            SendPacketTo(NetManager.FirstPeer, PacketId.CMT_KickMapper, writer.Data);
+        }
     }
 }

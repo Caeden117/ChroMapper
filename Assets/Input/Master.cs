@@ -3742,6 +3742,96 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""United Mapping"",
+            ""id"": ""a6cd9410-0433-4903-8cfb-822fd83dc3f9"",
+            ""actions"": [
+                {
+                    ""name"": ""Kick Player"",
+                    ""type"": ""Button"",
+                    ""id"": ""7f419f15-99fd-40bd-a734-6569e88ccc43"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Ban Player"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d776b67-ed30-4f25-b252-5ac42577c2df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""a0a89e51-d773-435e-9e32-6caf90564027"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ban Player"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""6406d94f-28e4-41bc-b82c-03308a4b32bc"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ban Player"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""7af667fa-2687-46ca-9d03-09441d7bdb6a"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ban Player"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""2dd92795-a631-4261-9c7d-e7bdb69569bd"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick Player"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e8126e76-e75f-4256-9ef8-94dd85369fb2"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick Player"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""dd971ae9-0262-4ed6-a339-4f1906e17f60"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick Player"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -3956,6 +4046,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         m_DialogBox_NavigateDown = m_DialogBox.FindAction("Navigate Down", throwIfNotFound: true);
         m_DialogBox_NavigateUp = m_DialogBox.FindAction("Navigate Up", throwIfNotFound: true);
         m_DialogBox_AttemptQuickSubmit = m_DialogBox.FindAction("Attempt Quick Submit", throwIfNotFound: true);
+        // United Mapping
+        m_UnitedMapping = asset.FindActionMap("United Mapping", throwIfNotFound: true);
+        m_UnitedMapping_KickPlayer = m_UnitedMapping.FindAction("Kick Player", throwIfNotFound: true);
+        m_UnitedMapping_BanPlayer = m_UnitedMapping.FindAction("Ban Player", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -5984,6 +6078,47 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public DialogBoxActions @DialogBox => new DialogBoxActions(this);
+
+    // United Mapping
+    private readonly InputActionMap m_UnitedMapping;
+    private IUnitedMappingActions m_UnitedMappingActionsCallbackInterface;
+    private readonly InputAction m_UnitedMapping_KickPlayer;
+    private readonly InputAction m_UnitedMapping_BanPlayer;
+    public struct UnitedMappingActions
+    {
+        private @CMInput m_Wrapper;
+        public UnitedMappingActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @KickPlayer => m_Wrapper.m_UnitedMapping_KickPlayer;
+        public InputAction @BanPlayer => m_Wrapper.m_UnitedMapping_BanPlayer;
+        public InputActionMap Get() { return m_Wrapper.m_UnitedMapping; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UnitedMappingActions set) { return set.Get(); }
+        public void SetCallbacks(IUnitedMappingActions instance)
+        {
+            if (m_Wrapper.m_UnitedMappingActionsCallbackInterface != null)
+            {
+                @KickPlayer.started -= m_Wrapper.m_UnitedMappingActionsCallbackInterface.OnKickPlayer;
+                @KickPlayer.performed -= m_Wrapper.m_UnitedMappingActionsCallbackInterface.OnKickPlayer;
+                @KickPlayer.canceled -= m_Wrapper.m_UnitedMappingActionsCallbackInterface.OnKickPlayer;
+                @BanPlayer.started -= m_Wrapper.m_UnitedMappingActionsCallbackInterface.OnBanPlayer;
+                @BanPlayer.performed -= m_Wrapper.m_UnitedMappingActionsCallbackInterface.OnBanPlayer;
+                @BanPlayer.canceled -= m_Wrapper.m_UnitedMappingActionsCallbackInterface.OnBanPlayer;
+            }
+            m_Wrapper.m_UnitedMappingActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @KickPlayer.started += instance.OnKickPlayer;
+                @KickPlayer.performed += instance.OnKickPlayer;
+                @KickPlayer.canceled += instance.OnKickPlayer;
+                @BanPlayer.started += instance.OnBanPlayer;
+                @BanPlayer.performed += instance.OnBanPlayer;
+                @BanPlayer.canceled += instance.OnBanPlayer;
+            }
+        }
+    }
+    public UnitedMappingActions @UnitedMapping => new UnitedMappingActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -6235,5 +6370,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         void OnNavigateDown(InputAction.CallbackContext context);
         void OnNavigateUp(InputAction.CallbackContext context);
         void OnAttemptQuickSubmit(InputAction.CallbackContext context);
+    }
+    public interface IUnitedMappingActions
+    {
+        void OnKickPlayer(InputAction.CallbackContext context);
+        void OnBanPlayer(InputAction.CallbackContext context);
     }
 }
