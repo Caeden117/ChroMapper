@@ -305,7 +305,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="refreshesPool">Whether or not the pool will be refreshed as a result of this deletion.</param>
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BeatmapObject obj, bool triggersAction = true, bool refreshesPool = true,
-        string comment = "No comment.", bool triggersEvent = true)
+        string comment = "No comment.")
     {
         var removed = UnsortedObjects.Remove(obj);
         var removed2 = LoadedObjects.Remove(obj);
@@ -318,7 +318,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             RecycleContainer(obj);
             if (refreshesPool) RefreshPool();
             OnObjectDelete(obj);
-            if (triggersEvent) ObjectDeletedEvent?.Invoke(obj);
+            ObjectDeletedEvent?.Invoke(obj);
         }
         else
         {
@@ -358,7 +358,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// </param>
     /// <param name="refreshesPool">Whether or not the pool will be refreshed.</param>
     public void SpawnObject(BeatmapObject obj, out List<BeatmapObject> conflicting, bool removeConflicting = true,
-        bool refreshesPool = true, bool triggersEvent = true)
+        bool refreshesPool = true)
     {
         //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
         if (removeConflicting)
@@ -368,11 +368,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         LoadedObjects.Add(obj);
         UnsortedObjects.Add(obj);
         OnObjectSpawned(obj);
-
-        if (triggersEvent)
-        {
-            ObjectSpawnedEvent?.Invoke(obj);
-        }
+        ObjectSpawnedEvent?.Invoke(obj);
 
         //Debug.Log($"Total object count: {LoadedObjects.Count}");
         if (refreshesPool) RefreshPool();
