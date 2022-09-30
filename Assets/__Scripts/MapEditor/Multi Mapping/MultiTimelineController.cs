@@ -34,6 +34,15 @@ public class MultiTimelineController
         container.RefreshPosition(pose, timelineCanvas.sizeDelta.x + BookmarkManager.CanvasWidthOffset, songLength);
     }
 
+    public void DisconnectMapper(MapperIdentityPacket identity)
+    {
+        if (activeContainers.TryGetValue(identity, out var container))
+        {
+            Object.Destroy(container);
+            activeContainers.Remove(identity);
+        }
+    }
+
     public void ManualUpdate()
     {
         if (previousCanvasWidth != timelineCanvas.sizeDelta.x)

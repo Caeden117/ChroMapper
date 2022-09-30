@@ -163,6 +163,8 @@ public class MultiNetListener : INetEventListener, IDisposable
                 RemotePlayers.Remove(identity);
             }
 
+            multiTimelineController.DisconnectMapper(identity);
+
             CachedPosePackets.Remove(identity);
         }
     }
