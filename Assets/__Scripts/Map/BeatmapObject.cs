@@ -1,8 +1,9 @@
 ﻿using System;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
-public abstract class BeatmapObject
+public abstract class BeatmapObject : INetSerializable
 {
     protected static int DecimalPrecision =>
 #if UNITY_EDITOR
@@ -19,7 +20,8 @@ public abstract class BeatmapObject
         Obstacle,
         CustomNote,
         CustomEvent,
-        BpmChange
+        BpmChange,
+        Bookmark
     }
 
     public abstract ObjectType BeatmapType { get; set; }
@@ -40,6 +42,10 @@ public abstract class BeatmapObject
     public JSONNode CustomData;
 
     public abstract JSONNode ConvertToJson();
+
+    public abstract void Serialize(NetDataWriter writer);
+
+    public abstract void Deserialize(NetDataReader reader);
 
     protected abstract bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false);
 

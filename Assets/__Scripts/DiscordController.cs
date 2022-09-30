@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class DiscordController : MonoBehaviour
 {
     public static bool IsActive = true;
+    public static ImageManager ImageManager = null;
+    public static UserManager UserManager = null;
 
     public ActivityManager ActivityManager;
     public Discord.Discord Discord;
@@ -25,6 +27,8 @@ public class DiscordController : MonoBehaviour
                 Application.internetReachability != NetworkReachability.NotReachable)
             {
                 Discord = new Discord.Discord(discordClientID, (ulong)CreateFlags.NoRequireDiscord);
+                ImageManager = Discord.GetImageManager();
+                UserManager = Discord.GetUserManager();
                 ActivityManager = Discord.GetActivityManager();
                 ActivityManager.ClearActivity(res => { });
                 SceneManager.activeSceneChanged += SceneUpdated;

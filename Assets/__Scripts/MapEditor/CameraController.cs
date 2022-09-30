@@ -65,6 +65,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         }
     }
 
+    public bool MovingCamera => canMoveCamera;
+
     private void Start()
     {
         instance = this;

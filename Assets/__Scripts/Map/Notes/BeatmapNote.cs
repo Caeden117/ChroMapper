@@ -1,4 +1,5 @@
 ﻿using System;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -84,6 +85,26 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
         node["_cutDirection"] = CutDirection;
         if (CustomData != null) node["_customData"] = CustomData;
         return node;
+    }
+
+    public override void Serialize(NetDataWriter writer)
+    {
+        writer.Put(Time);
+        writer.Put(LineIndex);
+        writer.Put(LineLayer);
+        writer.Put(CutDirection);
+        writer.Put(Type);
+        writer.Put(CustomData?.ToString());
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Time = reader.GetFloat();
+        LineIndex = reader.GetInt();
+        LineLayer = reader.GetInt();
+        CutDirection = reader.GetInt();
+        Type = reader.GetInt();
+        CustomData = JSON.Parse(reader.GetString());
     }
 
     public Vector2 GetPosition()

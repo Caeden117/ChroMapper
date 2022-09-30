@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using LiteNetLib.Utils;
 
 public class StrobeGeneratorGenerationAction : BeatmapAction
 {
-    private readonly IEnumerable<BeatmapObject> conflictingData;
+    private IEnumerable<BeatmapObject> conflictingData;
+
+    public StrobeGeneratorGenerationAction() : base() { }
 
     public StrobeGeneratorGenerationAction(IEnumerable<BeatmapObject> generated, IEnumerable<BeatmapObject> conflicting)
         : base(generated) => conflictingData = conflicting;
@@ -10,18 +13,30 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var obj in Data)
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false, false);
+            DeleteObject(obj, false);
         foreach (var obj in conflictingData)
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).SpawnObject(obj, false, false);
+            SpawnObject(obj);
         BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event).RefreshPool(true);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var obj in conflictingData)
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false, false);
+            DeleteObject(obj, false);
         foreach (var obj in Data)
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).SpawnObject(obj, false, false);
+            SpawnObject(obj);
         BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event).RefreshPool(true);
+    }
+
+    public override void Serialize(NetDataWriter writer)
+    {
+        SerializeBeatmapObjectList(writer, Data);
+        SerializeBeatmapObjectList(writer, conflictingData);
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Data = DeserializeBeatmapObjectList(reader);
+        conflictingData = DeserializeBeatmapObjectList(reader);
     }
 }

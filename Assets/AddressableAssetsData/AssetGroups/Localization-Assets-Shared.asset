@@ -45,6 +45,10 @@ MonoBehaviour:
     m_Address: Contributors Shared Data
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: 4bc9586dd75931946bdf2f3334dc9397
+    m_Address: Assets/Locales/MultiMapping Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:

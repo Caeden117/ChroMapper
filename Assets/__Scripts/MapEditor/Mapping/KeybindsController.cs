@@ -17,7 +17,7 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
     /// </summary>
     public static char PersistentKeybindIdentifier = '_';
 
-    private static Vector2 mousePos = Vector2.zero;
+    public static Vector2 MousePosition = Vector2.zero;
 
     public static bool IsMouseInWindow { get; private set; } = true;
 
@@ -35,7 +35,7 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
 
     public void OnMouseMovement(InputAction.CallbackContext context)
     {
-        mousePos = context.ReadValue<Vector2>();
+        MousePosition = context.ReadValue<Vector2>();
         IsMouseInWindow = IsMouseInBounds();
     }
 
@@ -43,10 +43,10 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
     {
 #if UNITY_EDITOR
         var gameSize = Handles.GetMainGameViewSize();
-        if (mousePos.x <= 0 || mousePos.y <= 0 || mousePos.x >= gameSize.x - 1 || mousePos.y >= gameSize.y - 1)
+        if (MousePosition.x <= 0 || MousePosition.y <= 0 || MousePosition.x >= gameSize.x - 1 || MousePosition.y >= gameSize.y - 1)
             return false;
 #else
-        if (mousePos.x <= 0 || mousePos.y <= 0 || mousePos.x >= Screen.width - 1 || mousePos.y >= Screen.height - 1)
+        if (MousePosition.x <= 0 || MousePosition.y <= 0 || MousePosition.x >= Screen.width - 1 || MousePosition.y >= Screen.height - 1)
         {
             return false;
         }

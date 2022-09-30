@@ -135,6 +135,8 @@ public class Settings
 
     public int LastSongSortType = (int)SongList.SongSortType.Name;
 
+    public MultiSettings MultiSettings = new MultiSettings();
+
     public static Dictionary<string, FieldInfo> AllFieldInfos = new Dictionary<string, FieldInfo>();
     public static Dictionary<string, object> NonPersistentSettings = new Dictionary<string, object>();
 

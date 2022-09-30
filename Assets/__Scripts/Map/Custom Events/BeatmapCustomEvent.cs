@@ -1,9 +1,12 @@
 ﻿using System;
+using LiteNetLib.Utils;
 using SimpleJSON;
 
 public class BeatmapCustomEvent : BeatmapObject
 {
     public string Type;
+
+    public BeatmapCustomEvent() { }
 
     public BeatmapCustomEvent(JSONNode node)
     {
@@ -28,6 +31,19 @@ public class BeatmapCustomEvent : BeatmapObject
         node["_type"] = Type;
         node["_data"] = CustomData;
         return node;
+    }
+    public override void Serialize(NetDataWriter writer)
+    {
+        writer.Put(Time);
+        writer.Put(Type);
+        writer.Put(CustomData?.ToString() ?? "null");
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Time = reader.GetFloat();
+        Type = reader.GetString();
+        CustomData = JSON.Parse(reader.GetString());
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)
