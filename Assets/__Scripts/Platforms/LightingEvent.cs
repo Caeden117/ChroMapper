@@ -21,7 +21,7 @@ public class LightingEvent : MonoBehaviour
     private Color currentColor = Color.white;
 
     private MaterialPropertyBlock lightPropertyBlock;
-    private Renderer lightRenderer;
+    private Renderer[] lightRenderers;
     private float targetAlpha;
 
     private Color targetColor = Color.white;
@@ -41,16 +41,18 @@ public class LightingEvent : MonoBehaviour
     private void Start()
     {
         lightPropertyBlock = new MaterialPropertyBlock();
-        lightRenderer = GetComponentInChildren<Renderer>();
+        lightRenderers = GetComponentsInChildren<Renderer>();
         boostSprite = GetComponent<BoostSprite>();
 
-
-        if (lightRenderer is SpriteRenderer spriteRenderer)
+        foreach (var lightRenderer in lightRenderers)
         {
-            if (boostSprite != null)
-                boostSprite.Setup(spriteRenderer.sprite);
+            if (lightRenderer is SpriteRenderer spriteRenderer)
+            {
+                if (boostSprite != null)
+                    boostSprite.Setup(spriteRenderer.sprite);
 
-            lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
+                lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
+            }
         }
 
         if (OverrideLightGroup)
@@ -76,7 +78,8 @@ public class LightingEvent : MonoBehaviour
             lightPropertyBlock.SetColor("_BaseColor", Color.white);
             lightPropertyBlock.SetColor("_EmissionColor", color);
             SetEmission(true);
-            lightRenderer.SetPropertyBlock(lightPropertyBlock);
+            foreach (var lightRenderer in lightRenderers)
+                lightRenderer.SetPropertyBlock(lightPropertyBlock);
             return;
         }
 
@@ -89,7 +92,8 @@ public class LightingEvent : MonoBehaviour
         {
             lightPropertyBlock.SetColor("_EmissionColor", color);
             lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
-            lightRenderer.SetPropertyBlock(lightPropertyBlock);
+            foreach (var lightRenderer in lightRenderers)
+                lightRenderer.SetPropertyBlock(lightPropertyBlock);
         }
     }
 
@@ -140,7 +144,9 @@ public class LightingEvent : MonoBehaviour
     {
         if (isLightEnabled != enabled)
         {
-            lightRenderer.enabled = isLightEnabled = enabled;
+            isLightEnabled = enabled;
+            foreach (var lightRenderer in lightRenderers)
+                lightRenderer.enabled = isLightEnabled = enabled;
         }
     }
 
