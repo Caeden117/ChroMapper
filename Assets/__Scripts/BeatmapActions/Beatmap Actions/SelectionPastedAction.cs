@@ -3,9 +3,9 @@ using Beatmap.Base;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private readonly IEnumerable<IObject> removed;
+    private readonly IEnumerable<BaseObject> removed;
 
-    public SelectionPastedAction(IEnumerable<IObject> pasteData, IEnumerable<IObject> removed) :
+    public SelectionPastedAction(IEnumerable<BaseObject> pasteData, IEnumerable<BaseObject> removed) :
         base(pasteData) => this.removed = removed;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

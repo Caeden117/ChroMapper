@@ -4,15 +4,15 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3ColorNote : INote
+    public class V3ColorNote : BaseNote
     {
         public V3ColorNote()
         {
         }
 
-        public V3ColorNote(INote other) : base(other) => ParseCustom();
+        public V3ColorNote(BaseNote other) : base(other) => ParseCustom();
 
-        public V3ColorNote(IBaseSlider slider) : base(slider) => ParseCustom();
+        public V3ColorNote(BaseSlider slider) : base(slider) => ParseCustom();
 
         public V3ColorNote(JSONNode node)
         {
@@ -92,6 +92,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() => new V3ColorNote(Time, PosX, PosY, Type, CutDirection, CustomData?.Clone());
+        public override BaseItem Clone() => new V3ColorNote(Time, PosX, PosY, Type, CutDirection, CustomData?.Clone());
     }
 }

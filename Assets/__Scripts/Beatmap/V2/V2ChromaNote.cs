@@ -14,17 +14,17 @@ namespace Beatmap.V2
 
         public int BombRotation = 0;
 
-        public INote OriginalNote;
+        public BaseNote OriginalNote;
 
-        public V2ChromaNote(INote note)
+        public V2ChromaNote(BaseNote baseNote)
         {
-            OriginalNote = note;
-            Type = note.Type;
-            CutDirection = note.CutDirection;
-            PosX = note.PosX;
-            PosY = note.PosY;
-            Time = note.Time;
-            Type = note.Type;
+            OriginalNote = baseNote;
+            Type = baseNote.Type;
+            CutDirection = baseNote.CutDirection;
+            PosX = baseNote.PosX;
+            PosY = baseNote.PosY;
+            Time = baseNote.Time;
+            Type = baseNote.Type;
 
             //Set custom JSON data here.
         }

@@ -130,7 +130,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             return;
         }
 
-        IBookmark newBookmark;
+        BaseBookmark newBookmark;
         if (BeatSaberSongContainer.Instance.Map.GetVersion() == 3)
             newBookmark = new V3Bookmark(Atsc.CurrentBeat, name);
         else

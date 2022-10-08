@@ -12,7 +12,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;
-    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [SerializeField] private NoteAppearanceSO noteAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
 
     [SerializeField] private CountersPlusController countersPlus;
@@ -46,28 +46,28 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
 
     // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
     // (I'm done with note sorting; if you don't like it, go fix it yourself.)
-    public override IEnumerable<IObject> GrabSortedObjects()
+    public override IEnumerable<BaseObject> GrabSortedObjects()
     {
-        var sorted = new List<IObject>();
+        var sorted = new List<BaseObject>();
         var grouping = LoadedObjects.GroupBy(x => x.Time);
         foreach (var group in grouping)
         {
-            sorted.AddRange(@group.OrderBy(x => ((INote)x).PosX) //0 -> 3
-                .ThenBy(x => ((INote)x).PosY) //0 -> 2
-                .ThenBy(x => ((INote)x).Type));
+            sorted.AddRange(@group.OrderBy(x => ((BaseNote)x).PosX) //0 -> 3
+                .ThenBy(x => ((BaseNote)x).PosY) //0 -> 2
+                .ThenBy(x => ((BaseNote)x).Type));
         }
 
         return sorted;
     }
 
     //We don't need to check index as that's already done further up the chain
-    private void SpawnCallback(bool initial, int index, IObject objectData)
+    private void SpawnCallback(bool initial, int index, BaseObject objectData)
     {
         if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
     }
 
     //We don't need to check index as that's already done further up the chain
-    private void DespawnCallback(bool initial, int index, IObject objectData)
+    private void DespawnCallback(bool initial, int index, BaseObject objectData)
     {
         if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
     }
@@ -92,10 +92,10 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         return con;
     }
 
-    protected override void UpdateContainerData(ObjectContainer con, IObject obj)
+    protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         var note = con as NoteContainer;
-        var noteData = obj as INote;
+        var noteData = obj as BaseNote;
         noteAppearanceSo.SetNoteAppearance(note);
         note.Setup();
         note.SetBomb(noteData.Type == (int)NoteType.Bomb);
@@ -105,32 +105,32 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         track.AttachContainer(con);
     }
 
-    protected override void OnObjectSpawned(IObject _) =>
+    protected override void OnObjectSpawned(BaseObject _) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
 
-    protected override void OnObjectDelete(IObject _) =>
+    protected override void OnObjectDelete(BaseObject _) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
 
     // Here we check to see if any special angled notes are required.
-    protected override void OnContainerSpawn(ObjectContainer container, IObject obj) =>
+    protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj) =>
         RefreshSpecialAngles(obj, true, AudioTimeSyncController.IsPlaying);
 
-    protected override void OnContainerDespawn(ObjectContainer container, IObject obj) =>
+    protected override void OnContainerDespawn(ObjectContainer container, BaseObject obj) =>
         RefreshSpecialAngles(obj, false, AudioTimeSyncController.IsPlaying);
 
-    public void RefreshSpecialAngles(IObject obj, bool objectWasSpawned, bool isNatural)
+    public void RefreshSpecialAngles(BaseObject obj, bool objectWasSpawned, bool isNatural)
     {
         // Do not bother refreshing if objects are despawning naturally (while playing back the song)
         if (!objectWasSpawned && isNatural) return;
         // Do not do special angles for bombs
-        if ((obj as INote).Type == (int)NoteType.Bomb) return;
+        if ((obj as BaseNote).Type == (int)NoteType.Bomb) return;
         // Grab all objects with the same type, and time (within epsilon)
 
         objectsAtSameTime.Clear();
         foreach (var x in LoadedContainers)
         {
             if (!(x.Key.Time - Epsilon <= obj.Time && x.Key.Time + Epsilon >= obj.Time &&
-                  (x.Key as INote).Type == (obj as INote).Type))
+                  (x.Key as BaseNote).Type == (obj as BaseNote).Type))
             {
                 continue;
             }
@@ -142,8 +142,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         if (objectsAtSameTime.Count == 2)
         {
             // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
-            var a = objectsAtSameTime.First().ObjectData as INote;
-            var b = objectsAtSameTime.Last().ObjectData as INote;
+            var a = objectsAtSameTime.First().ObjectData as BaseNote;
+            var b = objectsAtSameTime.Last().ObjectData as BaseNote;
 
             // Grab the containers we will be flipping
             var containerA = objectsAtSameTime.First();
@@ -194,14 +194,14 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         {
             foreach (var toReset in objectsAtSameTime)
             {
-                var direction = NoteContainer.Directionalize(toReset.ObjectData as INote);
+                var direction = NoteContainer.Directionalize(toReset.ObjectData as BaseNote);
                 toReset.transform.localEulerAngles = direction;
             }
         }
     }
 
     // Grab a Vector2 plane based on the cut direction
-    public static Vector2 Direction(INote obj)
+    public static Vector2 Direction(BaseNote obj)
     {
         return obj.CutDirection switch
         {

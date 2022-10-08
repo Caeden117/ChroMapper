@@ -69,7 +69,7 @@ namespace Tests.Util
         {
             BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(type);
 
-            foreach (IObject evt in eventsContainer.LoadedObjects.ToArray())
+            foreach (BaseObject evt in eventsContainer.LoadedObjects.ToArray())
             {
                 eventsContainer.DeleteObject(evt);
             }

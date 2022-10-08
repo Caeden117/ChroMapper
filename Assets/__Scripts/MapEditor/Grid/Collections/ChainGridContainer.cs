@@ -43,10 +43,10 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
     }
     public void UpdateColor(Color red, Color blue) => chainAppearanceSO.UpdateColor(red, blue);
 
-    protected override void UpdateContainerData(ObjectContainer con, IObject obj)
+    protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         var chain = con as ChainContainer;
-        var chainData = obj as IChain;
+        var chainData = obj as BaseChain;
         chain.ChainData = chainData;
         chainAppearanceSO.SetChainAppearance(chain);
         chain.Setup();
@@ -67,22 +67,22 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
             notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
     }
 
-    protected override void OnContainerSpawn(ObjectContainer container, IObject obj)
+    protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj)
     {
         (container as ChainContainer).DetectHeadNote();
     }
 
-    protected override void OnContainerDespawn(ObjectContainer container, IObject obj)
+    protected override void OnContainerDespawn(ObjectContainer container, BaseObject obj)
     {
         (container as ChainContainer).ResetHeadNoteScale();
     }
 
-    private void CheckUpdatedNote(IObject obj)
+    private void CheckUpdatedNote(BaseObject obj)
     {
-        var note = obj as INote;
+        var note = obj as BaseNote;
         if (note.Type == (int)NoteType.Bomb) return;
         var chains = GetBetween(note.Time - ViewEpsilon, note.Time + ViewEpsilon);
-        foreach (IChain chain in chains)
+        foreach (BaseChain chain in chains)
         {
             LoadedContainers.TryGetValue(chain, out var con);
             var container = con as ChainContainer;

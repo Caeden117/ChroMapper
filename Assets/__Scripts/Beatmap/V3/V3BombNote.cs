@@ -4,13 +4,13 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3BombNote : IBombNote
+    public class V3BombNote : BaseBombNote
     {
         public V3BombNote()
         {
         }
 
-        public V3BombNote(IGrid other) : base(other) => ParseCustom();
+        public V3BombNote(BaseGrid other) : base(other) => ParseCustom();
 
         public V3BombNote(JSONNode node)
         {
@@ -72,6 +72,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() => new V3BombNote(Time, PosX, PosY, CustomData?.Clone());
+        public override BaseItem Clone() => new V3BombNote(Time, PosX, PosY, CustomData?.Clone());
     }
 }

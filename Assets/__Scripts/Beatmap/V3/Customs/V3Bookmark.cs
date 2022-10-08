@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3.Customs
 {
-    public class V3Bookmark : IBookmark
+    public class V3Bookmark : BaseBookmark
     {
         public V3Bookmark()
         {
@@ -23,6 +23,6 @@ namespace Beatmap.V3.Customs
         public override string KeyName { get; } = "n";
         public override string KeyColor { get; } = "c";
 
-        public override IItem Clone() => new V3Bookmark(ToJson().Clone());
+        public override BaseItem Clone() => new V3Bookmark(ToJson().Clone());
     }
 }

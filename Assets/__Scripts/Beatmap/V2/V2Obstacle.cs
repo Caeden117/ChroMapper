@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Beatmap.V2
 {
-    public class V2Obstacle : IObstacle
+    public class V2Obstacle : BaseObstacle
     {
         public V2Obstacle()
         {
         }
 
-        public V2Obstacle(IObstacle other) : base(other) => ParseCustom();
+        public V2Obstacle(BaseObstacle other) : base(other) => ParseCustom();
 
         public V2Obstacle(JSONNode node)
         {
@@ -70,21 +70,17 @@ namespace Beatmap.V2
         {
             JSONNode node = new JSONObject();
             node["_time"] = Math.Round(Time, DecimalPrecision);
-            Debug.Log(node);
             node["_lineIndex"] = PosX;
             node["_lineLayer"] = PosY;
             node["_type"] = Type;
             node["_duration"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
-            Debug.Log(node);
             node["_width"] = Width;
             node["_height"] = Height; 
-            Debug.Log(node);
             if (CustomData == null) return node;
             node["_customData"] = CustomData;
-            Debug.Log(node);
             return node;
         }
 
-        public override IItem Clone() => new V2Obstacle(Time, PosX, Type, Duration, Width, CustomData?.Clone());
+        public override BaseItem Clone() => new V2Obstacle(Time, PosX, Type, Duration, Width, CustomData?.Clone());
     }
 }

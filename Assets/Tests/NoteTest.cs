@@ -29,9 +29,9 @@ namespace Tests
 
         public static void CheckNote(BeatmapObjectContainerCollection container, int idx, int time, int type, int index, int layer, int cutDirection, JSONNode customData = null)
         {
-            IObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<INote>(newObjA);
-            if (newObjA is INote newNoteA)
+            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
+            Assert.IsInstanceOf<BaseNote>(newObjA);
+            if (newObjA is BaseNote newNoteA)
             {
                 Assert.AreEqual(time, newNoteA.Time);
                 Assert.AreEqual(type, newNoteA.Type);
@@ -57,13 +57,13 @@ namespace Tests
                 NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                INote noteA = new V2Note(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                BaseNote baseNoteA = new V2Note(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
 
-                notePlacement.queuedData = noteA;
+                notePlacement.queuedData = baseNoteA;
                 notePlacement.RoundedTime = notePlacement.queuedData.Time;
                 notePlacement.ApplyToMap();
 
-                if (notesContainer.LoadedContainers[noteA] is NoteContainer containerA)
+                if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
                 {
                     inputController.InvertNote(containerA);
                 }
@@ -88,13 +88,13 @@ namespace Tests
                 NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                INote noteA = new V2Note(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                BaseNote baseNoteA = new V2Note(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
 
-                notePlacement.queuedData = noteA;
+                notePlacement.queuedData = baseNoteA;
                 notePlacement.RoundedTime = notePlacement.queuedData.Time;
                 notePlacement.ApplyToMap();
 
-                if (notesContainer.LoadedContainers[noteA] is NoteContainer containerA)
+                if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
                 {
                     inputController.UpdateNoteDirection(containerA, true);
                 }

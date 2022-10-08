@@ -25,7 +25,7 @@ namespace Beatmap.Containers
         [SerializeField] private GameObject indicatorMu;
         [SerializeField] private GameObject indicatorTmu;
         [SerializeField] private List<GameObject> indicators;
-        [FormerlySerializedAs("arcData")] public IArc ArcData;
+        [FormerlySerializedAs("arcData")] public BaseArc ArcData;
 
         private MaterialPropertyBlock indicatorMaterialPropertyBlock;
 
@@ -43,13 +43,13 @@ namespace Beatmap.Containers
             }
         }
 
-        public override IObject ObjectData
+        public override BaseObject ObjectData
         {
             get => ArcData;
-            set => ArcData = (IArc)value;
+            set => ArcData = (BaseArc)value;
         }
 
-        public static ArcContainer SpawnArc(IArc data, ref GameObject prefab)
+        public static ArcContainer SpawnArc(BaseArc data, ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<ArcContainer>();
             container.ArcData = data;
@@ -82,7 +82,7 @@ namespace Beatmap.Containers
             //UpdateMaterials();
         }
 
-        public void NotifySplineChanged(IArc arcData = null)
+        public void NotifySplineChanged(BaseArc arcData = null)
         {
             if (arcData != null) ArcData = arcData;
             if (splineRenderer != null) // since curve has been changed, firstly disable it until it is computed.

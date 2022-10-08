@@ -9,10 +9,10 @@ using Beatmap.Base;
 public abstract class BeatmapAction
 {
     public bool Active = true;
-    public IEnumerable<IObject> Data;
+    public IEnumerable<BaseObject> Data;
     internal bool inCollection = false;
 
-    public BeatmapAction(IEnumerable<IObject> data, string comment = "No comment.")
+    public BeatmapAction(IEnumerable<BaseObject> data, string comment = "No comment.")
     {
         Data = data;
         Comment = comment;
@@ -20,7 +20,7 @@ public abstract class BeatmapAction
 
     public string Comment { get; } = "No comment.";
 
-    protected void RefreshPools(IEnumerable<IObject> data)
+    protected void RefreshPools(IEnumerable<BaseObject> data)
     {
         foreach (var unique in data.DistinctBy(x => x.ObjectType))
         {

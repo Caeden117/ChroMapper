@@ -4,13 +4,13 @@ using SimpleJSON;
 
 namespace Beatmap.V2
 {
-    public class V2Arc : IArc
+    public class V2Arc : BaseArc
     {
         public V2Arc()
         {
         }
 
-        public V2Arc(IArc other) : base(other) => ParseCustom();
+        public V2Arc(BaseArc other) : base(other) => ParseCustom();
 
         public V2Arc(JSONNode node)
         {
@@ -68,7 +68,7 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override IItem Clone() =>
+        public override BaseItem Clone() =>
             new V2Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, ControlPointLengthMultiplier,
                 TailTime, TailPosX, TailPosY, TailCutDirection, TailControlPointLengthMultiplier, MidAnchorMode,
                 CustomData?.Clone());

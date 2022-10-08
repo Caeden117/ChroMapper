@@ -30,25 +30,25 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     [FormerlySerializedAs("useAudioTime")] public bool UseAudioTime;
 
-    private readonly HashSet<IObject> nextEvents = new HashSet<IObject>();
-    private readonly HashSet<IObject> nextNotes = new HashSet<IObject>();
-    private HashSet<IObject> allEvents = new HashSet<IObject>();
-    private HashSet<IObject> allNotes = new HashSet<IObject>();
-    private HashSet<IObject> queuedToClear = new HashSet<IObject>();
+    private readonly HashSet<BaseObject> nextEvents = new HashSet<BaseObject>();
+    private readonly HashSet<BaseObject> nextNotes = new HashSet<BaseObject>();
+    private HashSet<BaseObject> allEvents = new HashSet<BaseObject>();
+    private HashSet<BaseObject> allNotes = new HashSet<BaseObject>();
+    private HashSet<BaseObject> queuedToClear = new HashSet<BaseObject>();
 
     private float curTime;
-    public Action<bool, int, IObject> EventPassedThreshold;
+    public Action<bool, int, BaseObject> EventPassedThreshold;
 
-    public Action<bool, int, IObject> NotePassedThreshold;
+    public Action<bool, int, BaseObject> NotePassedThreshold;
     public Action<bool, int> RecursiveEventCheckFinished;
     public Action<bool, int> RecursiveNoteCheckFinished;
 
     /// v3 version fields
     [FormerlySerializedAs("chainsContainer")] [SerializeField] private ChainGridContainer chainGridContainer; // Now it should be useless. Does chain have sound?
     [SerializeField] private int nextChainIndex;
-    private readonly HashSet<IObject> nextChains = new HashSet<IObject>();
-    private HashSet<IObject> allChains = new HashSet<IObject>();
-    public Action<bool, int, IObject> ChainPassedThreshold;
+    private readonly HashSet<BaseObject> nextChains = new HashSet<BaseObject>();
+    private HashSet<BaseObject> allChains = new HashSet<BaseObject>();
+    public Action<bool, int, BaseObject> ChainPassedThreshold;
     public Action<bool, int> RecursiveChainCheckFinished;
 
     private void Start()
@@ -96,19 +96,19 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         {
             foreach (var toClear in queuedToClear)
             {
-                if (toClear is INote)
+                if (toClear is BaseNote)
                 {
                     allNotes.Remove(toClear);
                     nextNotes.Remove(toClear);
                 }
-                else if (toClear is IEvent)
+                else if (toClear is BaseEvent)
                 {
                     allEvents.Remove(toClear);
                     nextEvents.Remove(toClear);
                 }
                 else if (Settings.Instance.Load_MapV3)
                 {
-                    if (toClear is IChain)
+                    if (toClear is BaseChain)
                     {
                         allChains.Remove(toClear);
                         nextChains.Remove(toClear);
@@ -150,7 +150,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         //notesContainer.SortObjects();
         curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
         allNotes.Clear();
-        allNotes = new HashSet<IObject>(noteGridContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
+        allNotes = new HashSet<BaseObject>(noteGridContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
         nextNoteIndex = noteGridContainer.LoadedObjects.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
         nextNotes.Clear();
@@ -164,7 +164,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     private void CheckAllEvents(bool natural)
     {
         allEvents.Clear();
-        allEvents = new HashSet<IObject>(eventGridContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
+        allEvents = new HashSet<BaseObject>(eventGridContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
 
         nextEventIndex = eventGridContainer.LoadedObjects.Count - allEvents.Count;
         RecursiveEventCheckFinished?.Invoke(natural, nextEventIndex - 1);
@@ -181,7 +181,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         if (chainGridContainer == null) return; // currently only use for sound effect
         curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
         allChains.Clear();
-        allChains = new HashSet<IObject>(chainGridContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
+        allChains = new HashSet<BaseObject>(chainGridContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
         nextChainIndex = chainGridContainer.LoadedObjects.Count - allChains.Count;
         RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
         nextChains.Clear();
@@ -229,19 +229,19 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         }
     }
 
-    private void NoteGridContainerObjectSpawnedEvent(IObject obj) => OnObjSpawn(obj, nextNotes);
+    private void NoteGridContainerObjectSpawnedEvent(BaseObject obj) => OnObjSpawn(obj, nextNotes);
 
-    private void NoteGridContainerObjectDeletedEvent(IObject obj) => OnObjDeleted(obj);
+    private void NoteGridContainerObjectDeletedEvent(BaseObject obj) => OnObjDeleted(obj);
 
-    private void EventGridContainerObjectSpawnedEventGrid(IObject obj) => OnObjSpawn(obj, nextEvents);
+    private void EventGridContainerObjectSpawnedEventGrid(BaseObject obj) => OnObjSpawn(obj, nextEvents);
 
-    private void EventGridContainerObjectDeletedEventGrid(IObject obj) => OnObjDeleted(obj);
+    private void EventGridContainerObjectDeletedEventGrid(BaseObject obj) => OnObjDeleted(obj);
 
-    private void ChainGridContainerObjectSpawnedEvent(IObject obj) => OnObjSpawn(obj, nextChains);
+    private void ChainGridContainerObjectSpawnedEvent(BaseObject obj) => OnObjSpawn(obj, nextChains);
 
-    private void ChainGridContainerObjectDeletedEvent(IObject obj) => OnObjDeleted(obj);
+    private void ChainGridContainerObjectDeletedEvent(BaseObject obj) => OnObjDeleted(obj);
 
-    private void OnObjSpawn(IObject obj, HashSet<IObject> nextObjects)
+    private void OnObjSpawn(BaseObject obj, HashSet<BaseObject> nextObjects)
     {
         if (!timeSyncController.IsPlaying) return;
 
@@ -251,7 +251,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         }
     }
 
-    private void OnObjDeleted(IObject obj)
+    private void OnObjDeleted(BaseObject obj)
     {
         if (!timeSyncController.IsPlaying) return;
 
@@ -261,7 +261,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         }
     }
 
-    private void QueueNextObject(HashSet<IObject> allObjs, HashSet<IObject> nextObjs)
+    private void QueueNextObject(HashSet<BaseObject> allObjs, HashSet<BaseObject> nextObjs)
     {
         // Assumes that the "Count > 0" check happens before this is called
         var first = allObjs.First();

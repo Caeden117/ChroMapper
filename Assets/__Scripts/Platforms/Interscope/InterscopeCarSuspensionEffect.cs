@@ -25,9 +25,9 @@ public class InterscopeCarSuspensionEffect : InterscopeCarEventHandler
             .FirstOrDefault();
     }
 
-    protected override void OnCarGroupTriggered(IEvent @event)
+    protected override void OnCarGroupTriggered(BaseEvent baseEvent)
     {
-        if (@event.Type == (int)EventTypeValue.UtilityEvent0)
+        if (baseEvent.Type == (int)EventTypeValue.UtilityEvent0)
         {
             frontWheelSpringJoint.minDistance = frontWheelSpringJoint.maxDistance = expandDistance;
             CarRigidbody.WakeUp();

@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Beatmap.V2
 {
-    public class V2Difficulty : IDifficulty
+    public class V2Difficulty : BaseDifficulty
     {
         public V2Difficulty()
         {
@@ -139,7 +139,7 @@ namespace Beatmap.V2
 
         public override JSONNode ToJson() => throw new NotImplementedException();
 
-        public override IItem Clone() => throw new NotSupportedException();
+        public override BaseItem Clone() => throw new NotSupportedException();
 
         public static V2Difficulty GetFromJson(JSONNode mainNode, string path)
         {
@@ -193,10 +193,10 @@ namespace Beatmap.V2
 
         private static void LoadCustomDataNode(ref V2Difficulty map, ref JSONNode mainNode)
         {
-            var bpmList = new List<IBpmChange>();
-            var bookmarksList = new List<IBookmark>();
-            var customEventsList = new List<ICustomEvent>();
-            var envEnhancementsList = new List<IEnvironmentEnhancement>();
+            var bpmList = new List<BaseBpmChange>();
+            var bookmarksList = new List<BaseBookmark>();
+            var customEventsList = new List<BaseCustomEvent>();
+            var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
 
             var nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())

@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace Beatmap.V2
 {
-    public class V2Note : INote
+    public class V2Note : BaseNote
     {
         public V2Note()
         {
             CustomData = new JSONObject();
         }
 
-        public V2Note(INote other) : base(other) => ParseCustom();
+        public V2Note(BaseNote other) : base(other) => ParseCustom();
 
-        public V2Note(IBombNote bomb) : base(bomb) => ParseCustom();
+        public V2Note(BaseBombNote baseBomb) : base(baseBomb) => ParseCustom();
 
         public V2Note(JSONNode node)
         {
@@ -90,6 +90,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override IItem Clone() => new V2Note(Time, PosX, PosY, Type, CutDirection, CustomData?.Clone());
+        public override BaseItem Clone() => new V2Note(Time, PosX, PosY, Type, CutDirection, CustomData?.Clone());
     }
 }

@@ -16,25 +16,25 @@ public class MapLoader : MonoBehaviour
 
     [Space] [SerializeField] private Transform containerCollectionsContainer;
 
-    private IDifficulty map;
+    private BaseDifficulty map;
     private int noteLaneSize = 2;
     private int noteLayerSize = 3;
 
-    public void UpdateMapData(IDifficulty map)
+    public void UpdateMapData(BaseDifficulty map)
     {
         if (map is V3Difficulty)
         {
             var copy = new V3Difficulty
             {
                 CustomData = map.CustomData?.Clone(),
-                Notes = new List<INote>(map.Notes),
-                Obstacles = new List<IObstacle>(map.Obstacles),
-                Arcs = new List<IArc>(map.Arcs),
-                Chains = new List<IChain>(map.Chains),
-                Events = new List<IEvent>(map.Events),
-                BpmChanges = new List<IBpmChange>(map.BpmChanges),
-                ColorBoostEvents = new List<IColorBoostEvent>(map.ColorBoostEvents),
-                CustomEvents = new List<ICustomEvent>(map.CustomEvents)
+                Notes = new List<BaseNote>(map.Notes),
+                Obstacles = new List<BaseObstacle>(map.Obstacles),
+                Arcs = new List<BaseArc>(map.Arcs),
+                Chains = new List<BaseChain>(map.Chains),
+                Events = new List<BaseEvent>(map.Events),
+                BpmChanges = new List<BaseBpmChange>(map.BpmChanges),
+                ColorBoostEvents = new List<BaseColorBoostEvent>(map.ColorBoostEvents),
+                CustomEvents = new List<BaseCustomEvent>(map.CustomEvents)
             };
             this.map = copy;
         }
@@ -43,11 +43,11 @@ public class MapLoader : MonoBehaviour
             var copy = new V2Difficulty
             {
                 CustomData = map.CustomData?.Clone(),
-                Notes = new List<INote>(map.Notes),
-                Obstacles = new List<IObstacle>(map.Obstacles),
-                Events = new List<IEvent>(map.Events),
-                BpmChanges = new List<IBpmChange>(map.BpmChanges),
-                CustomEvents = new List<ICustomEvent>(map.CustomEvents)
+                Notes = new List<BaseNote>(map.Notes),
+                Obstacles = new List<BaseObstacle>(map.Obstacles),
+                Events = new List<BaseEvent>(map.Events),
+                BpmChanges = new List<BaseBpmChange>(map.BpmChanges),
+                CustomEvents = new List<BaseCustomEvent>(map.CustomEvents)
             };
             this.map = copy;
         }
@@ -75,22 +75,22 @@ public class MapLoader : MonoBehaviour
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }
 
-    public IEnumerator LoadObjects<T>(IEnumerable<T> objects) where T : IObject
+    public IEnumerator LoadObjects<T>(IEnumerable<T> objects) where T : BaseObject
     {
         if (!objects.Any()) yield break;
         var collection = BeatmapObjectContainerCollection.GetCollectionForType(objects.First().ObjectType);
         if (collection == null) yield break;
         foreach (var obj in collection.LoadedObjects.ToArray()) collection.DeleteObject(obj, false, false);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
-        collection.LoadedObjects = new SortedSet<IObject>(objects, new ObjectComparer());
+        collection.LoadedObjects = new SortedSet<BaseObject>(objects, new ObjectComparer());
         collection.UnsortedObjects = collection.LoadedObjects.ToList();
         UpdateSlider<T>();
-        if (typeof(T) == typeof(INote) || typeof(T) == typeof(IObstacle))
+        if (typeof(T) == typeof(BaseNote) || typeof(T) == typeof(BaseObstacle))
         {
             for (var i = 0; i < objects.Count(); i++)
             {
-                IObject data = objects.ElementAt(i);
-                if (data is INote noteData)
+                BaseObject data = objects.ElementAt(i);
+                if (data is BaseNote noteData)
                 {
                     if (noteData.PosX >= 1000 || noteData.PosX <= -1000 || noteData.PosY >= 1000 ||
                         noteData.PosY <= -1000)
@@ -102,7 +102,7 @@ public class MapLoader : MonoBehaviour
                     if (noteData.PosX - 1 > noteLaneSize) noteLaneSize = noteData.PosX - 1;
                     if (noteData.PosY + 1 > noteLayerSize) noteLayerSize = noteData.PosY + 1;
                 }
-                else if (data is IObstacle obstacleData)
+                else if (data is BaseObstacle obstacleData)
                 {
                     if (data is V3Obstacle) continue;
                     if (obstacleData.PosX >= 1000 || obstacleData.PosX <= -1000) continue;
@@ -118,12 +118,12 @@ public class MapLoader : MonoBehaviour
             noteLanesController.UpdateNoteLanes((noteLaneSize * 2).ToString());
         }
 
-        if (typeof(T) == typeof(IEvent))
+        if (typeof(T) == typeof(BaseEvent))
         {
             manager.RefreshTracks();
             var events = collection as EventGridContainer;
-            events.AllRotationEvents = objects.Cast<IEvent>().Where(x => x.IsLaneRotationEvent()).ToList();
-            events.AllBoostEvents = objects.Cast<IEvent>().Where(x => x.Type == (int)EventTypeValue.ColorBoost)
+            events.AllRotationEvents = objects.Cast<BaseEvent>().Where(x => x.IsLaneRotationEvent()).ToList();
+            events.AllBoostEvents = objects.Cast<BaseEvent>().Where(x => x.Type == (int)EventTypeValue.ColorBoost)
                 .ToList();
 
             if (Settings.Instance.Load_MapV3)
@@ -135,7 +135,7 @@ public class MapLoader : MonoBehaviour
         collection.RefreshPool(true);
     }
 
-    private void UpdateSlider<T>() where T : IObject
+    private void UpdateSlider<T>() where T : BaseObject
     {
         PersistentUI.Instance.LevelLoadSliderLabel.text = $"Loading {typeof(T).Name}s... ";
         PersistentUI.Instance.LevelLoadSlider.value = 1;

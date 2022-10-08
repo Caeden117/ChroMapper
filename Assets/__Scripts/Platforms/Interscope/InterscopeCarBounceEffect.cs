@@ -13,7 +13,7 @@ public class InterscopeCarBounceEffect : InterscopeCarEventHandler
 
     public override int[] ListeningEventTypes => new[] { (int)EventTypeValue.RingZoom };
 
-    protected override void OnCarGroupTriggered(IEvent @event)
+    protected override void OnCarGroupTriggered(BaseEvent baseEvent)
     {
         var timeSinceLevelLoad = Time.timeSinceLevelLoad;
 

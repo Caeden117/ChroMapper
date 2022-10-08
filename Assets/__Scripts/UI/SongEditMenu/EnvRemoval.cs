@@ -19,7 +19,7 @@ public class EnvRemoval : MonoBehaviour
     [SerializeField] private Image envRemovalToggle;
 
     private readonly List<EnvRemovalListItem> envRemovalList = new List<EnvRemovalListItem>();
-    public List<IEnvironmentEnhancement> EnvRemovalList => envRemovalList.Select(it => it.Value).ToList();
+    public List<BaseEnvironmentEnhancement> EnvRemovalList => envRemovalList.Select(it => it.Value).ToList();
 
     public void ToggleEnvRemoval()
     {
@@ -34,12 +34,12 @@ public class EnvRemoval : MonoBehaviour
 
     public void AddItem()
     {
-        AddItem(difficultySelect.CurrentDiff.GetVersion() == 3 ? (IEnvironmentEnhancement)new V3EnvironmentEnhancement("") : new V2EnvironmentEnhancement(""));
+        AddItem(difficultySelect.CurrentDiff.GetVersion() == 3 ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement("") : new V2EnvironmentEnhancement(""));
         UpdateEnvRemoval();
         StartCoroutine(WaitToScroll());
     }
 
-    public void AddItem(IEnvironmentEnhancement text)
+    public void AddItem(BaseEnvironmentEnhancement text)
     {
         var obj = Instantiate(listItemPrefab, listContainer.transform).GetComponent<EnvRemovalListItem>();
         obj.Setup(this, text);
@@ -66,7 +66,7 @@ public class EnvRemoval : MonoBehaviour
         envRemovalList.Clear();
     }
 
-    public void UpdateFromDiff(List<IEnvironmentEnhancement> localEnvRemoval)
+    public void UpdateFromDiff(List<BaseEnvironmentEnhancement> localEnvRemoval)
     {
         ClearList();
 

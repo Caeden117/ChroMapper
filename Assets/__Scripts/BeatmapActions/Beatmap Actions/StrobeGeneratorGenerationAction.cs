@@ -4,9 +4,9 @@ using Beatmap.Base;
 
 public class StrobeGeneratorGenerationAction : BeatmapAction
 {
-    private readonly IEnumerable<IObject> conflictingData;
+    private readonly IEnumerable<BaseObject> conflictingData;
 
-    public StrobeGeneratorGenerationAction(IEnumerable<IObject> generated, IEnumerable<IObject> conflicting)
+    public StrobeGeneratorGenerationAction(IEnumerable<BaseObject> generated, IEnumerable<BaseObject> conflicting)
         : base(generated) => conflictingData = conflicting;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

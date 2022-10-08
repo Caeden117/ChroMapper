@@ -466,7 +466,7 @@ public class BeatSaberSong
         }
     }
 
-    public IDifficulty GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
+    public BaseDifficulty GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
         var fullPath = Path.Combine(Directory, data.BeatmapFilename);
 
@@ -531,7 +531,7 @@ public class BeatSaberSong
             else BeatmapFilename = fileName;
         }
 
-        public void RefreshRequirementsAndWarnings(IDifficulty map)
+        public void RefreshRequirementsAndWarnings(BaseDifficulty map)
         {
             //Saving Map Requirement Info
             var requiredArray = new JSONArray(); //Generate suggestions and requirements array

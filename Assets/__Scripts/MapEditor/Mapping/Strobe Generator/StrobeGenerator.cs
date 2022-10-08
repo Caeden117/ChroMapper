@@ -14,10 +14,10 @@ public class StrobeGenerator : MonoBehaviour
 
     public void GenerateStrobe(IEnumerable<StrobeGeneratorPass> passes)
     {
-        var generatedObjects = new List<IObject>();
+        var generatedObjects = new List<BaseObject>();
         var containers =
-            SelectionController.SelectedObjects.Where(x => x is IEvent).Cast<IEvent>(); //Grab selected objects
-        var oldEvents = new List<IObject>(); //For the Action
+            SelectionController.SelectedObjects.Where(x => x is BaseEvent).Cast<BaseEvent>(); //Grab selected objects
+        var oldEvents = new List<BaseObject>(); //For the Action
         //Order by type, then by descending time
         var groupings = containers.GroupBy(x => x.Type);
         foreach (var group in groupings)
@@ -43,12 +43,12 @@ public class StrobeGenerator : MonoBehaviour
                     var lightIds = customData?["_lightID"] ?? customData?["lightID"];
                     if (propGroup.Count() >= 2)
                     {
-                        IEnumerable<IEvent> ordered = propGroup.OrderByDescending(x => x.Time);
+                        IEnumerable<BaseEvent> ordered = propGroup.OrderByDescending(x => x.Time);
                         var end = ordered.First();
                         var start = ordered.Last();
 
                         var containersBetween = eventGridContainer.LoadedObjects.GetViewBetween(start, end)
-                            .Cast<IEvent>().Where(x =>
+                            .Cast<BaseEvent>().Where(x =>
                                 x.Type == start.Type && //Grab all events between start and end point.
                                 ((!start.IsLightID && !x.IsLightID) || (start.IsLightID &&
                                                                         x.IsLightID && x.CustomLightID.Contains(start.CustomLightID[0])))
@@ -77,13 +77,13 @@ public class StrobeGenerator : MonoBehaviour
         if (generatedObjects.Count > 0)
         {
             //Delete conflicting vanilla events
-            foreach (IEvent e in oldEvents) eventGridContainer.DeleteObject(e, false, false);
+            foreach (BaseEvent e in oldEvents) eventGridContainer.DeleteObject(e, false, false);
             //Spawn objects that were generated
-            foreach (IEvent data in generatedObjects) eventGridContainer.SpawnObject(data, false, false);
+            foreach (BaseEvent data in generatedObjects) eventGridContainer.SpawnObject(data, false, false);
             eventGridContainer.RefreshPool(true);
             //yield return PersistentUI.Instance.FadeOutLoadingScreen();
             SelectionController.DeselectAll();
-            SelectionController.SelectedObjects = new HashSet<IObject>(generatedObjects);
+            SelectionController.SelectedObjects = new HashSet<BaseObject>(generatedObjects);
             SelectionController.SelectionChangedEvent?.Invoke();
             SelectionController.RefreshSelectionMaterial(false);
             BeatmapActionContainer.AddAction(

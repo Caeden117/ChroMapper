@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     private BookmarkManager manager;
-    public IBookmark Data { get; private set; }
+    public BaseBookmark Data { get; private set; }
 
 
-    public void Init(BookmarkManager manager, IBookmark data)
+    public void Init(BookmarkManager manager, BaseBookmark data)
     {
         if (Data != null) return;
         Data = data;

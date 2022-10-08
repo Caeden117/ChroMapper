@@ -37,7 +37,7 @@ public class DifficultySelect : MonoBehaviour
     private bool loading;
     private DifficultyRow selected;
 
-    public IDifficulty CurrentDiff => diffs[selected.Name].Map;
+    public BaseDifficulty CurrentDiff => diffs[selected.Name].Map;
 
     private BeatSaberSong Song => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
@@ -142,7 +142,7 @@ public class DifficultySelect : MonoBehaviour
         row.ShowDirtyObjects(localDiff);
     }
 
-    private IDifficulty TryGetExistingMapFromDiff(DifficultySettings diff)
+    private BaseDifficulty TryGetExistingMapFromDiff(DifficultySettings diff)
     {
         try
         {
@@ -179,7 +179,7 @@ public class DifficultySelect : MonoBehaviour
 
         var map = TryGetExistingMapFromDiff(localDiff) ?? (
             Settings.Instance.Load_MapV3 ?
-            (IDifficulty)new V3Difficulty { MainNode = new JSONObject() } :
+            (BaseDifficulty)new V3Difficulty { MainNode = new JSONObject() } :
             new V2Difficulty { MainNode = new JSONObject() });
         var oldPath = map.DirectoryAndFile;
 

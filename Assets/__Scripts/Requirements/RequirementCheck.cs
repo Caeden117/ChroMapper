@@ -28,5 +28,5 @@ public abstract class RequirementCheck
     }
 
     public static void RegisterRequirement(RequirementCheck req) => requirementsAndSuggestions.Add(req);
-    public abstract RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, IDifficulty map);
+    public abstract RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map);
 }

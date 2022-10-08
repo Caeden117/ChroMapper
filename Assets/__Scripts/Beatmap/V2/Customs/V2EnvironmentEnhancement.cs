@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V2.Customs
 {
-    public class V2EnvironmentEnhancement : IEnvironmentEnhancement
+    public class V2EnvironmentEnhancement : BaseEnvironmentEnhancement
     {
         public V2EnvironmentEnhancement()
         {
@@ -65,6 +65,6 @@ namespace Beatmap.V2.Customs
             return node;
         }
 
-        public override IItem Clone() => new V2EnvironmentEnhancement(ToJson().Clone());
+        public override BaseItem Clone() => new V2EnvironmentEnhancement(ToJson().Clone());
     }
 }

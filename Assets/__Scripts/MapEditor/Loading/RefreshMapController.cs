@@ -13,7 +13,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
     [SerializeField] private TMP_FontAsset moreOptionsFontAsset;
     [SerializeField] private TMP_FontAsset thingYouCanRefreshFontAsset;
     private BeatSaberSong.DifficultyBeatmap diff;
-    private IDifficulty map;
+    private BaseDifficulty map;
     private BeatSaberSong song;
 
     private void Start()

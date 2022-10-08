@@ -4,13 +4,13 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3BasicEvent : IEvent
+    public class V3BasicEvent : BaseEvent
     {
         public V3BasicEvent()
         {
         }
 
-        public V3BasicEvent(IEvent other) : base(other) => ParseCustom();
+        public V3BasicEvent(BaseEvent other) : base(other) => ParseCustom();
 
         public V3BasicEvent(JSONNode node)
         {
@@ -112,6 +112,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() => new V3BasicEvent(Time, Type, Value, FloatValue, CustomData?.Clone());
+        public override BaseItem Clone() => new V3BasicEvent(Time, Type, Value, FloatValue, CustomData?.Clone());
     }
 }

@@ -17,7 +17,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     }
 
     [SerializeField] private GameObject eventPrefab;
-    [FormerlySerializedAs("eventAppearanceSO")] [SerializeField] private EventAppearanceSO eventAppearanceSo;
+    [SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private GameObject eventGridLabels;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private EventPlacement eventPlacement;
@@ -29,12 +29,12 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     public int EventTypeToPropagate = (int)EventTypeValue.RingRotation;
     public int EventTypePropagationSize;
 
-    public List<IEvent> AllRotationEvents = new List<IEvent>();
-    public List<IEvent> AllBoostEvents = new List<IEvent>();
+    public List<BaseEvent> AllRotationEvents = new List<BaseEvent>();
+    public List<BaseEvent> AllBoostEvents = new List<BaseEvent>();
 
     // TODO: why was this MapEventV3?
-    private Dictionary<int, List<IEvent>> allLightEvents = new Dictionary<int, List<IEvent>>();
-    public Dictionary<int, List<IEvent>> AllLightEvents { get => allLightEvents;
+    private Dictionary<int, List<BaseEvent>> allLightEvents = new Dictionary<int, List<BaseEvent>>();
+    public Dictionary<int, List<BaseEvent>> AllLightEvents { get => allLightEvents;
         set {
             allLightEvents = value;
             foreach (var p in allLightEvents)
@@ -170,9 +170,9 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
     }
 
-    protected override void OnObjectDelete(IObject obj)
+    protected override void OnObjectDelete(BaseObject obj)
     {
-        if (obj is IEvent e)
+        if (obj is BaseEvent e)
         {
             if (e.IsLaneRotationEvent())
             {
@@ -188,9 +188,9 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
 
-    protected override void OnObjectSpawned(IObject obj)
+    protected override void OnObjectSpawned(BaseObject obj)
     {
-        if (obj is IEvent e)
+        if (obj is BaseEvent e)
         {
             if (e.IsLaneRotationEvent())
                 AllRotationEvents.Add(e);
@@ -200,14 +200,14 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
 
-    public override IEnumerable<IObject> GrabSortedObjects()
+    public override IEnumerable<BaseObject> GrabSortedObjects()
     {
-        var sorted = new List<IObject>();
+        var sorted = new List<BaseObject>();
         var grouping = LoadedObjects.GroupBy(x => x.Time);
         foreach (var group in grouping)
         {
             sorted.AddRange(@group.OrderBy(x =>
-                (x as IEvent)?.CustomPropID ?? -1)); // Sort non-light prop events before light prop events
+                (x as BaseEvent)?.CustomPropID ?? -1)); // Sort non-light prop events before light prop events
         }
 
         return sorted;
@@ -236,17 +236,17 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         if (propagationEditing == PropMode.Off) OnPlayToggle(AudioTimeSyncController.IsPlaying);
     }
 
-    private void SpawnCallback(bool initial, int index, IObject objectData)
+    private void SpawnCallback(bool initial, int index, BaseObject objectData)
     {
         if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
     }
 
     //We don't need to check index as that's already done further up the chain
-    private void DespawnCallback(bool initial, int index, IObject objectData)
+    private void DespawnCallback(bool initial, int index, BaseObject objectData)
     {
         if (LoadedContainers.ContainsKey(objectData))
         {
-            var e = objectData as IEvent;
+            var e = objectData as BaseEvent;
             if (e.CustomLightGradient != null && Settings.Instance.VisualizeChromaGradients && isActiveAndEnabled)
                 StartCoroutine(nameof(WaitForGradientThenRecycle), e);
             else
@@ -254,12 +254,12 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         }
     }
 
-    private IEnumerator WaitForGradientThenRecycle(IEvent @event)
+    private IEnumerator WaitForGradientThenRecycle(BaseEvent baseEvent)
     {
-        var endTime = @event.Time + @event.CustomLightGradient.Duration;
+        var endTime = baseEvent.Time + baseEvent.CustomLightGradient.Duration;
         yield return new WaitUntil(() =>
             endTime < AudioTimeSyncController.CurrentBeat + DespawnCallbackController.Offset);
-        RecycleContainer(@event);
+        RecycleContainer(baseEvent);
     }
 
     private void OnPlayToggle(bool playing)
@@ -285,17 +285,17 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     public override ObjectContainer CreateContainer() =>
         EventContainer.SpawnEvent(this, null, ref eventPrefab, ref eventAppearanceSo, ref labels);
 
-    protected override void UpdateContainerData(ObjectContainer con, IObject obj)
+    protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         eventAppearanceSo.SetEventAppearance(con as EventContainer, true,
             AllBoostEvents.FindLast(x => x.Time <= obj.Time)?.Value == 1);
-        var e = obj as IEvent;
+        var e = obj as BaseEvent;
         if (PropagationEditing != PropMode.Off && e.Type != EventTypeToPropagate) con.SafeSetActive(false);
     }
 
     public void LinkAllLightEvents()
     {
-        AllLightEvents = LoadedObjects.OfType<IEvent>().
+        AllLightEvents = LoadedObjects.OfType<BaseEvent>().
                     Where(x => x.IsLightEvent(EnvironmentInfoHelper.GetName())).
                     GroupBy(x => x.Type).
                     ToDictionary(g => g.Key, g => g.ToList());

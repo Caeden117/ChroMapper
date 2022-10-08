@@ -47,12 +47,12 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
         if (uniqueLaserDirection) rightRotatesClockwise = !leftRotatesClockwise;
     }
 
-    public override bool IsEventValidForPass(IEvent @event) => @event.IsLaserRotationEvent(EnvironmentInfoHelper.GetName());
+    public override bool IsEventValidForPass(BaseEvent baseEvent) => baseEvent.IsLaserRotationEvent(EnvironmentInfoHelper.GetName());
 
-    public override IEnumerable<IEvent> StrobePassForLane(IEnumerable<IEvent> original, int type,
+    public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, JSONNode propID)
     {
-        var generatedObjects = new List<IEvent>();
+        var generatedObjects = new List<BaseEvent>();
 
         var startTime = original.First().Time;
         var endTime = original.Last().Time;
@@ -113,15 +113,15 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
         return generatedObjects;
     }
 
-    private float GetLaserSpeedFromEvent(IEvent @event)
+    private float GetLaserSpeedFromEvent(BaseEvent baseEvent)
     {
-        if (@event.CustomPreciseSpeed == null && @event.CustomSpeed == null)
+        if (baseEvent.CustomPreciseSpeed == null && baseEvent.CustomSpeed == null)
         {
-            return @event.Value;
+            return baseEvent.Value;
         }
 
-        return (float)(@event.CustomPreciseSpeed != null
-            ? @event.CustomPreciseSpeed
-            : @event.CustomSpeed);
+        return (float)(baseEvent.CustomPreciseSpeed != null
+            ? baseEvent.CustomPreciseSpeed
+            : baseEvent.CustomSpeed);
     }
 }

@@ -41,13 +41,13 @@ namespace Tests
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            INote noteA = new V2Note(2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+            BaseNote baseNoteA = new V2Note(2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
 
-            notePlacement.queuedData = noteA;
+            notePlacement.queuedData = baseNoteA;
             notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
-            SelectionController.Select(noteA);
+            SelectionController.Select(baseNoteA);
 
             _mirror.Mirror();
             NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Blue, 5345, (int)GridY.Base, (int)NoteCutDirection.Right);
@@ -64,7 +64,7 @@ namespace Tests
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            INote noteA = new V2Note
+            BaseNote baseNoteA = new V2Note
             {
                 Time = 2,
                 Type = (int)NoteType.Red,
@@ -74,11 +74,11 @@ namespace Tests
                 CutDirection = (int)NoteCutDirection.Left
             };
 
-            notePlacement.queuedData = noteA;
+            notePlacement.queuedData = baseNoteA;
             notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
-            SelectionController.Select(noteA);
+            SelectionController.Select(baseNoteA);
 
             _mirror.Mirror();
             NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Right, JSON.Parse("{\"_position\": [0, 0]}"));
@@ -97,16 +97,16 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                IEvent eventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightID\": 2}"));
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightID\": 2}"));
 
-                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
                 eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
-                SelectionController.Select(eventA);
+                SelectionController.Select(baseEventA);
 
-                eventsContainer.EventTypeToPropagate = eventA.Type;
+                eventsContainer.EventTypeToPropagate = baseEventA.Type;
                 eventsContainer.PropagationEditing = EventGridContainer.PropMode.Light;
 
                 _mirror.Mirror();
@@ -130,14 +130,14 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                IEvent eventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
-                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
                 eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
-                SelectionController.Select(eventA);
+                SelectionController.Select(baseEventA);
 
                 _mirror.Mirror();
                 EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [0, 1, 0, 1], \"_endColor\": [1, 0, 0, 1], \"_easing\": \"easeLinear\"}}"));
@@ -161,7 +161,7 @@ namespace Tests
                 // What the actual fuck - example from mirroring in MMA2
                 //{"_time":1.5,"_lineIndex":1446,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
                 //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
-                IObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
+                BaseObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
 
                 wallPlacement.queuedData = wallA;
                 wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
@@ -190,7 +190,7 @@ namespace Tests
                 ObstaclePlacement wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
                 wallPlacement.RefreshVisuals();
 
-                IObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
+                BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
 
                 wallPlacement.queuedData = wallA;
                 wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
@@ -221,21 +221,21 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                IEvent eventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, (int)IEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
 
-                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
                 eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
-                SelectionController.Select(eventA);
+                SelectionController.Select(baseEventA);
 
                 _mirror.Mirror();
-                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)IEvent.LightValueToRotationDegrees.ToList().IndexOf(-45), JSON.Parse("{\"_rotation\": -33}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45), JSON.Parse("{\"_rotation\": -33}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)IEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
             }
         }
     }

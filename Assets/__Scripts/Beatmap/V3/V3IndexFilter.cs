@@ -3,7 +3,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3IndexFilter : IIndexFilter
+    public class V3IndexFilter : BaseIndexFilter
     {
         public V3IndexFilter()
         {
@@ -46,6 +46,6 @@ namespace Beatmap.V3
                 ["s"] = Seed
             };
 
-        public override IItem Clone() => new V3IndexFilter(Type, Param0, Param1, Reverse, Chunks, Limit, LimitAffectsType, Random, Seed);
+        public override BaseItem Clone() => new V3IndexFilter(Type, Param0, Param1, Reverse, Chunks, Limit, LimitAffectsType, Random, Seed);
     }
 }

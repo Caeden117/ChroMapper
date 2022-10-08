@@ -19,10 +19,10 @@ internal class PluginEventHandler : MonoBehaviour
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]
-    private void EventPassedThreshold(bool _, int __, IObject newlyAdded) =>
-        PluginLoader.BroadcastEvent<EventPassedThresholdAttribute, IObject>(newlyAdded);
+    private void EventPassedThreshold(bool _, int __, BaseObject newlyAdded) =>
+        PluginLoader.BroadcastEvent<EventPassedThresholdAttribute, BaseObject>(newlyAdded);
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]
-    private void NotePassedThreshold(bool _, int __, IObject newlyAdded) =>
-        PluginLoader.BroadcastEvent<NotePassedThresholdAttribute, IObject>(newlyAdded);
+    private void NotePassedThreshold(bool _, int __, BaseObject newlyAdded) =>
+        PluginLoader.BroadcastEvent<NotePassedThresholdAttribute, BaseObject>(newlyAdded);
 }

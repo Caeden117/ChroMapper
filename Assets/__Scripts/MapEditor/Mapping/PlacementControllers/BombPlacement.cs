@@ -8,7 +8,7 @@ using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 
-public class BombPlacement : PlacementController<INote, NoteContainer, NoteGridContainer>
+public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGridContainer>
 {
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
@@ -30,10 +30,10 @@ public class BombPlacement : PlacementController<INote, NoteContainer, NoteGridC
 
     public override int PlacementXMin => base.PlacementXMax * -1;
 
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> container) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a Bomb.");
 
-    public override INote GenerateOriginalData() 
+    public override BaseNote GenerateOriginalData() 
     {
         Debug.Log("did u spawn this instead?");
         if (Settings.Instance.Load_MapV3)
@@ -100,7 +100,7 @@ public class BombPlacement : PlacementController<INote, NoteContainer, NoteGridC
         instantiatedContainer.UpdateMaterials();
     }
 
-    public override void TransferQueuedToDraggedObject(ref INote dragged, INote queued)
+    public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
     {
         dragged.Time = queued.Time;
         dragged.PosX = queued.PosX;

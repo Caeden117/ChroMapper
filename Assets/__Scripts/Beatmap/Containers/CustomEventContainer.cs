@@ -7,15 +7,15 @@ namespace Beatmap.Containers
     public class CustomEventContainer : ObjectContainer
     {
         private CustomEventGridContainer collection;
-        public ICustomEvent CustomEventData;
+        public BaseCustomEvent CustomEventData;
 
-        public override IObject ObjectData
+        public override BaseObject ObjectData
         {
             get => CustomEventData;
-            set => CustomEventData = (ICustomEvent)value;
+            set => CustomEventData = (BaseCustomEvent)value;
         }
 
-        public static CustomEventContainer SpawnCustomEvent(ICustomEvent data,
+        public static CustomEventContainer SpawnCustomEvent(BaseCustomEvent data,
             CustomEventGridContainer collection, ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<CustomEventContainer>();

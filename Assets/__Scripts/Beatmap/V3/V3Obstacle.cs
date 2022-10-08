@@ -4,13 +4,13 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3Obstacle : IObstacle
+    public class V3Obstacle : BaseObstacle
     {
         public V3Obstacle()
         {
         }
 
-        public V3Obstacle(IObstacle other) : base(other) => ParseCustom();
+        public V3Obstacle(BaseObstacle other) : base(other) => ParseCustom();
 
         public V3Obstacle(JSONNode node)
         {
@@ -77,6 +77,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() => new V3Obstacle(Time, PosX, PosY, Duration, Width, Height, CustomData?.Clone());
+        public override BaseItem Clone() => new V3Obstacle(Time, PosX, PosY, Duration, Width, Height, CustomData?.Clone());
     }
 }

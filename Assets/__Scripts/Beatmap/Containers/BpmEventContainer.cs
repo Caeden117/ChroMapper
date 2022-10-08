@@ -7,16 +7,16 @@ namespace Beatmap.Containers
 {
     public class BpmEventContainer : ObjectContainer
     {
-        public IBpmEvent BpmData;
+        public BaseBpmEvent BpmData;
         [SerializeField] private TextMeshProUGUI bpmText;
 
-        public override IObject ObjectData
+        public override BaseObject ObjectData
         {
             get => BpmData;
-            set => BpmData = (IBpmEvent)value;
+            set => BpmData = (BaseBpmEvent)value;
         }
 
-        public static BpmEventContainer SpawnBpmChange(IBpmEvent data, ref GameObject prefab)
+        public static BpmEventContainer SpawnBpmChange(BaseBpmEvent data, ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<BpmEventContainer>();
             container.BpmData = data;

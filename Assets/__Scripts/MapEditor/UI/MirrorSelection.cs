@@ -61,7 +61,7 @@ public class MirrorSelection : MonoBehaviour
         foreach (var con in SelectionController.SelectedObjects)
         {
             var original = BeatmapFactory.Clone(con);
-            if (con is IObstacle obstacle && moveNotes)
+            if (con is BaseObstacle obstacle && moveNotes)
             {
                 var precisionWidth = obstacle.Width >= 1000;
                 var state = obstacle.PosX;
@@ -118,7 +118,7 @@ public class MirrorSelection : MonoBehaviour
                     obstacle.PosX = mirrorLane - obstacle.Width; //adjust for wall width
                 }
             }
-            else if (con is INote note)
+            else if (con is BaseNote note)
             {
                 if (note is V3ColorNote cnote) cnote.AngleOffset *= -1;
                 if (moveNotes)
@@ -179,7 +179,7 @@ public class MirrorSelection : MonoBehaviour
                         note.CutDirection = cutDirectionToMirrored[note.CutDirection];
                 }
             }
-            else if (con is IEvent e)
+            else if (con is BaseEvent e)
             {
                 if (e.IsLaneRotationEvent())
                 {
@@ -189,8 +189,8 @@ public class MirrorSelection : MonoBehaviour
                     var rotation = e.GetRotationDegreeFromValue();
                     if (rotation != null)
                     {
-                        if (e.Value >= 0 && e.Value < IEvent.LightValueToRotationDegrees.Length)
-                            e.Value = IEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
+                        if (e.Value >= 0 && e.Value < BaseEvent.LightValueToRotationDegrees.Length)
+                            e.Value = BaseEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
                         else if (e.Value >= 1000 && e.Value <= 1720) //Invert Mapping Extensions rotation
                             e.Value = 1720 - (e.Value - 1000);
                     }
@@ -228,7 +228,7 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (Settings.Instance.Load_MapV3)
             {
-                if (con is IArc arc)
+                if (con is BaseArc arc)
                 {
                     if (moveNotes)
                     {
@@ -245,7 +245,7 @@ public class MirrorSelection : MonoBehaviour
                         : (int)NoteColor.Blue;
 
                 }
-                else if (con is IChain chain)
+                else if (con is BaseChain chain)
                 {
                     if (moveNotes)
                     {

@@ -53,16 +53,16 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
             var rotation = e.EventData.GetRotationDegreeFromValue();
             if (rotation != null)
             {
-                if (e.EventData is IRotationEvent)
+                if (e.EventData is BaseRotationEvent)
                 {
                     // (e.EventData as IRotationEvent).Rotation *= -1;
                 }
                 else
                 {
-                    if (e.EventData.Value >= 0 && e.EventData.Value < IEvent.LightValueToRotationDegrees.Length)
+                    if (e.EventData.Value >= 0 && e.EventData.Value < BaseEvent.LightValueToRotationDegrees.Length)
                     {
                         e.EventData.Value =
-                            IEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
+                            BaseEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
                     }
                     else if (e.EventData.Value >= 1000 && e.EventData.Value <= 1720) //Invert Mapping Extensions rotation
                     {
@@ -99,7 +99,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
     {
         var original = BeatmapFactory.Clone(e.ObjectData);
 
-        if (e.EventData is IRotationEvent)
+        if (e.EventData is BaseRotationEvent)
         {
             // (e.EventData as IRotationEvent).Rotation += modifier;
         }

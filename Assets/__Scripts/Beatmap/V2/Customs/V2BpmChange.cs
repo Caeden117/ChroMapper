@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V2.Customs
 {
-    public class V2BpmChange : IBpmChange
+    public class V2BpmChange : BaseBpmChange
     {
         public V2BpmChange()
         {
@@ -24,6 +24,6 @@ namespace Beatmap.V2.Customs
         public override string KeyBpm { get; } = "_beatsPerBar";
         public override string KeyMetronomeOffset { get; } = "_metronomeOffset";
 
-        public override IItem Clone() => new V2BpmChange(ToJson());
+        public override BaseItem Clone() => new V2BpmChange(ToJson());
     }
 }

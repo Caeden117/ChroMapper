@@ -35,7 +35,7 @@ public class SwingsPerSecond
             lastNoteTime = noteGrid.LoadedObjects.Last().Time / songBpm * 60;
 
         var lastChainTime = 0f;
-        foreach (IChain chain in chainGrid.LoadedObjects)
+        foreach (BaseChain chain in chainGrid.LoadedObjects)
         {
             if (chain.SliceCount > 1)
             {
@@ -46,7 +46,7 @@ public class SwingsPerSecond
 
 
         var lastInteractiveObstacleTime = 0f;
-        foreach (IObstacle obstacle in obstacleGrid.LoadedObjects)
+        foreach (BaseObstacle obstacle in obstacleGrid.LoadedObjects)
         {
             if (obstacle.Width >= 2 || obstacle.PosX == 1 || obstacle.PosX == 2)
             {
@@ -65,7 +65,7 @@ public class SwingsPerSecond
             firstNoteTime = noteGrid.LoadedObjects.First().Time / songBpm * 60;
 
         var firstInteractiveObstacleTime = float.MaxValue;
-        foreach (IObstacle obstacle in obstacleGrid.LoadedObjects)
+        foreach (BaseObstacle obstacle in obstacleGrid.LoadedObjects)
         {
             if (obstacle.Width >= 2 || obstacle.PosX == 1 || obstacle.PosX == 2)
             {
@@ -77,20 +77,20 @@ public class SwingsPerSecond
         return Mathf.Min(firstInteractiveObstacleTime, firstNoteTime);
     }
 
-    private bool MaybeWindowed(INote note1, INote note2) =>
+    private bool MaybeWindowed(BaseNote note1, BaseNote note2) =>
         Mathf.Max(
             Mathf.Abs(note1.PosX - note2.PosX),
             Mathf.Abs(note1.PosY - note2.PosY)
         ) >= 2;
 
-    private void CheckWindow(INote note, ref INote lastNote, int[] swingCount, float realTime,
+    private void CheckWindow(BaseNote baseNote, ref BaseNote lastNote, int[] swingCount, float realTime,
         float songBpm)
     {
         if (lastNote != null)
         {
-            if ((MaybeWindowed(note, lastNote) &&
-                 (note.Time - lastNote.Time) / songBpm * 60 > maximumWindowTolerance) ||
-                (note.Time - lastNote.Time) / songBpm * 60 > maximumTolerance)
+            if ((MaybeWindowed(baseNote, lastNote) &&
+                 (baseNote.Time - lastNote.Time) / songBpm * 60 > maximumWindowTolerance) ||
+                (baseNote.Time - lastNote.Time) / songBpm * 60 > maximumTolerance)
             {
                 swingCount[Mathf.FloorToInt(realTime)] += 1;
             }
@@ -100,7 +100,7 @@ public class SwingsPerSecond
             swingCount[Mathf.FloorToInt(realTime)] += 1;
         }
 
-        lastNote = note;
+        lastNote = baseNote;
     }
 
     private int[][] SwingCount(float songBpm)
@@ -113,10 +113,10 @@ public class SwingsPerSecond
         var swingCountRed = new int[Mathf.FloorToInt(lastInteraction) + 1];
         var swingCountBlue = new int[Mathf.FloorToInt(lastInteraction) + 1];
 
-        INote lastRed = null, lastBlue = null;
+        BaseNote lastRed = null, lastBlue = null;
         var notesSet = noteGrid.LoadedObjects;
 
-        foreach (INote note in notesSet)
+        foreach (BaseNote note in notesSet)
         {
             var realTime = note.Time / songBpm * 60;
             if (note.Type == 0)

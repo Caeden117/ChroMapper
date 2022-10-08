@@ -95,7 +95,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void ToggleHyperWall(ObstacleContainer obs)
     {
-        if (BeatmapFactory.Clone(obs.ObjectData) is IObstacle edited)
+        if (BeatmapFactory.Clone(obs.ObjectData) is BaseObstacle edited)
         {
             edited.Time += obs.ObstacleData.Duration;
             edited.Duration *= -1f;

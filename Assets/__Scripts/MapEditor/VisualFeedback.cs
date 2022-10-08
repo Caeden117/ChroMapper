@@ -39,10 +39,10 @@ public class VisualFeedback : MonoBehaviour
 
     private void OnPlayToggle(bool playing) => lastTime = -1;
 
-    private void HandleCallback(bool initial, int index, IObject objectData)
+    private void HandleCallback(bool initial, int index, BaseObject objectData)
     {
         if (objectData.Time == lastTime ||
-            !DingOnNotePassingGrid.NoteTypeToDing[(objectData as INote).Type])
+            !DingOnNotePassingGrid.NoteTypeToDing[(objectData as BaseNote).Type])
         {
             return;
         }
@@ -50,7 +50,7 @@ public class VisualFeedback : MonoBehaviour
 * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
 * the same time that are supposed to ding from triggering the sound effects.
 */
-        var noteData = (INote)objectData;
+        var noteData = (BaseNote)objectData;
         if (useColours)
         {
             Color c;

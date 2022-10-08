@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class ObstaclePlacement : PlacementController<IObstacle, ObstacleContainer, ObstacleGridContainer>
+public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleContainer, ObstacleGridContainer>
 {
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
@@ -51,12 +51,12 @@ public class ObstaclePlacement : PlacementController<IObstacle, ObstacleContaine
 
     private float SmallestRankableWallDuration => Atsc.GetBeatFromSeconds(0.016f);
 
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> container) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
-    public override IObstacle GenerateOriginalData() =>
+    public override BaseObstacle GenerateOriginalData() =>
         BeatSaberSongContainer.Instance.Map.GetVersion() == 3
-            ? (IObstacle)new V3Obstacle(0, 0, 0, 0, 1, 5)
+            ? (BaseObstacle)new V3Obstacle(0, 0, 0, 0, 1, 5)
             : new V2Obstacle(0, 0, (int)ObstacleType.Full, 0, 1);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
@@ -212,7 +212,7 @@ public class ObstaclePlacement : PlacementController<IObstacle, ObstacleContaine
         }
     }
 
-    public override void TransferQueuedToDraggedObject(ref IObstacle dragged, IObstacle queued)
+    public override void TransferQueuedToDraggedObject(ref BaseObstacle dragged, BaseObstacle queued)
     {
         dragged.Time = queued.Time;
         dragged.PosX = queued.PosX;

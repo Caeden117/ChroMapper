@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Beatmap.Shared
 {
-    public class ChromaLightGradient : IItem
+    public class ChromaLightGradient : BaseItem
     {
         public float Duration;
         public string EasingType;
@@ -41,7 +41,7 @@ namespace Beatmap.Shared
             EasingType = easing;
         }
 
-        public override IItem Clone()
+        public override BaseItem Clone()
         {
             return new ChromaLightGradient(StartColor, EndColor, Duration, EasingType);
         }

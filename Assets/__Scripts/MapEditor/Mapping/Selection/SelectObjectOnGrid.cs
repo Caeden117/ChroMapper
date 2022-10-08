@@ -8,7 +8,7 @@ public class SelectObjectOnGrid : MonoBehaviour
 
     private void OnDestroy() => SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
 
-    private void ObjectSelected(IObject container)
+    private void ObjectSelected(BaseObject container)
     {
     }
 }

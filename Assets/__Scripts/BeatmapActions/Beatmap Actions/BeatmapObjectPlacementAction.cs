@@ -3,14 +3,14 @@ using Beatmap.Base;
 
 public class BeatmapObjectPlacementAction : BeatmapAction
 {
-    private readonly IEnumerable<IObject> removedConflictObjects;
+    private readonly IEnumerable<BaseObject> removedConflictObjects;
 
-    public BeatmapObjectPlacementAction(IEnumerable<IObject> placedContainers,
-        IEnumerable<IObject> conflictingObjects, string comment) : base(placedContainers, comment) =>
+    public BeatmapObjectPlacementAction(IEnumerable<BaseObject> placedContainers,
+        IEnumerable<BaseObject> conflictingObjects, string comment) : base(placedContainers, comment) =>
         removedConflictObjects = conflictingObjects;
 
-    public BeatmapObjectPlacementAction(IObject placedObject,
-        IEnumerable<IObject> conflictingObject, string comment) : base(new[] { placedObject }, comment) =>
+    public BeatmapObjectPlacementAction(BaseObject placedObject,
+        IEnumerable<BaseObject> conflictingObject, string comment) : base(new[] { placedObject }, comment) =>
         removedConflictObjects = conflictingObject;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

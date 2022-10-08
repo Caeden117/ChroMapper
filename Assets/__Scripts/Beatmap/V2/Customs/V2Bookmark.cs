@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V2.Customs
 {
-    public class V2Bookmark : IBookmark
+    public class V2Bookmark : BaseBookmark
     {
         public V2Bookmark()
         {
@@ -23,6 +23,6 @@ namespace Beatmap.V2.Customs
         public override string KeyName { get; } = "_name";
         public override string KeyColor { get; } = "_color";
 
-        public override IItem Clone() => new V2Bookmark(ToJson());
+        public override BaseItem Clone() => new V2Bookmark(ToJson());
     }
 }

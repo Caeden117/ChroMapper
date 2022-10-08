@@ -5,17 +5,17 @@ using UnityEngine;
 
 namespace Beatmap.V3
 {
-    public class V3ColorBoostEvent : IColorBoostEvent
+    public class V3ColorBoostEvent : BaseColorBoostEvent
     {
         public V3ColorBoostEvent()
         {
         }
 
-        public V3ColorBoostEvent(IColorBoostEvent other) : base(other)
+        public V3ColorBoostEvent(BaseColorBoostEvent other) : base(other)
         {
         }
 
-        public V3ColorBoostEvent(IEvent evt) : base(evt)
+        public V3ColorBoostEvent(BaseEvent evt) : base(evt)
         {
         }
 
@@ -48,6 +48,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() => new V3ColorBoostEvent(Time, Toggle, CustomData?.Clone());
+        public override BaseItem Clone() => new V3ColorBoostEvent(Time, Toggle, CustomData?.Clone());
     }
 }

@@ -14,7 +14,7 @@ public class RotationCallbackController : MonoBehaviour
 
     public Action<bool, int> RotationChangedEvent; //Natural, degrees
     public bool IsActive { get; private set; }
-    public IEvent LatestRotationEvent { get; private set; }
+    public BaseEvent LatestRotationEvent { get; private set; }
 
     public int Rotation { get; private set; }
 
@@ -78,9 +78,9 @@ public class RotationCallbackController : MonoBehaviour
         RotationChangedEvent.Invoke(false, Rotation);
     }
 
-    private void EventPassedThreshold(bool initial, int index, IObject obj)
+    private void EventPassedThreshold(bool initial, int index, BaseObject obj)
     {
-        var e = obj as IEvent;
+        var e = obj as BaseEvent;
         if (e is null || !IsActive || (e == LatestRotationEvent && e.Type == (int)EventTypeValue.EarlyLaneRotation) ||
             !e.IsLaneRotationEvent())
         {

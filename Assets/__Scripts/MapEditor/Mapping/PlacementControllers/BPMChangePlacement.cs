@@ -5,18 +5,18 @@ using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
 using UnityEngine;
 
-public class BPMChangePlacement : PlacementController<IBpmEvent, BpmEventContainer, BPMChangeGridContainer>
+public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventContainer, BPMChangeGridContainer>
 {
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> conflicting) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned.Time}");
 
-    public override IBpmEvent GenerateOriginalData() => BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (IBpmEvent)new V3BpmChange(0, 0) : new V2BpmChange(0, 0);
+    public override BaseBpmEvent GenerateOriginalData() => BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseBpmEvent)new V3BpmChange(0, 0) : new V2BpmChange(0, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __) =>
         instantiatedContainer.transform.localPosition =
             new Vector3(0.5f, 0.5f, instantiatedContainer.transform.localPosition.z);
 
-    public override void TransferQueuedToDraggedObject(ref IBpmEvent dragged, IBpmEvent queued)
+    public override void TransferQueuedToDraggedObject(ref BaseBpmEvent dragged, BaseBpmEvent queued)
     {
         dragged.Time = queued.Time;
         objectContainerCollection.RefreshModifiedBeat();

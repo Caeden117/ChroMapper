@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 public class ObstacleGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject obstaclePrefab;
-    [FormerlySerializedAs("obstacleAppearanceSO")] [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
+    [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
 
@@ -27,16 +27,16 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     public void UpdateColor(Color obstacle) => obstacleAppearanceSo.DefaultObstacleColor = obstacle;
 
 
-    protected override void OnObjectSpawned(IObject _) =>
+    protected override void OnObjectSpawned(BaseObject _) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Obstacles);
 
-    protected override void OnObjectDelete(IObject _) =>
+    protected override void OnObjectDelete(BaseObject _) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Obstacles);
 
     public override ObjectContainer CreateContainer() =>
         ObstacleContainer.SpawnObstacle(null, tracksManager, ref obstaclePrefab);
 
-    protected override void UpdateContainerData(ObjectContainer con, IObject obj)
+    protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         var obstacle = con as ObstacleContainer;
         if (!obstacle.IsRotatedByNoodleExtensions)

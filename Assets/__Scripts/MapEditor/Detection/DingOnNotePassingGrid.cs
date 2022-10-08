@@ -118,7 +118,7 @@ public class DingOnNotePassingGrid : MonoBehaviour
             offset = 0;
     }
 
-    private void TriggerBongoCat(bool initial, int index, IObject objectData)
+    private void TriggerBongoCat(bool initial, int index, BaseObject objectData)
     {
         // Filter notes that are too far behind the current beat
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
@@ -128,17 +128,17 @@ public class DingOnNotePassingGrid : MonoBehaviour
         if (soundListId == (int)HitSounds.Discord) Instantiate(discordPingPrefab, gameObject.transform, true);
 
         // bongo cat
-        bongocat.TriggerArm(objectData as INote, container);
+        bongocat.TriggerArm(objectData as BaseNote, container);
     }
 
-    private void PlaySound(bool initial, int index, IObject objectData)
+    private void PlaySound(bool initial, int index, BaseObject objectData)
     {
         // Filter notes that are too far behind the current beat
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
         if (objectData.Time - container.AudioTimeSyncController.CurrentBeat <= -0.5f) return;
 
         bool shortCut;
-        if (Settings.Instance.Load_MapV3 && objectData is IChain)
+        if (Settings.Instance.Load_MapV3 && objectData is BaseChain)
         {
             if (objectData.Time == lastCheckedTime) return;
             shortCut = false;
@@ -146,7 +146,7 @@ public class DingOnNotePassingGrid : MonoBehaviour
         else
         {
             //actual ding stuff
-            if (objectData.Time == lastCheckedTime || !NoteTypeToDing[((INote)objectData).Type]) return;
+            if (objectData.Time == lastCheckedTime || !NoteTypeToDing[((BaseNote)objectData).Type]) return;
             /*
              * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
              * the same time that are supposed to ding from triggering the sound effects.

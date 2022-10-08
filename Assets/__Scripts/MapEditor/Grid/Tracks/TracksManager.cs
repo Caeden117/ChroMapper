@@ -44,7 +44,7 @@ public class TracksManager : MonoBehaviour
     {
         if (obj is EventContainer)
         {
-            var e = obj.ObjectData as IEvent;
+            var e = obj.ObjectData as BaseEvent;
             if (e.IsLaneRotationEvent())
             {
                 foreach (var collection in objectContainerCollections)

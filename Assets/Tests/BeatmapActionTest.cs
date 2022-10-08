@@ -31,14 +31,14 @@ namespace Tests
             BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             Transform root = notesContainer.transform.root;
 
-            INote noteA = new V3ColorNote
+            BaseNote baseNoteA = new V3ColorNote
             {
                 Time = 2,
                 Type = (int)NoteType.Red
             };
-            notesContainer.SpawnObject(noteA);
+            notesContainer.SpawnObject(baseNoteA);
 
-            SelectionController.Select(noteA);
+            SelectionController.Select(baseNoteA);
 
             SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
             // Default precision is 3dp, but in editor it's 6dp so check 7dp
@@ -64,12 +64,12 @@ namespace Tests
             SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            INote noteA = new V3ColorNote
+            BaseNote baseNoteA = new V3ColorNote
             {
                 Time = 2,
                 Type = (int)NoteType.Red
             };
-            INote noteB = new V3ColorNote
+            BaseNote baseNoteB = new V3ColorNote
             {
                 Time = 2,
                 Type = (int)NoteType.Blue,
@@ -77,20 +77,20 @@ namespace Tests
                 PosY = 1
             };
 
-            notePlacement.queuedData = noteA;
+            notePlacement.queuedData = baseNoteA;
             notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
-            SelectionController.Select(noteA);
+            SelectionController.Select(baseNoteA);
 
             selectionController.ShiftSelection(1, 1);
 
             // Should conflict with existing note and delete it
-            notePlacement.queuedData = noteB;
+            notePlacement.queuedData = baseNoteB;
             notePlacement.RoundedTime = notePlacement.queuedData.Time;
             notePlacement.ApplyToMap();
 
-            SelectionController.Select(noteB);
+            SelectionController.Select(baseNoteB);
             selectionController.ShiftSelection(1, 1);
             selectionController.Copy(true);
 
@@ -102,9 +102,9 @@ namespace Tests
                 Assert.AreEqual(loadedObjects, notesContainer.LoadedObjects.Count);
                 Assert.AreEqual(selectedObjects, SelectionController.SelectedObjects.Count);
                 Assert.AreEqual(time, notesContainer.UnsortedObjects[0].Time);
-                Assert.AreEqual(type, ((INote)notesContainer.UnsortedObjects[0]).Type);
-                Assert.AreEqual(index, ((INote)notesContainer.UnsortedObjects[0]).PosX);
-                Assert.AreEqual(layer, ((INote)notesContainer.UnsortedObjects[0]).PosY);
+                Assert.AreEqual(type, ((BaseNote)notesContainer.UnsortedObjects[0]).Type);
+                Assert.AreEqual(index, ((BaseNote)notesContainer.UnsortedObjects[0]).PosX);
+                Assert.AreEqual(layer, ((BaseNote)notesContainer.UnsortedObjects[0]).PosY);
             }
 
             // No notes loaded

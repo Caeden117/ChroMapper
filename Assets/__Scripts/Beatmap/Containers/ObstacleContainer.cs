@@ -11,19 +11,19 @@ namespace Beatmap.Containers
 
         [SerializeField] private TracksManager manager;
 
-        [FormerlySerializedAs("obstacleData")] public IObstacle ObstacleData;
+        [FormerlySerializedAs("obstacleData")] public BaseObstacle ObstacleData;
 
-        public override IObject ObjectData
+        public override BaseObject ObjectData
         {
             get => ObstacleData;
-            set => ObstacleData = (IObstacle)value;
+            set => ObstacleData = (BaseObstacle)value;
         }
 
         public int ChunkEnd => (int)((ObstacleData.Time + ObstacleData.Duration) / Intersections.ChunkSize);
 
         public bool IsRotatedByNoodleExtensions => ObstacleData.CustomWorldRotation != null;
 
-        public static ObstacleContainer SpawnObstacle(IObstacle data, TracksManager manager,
+        public static ObstacleContainer SpawnObstacle(BaseObstacle data, TracksManager manager,
             ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<ObstacleContainer>();

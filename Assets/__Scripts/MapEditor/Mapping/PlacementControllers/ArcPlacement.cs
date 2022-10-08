@@ -6,10 +6,10 @@ using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ArcPlacement : PlacementController<IArc, ArcContainer, ArcGridContainer>,
+public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridContainer>,
     CMInput.IArcPlacementActions
 {
-    private static HashSet<IObject> SelectedObjects => SelectionController.SelectedObjects;
+    private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
     
 
     public void OnSpawnArc(InputAction.CallbackContext context)
@@ -22,27 +22,27 @@ public class ArcPlacement : PlacementController<IArc, ArcContainer, ArcGridConta
         {
             return;
         }
-        var n1 = objects[0] as INote;
-        var n2 = objects[1] as INote;
+        var n1 = objects[0] as BaseNote;
+        var n2 = objects[1] as BaseNote;
         if (n1.Time > n2.Time) { var t = n1; n1 = n2; n2 = t; }
         var arcData = new V3Arc(n1, n2);
         SpawnArc(arcData);
     }
 
-    public static bool IsColorNote(IObject o)
+    public static bool IsColorNote(BaseObject o)
     {
-        return o is INote && !(o is V3BombNote);
+        return o is BaseNote && !(o is V3BombNote);
     }
 
-    public override IArc GenerateOriginalData() => new V3Arc();
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> conflicting)
+    public override BaseArc GenerateOriginalData() => new V3Arc();
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
-    public void SpawnArc(IArc arcData)
+    public void SpawnArc(BaseArc baseArcData)
     {
         var arcContainer = objectContainerCollection;
-        arcContainer.SpawnObject(arcData, false);
-        BeatmapActionContainer.AddAction(GenerateAction(arcData, new List<IObject>()));
+        arcContainer.SpawnObject(baseArcData, false);
+        BeatmapActionContainer.AddAction(GenerateAction(baseArcData, new List<BaseObject>()));
     }
 
 
@@ -52,5 +52,5 @@ public class ArcPlacement : PlacementController<IArc, ArcContainer, ArcGridConta
     {
         return;
     }
-    public override void TransferQueuedToDraggedObject(ref IArc dragged, IArc queued) { }
+    public override void TransferQueuedToDraggedObject(ref BaseArc dragged, BaseArc queued) { }
 }

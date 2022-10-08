@@ -2,10 +2,10 @@
 
 public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedAction
 {
-    private readonly IObject conflictingObject;
+    private readonly BaseObject conflictingObject;
 
-    public BeatmapObjectModifiedWithConflictingAction(IObject edited, IObject originalObject,
-        IObject originalData, IObject conflicting, string comment = "No comment.") : base(edited,
+    public BeatmapObjectModifiedWithConflictingAction(BaseObject edited, BaseObject originalObject,
+        BaseObject originalData, BaseObject conflicting, string comment = "No comment.") : base(edited,
         originalObject, originalData, comment) => conflictingObject = conflicting;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

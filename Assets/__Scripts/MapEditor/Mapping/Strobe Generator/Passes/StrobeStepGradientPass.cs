@@ -22,12 +22,12 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
         this.easing = easing;
     }
 
-    public override bool IsEventValidForPass(IEvent @event) => @event.IsLightEvent(EnvironmentInfoHelper.GetName());
+    public override bool IsEventValidForPass(BaseEvent baseEvent) => baseEvent.IsLightEvent(EnvironmentInfoHelper.GetName());
 
-    public override IEnumerable<IEvent> StrobePassForLane(IEnumerable<IEvent> original, int type,
+    public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, JSONNode propID)
     {
-        var generatedObjects = new List<IEvent>();
+        var generatedObjects = new List<BaseEvent>();
 
         var startTime = original.First().Time;
         var endTime = original.Last().Time;
@@ -57,7 +57,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             }
         }
 
-        if (colorPoints.Count < 2) return Enumerable.Empty<IEvent>();
+        if (colorPoints.Count < 2) return Enumerable.Empty<BaseEvent>();
 
         var distanceInBeats = endTime - startTime;
 

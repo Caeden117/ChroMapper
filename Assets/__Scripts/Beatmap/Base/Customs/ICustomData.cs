@@ -16,10 +16,10 @@ namespace Beatmap.Base.Customs
     public interface ICustomDataDifficulty : ICustomData
     {
         float Time { get; set; }
-        List<IBpmChange> BpmChanges { get; set; }
-        List<IBookmark> Bookmarks { get; set; }
-        List<ICustomEvent> CustomEvents { get; set; }
-        List<IEnvironmentEnhancement> EnvironmentEnhancements { get; set; }
+        List<BaseBpmChange> BpmChanges { get; set; }
+        List<BaseBookmark> Bookmarks { get; set; }
+        List<BaseCustomEvent> CustomEvents { get; set; }
+        List<BaseEnvironmentEnhancement> EnvironmentEnhancements { get; set; }
     }
 
     public interface ICustomDataNote : ICustomData, IChromaObject, INoodleExtensionsNote

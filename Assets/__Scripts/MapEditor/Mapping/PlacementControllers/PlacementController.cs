@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMInput.IPlacementControllersActions,
-    CMInput.ICancelPlacementActions where TBo : IObject
+    CMInput.ICancelPlacementActions where TBo : BaseObject
     where TBoc : ObjectContainer
     where TBocc : BeatmapObjectContainerCollection
 {
@@ -128,7 +128,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             }
 
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-            var trackObject = queuedData as IGrid;
+            var trackObject = queuedData as BaseGrid;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
             {
                 if (trackObject != null) trackObject.CustomTrack = BeatmapObjectContainerCollection.TrackFilterID;
@@ -360,7 +360,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     }
 
     public abstract TBo GenerateOriginalData();
-    public abstract BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> conflicting);
+    public abstract BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting);
     public abstract void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint);
 
     public virtual void ClickAndDragFinished() { }

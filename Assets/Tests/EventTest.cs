@@ -29,9 +29,9 @@ namespace Tests
 
         public static void CheckEvent(BeatmapObjectContainerCollection container, int idx, int time, int type, int value, JSONNode customData = null)
         {
-            IObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<IEvent>(newObjA);
-            if (newObjA is IEvent newNoteA)
+            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
+            Assert.IsInstanceOf<BaseEvent>(newObjA);
+            if (newObjA is BaseEvent newNoteA)
             {
                 Assert.AreEqual(time, newNoteA.Time);
                 Assert.AreEqual(type, newNoteA.Type);
@@ -56,40 +56,40 @@ namespace Tests
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
                 BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                IEvent eventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, IEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
-                IEvent eventB = new V2Event(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                BaseEvent baseEventB = new V2Event(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
 
-                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
                 eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
-                eventPlacement.queuedData = eventB;
+                eventPlacement.queuedData = baseEventB;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
                 eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.ApplyToMap();
 
-                if (eventsContainer.LoadedContainers[eventA] is EventContainer containerA)
+                if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
                 {
                     inputController.InvertEvent(containerA);
                 }
-                if (eventsContainer.LoadedContainers[eventB] is EventContainer containerB)
+                if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB)
                 {
                     inputController.InvertEvent(containerB);
                 }
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, IEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
                 CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)IEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
                 CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
 
                 actionContainer.Undo();
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)IEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
                 CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
             }
         }
@@ -105,16 +105,16 @@ namespace Tests
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
                 BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                IEvent eventA = new V2Event(2, (int)EventTypeValue.LeftLaserRotation, 2);
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LeftLaserRotation, 2);
 
-                eventPlacement.queuedData = eventA;
+                eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
                 eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                 eventPlacement.PlacePrecisionRotation = true;
                 eventPlacement.ApplyToMap();
                 eventPlacement.PlacePrecisionRotation = false;
 
-                if (eventsContainer.LoadedContainers[eventA] is EventContainer containerA)
+                if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
                 {
                     inputController.TweakValue(containerA, 1);
                 }

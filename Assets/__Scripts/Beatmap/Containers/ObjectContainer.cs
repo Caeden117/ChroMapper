@@ -44,7 +44,7 @@ namespace Beatmap.Containers
 
         public Track AssignedTrack { get; private set; }
 
-        public abstract IObject ObjectData { get; set; }
+        public abstract BaseObject ObjectData { get; set; }
 
         public int ChunkID => (int)(ObjectData.Time / Intersections.ChunkSize);
 

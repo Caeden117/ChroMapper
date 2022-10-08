@@ -12,9 +12,9 @@ public abstract class StrobeGeneratorPass
     /// <summary>
     ///     Used to group together various events that are put through the particular generator pass.
     /// </summary>
-    /// <param name="event">An event that is considered to be included in the strobe generator pass.</param>
+    /// <param name="baseEvent event that is considered to be included in the strobe generator pass.</param>
     /// <returns>Whether or not this particular event will be included in the strobe generator pass.</returns>
-    public abstract bool IsEventValidForPass(IEvent @event);
+    public abstract bool IsEventValidForPass(BaseEvent baseEvent);
 
     /// <summary>
     ///     Perform a strobe generator pass on any <see cref="MapEvent.Type" />.
@@ -24,6 +24,6 @@ public abstract class StrobeGeneratorPass
     /// </summary>
     /// <param name="original">The list of all valid events for this pass.</param>
     /// <returns>A new list of objects that will be created.</returns>
-    public abstract IEnumerable<IEvent> StrobePassForLane(IEnumerable<IEvent> original, int type,
+    public abstract IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, JSONNode propID);
 }

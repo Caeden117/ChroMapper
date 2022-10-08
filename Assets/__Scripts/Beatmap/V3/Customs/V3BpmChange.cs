@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3.Customs
 {
-    public class V3BpmChange : IBpmChange
+    public class V3BpmChange : BaseBpmChange
     {
         public V3BpmChange()
         {
@@ -24,6 +24,6 @@ namespace Beatmap.V3.Customs
         public override string KeyBpm { get; } = "m";
         public override string KeyMetronomeOffset { get; } = "o";
 
-        public override IItem Clone() => new V3BpmChange(ToJson().Clone());
+        public override BaseItem Clone() => new V3BpmChange(ToJson().Clone());
     }
 }

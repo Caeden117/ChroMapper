@@ -19,12 +19,12 @@ namespace Beatmap.Containers
         [SerializeField] private MeshRenderer arrowRenderer;
         [SerializeField] private SpriteRenderer swingArcRenderer;
 
-        [SerializeField] public INote NoteData;
+        [SerializeField] public BaseNote NoteData;
 
-        public override IObject ObjectData
+        public override BaseObject ObjectData
         {
             get => NoteData;
-            set => NoteData = (INote)value;
+            set => NoteData = (BaseNote)value;
         }
 
         public override void Setup()
@@ -45,7 +45,7 @@ namespace Beatmap.Containers
             SetArcVisible(NoteGridContainer.ShowArcVisualizer);
         }
 
-        internal static Vector3 Directionalize(INote noteData)
+        internal static Vector3 Directionalize(BaseNote noteData)
         {
             if (noteData is null) return Vector3.zero;
             var cutDirection = noteData.CutDirection;
@@ -56,10 +56,10 @@ namespace Beatmap.Containers
             }
             else
             {
-                var newMapNoteData = noteData;
-                if (newMapNoteData != null && newMapNoteData.AngleOffset != 0)
+                var newNoteData = noteData;
+                if (newNoteData != null && newNoteData.AngleOffset != 0)
                 {
-                    directionEuler += new Vector3(0, 0, newMapNoteData.AngleOffset);
+                    directionEuler += new Vector3(0, 0, newNoteData.AngleOffset);
                 }
                 else
                 {
@@ -128,7 +128,7 @@ namespace Beatmap.Containers
             if (swingArcRenderer != null) swingArcRenderer.enabled = showArcVisualizer;
         }
 
-        public static NoteContainer SpawnBeatmapNote(INote noteData, ref GameObject notePrefab)
+        public static NoteContainer SpawnBeatmapNote(BaseNote noteData, ref GameObject notePrefab)
         {
             var container = Instantiate(notePrefab).GetComponent<NoteContainer>();
             container.NoteData = noteData;

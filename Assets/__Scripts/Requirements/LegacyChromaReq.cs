@@ -5,7 +5,7 @@ public class LegacyChromaReq : RequirementCheck
 {
     public override string Name => "Chroma Lighting Events";
 
-    public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, IDifficulty map)
+    public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map)
     {
         if (mapInfo is null) return RequirementType.None;
         return map?.Events?.Any(e => e.Value > ColourManager.RgbintOffset) == true

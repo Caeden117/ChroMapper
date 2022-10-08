@@ -5,17 +5,17 @@ using UnityEngine;
 
 namespace Beatmap.V3
 {
-    public class V3RotationEvent : IRotationEvent
+    public class V3RotationEvent : BaseRotationEvent
     {
         public V3RotationEvent()
         {
         }
 
-        public V3RotationEvent(IRotationEvent other) : base(other)
+        public V3RotationEvent(BaseRotationEvent other) : base(other)
         {
         }
 
-        public V3RotationEvent(IEvent evt) : base(evt)
+        public V3RotationEvent(BaseEvent evt) : base(evt)
         {
         }
 
@@ -51,6 +51,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() => new V3RotationEvent(Time, ExecutionTime, Rotation, CustomData?.Clone());
+        public override BaseItem Clone() => new V3RotationEvent(Time, ExecutionTime, Rotation, CustomData?.Clone());
     }
 }

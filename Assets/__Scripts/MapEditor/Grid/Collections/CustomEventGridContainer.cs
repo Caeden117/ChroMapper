@@ -53,12 +53,12 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             CreateNewType();
     }
 
-    public override IEnumerable<IObject> GrabSortedObjects() =>
-        UnsortedObjects.OrderBy(x => x.Time).ThenBy(x => (x as ICustomEvent).Type);
+    public override IEnumerable<BaseObject> GrabSortedObjects() =>
+        UnsortedObjects.OrderBy(x => x.Time).ThenBy(x => (x as BaseCustomEvent).Type);
 
-    protected override void OnObjectSpawned(IObject obj)
+    protected override void OnObjectSpawned(BaseObject obj)
     {
-        var customEvent = obj as ICustomEvent;
+        var customEvent = obj as BaseCustomEvent;
         if (!customEventTypes.Contains(customEvent.Type))
         {
             customEventTypes.Add(customEvent.Type);
@@ -101,7 +101,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     {
         foreach (var loadedObject in UnsortedObjects)
         {
-            var customEvent = loadedObject as ICustomEvent;
+            var customEvent = loadedObject as BaseCustomEvent;
             if (!customEventTypes.Contains(customEvent.Type))
             {
                 customEventTypes.Add(customEvent.Type);

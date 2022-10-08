@@ -4,15 +4,15 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3Chain : IChain
+    public class V3Chain : BaseChain
     {
         public V3Chain()
         {
         }
 
-        public V3Chain(IChain other) : base(other) => ParseCustom();
+        public V3Chain(BaseChain other) : base(other) => ParseCustom();
 
-        public V3Chain(INote start, INote end) : base(start, end) => ParseCustom();
+        public V3Chain(BaseNote start, BaseNote end) : base(start, end) => ParseCustom();
 
         public V3Chain(JSONNode node)
         {
@@ -92,7 +92,7 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() =>
+        public override BaseItem Clone() =>
             new V3Chain(Time, Color, PosX, PosY, CutDirection, AngleOffset,
                 TailTime, TailPosX, TailPosY, SliceCount, Squish, CustomData?.Clone());
     }

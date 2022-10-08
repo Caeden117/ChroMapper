@@ -5,13 +5,13 @@ public class BeatmapObjectModifiedAction : BeatmapAction
 {
     private readonly bool addToSelection;
     private readonly BeatmapObjectContainerCollection collection;
-    private readonly IObject editedData;
+    private readonly BaseObject editedData;
 
-    private readonly IObject editedObject;
-    private readonly IObject originalData;
-    private readonly IObject originalObject;
+    private readonly BaseObject editedObject;
+    private readonly BaseObject originalData;
+    private readonly BaseObject originalObject;
 
-    public BeatmapObjectModifiedAction(IObject edited, IObject originalObject, IObject originalData,
+    public BeatmapObjectModifiedAction(BaseObject edited, BaseObject originalObject, BaseObject originalData,
         string comment = "No comment.", bool keepSelection = false) : base(new[] { edited }, comment)
     {
         collection = BeatmapObjectContainerCollection.GetCollectionForType(originalObject.ObjectType);

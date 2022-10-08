@@ -4,7 +4,7 @@ using Beatmap.Base;
 
 public class SelectionDeletedAction : BeatmapAction
 {
-    public SelectionDeletedAction(IEnumerable<IObject> deletedData) : base(deletedData)
+    public SelectionDeletedAction(IEnumerable<BaseObject> deletedData) : base(deletedData)
     {
     }
 

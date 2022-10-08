@@ -13,7 +13,7 @@ using SimpleJSON;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridContainer>,
+public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGridContainer>,
     CMInput.INotePlacementActions
 {
     private const int upKey = 0;
@@ -123,12 +123,12 @@ public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridC
             Settings.NonPersistentSettings.Add(ChromaColorKey, v);
     }
 
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> container) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
 
-    public override INote GenerateOriginalData() =>
+    public override BaseNote GenerateOriginalData() =>
         BeatSaberSongContainer.Instance.Map.GetVersion() == 3
-            ? (INote)new V3ColorNote(0, 0, 0, (int)NoteColor.Red, (int)NoteCutDirection.Down)
+            ? (BaseNote)new V3ColorNote(0, 0, 0, (int)NoteColor.Red, (int)NoteCutDirection.Down)
             : new V2Note(0, 0, 0, (int)NoteType.Red, (int)NoteCutDirection.Down);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
@@ -192,7 +192,7 @@ public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridC
         else if (beatmapNoteInputController.QuickModificationActive && Settings.Instance.QuickNoteEditing)
         {
             var note = ObjectUnderCursor();
-            if (note != null && note.ObjectData is INote noteData)
+            if (note != null && note.ObjectData is BaseNote noteData)
             {
                 var newData = BeatmapFactory.Clone(noteData);
                 newData.CutDirection = value;
@@ -246,7 +246,7 @@ public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridC
         instantiatedContainer.transform.localEulerAngles = NoteContainer.Directionalize(queuedData);
     }
 
-    public override void TransferQueuedToDraggedObject(ref INote dragged, INote queued)
+    public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
     {
         dragged.Time = queued.Time;
         dragged.PosX = queued.PosX;

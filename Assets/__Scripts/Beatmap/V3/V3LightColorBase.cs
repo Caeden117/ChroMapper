@@ -4,9 +4,9 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3LightColorBase : ILightColorBase
+    public class V3LightColorBase : BaseLightColorBase
     {
-        private ILightColorBase lightColorBaseImplementation;
+        private BaseLightColorBase lightColorBaseImplementation;
 
         public V3LightColorBase()
         {
@@ -42,6 +42,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() => new V3LightColorBase(Time, Color, Brightness, TransitionType, Frequency, CustomData?.Clone());
+        public override BaseItem Clone() => new V3LightColorBase(Time, Color, Brightness, TransitionType, Frequency, CustomData?.Clone());
     }
 }

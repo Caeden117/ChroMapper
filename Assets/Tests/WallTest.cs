@@ -29,9 +29,9 @@ namespace Tests
 
         public static void CheckWall(BeatmapObjectContainerCollection container, int idx, int time, int lineIndex, int type, int duration, int width, JSONNode customData = null)
         {
-            IObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<IObstacle>(newObjA);
-            if (newObjA is IObstacle newNoteA)
+            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
+            Assert.IsInstanceOf<BaseObstacle>(newObjA);
+            if (newObjA is BaseObstacle newNoteA)
             {
                 Assert.AreEqual(time, newNoteA.Time);
                 Assert.AreEqual(type, newNoteA.Type);
@@ -58,7 +58,7 @@ namespace Tests
                 BeatmapObstacleInputController inputController = root.GetComponentInChildren<BeatmapObstacleInputController>();
                 wallPlacement.RefreshVisuals();
 
-                IObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
+                BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
                 wallPlacement.queuedData = wallA;
                 wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
                 wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
@@ -70,7 +70,7 @@ namespace Tests
                     inputController.ToggleHyperWall(container);
                 }
 
-                IObject toDelete = obstaclesCollection.LoadedObjects.First();
+                BaseObject toDelete = obstaclesCollection.LoadedObjects.First();
                 obstaclesCollection.DeleteObject(toDelete);
 
                 Assert.AreEqual(0, obstaclesCollection.LoadedObjects.Count);

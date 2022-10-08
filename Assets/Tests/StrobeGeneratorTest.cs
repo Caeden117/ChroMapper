@@ -29,9 +29,9 @@ namespace Tests
 
         public static void CheckEvent(BeatmapObjectContainerCollection container, int idx, float time, int type, int value, JSONNode customData = null)
         {
-            IObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<IEvent>(newObjA);
-            if (newObjA is IEvent newNoteA)
+            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
+            Assert.IsInstanceOf<BaseEvent>(newObjA);
+            if (newObjA is BaseEvent newNoteA)
             {
                 Assert.AreEqual(time, newNoteA.Time);
                 Assert.AreEqual(type, newNoteA.Type);
@@ -54,21 +54,21 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                IEvent eventA = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_color"] = new Color(0, 1, 0)
                 });
-                IEvent eventB = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventB = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_color"] = new Color(0, 0, 1)
                 });
-                IEvent eventC = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventC = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_lightID"] = 1,
                     ["_color"] = new Color(1, 0, 0)
                 });
 
-                foreach (IEvent IEvent in new IEvent[] { eventA, eventB, eventC })
+                foreach (BaseEvent IEvent in new BaseEvent[] { baseEventA, baseEventB, baseEventC })
                 {
                     eventPlacement.queuedData = IEvent;
                     eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -76,8 +76,8 @@ namespace Tests
                     eventPlacement.ApplyToMap();
                 }
 
-                SelectionController.Select(eventA);
-                SelectionController.Select(eventB, true);
+                SelectionController.Select(baseEventA);
+                SelectionController.Select(baseEventB, true);
                 // eventC is not selected
 
                 StrobeGenerator strobeGenerator = Object.FindObjectOfType<StrobeGenerator>();
@@ -102,25 +102,25 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                IEvent eventA = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_color"] = new Color(0, 1, 0)
                 });
-                IEvent eventB = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventB = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_color"] = new Color(0, 0, 1)
                 });
-                IEvent eventC = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventC = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_lightID"] = 1,
                     ["_color"] = new Color(1, 0, 0)
                 });
-                IEvent eventD = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventD = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_lightID"] = 1,
                     ["_color"] = new Color(1, 1, 0)
                 });
-                IEvent eventE = new V2Event(4, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventE = new V2Event(4, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_lightID"] = new JSONArray()
                     {
@@ -129,13 +129,13 @@ namespace Tests
                     },
                     ["_color"] = new Color(1, 0, 1)
                 });
-                IEvent eventF = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventF = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
                 {
                     ["_lightID"] = 3,
                     ["_color"] = new Color(0, 1, 1)
                 });
 
-                foreach (IEvent IEvent in new IEvent[] { eventA, eventB, eventC, eventD, eventE, eventF })
+                foreach (BaseEvent IEvent in new BaseEvent[] { baseEventA, baseEventB, baseEventC, baseEventD, baseEventE, baseEventF })
                 {
                     eventPlacement.queuedData = IEvent;
                     eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -143,9 +143,9 @@ namespace Tests
                     eventPlacement.ApplyToMap();
                 }
 
-                SelectionController.Select(eventC);
-                SelectionController.Select(eventD, true);
-                SelectionController.Select(eventE, true);
+                SelectionController.Select(baseEventC);
+                SelectionController.Select(baseEventD, true);
+                SelectionController.Select(baseEventE, true);
 
                 StrobeGenerator strobeGenerator = Object.FindObjectOfType<StrobeGenerator>();
                 strobeGenerator.GenerateStrobe(new List<StrobeGeneratorPass>()

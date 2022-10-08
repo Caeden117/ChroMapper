@@ -12,17 +12,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class BoxSelectionPlacementController : PlacementController<IEvent, EventContainer, EventGridContainer>,
+public class BoxSelectionPlacementController : PlacementController<BaseEvent, EventContainer, EventGridContainer>,
     CMInput.IBoxSelectActions
 {
     [SerializeField] public CustomEventGridContainer CustomCollection;
     [SerializeField] public EventGridContainer EventGridContainer;
     [SerializeField] public CreateEventTypeLabels Labels;
 
-    private readonly HashSet<IObject> selected = new HashSet<IObject>();
+    private readonly HashSet<BaseObject> selected = new HashSet<BaseObject>();
 
     private readonly List<ObjectType> selectedTypes = new List<ObjectType>();
-    private HashSet<IObject> alreadySelected = new HashSet<IObject>();
+    private HashSet<BaseObject> alreadySelected = new HashSet<BaseObject>();
 
     private bool keybindPressed;
     private Vector3 originPos;
@@ -54,9 +54,9 @@ public class BoxSelectionPlacementController : PlacementController<IEvent, Event
 
     public void OnActivateBoxSelect(InputAction.CallbackContext context) => keybindPressed = context.performed;
 
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> conflicting) => null;
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) => null;
 
-    public override IEvent GenerateOriginalData() => new V3BasicEvent(float.MaxValue, 69, 420);
+    public override BaseEvent GenerateOriginalData() => new V3BasicEvent(float.MaxValue, 69, 420);
 
     protected override bool TestForType<T>(Intersections.IntersectionHit hit, ObjectType type)
     {
@@ -155,7 +155,7 @@ public class BoxSelectionPlacementController : PlacementController<IEvent, Event
                 {
                     p = obj.GetCenter();
                 }
-                else if (bo is IEvent evt)
+                else if (bo is BaseEvent evt)
                 {
                     var position = evt.GetPosition(Labels, EventGridContainer.PropagationEditing,
                         EventGridContainer.EventTypeToPropagate);
@@ -165,7 +165,7 @@ public class BoxSelectionPlacementController : PlacementController<IEvent, Event
 
                     p = new Vector2(position?.x + Bounds.min.x ?? 0, position?.y ?? 0);
                 }
-                else if (bo is ICustomEvent custom)
+                else if (bo is BaseCustomEvent custom)
                 {
                     p = new Vector2(CustomCollection.CustomEventTypes.IndexOf(custom.Type) + Bounds.min.x + 0.5f,
                         0.5f);
@@ -201,7 +201,7 @@ public class BoxSelectionPlacementController : PlacementController<IEvent, Event
         {
             IsSelecting = true;
             originPos = instantiatedContainer.transform.localPosition;
-            alreadySelected = new HashSet<IObject>(SelectionController.SelectedObjects);
+            alreadySelected = new HashSet<BaseObject>(SelectionController.SelectedObjects);
         }
         else
         {
@@ -226,5 +226,5 @@ public class BoxSelectionPlacementController : PlacementController<IEvent, Event
         foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject);
     }
 
-    public override void TransferQueuedToDraggedObject(ref IEvent dragged, IEvent queued) { }
+    public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued) { }
 }

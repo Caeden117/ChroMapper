@@ -5,7 +5,7 @@ using SimpleJSON;
 
 namespace Beatmap.Info
 {
-    public class InfoContributor : IContributor
+    public class InfoContributor : BaseContributor
     {
         public InfoContributor(JSONNode node)
         {
@@ -36,7 +36,7 @@ namespace Beatmap.Info
             };
         }
 
-        public override IItem Clone()
+        public override BaseItem Clone()
         {
             return new InfoContributor(Name, Role, LocalImageLocation);
         }

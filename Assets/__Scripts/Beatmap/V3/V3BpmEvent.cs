@@ -5,17 +5,17 @@ using UnityEngine;
 
 namespace Beatmap.V3
 {
-    public class V3BpmEvent : IBpmEvent
+    public class V3BpmEvent : BaseBpmEvent
     {
         public V3BpmEvent()
         {
         }
 
-        public V3BpmEvent(IBpmEvent other) : base(other)
+        public V3BpmEvent(BaseBpmEvent other) : base(other)
         {
         }
 
-        public V3BpmEvent(IEvent evt) : base(evt)
+        public V3BpmEvent(BaseEvent evt) : base(evt)
         {
         }
 
@@ -48,6 +48,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() => new V3BpmEvent(Time, Bpm, CustomData?.Clone());
+        public override BaseItem Clone() => new V3BpmEvent(Time, Bpm, CustomData?.Clone());
     }
 }

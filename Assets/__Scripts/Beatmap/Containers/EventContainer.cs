@@ -23,7 +23,7 @@ namespace Beatmap.Containers
         private static readonly int fadeSize = Shader.PropertyToID("_FadeSize");
         private static readonly int spotlightSize = Shader.PropertyToID("_SpotlightSize");
 
-        [SerializeField] public IEvent EventData;
+        [SerializeField] public BaseEvent EventData;
         [SerializeField] public EventGridContainer EventGridContainer;
         [SerializeField] private EventAppearanceSO eventAppearance;
         [SerializeField] private List<Renderer> eventRenderer;
@@ -57,13 +57,13 @@ namespace Beatmap.Containers
         public float BoostEventFadeSize =>
             eventModels[eventModel].GetComponent<MaterialParameters>().BoostEventFadeSize;
 
-        public override IObject ObjectData
+        public override BaseObject ObjectData
         {
             get => EventData;
-            set => EventData = (IEvent)value;
+            set => EventData = (BaseEvent)value;
         }
 
-        public static EventContainer SpawnEvent(EventGridContainer eventsContainer, IEvent data, ref GameObject prefab,
+        public static EventContainer SpawnEvent(EventGridContainer eventsContainer, BaseEvent data, ref GameObject prefab,
             ref EventAppearanceSO eventAppearanceSO, ref CreateEventTypeLabels labels)
         {
             var container = Instantiate(prefab).GetComponent<EventContainer>();

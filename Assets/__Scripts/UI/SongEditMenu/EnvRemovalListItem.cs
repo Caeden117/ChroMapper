@@ -6,11 +6,11 @@ public class EnvRemovalListItem : MonoBehaviour
 {
     [SerializeField] private TMP_InputField textField;
     private EnvRemoval controller;
-    public IEnvironmentEnhancement Value { get; private set; }
+    public BaseEnvironmentEnhancement Value { get; private set; }
 
     private void OnDestroy() => textField.DeactivateInputField();
 
-    public void Setup(EnvRemoval controllerNew, IEnvironmentEnhancement v)
+    public void Setup(EnvRemoval controllerNew, BaseEnvironmentEnhancement v)
     {
         Value = v;
         textField.text = v.ID ?? "";

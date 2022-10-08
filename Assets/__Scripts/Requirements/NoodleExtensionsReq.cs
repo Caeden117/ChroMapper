@@ -11,7 +11,7 @@ public class NoodleExtensionsReq : RequirementCheck
 
     public override string Name => "Noodle Extensions";
 
-    public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, IDifficulty map)
+    public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map)
     {
         if (mapInfo is null) return RequirementType.None;
         return map.IsNoodleExtensions()

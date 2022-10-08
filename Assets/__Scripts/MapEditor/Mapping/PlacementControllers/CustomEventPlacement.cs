@@ -9,7 +9,7 @@ using SimpleJSON;
 using UnityEngine;
 
 public class
-    CustomEventPlacement : PlacementController<ICustomEvent, CustomEventContainer, CustomEventGridContainer>
+    CustomEventPlacement : PlacementController<BaseCustomEvent, CustomEventContainer, CustomEventGridContainer>
 {
     private readonly List<TextAsset> customEventDataPresets = new List<TextAsset>();
 
@@ -26,10 +26,10 @@ public class
         base.Start();
     }
 
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> conflicting) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a Custom Event.");
 
-    public override ICustomEvent GenerateOriginalData() => BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (ICustomEvent)new V3CustomEvent(0, "", null) : new V2CustomEvent(0, "", null);
+    public override BaseCustomEvent GenerateOriginalData() => BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseCustomEvent)new V3CustomEvent(0, "", null) : new V2CustomEvent(0, "", null);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
@@ -60,5 +60,5 @@ public class
         base.ApplyToMap();
     }
 
-    public override void TransferQueuedToDraggedObject(ref ICustomEvent dragged, ICustomEvent queued) { }
+    public override void TransferQueuedToDraggedObject(ref BaseCustomEvent dragged, BaseCustomEvent queued) { }
 }

@@ -11,7 +11,7 @@ namespace Beatmap.Shared
         public IndicatorType IndicatorType;
         public ArcContainer ParentArc;
 
-        public override IObject ObjectData { get; set; }
+        public override BaseObject ObjectData { get; set; }
 
         public override void UpdateGridPosition()
         {

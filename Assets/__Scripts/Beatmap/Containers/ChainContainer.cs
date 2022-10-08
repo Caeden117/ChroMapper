@@ -15,18 +15,18 @@ namespace Beatmap.Containers
         [SerializeField] private GameObject tailNode;
         public NoteContainer AttachedHead;
         private readonly List<GameObject> nodes = new List<GameObject>();
-        [FormerlySerializedAs("chainData")] public IChain ChainData;
+        [FormerlySerializedAs("chainData")] public BaseChain ChainData;
         private Vector3 headDirection;
         private bool headPointsToTail;
         private Vector3 interPoint;
 
-        public override IObject ObjectData
+        public override BaseObject ObjectData
         {
             get => ChainData;
-            set => ChainData = (IChain)value;
+            set => ChainData = (BaseChain)value;
         }
 
-        public static ChainContainer SpawnChain(IChain data, ref GameObject prefab)
+        public static ChainContainer SpawnChain(BaseChain data, ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<ChainContainer>();
             container.ChainData = data;
@@ -52,7 +52,7 @@ namespace Beatmap.Containers
         ///     Generate chain's all notes based on <see cref="ChainData" />
         /// </summary>
         /// <param name="chainData"></param>
-        public void GenerateChain(IChain chainData = null)
+        public void GenerateChain(BaseChain chainData = null)
         {
             if (chainData != null) ChainData = chainData;
             var headTrans = new Vector3(ChainData.PosX, ChainData.PosY, 0);
@@ -72,7 +72,7 @@ namespace Beatmap.Containers
             SelectionRenderers.Clear();
             var cutDirection = NoteGridContainer.Direction(new V3ColorNote(ChainData));
             ComputeHeadPointsToTail(ChainData);
-            headTrans -= IChain.PosOffsetFactor / 2 * headDirection;
+            headTrans -= BaseChain.PosOffsetFactor / 2 * headDirection;
             var i = 0;
             for (; i < ChainData.SliceCount - 2; ++i)
             {
@@ -102,7 +102,7 @@ namespace Beatmap.Containers
             UpdateMaterials();
         }
 
-        private void ComputeHeadPointsToTail(IChain chainData)
+        private void ComputeHeadPointsToTail(BaseChain chainData)
         {
             var path = new Vector2(ChainData.TailPosX - ChainData.PosX, ChainData.TailPosY - ChainData.PosY);
             var pathAngle = Vector2.SignedAngle(Vector2.down, path);
@@ -183,11 +183,11 @@ namespace Beatmap.Containers
                 foreach (var note in notes)
                 {
                     if (note.ObjectType != ObjectType.Note || !note.HasAttachedContainer) continue;
-                    if (!IsHeadNote((INote)note)) continue;
+                    if (!IsHeadNote((BaseNote)note)) continue;
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
-                    AttachedHead.transform.localScale = IChain.ChainScale;
-                    AttachedHead.transform.localPosition -= IChain.PosOffsetFactor * headDirection;
+                    AttachedHead.transform.localScale = BaseChain.ChainScale;
+                    AttachedHead.transform.localPosition -= BaseChain.PosOffsetFactor * headDirection;
                     break;
                 }
             }
@@ -201,8 +201,8 @@ namespace Beatmap.Containers
                 }
                 else
                 {
-                    AttachedHead.transform.localScale = IChain.ChainScale;
-                    AttachedHead.transform.localPosition -= IChain.PosOffsetFactor * headDirection;
+                    AttachedHead.transform.localScale = BaseChain.ChainScale;
+                    AttachedHead.transform.localPosition -= BaseChain.PosOffsetFactor * headDirection;
                 }
             }
         }
@@ -213,12 +213,12 @@ namespace Beatmap.Containers
             AttachedHead.UpdateGridPosition();
         }
 
-        public bool IsHeadNote(INote note)
+        public bool IsHeadNote(BaseNote baseNote)
         {
-            if (note is null) return false;
-            return Mathf.Approximately(note.Time, ChainData.Time) && note.PosX == ChainData.PosX &&
-                   note.PosY == ChainData.PosY
-                   && note.CutDirection == ChainData.CutDirection && note.Type == ChainData.Color;
+            if (baseNote is null) return false;
+            return Mathf.Approximately(baseNote.Time, ChainData.Time) && baseNote.PosX == ChainData.PosX &&
+                   baseNote.PosY == ChainData.PosY
+                   && baseNote.CutDirection == ChainData.CutDirection && baseNote.Type == ChainData.Color;
         }
     }
 }

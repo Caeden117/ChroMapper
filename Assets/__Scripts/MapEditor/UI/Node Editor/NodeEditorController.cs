@@ -26,7 +26,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     private JSONNode editingNode;
 
-    private IEnumerable<IObject> editingObjects;
+    private IEnumerable<BaseObject> editingObjects;
     private bool firstActive = true;
 
     private int height = 205;
@@ -205,7 +205,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
             var beatmapActions = dict.Select(entry =>
                 new BeatmapObjectModifiedAction(
-                    Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as IObject,
+                    Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as BaseObject,
                     entry.Key, entry.Key, $"Edited a {entry.Key.ObjectType} with Node Editor.", true)
             ).ToList();
 
@@ -345,7 +345,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         return result;
     }
 
-    private void ApplyJson(JSONObject old, JSONObject updated, Dictionary<IObject, JSONNode> objects)
+    private void ApplyJson(JSONObject old, JSONObject updated, Dictionary<BaseObject, JSONNode> objects)
     {
         foreach (var key in old.Keys)
         {
@@ -379,7 +379,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         }
     }
 
-    private void ApplyJson(JSONArray old, JSONArray updated, Dictionary<IObject, JSONArray> objects)
+    private void ApplyJson(JSONArray old, JSONArray updated, Dictionary<BaseObject, JSONArray> objects)
     {
         foreach (var o in objects)
         {

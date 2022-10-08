@@ -33,7 +33,7 @@ namespace Tests
         [SetUp]
         public void SpawnNotes()
         {
-            INote noteA = new V2Note
+            BaseNote baseNoteA = new V2Note
             {
                 Time = 2,
                 Type = (int)NoteType.Red,
@@ -41,7 +41,7 @@ namespace Tests
                 PosY = (int)GridY.Base,
                 CutDirection = (int)NoteCutDirection.Left
             };
-            INote noteB = new V2Note
+            BaseNote baseNoteB = new V2Note
             {
                 Time = 3,
                 Type = (int)NoteType.Blue,
@@ -50,17 +50,17 @@ namespace Tests
                 CutDirection = (int)NoteCutDirection.UpRight
             };
 
-            _notePlacement.queuedData = noteA;
+            _notePlacement.queuedData = baseNoteA;
             _notePlacement.RoundedTime = _notePlacement.queuedData.Time;
             _notePlacement.ApplyToMap();
 
             // Should conflict with existing note and delete it
-            _notePlacement.queuedData = noteB;
+            _notePlacement.queuedData = baseNoteB;
             _notePlacement.RoundedTime = _notePlacement.queuedData.Time;
             _notePlacement.ApplyToMap();
 
-            SelectionController.Select(noteA);
-            SelectionController.Select(noteB, true);
+            SelectionController.Select(baseNoteA);
+            SelectionController.Select(baseNoteB, true);
         }
 
         [TearDown]
@@ -76,7 +76,7 @@ namespace Tests
             _mirror.MirrorTime();
 
             // Check we can still delete our objects
-            IObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            BaseObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 
@@ -100,7 +100,7 @@ namespace Tests
             _mirror.Mirror();
 
             // Check we can still delete our objects
-            IObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            BaseObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 
@@ -124,7 +124,7 @@ namespace Tests
             _mirror.Mirror(false);
 
             // Check we can still delete our objects
-            IObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            BaseObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 

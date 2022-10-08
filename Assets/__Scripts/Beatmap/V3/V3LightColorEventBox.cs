@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3LightColorEventBox : ILightColorEventBox
+    public class V3LightColorEventBox : BaseLightColorEventBox
     {
         public V3LightColorEventBox()
         {
@@ -21,9 +21,9 @@ namespace Beatmap.V3
             Events = RetrieveRequiredNode(node, "e").AsArray.Linq.Select(x => new V3LightColorBase(x)).ToArray();
         }
 
-        public V3LightColorEventBox(IIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
+        public V3LightColorEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
             float brightnessDistribution, int brightnessDistributionType, int brightnessAffectFirst,
-            ILightColorBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
+            BaseLightColorBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
             brightnessDistribution, brightnessDistributionType, brightnessAffectFirst, events)
         {
         }
@@ -43,7 +43,7 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() =>
+        public override BaseItem Clone() =>
             new V3LightColorEventBox((V3IndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
                 BrightnessDistribution, BrightnessDistributionType, BrightnessAffectFirst, (V3LightColorBase[])Events.Clone());
     }

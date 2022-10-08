@@ -5,23 +5,23 @@ using SimpleJSON;
 
 namespace Beatmap.V2
 {
-    public class V2Event : IEvent
+    public class V2Event : BaseEvent
     {
         public V2Event()
         {
         }
 
-        public V2Event(IEvent other) : base(other) => ParseCustom();
+        public V2Event(BaseEvent other) : base(other) => ParseCustom();
 
-        public V2Event(IBpmEvent bpm) : base(bpm)
+        public V2Event(BaseBpmEvent baseBpm) : base(baseBpm)
         {
         }
 
-        public V2Event(IColorBoostEvent cbe) : base(cbe)
+        public V2Event(BaseColorBoostEvent cbe) : base(cbe)
         {
         }
 
-        public V2Event(IRotationEvent re) : base(re) => ParseCustom();
+        public V2Event(BaseRotationEvent re) : base(re) => ParseCustom();
 
         public V2Event(JSONNode node)
         {
@@ -128,9 +128,9 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override IItem Clone() => new V2Event(Time, Type, Value, FloatValue, CustomData?.Clone());
+        public override BaseItem Clone() => new V2Event(Time, Type, Value, FloatValue, CustomData?.Clone());
 
-        public override void Apply(IObject originalData)
+        public override void Apply(BaseObject originalData)
         {
             base.Apply(originalData);
 

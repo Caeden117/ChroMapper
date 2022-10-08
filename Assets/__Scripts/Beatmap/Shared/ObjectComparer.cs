@@ -3,9 +3,9 @@ using Beatmap.Base;
 
 namespace Beatmap.Shared
 {
-    public class ObjectComparer : IComparer<IObject>
+    public class ObjectComparer : IComparer<BaseObject>
     {
-        public int Compare(IObject x, IObject y)
+        public int Compare(BaseObject x, BaseObject y)
         {
             return x.Time == y.Time ? x.GetHashCode().CompareTo(y.GetHashCode()) : x.Time.CompareTo(y.Time);
         }

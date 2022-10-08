@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Beatmap.V3
 {
-    public class V3LightRotationEventBoxGroup : ILightRotationEventBoxGroup<ILightRotationEventBox>
+    public class V3LightRotationEventBoxGroup : BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>
     {
         public V3LightRotationEventBoxGroup()
         {
@@ -17,11 +17,11 @@ namespace Beatmap.V3
         {
             Time = RetrieveRequiredNode(node, "b").AsFloat;
             ID = RetrieveRequiredNode(node, "g").AsInt;
-            Events = new List<ILightRotationEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq.Select(x => new V3LightRotationEventBox(x)).ToList());
+            Events = new List<BaseLightRotationEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq.Select(x => new V3LightRotationEventBox(x)).ToList());
             CustomData = node["customData"];
         }
 
-        public V3LightRotationEventBoxGroup(float time, int id, List<ILightRotationEventBox> events,
+        public V3LightRotationEventBoxGroup(float time, int id, List<BaseLightRotationEventBox> events,
             JSONNode customData = null) : base(time, id, events, customData)
         {
         }
@@ -49,6 +49,6 @@ namespace Beatmap.V3
         }
 
         // TODO: proper event box group cloning
-        public override IItem Clone() => new V3LightRotationEventBoxGroup(ToJson().Clone());
+        public override BaseItem Clone() => new V3LightRotationEventBoxGroup(ToJson().Clone());
     }
 }

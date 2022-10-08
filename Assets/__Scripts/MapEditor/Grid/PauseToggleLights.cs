@@ -13,8 +13,8 @@ public class PauseToggleLights : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
 
-    private readonly IEvent defaultBoostEvent = new V2Event(0, 5, 0);
-    private readonly List<IEvent> lastChromaEvents = new List<IEvent>();
+    private readonly BaseEvent defaultBoostEvent = new V2Event(0, 5, 0);
+    private readonly List<BaseEvent> lastChromaEvents = new List<BaseEvent>();
     private readonly Dictionary<int, LastEvents> lastEvents = new Dictionary<int, LastEvents>();
     private PlatformDescriptor descriptor;
 
@@ -45,7 +45,7 @@ public class PauseToggleLights : MonoBehaviour
 
         if (isPlaying)
         {
-            var allEvents = eventGrid.LoadedObjects.Cast<IEvent>().Reverse();
+            var allEvents = eventGrid.LoadedObjects.Cast<BaseEvent>().Reverse();
             foreach (var e in allEvents)
             {
                 if (e.Time <= atsc.CurrentBeat && !e.IsLegacyChroma)
@@ -113,7 +113,7 @@ public class PauseToggleLights : MonoBehaviour
                 // Pass an empty even if it is not a ring or rotation event, OR it is null.
                 else if (regular is null || (!regular.IsRingEvent(envName) && !regular.IsLaneRotationEvent()))
                 {
-                    descriptor.EventPassed(isPlaying, 0, isV3 ? (IEvent)new V3BasicEvent(0, i, 0) : new V2Event(0, i, 0));
+                    descriptor.EventPassed(isPlaying, 0, isV3 ? (BaseEvent)new V3BasicEvent(0, i, 0) : new V2Event(0, i, 0));
                     continue;
                 }
 
@@ -126,7 +126,7 @@ public class PauseToggleLights : MonoBehaviour
 
                 if (regular.IsLightEvent(envName) && Settings.Instance.EmulateChromaLite)
                     descriptor.EventPassed(isPlaying, 0, chroma ?? (isV3
-                        ? (IEvent)new V3BasicEvent(0, i, ColourManager.RGBReset)
+                        ? (BaseEvent)new V3BasicEvent(0, i, ColourManager.RGBReset)
                         : new V2Event(0, i, ColourManager.RGBReset)));
             }
         }
@@ -134,7 +134,7 @@ public class PauseToggleLights : MonoBehaviour
         {
             var leftSpeedReset =
                 isV3
-                    ? (IEvent)new V3BasicEvent(0, (int)EventTypeValue.LeftLaserRotation, 0)
+                    ? (BaseEvent)new V3BasicEvent(0, (int)EventTypeValue.LeftLaserRotation, 0)
                     {
                         CustomData = new JSONObject()
                     }
@@ -143,7 +143,7 @@ public class PauseToggleLights : MonoBehaviour
                 CustomData = new JSONObject()
             };
             leftSpeedReset.CustomLockRotation = true;
-            var rightSpeedReset = isV3 ? (IEvent)new V3BasicEvent(0, (int)EventTypeValue.RightLaserRotation, 0)
+            var rightSpeedReset = isV3 ? (BaseEvent)new V3BasicEvent(0, (int)EventTypeValue.RightLaserRotation, 0)
             {
                 CustomData = new JSONObject()
             } : new V2Event(0, (int)EventTypeValue.RightLaserRotation, 0)
@@ -160,8 +160,8 @@ public class PauseToggleLights : MonoBehaviour
 
     private class LastEvents
     {
-        public IEvent LastEvent;
-        public readonly Dictionary<int, IEvent> LastLightIdEvents = new Dictionary<int, IEvent>();
-        public readonly Dictionary<int, IEvent> LastPropEvents = new Dictionary<int, IEvent>();
+        public BaseEvent LastEvent;
+        public readonly Dictionary<int, BaseEvent> LastLightIdEvents = new Dictionary<int, BaseEvent>();
+        public readonly Dictionary<int, BaseEvent> LastPropEvents = new Dictionary<int, BaseEvent>();
     }
 }

@@ -4,13 +4,13 @@ using SimpleJSON;
 
 namespace Beatmap.V2
 {
-    public class V2SpecialEventsKeywordFiltersKeywords : IEventTypesForKeywords
+    public class V2SpecialEventsKeywordFiltersKeywords : BaseEventTypesForKeywords
     {
         public V2SpecialEventsKeywordFiltersKeywords()
         {
         }
 
-        public V2SpecialEventsKeywordFiltersKeywords(IEventTypesForKeywords other) : base(other)
+        public V2SpecialEventsKeywordFiltersKeywords(BaseEventTypesForKeywords other) : base(other)
         {
         }
 
@@ -31,6 +31,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override IItem Clone() => new V2SpecialEventsKeywordFiltersKeywords(ToJson().Clone());
+        public override BaseItem Clone() => new V2SpecialEventsKeywordFiltersKeywords(ToJson().Clone());
     }
 }

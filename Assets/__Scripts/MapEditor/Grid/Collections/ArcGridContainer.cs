@@ -14,7 +14,7 @@ using UnityEngine.Serialization;
 public class ArcGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject arcPrefab;
-    [FormerlySerializedAs("arcAppearanceSO")] [SerializeField] private ArcAppearanceSO arcAppearanceSO;
+    [SerializeField] private ArcAppearanceSO arcAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
     private bool isPlaying;
@@ -48,12 +48,12 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
         }
     }
 
-    private void SpawnCallback(bool initial, int index, IObject objectData)
+    private void SpawnCallback(bool initial, int index, BaseObject objectData)
     {
         if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
     }
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
-    private void DespawnCallback(bool initial, int index, IObject objectData)
+    private void DespawnCallback(bool initial, int index, BaseObject objectData)
     {
         if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
     }
@@ -72,14 +72,14 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
         }
     }
 
-    public void UpdateColor(Color red, Color blue) => arcAppearanceSO.UpdateColor(red, blue);
+    public void UpdateColor(Color red, Color blue) => arcAppearanceSo.UpdateColor(red, blue);
 
-    protected override void UpdateContainerData(ObjectContainer con, IObject obj)
+    protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         var arc = con as ArcContainer;
-        var arcData = obj as IArc;
+        var arcData = obj as BaseArc;
         arc.NotifySplineChanged(arcData);
-        arcAppearanceSO.SetArcAppearance(arc);
+        arcAppearanceSo.SetArcAppearance(arc);
         arc.Setup();
         arc.SetIndicatorBlocksActive(false);
         var track = tracksManager.GetTrackAtTime(arcData.Time);

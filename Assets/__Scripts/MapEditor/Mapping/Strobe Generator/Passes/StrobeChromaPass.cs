@@ -12,12 +12,12 @@ public class StrobeChromaPass : StrobeGeneratorPass
 
     public StrobeChromaPass(string easing) => this.easing = easing;
 
-    public override bool IsEventValidForPass(IEvent @event) => @event.CustomColor != null && !@event.IsLightID;
+    public override bool IsEventValidForPass(BaseEvent baseEvent) => baseEvent.CustomColor != null && !baseEvent.IsLightID;
 
-    public override IEnumerable<IEvent> StrobePassForLane(IEnumerable<IEvent> original, int type,
+    public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, JSONNode propID)
     {
-        var generatedObjects = new List<IEvent>();
+        var generatedObjects = new List<BaseEvent>();
 
         var nonGradients = original.Where(x => x.CustomLightGradient == null);
         for (var i = 0; i < nonGradients.Count() - 1; i++)

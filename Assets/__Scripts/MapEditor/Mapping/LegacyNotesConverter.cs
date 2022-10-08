@@ -19,7 +19,7 @@ public class LegacyNotesConverter : MonoBehaviour
         var chromaColorsByEventType = new Dictionary<int, Color?>();
         foreach (var obj in events.UnsortedObjects.ToArray())
         {
-            var e = obj as IEvent;
+            var e = obj as BaseEvent;
             if (chromaColorsByEventType.TryGetValue(e.Type, out var chroma))
             {
                 if (e.Value >= ColourManager.RgbintOffset)

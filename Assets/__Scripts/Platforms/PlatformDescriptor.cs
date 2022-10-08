@@ -155,9 +155,9 @@ public class PlatformDescriptor : MonoBehaviour
         chromaGradients.Clear();
     }
 
-    public void EventPassed(bool isPlaying, int index, IObject obj)
+    public void EventPassed(bool isPlaying, int index, BaseObject obj)
     {
-        var e = obj as IEvent;
+        var e = obj as BaseEvent;
 
         // Two events at the same time should yield same results
         Random.InitState(Mathf.RoundToInt(obj.Time * 100));
@@ -252,7 +252,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
     }
 
-    private void HandleLights(LightsManager group, int value, IEvent e)
+    private void HandleLights(LightsManager group, int value, BaseEvent e)
     {
         var mainColor = Color.white;
         var invertedColor = Color.white;
@@ -407,7 +407,7 @@ public class PlatformDescriptor : MonoBehaviour
     }
 
 
-    private bool TryGetNextTransitionNote(in IEvent e, out IEvent transitionEvent)
+    private bool TryGetNextTransitionNote(in BaseEvent e, out BaseEvent transitionEvent)
     {
         transitionEvent = null;
         if (e.Next != null && e.Next.IsTransition)
@@ -440,7 +440,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
     }
 
-    private void TrySetTransition(LightingEvent light, IEvent e)
+    private void TrySetTransition(LightingEvent light, BaseEvent e)
     {
         if (TryGetNextTransitionNote(e, out var transition))
         {
@@ -453,7 +453,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
     }
 
-    private IEnumerator GradientRoutine(IEvent gradientEvent, LightsManager group)
+    private IEnumerator GradientRoutine(BaseEvent gradientEvent, LightsManager group)
     {
         var gradient = gradientEvent.CustomLightGradient;
         var easingFunc = Easing.ByName[gradient.EasingType];
@@ -479,7 +479,7 @@ public class PlatformDescriptor : MonoBehaviour
 
     private class Gradient
     {
-        public IEvent GradientEvent;
+        public BaseEvent GradientEvent;
         public Coroutine Routine;
     }
 }

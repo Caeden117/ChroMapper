@@ -20,10 +20,10 @@ public class PastNotesWorker : MonoBehaviour
     private readonly Dictionary<int, Dictionary<GameObject, Image>> instantiatedNotes =
         new Dictionary<int, Dictionary<GameObject, Image>>();
 
-    private readonly Dictionary<int, INote>
-        lastByType = new Dictionary<int, INote>(); //Used to improve performance
+    private readonly Dictionary<int, BaseNote>
+        lastByType = new Dictionary<int, BaseNote>(); //Used to improve performance
 
-    private readonly List<IObject> lastGroup = new List<IObject>();
+    private readonly List<BaseObject> lastGroup = new List<BaseObject>();
     private Canvas canvas;
 
     private Transform notes;
@@ -70,10 +70,10 @@ public class PastNotesWorker : MonoBehaviour
             {
                 time = note.Time;
                 lastGroup.Clear();
-                if ((note as INote).Type != (int)NoteType.Bomb)
+                if ((note as BaseNote).Type != (int)NoteType.Bomb)
                     lastGroup.Add(note);
             }
-            else if (time == note.Time && (note as INote).Type != (int)NoteType.Bomb)
+            else if (time == note.Time && (note as BaseNote).Type != (int)NoteType.Bomb)
             {
                 lastGroup.Add(note);
             }
@@ -82,9 +82,9 @@ public class PastNotesWorker : MonoBehaviour
         foreach (var note in lastGroup) NotePassedThreshold(false, 0, note);
     }
 
-    private void NotePassedThreshold(bool natural, int id, IObject obj)
+    private void NotePassedThreshold(bool natural, int id, BaseObject obj)
     {
-        var note = obj as INote;
+        var note = obj as BaseNote;
 
         if (!instantiatedNotes.ContainsKey(note.Type))
             instantiatedNotes.Add(note.Type, new Dictionary<GameObject, Image>());

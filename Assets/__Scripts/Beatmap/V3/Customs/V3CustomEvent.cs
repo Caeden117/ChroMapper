@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3.Customs
 {
-    public class V3CustomEvent : ICustomEvent
+    public class V3CustomEvent : BaseCustomEvent
     {
         public V3CustomEvent()
         {
@@ -23,6 +23,6 @@ namespace Beatmap.V3.Customs
         public override string KeyType { get; } = "t";
         public override string KeyData { get; } = "d";
 
-        public override IItem Clone() => new V3CustomEvent(Time, Type, Data.Clone());
+        public override BaseItem Clone() => new V3CustomEvent(Time, Type, Data.Clone());
     }
 }

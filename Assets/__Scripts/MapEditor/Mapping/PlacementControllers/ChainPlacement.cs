@@ -9,16 +9,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class ChainPlacement : PlacementController<IChain, ChainContainer, ChainGridContainer>, CMInput.IChainPlacementActions
+public class ChainPlacement : PlacementController<BaseChain, ChainContainer, ChainGridContainer>, CMInput.IChainPlacementActions
 {
     public const int ChainDefaultSpawnCount = 3;
-    private static HashSet<IObject> SelectedObjects => SelectionController.SelectedObjects;
+    private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
     [SerializeField] private SelectionController selectionController;
     [SerializeField] private NoteGridContainer noteGridContainer;
 
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> conflicting) => 
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) => 
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a chain.");
-    public override IChain GenerateOriginalData() => new V3Chain();
+    public override BaseChain GenerateOriginalData() => new V3Chain();
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint) => throw new System.NotImplementedException();
 
     /// <summary>
@@ -35,23 +35,23 @@ public class ChainPlacement : PlacementController<IChain, ChainContainer, ChainG
         {
             return;
         }
-        var n1 = objects[0] as INote;
-        var n2 = objects[1] as INote;
+        var n1 = objects[0] as BaseNote;
+        var n2 = objects[1] as BaseNote;
         if (n1.Time > n2.Time) (n1, n2) = (n2, n1);
         if (n1.CutDirection == (int)NoteCutDirection.Any) { return; }
         var chainData = new V3Chain(n1, n2);
         SpawnChain(chainData, n1, n2);
     }
 
-    public void SpawnChain(IChain chainData, INote headNote, INote toDeleteNote)
+    public void SpawnChain(BaseChain chainData, BaseNote headNote, BaseNote toDeleteNote)
     {
         var chainContainer = objectContainerCollection;
         chainContainer.SpawnObject(chainData, false);
         SelectionController.Deselect(headNote);
-        var conflict = new List<IObject>(SelectedObjects);
+        var conflict = new List<BaseObject>(SelectedObjects);
         selectionController.Delete(false);
         BeatmapActionContainer.AddAction(GenerateAction(chainData, conflict));
     }
 
-    public override void TransferQueuedToDraggedObject(ref IChain dragged, IChain queued) { }
+    public override void TransferQueuedToDraggedObject(ref BaseChain dragged, BaseChain queued) { }
 }

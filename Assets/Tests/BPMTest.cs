@@ -28,9 +28,9 @@ namespace Tests
 
         private static void CheckBPM(BeatmapObjectContainerCollection container, int idx, int time, int bpm)
         {
-            IObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<IBpmEvent>(newObjA);
-            if (newObjA is IBpmEvent newNoteA)
+            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
+            Assert.IsInstanceOf<BaseBpmEvent>(newObjA);
+            if (newObjA is BaseBpmEvent newNoteA)
             {
                 Assert.AreEqual(time, newNoteA.Time);
                 Assert.AreEqual(bpm, newNoteA.Bpm);
@@ -44,10 +44,10 @@ namespace Tests
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
             if (collection is BPMChangeGridContainer bpmCollection)
             {
-                IBpmEvent bpmChange = new V2BpmChange(50, 10);
-                bpmCollection.SpawnObject(bpmChange);
+                BaseBpmEvent baseBpmChange = new V2BpmChange(50, 10);
+                bpmCollection.SpawnObject(baseBpmChange);
 
-                if (bpmCollection.LoadedContainers[bpmChange] is BpmEventContainer container)
+                if (bpmCollection.LoadedContainers[baseBpmChange] is BpmEventContainer container)
                 {
                     BeatmapBPMChangeInputController.ChangeBpm(container, "60");
                 }

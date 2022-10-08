@@ -13,7 +13,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class EventPlacement : PlacementController<IEvent, EventContainer, EventGridContainer>,
+public class EventPlacement : PlacementController<BaseEvent, EventContainer, EventGridContainer>,
     CMInput.IEventPlacementActions
 {
     [SerializeField] private EventAppearanceSO eventAppearanceSo;
@@ -106,13 +106,13 @@ public class EventPlacement : PlacementController<IEvent, EventContainer, EventG
         GridChild.Size = gridSize;
     }
 
-    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> container) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed an event.");
 
-    public override IEvent GenerateOriginalData() =>
+    public override BaseEvent GenerateOriginalData() =>
         //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
         BeatSaberSongContainer.Instance.Map.GetVersion() == 3
-            ? (IEvent)new V3BasicEvent(0, 0, (int)LightValue.RedOn)
+            ? (BaseEvent)new V3BasicEvent(0, 0, (int)LightValue.RedOn)
             : new V2Event(0, 0, (int)LightValue.RedOn);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
@@ -257,7 +257,7 @@ public class EventPlacement : PlacementController<IEvent, EventContainer, EventG
         if (evt.IsLaneRotationEvent()) TracksManager.RefreshTracks();
     }
 
-    public override void TransferQueuedToDraggedObject(ref IEvent dragged, IEvent queued)
+    public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued)
     {
         dragged.Time = queued.Time;
         dragged.Type = queued.Type;

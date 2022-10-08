@@ -15,13 +15,13 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMInput.IModifyingSelectionActions
 {
-    public static HashSet<IObject> SelectedObjects = new HashSet<IObject>();
-    public static HashSet<IObject> CopiedObjects = new HashSet<IObject>();
+    public static HashSet<BaseObject> SelectedObjects = new HashSet<BaseObject>();
+    public static HashSet<BaseObject> CopiedObjects = new HashSet<BaseObject>();
     private static float copiedBpm = 100;
 
-    public static Action<IObject> ObjectWasSelectedEvent;
+    public static Action<BaseObject> ObjectWasSelectedEvent;
     public static Action SelectionChangedEvent;
-    public static Action<IEnumerable<IObject>> SelectionPastedEvent;
+    public static Action<IEnumerable<BaseObject>> SelectionPastedEvent;
 
     private static SelectionController instance;
 
@@ -108,7 +108,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     ///     Returns true if the given container is selected, and false if it's not.
     /// </summary>
     /// <param name="container">Container to check.</param>
-    public static bool IsObjectSelected(IObject container) => SelectedObjects.Contains(container);
+    public static bool IsObjectSelected(BaseObject container) => SelectedObjects.Contains(container);
 
     /// <summary>
     ///     Shows what types of object groups are in the passed in group of objects through output parameters.
@@ -117,7 +117,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="hasNoteOrObstacle">Whether or not an object is in the note or obstacle group</param>
     /// <param name="hasEvent">Whether or not an object is in the event group</param>
     /// <param name="hasBpmChange">Whether or not an object is in the bpm change group</param>
-    public static void GetObjectTypes(IEnumerable<IObject> objects, out bool hasNoteOrObstacle, out bool hasEvent,
+    public static void GetObjectTypes(IEnumerable<BaseObject> objects, out bool hasNoteOrObstacle, out bool hasEvent,
         out bool hasBpmChange)
     {
         hasNoteOrObstacle = false;
@@ -153,7 +153,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="hasBpmChange">Whether or not to include the bpm change group</param>
     /// <param name="callback">Callback with an object container and the collection it belongs to</param>
     public static void ForEachObjectBetweenTimeByGroup(float start, float end, bool hasNoteOrObstacle, bool hasEvent,
-        bool hasBpmChange, Action<BeatmapObjectContainerCollection, IObject> callback)
+        bool hasBpmChange, Action<BeatmapObjectContainerCollection, BaseObject> callback)
     {
         var clearTypes = new List<ObjectType>();
         if (hasNoteOrObstacle)
@@ -187,7 +187,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             foreach (var toCheck in collection.LoadedObjects.Where(x =>
                 x.Time > start - epsilon && x.Time < end + epsilon))
             {
-                if (!hasEvent && toCheck is IEvent mapEvent &&
+                if (!hasEvent && toCheck is BaseEvent mapEvent &&
                     !mapEvent
                         .IsLaneRotationEvent()) //Includes only rotation events when neither of the two objects are events
                 {
@@ -209,7 +209,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="container">The container to select.</param>
     /// <param name="addsToSelection">Whether or not previously selected objects will deselect before selecting this object.</param>
     /// <param name="addActionEvent">If an action event to undo the selection should be made</param>
-    public static void Select(IObject obj, bool addsToSelection = false, bool automaticallyRefreshes = true,
+    public static void Select(BaseObject obj, bool addsToSelection = false, bool automaticallyRefreshes = true,
         bool addActionEvent = true)
     {
         if (!addsToSelection)
@@ -236,7 +236,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="second">The beatmap object at the other end of the selection</param>
     /// <param name="addsToSelection">Whether or not previously selected objects will deselect before selecting this object.</param>
     /// <param name="addActionEvent">If an action event to undo the selection should be made</param>
-    public static void SelectBetween(IObject first, IObject second, bool addsToSelection = false,
+    public static void SelectBetween(BaseObject first, BaseObject second, bool addsToSelection = false,
         bool addActionEvent = true)
     {
         if (!addsToSelection)
@@ -261,7 +261,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     ///     Deselects a container if it is currently selected
     /// </summary>
     /// <param name="obj">The container to deselect, if it has been selected.</param>
-    public static void Deselect(IObject obj, bool removeActionEvent = true)
+    public static void Deselect(BaseObject obj, bool removeActionEvent = true)
     {
         SelectedObjects.Remove(obj);
         if (BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).LoadedContainers.TryGetValue(obj, out var container)
@@ -307,7 +307,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// </summary>
     public void Delete(bool triggersAction = true)
     {
-        IEnumerable<IObject> objects = SelectedObjects.ToArray();
+        IEnumerable<BaseObject> objects = SelectedObjects.ToArray();
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionDeletedAction(objects));
         DeselectAll();
         foreach (var con in objects)
@@ -347,15 +347,15 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         DeselectAll();
 
         // Set up stuff that we need
-        var pasted = new List<IObject>();
+        var pasted = new List<BaseObject>();
         var collections = new Dictionary<ObjectType, BeatmapObjectContainerCollection>();
 
         // Grab the last BPM Change to warp distances between copied objects and maintain BPM.
         var bpmChanges =
             BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
 
-        IBpmEvent lowerValue;
-        IBpmEvent upperValue;
+        BaseBpmEvent lowerValue;
+        BaseBpmEvent upperValue;
         if (BeatSaberSongContainer.Instance.Map.GetVersion() == 3)
         {
             lowerValue = new V3BpmChange(420, atsc.CurrentBeat - 0.01f);
@@ -382,19 +382,19 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             if (bpmChangeView.Any())
             {
-                var firstBpmChange = bpmChangeView.First() as IBpmEvent;
+                var firstBpmChange = bpmChangeView.First() as BaseBpmEvent;
 
                 bpmTime = firstBpmChange.Time - atsc.CurrentBeat;
 
                 for (var i = 0; i < bpmChangeView.Count - 1; i++)
                 {
-                    var leftBpm = bpmChangeView.ElementAt(i) as IBpmEvent;
-                    var rightBpm = bpmChangeView.ElementAt(i + 1) as IBpmEvent;
+                    var leftBpm = bpmChangeView.ElementAt(i) as BaseBpmEvent;
+                    var rightBpm = bpmChangeView.ElementAt(i + 1) as BaseBpmEvent;
 
                     bpmTime += (rightBpm.Time - leftBpm.Time) * (copiedBpm / leftBpm.Bpm);
                 }
 
-                var lastBpmChange = bpmChangeView.Last() as IBpmEvent;
+                var lastBpmChange = bpmChangeView.Last() as BaseBpmEvent;
                 bpmTime += (atsc.CurrentBeat + data.Time - lastBpmChange.Time) * (copiedBpm / lastBpmChange.Bpm);
             }
 
@@ -412,7 +412,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             pasted.Add(newData);
         }
 
-        var totalRemoved = new List<IObject>();
+        var totalRemoved = new List<BaseObject>();
 
         // We remove conflicting objects with our to-be-pasted objects.
         foreach (var kvp in collections)
@@ -435,7 +435,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
 
             GetObjectTypes(pasted, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
-            var toRemove = new List<(BeatmapObjectContainerCollection, IObject)>();
+            var toRemove = new List<(BeatmapObjectContainerCollection, BaseObject)>();
             ForEachObjectBetweenTimeByGroup(start, end, hasNoteOrObstacle, hasEvent, hasBpmChange,
                 (collection, IObject) =>
                 {
@@ -465,7 +465,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (collection is BPMChangeGridContainer con) con.RefreshModifiedBeat();
         }
 
-        if (CopiedObjects.Any(x => x is IEvent e && e.IsLaneRotationEvent())) tracksManager.RefreshTracks();
+        if (CopiedObjects.Any(x => x is BaseEvent e && e.IsLaneRotationEvent())) tracksManager.RefreshTracks();
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, totalRemoved));
         SelectionPastedEvent?.Invoke(pasted);
         SelectionChangedEvent?.Invoke();
@@ -515,7 +515,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         var allActions = SelectedObjects.AsParallel().Select(data =>
         {
             var original = BeatmapFactory.Clone(data);
-            if (data is INote note)
+            if (data is BaseNote note)
             {
                 if (note.CustomCoordinate is null)
                 {
@@ -548,7 +548,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
-            else if (data is IObstacle obstacle)
+            else if (data is BaseObstacle obstacle)
             {
                 if (!obstacle.IsNoodleExtensions())
                 {
@@ -577,7 +577,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
-            else if (data is IEvent e)
+            else if (data is BaseEvent e)
             {
                 var events = eventPlacement.objectContainerCollection;
                 if (eventPlacement.objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Light)
@@ -641,7 +641,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                 if (data.CustomData?.Count == 0) data.CustomData = null;
             }
-            else if (data is IArc arc)
+            else if (data is BaseArc arc)
             {
                 // TODO: Do ME and NE
                 arc.PosX += leftRight;
@@ -657,7 +657,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     arc.TailPosY = Mathf.Clamp(arc.TailPosY, 0, 2);
                 }
             }
-            else if (data is IChain chain)
+            else if (data is BaseChain chain)
             {
                 chain.PosX += leftRight;
                 chain.PosY += upDown;
@@ -686,7 +686,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         if (BeatSaberSongContainer.Instance.Map != null)
         {
-            var newObjects = new Dictionary<ObjectType, IEnumerable<IObject>>();
+            var newObjects = new Dictionary<ObjectType, IEnumerable<BaseObject>>();
             foreach (int num in Enum.GetValues(typeof(ObjectType)))
             {
                 var type = (ObjectType)num;
@@ -698,35 +698,35 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (Settings.Instance.Load_Notes)
             {
                 BeatSaberSongContainer.Instance.Map.Notes =
-                    newObjects[ObjectType.Note].Cast<INote>().ToList();
+                    newObjects[ObjectType.Note].Cast<BaseNote>().ToList();
             }
 
             if (Settings.Instance.Load_Obstacles)
             {
                 BeatSaberSongContainer.Instance.Map.Obstacles =
-                    newObjects[ObjectType.Obstacle].Cast<IObstacle>().ToList();
+                    newObjects[ObjectType.Obstacle].Cast<BaseObstacle>().ToList();
             }
 
             if (Settings.Instance.Load_Events)
             {
                 BeatSaberSongContainer.Instance.Map.Events =
-                    newObjects[ObjectType.Event].Cast<IEvent>().ToList();
+                    newObjects[ObjectType.Event].Cast<BaseEvent>().ToList();
             }
 
             if (Settings.Instance.Load_Others)
             {
                 BeatSaberSongContainer.Instance.Map.BpmChanges =
-                    newObjects[ObjectType.BpmChange].Cast<IBpmChange>().ToList();
+                    newObjects[ObjectType.BpmChange].Cast<BaseBpmChange>().ToList();
                 BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[ObjectType.CustomEvent]
-                    .Cast<ICustomEvent>().ToList();
+                    .Cast<BaseCustomEvent>().ToList();
             }
 
             if (Settings.Instance.Load_MapV3)
             {
                 BeatSaberSongContainer.Instance.Map.Arcs =
-                    newObjects[ObjectType.Arc].Cast<IArc>().ToList();
+                    newObjects[ObjectType.Arc].Cast<BaseArc>().ToList();
                 BeatSaberSongContainer.Instance.Map.Chains =
-                    newObjects[ObjectType.Chain].Cast<IChain>().ToList();
+                    newObjects[ObjectType.Chain].Cast<BaseChain>().ToList();
             }
         }
     }

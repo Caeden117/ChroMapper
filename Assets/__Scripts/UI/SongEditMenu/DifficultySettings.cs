@@ -12,8 +12,8 @@ using static BeatSaberSong;
 /// </summary>
 public class DifficultySettings
 {
-    private List<IEnvironmentEnhancement> envEnhancements;
-    private IDifficulty map;
+    private List<BaseEnvironmentEnhancement> envEnhancements;
+    private BaseDifficulty map;
     public string CustomName = "";
     public bool ForceDirty;
     public float NoteJumpMovementSpeed = 16;
@@ -30,7 +30,7 @@ public class DifficultySettings
     public DifficultySettings(DifficultyBeatmap difficultyBeatmap, bool forceDirty) : this(difficultyBeatmap) =>
         ForceDirty = forceDirty;
 
-    public IDifficulty Map
+    public BaseDifficulty Map
     {
         get
         {
@@ -39,7 +39,7 @@ public class DifficultySettings
         }
     }
 
-    public List<IEnvironmentEnhancement> EnvEnhancements
+    public List<BaseEnvironmentEnhancement> EnvEnhancements
     {
         get
         {
@@ -92,16 +92,16 @@ public class DifficultySettings
         }
     }
 
-    private List<IEnvironmentEnhancement> GetEnvEnhancementsFromMap()
+    private List<BaseEnvironmentEnhancement> GetEnvEnhancementsFromMap()
     {
-        var enhancements = new List<IEnvironmentEnhancement>();
+        var enhancements = new List<BaseEnvironmentEnhancement>();
         if (DifficultyBeatmap.CustomData != null)
         {
             foreach (var ent in DifficultyBeatmap.CustomData["_environmentRemoval"])
                 enhancements.Add(new V3EnvironmentEnhancement(""));
         }
 
-        if (Map != null) enhancements.AddRange(Map.EnvironmentEnhancements.Select(it => it.Clone() as IEnvironmentEnhancement));
+        if (Map != null) enhancements.AddRange(Map.EnvironmentEnhancements.Select(it => it.Clone() as BaseEnvironmentEnhancement));
 
         return enhancements;
     }

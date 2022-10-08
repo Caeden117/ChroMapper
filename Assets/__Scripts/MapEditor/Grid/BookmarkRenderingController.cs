@@ -15,17 +15,17 @@ public class BookmarkRenderingController : MonoBehaviour
 
     private class CachedBookmark
     {
-        public readonly IBookmark MapBookmark;
+        public readonly BaseBookmark MapBookmark;
         public readonly TextMeshProUGUI Text;
         public string Name;
         public Color Color;
 
-        public CachedBookmark(IBookmark bookmark, TextMeshProUGUI text)
+        public CachedBookmark(BaseBookmark baseBookmark, TextMeshProUGUI text)
         {
-            MapBookmark = bookmark;
+            MapBookmark = baseBookmark;
             Text = text;
-            Name = bookmark.Name;
-            Color = bookmark.Color;
+            Name = baseBookmark.Name;
+            Color = baseBookmark.Color;
         }
     }
 
@@ -57,7 +57,7 @@ public class BookmarkRenderingController : MonoBehaviour
         }
         else if (currentBookmarks.Count > renderedBookmarks.Count) // Added bookmark
         {
-            foreach (IBookmark bookmark in currentBookmarks)
+            foreach (BaseBookmark bookmark in currentBookmarks)
             {
                 if (renderedBookmarks.All(x => x.MapBookmark != bookmark))
                 {
@@ -96,12 +96,12 @@ public class BookmarkRenderingController : MonoBehaviour
         rect.anchoredPosition3D = new Vector3(-4.5f, time * EditorScaleController.EditorScale, 0);
     }
 
-    private TextMeshProUGUI CreateGridBookmark(IBookmark bookmark)
+    private TextMeshProUGUI CreateGridBookmark(BaseBookmark baseBookmark)
     {
         GameObject obj = new GameObject("GridBookmark", typeof(TextMeshProUGUI));
         RectTransform rect = (RectTransform)obj.transform;
         rect.SetParent(gridBookmarksParent);
-        SetBookmarkPos(rect, bookmark.Time);
+        SetBookmarkPos(rect, baseBookmark.Time);
         rect.sizeDelta = Vector2.one;
         rect.localRotation = Quaternion.identity;
 
@@ -112,7 +112,7 @@ public class BookmarkRenderingController : MonoBehaviour
         text.enableWordWrapping = false;
         text.raycastTarget = false;
         text.fontMaterial.renderQueue = 3150; // Above grid and measure numbers - Below grid interface
-        SetGridBookmarkNameColor(text, bookmark.Color, bookmark.Name);
+        SetGridBookmarkNameColor(text, baseBookmark.Color, baseBookmark.Name);
 
         return text;
     }

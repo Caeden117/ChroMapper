@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3LightRotationEventBox : ILightRotationEventBox
+    public class V3LightRotationEventBox : BaseLightRotationEventBox
     {
         public V3LightRotationEventBox()
         {
@@ -23,9 +23,9 @@ namespace Beatmap.V3
             Events = RetrieveRequiredNode(node, "l").AsArray.Linq.Select(x => new V3LightRotationBase(x)).ToArray();
         }
 
-        public V3LightRotationEventBox(IIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
+        public V3LightRotationEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
             float rotationDistribution, int rotationDistributionType, int rotationAffectFirst, int axis, int flip,
-            ILightRotationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
+            BaseLightRotationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
             rotationDistribution, rotationDistributionType, rotationAffectFirst, axis, flip, events)
         {
         }
@@ -47,7 +47,7 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() =>
+        public override BaseItem Clone() =>
             new V3LightRotationEventBox((V3IndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
                 RotationDistribution, RotationDistributionType, RotationAffectFirst, Axis, Flip, (V3LightRotationBase[])Events.Clone());
     }

@@ -8,12 +8,12 @@ namespace Beatmap.Helper
 {
     public static class BeatmapFactory
     {
-        public static IDifficulty GetDifficultyFromJson(JSONNode mainNode, string directoryAndFile)
+        public static BaseDifficulty GetDifficultyFromJson(JSONNode mainNode, string directoryAndFile)
         {
             var v = PeekMapVersionFromJson(mainNode);
             return v[0] == '3'
                 ? V3Difficulty.GetFromJson(mainNode, directoryAndFile)
-                : V2Difficulty.GetFromJson(mainNode, directoryAndFile) as IDifficulty;
+                : V2Difficulty.GetFromJson(mainNode, directoryAndFile) as BaseDifficulty;
         }
 
         private static string PeekMapVersionFromJson(JSONNode mainNode)
@@ -30,7 +30,7 @@ namespace Beatmap.Helper
             return "2.0.0";
         }
 
-        public static TConcrete Clone<TConcrete>(TConcrete cloneable) where TConcrete : IItem
+        public static TConcrete Clone<TConcrete>(TConcrete cloneable) where TConcrete : BaseItem
         {
             return cloneable.Clone() as TConcrete;
         }

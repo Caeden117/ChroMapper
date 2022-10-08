@@ -4,13 +4,13 @@ using SimpleJSON;
 
 namespace Beatmap.V2
 {
-    public class V2Waypoint : IWaypoint
+    public class V2Waypoint : BaseWaypoint
     {
         public V2Waypoint()
         {
         }
 
-        public V2Waypoint(IWaypoint other) : base(other)
+        public V2Waypoint(BaseWaypoint other) : base(other)
         {
         }
 
@@ -50,6 +50,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override IItem Clone() => new V2Waypoint(Time, PosX, PosY, OffsetDirection, CustomData?.Clone());
+        public override BaseItem Clone() => new V2Waypoint(Time, PosX, PosY, OffsetDirection, CustomData?.Clone());
     }
 }

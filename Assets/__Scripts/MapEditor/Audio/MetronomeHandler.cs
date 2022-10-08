@@ -16,7 +16,7 @@ public class MetronomeHandler : MonoBehaviour
     private float beatProgress;
     private bool cowBellPlayed;
     private float lastBpm = 100;
-    private IBpmEvent lastBpmChange;
+    private BaseBpmEvent lastBpmChange;
     private Animator metronomeUIAnimator;
     private bool metronomeUIDirection = true;
 

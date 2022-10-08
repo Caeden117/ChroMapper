@@ -44,14 +44,14 @@ public class CountersPlusController : MonoBehaviour
 
 
     public int NotesCount =>
-       noteGrid.LoadedObjects.Where(note => ((INote)note).Type != (int)NoteType.Bomb).Count();
+       noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type != (int)NoteType.Bomb).Count();
 
 
     public float NPSCount => NotesCount / cameraAudioSource.clip.length;
 
     public int NotesSelected
         => SelectionController.SelectedObjects
-            .Where(x => (x is INote note && note.Type != (int)NoteType.Bomb) || x is IChain).Count();
+            .Where(x => (x is BaseNote note && note.Type != (int)NoteType.Bomb) || x is BaseChain).Count();
 
     public float NPSselected
     {
@@ -66,7 +66,7 @@ public class CountersPlusController : MonoBehaviour
     }
 
     public int BombCount
-        => noteGrid.LoadedObjects.Where(note => ((INote)note).Type == (int)NoteType.Bomb).Count();
+        => noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Bomb).Count();
 
     public int ObstacleCount => obstacleGrid.LoadedObjects.Count;
     
@@ -87,9 +87,9 @@ public class CountersPlusController : MonoBehaviour
     {
         get
         {
-            var redCount = noteGrid.LoadedObjects.Where(note => ((INote)note).Type == (int)NoteType.Red)
+            var redCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Red)
                 .Count();
-            var blueCount = noteGrid.LoadedObjects.Where(note => ((INote)note).Type == (int)NoteType.Blue)
+            var blueCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Blue)
                 .Count();
             return blueCount == 0 ? 0f : redCount / (float)blueCount;
         }

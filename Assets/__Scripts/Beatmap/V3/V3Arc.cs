@@ -4,15 +4,15 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3Arc : IArc
+    public class V3Arc : BaseArc
     {
         public V3Arc()
         {
         }
 
-        public V3Arc(IArc other) : base(other) => ParseCustom();
+        public V3Arc(BaseArc other) : base(other) => ParseCustom();
 
-        public V3Arc(INote start, INote end) : base(start, end) => ParseCustom();
+        public V3Arc(BaseNote start, BaseNote end) : base(start, end) => ParseCustom();
 
         public V3Arc(JSONNode node)
         {
@@ -97,7 +97,7 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override IItem Clone() =>
+        public override BaseItem Clone() =>
             new V3Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, ControlPointLengthMultiplier,
                 TailTime, TailPosX, TailPosY, TailCutDirection, TailControlPointLengthMultiplier, MidAnchorMode,
                 CustomData?.Clone());
