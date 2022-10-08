@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -45,10 +46,11 @@ public class BasicStrobePassUI : StrobeGeneratorPassUIController
     {
         return eventValue switch
         {
-            0 => MapEvent.LightValueOff,
-            1 => eventColor == 0 ? MapEvent.LightValueRedON : MapEvent.LightValueBlueON,
-            2 => eventColor == 0 ? MapEvent.LightValueRedFlash : MapEvent.LightValueBlueFlash,
-            3 => eventColor == 0 ? MapEvent.LightValueRedFade : MapEvent.LightValueBlueFade,
+            0 => (int)LightValue.Off,
+            1 => eventColor == 0 ? (int)LightValue.RedOn : (int)LightValue.BlueOn,
+            2 => eventColor == 0 ? (int)LightValue.RedFlash : (int)LightValue.BlueFlash,
+            3 => eventColor == 0 ? (int)LightValue.RedFade : (int)LightValue.BlueFade,
+            4 => eventColor == 0 ? (int)LightValue.RedTransition : (int)LightValue.BlueTransition,
             _ => -1,
         };
     }

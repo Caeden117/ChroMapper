@@ -1,15 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PauseToggleLights : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
-    [SerializeField] private EventsContainer events;
+    [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
 
-    private readonly MapEvent defaultBoostEvent = new MapEvent(0, 5, 0);
-    private readonly List<MapEvent> lastChromaEvents = new List<MapEvent>();
+    private readonly IEvent defaultBoostEvent = new V2Event(0, 5, 0);
+    private readonly List<IEvent> lastChromaEvents = new List<IEvent>();
     private readonly Dictionary<int, LastEvents> lastEvents = new Dictionary<int, LastEvents>();
     private PlatformDescriptor descriptor;
 
@@ -29,6 +34,9 @@ public class PauseToggleLights : MonoBehaviour
 
     private void PlayToggle(bool isPlaying)
     {
+        var envName = EnvironmentInfoHelper.GetName();
+        var isV3 = BeatSaberSongContainer.Instance.Map.GetVersion() == 3;
+
         lastEvents.Clear();
         lastChromaEvents.Clear();
 
@@ -37,28 +45,28 @@ public class PauseToggleLights : MonoBehaviour
 
         if (isPlaying)
         {
-            var allEvents = events.LoadedObjects.Cast<MapEvent>().Reverse();
+            var allEvents = eventGrid.LoadedObjects.Cast<IEvent>().Reverse();
             foreach (var e in allEvents)
             {
-                if (e.Time <= atsc.CurrentBeat && !e.IsLegacyChromaEvent)
+                if (e.Time <= atsc.CurrentBeat && !e.IsLegacyChroma)
                 {
                     if (!lastEvents.ContainsKey(e.Type)) lastEvents.Add(e.Type, new LastEvents());
 
                     var d = lastEvents[e.Type];
-                    if (e.IsLightIdEvent && d.LastEvent == null)
+                    if (e.IsLightID && d.LastEvent == null)
                     {
-                        foreach (var i in e.LightId.Distinct().Where(x => !d.LastLightIdEvents.ContainsKey(x))
+                        foreach (var i in e.CustomLightID.Distinct().Where(x => !d.LastLightIdEvents.ContainsKey(x))
                             .ToArray())
                         {
                             d.LastLightIdEvents.Add(i, e);
                         }
                     }
-                    else if (!e.IsLightIdEvent && d.LastEvent == null)
+                    else if (!e.IsLightID && d.LastEvent == null)
                     {
                         d.LastEvent = e;
                     }
                 }
-                else if (lastEvents.ContainsKey(e.Type) && e.IsLegacyChromaEvent)
+                else if (lastEvents.ContainsKey(e.Type) && e.IsLegacyChroma)
                 {
                     lastChromaEvents.Add(e);
                 }
@@ -66,15 +74,15 @@ public class PauseToggleLights : MonoBehaviour
 
             // We handle Boost Lights first to set the correct colors
             descriptor.EventPassed(isPlaying, 0,
-                lastEvents.ContainsKey(MapEvent.EventTypeBoostLights)
-                    ? lastEvents[MapEvent.EventTypeBoostLights].LastEvent
+                lastEvents.ContainsKey((int)EventTypeValue.ColorBoost)
+                    ? lastEvents[(int)EventTypeValue.ColorBoost].LastEvent
                     : defaultBoostEvent);
 
-            var blankEvent = new MapEvent(0, 0, 0);
+            var blankEvent = new V3BasicEvent(0, 0, 0);
             for (var i = 0; i < 16; i++)
             {
                 // Boost light events are already handled above; skip them.
-                if (i == MapEvent.EventTypeBoostLights) continue;
+                if (i == (int)EventTypeValue.ColorBoost) continue;
 
                 blankEvent.Type = i;
                 if (lastEvents.ContainsKey(i) && lastEvents[i].LastEvent == null) lastEvents[i].LastEvent = blankEvent;
@@ -82,7 +90,7 @@ public class PauseToggleLights : MonoBehaviour
                 // No events with this event type exist prior to this time; pass a blank event and skip.
                 if (!lastEvents.ContainsKey(i))
                 {
-                    if (blankEvent.IsRingEvent || blankEvent.IsRotationEvent) continue;
+                    if (blankEvent.IsRingEvent() || blankEvent.IsLaneRotationEvent()) continue;
                     descriptor.EventPassed(isPlaying, 0, blankEvent);
                     continue;
                 }
@@ -95,17 +103,17 @@ public class PauseToggleLights : MonoBehaviour
                 // Past the last event if we have an event to pass in the first place
                 if (regular != null &&
                     // ... it's not a fade event
-                    (regular.IsUtilityEvent || (regular.Value != MapEvent.LightValueBlueFade &&
-                                                regular.Value != MapEvent.LightValueRedFade)) &&
+                    (!regular.IsLightEvent(envName) || (regular.Value != (int)LightValue.BlueFade &&
+                                                        regular.Value != (int)LightValue.RedFade)) &&
                     // ... and it's not a ring event
-                    !regular.IsRingEvent)
+                    !regular.IsRingEvent(envName))
                 {
                     descriptor.EventPassed(isPlaying, 0, regular);
                 }
                 // Pass an empty even if it is not a ring or rotation event, OR it is null.
-                else if (regular is null || (!regular.IsRingEvent && !regular.IsRotationEvent))
+                else if (regular is null || (!regular.IsRingEvent(envName) && !regular.IsLaneRotationEvent()))
                 {
-                    descriptor.EventPassed(isPlaying, 0, new MapEvent(0, i, 0));
+                    descriptor.EventPassed(isPlaying, 0, isV3 ? (IEvent)new V3BasicEvent(0, i, 0) : new V2Event(0, i, 0));
                     continue;
                 }
 
@@ -116,18 +124,29 @@ public class PauseToggleLights : MonoBehaviour
                 foreach (var propEvent in regularEvents.LastLightIdEvents)
                     descriptor.EventPassed(isPlaying, 0, propEvent.Value);
 
-                if (!regular.IsUtilityEvent && Settings.Instance.EmulateChromaLite)
-                    descriptor.EventPassed(isPlaying, 0, chroma ?? new MapEvent(0, i, ColourManager.RGBReset));
+                if (regular.IsLightEvent(envName) && Settings.Instance.EmulateChromaLite)
+                    descriptor.EventPassed(isPlaying, 0, chroma ?? (isV3
+                        ? (IEvent)new V3BasicEvent(0, i, ColourManager.RGBReset)
+                        : new V2Event(0, i, ColourManager.RGBReset)));
             }
         }
         else
         {
-            var leftSpeedReset = new MapEvent(0, MapEvent.EventTypeLeftLasersSpeed, 0)
+            var leftSpeedReset =
+                isV3
+                    ? (IEvent)new V3BasicEvent(0, (int)EventTypeValue.LeftLaserRotation, 0)
+                    {
+                        CustomData = new JSONObject()
+                    }
+                    : new V2Event(0, (int)EventTypeValue.LeftLaserRotation, 0)
             {
                 CustomData = new JSONObject()
             };
             leftSpeedReset.CustomLockRotation = true;
-            var rightSpeedReset = new MapEvent(0, MapEvent.EventTypeRightLasersSpeed, 0)
+            var rightSpeedReset = isV3 ? (IEvent)new V3BasicEvent(0, (int)EventTypeValue.RightLaserRotation, 0)
+            {
+                CustomData = new JSONObject()
+            } : new V2Event(0, (int)EventTypeValue.RightLaserRotation, 0)
             {
                 CustomData = new JSONObject()
             };
@@ -141,8 +160,8 @@ public class PauseToggleLights : MonoBehaviour
 
     private class LastEvents
     {
-        public MapEvent LastEvent;
-        public readonly Dictionary<int, MapEvent> LastLightIdEvents = new Dictionary<int, MapEvent>();
-        public readonly Dictionary<int, MapEvent> LastPropEvents = new Dictionary<int, MapEvent>();
+        public IEvent LastEvent;
+        public readonly Dictionary<int, IEvent> LastLightIdEvents = new Dictionary<int, IEvent>();
+        public readonly Dictionary<int, IEvent> LastPropEvents = new Dictionary<int, IEvent>();
     }
 }

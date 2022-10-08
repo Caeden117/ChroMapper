@@ -1,13 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Containers;
+using Beatmap.Base;
+using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ArcPlacement : PlacementController<BeatmapArc, BeatmapArcContainer, ArcsContainer>,
+public class ArcPlacement : PlacementController<IArc, ArcContainer, ArcGridContainer>,
     CMInput.IArcPlacementActions
 {
-    private static HashSet<BeatmapObject> SelectedObjects => SelectionController.SelectedObjects;
+    private static HashSet<IObject> SelectedObjects => SelectionController.SelectedObjects;
     
 
     public void OnSpawnArc(InputAction.CallbackContext context)
@@ -20,41 +22,27 @@ public class ArcPlacement : PlacementController<BeatmapArc, BeatmapArcContainer,
         {
             return;
         }
-        var n1 = objects[0] as BeatmapNote;
-        var n2 = objects[1] as BeatmapNote;
+        var n1 = objects[0] as INote;
+        var n2 = objects[1] as INote;
         if (n1.Time > n2.Time) { var t = n1; n1 = n2; n2 = t; }
-        var arcData = new BeatmapArc
-        {
-            Time = n1.Time,
-            Color = n1.Type,
-            X = n1.LineIndex,
-            Y = n1.LineLayer,
-            Direction = n1.CutDirection,
-            TailTime = n2.Time,
-            TailX = n2.LineIndex,
-            TailY = n2.LineLayer,
-            HeadControlPointLengthMultiplier = 1.0f,
-            TailControlPointLengthMultiplier = 1.0f,
-            TailCutDirection = n2.CutDirection,
-            ArcMidAnchorMode = 0
-        };
+        var arcData = new V3Arc(n1, n2);
         SpawnArc(arcData);
     }
 
-    public static bool IsColorNote(BeatmapObject o)
+    public static bool IsColorNote(IObject o)
     {
-        return o is BeatmapNote && !(o is BeatmapBombNote);
+        return o is INote && !(o is V3BombNote);
     }
 
-    public override BeatmapArc GenerateOriginalData() => new BeatmapArc();
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
+    public override IArc GenerateOriginalData() => new V3Arc();
+    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
-    public void SpawnArc(BeatmapArc arcData)
+    public void SpawnArc(IArc arcData)
     {
         var arcContainer = objectContainerCollection;
         arcContainer.SpawnObject(arcData, false);
-        BeatmapActionContainer.AddAction(GenerateAction(arcData, new List<BeatmapObject>()));
+        BeatmapActionContainer.AddAction(GenerateAction(arcData, new List<IObject>()));
     }
 
 
@@ -64,5 +52,5 @@ public class ArcPlacement : PlacementController<BeatmapArc, BeatmapArcContainer,
     {
         return;
     }
-    public override void TransferQueuedToDraggedObject(ref BeatmapArc dragged, BeatmapArc queued) { }
+    public override void TransferQueuedToDraggedObject(ref IArc dragged, IArc queued) { }
 }

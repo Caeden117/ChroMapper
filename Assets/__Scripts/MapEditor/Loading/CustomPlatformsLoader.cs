@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Enums;
 using CustomFloorPlugin;
 using UnityEngine;
 using static CustomFloorPlugin.TubeLight;
@@ -191,19 +192,19 @@ public class CustomPlatformsLoader : MonoBehaviour
             switch (tubeLight.lightsID)
             {
                 case LightsID.Unused5:
-                    maxSize = Math.Max(maxSize, MapEvent.EventTypeBoostLights + 1);
+                    maxSize = Math.Max(maxSize, (int)EventTypeValue.ColorBoost + 1);
                     break;
                 case LightsID.Unused6:
-                    maxSize = Math.Max(maxSize, MapEvent.EventTypeCustomLight2 + 1);
+                    maxSize = Math.Max(maxSize, (int)EventTypeValue.ExtraLeftLights + 1);
                     break;
                 case LightsID.Unused7:
-                    maxSize = Math.Max(maxSize, MapEvent.EventTypeCustomLight3 + 1);
+                    maxSize = Math.Max(maxSize, (int)EventTypeValue.ExtraRightLights + 1);
                     break;
                 case LightsID.Unused10:
-                    maxSize = Math.Max(maxSize, MapEvent.EventTypeCustomLight4 + 1);
+                    maxSize = Math.Max(maxSize, (int)EventTypeValue.ExtraLeftLasers + 1);
                     break;
                 case LightsID.Unused11:
-                    maxSize = Math.Max(maxSize, MapEvent.EventTypeCustomLight5 + 1);
+                    maxSize = Math.Max(maxSize, (int)EventTypeValue.ExtraRightLasers + 1);
                     break;
             }
         }
@@ -219,26 +220,26 @@ public class CustomPlatformsLoader : MonoBehaviour
         {
             if (tubeLight.gameObject.GetComponent<LightingEvent>() != null) continue;
 
-            var eventId = -MapEvent.EventTypeBackLasers;
+            var eventId = -(int)EventTypeValue.BackLasers;
             switch (tubeLight.lightsID)
             {
                 case LightsID.Static:
-                    eventId = MapEvent.EventTypeBackLasers;
+                    eventId = (int)EventTypeValue.BackLasers;
                     break;
                 case LightsID.BackLights:
-                    eventId = MapEvent.EventTypeBackLasers;
+                    eventId = (int)EventTypeValue.BackLasers;
                     break;
                 case LightsID.BigRingLights:
-                    eventId = MapEvent.EventTypeRingLights;
+                    eventId = (int)EventTypeValue.RingLights;
                     break;
                 case LightsID.LeftLasers:
-                    eventId = MapEvent.EventTypeLeftLasers;
+                    eventId = (int)EventTypeValue.LeftLasers;
                     break;
                 case LightsID.RightLasers:
-                    eventId = MapEvent.EventTypeRightLasers;
+                    eventId = (int)EventTypeValue.RightLasers;
                     break;
                 case LightsID.TrackAndBottom:
-                    eventId = MapEvent.EventTypeRoadLights;
+                    eventId = (int)EventTypeValue.CenterLights;
                     break;
                 case LightsID.RingsRotationEffect:
                     break;
@@ -249,19 +250,19 @@ public class CustomPlatformsLoader : MonoBehaviour
                 case LightsID.RingSpeedRight:
                     break;
                 case LightsID.Unused5:
-                    eventId = MapEvent.EventTypeBoostLights;
+                    eventId = (int)EventTypeValue.ColorBoost;
                     break;
                 case LightsID.Unused6:
-                    eventId = MapEvent.EventTypeCustomLight2;
+                    eventId = (int)EventTypeValue.ExtraLeftLights;
                     break;
                 case LightsID.Unused7:
-                    eventId = MapEvent.EventTypeCustomLight3;
+                    eventId = (int)EventTypeValue.ExtraRightLights;
                     break;
                 case LightsID.Unused10:
-                    eventId = MapEvent.EventTypeCustomLight4;
+                    eventId = (int)EventTypeValue.ExtraLeftLasers;
                     break;
                 case LightsID.Unused11:
-                    eventId = MapEvent.EventTypeCustomLight5;
+                    eventId = (int)EventTypeValue.ExtraRightLasers;
                     break;
                 default:
                     //Unused 5 6 7 10 11 14 15
@@ -653,37 +654,37 @@ public class CustomPlatformsLoader : MonoBehaviour
             switch (tubeLight.lightsID)
             {
                 case LightsID.Static:
-                    eventId = MapEvent.EventTypeBackLasers;
+                    eventId = (int)EventTypeValue.BackLasers;
                     break;
                 case LightsID.BackLights:
-                    eventId = MapEvent.EventTypeBackLasers;
+                    eventId = (int)EventTypeValue.BackLasers;
                     break;
                 case LightsID.BigRingLights:
-                    eventId = MapEvent.EventTypeRingLights;
+                    eventId = (int)EventTypeValue.RingLights;
                     break;
                 case LightsID.LeftLasers:
-                    eventId = MapEvent.EventTypeLeftLasers;
+                    eventId = (int)EventTypeValue.LeftLasers;
                     break;
                 case LightsID.RightLasers:
-                    eventId = MapEvent.EventTypeRightLasers;
+                    eventId = (int)EventTypeValue.RightLasers;
                     break;
                 case LightsID.TrackAndBottom:
-                    eventId = MapEvent.EventTypeRoadLights;
+                    eventId = (int)EventTypeValue.CenterLights;
                     break;
                 case LightsID.Unused5:
-                    eventId = MapEvent.EventTypeBoostLights;
+                    eventId = (int)EventTypeValue.ColorBoost;
                     break;
                 case LightsID.Unused6:
-                    eventId = MapEvent.EventTypeCustomLight2;
+                    eventId = (int)EventTypeValue.ExtraLeftLights;
                     break;
                 case LightsID.Unused7:
-                    eventId = MapEvent.EventTypeCustomLight3;
+                    eventId = (int)EventTypeValue.ExtraRightLights;
                     break;
                 case LightsID.Unused10:
-                    eventId = MapEvent.EventTypeCustomLight4;
+                    eventId = (int)EventTypeValue.ExtraLeftLasers;
                     break;
                 case LightsID.Unused11:
-                    eventId = MapEvent.EventTypeCustomLight5;
+                    eventId = (int)EventTypeValue.ExtraRightLasers;
                     break;
             }
 
@@ -706,7 +707,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
         if (tubeRingLights.Length == 0)
         {
-            var tubeLightsManager = platformDescriptor.LightingManagers[MapEvent.EventTypeRingLights];
+            var tubeLightsManager = platformDescriptor.LightingManagers[(int)EventTypeValue.RingLights];
             var meshRenderers = trackRings.trackLaneRingPrefab.GetComponentsInChildren<MeshRenderer>();
 
             foreach (var renderer in meshRenderers) SetRendererMaterials(renderer, tubeLightsManager);
@@ -718,7 +719,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             newLightsManager.GroupLightsBasedOnZ();
 
             Destroy(tubeLightsManager);
-            platformDescriptor.LightingManagers[MapEvent.EventTypeRingLights] = newLightsManager;
+            platformDescriptor.LightingManagers[(int)EventTypeValue.RingLights] = newLightsManager;
         }
 
         //LightsManager lm = pd.LightingManagers[MapEvent.EVENT_TYPE_RING_LIGHTS];

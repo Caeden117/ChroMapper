@@ -1778,7 +1778,7 @@ MonoBehaviour:
   IgnoreTrackFilter: 0
   notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
   bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
-  noteAppearanceSo: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+  noteAppearanceSo: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
   tracksManager: {fileID: 25550679}
   countersPlus: {fileID: 471772270}
 --- !u!114 &25550674
@@ -1803,7 +1803,7 @@ MonoBehaviour:
   IgnoreTrackFilter: 1
   eventPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
     type: 3}
-  eventAppearanceSo: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  eventAppearanceSo: {fileID: 11400000, guid: 00bab3c0ab2051441b924304da9d0e12, type: 2}
   eventGridLabels: {fileID: 695639397}
   tracksManager: {fileID: 25550679}
   eventPlacement: {fileID: 1277691436}
@@ -1813,8 +1813,6 @@ MonoBehaviour:
   countersPlus: {fileID: 471772270}
   EventTypeToPropagate: 1
   EventTypePropagationSize: 0
-  AllRotationEvents: []
-  AllBoostEvents: []
 --- !u!114 &25550675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,7 +1855,7 @@ MonoBehaviour:
   noteGrid: {fileID: 2108936575}
   frontNoteGridScaling: {fileID: 236088295}
   measureLineGrid: {fileID: 1903135839}
-  bpmChangesContainer: {fileID: 25550675}
+  bpmChangeGridContainer: {fileID: 25550675}
   measureLinesGridChild: {fileID: 1903135840}
   bookmarkRenderingController: {fileID: 1891278561}
 --- !u!114 &25550677
@@ -1910,7 +1908,7 @@ MonoBehaviour:
   IgnoreTrackFilter: 0
   obstaclePrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
     type: 3}
-  obstacleAppearanceSo: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+  obstacleAppearanceSo: {fileID: 11400000, guid: 7a50c9a2cc4ae50499232fe511d6437e,
     type: 2}
   tracksManager: {fileID: 25550679}
   countersPlus: {fileID: 471772270}
@@ -1929,7 +1927,7 @@ MonoBehaviour:
   trackPrefab: {fileID: 4184632026203889353, guid: 1e1f172e929d0ac4785e387f14dbd39e,
     type: 3}
   tracksParent: {fileID: 1439999959}
-  events: {fileID: 25550674}
+  eventGrid: {fileID: 25550674}
   atsc: {fileID: 570484802}
 --- !u!114 &25550680
 MonoBehaviour:
@@ -1953,7 +1951,7 @@ MonoBehaviour:
   IgnoreTrackFilter: 0
   arcPrefab: {fileID: 2800143464783224911, guid: 3a289a2479446ea40b41b092b296e8e7,
     type: 3}
-  arcAppearanceSO: {fileID: 11400000, guid: 216d12337d92ffc40be68b26e2c13cd7, type: 2}
+  arcAppearanceSO: {fileID: 11400000, guid: c737f74f07351d441a56c84811b4d665, type: 2}
   tracksManager: {fileID: 25550679}
   countersPlus: {fileID: 471772270}
 --- !u!114 &25550681
@@ -1979,7 +1977,7 @@ MonoBehaviour:
   chainPrefab: {fileID: 1094719878252698, guid: a14acb27bffab494cb5735e7fba61dbf,
     type: 3}
   tracksManager: {fileID: 25550679}
-  chainAppearanceSO: {fileID: 11400000, guid: 957753756470ed043a36fb2722ca84e2, type: 2}
+  chainAppearanceSO: {fileID: 11400000, guid: 7eafe2e8b1acf5b49903b99310732bf6, type: 2}
 --- !u!1 &26466118
 GameObject:
   m_ObjectHideFlags: 0
@@ -2079,8 +2077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ef6dda16cd96e4c86b4763cab11725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
-  eventAppearance: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  noteAppearance: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
+  eventAppearance: {fileID: 11400000, guid: 00bab3c0ab2051441b924304da9d0e12, type: 2}
   tracksManager: {fileID: 25550679}
   labels: {fileID: 322207091}
 --- !u!114 &39480890
@@ -2544,7 +2542,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &63770835
 Canvas:
   m_ObjectHideFlags: 0
@@ -3105,7 +3103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   picker: {fileID: 1225848101}
   dropdown: {fileID: 81479822}
-  eventsContainer: {fileID: 25550674}
+  eventGridContainer: {fileID: 25550674}
   toggle: {fileID: 157530501}
   placeChromaToggle: {fileID: 1427203218}
 --- !u!1 &81669278
@@ -4495,8 +4493,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ca6a65c55532049ac74be40213ae29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notesContainer: {fileID: 25550673}
-  eventsContainer: {fileID: 25550674}
+  noteGridContainer: {fileID: 25550673}
+  eventGridContainer: {fileID: 25550674}
   timeSyncController: {fileID: 570484802}
   uiMode: {fileID: 1799035893}
   useOffsetFromConfig: 0
@@ -4505,7 +4503,7 @@ MonoBehaviour:
   nextNoteIndex: 0
   nextEventIndex: 0
   UseAudioTime: 0
-  chainsContainer: {fileID: 25550681}
+  chainGridContainer: {fileID: 25550681}
   nextChainIndex: 0
 --- !u!1 &122379078
 GameObject:
@@ -5646,85 +5644,6 @@ Material:
     - _r: {r: 3, g: 3, b: 3, a: 3}
     - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
   m_BuildTextureStacks: []
---- !u!21 &178588390
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Inherited From Round Corners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _AlphaClip: 0
-    - _Blend: 0
-    - _BumpScale: 1
-    - _ColorMask: 15
-    - _Cull: 2
-    - _Cutoff: 0.5
-    - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _Metallic: 0
-    - _OcclusionStrength: 1
-    - _ReceiveShadows: 1
-    - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _Surface: 0
-    - _UseUIAlphaClip: 0
-    - _WorkflowMode: 1
-    - _ZWrite: 1
-    m_Colors:
-    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WidthHeightRadius: {r: 37, g: 14, b: 2, a: 0}
-    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
-    - _r: {r: 3, g: 3, b: 3, a: 3}
-    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
-  m_BuildTextureStacks: []
 --- !u!1 &180611027
 GameObject:
   m_ObjectHideFlags: 0
@@ -6294,7 +6213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interfaceCallback: {fileID: 973455628}
   Atsc: {fileID: 570484802}
-  events: {fileID: 25550674}
+  eventGrid: {fileID: 25550674}
 --- !u!4 &226696886
 Transform:
   m_ObjectHideFlags: 0
@@ -9769,6 +9688,85 @@ MonoBehaviour:
   audioUtil: {fileID: 119653248}
   metronomeUI: {fileID: 39555788}
   CowBell: 0
+--- !u!21 &307087187
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Inherited From Round Corners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _ReceiveShadows: 1
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _Surface: 0
+    - _UseUIAlphaClip: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WidthHeightRadius: {r: 34.4, g: 16.4, b: 4, a: 0}
+    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
+    - _r: {r: 3, g: 3, b: 3, a: 3}
+    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
+  m_BuildTextureStacks: []
 --- !u!1 &309231906
 GameObject:
   m_ObjectHideFlags: 0
@@ -14323,9 +14321,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadff820e7bfa3145b1656a0ddcd9e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notes: {fileID: 25550673}
-  obstacles: {fileID: 25550678}
-  events: {fileID: 25550674}
+  noteGrid: {fileID: 25550673}
+  obstacleGrid: {fileID: 25550678}
+  chainGrid: {fileID: 25550681}
+  eventGrid: {fileID: 25550674}
   bpm: {fileID: 25550675}
   cameraAudioSource: {fileID: 119653247}
   atsc: {fileID: 570484802}
@@ -17293,7 +17292,7 @@ MonoBehaviour:
   - {fileID: 1645535437}
   - {fileID: 859643184}
   - {fileID: 866552294}
-  bpmChangesContainer: {fileID: 25550675}
+  bpmChangeGridContainer: {fileID: 25550675}
   gridRenderingController: {fileID: 1485521054}
   customStandaloneInputModule: {fileID: 806554}
   Song:
@@ -17317,7 +17316,6 @@ MonoBehaviour:
     Warnings: []
     Suggestions: []
     Requirements: []
-    Contributors: []
   currentBeat: 0
   currentSeconds: 0
   StopScheduled: 0
@@ -29137,7 +29135,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 13585791}
   m_HandleRect: {fileID: 13585789}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -29935,8 +29933,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ca6a65c55532049ac74be40213ae29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notesContainer: {fileID: 25550673}
-  eventsContainer: {fileID: 25550674}
+  noteGridContainer: {fileID: 25550673}
+  eventGridContainer: {fileID: 25550674}
   timeSyncController: {fileID: 570484802}
   uiMode: {fileID: 1799035893}
   useOffsetFromConfig: 0
@@ -29945,7 +29943,7 @@ MonoBehaviour:
   nextNoteIndex: 0
   nextEventIndex: 0
   UseAudioTime: 0
-  chainsContainer: {fileID: 0}
+  chainGridContainer: {fileID: 0}
   nextChainIndex: 0
 --- !u!1 &974423489
 GameObject:
@@ -30085,8 +30083,189 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: Dragging
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: dotRenderer
+      value: 
+      objectReference: {fileID: 979988624}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: simpleBlock
+      value: 
+      objectReference: {fileID: 979988620}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: bombRenderer
+      value: 
+      objectReference: {fileID: 979988625}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: complexBlock
+      value: 
+      objectReference: {fileID: 979988629}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: arrowRenderer
+      value: 
+      objectReference: {fileID: 979988623}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: swingArcRenderer
+      value: 
+      objectReference: {fileID: 979988622}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: Colliders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: Colliders.Array.data[0]
+      value: 
+      objectReference: {fileID: 979988618}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: noteRenderer.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: noteRenderer.Array.data[0]
+      value: 
+      objectReference: {fileID: 979988628}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: noteRenderer.Array.data[1]
+      value: 
+      objectReference: {fileID: 979988627}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: noteRenderer.Array.data[2]
+      value: 
+      objectReference: {fileID: 979988626}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: noteRenderer.Array.data[3]
+      value: 
+      objectReference: {fileID: 979988619}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: SelectionRenderers.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: SelectionRenderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 979988621}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: SelectionRenderers.Array.data[1]
+      value: 
+      objectReference: {fileID: 979988631}
+    - target: {fileID: 3130810298530284748, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+        type: 3}
+      propertyPath: SelectionRenderers.Array.data[2]
+      value: 
+      objectReference: {fileID: 979988630}
+    m_RemovedComponents:
+    - {fileID: 114658967295416532, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
+--- !u!114 &979988618 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5656241720920303499, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!23 &979988619 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5340180851528429382, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &979988620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5917998450345237402, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988621 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1842004165721872753, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &979988622 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1080430093250605690, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988623 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 23765382870616916, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988624 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2943287698693247782, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988625 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3270828220921705982, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988626 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3119262310063179706, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988627 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8922317231100721677, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988628 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3686148892469938315, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &979988629 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8487697771764994487, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988630 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3849728588848831574, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &979988631 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8423123464298783434, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
+    type: 3}
+  m_PrefabInstance: {fileID: 979988617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &980591774
 GameObject:
   m_ObjectHideFlags: 0
@@ -32855,7 +33034,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &1057120712
 Canvas:
   m_ObjectHideFlags: 0
@@ -33644,6 +33823,85 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078238019}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1079041932
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Inherited From Round Corners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BumpScale: 1
+    - _ColorMask: 15
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _ReceiveShadows: 1
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _Surface: 0
+    - _UseUIAlphaClip: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WidthHeightRadius: {r: 37, g: 14, b: 2, a: 0}
+    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
+    - _r: {r: 3, g: 3, b: 3, a: 3}
+    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
+  m_BuildTextureStacks: []
 --- !u!1 &1080694186
 GameObject:
   m_ObjectHideFlags: 0
@@ -34505,10 +34763,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atsc: {fileID: 570484802}
   rotationController: {fileID: 226696885}
-  notesContainer: {fileID: 25550673}
-  obstaclesContainer: {fileID: 25550678}
-  arcsContainer: {fileID: 25550680}
-  chainsContainer: {fileID: 25550681}
+  noteGridContainer: {fileID: 25550673}
+  obstacleGridContainer: {fileID: 25550678}
+  arcGridContainer: {fileID: 25550680}
+  chainGridContainer: {fileID: 25550681}
   loader: {fileID: 1117169519}
   platformPrefabs:
   - {fileID: 3009465475994126661, guid: 363064460cb46a547afb83aceb44c1ab, type: 3}
@@ -40111,18 +40369,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
     type: 3}
-  objectData:
-    HasAttachedContainer: 0
-    Time: 0
-    PropId: 0
-    Type: 0
-    Value: 0
-    LightGradient:
-      Duration: 0
-      StartColor: {r: 0, g: 0, b: 0, a: 0}
-      EndColor: {r: 0, g: 0, b: 0, a: 0}
-      EasingType: 
-    FloatValue: 0
   objectContainerCollection: {fileID: 25550674}
   ParentTrack: {fileID: 1125491375}
   InterfaceGridParent: {fileID: 1277691435}
@@ -40139,7 +40385,7 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
-  eventAppearanceSo: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  eventAppearanceSo: {fileID: 11400000, guid: 00bab3c0ab2051441b924304da9d0e12, type: 2}
   colorPicker: {fileID: 1225848101}
   laserSpeedInputField: {fileID: 1475303726}
   chromaToggle: {fileID: 0}
@@ -40584,8 +40830,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ca6a65c55532049ac74be40213ae29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notesContainer: {fileID: 25550673}
-  eventsContainer: {fileID: 25550674}
+  noteGridContainer: {fileID: 25550673}
+  eventGridContainer: {fileID: 25550674}
   timeSyncController: {fileID: 570484802}
   uiMode: {fileID: 1799035893}
   useOffsetFromConfig: 1
@@ -40594,7 +40840,7 @@ MonoBehaviour:
   nextNoteIndex: 0
   nextEventIndex: 0
   UseAudioTime: 0
-  chainsContainer: {fileID: 0}
+  chainGridContainer: {fileID: 0}
   nextChainIndex: 0
 --- !u!1 &1290658007
 GameObject:
@@ -46348,7 +46594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atsc: {fileID: 570484802}
-  events: {fileID: 25550674}
+  eventGrid: {fileID: 25550674}
 --- !u!114 &1524038341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46363,18 +46609,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1056647016207082, guid: cae5f76e2962f1f4085c6007e787e438,
     type: 3}
-  objectData:
-    HasAttachedContainer: 0
-    Time: 0
-    PropId: 0
-    Type: 0
-    Value: 0
-    LightGradient:
-      Duration: 0
-      StartColor: {r: 0, g: 0, b: 0, a: 0}
-      EndColor: {r: 0, g: 0, b: 0, a: 0}
-      EasingType: 
-    FloatValue: 0
   objectContainerCollection: {fileID: 25550674}
   ParentTrack: {fileID: 1006741503}
   InterfaceGridParent: {fileID: 1524038328}
@@ -46392,7 +46626,7 @@ MonoBehaviour:
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
   CustomCollection: {fileID: 25550677}
-  EventsContainer: {fileID: 25550674}
+  EventGridContainer: {fileID: 25550674}
   Labels: {fileID: 322207091}
 --- !u!1 &1524114567
 GameObject:
@@ -47524,7 +47758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CustomStandaloneInputModule: {fileID: 806554}
-  noteAppearanceSo: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+  noteAppearanceSo: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
   QuickModificationActive: 0
 --- !u!114 &1546839085
 MonoBehaviour:
@@ -47540,8 +47774,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CustomStandaloneInputModule: {fileID: 806554}
   atsc: {fileID: 570484802}
-  bpmChangesContainer: {fileID: 25550675}
-  obstacleAppearanceSo: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+  bpmChangeGridContainer: {fileID: 25550675}
+  obstacleAppearanceSo: {fileID: 11400000, guid: 7a50c9a2cc4ae50499232fe511d6437e,
     type: 2}
 --- !u!114 &1546839086
 MonoBehaviour:
@@ -47556,7 +47790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CustomStandaloneInputModule: {fileID: 806554}
-  eventAppearanceSo: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  eventAppearanceSo: {fileID: 11400000, guid: 00bab3c0ab2051441b924304da9d0e12, type: 2}
   tracksManager: {fileID: 25550679}
 --- !u!114 &1546839087
 MonoBehaviour:
@@ -47597,7 +47831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CustomStandaloneInputModule: {fileID: 806554}
-  arcAppearanceSo: {fileID: 11400000, guid: 216d12337d92ffc40be68b26e2c13cd7, type: 2}
+  arcAppearanceSo: {fileID: 11400000, guid: c737f74f07351d441a56c84811b4d665, type: 2}
 --- !u!114 &1546839090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47611,7 +47845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CustomStandaloneInputModule: {fileID: 806554}
-  chainAppearanceSo: {fileID: 11400000, guid: 957753756470ed043a36fb2722ca84e2, type: 2}
+  chainAppearanceSo: {fileID: 11400000, guid: 7eafe2e8b1acf5b49903b99310732bf6, type: 2}
 --- !u!114 &1546839091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47921,8 +48155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ef6dda16cd96e4c86b4763cab11725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
-  eventAppearance: {fileID: 11400000, guid: 2bea2298a3153ae4f907f2b615f67d0b, type: 2}
+  noteAppearance: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
+  eventAppearance: {fileID: 11400000, guid: 00bab3c0ab2051441b924304da9d0e12, type: 2}
   tracksManager: {fileID: 25550679}
   labels: {fileID: 322207091}
 --- !u!114 &1553543988
@@ -51486,8 +51720,63 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114866437164864884, guid: e8851ff5377acfa49976aeb131fcace1,
+        type: 3}
+      propertyPath: bpmText
+      value: 
+      objectReference: {fileID: 1652816930}
+    - target: {fileID: 114866437164864884, guid: e8851ff5377acfa49976aeb131fcace1,
+        type: 3}
+      propertyPath: Colliders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114866437164864884, guid: e8851ff5377acfa49976aeb131fcace1,
+        type: 3}
+      propertyPath: Colliders.Array.data[0]
+      value: 
+      objectReference: {fileID: 1652816929}
+    - target: {fileID: 114866437164864884, guid: e8851ff5377acfa49976aeb131fcace1,
+        type: 3}
+      propertyPath: SelectionRenderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114866437164864884, guid: e8851ff5377acfa49976aeb131fcace1,
+        type: 3}
+      propertyPath: SelectionRenderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 1652816931}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8851ff5377acfa49976aeb131fcace1, type: 3}
+--- !u!114 &1652816929 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2662271189267428640, guid: e8851ff5377acfa49976aeb131fcace1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1652816928}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1652816930 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114113500200447462, guid: e8851ff5377acfa49976aeb131fcace1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1652816928}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!23 &1652816931 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6325708122774775993, guid: e8851ff5377acfa49976aeb131fcace1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1652816928}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1654267882
 GameObject:
   m_ObjectHideFlags: 0
@@ -54785,8 +55074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ca6a65c55532049ac74be40213ae29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notesContainer: {fileID: 25550673}
-  eventsContainer: {fileID: 25550674}
+  noteGridContainer: {fileID: 25550673}
+  eventGridContainer: {fileID: 25550674}
   timeSyncController: {fileID: 570484802}
   uiMode: {fileID: 1799035893}
   useOffsetFromConfig: 1
@@ -54795,7 +55084,7 @@ MonoBehaviour:
   nextNoteIndex: 0
   nextEventIndex: 0
   UseAudioTime: 0
-  chainsContainer: {fileID: 0}
+  chainGridContainer: {fileID: 0}
   nextChainIndex: 0
 --- !u!1 &1765493899
 GameObject:
@@ -58786,7 +59075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a21e32ac7378ac4caa0ab28c411cabf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventsContainer: {fileID: 25550674}
+  eventGridContainer: {fileID: 25550674}
   atsc: {fileID: 570484802}
   ui: {fileID: 213316055}
 --- !u!1 &1888945674
@@ -62652,85 +62941,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033073262}
   m_CullTransparentMesh: 0
---- !u!21 &2033232753
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Inherited From Round Corners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SpecGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _AlphaClip: 0
-    - _Blend: 0
-    - _BumpScale: 1
-    - _ColorMask: 15
-    - _Cull: 2
-    - _Cutoff: 0.5
-    - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _Metallic: 0
-    - _OcclusionStrength: 1
-    - _ReceiveShadows: 1
-    - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _Surface: 0
-    - _UseUIAlphaClip: 0
-    - _WorkflowMode: 1
-    - _ZWrite: 1
-    m_Colors:
-    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _WidthHeightRadius: {r: 34.4, g: 16.4, b: 4, a: 0}
-    - _halfSize: {r: 29, g: 10, b: 0, a: 0}
-    - _r: {r: 3, g: 3, b: 3, a: 3}
-    - _rect2props: {r: 0.0000019073486, g: -0.0000038146973, b: 25.455845, a: 25.455845}
-  m_BuildTextureStacks: []
 --- !u!1 &2035826361
 GameObject:
   m_ObjectHideFlags: 0
@@ -63248,7 +63458,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &2057519788
 Canvas:
   m_ObjectHideFlags: 0
@@ -65109,14 +65319,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
     type: 3}
-  objectData:
-    HasAttachedContainer: 0
-    Time: 0
-    LineIndex: 0
-    LineLayer: 0
-    Type: 0
-    CutDirection: 0
-    ID: 0
   objectContainerCollection: {fileID: 25550673}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -65133,7 +65335,7 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
-  noteAppearanceSo: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+  noteAppearanceSo: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
   deleteToolController: {fileID: 1243231049}
   precisionPlacement: {fileID: 2108936580}
   laserSpeedController: {fileID: 160161773}
@@ -65154,14 +65356,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6,
     type: 3}
-  objectData:
-    HasAttachedContainer: 0
-    Time: 0
-    LineIndex: 0
-    LineLayer: 0
-    Type: 0
-    CutDirection: 0
-    ID: 0
   objectContainerCollection: {fileID: 25550673}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -65195,13 +65389,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
     type: 3}
-  objectData:
-    HasAttachedContainer: 0
-    Time: 0
-    LineIndex: 0
-    Type: 0
-    Duration: 0
-    Width: 0
   objectContainerCollection: {fileID: 25550678}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -65218,7 +65405,7 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
-  obstacleAppearanceSo: {fileID: 11400000, guid: 1a165ba5070dfcf4c9f9bc7864386a27,
+  obstacleAppearanceSo: {fileID: 11400000, guid: 7a50c9a2cc4ae50499232fe511d6437e,
     type: 2}
   precisionPlacement: {fileID: 2108936580}
   colorPicker: {fileID: 1225848101}
@@ -65331,7 +65518,7 @@ MonoBehaviour:
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
   selectionController: {fileID: 1524038335}
-  notesContainer: {fileID: 25550673}
+  noteGridContainer: {fileID: 25550673}
 --- !u!1 &2109111737
 GameObject:
   m_ObjectHideFlags: 0
@@ -67142,11 +67329,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atsc: {fileID: 570484802}
-  notesContainer: {fileID: 25550673}
+  noteGridContainer: {fileID: 25550673}
   gridNotePrefab: {fileID: 7251896189731183911, guid: 7113feb1c68d0ed4aab9fb5fb6f3a5dd,
     type: 3}
   callbackController: {fileID: 973455628}
-  noteAppearance: {fileID: 11400000, guid: 2e49cb79fe1ae9e448bc9363be6040c5, type: 2}
+  noteAppearance: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
 --- !u!223 &2507495661568924619
 Canvas:
   m_ObjectHideFlags: 0
@@ -67854,9 +68041,37 @@ PrefabInstance:
       objectReference: {fileID: 25550674}
     - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
         type: 3}
+      propertyPath: eventGrid
+      value: 
+      objectReference: {fileID: 25550674}
+    - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
+        type: 3}
       propertyPath: obstacles
       value: 
       objectReference: {fileID: 25550678}
+    - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
+        type: 3}
+      propertyPath: obstacleGrid
+      value: 
+      objectReference: {fileID: 25550678}
+    - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
+        type: 3}
+      propertyPath: noteAppearance
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1,
+        type: 2}
+    - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
+        type: 3}
+      propertyPath: eventAppearance
+      value: 
+      objectReference: {fileID: 11400000, guid: 00bab3c0ab2051441b924304da9d0e12,
+        type: 2}
+    - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
+        type: 3}
+      propertyPath: obstacleAppearance
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a50c9a2cc4ae50499232fe511d6437e,
+        type: 2}
     - target: {fileID: 3267473903547393833, guid: 29b0e711db3f65542a213179a4cab985,
         type: 3}
       propertyPath: m_AnchorMax.y

@@ -18,7 +18,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     [SerializeField] private GameObject moveables;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private Track[] otherTracks;
-    [SerializeField] private BPMChangesContainer bpmChangesContainer;
+    [FormerlySerializedAs("bpmChangesContainer")] [SerializeField] private BPMChangeGridContainer bpmChangeGridContainer;
     [SerializeField] private GridRenderingController gridRenderingController;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
     [FormerlySerializedAs("song")] [HideInInspector] public BeatSaberSong Song;
@@ -214,7 +214,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 // +1 beat if we're going forward, -1 beat if we're going backwards
                 var beatShiftRaw = 1f / GridMeasureSnapping * (value > 0 ? 1f : -1f);
 
-                MoveToTimeInBeats(CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats(beatShiftRaw, CurrentBeat));
+                MoveToTimeInBeats(CurrentBeat + bpmChangeGridContainer.LocalBeatsToSongBeats(beatShiftRaw, CurrentBeat));
             }
         }
     }
@@ -323,7 +323,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         if (IsPlaying) return;
         var beatTime = GetBeatFromSeconds(seconds);
-        currentBeat = bpmChangesContainer.FindRoundedBpmTime(beatTime);
+        currentBeat = bpmChangeGridContainer.FindRoundedBpmTime(beatTime);
         currentSeconds = GetSecondsFromBeat(currentBeat);
         SongAudioSource.time = CurrentSeconds;
         ValidatePosition();
@@ -332,7 +332,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public void SnapToGrid(bool positionValidated = false)
     {
-        currentBeat = bpmChangesContainer.FindRoundedBpmTime(currentBeat);
+        currentBeat = bpmChangeGridContainer.FindRoundedBpmTime(currentBeat);
         currentSeconds = GetSecondsFromBeat(currentBeat);
         if (!positionValidated) ValidatePosition();
         UpdateMovables();
@@ -354,7 +354,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         SongAudioSource.time = CurrentSeconds;
     }
 
-    public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangesContainer.FindRoundedBpmTime(beat, snap);
+    public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangeGridContainer.FindRoundedBpmTime(beat, snap);
 
     public float GetBeatFromSeconds(float seconds) => Song.BeatsPerMinute / 60 * seconds;
 

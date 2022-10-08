@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,7 +17,7 @@ public abstract class InterscopeCarEventHandler : PlatformEventHandler
 
     protected virtual void Start() => eventValuesHash = new HashSet<int>(CarFlags);
 
-    public override void OnEventTrigger(int type, MapEvent @event)
+    public override void OnEventTrigger(int type, IEvent @event)
     {
         // Values 0 and 1 affect all cars, but after that, the events affect different cars depending on their flags.
         if (@event.Value == 0
@@ -27,5 +28,5 @@ public abstract class InterscopeCarEventHandler : PlatformEventHandler
         }
     }
 
-    protected abstract void OnCarGroupTriggered(MapEvent @event);
+    protected abstract void OnCarGroupTriggered(IEvent @event);
 }

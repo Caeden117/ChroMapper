@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Beatmap.Base;
 
 /// <summary>
 ///     A BeatmapAction contains a BeatmapObjectContainer as well as a methods to Undo and Redo the action.
@@ -8,10 +9,10 @@
 public abstract class BeatmapAction
 {
     public bool Active = true;
-    public IEnumerable<BeatmapObject> Data;
+    public IEnumerable<IObject> Data;
     internal bool inCollection = false;
 
-    public BeatmapAction(IEnumerable<BeatmapObject> data, string comment = "No comment.")
+    public BeatmapAction(IEnumerable<IObject> data, string comment = "No comment.")
     {
         Data = data;
         Comment = comment;
@@ -19,14 +20,14 @@ public abstract class BeatmapAction
 
     public string Comment { get; } = "No comment.";
 
-    protected void RefreshPools(IEnumerable<BeatmapObject> data)
+    protected void RefreshPools(IEnumerable<IObject> data)
     {
-        foreach (var unique in data.DistinctBy(x => x.BeatmapType))
+        foreach (var unique in data.DistinctBy(x => x.ObjectType))
         {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(unique.BeatmapType);
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(unique.ObjectType);
             collection.RefreshPool(true);
 
-            if (collection is BPMChangesContainer con) con.RefreshModifiedBeat();
+            if (collection is BPMChangeGridContainer con) con.RefreshModifiedBeat();
         }
     }
 

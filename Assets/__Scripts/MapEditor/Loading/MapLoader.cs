@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
+using Beatmap.Shared;
+using Beatmap.V2;
+using Beatmap.V3;
 using UnityEngine;
 
 public class MapLoader : MonoBehaviour
@@ -10,42 +16,41 @@ public class MapLoader : MonoBehaviour
 
     [Space] [SerializeField] private Transform containerCollectionsContainer;
 
-    private BeatSaberMap map;
+    private IDifficulty map;
     private int noteLaneSize = 2;
     private int noteLayerSize = 3;
 
-    public void UpdateMapData(BeatSaberMap map)
+    public void UpdateMapData(IDifficulty map)
     {
-        if (map is BeatSaberMapV3)
+        if (map is V3Difficulty)
         {
-            var copy = new BeatSaberMapV3
+            var copy = new V3Difficulty
             {
                 CustomData = map.CustomData.Clone(),
-                Notes = new List<BeatmapNote>(map.Notes),
-                Obstacles = new List<BeatmapObstacle>(map.Obstacles),
-                Arcs = new List<BeatmapArc>((map as BeatSaberMapV3).Arcs),
-                Chains = new List<BeatmapChain>((map as BeatSaberMapV3).Chains),
-                Events = new List<MapEvent>(map.Events),
-                BpmChanges = new List<BeatmapBPMChange>(map.BpmChanges),
-                ColorBoostBeatmapEvents = new List<ColorBoostEvent>((map as BeatSaberMapV3).ColorBoostBeatmapEvents),
-                CustomEvents = new List<BeatmapCustomEvent>(map.CustomEvents)
+                Notes = new List<INote>(map.Notes),
+                Obstacles = new List<IObstacle>(map.Obstacles),
+                Arcs = new List<IArc>(map.Arcs),
+                Chains = new List<IChain>(map.Chains),
+                Events = new List<IEvent>(map.Events),
+                BpmChanges = new List<IBpmChange>(map.BpmChanges),
+                ColorBoostEvents = new List<IColorBoostEvent>(map.ColorBoostEvents),
+                CustomEvents = new List<ICustomEvent>(map.CustomEvents)
             };
             this.map = copy;
         }
         else
         {
-            var copy = new BeatSaberMap
+            var copy = new V2Difficulty
             {
                 CustomData = map.CustomData.Clone(),
-                Notes = new List<BeatmapNote>(map.Notes),
-                Obstacles = new List<BeatmapObstacle>(map.Obstacles),
-                Events = new List<MapEvent>(map.Events),
-                BpmChanges = new List<BeatmapBPMChange>(map.BpmChanges),
-                CustomEvents = new List<BeatmapCustomEvent>(map.CustomEvents)
+                Notes = new List<INote>(map.Notes),
+                Obstacles = new List<IObstacle>(map.Obstacles),
+                Events = new List<IEvent>(map.Events),
+                BpmChanges = new List<IBpmChange>(map.BpmChanges),
+                CustomEvents = new List<ICustomEvent>(map.CustomEvents)
             };
             this.map = copy;
         }
-
     }
 
     public IEnumerator HardRefresh()
@@ -60,8 +65,8 @@ public class MapLoader : MonoBehaviour
         }
         if (Settings.Instance.Load_MapV3)
         {
-            yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Arcs));
-            yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Chains));
+            yield return StartCoroutine(LoadObjects(map.Arcs));
+            yield return StartCoroutine(LoadObjects(map.Chains));
         }
 
         PersistentUI.Instance.LevelLoadSliderLabel.text = "Finishing up...";
@@ -70,39 +75,39 @@ public class MapLoader : MonoBehaviour
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }
 
-    public IEnumerator LoadObjects<T>(IEnumerable<T> objects) where T : BeatmapObject
+    public IEnumerator LoadObjects<T>(IEnumerable<T> objects) where T : IObject
     {
         if (!objects.Any()) yield break;
-        var collection = BeatmapObjectContainerCollection.GetCollectionForType(objects.First().BeatmapType);
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType(objects.First().ObjectType);
         if (collection == null) yield break;
         foreach (var obj in collection.LoadedObjects.ToArray()) collection.DeleteObject(obj, false, false);
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
-        collection.LoadedObjects = new SortedSet<BeatmapObject>(objects, new BeatmapObjectComparer());
+        collection.LoadedObjects = new SortedSet<IObject>(objects, new ObjectComparer());
         collection.UnsortedObjects = collection.LoadedObjects.ToList();
         UpdateSlider<T>();
-        if (typeof(T) == typeof(BeatmapNote) || typeof(T) == typeof(BeatmapObstacle))
+        if (typeof(T) == typeof(INote) || typeof(T) == typeof(IObstacle))
         {
             for (var i = 0; i < objects.Count(); i++)
             {
-                BeatmapObject data = objects.ElementAt(i);
-                if (data is BeatmapNote noteData)
+                IObject data = objects.ElementAt(i);
+                if (data is INote noteData)
                 {
-                    if (noteData.LineIndex >= 1000 || noteData.LineIndex <= -1000 || noteData.LineLayer >= 1000 ||
-                        noteData.LineLayer <= -1000)
+                    if (noteData.PosX >= 1000 || noteData.PosX <= -1000 || noteData.PosY >= 1000 ||
+                        noteData.PosY <= -1000)
                     {
                         continue;
                     }
 
-                    if (2 - noteData.LineIndex > noteLaneSize) noteLaneSize = 2 - noteData.LineIndex;
-                    if (noteData.LineIndex - 1 > noteLaneSize) noteLaneSize = noteData.LineIndex - 1;
-                    if (noteData.LineLayer + 1 > noteLayerSize) noteLayerSize = noteData.LineLayer + 1;
+                    if (2 - noteData.PosX > noteLaneSize) noteLaneSize = 2 - noteData.PosX;
+                    if (noteData.PosX - 1 > noteLaneSize) noteLaneSize = noteData.PosX - 1;
+                    if (noteData.PosY + 1 > noteLayerSize) noteLayerSize = noteData.PosY + 1;
                 }
-                else if (data is BeatmapObstacle obstacleData)
+                else if (data is IObstacle obstacleData)
                 {
-                    if (data is BeatmapObstacleV3) continue;
-                    if (obstacleData.LineIndex >= 1000 || obstacleData.LineIndex <= -1000) continue;
-                    if (2 - obstacleData.LineIndex > noteLaneSize) noteLaneSize = 2 - obstacleData.LineIndex;
-                    if (obstacleData.LineIndex - 1 > noteLaneSize) noteLaneSize = obstacleData.LineIndex - 1;
+                    if (data is V3Obstacle) continue;
+                    if (obstacleData.PosX >= 1000 || obstacleData.PosX <= -1000) continue;
+                    if (2 - obstacleData.PosX > noteLaneSize) noteLaneSize = 2 - obstacleData.PosX;
+                    if (obstacleData.PosX - 1 > noteLaneSize) noteLaneSize = obstacleData.PosX - 1;
                 }
             }
 
@@ -113,12 +118,12 @@ public class MapLoader : MonoBehaviour
             noteLanesController.UpdateNoteLanes((noteLaneSize * 2).ToString());
         }
 
-        if (typeof(T) == typeof(MapEvent))
+        if (typeof(T) == typeof(IEvent))
         {
             manager.RefreshTracks();
-            var events = collection as EventsContainer;
-            events.AllRotationEvents = objects.Cast<MapEvent>().Where(x => x.IsRotationEvent).ToList();
-            events.AllBoostEvents = objects.Cast<MapEvent>().Where(x => x.Type == MapEvent.EventTypeBoostLights)
+            var events = collection as EventGridContainer;
+            events.AllRotationEvents = objects.Cast<IEvent>().Where(x => x.IsLaneRotationEvent()).ToList();
+            events.AllBoostEvents = objects.Cast<IEvent>().Where(x => x.Type == (int)EventTypeValue.ColorBoost)
                 .ToList();
 
             if (Settings.Instance.Load_MapV3)
@@ -130,7 +135,7 @@ public class MapLoader : MonoBehaviour
         collection.RefreshPool(true);
     }
 
-    private void UpdateSlider<T>() where T : BeatmapObject
+    private void UpdateSlider<T>() where T : IObject
     {
         PersistentUI.Instance.LevelLoadSliderLabel.text = $"Loading {typeof(T).Name}s... ";
         PersistentUI.Instance.LevelLoadSlider.value = 1;

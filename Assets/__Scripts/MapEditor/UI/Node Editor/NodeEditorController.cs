@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Beatmap.Base;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -25,7 +26,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     private JSONNode editingNode;
 
-    private IEnumerable<BeatmapObject> editingObjects;
+    private IEnumerable<IObject> editingObjects;
     private bool firstActive = true;
 
     private int height = 205;
@@ -144,7 +145,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private void UpdateJson()
     {
         editingObjects = SelectionController.SelectedObjects.Select(it => it);
-        editingNode = GetSharedJson(editingObjects.Select(it => JSON.Parse(it.ConvertToJson().ToString())));
+        editingNode = GetSharedJson(editingObjects.Select(it => JSON.Parse(it.ToJson().ToString())));
 
         nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
 
@@ -152,7 +153,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         {
             var obj = editingObjects.First();
 
-            var splitName = obj.BeatmapType.ToString().Split('_');
+            var splitName = obj.ObjectType.ToString().Split('_');
             var processedNames = new List<string>(splitName.Length);
             foreach (var unprocessedName in splitName)
             {
@@ -199,14 +200,14 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
                 throw new Exception("Node cannot be empty.");
 
             // Super sneaky clone, maybe not needed
-            var dict = editingObjects.ToDictionary(it => it, it => it.ConvertToJson().Clone());
+            var dict = editingObjects.ToDictionary(it => it, it => it.ToJson().Clone());
 
             ApplyJson(editingNode.AsObject, newNode.AsObject, dict);
 
             var beatmapActions = dict.Select(entry =>
                 new BeatmapObjectModifiedAction(
-                    Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as BeatmapObject,
-                    entry.Key, entry.Key, $"Edited a {entry.Key.BeatmapType} with Node Editor.", true)
+                    Activator.CreateInstance(entry.Key.GetType(), new object[] { entry.Value }) as IObject,
+                    entry.Key, entry.Key, $"Edited a {entry.Key.ObjectType} with Node Editor.", true)
             ).ToList();
 
             BeatmapActionContainer.AddAction(
@@ -345,7 +346,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         return result;
     }
 
-    private void ApplyJson(JSONObject old, JSONObject updated, Dictionary<BeatmapObject, JSONNode> objects)
+    private void ApplyJson(JSONObject old, JSONObject updated, Dictionary<IObject, JSONNode> objects)
     {
         foreach (var key in old.Keys)
         {
@@ -379,7 +380,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         }
     }
 
-    private void ApplyJson(JSONArray old, JSONArray updated, Dictionary<BeatmapObject, JSONArray> objects)
+    private void ApplyJson(JSONArray old, JSONArray updated, Dictionary<IObject, JSONArray> objects)
     {
         foreach (var o in objects)
         {

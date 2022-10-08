@@ -1,29 +1,30 @@
 ﻿using System.Collections.Generic;
+using Beatmap.Base;
 
 public class BeatmapObjectPlacementAction : BeatmapAction
 {
-    private readonly IEnumerable<BeatmapObject> removedConflictObjects;
+    private readonly IEnumerable<IObject> removedConflictObjects;
 
-    public BeatmapObjectPlacementAction(IEnumerable<BeatmapObject> placedContainers,
-        IEnumerable<BeatmapObject> conflictingObjects, string comment) : base(placedContainers, comment) =>
+    public BeatmapObjectPlacementAction(IEnumerable<IObject> placedContainers,
+        IEnumerable<IObject> conflictingObjects, string comment) : base(placedContainers, comment) =>
         removedConflictObjects = conflictingObjects;
 
-    public BeatmapObjectPlacementAction(BeatmapObject placedObject,
-        IEnumerable<BeatmapObject> conflictingObject, string comment) : base(new[] { placedObject }, comment) =>
+    public BeatmapObjectPlacementAction(IObject placedObject,
+        IEnumerable<IObject> conflictingObject, string comment) : base(new[] { placedObject }, comment) =>
         removedConflictObjects = conflictingObject;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).DeleteObject(obj, false, false);
         }
 
         RefreshPools(Data);
 
         foreach (var data in removedConflictObjects)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(data.BeatmapType).SpawnObject(data, refreshesPool: false);
+            BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType).SpawnObject(data, refreshesPool: false);
         }
 
         RefreshPools(removedConflictObjects);
@@ -33,14 +34,14 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     {
         foreach (var obj in removedConflictObjects)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).DeleteObject(obj, false, false);
         }
 
         RefreshPools(Data);
 
         foreach (var con in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(con.BeatmapType).SpawnObject(con, refreshesPool: false);
+            BeatmapObjectContainerCollection.GetCollectionForType(con.ObjectType).SpawnObject(con, refreshesPool: false);
         }
 
         RefreshPools(Data);

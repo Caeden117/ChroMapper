@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Beatmap.Containers;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor.Experimental.SceneManagement;
@@ -95,7 +96,7 @@ namespace SplineMesh {
                 var go = FindOrCreate("segment 1 mesh");
                 go.GetComponent<MeshBender>().SetInterval(spline, 0);
                 go.GetComponent<MeshCollider>().enabled = generateCollider;
-                go.GetComponentInParent<BeatmapArcContainer>().SplineRenderer = go.GetComponent<MeshRenderer>();
+                go.GetComponentInParent<ArcContainer>().SplineRenderer = go.GetComponent<MeshRenderer>();
                 used.Add(go);
             }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using Beatmap.Enums;
+using Beatmap.Base;
 using UnityEngine;
 
 public class MetronomeHandler : MonoBehaviour
@@ -14,7 +16,7 @@ public class MetronomeHandler : MonoBehaviour
     private float beatProgress;
     private bool cowBellPlayed;
     private float lastBpm = 100;
-    private BeatmapBPMChange lastBpmChange;
+    private IBpmEvent lastBpmChange;
     private Animator metronomeUIAnimator;
     private bool metronomeUIDirection = true;
 
@@ -47,8 +49,8 @@ public class MetronomeHandler : MonoBehaviour
         if (metronomeVolume != 0f && atsc.IsPlaying && !atsc.StopScheduled)
         {
             var collection =
-                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(
-                    BeatmapObject.ObjectType.BpmChange);
+                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
+                    ObjectType.BpmChange);
             var toCheck = collection.FindLastBpm(atsc.CurrentSongBeats);
             if (lastBpmChange != toCheck)
             {
@@ -100,8 +102,8 @@ public class MetronomeHandler : MonoBehaviour
         {
             RunAnimation();
             var collection =
-                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(
-                    BeatmapObject.ObjectType.BpmChange);
+                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
+                    ObjectType.BpmChange);
             lastBpmChange = collection.FindLastBpm(atsc.CurrentSongBeats);
             lastBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
             if (lastBpmChange != null)

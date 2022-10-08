@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Beatmap.Enums;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ColorTypeController : MonoBehaviour
@@ -45,17 +46,17 @@ public class ColorTypeController : MonoBehaviour
 
     public void RedNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NoteTypeA);
+        if (active) UpdateValue((int)NoteType.Red);
     }
 
     public void BlueNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NoteTypeB);
+        if (active) UpdateValue((int)NoteType.Blue);
     }
 
     public void BombNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NoteTypeBomb);
+        if (active) UpdateValue((int)NoteType.Bomb);
     }
 
     public void UpdateValue(int type)
@@ -67,8 +68,8 @@ public class ColorTypeController : MonoBehaviour
 
     public void UpdateUI()
     {
-        leftSelected.enabled = notePlacement.queuedData.Type == BeatmapNote.NoteTypeA;
-        rightSelected.enabled = notePlacement.queuedData.Type == BeatmapNote.NoteTypeB;
+        leftSelected.enabled = notePlacement.queuedData.Type == (int)NoteType.Red;
+        rightSelected.enabled = notePlacement.queuedData.Type == (int)NoteType.Blue;
     }
 
     public bool LeftSelectedEnabled() => leftSelected.enabled;

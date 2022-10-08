@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Beatmap.Enums;
+using Beatmap.Base;
 using UnityEngine;
 
 public class VisualFeedback : MonoBehaviour
@@ -37,10 +39,10 @@ public class VisualFeedback : MonoBehaviour
 
     private void OnPlayToggle(bool playing) => lastTime = -1;
 
-    private void HandleCallback(bool initial, int index, BeatmapObject objectData)
+    private void HandleCallback(bool initial, int index, IObject objectData)
     {
         if (objectData.Time == lastTime ||
-            !DingOnNotePassingGrid.NoteTypeToDing[(objectData as BeatmapNote).Type])
+            !DingOnNotePassingGrid.NoteTypeToDing[(objectData as INote).Type])
         {
             return;
         }
@@ -48,16 +50,16 @@ public class VisualFeedback : MonoBehaviour
 * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
 * the same time that are supposed to ding from triggering the sound effects.
 */
-        var noteData = (BeatmapNote)objectData;
+        var noteData = (INote)objectData;
         if (useColours)
         {
             Color c;
             switch (noteData.Type)
             {
-                case BeatmapNote.NoteTypeA:
+                case (int)NoteType.Red:
                     c = red;
                     break;
-                case BeatmapNote.NoteTypeB:
+                case (int)NoteType.Blue:
                     c = blue;
                     break;
                 default: return;

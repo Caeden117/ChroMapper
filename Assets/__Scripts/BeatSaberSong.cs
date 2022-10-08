@@ -4,6 +4,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Beatmap.Helper;
+using Beatmap.Info;
+using Beatmap.Base;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -52,7 +55,7 @@ public class BeatSaberSong
     [FormerlySerializedAs("warnings")] public List<string> Warnings = new List<string>();
     [FormerlySerializedAs("suggestions")] public List<string> Suggestions = new List<string>();
     [FormerlySerializedAs("requirements")] public List<string> Requirements = new List<string>();
-    [FormerlySerializedAs("contributors")] public List<MapContributor> Contributors = new List<MapContributor>();
+    [FormerlySerializedAs("contributors")] public List<InfoContributor> Contributors = new List<InfoContributor>();
 
     private readonly bool isWipMap;
 
@@ -162,7 +165,7 @@ public class BeatSaberSong
             if (Contributors.Any())
             {
                 var contributorArrayFuckyougit = new JSONArray();
-                Contributors.ForEach(x => contributorArrayFuckyougit.Add(x.ToJsonNode()));
+                Contributors.ForEach(x => contributorArrayFuckyougit.Add(x.ToJson()));
                 if (Contributors.Any()) Json["_customData"]["_contributors"] = contributorArrayFuckyougit;
             }
 
@@ -383,7 +386,7 @@ public class BeatSaberSong
                         if (node.HasKey("_contributors"))
                         {
                             foreach (JSONNode contributor in song.CustomData["_contributors"])
-                                song.Contributors.Add(new MapContributor(contributor));
+                                song.Contributors.Add(new InfoContributor(contributor));
                         }
 
                         song.Editors = new EditorsObject(node["_editors"]);
@@ -463,7 +466,7 @@ public class BeatSaberSong
         }
     }
 
-    public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
+    public IDifficulty GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
         var fullPath = Path.Combine(Directory, data.BeatmapFilename);
 
@@ -474,7 +477,7 @@ public class BeatSaberSong
             return null;
         }
 
-        return BeatSaberMapFactory.GetBeatSaberMapFromJson(mainNode, fullPath);
+        return BeatmapFactory.GetDifficultyFromJson(mainNode, fullPath);
     }
 
     private static JSONNode GetNodeFromFile(string file)
@@ -528,7 +531,7 @@ public class BeatSaberSong
             else BeatmapFilename = fileName;
         }
 
-        public void RefreshRequirementsAndWarnings(BeatSaberMap map)
+        public void RefreshRequirementsAndWarnings(IDifficulty map)
         {
             //Saving Map Requirement Info
             var requiredArray = new JSONArray(); //Generate suggestions and requirements array

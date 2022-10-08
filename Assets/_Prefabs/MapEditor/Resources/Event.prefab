@@ -45,29 +45,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1173282366639492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49ca58ce40fce7e49b2b44aa558a5819, type: 3}
+  m_Script: {fileID: 11500000, guid: e20e0a258e6144f45bab53b12c0ea51a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragging: 0
-  colliders:
+  Dragging: 0
+  Colliders:
   - {fileID: 1228894562538561088}
   - {fileID: 8269471942151270873}
-  selectionRenderers:
+  SelectionRenderers:
   - {fileID: 2654713343862594198}
   - {fileID: 3938364105697110404}
-  boxCollider: {fileID: 0}
-  eventData:
-    HasAttachedContainer: 0
-    _time: 0
-    PropId: 0
-    _type: 0
-    _value: 0
-    _lightGradient:
-      Duration: 0
-      StartColor: {r: 0, g: 0, b: 0, a: 0}
-      EndColor: {r: 0, g: 0, b: 0, a: 0}
-      EasingType: 
-  eventsContainer: {fileID: 0}
+  BoxCollider: {fileID: 0}
+  EventGridContainer: {fileID: 0}
   eventAppearance: {fileID: 0}
   eventRenderer:
   - {fileID: 23934209316677924}
@@ -75,7 +64,7 @@ MonoBehaviour:
   - {fileID: 6766682728314043683}
   tracksManager: {fileID: 0}
   valueDisplay: {fileID: 7155935288314928645}
-  eventGradientController: {fileID: 3430681651377604802}
+  lightGradientController: {fileID: 3430681651377604802}
   eventModels:
   - {fileID: 1347524282044752}
   - {fileID: 784725713453205920}
@@ -222,10 +211,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c09db4d18991ef4398365f817dac8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashShaderOffset: {x: 0, y: 0, z: 1.2}
-  fadeShaderOffset: {x: 0, y: 0, z: -1.2}
-  defaultFadeSize: 0.35
-  boostEventFadeSize: 0.1
+  FlashShaderOffset: {x: 0, y: 0, z: 1.2}
+  FadeShaderOffset: {x: 0, y: 0, z: -1.2}
+  DefaultFadeSize: 0.35
+  BoostEventFadeSize: 0.1
 --- !u!1 &784725713453205920
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,10 +348,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c09db4d18991ef4398365f817dac8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashShaderOffset: {x: 0, y: 0, z: 50}
-  fadeShaderOffset: {x: 0, y: 0, z: 0}
-  defaultFadeSize: 50
-  boostEventFadeSize: 10
+  FlashShaderOffset: {x: 0, y: 0, z: 50}
+  FadeShaderOffset: {x: 0, y: 0, z: 0}
+  DefaultFadeSize: 50
+  BoostEventFadeSize: 10
 --- !u!1 &2090204300881967071
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +862,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8110838772168035324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b813ce5639867940af66b6820e2a71f, type: 3}
+  m_Script: {fileID: 11500000, guid: a387ae5c34bce80408ea44c83fef8c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1018352457705622270}
@@ -1010,7 +999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c09db4d18991ef4398365f817dac8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashShaderOffset: {x: 0, y: 0, z: 1.95}
-  fadeShaderOffset: {x: 0, y: 0, z: 0}
-  defaultFadeSize: 1
-  boostEventFadeSize: 0.5
+  FlashShaderOffset: {x: 0, y: 0, z: 1.95}
+  FadeShaderOffset: {x: 0, y: 0, z: 0}
+  DefaultFadeSize: 1
+  BoostEventFadeSize: 0.5

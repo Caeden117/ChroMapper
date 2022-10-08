@@ -1,10 +1,14 @@
 using System.Linq;
+using Beatmap.Appearances;
+using Beatmap.Containers;
+using Beatmap.Helper;
+using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class BeatmapEventInputController : BeatmapInputController<BeatmapEventContainer>, CMInput.IEventObjectsActions
+public class BeatmapEventInputController : BeatmapInputController<EventContainer>, CMInput.IEventObjectsActions
 {
     [FormerlySerializedAs("eventAppearanceSO")] [SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
@@ -41,24 +45,24 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         TweakFloatValue(e, modifier);
     }
 
-    public void InvertEvent(BeatmapEventContainer e)
+    public void InvertEvent(EventContainer e)
     {
-        var original = BeatmapObject.GenerateCopy(e.ObjectData);
-        if (e.EventData.IsRotationEvent)
+        var original = BeatmapFactory.Clone(e.ObjectData);
+        if (e.EventData.IsLaneRotationEvent())
         {
             var rotation = e.EventData.GetRotationDegreeFromValue();
             if (rotation != null)
             {
-                if (e.EventData is RotationEvent)
+                if (e.EventData is IRotationEvent)
                 {
-                    (e.EventData as RotationEvent).RotationAmount *= -1;
+                    // (e.EventData as IRotationEvent).Rotation *= -1;
                 }
                 else
                 {
-                    if (e.EventData.Value >= 0 && e.EventData.Value < MapEvent.LightValueToRotationDegrees.Length)
+                    if (e.EventData.Value >= 0 && e.EventData.Value < IEvent.LightValueToRotationDegrees.Length)
                     {
                         e.EventData.Value =
-                            MapEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
+                            IEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
                     }
                     else if (e.EventData.Value >= 1000 && e.EventData.Value <= 1720) //Invert Mapping Extensions rotation
                     {
@@ -69,11 +73,11 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
                 tracksManager.RefreshTracks();
             }
         }
-        else if (e.EventData.Type == MapEvent.EventTypeBoostLights)
+        else if (e.EventData.IsColorBoostEvent())
         {
             e.EventData.Value = e.EventData.Value > 0 ? 0 : 1;
         }
-        else if (e.EventData.IsUtilityEvent)
+        else if (!e.EventData.IsLightEvent(EnvironmentInfoHelper.GetName()))
         {
             return;
         }
@@ -88,48 +92,45 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original));
     }
 
-    protected override bool GetComponentFromTransform(GameObject t, out BeatmapEventContainer obj) =>
+    protected override bool GetComponentFromTransform(GameObject t, out EventContainer obj) =>
         t.transform.parent.TryGetComponent(out obj);
 
-    public void TweakValue(BeatmapEventContainer e, int modifier)
+    public void TweakValue(EventContainer e, int modifier)
     {
-        var original = BeatmapObject.GenerateCopy(e.ObjectData);
+        var original = BeatmapFactory.Clone(e.ObjectData);
 
-        if (e.EventData is RotationEvent)
+        if (e.EventData is IRotationEvent)
         {
-            (e.EventData as RotationEvent).RotationAmount += modifier;
+            // (e.EventData as IRotationEvent).Rotation += modifier;
         }
         else
         {
             e.EventData.Value += modifier;
 
-            if (e.EventData.Value == 4 && !e.EventData.IsUtilityEvent)
+            if (e.EventData.Value == 4 && e.EventData.IsLightEvent(EnvironmentInfoHelper.GetName()))
                 e.EventData.Value += modifier;
 
             if (e.EventData.Value < 0) e.EventData.Value = 0;
 
-            if (!e.EventData.IsLaserSpeedEvent)
+            if (!e.EventData.IsLaserRotationEvent(EnvironmentInfoHelper.GetName()))
             {
                 if (e.EventData.Value > 7)
                     e.EventData.Value = 7;
             }
         }
 
-        if (e.EventData.IsRotationEvent)
+        if (e.EventData.IsLaneRotationEvent())
             tracksManager.RefreshTracks();
         eventAppearanceSo.SetEventAppearance(e);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original));
     }
 
-    public void TweakFloatValue(BeatmapEventContainer e, int modifier)
+    public void TweakFloatValue(EventContainer e, int modifier)
     {
-        var original = BeatmapObject.GenerateCopy(e.ObjectData);
+        var original = BeatmapFactory.Clone(e.ObjectData);
 
-        if (!e.EventData.IsUtilityEvent)
-        {
-            e.EventData.FloatValue += 0.1f * modifier;
-            if (e.EventData.FloatValue < 0) e.EventData.FloatValue = 0;
-        }
+        e.EventData.FloatValue += 0.1f * modifier;
+        if (e.EventData.FloatValue < 0) e.EventData.FloatValue = 0;
 
         eventAppearanceSo.SetEventAppearance(e);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original));

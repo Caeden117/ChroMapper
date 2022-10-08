@@ -1,15 +1,16 @@
-﻿using TMPro;
+﻿using Beatmap.Base.Customs;
+using TMPro;
 using UnityEngine;
 
 public class EnvRemovalListItem : MonoBehaviour
 {
     [SerializeField] private TMP_InputField textField;
     private EnvRemoval controller;
-    public EnvEnhancement Value { get; private set; }
+    public IEnvironmentEnhancement Value { get; private set; }
 
     private void OnDestroy() => textField.DeactivateInputField();
 
-    public void Setup(EnvRemoval controllerNew, EnvEnhancement v)
+    public void Setup(EnvRemoval controllerNew, IEnvironmentEnhancement v)
     {
         Value = v;
         textField.text = v.ID ?? "";

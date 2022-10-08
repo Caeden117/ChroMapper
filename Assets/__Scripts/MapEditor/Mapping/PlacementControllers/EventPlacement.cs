@@ -1,4 +1,11 @@
 ﻿using System.Collections.Generic;
+using Beatmap.Appearances;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.Base;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -6,10 +13,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class EventPlacement : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>,
+public class EventPlacement : PlacementController<IEvent, EventContainer, EventGridContainer>,
     CMInput.IEventPlacementActions
 {
-    [FormerlySerializedAs("eventAppearanceSO")] [SerializeField] private EventAppearanceSO eventAppearanceSo;
+    [SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private TMP_InputField laserSpeedInputField;
     [SerializeField] private Toggle chromaToggle;
@@ -25,29 +32,28 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
     private bool halfFloatValue;
     private bool zeroFloatValue;
 
-
-    internal int queuedValue = MapEvent.LightValueRedON;
+    internal int queuedValue = (int)LightValue.RedOn;
     internal float queuedFloatValue = 1.0f;
     public static bool CanPlaceChromaEvents => Settings.Instance.PlaceChromaColor;
 
     public void OnRotation15Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateQueuedRotation(negativeRotations ? 3 : 4);
+        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateQueuedRotation(negativeRotations ? 3 : 4);
     }
 
     public void OnRotation30Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateQueuedRotation(negativeRotations ? 2 : 5);
+        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateQueuedRotation(negativeRotations ? 2 : 5);
     }
 
     public void OnRotation45Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateQueuedRotation(negativeRotations ? 1 : 6);
+        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateQueuedRotation(negativeRotations ? 1 : 6);
     }
 
     public void OnRotation60Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsRotationEvent && context.performed) UpdateQueuedRotation(negativeRotations ? 0 : 7);
+        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateQueuedRotation(negativeRotations ? 0 : 7);
     }
 
     public void OnNegativeRotationModifier(InputAction.CallbackContext context) =>
@@ -100,19 +106,19 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         GridChild.Size = gridSize;
     }
 
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
+    public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
 
-    public override MapEvent GenerateOriginalData()
+    public override IEvent GenerateOriginalData()
     {
         //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
         if (Settings.Instance.Load_MapV3)
         {
-            return new MapEventV3(new MapEvent(0, 0, MapEvent.LightValueRedON));
+            return new V3BasicEvent(0, 0, (int)LightValue.RedOn);
         }
         else
         {
-            return new MapEvent(0, 0, MapEvent.LightValueRedON);
+            return new V2Event(0, 0, (int)LightValue.RedOn);
         }
     }
 
@@ -121,12 +127,11 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
             0.5f,
             instantiatedContainer.transform.localPosition.z);
-        if (objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Off)
+        if (objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Off)
         {
             queuedData.Type =
                 labels.LaneIdToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x));
             queuedData.CustomData?.Remove("_lightID");
-            queuedData.CustomData?.Remove("lightID");
         }
         else
         {
@@ -135,27 +140,21 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
             if (propID >= 0)
             {
-                var lightIdToApply = objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop
+                var lightIdToApply = objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Prop
                     ? labels.PropIdToLightIdsJ(objectContainerCollection.EventTypeToPropagate, propID)
                     : (JSONNode)labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID);
-                queuedData.GetOrCreateCustomData().Add("_lightID", lightIdToApply);
-                queuedData.GetOrCreateCustomData().Add("lightID", lightIdToApply);
+                queuedData.GetOrCreateCustom().Add("_lightID", lightIdToApply);
             }
             else
             {
-                queuedData.GetOrCreateCustomData().Remove("_lightID");
-                queuedData.GetOrCreateCustomData().Remove("lightID");
+                queuedData.GetOrCreateCustom().Remove("_lightID");
             }
         }
 
-        if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && queuedData.Value != MapEvent.LightValueOff)
+        if (CanPlaceChromaEvents && queuedData.IsLightEvent(EnvironmentInfoHelper.GetName()) && queuedData.Value != (int)LightValue.Off)
         {
-            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
-            queuedData.GetOrCreateCustomData()["color"] = colorPicker.CurrentColor;
+            queuedData.CustomColor = colorPicker.CurrentColor;
         }
-        else
-            queuedData.CustomData?.Remove("_color");
-            queuedData.CustomData?.Remove("color");
 
         UpdateQueuedValue(queuedValue);
         UpdateAppearance();
@@ -163,15 +162,16 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void UpdateQueuedValue(int value)
     {
+        var envName = EnvironmentInfoHelper.GetName();
         queuedData.Value = value;
 
-        if ((queuedData.IsLaserSpeedEvent || queuedData.IsInterscopeEvent)
+        if ((queuedData.IsLaserRotationEvent(envName) || queuedData.IsUtilityEvent(envName))
             && int.TryParse(laserSpeedInputField.text, out var laserSpeed))
         {
             queuedData.Value = laserSpeed;
         }
 
-        if (queuedData.Type == MapEvent.EventTypeBoostLights)
+        if (queuedData.IsColorBoostEvent())
             queuedData.Value = queuedData.Value > 0 ? 1 : 0;
     }
 
@@ -184,10 +184,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void UpdateQueuedFloatValue(float value)
     {
-        if (Settings.Instance.Load_MapV3 && (queuedData as MapEventV3).IsControlLight)
-        {
-            queuedData.FloatValue = value;
-        }
+        queuedData.FloatValue = value;
     }
 
     public void UpdateFloatValue(float value)
@@ -199,7 +196,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     private void UpdateQueuedRotation(int value)
     {
-        if (queuedData.IsRotationEvent)
+        if (queuedData.IsLaneRotationEvent())
         {
             if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
             queuedData.CustomData["_queuedRotation"] = value;
@@ -210,16 +207,17 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     public void SwapColors(bool red)
     {
-        if (queuedData.IsUtilityEvent) return;
-        if (queuedValue >= ColourManager.RgbintOffset || queuedValue == MapEvent.LightValueOff) return;
-        if ((red && queuedValue >= MapEvent.LightValueRedON) ||
-            (!red && queuedValue >= MapEvent.LightValueBlueON && queuedValue < MapEvent.LightValueRedON))
+        var envName = EnvironmentInfoHelper.GetName();
+        if (!queuedData.IsLightEvent(envName)) return;
+        if (queuedValue >= ColourManager.RgbintOffset || queuedValue == (int)LightValue.Off) return;
+        if ((red && queuedValue >= (int)LightValue.RedOn) ||
+            (!red && queuedValue >= (int)LightValue.BlueOn && queuedValue < (int)LightValue.RedOn))
         {
             return;
         }
 
-        if (queuedValue >= MapEvent.LightValueRedON) queuedValue -= 4;
-        else if (queuedValue >= MapEvent.LightValueBlueON) queuedValue += 4;
+        if (queuedValue >= (int)LightValue.RedOn) queuedValue -= 4;
+        else if (queuedValue >= (int)LightValue.BlueOn) queuedValue += 4;
     }
 
     private void UpdateAppearance()
@@ -233,9 +231,9 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
 
     internal override void ApplyToMap()
     {
-        var mapEvent = queuedData;
+        var evt = queuedData;
 
-        if (mapEvent.Type == MapEvent.EventTypeEarlyRotation || mapEvent.Type == MapEvent.EventTypeLateRotation)
+        if (evt.Type == (int)EventTypeValue.EarlyLaneRotation || evt.Type == (int)EventTypeValue.LateLaneRotation)
         {
             if (!GridRotation.IsActive)
             {
@@ -244,42 +242,35 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
             }
         }
 
-        mapEvent.Time = RoundedTime;
+        evt.Time = RoundedTime;
 
-        if (mapEvent.CustomData != null && mapEvent.CustomData.HasKey("_queuedRotation"))
+        if (evt.CustomData != null && evt.CustomData.HasKey("_queuedRotation"))
         {
-            if (mapEvent.IsRotationEvent) queuedValue = queuedData.CustomData["_queuedRotation"];
+            if (evt.IsLaneRotationEvent()) queuedValue = queuedData.CustomData["_queuedRotation"];
 
-            mapEvent.CustomData.Remove("_queuedRotation");
+            evt.CustomData.Remove("_queuedRotation");
         }
 
         if (!PlacePrecisionRotation)
             UpdateQueuedValue(queuedValue);
-        else if (mapEvent.IsRotationEvent) mapEvent.Value = 1360 + PrecisionRotationValue;
+        else if (evt.IsLaneRotationEvent()) evt.Value = 1360 + PrecisionRotationValue;
 
-        if (mapEvent.CustomData?.Count <= 0) mapEvent.CustomData = null;
+        if (evt.CustomData?.Count <= 0) evt.CustomData = null;
         
-        if (mapEvent is MapEventV3 e3 && !e3.IsControlLight) // in case we are placing rotation/boost when pressing half/zero modifier
-        {
-            e3.FloatValue = 1;
-        }
+        evt.FloatValue = 1;
 
         base.ApplyToMap();
 
-        if (mapEvent.IsRotationEvent) TracksManager.RefreshTracks();
+        if (evt.IsLaneRotationEvent()) TracksManager.RefreshTracks();
     }
 
-    public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued)
+    public override void TransferQueuedToDraggedObject(ref IEvent dragged, IEvent queued)
     {
         dragged.Time = queued.Time;
         dragged.Type = queued.Type;
         // Instead of copying the whole custom data, only copy prop ID
-        if (dragged.CustomData != null && queued.CustomData != null)
-        {
-            if (queued.CustomPropID) dragged.CustomPropID = queued.CustomPropID;
-
-            if (queued.CustomLightID) dragged.CustomLightID = queued.CustomLightID;
-        }
+        if (queued.CustomPropID != null) dragged.CustomPropID = queued.CustomPropID;
+        if (queued.CustomLightID != null) dragged.CustomLightID = queued.CustomLightID;
     }
 
     internal void PlaceRotationNow(bool right, bool early)
@@ -287,34 +278,34 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         if (!GridRotation.IsActive)
             return;
 
-        var rotationType = early ? MapEvent.EventTypeEarlyRotation : MapEvent.EventTypeLateRotation;
+        var rotationType = early ? (int)EventTypeValue.EarlyLaneRotation : (int)EventTypeValue.LateLaneRotation;
         var epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
-        var mapEvent = objectContainerCollection.AllRotationEvents.Find(x =>
+        var IEvent = objectContainerCollection.AllRotationEvents.Find(x =>
             x.Time - epsilon < Atsc.CurrentBeat && x.Time + epsilon > Atsc.CurrentBeat && x.Type == rotationType);
 
         //todo add support for custom rotation angles
 
         var startingValue = right ? 4 : 3;
-        if (mapEvent != null) startingValue = mapEvent.Value;
+        if (IEvent != null) startingValue = IEvent.Value;
 
-        if (mapEvent != null &&
+        if (IEvent != null &&
             ((startingValue == 4 && !right) ||
              (startingValue == 3 && right))) //This is for when we're going from a rotation event to no rotation event
         {
-            startingValue = mapEvent.Value;
-            objectContainerCollection.DeleteObject(mapEvent, false);
-            BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(mapEvent, "Deleted by PlaceRotationNow."));
+            startingValue = IEvent.Value;
+            objectContainerCollection.DeleteObject(IEvent, false);
+            BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(IEvent, "Deleted by PlaceRotationNow."));
         }
         else if ((startingValue < 7 && right) || (startingValue > 0 && !right))
         {
-            if (mapEvent != null) startingValue += right ? 1 : -1;
-            var objectData = new MapEvent(Atsc.CurrentBeat, rotationType, startingValue);
+            if (IEvent != null) startingValue += right ? 1 : -1;
+            var objectData = new V2Event(Atsc.CurrentBeat, rotationType, startingValue);
 
             objectContainerCollection.SpawnObject(objectData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         }
 
-        queuedData = BeatmapObject.GenerateCopy(queuedData);
+        queuedData = BeatmapFactory.Clone(queuedData);
         TracksManager.RefreshTracks();
     }
 

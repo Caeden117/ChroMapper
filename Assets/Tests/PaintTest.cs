@@ -1,6 +1,10 @@
 ﻿using NUnit.Framework;
 using SimpleJSON;
 using System.Collections;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.Shared;
+using Beatmap.V2;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -29,15 +33,15 @@ namespace Tests
             ColorPicker colorPicker = Object.FindObjectOfType<ColorPicker>();
             PaintSelectedObjects painter = Object.FindObjectOfType<PaintSelectedObjects>();
 
-            BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
+            BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
             Transform root = eventsContainer.transform.root;
 
             SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
             JSONObject customData = new JSONObject();
-            customData["_lightGradient"] = new MapEvent.ChromaGradient(Color.blue, Color.cyan, 1, "easeLinear").ToJsonNode();
-            MapEvent noteA = new MapEvent(2, 1, 1, customData);
+            customData["_lightGradient"] = new ChromaLightGradient(Color.blue, Color.cyan, 1, "easeLinear").ToJson();
+            IEvent noteA = new V2Event(2, 1, 1, 1, customData);
             eventPlacement.queuedData = noteA;
             eventPlacement.queuedValue = eventPlacement.queuedData.Value;
             eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
@@ -52,24 +56,24 @@ namespace Tests
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
-            Assert.AreEqual(2, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, ((MapEvent)eventsContainer.UnsortedObjects[0]).LightGradient.StartColor);
+            Assert.AreEqual(2, ((IEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(Color.red, ((IEvent)eventsContainer.UnsortedObjects[0]).CustomLightGradient.StartColor);
 
             // Undo move
             actionContainer.Undo();
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
-            Assert.AreEqual(1, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, ((MapEvent)eventsContainer.UnsortedObjects[0]).LightGradient.StartColor);
+            Assert.AreEqual(1, ((IEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(Color.red, ((IEvent)eventsContainer.UnsortedObjects[0]).CustomLightGradient.StartColor);
 
             // Undo paint
             actionContainer.Undo();
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
-            Assert.AreEqual(1, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.blue, ((MapEvent)eventsContainer.UnsortedObjects[0]).LightGradient.StartColor);
+            Assert.AreEqual(1, ((IEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(Color.blue, ((IEvent)eventsContainer.UnsortedObjects[0]).CustomLightGradient.StartColor);
         }
 
         [Test]
@@ -79,13 +83,13 @@ namespace Tests
             ColorPicker colorPicker = Object.FindObjectOfType<ColorPicker>();
             PaintSelectedObjects painter = Object.FindObjectOfType<PaintSelectedObjects>();
 
-            BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
+            BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
             Transform root = eventsContainer.transform.root;
 
             SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            MapEvent noteA = new MapEvent(2, 1, 1);
+            IEvent noteA = new V2Event(2, 1, 1);
             eventPlacement.queuedData = noteA;
             eventPlacement.queuedValue = eventPlacement.queuedData.Value;
             eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
@@ -100,7 +104,7 @@ namespace Tests
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
-            Assert.AreEqual(2, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(2, ((IEvent)eventsContainer.UnsortedObjects[0]).Type);
             Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData["_color"].ReadColor());
 
             // Undo move
@@ -108,7 +112,7 @@ namespace Tests
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
-            Assert.AreEqual(1, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(1, ((IEvent)eventsContainer.UnsortedObjects[0]).Type);
             Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData["_color"].ReadColor());
 
             // Undo paint
@@ -116,7 +120,7 @@ namespace Tests
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
-            Assert.AreEqual(1, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(1, ((IEvent)eventsContainer.UnsortedObjects[0]).Type);
             Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey("_color"));
         }
 
@@ -126,11 +130,11 @@ namespace Tests
             ColorPicker colorPicker = Object.FindObjectOfType<ColorPicker>();
             PaintSelectedObjects painter = Object.FindObjectOfType<PaintSelectedObjects>();
 
-            BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
+            BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
             Transform root = eventsContainer.transform.root;
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            MapEvent noteA = new MapEvent(2, 1, 0);
+            IEvent noteA = new V2Event(2, 1, 0);
             eventPlacement.queuedData = noteA;
             eventPlacement.queuedValue = eventPlacement.queuedData.Value;
             eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
@@ -143,7 +147,7 @@ namespace Tests
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
-            Assert.AreEqual(1, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(1, ((IEvent)eventsContainer.UnsortedObjects[0]).Type);
             Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey("_color"));
         }
     }

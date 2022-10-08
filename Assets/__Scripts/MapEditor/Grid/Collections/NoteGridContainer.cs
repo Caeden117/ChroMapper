@@ -1,0 +1,228 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Beatmap.Appearances;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V3;
+using UnityEngine;
+using UnityEngine.Serialization;
+
+public class NoteGridContainer : BeatmapObjectContainerCollection
+{
+    [SerializeField] private GameObject notePrefab;
+    [SerializeField] private GameObject bombPrefab;
+    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [SerializeField] private TracksManager tracksManager;
+
+    [SerializeField] private CountersPlusController countersPlus;
+
+    private readonly List<ObjectContainer> objectsAtSameTime = new List<ObjectContainer>();
+
+    public static bool ShowArcVisualizer { get; private set; }
+
+    public override ObjectType ContainerType => ObjectType.Note;
+
+    internal override void SubscribeToCallbacks()
+    {
+        SpawnCallbackController.NotePassedThreshold += SpawnCallback;
+        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        DespawnCallbackController.NotePassedThreshold += DespawnCallback;
+        AudioTimeSyncController.PlayToggle += OnPlayToggle;
+    }
+
+    internal override void UnsubscribeToCallbacks()
+    {
+        SpawnCallbackController.NotePassedThreshold -= SpawnCallback;
+        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
+        AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+    }
+
+    private void OnPlayToggle(bool isPlaying)
+    {
+        if (!isPlaying) RefreshPool();
+    }
+
+    // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
+    // (I'm done with note sorting; if you don't like it, go fix it yourself.)
+    public override IEnumerable<IObject> GrabSortedObjects()
+    {
+        var sorted = new List<IObject>();
+        var grouping = LoadedObjects.GroupBy(x => x.Time);
+        foreach (var group in grouping)
+        {
+            sorted.AddRange(@group.OrderBy(x => ((INote)x).PosX) //0 -> 3
+                .ThenBy(x => ((INote)x).PosY) //0 -> 2
+                .ThenBy(x => ((INote)x).Type));
+        }
+
+        return sorted;
+    }
+
+    //We don't need to check index as that's already done further up the chain
+    private void SpawnCallback(bool initial, int index, IObject objectData)
+    {
+        if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
+    }
+
+    //We don't need to check index as that's already done further up the chain
+    private void DespawnCallback(bool initial, int index, IObject objectData)
+    {
+        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
+    }
+
+    private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
+
+    public void UpdateColor(Color red, Color blue)
+    {
+        noteAppearanceSo.UpdateColor(red, blue);
+    }
+
+    public void UpdateSwingArcVisualizer()
+    {
+        ShowArcVisualizer = !ShowArcVisualizer;
+        foreach (var note in LoadedContainers.Values.Cast<NoteContainer>())
+            note.SetArcVisible(ShowArcVisualizer);
+    }
+
+    public override ObjectContainer CreateContainer()
+    {
+        ObjectContainer con = NoteContainer.SpawnBeatmapNote(null, ref notePrefab);
+        return con;
+    }
+
+    protected override void UpdateContainerData(ObjectContainer con, IObject obj)
+    {
+        var note = con as NoteContainer;
+        var noteData = obj as INote;
+        noteAppearanceSo.SetNoteAppearance(note);
+        note.Setup();
+        note.SetBomb(noteData.Type == (int)NoteType.Bomb);
+        note.transform.localEulerAngles = NoteContainer.Directionalize(noteData);
+
+        var track = tracksManager.GetTrackAtTime(obj.Time);
+        track.AttachContainer(con);
+    }
+
+    protected override void OnObjectSpawned(IObject _) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
+
+    protected override void OnObjectDelete(IObject _) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
+
+    // Here we check to see if any special angled notes are required.
+    protected override void OnContainerSpawn(ObjectContainer container, IObject obj) =>
+        RefreshSpecialAngles(obj, true, AudioTimeSyncController.IsPlaying);
+
+    protected override void OnContainerDespawn(ObjectContainer container, IObject obj) =>
+        RefreshSpecialAngles(obj, false, AudioTimeSyncController.IsPlaying);
+
+    public void RefreshSpecialAngles(IObject obj, bool objectWasSpawned, bool isNatural)
+    {
+        // Do not bother refreshing if objects are despawning naturally (while playing back the song)
+        if (!objectWasSpawned && isNatural) return;
+        // Do not do special angles for bombs
+        if ((obj as INote).Type == (int)NoteType.Bomb) return;
+        // Grab all objects with the same type, and time (within epsilon)
+
+        objectsAtSameTime.Clear();
+        foreach (var x in LoadedContainers)
+        {
+            if (!(x.Key.Time - Epsilon <= obj.Time && x.Key.Time + Epsilon >= obj.Time &&
+                  (x.Key as INote).Type == (obj as INote).Type))
+            {
+                continue;
+            }
+
+            objectsAtSameTime.Add(x.Value);
+        }
+
+        // Only execute if we have exactly 2 notes with the same type
+        if (objectsAtSameTime.Count == 2)
+        {
+            // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
+            var a = objectsAtSameTime.First().ObjectData as INote;
+            var b = objectsAtSameTime.Last().ObjectData as INote;
+
+            // Grab the containers we will be flipping
+            var containerA = objectsAtSameTime.First();
+            var containerB = objectsAtSameTime.Last();
+
+            // Do not execute if cut directions are not the same (and both are not dot notes)
+            if (a.CutDirection != b.CutDirection && a.CutDirection != (int)NoteCutDirection.Any &&
+                b.CutDirection != (int)NoteCutDirection.Any)
+            {
+                return;
+            }
+
+            if (a.CutDirection == (int)NoteCutDirection.Any)
+            {
+                (a, b) = (b, a); // You can flip variables like this in C#. Who knew?
+                (containerA, containerB) = (containerB, containerA);
+            }
+
+            Vector2 posA = containerA.transform.localPosition;
+            Vector2 posB = containerB.transform.localPosition;
+            var cutVector = a.CutDirection == (int)NoteCutDirection.Any ? Vector2.up : Direction(a);
+            var line = posA - posB;
+            var angle = SignedAngleToLine(cutVector, line);
+
+            // if both notes are dots, line them up with each other by adding the signed angle.
+            if (a.CutDirection == (int)NoteCutDirection.Any &&
+                b.CutDirection == (int)NoteCutDirection.Any)
+            {
+                containerA.transform.localEulerAngles = Vector3.forward * angle;
+                containerB.transform.localEulerAngles = Vector3.forward * angle;
+            }
+            else
+            {
+                var originalA = (a is V3ColorNote newA) ? NoteContainer.Directionalize(a) + new Vector3(0,0,-newA.AngleOffset) : NoteContainer.Directionalize(a);
+                var originalB = (b is V3ColorNote newB) ? NoteContainer.Directionalize(b) + new Vector3(0, 0, -newB.AngleOffset) : NoteContainer.Directionalize(b);
+                // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
+                if (Mathf.Abs(angle) <= 40)
+                {
+                    containerA.transform.localEulerAngles = originalA + (Vector3.forward * angle);
+                    if (b.CutDirection == (int)NoteCutDirection.Any && !a.IsMainDirection)
+                        containerB.transform.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
+                    else
+                        containerB.transform.localEulerAngles = originalB + (Vector3.forward * angle);
+                }
+            }
+        }
+        else
+        {
+            foreach (var toReset in objectsAtSameTime)
+            {
+                var direction = NoteContainer.Directionalize(toReset.ObjectData as INote);
+                toReset.transform.localEulerAngles = direction;
+            }
+        }
+    }
+
+    // Grab a Vector2 plane based on the cut direction
+    public static Vector2 Direction(INote obj)
+    {
+        return obj.CutDirection switch
+        {
+            (int)NoteCutDirection.Up => new Vector2(0f, 1f),
+            (int)NoteCutDirection.Down => new Vector2(0f, -1f),
+            (int)NoteCutDirection.Left => new Vector2(-1f, 0f),
+            (int)NoteCutDirection.Right => new Vector2(1f, 0f),
+            (int)NoteCutDirection.UpLeft => new Vector2(-0.7071f, 0.7071f),
+            (int)NoteCutDirection.UpRight => new Vector2(0.7071f, 0.7071f),
+            (int)NoteCutDirection.DownLeft => new Vector2(-0.7071f, -0.7071f),
+            (int)NoteCutDirection.DownRight => new Vector2(0.7071f, -0.7071f),
+            _ => new Vector2(0f, 0f),
+        };
+    }
+
+    // Totally not ripped from Beat Saber (jaroslav beck plz dont hurt me)
+    private float SignedAngleToLine(Vector2 vec, Vector2 line)
+    {
+        var positive = Vector2.SignedAngle(vec, line);
+        var negative = Vector2.SignedAngle(vec, -line);
+        if (Mathf.Abs(positive) >= Mathf.Abs(negative)) return negative;
+        return positive;
+    }
+}

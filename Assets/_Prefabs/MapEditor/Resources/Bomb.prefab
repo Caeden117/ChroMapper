@@ -43,24 +43,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1141840594674112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51eeeb932eac8f74eaa67b1318cdc743, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c1a39b3d86529d4b8a925fb69ae6af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragging: 0
-  colliders:
+  Dragging: 0
+  Colliders:
   - {fileID: 4768512925771621658}
-  ModelMaterials: []
-  SelectionMaterials: []
-  selectionRenderers:
+  SelectionRenderers:
   - {fileID: 4769270285244765053}
-  mapNoteData:
-    HasAttachedContainer: 0
-    _time: 0
-    _lineIndex: 0
-    _lineLayer: 0
-    _type: 0
-    _cutDirection: 0
-    id: 0
+  BoxCollider: {fileID: 0}
   simpleBlock: {fileID: 0}
   complexBlock: {fileID: 0}
   noteRenderer: []
@@ -353,10 +344,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -381,6 +374,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &715626853168314649
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,10 +426,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -460,3 +456,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

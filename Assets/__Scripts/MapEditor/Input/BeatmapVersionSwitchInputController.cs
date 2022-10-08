@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Beatmap.V2;
+using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,16 +24,14 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
             if (v1 == "3")
             {
                 Settings.Instance.Load_MapV3 = false;
-                var mapV3 = BeatSaberSongContainer.Instance.Map as BeatSaberMapV3;
-                mapV3.Version = "2.2.0";
+                var mapV3 = BeatSaberSongContainer.Instance.Map;
                 mapV3.MainNode = null;
             }
             else
             {
                 Settings.Instance.Load_MapV3 = true;
                 var map = BeatSaberSongContainer.Instance.Map;
-                var mapV3 = new BeatSaberMapV3(map);
-                mapV3.Version = "3.0.0";
+                var mapV3 = Beatmap.Converters.V2ToV3.Difficulty(map as V2Difficulty);
                 BeatSaberSongContainer.Instance.Map = mapV3;
             }
             pauseManager.Quit(true);

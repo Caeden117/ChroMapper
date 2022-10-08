@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
 
 public class SelectionDeletedAction : BeatmapAction
 {
-    public SelectionDeletedAction(IEnumerable<BeatmapObject> deletedData) : base(deletedData)
+    public SelectionDeletedAction(IEnumerable<IObject> deletedData) : base(deletedData)
     {
     }
 
@@ -11,7 +12,7 @@ public class SelectionDeletedAction : BeatmapAction
     {
         foreach (var data in Data.ToArray())
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(data.BeatmapType).SpawnObject(data, false, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType).SpawnObject(data, false, false);
             SelectionController.Select(data, true, false, false);
         }
 
@@ -22,7 +23,7 @@ public class SelectionDeletedAction : BeatmapAction
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var data in Data.ToArray())
-            BeatmapObjectContainerCollection.GetCollectionForType(data.BeatmapType).DeleteObject(data, false, false);
+            BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType).DeleteObject(data, false, false);
 
         RefreshPools(Data);
     }

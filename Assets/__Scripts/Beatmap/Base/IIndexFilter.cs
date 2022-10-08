@@ -1,0 +1,33 @@
+namespace Beatmap.Base
+{
+    public abstract class IIndexFilter : IItem
+    {
+        protected IIndexFilter()
+        {
+        }
+
+        protected IIndexFilter(int type, int param0, int param1, int reverse, int chunks = 0, float limit = 0,
+            int limitAffectsType = 0, int random = 0, int seed = 0)
+        {
+            Type = type;
+            Param0 = param0;
+            Param1 = param1;
+            Reverse = reverse;
+            Chunks = chunks;
+            Limit = limit;
+            LimitAffectsType = limitAffectsType;
+            Random = random;
+            Seed = seed;
+        }
+
+        public int Type { get; set; }
+        public int Param0 { get; set; }
+        public int Param1 { get; set; }
+        public int Reverse { get; set; }
+        public int Chunks { get; set; }
+        public float Limit { get; set; }
+        public int LimitAffectsType { get; set; }
+        public int Random { get; set; }
+        public int Seed { get; set; }
+    }
+}

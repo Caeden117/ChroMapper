@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Beatmap.Base;
 
 /**
  * The intention here is to create a simple interface that a CM plugin can implement
@@ -27,5 +28,5 @@ public abstract class RequirementCheck
     }
 
     public static void RegisterRequirement(RequirementCheck req) => requirementsAndSuggestions.Add(req);
-    public abstract RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BeatSaberMap map);
+    public abstract RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, IDifficulty map);
 }

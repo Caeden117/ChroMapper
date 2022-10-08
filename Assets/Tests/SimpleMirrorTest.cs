@@ -2,6 +2,9 @@
 using SimpleJSON;
 using System.Collections;
 using System.Linq;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V2;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -34,11 +37,11 @@ namespace Tests
         [Test]
         public void MirrorME()
         {
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note);
+            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            BeatmapNote noteA = new BeatmapNote(2, -2345, BeatmapNote.LineLayerBottom, BeatmapNote.NoteTypeA, BeatmapNote.NoteCutDirectionLeft);
+            INote noteA = new V2Note(2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
 
             notePlacement.queuedData = noteA;
             notePlacement.RoundedTime = notePlacement.queuedData.Time;
@@ -47,28 +50,28 @@ namespace Tests
             SelectionController.Select(noteA);
 
             _mirror.Mirror();
-            NoteTest.CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeB, 5345, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionRight);
+            NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Blue, 5345, (int)GridY.Base, (int)NoteCutDirection.Right);
 
             // Undo mirror
             _actionContainer.Undo();
-            NoteTest.CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeA, -2345, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
+            NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Red, -2345, (int)GridY.Base, (int)NoteCutDirection.Left);
         }
 
         [Test]
         public void MirrorNoteNE()
         {
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note);
+            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            BeatmapNote noteA = new BeatmapNote
+            INote noteA = new V2Note
             {
                 Time = 2,
-                Type = BeatmapNote.NoteTypeA,
-                LineIndex = BeatmapNote.LineIndexFarLeft,
-                LineLayer = BeatmapNote.LineLayerBottom,
+                Type = (int)NoteType.Red,
+                PosX = (int)GridX.Left,
+                PosY = (int)GridY.Base,
                 CustomData = JSON.Parse("{\"_position\": [-1, 0]}"),
-                CutDirection = BeatmapNote.NoteCutDirectionLeft
+                CutDirection = (int)NoteCutDirection.Left
             };
 
             notePlacement.queuedData = noteA;
@@ -78,23 +81,23 @@ namespace Tests
             SelectionController.Select(noteA);
 
             _mirror.Mirror();
-            NoteTest.CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionRight, JSON.Parse("{\"_position\": [0, 0]}"));
+            NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Right, JSON.Parse("{\"_position\": [0, 0]}"));
 
             // Undo mirror
             _actionContainer.Undo();
-            NoteTest.CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft, JSON.Parse("{\"_position\": [-1, 0]}"));
+            NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, JSON.Parse("{\"_position\": [-1, 0]}"));
         }
 
         [Test]
         public void MirrorProp()
         {
-            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
-            if (container is EventsContainer eventsContainer)
+            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            if (container is EventGridContainer eventsContainer)
             {
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                MapEvent eventA = new MapEvent(2, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade, JSON.Parse("{\"_lightID\": 2}"));
+                IEvent eventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightID\": 2}"));
 
                 eventPlacement.queuedData = eventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -104,30 +107,30 @@ namespace Tests
                 SelectionController.Select(eventA);
 
                 eventsContainer.EventTypeToPropagate = eventA.Type;
-                eventsContainer.PropagationEditing = EventsContainer.PropMode.Light;
+                eventsContainer.PropagationEditing = EventGridContainer.PropMode.Light;
 
                 _mirror.Mirror();
                 // I'm sorry if you're here after changing the prop mapping for default env
-                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeBackLasers, MapEvent.LightValueBlueFade, JSON.Parse("{\"_lightID\": 9}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, JSON.Parse("{\"_lightID\": 9}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade, JSON.Parse("{\"_lightID\": 2}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightID\": 2}"));
 
-                eventsContainer.PropagationEditing = EventsContainer.PropMode.Off;
+                eventsContainer.PropagationEditing = EventGridContainer.PropMode.Off;
             }
         }
 
         [Test]
         public void MirrorGradient()
         {
-            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
-            if (container is EventsContainer eventsContainer)
+            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            if (container is EventGridContainer eventsContainer)
             {
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                MapEvent eventA = new MapEvent(2, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+                IEvent eventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
                 eventPlacement.queuedData = eventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -137,19 +140,19 @@ namespace Tests
                 SelectionController.Select(eventA);
 
                 _mirror.Mirror();
-                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeBackLasers, MapEvent.LightValueBlueFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [0, 1, 0, 1], \"_endColor\": [1, 0, 0, 1], \"_easing\": \"easeLinear\"}}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [0, 1, 0, 1], \"_endColor\": [1, 0, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeBackLasers, MapEvent.LightValueRedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
             }
         }
 
         [Test]
         public void MirrorWallME()
         {
-            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle);
-            if (container is ObstaclesContainer wallsContainer)
+            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
+            if (container is ObstacleGridContainer wallsContainer)
             {
                 Transform root = wallsContainer.transform.root;
                 ObstaclePlacement wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
@@ -158,7 +161,7 @@ namespace Tests
                 // What the actual fuck - example from mirroring in MMA2
                 //{"_time":1.5,"_lineIndex":1446,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
                 //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
-                BeatmapObstacle wallA = new BeatmapObstacle(2, 1446, 595141, 1, 2596);
+                IObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
 
                 wallPlacement.queuedData = wallA;
                 wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
@@ -180,14 +183,14 @@ namespace Tests
         [Test]
         public void MirrorWallNE()
         {
-            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle);
-            if (container is ObstaclesContainer wallsContainer)
+            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
+            if (container is ObstacleGridContainer wallsContainer)
             {
                 Transform root = wallsContainer.transform.root;
                 ObstaclePlacement wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
                 wallPlacement.RefreshVisuals();
 
-                BeatmapObstacle wallA = new BeatmapObstacle(2, BeatmapNote.LineIndexFarLeft, BeatmapObstacle.ValueFullBarrier, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
+                IObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
 
                 wallPlacement.queuedData = wallA;
                 wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
@@ -198,11 +201,11 @@ namespace Tests
                 SelectionController.Select(wallA);
 
                 _mirror.Mirror();
-                WallTest.CheckWall(wallsContainer, 0, 2, BeatmapNote.LineIndexMidRight, BeatmapObstacle.ValueFullBarrier, 1, 2, JSON.Parse("{\"_position\": [-0.5, 0]}"));
+                WallTest.CheckWall(wallsContainer, 0, 2, (int)GridX.MiddleRight, (int)ObstacleType.Full, 1, 2, JSON.Parse("{\"_position\": [-0.5, 0]}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                WallTest.CheckWall(wallsContainer, 0, 2, BeatmapNote.LineIndexFarLeft, BeatmapObstacle.ValueFullBarrier, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
+                WallTest.CheckWall(wallsContainer, 0, 2, (int)GridX.Left, (int)ObstacleType.Full, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
             }
         }
 
@@ -212,13 +215,13 @@ namespace Tests
             RotationCallbackController rotationCb = Object.FindObjectOfType<RotationCallbackController>();
             rotationCb.Start();
 
-            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
-            if (container is EventsContainer eventsContainer)
+            BeatmapObjectContainerCollection container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            if (container is EventGridContainer eventsContainer)
             {
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                MapEvent eventA = new MapEvent(2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
+                IEvent eventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, (int)IEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
 
                 eventPlacement.queuedData = eventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -228,11 +231,11 @@ namespace Tests
                 SelectionController.Select(eventA);
 
                 _mirror.Mirror();
-                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(-45), JSON.Parse("{\"_rotation\": -33}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)IEvent.LightValueToRotationDegrees.ToList().IndexOf(-45), JSON.Parse("{\"_rotation\": -33}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                EventTest.CheckEvent(eventsContainer, 0, 2, MapEvent.EventTypeLateRotation, MapEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
+                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)IEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
             }
         }
     }

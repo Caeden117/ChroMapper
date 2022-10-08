@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 
@@ -19,12 +22,12 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
         this.easing = easing;
     }
 
-    public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent;
+    public override bool IsEventValidForPass(IEvent @event) => @event.IsLightEvent(EnvironmentInfoHelper.GetName());
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
-        EventsContainer.PropMode propMode, JSONNode propID)
+    public override IEnumerable<IEvent> StrobePassForLane(IEnumerable<IEvent> original, int type,
+        EventGridContainer.PropMode propMode, JSONNode propID)
     {
-        var generatedObjects = new List<MapEvent>();
+        var generatedObjects = new List<IEvent>();
 
         var startTime = original.First().Time;
         var endTime = original.Last().Time;
@@ -35,18 +38,18 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
         foreach (var e in original)
         {
             // Might as well be fancy and add support for Chroma 2.0 gradients
-            if (e.LightGradient != null)
+            if (e.CustomLightGradient != null)
             {
-                colorPoints.Add(e.Time, e.LightGradient.StartColor);
-                colorPoints.Add(e.Time + e.LightGradient.Duration, e.LightGradient.EndColor);
+                colorPoints.Add(e.Time, e.CustomLightGradient.StartColor);
+                colorPoints.Add(e.Time + e.CustomLightGradient.Duration, e.CustomLightGradient.EndColor);
             }
-            else if (e.IsChromaEvent) // This already checks customData, so if this is true then customData exists.
+            else if (e.CustomColor != null) // This already checks customData, so if this is true then customData exists.
             {
-                colorPoints.Add(e.Time, e.CustomColor);
+                colorPoints.Add(e.Time, (Color)e.CustomColor);
             }
-            else if (e.Value == MapEvent.LightValueOff)
+            else if (e.IsOff)
             {
-                var lastColor = colorPoints.Where(x => x.Key < e.Time).LastOrDefault();
+                var lastColor = colorPoints.LastOrDefault(x => x.Key < e.Time);
 
                 colorPoints.Add(e.Time, !lastColor.Equals(default(KeyValuePair<float, Color>))
                     ? lastColor.Value.WithAlpha(0)
@@ -54,7 +57,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             }
         }
 
-        if (colorPoints.Count < 2) return Enumerable.Empty<MapEvent>();
+        if (colorPoints.Count < 2) return Enumerable.Empty<IEvent>();
 
         var distanceInBeats = endTime - startTime;
 
@@ -72,7 +75,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var localDistance = Mathf.Clamp(i / precision, 0, distanceInBeats);
             var newTime = startTime + localDistance;
 
-            var anyLast = colorPoints.Where(x => x.Key <= newTime).LastOrDefault();
+            var anyLast = colorPoints.LastOrDefault(x => x.Key <= newTime);
             if (anyLast.Key != lastPoint.Key)
             {
                 var nextPoints = colorPoints.Where(x => x.Key > newTime);
@@ -88,12 +91,11 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var lerp = easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
 
-            var data = new MapEvent(newTime, type, value, new JSONObject());
-            data.CustomColor = color;
+            var data = new V3BasicEvent(newTime, type, value, 1, new JSONObject()) { CustomColor = color };
 
-            if (propMode != EventsContainer.PropMode.Off)
+            if (propMode != EventGridContainer.PropMode.Off)
             {
-                data.CustomLightID = propID;
+                data.CustomLightID = new int[] { propID };
             }
 
             generatedObjects.Add(data);
@@ -108,13 +110,19 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
     {
         return colorValue switch
         {
-            MapEvent.LightValueBlueON => MapEvent.LightValueRedON,
-            MapEvent.LightValueBlueFlash => MapEvent.LightValueRedFlash,
-            MapEvent.LightValueBlueFade => MapEvent.LightValueRedFade,
-            MapEvent.LightValueRedON => MapEvent.LightValueBlueON,
-            MapEvent.LightValueRedFlash => MapEvent.LightValueBlueFlash,
-            MapEvent.LightValueRedFade => MapEvent.LightValueBlueFade,
-            _ => MapEvent.LightValueOff,
+            (int)LightValue.BlueOn => (int)LightValue.RedOn,
+            (int)LightValue.BlueFlash => (int)LightValue.RedFlash,
+            (int)LightValue.BlueFade => (int)LightValue.RedFade,
+            (int)LightValue.BlueTransition => (int)LightValue.RedTransition,
+            (int)LightValue.RedOn => (int)LightValue.BlueOn,
+            (int)LightValue.RedFlash => (int)LightValue.BlueFlash,
+            (int)LightValue.RedFade => (int)LightValue.BlueFade,
+            (int)LightValue.RedTransition => (int)LightValue.BlueTransition,
+            (int)LightValue.WhiteOn => (int)LightValue.WhiteOn,
+            (int)LightValue.WhiteFlash => (int)LightValue.WhiteFlash,
+            (int)LightValue.WhiteFade => (int)LightValue.WhiteFade,
+            (int)LightValue.WhiteTransition => (int)LightValue.WhiteTransition,
+            _ => (int)LightValue.Off,
         };
     }
 }

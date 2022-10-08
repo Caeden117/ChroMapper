@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -34,7 +37,7 @@ public class DifficultySelect : MonoBehaviour
     private bool loading;
     private DifficultyRow selected;
 
-    public BeatSaberMap CurrentDiff => diffs[selected.Name].Map;
+    public IDifficulty CurrentDiff => diffs[selected.Name].Map;
 
     private BeatSaberSong Song => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
@@ -139,7 +142,7 @@ public class DifficultySelect : MonoBehaviour
         row.ShowDirtyObjects(localDiff);
     }
 
-    private BeatSaberMap TryGetExistingMapFromDiff(DifficultySettings diff)
+    private IDifficulty TryGetExistingMapFromDiff(DifficultySettings diff)
     {
         try
         {
@@ -176,8 +179,8 @@ public class DifficultySelect : MonoBehaviour
 
         var map = TryGetExistingMapFromDiff(localDiff) ?? (
             Settings.Instance.Load_MapV3 ?
-            new BeatSaberMapV3 { MainNode = new JSONObject(), Version = "3.0.0" } :
-            new BeatSaberMap { MainNode = new JSONObject() });
+            (IDifficulty)new V3Difficulty { MainNode = new JSONObject() } :
+            new V2Difficulty { MainNode = new JSONObject() });
         var oldPath = map.DirectoryAndFile;
 
         diff.UpdateName();

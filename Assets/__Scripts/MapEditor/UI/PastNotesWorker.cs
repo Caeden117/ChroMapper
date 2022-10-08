@@ -1,12 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Appearances;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Base;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PastNotesWorker : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
-    [SerializeField] private NotesContainer notesContainer;
+    [SerializeField] private NoteGridContainer noteGridContainer;
     [SerializeField] private GameObject gridNotePrefab;
     [SerializeField] private BeatmapObjectCallbackController callbackController;
     [SerializeField] private NoteAppearanceSO noteAppearance;
@@ -15,10 +20,10 @@ public class PastNotesWorker : MonoBehaviour
     private readonly Dictionary<int, Dictionary<GameObject, Image>> instantiatedNotes =
         new Dictionary<int, Dictionary<GameObject, Image>>();
 
-    private readonly Dictionary<int, BeatmapNote>
-        lastByType = new Dictionary<int, BeatmapNote>(); //Used to improve performance
+    private readonly Dictionary<int, INote>
+        lastByType = new Dictionary<int, INote>(); //Used to improve performance
 
-    private readonly List<BeatmapObject> lastGroup = new List<BeatmapObject>();
+    private readonly List<IObject> lastGroup = new List<IObject>();
     private Canvas canvas;
 
     private Transform notes;
@@ -59,16 +64,16 @@ public class PastNotesWorker : MonoBehaviour
         var time = 0f;
         lastGroup.Clear();
 
-        foreach (var note in notesContainer.LoadedObjects)
+        foreach (var note in noteGridContainer.LoadedObjects)
         {
             if (time < note.Time && note.Time < atsc.CurrentBeat)
             {
                 time = note.Time;
                 lastGroup.Clear();
-                if ((note as BeatmapNote).Type != BeatmapNote.NoteTypeBomb)
+                if ((note as INote).Type != (int)NoteType.Bomb)
                     lastGroup.Add(note);
             }
-            else if (time == note.Time && (note as BeatmapNote).Type != BeatmapNote.NoteTypeBomb)
+            else if (time == note.Time && (note as INote).Type != (int)NoteType.Bomb)
             {
                 lastGroup.Add(note);
             }
@@ -77,9 +82,9 @@ public class PastNotesWorker : MonoBehaviour
         foreach (var note in lastGroup) NotePassedThreshold(false, 0, note);
     }
 
-    private void NotePassedThreshold(bool natural, int id, BeatmapObject obj)
+    private void NotePassedThreshold(bool natural, int id, IObject obj)
     {
-        var note = obj as BeatmapNote;
+        var note = obj as INote;
 
         if (!instantiatedNotes.ContainsKey(note.Type))
             instantiatedNotes.Add(note.Type, new Dictionary<GameObject, Image>());
@@ -90,13 +95,13 @@ public class PastNotesWorker : MonoBehaviour
                 child.Key.SetActive(false);
         }
 
-        if (note.Type == BeatmapNote.NoteTypeBomb) return;
+        if (note.Type == (int)NoteType.Bomb) return;
 
-        float gridPosX = note.LineIndex, gridPosY = note.LineLayer;
+        float gridPosX = note.PosX, gridPosY = note.PosY;
 
-        if (note.CustomData?.HasKey("_position") ?? false)
+        if (note.CustomCoordinate != null)
         {
-            Vector2 pos = note.CustomData["_position"];
+            var pos = (Vector2)note.CustomCoordinate;
             gridPosX = pos.x + 2f;
             gridPosY = pos.y;
         }
@@ -141,12 +146,12 @@ public class PastNotesWorker : MonoBehaviour
         //transform1.rotation = o.transform.rotation; //This code breaks when using 360 maps; use local rotation instead.
         transform1.localEulerAngles =
             Vector3.forward *
-            BeatmapNoteContainer.Directionalize(note)
+            NoteContainer.Directionalize(note)
                 .z; //Sets the rotation of the image to match the same rotation as the block
-        img.color = note.Type == BeatmapNote.NoteTypeA ? noteAppearance.RedColor : noteAppearance.BlueColor;
+        img.color = note.Type == (int)NoteType.Red ? noteAppearance.RedColor : noteAppearance.BlueColor;
 
         var dotEnabled =
-            note.CutDirection == BeatmapNote.NoteCutDirectionAny; //Checks to see if the Dot is visible on the block
+            note.CutDirection == (int)NoteCutDirection.Any; //Checks to see if the Dot is visible on the block
 
         if (dotEnabled) g.transform.GetChild(0).gameObject.SetActive(false);
         else g.transform.GetChild(1).gameObject.SetActive(false);

@@ -1,4 +1,5 @@
 ﻿using System;
+using Beatmap.Containers;
 using UnityEngine;
 
 public class Track : MonoBehaviour
@@ -25,7 +26,7 @@ public class Track : MonoBehaviour
         TimeChanged?.Invoke();
     }
 
-    public void AttachContainer(BeatmapObjectContainer obj)
+    public void AttachContainer(ObjectContainer obj)
     {
         UpdateMaterialRotation(obj);
         if (obj.transform.parent == ObjectParentTransform) return;
@@ -33,8 +34,8 @@ public class Track : MonoBehaviour
         obj.AssignTrack(this);
     }
 
-    public void UpdateMaterialRotation(BeatmapObjectContainer obj)
+    public void UpdateMaterialRotation(ObjectContainer obj)
     {
-        if (obj is BeatmapObstacleContainer || obj is BeatmapNoteContainer) obj.SetRotation(RotationValue.y);
+        if (obj is ObstacleContainer || obj is NoteContainer) obj.SetRotation(RotationValue.y);
     }
 }

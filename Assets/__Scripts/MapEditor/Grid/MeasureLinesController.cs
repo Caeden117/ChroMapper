@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MeasureLinesController : MonoBehaviour
 {
@@ -11,7 +15,7 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform noteGrid;
     [SerializeField] private Transform frontNoteGridScaling;
     [SerializeField] private Transform measureLineGrid;
-    [SerializeField] private BPMChangesContainer bpmChangesContainer;
+    [FormerlySerializedAs("bpmChangesContainer")] [SerializeField] private BPMChangeGridContainer bpmChangeGridContainer;
     [SerializeField] private GridChild measureLinesGridChild;
     [SerializeField] private BookmarkRenderingController bookmarkRenderingController;
     private readonly List<(float, TextMeshProUGUI)> measureTextsByBeat = new List<(float, TextMeshProUGUI)>();
@@ -57,8 +61,8 @@ public class MeasureLinesController : MonoBehaviour
         var modifiedBeats = 0;
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
-        var allBpmChanges = new List<BeatmapBPMChange> { new BeatmapBPMChange(songBpm, 0) };
-        allBpmChanges.AddRange(bpmChangesContainer.LoadedObjects.Cast<BeatmapBPMChange>());
+        var allBpmChanges = new List<IBpmEvent> { BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (IBpmEvent)new V3BpmChange(songBpm, 0) : new V2BpmChange(songBpm, 0) };
+        allBpmChanges.AddRange(bpmChangeGridContainer.LoadedObjects.Cast<IBpmEvent>());
 
         while (jsonBeat <= rawBeatsInSong)
         {

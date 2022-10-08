@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Appearances;
+using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.Base;
+using Beatmap.V3;
 using UnityEngine;
 
 public class MirrorSelection : MonoBehaviour
@@ -11,12 +16,12 @@ public class MirrorSelection : MonoBehaviour
 
     private readonly Dictionary<int, int> cutDirectionToMirrored = new Dictionary<int, int>
     {
-        {BeatmapNote.NoteCutDirectionDownLeft, BeatmapNote.NoteCutDirectionDownRight},
-        {BeatmapNote.NoteCutDirectionDownRight, BeatmapNote.NoteCutDirectionDownLeft},
-        {BeatmapNote.NoteCutDirectionUpLeft, BeatmapNote.NoteCutDirectionUpRight},
-        {BeatmapNote.NoteCutDirectionUpRight, BeatmapNote.NoteCutDirectionUpLeft},
-        {BeatmapNote.NoteCutDirectionRight, BeatmapNote.NoteCutDirectionLeft},
-        {BeatmapNote.NoteCutDirectionLeft, BeatmapNote.NoteCutDirectionRight}
+        {(int)NoteCutDirection.DownLeft, (int)NoteCutDirection.DownRight},
+        {(int)NoteCutDirection.DownRight, (int)NoteCutDirection.DownLeft},
+        {(int)NoteCutDirection.UpLeft, (int)NoteCutDirection.UpRight},
+        {(int)NoteCutDirection.UpRight, (int)NoteCutDirection.UpLeft},
+        {(int)NoteCutDirection.Right, (int)NoteCutDirection.Left},
+        {(int)NoteCutDirection.Left, (int)NoteCutDirection.Right}
     };
 
     public void MirrorTime()
@@ -33,7 +38,7 @@ public class MirrorSelection : MonoBehaviour
         var allActions = new List<BeatmapAction>();
         foreach (var con in SelectionController.SelectedObjects)
         {
-            var edited = BeatmapObject.GenerateCopy(con);
+            var edited = BeatmapFactory.Clone(con);
             edited.Time = start + (end - con.Time);
             allActions.Add(new BeatmapObjectModifiedAction(edited, con, con, "e", true));
         }
@@ -51,15 +56,15 @@ public class MirrorSelection : MonoBehaviour
             return;
         }
 
-        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.ObjectType.Event);
+        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         var allActions = new List<BeatmapAction>();
         foreach (var con in SelectionController.SelectedObjects)
         {
-            var original = BeatmapObject.GenerateCopy(con);
-            if (con is BeatmapObstacle obstacle && moveNotes)
+            var original = BeatmapFactory.Clone(con);
+            if (con is IObstacle obstacle && moveNotes)
             {
                 var precisionWidth = obstacle.Width >= 1000;
-                var state = obstacle.LineIndex;
+                var state = obstacle.PosX;
                 if (obstacle.CustomData != null) //Noodle Extensions
                 {
                     if (obstacle.CustomData.HasKey("_position"))
@@ -105,39 +110,39 @@ public class MirrorSelection : MonoBehaviour
                         newIndex -= 1000;
                     else
                         newIndex += 1000;
-                    obstacle.LineIndex = newIndex;
+                    obstacle.PosX = newIndex;
                 }
                 else // state > -1000 || state < 1000 assumes no precision width
                 {
                     var mirrorLane = ((state - 2) * -1) + 2; //flip lineIndex
-                    obstacle.LineIndex = mirrorLane - obstacle.Width; //adjust for wall width
+                    obstacle.PosX = mirrorLane - obstacle.Width; //adjust for wall width
                 }
             }
-            else if (con is BeatmapNote note)
+            else if (con is INote note)
             {
-                if (note is BeatmapColorNote cnote) cnote.AngleOffset *= -1;
+                if (note is V3ColorNote cnote) cnote.AngleOffset *= -1;
                 if (moveNotes)
                 {
                     if (note.CustomData != null)
                     {
                         // NE Precision rotation
-                        if (note.CustomData.HasKey("_position"))
+                        if (note.CustomCoordinate != null)
                         {
-                            Vector2 oldPosition = note.CustomData["_position"];
+                            Vector2 oldPosition = (Vector2)note.CustomCoordinate;
                             var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            note.CustomData["_position"] = flipped;
+                            note.CustomCoordinate = flipped;
                         }
                         
                         // NE precision cut direction
-                        if (note.CustomData.HasKey("_cutDirection"))
+                        if (note.CustomDirection != null)
                         {
-                            var cutDirection = note.CustomData["_cutDirection"].AsFloat;
-                            note.CustomData["_cutDirection"] = cutDirection * -1;
+                            var cutDirection = note.CustomDirection;
+                            note.CustomDirection = cutDirection * -1;
                         }
                     }
                     else
                     {
-                        var state = note.LineIndex; // flip line index
+                        var state = note.PosX; // flip line index
                         if (state > 3 || state < 0) // precision case
                         {
                             var newIndex = state;
@@ -152,40 +157,40 @@ public class MirrorSelection : MonoBehaviour
                             else
                                 newIndex += 1000;
 
-                            note.LineIndex = newIndex;
+                            note.PosX = newIndex;
                         }
                         else
                         {
                             var mirrorLane = (int)(((state - 1.5f) * -1) + 1.5f);
-                            note.LineIndex = mirrorLane;
+                            note.PosX = mirrorLane;
                         }
                     }
                 }
 
                 //flip colors
-                if (note.Type != BeatmapNote.NoteTypeBomb)
+                if (note.Type != (int)NoteType.Bomb)
                 {
-                    note.Type = note.Type == BeatmapNote.NoteTypeA
-                        ? BeatmapNote.NoteTypeB
-                        : BeatmapNote.NoteTypeA;
+                    note.Type = note.Type == (int)NoteType.Red
+                        ? (int)NoteType.Blue
+                        : (int)NoteType.Red;
 
                     //flip cut direction horizontally
                     if (moveNotes && cutDirectionToMirrored.ContainsKey(note.CutDirection))
                         note.CutDirection = cutDirectionToMirrored[note.CutDirection];
                 }
             }
-            else if (con is MapEvent e)
+            else if (con is IEvent e)
             {
-                if (e.IsRotationEvent)
+                if (e.IsLaneRotationEvent())
                 {
-                    if (e.CustomData != null && e.CustomData.HasKey("_rotation"))
-                        e.CustomData["_rotation"] = e.CustomData["_rotation"].AsFloat * -1;
+                    if (e.CustomLaneRotation != null)
+                        e.CustomLaneRotation = e.CustomLaneRotation * -1;
 
                     var rotation = e.GetRotationDegreeFromValue();
                     if (rotation != null)
                     {
-                        if (e.Value >= 0 && e.Value < MapEvent.LightValueToRotationDegrees.Length)
-                            e.Value = MapEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
+                        if (e.Value >= 0 && e.Value < IEvent.LightValueToRotationDegrees.Length)
+                            e.Value = IEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
                         else if (e.Value >= 1000 && e.Value <= 1720) //Invert Mapping Extensions rotation
                             e.Value = 1720 - (e.Value - 1000);
                     }
@@ -194,26 +199,26 @@ public class MirrorSelection : MonoBehaviour
                 }
                 else
                 {
-                    if (e.LightGradient != null)
+                    if (e.CustomLightGradient != null)
                     {
-                        var startColor = e.LightGradient.StartColor;
-                        e.LightGradient.StartColor = e.LightGradient.EndColor;
-                        e.LightGradient.EndColor = startColor;
+                        var startColor = e.CustomLightGradient.StartColor;
+                        e.CustomLightGradient.StartColor = e.CustomLightGradient.EndColor;
+                        e.CustomLightGradient.EndColor = startColor;
                     }
 
-                    if (e.IsUtilityEvent) continue;
-                    if (moveNotes && e.IsPropogationEvent && events.EventTypeToPropagate == e.Type &&
-                        events.PropagationEditing == EventsContainer.PropMode.Prop)
+                    if (!e.IsLightEvent(EnvironmentInfoHelper.GetName())) continue;
+                    if (moveNotes && e.IsPropagation && events.EventTypeToPropagate == e.Type &&
+                        events.PropagationEditing == EventGridContainer.PropMode.Prop)
                     {
-                        var mirroredIdx = events.EventTypePropagationSize - e.PropId - 1;
-                        e.CustomData["_lightID"] = labels.PropIdToLightIdsJ(e.Type, mirroredIdx);
+                        var mirroredIdx = events.EventTypePropagationSize - (e.CustomPropID ?? 0) - 1;
+                        e.CustomLightID = new int[] { labels.PropIdToLightIdsJ(e.Type,  mirroredIdx) };
                     }
-                    else if (moveNotes && e.IsLightIdEvent && events.EventTypeToPropagate == e.Type &&
-                             events.PropagationEditing == EventsContainer.PropMode.Light)
+                    else if (moveNotes && e.IsLightID && events.EventTypeToPropagate == e.Type &&
+                             events.PropagationEditing == EventGridContainer.PropMode.Light)
                     {
-                        var idx = labels.LightIDToEditor(e.Type, e.LightId[0]);
+                        var idx = labels.LightIDToEditor(e.Type, e.CustomLightID[0]);
                         var mirroredIdx = events.EventTypePropagationSize - idx - 1;
-                        e.CustomData["_lightID"] = labels.EditorToLightID(e.Type, mirroredIdx);
+                        e.CustomLightID = new int[] { labels.EditorToLightID(e.Type, mirroredIdx) };
                     }
 
                     if (e.Value > 4 && e.Value <= 8) e.Value -= 4;
@@ -223,44 +228,44 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (Settings.Instance.Load_MapV3)
             {
-                if (con is BeatmapArc arc)
+                if (con is IArc arc)
                 {
                     if (moveNotes)
                     {
-                        arc.X = Mathf.RoundToInt(((arc.X - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(arc.Direction))
-                            arc.Direction = cutDirectionToMirrored[arc.Direction];
+                        arc.PosX = Mathf.RoundToInt(((arc.PosX - 1.5f) * -1) + 1.5f);
+                        if (cutDirectionToMirrored.ContainsKey(arc.CutDirection))
+                            arc.CutDirection = cutDirectionToMirrored[arc.CutDirection];
 
-                        arc.TailX = Mathf.RoundToInt(((arc.TailX - 1.5f) * -1) + 1.5f);
+                        arc.TailPosX = Mathf.RoundToInt(((arc.TailPosX - 1.5f) * -1) + 1.5f);
                         if (cutDirectionToMirrored.ContainsKey(arc.TailCutDirection))
                             arc.TailCutDirection = cutDirectionToMirrored[arc.TailCutDirection];
                     }
-                    arc.Color = arc.Color == BeatmapNote.NoteTypeA
-                        ? BeatmapNote.NoteTypeB
-                        : BeatmapNote.NoteTypeA;
+                    arc.Color = arc.Color == (int)NoteColor.Blue
+                        ? (int)NoteColor.Red
+                        : (int)NoteColor.Blue;
 
                 }
-                else if (con is BeatmapChain chain)
+                else if (con is IChain chain)
                 {
                     if (moveNotes)
                     {
-                        chain.X = Mathf.RoundToInt(((chain.X - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(chain.Direction))
-                            chain.Direction = cutDirectionToMirrored[chain.Direction];
+                        chain.PosX = Mathf.RoundToInt(((chain.PosX - 1.5f) * -1) + 1.5f);
+                        if (cutDirectionToMirrored.ContainsKey(chain.CutDirection))
+                            chain.CutDirection = cutDirectionToMirrored[chain.CutDirection];
 
-                        chain.TailX = Mathf.RoundToInt(((chain.TailX - 1.5f) * -1) + 1.5f);
+                        chain.TailPosX = Mathf.RoundToInt(((chain.TailPosX - 1.5f) * -1) + 1.5f);
                     }
-                    chain.Color = chain.Color == BeatmapNote.NoteTypeA
-                        ? BeatmapNote.NoteTypeB
-                        : BeatmapNote.NoteTypeA;
+                    chain.Color = chain.Color == (int)NoteColor.Blue
+                        ? (int)NoteColor.Red
+                        : (int)NoteColor.Blue;
                 }
             }
 
             allActions.Add(new BeatmapObjectModifiedAction(con, con, original, "e", true));
         }
 
-        foreach (var unique in SelectionController.SelectedObjects.DistinctBy(x => x.BeatmapType))
-            BeatmapObjectContainerCollection.GetCollectionForType(unique.BeatmapType).RefreshPool(true);
+        foreach (var unique in SelectionController.SelectedObjects.DistinctBy(x => x.ObjectType))
+            BeatmapObjectContainerCollection.GetCollectionForType(unique.ObjectType).RefreshPool(true);
         BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true,
             "Mirrored a selection of objects."));
     }

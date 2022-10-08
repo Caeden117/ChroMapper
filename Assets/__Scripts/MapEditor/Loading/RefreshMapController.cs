@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Beatmap.Base;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +13,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
     [SerializeField] private TMP_FontAsset moreOptionsFontAsset;
     [SerializeField] private TMP_FontAsset thingYouCanRefreshFontAsset;
     private BeatSaberSong.DifficultyBeatmap diff;
-    private BeatSaberMap map;
+    private IDifficulty map;
     private BeatSaberSong song;
 
     private void Start()
@@ -78,8 +79,8 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map.CustomEvents));
         if ((notes || full) && Settings.Instance.Load_MapV3)
         {
-            yield return StartCoroutine(loader.LoadObjects((map as BeatSaberMapV3).Arcs));
-            yield return StartCoroutine(loader.LoadObjects((map as BeatSaberMapV3).Chains));
+            yield return StartCoroutine(loader.LoadObjects(map.Arcs));
+            yield return StartCoroutine(loader.LoadObjects(map.Chains));
         }
         if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;
         tracksManager.RefreshTracks();

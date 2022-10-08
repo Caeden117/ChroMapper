@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Beatmap.Base;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class BeatSaberSongContainer : MonoBehaviour
@@ -6,7 +7,7 @@ public class BeatSaberSongContainer : MonoBehaviour
     [FormerlySerializedAs("song")] public BeatSaberSong Song;
     [FormerlySerializedAs("difficultyData")] public BeatSaberSong.DifficultyBeatmap DifficultyData;
     [FormerlySerializedAs("loadedSong")] public AudioClip LoadedSong;
-    [FormerlySerializedAs("map")] public BeatSaberMap Map;
+    [FormerlySerializedAs("map")] public IDifficulty Map;
     public static BeatSaberSongContainer Instance { get; private set; }
 
     private void Awake()

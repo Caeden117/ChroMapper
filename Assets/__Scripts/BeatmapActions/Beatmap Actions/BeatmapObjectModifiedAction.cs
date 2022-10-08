@@ -1,19 +1,22 @@
-﻿public class BeatmapObjectModifiedAction : BeatmapAction
+﻿using Beatmap.Helper;
+using Beatmap.Base;
+
+public class BeatmapObjectModifiedAction : BeatmapAction
 {
     private readonly bool addToSelection;
     private readonly BeatmapObjectContainerCollection collection;
-    private readonly BeatmapObject editedData;
+    private readonly IObject editedData;
 
-    private readonly BeatmapObject editedObject;
-    private readonly BeatmapObject originalData;
-    private readonly BeatmapObject originalObject;
+    private readonly IObject editedObject;
+    private readonly IObject originalData;
+    private readonly IObject originalObject;
 
-    public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject originalObject, BeatmapObject originalData,
+    public BeatmapObjectModifiedAction(IObject edited, IObject originalObject, IObject originalData,
         string comment = "No comment.", bool keepSelection = false) : base(new[] { edited }, comment)
     {
-        collection = BeatmapObjectContainerCollection.GetCollectionForType(originalObject.BeatmapType);
+        collection = BeatmapObjectContainerCollection.GetCollectionForType(originalObject.ObjectType);
         editedObject = edited;
-        editedData = BeatmapObject.GenerateCopy(edited);
+        editedData = BeatmapFactory.Clone(edited);
 
         this.originalData = originalData;
         this.originalObject = originalObject;

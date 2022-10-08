@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V3;
 using SimpleJSON;
 
 public class StrobeLightingPass : StrobeGeneratorPass
@@ -25,12 +28,12 @@ public class StrobeLightingPass : StrobeGeneratorPass
         easeValue = easingValueSwitch;
     }
 
-    public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent && !@event.IsLegacyChromaEvent;
+    public override bool IsEventValidForPass(IEvent @event) => @event.IsLightEvent(EnvironmentInfoHelper.GetName()) && !@event.IsLegacyChroma;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
-        EventsContainer.PropMode propMode, JSONNode propID)
+    public override IEnumerable<IEvent> StrobePassForLane(IEnumerable<IEvent> original, int type,
+        EventGridContainer.PropMode propMode, JSONNode propID)
     {
-        var generatedObjects = new List<MapEvent>();
+        var generatedObjects = new List<IEvent>();
 
         var startTime = original.First().Time;
         var endTime = original.Last().Time;
@@ -49,15 +52,15 @@ public class StrobeLightingPass : StrobeGeneratorPass
 
         var distanceInBeats = endTime - startTime;
         var originalDistance = distanceInBeats;
-        MapEvent lastPassed = null;
+        IEvent lastPassed = null;
 
         while (distanceInBeats >= 0)
         {
             if (typeIndex >= alternatingTypes.Count) typeIndex = 0;
 
-            var any = original.Where(x => x.Time <= endTime - distanceInBeats).LastOrDefault();
-            if (any != lastPassed && dynamic && MapEvent.IsBlueEventFromValue(any.Value) !=
-                MapEvent.IsBlueEventFromValue(alternatingTypes[typeIndex]))
+            var any = original.LastOrDefault(x => x.Time <= endTime - distanceInBeats);
+            if (any != lastPassed && dynamic && LightEventHelper.IsBlueFromValue(any.Value) !=
+                LightEventHelper.IsBlueFromValue(alternatingTypes[typeIndex]))
             {
                 lastPassed = any;
                 for (var i = 0; i < alternatingTypes.Count; i++)
@@ -75,11 +78,11 @@ public class StrobeLightingPass : StrobeGeneratorPass
                 ? (easingFunc(progress) * floatValueDiff) + startFloatValue
                 : (progress * floatValueDiff) + startFloatValue;
 
-            var data = new MapEvent(newTime, type, value, null, newFloatValue);
-            if (propMode != EventsContainer.PropMode.Off)
+            var data = new V3BasicEvent(newTime, type, value, newFloatValue);
+            if (propMode != EventGridContainer.PropMode.Off)
             {
                 data.CustomData = new JSONObject();
-                data.CustomLightID = propID;
+                data.CustomLightID = new int[] { propID };
             }
 
             generatedObjects.Add(data);
@@ -97,13 +100,19 @@ public class StrobeLightingPass : StrobeGeneratorPass
     {
         return colorValue switch
         {
-            MapEvent.LightValueBlueON => MapEvent.LightValueRedON,
-            MapEvent.LightValueBlueFlash => MapEvent.LightValueRedFlash,
-            MapEvent.LightValueBlueFade => MapEvent.LightValueRedFade,
-            MapEvent.LightValueRedON => MapEvent.LightValueBlueON,
-            MapEvent.LightValueRedFlash => MapEvent.LightValueBlueFlash,
-            MapEvent.LightValueRedFade => MapEvent.LightValueBlueFade,
-            _ => MapEvent.LightValueOff,
+            (int)LightValue.BlueOn => (int)LightValue.RedOn,
+            (int)LightValue.BlueFlash => (int)LightValue.RedFlash,
+            (int)LightValue.BlueFade => (int)LightValue.RedFade,
+            (int)LightValue.BlueTransition => (int)LightValue.RedTransition,
+            (int)LightValue.RedOn => (int)LightValue.BlueOn,
+            (int)LightValue.RedFlash => (int)LightValue.BlueFlash,
+            (int)LightValue.RedFade => (int)LightValue.BlueFade,
+            (int)LightValue.RedTransition => (int)LightValue.BlueTransition,
+            (int)LightValue.WhiteOn => (int)LightValue.WhiteOn,
+            (int)LightValue.WhiteFlash => (int)LightValue.WhiteFlash,
+            (int)LightValue.WhiteFade => (int)LightValue.WhiteFade,
+            (int)LightValue.WhiteTransition => (int)LightValue.WhiteTransition,
+            _ => (int)LightValue.Off,
         };
     }
 }

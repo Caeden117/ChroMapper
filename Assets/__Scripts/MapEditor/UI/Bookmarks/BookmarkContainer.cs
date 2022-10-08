@@ -1,4 +1,5 @@
 ﻿using System;
+using Beatmap.Base.Customs;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,10 +7,10 @@ using UnityEngine.UI;
 public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     private BookmarkManager manager;
-    public BeatmapBookmark Data { get; private set; }
+    public IBookmark Data { get; private set; }
 
 
-    public void Init(BookmarkManager manager, BeatmapBookmark data)
+    public void Init(BookmarkManager manager, IBookmark data)
     {
         if (Data != null) return;
         Data = data;

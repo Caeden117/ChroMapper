@@ -1,5 +1,9 @@
 ﻿using NUnit.Framework;
 using System.Collections;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V2;
 using Tests.Util;
 using UnityEngine.TestTools;
 
@@ -22,25 +26,25 @@ namespace Tests
         [Test]
         public void RefreshSpecialAngles()
         {
-            NotesContainer notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note) as NotesContainer;
+            NoteGridContainer noteGridContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer;
 
-            BeatmapNote noteA = new BeatmapNote
+            INote noteA = new V2Note
             {
                 Time = 14,
-                Type = BeatmapNote.NoteTypeA,
-                LineIndex = BeatmapNote.LineIndexFarLeft
+                Type = (int)NoteType.Red,
+                PosX = (int)GridX.Left
             };
-            notesContainer.SpawnObject(noteA);
-            BeatmapNoteContainer containerA = notesContainer.LoadedContainers[noteA] as BeatmapNoteContainer;
+            noteGridContainer.SpawnObject(noteA);
+            NoteContainer containerA = noteGridContainer.LoadedContainers[noteA] as NoteContainer;
 
-            BeatmapNote noteB = new BeatmapNote
+            INote noteB = new V2Note
             {
                 Time = 14,
-                Type = BeatmapNote.NoteTypeA,
-                LineIndex = BeatmapNote.LineIndexMidLeft
+                Type = (int)NoteType.Red,
+                PosX = (int)GridX.MiddleLeft
             };
-            notesContainer.SpawnObject(noteB);
-            BeatmapNoteContainer containerB = notesContainer.LoadedContainers[noteB] as BeatmapNoteContainer;
+            noteGridContainer.SpawnObject(noteB);
+            NoteContainer containerB = noteGridContainer.LoadedContainers[noteB] as NoteContainer;
 
             // These tests are based of the examples in this image
             // https://media.discordapp.net/attachments/443569023951568906/681978249139585031/unknown.png
@@ -48,79 +52,79 @@ namespace Tests
             // ◌◌◌◌
             // ◌→◌◌
             // ◌◌→◌
-            UpdateNote(containerA, BeatmapNote.LineIndexMidLeft, BeatmapNote.LineLayerMid, BeatmapNote.NoteCutDirectionRight);
-            UpdateNote(containerB, BeatmapNote.LineIndexMidRight, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionRight);
+            UpdateNote(containerA, (int)GridX.MiddleLeft, (int)GridY.Upper, (int)NoteCutDirection.Right);
+            UpdateNote(containerB, (int)GridX.MiddleRight, (int)GridY.Base, (int)NoteCutDirection.Right);
 
-            notesContainer.RefreshSpecialAngles(noteA, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteA, true, false);
             Assert.AreEqual(90, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(90, containerB.transform.localEulerAngles.z, 0.01);
 
             // ◌◌↙◌
             // ◌◌◌◌
             // ◌◌↙◌
-            UpdateNote(containerA, BeatmapNote.LineIndexMidRight, BeatmapNote.LineLayerTop, BeatmapNote.NoteCutDirectionDownLeft);
-            UpdateNote(containerB, BeatmapNote.LineIndexMidRight, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionDownLeft);
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, (int)NoteCutDirection.DownLeft);
+            UpdateNote(containerB, (int)GridX.MiddleRight, (int)GridY.Base, (int)NoteCutDirection.DownLeft);
 
-            notesContainer.RefreshSpecialAngles(noteA, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteA, true, false);
             Assert.AreEqual(315, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(315, containerB.transform.localEulerAngles.z, 0.01);
 
             // ◌◌↓◌
             // ◌◌◌◌
             // ◌↓◌◌
-            UpdateNote(containerA, BeatmapNote.LineIndexMidRight, BeatmapNote.LineLayerTop, BeatmapNote.NoteCutDirectionDown);
-            UpdateNote(containerB, BeatmapNote.LineIndexMidLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionDown);
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, (int)NoteCutDirection.Down);
+            UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, (int)NoteCutDirection.Down);
 
-            notesContainer.RefreshSpecialAngles(noteA, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteA, true, false);
             Assert.AreEqual(333.43, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(333.43, containerB.transform.localEulerAngles.z, 0.01);
 
             // ◌◌◌◌
             // ◌◌◌◌
             // ◌↓↓◌
-            UpdateNote(containerA, BeatmapNote.LineIndexMidRight, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionDown);
-            UpdateNote(containerB, BeatmapNote.LineIndexMidLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionDown);
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Base, (int)NoteCutDirection.Down);
+            UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, (int)NoteCutDirection.Down);
 
-            notesContainer.RefreshSpecialAngles(noteA, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteA, true, false);
             Assert.AreEqual(0, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(0, containerB.transform.localEulerAngles.z, 0.01);
 
             // ◌◌◌◌
             // ↙◌◌◌
             // ↙◌◌◌
-            UpdateNote(containerA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerMid, BeatmapNote.NoteCutDirectionDownLeft);
-            UpdateNote(containerB, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionDownLeft);
+            UpdateNote(containerA, (int)GridX.Left, (int)GridY.Upper, (int)NoteCutDirection.DownLeft);
+            UpdateNote(containerB, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.DownLeft);
 
-            notesContainer.RefreshSpecialAngles(noteA, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteA, true, false);
             Assert.AreEqual(315, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(315, containerB.transform.localEulerAngles.z, 0.01);
 
             // ◌◌◌◌
             // ◌◌◌◌
             // ↙◌◌↙
-            UpdateNote(containerA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionDownLeft);
-            UpdateNote(containerB, BeatmapNote.LineIndexFarRight, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionDownLeft);
+            UpdateNote(containerA, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.DownLeft);
+            UpdateNote(containerB, (int)GridX.Right, (int)GridY.Base, (int)NoteCutDirection.DownLeft);
 
-            notesContainer.RefreshSpecialAngles(noteA, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteA, true, false);
             Assert.AreEqual(315, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(315, containerB.transform.localEulerAngles.z, 0.01);
 
             // ◌◌◌◌
             // ↘◌◌◌
             // ◌◌↘◌
-            UpdateNote(containerA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerMid, BeatmapNote.NoteCutDirectionDownRight);
-            UpdateNote(containerB, BeatmapNote.LineIndexMidRight, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionDownRight);
+            UpdateNote(containerA, (int)GridX.Left, (int)GridY.Upper, (int)NoteCutDirection.DownRight);
+            UpdateNote(containerB, (int)GridX.MiddleRight, (int)GridY.Base, (int)NoteCutDirection.DownRight);
 
-            notesContainer.RefreshSpecialAngles(noteA, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteA, true, false);
             Assert.AreEqual(63.43, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(63.43, containerB.transform.localEulerAngles.z, 0.01);
 
             // Changing this note to be in another beat should stop the angles snapping
             noteA.Time = 13;
-            UpdateNote(containerA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerMid, BeatmapNote.NoteCutDirectionDownRight);
+            UpdateNote(containerA, (int)GridX.Left, (int)GridY.Upper, (int)NoteCutDirection.DownRight);
 
-            notesContainer.RefreshSpecialAngles(noteA, true, false);
-            notesContainer.RefreshSpecialAngles(noteB, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteA, true, false);
+            noteGridContainer.RefreshSpecialAngles(noteB, true, false);
             Assert.AreEqual(45, containerA.transform.localEulerAngles.z, 0.01);
             Assert.AreEqual(45, containerB.transform.localEulerAngles.z, 0.01);
 
@@ -128,33 +132,33 @@ namespace Tests
             noteA.Time = 14;
         }
 
-        private void UpdateNote(BeatmapNoteContainer container, int lineIndex, int lineLayer, int cutDirection)
+        private void UpdateNote(NoteContainer container, int PosX, int PosY, int cutDirection)
         {
-            BeatmapNote note = (BeatmapNote)container.ObjectData;
-            note.LineIndex = lineIndex;
-            note.LineLayer = lineLayer;
+            INote note = (INote)container.ObjectData;
+            note.PosX = PosX;
+            note.PosY = PosY;
             note.CutDirection = cutDirection;
             container.UpdateGridPosition();
-            container.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note);
+            container.transform.localEulerAngles = NoteContainer.Directionalize(note);
         }
 
         [Test]
         public void ShiftInTime()
         {
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note);
+            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             UnityEngine.Transform root = notesContainer.transform.root;
 
-            BeatmapNote noteA = new BeatmapNote
+            INote noteA = new V2Note
             {
                 Time = 2,
-                Type = BeatmapNote.NoteTypeA
+                Type = (int)NoteType.Red
             };
             notesContainer.SpawnObject(noteA);
 
-            BeatmapNote noteB = new BeatmapNote
+            INote noteB = new V2Note
             {
                 Time = 3,
-                Type = BeatmapNote.NoteTypeA
+                Type = (int)NoteType.Red
             };
             notesContainer.SpawnObject(noteB);
 

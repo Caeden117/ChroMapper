@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Beatmap.Base;
 using SimpleJSON;
 
 /// <summary>
@@ -13,7 +14,7 @@ public abstract class StrobeGeneratorPass
     /// </summary>
     /// <param name="event">An event that is considered to be included in the strobe generator pass.</param>
     /// <returns>Whether or not this particular event will be included in the strobe generator pass.</returns>
-    public abstract bool IsEventValidForPass(MapEvent @event);
+    public abstract bool IsEventValidForPass(IEvent @event);
 
     /// <summary>
     ///     Perform a strobe generator pass on any <see cref="MapEvent.Type" />.
@@ -23,6 +24,6 @@ public abstract class StrobeGeneratorPass
     /// </summary>
     /// <param name="original">The list of all valid events for this pass.</param>
     /// <returns>A new list of objects that will be created.</returns>
-    public abstract IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
-        EventsContainer.PropMode propMode, JSONNode propID);
+    public abstract IEnumerable<IEvent> StrobePassForLane(IEnumerable<IEvent> original, int type,
+        EventGridContainer.PropMode propMode, JSONNode propID);
 }

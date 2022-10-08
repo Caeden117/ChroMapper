@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Beatmap.Enums;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -140,7 +141,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     public void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        (BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note) as NotesContainer)
+        (BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer)
             .UpdateSwingArcVisualizer();
     }
 

@@ -1,9 +1,11 @@
-﻿public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedAction
-{
-    private readonly BeatmapObject conflictingObject;
+﻿using Beatmap.Base;
 
-    public BeatmapObjectModifiedWithConflictingAction(BeatmapObject edited, BeatmapObject originalObject,
-        BeatmapObject originalData, BeatmapObject conflicting, string comment = "No comment.") : base(edited,
+public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedAction
+{
+    private readonly IObject conflictingObject;
+
+    public BeatmapObjectModifiedWithConflictingAction(IObject edited, IObject originalObject,
+        IObject originalData, IObject conflicting, string comment = "No comment.") : base(edited,
         originalObject, originalData, comment) => conflictingObject = conflicting;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
@@ -11,7 +13,7 @@
         base.Undo(param);
         if (conflictingObject != null)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(conflictingObject.BeatmapType)
+            BeatmapObjectContainerCollection.GetCollectionForType(conflictingObject.ObjectType)
                 .SpawnObject(conflictingObject, false);
         }
     }
@@ -21,7 +23,7 @@
         base.Redo(param);
         if (conflictingObject != null)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(conflictingObject.BeatmapType)
+            BeatmapObjectContainerCollection.GetCollectionForType(conflictingObject.ObjectType)
                 .DeleteObject(conflictingObject, false);
         }
     }

@@ -1,6 +1,10 @@
 ﻿using NUnit.Framework;
 using System.Collections;
 using System.Linq;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V2.Customs;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -24,9 +28,9 @@ namespace Tests
 
         private static void CheckBPM(BeatmapObjectContainerCollection container, int idx, int time, int bpm)
         {
-            BeatmapObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BeatmapBPMChange>(newObjA);
-            if (newObjA is BeatmapBPMChange newNoteA)
+            IObject newObjA = container.LoadedObjects.Skip(idx).First();
+            Assert.IsInstanceOf<IBpmEvent>(newObjA);
+            if (newObjA is IBpmEvent newNoteA)
             {
                 Assert.AreEqual(time, newNoteA.Time);
                 Assert.AreEqual(bpm, newNoteA.Bpm);
@@ -37,13 +41,13 @@ namespace Tests
         public void ModifyEvent()
         {
             BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.BpmChange);
-            if (collection is BPMChangesContainer bpmCollection)
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
+            if (collection is BPMChangeGridContainer bpmCollection)
             {
-                BeatmapBPMChange bpmChange = new BeatmapBPMChange(50, 10);
+                IBpmEvent bpmChange = new V2BpmChange(50, 10);
                 bpmCollection.SpawnObject(bpmChange);
 
-                if (bpmCollection.LoadedContainers[bpmChange] is BeatmapBPMChangeContainer container)
+                if (bpmCollection.LoadedContainers[bpmChange] is BpmEventContainer container)
                 {
                     BeatmapBPMChangeInputController.ChangeBpm(container, "60");
                 }

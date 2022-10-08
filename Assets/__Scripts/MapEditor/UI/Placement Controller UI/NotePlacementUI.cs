@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Beatmap.Enums;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class NotePlacementUI : MonoBehaviour
@@ -41,12 +42,12 @@ public class NotePlacementUI : MonoBehaviour
 
     public void RedNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NoteTypeA);
+        if (active) UpdateValue((int)NoteType.Red);
     }
 
     public void BlueNote(bool active)
     {
-        if (active) UpdateValue(BeatmapNote.NoteTypeB);
+        if (active) UpdateValue((int)NoteType.Blue);
     }
 
     public void Bomb(bool active)
