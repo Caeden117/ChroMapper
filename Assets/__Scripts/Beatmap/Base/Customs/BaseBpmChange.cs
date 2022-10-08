@@ -1,8 +1,9 @@
-﻿using SimpleJSON;
+﻿using System;
+using SimpleJSON;
 
 namespace Beatmap.Base.Customs
 {
-    public abstract class BaseBpmChange : BaseBpmEvent
+    public class BaseBpmChange : BaseBpmEvent
     {
         protected BaseBpmChange()
         {
@@ -21,10 +22,10 @@ namespace Beatmap.Base.Customs
         public float BeatsPerBar { get; set; }
         public float MetronomeOffset { get; set; }
 
-        public abstract string KeyTime { get; }
-        public abstract string KeyBeatsPerBar { get; }
-        public abstract string KeyBpm { get; }
-        public abstract string KeyMetronomeOffset { get; }
+        public virtual string KeyTime { get; }
+        public virtual string KeyBeatsPerBar { get; }
+        public virtual string KeyBpm { get; }
+        public virtual string KeyMetronomeOffset { get; }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => true;
 
@@ -43,7 +44,7 @@ namespace Beatmap.Base.Customs
         public override JSONNode ToJson() =>
             new JSONObject
             {
-                [KeyTime] = Time,
+                [KeyTime] = Math.Round(Time, DecimalPrecision),
                 [KeyBpm] = Bpm,
                 [KeyBeatsPerBar] = BeatsPerBar,
                 [KeyMetronomeOffset] = MetronomeOffset

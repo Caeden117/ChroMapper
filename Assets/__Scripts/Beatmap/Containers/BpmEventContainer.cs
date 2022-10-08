@@ -1,5 +1,6 @@
 using System.Globalization;
 using Beatmap.Base;
+using Beatmap.Enums;
 using TMPro;
 using UnityEngine;
 

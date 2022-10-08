@@ -147,7 +147,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     ///     Invokes a callback for all objects between a time by group
     /// </summary>
     /// <param name="start">Start time in beats</param>
-    /// <param name="start">End time in beats</param>
+    /// <param name="end">End time in beats</param>
     /// <param name="hasNoteOrObstacle">Whether or not to include the note or obstacle group</param>
     /// <param name="hasEvent">Whether or not to include the event group</param>
     /// <param name="hasBpmChange">Whether or not to include the bpm change group</param>
@@ -354,18 +354,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         var bpmChanges =
             BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
 
-        BaseBpmEvent lowerValue;
-        BaseBpmEvent upperValue;
-        if (BeatSaberSongContainer.Instance.Map.GetVersion() == 3)
-        {
-            lowerValue = new V3BpmChange(420, atsc.CurrentBeat - 0.01f);
-            upperValue = new V3BpmChange(69, atsc.CurrentBeat);
-        }
-        else
-        {
-            lowerValue = new V2BpmChange(420, atsc.CurrentBeat - 0.01f);
-            upperValue = new V2BpmChange(69, atsc.CurrentBeat);
-        }
+        var lowerValue = new V2BpmChange(420, atsc.CurrentBeat - 0.01f);
+        var upperValue = new V2BpmChange(69, atsc.CurrentBeat);
 
         var lastBpmChangeBeforePaste = bpmChanges.FindLastBpm(atsc.CurrentBeat);
 
