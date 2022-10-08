@@ -26,7 +26,7 @@ namespace Beatmap.Base
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false) => false;
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false) => false;
 
         public override void Apply(IObject originalData)
         {

@@ -21,7 +21,7 @@ namespace Beatmap.Base
         public int ID { get; set; }
         public List<T> Events { get; set; } = new List<T>();
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             if (other is IEventBoxGroup<T> eventBoxGroup) return ID == eventBoxGroup.ID;
             return false;

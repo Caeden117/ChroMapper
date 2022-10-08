@@ -8,7 +8,7 @@ namespace Beatmap.Base
     public abstract class INote : IGrid, ICustomDataNote
     {
         private int _color;
-        protected int? _customDirection;
+        private int? _customDirection;
         private int _type;
 
         protected INote()
@@ -110,7 +110,7 @@ namespace Beatmap.Base
             }
         }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             // Only down to 1/4 spacing
             if (other is IBombNote || other is INote)

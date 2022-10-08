@@ -207,9 +207,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         foreach (var group in grouping)
         {
             sorted.AddRange(@group.OrderBy(x =>
-                x.CustomData?.HasKey("_propID") ?? false
-                    ? x.CustomData["_propID"].AsInt
-                    : -1)); // Sort non-light prop events before light prop events
+                (x as IEvent)?.CustomPropID ?? -1)); // Sort non-light prop events before light prop events
         }
 
         return sorted;

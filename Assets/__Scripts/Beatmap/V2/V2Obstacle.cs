@@ -1,6 +1,7 @@
 using System;
 using Beatmap.Base;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.V2
 {
@@ -30,7 +31,7 @@ namespace Beatmap.V2
             time, posX, type, duration, width, customData) =>
             ParseCustom();
 
-        public sealed override void ParseCustom() => base.ParseCustom();
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override string CustomKeyTrack { get; } = "_track";
 
@@ -69,13 +70,18 @@ namespace Beatmap.V2
         {
             JSONNode node = new JSONObject();
             node["_time"] = Math.Round(Time, DecimalPrecision);
+            Debug.Log(node);
             node["_lineIndex"] = PosX;
             node["_lineLayer"] = PosY;
             node["_type"] = Type;
             node["_duration"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
+            Debug.Log(node);
             node["_width"] = Width;
-            node["_height"] = Height;
-            if (CustomData != null) node["_customData"] = CustomData;
+            node["_height"] = Height; 
+            Debug.Log(node);
+            if (CustomData == null) return node;
+            node["_customData"] = CustomData;
+            Debug.Log(node);
             return node;
         }
 

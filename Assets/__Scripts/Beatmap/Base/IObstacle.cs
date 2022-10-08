@@ -64,7 +64,7 @@ namespace Beatmap.Base
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             if (other is IObstacle obstacle)
             {
@@ -187,13 +187,13 @@ namespace Beatmap.Base
 
         public abstract string CustomKeySize { get; }
 
-        public override void ParseCustom()
+        protected override void ParseCustom()
         {
             base.ParseCustom();
             if (CustomData?[CustomKeySize] != null)
             {
                 var temp = CustomData[CustomKeySize].AsArray;
-                if(temp.Count < 2) temp.Add(0);
+                if (temp.Count < 2) temp.Add(0);
                 CustomSize = temp;
             }
         }

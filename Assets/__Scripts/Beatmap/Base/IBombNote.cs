@@ -26,7 +26,7 @@ namespace Beatmap.Base
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Bomb;
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             // Only down to 1/4 spacing
             if (other is IBombNote || other is INote)

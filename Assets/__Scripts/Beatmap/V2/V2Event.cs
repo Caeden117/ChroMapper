@@ -1,3 +1,4 @@
+using System;
 using Beatmap.Base;
 using Beatmap.Shared;
 using SimpleJSON;
@@ -37,11 +38,11 @@ namespace Beatmap.V2
             value, floatValue, customData) =>
             ParseCustom();
 
-        public sealed override void ParseCustom()
+        protected sealed override void ParseCustom()
         {
             base.ParseCustom();
+            
             if (CustomData == null) return;
-
             if (CustomData[CustomKeyLightGradient] != null)
                 CustomLightGradient = new ChromaLightGradient(CustomData[CustomKeyLightGradient]);
             if (CustomData[CustomKeyPropMult] != null) CustomPropMult = CustomData[CustomKeyPropMult].AsFloat;
@@ -117,7 +118,7 @@ namespace Beatmap.V2
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["_time"] = Time;
+            node["_time"] = Math.Round(Time, DecimalPrecision);
             node["_type"] = Type;
             node["_value"] = Value;
             node["_floatValue"] = FloatValue;
@@ -133,8 +134,7 @@ namespace Beatmap.V2
         {
             base.Apply(originalData);
 
-            if (originalData is V2Event)
-                CustomLightGradient = (ChromaLightGradient)CustomLightGradient?.Clone();
+            CustomLightGradient = (ChromaLightGradient)CustomLightGradient?.Clone();
         }
     }
 }

@@ -92,11 +92,8 @@ public class LoadInitialMap : MonoBehaviour
 
         noteGridContainer.UpdateColor(leftNote, rightNote);
         obstacleGridContainer.UpdateColor(diff.ObstacleColor ?? BeatSaberSong.DefaultLeftColor);
-        if (Settings.Instance.Load_MapV3)
-        {
-            arcGridContainer.UpdateColor(leftNote, rightNote);
-            chainGridContainer.UpdateColor(leftNote, rightNote);
-        }
+        arcGridContainer.UpdateColor(leftNote, rightNote);
+        chainGridContainer.UpdateColor(leftNote, rightNote);
         if (diff.ColorLeft != null) descriptor.Colors.RedNoteColor = diff.ColorLeft ?? descriptor.Colors.RedNoteColor;
         if (diff.ColorRight != null)
             descriptor.Colors.BlueNoteColor = diff.ColorRight ?? descriptor.Colors.BlueNoteColor;

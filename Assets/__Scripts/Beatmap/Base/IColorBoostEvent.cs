@@ -28,7 +28,7 @@ namespace Beatmap.Base
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
         public bool Toggle { get; set; }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             if (other is IColorBoostEvent cbe) return Toggle = cbe.Toggle;
             return false;

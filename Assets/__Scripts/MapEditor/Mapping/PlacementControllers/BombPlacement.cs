@@ -35,10 +35,11 @@ public class BombPlacement : PlacementController<INote, NoteContainer, NoteGridC
 
     public override INote GenerateOriginalData() 
     {
+        Debug.Log("did u spawn this instead?");
         if (Settings.Instance.Load_MapV3)
             return new V2Note(new V3BombNote(0, 0, 0));
         else
-            return new V2Note(0, 0, 0, (int)NoteType.Bomb, (int)NoteCutDirection.Down);
+            return new V3ColorNote(0, 0, 0, (int)NoteType.Bomb, (int)NoteCutDirection.Down);
     }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
@@ -57,9 +58,9 @@ public class BombPlacement : PlacementController<INote, NoteContainer, NoteGridC
             // If not remove _color
             if (queuedData.CustomData != null && queuedData.CustomData.HasKey(queuedData.CustomKeyColor))
             {
-                queuedData.CustomData.Remove("_color");
+                queuedData.CustomData.Remove(queuedData.CustomKeyColor);
 
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                if (queuedData.CustomData.Count == 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
             }
         }
@@ -86,7 +87,7 @@ public class BombPlacement : PlacementController<INote, NoteContainer, NoteGridC
             {
                 queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
 
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                if (queuedData.CustomData.Count == 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
             }
 

@@ -25,7 +25,7 @@ namespace Beatmap.Base
         public int TransitionType { get; set; }
         public int Frequency { get; set; }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             if (other is ILightColorBase lcb)
                 return Color == lcb.Color || Math.Abs(Brightness - lcb.Brightness) < DecimalTolerance ||

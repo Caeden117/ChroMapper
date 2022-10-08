@@ -211,7 +211,7 @@ namespace Beatmap.Base
             return null;
         }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             if (other is IEvent @event)
             {
@@ -404,8 +404,8 @@ namespace Beatmap.Base
         public abstract string CustomKeyDirection { get; }
         public abstract string CustomKeyLockRotation { get; }
         public abstract string CustomKeyLaneRotation { get; }
-        
-        public override void ParseCustom()
+
+        protected override void ParseCustom()
         {
             base.ParseCustom();
             if (CustomData == null) return;

@@ -38,7 +38,7 @@ namespace Beatmap.V3
             tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
             ParseCustom();
 
-        public sealed override void ParseCustom() => base.ParseCustom();
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override string CustomKeyTrack { get; } = "track";
 
@@ -92,7 +92,8 @@ namespace Beatmap.V3
             node["tmu"] = TailControlPointLengthMultiplier;
             node["tc"] = TailCutDirection;
             node["m"] = MidAnchorMode;
-            if (CustomData != null) node["_customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

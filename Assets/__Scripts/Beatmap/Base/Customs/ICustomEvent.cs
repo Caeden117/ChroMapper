@@ -19,7 +19,7 @@ namespace Beatmap.Base.Customs
 
         public override ObjectType ObjectType { get; set; } = ObjectType.BpmChange;
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false) => false;
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false) => false;
 
         public override JSONNode ToJson() =>
             new JSONObject

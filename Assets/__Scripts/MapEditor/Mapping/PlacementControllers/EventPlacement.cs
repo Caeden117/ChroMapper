@@ -107,20 +107,13 @@ public class EventPlacement : PlacementController<IEvent, EventContainer, EventG
     }
 
     public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> container) =>
-        new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
+        new BeatmapObjectPlacementAction(spawned, container, "Placed an event.");
 
-    public override IEvent GenerateOriginalData()
-    {
+    public override IEvent GenerateOriginalData() =>
         //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
-        if (Settings.Instance.Load_MapV3)
-        {
-            return new V3BasicEvent(0, 0, (int)LightValue.RedOn);
-        }
-        else
-        {
-            return new V2Event(0, 0, (int)LightValue.RedOn);
-        }
-    }
+        BeatSaberSongContainer.Instance.Map.GetVersion() == 3
+            ? (IEvent)new V3BasicEvent(0, 0, (int)LightValue.RedOn)
+            : new V2Event(0, 0, (int)LightValue.RedOn);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
@@ -131,7 +124,7 @@ public class EventPlacement : PlacementController<IEvent, EventContainer, EventG
         {
             queuedData.Type =
                 labels.LaneIdToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x));
-            queuedData.CustomData?.Remove("_lightID");
+            queuedData.CustomLightID = null;
         }
         else
         {
@@ -143,11 +136,11 @@ public class EventPlacement : PlacementController<IEvent, EventContainer, EventG
                 var lightIdToApply = objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Prop
                     ? labels.PropIdToLightIdsJ(objectContainerCollection.EventTypeToPropagate, propID)
                     : (JSONNode)labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID);
-                queuedData.GetOrCreateCustom().Add("_lightID", lightIdToApply);
+                queuedData.GetOrCreateCustom().Add(queuedData.CustomKeyLightID, lightIdToApply);
             }
             else
             {
-                queuedData.GetOrCreateCustom().Remove("_lightID");
+                queuedData.CustomLightID = null;
             }
         }
 

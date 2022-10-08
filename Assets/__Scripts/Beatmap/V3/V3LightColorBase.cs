@@ -6,6 +6,8 @@ namespace Beatmap.V3
 {
     public class V3LightColorBase : ILightColorBase
     {
+        private ILightColorBase lightColorBaseImplementation;
+
         public V3LightColorBase()
         {
         }
@@ -35,7 +37,8 @@ namespace Beatmap.V3
             node["s"] = Brightness;
             node["i"] = TransitionType;
             node["f"] = Frequency;
-            if (CustomData != null) node["customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

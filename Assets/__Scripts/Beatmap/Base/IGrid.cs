@@ -6,10 +6,10 @@ namespace Beatmap.Base
 {
     public abstract class IGrid : IObject, IObjectBounds, IHeckGrid, INoodleExtensionsGrid
     {
-        protected Vector2? _customCoordinate;
-        protected Vector3? _customLocalRotation;
-        protected string _customTrack;
-        protected Vector3? _customWorldRotation;
+        private Vector2? _customCoordinate;
+        private Vector3? _customLocalRotation;
+        private string _customTrack;
+        private Vector3? _customWorldRotation;
 
         protected IGrid()
         {
@@ -86,7 +86,7 @@ namespace Beatmap.Base
         public abstract string CustomKeyWorldRotation { get; }
         public abstract string CustomKeyLocalRotation { get; }
 
-        public override void ParseCustom()
+        protected override void ParseCustom()
         {
             base.ParseCustom();
             if (CustomData == null) return;
@@ -102,11 +102,11 @@ namespace Beatmap.Base
             float layer = PosY;
 
             if (PosX >= 1000)
-                position = PosX / 1000f - 2.5f;
+                position = (PosX / 1000f) - 2.5f;
             else if (PosX <= -1000)
-                position = PosX / 1000f - 0.5f;
+                position = (PosX / 1000f) - 0.5f;
 
-            if (PosY >= 1000 || PosY <= -1000) layer = PosY / 1000f - 1f;
+            if (PosY >= 1000 || PosY <= -1000) layer = (PosY / 1000f) - 1f;
 
             return new Vector2(position, layer);
         }

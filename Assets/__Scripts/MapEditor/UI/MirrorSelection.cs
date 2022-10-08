@@ -67,15 +67,15 @@ public class MirrorSelection : MonoBehaviour
                 var state = obstacle.PosX;
                 if (obstacle.CustomData != null) //Noodle Extensions
                 {
-                    if (obstacle.CustomData.HasKey("_position"))
+                    if (obstacle.CustomCoordinate != null)
                     {
-                        Vector2 oldPosition = obstacle.CustomData["_position"];
+                        Vector2 oldPosition = (Vector2)obstacle.CustomCoordinate;
                         
                         var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
-                        if (obstacle.CustomData.HasKey("_scale"))
+                        if (obstacle.CustomSize != null)
                         {
-                            Vector2 scale = obstacle.CustomData["_scale"];
+                            var scale = (Vector3)obstacle.CustomSize;
                             flipped.x -= scale.x;
                         }
                         else
@@ -83,7 +83,7 @@ public class MirrorSelection : MonoBehaviour
                             flipped.x -= obstacle.Width;
                         }
 
-                        obstacle.CustomData["_position"] = flipped;
+                        obstacle.CustomCoordinate = flipped;
                     }
                 }
 

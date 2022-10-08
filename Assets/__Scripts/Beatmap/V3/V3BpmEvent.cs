@@ -43,7 +43,8 @@ namespace Beatmap.V3
             JSONNode node = new JSONObject();
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["m"] = Bpm;
-            if (CustomData != null) node["customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

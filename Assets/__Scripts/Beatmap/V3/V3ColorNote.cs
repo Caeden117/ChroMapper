@@ -32,12 +32,12 @@ namespace Beatmap.V3
             time, posX, posY, type, cutDirection, customData) =>
             ParseCustom();
 
-        public sealed override void ParseCustom() => base.ParseCustom();
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         // TODO: deal with custom direction to angle offset
         public override int? CustomDirection
         {
-            get => 0;
+            get => null;
             set { }
         }
 
@@ -84,10 +84,11 @@ namespace Beatmap.V3
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["x"] = PosX;
             node["y"] = PosY;
-            node["a"] = AngleOffset;
             node["c"] = Color;
             node["d"] = CutDirection;
-            if (CustomData != null) node["customData"] = CustomData;
+            node["a"] = AngleOffset;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

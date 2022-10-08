@@ -12,7 +12,6 @@ using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridContainer>,
     CMInput.INotePlacementActions
@@ -127,13 +126,10 @@ public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridC
     public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
 
-    public override INote GenerateOriginalData()
-    {
-        if (Settings.Instance.Load_MapV3)
-            return new V3ColorNote(0, 0, 0, (int)NoteColor.Red, (int)NoteCutDirection.Down);
-        else
-            return new V2Note(0, 0, 0, (int)NoteType.Red, (int)NoteCutDirection.Down);
-    }
+    public override INote GenerateOriginalData() =>
+        BeatSaberSongContainer.Instance.Map.GetVersion() == 3
+            ? (INote)new V3ColorNote(0, 0, 0, (int)NoteColor.Red, (int)NoteCutDirection.Down)
+            : new V2Note(0, 0, 0, (int)NoteType.Red, (int)NoteCutDirection.Down);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {
@@ -144,18 +140,14 @@ public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridC
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustom()[queuedData.CustomKeyColor] = colorPicker.CurrentColor;
+            queuedData.CustomColor = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null)
+            if (queuedData.CustomColor != null)
             {
-                if (queuedData.CustomData.HasKey(queuedData.CustomKeyColor))
-                    queuedData.CustomData.Remove(queuedData.CustomKeyColor);
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
+                queuedData.CustomColor = null;
             }
         }
 
@@ -165,10 +157,9 @@ public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridC
 
             instantiatedContainer.transform.localPosition = roundedHit;
 
-            var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
-            position[0] = Math.Round(roundedHit.x - 0.5f, 3);
-            position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.GetOrCreateCustom()[queuedData.CustomKeyCoordinate] = position;
+            //We do some manual array stuff to get rounding decimals to work.
+            var position = new JSONArray { [0] = Math.Round(roundedHit.x - 0.5f, 3), [1] = Math.Round(roundedHit.y - 0.5f, 3) };
+            queuedData.CustomCoordinate = position.ReadVector2();
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -176,17 +167,14 @@ public class NotePlacement : PlacementController<INote, NoteContainer, NoteGridC
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
-            if (queuedData.CustomData != null)
+            if (queuedData.CustomCoordinate != null)
             {
-                if (queuedData.CustomData.HasKey(queuedData.CustomKeyCoordinate))
-                    queuedData.CustomData.Remove(queuedData.CustomKeyCoordinate);
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
+                queuedData.CustomCoordinate = null;
             }
 
-            queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-            queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+            var localPosition = instantiatedContainer.transform.localPosition;
+            queuedData.PosX = Mathf.RoundToInt(localPosition.x + 1.5f);
+            queuedData.PosY = Mathf.RoundToInt(localPosition.y - 0.5f);
         }
 
         UpdateAppearance();

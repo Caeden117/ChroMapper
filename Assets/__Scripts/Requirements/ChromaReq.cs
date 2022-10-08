@@ -15,9 +15,7 @@ public class ChromaReq : RequirementCheck
 
     //Bold assumption for events, but so far Chroma is the only mod that uses Custom Data in vanilla events.
     private bool HasChromaEvents(IDifficulty map) =>
-        map.Notes.Any(note => note.CustomData?["_color"] != null) ||
-        map.Obstacles.Any(ob => ob.CustomData?["_color"] != null) ||
-        map.Events.Any(ob => ob.CustomData != null);
+        map.IsChroma();
 
     private bool RequiresChroma(BeatSaberSong.DifficultyBeatmap mapInfo, IDifficulty map) =>
         mapInfo.CustomData != null && mapInfo.CustomData.HasKey("_requirements") &&

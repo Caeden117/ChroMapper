@@ -27,7 +27,7 @@ namespace Beatmap.V3
             value, floatValue, customData) =>
             ParseCustom();
 
-        public sealed override void ParseCustom() => base.ParseCustom();
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override int? CustomPropID
         {
@@ -107,7 +107,8 @@ namespace Beatmap.V3
             node["et"] = Type;
             node["i"] = Value;
             node["f"] = FloatValue;
-            if (CustomData != null) node["customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

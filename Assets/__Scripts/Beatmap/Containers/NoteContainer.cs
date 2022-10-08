@@ -45,18 +45,18 @@ namespace Beatmap.Containers
             SetArcVisible(NoteGridContainer.ShowArcVisualizer);
         }
 
-        internal static Vector3 Directionalize(INote mapNoteData)
+        internal static Vector3 Directionalize(INote noteData)
         {
-            if (mapNoteData is null) return Vector3.zero;
-            var cutDirection = mapNoteData.CutDirection;
+            if (noteData is null) return Vector3.zero;
+            var cutDirection = noteData.CutDirection;
             var directionEuler = Directionalize(cutDirection);
-            if (mapNoteData.CustomDirection != null)
+            if (noteData.CustomDirection != null)
             {
-                directionEuler = new Vector3(0, 0, mapNoteData.CustomDirection ?? 0);
+                directionEuler = new Vector3(0, 0, noteData.CustomDirection ?? 0);
             }
             else
             {
-                var newMapNoteData = mapNoteData;
+                var newMapNoteData = noteData;
                 if (newMapNoteData != null && newMapNoteData.AngleOffset != 0)
                 {
                     directionEuler += new Vector3(0, 0, newMapNoteData.AngleOffset);

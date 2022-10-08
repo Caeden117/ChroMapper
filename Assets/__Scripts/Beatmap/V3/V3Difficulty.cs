@@ -18,7 +18,7 @@ namespace Beatmap.V3
         {
         }
 
-        public override string Version { get; } = "3.0.0";
+        public override string Version { get; } = "3.1.0";
 
         public override bool IsChroma() =>
             Notes.Any(x => x.IsChroma()) || Bombs.Any(x => x.IsChroma()) || Arcs.Any(x => x.IsChroma()) ||
@@ -181,7 +181,8 @@ namespace Beatmap.V3
                 var map = new V3Difficulty
                 {
                     MainNode = mainNode,
-                    DirectoryAndFile = path
+                    DirectoryAndFile = path,
+                    EventTypesWithKeywords = new V3BasicEventTypesWithKeywords() // apparently this is required
                 };
 
                 var nodeEnum = mainNode.GetEnumerator();

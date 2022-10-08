@@ -7,7 +7,7 @@ namespace Beatmap.Base
 {
     public abstract class IObject : IItem, ICustomData, IChromaObject
     {
-        protected Color? _customColor;
+        private Color? _customColor;
 
         protected IObject()
         {
@@ -28,7 +28,7 @@ namespace Beatmap.Base
             Mathf.Abs(Time - other.Time) < BeatmapObjectContainerCollection.Epsilon &&
             IsConflictingWithObjectAtSameTime(other, deletion);
 
-        public abstract bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false);
+        protected abstract bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false);
 
         public virtual void Apply(IObject originalData)
         {
@@ -44,7 +44,7 @@ namespace Beatmap.Base
             return CustomData;
         }
 
-        public virtual void ParseCustom()
+        protected virtual void ParseCustom()
         {
             if (CustomData == null) return;
             if (CustomData[CustomKeyColor] != null) CustomColor = CustomData[CustomKeyColor].ReadColor();
@@ -61,6 +61,11 @@ namespace Beatmap.Base
             get => _customColor;
             set
             {
+                if (value == null && CustomData?[CustomKeyColor] != null)
+                {
+                    CustomData?.Remove(CustomKeyColor);
+                    return;
+                }
                 GetOrCreateCustom()[CustomKeyColor] = value;
                 _customColor = value;
             }

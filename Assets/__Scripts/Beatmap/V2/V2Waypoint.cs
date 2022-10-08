@@ -45,7 +45,8 @@ namespace Beatmap.V2
             node["_lineIndex"] = PosX;
             node["_lineLayer"] = PosY;
             node["_offsetDirection"] = OffsetDirection;
-            if (CustomData != null) node["_customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["_customData"] = CustomData;
             return node;
         }
 

@@ -26,7 +26,7 @@ public class MapLoader : MonoBehaviour
         {
             var copy = new V3Difficulty
             {
-                CustomData = map.CustomData.Clone(),
+                CustomData = map.CustomData?.Clone(),
                 Notes = new List<INote>(map.Notes),
                 Obstacles = new List<IObstacle>(map.Obstacles),
                 Arcs = new List<IArc>(map.Arcs),
@@ -42,7 +42,7 @@ public class MapLoader : MonoBehaviour
         {
             var copy = new V2Difficulty
             {
-                CustomData = map.CustomData.Clone(),
+                CustomData = map.CustomData?.Clone(),
                 Notes = new List<INote>(map.Notes),
                 Obstacles = new List<IObstacle>(map.Obstacles),
                 Events = new List<IEvent>(map.Events),

@@ -30,7 +30,7 @@ namespace Beatmap.Base
         public float Bpm { get; set; }
         public int Beat { get; set; } = 0;
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             if (other is IBpmEvent bpm) return Math.Abs(Bpm - bpm.Bpm) < DecimalTolerance;
             return false;

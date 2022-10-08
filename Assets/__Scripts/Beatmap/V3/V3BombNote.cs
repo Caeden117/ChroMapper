@@ -25,7 +25,7 @@ namespace Beatmap.V3
             customData) =>
             ParseCustom();
 
-        public sealed override void ParseCustom() => base.ParseCustom();
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override string CustomKeyTrack { get; } = "track";
 
@@ -67,7 +67,8 @@ namespace Beatmap.V3
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["x"] = PosX;
             node["y"] = PosY;
-            if (CustomData != null) node["customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

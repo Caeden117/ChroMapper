@@ -1,6 +1,7 @@
 using System;
 using Beatmap.Base;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.V2
 {
@@ -8,13 +9,12 @@ namespace Beatmap.V2
     {
         public V2Note()
         {
+            CustomData = new JSONObject();
         }
 
         public V2Note(INote other) : base(other) => ParseCustom();
 
-        public V2Note(IBombNote bomb) : base(bomb)
-        {
-        }
+        public V2Note(IBombNote bomb) : base(bomb) => ParseCustom();
 
         public V2Note(JSONNode node)
         {
@@ -29,11 +29,10 @@ namespace Beatmap.V2
         }
 
         public V2Note(float time, int posX, int posY, int type, int cutDirection, JSONNode customData = null) : base(
-            time,
-            posX, posY, type, cutDirection, customData) =>
+            time, posX, posY, type, cutDirection, customData) =>
             ParseCustom();
 
-        public sealed override void ParseCustom()
+        protected sealed override void ParseCustom()
         {
             base.ParseCustom();
             
@@ -86,7 +85,8 @@ namespace Beatmap.V2
             node["_lineLayer"] = PosY;
             node["_type"] = Type;
             node["_cutDirection"] = CutDirection;
-            if (CustomData != null) node["_customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["_customData"] = CustomData;
             return node;
         }
 

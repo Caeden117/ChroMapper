@@ -30,7 +30,7 @@ namespace Beatmap.Base.Customs
         public abstract string KeyName { get; }
         public abstract string KeyColor { get; }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false) => true;
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false) => true;
 
         public override JSONNode ToJson() =>
             new JSONObject

@@ -7,7 +7,6 @@ namespace Beatmap.Base.Customs
     {
         JSONNode CustomData { get; set; }
         JSONNode GetOrCreateCustom();
-        void ParseCustom();
 
         bool IsChroma();
         bool IsNoodleExtensions();

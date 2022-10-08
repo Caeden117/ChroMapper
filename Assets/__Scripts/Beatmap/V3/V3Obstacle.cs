@@ -29,7 +29,7 @@ namespace Beatmap.V3
             JSONNode customData = null) : base(time, posX, posY, duration, width, height, customData) =>
             ParseCustom();
 
-        public sealed override void ParseCustom() => base.ParseCustom();
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override string CustomKeyTrack { get; } = "_track";
 
@@ -72,7 +72,8 @@ namespace Beatmap.V3
             node["d"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
             node["w"] = Width;
             node["h"] = Height;
-            if (CustomData != null) node["customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

@@ -44,7 +44,8 @@ namespace Beatmap.V3
             node["e"] = EaseType;
             node["l"] = Loop;
             node["p"] = UsePrevious;
-            if (CustomData != null) node["customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

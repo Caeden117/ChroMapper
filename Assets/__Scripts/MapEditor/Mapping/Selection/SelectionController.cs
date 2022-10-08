@@ -639,7 +639,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
 
-                if (data.CustomData?.Count <= 0) data.CustomData = null;
+                if (data.CustomData?.Count == 0) data.CustomData = null;
             }
             else if (data is IArc arc)
             {

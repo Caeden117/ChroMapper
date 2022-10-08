@@ -46,7 +46,8 @@ namespace Beatmap.V3
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["e"] = ExecutionTime;
             node["r"] = Rotation;
-            if (CustomData != null) node["customData"] = CustomData;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
             return node;
         }
 

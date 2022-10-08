@@ -26,7 +26,7 @@ namespace Beatmap.Base.Customs
         public abstract string KeyBpm { get; }
         public abstract string KeyMetronomeOffset { get; }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false) => true;
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false) => true;
 
         public override void Apply(IObject originalData)
         {

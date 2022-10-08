@@ -29,7 +29,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     [SerializeField] protected GridChild GridChild;
     [SerializeField] private Transform noteGridTransform;
 
-    [FormerlySerializedAs("bounds")] public Bounds Bounds;
+    [SerializeField] public Bounds Bounds;
     public bool IsActive;
 
     private bool applicationFocus;

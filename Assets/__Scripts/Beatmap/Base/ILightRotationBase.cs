@@ -27,7 +27,7 @@ namespace Beatmap.Base
         public int Loop { get; set; }
         public int UsePrevious { get; set; }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             if (other is ILightRotationBase lrb)
                 return Math.Abs(Rotation - lrb.Rotation) < DecimalTolerance || Direction == lrb.Direction ||

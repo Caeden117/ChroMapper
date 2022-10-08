@@ -54,15 +54,10 @@ public class ObstaclePlacement : PlacementController<IObstacle, ObstacleContaine
     public override BeatmapAction GenerateAction(IObject spawned, IEnumerable<IObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
-    public override IObstacle GenerateOriginalData()
-    {
-        if (Settings.Instance.Load_MapV3)
-        {
-            return new V3Obstacle(0, 0, 0 ,0, 1, 5);
-        }
-        else
-            return new V2Obstacle(0, 0, (int)ObstacleType.Full, 0, 1);
-    }
+    public override IObstacle GenerateOriginalData() =>
+        BeatSaberSongContainer.Instance.Map.GetVersion() == 3
+            ? (IObstacle)new V3Obstacle(0, 0, 0, 0, 1, 5)
+            : new V2Obstacle(0, 0, (int)ObstacleType.Full, 0, 1);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
@@ -83,9 +78,9 @@ public class ObstaclePlacement : PlacementController<IObstacle, ObstacleContaine
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey(queuedData.CustomKeyColor))
             {
-                queuedData.CustomData.Remove("_color");
+                queuedData.CustomData.Remove(queuedData.CustomKeyColor);
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;

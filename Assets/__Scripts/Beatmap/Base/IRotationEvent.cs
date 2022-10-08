@@ -43,7 +43,7 @@ namespace Beatmap.Base
         public int ExecutionTime { get; set; }
         public float Rotation { get; set; }
 
-        public override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
+        protected override bool IsConflictingWithObjectAtSameTime(IObject other, bool deletion = false)
         {
             if (other is IRotationEvent re)
                 return ExecutionTime == re.ExecutionTime || Math.Abs(Rotation - re.Rotation) < DecimalTolerance;
