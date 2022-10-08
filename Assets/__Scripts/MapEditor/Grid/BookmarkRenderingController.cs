@@ -20,12 +20,12 @@ public class BookmarkRenderingController : MonoBehaviour
         public string Name;
         public Color Color;
 
-        public CachedBookmark(BaseBookmark baseBookmark, TextMeshProUGUI text)
+        public CachedBookmark(BaseBookmark bookmark, TextMeshProUGUI text)
         {
-            MapBookmark = baseBookmark;
+            MapBookmark = bookmark;
             Text = text;
-            Name = baseBookmark.Name;
-            Color = baseBookmark.Color;
+            Name = bookmark.Name;
+            Color = bookmark.Color;
         }
     }
 
@@ -96,12 +96,12 @@ public class BookmarkRenderingController : MonoBehaviour
         rect.anchoredPosition3D = new Vector3(-4.5f, time * EditorScaleController.EditorScale, 0);
     }
 
-    private TextMeshProUGUI CreateGridBookmark(BaseBookmark baseBookmark)
+    private TextMeshProUGUI CreateGridBookmark(BaseBookmark bookmark)
     {
         GameObject obj = new GameObject("GridBookmark", typeof(TextMeshProUGUI));
         RectTransform rect = (RectTransform)obj.transform;
         rect.SetParent(gridBookmarksParent);
-        SetBookmarkPos(rect, baseBookmark.Time);
+        SetBookmarkPos(rect, bookmark.Time);
         rect.sizeDelta = Vector2.one;
         rect.localRotation = Quaternion.identity;
 
@@ -112,7 +112,7 @@ public class BookmarkRenderingController : MonoBehaviour
         text.enableWordWrapping = false;
         text.raycastTarget = false;
         text.fontMaterial.renderQueue = 3150; // Above grid and measure numbers - Below grid interface
-        SetGridBookmarkNameColor(text, baseBookmark.Color, baseBookmark.Name);
+        SetGridBookmarkNameColor(text, bookmark.Color, bookmark.Name);
 
         return text;
     }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
-using Beatmap.V3;
+using Beatmap.Enums;
+using Beatmap.V2;
 using SimpleJSON;
 
 public class StrobeLightingPass : StrobeGeneratorPass
@@ -28,7 +28,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
         easeValue = easingValueSwitch;
     }
 
-    public override bool IsEventValidForPass(BaseEvent baseEvent) => baseEvent.IsLightEvent(EnvironmentInfoHelper.GetName()) && !baseEvent.IsLegacyChroma;
+    public override bool IsEventValidForPass(BaseEvent @event) => !@event.IsUtilityEvent() && !@event.IsLegacyChroma;
 
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, JSONNode propID)
@@ -58,7 +58,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
         {
             if (typeIndex >= alternatingTypes.Count) typeIndex = 0;
 
-            var any = original.LastOrDefault(x => x.Time <= endTime - distanceInBeats);
+            var any = original.Where(x => x.Time <= endTime - distanceInBeats).LastOrDefault();
             if (any != lastPassed && dynamic && LightEventHelper.IsBlueFromValue(any.Value) !=
                 LightEventHelper.IsBlueFromValue(alternatingTypes[typeIndex]))
             {
@@ -78,11 +78,12 @@ public class StrobeLightingPass : StrobeGeneratorPass
                 ? (easingFunc(progress) * floatValueDiff) + startFloatValue
                 : (progress * floatValueDiff) + startFloatValue;
 
-            var data = new V3BasicEvent(newTime, type, value, newFloatValue);
+            // TODO: do v2 or v3
+            var data = new V2Event(newTime, type, value, newFloatValue);
             if (propMode != EventGridContainer.PropMode.Off)
             {
                 data.CustomData = new JSONObject();
-                data.CustomLightID = new int[] { propID };
+                data.CustomData.Add("_lightID", propID);
             }
 
             generatedObjects.Add(data);

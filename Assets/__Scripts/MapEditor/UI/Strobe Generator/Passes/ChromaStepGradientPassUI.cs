@@ -61,7 +61,7 @@ public class ChromaStepGradientPassUI : StrobeGeneratorPassUIController
             1 => eventColor == 0 ? (int)LightValue.RedOn : (int)LightValue.BlueOn,
             2 => eventColor == 0 ? (int)LightValue.RedFlash : (int)LightValue.BlueFlash,
             3 => eventColor == 0 ? (int)LightValue.RedFade : (int)LightValue.BlueFade,
-            4 => eventColor == 0 ? (int)LightValue.RedFade : (int)LightValue.BlueFade,
+            4 => eventColor == 0 ? (int)LightValue.RedTransition : (int)LightValue.BlueTransition,
             _ => -1,
         };
     }

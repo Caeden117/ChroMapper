@@ -1,14 +1,14 @@
 ﻿using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class ObstacleGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject obstaclePrefab;
-    [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
+    [FormerlySerializedAs("obstacleAppearanceSO")] [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
 

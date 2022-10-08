@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using Beatmap.V2;
 using Beatmap.V3;
 using SimpleJSON;
@@ -35,11 +35,10 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     public override BaseNote GenerateOriginalData() 
     {
-        Debug.Log("did u spawn this instead?");
         if (Settings.Instance.Load_MapV3)
-            return new V2Note(new V3BombNote(0, 0, 0));
+            return new V3BombNote(0, 0, 0);
         else
-            return new V3ColorNote(0, 0, 0, (int)NoteType.Bomb, (int)NoteCutDirection.Down);
+            return new V2Note(0, 0, 0, (int)NoteType.Bomb, (int)NoteCutDirection.Down);
     }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
@@ -51,16 +50,16 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustom()[queuedData.CustomKeyColor] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustom()["_color"] = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey(queuedData.CustomKeyColor))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
             {
-                queuedData.CustomData.Remove(queuedData.CustomKeyColor);
+                queuedData.CustomData.Remove("_color");
 
-                if (queuedData.CustomData.Count == 0) //Set customData to null if there is no customData to store
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
             }
         }
@@ -76,18 +75,18 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.CustomCoordinate = position;
+            queuedData.CustomData["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {
-            if (queuedData.CustomCoordinate != null)
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
             {
-                queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
+                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
 
-                if (queuedData.CustomData.Count == 0) //Set customData to null if there is no customData to store
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
             }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.Serialization;
@@ -10,7 +10,6 @@ public class CountersPlusController : MonoBehaviour
 {
     [FormerlySerializedAs("notes")] [SerializeField] private NoteGridContainer noteGrid;
     [FormerlySerializedAs("obstacles")] [SerializeField] private ObstacleGridContainer obstacleGrid;
-    [FormerlySerializedAs("chains")] [SerializeField] private ChainGridContainer chainGrid;
     [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
     [SerializeField] private BPMChangeGridContainer bpm;
     [SerializeField] private AudioSource cameraAudioSource;
@@ -69,8 +68,6 @@ public class CountersPlusController : MonoBehaviour
         => noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Bomb).Count();
 
     public int ObstacleCount => obstacleGrid.LoadedObjects.Count;
-    
-    public int ChainCount => chainGrid.LoadedObjects.Count;
 
     public int EventCount => eventGrid.LoadedObjects.Count;
 
@@ -104,7 +101,7 @@ public class CountersPlusController : MonoBehaviour
         Settings.NotifyBySettingName("CountersPlus", UpdateCountersVisibility);
         UpdateCountersVisibility(Settings.Instance.CountersPlus);
 
-        swingsPerSecond = new SwingsPerSecond(noteGrid, obstacleGrid, chainGrid);
+        swingsPerSecond = new SwingsPerSecond(noteGrid, obstacleGrid);
 
         LoadInitialMap.LevelLoadedEvent += LevelLoadedEvent;
         SelectionController.SelectionChangedEvent += SelectionChangedEvent;

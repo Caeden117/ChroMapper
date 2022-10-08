@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using Beatmap.V2;
-using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -34,9 +33,6 @@ public class PauseToggleLights : MonoBehaviour
 
     private void PlayToggle(bool isPlaying)
     {
-        var envName = EnvironmentInfoHelper.GetName();
-        var isV3 = BeatSaberSongContainer.Instance.Map.GetVersion() == 3;
-
         lastEvents.Clear();
         lastChromaEvents.Clear();
 
@@ -78,7 +74,8 @@ public class PauseToggleLights : MonoBehaviour
                     ? lastEvents[(int)EventTypeValue.ColorBoost].LastEvent
                     : defaultBoostEvent);
 
-            var blankEvent = new V3BasicEvent(0, 0, 0);
+            // TODO: check v2 or v3 event
+            var blankEvent = new V2Event(0, 0, 0);
             for (var i = 0; i < 16; i++)
             {
                 // Boost light events are already handled above; skip them.
@@ -103,17 +100,18 @@ public class PauseToggleLights : MonoBehaviour
                 // Past the last event if we have an event to pass in the first place
                 if (regular != null &&
                     // ... it's not a fade event
-                    (!regular.IsLightEvent(envName) || (regular.Value != (int)LightValue.BlueFade &&
-                                                        regular.Value != (int)LightValue.RedFade)) &&
+                    (!regular.IsLightEvent() || (regular.Value != (int)LightValue.BlueFade &&
+                                                regular.Value != (int)LightValue.RedFade)) &&
                     // ... and it's not a ring event
-                    !regular.IsRingEvent(envName))
+                    !regular.IsRingEvent())
                 {
                     descriptor.EventPassed(isPlaying, 0, regular);
                 }
                 // Pass an empty even if it is not a ring or rotation event, OR it is null.
-                else if (regular is null || (!regular.IsRingEvent(envName) && !regular.IsLaneRotationEvent()))
+                else if (regular is null || (!regular.IsRingEvent() && !regular.IsLaneRotationEvent()))
                 {
-                    descriptor.EventPassed(isPlaying, 0, isV3 ? (BaseEvent)new V3BasicEvent(0, i, 0) : new V2Event(0, i, 0));
+                    // TODO: check v2 or v3 event
+                    descriptor.EventPassed(isPlaying, 0, new V2Event(0, i, 0));
                     continue;
                 }
 
@@ -124,33 +122,24 @@ public class PauseToggleLights : MonoBehaviour
                 foreach (var propEvent in regularEvents.LastLightIdEvents)
                     descriptor.EventPassed(isPlaying, 0, propEvent.Value);
 
-                if (regular.IsLightEvent(envName) && Settings.Instance.EmulateChromaLite)
-                    descriptor.EventPassed(isPlaying, 0, chroma ?? (isV3
-                        ? (BaseEvent)new V3BasicEvent(0, i, ColourManager.RGBReset)
-                        : new V2Event(0, i, ColourManager.RGBReset)));
+                if (regular.IsLightEvent() && Settings.Instance.EmulateChromaLite)
+                    // TODO: check v2 or v3 event
+                    descriptor.EventPassed(isPlaying, 0, chroma ?? new V2Event(0, i, ColourManager.RGBReset));
             }
         }
         else
         {
-            var leftSpeedReset =
-                isV3
-                    ? (BaseEvent)new V3BasicEvent(0, (int)EventTypeValue.LeftLaserRotation, 0)
-                    {
-                        CustomData = new JSONObject()
-                    }
-                    : new V2Event(0, (int)EventTypeValue.LeftLaserRotation, 0)
+            // TODO: check v2 or v3 event
+            var leftSpeedReset = new V2Event(0, (int)EventTypeValue.LeftLaserRotation, 0)
             {
                 CustomData = new JSONObject()
             };
-            leftSpeedReset.CustomLockRotation = true;
-            var rightSpeedReset = isV3 ? (BaseEvent)new V3BasicEvent(0, (int)EventTypeValue.RightLaserRotation, 0)
-            {
-                CustomData = new JSONObject()
-            } : new V2Event(0, (int)EventTypeValue.RightLaserRotation, 0)
+            leftSpeedReset.CustomData["_lockPosition"] = true;
+            var rightSpeedReset = new V2Event(0, (int)EventTypeValue.RightLaserRotation, 0)
             {
                 CustomData = new JSONObject()
             };
-            rightSpeedReset.CustomLockRotation = true;
+            rightSpeedReset.CustomData["_lockPosition"] = true;
             descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
             descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
             descriptor.KillChromaLights();

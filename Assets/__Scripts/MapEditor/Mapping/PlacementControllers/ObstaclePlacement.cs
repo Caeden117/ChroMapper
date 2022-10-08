@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using Beatmap.V2;
 using Beatmap.V3;
 using SimpleJSON;
@@ -15,7 +15,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 {
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
-    [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
+    [FormerlySerializedAs("obstacleAppearanceSO")] [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private ToggleColourDropdown dropdown;
@@ -54,10 +54,15 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
-    public override BaseObstacle GenerateOriginalData() =>
-        BeatSaberSongContainer.Instance.Map.GetVersion() == 3
-            ? (BaseObstacle)new V3Obstacle(0, 0, 0, 0, 1, 5)
-            : new V2Obstacle(0, 0, (int)ObstacleType.Full, 0, 1);
+    public override BaseObstacle GenerateOriginalData()
+    {
+        if (Settings.Instance.Load_MapV3)
+        {
+            return new V3Obstacle(0, 0, 0, 0, 1, (int)ObstacleHeight.Full);
+        }
+        else
+            return new V2Obstacle(0, 0, (int)ObstacleType.Full, 0, 1);
+    }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
@@ -73,14 +78,14 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustom()[queuedData.CustomKeyColor] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustom()["_color"] = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey(queuedData.CustomKeyColor))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
             {
-                queuedData.CustomData.Remove(queuedData.CustomKeyColor);
+                queuedData.CustomData.Remove("_color");
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
@@ -95,7 +100,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             {
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-                Vector2 position = queuedData.CustomCoordinate ?? Vector2.zero;
+                Vector2 position = queuedData.CustomData["_position"];
                 var localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
                 wallTransform.localPosition = localPosition;
 
@@ -106,7 +111,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 var scale = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
                 scale[0] = Math.Round(newLocalScale.x, 3);
                 scale[1] = Math.Round(newLocalScale.y, 3);
-                queuedData.CustomSize = scale;
+                queuedData.CustomData["_scale"] = scale;
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);
@@ -144,7 +149,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x, 3);
             position[1] = Math.Round(roundedHit.y, 3);
-            queuedData.CustomCoordinate = position;
+            queuedData.CustomData["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);

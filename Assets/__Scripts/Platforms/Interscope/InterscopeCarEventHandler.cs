@@ -17,16 +17,16 @@ public abstract class InterscopeCarEventHandler : PlatformEventHandler
 
     protected virtual void Start() => eventValuesHash = new HashSet<int>(CarFlags);
 
-    public override void OnEventTrigger(int type, BaseEvent baseEvent)
+    public override void OnEventTrigger(int type, BaseEvent @event)
     {
         // Values 0 and 1 affect all cars, but after that, the events affect different cars depending on their flags.
-        if (baseEvent.Value == 0
-            || baseEvent.Value == 1
-            || eventValuesHash.Contains(baseEvent.Value))
+        if (@event.Value == 0
+            || @event.Value == 1
+            || eventValuesHash.Contains(@event.Value))
         {
-            OnCarGroupTriggered(baseEvent);
+            OnCarGroupTriggered(@event);
         }
     }
 
-    protected abstract void OnCarGroupTriggered(BaseEvent baseEvent);
+    protected abstract void OnCarGroupTriggered(BaseEvent @event);
 }

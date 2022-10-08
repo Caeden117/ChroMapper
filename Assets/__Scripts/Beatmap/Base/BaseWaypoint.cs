@@ -23,7 +23,7 @@ namespace Beatmap.Base
             base(time, posX, posY, customData) =>
             OffsetDirection = offsetDirection;
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.Waypoint;
+        public override ObjectType ObjectType { get; set; } = ObjectType.Note;
         public int OffsetDirection { get; set; }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)

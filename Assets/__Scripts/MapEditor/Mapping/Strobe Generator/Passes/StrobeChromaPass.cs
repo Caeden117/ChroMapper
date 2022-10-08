@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Helper;
 using Beatmap.Base;
+using Beatmap.Helper;
 using Beatmap.Shared;
 using SimpleJSON;
-using UnityEngine;
 
 public class StrobeChromaPass : StrobeGeneratorPass
 {
@@ -12,7 +11,7 @@ public class StrobeChromaPass : StrobeGeneratorPass
 
     public StrobeChromaPass(string easing) => this.easing = easing;
 
-    public override bool IsEventValidForPass(BaseEvent baseEvent) => baseEvent.CustomColor != null && !baseEvent.IsLightID;
+    public override bool IsEventValidForPass(BaseEvent @event) => @event.CustomColor != null && !@event.IsLightID;
 
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, JSONNode propID)
@@ -27,15 +26,14 @@ public class StrobeChromaPass : StrobeGeneratorPass
 
             var generated = BeatmapFactory.Clone(currentChroma);
             generated.CustomLightGradient = new ChromaLightGradient(
-                (Color)currentChroma.CustomColor, //Start color
-                (Color)nextChroma.CustomColor, //End color
+                currentChroma.CustomData["_color"], //Start color
+                nextChroma.CustomData["_color"], //End color
                 nextChroma.Time - currentChroma.Time, //Duration
                 easing); //Duration
 
             // Don't forget to replace our Chroma color with a Light Gradient in _customData
             generated.CustomData.Add("_lightGradient", generated.CustomLightGradient.ToJson());
             generated.CustomData.Remove("_color");
-            generated.CustomData.Remove("color");
 
             generatedObjects.Add(generated);
         }

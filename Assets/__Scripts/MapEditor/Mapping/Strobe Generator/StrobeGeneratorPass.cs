@@ -12,9 +12,9 @@ public abstract class StrobeGeneratorPass
     /// <summary>
     ///     Used to group together various events that are put through the particular generator pass.
     /// </summary>
-    /// <param name="baseEvent event that is considered to be included in the strobe generator pass.</param>
+    /// <param name="event">An event that is considered to be included in the strobe generator pass.</param>
     /// <returns>Whether or not this particular event will be included in the strobe generator pass.</returns>
-    public abstract bool IsEventValidForPass(BaseEvent baseEvent);
+    public abstract bool IsEventValidForPass(BaseEvent @event);
 
     /// <summary>
     ///     Perform a strobe generator pass on any <see cref="MapEvent.Type" />.

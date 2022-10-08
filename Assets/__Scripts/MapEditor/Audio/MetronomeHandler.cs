@@ -1,6 +1,6 @@
 ﻿using System;
+using Beatmap.Base.Customs;
 using Beatmap.Enums;
-using Beatmap.Base;
 using UnityEngine;
 
 public class MetronomeHandler : MonoBehaviour
@@ -16,7 +16,7 @@ public class MetronomeHandler : MonoBehaviour
     private float beatProgress;
     private bool cowBellPlayed;
     private float lastBpm = 100;
-    private BaseBpmEvent lastBpmChange;
+    private BaseBpmChange lastBpmChange;
     private Animator metronomeUIAnimator;
     private bool metronomeUIDirection = true;
 

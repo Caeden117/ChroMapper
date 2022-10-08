@@ -1,3 +1,4 @@
+using System;
 using Beatmap.Base;
 using Beatmap.V2;
 using Beatmap.V3;
@@ -32,6 +33,7 @@ namespace Beatmap.Helper
 
         public static TConcrete Clone<TConcrete>(TConcrete cloneable) where TConcrete : BaseItem
         {
+            if (cloneable is null) throw new ArgumentException("cloneable is null.");
             return cloneable.Clone() as TConcrete;
         }
     }

@@ -72,17 +72,16 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         loader.UpdateMapData(map);
         var currentBeat = atsc.CurrentBeat;
         atsc.MoveToTimeInBeats(0);
-        if (notes || full)
-        {
-            yield return StartCoroutine(loader.LoadObjects(map.Arcs));
-            yield return StartCoroutine(loader.LoadObjects(map.Chains));
-            yield return StartCoroutine(loader.LoadObjects(map.Bombs));
-            yield return StartCoroutine(loader.LoadObjects(map.Notes));
-        }
+        if (notes || full) yield return StartCoroutine(loader.LoadObjects(map.Notes));
         if (obstacles || full) yield return StartCoroutine(loader.LoadObjects(map.Obstacles));
         if (events || full) yield return StartCoroutine(loader.LoadObjects(map.Events));
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map.BpmChanges));
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map.CustomEvents));
+        if ((notes || full) && Settings.Instance.Load_MapV3)
+        {
+            yield return StartCoroutine(loader.LoadObjects(map.Arcs));
+            yield return StartCoroutine(loader.LoadObjects(map.Chains));
+        }
         if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;
         tracksManager.RefreshTracks();
         SelectionController.RefreshMap();

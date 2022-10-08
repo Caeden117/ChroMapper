@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base.Customs;
 using Beatmap.V2.Customs;
-using Beatmap.V3.Customs;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,7 +33,8 @@ public class EnvRemoval : MonoBehaviour
 
     public void AddItem()
     {
-        AddItem(difficultySelect.CurrentDiff.GetVersion() == 3 ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement("") : new V2EnvironmentEnhancement(""));
+        // TODO: check for v3 enviormneremte
+        AddItem(new V2EnvironmentEnhancement(""));
         UpdateEnvRemoval();
         StartCoroutine(WaitToScroll());
     }

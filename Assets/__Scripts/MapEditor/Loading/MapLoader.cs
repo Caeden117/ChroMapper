@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Shared;
@@ -51,6 +50,7 @@ public class MapLoader : MonoBehaviour
             };
             this.map = copy;
         }
+
     }
 
     public IEnumerator HardRefresh()
@@ -123,7 +123,7 @@ public class MapLoader : MonoBehaviour
             manager.RefreshTracks();
             var events = collection as EventGridContainer;
             events.AllRotationEvents = objects.Cast<BaseEvent>().Where(x => x.IsLaneRotationEvent()).ToList();
-            events.AllBoostEvents = objects.Cast<BaseEvent>().Where(x => x.Type == (int)EventTypeValue.ColorBoost)
+            events.AllBoostEvents = objects.Cast<BaseEvent>().Where(x => x.IsColorBoostEvent())
                 .ToList();
 
             if (Settings.Instance.Load_MapV3)

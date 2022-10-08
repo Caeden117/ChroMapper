@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
@@ -47,9 +48,9 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
     public void InvertArc(ArcContainer arc)
     {
         var original = BeatmapFactory.Clone(arc.ArcData);
-        var newType = arc.ArcData.Color == (int)NoteType.Red
-            ? (int)NoteType.Blue
-            : (int)NoteType.Red;
+        var newType = arc.ArcData.Color == (int)NoteColor.Red
+            ? (int)NoteColor.Blue
+            : (int)NoteColor.Red;
         arc.ArcData.Color = newType;
         arcAppearanceSo.SetArcAppearance(arc);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(arc.ObjectData, arc.ObjectData, original, "invert arc color"));

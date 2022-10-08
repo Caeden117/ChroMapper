@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 
 public class InterscopeCarSuspensionEffect : InterscopeCarEventHandler
@@ -25,9 +25,9 @@ public class InterscopeCarSuspensionEffect : InterscopeCarEventHandler
             .FirstOrDefault();
     }
 
-    protected override void OnCarGroupTriggered(BaseEvent baseEvent)
+    protected override void OnCarGroupTriggered(BaseEvent @event)
     {
-        if (baseEvent.Type == (int)EventTypeValue.UtilityEvent0)
+        if (@event.Type == (int)EventTypeValue.UtilityEvent0)
         {
             frontWheelSpringJoint.minDistance = frontWheelSpringJoint.maxDistance = expandDistance;
             CarRigidbody.WakeUp();

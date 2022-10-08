@@ -1,7 +1,8 @@
 ﻿using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Helper;
-using Beatmap.Base;
+using Beatmap.V2;
 using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -95,13 +96,11 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void ToggleHyperWall(ObstacleContainer obs)
     {
-        if (BeatmapFactory.Clone(obs.ObjectData) is BaseObstacle edited)
-        {
-            edited.Time += obs.ObstacleData.Duration;
-            edited.Duration *= -1f;
+        var wall = BeatmapFactory.Clone(obs.ObjectData) as BaseObstacle;
+        wall.Time += obs.ObstacleData.Duration;
+        wall.Duration *= -1f;
 
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(edited, obs.ObjectData, obs.ObjectData),
-                true);
-        }
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(wall, obs.ObjectData, obs.ObjectData),
+            true);
     }
 }

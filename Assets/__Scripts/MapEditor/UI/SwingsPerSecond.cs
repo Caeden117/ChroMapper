@@ -10,19 +10,16 @@ public class SwingsPerSecond
     private readonly float maximumWindowTolerance = .07f; // For windowed sliders
 
     private readonly NoteGridContainer noteGrid;
-    private readonly ChainGridContainer chainGrid;
     private readonly ObstacleGridContainer obstacleGrid;
 
 
-    public SwingsPerSecond(NoteGridContainer noteGrid, ObstacleGridContainer obstacleGrid, ChainGridContainer chainGrid)
+    public SwingsPerSecond(NoteGridContainer noteGrid, ObstacleGridContainer obstacleGrid)
     {
         this.noteGrid = noteGrid;
         this.obstacleGrid = obstacleGrid;
-        this.chainGrid = chainGrid;
     }
 
     private int NotesCount => noteGrid.LoadedObjects.Count;
-    private int ChainsCount => chainGrid.LoadedObjects.Count;
 
     public Stats Blue { get; private set; }
     public Stats Red { get; private set; }
@@ -34,17 +31,6 @@ public class SwingsPerSecond
         if (NotesCount > 0 && noteGrid.LoadedObjects.Count != 0) 
             lastNoteTime = noteGrid.LoadedObjects.Last().Time / songBpm * 60;
 
-        var lastChainTime = 0f;
-        foreach (BaseChain chain in chainGrid.LoadedObjects)
-        {
-            if (chain.SliceCount > 1)
-            {
-                var chainEnd = (chain.Time + (chain.TailTime - chain.Time)) / songBpm * 60;
-                lastChainTime = Mathf.Max(lastChainTime, chainEnd);
-            }
-        }
-
-
         var lastInteractiveObstacleTime = 0f;
         foreach (BaseObstacle obstacle in obstacleGrid.LoadedObjects)
         {
@@ -55,7 +41,7 @@ public class SwingsPerSecond
             }
         }
 
-        return Mathf.Max(lastInteractiveObstacleTime, lastNoteTime, lastChainTime);
+        return Mathf.Max(lastInteractiveObstacleTime, lastNoteTime);
     }
 
     private float FirstInteractiveObjectTime(float songBpm)
@@ -83,14 +69,14 @@ public class SwingsPerSecond
             Mathf.Abs(note1.PosY - note2.PosY)
         ) >= 2;
 
-    private void CheckWindow(BaseNote baseNote, ref BaseNote lastNote, int[] swingCount, float realTime,
+    private void CheckWindow(BaseNote note, ref BaseNote lastNote, int[] swingCount, float realTime,
         float songBpm)
     {
         if (lastNote != null)
         {
-            if ((MaybeWindowed(baseNote, lastNote) &&
-                 (baseNote.Time - lastNote.Time) / songBpm * 60 > maximumWindowTolerance) ||
-                (baseNote.Time - lastNote.Time) / songBpm * 60 > maximumTolerance)
+            if ((MaybeWindowed(note, lastNote) &&
+                 (note.Time - lastNote.Time) / songBpm * 60 > maximumWindowTolerance) ||
+                (note.Time - lastNote.Time) / songBpm * 60 > maximumTolerance)
             {
                 swingCount[Mathf.FloorToInt(realTime)] += 1;
             }
@@ -100,7 +86,7 @@ public class SwingsPerSecond
             swingCount[Mathf.FloorToInt(realTime)] += 1;
         }
 
-        lastNote = baseNote;
+        lastNote = note;
     }
 
     private int[][] SwingCount(float songBpm)

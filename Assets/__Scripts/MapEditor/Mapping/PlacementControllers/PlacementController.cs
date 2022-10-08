@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
-using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -16,20 +16,20 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 {
     [SerializeField] private GameObject objectContainerPrefab;
     [SerializeField] private TBo objectData;
-    [SerializeField] internal TBocc objectContainerCollection;
-    [SerializeField] protected Transform ParentTrack;
-    [SerializeField] protected Transform InterfaceGridParent;
+    [FormerlySerializedAs("ObjectContainerCollection")] [SerializeField] internal TBocc objectContainerCollection;
+    [FormerlySerializedAs("parentTrack")] [SerializeField] protected Transform ParentTrack;
+    [FormerlySerializedAs("interfaceGridParent")] [SerializeField] protected Transform InterfaceGridParent;
     [SerializeField] protected bool AssignTo360Tracks;
     [SerializeField] private ObjectType objectDataType;
     [SerializeField] private bool startingActiveState;
-    [SerializeField] protected AudioTimeSyncController Atsc;
+    [FormerlySerializedAs("atsc")] [SerializeField] protected AudioTimeSyncController Atsc;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
-    [SerializeField] protected TracksManager TracksManager;
-    [SerializeField] protected RotationCallbackController GridRotation;
-    [SerializeField] protected GridChild GridChild;
+    [FormerlySerializedAs("tracksManager")] [SerializeField] protected TracksManager TracksManager;
+    [FormerlySerializedAs("gridRotation")] [SerializeField] protected RotationCallbackController GridRotation;
+    [FormerlySerializedAs("gridChild")] [SerializeField] protected GridChild GridChild;
     [SerializeField] private Transform noteGridTransform;
 
-    [SerializeField] public Bounds Bounds;
+    [FormerlySerializedAs("bounds")] public Bounds Bounds;
     public bool IsActive;
 
     private bool applicationFocus;
@@ -127,13 +127,12 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 return;
             }
 
+            // TODO: check for track
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
-            var trackObject = queuedData as BaseGrid;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
-            {
-                if (trackObject != null) trackObject.CustomTrack = BeatmapObjectContainerCollection.TrackFilterID;
-            }
-            else if (trackObject != null) trackObject.CustomTrack = null;
+                queuedData.GetOrCreateCustom()["track"] = BeatmapObjectContainerCollection.TrackFilterID;
+            else
+                queuedData?.CustomData?.Remove("track");
 
             CalculateTimes(hit, out var roundedHit, out var roundedTime);
             RoundedTime = roundedTime;
@@ -353,7 +352,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         objectData = queuedData;
         objectData.Time = RoundedTime;
-        //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<IObject> conflicting);
+        //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BaseObject> conflicting);
         objectContainerCollection.SpawnObject(objectData, out var conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         queuedData = BeatmapFactory.Clone(queuedData);

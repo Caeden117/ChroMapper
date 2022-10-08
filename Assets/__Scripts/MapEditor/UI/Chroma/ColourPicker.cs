@@ -1,4 +1,5 @@
 ﻿using Beatmap.Base;
+using Beatmap.V2;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -26,8 +27,8 @@ public class ColourPicker : MonoBehaviour
     private void SelectedObject(BaseObject obj)
     {
         if (!Settings.Instance.PickColorFromChromaEvents || !dropdown.Visible) return;
-        if (obj.CustomColor != null) picker.CurrentColor = (Color)obj.CustomColor;
-        if (!(obj is BaseEvent e)) return;
+        if (obj.CustomData?.HasKey("_color") ?? false) picker.CurrentColor = obj.CustomData["_color"];
+        if (!(obj is V2Event e)) return;
         if (e.Value >= ColourManager.RgbintOffset)
             picker.CurrentColor = ColourManager.ColourFromInt(e.Value);
         else if (e.CustomLightGradient != null) picker.CurrentColor = e.CustomLightGradient.StartColor;

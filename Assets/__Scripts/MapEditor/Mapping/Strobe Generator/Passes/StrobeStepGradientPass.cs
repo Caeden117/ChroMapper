@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
-using Beatmap.V3;
+using Beatmap.Enums;
+using Beatmap.V2;
 using SimpleJSON;
 using UnityEngine;
 
@@ -22,7 +22,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
         this.easing = easing;
     }
 
-    public override bool IsEventValidForPass(BaseEvent baseEvent) => baseEvent.IsLightEvent(EnvironmentInfoHelper.GetName());
+    public override bool IsEventValidForPass(BaseEvent @event) => !@event.IsUtilityEvent();
 
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, JSONNode propID)
@@ -49,7 +49,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             }
             else if (e.IsOff)
             {
-                var lastColor = colorPoints.LastOrDefault(x => x.Key < e.Time);
+                var lastColor = colorPoints.Where(x => x.Key < e.Time).LastOrDefault();
 
                 colorPoints.Add(e.Time, !lastColor.Equals(default(KeyValuePair<float, Color>))
                     ? lastColor.Value.WithAlpha(0)
@@ -75,7 +75,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var localDistance = Mathf.Clamp(i / precision, 0, distanceInBeats);
             var newTime = startTime + localDistance;
 
-            var anyLast = colorPoints.LastOrDefault(x => x.Key <= newTime);
+            var anyLast = colorPoints.Where(x => x.Key <= newTime).LastOrDefault();
             if (anyLast.Key != lastPoint.Key)
             {
                 var nextPoints = colorPoints.Where(x => x.Key > newTime);
@@ -91,11 +91,13 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var lerp = easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
 
-            var data = new V3BasicEvent(newTime, type, value, 1, new JSONObject()) { CustomColor = color };
+            // TODO: check v2 or v3
+            var data = new V2Event(newTime, type, value, new JSONObject());
+            data.CustomData.Add("_color", color);
 
             if (propMode != EventGridContainer.PropMode.Off)
             {
-                data.CustomLightID = new int[] { propID };
+                data.CustomData.Add("_lightID", propID);
             }
 
             generatedObjects.Add(data);

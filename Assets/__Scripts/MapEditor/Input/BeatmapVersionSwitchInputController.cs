@@ -24,7 +24,7 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
             if (v1 == "3")
             {
                 Settings.Instance.Load_MapV3 = false;
-                var mapV3 = BeatSaberSongContainer.Instance.Map;
+                var mapV3 = BeatSaberSongContainer.Instance.Map as V3Difficulty;
                 mapV3.MainNode = null;
             }
             else

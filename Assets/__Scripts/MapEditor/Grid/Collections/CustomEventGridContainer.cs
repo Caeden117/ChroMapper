@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Beatmap.Containers;
-using Beatmap.Enums;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Containers;
+using Beatmap.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -142,6 +142,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             }
         }
 
+        // TODO: deal with track
         foreach (var obj in SelectionController.SelectedObjects) obj.GetOrCreateCustom()["_track"] = res;
     }
 

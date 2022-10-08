@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseBombNote : BaseGrid, ICustomDataBomb
+    public abstract class BaseBombNote : BaseNote, ICustomDataBomb
     {
         protected BaseBombNote()
         {
@@ -20,11 +20,11 @@ namespace Beatmap.Base
         }
 
         protected BaseBombNote(float time, int posX, int posY, JSONNode customData = null) : base(time, posX, posY,
-            customData)
+            3, 0, customData)
         {
         }
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.Bomb;
+        public override ObjectType ObjectType { get; set; } = ObjectType.Note;
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {

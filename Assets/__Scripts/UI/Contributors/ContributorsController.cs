@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base.Customs;
 using Beatmap.Info;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class ContributorsController : MonoBehaviour
 {
     [SerializeField] private GameObject listContainer;
     [SerializeField] private GameObject listItemPrefab;
-    public readonly List<InfoContributor> Contributors = new List<InfoContributor>();
+    public readonly List<BaseContributor> Contributors = new List<BaseContributor>();
 
     private readonly List<ContributorListItem> items = new List<ContributorListItem>();
 

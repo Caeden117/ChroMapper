@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class PastNotesWorker : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
-    [SerializeField] private NoteGridContainer noteGridContainer;
+    [FormerlySerializedAs("notesContainer")] [SerializeField] private NoteGridContainer noteGridContainer;
     [SerializeField] private GameObject gridNotePrefab;
     [SerializeField] private BeatmapObjectCallbackController callbackController;
     [SerializeField] private NoteAppearanceSO noteAppearance;
@@ -99,9 +99,9 @@ public class PastNotesWorker : MonoBehaviour
 
         float gridPosX = note.PosX, gridPosY = note.PosY;
 
-        if (note.CustomCoordinate != null)
+        if (note.CustomData?.HasKey("_position") ?? false)
         {
-            var pos = (Vector2)note.CustomCoordinate;
+            Vector2 pos = note.CustomData["_position"];
             gridPosX = pos.x + 2f;
             gridPosY = pos.y;
         }

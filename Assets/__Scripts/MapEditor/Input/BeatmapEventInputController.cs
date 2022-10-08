@@ -1,8 +1,8 @@
 using System.Linq;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Helper;
-using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -55,7 +55,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
             {
                 if (e.EventData is BaseRotationEvent)
                 {
-                    // (e.EventData as IRotationEvent).Rotation *= -1;
+                    (e.EventData as BaseRotationEvent).Rotation *= -1;
                 }
                 else
                 {
@@ -77,7 +77,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         {
             e.EventData.Value = e.EventData.Value > 0 ? 0 : 1;
         }
-        else if (!e.EventData.IsLightEvent(EnvironmentInfoHelper.GetName()))
+        else if (!e.EventData.IsLightEvent())
         {
             return;
         }
@@ -101,18 +101,18 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
 
         if (e.EventData is BaseRotationEvent)
         {
-            // (e.EventData as IRotationEvent).Rotation += modifier;
+            (e.EventData as BaseRotationEvent).Rotation += modifier;
         }
         else
         {
             e.EventData.Value += modifier;
 
-            if (e.EventData.Value == 4 && e.EventData.IsLightEvent(EnvironmentInfoHelper.GetName()))
+            if (e.EventData.Value == 4 && e.EventData.IsLightEvent())
                 e.EventData.Value += modifier;
 
             if (e.EventData.Value < 0) e.EventData.Value = 0;
 
-            if (!e.EventData.IsLaserRotationEvent(EnvironmentInfoHelper.GetName()))
+            if (!e.EventData.IsLaserRotationEvent())
             {
                 if (e.EventData.Value > 7)
                     e.EventData.Value = 7;
@@ -129,8 +129,11 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
     {
         var original = BeatmapFactory.Clone(e.ObjectData);
 
-        e.EventData.FloatValue += 0.1f * modifier;
-        if (e.EventData.FloatValue < 0) e.EventData.FloatValue = 0;
+        if (e.EventData.IsLightEvent())
+        {
+            e.EventData.FloatValue += 0.1f * modifier;
+            if (e.EventData.FloatValue < 0) e.EventData.FloatValue = 0;
+        }
 
         eventAppearanceSo.SetEventAppearance(e);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original));

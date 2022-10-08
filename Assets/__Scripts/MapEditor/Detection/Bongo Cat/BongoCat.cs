@@ -1,5 +1,5 @@
-﻿using Beatmap.Enums;
-using Beatmap.Base;
+﻿using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -67,22 +67,22 @@ public class BongoCat : MonoBehaviour
         transform.localScale = selectedBongoCat.Scale;
     }
 
-    public void TriggerArm(BaseNote baseNote, NoteGridContainer container)
+    public void TriggerArm(BaseNote note, NoteGridContainer container)
     {
         //Ignore bombs here to improve performance.
-        if (Settings.Instance.BongoCat == -1 || baseNote.Type == (int)NoteType.Bomb) return;
-        var next = container.UnsortedObjects.Find(x => x.Time > baseNote.Time &&
-                                                       ((BaseNote)x).Type == baseNote.Type);
+        if (Settings.Instance.BongoCat == -1 || note.Type == (int)NoteType.Bomb) return;
+        var next = container.UnsortedObjects.Find(x => x.Time > note.Time &&
+                                                       ((BaseNote)x).Type == note.Type);
         var timer = 0.125f;
         if (!(next is null))
         {
-            var half = container.AudioTimeSyncController.GetSecondsFromBeat((next.Time - baseNote.Time) / 2f);
+            var half = container.AudioTimeSyncController.GetSecondsFromBeat((next.Time - note.Time) / 2f);
             timer = next != null
                 ? Mathf.Clamp(half, 0.05f, 0.2f)
                 : 0.125f; // clamp to accommodate sliders and long gaps between notes
         }
 
-        switch (baseNote.Type)
+        switch (note.Type)
         {
             case (int)NoteType.Red:
                 larm = true;

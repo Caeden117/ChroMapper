@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,7 +14,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
     public const int ChainDefaultSpawnCount = 3;
     private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
     [SerializeField] private SelectionController selectionController;
-    [SerializeField] private NoteGridContainer noteGridContainer;
+    [FormerlySerializedAs("notesContainer")] [SerializeField] private NoteGridContainer noteGridContainer;
 
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) => 
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a chain.");

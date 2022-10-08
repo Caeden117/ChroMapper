@@ -7,6 +7,10 @@ namespace Beatmap.Base
 {
     public abstract class BaseChain : BaseSlider, ICustomDataChain
     {
+        public const int MinChainCount = 2;
+        public const int MaxChainCount = 999;
+        public const float MinChainSquish = 0.1f;
+        public const float MaxChainSquish = 999;
         public const float
             PosOffsetFactor = 0.17333f; // Hardcorded because haven't found exact relationship between ChainScale yet
 

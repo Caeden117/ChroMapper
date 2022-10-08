@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Beatmap.Enums;
-using Beatmap.Helper;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Enums;
+using Beatmap.Helper;
 using UnityEngine;
 
 public class PaintSelectedObjects : MonoBehaviour
@@ -14,7 +14,7 @@ public class PaintSelectedObjects : MonoBehaviour
         var allActions = new List<BeatmapAction>();
         foreach (var obj in SelectionController.SelectedObjects)
         {
-            if (obj is BaseBpmEvent || obj is BaseCustomEvent) continue; //These should probably not be colored.
+            if (obj is BaseBpmChange || obj is BaseCustomEvent) continue; //These should probably not be colored.
             var beforePaint = BeatmapFactory.Clone(obj);
             if (DoPaint(obj)) allActions.Add(new BeatmapObjectModifiedAction(obj, obj, beforePaint, "a", true));
         }
@@ -36,12 +36,12 @@ public class PaintSelectedObjects : MonoBehaviour
             if (@event.CustomLightGradient != null)
             {
                 //Modify start color if we are painting a Chroma 2.0 gradient
-                @event.CustomLightGradient.StartColor = (Color)picker.CurrentColor;
+                @event.CustomLightGradient.StartColor = picker.CurrentColor;
                 return true;
             }
         }
 
-        obj.CustomColor = picker.CurrentColor;
+        obj.GetOrCreateCustom()["_color"] = picker.CurrentColor;
 
         return true;
     }

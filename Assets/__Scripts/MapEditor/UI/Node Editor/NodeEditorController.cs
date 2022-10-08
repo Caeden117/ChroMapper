@@ -146,6 +146,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     {
         editingObjects = SelectionController.SelectedObjects.Select(it => it);
         editingNode = GetSharedJson(editingObjects.Select(it => JSON.Parse(it.ToString())));
+
         nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
 
         if (editingObjects.Count() == 1)

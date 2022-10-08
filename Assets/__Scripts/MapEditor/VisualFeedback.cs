@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 
 public class VisualFeedback : MonoBehaviour

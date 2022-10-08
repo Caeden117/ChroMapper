@@ -2,12 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Containers;
-using Beatmap.Enums;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Containers;
+using Beatmap.Enums;
 using Beatmap.V2;
-using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -15,9 +14,9 @@ using UnityEngine.Serialization;
 public class BoxSelectionPlacementController : PlacementController<BaseEvent, EventContainer, EventGridContainer>,
     CMInput.IBoxSelectActions
 {
-    [SerializeField] public CustomEventGridContainer CustomCollection;
-    [SerializeField] public EventGridContainer EventGridContainer;
-    [SerializeField] public CreateEventTypeLabels Labels;
+    [FormerlySerializedAs("customCollection")] public CustomEventGridContainer CustomCollection;
+    [FormerlySerializedAs("EventsContainer")] [FormerlySerializedAs("eventsContainer")] public EventGridContainer EventGridContainer;
+    [FormerlySerializedAs("labels")] public CreateEventTypeLabels Labels;
 
     private readonly HashSet<BaseObject> selected = new HashSet<BaseObject>();
 
@@ -56,7 +55,8 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
 
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) => null;
 
-    public override BaseEvent GenerateOriginalData() => new V3BasicEvent(float.MaxValue, 69, 420);
+    // TODO: v3 check?
+    public override BaseEvent GenerateOriginalData() => new V2Event(float.MaxValue, 69, 420);
 
     protected override bool TestForType<T>(Intersections.IntersectionHit hit, ObjectType type)
     {

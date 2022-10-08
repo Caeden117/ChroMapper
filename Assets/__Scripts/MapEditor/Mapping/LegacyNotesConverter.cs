@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 
 //TODO rename to LegacyEventsConverter
@@ -36,7 +36,7 @@ public class LegacyNotesConverter : MonoBehaviour
                     continue;
                 }
 
-                if (chroma != null && e.CustomData != null && e.IsOff)
+                if (chroma != null && e.Value != (int)LightValue.Off)
                     e.CustomColor = chroma;
             }
             else

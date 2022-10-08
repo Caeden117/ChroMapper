@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -410,7 +410,7 @@ public class PlatformDescriptor : MonoBehaviour
     private bool TryGetNextTransitionNote(in BaseEvent e, out BaseEvent transitionEvent)
     {
         transitionEvent = null;
-        if (e.Next != null && e.Next.IsTransition)
+        if (e.Next is { IsTransition: true })
         {
             transitionEvent = e.Next;
             return true;

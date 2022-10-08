@@ -1,5 +1,5 @@
-﻿using Beatmap.Helper;
-using Beatmap.Base;
+﻿using Beatmap.Base;
+using Beatmap.Helper;
 
 public class BeatmapObjectModifiedAction : BeatmapAction
 {

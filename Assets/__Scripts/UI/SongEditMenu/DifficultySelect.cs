@@ -179,8 +179,8 @@ public class DifficultySelect : MonoBehaviour
 
         var map = TryGetExistingMapFromDiff(localDiff) ?? (
             Settings.Instance.Load_MapV3 ?
-            (BaseDifficulty)new V3Difficulty { MainNode = new JSONObject() } :
-            new V2Difficulty { MainNode = new JSONObject() });
+            (BaseDifficulty)new V3Difficulty() { MainNode = new JSONObject() } :
+            new V2Difficulty() { MainNode = new JSONObject() });
         var oldPath = map.DirectoryAndFile;
 
         diff.UpdateName();

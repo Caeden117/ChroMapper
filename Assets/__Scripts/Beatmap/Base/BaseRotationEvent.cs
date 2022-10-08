@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseRotationEvent : BaseObject
+    public abstract class BaseRotationEvent : BaseEvent
     {
         protected BaseRotationEvent()
         {
@@ -33,7 +33,7 @@ namespace Beatmap.Base
         }
 
         protected BaseRotationEvent(float time, int executionTime, float rotation, JSONNode customData = null) :
-            base(time, customData)
+            base(time, executionTime == 0 ? 14 : 15, customData)
         {
             ExecutionTime = executionTime;
             Rotation = rotation;

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Enums;
 using Beatmap.Helper;
-using Beatmap.Base;
 using Beatmap.V3;
 using UnityEngine;
 
@@ -67,15 +67,15 @@ public class MirrorSelection : MonoBehaviour
                 var state = obstacle.PosX;
                 if (obstacle.CustomData != null) //Noodle Extensions
                 {
-                    if (obstacle.CustomCoordinate != null)
+                    if (obstacle.CustomData.HasKey("_position"))
                     {
-                        Vector2 oldPosition = (Vector2)obstacle.CustomCoordinate;
+                        Vector2 oldPosition = obstacle.CustomData["_position"];
                         
                         var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
-                        if (obstacle.CustomSize != null)
+                        if (obstacle.CustomData.HasKey("_scale"))
                         {
-                            var scale = (Vector3)obstacle.CustomSize;
+                            Vector2 scale = obstacle.CustomData["_scale"];
                             flipped.x -= scale.x;
                         }
                         else
@@ -83,7 +83,7 @@ public class MirrorSelection : MonoBehaviour
                             flipped.x -= obstacle.Width;
                         }
 
-                        obstacle.CustomCoordinate = flipped;
+                        obstacle.CustomData["_position"] = flipped;
                     }
                 }
 
@@ -126,18 +126,18 @@ public class MirrorSelection : MonoBehaviour
                     if (note.CustomData != null)
                     {
                         // NE Precision rotation
-                        if (note.CustomCoordinate != null)
+                        if (note.CustomData.HasKey("_position"))
                         {
-                            Vector2 oldPosition = (Vector2)note.CustomCoordinate;
+                            Vector2 oldPosition = note.CustomData["_position"];
                             var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            note.CustomCoordinate = flipped;
+                            note.CustomData["_position"] = flipped;
                         }
                         
                         // NE precision cut direction
-                        if (note.CustomDirection != null)
+                        if (note.CustomData.HasKey("_cutDirection"))
                         {
-                            var cutDirection = note.CustomDirection;
-                            note.CustomDirection = cutDirection * -1;
+                            var cutDirection = note.CustomData["_cutDirection"].AsFloat;
+                            note.CustomData["_cutDirection"] = cutDirection * -1;
                         }
                     }
                     else
@@ -183,8 +183,8 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (e.IsLaneRotationEvent())
                 {
-                    if (e.CustomLaneRotation != null)
-                        e.CustomLaneRotation = e.CustomLaneRotation * -1;
+                    if (e.CustomData != null && e.CustomData.HasKey("_rotation"))
+                        e.CustomData["_rotation"] = e.CustomData["_rotation"].AsFloat * -1;
 
                     var rotation = e.GetRotationDegreeFromValue();
                     if (rotation != null)
@@ -206,19 +206,19 @@ public class MirrorSelection : MonoBehaviour
                         e.CustomLightGradient.EndColor = startColor;
                     }
 
-                    if (!e.IsLightEvent(EnvironmentInfoHelper.GetName())) continue;
+                    if (!e.IsLightEvent()) continue;
                     if (moveNotes && e.IsPropagation && events.EventTypeToPropagate == e.Type &&
                         events.PropagationEditing == EventGridContainer.PropMode.Prop)
                     {
-                        var mirroredIdx = events.EventTypePropagationSize - (e.CustomPropID ?? 0) - 1;
-                        e.CustomLightID = new int[] { labels.PropIdToLightIdsJ(e.Type,  mirroredIdx) };
+                        var mirroredIdx = events.EventTypePropagationSize - (int)e.CustomPropID - 1;
+                        e.CustomData["_lightID"] = labels.PropIdToLightIdsJ(e.Type, mirroredIdx);
                     }
                     else if (moveNotes && e.IsLightID && events.EventTypeToPropagate == e.Type &&
                              events.PropagationEditing == EventGridContainer.PropMode.Light)
                     {
                         var idx = labels.LightIDToEditor(e.Type, e.CustomLightID[0]);
                         var mirroredIdx = events.EventTypePropagationSize - idx - 1;
-                        e.CustomLightID = new int[] { labels.EditorToLightID(e.Type, mirroredIdx) };
+                        e.CustomData["_lightID"] = labels.EditorToLightID(e.Type, mirroredIdx);
                     }
 
                     if (e.Value > 4 && e.Value <= 8) e.Value -= 4;
@@ -240,9 +240,9 @@ public class MirrorSelection : MonoBehaviour
                         if (cutDirectionToMirrored.ContainsKey(arc.TailCutDirection))
                             arc.TailCutDirection = cutDirectionToMirrored[arc.TailCutDirection];
                     }
-                    arc.Color = arc.Color == (int)NoteColor.Blue
-                        ? (int)NoteColor.Red
-                        : (int)NoteColor.Blue;
+                    arc.Color = arc.Color == (int)NoteType.Red
+                        ? (int)NoteType.Blue
+                        : (int)NoteType.Red;
 
                 }
                 else if (con is BaseChain chain)
@@ -255,9 +255,9 @@ public class MirrorSelection : MonoBehaviour
 
                         chain.TailPosX = Mathf.RoundToInt(((chain.TailPosX - 1.5f) * -1) + 1.5f);
                     }
-                    chain.Color = chain.Color == (int)NoteColor.Blue
-                        ? (int)NoteColor.Red
-                        : (int)NoteColor.Blue;
+                    chain.Color = chain.Color == (int)NoteType.Red
+                        ? (int)NoteType.Blue
+                        : (int)NoteType.Red;
                 }
             }
 

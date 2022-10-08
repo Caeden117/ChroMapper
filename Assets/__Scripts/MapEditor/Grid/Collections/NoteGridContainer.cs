@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,7 +12,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;
-    [SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
 
     [SerializeField] private CountersPlusController countersPlus;
@@ -74,10 +74,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
 
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
 
-    public void UpdateColor(Color red, Color blue)
-    {
-        noteAppearanceSo.UpdateColor(red, blue);
-    }
+    public void UpdateColor(Color red, Color blue) => noteAppearanceSo.UpdateColor(red, blue);
 
     public void UpdateSwingArcVisualizer()
     {

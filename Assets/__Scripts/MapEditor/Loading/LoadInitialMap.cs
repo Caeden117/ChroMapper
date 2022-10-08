@@ -14,6 +14,7 @@ public class LoadInitialMap : MonoBehaviour
     [SerializeField] private RotationCallbackController rotationController;
 
     [FormerlySerializedAs("notesContainer")] [Space] [SerializeField] private NoteGridContainer noteGridContainer;
+
     [FormerlySerializedAs("obstaclesContainer")] [SerializeField] private ObstacleGridContainer obstacleGridContainer;
     [FormerlySerializedAs("arcsContainer")] [SerializeField] private ArcGridContainer arcGridContainer;
     [FormerlySerializedAs("chainsContainer")] [SerializeField] private ChainGridContainer chainGridContainer;

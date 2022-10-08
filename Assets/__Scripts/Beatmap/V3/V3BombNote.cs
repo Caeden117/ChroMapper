@@ -73,5 +73,6 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() => new V3BombNote(Time, PosX, PosY, CustomData?.Clone());
+        public override string CustomKeyDirection { get; } = "direction";
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
@@ -47,7 +47,7 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
         if (uniqueLaserDirection) rightRotatesClockwise = !leftRotatesClockwise;
     }
 
-    public override bool IsEventValidForPass(BaseEvent baseEvent) => baseEvent.IsLaserRotationEvent(EnvironmentInfoHelper.GetName());
+    public override bool IsEventValidForPass(BaseEvent @event) => @event.IsLaserRotationEvent();
 
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, JSONNode propID)
@@ -85,26 +85,27 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
             // This does not support negative numbers, however I do not believe there is a reason to support them in the first place
             var roundedPreciseSpeed = (int)Math.Max(1, Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero));
 
+            // TODO: check v2 or v3
             var data = new V3BasicEvent(newTime, type, 1) { CustomData = new JSONObject(), Value = roundedPreciseSpeed };
 
             // Bit cheeky but hopefully a bit more readable
             if (Math.Abs(decimalPreciseSpeed - roundedPreciseSpeed) > 0.01f)
-                data.CustomPreciseSpeed = decimalPreciseSpeed as float?;
+                data.CustomData["_preciseSpeed"] = decimalPreciseSpeed;
 
             if (overrideDirection)
             {
                 switch (type)
                 {
                     case (int)EventTypeValue.LeftLaserRotation:
-                        data.CustomDirection = Convert.ToInt32(leftRotatesClockwise);
+                        data.CustomData["_direction"] = Convert.ToInt32(leftRotatesClockwise);
                         break;
                     case (int)EventTypeValue.RightLaserRotation:
-                        data.CustomDirection = Convert.ToInt32(rightRotatesClockwise);
+                        data.CustomData["_direction"] = Convert.ToInt32(rightRotatesClockwise);
                         break;
                 }
             }
 
-            if (lockLaserRotation) data.CustomLockRotation = true;
+            if (lockLaserRotation) data.CustomData["_lockPosition"] = true;
 
             generatedObjects.Add(data);
             distanceInBeats -= 1 / interval;
@@ -113,15 +114,17 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
         return generatedObjects;
     }
 
-    private float GetLaserSpeedFromEvent(BaseEvent baseEvent)
+    private float GetLaserSpeedFromEvent(BaseEvent @event)
     {
-        if (baseEvent.CustomPreciseSpeed == null && baseEvent.CustomSpeed == null)
+        if (@event.CustomData == null || @event.CustomData.Children.Count() == 0
+                                       || (!@event.CustomData.HasKey("_preciseSpeed") &&
+                                           !@event.CustomData.HasKey("_speed")))
         {
-            return baseEvent.Value;
+            return @event.Value;
         }
 
-        return (float)(baseEvent.CustomPreciseSpeed != null
-            ? baseEvent.CustomPreciseSpeed
-            : baseEvent.CustomSpeed);
+        return @event.CustomData.HasKey("_preciseSpeed")
+            ? @event.CustomData["_preciseSpeed"].AsFloat
+            : @event.CustomData["_speed"].AsFloat;
     }
 }

@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Base.Customs;
 using Beatmap.V2.Customs;
-using Beatmap.V3.Customs;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -130,11 +128,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             return;
         }
 
-        BaseBookmark newBookmark;
-        if (BeatSaberSongContainer.Instance.Map.GetVersion() == 3)
-            newBookmark = new V3Bookmark(Atsc.CurrentBeat, name);
-        else
-            newBookmark = new V2Bookmark(Atsc.CurrentBeat, name);
+        // TODO: check v2 and v3 bookmark
+        var newBookmark = new V2Bookmark(Atsc.CurrentBeat, name);
 
         if (color != null)
         {

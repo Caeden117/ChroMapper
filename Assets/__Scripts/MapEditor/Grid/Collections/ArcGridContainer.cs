@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,7 +14,7 @@ using UnityEngine.Serialization;
 public class ArcGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject arcPrefab;
-    [SerializeField] private ArcAppearanceSO arcAppearanceSo;
+    [FormerlySerializedAs("arcAppearanceSO")] [SerializeField] private ArcAppearanceSO arcAppearanceSO;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
     private bool isPlaying;
@@ -72,14 +72,14 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
         }
     }
 
-    public void UpdateColor(Color red, Color blue) => arcAppearanceSo.UpdateColor(red, blue);
+    public void UpdateColor(Color red, Color blue) => arcAppearanceSO.UpdateColor(red, blue);
 
     protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         var arc = con as ArcContainer;
         var arcData = obj as BaseArc;
         arc.NotifySplineChanged(arcData);
-        arcAppearanceSo.SetArcAppearance(arc);
+        arcAppearanceSO.SetArcAppearance(arc);
         arc.Setup();
         arc.SetIndicatorBlocksActive(false);
         var track = tracksManager.GetTrackAtTime(arcData.Time);

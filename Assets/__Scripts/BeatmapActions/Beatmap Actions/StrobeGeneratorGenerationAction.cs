@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 
 public class StrobeGeneratorGenerationAction : BeatmapAction
 {

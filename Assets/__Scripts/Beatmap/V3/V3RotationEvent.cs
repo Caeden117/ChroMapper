@@ -52,5 +52,37 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() => new V3RotationEvent(Time, ExecutionTime, Rotation, CustomData?.Clone());
+
+        public override string CustomKeyPropID { get; } = "propID";
+
+        public override string CustomKeyLightID { get; } = "lightID";
+
+        public override string CustomKeyLerpType { get; } = "lerpType";
+
+        public override string CustomKeyEasing { get; } = "easing";
+
+        public override string CustomKeyLightGradient { get; } = "lightGradient";
+
+        public override string CustomKeyStep { get; } = "step";
+
+        public override string CustomKeyProp { get; } = "prop";
+
+        public override string CustomKeySpeed { get; } = "speed";
+
+        public override string CustomKeyStepMult { get; } = "stepMult";
+
+        public override string CustomKeyPropMult { get; } = "propMult";
+
+        public override string CustomKeySpeedMult { get; } = "speedMult";
+
+        public override string CustomKeyPreciseSpeed { get; } = "preciseSpeed";
+
+        public override string CustomKeyDirection { get; } = "direction";
+
+        public override string CustomKeyLockRotation { get; } = "lockRotation";
+
+        public override string CustomKeyLaneRotation { get; } = "rotation";
+
+        public override bool IsPropagation { get; } = false;
     }
 }

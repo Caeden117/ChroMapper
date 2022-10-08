@@ -2,8 +2,8 @@ namespace Beatmap.Base.Customs
 {
     public abstract class BaseContributor : BaseItem
     {
-        string LocalImageLocation { get; set; }
-        string Name { get; set; }
-        string Role { get; set; }
+        public string LocalImageLocation { get; set; }
+        public string Name { get; set; }
+        public string Role { get; set; }
     }
 }

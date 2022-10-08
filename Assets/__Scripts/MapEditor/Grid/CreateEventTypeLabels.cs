@@ -116,35 +116,35 @@ public class CreateEventTypeLabels : MonoBehaviour
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent0:
-                            textMesh.text = "Utility Event 1";
+                            textMesh.text = "Utility Event 0";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent1:
-                            textMesh.text = "Utility Event 2";
+                            textMesh.text = "Utility Event 1";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent2:
-                            textMesh.text = "Utility Event 3";
+                            textMesh.text = "Utility Event 2";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent3:
-                            textMesh.text = "Utility Event 4";
+                            textMesh.text = "Utility Event 3";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.SpecialEvent0:
-                            textMesh.text = "Special Event 1";
+                            textMesh.text = "Special Event 0";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.SpecialEvent1:
-                            textMesh.text = "Special Event 2";
+                            textMesh.text = "Special Event 1";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.SpecialEvent2:
-                            textMesh.text = "Special Event 3";
+                            textMesh.text = "Special Event 2";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.SpecialEvent3:
-                            textMesh.text = "Special Event 4";
+                            textMesh.text = "Special Event 3";
                             textMesh.font = UtilityAsset;
                             break;
                         default:

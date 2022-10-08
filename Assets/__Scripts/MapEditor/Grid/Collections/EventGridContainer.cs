@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -17,7 +17,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     }
 
     [SerializeField] private GameObject eventPrefab;
-    [SerializeField] private EventAppearanceSO eventAppearanceSo;
+    [FormerlySerializedAs("eventAppearanceSO")] [SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private GameObject eventGridLabels;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private EventPlacement eventPlacement;
@@ -26,13 +26,12 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     [SerializeField] private LaserSpeedController laserSpeedController;
     [SerializeField] private CountersPlusController countersPlus;
 
-    public int EventTypeToPropagate = (int)EventTypeValue.RingRotation;
+    public int EventTypeToPropagate = (int)EventTypeValue.RingLights;
     public int EventTypePropagationSize;
 
     public List<BaseEvent> AllRotationEvents = new List<BaseEvent>();
     public List<BaseEvent> AllBoostEvents = new List<BaseEvent>();
 
-    // TODO: why was this MapEventV3?
     private Dictionary<int, List<BaseEvent>> allLightEvents = new Dictionary<int, List<BaseEvent>>();
     public Dictionary<int, List<BaseEvent>> AllLightEvents { get => allLightEvents;
         set {
@@ -207,7 +206,9 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         foreach (var group in grouping)
         {
             sorted.AddRange(@group.OrderBy(x =>
-                (x as BaseEvent)?.CustomPropID ?? -1)); // Sort non-light prop events before light prop events
+                x.CustomData?.HasKey("_propID") ?? false
+                    ? x.CustomData["_propID"].AsInt
+                    : -1)); // Sort non-light prop events before light prop events
         }
 
         return sorted;
@@ -254,12 +255,12 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         }
     }
 
-    private IEnumerator WaitForGradientThenRecycle(BaseEvent baseEvent)
+    private IEnumerator WaitForGradientThenRecycle(BaseEvent @event)
     {
-        var endTime = baseEvent.Time + baseEvent.CustomLightGradient.Duration;
+        var endTime = @event.Time + @event.CustomLightGradient.Duration;
         yield return new WaitUntil(() =>
             endTime < AudioTimeSyncController.CurrentBeat + DespawnCallbackController.Offset);
-        RecycleContainer(baseEvent);
+        RecycleContainer(@event);
     }
 
     private void OnPlayToggle(bool playing)
@@ -296,7 +297,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     public void LinkAllLightEvents()
     {
         AllLightEvents = LoadedObjects.OfType<BaseEvent>().
-                    Where(x => x.IsLightEvent(EnvironmentInfoHelper.GetName())).
+                    Where(x => x.IsLightEvent()).
                     GroupBy(x => x.Type).
                     ToDictionary(g => g.Key, g => g.ToList());
     }

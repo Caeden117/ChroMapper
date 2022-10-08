@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
@@ -26,7 +27,7 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
     {
         var original = BeatmapFactory.Clone(c.ObjectData);
         c.ChainData.SliceCount += modifier;
-        c.ChainData.SliceCount = Mathf.Clamp(c.ChainData.SliceCount, 1, 100);
+        c.ChainData.SliceCount = Mathf.Clamp(c.ChainData.SliceCount, BaseChain.MinChainCount, BaseChain.MaxChainCount);
         c.GenerateChain();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
     }
@@ -46,9 +47,9 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
     public void InvertChain(ChainContainer chain)
     {
         var original = BeatmapFactory.Clone(chain.ObjectData);
-        var newType = chain.ChainData.Color == (int)NoteType.Red
-            ? (int)NoteType.Blue
-            : (int)NoteType.Red;
+        var newType = chain.ChainData.Color == (int)NoteColor.Red
+            ? (int)NoteColor.Blue
+            : (int)NoteColor.Red;
         chain.ChainData.Color = newType;
         chainAppearanceSo.SetChainAppearance(chain);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(chain.ObjectData, chain.ObjectData, original));
@@ -68,7 +69,7 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
     {
         var original = BeatmapFactory.Clone(c.ObjectData);
         c.ChainData.Squish += modifier;
-        c.ChainData.Squish = Mathf.Clamp(c.ChainData.Squish, 0.001f, 100f);
+        c.ChainData.Squish = Mathf.Clamp(c.ChainData.Squish, BaseChain.MinChainSquish, BaseChain.MaxChainSquish);
         c.GenerateChain();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
     }

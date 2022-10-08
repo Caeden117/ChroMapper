@@ -4,9 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
 using Beatmap.Helper;
 using Beatmap.Info;
-using Beatmap.Base;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -55,7 +56,7 @@ public class BeatSaberSong
     [FormerlySerializedAs("warnings")] public List<string> Warnings = new List<string>();
     [FormerlySerializedAs("suggestions")] public List<string> Suggestions = new List<string>();
     [FormerlySerializedAs("requirements")] public List<string> Requirements = new List<string>();
-    [FormerlySerializedAs("contributors")] public List<InfoContributor> Contributors = new List<InfoContributor>();
+    [FormerlySerializedAs("contributors")] public List<BaseContributor> Contributors = new List<BaseContributor>();
 
     private readonly bool isWipMap;
 

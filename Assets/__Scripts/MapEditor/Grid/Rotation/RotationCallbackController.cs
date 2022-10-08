@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 

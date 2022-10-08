@@ -3,8 +3,6 @@ using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.V2.Customs;
-using Beatmap.V3.Customs;
-using UnityEngine;
 using static BeatSaberSong;
 
 /// <summary>
@@ -97,8 +95,9 @@ public class DifficultySettings
         var enhancements = new List<BaseEnvironmentEnhancement>();
         if (DifficultyBeatmap.CustomData != null)
         {
+            // TODO: check for v3 env enhancement
             foreach (var ent in DifficultyBeatmap.CustomData["_environmentRemoval"])
-                enhancements.Add(new V3EnvironmentEnhancement(""));
+                enhancements.Add(new V2EnvironmentEnhancement(ent.Value.Value));
         }
 
         if (Map != null) enhancements.AddRange(Map.EnvironmentEnhancements.Select(it => it.Clone() as BaseEnvironmentEnhancement));

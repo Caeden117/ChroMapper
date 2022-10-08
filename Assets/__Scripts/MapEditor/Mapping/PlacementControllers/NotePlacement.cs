@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
-using Beatmap.Base;
 using Beatmap.V2;
 using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGridContainer>,
     CMInput.INotePlacementActions
@@ -23,7 +24,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
-    [SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
     [SerializeField] private DeleteToolController deleteToolController;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     [SerializeField] private LaserSpeedController laserSpeedController;
@@ -126,10 +127,13 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
 
-    public override BaseNote GenerateOriginalData() =>
-        BeatSaberSongContainer.Instance.Map.GetVersion() == 3
-            ? (BaseNote)new V3ColorNote(0, 0, 0, (int)NoteColor.Red, (int)NoteCutDirection.Down)
-            : new V2Note(0, 0, 0, (int)NoteType.Red, (int)NoteCutDirection.Down);
+    public override BaseNote GenerateOriginalData()
+    {
+        if (Settings.Instance.Load_MapV3)
+            return new V3ColorNote(0, 0, 0, (int)NoteType.Red, (int)NoteCutDirection.Down);
+        else
+            return new V2Note(0, 0, 0, (int)NoteType.Red, (int)NoteCutDirection.Down);
+    }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {
@@ -140,14 +144,17 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.CustomColor = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustom()["_color"] = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomColor != null)
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
             {
-                queuedData.CustomColor = null;
+                queuedData.CustomData.Remove("_color");
+
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                    queuedData.CustomData = null;
             }
         }
 
@@ -157,9 +164,10 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
             instantiatedContainer.transform.localPosition = roundedHit;
 
-            //We do some manual array stuff to get rounding decimals to work.
-            var position = new JSONArray { [0] = Math.Round(roundedHit.x - 0.5f, 3), [1] = Math.Round(roundedHit.y - 0.5f, 3) };
-            queuedData.CustomCoordinate = position.ReadVector2();
+            var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
+            position[0] = Math.Round(roundedHit.x - 0.5f, 3);
+            position[1] = Math.Round(roundedHit.y - 0.5f, 3);
+            queuedData.GetOrCreateCustom()["_position"] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -167,14 +175,16 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
-            if (queuedData.CustomCoordinate != null)
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
             {
-                queuedData.CustomCoordinate = null;
+                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+
+                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
+                    queuedData.CustomData = null;
             }
 
-            var localPosition = instantiatedContainer.transform.localPosition;
-            queuedData.PosX = Mathf.RoundToInt(localPosition.x + 1.5f);
-            queuedData.PosY = Mathf.RoundToInt(localPosition.y - 0.5f);
+            queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         }
 
         UpdateAppearance();
