@@ -21,10 +21,10 @@ namespace Beatmap.Appearances
 
         [Space(5)] [Header("Default Colors")] public Color RedColor;
         public Color BlueColor;
-        public Color WhiteColor = Color.white;
+        public Color WhiteColor = new Color(0.7264151f, 0.7264151f, 0.7264151f);
         public Color RedBoostColor;
         public Color BlueBoostColor;
-        public Color WhiteBoostColor = Color.white;
+        public Color WhiteBoostColor = new Color(0.7264151f, 0.7264151f, 0.7264151f);
 
         [FormerlySerializedAs("OffColor")] [SerializeField]
         private Color offColor;
