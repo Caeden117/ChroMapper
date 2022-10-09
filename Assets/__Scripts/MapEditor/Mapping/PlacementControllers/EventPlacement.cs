@@ -308,8 +308,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         else if ((startingValue < 7 && right) || (startingValue > 0 && !right))
         {
             if (mapEvent != null) startingValue += right ? 1 : -1;
-            // TODO: check v2 or v3
-            var objectData = new V2Event(Atsc.CurrentBeat, rotationType, startingValue);
+            var objectData = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V3BasicEvent(Atsc.CurrentBeat, rotationType, startingValue) : new V2Event(Atsc.CurrentBeat, rotationType, startingValue);
 
             objectContainerCollection.SpawnObject(objectData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));

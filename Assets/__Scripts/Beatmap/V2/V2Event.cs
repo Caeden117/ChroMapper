@@ -28,7 +28,7 @@ namespace Beatmap.V2
             Time = RetrieveRequiredNode(node, "_time").AsFloat;
             Type = RetrieveRequiredNode(node, "_type").AsInt;
             Value = RetrieveRequiredNode(node, "_value").AsInt;
-            FloatValue = node["_floatValue"]?.AsFloat ?? 1;
+            FloatValue = !node.HasKey("_floatValue") ? 1f : node["_floatValue"].AsFloat;
             CustomData = node["_customData"];
             ParseCustom();
         }

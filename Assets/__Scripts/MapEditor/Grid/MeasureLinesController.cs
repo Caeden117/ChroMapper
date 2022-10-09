@@ -3,6 +3,7 @@ using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -61,8 +62,7 @@ public class MeasureLinesController : MonoBehaviour
         var modifiedBeats = 0;
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
-        // TODO: check for v3 bpm event
-        var allBpmChanges = new List<BaseBpmEvent> { new V2BpmChange(songBpm, 0) };
+        var allBpmChanges = new List<BaseBpmEvent> { BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseBpmEvent)new V3BpmChange(songBpm, 0) : new V2BpmChange(songBpm, 0) };
         allBpmChanges.AddRange(bpmChangeGridContainer.LoadedObjects.Cast<BaseBpmEvent>());
 
         while (jsonBeat <= rawBeatsInSong)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
+using Beatmap.V2;
 using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
@@ -85,8 +86,7 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
             // This does not support negative numbers, however I do not believe there is a reason to support them in the first place
             var roundedPreciseSpeed = (int)Math.Max(1, Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero));
 
-            // TODO: check v2 or v3
-            var data = new V3BasicEvent(newTime, type, 1) { CustomData = new JSONObject(), Value = roundedPreciseSpeed };
+            var data = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V3BasicEvent(newTime, type, 1) { CustomData = new JSONObject(), Value = roundedPreciseSpeed } : new V2Event(newTime, type, 1) { CustomData = new JSONObject(), Value = roundedPreciseSpeed };
 
             // Bit cheeky but hopefully a bit more readable
             if (Math.Abs(decimalPreciseSpeed - roundedPreciseSpeed) > 0.01f)

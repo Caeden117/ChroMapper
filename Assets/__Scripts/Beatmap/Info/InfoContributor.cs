@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.Info
 {
@@ -9,9 +10,9 @@ namespace Beatmap.Info
     {
         public InfoContributor(JSONNode node)
         {
-            Name = node["_name"];
-            Role = node["_role"];
-            LocalImageLocation = node["_iconPath"];
+            Name = node["_name"]?.Value;
+            Role = node["_role"]?.Value;
+            LocalImageLocation = node["_iconPath"]?.Value;
         }
 
         public InfoContributor(string name, string role, string iconPath)
@@ -26,19 +27,14 @@ namespace Beatmap.Info
         public string Name { get; set; }
         public string Role { get; set; }
 
-        public override JSONNode ToJson()
-        {
-            return new JSONObject
+        public override JSONNode ToJson() =>
+            new JSONObject
             {
                 ["_name"] = Name,
                 ["_role"] = Role,
                 ["_iconPath"] = LocalImageLocation
             };
-        }
 
-        public override BaseItem Clone()
-        {
-            return new InfoContributor(Name, Role, LocalImageLocation);
-        }
+        public override BaseItem Clone() => new InfoContributor(Name, Role, LocalImageLocation);
     }
 }
