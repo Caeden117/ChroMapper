@@ -6,6 +6,9 @@ namespace Beatmap.V3
 {
     public class V3Obstacle : BaseObstacle
     {
+        private int width;
+        private int height;
+
         public V3Obstacle()
         {
         }
@@ -31,17 +34,37 @@ namespace Beatmap.V3
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
-        public override string CustomKeyTrack { get; } = "_track";
+        public override int Width
+        {
+            get => width;
+            set
+            {
+                width = value;
+                InferType();
+            }
+        }
 
-        public override string CustomKeyColor { get; } = "_color";
+        public override int Height
+        {
+            get => height;
+            set
+            {
+                height = value;
+                InferType();
+            }
+        }
 
-        public override string CustomKeyCoordinate { get; } = "_position";
+        public override string CustomKeyTrack { get; } = "track";
 
-        public override string CustomKeyWorldRotation { get; } = "_rotation";
+        public override string CustomKeyColor { get; } = "color";
 
-        public override string CustomKeyLocalRotation { get; } = "_localRotation";
+        public override string CustomKeyCoordinate { get; } = "position";
 
-        public override string CustomKeySize { get; } = "_scale";
+        public override string CustomKeyWorldRotation { get; } = "rotation";
+
+        public override string CustomKeyLocalRotation { get; } = "localRotation";
+
+        public override string CustomKeySize { get; } = "size";
 
         public override bool IsChroma() => CustomData?["color"] != null && CustomData["color"].IsArray;
 

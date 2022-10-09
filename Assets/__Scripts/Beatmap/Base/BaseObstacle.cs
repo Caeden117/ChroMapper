@@ -11,8 +11,6 @@ namespace Beatmap.Base
         public const float MappingExtensionsStartHeightMultiplier = 1.35f;
         public const float MappingExtensionsUnitsToFullHeightWall = 1000 / 3.5f;
 
-        // Editor walls heights are squished compared to in game as 1.5f is accurate-ish but y=0 wall and y=0 note base is different.
-        private const float heightStep = 0.75f;
         protected Vector3? _customSize;
 
         protected BaseObstacle()
@@ -61,8 +59,8 @@ namespace Beatmap.Base
         public override ObjectType ObjectType { get; set; } = ObjectType.Obstacle;
         public int Type { get; set; }
         public float Duration { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public virtual int Width { get; set; }
+        public virtual int Height { get; set; }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
@@ -92,8 +90,8 @@ namespace Beatmap.Base
         public ObstacleBounds GetShape()
         {
             var position = PosX - 2f; //Line index
-            var startHeight = Type == (int)ObstacleType.Crouch ? 1.5f : 0;
-            var height = Type == (int)ObstacleType.Crouch ? 2.25f : 3.75f;
+            var startHeight = Type == (int)ObstacleType.Crouch ? 1.5f : -0.5f;
+            var height = Type == (int)ObstacleType.Crouch ? 3f : 5f;
             float width = Width;
             GetHeights(ref height, ref startHeight);
 
@@ -105,7 +103,7 @@ namespace Beatmap.Base
             else if (PosX <= -1000)
                 position = ((float)PosX - 1000) / 1000f;
 
-            if (Type > 1 && Type < 1000)
+            if (Type > 2 && Type < 1000)
             {
                 startHeight = Type / (750 / 3.5f); //start height 750 == standard wall height
                 height = 3.5f;
@@ -144,23 +142,15 @@ namespace Beatmap.Base
             return new ObstacleBounds(width, height, position, startHeight);
         }
 
-        public void InferType()
-        {
-            switch (PosY)
+        protected void InferType() =>
+            Type = PosY switch
             {
-                case (int)GridY.Base when Height == (int)ObstacleHeight.Full:
-                    Type = (int)ObstacleType.Full;
-                    break;
-                case (int)GridY.Top when Height == (int)ObstacleHeight.Crouch:
-                    Type = (int)ObstacleType.Crouch;
-                    break;
-                default:
-                    Type = (int)ObstacleType.Freeform;
-                    break;
-            }
-        }
+                (int)GridY.Base when Height is (int)ObstacleHeight.Full => (int)ObstacleType.Full,
+                (int)GridY.Top when Height is (int)ObstacleHeight.Crouch => (int)ObstacleType.Crouch,
+                _ => (int)ObstacleType.Freeform
+            };
 
-        public void InferPosYHeight()
+        protected void InferPosYHeight()
         {
             switch (Type)
             {
@@ -197,7 +187,7 @@ namespace Beatmap.Base
         protected override void ParseCustom()
         {
             base.ParseCustom();
-            if (CustomData?[CustomKeySize] != null)
+            if (CustomData?[CustomKeySize]?.IsArray ?? false)
             {
                 var temp = CustomData[CustomKeySize].AsArray;
                 if (temp.Count < 2) temp.Add(0);
@@ -207,9 +197,10 @@ namespace Beatmap.Base
 
         private void GetHeights(ref float height, ref float startHeight)
         {
-            if (Type < 0 || Type > 2) return;
-            startHeight = heightStep * Mathf.Clamp(PosY, 0, 2);
-            height = Mathf.Min(Height * heightStep, 5 * heightStep - PosY * heightStep);
+            if (Type != (int)ObstacleType.Freeform) return;
+            var clampedY = Mathf.Clamp(PosY, 0, 2);
+            startHeight = -0.5f + clampedY;
+            height = Mathf.Min(Height, 5 - clampedY);
         }
     }
 }
