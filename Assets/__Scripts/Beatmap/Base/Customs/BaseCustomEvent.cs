@@ -17,7 +17,7 @@ namespace Beatmap.Base.Customs
             Data = node is JSONObject ? node : new JSONObject();
         }
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.BpmChange;
+        public override ObjectType ObjectType { get; set; } = ObjectType.CustomEvent;
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
