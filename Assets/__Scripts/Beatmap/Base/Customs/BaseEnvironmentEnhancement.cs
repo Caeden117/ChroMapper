@@ -50,7 +50,7 @@ namespace Beatmap.Base.Customs
 
         private static Vector3? ReadVector3OrNull(JSONNode node, string key) => !node.HasKey(key) || node[key].IsNull ? (Vector3?)null : node[key].ReadVector3();
 
-        private static void WriteVector3(JSONNode node, string key, Vector3? v)
+        protected static void WriteVector3(JSONNode node, string key, Vector3? v)
         {
             if (!v.HasValue) return;
 
@@ -94,13 +94,13 @@ namespace Beatmap.Base.Customs
 
         protected void InstantiateHelper(ref JSONNode node)
         {
-            ID = node[KeyID].Value;
-            Enum.TryParse(node[KeyLookupMethod].Value, out EnvironmentLookupMethod environmentLookup);
+            ID = node[KeyID]?.Value;
+            Enum.TryParse(node[KeyLookupMethod]?.Value, out EnvironmentLookupMethod environmentLookup);
             LookupMethod = environmentLookup;
 
             Geometry = node[KeyGeometry];
 
-            Track = node[KeyTrack].Value;
+            Track = node[KeyTrack]?.Value;
             Duplicate = node[KeyDuplicate]?.AsInt;
             Active = node[KeyActive]?.AsBool;
             Scale = ReadVector3OrNull(node, KeyScale);

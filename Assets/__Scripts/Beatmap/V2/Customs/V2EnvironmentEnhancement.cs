@@ -1,6 +1,7 @@
 ﻿using Beatmap.Base;
 using Beatmap.Base.Customs;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.V2.Customs
 {
@@ -53,14 +54,15 @@ namespace Beatmap.V2.Customs
                 node[KeyLookupMethod] = LookupMethod.ToString();
             }
 
-            if (node[KeyTrack] != null) node[KeyTrack] = Track;
-            if (node[KeyDuplicate] != null) node[KeyDuplicate] = Duplicate;
-            if (node[KeyActive] != null) node[KeyActive] = Active;
-            if (node[KeyScale] != null) node[KeyScale] = Scale;
-            if (node[KeyPosition] != null) node[KeyPosition] = Position;
-            if (node[KeyRotation] != null) node[KeyRotation] = Rotation;
-            if (node[KeyLocalPosition] != null) node[KeyLocalPosition] = LocalPosition;
-            if (node[KeyLightID] != null) node[KeyLightID] = KeyLightID;
+            if (Track != null) node[KeyTrack] = Track;
+            if (Duplicate != null) node[KeyDuplicate] = Duplicate;
+            if (Active != null) node[KeyActive] = Active;
+            if (Scale != null) WriteVector3(node, KeyScale, Scale);
+            if (Position != null) WriteVector3(node, KeyPosition, Position);
+            if (Rotation != null) WriteVector3(node, KeyRotation, Rotation);
+            if (LocalPosition != null) WriteVector3(node, KeyLocalPosition, LocalPosition);
+            if (LocalRotation != null) WriteVector3(node, KeyLocalRotation, LocalRotation);
+            if (KeyLightID != null) node[KeyLightID] = KeyLightID;
 
             return node;
         }
