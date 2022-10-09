@@ -21,12 +21,7 @@ namespace Beatmap.Info
             Role = role;
             LocalImageLocation = iconPath;
         }
-
-        public IDictionary<string, JSONNode> UnserializedData { get; }
-        public string LocalImageLocation { get; set; }
-        public string Name { get; set; }
-        public string Role { get; set; }
-
+        
         public override JSONNode ToJson() =>
             new JSONObject
             {
