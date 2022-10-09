@@ -166,9 +166,9 @@ public class PlatformDescriptor : MonoBehaviour
         switch (e.Type)
         {
             case 8:
-                if (obj.CustomData?.HasKey("_nameFilter") ?? false)
+                if (e.CustomNameFilter != null)
                 {
-                    string filter = obj.CustomData["_nameFilter"];
+                    string filter = e.CustomNameFilter;
                     if (filter.Contains("Big") || filter.Contains("Large"))
                     {
                         if (BigRingManager != null)
@@ -310,9 +310,9 @@ public class PlatformDescriptor : MonoBehaviour
         }
 
         //Check if it is a PogU new Chroma event
-        if ((e.CustomData?.HasKey("_color") ?? false) && Settings.Instance.EmulateChromaLite)
+        if ((e.CustomColor != null) && Settings.Instance.EmulateChromaLite)
         {
-            mainColor = invertedColor = e.CustomData["_color"];
+            mainColor = invertedColor = (Color)e.CustomColor;
             chromaCustomColors.Remove(group);
             if (chromaGradients.ContainsKey(group))
             {

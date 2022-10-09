@@ -90,22 +90,22 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
             // Bit cheeky but hopefully a bit more readable
             if (Math.Abs(decimalPreciseSpeed - roundedPreciseSpeed) > 0.01f)
-                data.CustomData["_preciseSpeed"] = decimalPreciseSpeed;
+                data.CustomSpeed = decimalPreciseSpeed as float?;
 
             if (overrideDirection)
             {
                 switch (type)
                 {
                     case (int)EventTypeValue.LeftLaserRotation:
-                        data.CustomData["_direction"] = Convert.ToInt32(leftRotatesClockwise);
+                        data.CustomDirection = Convert.ToInt32(leftRotatesClockwise);
                         break;
                     case (int)EventTypeValue.RightLaserRotation:
-                        data.CustomData["_direction"] = Convert.ToInt32(rightRotatesClockwise);
+                        data.CustomDirection = Convert.ToInt32(rightRotatesClockwise);
                         break;
                 }
             }
 
-            if (lockLaserRotation) data.CustomData["_lockPosition"] = true;
+            if (lockLaserRotation) data.CustomLockRotation = true;
 
             generatedObjects.Add(data);
             distanceInBeats -= 1 / interval;

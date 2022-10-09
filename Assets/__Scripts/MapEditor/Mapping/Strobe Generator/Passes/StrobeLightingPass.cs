@@ -82,8 +82,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
             var data = new V2Event(newTime, type, value, newFloatValue);
             if (propMode != EventGridContainer.PropMode.Off)
             {
-                data.CustomData = new JSONObject();
-                data.CustomData.Add("_lightID", propID);
+                data.CustomLightID = propID.AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
             }
 
             generatedObjects.Add(data);

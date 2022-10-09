@@ -255,7 +255,7 @@ namespace Beatmap.V3
         {
             if (mainNode["customData"] == null) return;
 
-            var bpmList = new List<BaseBpmChange>();
+            var bpmList = new List<BaseBpmEvent>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();

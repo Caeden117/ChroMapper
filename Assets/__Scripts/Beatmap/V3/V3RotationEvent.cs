@@ -82,6 +82,8 @@ namespace Beatmap.V3
         public override string CustomKeyLockRotation { get; } = "lockRotation";
 
         public override string CustomKeyLaneRotation { get; } = "rotation";
+        
+        public override string CustomKeyNameFilter { get; } = "nameFilter";
 
         public override bool IsPropagation { get; } = false;
     }

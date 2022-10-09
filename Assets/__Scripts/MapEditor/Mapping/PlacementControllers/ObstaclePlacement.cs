@@ -78,14 +78,14 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustom()["_color"] = colorPicker.CurrentColor;
+            queuedData.CustomColor = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomColor != null)
             {
-                queuedData.CustomData.Remove("_color");
+                queuedData.CustomColor = null;
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
@@ -100,7 +100,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             {
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-                Vector2 position = queuedData.CustomData["_position"];
+                var position = queuedData.CustomCoordinate ?? Vector2.zero;
                 var localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
                 wallTransform.localPosition = localPosition;
 
@@ -111,7 +111,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 var scale = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
                 scale[0] = Math.Round(newLocalScale.x, 3);
                 scale[1] = Math.Round(newLocalScale.y, 3);
-                queuedData.CustomData["_scale"] = scale;
+                queuedData.CustomSize = scale;
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);
@@ -149,7 +149,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x, 3);
             position[1] = Math.Round(roundedHit.y, 3);
-            queuedData.CustomData["_position"] = position;
+            queuedData.CustomCoordinate = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);

@@ -134,12 +134,12 @@ public class PauseToggleLights : MonoBehaviour
             {
                 CustomData = new JSONObject()
             };
-            leftSpeedReset.CustomData["_lockPosition"] = true;
+            leftSpeedReset.CustomLockRotation = true;
             var rightSpeedReset = new V2Event(0, (int)EventTypeValue.RightLaserRotation, 0)
             {
                 CustomData = new JSONObject()
             };
-            rightSpeedReset.CustomData["_lockPosition"] = true;
+            rightSpeedReset.CustomLockRotation = true;
             descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
             descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
             descriptor.KillChromaLights();

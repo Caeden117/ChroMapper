@@ -14,7 +14,7 @@ public class PaintSelectedObjects : MonoBehaviour
         var allActions = new List<BeatmapAction>();
         foreach (var obj in SelectionController.SelectedObjects)
         {
-            if (obj is BaseBpmChange || obj is BaseCustomEvent) continue; //These should probably not be colored.
+            if (obj is BaseBpmEvent || obj is BaseCustomEvent) continue; //These should probably not be colored.
             var beforePaint = BeatmapFactory.Clone(obj);
             if (DoPaint(obj)) allActions.Add(new BeatmapObjectModifiedAction(obj, obj, beforePaint, "a", true));
         }
@@ -41,7 +41,7 @@ public class PaintSelectedObjects : MonoBehaviour
             }
         }
 
-        obj.GetOrCreateCustom()["_color"] = picker.CurrentColor;
+        obj.CustomColor = picker.CurrentColor;
 
         return true;
     }

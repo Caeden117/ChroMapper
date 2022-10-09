@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using Beatmap.Base;
-using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.V2.Customs;
@@ -113,11 +112,11 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
 
     public void RefreshModifiedBeat()
     {
-        BaseBpmChange lastChange = null;
+        BaseBpmEvent lastChange = null;
 
         foreach (var obj in LoadedObjects)
         {
-            var bpmChange = obj as BaseBpmChange;
+            var bpmChange = obj as BaseBpmEvent;
 
             if (lastChange == null)
             {
@@ -173,7 +172,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
                     break;
                 }
 
-                var bpmChange = bpmChangeKvp.Key as BaseBpmChange;
+                var bpmChange = bpmChangeKvp.Key as BaseBpmEvent;
                 bpmShaderTimes[bpmChangeCount] = bpmChange.Time;
                 bpmShaderBpMs[bpmChangeCount] = bpmChange.Bpm;
                 bpmChangeCount++;
@@ -211,29 +210,29 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     }
 
     /// <summary>
-    ///     Find the last <see cref="BaseBpmChange" /> before a given beat time.
+    ///     Find the last <see cref="BaseBpmEvent" /> before a given beat time.
     /// </summary>
     /// <param name="beatTimeInSongBpm">Time in raw beats (Unmodified by any BPM Changes)</param>
-    /// <param name="inclusive">Whether or not to include <see cref="BaseBpmChange" />s with the same time value.</param>
-    /// <returns>The last <see cref="BaseBpmChange" /> before the given beat (or <see cref="null" /> if there is none).</returns>
-    public BaseBpmChange FindLastBpm(float beatTimeInSongBpm, bool inclusive = true)
+    /// <param name="inclusive">Whether or not to include <see cref="BaseBpmEvent" />s with the same time value.</param>
+    /// <returns>The last <see cref="BaseBpmEvent" /> before the given beat (or <see cref="null" /> if there is none).</returns>
+    public BaseBpmEvent FindLastBpm(float beatTimeInSongBpm, bool inclusive = true)
     {
         if (inclusive)
-            return LoadedObjects.LastOrDefault(x => x.Time <= beatTimeInSongBpm + 0.01f) as BaseBpmChange;
-        return LoadedObjects.LastOrDefault(x => x.Time + 0.01f < beatTimeInSongBpm) as BaseBpmChange;
+            return LoadedObjects.LastOrDefault(x => x.Time <= beatTimeInSongBpm + 0.01f) as BaseBpmEvent;
+        return LoadedObjects.LastOrDefault(x => x.Time + 0.01f < beatTimeInSongBpm) as BaseBpmEvent;
     }
 
     /// <summary>
-    ///     Find the next <see cref="BaseBpmChange" /> after a given beat time.
+    ///     Find the next <see cref="BaseBpmEvent" /> after a given beat time.
     /// </summary>
     /// <param name="beatTimeInSongBpm">Time in raw beats (Unmodified by any BPM Changes)</param>
-    /// <param name="inclusive">Whether or not to include <see cref="BaseBpmChange" />s with the same time value.</param>
-    /// <returns>The next <see cref="BaseBpmChange" /> after the given beat (or <see cref="null" /> if there is none).</returns>
-    public BaseBpmChange FindNextBpm(float beatTimeInSongBpm, bool inclusive = false)
+    /// <param name="inclusive">Whether or not to include <see cref="BaseBpmEvent" />s with the same time value.</param>
+    /// <returns>The next <see cref="BaseBpmEvent" /> after the given beat (or <see cref="null" /> if there is none).</returns>
+    public BaseBpmEvent FindNextBpm(float beatTimeInSongBpm, bool inclusive = false)
     {
         if (inclusive)
-            return LoadedObjects.FirstOrDefault(x => x.Time >= beatTimeInSongBpm - 0.01f) as BaseBpmChange;
-        return LoadedObjects.FirstOrDefault(x => x.Time - 0.01f > beatTimeInSongBpm) as BaseBpmChange;
+            return LoadedObjects.FirstOrDefault(x => x.Time >= beatTimeInSongBpm - 0.01f) as BaseBpmEvent;
+        return LoadedObjects.FirstOrDefault(x => x.Time - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
     }
 
     /// <summary>

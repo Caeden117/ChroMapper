@@ -25,6 +25,7 @@ namespace Beatmap.Base
         private float? _customStep;
         private float? _customStepMult;
         private int? _customDirection;
+        private string? customNameFilter;
 
         protected BaseEvent()
         {
@@ -237,7 +238,7 @@ namespace Beatmap.Base
                 FloatValue = obs.FloatValue;
             }
         }
-
+        
         public bool IsLegacyChroma => Value >= ColourManager.RgbintOffset;
 
         public virtual bool IsPropagation => CustomData?[CustomKeyPropID] != null;
@@ -249,7 +250,14 @@ namespace Beatmap.Base
             get => _customPropID;
             set
             {
-                GetOrCreateCustom()[CustomKeyPropID] = value;
+                if (value == null && CustomData?[CustomKeyPropID] != null)
+                {
+                    CustomData.Remove(CustomKeyPropID);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyPropID] = value;
+                }
                 _customPropID = value;
             }
         }
@@ -259,11 +267,22 @@ namespace Beatmap.Base
             get => _customLightID;
             set
             {
-                if (value == null) return;
-                var ary = new JSONArray();
-                foreach (var i in value) ary.Add(i);
-                GetOrCreateCustom()[CustomKeyLightID] = ary;
-                _customLightID = value;
+                if (value == null && CustomData?[CustomKeyLightID] != null)
+                {
+                    CustomData.Remove(CustomKeyLightID);
+                    _customLightID = null;
+                }
+                else
+                {
+                    if (value == null)
+                    {
+                        return;
+                    }
+                    var ary = new JSONArray();
+                    foreach (var i in value) ary.Add(i);
+                    GetOrCreateCustom()[CustomKeyLightID] = ary;
+                    _customLightID = value;
+                }
             }
         }
 
@@ -272,7 +291,14 @@ namespace Beatmap.Base
             get => _customLerpType;
             set
             {
-                GetOrCreateCustom()[CustomKeyLerpType] = value;
+                if (value == null && CustomData?[CustomKeyLerpType] != null)
+                {
+                    CustomData.Remove(CustomKeyLerpType);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyLerpType] = value;
+                }
                 _customLerpType = value;
             }
         }
@@ -282,7 +308,14 @@ namespace Beatmap.Base
             get => _customEasing;
             set
             {
-                GetOrCreateCustom()[CustomKeyEasing] = value;
+                if (value == null && CustomData?[CustomKeyEasing] != null)
+                {
+                    CustomData.Remove(CustomKeyEasing);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyEasing] = value;
+                }
                 _customEasing = value;
             }
         }
@@ -294,7 +327,14 @@ namespace Beatmap.Base
             get => _customStep;
             set
             {
-                GetOrCreateCustom()[CustomKeyStep] = value;
+                if (value == null && CustomData?[CustomKeyStep] != null)
+                {
+                    CustomData.Remove(CustomKeyStep);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyStep] = value;
+                }
                 _customStep = value;
             }
         }
@@ -304,7 +344,14 @@ namespace Beatmap.Base
             get => _customProp;
             set
             {
-                GetOrCreateCustom()[CustomKeyProp] = value;
+                if (value == null && CustomData?[CustomKeyProp] != null)
+                {
+                    CustomData.Remove(CustomKeyProp);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyProp] = value;
+                }
                 _customProp = value;
             }
         }
@@ -314,7 +361,14 @@ namespace Beatmap.Base
             get => _customSpeed;
             set
             {
-                GetOrCreateCustom()[CustomKeySpeed] = value;
+                if (value == null && CustomData?[CustomKeySpeed] != null)
+                {
+                    CustomData.Remove(CustomKeySpeed);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeySpeed] = value;
+                }
                 _customSpeed = value;
             }
         }
@@ -324,6 +378,14 @@ namespace Beatmap.Base
             get => _customStepMult;
             set
             {
+                if (value == null && CustomData?[CustomKeyStepMult] != null)
+                {
+                    CustomData.Remove(CustomKeyStepMult);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyStepMult] = value;
+                }
                 GetOrCreateCustom()[CustomKeyStepMult] = value;
                 _customStepMult = value;
             }
@@ -334,6 +396,14 @@ namespace Beatmap.Base
             get => _customPropMult;
             set
             {
+                if (value == null && CustomData?[CustomKeyPropMult] != null)
+                {
+                    CustomData.Remove(CustomKeyPropMult);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyPropMult] = value;
+                }
                 GetOrCreateCustom()[CustomKeyPropMult] = value;
                 _customPropMult = value;
             }
@@ -344,6 +414,14 @@ namespace Beatmap.Base
             get => _customSpeedMult;
             set
             {
+                if (value == null && CustomData?[CustomKeySpeedMult] != null)
+                {
+                    CustomData.Remove(CustomKeySpeedMult);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeySpeedMult] = value;
+                }
                 GetOrCreateCustom()[CustomKeySpeedMult] = value;
                 _customSpeedMult = value;
             }
@@ -354,6 +432,14 @@ namespace Beatmap.Base
             get => _customPreciseSpeed;
             set
             {
+                if (value == null && CustomData?[CustomKeyPreciseSpeed] != null)
+                {
+                    CustomData.Remove(CustomKeyPreciseSpeed);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyPreciseSpeed] = value;
+                }
                 GetOrCreateCustom()[CustomKeyPreciseSpeed] = value;
                 _customPreciseSpeed = value;
             }
@@ -364,6 +450,14 @@ namespace Beatmap.Base
             get => _customDirection;
             set
             {
+                if (value == null && CustomData?[CustomKeyDirection] != null)
+                {
+                    CustomData.Remove(CustomKeyDirection);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyDirection] = value;
+                }
                 GetOrCreateCustom()[CustomKeyDirection] = value;
                 _customDirection = value;
             }
@@ -374,8 +468,34 @@ namespace Beatmap.Base
             get => _customLockRotation;
             set
             {
+                if (value == null && CustomData?[CustomKeyLockRotation] != null)
+                {
+                    CustomData.Remove(CustomKeyLockRotation);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyLockRotation] = value;
+                }
                 GetOrCreateCustom()[CustomKeyLockRotation] = value;
                 _customLockRotation = value;
+            }
+        }
+
+        public virtual string CustomNameFilter
+        {
+            get => customNameFilter;
+            set
+            {
+                if (value == null && CustomData?[CustomKeyNameFilter] != null)
+                {
+                    CustomData.Remove(CustomKeyNameFilter);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyNameFilter] = value;
+                }
+                GetOrCreateCustom()[CustomKeyNameFilter] = value;
+                customNameFilter = value;
             }
         }
 
@@ -384,6 +504,14 @@ namespace Beatmap.Base
             get => _customLaneRotation;
             set
             {
+                if (value == null && CustomData?[CustomKeyLaneRotation] != null)
+                {
+                    CustomData.Remove(CustomKeyLaneRotation);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyLaneRotation] = value;
+                }
                 GetOrCreateCustom()[CustomKeyLaneRotation] = value;
                 _customLaneRotation = value;
             }
@@ -404,6 +532,7 @@ namespace Beatmap.Base
         public abstract string CustomKeyDirection { get; }
         public abstract string CustomKeyLockRotation { get; }
         public abstract string CustomKeyLaneRotation { get; }
+        public abstract string CustomKeyNameFilter { get; }
 
         protected override void ParseCustom()
         {

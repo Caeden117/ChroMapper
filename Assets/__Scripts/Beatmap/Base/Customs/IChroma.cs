@@ -31,6 +31,7 @@ namespace Beatmap.Base.Customs
         float? CustomPreciseSpeed { get; set; }
         int? CustomDirection { get; set; }
         bool? CustomLockRotation { get; set; }
+        string CustomNameFilter { get; set; }
 
         string CustomKeyPropID { get; }
         string CustomKeyLightID { get; }
@@ -47,6 +48,7 @@ namespace Beatmap.Base.Customs
         string CustomKeyPreciseSpeed { get; }
         string CustomKeyDirection { get; }
         string CustomKeyLockRotation { get; }
+        string CustomKeyNameFilter { get; }
 
         bool IsLegacyChroma { get; }
         bool IsPropagation { get; }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -132,7 +133,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         {
             queuedData.Type =
                 labels.LaneIdToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x));
-            queuedData.CustomData?.Remove("_lightID");
+            queuedData.CustomLightID = null;
         }
         else
         {
@@ -144,18 +145,20 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
                 var lightIdToApply = objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Prop
                     ? labels.PropIdToLightIdsJ(objectContainerCollection.EventTypeToPropagate, propID)
                     : (JSONNode)labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID);
-                queuedData.GetOrCreateCustom().Add("_lightID", lightIdToApply);
+                queuedData.CustomLightID = lightIdToApply.IsNumber
+                    ? new int[] { lightIdToApply }
+                    : lightIdToApply.AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
             }
             else
             {
-                queuedData.GetOrCreateCustom().Remove("_lightID");
+                queuedData.CustomLightID = null;
             }
         }
 
         if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent() && queuedData.Value != (int)LightValue.Off)
-            queuedData.GetOrCreateCustom()["_color"] = colorPicker.CurrentColor;
+            queuedData.CustomColor = colorPicker.CurrentColor;
         else
-            queuedData.CustomData?.Remove("_color");
+            queuedData.CustomColor = null;
 
         UpdateQueuedValue(queuedValue);
         UpdateAppearance();
@@ -273,9 +276,9 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         // Instead of copying the whole custom data, only copy prop ID
         if (dragged.CustomData != null && queued.CustomData != null)
         {
-            if (queued.CustomData.HasKey("_propID")) dragged.CustomData["_propID"] = queued.CustomData["_propID"];
+            if (queued.CustomPropID != null) dragged.CustomPropID = queued.CustomPropID;
 
-            if (queued.CustomData.HasKey("_lightID")) dragged.CustomData["_lightID"] = queued.CustomData["_lightID"];
+            if (queued.CustomLightID != null) dragged.CustomLightID = queued.CustomLightID;
         }
     }
 

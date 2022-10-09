@@ -193,7 +193,7 @@ namespace Beatmap.V2
 
         private static void LoadCustomDataNode(ref V2Difficulty map, ref JSONNode mainNode)
         {
-            var bpmList = new List<BaseBpmChange>();
+            var bpmList = new List<BaseBpmEvent>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.V2.Customs;
 using TMPro;
@@ -61,8 +62,8 @@ public class MeasureLinesController : MonoBehaviour
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
         // TODO: check for v3 bpm event
-        var allBpmChanges = new List<BaseBpmChange> { new V2BpmChange(songBpm, 0) };
-        allBpmChanges.AddRange(bpmChangeGridContainer.LoadedObjects.Cast<BaseBpmChange>());
+        var allBpmChanges = new List<BaseBpmEvent> { new V2BpmChange(songBpm, 0) };
+        allBpmChanges.AddRange(bpmChangeGridContainer.LoadedObjects.Cast<BaseBpmEvent>());
 
         while (jsonBeat <= rawBeatsInSong)
         {

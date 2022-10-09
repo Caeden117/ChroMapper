@@ -180,7 +180,14 @@ namespace Beatmap.Base
             get => _customSize;
             set
             {
-                GetOrCreateCustom()[CustomKeySize] = value;
+                if (value == null && CustomData?[CustomKeySize] != null)
+                {
+                    CustomData.Remove(CustomKeySize);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeySize] = value;
+                }
                 _customSize = value;
             }
         }

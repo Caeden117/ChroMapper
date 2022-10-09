@@ -127,7 +127,14 @@ namespace Beatmap.Base
             get => _customDirection;
             set
             {
-                GetOrCreateCustom()[CustomKeyDirection] = value;
+                if (value == null && CustomData?[CustomKeyDirection] != null)
+                {
+                    CustomData.Remove(CustomKeyDirection);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyDirection] = value;
+                }
                 _customDirection = value;
             }
         }

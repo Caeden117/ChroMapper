@@ -29,7 +29,7 @@ namespace Beatmap.Base
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
         public bool UseNormalEventsAsCompatibleEvents { get; set; } = true;
         public float Time { get; set; } = 0f;
-        public List<BaseBpmChange> BpmChanges { get; set; } = new List<BaseBpmChange>();
+        public List<BaseBpmEvent> BpmChanges { get; set; } = new List<BaseBpmEvent>();
         public List<BaseBookmark> Bookmarks { get; set; } = new List<BaseBookmark>();
         public List<BaseCustomEvent> CustomEvents { get; set; } = new List<BaseCustomEvent>();
 

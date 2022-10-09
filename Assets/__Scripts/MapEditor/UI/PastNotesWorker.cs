@@ -70,7 +70,7 @@ public class PastNotesWorker : MonoBehaviour
             {
                 time = note.Time;
                 lastGroup.Clear();
-                if ((note as BaseNote).Type != (int)NoteType.Bomb)
+                if (((BaseNote)note).Type != (int)NoteType.Bomb)
                     lastGroup.Add(note);
             }
             else if (time == note.Time && (note as BaseNote).Type != (int)NoteType.Bomb)
@@ -99,9 +99,9 @@ public class PastNotesWorker : MonoBehaviour
 
         float gridPosX = note.PosX, gridPosY = note.PosY;
 
-        if (note.CustomData?.HasKey("_position") ?? false)
+        if (note.CustomCoordinate != null)
         {
-            Vector2 pos = note.CustomData["_position"];
+            var pos = (Vector2)note.CustomCoordinate;
             gridPosX = pos.x + 2f;
             gridPosY = pos.y;
         }

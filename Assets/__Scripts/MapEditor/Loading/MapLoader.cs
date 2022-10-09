@@ -31,7 +31,7 @@ public class MapLoader : MonoBehaviour
                 Arcs = new List<BaseArc>(map.Arcs),
                 Chains = new List<BaseChain>(map.Chains),
                 Events = new List<BaseEvent>(map.Events),
-                BpmChanges = new List<BaseBpmChange>(map.BpmChanges),
+                BpmChanges = new List<BaseBpmEvent>(map.BpmChanges),
                 ColorBoostEvents = new List<BaseColorBoostEvent>(map.ColorBoostEvents),
                 CustomEvents = new List<BaseCustomEvent>(map.CustomEvents)
             };
@@ -45,7 +45,7 @@ public class MapLoader : MonoBehaviour
                 Notes = new List<BaseNote>(map.Notes),
                 Obstacles = new List<BaseObstacle>(map.Obstacles),
                 Events = new List<BaseEvent>(map.Events),
-                BpmChanges = new List<BaseBpmChange>(map.BpmChanges),
+                BpmChanges = new List<BaseBpmEvent>(map.BpmChanges),
                 CustomEvents = new List<BaseCustomEvent>(map.CustomEvents)
             };
             this.map = copy;

@@ -371,19 +371,19 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             if (bpmChangeView.Any())
             {
-                var firstBpmChange = bpmChangeView.First() as BaseBpmChange;
+                var firstBpmChange = bpmChangeView.First() as BaseBpmEvent;
 
                 bpmTime = firstBpmChange.Time - atsc.CurrentBeat;
 
                 for (var i = 0; i < bpmChangeView.Count - 1; i++)
                 {
-                    var leftBpm = bpmChangeView.ElementAt(i) as BaseBpmChange;
-                    var rightBpm = bpmChangeView.ElementAt(i + 1) as BaseBpmChange;
+                    var leftBpm = bpmChangeView.ElementAt(i) as BaseBpmEvent;
+                    var rightBpm = bpmChangeView.ElementAt(i + 1) as BaseBpmEvent;
 
                     bpmTime += (rightBpm.Time - leftBpm.Time) * (copiedBpm / leftBpm.Bpm);
                 }
 
-                var lastBpmChange = bpmChangeView.Last() as BaseBpmChange;
+                var lastBpmChange = bpmChangeView.Last() as BaseBpmEvent;
                 bpmTime += (atsc.CurrentBeat + data.Time - lastBpmChange.Time) * (copiedBpm / lastBpmChange.Bpm);
             }
 
@@ -708,7 +708,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (Settings.Instance.Load_Others)
             {
                 BeatSaberSongContainer.Instance.Map.BpmChanges =
-                    newObjects[ObjectType.BpmChange].Cast<BaseBpmChange>().ToList();
+                    newObjects[ObjectType.BpmChange].Cast<BaseBpmEvent>().ToList();
                 BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[ObjectType.CustomEvent]
                     .Cast<BaseCustomEvent>().ToList();
             }

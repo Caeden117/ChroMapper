@@ -28,14 +28,13 @@ namespace Beatmap.V2
             Time = RetrieveRequiredNode(node, "_time").AsFloat;
             Type = RetrieveRequiredNode(node, "_type").AsInt;
             Value = RetrieveRequiredNode(node, "_value").AsInt;
-            FloatValue = node["_floatValue"]?.AsFloat ?? 1f;
+            FloatValue = node["_floatValue"]?.AsFloat ?? 1;
             CustomData = node["_customData"];
             ParseCustom();
         }
 
-        public V2Event(float time, int type, int value, float floatValue = 1f, JSONNode customData = null) : base(time,
-            type,
-            value, floatValue, customData) =>
+        public V2Event(float time, int type, int value, float floatValue = 1, JSONNode customData = null) : base(time,
+            type, value, floatValue, customData) =>
             ParseCustom();
 
         protected sealed override void ParseCustom()
@@ -84,6 +83,8 @@ namespace Beatmap.V2
         public override string CustomKeyLockRotation { get; } = "_lockPosition";
 
         public override string CustomKeyLaneRotation { get; } = "_rotation";
+        
+        public override string CustomKeyNameFilter { get; } = "_nameFilter";
 
         public override bool IsChroma() =>
             (CustomData?["_color"] != null && CustomData["_color"].IsArray) ||
@@ -122,8 +123,8 @@ namespace Beatmap.V2
             node["_type"] = Type;
             node["_value"] = Value;
             node["_floatValue"] = FloatValue;
-            if (CustomData == null) return node;
-            node["_customData"] = CustomData;
+            if (CustomData == null && CustomLightGradient == null) return node;
+            node["_customData"] = CustomData ?? new JSONObject();
             if (CustomLightGradient != null) node["_customData"]["_lightGradient"] = CustomLightGradient.ToJson();
             return node;
         }

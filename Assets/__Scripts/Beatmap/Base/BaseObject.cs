@@ -63,10 +63,12 @@ namespace Beatmap.Base
             {
                 if (value == null && CustomData?[CustomKeyColor] != null)
                 {
-                    CustomData?.Remove(CustomKeyColor);
-                    return;
+                    CustomData.Remove(CustomKeyColor);
                 }
-                GetOrCreateCustom()[CustomKeyColor] = value;
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyColor] = value;
+                }
                 _customColor = value;
             }
         }

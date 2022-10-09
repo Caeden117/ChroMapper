@@ -50,14 +50,14 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustom()["_color"] = colorPicker.CurrentColor;
+            queuedData.CustomColor = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null)
             {
-                queuedData.CustomData.Remove("_color");
+                queuedData.CustomColor = null;
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
@@ -75,16 +75,16 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.CustomData["_position"] = position;
+            queuedData.CustomCoordinate = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
+            if (queuedData.CustomData != null)
             {
-                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+                queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;

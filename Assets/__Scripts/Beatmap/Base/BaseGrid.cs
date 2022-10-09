@@ -46,7 +46,14 @@ namespace Beatmap.Base
             get => _customTrack;
             set
             {
-                GetOrCreateCustom()[CustomKeyTrack] = value;
+                if (value == null && CustomData?[CustomKeyTrack] != null)
+                {
+                    CustomData.Remove(CustomKeyTrack);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyTrack] = value;
+                }
                 _customTrack = value;
             }
         }
@@ -56,7 +63,14 @@ namespace Beatmap.Base
             get => _customCoordinate;
             set
             {
-                GetOrCreateCustom()[CustomKeyCoordinate] = value;
+                if (value == null && CustomData?[CustomKeyCoordinate] != null)
+                {
+                    CustomData.Remove(CustomKeyCoordinate);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyCoordinate] = value;
+                }
                 _customCoordinate = value;
             }
         }
@@ -66,7 +80,14 @@ namespace Beatmap.Base
             get => _customWorldRotation;
             set
             {
-                GetOrCreateCustom()[CustomKeyWorldRotation] = value;
+                if (value == null && CustomData?[CustomKeyWorldRotation] != null)
+                {
+                    CustomData.Remove(CustomKeyWorldRotation);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyWorldRotation] = value;
+                }
                 _customWorldRotation = value;
             }
         }
@@ -76,7 +97,14 @@ namespace Beatmap.Base
             get => _customLocalRotation;
             set
             {
-                GetOrCreateCustom()[CustomKeyLocalRotation] = value;
+                if (value == null && CustomData?[CustomKeyLocalRotation] != null)
+                {
+                    CustomData.Remove(CustomKeyLocalRotation);
+                }
+                else
+                {
+                    GetOrCreateCustom()[CustomKeyLocalRotation] = value;
+                }
                 _customLocalRotation = value;
             }
         }
