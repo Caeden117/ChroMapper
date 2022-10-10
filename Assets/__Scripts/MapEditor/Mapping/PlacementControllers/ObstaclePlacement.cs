@@ -125,7 +125,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 );
 
                 wallTransform.localPosition = new Vector3(
-                    originIndex - 2, queuedData.Type == (int)ObstacleType.Full ? 0 : 1.5f,
+                    originIndex - 2, queuedData.Type == (int)ObstacleType.Full ? -0.5f : 1.5f,
                     startTime * EditorScaleController.EditorScale);
                 queuedData.Width = Mathf.CeilToInt(roundedHit.x + 2) - originIndex;
 
@@ -156,17 +156,18 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         }
         else
         {
-            var vanillaType = transformedPoint.y <= 1.5f ? 0 : 1;
+            var vanillaType = transformedPoint.y <= 2f ? (int)ObstacleType.Full : (int)ObstacleType.Crouch;
 
             wallTransform.localPosition = new Vector3(
                 wallTransform.localPosition.x - 0.5f,
-                vanillaType * 1.5f,
+                vanillaType == (int)ObstacleType.Full ? -0.5f : 1.5f,
                 wallTransform.localPosition.z);
 
-            instantiatedContainer.SetScale(new Vector3(1, wallTransform.localPosition.y == 0 ? 3.75f : 2.25f, 0));
+            instantiatedContainer.SetScale(new Vector3(1, vanillaType == (int)ObstacleType.Full ? 5f : 3f, 0));
 
             queuedData.CustomData = null;
             queuedData.PosX = Mathf.RoundToInt(wallTransform.localPosition.x + 2);
+            queuedData.PosY = vanillaType == (int)ObstacleType.Full ? 0 : 2;
             queuedData.Type = vanillaType;
 
             precisionPlacement.TogglePrecisionPlacement(false);
@@ -207,7 +208,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.75f : 2.25f, 0);
+                1, instantiatedContainer.ObstacleData.Type == (int)ObstacleType.Full ? 5f : 3f, 0);
         }
         else
         {
@@ -232,7 +233,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.75f : 2.25f, 0);
+                1, instantiatedContainer.ObstacleData.Type == (int)ObstacleType.Full ? 5f : 3f, 0);
         }
     }
 }

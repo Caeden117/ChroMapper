@@ -154,11 +154,11 @@ namespace Beatmap.Base
         {
             switch (Type)
             {
-                case (int)ObstacleType.Crouch:
+                case (int)ObstacleType.Full:
                     PosY = (int)GridY.Base;
                     Height = (int)ObstacleHeight.Full;
                     break;
-                case (int)ObstacleType.Full:
+                case (int)ObstacleType.Crouch:
                     PosY = (int)GridY.Top;
                     Height = (int)ObstacleHeight.Crouch;
                     break;
