@@ -12,6 +12,6 @@ namespace Beatmap.Base
 
         protected BaseEventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Keywords = keywords;
 
-        public BaseEventTypesForKeywords[] Keywords { get; set; }
+        public BaseEventTypesForKeywords[] Keywords { get; set; } = { };
     }
 }

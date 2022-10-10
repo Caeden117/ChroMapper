@@ -25,9 +25,8 @@ namespace Beatmap.V3
         {
             JSONNode node = new JSONObject();
             node["k"] = Keyword;
-            var ary = new JSONArray();
-            foreach (var i in Events) ary.Add(i);
-            node["e"] = ary;
+            node["e"] = new JSONArray();
+            foreach (var i in Events) node["e"].Add(i);
             return node;
         }
 

@@ -21,9 +21,8 @@ namespace Beatmap.V2
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            var ary = new JSONArray();
-            foreach (var k in Keywords) ary.Add(k.ToJson());
-            node["_keywords"] = ary;
+            node["_keywords"] = new JSONArray();
+            foreach (var k in Keywords) node["_keywords"].Add(k.ToJson());
             return node;
         }
 

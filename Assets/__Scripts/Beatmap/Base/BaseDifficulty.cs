@@ -73,7 +73,7 @@ namespace Beatmap.Base
         // fuick
         // public static abstract IDifficulty GetFromJson(JSONNode node, string path);
         
-        protected static void WriteFile(BaseDifficulty map)
+        protected void WriteFile(BaseDifficulty map)
         {
             // I *believe* this automatically creates the file if it doesn't exist. Needs more experimentation
             File.WriteAllText(map.DirectoryAndFile,

@@ -132,8 +132,8 @@ namespace Beatmap.Containers
 
         public void SetColor(Color color)
         {
-            MaterialPropertyBlock.SetColor(ObjectContainer.color, color ?? unassignedColor);
-            MaterialPropertyBlock.SetColor(emissionColor, color * arcEmissionIntensity ?? unassignedColor);
+            MaterialPropertyBlock.SetColor(ObjectContainer.color, color);
+            MaterialPropertyBlock.SetColor(emissionColor, color * arcEmissionIntensity);
             UpdateMaterials();
         }
 

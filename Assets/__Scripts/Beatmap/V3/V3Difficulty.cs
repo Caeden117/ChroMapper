@@ -99,7 +99,7 @@ namespace Beatmap.V3
                 MainNode["colorBoostBeatmapEvents"] = CleanupArray(colorBoostEvents, "b");
                 MainNode["lightColorEventBoxGroups"] = CleanupArray(lightColorEventBoxGroups, "b");
                 MainNode["lightRotationEventBoxGroups"] = CleanupArray(lightRotationEventBoxGroups, "b");
-                MainNode["basicEventTypesWithKeywords"] = EventTypesWithKeywords.ToJson();
+                MainNode["basicEventTypesWithKeywords"] = EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
                 MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
 
                 SaveCustomDataNode();
@@ -174,8 +174,7 @@ namespace Beatmap.V3
                 var map = new V3Difficulty
                 {
                     MainNode = mainNode,
-                    DirectoryAndFile = path,
-                    EventTypesWithKeywords = new V3BasicEventTypesWithKeywords() // apparently this is required
+                    DirectoryAndFile = path
                 };
 
                 var nodeEnum = mainNode.GetEnumerator();
@@ -234,7 +233,6 @@ namespace Beatmap.V3
                 }
 
                 LoadCustomDataNode(ref map, ref mainNode);
-
                 map.ParseV3ToV2();
 
                 return map;
@@ -248,55 +246,64 @@ namespace Beatmap.V3
 
         private void ParseV2ToV3()
         {
-            foreach (var note in Notes)
+            var newNotes = new List<BaseNote>();
+            var newBombs = new List<BaseBombNote>();
+            foreach (var n in Notes)
             {
-                if (note is V2Note n)
+                switch (n.Type)
                 {
-                    switch (n.Type)
-                    {
-                        case (int)NoteType.Bomb:
-                            Bombs.Add(new V3BombNote(note));
-                            break;
-                        case (int)NoteType.Red:
-                        case (int)NoteType.Blue:
-                            Notes.Add(new V3ColorNote(note));
-                            break;
-                        default:
-                            Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
-                            break;
-                    }
+                    case (int)NoteType.Bomb:
+                        newBombs.Add(new V3BombNote(n));
+                        break;
+                    case (int)NoteType.Red:
+                    case (int)NoteType.Blue:
+                        newNotes.Add(new V3ColorNote(n));
+                        break;
+                    default:
+                        Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
+                        break;
                 }
             }
+            Notes = newNotes;
+            Bombs = newBombs;
 
-            foreach (var obs in Obstacles) if (obs is V2Obstacle o) Obstacles.Add(new V3Obstacle(o));
+            Obstacles = Obstacles.Select(o => new V3Obstacle(o)).Cast<BaseObstacle>().ToList();
 
-            foreach (var evt in Events)
+            var newColorBoostEvents = new List<BaseColorBoostEvent>();
+            var newRotationEvents = new List<BaseRotationEvent>();
+            var newBpmEvents = new List<BaseBpmEvent>();
+            var newEvents = new List<BaseEvent>();
+            foreach (var e in Events)
             {
-                if (evt is V2Event e)
+                switch (e.Type)
                 {
-                    switch (e.Type)
-                    {
-                        case (int)EventTypeValue.ColorBoost:
-                            ColorBoostEvents.Add(new V3ColorBoostEvent(e));
-                            break;
-                        case (int)EventTypeValue.EarlyLaneRotation:
-                        case (int)EventTypeValue.LateLaneRotation:
-                            RotationEvents.Add(new V3RotationEvent(e));
-                            break;
-                        default:
-                            Events.Add(new V3BasicEvent(e));
-                            break;
-                    }
+                    case (int)EventTypeValue.ColorBoost:
+                        newColorBoostEvents.Add(new V3ColorBoostEvent(e));
+                        break;
+                    case (int)EventTypeValue.EarlyLaneRotation:
+                    case (int)EventTypeValue.LateLaneRotation:
+                        newRotationEvents.Add(new V3RotationEvent(e));
+                        break;
+                    case (int)EventTypeValue.BpmChange:
+                        newBpmEvents.Add(new V3BpmEvent(e));
+                        break;
+                    default:
+                        newEvents.Add(new V3BasicEvent(e));
+                        break;
                 }
             }
+            ColorBoostEvents = newColorBoostEvents;
+            RotationEvents = newRotationEvents;
+            BpmEvents = newBpmEvents;
+            Events = newEvents;
         }
         
-        private void ParseV3ToV2()
+        public void ParseV3ToV2()
         {
             Notes.AddRange(Bombs.OfType<BaseNote>().ToList());
             Events.AddRange(ColorBoostEvents.OfType<BaseEvent>().ToList());
             Events.AddRange(RotationEvents.OfType<BaseEvent>().ToList());
-            Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
+            Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
         }
         
         private static void LoadCustomDataNode(ref V3Difficulty map, ref JSONNode mainNode)

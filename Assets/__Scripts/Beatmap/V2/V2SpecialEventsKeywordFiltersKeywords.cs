@@ -25,12 +25,11 @@ namespace Beatmap.V2
         {
             JSONNode node = new JSONObject();
             node["_keyword"] = Keyword;
-            var ary = new JSONArray();
-            foreach (var i in Events) ary.Add(i);
-            node["_specialEvents"] = ary;
+            node["_specialEvents"] = new JSONArray();
+            foreach (var i in Events) node["_specialEvents"].Add(i);
             return node;
         }
 
-        public override BaseItem Clone() => new V2SpecialEventsKeywordFiltersKeywords(ToJson().Clone());
+        public override BaseItem Clone() => new V2SpecialEventsKeywordFiltersKeywords(ToJson());
     }
 }

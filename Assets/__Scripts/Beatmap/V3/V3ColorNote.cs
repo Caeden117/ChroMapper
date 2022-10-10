@@ -1,6 +1,7 @@
 using System;
 using Beatmap.Base;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.V3
 {
@@ -84,9 +85,9 @@ namespace Beatmap.V3
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["x"] = PosX;
             node["y"] = PosY;
+            node["a"] = AngleOffset;
             node["c"] = Color;
             node["d"] = CutDirection;
-            node["a"] = AngleOffset;
             if (CustomData == null) return node;
             node["customData"] = CustomData;
             return node;

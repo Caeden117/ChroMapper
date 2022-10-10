@@ -21,6 +21,6 @@ namespace Beatmap.Base
         }
 
         public string Keyword { get; set; }
-        public int[] Events { get; set; }
+        public int[] Events { get; set; } = { };
     }
 }

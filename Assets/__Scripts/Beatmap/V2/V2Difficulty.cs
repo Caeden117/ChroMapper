@@ -171,6 +171,7 @@ namespace Beatmap.V2
                 }
 
                 LoadCustomDataNode(ref map, ref mainNode);
+                map.ParseV3ToV2();
 
                 return map;
             }
@@ -179,6 +180,17 @@ namespace Beatmap.V2
                 Debug.LogException(e);
                 return null;
             }
+        }
+
+        private void ParseV3ToV2()
+        {
+            Notes = Notes.OfType<BaseNote>().ToList();
+            Notes.AddRange(Bombs.OfType<BaseNote>().ToList());
+            Notes = Notes.OfType<BaseNote>().ToList();
+            Events.AddRange(ColorBoostEvents.OfType<BaseEvent>().ToList());
+            Events.AddRange(RotationEvents.OfType<BaseEvent>().ToList());
+            Events.AddRange(BpmEvents.OfType<BaseEvent>().ToList());
+            Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
         }
 
         private static void LoadCustomDataNode(ref V2Difficulty map, ref JSONNode mainNode)
