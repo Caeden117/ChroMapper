@@ -25,7 +25,7 @@ namespace Beatmap.Containers
         [SerializeField] private GameObject indicatorMu;
         [SerializeField] private GameObject indicatorTmu;
         [SerializeField] private List<GameObject> indicators;
-        [FormerlySerializedAs("arcData")] public BaseArc ArcData;
+        [SerializeField] public BaseArc ArcData;
 
         private MaterialPropertyBlock indicatorMaterialPropertyBlock;
 
@@ -132,8 +132,8 @@ namespace Beatmap.Containers
 
         public void SetColor(Color color)
         {
-            MaterialPropertyBlock.SetColor(ObjectContainer.color, color);
-            MaterialPropertyBlock.SetColor(emissionColor, color * arcEmissionIntensity);
+            MaterialPropertyBlock.SetColor(ObjectContainer.color, color ?? unassignedColor);
+            MaterialPropertyBlock.SetColor(emissionColor, color * arcEmissionIntensity ?? unassignedColor);
             UpdateMaterials();
         }
 

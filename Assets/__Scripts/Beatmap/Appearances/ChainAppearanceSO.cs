@@ -27,6 +27,9 @@ namespace Beatmap.Appearances
                     chain.SetColor(BlueColor);
                     break;
             }
+            
+            if (chain.ChainData.CustomColor != null)
+                chain.SetColor((Color)chain.ChainData.CustomColor);
         }
     }
 }

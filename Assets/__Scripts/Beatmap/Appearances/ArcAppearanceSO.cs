@@ -27,6 +27,9 @@ namespace Beatmap.Appearances
                     arc.SetColor(BlueColor);
                     break;
             }
+            
+            if (arc.ArcData.CustomColor != null)
+                arc.SetColor((Color)arc.ArcData.CustomColor);
         }
     }
 }
