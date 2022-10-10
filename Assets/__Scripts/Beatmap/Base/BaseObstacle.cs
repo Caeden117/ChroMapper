@@ -57,7 +57,7 @@ namespace Beatmap.Base
         }
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Obstacle;
-        public int Type { get; set; }
+        public virtual int Type { get; set; }
         public float Duration { get; set; }
         public virtual int Width { get; set; }
         public virtual int Height { get; set; }

@@ -68,17 +68,7 @@ namespace Beatmap.V2
 
                 SaveCustomDataNode();
 
-                // I *believe* this automatically creates the file if it doesn't exist. Needs more experimentation
-                File.WriteAllText(DirectoryAndFile,
-                    Settings.Instance.FormatJson ? MainNode.ToString(2) : MainNode.ToString());
-                /*using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
-                {
-                    //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
-                    //Thus, ChroMapper "beautifies" the JSON if you are in advanced mode.
-                    if (Settings.Instance.AdvancedShit)
-                        writer.Write(mainNode.ToString(2));
-                    else writer.Write(mainNode.ToString());
-                }*/
+                WriteFile(this);
 
                 return true;
             }

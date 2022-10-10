@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Enums;
+using Beatmap.V2;
 using Beatmap.V3.Customs;
 using SimpleJSON;
 using UnityEngine;
@@ -47,6 +49,7 @@ namespace Beatmap.V3
                 if (MainNode == null) MainNode = new JSONObject();
 
                 MainNode["version"] = Version;
+                ParseV2ToV3();
 
                 var rotationEvents = new JSONArray();
                 foreach (var r in RotationEvents) rotationEvents.Add(r.ToJson());
@@ -101,17 +104,7 @@ namespace Beatmap.V3
 
                 SaveCustomDataNode();
 
-                // I *believe* this automatically creates the file if it doesn't exist. Needs more experimentation
-                File.WriteAllText(DirectoryAndFile,
-                    Settings.Instance.FormatJson ? MainNode.ToString(2) : MainNode.ToString());
-                /*using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
-                {
-                    //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
-                    //Thus, ChroMapper "beautifies" the JSON if you are in advanced mode.
-                    if (Settings.Instance.AdvancedShit)
-                        writer.Write(mainNode.ToString(2));
-                    else writer.Write(mainNode.ToString());
-                }*/
+                WriteFile(this);
 
                 return true;
             }
@@ -242,6 +235,8 @@ namespace Beatmap.V3
 
                 LoadCustomDataNode(ref map, ref mainNode);
 
+                map.ParseV3ToV2();
+
                 return map;
             }
             catch (Exception e)
@@ -251,6 +246,59 @@ namespace Beatmap.V3
             }
         }
 
+        private void ParseV2ToV3()
+        {
+            foreach (var note in Notes)
+            {
+                if (note is V2Note n)
+                {
+                    switch (n.Type)
+                    {
+                        case (int)NoteType.Bomb:
+                            Bombs.Add(new V3BombNote(note));
+                            break;
+                        case (int)NoteType.Red:
+                        case (int)NoteType.Blue:
+                            Notes.Add(new V3ColorNote(note));
+                            break;
+                        default:
+                            Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
+                            break;
+                    }
+                }
+            }
+
+            foreach (var obs in Obstacles) if (obs is V2Obstacle o) Obstacles.Add(new V3Obstacle(o));
+
+            foreach (var evt in Events)
+            {
+                if (evt is V2Event e)
+                {
+                    switch (e.Type)
+                    {
+                        case (int)EventTypeValue.ColorBoost:
+                            ColorBoostEvents.Add(new V3ColorBoostEvent(e));
+                            break;
+                        case (int)EventTypeValue.EarlyLaneRotation:
+                        case (int)EventTypeValue.LateLaneRotation:
+                            RotationEvents.Add(new V3RotationEvent(e));
+                            break;
+                        default:
+                            Events.Add(new V3BasicEvent(e));
+                            break;
+                    }
+                }
+            }
+        }
+        
+        private void ParseV3ToV2()
+        {
+            Notes.AddRange(Bombs.OfType<BaseNote>().ToList());
+            Events.AddRange(ColorBoostEvents.OfType<BaseEvent>().ToList());
+            Events.AddRange(RotationEvents.OfType<BaseEvent>().ToList());
+            Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
+        }
+        
         private static void LoadCustomDataNode(ref V3Difficulty map, ref JSONNode mainNode)
         {
             if (mainNode["customData"] == null) return;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using Beatmap.Base.Customs;
 using SimpleJSON;
 
@@ -71,5 +72,20 @@ namespace Beatmap.Base
 
         // fuick
         // public static abstract IDifficulty GetFromJson(JSONNode node, string path);
+        
+        protected static void WriteFile(BaseDifficulty map)
+        {
+            // I *believe* this automatically creates the file if it doesn't exist. Needs more experimentation
+            File.WriteAllText(map.DirectoryAndFile,
+                Settings.Instance.FormatJson ? map.MainNode.ToString(2) : map.MainNode.ToString());
+            /*using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
+            {
+                //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
+                //Thus, ChroMapper "beautifies" the JSON if you are in advanced mode.
+                if (Settings.Instance.AdvancedShit)
+                    writer.Write(mainNode.ToString(2));
+                else writer.Write(mainNode.ToString());
+            }*/
+        }
     }
 }

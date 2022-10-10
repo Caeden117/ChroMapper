@@ -7,6 +7,8 @@ namespace Beatmap.V2
 {
     public class V2Obstacle : BaseObstacle
     {
+        private int type;
+
         public V2Obstacle()
         {
         }
@@ -32,6 +34,16 @@ namespace Beatmap.V2
             ParseCustom();
 
         protected sealed override void ParseCustom() => base.ParseCustom();
+
+        public override int Type
+        {
+            get => type;
+            set
+            {
+                type = value;
+                InferPosYHeight();
+            }
+        }
 
         public override string CustomKeyTrack { get; } = "_track";
 

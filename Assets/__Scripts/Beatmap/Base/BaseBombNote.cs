@@ -7,22 +7,20 @@ namespace Beatmap.Base
 {
     public abstract class BaseBombNote : BaseNote, ICustomDataBomb
     {
-        protected BaseBombNote()
-        {
-        }
+        protected BaseBombNote() => Type = (int)NoteType.Bomb;
 
         protected BaseBombNote(BaseGrid other)
         {
             Time = other.Time;
             PosX = other.PosX;
             PosY = other.PosY;
+            Type = (int)NoteType.Bomb;
             CustomData = other.CustomData?.Clone();
         }
 
         protected BaseBombNote(float time, int posX, int posY, JSONNode customData = null) : base(time, posX, posY,
-            3, 0, customData)
-        {
-        }
+            (int)NoteType.Bomb, 0, customData) =>
+            Type = (int)NoteType.Bomb;
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Note;
 
