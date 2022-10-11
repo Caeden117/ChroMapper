@@ -44,7 +44,7 @@ namespace Tests
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
             if (collection is BPMChangeGridContainer bpmCollection)
             {
-                BaseBpmEvent baseBpmChange = new V2BpmChange(50, 10);
+                BaseBpmEvent baseBpmChange = new V2BpmChange(10, 50);
                 bpmCollection.SpawnObject(baseBpmChange);
 
                 if (bpmCollection.LoadedContainers[baseBpmChange] is BpmEventContainer container)

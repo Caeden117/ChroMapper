@@ -16,7 +16,7 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private Transform noteGrid;
     [SerializeField] private Transform frontNoteGridScaling;
     [SerializeField] private Transform measureLineGrid;
-    [FormerlySerializedAs("bpmChangesContainer")] [SerializeField] private BPMChangeGridContainer bpmChangeGridContainer;
+    [SerializeField] private BPMChangeGridContainer bpmChangeGridContainer;
     [SerializeField] private GridChild measureLinesGridChild;
     [SerializeField] private BookmarkRenderingController bookmarkRenderingController;
     private readonly List<(float, TextMeshProUGUI)> measureTextsByBeat = new List<(float, TextMeshProUGUI)>();
@@ -62,7 +62,7 @@ public class MeasureLinesController : MonoBehaviour
         var modifiedBeats = 0;
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
-        var allBpmChanges = new List<BaseBpmEvent> { BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseBpmEvent)new V3BpmChange(songBpm, 0) : new V2BpmChange(songBpm, 0) };
+        var allBpmChanges = new List<BaseBpmEvent> { new V3BpmChange(0, songBpm) };
         allBpmChanges.AddRange(bpmChangeGridContainer.LoadedObjects.Cast<BaseBpmEvent>());
 
         while (jsonBeat <= rawBeatsInSong)

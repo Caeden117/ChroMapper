@@ -353,8 +353,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         var bpmChanges =
             BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
 
-        var lowerValue = new V2BpmChange(420, atsc.CurrentBeat - 0.01f);
-        var upperValue = new V2BpmChange(69, atsc.CurrentBeat);
+        var lowerValue = new V2BpmChange(atsc.CurrentBeat - 0.01f, 420);
+        var upperValue = new V2BpmChange(atsc.CurrentBeat, 69);
 
         var lastBpmChangeBeforePaste = bpmChanges.FindLastBpm(atsc.CurrentBeat);
 

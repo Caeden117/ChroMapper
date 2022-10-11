@@ -26,13 +26,20 @@ public class MapLoader : MonoBehaviour
             var copy = new V3Difficulty
             {
                 CustomData = map.CustomData?.Clone(),
+                BpmEvents = new List<BaseBpmEvent>(map.BpmEvents),
+                RotationEvents = new List<BaseRotationEvent>(map.RotationEvents),
                 Notes = new List<BaseNote>(map.Notes),
                 Obstacles = new List<BaseObstacle>(map.Obstacles),
                 Arcs = new List<BaseArc>(map.Arcs),
                 Chains = new List<BaseChain>(map.Chains),
                 Events = new List<BaseEvent>(map.Events),
-                BpmChanges = new List<BaseBpmEvent>(map.BpmChanges),
                 ColorBoostEvents = new List<BaseColorBoostEvent>(map.ColorBoostEvents),
+                LightColorEventBoxGroups = new List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>>(map.LightColorEventBoxGroups),
+                LightRotationEventBoxGroups = new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>(map.LightRotationEventBoxGroups),
+                EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(map.EventTypesWithKeywords),
+                UseNormalEventsAsCompatibleEvents = map.UseNormalEventsAsCompatibleEvents,
+                EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(map.EnvironmentEnhancements),
+                BpmChanges = new List<BaseBpmEvent>(map.BpmChanges),
                 CustomEvents = new List<BaseCustomEvent>(map.CustomEvents)
             };
             this.map = copy;
@@ -45,6 +52,8 @@ public class MapLoader : MonoBehaviour
                 Notes = new List<BaseNote>(map.Notes),
                 Obstacles = new List<BaseObstacle>(map.Obstacles),
                 Events = new List<BaseEvent>(map.Events),
+                EventTypesWithKeywords = map.EventTypesWithKeywords != null ? new V2SpecialEventsKeywordFilters(map.EventTypesWithKeywords) : null,
+                EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(map.EnvironmentEnhancements),
                 BpmChanges = new List<BaseBpmEvent>(map.BpmChanges),
                 CustomEvents = new List<BaseCustomEvent>(map.CustomEvents)
             };
