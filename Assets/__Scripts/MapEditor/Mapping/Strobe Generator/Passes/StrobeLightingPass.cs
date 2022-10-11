@@ -79,7 +79,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
                 ? (easingFunc(progress) * floatValueDiff) + startFloatValue
                 : (progress * floatValueDiff) + startFloatValue;
 
-            var data = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V3BasicEvent(newTime, type, value, newFloatValue) : new V2Event(newTime, type, value, newFloatValue);
+            var data = Settings.Instance.Load_MapV3 ? (BaseEvent)new V3BasicEvent(newTime, type, value, newFloatValue) : new V2Event(newTime, type, value, newFloatValue);
             if (propMode != EventGridContainer.PropMode.Off)
             {
                 data.CustomLightID = propID.AsArray.Linq.Select(x => x.Value.AsInt).ToArray();

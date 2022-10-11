@@ -14,9 +14,9 @@ using UnityEngine.Serialization;
 public class BoxSelectionPlacementController : PlacementController<BaseEvent, EventContainer, EventGridContainer>,
     CMInput.IBoxSelectActions
 {
-    [FormerlySerializedAs("customCollection")] public CustomEventGridContainer CustomCollection;
-    [FormerlySerializedAs("EventsContainer")] [FormerlySerializedAs("eventsContainer")] public EventGridContainer EventGridContainer;
-    [FormerlySerializedAs("labels")] public CreateEventTypeLabels Labels;
+    [SerializeField] public CustomEventGridContainer CustomCollection;
+    [SerializeField] public EventGridContainer EventGridContainer;
+    [SerializeField] public CreateEventTypeLabels Labels;
 
     private readonly HashSet<BaseObject> selected = new HashSet<BaseObject>();
 

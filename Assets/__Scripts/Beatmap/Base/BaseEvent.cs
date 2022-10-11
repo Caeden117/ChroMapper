@@ -25,7 +25,7 @@ namespace Beatmap.Base
         private float? _customStep;
         private float? _customStepMult;
         private int? _customDirection;
-        private string? customNameFilter;
+        private string customNameFilter;
 
         protected BaseEvent()
         {

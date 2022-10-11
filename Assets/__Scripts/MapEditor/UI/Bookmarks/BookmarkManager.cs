@@ -130,7 +130,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             return;
         }
 
-        var newBookmark = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseBookmark)new V3Bookmark(Atsc.CurrentBeat, name) : new V2Bookmark(Atsc.CurrentBeat, name);
+        var newBookmark = Settings.Instance.Load_MapV3 ? (BaseBookmark)new V3Bookmark(Atsc.CurrentBeat, name) : new V2Bookmark(Atsc.CurrentBeat, name);
 
         if (color != null)
         {

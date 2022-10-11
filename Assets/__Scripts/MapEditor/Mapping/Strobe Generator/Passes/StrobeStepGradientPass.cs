@@ -91,7 +91,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var lerp = easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
 
-            var data = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V2Event(newTime, type, value) : new V2Event(newTime, type, value);
+            var data = Settings.Instance.Load_MapV3 ? (BaseEvent)new V2Event(newTime, type, value) : new V2Event(newTime, type, value);
             data.CustomColor = color;
 
             if (propMode != EventGridContainer.PropMode.Off)

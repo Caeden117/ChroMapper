@@ -34,7 +34,7 @@ public class EnvRemoval : MonoBehaviour
 
     public void AddItem()
     {
-        AddItem(BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement("") : new V2EnvironmentEnhancement(""));
+        AddItem(Settings.Instance.Load_MapV3 ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement("") : new V2EnvironmentEnhancement(""));
         UpdateEnvRemoval();
         StartCoroutine(WaitToScroll());
     }

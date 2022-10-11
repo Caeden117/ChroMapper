@@ -29,7 +29,7 @@ public class
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a Custom Event.");
 
-    public override BaseCustomEvent GenerateOriginalData() => BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseCustomEvent)new V3CustomEvent(0, "", null) : new V2CustomEvent(0, "", null);
+    public override BaseCustomEvent GenerateOriginalData() => Settings.Instance.Load_MapV3 ? (BaseCustomEvent)new V3CustomEvent(0, "", null) : new V2CustomEvent(0, "", null);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {

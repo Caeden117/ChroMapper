@@ -68,11 +68,11 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
         while (distanceInBeats >= 0)
         {
-            var any = original.Where(x => x.Time <= endTime - distanceInBeats).LastOrDefault();
+            var any = original.LastOrDefault(x => x.Time <= endTime - distanceInBeats);
             if (lastPassed != any)
             {
                 lastPassed = any;
-                nextEvent = original.Where(x => x.Time > lastPassed.Time).FirstOrDefault();
+                nextEvent = original.FirstOrDefault(x => x.Time > lastPassed.Time);
                 lastSpeed = GetLaserSpeedFromEvent(lastPassed);
                 if (nextEvent == null) nextEvent = lastPassed;
                 nextSpeed = GetLaserSpeedFromEvent(nextEvent);
@@ -82,27 +82,24 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
             var progress = Mathf.InverseLerp(lastPassed.Time, nextEvent.Time, newTime);
 
             var decimalPreciseSpeed =
-                Math.Round(Mathf.Lerp(lastSpeed, nextSpeed, easingFunc(progress)), decimalPrecision);
+                (float)Math.Round(Mathf.Lerp(lastSpeed, nextSpeed, easingFunc(progress)), decimalPrecision);
             // This does not support negative numbers, however I do not believe there is a reason to support them in the first place
             var roundedPreciseSpeed = (int)Math.Max(1, Math.Round(decimalPreciseSpeed, MidpointRounding.AwayFromZero));
 
-            var data = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V3BasicEvent(newTime, type, 1) { CustomData = new JSONObject(), Value = roundedPreciseSpeed } : new V2Event(newTime, type, 1) { CustomData = new JSONObject(), Value = roundedPreciseSpeed };
+            var data = Settings.Instance.Load_MapV3 ? (BaseEvent)new V3BasicEvent(newTime, type, 1) { CustomData = new JSONObject(), Value = roundedPreciseSpeed } : new V2Event(newTime, type, 1) { CustomData = new JSONObject(), Value = roundedPreciseSpeed };
 
             // Bit cheeky but hopefully a bit more readable
             if (Math.Abs(decimalPreciseSpeed - roundedPreciseSpeed) > 0.01f)
-                data.CustomSpeed = decimalPreciseSpeed as float?;
+                data.CustomSpeed = decimalPreciseSpeed;
 
             if (overrideDirection)
             {
-                switch (type)
+                data.CustomDirection = type switch
                 {
-                    case (int)EventTypeValue.LeftLaserRotation:
-                        data.CustomDirection = Convert.ToInt32(leftRotatesClockwise);
-                        break;
-                    case (int)EventTypeValue.RightLaserRotation:
-                        data.CustomDirection = Convert.ToInt32(rightRotatesClockwise);
-                        break;
-                }
+                    (int)EventTypeValue.LeftLaserRotation => Convert.ToInt32(leftRotatesClockwise),
+                    (int)EventTypeValue.RightLaserRotation => Convert.ToInt32(rightRotatesClockwise),
+                    _ => data.CustomDirection
+                };
             }
 
             if (lockLaserRotation) data.CustomLockRotation = true;
@@ -116,9 +113,9 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
     private float GetLaserSpeedFromEvent(BaseEvent @event)
     {
-        if (@event.CustomData == null || @event.CustomData.Children.Count() == 0
-                                       || (!@event.CustomData.HasKey("_preciseSpeed") &&
-                                           !@event.CustomData.HasKey("_speed")))
+        if (@event.CustomData == null || !@event.CustomData.Children.Any()
+                                      || (!@event.CustomData.HasKey("_preciseSpeed") &&
+                                          !@event.CustomData.HasKey("_speed")))
         {
             return @event.Value;
         }

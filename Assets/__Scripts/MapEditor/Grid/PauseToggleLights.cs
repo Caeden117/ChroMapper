@@ -75,7 +75,7 @@ public class PauseToggleLights : MonoBehaviour
                     ? lastEvents[(int)EventTypeValue.ColorBoost].LastEvent
                     : defaultBoostEvent);
 
-            var blankEvent = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V3BasicEvent(0, 0, 0) : new V2Event(0, 0, 0);
+            var blankEvent = new V3BasicEvent(0, 0, 0);
             for (var i = 0; i < 16; i++)
             {
                 // Boost light events are already handled above; skip them.
@@ -110,7 +110,7 @@ public class PauseToggleLights : MonoBehaviour
                 // Pass an empty even if it is not a ring or rotation event, OR it is null.
                 else if (regular is null || (!regular.IsRingEvent() && !regular.IsLaneRotationEvent()))
                 {
-                    descriptor.EventPassed(isPlaying, 0, BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V3BasicEvent(0, i, 0) : new V2Event(0, i, 0));
+                    descriptor.EventPassed(isPlaying, 0, new V3BasicEvent(0, i, 0));
                     continue;
                 }
 
@@ -122,24 +122,21 @@ public class PauseToggleLights : MonoBehaviour
                     descriptor.EventPassed(isPlaying, 0, propEvent.Value);
 
                 if (regular.IsLightEvent() && Settings.Instance.EmulateChromaLite)
-                    descriptor.EventPassed(isPlaying, 0, chroma ??
-                                                         (BeatSaberSongContainer.Instance.Map.GetVersion() == 3
-                                                             ? (BaseEvent)new V3BasicEvent(0, i, ColourManager.RGBReset)
-                                                             : new V2Event(0, i, ColourManager.RGBReset)));
+                    descriptor.EventPassed(isPlaying, 0, chroma ?? (BaseEvent)new V3BasicEvent(0, i, ColourManager.RGBReset));
             }
         }
         else
         {
-            var leftSpeedReset = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V3BasicEvent(0, (int)EventTypeValue.LeftLaserRotation, 0) : new V2Event(0, (int)EventTypeValue.LeftLaserRotation, 0)
+            var leftSpeedReset = new V3BasicEvent(0, (int)EventTypeValue.LeftLaserRotation, 0)
             {
-                CustomData = new JSONObject()
+                CustomData = new JSONObject(),
+                CustomLockRotation = true
             };
-            leftSpeedReset.CustomLockRotation = true;
-            var rightSpeedReset = BeatSaberSongContainer.Instance.Map.GetVersion() == 3 ? (BaseEvent)new V3BasicEvent(0, (int)EventTypeValue.RightLaserRotation, 0) : new V2Event(0, (int)EventTypeValue.RightLaserRotation, 0)
+            var rightSpeedReset = new V3BasicEvent(0, (int)EventTypeValue.RightLaserRotation, 0)
             {
-                CustomData = new JSONObject()
+                CustomData = new JSONObject(),
+                CustomLockRotation = true
             };
-            rightSpeedReset.CustomLockRotation = true;
             descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
             descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
             descriptor.KillChromaLights();
