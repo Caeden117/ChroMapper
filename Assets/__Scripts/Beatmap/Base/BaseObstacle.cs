@@ -8,10 +8,10 @@ namespace Beatmap.Base
 {
     public abstract class BaseObstacle : BaseGrid, ICustomDataObstacle
     {
-        public const float MappingExtensionsStartHeightMultiplier = 1.35f;
-        public const float MappingExtensionsUnitsToFullHeightWall = 1000 / 3.5f;
+        private const float mappingExtensionsStartHeightMultiplier = 1.35f;
+        private const float mappingExtensionsUnitsToFullHeightWall = 1000 / 3.5f;
 
-        protected Vector3? _customSize;
+        protected Vector3? customSize;
 
         protected BaseObstacle()
         {
@@ -62,6 +62,21 @@ namespace Beatmap.Base
         public virtual int Width { get; set; }
         public virtual int Height { get; set; }
 
+        public virtual Vector3? CustomSize
+        {
+            get => customSize;
+            set
+            {
+                if (value == null && CustomData?[CustomKeySize] != null)
+                    CustomData.Remove(CustomKeySize);
+                else
+                    GetOrCreateCustom()[CustomKeySize] = value;
+                customSize = value;
+            }
+        }
+
+        public abstract string CustomKeySize { get; }
+
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
             if (other is BaseObstacle obstacle)
@@ -99,7 +114,7 @@ namespace Beatmap.Base
 
             if (Width >= 1000) width = ((float)Width - 1000) / 1000;
             if (PosX >= 1000)
-                position = ((float)PosX - 1000) / 1000f - 2f;
+                position = (((float)PosX - 1000) / 1000f) - 2f;
             else if (PosX <= -1000)
                 position = ((float)PosX - 1000) / 1000f;
 
@@ -112,14 +127,14 @@ namespace Beatmap.Base
             {
                 startHeight = 0; //start height = floor
                 height = ((float)Type - 1000) /
-                         MappingExtensionsUnitsToFullHeightWall; //1000 = no height, 2000 = full height
+                         mappingExtensionsUnitsToFullHeightWall; //1000 = no height, 2000 = full height
             }
             else if (Type > 4000)
             {
                 float modifiedType = Type - 4001;
-                startHeight = modifiedType % 1000 / MappingExtensionsUnitsToFullHeightWall *
-                              MappingExtensionsStartHeightMultiplier;
-                height = modifiedType / 1000 / MappingExtensionsUnitsToFullHeightWall;
+                startHeight = modifiedType % 1000 / mappingExtensionsUnitsToFullHeightWall *
+                              mappingExtensionsStartHeightMultiplier;
+                height = modifiedType / 1000 / mappingExtensionsUnitsToFullHeightWall;
             }
 
             // NE
@@ -164,25 +179,6 @@ namespace Beatmap.Base
                     break;
             }
         }
-
-        public virtual Vector3? CustomSize
-        {
-            get => _customSize;
-            set
-            {
-                if (value == null && CustomData?[CustomKeySize] != null)
-                {
-                    CustomData.Remove(CustomKeySize);
-                }
-                else
-                {
-                    GetOrCreateCustom()[CustomKeySize] = value;
-                }
-                _customSize = value;
-            }
-        }
-
-        public abstract string CustomKeySize { get; }
 
         protected override void ParseCustom()
         {

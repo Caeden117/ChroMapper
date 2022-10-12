@@ -49,6 +49,7 @@ namespace Beatmap.V3
 
         public override BaseItem Clone() =>
             new V3LightRotationEventBox((V3IndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
-                RotationDistribution, RotationDistributionType, RotationAffectFirst, Axis, Flip, (V3LightRotationBase[])Events.Clone());
+                RotationDistribution, RotationDistributionType, RotationAffectFirst, Axis, Flip,
+                (V3LightRotationBase[])Events.Clone());
     }
 }

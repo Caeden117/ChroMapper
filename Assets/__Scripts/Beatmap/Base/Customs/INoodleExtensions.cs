@@ -20,6 +20,13 @@ namespace Beatmap.Base.Customs
         string CustomKeyDirection { get; }
     }
 
+    public interface INoodleExtensionsSlider : INoodleExtensionsGrid
+    {
+        Vector2? CustomTailCoordinate { get; set; }
+
+        string CustomKeyTailCoordinate { get; }
+    }
+
     public interface INoodleExtensionsObstacle : INoodleExtensionsGrid
     {
         Vector3? CustomSize { get; set; }

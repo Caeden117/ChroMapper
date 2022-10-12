@@ -1,7 +1,6 @@
 using System;
 using Beatmap.Base;
 using SimpleJSON;
-using UnityEngine;
 
 namespace Beatmap.V2
 {
@@ -33,8 +32,6 @@ namespace Beatmap.V2
             time, posX, type, duration, width, customData) =>
             ParseCustom();
 
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
         public override int Type
         {
             get => type;
@@ -56,6 +53,8 @@ namespace Beatmap.V2
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
 
         public override string CustomKeySize { get; } = "_scale";
+
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override bool IsChroma() => CustomData?["_color"] != null && CustomData["_color"].IsArray;
 
@@ -87,7 +86,7 @@ namespace Beatmap.V2
             node["_type"] = Type;
             node["_duration"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
             node["_width"] = Width;
-            node["_height"] = Height; 
+            node["_height"] = Height;
             if (CustomData == null) return node;
             node["_customData"] = CustomData;
             return node;

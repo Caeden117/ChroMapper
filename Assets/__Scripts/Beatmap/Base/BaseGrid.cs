@@ -6,10 +6,10 @@ namespace Beatmap.Base
 {
     public abstract class BaseGrid : BaseObject, IObjectBounds, IHeckGrid, INoodleExtensionsGrid
     {
-        private Vector2? _customCoordinate;
-        private Vector3? _customLocalRotation;
-        private string _customTrack;
-        private Vector3? _customWorldRotation;
+        private Vector2? customCoordinate;
+        private Vector3? customLocalRotation;
+        private string customTrack;
+        private Vector3? customWorldRotation;
 
         protected BaseGrid()
         {
@@ -23,6 +23,64 @@ namespace Beatmap.Base
 
         public int PosX { get; set; }
         public int PosY { get; set; }
+
+        public string CustomTrack
+        {
+            get => customTrack;
+            set
+            {
+                if (value == null && CustomData?[CustomKeyTrack] != null)
+                    CustomData.Remove(CustomKeyTrack);
+                else
+                    GetOrCreateCustom()[CustomKeyTrack] = value;
+                customTrack = value;
+            }
+        }
+
+        public abstract string CustomKeyTrack { get; }
+
+        public virtual Vector2? CustomCoordinate
+        {
+            get => customCoordinate;
+            set
+            {
+                if (value == null && CustomData?[CustomKeyCoordinate] != null)
+                    CustomData.Remove(CustomKeyCoordinate);
+                else
+                    GetOrCreateCustom()[CustomKeyCoordinate] = value;
+                customCoordinate = value;
+            }
+        }
+
+        public virtual Vector3? CustomWorldRotation
+        {
+            get => customWorldRotation;
+            set
+            {
+                if (value == null && CustomData?[CustomKeyWorldRotation] != null)
+                    CustomData.Remove(CustomKeyWorldRotation);
+                else
+                    GetOrCreateCustom()[CustomKeyWorldRotation] = value;
+                customWorldRotation = value;
+            }
+        }
+
+        public virtual Vector3? CustomLocalRotation
+        {
+            get => customLocalRotation;
+            set
+            {
+                if (value == null && CustomData?[CustomKeyLocalRotation] != null)
+                    CustomData.Remove(CustomKeyLocalRotation);
+                else
+                    GetOrCreateCustom()[CustomKeyLocalRotation] = value;
+                customLocalRotation = value;
+            }
+        }
+
+        public abstract string CustomKeyCoordinate { get; }
+        public abstract string CustomKeyWorldRotation { get; }
+        public abstract string CustomKeyLocalRotation { get; }
 
         public Vector2 GetCenter() => GetPosition() + new Vector2(0f, 0.5f);
 
@@ -41,87 +99,17 @@ namespace Beatmap.Base
             }
         }
 
-        public string CustomTrack
-        {
-            get => _customTrack;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyTrack] != null)
-                {
-                    CustomData.Remove(CustomKeyTrack);
-                }
-                else
-                {
-                    GetOrCreateCustom()[CustomKeyTrack] = value;
-                }
-                _customTrack = value;
-            }
-        }
-
-        public virtual Vector2? CustomCoordinate
-        {
-            get => _customCoordinate;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyCoordinate] != null)
-                {
-                    CustomData.Remove(CustomKeyCoordinate);
-                }
-                else
-                {
-                    GetOrCreateCustom()[CustomKeyCoordinate] = value;
-                }
-                _customCoordinate = value;
-            }
-        }
-
-        public virtual Vector3? CustomWorldRotation
-        {
-            get => _customWorldRotation;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyWorldRotation] != null)
-                {
-                    CustomData.Remove(CustomKeyWorldRotation);
-                }
-                else
-                {
-                    GetOrCreateCustom()[CustomKeyWorldRotation] = value;
-                }
-                _customWorldRotation = value;
-            }
-        }
-
-        public virtual Vector3? CustomLocalRotation
-        {
-            get => _customLocalRotation;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyLocalRotation] != null)
-                {
-                    CustomData.Remove(CustomKeyLocalRotation);
-                }
-                else
-                {
-                    GetOrCreateCustom()[CustomKeyLocalRotation] = value;
-                }
-                _customLocalRotation = value;
-            }
-        }
-
-        public abstract string CustomKeyTrack { get; }
-        public abstract string CustomKeyCoordinate { get; }
-        public abstract string CustomKeyWorldRotation { get; }
-        public abstract string CustomKeyLocalRotation { get; }
-
         protected override void ParseCustom()
         {
             base.ParseCustom();
             if (CustomData == null) return;
             if (CustomData[CustomKeyTrack] != null) CustomTrack = CustomData[CustomKeyTrack].Value;
-            if (CustomData[CustomKeyCoordinate] != null) CustomCoordinate = CustomData[CustomKeyCoordinate].ReadVector2();
-            if (CustomData[CustomKeyWorldRotation] != null) CustomWorldRotation = CustomData[CustomKeyWorldRotation].ReadVector3();
-            if (CustomData[CustomKeyLocalRotation] != null) CustomLocalRotation = CustomData[CustomKeyLocalRotation].ReadVector3();
+            if (CustomData[CustomKeyCoordinate] != null)
+                CustomCoordinate = CustomData[CustomKeyCoordinate].ReadVector2();
+            if (CustomData[CustomKeyWorldRotation] != null)
+                CustomWorldRotation = CustomData[CustomKeyWorldRotation].ReadVector3();
+            if (CustomData[CustomKeyLocalRotation] != null)
+                CustomLocalRotation = CustomData[CustomKeyLocalRotation].ReadVector3();
         }
 
         protected virtual Vector2 DerivePositionFromData()

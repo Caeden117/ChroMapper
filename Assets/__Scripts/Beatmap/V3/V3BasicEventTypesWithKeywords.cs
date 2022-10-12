@@ -1,7 +1,6 @@
 using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
-using UnityEngine;
 
 namespace Beatmap.V3
 {
@@ -15,11 +14,9 @@ namespace Beatmap.V3
         {
         }
 
-        public V3BasicEventTypesWithKeywords(JSONNode node)
-        {
+        public V3BasicEventTypesWithKeywords(JSONNode node) =>
             Keywords = RetrieveRequiredNode(node, "d").AsArray.Linq
                 .Select(x => new V3BasicEventTypesForKeywords(x)).ToArray();
-        }
 
         public override JSONNode ToJson()
         {

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Beatmap.Containers
 {
@@ -104,15 +103,9 @@ namespace Beatmap.Containers
             return directionEuler;
         }
 
-        public void SetDotVisible(bool b)
-        {
-            dotRenderer.enabled = b;
-        }
+        public void SetDotVisible(bool b) => dotRenderer.enabled = b;
 
-        public void SetArrowVisible(bool b)
-        {
-            arrowRenderer.enabled = b;
-        }
+        public void SetArrowVisible(bool b) => arrowRenderer.enabled = b;
 
         public void SetBomb(bool b)
         {

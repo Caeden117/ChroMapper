@@ -8,7 +8,8 @@ namespace Beatmap.Base
 
         protected BaseLightRotationEventBox(BaseIndexFilter indexFilter, float beatDistribution,
             int beatDistributionType, float rotationDistribution, int rotationDistributionType, int rotationAffectFirst,
-            int axis, int flip, BaseLightRotationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType)
+            int axis, int flip, BaseLightRotationBase[] events) : base(indexFilter, beatDistribution,
+            beatDistributionType)
         {
             RotationDistribution = rotationDistribution;
             RotationDistributionType = rotationDistributionType;

@@ -1,16 +1,12 @@
 using System;
 using Beatmap.Base;
 using SimpleJSON;
-using UnityEngine;
 
 namespace Beatmap.V2
 {
     public class V2Note : BaseNote
     {
-        public V2Note()
-        {
-            CustomData = new JSONObject();
-        }
+        public V2Note() => CustomData = new JSONObject();
 
         public V2Note(BaseNote other) : base(other) => ParseCustom();
 
@@ -32,14 +28,6 @@ namespace Beatmap.V2
             time, posX, posY, type, cutDirection, customData) =>
             ParseCustom();
 
-        protected sealed override void ParseCustom()
-        {
-            base.ParseCustom();
-            
-            if (CustomData == null) return;
-            if (CustomData[CustomKeyDirection] != null) CustomDirection = CustomData[CustomKeyDirection].AsInt;
-        }
-
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";
@@ -51,6 +39,14 @@ namespace Beatmap.V2
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
 
         public override string CustomKeyDirection { get; } = "_cutDirection";
+
+        protected sealed override void ParseCustom()
+        {
+            base.ParseCustom();
+
+            if (CustomData == null) return;
+            if (CustomData[CustomKeyDirection] != null) CustomDirection = CustomData[CustomKeyDirection].AsInt;
+        }
 
         public override bool IsChroma() =>
             (CustomData?["_color"] != null && CustomData["_color"].IsArray) ||

@@ -41,20 +41,15 @@ namespace Beatmap.Shared
             EasingType = easing;
         }
 
-        public override BaseItem Clone()
-        {
-            return new ChromaLightGradient(StartColor, EndColor, Duration, EasingType);
-        }
+        public override BaseItem Clone() => new ChromaLightGradient(StartColor, EndColor, Duration, EasingType);
 
-        public override JSONNode ToJson()
-        {
-            return new JSONObject
+        public override JSONNode ToJson() =>
+            new JSONObject
             {
                 ["_duration"] = Duration,
                 ["_startColor"] = StartColor,
                 ["_endColor"] = EndColor,
                 ["_easing"] = EasingType
             };
-        }
     }
 }

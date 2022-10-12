@@ -19,21 +19,16 @@ namespace Beatmap.Base.Customs
 
         public override ObjectType ObjectType { get; set; } = ObjectType.CustomEvent;
 
-        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
-
-        public override JSONNode ToJson() =>
-            new JSONObject
-            {
-                [KeyTime] = Time,
-                [KeyType] = Type,
-                [KeyData] = Data
-            };
-
         public string Type { get; set; }
         public JSONNode Data { get; set; }
         public abstract string KeyTime { get; }
         public abstract string KeyType { get; }
         public abstract string KeyData { get; }
+
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
+
+        public override JSONNode ToJson() =>
+            new JSONObject { [KeyTime] = Time, [KeyType] = Type, [KeyData] = Data };
 
         protected void InstantiateHelper(ref JSONNode node)
         {

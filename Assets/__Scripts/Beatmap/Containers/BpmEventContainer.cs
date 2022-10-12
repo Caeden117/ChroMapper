@@ -1,6 +1,5 @@
 using System.Globalization;
 using Beatmap.Base;
-using Beatmap.Enums;
 using TMPro;
 using UnityEngine;
 
@@ -8,8 +7,8 @@ namespace Beatmap.Containers
 {
     public class BpmEventContainer : ObjectContainer
     {
-        public BaseBpmEvent BpmData;
         [SerializeField] private TextMeshProUGUI bpmText;
+        public BaseBpmEvent BpmData;
 
         public override BaseObject ObjectData
         {
@@ -24,10 +23,7 @@ namespace Beatmap.Containers
             return container;
         }
 
-        public void UpdateBpmText()
-        {
-            bpmText.text = BpmData.Bpm.ToString(CultureInfo.InvariantCulture);
-        }
+        public void UpdateBpmText() => bpmText.text = BpmData.Bpm.ToString(CultureInfo.InvariantCulture);
 
         public override void UpdateGridPosition()
         {

@@ -6,8 +6,8 @@ namespace Beatmap.V3
 {
     public class V3Obstacle : BaseObstacle
     {
-        private int width;
         private int height;
+        private int width;
 
         public V3Obstacle()
         {
@@ -31,8 +31,6 @@ namespace Beatmap.V3
         public V3Obstacle(float time, int posX, int posY, float duration, int width, int height,
             JSONNode customData = null) : base(time, posX, posY, duration, width, height, customData) =>
             ParseCustom();
-
-        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override int Width
         {
@@ -65,6 +63,8 @@ namespace Beatmap.V3
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
         public override string CustomKeySize { get; } = "size";
+
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override bool IsChroma() => CustomData?["color"] != null && CustomData["color"].IsArray;
 
@@ -100,6 +100,7 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3Obstacle(Time, PosX, PosY, Duration, Width, Height, CustomData?.Clone());
+        public override BaseItem Clone() =>
+            new V3Obstacle(Time, PosX, PosY, Duration, Width, Height, CustomData?.Clone());
     }
 }

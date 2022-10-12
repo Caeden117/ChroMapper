@@ -33,18 +33,15 @@ namespace Beatmap.Base.Customs
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => true;
 
         public override JSONNode ToJson() =>
-            new JSONObject
-            {
-                [KeyTime] = Time,
-                [KeyName] = Name,
-                [KeyColor] = Color
-            };
+            new JSONObject { [KeyTime] = Time, [KeyName] = Name, [KeyColor] = Color };
 
         protected void InstantiateHelper(ref JSONNode node)
         {
             Time = node[KeyTime]?.AsFloat ?? 0f;
             Name = node[KeyName]?.Value ?? "Missing Name";
-            Color = node.HasKey(KeyColor) ? node[KeyColor].ReadColor() : Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
+            Color = node.HasKey(KeyColor)
+                ? node[KeyColor].ReadColor()
+                : Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
         }
     }
 }

@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Beatmap.Appearances;
-using Beatmap.Enums;
 using Beatmap.Base;
-using Beatmap.Shared;
+using Beatmap.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Beatmap.Containers
 {
@@ -22,8 +20,6 @@ namespace Beatmap.Containers
         private static readonly int mainAlpha = Shader.PropertyToID("_MainAlpha");
         private static readonly int fadeSize = Shader.PropertyToID("_FadeSize");
         private static readonly int spotlightSize = Shader.PropertyToID("_SpotlightSize");
-
-        [SerializeField] public BaseEvent EventData;
         [SerializeField] public EventGridContainer EventGridContainer;
         [SerializeField] private EventAppearanceSO eventAppearance;
         [SerializeField] private List<Renderer> eventRenderer;
@@ -32,6 +28,8 @@ namespace Beatmap.Containers
         [SerializeField] private LightGradientController lightGradientController;
         [SerializeField] private GameObject[] eventModels;
         [SerializeField] private CreateEventTypeLabels labels;
+
+        [SerializeField] public BaseEvent EventData;
 
         // This needs to be an int for the below properties
         private int eventModel;
@@ -63,7 +61,8 @@ namespace Beatmap.Containers
             set => EventData = (BaseEvent)value;
         }
 
-        public static EventContainer SpawnEvent(EventGridContainer eventsContainer, BaseEvent data, ref GameObject prefab,
+        public static EventContainer SpawnEvent(EventGridContainer eventsContainer, BaseEvent data,
+            ref GameObject prefab,
             ref EventAppearanceSO eventAppearanceSO, ref CreateEventTypeLabels labels)
         {
             var container = Instantiate(prefab).GetComponent<EventContainer>();
@@ -104,7 +103,7 @@ namespace Beatmap.Containers
             //Move event up or down enough to give a constant distance from the bottom of the event, taking the y alpha scale into account
             if (Settings.Instance.VisualizeChromaAlpha)
                 transform.localPosition = new Vector3(transform.localPosition.x,
-                    transform.localPosition.y + (GetHeight() - 1f) / 2.775f, transform.localPosition.z);
+                    transform.localPosition.y + ((GetHeight() - 1f) / 2.775f), transform.localPosition.z);
             UpdateCollisionGroups();
         }
 
@@ -148,12 +147,10 @@ namespace Beatmap.Containers
             if (updateMaterials) UpdateMaterials();
         }
 
-        public void UpdateScale(float scale)
-        {
-            transform.localScale = new Vector3(1, Settings.Instance.VisualizeChromaAlpha ? GetHeight() : 1, 1) * scale;
-            //you can do this instead//Change the scale of the event height based on the alpha of the event if alpha visualization is on
-        }
+        public void UpdateScale(float scale) => transform.localScale =
+            new Vector3(1, Settings.Instance.VisualizeChromaAlpha ? GetHeight() : 1, 1) * scale;
 
+        //you can do this instead//Change the scale of the event height based on the alpha of the event if alpha visualization is on
         private float GetHeight()
         {
             var height = EventData.FloatValue;
@@ -193,14 +190,8 @@ namespace Beatmap.Containers
             valueDisplay.text = text;
         }
 
-        public void UpdateTextColor(Color color)
-        {
-            valueDisplay.color = color;
-        }
+        public void UpdateTextColor(Color color) => valueDisplay.color = color;
 
-        public void RefreshAppearance()
-        {
-            eventAppearance.SetEventAppearance(this);
-        }
+        public void RefreshAppearance() => eventAppearance.SetEventAppearance(this);
     }
 }

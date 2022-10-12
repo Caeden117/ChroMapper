@@ -23,7 +23,8 @@ namespace Beatmap.Base
             CustomData = evt.CustomData?.Clone();
         }
 
-        protected BaseColorBoostEvent(float time, bool toggle, JSONNode customData = null) : base(time, 5, toggle ? 1 : 0, 1, customData) => Toggle = toggle;
+        protected BaseColorBoostEvent(float time, bool toggle, JSONNode customData = null) : base(time, 5,
+            toggle ? 1 : 0, 1, customData) => Toggle = toggle;
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
         public bool Toggle { get; set; }

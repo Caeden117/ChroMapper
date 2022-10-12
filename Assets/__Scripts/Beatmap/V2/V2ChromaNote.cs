@@ -1,5 +1,5 @@
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 
 namespace Beatmap.V2
 {

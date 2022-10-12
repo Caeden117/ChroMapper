@@ -46,6 +46,7 @@ namespace Beatmap.V3
                 ["s"] = Seed
             };
 
-        public override BaseItem Clone() => new V3IndexFilter(Type, Param0, Param1, Reverse, Chunks, Limit, LimitAffectsType, Random, Seed);
+        public override BaseItem Clone() =>
+            new V3IndexFilter(Type, Param0, Param1, Reverse, Chunks, Limit, LimitAffectsType, Random, Seed);
     }
 }

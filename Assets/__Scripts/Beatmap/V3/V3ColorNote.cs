@@ -1,7 +1,6 @@
 using System;
 using Beatmap.Base;
 using SimpleJSON;
-using UnityEngine;
 
 namespace Beatmap.V3
 {
@@ -33,8 +32,6 @@ namespace Beatmap.V3
             time, posX, posY, type, cutDirection, customData) =>
             ParseCustom();
 
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
         // TODO: deal with custom direction to angle offset
         public override int? CustomDirection
         {
@@ -53,6 +50,8 @@ namespace Beatmap.V3
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
         public override string CustomKeyDirection { get; } = "cutDirection";
+
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override bool IsChroma() =>
             (CustomData?["color"] != null && CustomData["color"].IsArray) ||

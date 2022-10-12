@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using Beatmap.Shared;
 using SplineMesh;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Beatmap.Containers
 {
@@ -74,21 +73,18 @@ namespace Beatmap.Containers
             UpdateCollisionGroups();
         }
 
-        public void SetScale(Vector3 scale)
-        {
-            transform.localScale = scale;
+        public void SetScale(Vector3 scale) => transform.localScale = scale;
 
-            //MaterialPropertyBlock.SetVector(shaderScale, scale);
-            //UpdateMaterials();
-        }
-
+        //MaterialPropertyBlock.SetVector(shaderScale, scale);
+        //UpdateMaterials();
         public void NotifySplineChanged(BaseArc arcData = null)
         {
             if (arcData != null) ArcData = arcData;
             if (splineRenderer != null) // since curve has been changed, firstly disable it until it is computed.
                 splineRenderer.enabled = false;
             splineRendererEnabled = false;
-            var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc) as ArcGridContainer;
+            var arcCollection =
+                BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc) as ArcGridContainer;
             arcCollection.RequestForSplineRecompute(this);
         }
 
@@ -153,14 +149,8 @@ namespace Beatmap.Containers
             foreach (var gameObject in indicators) gameObject.SetActive(visible);
         }
 
-        public void ChangeMultiplier(float modifier)
-        {
-            ArcData.ControlPointLengthMultiplier += modifier;
-        }
+        public void ChangeMultiplier(float modifier) => ArcData.ControlPointLengthMultiplier += modifier;
 
-        public void ChangeTailMultiplier(float modifier)
-        {
-            ArcData.TailControlPointLengthMultiplier += modifier;
-        }
+        public void ChangeTailMultiplier(float modifier) => ArcData.TailControlPointLengthMultiplier += modifier;
     }
 }

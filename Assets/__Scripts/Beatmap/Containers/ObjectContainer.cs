@@ -88,10 +88,7 @@ namespace Beatmap.Containers
             UpdateMaterials();
         }
 
-        public virtual void AssignTrack(Track track)
-        {
-            AssignedTrack = track;
-        }
+        public virtual void AssignTrack(Track track) => AssignedTrack = track;
 
         protected virtual void UpdateCollisionGroups()
         {

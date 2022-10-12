@@ -38,8 +38,6 @@ namespace Beatmap.V3
             tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
             ParseCustom();
 
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";
@@ -49,6 +47,10 @@ namespace Beatmap.V3
         public override string CustomKeyWorldRotation { get; } = "worldRotation";
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
+
+        public override string CustomKeyTailCoordinate { get; } = "tailCoordinate";
+
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override bool IsChroma() =>
             (CustomData?["color"] != null && CustomData["color"].IsArray) ||

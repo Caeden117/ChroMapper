@@ -13,9 +13,12 @@ namespace Beatmap.Converters
 
         public static V3ColorNote ColorNote(V2Note other) => new V3ColorNote(other);
 
-        public static V3BasicEventTypesWithKeywords EventTypesForKeywords(V2SpecialEventsKeywordFilters other) => new V3BasicEventTypesWithKeywords(other);
+        public static V3BasicEventTypesWithKeywords EventTypesForKeywords(V2SpecialEventsKeywordFilters other) =>
+            new V3BasicEventTypesWithKeywords(other);
 
-        public static V3BasicEventTypesForKeywords EventTypesWithKeywords(V2SpecialEventsKeywordFiltersKeywords other) => new V3BasicEventTypesForKeywords(other);
+        public static V3BasicEventTypesForKeywords
+            EventTypesWithKeywords(V2SpecialEventsKeywordFiltersKeywords other) =>
+            new V3BasicEventTypesForKeywords(other);
 
         public static V3Obstacle Obstacle(V2Obstacle other) => new V3Obstacle(other);
 
@@ -24,16 +27,15 @@ namespace Beatmap.Converters
         public static V3Arc Slider(V2Arc other) => new V3Arc(other);
 
         public static V3Waypoint Waypoint(V2Waypoint other) => new V3Waypoint(other);
-        
+
         public static V3Difficulty Difficulty(V2Difficulty other) =>
-            new V3Difficulty()
+            new V3Difficulty
             {
                 DirectoryAndFile = other.DirectoryAndFile,
                 Time = other.Time,
                 Events = other.Events,
                 Notes = other.Notes,
                 Obstacles = other.Obstacles,
-
                 Waypoints = other.Waypoints,
                 BpmChanges = other.BpmChanges,
                 Bookmarks = other.Bookmarks,

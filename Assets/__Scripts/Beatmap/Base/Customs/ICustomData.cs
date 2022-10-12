@@ -30,11 +30,15 @@ namespace Beatmap.Base.Customs
     {
     }
 
-    public interface ICustomDataArc : ICustomData, IChromaObject, INoodleExtensionsGrid
+    public interface ICustomDataSlider : ICustomData, IChromaObject, INoodleExtensionsSlider
     {
     }
 
-    public interface ICustomDataChain : ICustomData, IChromaObject, INoodleExtensionsGrid
+    public interface ICustomDataArc : ICustomDataSlider
+    {
+    }
+
+    public interface ICustomDataChain : ICustomDataSlider
     {
     }
 

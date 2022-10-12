@@ -49,6 +49,7 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3LightRotationBase(Time, Rotation, Direction, EaseType, Loop, UsePrevious, CustomData.Clone());
+        public override BaseItem Clone() => new V3LightRotationBase(Time, Rotation, Direction, EaseType, Loop,
+            UsePrevious, CustomData.Clone());
     }
 }

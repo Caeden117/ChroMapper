@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Beatmap.Base.Customs;
@@ -21,10 +22,11 @@ namespace Beatmap.Base
         public List<BaseEvent> Events { get; set; } = new List<BaseEvent>();
         public List<BaseColorBoostEvent> ColorBoostEvents { get; set; } = new List<BaseColorBoostEvent>();
 
-        public virtual List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>> LightColorEventBoxGroups { get; set; } =
+        public List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>> LightColorEventBoxGroups { get; set; } =
             new List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>>();
 
-        public virtual List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>> LightRotationEventBoxGroups { get; set; } =
+        public List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>
+            LightRotationEventBoxGroups { get; set; } =
             new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>();
 
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
@@ -47,15 +49,13 @@ namespace Beatmap.Base
             return CustomData;
         }
 
-        public void ParseCustom() => throw new System.NotSupportedException();
-
         public abstract bool IsChroma();
         public abstract bool IsNoodleExtensions();
         public abstract bool IsMappingExtensions();
 
-        public abstract bool Save();
-        public abstract int GetVersion();
+        public void ParseCustom() => throw new NotSupportedException();
 
+        public abstract bool Save();
         protected abstract bool SaveCustomDataNode();
 
         // Cleans an array by filtering out null elements, or objects with invalid time.
@@ -72,13 +72,12 @@ namespace Beatmap.Base
 
         // fuick
         // public static abstract IDifficulty GetFromJson(JSONNode node, string path);
-        
-        protected void WriteFile(BaseDifficulty map)
-        {
+
+        protected void WriteFile(BaseDifficulty map) =>
             // I *believe* this automatically creates the file if it doesn't exist. Needs more experimentation
             File.WriteAllText(map.DirectoryAndFile,
                 Settings.Instance.FormatJson ? map.MainNode.ToString(2) : map.MainNode.ToString());
-            /*using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
+        /*using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
             {
                 //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
                 //Thus, ChroMapper "beautifies" the JSON if you are in advanced mode.
@@ -86,6 +85,5 @@ namespace Beatmap.Base
                     writer.Write(mainNode.ToString(2));
                 else writer.Write(mainNode.ToString());
             }*/
-        }
     }
 }

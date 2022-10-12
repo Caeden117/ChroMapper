@@ -36,8 +36,6 @@ namespace Beatmap.V2
             tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
             ParseCustom();
 
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";
@@ -47,6 +45,10 @@ namespace Beatmap.V2
         public override string CustomKeyWorldRotation { get; } = "_rotation";
 
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
+
+        public override string CustomKeyTailCoordinate { get; } = "_tailPosition";
+
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override JSONNode ToJson()
         {

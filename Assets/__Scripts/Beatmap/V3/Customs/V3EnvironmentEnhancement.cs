@@ -50,21 +50,12 @@ namespace Beatmap.V3.Customs
                     if (Components["ILightWithId"] != null)
                         Components["ILightWithId"]["lightID"] = value;
                     else
-                        Components["ILightWithId"] = new JSONObject
-                        {
-                            ["lightID"] = value
-                        };
+                        Components["ILightWithId"] = new JSONObject { ["lightID"] = value };
                 }
                 else
                 {
-                    var iLightWithID = new JSONObject
-                    {
-                        ["lightID"] = value
-                    };
-                    Components = new JSONObject
-                    {
-                        ["ILightWithId"] = iLightWithID
-                    };
+                    var iLightWithID = new JSONObject { ["lightID"] = value };
+                    Components = new JSONObject { ["ILightWithId"] = iLightWithID };
                 }
             }
         }

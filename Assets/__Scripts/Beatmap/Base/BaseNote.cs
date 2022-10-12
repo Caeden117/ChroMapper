@@ -7,9 +7,9 @@ namespace Beatmap.Base
 {
     public abstract class BaseNote : BaseGrid, ICustomDataNote
     {
-        private int _color;
-        private int? _customDirection;
-        private int _type;
+        private int color;
+        private int? customDirection;
+        private int type;
 
         protected BaseNote()
         {
@@ -73,21 +73,21 @@ namespace Beatmap.Base
 
         public int Type
         {
-            get => _type;
+            get => type;
             set
             {
-                _type = value;
-                _color = value;
+                type = value;
+                color = value;
             }
         }
 
         public int Color
         {
-            get => _color;
+            get => color;
             set
             {
-                _color = value;
-                _type = value;
+                color = value;
+                type = value;
             }
         }
 
@@ -98,6 +98,21 @@ namespace Beatmap.Base
                                        CutDirection == (int)NoteCutDirection.Down ||
                                        CutDirection == (int)NoteCutDirection.Left ||
                                        CutDirection == (int)NoteCutDirection.Right;
+
+        public virtual int? CustomDirection
+        {
+            get => customDirection;
+            set
+            {
+                if (value == null && CustomData?[CustomKeyDirection] != null)
+                    CustomData.Remove(CustomKeyDirection);
+                else
+                    GetOrCreateCustom()[CustomKeyDirection] = value;
+                customDirection = value;
+            }
+        }
+
+        public abstract string CustomKeyDirection { get; }
 
         public override void Apply(BaseObject originalData)
         {
@@ -121,24 +136,5 @@ namespace Beatmap.Base
         protected void InferType() => Type = Color;
 
         protected void InferColor() => Color = Type;
-
-        public virtual int? CustomDirection
-        {
-            get => _customDirection;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyDirection] != null)
-                {
-                    CustomData.Remove(CustomKeyDirection);
-                }
-                else
-                {
-                    GetOrCreateCustom()[CustomKeyDirection] = value;
-                }
-                _customDirection = value;
-            }
-        }
-
-        public abstract string CustomKeyDirection { get; }
     }
 }

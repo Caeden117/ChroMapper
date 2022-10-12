@@ -1,9 +1,13 @@
+using Beatmap.Base.Customs;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseSlider : BaseGrid
+    public abstract class BaseSlider : BaseGrid, ICustomDataSlider
     {
+        private Vector2? customTailCoordinate;
+
         protected BaseSlider()
         {
         }
@@ -26,6 +30,21 @@ namespace Beatmap.Base
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
+        public Vector2? CustomTailCoordinate
+        {
+            get => customTailCoordinate;
+            set
+            {
+                if (value == null && CustomData?[CustomKeyCoordinate] != null)
+                    CustomData.Remove(CustomKeyCoordinate);
+                else
+                    GetOrCreateCustom()[CustomKeyCoordinate] = value;
+                customTailCoordinate = value;
+            }
+        }
+
+        public abstract string CustomKeyTailCoordinate { get; }
+
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
         public override void Apply(BaseObject originalData)
@@ -41,6 +60,14 @@ namespace Beatmap.Base
                 TailPosX = baseSlider.TailPosX;
                 TailPosY = baseSlider.TailPosY;
             }
+        }
+
+        protected override void ParseCustom()
+        {
+            base.ParseCustom();
+            if (CustomData == null) return;
+            if (CustomData[CustomKeyTailCoordinate] != null)
+                CustomTailCoordinate = CustomData[CustomKeyTailCoordinate].ReadVector2();
         }
     }
 }

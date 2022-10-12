@@ -37,21 +37,6 @@ namespace Beatmap.V2
             type, value, floatValue, customData) =>
             ParseCustom();
 
-        protected sealed override void ParseCustom()
-        {
-            base.ParseCustom();
-            
-            if (CustomData == null) return;
-            if (CustomData[CustomKeyLightGradient] != null)
-                CustomLightGradient = new ChromaLightGradient(CustomData[CustomKeyLightGradient]);
-            if (CustomData[CustomKeyPropMult] != null) CustomPropMult = CustomData[CustomKeyPropMult].AsFloat;
-            if (CustomData[CustomKeyStepMult] != null) CustomStepMult = CustomData[CustomKeyStepMult].AsFloat;
-            if (CustomData[CustomKeyPropMult] != null) CustomPropMult = CustomData[CustomKeyPropMult].AsFloat;
-            if (CustomData[CustomKeySpeedMult] != null) CustomSpeedMult = CustomData[CustomKeySpeedMult].AsFloat;
-            if (CustomData[CustomKeyPreciseSpeed] != null) CustomPreciseSpeed = CustomData[CustomKeyPreciseSpeed].AsFloat;
-            if (CustomData[CustomKeyLaneRotation] != null) CustomLaneRotation = CustomData[CustomKeyLaneRotation].AsInt;
-        }
-
         public override string CustomKeyColor { get; } = "_color";
 
         public override string CustomKeyPropID { get; } = "_propID";
@@ -83,8 +68,24 @@ namespace Beatmap.V2
         public override string CustomKeyLockRotation { get; } = "_lockPosition";
 
         public override string CustomKeyLaneRotation { get; } = "_rotation";
-        
+
         public override string CustomKeyNameFilter { get; } = "_nameFilter";
+
+        protected sealed override void ParseCustom()
+        {
+            base.ParseCustom();
+
+            if (CustomData == null) return;
+            if (CustomData[CustomKeyLightGradient] != null)
+                CustomLightGradient = new ChromaLightGradient(CustomData[CustomKeyLightGradient]);
+            if (CustomData[CustomKeyPropMult] != null) CustomPropMult = CustomData[CustomKeyPropMult].AsFloat;
+            if (CustomData[CustomKeyStepMult] != null) CustomStepMult = CustomData[CustomKeyStepMult].AsFloat;
+            if (CustomData[CustomKeyPropMult] != null) CustomPropMult = CustomData[CustomKeyPropMult].AsFloat;
+            if (CustomData[CustomKeySpeedMult] != null) CustomSpeedMult = CustomData[CustomKeySpeedMult].AsFloat;
+            if (CustomData[CustomKeyPreciseSpeed] != null)
+                CustomPreciseSpeed = CustomData[CustomKeyPreciseSpeed].AsFloat;
+            if (CustomData[CustomKeyLaneRotation] != null) CustomLaneRotation = CustomData[CustomKeyLaneRotation].AsInt;
+        }
 
         public override bool IsChroma() =>
             (CustomData?["_color"] != null && CustomData["_color"].IsArray) ||
@@ -114,7 +115,8 @@ namespace Beatmap.V2
             IsLaneRotationEvent() &&
             CustomData?["_rotation"] != null && CustomData["_rotation"].IsNumber;
 
-        public override bool IsMappingExtensions() => IsLaneRotationEvent() && !IsNoodleExtensions() && Value >= 1000 && Value <= 1720;
+        public override bool IsMappingExtensions() =>
+            IsLaneRotationEvent() && !IsNoodleExtensions() && Value >= 1000 && Value <= 1720;
 
         public override JSONNode ToJson()
         {

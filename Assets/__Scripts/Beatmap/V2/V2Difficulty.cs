@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using Beatmap.Base;
@@ -14,10 +13,6 @@ namespace Beatmap.V2
 {
     public class V2Difficulty : BaseDifficulty
     {
-        public V2Difficulty()
-        {
-        }
-
         public override string Version => "2.6.0";
 
         public override bool IsChroma() =>
@@ -81,8 +76,6 @@ namespace Beatmap.V2
             }
         }
 
-        public override int GetVersion() => 2;
-
         protected override bool SaveCustomDataNode()
         {
             var bpm = new JSONArray();
@@ -135,11 +128,7 @@ namespace Beatmap.V2
         {
             try
             {
-                var map = new V2Difficulty
-                {
-                    MainNode = mainNode,
-                    DirectoryAndFile = path
-                };
+                var map = new V2Difficulty { MainNode = mainNode, DirectoryAndFile = path };
 
                 var nodeEnum = mainNode.GetEnumerator();
                 while (nodeEnum.MoveNext())

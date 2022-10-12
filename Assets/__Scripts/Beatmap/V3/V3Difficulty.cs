@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
-using Beatmap.V2;
 using Beatmap.V3.Customs;
 using SimpleJSON;
 using UnityEngine;
@@ -16,10 +14,6 @@ namespace Beatmap.V3
 {
     public class V3Difficulty : BaseDifficulty
     {
-        public V3Difficulty()
-        {
-        }
-
         public override string Version { get; } = "3.1.0";
 
         public override bool IsChroma() =>
@@ -99,7 +93,8 @@ namespace Beatmap.V3
                 MainNode["colorBoostBeatmapEvents"] = CleanupArray(colorBoostEvents, "b");
                 MainNode["lightColorEventBoxGroups"] = CleanupArray(lightColorEventBoxGroups, "b");
                 MainNode["lightRotationEventBoxGroups"] = CleanupArray(lightRotationEventBoxGroups, "b");
-                MainNode["basicEventTypesWithKeywords"] = EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
+                MainNode["basicEventTypesWithKeywords"] =
+                    EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
                 MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
 
                 SaveCustomDataNode();
@@ -116,8 +111,6 @@ namespace Beatmap.V3
                 return false;
             }
         }
-
-        public override int GetVersion() => 3;
 
         protected override bool SaveCustomDataNode()
         {
@@ -171,11 +164,7 @@ namespace Beatmap.V3
         {
             try
             {
-                var map = new V3Difficulty
-                {
-                    MainNode = mainNode,
-                    DirectoryAndFile = path
-                };
+                var map = new V3Difficulty { MainNode = mainNode, DirectoryAndFile = path };
 
                 var nodeEnum = mainNode.GetEnumerator();
                 while (nodeEnum.MoveNext())
@@ -249,7 +238,6 @@ namespace Beatmap.V3
             var newNotes = new List<BaseNote>();
             var newBombs = new List<BaseBombNote>();
             foreach (var n in Notes)
-            {
                 switch (n.Type)
                 {
                     case (int)NoteType.Bomb:
@@ -263,7 +251,7 @@ namespace Beatmap.V3
                         Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
                         break;
                 }
-            }
+
             Notes = newNotes;
             Bombs = newBombs;
 
@@ -274,7 +262,6 @@ namespace Beatmap.V3
             var newBpmEvents = new List<BaseBpmEvent>();
             var newEvents = new List<BaseEvent>();
             foreach (var e in Events)
-            {
                 switch (e.Type)
                 {
                     case (int)EventTypeValue.ColorBoost:
@@ -291,13 +278,13 @@ namespace Beatmap.V3
                         newEvents.Add(new V3BasicEvent(e));
                         break;
                 }
-            }
+
             ColorBoostEvents = newColorBoostEvents;
             RotationEvents = newRotationEvents;
             BpmEvents = newBpmEvents;
             Events = newEvents;
         }
-        
+
         public void ParseV3ToV2()
         {
             Notes.AddRange(Bombs.OfType<BaseNote>().ToList());
@@ -305,7 +292,7 @@ namespace Beatmap.V3
             Events.AddRange(RotationEvents.OfType<BaseEvent>().ToList());
             Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
         }
-        
+
         private static void LoadCustomDataNode(ref V3Difficulty map, ref JSONNode mainNode)
         {
             if (mainNode["customData"] == null) return;

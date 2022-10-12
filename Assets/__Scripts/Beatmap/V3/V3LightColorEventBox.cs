@@ -45,6 +45,7 @@ namespace Beatmap.V3
 
         public override BaseItem Clone() =>
             new V3LightColorEventBox((V3IndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
-                BrightnessDistribution, BrightnessDistributionType, BrightnessAffectFirst, (V3LightColorBase[])Events.Clone());
+                BrightnessDistribution, BrightnessDistributionType, BrightnessAffectFirst,
+                (V3LightColorBase[])Events.Clone());
     }
 }

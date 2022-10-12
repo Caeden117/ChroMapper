@@ -73,8 +73,7 @@ public class LightGradientController : MonoBehaviour
         // create texture
         var outputTex = new Texture2D(256, 1, TextureFormat.ARGB32, hasMipMap, isLinear)
         {
-            wrapMode = textureWrapMode,
-            filterMode = filterMode
+            wrapMode = textureWrapMode, filterMode = filterMode
         };
 
         var easing = Easing.ByName[chromaGradient.EasingType];

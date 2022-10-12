@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Enums;
 using Beatmap.Shared;
 using Beatmap.V3;
 using UnityEngine;
@@ -142,15 +142,15 @@ namespace Beatmap.Containers
             {
                 // Quadratic bezier curve
                 // B(t) = (1-t)^2 P0 + 2(1-t)t P1 + t^2 P2, 0 < t < 1
-                var bezierLerp = Mathf.Pow(1 - tSquish, 2) * p0 + 2 * (1 - tSquish) * tSquish * p1 +
-                                 Mathf.Pow(tSquish, 2) * p2;
+                var bezierLerp = (Mathf.Pow(1 - tSquish, 2) * p0) + (2 * (1 - tSquish) * tSquish * p1) +
+                                 (Mathf.Pow(tSquish, 2) * p2);
                 linkSegment.transform.localPosition = new Vector3(bezierLerp.x, bezierLerp.y, lerpZPos);
 
                 // Bezier derivative gives tangent line
                 // B(t) = 2(1-t)(P1-P0) + 2t(P2-P1), 0 < t < 1
-                var bezierDervLerp = 2 * (1 - tSquish) * (p1 - p0) + 2 * tSquish * (p2 - p1);
+                var bezierDervLerp = (2 * (1 - tSquish) * (p1 - p0)) + (2 * tSquish * (p2 - p1));
                 linkSegment.transform.localRotation = Quaternion.Euler(new Vector3(0, 0,
-                    90 + Mathf.Rad2Deg * Mathf.Atan2(bezierDervLerp.y, bezierDervLerp.x)));
+                    90 + (Mathf.Rad2Deg * Mathf.Atan2(bezierDervLerp.y, bezierDervLerp.x))));
             }
         }
 

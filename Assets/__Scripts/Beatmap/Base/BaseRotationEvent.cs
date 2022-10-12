@@ -24,8 +24,8 @@ namespace Beatmap.Base
             Rotation = CustomData != null && evt.CustomLaneRotation != null
                 ? (int)evt.CustomLaneRotation
                 : evt.Value;
-            if (Rotation >= 0 && Rotation < BaseEvent.LightValueToRotationDegrees.Length)
-                Rotation = BaseEvent.LightValueToRotationDegrees[(int)Rotation];
+            if (Rotation >= 0 && Rotation < LightValueToRotationDegrees.Length)
+                Rotation = LightValueToRotationDegrees[(int)Rotation];
             if (Rotation >= 1000 && Rotation <= 1720)
                 Rotation -= 1360;
             ExecutionTime = evt.Type == (int)EventTypeValue.EarlyLaneRotation ? 0 : 1;

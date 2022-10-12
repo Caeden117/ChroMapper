@@ -20,9 +20,7 @@ namespace Beatmap.Appearances
 
         [SerializeField] private Material redNoteSharedMaterial;
 
-        [Space(20)]
-        [Header("ChromaToggle Notes")]
-        [SerializeField]
+        [Space(20)] [Header("ChromaToggle Notes")] [SerializeField]
         private Sprite deflectSprite;
 
         [Space(10)] [SerializeField] private Material greenNoteSharedMaterial;

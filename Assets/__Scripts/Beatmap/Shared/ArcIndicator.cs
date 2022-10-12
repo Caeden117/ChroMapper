@@ -1,6 +1,6 @@
-﻿using Beatmap.Containers;
+﻿using Beatmap.Base;
+using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using SplineMesh;
 using UnityEngine;
 
@@ -22,7 +22,7 @@ namespace Beatmap.Shared
             if (IndicatorType == IndicatorType.Head)
                 transform.localPosition = n1.Direction;
             else if (IndicatorType == IndicatorType.Tail)
-                transform.localPosition = 2 * n2.Position - n2.Direction; // symetric to n2 to make it comprehensible
+                transform.localPosition = (2 * n2.Position) - n2.Direction; // symetric to n2 to make it comprehensible
         }
 
         public void UpdateMaterials(MaterialPropertyBlock materialPropertyBlock)

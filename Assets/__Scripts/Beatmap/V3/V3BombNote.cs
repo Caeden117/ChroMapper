@@ -25,8 +25,6 @@ namespace Beatmap.V3
             customData) =>
             ParseCustom();
 
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";
@@ -36,6 +34,9 @@ namespace Beatmap.V3
         public override string CustomKeyWorldRotation { get; } = "worldRotation";
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
+        public override string CustomKeyDirection { get; } = "direction";
+
+        protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override bool IsChroma() =>
             (CustomData?["color"] != null && CustomData["color"].IsArray) ||
@@ -73,6 +74,5 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() => new V3BombNote(Time, PosX, PosY, CustomData?.Clone());
-        public override string CustomKeyDirection { get; } = "direction";
     }
 }

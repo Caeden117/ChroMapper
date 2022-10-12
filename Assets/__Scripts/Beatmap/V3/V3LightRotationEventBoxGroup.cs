@@ -17,7 +17,8 @@ namespace Beatmap.V3
         {
             Time = RetrieveRequiredNode(node, "b").AsFloat;
             ID = RetrieveRequiredNode(node, "g").AsInt;
-            Events = new List<BaseLightRotationEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq.Select(x => new V3LightRotationEventBox(x)).ToList());
+            Events = new List<BaseLightRotationEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq
+                .Select(x => new V3LightRotationEventBox(x)).ToList());
             CustomData = node["customData"];
         }
 

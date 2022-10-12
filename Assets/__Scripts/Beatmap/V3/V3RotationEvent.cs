@@ -40,19 +40,6 @@ namespace Beatmap.V3
 
         public override string CustomKeyColor { get; } = "color";
 
-        public override JSONNode ToJson()
-        {
-            JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
-            node["e"] = ExecutionTime;
-            node["r"] = Rotation;
-            if (CustomData == null) return node;
-            node["customData"] = CustomData;
-            return node;
-        }
-
-        public override BaseItem Clone() => new V3RotationEvent(Time, ExecutionTime, Rotation, CustomData?.Clone());
-
         public override string CustomKeyPropID { get; } = "propID";
 
         public override string CustomKeyLightID { get; } = "lightID";
@@ -82,9 +69,22 @@ namespace Beatmap.V3
         public override string CustomKeyLockRotation { get; } = "lockRotation";
 
         public override string CustomKeyLaneRotation { get; } = "rotation";
-        
+
         public override string CustomKeyNameFilter { get; } = "nameFilter";
 
         public override bool IsPropagation { get; } = false;
+
+        public override JSONNode ToJson()
+        {
+            JSONNode node = new JSONObject();
+            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["e"] = ExecutionTime;
+            node["r"] = Rotation;
+            if (CustomData == null) return node;
+            node["customData"] = CustomData;
+            return node;
+        }
+
+        public override BaseItem Clone() => new V3RotationEvent(Time, ExecutionTime, Rotation, CustomData?.Clone());
     }
 }
