@@ -506,7 +506,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var original = BeatmapFactory.Clone(data);
             if (data is BaseNote note)
             {
-                if (note.CustomData is null || !note.CustomData.HasKey("_position"))
+                if (note.CustomData is null || note.CustomCoordinate is null)
                 {
                     if (note.PosX >= 1000)
                     {
@@ -529,10 +529,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    if (data.CustomData.HasKey("_position"))
+                    if (note.CustomCoordinate != null)
                     {
-                        data.CustomData["_position"][0] += 1f / atsc.GridMeasureSnapping * leftRight;
-                        data.CustomData["_position"][1] += 1f / atsc.GridMeasureSnapping * upDown;
+                        var pos = (Vector2)note.CustomCoordinate;
+                        pos[0] += 1f / atsc.GridMeasureSnapping * leftRight; 
+                        pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
                     }
                 }
             }
@@ -557,10 +558,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    if (data.CustomData.HasKey("_position"))
+                    if (obstacle.CustomCoordinate != null)
                     {
-                        data.CustomData["_position"][0] += 1f / atsc.GridMeasureSnapping * leftRight;
-                        data.CustomData["_position"][1] += 1f / atsc.GridMeasureSnapping * upDown;
+                        var pos = (Vector2)obstacle.CustomCoordinate;
+                        pos[0] += 1f / atsc.GridMeasureSnapping * leftRight;
+                        pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
                     }
                 }
             }
@@ -594,8 +596,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                     else
                     {
-                        e.CustomLightID = labels.PropIdToLightIdsJ(events.EventTypeToPropagate, newId).AsArray.Linq
-                            .Select(x => x.Value.AsInt).ToArray();
+                        e.CustomLightID = labels.PropIdToLightIds(events.EventTypeToPropagate, newId);
                     }
                 }
                 else
@@ -614,15 +615,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                     e.Type = labels.LaneIdToEventType(modified);
 
-                    if (e.IsLightID && !e.CustomData[e.CustomKeyLightID].IsArray)
+                    if (e.CustomLightID != null)
                     {
                         var editorID = labels.LightIDToEditor(oldType, e.CustomLightID[0]);
                         e.CustomLightID = new [] { labels.EditorToLightID(e.Type, editorID) };
-                    }
-                    else if (e.IsLightID)
-                    {
-                        e.CustomLightID = labels.PropIdToLightIdsJ(e.Type, (int)e.CustomPropID).AsArray.Linq
-                            .Select(x => x.Value.AsInt).ToArray();
                     }
 
                     if (e.CustomLightID is { Length: 0 })

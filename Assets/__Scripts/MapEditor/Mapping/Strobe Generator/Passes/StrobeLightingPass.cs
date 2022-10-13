@@ -32,7 +32,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
     public override bool IsEventValidForPass(BaseEvent @event) => !@event.IsUtilityEvent() && !@event.IsLegacyChroma;
 
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
-        EventGridContainer.PropMode propMode, JSONNode propID)
+        EventGridContainer.PropMode propMode, int[] propID)
     {
         var generatedObjects = new List<BaseEvent>();
 
@@ -82,7 +82,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
             var data = Settings.Instance.Load_MapV3 ? (BaseEvent)new V3BasicEvent(newTime, type, value, newFloatValue) : new V2Event(newTime, type, value, newFloatValue);
             if (propMode != EventGridContainer.PropMode.Off)
             {
-                data.CustomLightID = propID.AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
+                data.CustomLightID = propID;
             }
 
             generatedObjects.Add(data);

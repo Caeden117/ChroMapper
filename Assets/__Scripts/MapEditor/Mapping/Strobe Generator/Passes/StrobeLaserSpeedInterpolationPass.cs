@@ -51,7 +51,7 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
     public override bool IsEventValidForPass(BaseEvent @event) => @event.IsLaserRotationEvent();
 
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
-        EventGridContainer.PropMode propMode, JSONNode propID)
+        EventGridContainer.PropMode propMode, int[] propID)
     {
         var generatedObjects = new List<BaseEvent>();
 
@@ -113,15 +113,8 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
     private float GetLaserSpeedFromEvent(BaseEvent @event)
     {
-        if (@event.CustomData == null || !@event.CustomData.Children.Any()
-                                      || (!@event.CustomData.HasKey("_preciseSpeed") &&
-                                          !@event.CustomData.HasKey("_speed")))
-        {
+        if (@event.CustomPreciseSpeed is null && @event.CustomSpeed is null)
             return @event.Value;
-        }
-
-        return @event.CustomData.HasKey("_preciseSpeed")
-            ? @event.CustomData["_preciseSpeed"].AsFloat
-            : @event.CustomData["_speed"].AsFloat;
+        return (float)(@event.CustomPreciseSpeed ?? @event.CustomSpeed);
     }
 }

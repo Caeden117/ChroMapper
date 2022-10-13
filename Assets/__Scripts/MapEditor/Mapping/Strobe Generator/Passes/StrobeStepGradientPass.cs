@@ -25,7 +25,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
     public override bool IsEventValidForPass(BaseEvent @event) => !@event.IsUtilityEvent();
 
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
-        EventGridContainer.PropMode propMode, JSONNode propID)
+        EventGridContainer.PropMode propMode, int[] propID)
     {
         var generatedObjects = new List<BaseEvent>();
 
@@ -96,7 +96,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
 
             if (propMode != EventGridContainer.PropMode.Off)
             {
-                data.CustomLightID = propID.AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
+                data.CustomLightID = propID;
             }
 
             generatedObjects.Add(data);

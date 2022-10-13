@@ -202,13 +202,11 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     public override IEnumerable<BaseObject> GrabSortedObjects()
     {
         var sorted = new List<BaseObject>();
-        var grouping = LoadedObjects.GroupBy(x => x.Time);
+        var grouping = LoadedObjects.Cast<BaseEvent>().GroupBy(x => x.Time);
         foreach (var group in grouping)
         {
             sorted.AddRange(@group.OrderBy(x =>
-                x.CustomData?.HasKey("_propID") ?? false
-                    ? x.CustomData["_propID"].AsInt
-                    : -1)); // Sort non-light prop events before light prop events
+                x.CustomPropID ?? -1)); // Sort non-light prop events before light prop events
         }
 
         return sorted;

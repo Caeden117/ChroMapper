@@ -67,15 +67,15 @@ public class MirrorSelection : MonoBehaviour
                 var state = obstacle.PosX;
                 if (obstacle.CustomData != null) //Noodle Extensions
                 {
-                    if (obstacle.CustomData.HasKey("_position"))
+                    if (obstacle.CustomCoordinate != null)
                     {
-                        Vector2 oldPosition = obstacle.CustomData["_position"];
+                        var oldPosition = (Vector2)obstacle.CustomCoordinate;
                         
                         var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
-                        if (obstacle.CustomData.HasKey("_scale"))
+                        if (obstacle.CustomSize != null)
                         {
-                            Vector2 scale = obstacle.CustomData["_scale"];
+                            var scale = (Vector2)obstacle.CustomSize;
                             flipped.x -= scale.x;
                         }
                         else
@@ -83,7 +83,7 @@ public class MirrorSelection : MonoBehaviour
                             flipped.x -= obstacle.Width;
                         }
 
-                        obstacle.CustomData["_position"] = flipped;
+                        obstacle.CustomCoordinate = flipped;
                     }
                 }
 
@@ -126,18 +126,18 @@ public class MirrorSelection : MonoBehaviour
                     if (note.CustomData != null)
                     {
                         // NE Precision rotation
-                        if (note.CustomData.HasKey("_position"))
+                        if (note.CustomCoordinate != null)
                         {
-                            Vector2 oldPosition = note.CustomData["_position"];
+                            var oldPosition = (Vector2)note.CustomCoordinate;
                             var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            note.CustomData["_position"] = flipped;
+                            note.CustomCoordinate = flipped;
                         }
                         
                         // NE precision cut direction
-                        if (note.CustomData.HasKey("_cutDirection"))
+                        if (note.CustomDirection != null)
                         {
-                            var cutDirection = note.CustomData["_cutDirection"].AsFloat;
-                            note.CustomData["_cutDirection"] = cutDirection * -1;
+                            var cutDirection = note.CustomDirection;
+                            note.CustomDirection = cutDirection * -1;
                         }
                     }
                     else
@@ -183,8 +183,8 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (e.IsLaneRotationEvent())
                 {
-                    if (e.CustomData != null && e.CustomData.HasKey("_rotation"))
-                        e.CustomData["_rotation"] = e.CustomData["_rotation"].AsFloat * -1;
+                    if (e.CustomLaneRotation != null)
+                        e.CustomLaneRotation *= -1;
 
                     var rotation = e.GetRotationDegreeFromValue();
                     if (rotation != null)
@@ -201,9 +201,7 @@ public class MirrorSelection : MonoBehaviour
                 {
                     if (e.CustomLightGradient != null)
                     {
-                        var startColor = e.CustomLightGradient.StartColor;
-                        e.CustomLightGradient.StartColor = e.CustomLightGradient.EndColor;
-                        e.CustomLightGradient.EndColor = startColor;
+                        (e.CustomLightGradient.StartColor, e.CustomLightGradient.EndColor) = (e.CustomLightGradient.EndColor, e.CustomLightGradient.StartColor);
                     }
 
                     if (!e.IsLightEvent()) continue;
@@ -211,14 +209,14 @@ public class MirrorSelection : MonoBehaviour
                         events.PropagationEditing == EventGridContainer.PropMode.Prop)
                     {
                         var mirroredIdx = events.EventTypePropagationSize - (int)e.CustomPropID - 1;
-                        e.CustomData["_lightID"] = labels.PropIdToLightIdsJ(e.Type, mirroredIdx);
+                        e.CustomLightID = labels.PropIdToLightIds(e.Type, mirroredIdx);
                     }
                     else if (moveNotes && e.IsLightID && events.EventTypeToPropagate == e.Type &&
                              events.PropagationEditing == EventGridContainer.PropMode.Light)
                     {
                         var idx = labels.LightIDToEditor(e.Type, e.CustomLightID[0]);
                         var mirroredIdx = events.EventTypePropagationSize - idx - 1;
-                        e.CustomData["_lightID"] = labels.EditorToLightID(e.Type, mirroredIdx);
+                        e.CustomLightID = new[] { labels.EditorToLightID(e.Type, mirroredIdx) };
                     }
 
                     if (e.Value > 4 && e.Value <= 8) e.Value -= 4;

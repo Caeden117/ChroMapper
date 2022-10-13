@@ -143,11 +143,9 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             if (propID >= 0)
             {
                 var lightIdToApply = objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Prop
-                    ? labels.PropIdToLightIdsJ(objectContainerCollection.EventTypeToPropagate, propID)
-                    : (JSONNode)labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID);
-                queuedData.CustomLightID = lightIdToApply.IsNumber
-                    ? new int[] { lightIdToApply }
-                    : lightIdToApply.AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
+                    ? labels.PropIdToLightIds(objectContainerCollection.EventTypeToPropagate, propID)
+                    : new [] { labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID) };
+                queuedData.CustomLightID = lightIdToApply;
             }
             else
             {

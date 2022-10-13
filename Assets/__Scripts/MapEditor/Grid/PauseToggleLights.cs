@@ -129,12 +129,10 @@ public class PauseToggleLights : MonoBehaviour
         {
             var leftSpeedReset = new V3BasicEvent(0, (int)EventTypeValue.LeftLaserRotation, 0)
             {
-                CustomData = new JSONObject(),
                 CustomLockRotation = true
             };
             var rightSpeedReset = new V3BasicEvent(0, (int)EventTypeValue.RightLaserRotation, 0)
             {
-                CustomData = new JSONObject(),
                 CustomLockRotation = true
             };
             descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
