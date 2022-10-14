@@ -94,7 +94,8 @@ namespace Beatmap.V3
             node["tmu"] = TailControlPointLengthMultiplier;
             node["tc"] = TailCutDirection;
             node["m"] = MidAnchorMode;
-            if (CustomData == null) return node;
+            SaveCustom();
+            if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;
         }

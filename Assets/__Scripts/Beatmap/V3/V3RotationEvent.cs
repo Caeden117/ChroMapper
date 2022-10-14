@@ -38,6 +38,7 @@ namespace Beatmap.V3
             set { }
         }
 
+        public override string CustomKeyTrack { get; } = "track";
         public override string CustomKeyColor { get; } = "color";
 
         public override string CustomKeyPropID { get; } = "propID";
@@ -80,7 +81,8 @@ namespace Beatmap.V3
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["e"] = ExecutionTime;
             node["r"] = Rotation;
-            if (CustomData == null) return node;
+            SaveCustom();
+            if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;
         }

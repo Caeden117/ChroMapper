@@ -6,8 +6,6 @@ namespace Beatmap.Base
 {
     public abstract class BaseSlider : BaseGrid, ICustomDataSlider
     {
-        private Vector2? customTailCoordinate;
-
         protected BaseSlider()
         {
         }
@@ -30,18 +28,7 @@ namespace Beatmap.Base
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
-        public Vector2? CustomTailCoordinate
-        {
-            get => customTailCoordinate;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyCoordinate] != null)
-                    CustomData.Remove(CustomKeyCoordinate);
-                else
-                    GetOrCreateCustom()[CustomKeyCoordinate] = value;
-                customTailCoordinate = value;
-            }
-        }
+        public Vector2? CustomTailCoordinate { get; set; }
 
         public abstract string CustomKeyTailCoordinate { get; }
 
@@ -68,6 +55,13 @@ namespace Beatmap.Base
             if (CustomData == null) return;
             if (CustomData[CustomKeyTailCoordinate] != null)
                 CustomTailCoordinate = CustomData[CustomKeyTailCoordinate].ReadVector2();
+        }
+
+        protected override JSONNode SaveCustom()
+        {
+            base.SaveCustom();
+            if (CustomTailCoordinate != null) CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate;
+            return CustomData;
         }
     }
 }

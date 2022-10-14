@@ -4,13 +4,8 @@ using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseGrid : BaseObject, IObjectBounds, IHeckGrid, INoodleExtensionsGrid
+    public abstract class BaseGrid : BaseObject, IObjectBounds, INoodleExtensionsGrid
     {
-        private Vector2? customCoordinate;
-        private Vector3? customLocalRotation;
-        private string customTrack;
-        private Vector3? customWorldRotation;
-
         protected BaseGrid()
         {
         }
@@ -23,60 +18,12 @@ namespace Beatmap.Base
 
         public int PosX { get; set; }
         public int PosY { get; set; }
+        
+        public virtual Vector2? CustomCoordinate { get; set; }
 
-        public string CustomTrack
-        {
-            get => customTrack;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyTrack] != null)
-                    CustomData.Remove(CustomKeyTrack);
-                else
-                    GetOrCreateCustom()[CustomKeyTrack] = value;
-                customTrack = value;
-            }
-        }
+        public virtual Vector3? CustomWorldRotation { get; set; }
 
-        public abstract string CustomKeyTrack { get; }
-
-        public virtual Vector2? CustomCoordinate
-        {
-            get => customCoordinate;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyCoordinate] != null)
-                    CustomData.Remove(CustomKeyCoordinate);
-                else
-                    GetOrCreateCustom()[CustomKeyCoordinate] = value;
-                customCoordinate = value;
-            }
-        }
-
-        public virtual Vector3? CustomWorldRotation
-        {
-            get => customWorldRotation;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyWorldRotation] != null)
-                    CustomData.Remove(CustomKeyWorldRotation);
-                else
-                    GetOrCreateCustom()[CustomKeyWorldRotation] = value;
-                customWorldRotation = value;
-            }
-        }
-
-        public virtual Vector3? CustomLocalRotation
-        {
-            get => customLocalRotation;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyLocalRotation] != null)
-                    CustomData.Remove(CustomKeyLocalRotation);
-                else
-                    GetOrCreateCustom()[CustomKeyLocalRotation] = value;
-                customLocalRotation = value;
-            }
-        }
+        public virtual Vector3? CustomLocalRotation { get; set; }
 
         public abstract string CustomKeyCoordinate { get; }
         public abstract string CustomKeyWorldRotation { get; }
@@ -99,19 +46,6 @@ namespace Beatmap.Base
             }
         }
 
-        protected override void ParseCustom()
-        {
-            base.ParseCustom();
-            if (CustomData == null) return;
-            if (CustomData[CustomKeyTrack] != null) CustomTrack = CustomData[CustomKeyTrack].Value;
-            if (CustomData[CustomKeyCoordinate] != null)
-                CustomCoordinate = CustomData[CustomKeyCoordinate].ReadVector2();
-            if (CustomData[CustomKeyWorldRotation] != null)
-                CustomWorldRotation = CustomData[CustomKeyWorldRotation].ReadVector3();
-            if (CustomData[CustomKeyLocalRotation] != null)
-                CustomLocalRotation = CustomData[CustomKeyLocalRotation].ReadVector3();
-        }
-
         protected virtual Vector2 DerivePositionFromData()
         {
             var position = PosX - 1.5f;
@@ -125,6 +59,31 @@ namespace Beatmap.Base
             if (PosY >= 1000 || PosY <= -1000) layer = (PosY / 1000f) - 1f;
 
             return new Vector2(position, layer);
+        }
+
+        protected override void ParseCustom()
+        {
+            base.ParseCustom();
+            if (CustomData == null) return;
+            if (CustomData[CustomKeyTrack] != null) CustomTrack = CustomData[CustomKeyTrack].Value;
+            if (CustomData[CustomKeyCoordinate] != null)
+                CustomCoordinate = CustomData[CustomKeyCoordinate].ReadVector2();
+            if (CustomData[CustomKeyWorldRotation] != null)
+                CustomWorldRotation = CustomData[CustomKeyWorldRotation].ReadVector3();
+            if (CustomData[CustomKeyLocalRotation] != null)
+                CustomLocalRotation = CustomData[CustomKeyLocalRotation].ReadVector3();
+        }
+
+        protected override JSONNode SaveCustom()
+        {
+            base.SaveCustom();
+            if (CustomTrack != null) CustomData[CustomKeyTrack] = CustomTrack;
+            if (CustomKeyCoordinate != null) CustomCoordinate = CustomData[CustomKeyCoordinate] = CustomKeyCoordinate;
+            if (CustomKeyWorldRotation != null)
+                CustomWorldRotation = CustomData[CustomKeyWorldRotation] = CustomKeyWorldRotation;
+            if (CustomKeyLocalRotation != null)
+                CustomLocalRotation = CustomData[CustomKeyLocalRotation] = CustomKeyLocalRotation;
+            return CustomData;
         }
     }
 }

@@ -143,7 +143,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         }
 
         // TODO: deal with track
-        foreach (var obj in SelectionController.SelectedObjects) obj.GetOrCreateCustom()["_track"] = res;
+        foreach (var obj in SelectionController.SelectedObjects) obj.CustomTrack = res;
     }
 
     public override ObjectContainer CreateContainer() =>

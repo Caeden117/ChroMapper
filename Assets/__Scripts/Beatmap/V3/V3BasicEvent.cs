@@ -36,21 +36,22 @@ namespace Beatmap.V3
         public override float? CustomPreciseSpeed
         {
             get => customSpeed;
-            set
-            {
-                if (value == null && CustomData?[CustomKeySpeed] != null)
-                    CustomData.Remove(CustomKeySpeed);
-                else
-                    GetOrCreateCustom()[CustomKeySpeed] = value;
-                customSpeed = value;
-            }
+            set => customSpeed = value;
         }
 
         public override float? CustomStepMult { get; set; }
         public override float? CustomPropMult { get; set; }
         public override float? CustomSpeedMult { get; set; }
-        public override ChromaLightGradient CustomLightGradient { get; set; }
+        public override ChromaLightGradient CustomLightGradient
+        {
+            get => null;
+            set
+            {
+            }
+        }
 
+        public override string CustomKeyTrack { get; } = "track";
+        
         public override string CustomKeyColor { get; } = "color";
 
         public override string CustomKeyPropID { get; } = "propID";
@@ -112,7 +113,8 @@ namespace Beatmap.V3
             node["et"] = Type;
             node["i"] = Value;
             node["f"] = FloatValue;
-            if (CustomData == null) return node;
+            SaveCustom();
+            if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;
         }

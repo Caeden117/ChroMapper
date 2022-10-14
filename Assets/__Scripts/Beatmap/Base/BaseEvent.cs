@@ -10,22 +10,8 @@ namespace Beatmap.Base
     public abstract class BaseEvent : BaseObject, ICustomDataEvent
     {
         public static readonly int[] LightValueToRotationDegrees = { -60, -45, -30, -15, 15, 30, 45, 60 };
-        private int? customDirection;
-        private string customEasing;
-        private int? customLaneRotation;
-        private string customLerpType;
         private int[] customLightID;
-        private bool? customLockRotation;
-        private string customNameFilter;
-        private float? customPreciseSpeed;
-        private float? customProp;
-
-        private int? customPropID;
-        private float? customPropMult;
         protected float? customSpeed;
-        private float? customSpeedMult;
-        private float? customStep;
-        private float? customStepMult;
 
         protected BaseEvent()
         {
@@ -117,218 +103,63 @@ namespace Beatmap.Base
 
         public virtual bool IsLightID => CustomData?[CustomKeyLightID] != null;
 
-        public virtual int? CustomPropID
-        {
-            get => customPropID;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyPropID] != null)
-                    CustomData.Remove(CustomKeyPropID);
-                else
-                    GetOrCreateCustom()[CustomKeyPropID] = value;
-                customPropID = value;
-            }
-        }
+        public virtual int? CustomPropID { get; set; }
 
         public virtual int[] CustomLightID
         {
             get => customLightID;
             set
             {
-                if (value == null && CustomData?[CustomKeyLightID] != null)
+                if (value == null)
                 {
-                    CustomData.Remove(CustomKeyLightID);
                     customLightID = null;
+                    return;
                 }
-                else
+
+                if (value.Length == 0)
                 {
-                    if (value == null) return;
-                    var ary = new JSONArray();
-                    foreach (var i in value) ary.Add(i);
-                    GetOrCreateCustom()[CustomKeyLightID] = ary;
-                    customLightID = value;
+                    customLightID = null;
+                    return;
                 }
+
+                var ary = new JSONArray();
+                foreach (var i in value) ary.Add(i);
+                CustomData[CustomKeyLightID] = ary;
+                customLightID = value;
             }
         }
 
-        public virtual string CustomLerpType
-        {
-            get => customLerpType;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyLerpType] != null)
-                    CustomData.Remove(CustomKeyLerpType);
-                else
-                    GetOrCreateCustom()[CustomKeyLerpType] = value;
-                customLerpType = value;
-            }
-        }
+        public virtual string CustomLerpType { get; set; }
 
-        public virtual string CustomEasing
-        {
-            get => customEasing;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyEasing] != null)
-                    CustomData.Remove(CustomKeyEasing);
-                else
-                    GetOrCreateCustom()[CustomKeyEasing] = value;
-                customEasing = value;
-            }
-        }
+        public virtual string CustomEasing { get; set; }
 
         public virtual ChromaLightGradient CustomLightGradient { get; set; }
 
-        public virtual float? CustomStep
-        {
-            get => customStep;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyStep] != null)
-                    CustomData.Remove(CustomKeyStep);
-                else
-                    GetOrCreateCustom()[CustomKeyStep] = value;
-                customStep = value;
-            }
-        }
+        public virtual float? CustomStep { get; set; }
 
-        public virtual float? CustomProp
-        {
-            get => customProp;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyProp] != null)
-                    CustomData.Remove(CustomKeyProp);
-                else
-                    GetOrCreateCustom()[CustomKeyProp] = value;
-                customProp = value;
-            }
-        }
+        public virtual float? CustomProp { get; set; }
 
         public virtual float? CustomSpeed
         {
             get => customSpeed;
-            set
-            {
-                if (value == null && CustomData?[CustomKeySpeed] != null)
-                    CustomData.Remove(CustomKeySpeed);
-                else
-                    GetOrCreateCustom()[CustomKeySpeed] = value;
-                customSpeed = value;
-            }
+            set => customSpeed = value;
         }
 
-        public virtual float? CustomStepMult
-        {
-            get => customStepMult;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyStepMult] != null)
-                    CustomData.Remove(CustomKeyStepMult);
-                else
-                    GetOrCreateCustom()[CustomKeyStepMult] = value;
-                GetOrCreateCustom()[CustomKeyStepMult] = value;
-                customStepMult = value;
-            }
-        }
+        public virtual float? CustomStepMult { get; set; }
 
-        public virtual float? CustomPropMult
-        {
-            get => customPropMult;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyPropMult] != null)
-                    CustomData.Remove(CustomKeyPropMult);
-                else
-                    GetOrCreateCustom()[CustomKeyPropMult] = value;
-                GetOrCreateCustom()[CustomKeyPropMult] = value;
-                customPropMult = value;
-            }
-        }
+        public virtual float? CustomPropMult { get; set; }
 
-        public virtual float? CustomSpeedMult
-        {
-            get => customSpeedMult;
-            set
-            {
-                if (value == null && CustomData?[CustomKeySpeedMult] != null)
-                    CustomData.Remove(CustomKeySpeedMult);
-                else
-                    GetOrCreateCustom()[CustomKeySpeedMult] = value;
-                GetOrCreateCustom()[CustomKeySpeedMult] = value;
-                customSpeedMult = value;
-            }
-        }
+        public virtual float? CustomSpeedMult { get; set; }
 
-        public virtual float? CustomPreciseSpeed
-        {
-            get => customPreciseSpeed;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyPreciseSpeed] != null)
-                    CustomData.Remove(CustomKeyPreciseSpeed);
-                else
-                    GetOrCreateCustom()[CustomKeyPreciseSpeed] = value;
-                GetOrCreateCustom()[CustomKeyPreciseSpeed] = value;
-                customPreciseSpeed = value;
-            }
-        }
+        public virtual float? CustomPreciseSpeed { get; set; }
 
-        public virtual int? CustomDirection
-        {
-            get => customDirection;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyDirection] != null)
-                    CustomData.Remove(CustomKeyDirection);
-                else
-                    GetOrCreateCustom()[CustomKeyDirection] = value;
-                GetOrCreateCustom()[CustomKeyDirection] = value;
-                customDirection = value;
-            }
-        }
+        public virtual int? CustomDirection { get; set; }
 
-        public virtual bool? CustomLockRotation
-        {
-            get => customLockRotation;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyLockRotation] != null)
-                    CustomData.Remove(CustomKeyLockRotation);
-                else
-                    GetOrCreateCustom()[CustomKeyLockRotation] = value;
-                GetOrCreateCustom()[CustomKeyLockRotation] = value;
-                customLockRotation = value;
-            }
-        }
+        public virtual bool? CustomLockRotation { get; set; }
 
-        public virtual string CustomNameFilter
-        {
-            get => customNameFilter;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyNameFilter] != null)
-                    CustomData.Remove(CustomKeyNameFilter);
-                else
-                    GetOrCreateCustom()[CustomKeyNameFilter] = value;
-                GetOrCreateCustom()[CustomKeyNameFilter] = value;
-                customNameFilter = value;
-            }
-        }
+        public virtual string CustomNameFilter { get; set; }
 
-        public virtual int? CustomLaneRotation
-        {
-            get => customLaneRotation;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyLaneRotation] != null)
-                    CustomData.Remove(CustomKeyLaneRotation);
-                else
-                    GetOrCreateCustom()[CustomKeyLaneRotation] = value;
-                GetOrCreateCustom()[CustomKeyLaneRotation] = value;
-                customLaneRotation = value;
-            }
-        }
+        public virtual int? CustomLaneRotation { get; set; }
 
         public abstract string CustomKeyPropID { get; }
         public abstract string CustomKeyLightID { get; }
@@ -497,6 +328,25 @@ namespace Beatmap.Base
             if (CustomData[CustomKeyDirection] != null) CustomDirection = CustomData[CustomKeyDirection].AsInt;
             if (CustomData[CustomKeyLockRotation] != null)
                 CustomLockRotation = CustomData[CustomKeyLockRotation].AsBool;
+        }
+
+        protected override JSONNode SaveCustom()
+        {
+            base.SaveCustom();
+            if (CustomLightID != null)
+            {
+                CustomData[CustomKeyLightID] = new JSONArray();
+                foreach (var i in CustomLightID) CustomData[CustomKeyLightID].Add(i);
+            }
+
+            if (CustomLerpType != null) CustomData[CustomKeyLerpType] = CustomLerpType;
+            if (CustomEasing != null) CustomData[CustomKeyEasing] = CustomEasing;
+            if (CustomStep != null) CustomData[CustomKeyStep] = CustomStep;
+            if (CustomProp != null) CustomData[CustomKeyProp] = CustomProp;
+            if (CustomSpeed != null) CustomData[CustomKeySpeed] = CustomSpeed;
+            if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection;
+            if (CustomLockRotation != null) CustomData[CustomKeyLockRotation] = CustomLockRotation;
+            return CustomData;
         }
     }
 }

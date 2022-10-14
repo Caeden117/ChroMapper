@@ -92,11 +92,13 @@ namespace Beatmap.V3
             node["a"] = AngleOffset;
             node["c"] = Color;
             node["d"] = CutDirection;
-            if (CustomData == null) return node;
+            SaveCustom();
+            if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;
         }
 
-        public override BaseItem Clone() => new V3ColorNote(Time, PosX, PosY, Type, CutDirection, CustomData?.Clone());
+        public override BaseItem Clone() =>
+            new V3ColorNote(Time, PosX, PosY, Color, CutDirection, AngleOffset, CustomData?.Clone());
     }
 }

@@ -8,7 +8,6 @@ namespace Beatmap.Base
     public abstract class BaseNote : BaseGrid, ICustomDataNote
     {
         private int color;
-        private int? customDirection;
         private int type;
 
         protected BaseNote()
@@ -99,18 +98,7 @@ namespace Beatmap.Base
                                        CutDirection == (int)NoteCutDirection.Left ||
                                        CutDirection == (int)NoteCutDirection.Right;
 
-        public virtual int? CustomDirection
-        {
-            get => customDirection;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyDirection] != null)
-                    CustomData.Remove(CustomKeyDirection);
-                else
-                    GetOrCreateCustom()[CustomKeyDirection] = value;
-                customDirection = value;
-            }
-        }
+        public virtual int? CustomDirection { get; set; }
 
         public abstract string CustomKeyDirection { get; }
 

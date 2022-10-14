@@ -36,6 +36,7 @@ namespace Beatmap.V3
             set { }
         }
 
+        public override string CustomKeyTrack { get; } = "track";
         public override string CustomKeyColor { get; } = "color";
 
         public override JSONNode ToJson()
@@ -43,7 +44,8 @@ namespace Beatmap.V3
             JSONNode node = new JSONObject();
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["m"] = Bpm;
-            if (CustomData == null) return node;
+            SaveCustom();
+            if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;
         }

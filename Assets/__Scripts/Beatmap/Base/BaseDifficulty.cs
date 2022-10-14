@@ -41,6 +41,10 @@ namespace Beatmap.Base
 
         public JSONNode CustomData { get; set; }
 
+        public abstract bool IsChroma();
+        public abstract bool IsNoodleExtensions();
+        public abstract bool IsMappingExtensions();
+
         public JSONNode GetOrCreateCustom()
         {
             if (CustomData == null)
@@ -48,10 +52,6 @@ namespace Beatmap.Base
 
             return CustomData;
         }
-
-        public abstract bool IsChroma();
-        public abstract bool IsNoodleExtensions();
-        public abstract bool IsMappingExtensions();
 
         public void ParseCustom() => throw new NotSupportedException();
 

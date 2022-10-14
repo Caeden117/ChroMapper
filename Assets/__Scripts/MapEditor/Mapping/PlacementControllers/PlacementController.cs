@@ -130,9 +130,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             // TODO: check for track
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
-                queuedData.GetOrCreateCustom()["track"] = BeatmapObjectContainerCollection.TrackFilterID;
+                queuedData.CustomTrack = BeatmapObjectContainerCollection.TrackFilterID;
             else
-                queuedData?.CustomData?.Remove("track");
+                queuedData.CustomTrack = null;
 
             CalculateTimes(hit, out var roundedHit, out var roundedTime);
             RoundedTime = roundedTime;

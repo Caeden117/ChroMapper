@@ -11,8 +11,6 @@ namespace Beatmap.Base
         private const float mappingExtensionsStartHeightMultiplier = 1.35f;
         private const float mappingExtensionsUnitsToFullHeightWall = 1000 / 3.5f;
 
-        protected Vector3? customSize;
-
         protected BaseObstacle()
         {
         }
@@ -62,18 +60,7 @@ namespace Beatmap.Base
         public virtual int Width { get; set; }
         public virtual int Height { get; set; }
 
-        public virtual Vector3? CustomSize
-        {
-            get => customSize;
-            set
-            {
-                if (value == null && CustomData?[CustomKeySize] != null)
-                    CustomData.Remove(CustomKeySize);
-                else
-                    GetOrCreateCustom()[CustomKeySize] = value;
-                customSize = value;
-            }
-        }
+        public virtual Vector3? CustomSize { get; set; }
 
         public abstract string CustomKeySize { get; }
 
@@ -180,6 +167,14 @@ namespace Beatmap.Base
             }
         }
 
+        private void GetHeights(ref float height, ref float startHeight)
+        {
+            if (Type != (int)ObstacleType.Freeform) return;
+            var clampedY = Mathf.Clamp(PosY, 0, 2);
+            startHeight = -0.5f + clampedY;
+            height = Mathf.Min(Height, 5 - clampedY);
+        }
+
         protected override void ParseCustom()
         {
             base.ParseCustom();
@@ -191,12 +186,11 @@ namespace Beatmap.Base
             }
         }
 
-        private void GetHeights(ref float height, ref float startHeight)
+        protected override JSONNode SaveCustom()
         {
-            if (Type != (int)ObstacleType.Freeform) return;
-            var clampedY = Mathf.Clamp(PosY, 0, 2);
-            startHeight = -0.5f + clampedY;
-            height = Mathf.Min(Height, 5 - clampedY);
+            base.SaveCustom();
+            if (CustomSize != null) CustomData[CustomKeySize] = CustomSize;
+            return CustomData;
         }
     }
 }

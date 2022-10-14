@@ -45,7 +45,8 @@ namespace Beatmap.V3
             node["x"] = PosX;
             node["y"] = PosY;
             node["d"] = OffsetDirection;
-            if (CustomData == null) return node;
+            SaveCustom();
+            if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;
         }

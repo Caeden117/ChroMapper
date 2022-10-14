@@ -37,6 +37,8 @@ namespace Beatmap.V2
             type, value, floatValue, customData) =>
             ParseCustom();
 
+        public override string CustomKeyTrack { get; } = "_track";
+        
         public override string CustomKeyColor { get; } = "_color";
 
         public override string CustomKeyPropID { get; } = "_propID";
@@ -87,6 +89,19 @@ namespace Beatmap.V2
             if (CustomData[CustomKeyLaneRotation] != null) CustomLaneRotation = CustomData[CustomKeyLaneRotation].AsInt;
         }
 
+        protected sealed override JSONNode SaveCustom()
+        {
+            base.SaveCustom();
+            if (CustomLightGradient != null) CustomData[CustomKeyLightGradient] = CustomLightGradient.ToJson();
+            if (CustomPropMult != null) CustomData[CustomKeyPropMult] = CustomPropMult;
+            if (CustomStepMult != null) CustomData[CustomKeyStepMult] = CustomStepMult;
+            if (CustomPropMult != null) CustomData[CustomKeyPropMult] = CustomPropMult;
+            if (CustomSpeedMult != null) CustomData[CustomKeySpeedMult] = CustomSpeedMult;
+            if (CustomPreciseSpeed != null) CustomData[CustomKeyPreciseSpeed] = CustomPreciseSpeed;
+            if (CustomLaneRotation != null) CustomData[CustomKeyLaneRotation] = CustomLaneRotation;
+            return CustomData;
+        }
+
         public override bool IsChroma() =>
             (CustomData?["_color"] != null && CustomData["_color"].IsArray) ||
             (CustomData?["_lightID"] != null &&
@@ -125,9 +140,9 @@ namespace Beatmap.V2
             node["_type"] = Type;
             node["_value"] = Value;
             node["_floatValue"] = FloatValue;
-            if (CustomData == null && CustomLightGradient == null) return node;
-            node["_customData"] = CustomData ?? new JSONObject();
-            if (CustomLightGradient != null) node["_customData"]["_lightGradient"] = CustomLightGradient.ToJson();
+            SaveCustom();
+            if (CustomData.Count == 0) return node;
+            node["_customData"] = CustomData;
             return node;
         }
 

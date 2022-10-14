@@ -18,7 +18,8 @@ namespace Beatmap.V3.Customs
         {
         }
 
-        public override string CustomKeyColor { get; } = "c";
+        public override string CustomKeyTrack { get; } = "track";
+        public override string CustomKeyColor { get; } = "color";
         public override string KeyTime { get; } = "b";
         public override string KeyType { get; } = "t";
         public override string KeyData { get; } = "d";

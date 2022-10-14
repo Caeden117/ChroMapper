@@ -5,10 +5,8 @@ using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseObject : BaseItem, ICustomData, IChromaObject
+    public abstract class BaseObject : BaseItem, ICustomData, IHeckObject, IChromaObject
     {
-        private Color? customColor;
-
         protected BaseObject()
         {
         }
@@ -23,29 +21,12 @@ namespace Beatmap.Base
         public bool HasAttachedContainer { get; set; } = false;
         public float Time { get; set; }
 
-        public virtual Color? CustomColor
-        {
-            get => customColor;
-            set
-            {
-                if (value == null && CustomData?[CustomKeyColor] != null)
-                    CustomData.Remove(CustomKeyColor);
-                else
-                    GetOrCreateCustom()[CustomKeyColor] = value;
-                customColor = value;
-            }
-        }
+        public string CustomTrack { get; set; }
+        public virtual Color? CustomColor { get; set; }
 
+        public abstract string CustomKeyTrack { get; }
         public abstract string CustomKeyColor { get; }
         public JSONNode CustomData { get; set; }
-
-        public JSONNode GetOrCreateCustom()
-        {
-            if (CustomData == null)
-                CustomData = new JSONObject();
-
-            return CustomData;
-        }
 
         public virtual bool IsChroma() => false;
 
@@ -69,6 +50,21 @@ namespace Beatmap.Base
         {
             if (CustomData == null) return;
             if (CustomData[CustomKeyColor] != null) CustomColor = CustomData[CustomKeyColor].ReadColor();
+        }
+
+        protected virtual JSONNode SaveCustom()
+        {
+            CustomData ??= new JSONObject();
+            if (CustomColor != null) CustomData[CustomKeyColor] = CustomColor;
+            return CustomData;
+        }
+
+        public JSONNode GetOrCreateCustom()
+        {
+            if (CustomData == null)
+                CustomData = new JSONObject();
+
+            return CustomData;
         }
     }
 }

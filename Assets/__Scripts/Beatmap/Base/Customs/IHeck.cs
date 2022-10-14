@@ -1,6 +1,6 @@
 ﻿namespace Beatmap.Base.Customs
 {
-    public interface IHeckGrid
+    public interface IHeckObject
     {
         string CustomTrack { get; set; }
 
