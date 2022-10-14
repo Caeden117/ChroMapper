@@ -38,7 +38,7 @@ namespace Beatmap.V3
             node["s"] = Brightness;
             node["i"] = TransitionType;
             node["f"] = Frequency;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;

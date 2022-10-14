@@ -91,7 +91,7 @@ namespace Beatmap.V2
 
         protected sealed override JSONNode SaveCustom()
         {
-            base.SaveCustom();
+            CustomData = base.SaveCustom();
             if (CustomLightGradient != null) CustomData[CustomKeyLightGradient] = CustomLightGradient.ToJson();
             if (CustomPropMult != null) CustomData[CustomKeyPropMult] = CustomPropMult;
             if (CustomStepMult != null) CustomData[CustomKeyStepMult] = CustomStepMult;
@@ -140,7 +140,7 @@ namespace Beatmap.V2
             node["_type"] = Type;
             node["_value"] = Value;
             node["_floatValue"] = FloatValue;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["_customData"] = CustomData;
             return node;

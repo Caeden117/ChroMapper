@@ -92,7 +92,7 @@ namespace Beatmap.V3
             node["a"] = AngleOffset;
             node["c"] = Color;
             node["d"] = CutDirection;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;

@@ -76,13 +76,10 @@ namespace Beatmap.Base
 
         protected override JSONNode SaveCustom()
         {
-            base.SaveCustom();
-            if (CustomTrack != null) CustomData[CustomKeyTrack] = CustomTrack;
-            if (CustomKeyCoordinate != null) CustomCoordinate = CustomData[CustomKeyCoordinate] = CustomKeyCoordinate;
-            if (CustomKeyWorldRotation != null)
-                CustomWorldRotation = CustomData[CustomKeyWorldRotation] = CustomKeyWorldRotation;
-            if (CustomKeyLocalRotation != null)
-                CustomLocalRotation = CustomData[CustomKeyLocalRotation] = CustomKeyLocalRotation;
+            CustomData = base.SaveCustom();
+            if (CustomCoordinate != null) CustomData[CustomKeyCoordinate] = CustomCoordinate;
+            if (CustomWorldRotation != null) CustomData[CustomKeyWorldRotation] = CustomWorldRotation;
+            if (CustomLocalRotation != null) CustomData[CustomKeyLocalRotation] = CustomLocalRotation;
             return CustomData;
         }
     }

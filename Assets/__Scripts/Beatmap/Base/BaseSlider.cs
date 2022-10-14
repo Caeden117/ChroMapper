@@ -59,7 +59,7 @@ namespace Beatmap.Base
 
         protected override JSONNode SaveCustom()
         {
-            base.SaveCustom();
+            CustomData = base.SaveCustom();
             if (CustomTailCoordinate != null) CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate;
             return CustomData;
         }

@@ -50,7 +50,7 @@ namespace Beatmap.V2
 
         protected sealed override JSONNode SaveCustom()
         {
-            base.SaveCustom();
+            CustomData = base.SaveCustom();
             if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection;
             return CustomData;
         }
@@ -88,7 +88,7 @@ namespace Beatmap.V2
             node["_lineLayer"] = PosY;
             node["_type"] = Type;
             node["_cutDirection"] = CutDirection;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["_customData"] = CustomData;
             return node;

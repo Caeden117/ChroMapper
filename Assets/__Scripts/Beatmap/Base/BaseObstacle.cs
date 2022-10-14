@@ -188,7 +188,7 @@ namespace Beatmap.Base
 
         protected override JSONNode SaveCustom()
         {
-            base.SaveCustom();
+            CustomData = base.SaveCustom();
             if (CustomSize != null) CustomData[CustomKeySize] = CustomSize;
             return CustomData;
         }

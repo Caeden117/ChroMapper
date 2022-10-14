@@ -68,7 +68,7 @@ namespace Beatmap.V3
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["x"] = PosX;
             node["y"] = PosY;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;

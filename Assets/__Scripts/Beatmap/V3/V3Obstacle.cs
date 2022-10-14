@@ -95,7 +95,7 @@ namespace Beatmap.V3
             node["d"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
             node["w"] = Width;
             node["h"] = Height;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;

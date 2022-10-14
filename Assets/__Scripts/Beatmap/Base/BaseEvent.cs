@@ -332,7 +332,7 @@ namespace Beatmap.Base
 
         protected override JSONNode SaveCustom()
         {
-            base.SaveCustom();
+            CustomData = base.SaveCustom();
             if (CustomLightID != null)
             {
                 CustomData[CustomKeyLightID] = new JSONArray();

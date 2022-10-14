@@ -113,7 +113,7 @@ namespace Beatmap.V3
             node["et"] = Type;
             node["i"] = Value;
             node["f"] = FloatValue;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;

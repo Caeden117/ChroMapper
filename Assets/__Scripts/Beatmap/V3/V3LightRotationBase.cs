@@ -45,7 +45,7 @@ namespace Beatmap.V3
             node["e"] = EaseType;
             node["l"] = Loop;
             node["p"] = UsePrevious;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;

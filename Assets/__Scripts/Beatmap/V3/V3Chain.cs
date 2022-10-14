@@ -89,7 +89,7 @@ namespace Beatmap.V3
             node["ty"] = TailPosY;
             node["sc"] = SliceCount;
             node["s"] = Squish;
-            SaveCustom();
+            CustomData = SaveCustom();
             if (CustomData.Count == 0) return node;
             node["customData"] = CustomData;
             return node;
