@@ -93,7 +93,7 @@ namespace Beatmap.Base.Customs
             }
         }
 
-        protected void InstantiateHelper(ref JSONNode node)
+        private void InstantiateHelper(ref JSONNode node)
         {
             ID = node[KeyID]?.Value;
             Enum.TryParse(node[KeyLookupMethod]?.Value, out EnvironmentLookupMethod environmentLookup);

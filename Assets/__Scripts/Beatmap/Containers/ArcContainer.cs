@@ -60,7 +60,7 @@ namespace Beatmap.Containers
             base.Setup();
             MaterialPropertyBlock.SetFloat("_Lit", 1);
             MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1f);
-            foreach (var gameObject in indicators) gameObject.GetComponent<ArcIndicator>().Setup();
+            foreach (var gameObj in indicators) gameObj.GetComponent<ArcIndicatorContainer>().Setup();
 
             UpdateMaterials();
         }
@@ -69,7 +69,7 @@ namespace Beatmap.Containers
         {
             transform.localPosition = new Vector3(-1.5f, 0.5f, ArcData.Time * EditorScaleController.EditorScale);
             //RecomputePosition();
-            foreach (var gameObject in indicators) gameObject.GetComponent<ArcIndicator>().UpdateGridPosition();
+            foreach (var gameObj in indicators) gameObj.GetComponent<ArcIndicatorContainer>().UpdateGridPosition();
             UpdateCollisionGroups();
         }
 
@@ -123,30 +123,30 @@ namespace Beatmap.Containers
 
         private void ResetIndicatorsPosition()
         {
-            foreach (var gameObject in indicators) gameObject.GetComponent<ArcIndicator>().UpdateGridPosition();
+            foreach (var gameObj in indicators) gameObj.GetComponent<ArcIndicatorContainer>().UpdateGridPosition();
         }
 
-        public void SetColor(Color color)
+        public void SetColor(Color c)
         {
-            MaterialPropertyBlock.SetColor(ObjectContainer.color, color);
-            MaterialPropertyBlock.SetColor(emissionColor, color * arcEmissionIntensity);
+            MaterialPropertyBlock.SetColor(color, c);
+            MaterialPropertyBlock.SetColor(emissionColor, c * arcEmissionIntensity);
             UpdateMaterials();
         }
 
         internal override void UpdateMaterials()
         {
-            foreach (var gameObject in indicators)
-                gameObject.GetComponent<ArcIndicator>().UpdateMaterials(MaterialPropertyBlock);
-            foreach (var gameObject in indicators)
-                gameObject.GetComponent<ArcIndicator>().OutlineVisible = OutlineVisible;
+            foreach (var gameObj in indicators)
+                gameObj.GetComponent<ArcIndicatorContainer>().UpdateMaterials(MaterialPropertyBlock);
+            foreach (var gameObj in indicators)
+                gameObj.GetComponent<ArcIndicatorContainer>().OutlineVisible = OutlineVisible;
             if (SplineRenderer != null)
                 SplineRenderer.SetPropertyBlock(MaterialPropertyBlock);
-            foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
+            foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
         }
 
         public void SetIndicatorBlocksActive(bool visible)
         {
-            foreach (var gameObject in indicators) gameObject.SetActive(visible);
+            foreach (var gameObj in indicators) gameObj.SetActive(visible);
         }
 
         public void ChangeMultiplier(float modifier) => ArcData.ControlPointLengthMultiplier += modifier;

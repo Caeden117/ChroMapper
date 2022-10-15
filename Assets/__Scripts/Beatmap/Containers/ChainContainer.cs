@@ -10,12 +10,10 @@ namespace Beatmap.Containers
 {
     public class ChainContainer : ObjectContainer
     {
-        private const float epsilon = 1e-2f;
-
         [SerializeField] private GameObject tailNode;
         public NoteContainer AttachedHead;
         private readonly List<GameObject> nodes = new List<GameObject>();
-        [FormerlySerializedAs("chainData")] public BaseChain ChainData;
+        [SerializeField] public BaseChain ChainData;
         private Vector3 headDirection;
         private bool headPointsToTail;
         private Vector3 interPoint;
@@ -154,21 +152,21 @@ namespace Beatmap.Containers
             }
         }
 
-        public void SetColor(Color color)
+        public void SetColor(Color c)
         {
-            MaterialPropertyBlock.SetColor(ObjectContainer.color, color);
+            MaterialPropertyBlock.SetColor(color, c);
             UpdateMaterials();
         }
 
         internal override void UpdateMaterials()
         {
-            foreach (var collider in Colliders)
+            foreach (var c in Colliders)
             {
-                var renderer = collider.GetComponent<MeshRenderer>();
-                renderer.SetPropertyBlock(MaterialPropertyBlock);
+                var r = c.GetComponent<MeshRenderer>();
+                r.SetPropertyBlock(MaterialPropertyBlock);
             }
 
-            foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
+            foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
         }
 
         public void DetectHeadNote(bool detect = true)

@@ -1,12 +1,11 @@
 ﻿using Beatmap.Base;
-using Beatmap.Containers;
 using Beatmap.Enums;
 using SplineMesh;
 using UnityEngine;
 
-namespace Beatmap.Shared
+namespace Beatmap.Containers
 {
-    public class ArcIndicator : ObjectContainer
+    public class ArcIndicatorContainer : ObjectContainer
     {
         public IndicatorType IndicatorType;
         public ArcContainer ParentArc;
@@ -27,8 +26,8 @@ namespace Beatmap.Shared
 
         public void UpdateMaterials(MaterialPropertyBlock materialPropertyBlock)
         {
-            var color = materialPropertyBlock.GetColor(ObjectContainer.color);
-            MaterialPropertyBlock.SetColor(ObjectContainer.color, color);
+            var c = materialPropertyBlock.GetColor(ObjectContainer.color);
+            MaterialPropertyBlock.SetColor(ObjectContainer.color, c);
             UpdateMaterials();
         }
 

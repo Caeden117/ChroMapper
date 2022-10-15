@@ -11,7 +11,7 @@ namespace Beatmap.Containers
 
         [SerializeField] private TracksManager manager;
 
-        [FormerlySerializedAs("obstacleData")] public BaseObstacle ObstacleData;
+        [SerializeField] public BaseObstacle ObstacleData;
 
         public override BaseObject ObjectData
         {
@@ -32,9 +32,9 @@ namespace Beatmap.Containers
             return container;
         }
 
-        public void SetColor(Color color)
+        public void SetColor(Color c)
         {
-            MaterialPropertyBlock.SetColor(colorTint, color);
+            MaterialPropertyBlock.SetColor(colorTint, c);
             UpdateMaterials();
         }
 

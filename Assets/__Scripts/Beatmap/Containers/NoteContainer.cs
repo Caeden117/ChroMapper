@@ -142,9 +142,9 @@ namespace Beatmap.Containers
             UpdateMaterials();
         }
 
-        public void SetColor(Color? color)
+        public void SetColor(Color? c)
         {
-            MaterialPropertyBlock.SetColor(ObjectContainer.color, color ?? unassignedColor);
+            MaterialPropertyBlock.SetColor(ObjectContainer.color, c ?? unassignedColor);
             UpdateMaterials();
         }
 

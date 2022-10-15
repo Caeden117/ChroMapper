@@ -7,9 +7,7 @@ namespace Beatmap.Appearances
     [CreateAssetMenu(menuName = "Beatmap/Appearance/Obstacle Appearance SO", fileName = "ObstacleAppearanceSO")]
     public class ObstacleAppearanceSO : ScriptableObject
     {
-        [FormerlySerializedAs("defaultObstacleColor")]
-        public Color DefaultObstacleColor = BeatSaberSong.DefaultLeftColor;
-
+        [SerializeField] public Color DefaultObstacleColor = BeatSaberSong.DefaultLeftColor;
         [SerializeField] private Color negativeWidthColor = Color.green;
         [SerializeField] private Color negativeDurationColor = Color.yellow;
 

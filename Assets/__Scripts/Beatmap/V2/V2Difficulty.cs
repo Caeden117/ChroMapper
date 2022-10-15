@@ -175,7 +175,7 @@ namespace Beatmap.V2
         {
             Notes = Notes.OfType<BaseNote>().ToList();
             Notes.AddRange(Bombs.OfType<BaseNote>().ToList());
-            Notes = Notes.OfType<BaseNote>().ToList();
+            
             Events.AddRange(ColorBoostEvents.OfType<BaseEvent>().ToList());
             Events.AddRange(RotationEvents.OfType<BaseEvent>().ToList());
             Events.AddRange(BpmEvents.OfType<BaseEvent>().ToList());

@@ -16,16 +16,11 @@ namespace Beatmap.Containers
         internal static readonly int outline = Shader.PropertyToID("_Outline");
         internal static readonly int outlineColor = Shader.PropertyToID("_OutlineColor");
 
-        [FormerlySerializedAs("dragging")] public bool Dragging;
+        public bool Dragging;
 
-        [FormerlySerializedAs("colliders")] [SerializeField]
-        protected List<IntersectionCollider> Colliders;
-
-        [FormerlySerializedAs("selectionRenderers")] [SerializeField]
-        protected List<Renderer> SelectionRenderers = new List<Renderer>();
-
-        [FormerlySerializedAs("boxCollider")] [SerializeField]
-        protected BoxCollider BoxCollider;
+        [SerializeField] protected List<IntersectionCollider> Colliders;
+        [SerializeField] protected List<Renderer> SelectionRenderers = new List<Renderer>();
+        [SerializeField] protected BoxCollider BoxCollider;
 
         private readonly List<Renderer> modelRenderers = new List<Renderer>();
         public MaterialPropertyBlock MaterialPropertyBlock;
@@ -72,12 +67,12 @@ namespace Beatmap.Containers
 
         internal virtual void UpdateMaterials()
         {
-            foreach (var renderer in modelRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
+            foreach (var r in modelRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
         }
 
-        public void SetRotation(float rotation)
+        public void SetRotation(float rot)
         {
-            MaterialPropertyBlock.SetFloat(ObjectContainer.rotation, rotation);
+            MaterialPropertyBlock.SetFloat(rotation, rot);
             UpdateMaterials();
         }
 
@@ -94,12 +89,12 @@ namespace Beatmap.Containers
         {
             var chunkId = ChunkID;
 
-            foreach (var collider in Colliders)
+            foreach (var c in Colliders)
             {
-                var unregistered = Intersections.UnregisterColliderFromGroups(collider);
-                collider.CollisionGroups.Clear();
-                collider.CollisionGroups.Add(chunkId);
-                if (unregistered) Intersections.RegisterColliderToGroups(collider);
+                var unregistered = Intersections.UnregisterColliderFromGroups(c);
+                c.CollisionGroups.Clear();
+                c.CollisionGroups.Add(chunkId);
+                if (unregistered) Intersections.RegisterColliderToGroups(c);
             }
         }
     }

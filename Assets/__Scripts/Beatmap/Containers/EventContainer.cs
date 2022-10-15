@@ -76,10 +76,10 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            var position = EventData.GetPosition(labels, EventGridContainer.PropagationEditing,
+            var gridPos = EventData.GetPosition(labels, EventGridContainer.PropagationEditing,
                 EventGridContainer.EventTypeToPropagate);
 
-            if (position == null)
+            if (gridPos == null)
             {
                 transform.localPosition = new Vector3(
                     -0.5f,
@@ -91,8 +91,8 @@ namespace Beatmap.Containers
             else
             {
                 transform.localPosition = new Vector3(
-                    position?.x ?? 0,
-                    position?.y ?? 0,
+                    gridPos.Value.x,
+                    gridPos.Value.y,
                     EventData.Time * EditorScaleController.EditorScale
                 );
             }
@@ -107,15 +107,15 @@ namespace Beatmap.Containers
             UpdateCollisionGroups();
         }
 
-        public void ChangeColor(Color color, bool updateMaterials = true)
+        public void ChangeColor(Color c, bool updateMaterials = true)
         {
-            MaterialPropertyBlock.SetColor(colorTint, color);
+            MaterialPropertyBlock.SetColor(colorTint, c);
             if (updateMaterials) UpdateMaterials();
         }
 
-        public void ChangeBaseColor(Color color, bool updateMaterials = true)
+        public void ChangeBaseColor(Color c, bool updateMaterials = true)
         {
-            MaterialPropertyBlock.SetColor(colorBase, color);
+            MaterialPropertyBlock.SetColor(colorBase, c);
             if (updateMaterials) UpdateMaterials();
         }
 
@@ -190,7 +190,7 @@ namespace Beatmap.Containers
             valueDisplay.text = text;
         }
 
-        public void UpdateTextColor(Color color) => valueDisplay.color = color;
+        public void UpdateTextColor(Color c) => valueDisplay.color = c;
 
         public void RefreshAppearance() => eventAppearance.SetEventAppearance(this);
     }

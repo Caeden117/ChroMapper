@@ -17,7 +17,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     }
 
     [SerializeField] private GameObject eventPrefab;
-    [FormerlySerializedAs("eventAppearanceSO")] [SerializeField] private EventAppearanceSO eventAppearanceSo;
+    [SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private GameObject eventGridLabels;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private EventPlacement eventPlacement;

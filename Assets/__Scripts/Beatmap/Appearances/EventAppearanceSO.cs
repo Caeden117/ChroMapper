@@ -16,8 +16,7 @@ namespace Beatmap.Appearances
     [CreateAssetMenu(menuName = "Beatmap/Appearance/Event Appearance SO", fileName = "EventAppearanceSO")]
     public class EventAppearanceSO : ScriptableObject
     {
-        [FormerlySerializedAs("LaserSpeedPrefab")] [Space(5)] [SerializeField]
-        private GameObject laserSpeedPrefab;
+        [Space(5)] [SerializeField] private GameObject laserSpeedPrefab;
 
         [Space(5)] [Header("Default Colors")] public Color RedColor;
         public Color BlueColor;
@@ -26,16 +25,12 @@ namespace Beatmap.Appearances
         public Color BlueBoostColor;
         public Color WhiteBoostColor = new Color(0.7264151f, 0.7264151f, 0.7264151f);
 
-        [FormerlySerializedAs("OffColor")] [SerializeField]
-        private Color offColor;
+        [SerializeField] private Color offColor;
 
-        [FormerlySerializedAs("RingEventsColor")] [Header("Other Event Colors")] [SerializeField]
-        private Color ringEventsColor;
+        [Header("Other Event Colors")] [SerializeField] private Color ringEventsColor;
 
-        [FormerlySerializedAs("OtherColor")]
         [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
-        [SerializeField]
-        private Color otherColor;
+        [SerializeField] private Color otherColor;
 
         public void SetEventAppearance(EventContainer e, bool final = true, bool boost = false)
         {
