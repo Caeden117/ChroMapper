@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 public class PauseToggleLights : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
-    [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
+    [SerializeField] private EventGridContainer eventGrid;
 
     private readonly BaseEvent defaultBoostEvent = new V2Event(0, 5, 0);
     private readonly List<BaseEvent> lastChromaEvents = new List<BaseEvent>();
@@ -50,7 +50,7 @@ public class PauseToggleLights : MonoBehaviour
                     if (!lastEvents.ContainsKey(e.Type)) lastEvents.Add(e.Type, new LastEvents());
 
                     var d = lastEvents[e.Type];
-                    if (e.IsLightID && d.LastEvent == null)
+                    if (e.CustomLightID != null && d.LastEvent == null)
                     {
                         foreach (var i in e.CustomLightID.Distinct().Where(x => !d.LastLightIdEvents.ContainsKey(x))
                             .ToArray())
@@ -58,7 +58,7 @@ public class PauseToggleLights : MonoBehaviour
                             d.LastLightIdEvents.Add(i, e);
                         }
                     }
-                    else if (!e.IsLightID && d.LastEvent == null)
+                    else if (e.CustomLightID == null && d.LastEvent == null)
                     {
                         d.LastEvent = e;
                     }

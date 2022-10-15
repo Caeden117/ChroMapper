@@ -332,7 +332,7 @@ public class PlatformDescriptor : MonoBehaviour
 
         IEnumerable<LightingEvent> allLights = group.ControllingLights;
 
-        if (e.IsLightID && Settings.Instance.EmulateChromaAdvanced)
+        if (e.CustomLightID != null && Settings.Instance.EmulateChromaAdvanced)
         {
             var lightIDArr = e.CustomLightID;
             allLights = group.ControllingLights.FindAll(x => lightIDArr.Contains(x.LightID));

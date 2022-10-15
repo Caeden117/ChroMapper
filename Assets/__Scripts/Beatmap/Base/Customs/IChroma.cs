@@ -13,7 +13,7 @@ namespace Beatmap.Base.Customs
 
     public interface IChromaEvent : IChromaObject
     {
-        int? CustomPropID { get; set; }
+        int CustomPropID { get; set; } // honestly, what is this? kinda misleading
         int[] CustomLightID { get; set; }
 
         [CanBeNull] string CustomLerpType { get; set; }
@@ -52,6 +52,5 @@ namespace Beatmap.Base.Customs
 
         bool IsLegacyChroma { get; }
         bool IsPropagation { get; }
-        bool IsLightID { get; }
     }
 }

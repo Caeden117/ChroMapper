@@ -231,9 +231,9 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
     internal override void ApplyToMap()
     {
-        var mapEvent = queuedData;
+        var evt = queuedData;
 
-        if (mapEvent.IsLaneRotationEvent())
+        if (evt.IsLaneRotationEvent())
         {
             if (!GridRotation.IsActive)
             {
@@ -242,29 +242,29 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             }
         }
 
-        mapEvent.Time = RoundedTime;
+        evt.Time = RoundedTime;
 
-        if (mapEvent.CustomData != null && mapEvent.CustomData.HasKey("_queuedRotation"))
+        if (evt.CustomData != null && evt.CustomData.HasKey("_queuedRotation"))
         {
-            if (mapEvent.IsLaneRotationEvent()) queuedValue = queuedData.CustomData["_queuedRotation"];
+            if (evt.IsLaneRotationEvent()) queuedValue = queuedData.CustomData["_queuedRotation"];
 
-            mapEvent.CustomData.Remove("_queuedRotation");
+            evt.CustomData.Remove("_queuedRotation");
         }
 
         if (!PlacePrecisionRotation)
             UpdateQueuedValue(queuedValue);
-        else if (mapEvent.IsLaneRotationEvent()) mapEvent.Value = 1360 + PrecisionRotationValue;
+        else if (evt.IsLaneRotationEvent()) evt.Value = 1360 + PrecisionRotationValue;
 
-        if (mapEvent.CustomData?.Count <= 0) mapEvent.CustomData = null;
+        if (evt.CustomData?.Count <= 0) evt.CustomData = null;
         
-        if (!mapEvent.IsLightEvent()) // in case we are placing rotation/boost when pressing half/zero modifier
+        if (!evt.IsLightEvent()) // in case we are placing rotation/boost when pressing half/zero modifier
         {
-            mapEvent.FloatValue = 1;
+            evt.FloatValue = 1;
         }
 
         base.ApplyToMap();
 
-        if (mapEvent.IsLaneRotationEvent()) TracksManager.RefreshTracks();
+        if (evt.IsLaneRotationEvent()) TracksManager.RefreshTracks();
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued)
@@ -287,25 +287,25 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
         var rotationType = early ? (int)EventTypeValue.EarlyLaneRotation : (int)EventTypeValue.LateLaneRotation;
         var epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
-        var mapEvent = objectContainerCollection.AllRotationEvents.Find(x =>
+        var evt = objectContainerCollection.AllRotationEvents.Find(x =>
             x.Time - epsilon < Atsc.CurrentBeat && x.Time + epsilon > Atsc.CurrentBeat && x.Type == rotationType);
 
         //todo add support for custom rotation angles
 
         var startingValue = right ? 4 : 3;
-        if (mapEvent != null) startingValue = mapEvent.Value;
+        if (evt != null) startingValue = evt.Value;
 
-        if (mapEvent != null &&
+        if (evt != null &&
             ((startingValue == 4 && !right) ||
              (startingValue == 3 && right))) //This is for when we're going from a rotation event to no rotation event
         {
-            startingValue = mapEvent.Value;
-            objectContainerCollection.DeleteObject(mapEvent, false);
-            BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(mapEvent, "Deleted by PlaceRotationNow."));
+            startingValue = evt.Value;
+            objectContainerCollection.DeleteObject(evt, false);
+            BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(evt, "Deleted by PlaceRotationNow."));
         }
         else if ((startingValue < 7 && right) || (startingValue > 0 && !right))
         {
-            if (mapEvent != null) startingValue += right ? 1 : -1;
+            if (evt != null) startingValue += right ? 1 : -1;
             var objectData = Settings.Instance.Load_MapV3 ? (BaseEvent)new V3BasicEvent(Atsc.CurrentBeat, rotationType, startingValue) : new V2Event(Atsc.CurrentBeat, rotationType, startingValue);
 
             objectContainerCollection.SpawnObject(objectData, out var conflicting);

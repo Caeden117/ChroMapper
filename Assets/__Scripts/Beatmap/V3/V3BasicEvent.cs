@@ -27,12 +27,6 @@ namespace Beatmap.V3
             value, floatValue, customData) =>
             ParseCustom();
 
-        public override int? CustomPropID
-        {
-            get => -1;
-            set { }
-        }
-
         public override float? CustomPreciseSpeed
         {
             get => customSpeed;
@@ -85,8 +79,6 @@ namespace Beatmap.V3
         public override string CustomKeyLaneRotation { get; } = "rotation";
 
         public override string CustomKeyNameFilter { get; } = "nameFilter";
-
-        public override bool IsPropagation { get; } = false;
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 

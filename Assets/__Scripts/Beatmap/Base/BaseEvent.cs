@@ -98,33 +98,20 @@ namespace Beatmap.Base
             Value == (int)LightValue.WhiteTransition;
 
         public bool IsLegacyChroma => Value >= ColourManager.RgbintOffset;
+        public bool IsPropagation => CustomPropID >= -1;
 
-        public virtual bool IsPropagation => CustomData?[CustomKeyPropID] != null;
-
-        public virtual bool IsLightID => CustomData?[CustomKeyLightID] != null;
-
-        public virtual int? CustomPropID { get; set; }
-
+        public virtual int CustomPropID { get; set; } = -1;
         public virtual int[] CustomLightID
         {
             get => customLightID;
             set
             {
-                if (value == null)
+                if (value == null || value.Length == 0)
                 {
                     customLightID = null;
                     return;
                 }
 
-                if (value.Length == 0)
-                {
-                    customLightID = null;
-                    return;
-                }
-
-                var ary = new JSONArray();
-                foreach (var i in value) ary.Add(i);
-                CustomData[CustomKeyLightID] = ary;
                 customLightID = value;
             }
         }
@@ -236,7 +223,7 @@ namespace Beatmap.Base
 
         public Vector2? GetPosition(CreateEventTypeLabels labels, EventGridContainer.PropMode mode, int prop)
         {
-            if (IsLightID) CustomPropID = labels.LightIdsToPropId(Type, CustomLightID) ?? -1;
+            if (CustomLightID != null) CustomPropID = labels.LightIdsToPropId(Type, CustomLightID) ?? -1;
 
             if (mode == EventGridContainer.PropMode.Off)
                 return new Vector2(
@@ -246,7 +233,7 @@ namespace Beatmap.Base
 
             if (Type != prop) return null;
 
-            if (!IsLightID)
+            if (CustomLightID is null)
                 return new Vector2(
                     0.5f,
                     0.5f
@@ -255,16 +242,9 @@ namespace Beatmap.Base
 
             if (x < 0) x = CustomLightID.Length > 0 ? labels.LightIDToEditor(Type, CustomLightID[0]) : -1;
 
-            if (x != null)
-                return new Vector2(
-                    (float)x + 1.5f,
-                    0.5f
-                );
-
             return new Vector2(
-                0.5f,
-                0.5f
-            );
+                (float)x + 1.5f,
+                0.5f);
         }
 
         public int? GetRotationDegreeFromValue()
@@ -284,8 +264,8 @@ namespace Beatmap.Base
         {
             if (other is BaseEvent @event)
             {
-                var lightId = IsLightID ? CustomLightID : null;
-                var otherLightId = @event.IsLightID ? @event.CustomLightID : null;
+                var lightId = CustomLightID;
+                var otherLightId = @event.CustomLightID;
                 var lightIdEquals = lightId?.Length == otherLightId?.Length &&
                                     (lightId == null || lightId.All(x => otherLightId.Contains(x)));
 

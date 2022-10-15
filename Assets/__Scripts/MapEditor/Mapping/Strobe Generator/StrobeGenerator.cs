@@ -26,7 +26,7 @@ public class StrobeGenerator : MonoBehaviour
 
             // Try and do this in one pass so we don't tank performance
             var partitioned = group.GroupBy(y =>
-                    y.IsLightID ? EventGridContainer.PropMode.Light : EventGridContainer.PropMode.Off)
+                    y.CustomLightID != null ? EventGridContainer.PropMode.Light : EventGridContainer.PropMode.Off)
                 .ToDictionary(z => z.Key, modeGroup =>
                     modeGroup.Key == EventGridContainer.PropMode.Off
                         ? modeGroup.GroupBy(y => 1)
@@ -49,8 +49,8 @@ public class StrobeGenerator : MonoBehaviour
                         var containersBetween = eventGridContainer.LoadedObjects.GetViewBetween(start, end)
                             .Cast<BaseEvent>().Where(x =>
                                 x.Type == start.Type && //Grab all events between start and end point.
-                                ((!start.IsLightID && !x.IsLightID) || (start.IsLightID &&
-                                                                        x.IsLightID && x.CustomLightID.Contains(start.CustomLightID[0])))
+                                ((start.CustomLightID is null && x.CustomLightID is null) || (start.CustomLightID != null &&
+                                                                        x.CustomLightID != null && x.CustomLightID.Contains(start.CustomLightID[0])))
                             );
                         oldEvents.AddRange(containersBetween);
 

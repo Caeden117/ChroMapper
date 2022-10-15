@@ -205,13 +205,13 @@ public class MirrorSelection : MonoBehaviour
                     }
 
                     if (!e.IsLightEvent()) continue;
-                    if (moveNotes && e.IsPropagation && events.EventTypeToPropagate == e.Type &&
+                    if (moveNotes && e.CustomPropID != null && events.EventTypeToPropagate == e.Type &&
                         events.PropagationEditing == EventGridContainer.PropMode.Prop)
                     {
                         var mirroredIdx = events.EventTypePropagationSize - (int)e.CustomPropID - 1;
                         e.CustomLightID = labels.PropIdToLightIds(e.Type, mirroredIdx);
                     }
-                    else if (moveNotes && e.IsLightID && events.EventTypeToPropagate == e.Type &&
+                    else if (moveNotes && e.CustomLightID != null && events.EventTypeToPropagate == e.Type &&
                              events.PropagationEditing == EventGridContainer.PropMode.Light)
                     {
                         var idx = labels.LightIDToEditor(e.Type, e.CustomLightID[0]);

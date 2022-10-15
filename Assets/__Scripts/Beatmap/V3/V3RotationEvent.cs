@@ -73,8 +73,6 @@ namespace Beatmap.V3
 
         public override string CustomKeyNameFilter { get; } = "nameFilter";
 
-        public override bool IsPropagation { get; } = false;
-
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
