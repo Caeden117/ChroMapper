@@ -205,7 +205,7 @@ public class MirrorSelection : MonoBehaviour
                     }
 
                     if (!e.IsLightEvent()) continue;
-                    if (moveNotes && e.CustomPropID != null && events.EventTypeToPropagate == e.Type &&
+                    if (moveNotes && e.IsPropagation && events.EventTypeToPropagate == e.Type &&
                         events.PropagationEditing == EventGridContainer.PropMode.Prop)
                     {
                         var mirroredIdx = events.EventTypePropagationSize - (int)e.CustomPropID - 1;

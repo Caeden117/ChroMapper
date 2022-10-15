@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Converters;
 using Beatmap.Enums;
 using Beatmap.V3.Customs;
 using SimpleJSON;
@@ -40,8 +41,7 @@ namespace Beatmap.V3
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-                if (MainNode == null) MainNode = new JSONObject();
-
+                MainNode ??= new JSONObject();
                 MainNode["version"] = Version;
                 ParseV2ToV3();
 
@@ -97,7 +97,7 @@ namespace Beatmap.V3
                     EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
                 MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
 
-                SaveCustomDataNode();
+                SaveCustom();
 
                 WriteFile(this);
 
@@ -112,7 +112,7 @@ namespace Beatmap.V3
             }
         }
 
-        protected override bool SaveCustomDataNode()
+        public override bool SaveCustom()
         {
             var bpm = new JSONArray();
             foreach (var b in BpmChanges) bpm.Add(b.ToJson());
@@ -126,9 +126,7 @@ namespace Beatmap.V3
             var envEnhancements = new JSONArray();
             foreach (var e in EnvironmentEnhancements) envEnhancements.Add(e.ToJson());
 
-            if (!MainNode.HasKey("customData") || MainNode["customData"] is null ||
-                !MainNode["customData"].Children.Any())
-                MainNode["customData"] = CustomData;
+            MainNode["customData"] = CustomData ?? new JSONObject();
 
             if (BpmChanges.Any())
                 MainNode["customData"]["BPMChanges"] = CleanupArray(bpm, "b");
@@ -149,7 +147,15 @@ namespace Beatmap.V3
                 MainNode["customData"]["environment"] = envEnhancements;
             else
                 MainNode["customData"].Remove("environment");
+            
             if (Time > 0) MainNode["customData"]["time"] = Math.Round(Time, 3);
+            
+            if (CustomData.HasKey("_time")) CustomData.Remove("_time");
+            if (CustomData.HasKey("_BPMChanges")) CustomData.Remove("_BPMChanges");
+            if (CustomData.HasKey("_bookmarks")) CustomData.Remove("_bookmarks");
+            if (CustomData.HasKey("_customEvents")) CustomData.Remove("_customEvents");
+            if (CustomData.HasKey("_environment")) CustomData.Remove("_environment");
+
             BeatSaberSong.CleanObject(MainNode["customData"]);
             if (!MainNode["customData"].Children.Any()) MainNode.Remove("customData");
 
@@ -221,7 +227,7 @@ namespace Beatmap.V3
                     }
                 }
 
-                LoadCustomDataNode(ref map, ref mainNode);
+                LoadCustom(ref map, ref mainNode);
                 map.ParseV3ToV2();
 
                 return map;
@@ -241,11 +247,11 @@ namespace Beatmap.V3
                 switch (n.Type)
                 {
                     case (int)NoteType.Bomb:
-                        newBombs.Add(new V3BombNote(n));
+                        newBombs.Add(V2ToV3.BombNote(n));
                         break;
                     case (int)NoteType.Red:
                     case (int)NoteType.Blue:
-                        newNotes.Add(new V3ColorNote(n));
+                        newNotes.Add(V2ToV3.ColorNote(n));
                         break;
                     default:
                         Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
@@ -255,7 +261,7 @@ namespace Beatmap.V3
             Notes = newNotes;
             Bombs = newBombs;
 
-            Obstacles = Obstacles.Select(o => new V3Obstacle(o)).Cast<BaseObstacle>().ToList();
+            Obstacles = Obstacles.Select(V2ToV3.Obstacle).Cast<BaseObstacle>().ToList();
 
             var newColorBoostEvents = new List<BaseColorBoostEvent>();
             var newRotationEvents = new List<BaseRotationEvent>();
@@ -265,24 +271,29 @@ namespace Beatmap.V3
                 switch (e.Type)
                 {
                     case (int)EventTypeValue.ColorBoost:
-                        newColorBoostEvents.Add(new V3ColorBoostEvent(e));
+                        newColorBoostEvents.Add(V2ToV3.ColorBoostEvent(e));
                         break;
                     case (int)EventTypeValue.EarlyLaneRotation:
                     case (int)EventTypeValue.LateLaneRotation:
-                        newRotationEvents.Add(new V3RotationEvent(e));
+                        newRotationEvents.Add(V2ToV3.RotationEvent(e));
                         break;
                     case (int)EventTypeValue.BpmChange:
-                        newBpmEvents.Add(new V3BpmEvent(e));
+                        newBpmEvents.Add(V2ToV3.BpmEvent(e));
                         break;
                     default:
-                        newEvents.Add(new V3BasicEvent(e));
+                        newEvents.Add(V2ToV3.BasicEvent(e));
                         break;
                 }
-
             ColorBoostEvents = newColorBoostEvents;
             RotationEvents = newRotationEvents;
             BpmEvents = newBpmEvents;
             Events = newEvents;
+
+            Bookmarks = Bookmarks.Select(V2ToV3.Bookmark).Cast<BaseBookmark>().ToList();
+            BpmChanges = BpmChanges.Select(V2ToV3.BpmChange).Cast<BaseBpmChange>().ToList();
+            CustomEvents = CustomEvents.Select(V2ToV3.CustomEvent).Cast<BaseCustomEvent>().ToList();
+            EnvironmentEnhancements = EnvironmentEnhancements.Select(V2ToV3.EnvironmentEnhancement)
+                .Cast<BaseEnvironmentEnhancement>().ToList();
         }
 
         public void ParseV3ToV2()
@@ -290,14 +301,15 @@ namespace Beatmap.V3
             Notes.AddRange(Bombs.OfType<BaseNote>().ToList());
             Events.AddRange(ColorBoostEvents.OfType<BaseEvent>().ToList());
             Events.AddRange(RotationEvents.OfType<BaseEvent>().ToList());
+            // Events.AddRange(BpmChanges.OfType<BaseEvent>().ToList());
             Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
         }
 
-        private static void LoadCustomDataNode(ref V3Difficulty map, ref JSONNode mainNode)
+        private static void LoadCustom(ref V3Difficulty map, ref JSONNode mainNode)
         {
             if (mainNode["customData"] == null) return;
 
-            var bpmList = new List<BaseBpmEvent>();
+            var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();

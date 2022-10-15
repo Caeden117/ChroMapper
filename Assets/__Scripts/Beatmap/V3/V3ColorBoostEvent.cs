@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
 using UnityEngine;
@@ -37,7 +38,7 @@ namespace Beatmap.V3
         }
 
         public override string CustomKeyTrack { get; } = "track";
-        
+
         public override string CustomKeyColor { get; } = "color";
 
         public override string CustomKeyPropID { get; } = "propID";
@@ -78,7 +79,7 @@ namespace Beatmap.V3
             node["b"] = Math.Round(Time, DecimalPrecision);
             node["o"] = Toggle;
             CustomData = SaveCustom();
-            if (CustomData.Count == 0) return node;
+            if (!CustomData.Children.Any()) return node;
             node["customData"] = CustomData;
             return node;
         }

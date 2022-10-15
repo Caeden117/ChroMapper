@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
 
@@ -83,7 +84,7 @@ namespace Beatmap.V3
 
         public override bool IsMappingExtensions() =>
             (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 || Width <= -1000 || Width >= 1000 ||
-             Height < 0 || Height >= 5) &&
+             Height < 0 || Height > 5) &&
             !IsNoodleExtensions();
 
         public override JSONNode ToJson()
@@ -96,7 +97,7 @@ namespace Beatmap.V3
             node["w"] = Width;
             node["h"] = Height;
             CustomData = SaveCustom();
-            if (CustomData.Count == 0) return node;
+            if (!CustomData.Children.Any()) return node;
             node["customData"] = CustomData;
             return node;
         }

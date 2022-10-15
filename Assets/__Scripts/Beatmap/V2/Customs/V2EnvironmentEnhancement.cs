@@ -10,6 +10,10 @@ namespace Beatmap.V2.Customs
         {
         }
 
+        public V2EnvironmentEnhancement(BaseEnvironmentEnhancement other) : base(other)
+        {
+        }
+
         public V2EnvironmentEnhancement(JSONNode node) : base(node)
         {
         }
@@ -61,7 +65,7 @@ namespace Beatmap.V2.Customs
             if (Rotation != null) WriteVector3(node, KeyRotation, Rotation);
             if (LocalPosition != null) WriteVector3(node, KeyLocalPosition, LocalPosition);
             if (LocalRotation != null) WriteVector3(node, KeyLocalRotation, LocalRotation);
-            if (KeyLightID != null) node[KeyLightID] = KeyLightID;
+            if (LightID != null) node[KeyLightID] = LightID;
 
             return node;
         }

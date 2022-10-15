@@ -4,7 +4,6 @@ using Beatmap.Enums;
 using Beatmap.Shared;
 using Beatmap.V3;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Beatmap.Containers
 {

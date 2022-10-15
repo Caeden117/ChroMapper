@@ -20,11 +20,7 @@ namespace Beatmap.Base
         public abstract ObjectType ObjectType { get; set; }
         public bool HasAttachedContainer { get; set; } = false;
         public float Time { get; set; }
-
-        public string CustomTrack { get; set; }
         public virtual Color? CustomColor { get; set; }
-
-        public abstract string CustomKeyTrack { get; }
         public abstract string CustomKeyColor { get; }
         public JSONNode CustomData { get; set; }
 
@@ -33,6 +29,10 @@ namespace Beatmap.Base
         public virtual bool IsNoodleExtensions() => false;
 
         public virtual bool IsMappingExtensions() => false;
+
+        public string CustomTrack { get; set; }
+
+        public abstract string CustomKeyTrack { get; }
 
         public virtual bool IsConflictingWith(BaseObject other, bool deletion = false) =>
             Mathf.Abs(Time - other.Time) < BeatmapObjectContainerCollection.Epsilon &&

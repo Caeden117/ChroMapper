@@ -10,6 +10,10 @@ namespace Beatmap.V3.Customs
         {
         }
 
+        public V3Bookmark(BaseBookmark other) : base(other)
+        {
+        }
+
         public V3Bookmark(JSONNode node) : base(node)
         {
         }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Enums;
-using Beatmap.Shared;
 using SplineMesh;
 using UnityEngine;
 

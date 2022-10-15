@@ -11,6 +11,23 @@ namespace Beatmap.Base.Customs
         {
         }
 
+        public BaseEnvironmentEnhancement(BaseEnvironmentEnhancement other)
+        {
+            ID = other.ID;
+            LookupMethod = other.LookupMethod;
+            Geometry = other.Geometry?.Clone();
+            Track = other.Track;
+            Duplicate = other.Duplicate;
+            Active = other.Active;
+            Scale = other.Scale;
+            Position = other.Position;
+            Rotation = other.Rotation;
+            LocalPosition = other.LocalPosition;
+            LocalRotation = other.LocalRotation;
+            Components = other.Components?.Clone();
+            LightID = other.LightID;
+        }
+
         protected BaseEnvironmentEnhancement(JSONNode node) => InstantiateHelper(ref node);
 
         protected BaseEnvironmentEnhancement(string toRemove)

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Base;
 using Beatmap.Shared;
 using SimpleJSON;
@@ -38,7 +39,7 @@ namespace Beatmap.V2
             ParseCustom();
 
         public override string CustomKeyTrack { get; } = "_track";
-        
+
         public override string CustomKeyColor { get; } = "_color";
 
         public override string CustomKeyPropID { get; } = "_propID";
@@ -141,7 +142,7 @@ namespace Beatmap.V2
             node["_value"] = Value;
             node["_floatValue"] = FloatValue;
             CustomData = SaveCustom();
-            if (CustomData.Count == 0) return node;
+            if (!CustomData.Children.Any()) return node;
             node["_customData"] = CustomData;
             return node;
         }

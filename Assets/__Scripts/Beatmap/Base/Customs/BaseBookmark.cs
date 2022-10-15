@@ -13,6 +13,13 @@ namespace Beatmap.Base.Customs
         {
         }
 
+        protected BaseBookmark(BaseBookmark other)
+        {
+            Time = other.Time;
+            Name = other.Name;
+            Color = other.Color;
+        }
+
         protected BaseBookmark(JSONNode node) => InstantiateHelper(ref node);
 
         protected BaseBookmark(float time, string name) : base(time)

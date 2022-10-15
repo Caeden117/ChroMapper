@@ -32,31 +32,21 @@ namespace Beatmap.Base
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
         public bool UseNormalEventsAsCompatibleEvents { get; set; } = true;
         public float Time { get; set; } = 0f;
-        public List<BaseBpmEvent> BpmChanges { get; set; } = new List<BaseBpmEvent>();
+        public List<BaseBpmChange> BpmChanges { get; set; } = new List<BaseBpmChange>();
         public List<BaseBookmark> Bookmarks { get; set; } = new List<BaseBookmark>();
         public List<BaseCustomEvent> CustomEvents { get; set; } = new List<BaseCustomEvent>();
 
         public List<BaseEnvironmentEnhancement> EnvironmentEnhancements { get; set; } =
             new List<BaseEnvironmentEnhancement>();
 
-        public JSONNode CustomData { get; set; }
+        public JSONNode CustomData { get; set; } = new JSONObject();
 
         public abstract bool IsChroma();
         public abstract bool IsNoodleExtensions();
         public abstract bool IsMappingExtensions();
 
-        public JSONNode GetOrCreateCustom()
-        {
-            if (CustomData == null)
-                CustomData = new JSONObject();
-
-            return CustomData;
-        }
-
-        public void ParseCustom() => throw new NotSupportedException();
-
         public abstract bool Save();
-        protected abstract bool SaveCustomDataNode();
+        public abstract bool SaveCustom();
 
         // Cleans an array by filtering out null elements, or objects with invalid time.
         // Could definitely be optimized a little bit, but since saving is done on a separate thread, I'm not too worried about it.

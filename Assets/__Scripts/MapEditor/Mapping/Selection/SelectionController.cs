@@ -704,7 +704,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (Settings.Instance.Load_Others)
             {
                 BeatSaberSongContainer.Instance.Map.BpmChanges =
-                    newObjects[ObjectType.BpmChange].Cast<BaseBpmEvent>().ToList();
+                    newObjects[ObjectType.BpmChange].Cast<BaseBpmChange>().ToList();
                 BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[ObjectType.CustomEvent]
                     .Cast<BaseCustomEvent>().ToList();
             }

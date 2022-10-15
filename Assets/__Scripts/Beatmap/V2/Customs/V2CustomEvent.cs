@@ -10,6 +10,10 @@ namespace Beatmap.V2.Customs
         {
         }
 
+        public V2CustomEvent(BaseCustomEvent other) : base(other)
+        {
+        }
+
         public V2CustomEvent(JSONNode node) : base(node)
         {
         }

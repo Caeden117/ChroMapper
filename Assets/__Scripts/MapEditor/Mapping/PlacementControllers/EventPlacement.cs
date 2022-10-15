@@ -274,7 +274,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         // Instead of copying the whole custom data, only copy prop ID
         if (dragged.CustomData != null && queued.CustomData != null)
         {
-            if (queued.CustomPropID != null) dragged.CustomPropID = queued.CustomPropID;
+            if (queued.CustomData?[queued.CustomKeyPropID] != null) dragged.GetOrCreateCustom()[dragged.CustomKeyPropID] = queued.CustomData[queued.CustomKeyPropID];
 
             if (queued.CustomLightID != null) dragged.CustomLightID = queued.CustomLightID;
         }

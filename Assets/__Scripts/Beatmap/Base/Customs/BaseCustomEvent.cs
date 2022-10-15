@@ -9,6 +9,13 @@ namespace Beatmap.Base.Customs
         {
         }
 
+        protected BaseCustomEvent(BaseCustomEvent other)
+        {
+            Time = other.Time;
+            Type = other.Type;
+            Data = other.Data.Clone();
+        }
+
         protected BaseCustomEvent(JSONNode node) => InstantiateHelper(ref node);
 
         protected BaseCustomEvent(float time, string type, JSONNode node = null) : base(time)

@@ -19,45 +19,50 @@ public class MapLoader : MonoBehaviour
     private int noteLaneSize = 2;
     private int noteLayerSize = 3;
 
-    public void UpdateMapData(BaseDifficulty map)
+    public void UpdateMapData(BaseDifficulty m)
     {
-        if (map is V3Difficulty)
+        if (m is V3Difficulty)
         {
             var copy = new V3Difficulty
             {
-                CustomData = map.CustomData?.Clone(),
-                BpmEvents = new List<BaseBpmEvent>(map.BpmEvents),
-                RotationEvents = new List<BaseRotationEvent>(map.RotationEvents),
-                Notes = new List<BaseNote>(map.Notes),
-                Obstacles = new List<BaseObstacle>(map.Obstacles),
-                Arcs = new List<BaseArc>(map.Arcs),
-                Chains = new List<BaseChain>(map.Chains),
-                Events = new List<BaseEvent>(map.Events),
-                ColorBoostEvents = new List<BaseColorBoostEvent>(map.ColorBoostEvents),
-                LightColorEventBoxGroups = new List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>>(map.LightColorEventBoxGroups),
-                LightRotationEventBoxGroups = new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>(map.LightRotationEventBoxGroups),
-                EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(map.EventTypesWithKeywords),
-                UseNormalEventsAsCompatibleEvents = map.UseNormalEventsAsCompatibleEvents,
-                EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(map.EnvironmentEnhancements),
-                BpmChanges = new List<BaseBpmEvent>(map.BpmChanges),
-                CustomEvents = new List<BaseCustomEvent>(map.CustomEvents)
+                CustomData = m.CustomData?.Clone(),
+                BpmEvents = new List<BaseBpmEvent>(m.BpmEvents),
+                RotationEvents = new List<BaseRotationEvent>(m.RotationEvents),
+                Notes = new List<BaseNote>(m.Notes),
+                Obstacles = new List<BaseObstacle>(m.Obstacles),
+                Arcs = new List<BaseArc>(m.Arcs),
+                Chains = new List<BaseChain>(m.Chains),
+                Events = new List<BaseEvent>(m.Events),
+                Waypoints = new List<BaseWaypoint>(m.Waypoints),
+                ColorBoostEvents = new List<BaseColorBoostEvent>(m.ColorBoostEvents),
+                LightColorEventBoxGroups = new List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>>(m.LightColorEventBoxGroups),
+                LightRotationEventBoxGroups = new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>(m.LightRotationEventBoxGroups),
+                EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(m.EventTypesWithKeywords),
+                UseNormalEventsAsCompatibleEvents = m.UseNormalEventsAsCompatibleEvents,
+                
+                EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(m.EnvironmentEnhancements),
+                BpmChanges = new List<BaseBpmChange>(m.BpmChanges),
+                CustomEvents = new List<BaseCustomEvent>(m.CustomEvents)
             };
-            this.map = copy;
+            map = copy;
         }
         else
         {
             var copy = new V2Difficulty
             {
-                CustomData = map.CustomData?.Clone(),
-                Notes = new List<BaseNote>(map.Notes),
-                Obstacles = new List<BaseObstacle>(map.Obstacles),
-                Events = new List<BaseEvent>(map.Events),
-                EventTypesWithKeywords = map.EventTypesWithKeywords != null ? new V2SpecialEventsKeywordFilters(map.EventTypesWithKeywords) : null,
-                EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(map.EnvironmentEnhancements),
-                BpmChanges = new List<BaseBpmEvent>(map.BpmChanges),
-                CustomEvents = new List<BaseCustomEvent>(map.CustomEvents)
+                CustomData = m.CustomData?.Clone(),
+                Notes = new List<BaseNote>(m.Notes),
+                Obstacles = new List<BaseObstacle>(m.Obstacles),
+                Events = new List<BaseEvent>(m.Events),
+                Waypoints = new List<BaseWaypoint>(m.Waypoints),
+                Arcs = new List<BaseArc>(m.Arcs),
+                EventTypesWithKeywords = m.EventTypesWithKeywords != null ? new V2SpecialEventsKeywordFilters(m.EventTypesWithKeywords) : null,
+                
+                EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(m.EnvironmentEnhancements),
+                BpmChanges = new List<BaseBpmChange>(m.BpmChanges),
+                CustomEvents = new List<BaseCustomEvent>(m.CustomEvents)
             };
-            this.map = copy;
+            map = copy;
         }
 
     }

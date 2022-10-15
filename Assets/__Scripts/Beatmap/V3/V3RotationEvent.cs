@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
 using UnityEngine;
@@ -80,7 +81,7 @@ namespace Beatmap.V3
             node["e"] = ExecutionTime;
             node["r"] = Rotation;
             CustomData = SaveCustom();
-            if (CustomData.Count == 0) return node;
+            if (!CustomData.Children.Any()) return node;
             node["customData"] = CustomData;
             return node;
         }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Beatmap.Base;
 using Beatmap.Shared;
 using SimpleJSON;
@@ -36,6 +37,7 @@ namespace Beatmap.V3
         public override float? CustomStepMult { get; set; }
         public override float? CustomPropMult { get; set; }
         public override float? CustomSpeedMult { get; set; }
+
         public override ChromaLightGradient CustomLightGradient
         {
             get => null;
@@ -45,7 +47,7 @@ namespace Beatmap.V3
         }
 
         public override string CustomKeyTrack { get; } = "track";
-        
+
         public override string CustomKeyColor { get; } = "color";
 
         public override string CustomKeyPropID { get; } = "propID";
@@ -106,7 +108,7 @@ namespace Beatmap.V3
             node["i"] = Value;
             node["f"] = FloatValue;
             CustomData = SaveCustom();
-            if (CustomData.Count == 0) return node;
+            if (!CustomData.Children.Any()) return node;
             node["customData"] = CustomData;
             return node;
         }

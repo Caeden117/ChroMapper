@@ -9,6 +9,22 @@ namespace Beatmap.Base.Customs
         {
         }
 
+        protected BaseBpmChange(BaseBpmChange other)
+        {
+            Bpm = other.Bpm;
+            Time = other.Time;
+            BeatsPerBar = other.BeatsPerBar;
+            MetronomeOffset = other.MetronomeOffset;
+        }
+
+        protected BaseBpmChange(BaseBpmEvent other)
+        {
+            Bpm = other.Bpm;
+            Time = other.Time;
+            BeatsPerBar = 4;
+            MetronomeOffset = 4;
+        }
+
         protected BaseBpmChange(JSONNode node) => InstantiateHelper(ref node);
 
         protected BaseBpmChange(float time, float bpm) : base(time, bpm)

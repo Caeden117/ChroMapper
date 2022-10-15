@@ -10,6 +10,14 @@ namespace Beatmap.V2.Customs
         {
         }
 
+        public V2BpmChange(BaseBpmChange other) : base(other)
+        {
+        }
+
+        public V2BpmChange(BaseBpmEvent other) : base(other)
+        {
+        }
+
         public V2BpmChange(JSONNode node) : base(node)
         {
         }

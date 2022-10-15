@@ -1,6 +1,5 @@
 using Beatmap.Containers;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Beatmap.Appearances
 {

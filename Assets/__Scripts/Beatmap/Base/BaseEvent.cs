@@ -29,7 +29,7 @@ namespace Beatmap.Base
         protected BaseEvent(BaseBpmEvent baseBpm)
         {
             Time = baseBpm.Time;
-            Type = 100;
+            Type = (int)EventTypeValue.BpmChange;
             Value = 0;
             FloatValue = baseBpm.Bpm;
             CustomData = baseBpm.CustomData?.Clone();
@@ -38,7 +38,7 @@ namespace Beatmap.Base
         protected BaseEvent(BaseColorBoostEvent cbe)
         {
             Time = cbe.Time;
-            Type = 5;
+            Type = (int)EventTypeValue.ColorBoost;
             Value = cbe.Toggle ? 1 : 0;
             FloatValue = 1;
             CustomData = cbe.CustomData?.Clone();
@@ -101,6 +101,7 @@ namespace Beatmap.Base
         public bool IsPropagation => CustomPropID >= -1;
 
         public virtual int CustomPropID { get; set; } = -1;
+
         public virtual int[] CustomLightID
         {
             get => customLightID;
@@ -243,7 +244,7 @@ namespace Beatmap.Base
             if (x < 0) x = CustomLightID.Length > 0 ? labels.LightIDToEditor(Type, CustomLightID[0]) : -1;
 
             return new Vector2(
-                (float)x + 1.5f,
+                x + 1.5f,
                 0.5f);
         }
 

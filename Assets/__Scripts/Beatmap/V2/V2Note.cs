@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
 
@@ -89,7 +90,7 @@ namespace Beatmap.V2
             node["_type"] = Type;
             node["_cutDirection"] = CutDirection;
             CustomData = SaveCustom();
-            if (CustomData.Count == 0) return node;
+            if (!CustomData.Children.Any()) return node;
             node["_customData"] = CustomData;
             return node;
         }

@@ -46,7 +46,7 @@ namespace Beatmap.V3
             foreach (var k in Events) ary.Add(k.ToJson());
             node["e"] = ary;
             CustomData = SaveCustom();
-            if (CustomData.Count == 0) return node;
+            if (!CustomData.Children.Any()) return node;
             node["customData"] = CustomData;
             return node;
         }

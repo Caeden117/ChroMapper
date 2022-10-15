@@ -10,6 +10,10 @@ namespace Beatmap.V3.Customs
         {
         }
 
+        public V3CustomEvent(BaseCustomEvent other) : base(other)
+        {
+        }
+
         public V3CustomEvent(JSONNode node) : base(node)
         {
         }

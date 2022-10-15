@@ -26,8 +26,8 @@ namespace Beatmap.Containers
 
         public void UpdateMaterials(MaterialPropertyBlock materialPropertyBlock)
         {
-            var c = materialPropertyBlock.GetColor(ObjectContainer.color);
-            MaterialPropertyBlock.SetColor(ObjectContainer.color, c);
+            var c = materialPropertyBlock.GetColor(color);
+            MaterialPropertyBlock.SetColor(color, c);
             UpdateMaterials();
         }
 

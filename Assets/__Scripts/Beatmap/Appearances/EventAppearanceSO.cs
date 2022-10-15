@@ -2,7 +2,6 @@ using System.Globalization;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Beatmap.Appearances
 {
@@ -27,10 +26,11 @@ namespace Beatmap.Appearances
 
         [SerializeField] private Color offColor;
 
-        [Header("Other Event Colors")] [SerializeField] private Color ringEventsColor;
+        [Header("Other Event Colors")] [SerializeField]
+        private Color ringEventsColor;
 
-        [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
-        [SerializeField] private Color otherColor;
+        [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")] [SerializeField]
+        private Color otherColor;
 
         public void SetEventAppearance(EventContainer e, bool final = true, bool boost = false)
         {

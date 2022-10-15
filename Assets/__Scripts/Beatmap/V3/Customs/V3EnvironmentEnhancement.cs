@@ -10,6 +10,10 @@ namespace Beatmap.V3.Customs
         {
         }
 
+        public V3EnvironmentEnhancement(BaseEnvironmentEnhancement other) : base(other)
+        {
+        }
+
         public V3EnvironmentEnhancement(JSONNode node) : base(node)
         {
         }

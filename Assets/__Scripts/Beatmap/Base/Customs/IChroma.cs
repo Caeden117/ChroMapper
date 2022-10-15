@@ -1,5 +1,4 @@
 using Beatmap.Shared;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Beatmap.Base.Customs
@@ -15,12 +14,9 @@ namespace Beatmap.Base.Customs
     {
         int CustomPropID { get; set; } // honestly, what is this? kinda misleading
         int[] CustomLightID { get; set; }
-
-        [CanBeNull] string CustomLerpType { get; set; }
-
-        [CanBeNull] string CustomEasing { get; set; }
-
-        [CanBeNull] ChromaLightGradient CustomLightGradient { get; set; }
+        string CustomLerpType { get; set; }
+        string CustomEasing { get; set; }
+        ChromaLightGradient CustomLightGradient { get; set; }
 
         float? CustomStep { get; set; }
         float? CustomProp { get; set; }

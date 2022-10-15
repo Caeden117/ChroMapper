@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
 
@@ -90,7 +91,7 @@ namespace Beatmap.V3
             node["sc"] = SliceCount;
             node["s"] = Squish;
             CustomData = SaveCustom();
-            if (CustomData.Count == 0) return node;
+            if (!CustomData.Children.Any()) return node;
             node["customData"] = CustomData;
             return node;
         }
