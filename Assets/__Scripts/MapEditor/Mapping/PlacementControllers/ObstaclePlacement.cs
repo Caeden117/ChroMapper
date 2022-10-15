@@ -168,6 +168,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             queuedData.CustomData = null;
             queuedData.PosX = Mathf.RoundToInt(wallTransform.localPosition.x + 2);
             queuedData.PosY = vanillaType == (int)ObstacleType.Full ? 0 : 2;
+            queuedData.Height = vanillaType == (int)ObstacleType.Full ? 5 : 3;
             queuedData.Type = vanillaType;
 
             precisionPlacement.TogglePrecisionPlacement(false);
