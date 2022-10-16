@@ -134,10 +134,12 @@ namespace Beatmap.Converters
         public static V3EnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
             other switch
             {
-                V2EnvironmentEnhancement o => new V3EnvironmentEnhancement(o),
+                V2EnvironmentEnhancement o => new V3EnvironmentEnhancement(o) { Position = RescaleVector3(o.Position), LocalPosition = RescaleVector3(o.LocalPosition) },
                 V3EnvironmentEnhancement o => o,
                 _ => throw new ArgumentException("Unexpected object to convert v2 environment enhancement to v3 environment enhancement")
             };
+
+        private static Vector3? RescaleVector3(Vector3? vec3) => vec3 is { } v ? new Vector3(v.x * 0.6f, v.y * 0.6f, v.z * 0.6f) as Vector3? : null;
 
         public static JSONNode CustomDataObject(JSONNode node)
         {

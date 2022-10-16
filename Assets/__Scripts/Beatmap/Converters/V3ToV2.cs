@@ -7,6 +7,7 @@ using Beatmap.V2.Customs;
 using Beatmap.V3;
 using Beatmap.V3.Customs;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.Converters
 {
@@ -99,10 +100,12 @@ namespace Beatmap.Converters
         public static V2EnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
             other switch
             {
-                V3EnvironmentEnhancement o => new V2EnvironmentEnhancement(o),
+                V3EnvironmentEnhancement o => new V2EnvironmentEnhancement(o) { Position = RescaleVector3(o.Position), LocalPosition = RescaleVector3(o.LocalPosition) },
                 V2EnvironmentEnhancement o => o,
                 _ => throw new ArgumentException("Unexpected object to convert v3 environment enhancement to v2 environment enhancement")
             };
+
+        private static Vector3? RescaleVector3(Vector3? vec3) => vec3 is { } v ? new Vector3(v.x / 0.6f, v.y / 0.6f, v.z / 0.6f) as Vector3? : null;
 
         public static JSONNode CustomDataObject(JSONNode node)
         {
