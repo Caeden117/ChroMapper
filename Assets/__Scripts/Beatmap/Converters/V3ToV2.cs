@@ -94,18 +94,65 @@ namespace Beatmap.Converters
             {
                 V3CustomEvent o => new V2CustomEvent(o),
                 V2CustomEvent o => o,
-                _ => throw new ArgumentException("Unexpected object to convert v3 BPM change to v2 BPM change")
+                _ => throw new ArgumentException("Unexpected object to convert v3 custom event to v2 custom event")
             };
 
         public static V2EnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
             other switch
             {
-                V3EnvironmentEnhancement o => new V2EnvironmentEnhancement(o) { Position = RescaleVector3(o.Position), LocalPosition = RescaleVector3(o.LocalPosition) },
+                V3EnvironmentEnhancement o => new V2EnvironmentEnhancement(o) { Position = RescaleVector3(o.Position), LocalPosition = RescaleVector3(o.LocalPosition), Geometry = Geometry(other.Geometry.AsObject) },
                 V2EnvironmentEnhancement o => o,
                 _ => throw new ArgumentException("Unexpected object to convert v3 environment enhancement to v2 environment enhancement")
             };
 
-        private static Vector3? RescaleVector3(Vector3? vec3) => vec3 is { } v ? new Vector3(v.x / 0.6f, v.y / 0.6f, v.z / 0.6f) as Vector3? : null;
+        public static JSONObject Geometry(JSONObject other)
+        {
+            var obj = new JSONObject();
+            
+            if (other["type"] == "CUSTOM")
+            {
+                obj["_type"] = other["type"];
+                obj["_mesh"] = Mesh(obj["mesh"].AsObject);
+                obj["_material"] = other["material"].IsString
+                    ? other["material"]
+                    : Material(obj["material"].AsObject);
+                obj["_collision"] = other["collision"];
+            }
+            else
+            {
+                obj["_type"] = other["type"];
+                obj["_material"] = other["material"].IsString
+                    ? other["material"]
+                    : Material(obj["material"].AsObject);
+                obj["_collision"] = other["collision"];
+            }
+
+            return obj;
+        }
+
+        public static JSONObject Mesh(JSONObject other)
+        {
+            var obj = new JSONObject { ["_vertices"] = other["vertices"] };
+
+            if (other.HasKey("uv")) obj["_uv"] = other["uv"];
+            if (other.HasKey("triangles")) obj["_triangles"] = other["triangles"];
+            
+            return obj;
+        }
+
+        public static JSONObject Material(JSONObject other)
+        {
+            var obj = new JSONObject { ["_shader"] = other["shader"] };
+
+            if (other.HasKey("shaderKeywords")) obj["_shaderKeywords"] = other["shaderKeywords"];
+            if (other.HasKey("collision")) obj["_collision"] = other["collision"];
+            if (other.HasKey("track")) obj["_track"] = other["track"];
+            if (other.HasKey("color")) obj["_color"] = other["color"];
+            
+            return obj;
+        }
+
+        public static Vector3? RescaleVector3(Vector3? vec3) => vec3 is { } v ? new Vector3(v.x / 0.6f, v.y / 0.6f, v.z / 0.6f) as Vector3? : null;
 
         public static JSONNode CustomDataObject(JSONNode node)
         {
@@ -127,19 +174,21 @@ namespace Beatmap.Converters
             if (n.HasKey("uninteractable") && !n.HasKey("_interactable")) n["_interactable"] = !n["uninteractable"];
             if (n.HasKey("worldRotation")) n["_rotation"] = n.HasKey("_rotation") ? n["_rotation"] : n["worldRotation"];
             if (n.HasKey("animation") && !n.HasKey("_animation"))
-                n["_animation"] = new JSONObject
-                {
-                    ["_color"] = n["animation"]["color"],
-                    ["_definitePosition"] = n["animation"]["definitePosition"],
-                    ["_dissolve"] = n["animation"]["dissolve"],
-                    ["_dissolveArrow"] = n["animation"]["dissolveArrow"],
-                    ["_interactable"] = n["animation"]["interactable"],
-                    ["_localRotation"] = n["animation"]["localRotation"],
-                    ["_position"] = n["animation"]["offsetPosition"],
-                    ["_rotation"] = n["animation"]["offsetRotation"],
-                    ["_scale"] = n["animation"]["scale"],
-                    ["_time"] = n["animation"]["time"]
-                };
+            {
+                var obj = new JSONObject();
+                if (n["animation"].HasKey("color")) obj["_color"] = n["animation"]["color"];
+                if (n["animation"].HasKey("definitePosition")) obj["_definitePosition"] = n["animation"]["definitePosition"];
+                if (n["animation"].HasKey("dissolve")) obj["_dissolve"] = n["animation"]["dissolve"];
+                if (n["animation"].HasKey("dissolveArrow")) obj["_dissolveArrow"] = n["animation"]["dissolveArrow"];
+                if (n["animation"].HasKey("interactable")) obj["_interactable"] = n["animation"]["interactable"];
+                if (n["animation"].HasKey("localRotation")) obj["_localRotation"] = n["animation"]["localRotation"];
+                if (n["animation"].HasKey("offsetPosition")) obj["_position"] = n["animation"]["offsetPosition"];
+                if (n["animation"].HasKey("offsetRotation")) obj["_rotation"] = n["animation"]["offsetRotation"];
+                if (n["animation"].HasKey("scale")) obj["_scale"] = n["animation"]["scale"];
+                if (n["animation"].HasKey("time")) obj["_time"] = n["animation"]["time"];
+                if (obj.Children.Any())
+                    n["_animation"] = obj;
+            }
 
             if (n.HasKey("color")) n.Remove("color");
             if (n.HasKey("coordinates")) n.Remove("coordinates");
@@ -193,11 +242,11 @@ namespace Beatmap.Converters
             return n;
         }
 
-        public static V2Difficulty Difficulty(V3Difficulty other) =>
-            new V2Difficulty
+        public static V2Difficulty Difficulty(V3Difficulty other)
+        {
+            var d = new V2Difficulty
             {
                 DirectoryAndFile = other.DirectoryAndFile,
-                Time = other.Time,
                 Events = other.Events,
                 Notes = other.Notes,
                 Obstacles = other.Obstacles,
@@ -208,8 +257,29 @@ namespace Beatmap.Converters
                 Bookmarks = other.Bookmarks,
                 CustomEvents = other.CustomEvents,
                 EnvironmentEnhancements = other.EnvironmentEnhancements,
+                Time = other.Time,
                 
-                CustomData = other.CustomData?.Clone()
+                CustomData = other.CustomData?.Clone() ?? new JSONObject()
             };
+
+            if (d.Materials.Any())
+            {
+                var newMat = d.Materials.ToDictionary(m => m.Key, m => Material(m.Value));
+                d.Materials = newMat;
+            }
+
+            if (d.CustomData != null)
+            {
+                if (d.CustomData.HasKey("time")) d.CustomData.Remove("time");
+                if (d.CustomData.HasKey("BPMChanges")) d.CustomData.Remove("BPMChanges");
+                if (d.CustomData.HasKey("bookmarks")) d.CustomData.Remove("bookmarks");
+                if (d.CustomData.HasKey("customEvents")) d.CustomData.Remove("customEvents");
+                if (d.CustomData.HasKey("pointDefinitions")) d.CustomData.Remove("pointDefinitions");
+                if (d.CustomData.HasKey("environment")) d.CustomData.Remove("environment");
+                if (d.CustomData.HasKey("materials")) d.CustomData.Remove("materials");
+            }
+            
+            return d;
+        }
     }
 }

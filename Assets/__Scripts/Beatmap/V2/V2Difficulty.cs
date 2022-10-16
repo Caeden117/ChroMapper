@@ -109,19 +109,43 @@ namespace Beatmap.V2
             else
                 MainNode["_customData"].Remove("_customEvents");
 
+            if (PointDefinitions.Any())
+            {
+                var pAry = new JSONArray();
+                foreach (var p in PointDefinitions)
+                {
+                    var obj = new JSONObject { ["_name"] = p.Key };
+                    var points = new JSONArray();
+                    foreach (var ary in p.Value)
+                    {
+                        points.Add(ary);
+                    }
+                    obj["_points"] = points;
+                    pAry.Add(obj);
+                }
+                MainNode["_customData"]["_pointDefinitions"] = pAry;
+            }
+            else
+                MainNode["_customData"].Remove("_pointDefinitions");
+
             if (EnvironmentEnhancements.Any())
                 MainNode["_customData"]["_environment"] = envEnhancements;
             else
                 MainNode["_customData"].Remove("_environment");
             
+            if (Materials.Any())
+            {
+                MainNode["_customData"]["_materials"] = new JSONObject();
+                foreach (var m in Materials)
+                {
+                    MainNode["_customData"]["_materials"][m.Key] = m.Value;
+                }
+            }
+            else
+                MainNode["_customData"].Remove("_materials");
+
             if (Time > 0) MainNode["_customData"]["_time"] = Math.Round(Time, 3);
 
-            if (CustomData.HasKey("time")) CustomData.Remove("time");
-            if (CustomData.HasKey("BPMChanges")) CustomData.Remove("BPMChanges");
-            if (CustomData.HasKey("bookmarks")) CustomData.Remove("bookmarks");
-            if (CustomData.HasKey("customEvents")) CustomData.Remove("customEvents");
-            if (CustomData.HasKey("environment")) CustomData.Remove("environment");
-            
             BeatSaberSong.CleanObject(MainNode["_customData"]);
             if (!MainNode["_customData"].Children.Any()) MainNode.Remove("_customData");
 
@@ -232,7 +256,9 @@ namespace Beatmap.V2
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
+            var pointDefinitions = new Dictionary<string, List<JSONArray>>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
+            var materials = new Dictionary<string, JSONObject>();
 
             var nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
@@ -264,12 +290,29 @@ namespace Beatmap.V2
                                 case "_customEvents":
                                     foreach (JSONNode n in dataNode) customEventsList.Add(new V2CustomEvent(n));
                                     break;
-                                case "_time":
-                                    map.Time = dataNode.AsFloat;
+                                case "_pointDefinitions":
+                                    foreach (JSONNode n in node)
+                                    {
+                                        var points = new List<JSONArray>();
+                                        foreach (JSONArray p in n["_points"].AsArray)
+                                        {
+                                            points.Add(p);
+                                        }
+                                        pointDefinitions.Add(n["_name"], points);
+                                    }
                                     break;
                                 case "_environment":
                                     foreach (JSONNode n in dataNode)
                                         envEnhancementsList.Add(new V2EnvironmentEnhancement(n));
+                                    break;
+                                case "_materials":
+                                    foreach (var n in node)
+                                    {
+                                        materials.Add(n.Key, n.Value.AsObject);
+                                    }
+                                    break;
+                                case "_time":
+                                    map.Time = dataNode.AsFloat;
                                     break;
                             }
                         }

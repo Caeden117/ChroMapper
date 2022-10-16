@@ -143,19 +143,40 @@ namespace Beatmap.V3
             else
                 MainNode["customData"].Remove("customEvents");
 
+            if (PointDefinitions.Any())
+            {
+                MainNode["customData"]["pointDefinitions"] = new JSONObject();
+                foreach (var p in PointDefinitions)
+                {
+                    var points = new JSONArray();
+                    foreach (var ary in p.Value)
+                    {
+                        points.Add(ary);
+                    }
+                    MainNode["customData"]["pointDefinitions"][p.Key] = points;
+                }
+            }
+            else
+                MainNode["customData"].Remove("pointDefinitions");
+
             if (EnvironmentEnhancements.Any())
                 MainNode["customData"]["environment"] = envEnhancements;
             else
                 MainNode["customData"].Remove("environment");
             
+            if (Materials.Any())
+            {
+                MainNode["customData"]["materials"] = new JSONObject();
+                foreach (var m in Materials)
+                {
+                    MainNode["customData"]["materials"][m.Key] = m.Value;
+                }
+            }
+            else
+                MainNode["customData"].Remove("materials");
+
             if (Time > 0) MainNode["customData"]["time"] = Math.Round(Time, 3);
             
-            if (CustomData.HasKey("_time")) CustomData.Remove("_time");
-            if (CustomData.HasKey("_BPMChanges")) CustomData.Remove("_BPMChanges");
-            if (CustomData.HasKey("_bookmarks")) CustomData.Remove("_bookmarks");
-            if (CustomData.HasKey("_customEvents")) CustomData.Remove("_customEvents");
-            if (CustomData.HasKey("_environment")) CustomData.Remove("_environment");
-
             BeatSaberSong.CleanObject(MainNode["customData"]);
             if (!MainNode["customData"].Children.Any()) MainNode.Remove("customData");
 
@@ -312,7 +333,9 @@ namespace Beatmap.V3
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
+            var pointDefinitions = new Dictionary<string, List<JSONArray>>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
+            var materials = new Dictionary<string, JSONObject>();
 
             var nodeEnum = mainNode["customData"].GetEnumerator();
             while (nodeEnum.MoveNext())
@@ -331,8 +354,25 @@ namespace Beatmap.V3
                     case "customEvents":
                         foreach (JSONNode n in node) customEventsList.Add(new V3CustomEvent(n));
                         break;
+                    case "pointDefinitions":
+                        foreach (var n in node)
+                        {
+                            var points = new List<JSONArray>();
+                            foreach (var p in n.Value)
+                            {
+                                points.Add(p.Value.AsArray);
+                            }
+                            pointDefinitions.Add(n.Key, points);
+                        }
+                        break;
                     case "environment":
                         foreach (JSONNode n in node) envEnhancementsList.Add(new V3EnvironmentEnhancement(n));
+                        break;
+                    case "materials":
+                        foreach (var n in node)
+                        {
+                            materials.Add(n.Key, n.Value.AsObject);
+                        }
                         break;
                     case "time":
                         map.Time = node.AsFloat;
@@ -343,7 +383,9 @@ namespace Beatmap.V3
             map.BpmChanges = bpmList.DistinctBy(x => x.Time).ToList();
             map.Bookmarks = bookmarksList;
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
+            map.PointDefinitions = pointDefinitions;
             map.EnvironmentEnhancements = envEnhancementsList;
+            map.Materials = materials;
         }
     }
 }

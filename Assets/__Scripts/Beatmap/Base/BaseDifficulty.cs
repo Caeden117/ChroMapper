@@ -39,6 +39,11 @@ namespace Beatmap.Base
         public List<BaseEnvironmentEnhancement> EnvironmentEnhancements { get; set; } =
             new List<BaseEnvironmentEnhancement>();
 
+        // TODO: concrete class for these bad boys
+        public Dictionary<string, JSONObject> Materials = new Dictionary<string, JSONObject>();
+        
+        public Dictionary<string, List<JSONArray>> PointDefinitions = new Dictionary<string, List<JSONArray>>();
+
         public JSONNode CustomData { get; set; } = new JSONObject();
 
         public abstract bool IsChroma();
