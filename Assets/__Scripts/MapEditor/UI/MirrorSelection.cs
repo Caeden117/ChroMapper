@@ -65,26 +65,24 @@ public class MirrorSelection : MonoBehaviour
             {
                 var precisionWidth = obstacle.Width >= 1000;
                 var state = obstacle.PosX;
-                if (obstacle.CustomData != null) //Noodle Extensions
+                
+                if (obstacle.CustomCoordinate != null)
                 {
-                    if (obstacle.CustomCoordinate != null)
+                    var oldPosition = (Vector2)obstacle.CustomCoordinate;
+                    
+                    var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
+
+                    if (obstacle.CustomSize != null)
                     {
-                        var oldPosition = (Vector2)obstacle.CustomCoordinate;
-                        
-                        var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
-
-                        if (obstacle.CustomSize != null)
-                        {
-                            var scale = (Vector2)obstacle.CustomSize;
-                            flipped.x -= scale.x;
-                        }
-                        else
-                        {
-                            flipped.x -= obstacle.Width;
-                        }
-
-                        obstacle.CustomCoordinate = flipped;
+                        var scale = (Vector2)obstacle.CustomSize;
+                        flipped.x -= scale.x;
                     }
+                    else
+                    {
+                        flipped.x -= obstacle.Width;
+                    }
+
+                    obstacle.CustomCoordinate = flipped;
                 }
 
                 if (state >= 1000 || state <= -1000 || precisionWidth) // precision lineIndex
@@ -120,50 +118,45 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (con is BaseNote note)
             {
-                if (note is V3ColorNote cnote) cnote.AngleOffset *= -1;
+                note.AngleOffset *= -1;
                 if (moveNotes)
                 {
-                    if (note.CustomData != null)
+                    // NE Precision rotation
+                    if (note.CustomCoordinate != null)
                     {
-                        // NE Precision rotation
-                        if (note.CustomCoordinate != null)
-                        {
-                            var oldPosition = (Vector2)note.CustomCoordinate;
-                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            note.CustomCoordinate = flipped;
-                        }
-                        
-                        // NE precision cut direction
-                        if (note.CustomDirection != null)
-                        {
-                            var cutDirection = note.CustomDirection;
-                            note.CustomDirection = cutDirection * -1;
-                        }
+                        var oldPosition = (Vector2)note.CustomCoordinate;
+                        var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                        note.CustomCoordinate = flipped;
+                    }
+                    
+                    // NE precision cut direction
+                    if (note.CustomDirection != null)
+                    {
+                        var cutDirection = note.CustomDirection;
+                        note.CustomDirection = cutDirection * -1;
+                    }
+                    
+                    var state = note.PosX; // flip line index
+                    if (state > 3 || state < 0) // precision case
+                    {
+                        var newIndex = state;
+                        if (newIndex <= -1000) // normalize index values, we'll fix them later
+                            newIndex += 1000;
+                        else if (newIndex >= 1000) newIndex -= 1000;
+
+                        newIndex = ((newIndex - 1500) * -1) + 1500; //flip lineIndex
+
+                        if (newIndex < 0) //this is where we fix them
+                            newIndex -= 1000;
+                        else
+                            newIndex += 1000;
+
+                        note.PosX = newIndex;
                     }
                     else
                     {
-                        var state = note.PosX; // flip line index
-                        if (state > 3 || state < 0) // precision case
-                        {
-                            var newIndex = state;
-                            if (newIndex <= -1000) // normalize index values, we'll fix them later
-                                newIndex += 1000;
-                            else if (newIndex >= 1000) newIndex -= 1000;
-
-                            newIndex = ((newIndex - 1500) * -1) + 1500; //flip lineIndex
-
-                            if (newIndex < 0) //this is where we fix them
-                                newIndex -= 1000;
-                            else
-                                newIndex += 1000;
-
-                            note.PosX = newIndex;
-                        }
-                        else
-                        {
-                            var mirrorLane = (int)(((state - 1.5f) * -1) + 1.5f);
-                            note.PosX = mirrorLane;
-                        }
+                        var mirrorLane = (int)(((state - 1.5f) * -1) + 1.5f);
+                        note.PosX = mirrorLane;
                     }
                 }
 
@@ -230,6 +223,20 @@ public class MirrorSelection : MonoBehaviour
                 {
                     if (moveNotes)
                     {
+                        if (arc.CustomCoordinate != null)
+                        {
+                            var oldPosition = (Vector2)arc.CustomCoordinate;
+                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                            arc.CustomCoordinate = flipped;
+                        }
+
+                        if (arc.CustomTailCoordinate != null)
+                        {
+                            var oldPosition = (Vector2)arc.CustomTailCoordinate;
+                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                            arc.CustomTailCoordinate = flipped;
+                        }
+
                         arc.PosX = Mathf.RoundToInt(((arc.PosX - 1.5f) * -1) + 1.5f);
                         if (cutDirectionToMirrored.ContainsKey(arc.CutDirection))
                             arc.CutDirection = cutDirectionToMirrored[arc.CutDirection];
@@ -247,6 +254,21 @@ public class MirrorSelection : MonoBehaviour
                 {
                     if (moveNotes)
                     {
+                        // NE Precision rotation
+                        if (chain.CustomCoordinate != null)
+                        {
+                            var oldPosition = (Vector2)chain.CustomCoordinate;
+                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                            chain.CustomCoordinate = flipped;
+                        }
+
+                        if (chain.CustomTailCoordinate != null)
+                        {
+                            var oldPosition = (Vector2)chain.CustomTailCoordinate;
+                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                            chain.CustomTailCoordinate = flipped;
+                        }
+
                         chain.PosX = Mathf.RoundToInt(((chain.PosX - 1.5f) * -1) + 1.5f);
                         if (cutDirectionToMirrored.ContainsKey(chain.CutDirection))
                             chain.CutDirection = cutDirectionToMirrored[chain.CutDirection];
