@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.Helper;
 using Beatmap.V2;
 using Beatmap.V3;
 using SimpleJSON;
@@ -33,13 +34,7 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a Bomb.");
 
-    public override BaseNote GenerateOriginalData() 
-    {
-        if (Settings.Instance.Load_MapV3)
-            return new V3BombNote(0, 0, 0);
-        else
-            return new V2Note(0, 0, 0, (int)NoteType.Bomb, (int)NoteCutDirection.Down);
-    }
+    public override BaseNote GenerateOriginalData() => BeatmapFactory.Bomb(0, 0, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {

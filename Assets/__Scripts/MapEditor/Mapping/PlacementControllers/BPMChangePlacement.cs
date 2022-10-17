@@ -2,6 +2,7 @@
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
+using Beatmap.Helper;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned.Time}");
 
-    public override BaseBpmEvent GenerateOriginalData() => Settings.Instance.Load_MapV3 ? (BaseBpmEvent)new V3BpmChange(0, 0) : new V2BpmChange(0, 0);
+    public override BaseBpmEvent GenerateOriginalData() => BeatmapFactory.BpmChange(0, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __) =>
         instantiatedContainer.transform.localPosition =

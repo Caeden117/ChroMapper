@@ -127,13 +127,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
 
-    public override BaseNote GenerateOriginalData()
-    {
-        if (Settings.Instance.Load_MapV3)
-            return new V3ColorNote(0, 0, 0, (int)NoteType.Red, (int)NoteCutDirection.Down);
-        else
-            return new V2Note(0, 0, 0, (int)NoteType.Red, (int)NoteCutDirection.Down);
-    }
+    public override BaseNote GenerateOriginalData() => BeatmapFactory.Note(0, 0, 0, (int)NoteColor.Red, (int)NoteCutDirection.Down, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {

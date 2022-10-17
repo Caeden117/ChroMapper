@@ -24,8 +24,7 @@ namespace Beatmap.V3
         }
 
         public V3BasicEvent(float time, int type, int value, float floatValue = 1f, JSONNode customData = null) : base(
-            time, type,
-            value, floatValue, customData) =>
+            time, type, value, floatValue, customData) =>
             ParseCustom();
 
         public override float? CustomPreciseSpeed

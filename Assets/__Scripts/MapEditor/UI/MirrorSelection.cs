@@ -218,70 +218,67 @@ public class MirrorSelection : MonoBehaviour
                     else if (e.Value > 8 && e.Value <= 12) e.Value -= 4; // white to red
                 }
             }
-            else if (Settings.Instance.Load_MapV3)
+            else if (con is BaseArc arc)
             {
-                if (con is BaseArc arc)
+                if (moveNotes)
                 {
-                    if (moveNotes)
+                    if (arc.CustomCoordinate != null)
                     {
-                        if (arc.CustomCoordinate != null)
-                        {
-                            var oldPosition = (Vector2)arc.CustomCoordinate;
-                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            arc.CustomCoordinate = flipped;
-                        }
-
-                        if (arc.CustomTailCoordinate != null)
-                        {
-                            var oldPosition = (Vector2)arc.CustomTailCoordinate;
-                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            arc.CustomTailCoordinate = flipped;
-                        }
-
-                        arc.PosX = Mathf.RoundToInt(((arc.PosX - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(arc.CutDirection))
-                            arc.CutDirection = cutDirectionToMirrored[arc.CutDirection];
-
-                        arc.TailPosX = Mathf.RoundToInt(((arc.TailPosX - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(arc.TailCutDirection))
-                            arc.TailCutDirection = cutDirectionToMirrored[arc.TailCutDirection];
+                        var oldPosition = (Vector2)arc.CustomCoordinate;
+                        var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                        arc.CustomCoordinate = flipped;
                     }
-                    arc.Color = arc.Color == (int)NoteType.Red
-                        ? (int)NoteType.Blue
-                        : (int)NoteType.Red;
 
-                }
-                else if (con is BaseChain chain)
-                {
-                    if (moveNotes)
+                    if (arc.CustomTailCoordinate != null)
                     {
-                        // NE Precision rotation
-                        if (chain.CustomCoordinate != null)
-                        {
-                            var oldPosition = (Vector2)chain.CustomCoordinate;
-                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            chain.CustomCoordinate = flipped;
-                        }
-
-                        if (chain.CustomTailCoordinate != null)
-                        {
-                            var oldPosition = (Vector2)chain.CustomTailCoordinate;
-                            var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            chain.CustomTailCoordinate = flipped;
-                        }
-
-                        chain.PosX = Mathf.RoundToInt(((chain.PosX - 1.5f) * -1) + 1.5f);
-                        if (cutDirectionToMirrored.ContainsKey(chain.CutDirection))
-                            chain.CutDirection = cutDirectionToMirrored[chain.CutDirection];
-
-                        chain.TailPosX = Mathf.RoundToInt(((chain.TailPosX - 1.5f) * -1) + 1.5f);
+                        var oldPosition = (Vector2)arc.CustomTailCoordinate;
+                        var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                        arc.CustomTailCoordinate = flipped;
                     }
-                    chain.Color = chain.Color == (int)NoteType.Red
-                        ? (int)NoteType.Blue
-                        : (int)NoteType.Red;
+
+                    arc.PosX = Mathf.RoundToInt(((arc.PosX - 1.5f) * -1) + 1.5f);
+                    if (cutDirectionToMirrored.ContainsKey(arc.CutDirection))
+                        arc.CutDirection = cutDirectionToMirrored[arc.CutDirection];
+
+                    arc.TailPosX = Mathf.RoundToInt(((arc.TailPosX - 1.5f) * -1) + 1.5f);
+                    if (cutDirectionToMirrored.ContainsKey(arc.TailCutDirection))
+                        arc.TailCutDirection = cutDirectionToMirrored[arc.TailCutDirection];
                 }
+                arc.Color = arc.Color == (int)NoteType.Red
+                    ? (int)NoteType.Blue
+                    : (int)NoteType.Red;
+
             }
+            else if (con is BaseChain chain)
+            {
+                if (moveNotes)
+                {
+                    // NE Precision rotation
+                    if (chain.CustomCoordinate != null)
+                    {
+                        var oldPosition = (Vector2)chain.CustomCoordinate;
+                        var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                        chain.CustomCoordinate = flipped;
+                    }
 
+                    if (chain.CustomTailCoordinate != null)
+                    {
+                        var oldPosition = (Vector2)chain.CustomTailCoordinate;
+                        var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
+                        chain.CustomTailCoordinate = flipped;
+                    }
+
+                    chain.PosX = Mathf.RoundToInt(((chain.PosX - 1.5f) * -1) + 1.5f);
+                    if (cutDirectionToMirrored.ContainsKey(chain.CutDirection))
+                        chain.CutDirection = cutDirectionToMirrored[chain.CutDirection];
+
+                    chain.TailPosX = Mathf.RoundToInt(((chain.TailPosX - 1.5f) * -1) + 1.5f);
+                }
+                chain.Color = chain.Color == (int)NoteType.Red
+                    ? (int)NoteType.Blue
+                    : (int)NoteType.Red;
+            }
+            
             allActions.Add(new BeatmapObjectModifiedAction(con, con, original, "e", true));
         }
 

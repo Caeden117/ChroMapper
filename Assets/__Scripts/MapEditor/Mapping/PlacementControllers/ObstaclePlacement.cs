@@ -4,6 +4,7 @@ using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.Helper;
 using Beatmap.V2;
 using Beatmap.V3;
 using SimpleJSON;
@@ -50,19 +51,11 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
     }
 
     private float SmallestRankableWallDuration => Atsc.GetBeatFromSeconds(0.016f);
-
+ 
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
-    public override BaseObstacle GenerateOriginalData()
-    {
-        if (Settings.Instance.Load_MapV3)
-        {
-            return new V3Obstacle(0, 0, 0, 0, 1, (int)ObstacleHeight.Full);
-        }
-        else
-            return new V2Obstacle(0, 0, (int)ObstacleType.Full, 0, 1);
-    }
+    public override BaseObstacle GenerateOriginalData() => BeatmapFactory.Obstacle(0, 0, 0, (int)ObstacleType.Full, 0, 1, (int)ObstacleHeight.Full);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {

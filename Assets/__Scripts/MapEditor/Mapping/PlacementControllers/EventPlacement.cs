@@ -111,18 +111,9 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
 
-    public override BaseEvent GenerateOriginalData()
-    {
+    public override BaseEvent GenerateOriginalData() =>
         //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
-        if (Settings.Instance.Load_MapV3)
-        {
-            return new V3BasicEvent(0, 0, (int)LightValue.RedOn);
-        }
-        else
-        {
-            return new V2Event(0, 0, (int)LightValue.RedOn);
-        }
-    }
+         BeatmapFactory.Event(0, 0, (int)LightValue.RedOn);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
@@ -306,7 +297,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         else if ((startingValue < 7 && right) || (startingValue > 0 && !right))
         {
             if (evt != null) startingValue += right ? 1 : -1;
-            var objectData = Settings.Instance.Load_MapV3 ? (BaseEvent)new V3BasicEvent(Atsc.CurrentBeat, rotationType, startingValue) : new V2Event(Atsc.CurrentBeat, rotationType, startingValue);
+            var objectData = BeatmapFactory.Event(Atsc.CurrentBeat, rotationType, startingValue);
 
             objectContainerCollection.SpawnObject(objectData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));

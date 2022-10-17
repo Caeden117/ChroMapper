@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
+using Beatmap.Helper;
 using Beatmap.V2;
 using Beatmap.V3;
 using SimpleJSON;
@@ -79,7 +80,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
                 ? (easingFunc(progress) * floatValueDiff) + startFloatValue
                 : (progress * floatValueDiff) + startFloatValue;
 
-            var data = Settings.Instance.Load_MapV3 ? (BaseEvent)new V3BasicEvent(newTime, type, value, newFloatValue) : new V2Event(newTime, type, value, newFloatValue);
+            var data = BeatmapFactory.Event(newTime, type, value, newFloatValue);
             if (propMode != EventGridContainer.PropMode.Off)
             {
                 data.CustomLightID = propID;

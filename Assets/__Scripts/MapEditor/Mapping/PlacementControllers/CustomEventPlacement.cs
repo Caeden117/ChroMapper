@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
+using Beatmap.Helper;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
 using SimpleJSON;
@@ -29,7 +30,7 @@ public class
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a Custom Event.");
 
-    public override BaseCustomEvent GenerateOriginalData() => Settings.Instance.Load_MapV3 ? (BaseCustomEvent)new V3CustomEvent(0, "", null) : new V2CustomEvent(0, "", null);
+    public override BaseCustomEvent GenerateOriginalData() => BeatmapFactory.CustomEvent();
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
