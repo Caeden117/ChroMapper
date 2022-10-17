@@ -92,7 +92,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     public static IEnumerable<T> Partition<T>(IEnumerable<T> list, int section, int partition, bool reverse = false)
     {
         if (reverse) list = list.Reverse();
-        var binSize = list.Count() / partition;
+        var binSize = Mathf.Max(list.Count() / partition, 1);
         return list.Where((x, i) => i / binSize == section);
     }
 

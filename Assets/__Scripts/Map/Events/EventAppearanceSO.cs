@@ -281,6 +281,12 @@ public class EventAppearanceSO : ScriptableObject
         e.UpdateAlpha(final ? 1.0f : 0.6f, true);
         if (!final)
             e.transform.localScale = Vector3.one * 0.6f;
+        if (dataIdx == 0 && e.RotationEventData.EventBoxes[0].EventDatas.Count == 0)
+        {
+            e.ChangeColor(offColor);
+            e.UpdateTextDisplay(true, "??????"); // why would this happen again?
+            return;
+        }
         var eb = e.RotationEventData.EventBoxes[0];
         var ebd = eb.EventDatas[dataIdx];
         var text = GenerateFilterString(eb.Filter);
