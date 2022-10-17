@@ -199,18 +199,19 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
 
-    public override IEnumerable<BaseObject> GrabSortedObjects()
-    {
-        var sorted = new List<BaseObject>();
-        var grouping = LoadedObjects.Cast<BaseEvent>().GroupBy(x => x.Time);
-        foreach (var group in grouping)
-        {
-            sorted.AddRange(@group.OrderBy(x =>
-                x.CustomData.HasKey(x.CustomKeyPropID) ? x.CustomData[x.CustomKeyPropID].AsInt : -1)); // Sort non-light prop events before light prop events
-        }
-
-        return sorted;
-    }
+    // TODO: bleh, who cares about prop ID anyway
+    // public override IEnumerable<BaseObject> GrabSortedObjects()
+    // {
+    //     var sorted = new List<BaseObject>();
+    //     var grouping = LoadedObjects.GroupBy(x => x.Time);
+    //     foreach (var group in grouping)
+    //     {
+    //         sorted.AddRange(@group.Where(x => x is BaseEvent).Cast<BaseEvent>().OrderBy(x =>
+    //             x.CustomData.HasKey(x.CustomKeyPropID) ? x.CustomData[x.CustomKeyPropID].AsInt : -1)); // Sort non-light prop events before light prop events
+    //     }
+    //
+    //     return sorted;
+    // }
 
     private void UpdatePropagationMode()
     {
