@@ -243,6 +243,11 @@ public class MirrorSelection : MonoBehaviour
                     arc.TailPosX = Mathf.RoundToInt(((arc.TailPosX - 1.5f) * -1) + 1.5f);
                     if (cutDirectionToMirrored.ContainsKey(arc.TailCutDirection))
                         arc.TailCutDirection = cutDirectionToMirrored[arc.TailCutDirection];
+
+                    if (arc.MidAnchorMode > 0 && arc.MidAnchorMode < 3)
+                    {
+                        arc.MidAnchorMode = arc.MidAnchorMode == (int)SliderMidAnchorMode.Clockwise ? (int)SliderMidAnchorMode.CounterClockwise : (int)SliderMidAnchorMode.Clockwise;
+                    }
                 }
                 arc.Color = arc.Color == (int)NoteType.Red
                     ? (int)NoteType.Blue
