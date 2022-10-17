@@ -118,9 +118,10 @@ public class MirrorSelection : MonoBehaviour
             }
             else if (con is BaseNote note)
             {
-                note.AngleOffset *= -1;
                 if (moveNotes)
                 {
+                    note.AngleOffset *= -1;
+                    
                     // NE Precision rotation
                     if (note.CustomCoordinate != null)
                     {
