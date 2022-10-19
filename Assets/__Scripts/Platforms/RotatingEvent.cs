@@ -20,8 +20,8 @@ public class RotatingEventData
     };
     private float rotatingTime;
     private float timeToTransition;
-    private float currentDegree;
-    private float targetDegree;
+    private float currentDegree = 0;
+    private float targetDegree = 0;
     private int loop;
     private int direction;
     internal bool flip;
@@ -116,10 +116,10 @@ public class RotatingEvent : MonoBehaviour
     protected void Update()
     {
         var dt = Time.deltaTime;
-        transform.rotation = Quaternion.Euler(
+        transform.localRotation = Quaternion.Euler(
+            XData.LerpAngle(dt),
             YData.LerpAngle(dt),
-            0,
-            XData.LerpAngle(dt)
+            0
             );
     }
 
