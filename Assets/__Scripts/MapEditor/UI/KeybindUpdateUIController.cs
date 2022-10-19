@@ -24,7 +24,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     {
         if (!context.performed) return;
         placeMode.SetMode(PlacementModeController.PlacementMode.Note);
-        lightMode.SetMode(LightingModeController.LightingMode.ON);
+        lightMode.SetMode(LightingModeController.LightingMode.On);
     }
 
     public void OnTypeFlash(InputAction.CallbackContext context)

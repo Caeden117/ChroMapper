@@ -1,5 +1,6 @@
 ﻿using System;
 using Beatmap.Enums;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class LightingModeController : MonoBehaviour
     public enum LightingMode
     {
         [PickerChoice("Mapper", "bar.events.on")]
-        ON,
+        On,
 
         [PickerChoice("Mapper", "bar.events.off")]
         Off,
@@ -73,7 +74,7 @@ public class LightingModeController : MonoBehaviour
             case LightingMode.Off:
                 eventPlacement.UpdateValue((int)LightValue.Off);
                 break;
-            case LightingMode.ON:
+            case LightingMode.On:
                 eventPlacement.UpdateValue(red ? (int)LightValue.RedOn : white ? (int)LightValue.WhiteOn : (int)LightValue.BlueOn);
                 break;
             case LightingMode.Flash:
