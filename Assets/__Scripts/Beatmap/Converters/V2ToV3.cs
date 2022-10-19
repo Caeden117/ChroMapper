@@ -28,6 +28,7 @@ namespace Beatmap.Converters
             other switch
             {
                 V2Event o => new V3BpmEvent(o),
+                V3BasicEvent o => new V3BpmEvent(o),
                 V3BpmEvent o => o,
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 BPM event")
             };
@@ -36,6 +37,7 @@ namespace Beatmap.Converters
             other switch
             {
                 V2Event o => new V3ColorBoostEvent(o),
+                V3BasicEvent o => new V3ColorBoostEvent(o),
                 V3ColorBoostEvent o => o,
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 color boost event")
             };
@@ -88,6 +90,7 @@ namespace Beatmap.Converters
             other switch
             {
                 V2Event o => new V3RotationEvent(o),
+                V3BasicEvent o => new V3RotationEvent(o),
                 V3RotationEvent o => o,
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 rotation event")
             };
