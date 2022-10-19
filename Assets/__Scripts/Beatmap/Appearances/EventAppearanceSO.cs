@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using Beatmap.Containers;
 using Beatmap.Enums;
@@ -138,7 +139,9 @@ namespace Beatmap.Appearances
                                 : e.EventData.FloatValue.ToString("n2").Substring(1));
                 }
 
-                color = Color.Lerp(offColor, color, e.EventData.FloatValue);
+                // for clarity sake, we don't want this to be the same as off color
+                var clampedOffColor = Color.Lerp(offColor, color, 0.25f);
+                color = Color.Lerp(clampedOffColor, color, e.EventData.FloatValue); 
                 e.UpdateTextColor(color == Color.white ? Color.black : Color.white); // this may overwrite some configs
             }
 
