@@ -115,12 +115,25 @@ public class RotatingEvent : MonoBehaviour
 
     protected void Update()
     {
+        if (lightsManager == null) return;
         var dt = Time.deltaTime;
-        transform.localRotation = Quaternion.Euler(
-            XData.LerpAngle(dt),
-            YData.LerpAngle(dt),
-            0
-            );
+        if (lightsManager.ZRotatable) // for rings
+        {
+            transform.localEulerAngles = new Vector3(
+                0,
+                0,
+                XData.LerpAngle(dt)
+                );
+        }
+        else // for light beams
+        {
+            transform.localEulerAngles = new Vector3(
+                XData.LerpAngle(dt),
+                YData.LerpAngle(dt),
+                0
+                );
+        }
+
     }
 
     public RotatingEventData GetAxisData(int axis)

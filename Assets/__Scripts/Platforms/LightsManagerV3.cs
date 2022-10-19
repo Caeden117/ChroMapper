@@ -11,6 +11,7 @@ public class LightsManagerV3 : LightsManager
     public bool YRotatable = false;
     public bool XFlip = false;
     public bool YFlip = false;
+    public bool ZRotatable = false;
 
     public List<RotatingEvent> ControllingRotations = new List<RotatingEvent>();
 
@@ -32,6 +33,7 @@ public class LightsManagerV3 : LightsManager
             rotations[i].XData.flip = XFlip;
             rotations[i].YData.flip = YFlip;
         }
+        if (ZRotatable) XRotatable = true; // for compatibility with sanity check
         yield return null;
     }
 
