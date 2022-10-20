@@ -83,9 +83,9 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         }
         else
         {
-            if (e.EventData.Value > 4 && e.EventData.Value <= 8) e.EventData.Value -= 4;
-            else if (e.EventData.Value > 0 && e.EventData.Value <= 4) e.EventData.Value += 4;
-            else if (e.EventData.Value > 8 && e.EventData.Value <= 12) e.EventData.Value -= 4; // white to red
+            if (e.EventData.Value > 0 && e.EventData.Value <= 4) e.EventData.Value += 4; // blue to red
+            else if (e.EventData.Value > 4 && e.EventData.Value <= 8) e.EventData.Value += 4; // red to white
+            else if (e.EventData.Value > 8 && e.EventData.Value <= 12) e.EventData.Value -= 8; // white to blue
         }
 
         eventAppearanceSo.SetEventAppearance(e);
@@ -99,9 +99,9 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
     {
         var original = BeatmapFactory.Clone(e.ObjectData);
 
-        if (e.EventData is BaseRotationEvent)
+        if (e.EventData is BaseRotationEvent @event)
         {
-            (e.EventData as BaseRotationEvent).Rotation += modifier;
+            @event.Rotation += modifier;
         }
         else
         {

@@ -199,23 +199,23 @@ public class MirrorSelection : MonoBehaviour
                     }
 
                     if (!e.IsLightEvent()) continue;
-                    if (moveNotes && e.IsPropagation && events.EventTypeToPropagate == e.Type &&
-                        events.PropagationEditing == EventGridContainer.PropMode.Prop)
+                    if (moveNotes && (e.IsPropagation && events.EventTypeToPropagate == e.Type &&
+                                      events.PropagationEditing == EventGridContainer.PropMode.Prop))
                     {
                         var mirroredIdx = events.EventTypePropagationSize - (int)e.CustomPropID - 1;
                         e.CustomLightID = labels.PropIdToLightIds(e.Type, mirroredIdx);
                     }
-                    else if (moveNotes && e.CustomLightID != null && events.EventTypeToPropagate == e.Type &&
-                             events.PropagationEditing == EventGridContainer.PropMode.Light)
+                    else if (moveNotes && (e.CustomLightID != null && events.EventTypeToPropagate == e.Type &&
+                                           events.PropagationEditing == EventGridContainer.PropMode.Light))
                     {
                         var idx = labels.LightIDToEditor(e.Type, e.CustomLightID[0]);
                         var mirroredIdx = events.EventTypePropagationSize - idx - 1;
                         e.CustomLightID = new[] { labels.EditorToLightID(e.Type, mirroredIdx) };
                     }
 
-                    if (e.Value > 4 && e.Value <= 8) e.Value -= 4;
-                    else if (e.Value > 0 && e.Value <= 4) e.Value += 4;
-                    else if (e.Value > 8 && e.Value <= 12) e.Value -= 4; // white to red
+                    if (e.Value > 0 && e.Value <= 4) e.Value += 4; // blue to red
+                    else if (e.Value > 4 && e.Value <= 8) e.Value += 4; // red to white
+                    else if (e.Value > 8 && e.Value <= 12) e.Value -= 8; // white to blue
                 }
             }
             else if (con is BaseArc arc)

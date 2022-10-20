@@ -207,8 +207,9 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             return;
         }
 
-        if (queuedValue >= (int)LightValue.RedOn) queuedValue -= 4;
-        else if (queuedValue >= (int)LightValue.BlueOn) queuedValue += 4;
+        if (queuedValue > 0 && queuedValue <= 4) queuedValue += 4; // blue to red
+        else if (queuedValue > 4 && queuedValue <= 8) queuedValue += 4; // red to white
+        else if (queuedValue > 8 && queuedValue <= 12) queuedValue -= 8; // white to blue
     }
 
     private void UpdateAppearance()
