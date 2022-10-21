@@ -24,6 +24,7 @@ namespace Beatmap.V3
         {
             Time = RetrieveRequiredNode(node, "b").AsFloat;
             Bpm = RetrieveRequiredNode(node, "m").AsFloat;
+            Type = 100;
             CustomData = node["customData"];
         }
 

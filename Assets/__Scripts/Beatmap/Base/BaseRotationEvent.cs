@@ -15,6 +15,7 @@ namespace Beatmap.Base
             Time = other.Time;
             ExecutionTime = other.ExecutionTime;
             Rotation = other.Rotation;
+            Type = (int)(ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
             CustomData = other.CustomData?.Clone();
         }
 
@@ -29,6 +30,7 @@ namespace Beatmap.Base
             if (Rotation >= 1000 && Rotation <= 1720)
                 Rotation -= 1360;
             ExecutionTime = evt.Type == (int)EventTypeValue.EarlyLaneRotation ? 0 : 1;
+            Type = (int)(ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
             CustomData = evt.CustomData?.Clone();
         }
 

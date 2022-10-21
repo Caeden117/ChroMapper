@@ -249,7 +249,7 @@ namespace Beatmap.V3
                 }
 
                 LoadCustom(ref map, ref mainNode);
-                map.ParseV3ToV2();
+                ParseV3ToV2(ref map);
 
                 return map;
             }
@@ -317,13 +317,13 @@ namespace Beatmap.V3
                 .Cast<BaseEnvironmentEnhancement>().ToList();
         }
 
-        public void ParseV3ToV2()
+        private static void ParseV3ToV2(ref V3Difficulty map)
         {
-            Notes.AddRange(Bombs.OfType<BaseNote>().ToList());
-            Events.AddRange(ColorBoostEvents.OfType<BaseEvent>().ToList());
-            Events.AddRange(RotationEvents.OfType<BaseEvent>().ToList());
+            map.Notes.AddRange(map.Bombs);
+            map.Events.AddRange(map.ColorBoostEvents);
+            map.Events.AddRange(map.RotationEvents);
             // Events.AddRange(BpmChanges.OfType<BaseEvent>().ToList());
-            Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
+            map.Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
         }
 
         private static void LoadCustom(ref V3Difficulty map, ref JSONNode mainNode)

@@ -24,6 +24,8 @@ namespace Beatmap.V3
         {
             Time = RetrieveRequiredNode(node, "b").AsFloat;
             Toggle = RetrieveRequiredNode(node, "o").AsBool;
+            Type = 5;
+            Value = Toggle ? 1 : 0; 
             CustomData = node["customData"];
         }
 

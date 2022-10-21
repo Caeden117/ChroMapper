@@ -64,7 +64,7 @@ namespace Beatmap.Base
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
         public int Type { get; set; }
         public int Value { get; set; }
-        public float FloatValue { get; set; }
+        public float FloatValue { get; set; } = 1f;
         public BaseEvent Next { get; set; }
 
         public bool IsBlue => Value == (int)LightValue.BlueOn || Value == (int)LightValue.BlueFlash ||

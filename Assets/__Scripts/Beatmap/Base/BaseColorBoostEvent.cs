@@ -13,6 +13,8 @@ namespace Beatmap.Base
         {
             Time = other.Time;
             Toggle = other.Toggle;
+            Type = 5;
+            Value = Toggle ? 1 : 0; 
             CustomData = other.CustomData?.Clone();
         }
 
@@ -20,6 +22,8 @@ namespace Beatmap.Base
         {
             Time = evt.Time;
             Toggle = evt.Value == 1;
+            Type = 5;
+            Value = Toggle ? 1 : 0; 
             CustomData = evt.CustomData?.Clone();
         }
 
