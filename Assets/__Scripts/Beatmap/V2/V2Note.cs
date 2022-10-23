@@ -44,8 +44,8 @@ namespace Beatmap.V2
         protected sealed override void ParseCustom()
         {
             base.ParseCustom();
-
             if (CustomData == null) return;
+            
             if (CustomData[CustomKeyDirection] != null) CustomDirection = CustomData[CustomKeyDirection].AsInt;
         }
 
@@ -57,25 +57,27 @@ namespace Beatmap.V2
         }
 
         public override bool IsChroma() =>
-            (CustomData.HasKey("_color") && CustomData["_color"].IsArray) ||
-            (CustomData.HasKey("_disableSpawnEffect") && CustomData["_disableSpawnEffect"].IsBoolean);
+            CustomData != null &&
+            ((CustomData.HasKey("_color") && CustomData["_color"].IsArray) ||
+             (CustomData.HasKey("_disableSpawnEffect") && CustomData["_disableSpawnEffect"].IsBoolean));
 
         public override bool IsNoodleExtensions() =>
-            (CustomData.HasKey("_animation") && CustomData["_animation"].IsArray) ||
-            (CustomData.HasKey("_cutDirection") && CustomData["_cutDirection"].IsNumber) ||
-            (CustomData.HasKey("_disableNoteGravity") && CustomData["_disableNoteGravity"].IsBoolean) ||
-            (CustomData.HasKey("_disableNoteLook") && CustomData["_disableNoteLook"].IsBoolean) ||
-            (CustomData.HasKey("_flip") && CustomData["_flip"].IsArray) ||
-            (CustomData.HasKey("_fake") && CustomData["_fake"].IsBoolean) ||
-            (CustomData.HasKey("_interactable") && CustomData["_interactable"].IsBoolean) ||
-            (CustomData.HasKey("_localRotation") && CustomData["_localRotation"].IsArray) ||
-            (CustomData.HasKey("_noteJumpMovementSpeed") && CustomData["_noteJumpMovementSpeed"].IsNumber) ||
-            (CustomData.HasKey("_noteJumpStartBeatOffset") &&
-             CustomData["_noteJumpStartBeatOffset"].IsNumber) ||
-            (CustomData.HasKey("_position") && CustomData["_position"].IsArray) ||
-            (CustomData.HasKey("_rotation") &&
-             (CustomData["_rotation"].IsArray || CustomData["_rotation"].IsNumber)) ||
-            (CustomData.HasKey("_track") && CustomData["_track"].IsString);
+            CustomData != null &&
+            ((CustomData.HasKey("_animation") && CustomData["_animation"].IsArray) ||
+             (CustomData.HasKey("_cutDirection") && CustomData["_cutDirection"].IsNumber) ||
+             (CustomData.HasKey("_disableNoteGravity") && CustomData["_disableNoteGravity"].IsBoolean) ||
+             (CustomData.HasKey("_disableNoteLook") && CustomData["_disableNoteLook"].IsBoolean) ||
+             (CustomData.HasKey("_flip") && CustomData["_flip"].IsArray) ||
+             (CustomData.HasKey("_fake") && CustomData["_fake"].IsBoolean) ||
+             (CustomData.HasKey("_interactable") && CustomData["_interactable"].IsBoolean) ||
+             (CustomData.HasKey("_localRotation") && CustomData["_localRotation"].IsArray) ||
+             (CustomData.HasKey("_noteJumpMovementSpeed") && CustomData["_noteJumpMovementSpeed"].IsNumber) ||
+             (CustomData.HasKey("_noteJumpStartBeatOffset") &&
+              CustomData["_noteJumpStartBeatOffset"].IsNumber) ||
+             (CustomData.HasKey("_position") && CustomData["_position"].IsArray) ||
+             (CustomData.HasKey("_rotation") &&
+              (CustomData["_rotation"].IsArray || CustomData["_rotation"].IsNumber)) ||
+             (CustomData.HasKey("_track") && CustomData["_track"].IsString));
 
         public override bool IsMappingExtensions() =>
             (PosX < 0 || PosX > 3 || PosY < 0 || PosY > 2 || (CutDirection >= 1000 && CutDirection <= 1360)) &&

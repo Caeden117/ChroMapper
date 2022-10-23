@@ -84,20 +84,21 @@ namespace Beatmap.V3
         protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override bool IsChroma() =>
-            (CustomData.HasKey("color") && CustomData["color"].IsArray) ||
-            (CustomData.HasKey("lightID") &&
-             (CustomData["lightID"].IsArray || CustomData["lightID"].IsNumber)) ||
-            (CustomData.HasKey("easing") && CustomData["easing"].IsString) ||
-            (CustomData.HasKey("lerpType") && CustomData["lerpType"].IsString) ||
-            (CustomData.HasKey("nameFilter") && CustomData["nameFilter"].IsString) ||
-            (CustomData.HasKey("reset") && CustomData["reset"].IsBoolean) ||
-            (CustomData.HasKey("rotation") && CustomData["rotation"].IsNumber) ||
-            (CustomData.HasKey("step") && CustomData["step"].IsNumber) ||
-            (CustomData.HasKey("prop") && CustomData["prop"].IsNumber) ||
-            (CustomData.HasKey("speed") && CustomData["speed"].IsNumber) ||
-            (CustomData.HasKey("direction") && CustomData["direction"].IsNumber) ||
-            (CustomData.HasKey("lockRotation") && CustomData["lockRotation"].IsBoolean) ||
-            (CustomData.HasKey("direction") && CustomData["direction"].IsNumber);
+            CustomData != null &&
+            ((CustomData.HasKey("color") && CustomData["color"].IsArray) ||
+             (CustomData.HasKey("lightID") &&
+              (CustomData["lightID"].IsArray || CustomData["lightID"].IsNumber)) ||
+             (CustomData.HasKey("easing") && CustomData["easing"].IsString) ||
+             (CustomData.HasKey("lerpType") && CustomData["lerpType"].IsString) ||
+             (CustomData.HasKey("nameFilter") && CustomData["nameFilter"].IsString) ||
+             (CustomData.HasKey("reset") && CustomData["reset"].IsBoolean) ||
+             (CustomData.HasKey("rotation") && CustomData["rotation"].IsNumber) ||
+             (CustomData.HasKey("step") && CustomData["step"].IsNumber) ||
+             (CustomData.HasKey("prop") && CustomData["prop"].IsNumber) ||
+             (CustomData.HasKey("speed") && CustomData["speed"].IsNumber) ||
+             (CustomData.HasKey("direction") && CustomData["direction"].IsNumber) ||
+             (CustomData.HasKey("lockRotation") && CustomData["lockRotation"].IsBoolean) ||
+             (CustomData.HasKey("direction") && CustomData["direction"].IsNumber));
 
         public override JSONNode ToJson()
         {

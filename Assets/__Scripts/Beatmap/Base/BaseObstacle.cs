@@ -178,6 +178,8 @@ namespace Beatmap.Base
         protected override void ParseCustom()
         {
             base.ParseCustom();
+            if (CustomData == null) return;
+            
             if (CustomData.HasKey(CustomKeySize) && CustomData[CustomKeySize].IsArray)
             {
                 var temp = CustomData[CustomKeySize].AsArray;

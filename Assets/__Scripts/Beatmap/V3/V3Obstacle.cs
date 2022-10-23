@@ -67,20 +67,22 @@ namespace Beatmap.V3
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
-        public override bool IsChroma() => CustomData.HasKey("color") && CustomData["color"].IsArray;
+        public override bool IsChroma() => 
+            CustomData != null && CustomData.HasKey("color") && CustomData["color"].IsArray;
 
         public override bool IsNoodleExtensions() =>
-            (CustomData.HasKey("animation") && CustomData["animation"].IsArray) ||
-            (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
-            (CustomData.HasKey("localRotation") && CustomData["localRotation"].IsArray) ||
-            (CustomData.HasKey("noteJumpMovementSpeed") && CustomData["noteJumpMovementSpeed"].IsNumber) ||
-            (CustomData.HasKey("noteJumpStartBeatOffset") &&
-             CustomData["noteJumpStartBeatOffset"].IsNumber) ||
-            (CustomData.HasKey("coordinates") && CustomData["coordinates"].IsArray) ||
-            (CustomData.HasKey("worldRotation") &&
-             (CustomData["worldRotation"].IsArray || CustomData["worldRotation"].IsNumber)) ||
-            (CustomData.HasKey("size") && CustomData["size"].IsArray) ||
-            (CustomData.HasKey("track") && CustomData["track"].IsString);
+            CustomData != null &&
+            ((CustomData.HasKey("animation") && CustomData["animation"].IsArray) ||
+             (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
+             (CustomData.HasKey("localRotation") && CustomData["localRotation"].IsArray) ||
+             (CustomData.HasKey("noteJumpMovementSpeed") && CustomData["noteJumpMovementSpeed"].IsNumber) ||
+             (CustomData.HasKey("noteJumpStartBeatOffset") &&
+              CustomData["noteJumpStartBeatOffset"].IsNumber) ||
+             (CustomData.HasKey("coordinates") && CustomData["coordinates"].IsArray) ||
+             (CustomData.HasKey("worldRotation") &&
+              (CustomData["worldRotation"].IsArray || CustomData["worldRotation"].IsNumber)) ||
+             (CustomData.HasKey("size") && CustomData["size"].IsArray) ||
+             (CustomData.HasKey("track") && CustomData["track"].IsString));
 
         public override bool IsMappingExtensions() =>
             (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 || Width <= -1000 || Width >= 1000 ||

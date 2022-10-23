@@ -49,6 +49,7 @@ namespace Beatmap.Base
         protected virtual void ParseCustom()
         {
             if (CustomData == null) return;
+            
             if (CustomData.HasKey(CustomKeyTrack)) CustomTrack = CustomData[CustomKeyTrack].Value;
             if (CustomData[CustomKeyColor].HasKey(CustomTrack)) CustomColor = CustomData[CustomKeyColor].ReadColor();
         }
