@@ -373,9 +373,9 @@ public class BeatSaberMapV3 : BeatSaberMap
         {
             int j = i + 1;
             var newObj = list[i];
-            while (j < list.Count && sameFn(list[i], list[j]))
+            while (j < list.Count && sameFn(newObj, list[j]))
             {
-                newObj = mergeFn(list[i], list[j]);
+                newObj = mergeFn(newObj, list[j]);
                 ++j;
             }
             ret.Add(newObj);
