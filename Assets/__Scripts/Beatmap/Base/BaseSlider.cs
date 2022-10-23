@@ -53,7 +53,7 @@ namespace Beatmap.Base
         {
             base.ParseCustom();
             if (CustomData == null) return;
-            if (CustomData[CustomKeyTailCoordinate] != null)
+            if (CustomData.HasKey(CustomKeyTailCoordinate))
                 CustomTailCoordinate = CustomData[CustomKeyTailCoordinate].ReadVector2();
         }
 

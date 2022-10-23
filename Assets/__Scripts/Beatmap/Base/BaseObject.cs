@@ -49,13 +49,14 @@ namespace Beatmap.Base
         protected virtual void ParseCustom()
         {
             if (CustomData == null) return;
-            if (CustomData[CustomKeyColor] != null) CustomColor = CustomData[CustomKeyColor].ReadColor();
+            if (CustomData.HasKey(CustomKeyTrack)) CustomTrack = CustomData[CustomKeyTrack].Value;
+            if (CustomData[CustomKeyColor].HasKey(CustomTrack)) CustomColor = CustomData[CustomKeyColor].ReadColor();
         }
 
         protected virtual JSONNode SaveCustom()
         {
             CustomData = CustomData is JSONObject ? CustomData : new JSONObject();
-            if (CustomTrack != null) CustomData[CustomKeyTrack] = CustomTrack;
+            if (!string.IsNullOrEmpty(CustomTrack)) CustomData[CustomKeyTrack] = CustomTrack;
             if (CustomColor != null) CustomData[CustomKeyColor] = CustomColor;
             return CustomData;
         }

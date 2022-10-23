@@ -57,22 +57,22 @@ namespace Beatmap.V2
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
-        public override bool IsChroma() => CustomData?["_color"] != null && CustomData["_color"].IsArray;
+        public override bool IsChroma() => CustomData.HasKey("_color") && CustomData["_color"].IsArray;
 
 
         public override bool IsNoodleExtensions() =>
-            (CustomData?["_animation"] != null && CustomData["_animation"].IsArray) ||
-            (CustomData?["_fake"] != null && CustomData["_fake"].IsBoolean) ||
-            (CustomData?["_interactable"] != null && CustomData["_interactable"].IsBoolean) ||
-            (CustomData?["_localRotation"] != null && CustomData["_localRotation"].IsArray) ||
-            (CustomData?["_noteJumpMovementSpeed"] != null && CustomData["_noteJumpMovementSpeed"].IsNumber) ||
-            (CustomData?["_noteJumpStartBeatOffset"] != null &&
+            (CustomData.HasKey("_animation") && CustomData["_animation"].IsArray) ||
+            (CustomData.HasKey("_fake") && CustomData["_fake"].IsBoolean) ||
+            (CustomData.HasKey("_interactable") && CustomData["_interactable"].IsBoolean) ||
+            (CustomData.HasKey("_localRotation") && CustomData["_localRotation"].IsArray) ||
+            (CustomData.HasKey("_noteJumpMovementSpeed") && CustomData["_noteJumpMovementSpeed"].IsNumber) ||
+            (CustomData.HasKey("_noteJumpStartBeatOffset") &&
              CustomData["_noteJumpStartBeatOffset"].IsNumber) ||
-            (CustomData?["_position"] != null && CustomData["_position"].IsArray) ||
-            (CustomData?["_rotation"] != null &&
+            (CustomData.HasKey("_position") && CustomData["_position"].IsArray) ||
+            (CustomData.HasKey("_rotation") &&
              (CustomData["_rotation"].IsArray || CustomData["_rotation"].IsNumber)) ||
-            (CustomData?["_scale"] != null && CustomData["_scale"].IsArray) ||
-            (CustomData?["_track"] != null && CustomData["_track"].IsString);
+            (CustomData.HasKey("_scale") && CustomData["_scale"].IsArray) ||
+            (CustomData.HasKey("_track") && CustomData["_track"].IsString);
 
         public override bool IsMappingExtensions() =>
             (Width >= 1000 || Type >= 1000 || PosX < 0 || PosX > 3) &&

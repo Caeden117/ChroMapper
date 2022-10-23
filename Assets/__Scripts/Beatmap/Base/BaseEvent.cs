@@ -86,13 +86,11 @@ namespace Beatmap.Base
 
         public bool IsFlash => Value == (int)LightValue.BlueFlash || Value == (int)LightValue.RedFlash ||
                                Value == (int)LightValue.WhiteFlash;
-
-
+        
         public bool IsFade =>
             Value == (int)LightValue.BlueFade || Value == (int)LightValue.RedFade ||
             Value == (int)LightValue.WhiteFade;
-
-
+        
         public bool IsTransition =>
             Value == (int)LightValue.BlueTransition || Value == (int)LightValue.RedTransition ||
             Value == (int)LightValue.WhiteTransition;
@@ -293,7 +291,7 @@ namespace Beatmap.Base
             base.ParseCustom();
             if (CustomData == null) return;
 
-            if (CustomData[CustomKeyLightID] != null)
+            if (CustomData.HasKey(CustomKeyLightID))
             {
                 var temp = CustomData[CustomKeyLightID];
                 CustomLightID = temp.IsNumber
@@ -301,13 +299,13 @@ namespace Beatmap.Base
                     : temp.AsArray.Linq.Where(x => x.Value.IsNumber).Select(x => x.Value.AsInt).ToArray();
             }
 
-            if (CustomData[CustomKeyLerpType] != null) CustomLerpType = CustomData[CustomKeyLerpType].Value;
-            if (CustomData[CustomKeyEasing] != null) CustomEasing = CustomData[CustomKeyEasing].Value;
-            if (CustomData[CustomKeyStep] != null) CustomStep = CustomData[CustomKeyStep].AsFloat;
-            if (CustomData[CustomKeyProp] != null) CustomProp = CustomData[CustomKeyProp].AsFloat;
-            if (CustomData[CustomKeySpeed] != null) CustomSpeed = CustomData[CustomKeySpeed].AsFloat;
-            if (CustomData[CustomKeyDirection] != null) CustomDirection = CustomData[CustomKeyDirection].AsInt;
-            if (CustomData[CustomKeyLockRotation] != null)
+            if (CustomData.HasKey(CustomKeyLerpType)) CustomLerpType = CustomData[CustomKeyLerpType].Value;
+            if (CustomData.HasKey(CustomKeyEasing)) CustomEasing = CustomData[CustomKeyEasing].Value;
+            if (CustomData.HasKey(CustomKeyStep)) CustomStep = CustomData[CustomKeyStep].AsFloat;
+            if (CustomData.HasKey(CustomKeyProp)) CustomProp = CustomData[CustomKeyProp].AsFloat;
+            if (CustomData.HasKey(CustomKeySpeed)) CustomSpeed = CustomData[CustomKeySpeed].AsFloat;
+            if (CustomData.HasKey(CustomKeyDirection)) CustomDirection = CustomData[CustomKeyDirection].AsInt;
+            if (CustomData.HasKey(CustomKeyLockRotation))
                 CustomLockRotation = CustomData[CustomKeyLockRotation].AsBool;
         }
 

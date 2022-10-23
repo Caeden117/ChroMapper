@@ -13,7 +13,7 @@ namespace Beatmap.Base
         public const float MaxChainSquish = 999;
 
         public const float
-            PosOffsetFactor = 0.17333f; // Hardcorded because haven't found exact relationship between ChainScale yet
+            PosOffsetFactor = 0.17333f; // Hardcoded because haven't found exact relationship between ChainScale yet
 
         public static readonly Vector3 ChainScale = new Vector3(1.5f, 0.8f, 1.5f);
 

@@ -66,12 +66,12 @@ namespace Beatmap.Base.Customs
                 [KeyMetronomeOffset] = MetronomeOffset
             };
 
-        protected void InstantiateHelper(ref JSONNode node)
+        private void InstantiateHelper(ref JSONNode node)
         {
             Time = RetrieveRequiredNode(node, KeyTime).AsFloat;
             Bpm = RetrieveRequiredNode(node, KeyBpm).AsFloat;
-            BeatsPerBar = node[KeyBeatsPerBar]?.AsFloat ?? 4;
-            MetronomeOffset = node[KeyMetronomeOffset]?.AsFloat ?? 4;
+            BeatsPerBar = node.HasKey(KeyBeatsPerBar) ? node[KeyBeatsPerBar].AsFloat : 4f;
+            MetronomeOffset = node.HasKey(KeyMetronomeOffset) ? node[KeyMetronomeOffset].AsFloat : 4f;
         }
     }
 }

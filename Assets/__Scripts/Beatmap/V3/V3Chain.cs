@@ -52,24 +52,24 @@ namespace Beatmap.V3
         protected sealed override void ParseCustom() => base.ParseCustom();
 
         public override bool IsChroma() =>
-            (CustomData?["color"] != null && CustomData["color"].IsArray) ||
-            (CustomData?["spawnEffect"] != null && CustomData["spawnEffect"].IsBoolean) ||
-            (CustomData?["disableDebris"] != null && CustomData["disableDebris"].IsBoolean);
+            (CustomData.HasKey("color") && CustomData["color"].IsArray) ||
+            (CustomData.HasKey("spawnEffect") && CustomData["spawnEffect"].IsBoolean) ||
+            (CustomData.HasKey("disableDebris") && CustomData["disableDebris"].IsBoolean);
 
         public override bool IsNoodleExtensions() =>
-            (CustomData?["animation"] != null && CustomData["animation"].IsArray) ||
-            (CustomData?["disableNoteGravity"] != null && CustomData["disableNoteGravity"].IsBoolean) ||
-            (CustomData?["disableNoteLook"] != null && CustomData["disableNoteLook"].IsBoolean) ||
-            (CustomData?["flip"] != null && CustomData["flip"].IsArray) ||
-            (CustomData?["uninteractable"] != null && CustomData["uninteractable"].IsBoolean) ||
-            (CustomData?["localRotation"] != null && CustomData["localRotation"].IsArray) ||
-            (CustomData?["noteJumpMovementSpeed"] != null && CustomData["noteJumpMovementSpeed"].IsNumber) ||
-            (CustomData?["noteJumpStartBeatOffset"] != null &&
+            (CustomData.HasKey("animation") && CustomData["animation"].IsArray) ||
+            (CustomData.HasKey("disableNoteGravity") && CustomData["disableNoteGravity"].IsBoolean) ||
+            (CustomData.HasKey("disableNoteLook") && CustomData["disableNoteLook"].IsBoolean) ||
+            (CustomData.HasKey("flip") && CustomData["flip"].IsArray) ||
+            (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
+            (CustomData.HasKey("localRotation") && CustomData["localRotation"].IsArray) ||
+            (CustomData.HasKey("noteJumpMovementSpeed") && CustomData["noteJumpMovementSpeed"].IsNumber) ||
+            (CustomData.HasKey("noteJumpStartBeatOffset") &&
              CustomData["noteJumpStartBeatOffset"].IsNumber) ||
-            (CustomData?["coordinates"] != null && CustomData["coordinates"].IsArray) ||
-            (CustomData?["worldRotation"] != null &&
+            (CustomData.HasKey("coordinates") && CustomData["coordinates"].IsArray) ||
+            (CustomData.HasKey("worldRotation") &&
              (CustomData["worldRotation"].IsArray || CustomData["worldRotation"].IsNumber)) ||
-            (CustomData?["track"] != null && CustomData["track"].IsString);
+            (CustomData.HasKey("track") && CustomData["track"].IsString);
 
         public override bool IsMappingExtensions() =>
             (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 ||

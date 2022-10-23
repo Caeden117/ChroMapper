@@ -65,12 +65,11 @@ namespace Beatmap.Base
         {
             base.ParseCustom();
             if (CustomData == null) return;
-            if (CustomData[CustomKeyTrack] != null) CustomTrack = CustomData[CustomKeyTrack].Value;
-            if (CustomData[CustomKeyCoordinate] != null)
+            if (CustomData.HasKey(CustomKeyCoordinate))
                 CustomCoordinate = CustomData[CustomKeyCoordinate].ReadVector2();
-            if (CustomData[CustomKeyWorldRotation] != null)
+            if (CustomData.HasKey(CustomKeyWorldRotation))
                 CustomWorldRotation = CustomData[CustomKeyWorldRotation].ReadVector3();
-            if (CustomData[CustomKeyLocalRotation] != null)
+            if (CustomData.HasKey(CustomKeyLocalRotation))
                 CustomLocalRotation = CustomData[CustomKeyLocalRotation].ReadVector3();
         }
 

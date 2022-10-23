@@ -37,7 +37,7 @@ namespace Beatmap.Base.Customs
         public override JSONNode ToJson() =>
             new JSONObject { [KeyTime] = Time, [KeyType] = Type, [KeyData] = Data };
 
-        protected void InstantiateHelper(ref JSONNode node)
+        private void InstantiateHelper(ref JSONNode node)
         {
             Time = RetrieveRequiredNode(node, KeyTime).AsFloat;
             Type = RetrieveRequiredNode(node, KeyType).Value;
