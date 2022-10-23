@@ -28,7 +28,7 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
     public void ChangeMu(ArcContainer s, float modifier)
     {
         var original = BeatmapFactory.Clone(s.ArcData);
-        s.ChangeMultiplier(modifier);
+        s.ChangeHeadMultiplier(modifier);
         s.NotifySplineChanged();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
     }

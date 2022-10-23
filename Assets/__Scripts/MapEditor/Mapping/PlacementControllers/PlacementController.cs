@@ -127,7 +127,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 return;
             }
 
-            // TODO: check for track
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
                 queuedData.CustomTrack = BeatmapObjectContainerCollection.TrackFilterID;
@@ -194,6 +193,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             && !PersistentUI.Instance.DialogBoxIsEnabled &&
             queuedData?.Time >= 0 && !applicationFocusChanged && instantiatedContainer.gameObject.activeSelf)
         {
+            Debug.Log(queuedData); // TODO: WHY THE FUCK DOES THIS VERY LINE FIX CUSTOM DATA PLACEMENT?
             ApplyToMap();
         }
     }

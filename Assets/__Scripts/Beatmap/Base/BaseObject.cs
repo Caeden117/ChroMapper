@@ -22,7 +22,7 @@ namespace Beatmap.Base
         public float Time { get; set; }
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
-        public JSONNode CustomData { get; set; }
+        public JSONNode CustomData { get; set; } = new JSONObject();
 
         public virtual bool IsChroma() => false;
 
@@ -54,7 +54,7 @@ namespace Beatmap.Base
 
         protected virtual JSONNode SaveCustom()
         {
-            CustomData ??= new JSONObject();
+            CustomData = CustomData is JSONObject ? CustomData : new JSONObject();
             if (CustomTrack != null) CustomData[CustomKeyTrack] = CustomTrack;
             if (CustomColor != null) CustomData[CustomKeyColor] = CustomColor;
             return CustomData;

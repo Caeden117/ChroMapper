@@ -102,7 +102,7 @@ namespace Beatmap.Containers
             //var distance = EditorScaleController.EditorScale;
             var headPointMultiplier = ArcData.CutDirection == (int)NoteCutDirection.Any
                 ? 0f
-                : ArcData.ControlPointLengthMultiplier;
+                : ArcData.HeadControlPointLengthMultiplier;
             var d1 = new Vector3(0, splineYScaleFactor * headPointMultiplier, directionZPerturbation);
             var rot1 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.CutDirection).z - 180);
             d1 = rot1 * d1;
@@ -148,7 +148,7 @@ namespace Beatmap.Containers
             foreach (var gameObj in indicators) gameObj.SetActive(visible);
         }
 
-        public void ChangeMultiplier(float modifier) => ArcData.ControlPointLengthMultiplier += modifier;
+        public void ChangeHeadMultiplier(float modifier) => ArcData.HeadControlPointLengthMultiplier += modifier;
 
         public void ChangeTailMultiplier(float modifier) => ArcData.TailControlPointLengthMultiplier += modifier;
     }

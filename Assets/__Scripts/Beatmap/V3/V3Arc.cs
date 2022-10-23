@@ -22,12 +22,12 @@ namespace Beatmap.V3
             PosX = RetrieveRequiredNode(node, "x").AsInt;
             PosY = RetrieveRequiredNode(node, "y").AsInt;
             CutDirection = RetrieveRequiredNode(node, "d").AsInt;
+            HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "mu").AsFloat;
             TailTime = RetrieveRequiredNode(node, "tb").AsFloat;
             TailPosX = RetrieveRequiredNode(node, "tx").AsInt;
             TailPosY = RetrieveRequiredNode(node, "ty").AsInt;
-            ControlPointLengthMultiplier = RetrieveRequiredNode(node, "mu").AsFloat;
-            TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "tmu").AsFloat;
             TailCutDirection = RetrieveRequiredNode(node, "tc").AsInt;
+            TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "tmu").AsFloat;
             MidAnchorMode = RetrieveRequiredNode(node, "m").AsInt;
             CustomData = node["customData"];
             ParseCustom();
@@ -88,12 +88,12 @@ namespace Beatmap.V3
             node["x"] = PosX;
             node["y"] = PosY;
             node["d"] = CutDirection;
+            node["mu"] = HeadControlPointLengthMultiplier;
             node["tb"] = TailTime;
             node["tx"] = TailPosX;
             node["ty"] = TailPosY;
-            node["mu"] = ControlPointLengthMultiplier;
-            node["tmu"] = TailControlPointLengthMultiplier;
             node["tc"] = TailCutDirection;
+            node["tmu"] = TailControlPointLengthMultiplier;
             node["m"] = MidAnchorMode;
             CustomData = SaveCustom();
             if (!CustomData.Children.Any()) return node;
@@ -102,7 +102,7 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, ControlPointLengthMultiplier,
+            new V3Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, HeadControlPointLengthMultiplier,
                 TailTime, TailPosX, TailPosY, TailCutDirection, TailControlPointLengthMultiplier, MidAnchorMode,
                 CustomData?.Clone());
     }

@@ -8,7 +8,7 @@ public class ColourPicker : MonoBehaviour
 {
     [SerializeField] private ColorPicker picker;
     [SerializeField] private ToggleColourDropdown dropdown;
-    [FormerlySerializedAs("eventsContainer")] [SerializeField] private EventGridContainer eventGridContainer;
+    [SerializeField] private EventGridContainer eventGridContainer;
     [SerializeField] private Toggle toggle;
     [SerializeField] private Toggle placeChromaToggle;
 

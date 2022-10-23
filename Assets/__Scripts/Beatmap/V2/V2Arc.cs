@@ -20,12 +20,12 @@ namespace Beatmap.V2
             PosX = RetrieveRequiredNode(node, "_headLineIndex").AsInt;
             PosY = RetrieveRequiredNode(node, "_headLineLayer").AsInt;
             CutDirection = RetrieveRequiredNode(node, "_headCutDirection").AsInt;
+            HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "_headControlPointLengthMultiplier").AsFloat;
             TailTime = RetrieveRequiredNode(node, "_tailTime").AsFloat;
             TailPosX = RetrieveRequiredNode(node, "_tailLineIndex").AsInt;
             TailPosY = RetrieveRequiredNode(node, "_tailLineLayer").AsInt;
-            ControlPointLengthMultiplier = RetrieveRequiredNode(node, "_headControlPointLengthMultiplier").AsFloat;
-            TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "_tailControlPointLengthMultiplier").AsFloat;
             TailCutDirection = RetrieveRequiredNode(node, "_tailCutDirection").AsInt;
+            TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "_tailControlPointLengthMultiplier").AsFloat;
             MidAnchorMode = RetrieveRequiredNode(node, "_sliderMidAnchorMode").AsInt;
             CustomData = node["_customData"];
             ParseCustom();
@@ -59,12 +59,12 @@ namespace Beatmap.V2
             node["_headLineIndex"] = PosX;
             node["_headLineLayer"] = PosY;
             node["_headCutDirection"] = CutDirection;
+            node["_headControlPointLengthMultiplier"] = HeadControlPointLengthMultiplier;
             node["_tailTime"] = TailTime;
             node["_tailLineIndex"] = TailPosX;
             node["_tailLineLayer"] = TailPosY;
-            node["_headControlPointLengthMultiplier"] = ControlPointLengthMultiplier;
-            node["_tailControlPointLengthMultiplier"] = TailControlPointLengthMultiplier;
             node["_tailCutDirection"] = TailCutDirection;
+            node["_tailControlPointLengthMultiplier"] = TailControlPointLengthMultiplier;
             node["_sliderMidAnchorMode"] = MidAnchorMode;
             CustomData = SaveCustom();
             if (!CustomData.Children.Any()) return node;
@@ -73,7 +73,7 @@ namespace Beatmap.V2
         }
 
         public override BaseItem Clone() =>
-            new V2Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, ControlPointLengthMultiplier,
+            new V2Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, HeadControlPointLengthMultiplier,
                 TailTime, TailPosX, TailPosY, TailCutDirection, TailControlPointLengthMultiplier, MidAnchorMode,
                 CustomData?.Clone());
     }

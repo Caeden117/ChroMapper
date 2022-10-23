@@ -137,7 +137,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         // Check if Chroma Color notes button is active and apply _color
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
-            // Doing the same a Chroma 2.0 events but with notes insted
+            // Doing the same a Chroma 2.0 events but with notes instead
             queuedData.CustomColor = colorPicker.CurrentColor;
         }
         else
@@ -146,9 +146,6 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             if (queuedData.CustomColor != null)
             {
                 queuedData.CustomColor = null;
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
             }
         }
 
@@ -172,15 +169,12 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             if (queuedData.CustomCoordinate != null)
             {
                 queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
             }
 
             queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
             queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         }
-
+        
         UpdateAppearance();
     }
 

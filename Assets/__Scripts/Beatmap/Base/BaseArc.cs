@@ -17,12 +17,12 @@ namespace Beatmap.Base
             PosX = other.PosX;
             PosY = other.PosY;
             CutDirection = other.CutDirection;
+            HeadControlPointLengthMultiplier = other.HeadControlPointLengthMultiplier;
             TailTime = other.TailTime;
             TailPosX = other.TailPosX;
             TailPosY = other.TailPosY;
-            ControlPointLengthMultiplier = other.ControlPointLengthMultiplier;
-            TailControlPointLengthMultiplier = other.TailControlPointLengthMultiplier;
             TailCutDirection = other.TailCutDirection;
+            TailControlPointLengthMultiplier = other.TailControlPointLengthMultiplier;
             MidAnchorMode = other.MidAnchorMode;
             CustomData = other.CustomData?.Clone();
         }
@@ -34,12 +34,12 @@ namespace Beatmap.Base
             PosX = start.PosX;
             PosY = start.PosY;
             CutDirection = start.CutDirection;
+            HeadControlPointLengthMultiplier = 1f;
             TailTime = end.Time;
             TailPosX = end.PosX;
             TailPosY = end.PosY;
-            ControlPointLengthMultiplier = 1f;
-            TailControlPointLengthMultiplier = 1f;
             TailCutDirection = end.CutDirection;
+            TailControlPointLengthMultiplier = 1f;
             MidAnchorMode = 0;
             CustomData = start.CustomData?.Clone();
         }
@@ -49,14 +49,14 @@ namespace Beatmap.Base
             int midAnchorMode, JSONNode customData = null) : base(time, color, posX, posY, cutDirection, angleOffset,
             tailTime, tailPosX, tailPosY, customData)
         {
-            ControlPointLengthMultiplier = mult;
+            HeadControlPointLengthMultiplier = mult;
             TailCutDirection = tailCutDirection;
             TailControlPointLengthMultiplier = tailMult;
             MidAnchorMode = midAnchorMode;
         }
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Arc;
-        public float ControlPointLengthMultiplier { get; set; }
+        public float HeadControlPointLengthMultiplier { get; set; }
         public int TailCutDirection { get; set; }
         public float TailControlPointLengthMultiplier { get; set; }
         public int MidAnchorMode { get; set; }
@@ -67,7 +67,7 @@ namespace Beatmap.Base
 
             if (originalData is BaseArc arc)
             {
-                ControlPointLengthMultiplier = arc.ControlPointLengthMultiplier;
+                HeadControlPointLengthMultiplier = arc.HeadControlPointLengthMultiplier;
                 TailCutDirection = arc.TailCutDirection;
                 TailControlPointLengthMultiplier = arc.TailControlPointLengthMultiplier;
                 MidAnchorMode = arc.MidAnchorMode;

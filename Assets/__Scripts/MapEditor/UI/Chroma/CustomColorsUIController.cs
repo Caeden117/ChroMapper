@@ -21,9 +21,9 @@ public class CustomColorsUIController : MonoBehaviour
 
     [Space] [SerializeField] private NoteAppearanceSO noteAppearance;
 
-    [FormerlySerializedAs("obstacles")] [SerializeField] private ObstacleGridContainer obstacleGrid;
+    [SerializeField] private ObstacleGridContainer obstacleGrid;
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
-    [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
+    [SerializeField] private EventGridContainer eventGrid;
     [SerializeField] private EventAppearanceSO eventAppearance;
 
     private PlatformDescriptor platform;
