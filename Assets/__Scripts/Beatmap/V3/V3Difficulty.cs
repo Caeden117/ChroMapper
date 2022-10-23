@@ -322,7 +322,7 @@ namespace Beatmap.V3
             map.Notes.AddRange(map.Bombs);
             map.Events.AddRange(map.ColorBoostEvents);
             map.Events.AddRange(map.RotationEvents);
-            // Events.AddRange(BpmChanges.OfType<BaseEvent>().ToList());
+            map.Events.AddRange(map.BpmEvents);
             map.Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
         }
 
@@ -355,24 +355,72 @@ namespace Beatmap.V3
                         foreach (JSONNode n in node) customEventsList.Add(new V3CustomEvent(n));
                         break;
                     case "pointDefinitions":
-                        foreach (var n in node)
+                        // TODO: array is incorrect, but some old v3 NE/Chroma map uses them, temporarily this needs to be here
+                        if (node is JSONArray nodeAry)
                         {
-                            var points = new List<JSONArray>();
-                            foreach (var p in n.Value)
+                            foreach (var n in nodeAry)
                             {
-                                points.Add(p.Value.AsArray);
+                                if (!(n.Value is JSONObject obj)) continue;
+                                var points = new List<JSONArray>();
+                                foreach (var p in obj["points"].AsArray)
+                                {
+                                    points.Add(p.Value.AsArray);
+                                }
+
+                                if (!pointDefinitions.ContainsKey(n.Key))
+                                {
+                                    pointDefinitions.Add(obj["name"], points);
+                                }
+                                else
+                                {
+                                    Debug.LogWarning($"Duplicate key {n.Key} found in point definitions");
+                                }
                             }
-                            pointDefinitions.Add(n.Key, points);
+                            break;
                         }
+                        if (node is JSONObject nodeObj)
+                        {
+                            foreach (var n in nodeObj)
+                            {
+                                var points = new List<JSONArray>();
+                                foreach (var p in n.Value)
+                                {
+                                    points.Add(p.Value.AsArray);
+                                }
+
+                                if (!pointDefinitions.ContainsKey(n.Key))
+                                {
+                                    pointDefinitions.Add(n.Key, points);
+                                }
+                                else
+                                {
+                                    Debug.LogWarning($"Duplicate key {n.Key} found in point definitions");
+                                }
+                            }
+                            break;
+                        }
+                        Debug.LogWarning("Could not read point definitions");
                         break;
                     case "environment":
                         foreach (JSONNode n in node) envEnhancementsList.Add(new V3EnvironmentEnhancement(n));
                         break;
                     case "materials":
-                        foreach (var n in node)
+                        if (node is JSONObject matObj)
                         {
-                            materials.Add(n.Key, n.Value.AsObject);
+                            foreach (var n in matObj)
+                            {
+                                if (!materials.ContainsKey(n.Key))
+                                {
+                                    materials.Add(n.Key, n.Value.AsObject);
+                                }
+                                else
+                                {
+                                    Debug.LogWarning($"Duplicate key {n.Key} found in materials");
+                                }
+                            }
+                            break;
                         }
+                        Debug.LogWarning("Could not read materials");
                         break;
                     case "time":
                         map.Time = node.AsFloat;

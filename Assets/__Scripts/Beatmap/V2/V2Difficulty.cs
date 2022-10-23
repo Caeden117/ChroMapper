@@ -298,7 +298,14 @@ namespace Beatmap.V2
                                         {
                                             points.Add(p);
                                         }
-                                        pointDefinitions.Add(n["_name"], points);
+                                        if (!pointDefinitions.ContainsKey(n["_name"]))
+                                        {
+                                            pointDefinitions.Add(n["_name"], points);
+                                        }
+                                        else
+                                        {
+                                            Debug.LogWarning($"Duplicate key {n["_name"]} found in point definitions");
+                                        }
                                     }
                                     break;
                                 case "_environment":
@@ -306,10 +313,22 @@ namespace Beatmap.V2
                                         envEnhancementsList.Add(new V2EnvironmentEnhancement(n));
                                     break;
                                 case "_materials":
-                                    foreach (var n in node)
+                                    if (node is JSONObject matObj)
                                     {
-                                        materials.Add(n.Key, n.Value.AsObject);
+                                        foreach (var n in matObj)
+                                        {
+                                            if (!materials.ContainsKey(n.Key))
+                                            {
+                                                materials.Add(n.Key, n.Value.AsObject);
+                                            }
+                                            else
+                                            {
+                                                Debug.LogWarning($"Duplicate key {n.Key} found in materials");
+                                            }
+                                        }
+                                        break;
                                     }
+                                    Debug.LogWarning("Could not read materials");
                                     break;
                                 case "_time":
                                     map.Time = dataNode.AsFloat;

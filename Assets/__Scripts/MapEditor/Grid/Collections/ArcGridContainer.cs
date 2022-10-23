@@ -65,7 +65,7 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
     private void OnPlayToggle(bool isPlaying)
     {
         this.isPlaying = isPlaying;
-        if (isPlaying) RefreshPool(true);
+        // if (isPlaying) RefreshPool(true); // I dont know if removing this line affects anything, we'll see
         foreach (ArcContainer obj in LoadedContainers.Values)
         {
             obj.SetIndicatorBlocksActive(!this.isPlaying);
