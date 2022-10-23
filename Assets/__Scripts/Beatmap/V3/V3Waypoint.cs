@@ -52,6 +52,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3Waypoint(Time, PosX, PosY, OffsetDirection, CustomData?.Clone());
+        public override BaseItem Clone() => new V3Waypoint(Time, PosX, PosY, OffsetDirection, SaveCustom().Clone());
     }
 }

@@ -105,6 +105,6 @@ namespace Beatmap.V3
         public override BaseItem Clone() =>
             new V3Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, HeadControlPointLengthMultiplier,
                 TailTime, TailPosX, TailPosY, TailCutDirection, TailControlPointLengthMultiplier, MidAnchorMode,
-                CustomData?.Clone());
+                SaveCustom().Clone());
     }
 }

@@ -86,6 +86,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3ColorBoostEvent(Time, Toggle, CustomData?.Clone());
+        public override BaseItem Clone() => new V3ColorBoostEvent(Time, Toggle, SaveCustom().Clone());
     }
 }

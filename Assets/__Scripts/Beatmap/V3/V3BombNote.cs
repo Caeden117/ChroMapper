@@ -77,6 +77,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BombNote(Time, PosX, PosY, CustomData?.Clone());
+        public override BaseItem Clone() => new V3BombNote(Time, PosX, PosY, SaveCustom().Clone());
     }
 }

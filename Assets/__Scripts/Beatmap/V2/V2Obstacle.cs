@@ -96,6 +96,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Obstacle(Time, PosX, Type, Duration, Width, CustomData?.Clone());
+        public override BaseItem Clone() => new V2Obstacle(Time, PosX, Type, Duration, Width, SaveCustom().Clone());
     }
 }

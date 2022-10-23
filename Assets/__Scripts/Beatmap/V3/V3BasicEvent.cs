@@ -113,6 +113,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BasicEvent(Time, Type, Value, FloatValue, CustomData?.Clone());
+        public override BaseItem Clone() => new V3BasicEvent(Time, Type, Value, FloatValue, SaveCustom().Clone());
     }
 }

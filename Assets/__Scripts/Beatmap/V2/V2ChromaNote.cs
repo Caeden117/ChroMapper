@@ -36,7 +36,7 @@ namespace Beatmap.V2
         }
 
         public V2Note ConvertToNote() =>
-            new V2Note(Time, PosX, PosY, Type, CutDirection, CustomData);
+            new V2Note(Time, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
 
         /*public new JSONNode ConvertToJSON() //Uncomment this when Custom JSON Data is ready.
         {

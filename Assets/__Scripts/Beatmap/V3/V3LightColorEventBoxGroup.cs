@@ -52,6 +52,6 @@ namespace Beatmap.V3
         }
 
         // TODO: proper event box group cloning
-        public override BaseItem Clone() => new V3LightColorEventBoxGroup(ToJson().Clone());
+        public override BaseItem Clone() => new V3LightColorEventBoxGroup(Time, ID, Events);
     }
 }

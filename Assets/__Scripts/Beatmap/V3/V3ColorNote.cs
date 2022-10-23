@@ -102,6 +102,6 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3ColorNote(Time, PosX, PosY, Color, CutDirection, AngleOffset, CustomData?.Clone());
+            new V3ColorNote(Time, PosX, PosY, Color, CutDirection, AngleOffset, SaveCustom().Clone());
     }
 }

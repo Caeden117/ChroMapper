@@ -75,6 +75,6 @@ namespace Beatmap.V2
         public override BaseItem Clone() =>
             new V2Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, HeadControlPointLengthMultiplier,
                 TailTime, TailPosX, TailPosY, TailCutDirection, TailControlPointLengthMultiplier, MidAnchorMode,
-                CustomData?.Clone());
+                SaveCustom().Clone());
     }
 }

@@ -46,6 +46,6 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3LightColorBase(Time, Color, Brightness, TransitionType, Frequency, CustomData?.Clone());
+            new V3LightColorBase(Time, Color, Brightness, TransitionType, Frequency, SaveCustom().Clone());
     }
 }

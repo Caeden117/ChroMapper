@@ -193,7 +193,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             && !PersistentUI.Instance.DialogBoxIsEnabled &&
             queuedData?.Time >= 0 && !applicationFocusChanged && instantiatedContainer.gameObject.activeSelf)
         {
-            Debug.Log(queuedData); // TODO: WHY THE FUCK DOES THIS VERY LINE FIX CUSTOM DATA PLACEMENT?
             ApplyToMap();
         }
     }

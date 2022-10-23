@@ -52,6 +52,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BpmEvent(Time, Bpm, CustomData?.Clone());
+        public override BaseItem Clone() => new V3BpmEvent(Time, Bpm, SaveCustom().Clone());
     }
 }

@@ -97,6 +97,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Note(Time, PosX, PosY, Type, CutDirection, CustomData?.Clone());
+        public override BaseItem Clone() => new V2Note(Time, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
     }
 }
