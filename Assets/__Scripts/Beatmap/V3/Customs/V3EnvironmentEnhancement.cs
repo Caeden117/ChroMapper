@@ -46,7 +46,16 @@ namespace Beatmap.V3.Customs
 
         public override int? LightID
         {
-            get => Components?["ILightWithId"]?["lightID"]?.AsInt;
+            get
+            {
+                if (Components != null && Components["ILightWithId"] != null &&
+                    Components["ILightWithId"]["lightID"] != null)
+                {
+                    return Components["ILightWithId"]["lightID"].AsInt;
+                }
+
+                return null;
+            }
             set
             {
                 if (Components != null)
@@ -77,8 +86,8 @@ namespace Beatmap.V3.Customs
                 node[KeyLookupMethod] = LookupMethod.ToString();
             }
 
-            if (Track != null) node[KeyTrack] = Track;
-            if (Duplicate != null) node[KeyDuplicate] = Duplicate;
+            if (!string.IsNullOrEmpty(Track)) node[KeyTrack] = Track;
+            if (Duplicate > 0) node[KeyDuplicate] = Duplicate;
             if (Active != null) node[KeyActive] = Active;
             if (Scale != null) WriteVector3(node, KeyScale, Scale);
             if (Position != null) WriteVector3(node, KeyPosition, Position);
@@ -90,6 +99,6 @@ namespace Beatmap.V3.Customs
             return node;
         }
 
-        public override BaseItem Clone() => new V3EnvironmentEnhancement(ToJson().Clone());
+        public override BaseItem Clone() => new V3EnvironmentEnhancement(this);
     }
 }

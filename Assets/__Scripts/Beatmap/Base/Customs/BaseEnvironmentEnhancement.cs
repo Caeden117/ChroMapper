@@ -42,7 +42,7 @@ namespace Beatmap.Base.Customs
         public JSONNode Geometry { get; set; }
         public string Track { get; set; }
         public int? Duplicate { get; set; }
-        public bool? Active { get; set; }
+        public JSONNode Active { get; set; }
         public Vector3? Scale { get; set; }
         public Vector3? Position { get; set; }
         public Vector3? Rotation { get; set; }
@@ -96,15 +96,17 @@ namespace Beatmap.Base.Customs
             unchecked
             {
                 var hashCode = ID != null ? ID.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (int)LookupMethod;
-                hashCode = (hashCode * 397) ^ (int)Duplicate;
-                hashCode = (hashCode * 397) ^ Active.GetHashCode();
-                hashCode = (hashCode * 397) ^ Scale.GetHashCode();
-                hashCode = (hashCode * 397) ^ Position.GetHashCode();
-                hashCode = (hashCode * 397) ^ LocalPosition.GetHashCode();
-                hashCode = (hashCode * 397) ^ Rotation.GetHashCode();
-                hashCode = (hashCode * 397) ^ LocalRotation.GetHashCode();
-                hashCode = (hashCode * 397) ^ LightID.GetHashCode();
+                hashCode = (hashCode * 397) ^ LookupMethod.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Geometry != null ? Geometry.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Duplicate != null ? Duplicate.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Active != null ? Active.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Scale != null ? Scale.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Position != null ? Position.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (LocalPosition != null ? LocalPosition.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Rotation != null ? Rotation.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (LocalRotation != null ? LocalRotation.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Components != null ? Components.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (LightID != null ? LightID.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Track != null ? Track.GetHashCode() : 0);
                 return hashCode;
             }
@@ -112,22 +114,30 @@ namespace Beatmap.Base.Customs
 
         private void InstantiateHelper(ref JSONNode node)
         {
-            ID = node[KeyID]?.Value;
-            Enum.TryParse(node[KeyLookupMethod]?.Value, out EnvironmentLookupMethod environmentLookup);
-            LookupMethod = environmentLookup;
+            if (node[KeyGeometry] != null)
+            {
+                Geometry = node[KeyGeometry];
+            }
+            else
+            {
+                ID = node[KeyID]?.Value;
+                Enum.TryParse(node[KeyLookupMethod]?.Value, out EnvironmentLookupMethod environmentLookup);
+                LookupMethod = environmentLookup;
+            }
 
-            Geometry = node[KeyGeometry];
-
-            Track = node[KeyTrack]?.Value;
-            Duplicate = node[KeyDuplicate]?.AsInt;
-            Active = node[KeyActive]?.AsBool;
+            if (node[KeyTrack] != null) Track = node[KeyTrack].Value;
+            if (node[KeyDuplicate] != null) Duplicate = node[KeyDuplicate].AsInt;
+            if (node[KeyActive] != null) Active = node[KeyActive].AsBool;
             Scale = ReadVector3OrNull(node, KeyScale);
             Position = ReadVector3OrNull(node, KeyPosition);
             Rotation = ReadVector3OrNull(node, KeyRotation);
             LocalPosition = ReadVector3OrNull(node, KeyLocalPosition);
             LocalRotation = ReadVector3OrNull(node, KeyLocalRotation);
             Components = node[KeyComponents];
-            LightID = node[KeyLightID]?.AsInt;
+            if (node[KeyLightID] != null)
+            {
+                LightID = node[KeyLightID].AsInt;
+            }
         }
     }
 }

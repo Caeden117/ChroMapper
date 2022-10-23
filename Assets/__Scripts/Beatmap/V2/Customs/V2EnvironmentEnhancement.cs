@@ -57,19 +57,19 @@ namespace Beatmap.V2.Customs
                 node[KeyLookupMethod] = LookupMethod.ToString();
             }
 
-            if (Track != null) node[KeyTrack] = Track;
-            if (Duplicate != null) node[KeyDuplicate] = Duplicate;
+            if (!string.IsNullOrEmpty(Track)) node[KeyTrack] = Track;
+            if (Duplicate > 0) node[KeyDuplicate] = Duplicate;
             if (Active != null) node[KeyActive] = Active;
             if (Scale != null) WriteVector3(node, KeyScale, Scale);
             if (Position != null) WriteVector3(node, KeyPosition, Position);
             if (Rotation != null) WriteVector3(node, KeyRotation, Rotation);
             if (LocalPosition != null) WriteVector3(node, KeyLocalPosition, LocalPosition);
             if (LocalRotation != null) WriteVector3(node, KeyLocalRotation, LocalRotation);
-            if (LightID != null) node[KeyLightID] = LightID;
+            if (LightID > 0) node[KeyLightID] = LightID;
 
             return node;
         }
 
-        public override BaseItem Clone() => new V2EnvironmentEnhancement(ToJson().Clone());
+        public override BaseItem Clone() => new V2EnvironmentEnhancement(this);
     }
 }
