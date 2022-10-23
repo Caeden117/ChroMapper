@@ -15,7 +15,7 @@ namespace Beatmap.Base
             PosX = other.PosX;
             PosY = other.PosY;
             Type = (int)NoteType.Bomb;
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseBombNote(float time, int posX, int posY, JSONNode customData = null) : base(time, posX, posY,

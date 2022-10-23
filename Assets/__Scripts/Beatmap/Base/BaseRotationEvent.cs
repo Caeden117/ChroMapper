@@ -16,7 +16,7 @@ namespace Beatmap.Base
             ExecutionTime = other.ExecutionTime;
             Rotation = other.Rotation;
             Type = (int)(ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseRotationEvent(BaseEvent evt)
@@ -31,7 +31,7 @@ namespace Beatmap.Base
                 Rotation -= 1360;
             ExecutionTime = evt.Type == (int)EventTypeValue.EarlyLaneRotation ? 0 : 1;
             Type = (int)(ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
-            CustomData = evt.CustomData?.Clone();
+            CustomData = evt.SaveCustom().Clone();
         }
 
         protected BaseRotationEvent(float time, int executionTime, float rotation, JSONNode customData = null) :

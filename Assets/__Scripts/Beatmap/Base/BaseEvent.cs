@@ -23,7 +23,7 @@ namespace Beatmap.Base
             Type = other.Type;
             Value = other.Value;
             FloatValue = other.FloatValue;
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseEvent(BaseBpmEvent baseBpm)
@@ -32,7 +32,7 @@ namespace Beatmap.Base
             Type = (int)EventTypeValue.BpmChange;
             Value = 0;
             FloatValue = baseBpm.Bpm;
-            CustomData = baseBpm.CustomData?.Clone();
+            CustomData = baseBpm.SaveCustom().Clone();
         }
 
         protected BaseEvent(BaseColorBoostEvent cbe)
@@ -41,7 +41,7 @@ namespace Beatmap.Base
             Type = (int)EventTypeValue.ColorBoost;
             Value = cbe.Toggle ? 1 : 0;
             FloatValue = 1;
-            CustomData = cbe.CustomData?.Clone();
+            CustomData = cbe.SaveCustom().Clone();
         }
 
         protected BaseEvent(BaseRotationEvent re)
@@ -50,7 +50,7 @@ namespace Beatmap.Base
             Type = (int)(re.ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
             Value = 0;
             FloatValue = 1;
-            CustomData = re.CustomData?.Clone();
+            CustomData = re.SaveCustom().Clone();
         }
 
         protected BaseEvent(float time, int type, int value, float floatValue = 1f, JSONNode customData = null) :
@@ -309,7 +309,7 @@ namespace Beatmap.Base
                 CustomLockRotation = CustomData[CustomKeyLockRotation].AsBool;
         }
 
-        protected override JSONNode SaveCustom()
+        protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
             if (CustomLightID != null)

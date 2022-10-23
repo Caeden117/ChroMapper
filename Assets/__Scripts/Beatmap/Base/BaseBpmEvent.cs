@@ -17,7 +17,7 @@ namespace Beatmap.Base
             Type = 100;
             Value = 0;
             FloatValue = other.Bpm;
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseBpmEvent(BaseEvent evt)
@@ -27,7 +27,7 @@ namespace Beatmap.Base
             Type = 100;
             Value = 0;
             FloatValue = evt.FloatValue;
-            CustomData = evt.CustomData?.Clone();
+            CustomData = evt.SaveCustom().Clone();
         }
 
         protected BaseBpmEvent(float time, float bpm, JSONNode customData = null) :

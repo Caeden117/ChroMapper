@@ -23,7 +23,7 @@ namespace Beatmap.Base
             Type = other.Type;
             CutDirection = other.CutDirection;
             AngleOffset = other.AngleOffset;
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseNote(BaseBombNote baseBomb)
@@ -35,7 +35,7 @@ namespace Beatmap.Base
             Type = (int)NoteType.Bomb;
             CutDirection = 0;
             AngleOffset = 0;
-            CustomData = baseBomb.CustomData?.Clone();
+            CustomData = baseBomb.SaveCustom().Clone();
         }
 
         protected BaseNote(BaseSlider slider)
@@ -47,7 +47,7 @@ namespace Beatmap.Base
             Type = slider.Color;
             CutDirection = slider.CutDirection;
             AngleOffset = 0;
-            CustomData = slider.CustomData?.Clone();
+            CustomData = slider.SaveCustom().Clone();
         }
 
         protected BaseNote(float time, int posX, int posY, int type, int cutDirection,

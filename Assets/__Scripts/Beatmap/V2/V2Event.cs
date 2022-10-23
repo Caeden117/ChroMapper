@@ -90,7 +90,7 @@ namespace Beatmap.V2
             if (CustomData[CustomKeyLaneRotation] != null) CustomLaneRotation = CustomData[CustomKeyLaneRotation].AsInt;
         }
 
-        protected sealed override JSONNode SaveCustom()
+        protected internal sealed override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
             if (CustomLightGradient != null) CustomData[CustomKeyLightGradient] = CustomLightGradient.ToJson();

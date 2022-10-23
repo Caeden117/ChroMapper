@@ -51,10 +51,10 @@ namespace Beatmap.Base
             if (CustomData == null) return;
             
             if (CustomData.HasKey(CustomKeyTrack)) CustomTrack = CustomData[CustomKeyTrack].Value;
-            if (CustomData[CustomKeyColor].HasKey(CustomTrack)) CustomColor = CustomData[CustomKeyColor].ReadColor();
+            if (CustomData.HasKey(CustomKeyColor)) CustomColor = CustomData[CustomKeyColor].ReadColor();
         }
 
-        protected virtual JSONNode SaveCustom()
+        protected internal virtual JSONNode SaveCustom()
         {
             CustomData = CustomData is JSONObject ? CustomData : new JSONObject();
             if (!string.IsNullOrEmpty(CustomTrack)) CustomData[CustomKeyTrack] = CustomTrack;

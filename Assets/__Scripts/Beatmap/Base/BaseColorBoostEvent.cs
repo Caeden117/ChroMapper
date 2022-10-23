@@ -15,7 +15,7 @@ namespace Beatmap.Base
             Toggle = other.Toggle;
             Type = 5;
             Value = Toggle ? 1 : 0; 
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseColorBoostEvent(BaseEvent evt)
@@ -24,7 +24,7 @@ namespace Beatmap.Base
             Toggle = evt.Value == 1;
             Type = 5;
             Value = Toggle ? 1 : 0; 
-            CustomData = evt.CustomData?.Clone();
+            CustomData = evt.SaveCustom().Clone();
         }
 
         protected BaseColorBoostEvent(float time, bool toggle, JSONNode customData = null) : base(time, 5,

@@ -74,7 +74,7 @@ namespace Beatmap.Base
                 CustomLocalRotation = CustomData[CustomKeyLocalRotation].ReadVector3();
         }
 
-        protected override JSONNode SaveCustom()
+        protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
             if (CustomCoordinate != null) CustomData[CustomKeyCoordinate] = CustomCoordinate;

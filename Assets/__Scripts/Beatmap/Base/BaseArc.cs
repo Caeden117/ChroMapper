@@ -24,7 +24,7 @@ namespace Beatmap.Base
             TailCutDirection = other.TailCutDirection;
             TailControlPointLengthMultiplier = other.TailControlPointLengthMultiplier;
             MidAnchorMode = other.MidAnchorMode;
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseArc(BaseNote start, BaseNote end)
@@ -41,7 +41,7 @@ namespace Beatmap.Base
             TailCutDirection = end.CutDirection;
             TailControlPointLengthMultiplier = 1f;
             MidAnchorMode = 0;
-            CustomData = start.CustomData?.Clone();
+            CustomData = start.SaveCustom().Clone();
         }
 
         protected BaseArc(float time, int color, int posX, int posY, int cutDirection, int angleOffset,

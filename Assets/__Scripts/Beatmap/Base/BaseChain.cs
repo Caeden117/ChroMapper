@@ -33,7 +33,7 @@ namespace Beatmap.Base
             TailPosY = other.TailPosY;
             SliceCount = other.SliceCount;
             Squish = other.Squish;
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseChain(BaseNote start, BaseNote end)
@@ -48,7 +48,7 @@ namespace Beatmap.Base
             TailPosY = end.PosY;
             SliceCount = 5;
             Squish = 1;
-            CustomData = start.CustomData?.Clone();
+            CustomData = start.SaveCustom().Clone();
         }
 
         protected BaseChain(float time, int color, int posX, int posY, int cutDirection, int angleOffset,

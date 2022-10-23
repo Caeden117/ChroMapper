@@ -49,7 +49,7 @@ namespace Beatmap.V2
             if (CustomData[CustomKeyDirection] != null) CustomDirection = CustomData[CustomKeyDirection].AsInt;
         }
 
-        protected sealed override JSONNode SaveCustom()
+        protected internal sealed override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
             if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection;

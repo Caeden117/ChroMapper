@@ -16,7 +16,7 @@ namespace Beatmap.Base
             PosX = other.PosX;
             PosY = other.PosY;
             OffsetDirection = other.OffsetDirection;
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseWaypoint(float time, int posX, int posY, int offsetDirection, JSONNode customData = null) :

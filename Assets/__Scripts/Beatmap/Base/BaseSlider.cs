@@ -58,7 +58,7 @@ namespace Beatmap.Base
                 CustomTailCoordinate = CustomData[CustomKeyTailCoordinate].ReadVector2();
         }
 
-        protected override JSONNode SaveCustom()
+        protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
             if (CustomTailCoordinate != null) CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate;

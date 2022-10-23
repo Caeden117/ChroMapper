@@ -24,7 +24,7 @@ namespace Beatmap.Base
             Duration = other.Duration;
             Width = other.Width;
             Height = other.Height;
-            CustomData = other.CustomData?.Clone();
+            CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseObstacle(float time, int posX, int type, float duration, int width,
@@ -188,7 +188,7 @@ namespace Beatmap.Base
             }
         }
 
-        protected override JSONNode SaveCustom()
+        protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
             if (CustomSize != null) CustomData[CustomKeySize] = CustomSize;
