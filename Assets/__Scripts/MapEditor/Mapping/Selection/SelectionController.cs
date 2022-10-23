@@ -481,6 +481,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             data.Time += beats;
             if (snapObjects)
                 data.Time = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
+            if (data is BaseSlider slider)
+            {
+                slider.TailTime += beats;
+                if (snapObjects)
+                    slider.TailTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
+            }
             collection.LoadedObjects.Add(data);
 
             if (collection.LoadedContainers.TryGetValue(data, out var con)) con.UpdateGridPosition();
@@ -506,7 +512,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var original = BeatmapFactory.Clone(data);
             if (data is BaseNote note)
             {
-                if (note.CustomData is null || note.CustomCoordinate is null)
+                if (note.CustomCoordinate is null)
                 {
                     if (note.PosX >= 1000)
                     {
@@ -529,12 +535,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    if (note.CustomCoordinate != null)
-                    {
-                        var pos = (Vector2)note.CustomCoordinate;
-                        pos[0] += 1f / atsc.GridMeasureSnapping * leftRight; 
-                        pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
-                    }
+                    var pos = (Vector2)note.CustomCoordinate;
+                    pos[0] += 1f / atsc.GridMeasureSnapping * leftRight; 
+                    pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
                 }
             }
             else if (data is BaseObstacle obstacle)
@@ -629,34 +632,62 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                 if (data.CustomData?.Count <= 0) data.CustomData = null;
             }
-            else if (data is BaseArc arc)
+            else if (data is BaseSlider slider)
             {
-                // TODO: Do ME and NE
-                arc.PosX += leftRight;
-                arc.PosY += upDown;
-                arc.TailPosX += leftRight;
-                arc.TailPosY += upDown;
-                if (Settings.Instance.VanillaOnlyShift)
+                if (slider.CustomCoordinate is null)
                 {
-                    // While x is unbounded, you probably want to keep within the grid for vanilla mapping
-                    arc.PosX = Mathf.Clamp(arc.PosX, 0, 3);
-                    arc.PosY = Mathf.Clamp(arc.PosY, 0, 2);
-                    arc.TailPosX = Mathf.Clamp(arc.TailPosX, 0, 3);
-                    arc.TailPosY = Mathf.Clamp(arc.TailPosY, 0, 2);
+                    if (slider.PosX >= 1000)
+                    {
+                        slider.PosX += Mathf.RoundToInt(1f / atsc.GridMeasureSnapping * 1000 * leftRight);
+                        if (slider.PosX < 1000) slider.PosX = 1000;
+                    }
+                    else if (slider.PosX <= -1000)
+                    {
+                        slider.PosX += Mathf.RoundToInt(1f / atsc.GridMeasureSnapping * 1000 * leftRight);
+                        if (slider.PosX > -1000) slider.PosX = -1000;
+                    }
+                    else
+                    {
+                        slider.PosX += leftRight;
+                        if (Settings.Instance.VanillaOnlyShift) slider.PosX = Mathf.Clamp(slider.PosX, 0, 3);
+                    }
+
+                    slider.PosY += upDown;
+                    if (Settings.Instance.VanillaOnlyShift) slider.PosY = Mathf.Clamp(slider.PosY, 0, 2);
                 }
-            }
-            else if (data is BaseChain chain)
-            {
-                chain.PosX += leftRight;
-                chain.PosY += upDown;
-                chain.TailPosX += leftRight;
-                chain.TailPosY += upDown;
-                if (Settings.Instance.VanillaOnlyShift)
+                else
                 {
-                    chain.PosX = Mathf.Clamp(chain.PosX, 0, 3);
-                    chain.PosY = Mathf.Clamp(chain.PosY, 0, 2);
-                    chain.TailPosX = Mathf.Clamp(chain.TailPosX, 0, 3);
-                    chain.TailPosY = Mathf.Clamp(chain.TailPosY, 0, 2);
+                    var pos = (Vector2)slider.CustomCoordinate;
+                    pos[0] += 1f / atsc.GridMeasureSnapping * leftRight; 
+                    pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
+                }
+                
+                if (slider.CustomTailCoordinate is null)
+                {
+                    if (slider.TailPosX >= 1000)
+                    {
+                        slider.TailPosX += Mathf.RoundToInt(1f / atsc.GridMeasureSnapping * 1000 * leftRight);
+                        if (slider.TailPosX < 1000) slider.TailPosX = 1000;
+                    }
+                    else if (slider.TailPosX <= -1000)
+                    {
+                        slider.TailPosX += Mathf.RoundToInt(1f / atsc.GridMeasureSnapping * 1000 * leftRight);
+                        if (slider.TailPosX > -1000) slider.TailPosX = -1000;
+                    }
+                    else
+                    {
+                        slider.TailPosX += leftRight;
+                        if (Settings.Instance.VanillaOnlyShift) slider.TailPosX = Mathf.Clamp(slider.TailPosX, 0, 3);
+                    }
+
+                    slider.TailPosY += upDown;
+                    if (Settings.Instance.VanillaOnlyShift) slider.TailPosY = Mathf.Clamp(slider.TailPosY, 0, 2);
+                }
+                else
+                {
+                    var pos = (Vector2)slider.CustomTailCoordinate;
+                    pos[0] += 1f / atsc.GridMeasureSnapping * leftRight; 
+                    pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
                 }
             }
             return new BeatmapObjectModifiedAction(data, data, original, "", true);
