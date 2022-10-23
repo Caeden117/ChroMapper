@@ -2620,18 +2620,18 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""Tweak Event Value"",
+                    ""name"": ""Tweak Event Main"",
                     ""type"": ""Button"",
-                    ""id"": ""7a637f25-63f4-434a-b1bc-5db5e34f9e04"",
-                    ""expectedControlType"": """",
+                    ""id"": ""276c98b6-1db9-4975-be8c-23de8b862b07"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Tweak Event Float Value"",
+                    ""name"": ""Tweak Event Alternative"",
                     ""type"": ""Button"",
-                    ""id"": ""276c98b6-1db9-4975-be8c-23de8b862b07"",
-                    ""expectedControlType"": ""Button"",
+                    ""id"": ""7a637f25-63f4-434a-b1bc-5db5e34f9e04"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -2649,79 +2649,79 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""66e94709-0de5-4c2b-8dce-4655c335b6f2"",
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""70af3a21-80b6-491d-b247-6e0629fd31b6"",
                     ""path"": ""ButtonWithOneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Tweak Event Value"",
+                    ""action"": ""Tweak Event Main"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""modifier"",
-                    ""id"": ""a012cecc-290c-4dd4-9ace-cd99f0ec9f0e"",
+                    ""id"": ""7f25e490-2349-411c-92c8-8a13ff9fc1c0"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Tweak Event Value"",
+                    ""groups"": """",
+                    ""action"": ""Tweak Event Main"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""button"",
-                    ""id"": ""abcf4a70-1b75-4b22-a957-130910706481"",
+                    ""id"": ""2029a0a6-b94d-4213-8310-913895de92a9"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Tweak Event Value"",
+                    ""groups"": """",
+                    ""action"": ""Tweak Event Main"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""Button With Two Modifiers"",
-                    ""id"": ""08225278-9593-41d5-9404-abbd4a8f8da7"",
+                    ""id"": ""f6def448-a684-444f-a5c0-f94272a62c7c"",
                     ""path"": ""ButtonWithTwoModifiers"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Tweak Event Float Value"",
+                    ""action"": ""Tweak Event Alternative"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""modifier1"",
-                    ""id"": ""d92defbb-5e41-45c0-ba76-5d8b2af07c04"",
+                    ""id"": ""526cf1ec-bbc2-4012-b7bd-3f0e88ad9c99"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Tweak Event Float Value"",
+                    ""action"": ""Tweak Event Alternative"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""modifier2"",
-                    ""id"": ""7256dfca-e2f1-428f-9540-c89f3403be4b"",
+                    ""id"": ""bbbaec30-1693-470a-9e0a-cd32f6162128"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Tweak Event Float Value"",
+                    ""action"": ""Tweak Event Alternative"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""button"",
-                    ""id"": ""6e14fadd-b5e4-4740-b25b-e1e13e929eb8"",
+                    ""id"": ""93deb5e4-8f8e-4dda-bcf7-cd2b675cfda2"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Tweak Event Float Value"",
+                    ""action"": ""Tweak Event Alternative"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -4376,8 +4376,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Event Objects
         m_EventObjects = asset.FindActionMap("Event Objects", throwIfNotFound: true);
         m_EventObjects_InvertEventValue = m_EventObjects.FindAction("Invert Event Value", throwIfNotFound: true);
-        m_EventObjects_TweakEventValue = m_EventObjects.FindAction("Tweak Event Value", throwIfNotFound: true);
-        m_EventObjects_TweakEventFloatValue = m_EventObjects.FindAction("Tweak Event Float Value", throwIfNotFound: true);
+        m_EventObjects_TweakEventMain = m_EventObjects.FindAction("Tweak Event Main", throwIfNotFound: true);
+        m_EventObjects_TweakEventAlternative = m_EventObjects.FindAction("Tweak Event Alternative", throwIfNotFound: true);
         // Custom Events Container
         m_CustomEventsContainer = asset.FindActionMap("Custom Events Container", throwIfNotFound: true);
         m_CustomEventsContainer_AssignObjectstoTrack = m_CustomEventsContainer.FindAction("Assign Objects to Track", throwIfNotFound: true);
@@ -5728,15 +5728,15 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_EventObjects;
     private IEventObjectsActions m_EventObjectsActionsCallbackInterface;
     private readonly InputAction m_EventObjects_InvertEventValue;
-    private readonly InputAction m_EventObjects_TweakEventValue;
-    private readonly InputAction m_EventObjects_TweakEventFloatValue;
+    private readonly InputAction m_EventObjects_TweakEventMain;
+    private readonly InputAction m_EventObjects_TweakEventAlternative;
     public struct EventObjectsActions
     {
         private @CMInput m_Wrapper;
         public EventObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @InvertEventValue => m_Wrapper.m_EventObjects_InvertEventValue;
-        public InputAction @TweakEventValue => m_Wrapper.m_EventObjects_TweakEventValue;
-        public InputAction @TweakEventFloatValue => m_Wrapper.m_EventObjects_TweakEventFloatValue;
+        public InputAction @TweakEventMain => m_Wrapper.m_EventObjects_TweakEventMain;
+        public InputAction @TweakEventAlternative => m_Wrapper.m_EventObjects_TweakEventAlternative;
         public InputActionMap Get() { return m_Wrapper.m_EventObjects; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -5749,12 +5749,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @InvertEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
                 @InvertEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
                 @InvertEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnInvertEventValue;
-                @TweakEventValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
-                @TweakEventValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
-                @TweakEventValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventValue;
-                @TweakEventFloatValue.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventFloatValue;
-                @TweakEventFloatValue.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventFloatValue;
-                @TweakEventFloatValue.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventFloatValue;
+                @TweakEventMain.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventMain;
+                @TweakEventMain.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventMain;
+                @TweakEventMain.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventMain;
+                @TweakEventAlternative.started -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventAlternative;
+                @TweakEventAlternative.performed -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventAlternative;
+                @TweakEventAlternative.canceled -= m_Wrapper.m_EventObjectsActionsCallbackInterface.OnTweakEventAlternative;
             }
             m_Wrapper.m_EventObjectsActionsCallbackInterface = instance;
             if (instance != null)
@@ -5762,12 +5762,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @InvertEventValue.started += instance.OnInvertEventValue;
                 @InvertEventValue.performed += instance.OnInvertEventValue;
                 @InvertEventValue.canceled += instance.OnInvertEventValue;
-                @TweakEventValue.started += instance.OnTweakEventValue;
-                @TweakEventValue.performed += instance.OnTweakEventValue;
-                @TweakEventValue.canceled += instance.OnTweakEventValue;
-                @TweakEventFloatValue.started += instance.OnTweakEventFloatValue;
-                @TweakEventFloatValue.performed += instance.OnTweakEventFloatValue;
-                @TweakEventFloatValue.canceled += instance.OnTweakEventFloatValue;
+                @TweakEventMain.started += instance.OnTweakEventMain;
+                @TweakEventMain.performed += instance.OnTweakEventMain;
+                @TweakEventMain.canceled += instance.OnTweakEventMain;
+                @TweakEventAlternative.started += instance.OnTweakEventAlternative;
+                @TweakEventAlternative.performed += instance.OnTweakEventAlternative;
+                @TweakEventAlternative.canceled += instance.OnTweakEventAlternative;
             }
         }
     }
@@ -6852,8 +6852,8 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IEventObjectsActions
     {
         void OnInvertEventValue(InputAction.CallbackContext context);
-        void OnTweakEventValue(InputAction.CallbackContext context);
-        void OnTweakEventFloatValue(InputAction.CallbackContext context);
+        void OnTweakEventMain(InputAction.CallbackContext context);
+        void OnTweakEventAlternative(InputAction.CallbackContext context);
     }
     public interface ICustomEventsContainerActions
     {

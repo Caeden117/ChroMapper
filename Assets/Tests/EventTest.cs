@@ -116,7 +116,7 @@ namespace Tests
 
                 if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
                 {
-                    inputController.TweakValue(containerA, 1);
+                    inputController.TweakMain(containerA, 1);
                 }
 
                 CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 3);
