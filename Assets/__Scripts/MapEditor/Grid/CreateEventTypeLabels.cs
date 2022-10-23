@@ -27,6 +27,7 @@ public class CreateEventTypeLabels : MonoBehaviour
     private LightsManager[] lightingManagers;
     private bool loadedWithRotationEvents;
     [HideInInspector] public int NoRotationLaneOffset => loadedWithRotationEvents || RotationCallback.IsActive ? 0 : -2;
+    private int AvailableLightLaneOffset => lightingManagers.Length - 5;
 
     // Use this for initialization
     private void Start()
@@ -51,6 +52,15 @@ public class CreateEventTypeLabels : MonoBehaviour
         {
             var modified = (propMode == EventsContainer.PropMode.Off ? EventTypeToModifiedType(i) : i) +
                            NoRotationLaneOffset;
+            if (propMode == EventsContainer.PropMode.Off && Settings.Instance.Load_MapV3)
+            {
+            // v3 light system may have fewer v2 light lanes
+                if (i >= lightingManagers.Length)
+                {
+                    modified += AvailableLightLaneOffset;
+                }
+            }
+
             if (modified < 0 && propMode == EventsContainer.PropMode.Off) continue;
 
             var laneInfo = new LaneInfo(i, propMode != EventsContainer.PropMode.Off ? i : modified);
