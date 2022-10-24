@@ -328,6 +328,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (collection.LoadedContainers.TryGetValue(data, out var con)) con.SetOutlineColor(instance.copiedColor);
             var copy = BeatmapFactory.Clone(data);
             copy.Time -= firstTime;
+            if (copy is BaseSlider slider)
+                slider.TailTime -= firstTime;
             CopiedObjects.Add(copy);
         }
 
@@ -363,17 +365,24 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             if (data == null) continue;
 
-            upperValue.Time = atsc.CurrentBeat + data.Time;
+            var objTime = data.Time;
+            var objTailTime = objTime;
+            if (data is BaseSlider slider)
+                objTailTime = slider.TailTime;
+            
+            upperValue.Time = atsc.CurrentBeat + objTailTime;
 
             var bpmChangeView = bpmChanges.LoadedObjects.GetViewBetween(lowerValue, upperValue);
 
-            var bpmTime = data.Time * (copiedBpm / (lastBpmChangeBeforePaste?.Bpm ?? copiedBpm));
+            var bpmTime = objTime * (copiedBpm / (lastBpmChangeBeforePaste?.Bpm ?? copiedBpm));
+            var bpmTailTime = objTailTime * (copiedBpm / (lastBpmChangeBeforePaste?.Bpm ?? copiedBpm));
 
             if (bpmChangeView.Any())
             {
                 var firstBpmChange = bpmChangeView.First() as BaseBpmEvent;
 
                 bpmTime = firstBpmChange.Time - atsc.CurrentBeat;
+                bpmTailTime += firstBpmChange.Time - atsc.CurrentBeat;
 
                 for (var i = 0; i < bpmChangeView.Count - 1; i++)
                 {
@@ -381,16 +390,20 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     var rightBpm = bpmChangeView.ElementAt(i + 1) as BaseBpmEvent;
 
                     bpmTime += (rightBpm.Time - leftBpm.Time) * (copiedBpm / leftBpm.Bpm);
+                    bpmTailTime += (rightBpm.Time - leftBpm.Time) * (copiedBpm / leftBpm.Bpm);
                 }
 
                 var lastBpmChange = bpmChangeView.Last() as BaseBpmEvent;
-                bpmTime += (atsc.CurrentBeat + data.Time - lastBpmChange.Time) * (copiedBpm / lastBpmChange.Bpm);
+                bpmTime += (atsc.CurrentBeat + objTime - lastBpmChange.Time) * (copiedBpm / lastBpmChange.Bpm);
+                bpmTailTime += (atsc.CurrentBeat + objTailTime - lastBpmChange.Time) * (copiedBpm / lastBpmChange.Bpm);
             }
 
             var newTime = bpmTime + atsc.CurrentBeat;
+            var newTailTime = bpmTailTime + atsc.CurrentBeat;
 
             var newData = BeatmapFactory.Clone(data);
             newData.Time = newTime;
+            if (newData is BaseSlider newSlider) newSlider.TailTime = newTailTime;
 
             if (!collections.TryGetValue(newData.ObjectType, out var collection))
             {
