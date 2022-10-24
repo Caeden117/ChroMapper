@@ -142,7 +142,7 @@ namespace Beatmap.Appearances
                 // for clarity sake, we don't want this to be the same as off color
                 var clampedOffColor = Color.Lerp(offColor, color, 0.25f);
                 color = Color.Lerp(clampedOffColor, color, e.EventData.FloatValue); 
-                e.UpdateTextColor(color == Color.white ? Color.black : Color.white); // this may overwrite some configs
+                e.UpdateTextColor(color == Color.white ? Color.black : Color.white); // TODO: this messes with text color in unintended part, need to fix
             }
 
             e.EventModel = Settings.Instance.EventModel;

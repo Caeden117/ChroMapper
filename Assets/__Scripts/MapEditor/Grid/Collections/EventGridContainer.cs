@@ -31,6 +31,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
 
     public List<BaseEvent> AllRotationEvents = new List<BaseEvent>();
     public List<BaseEvent> AllBoostEvents = new List<BaseEvent>();
+    public List<BaseEvent> AllBpmEvents = new List<BaseEvent>();
 
     private Dictionary<int, List<BaseEvent>> allLightEvents = new Dictionary<int, List<BaseEvent>>();
     public Dictionary<int, List<BaseEvent>> AllLightEvents { get => allLightEvents;
@@ -182,6 +183,10 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             {
                 AllBoostEvents.Remove(e);
             }
+            else if (e.IsBpmEvent())
+            {
+                AllBpmEvents.Remove(e);
+            }
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
@@ -194,6 +199,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             if (e.IsLaneRotationEvent())
                 AllRotationEvents.Add(e);
             else if (e.IsColorBoostEvent()) AllBoostEvents.Add(e);
+            else if (e.IsBpmEvent()) AllBpmEvents.Add(e);
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
@@ -293,11 +299,9 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         if (PropagationEditing != PropMode.Off && e.Type != EventTypeToPropagate) con.SafeSetActive(false);
     }
 
-    public void LinkAllLightEvents()
-    {
+    public void LinkAllLightEvents() =>
         AllLightEvents = LoadedObjects.OfType<BaseEvent>().
-                    Where(x => x.IsLightEvent()).
-                    GroupBy(x => x.Type).
-                    ToDictionary(g => g.Key, g => g.ToList());
-    }
+            Where(x => x.IsLightEvent()).
+            GroupBy(x => x.Type).
+            ToDictionary(g => g.Key, g => g.ToList());
 }
