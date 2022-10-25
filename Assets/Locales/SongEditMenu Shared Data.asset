@@ -361,6 +361,10 @@ MonoBehaviour:
     m_Key: rt.placeholder
     m_Metadata:
       m_Items: []
+  - m_Id: 115521560328208384
+    m_Key: songtimeoffset.warning
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

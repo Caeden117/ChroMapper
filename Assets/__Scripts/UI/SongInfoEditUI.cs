@@ -151,6 +151,12 @@ public class SongInfoEditUI : MenuBase
         Song.PreviewDuration = GetTextValue(prevDurField);
         Song.SongTimeOffset = GetTextValue(offset);
 
+        if (Song.SongTimeOffset != 0)
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
+                PersistentUI.DialogBoxPresetType.Ok);
+        }
+
         Song.EnvironmentName = GetEnvironmentNameFromID(environmentDropdown.value);
 
         if (Song.CustomData == null) Song.CustomData = new JSONObject();
@@ -204,6 +210,11 @@ public class SongInfoEditUI : MenuBase
         audioPath.text = Song.SongFilename;
 
         offset.text = Song.SongTimeOffset.ToString(CultureInfo.InvariantCulture);
+        if (Song.SongTimeOffset != 0)
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
+                PersistentUI.DialogBoxPresetType.Ok);
+        }
 
         bpmField.text = Song.BeatsPerMinute.ToString(CultureInfo.InvariantCulture);
         prevStartField.text = Song.PreviewStartTime.ToString(CultureInfo.InvariantCulture);
