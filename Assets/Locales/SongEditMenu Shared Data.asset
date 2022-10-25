@@ -349,6 +349,18 @@ MonoBehaviour:
     m_Key: quest.no-quest
     m_Metadata:
       m_Items: []
+  - m_Id: 115483511321985024
+    m_Key: jd.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115492419843325952
+    m_Key: hjd.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115504465297211392
+    m_Key: rt.placeholder
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
