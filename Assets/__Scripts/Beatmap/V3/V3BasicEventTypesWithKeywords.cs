@@ -14,9 +14,13 @@ namespace Beatmap.V3
         {
         }
 
-        public V3BasicEventTypesWithKeywords(JSONNode node) =>
-            Keywords = RetrieveRequiredNode(node, "d").AsArray.Linq
-                .Select(x => new V3BasicEventTypesForKeywords(x)).ToArray();
+        public V3BasicEventTypesWithKeywords(JSONNode node)
+        {
+            if (node.HasKey("d"))
+                Keywords = node["d"].AsArray.Linq
+                    .Select(x => new V3BasicEventTypesForKeywords(x) as BaseEventTypesForKeywords).ToArray();
+            else Keywords = new BaseEventTypesForKeywords[]{};
+        }
 
         public override JSONNode ToJson()
         {
