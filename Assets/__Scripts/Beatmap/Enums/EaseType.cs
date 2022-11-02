@@ -6,6 +6,6 @@ namespace Beatmap.Enums
         Linear,
         InQuad,
         OutQuad,
-        InoutQuad
+        InOutQuad
     }
 }
