@@ -19,6 +19,19 @@ namespace Beatmap.Base
             Events = events;
         }
 
+        protected BaseLightRotationEventBox(BaseIndexFilter indexFilter, float beatDistribution,
+            int beatDistributionType, float rotationDistribution, int rotationDistributionType, int rotationAffectFirst,
+            int axis, int flip, int easing, BaseLightRotationBase[] events) : base(indexFilter, beatDistribution,
+            beatDistributionType, easing)
+        {
+            RotationDistribution = rotationDistribution;
+            RotationDistributionType = rotationDistributionType;
+            RotationAffectFirst = rotationAffectFirst;
+            Axis = axis;
+            Flip = flip;
+            Events = events;
+        }
+
         public float RotationDistribution { get; set; }
         public int RotationDistributionType { get; set; }
         public int RotationAffectFirst { get; set; }

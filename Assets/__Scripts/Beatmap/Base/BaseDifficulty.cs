@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Beatmap.Base.Customs;
@@ -8,6 +7,10 @@ namespace Beatmap.Base
 {
     public abstract class BaseDifficulty : BaseItem, ICustomDataDifficulty
     {
+        // TODO: concrete class for these bad boys
+        public Dictionary<string, JSONObject> Materials = new Dictionary<string, JSONObject>();
+
+        public Dictionary<string, List<JSONArray>> PointDefinitions = new Dictionary<string, List<JSONArray>>();
         public JSONNode MainNode { get; set; }
         public string DirectoryAndFile { get; set; }
         public abstract string Version { get; }
@@ -29,6 +32,10 @@ namespace Beatmap.Base
             LightRotationEventBoxGroups { get; set; } =
             new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>();
 
+        public List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>
+            LightTranslationEventBoxGroups { get; set; } =
+            new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>();
+
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
         public bool UseNormalEventsAsCompatibleEvents { get; set; } = true;
         public float Time { get; set; } = 0f;
@@ -38,11 +45,6 @@ namespace Beatmap.Base
 
         public List<BaseEnvironmentEnhancement> EnvironmentEnhancements { get; set; } =
             new List<BaseEnvironmentEnhancement>();
-
-        // TODO: concrete class for these bad boys
-        public Dictionary<string, JSONObject> Materials = new Dictionary<string, JSONObject>();
-        
-        public Dictionary<string, List<JSONArray>> PointDefinitions = new Dictionary<string, List<JSONArray>>();
 
         public JSONNode CustomData { get; set; } = new JSONObject();
 

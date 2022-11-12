@@ -67,7 +67,7 @@ namespace Beatmap.V3
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
-        public override bool IsChroma() => 
+        public override bool IsChroma() =>
             CustomData != null && CustomData.HasKey("color") && CustomData["color"].IsArray;
 
         public override bool IsNoodleExtensions() =>

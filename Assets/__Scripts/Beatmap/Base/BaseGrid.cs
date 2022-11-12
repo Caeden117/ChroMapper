@@ -65,7 +65,7 @@ namespace Beatmap.Base
         {
             base.ParseCustom();
             if (CustomData == null) return;
-            
+
             if (CustomData.HasKey(CustomKeyCoordinate))
                 CustomCoordinate = CustomData[CustomKeyCoordinate].ReadVector2();
             if (CustomData.HasKey(CustomKeyWorldRotation))

@@ -138,15 +138,21 @@ namespace Beatmap.Converters
         public static V3EnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
             other switch
             {
-                V2EnvironmentEnhancement o => new V3EnvironmentEnhancement(o) { Position = RescaleVector3(o.Position), LocalPosition = RescaleVector3(o.LocalPosition), Geometry = Geometry(other.Geometry.AsObject) },
+                V2EnvironmentEnhancement o => new V3EnvironmentEnhancement(o)
+                {
+                    Position = RescaleVector3(o.Position),
+                    LocalPosition = RescaleVector3(o.LocalPosition),
+                    Geometry = Geometry(other.Geometry.AsObject)
+                },
                 V3EnvironmentEnhancement o => o,
-                _ => throw new ArgumentException("Unexpected object to convert v2 environment enhancement to v3 environment enhancement")
+                _ => throw new ArgumentException(
+                    "Unexpected object to convert v2 environment enhancement to v3 environment enhancement")
             };
 
         public static JSONObject Geometry(JSONObject other)
         {
             var obj = new JSONObject();
-            
+
             if (other["_type"] == "CUSTOM")
             {
                 obj["type"] = other["_type"];
@@ -174,7 +180,7 @@ namespace Beatmap.Converters
 
             if (other.HasKey("_uv")) obj["uv"] = other["_uv"];
             if (other.HasKey("_triangles")) obj["triangles"] = other["_triangles"];
-            
+
             return obj;
         }
 
@@ -186,11 +192,12 @@ namespace Beatmap.Converters
             if (other.HasKey("_collision")) obj["collision"] = other["_collision"];
             if (other.HasKey("_track")) obj["track"] = other["_track"];
             if (other.HasKey("_color")) obj["color"] = other["_color"];
-            
+
             return obj;
         }
 
-        public static Vector3? RescaleVector3(Vector3? vec3) => vec3 is { } v ? new Vector3(v.x * 0.6f, v.y * 0.6f, v.z * 0.6f) as Vector3? : null;
+        public static Vector3? RescaleVector3(Vector3? vec3) =>
+            vec3 is { } v ? new Vector3(v.x * 0.6f, v.y * 0.6f, v.z * 0.6f) as Vector3? : null;
 
         public static JSONNode CustomDataObject(JSONNode node)
         {
@@ -200,17 +207,29 @@ namespace Beatmap.Converters
 
             if (n.HasKey("_color")) n["color"] = n.HasKey("color") ? n["color"] : n["_color"];
             if (n.HasKey("_position")) n["coordinates"] = n.HasKey("coordinates") ? n["coordinates"] : n["_position"];
-            if (n.HasKey("_disableNoteGravity")) n["disableNoteGravity"] = n.HasKey("disableNoteGravity") ? n["disableNoteGravity"] : n["_disableNoteGravity"];
-            if (n.HasKey("_disableNoteLook")) n["disableNoteLook"] = n.HasKey("disableNoteLook") ? n["disableNoteLook"] : n["_disableNoteLook"];
+            if (n.HasKey("_disableNoteGravity"))
+                n["disableNoteGravity"] =
+                    n.HasKey("disableNoteGravity") ? n["disableNoteGravity"] : n["_disableNoteGravity"];
+            if (n.HasKey("_disableNoteLook"))
+                n["disableNoteLook"] = n.HasKey("disableNoteLook") ? n["disableNoteLook"] : n["_disableNoteLook"];
             if (n.HasKey("_flip")) n["flip"] = n.HasKey("flip") ? n["flip"] : n["_flip"];
-            if (n.HasKey("_localRotation")) n["localRotation"] = n.HasKey("localRotation") ? n["localRotation"] : n["_localRotation"];
-            if (n.HasKey("_noteJumpMovementSpeed")) n["noteJumpMovementSpeed"] = n.HasKey("noteJumpMovementSpeed") ? n["noteJumpMovementSpeed"] : n["_noteJumpMovementSpeed"];
-            if (n.HasKey("_noteJumpStartBeatOffset")) n["noteJumpStartBeatOffset"] = n.HasKey("noteJumpStartBeatOffset") ? n["noteJumpStartBeatOffset"] : n["_noteJumpStartBeatOffset"];
-            if (n.HasKey("_disableSpawnEffect") && !n.HasKey("spawnEffect")) n["spawnEffect"] = !n["_disableSpawnEffect"];
+            if (n.HasKey("_localRotation"))
+                n["localRotation"] = n.HasKey("localRotation") ? n["localRotation"] : n["_localRotation"];
+            if (n.HasKey("_noteJumpMovementSpeed"))
+                n["noteJumpMovementSpeed"] = n.HasKey("noteJumpMovementSpeed")
+                    ? n["noteJumpMovementSpeed"]
+                    : n["_noteJumpMovementSpeed"];
+            if (n.HasKey("_noteJumpStartBeatOffset"))
+                n["noteJumpStartBeatOffset"] = n.HasKey("noteJumpStartBeatOffset")
+                    ? n["noteJumpStartBeatOffset"]
+                    : n["_noteJumpStartBeatOffset"];
+            if (n.HasKey("_disableSpawnEffect") && !n.HasKey("spawnEffect"))
+                n["spawnEffect"] = !n["_disableSpawnEffect"];
             if (n.HasKey("_scale")) n["size"] = n.HasKey("size") ? n["size"] : n["_scale"];
             if (n.HasKey("_track")) n["track"] = n.HasKey("track") ? n["track"] : n["_track"];
             if (n.HasKey("_interactable") && !n.HasKey("uninteractable")) n["uninteractable"] = !n["_interactable"];
-            if (n.HasKey("_rotation")) n["worldRotation"] = n.HasKey("worldRotation") ? n["worldRotation"] : n["_rotation"];
+            if (n.HasKey("_rotation"))
+                n["worldRotation"] = n.HasKey("worldRotation") ? n["worldRotation"] : n["_rotation"];
             if (n.HasKey("_animation") && !n.HasKey("animation"))
             {
                 var obj = new JSONObject();
@@ -225,7 +244,7 @@ namespace Beatmap.Converters
                 if (n["_animation"].HasKey("_rotation")) obj["offsetRotation"] = n["_animation"]["_rotation"];
                 if (n["_animation"].HasKey("_scale")) obj["scale"] = n["_animation"]["_scale"];
                 if (n["_animation"].HasKey("_time")) obj["time"] = n["_animation"]["_time"];
-                if(obj.Children.Any())
+                if (obj.Children.Any())
                     n["animation"] = obj;
             }
 
@@ -265,7 +284,8 @@ namespace Beatmap.Converters
             if (n.HasKey("_prop")) n["prop"] = n.HasKey("prop") ? n["prop"] : n["_prop"];
             if (speed != null) n["speed"] = speed;
             if (n.HasKey("_direction")) n["direction"] = n.HasKey("direction") ? n["direction"] : n["_direction"];
-            if (n.HasKey("_lockPosition")) n["lockRotation"] = n.HasKey("lockRotation") ? n["lockRotation"] : n["_lockPosition"];
+            if (n.HasKey("_lockPosition"))
+                n["lockRotation"] = n.HasKey("lockRotation") ? n["lockRotation"] : n["_lockPosition"];
 
             if (n.HasKey("_color")) n.Remove("_color");
             if (n.HasKey("_lightID")) n.Remove("_lightID");
@@ -293,26 +313,25 @@ namespace Beatmap.Converters
         public static V3Difficulty Difficulty(V2Difficulty other)
         {
             var d = new V3Difficulty
-                {
-                    DirectoryAndFile = other.DirectoryAndFile,
-                    Obstacles = other.Obstacles.Select(Obstacle).Cast<BaseObstacle>().ToList(),
-                    Arcs = other.Arcs.Select(Arc).Cast<BaseArc>().ToList(),
-                    Waypoints = other.Waypoints.Select(Waypoint).Cast<BaseWaypoint>().ToList(),
-                    EventTypesWithKeywords = other.EventTypesWithKeywords != null
-                        ? new V3BasicEventTypesWithKeywords(other.EventTypesWithKeywords)
-                        : new V3BasicEventTypesWithKeywords(),
-                    
-                    BpmChanges = other.BpmChanges.Select(BpmChange).Cast<BaseBpmChange>().ToList(),
-                    Bookmarks = other.Bookmarks.Select(Bookmark).Cast<BaseBookmark>().ToList(),
-                    CustomEvents = other.CustomEvents.Select(CustomEvent).Cast<BaseCustomEvent>().ToList(),
-                    PointDefinitions = new Dictionary<string, List<JSONArray>>(other.PointDefinitions),
-                    EnvironmentEnhancements = other.EnvironmentEnhancements.Select(EnvironmentEnhancement).Cast<BaseEnvironmentEnhancement>()
-                        .ToList(),
-                    Materials = other.Materials.ToDictionary(m => m.Key, m => Material(m.Value)),
-                    Time = other.Time,
-                    
-                    CustomData = other.CustomData?.Clone() ?? new JSONObject()
-                };
+            {
+                DirectoryAndFile = other.DirectoryAndFile,
+                Obstacles = other.Obstacles.Select(Obstacle).Cast<BaseObstacle>().ToList(),
+                Arcs = other.Arcs.Select(Arc).Cast<BaseArc>().ToList(),
+                Waypoints = other.Waypoints.Select(Waypoint).Cast<BaseWaypoint>().ToList(),
+                EventTypesWithKeywords = other.EventTypesWithKeywords != null
+                    ? new V3BasicEventTypesWithKeywords(other.EventTypesWithKeywords)
+                    : new V3BasicEventTypesWithKeywords(),
+                BpmChanges = other.BpmChanges.Select(BpmChange).Cast<BaseBpmChange>().ToList(),
+                Bookmarks = other.Bookmarks.Select(Bookmark).Cast<BaseBookmark>().ToList(),
+                CustomEvents = other.CustomEvents.Select(CustomEvent).Cast<BaseCustomEvent>().ToList(),
+                PointDefinitions = new Dictionary<string, List<JSONArray>>(other.PointDefinitions),
+                EnvironmentEnhancements = other.EnvironmentEnhancements.Select(EnvironmentEnhancement)
+                    .Cast<BaseEnvironmentEnhancement>()
+                    .ToList(),
+                Materials = other.Materials.ToDictionary(m => m.Key, m => Material(m.Value)),
+                Time = other.Time,
+                CustomData = other.CustomData?.Clone() ?? new JSONObject()
+            };
 
             if (d.CustomData != null)
             {
@@ -324,7 +343,7 @@ namespace Beatmap.Converters
                 if (d.CustomData.HasKey("_environment")) d.CustomData.Remove("_environment");
                 if (d.CustomData.HasKey("_materials")) d.CustomData.Remove("_materials");
             }
-            
+
             foreach (var n in other.Notes)
                 switch (n.Type)
                 {

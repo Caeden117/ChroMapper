@@ -15,7 +15,7 @@ namespace Beatmap.V3
 {
     public class V3Difficulty : BaseDifficulty
     {
-        public override string Version { get; } = "3.1.0";
+        public override string Version { get; } = "3.2.0";
 
         public override bool IsChroma() =>
             Notes.Any(x => x.IsChroma()) || Bombs.Any(x => x.IsChroma()) || Arcs.Any(x => x.IsChroma()) ||
@@ -81,6 +81,9 @@ namespace Beatmap.V3
                 var lightRotationEventBoxGroups = new JSONArray();
                 foreach (var e in LightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(e.ToJson());
 
+                var lightTranslationEventBoxGroups = new JSONArray();
+                foreach (var e in LightTranslationEventBoxGroups) lightTranslationEventBoxGroups.Add(e.ToJson());
+
                 MainNode["bpmEvents"] = CleanupArray(bpmEvents, "b");
                 MainNode["rotationEvents"] = CleanupArray(rotationEvents, "b");
                 MainNode["colorNotes"] = CleanupArray(colorNotes, "b");
@@ -93,6 +96,7 @@ namespace Beatmap.V3
                 MainNode["colorBoostBeatmapEvents"] = CleanupArray(colorBoostEvents, "b");
                 MainNode["lightColorEventBoxGroups"] = CleanupArray(lightColorEventBoxGroups, "b");
                 MainNode["lightRotationEventBoxGroups"] = CleanupArray(lightRotationEventBoxGroups, "b");
+                MainNode["lightTranslationEventBoxGroups"] = CleanupArray(lightTranslationEventBoxGroups, "b");
                 MainNode["basicEventTypesWithKeywords"] =
                     EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
                 MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
@@ -149,34 +153,32 @@ namespace Beatmap.V3
                 foreach (var p in PointDefinitions)
                 {
                     var points = new JSONArray();
-                    foreach (var ary in p.Value)
-                    {
-                        points.Add(ary);
-                    }
+                    foreach (var ary in p.Value) points.Add(ary);
                     MainNode["customData"]["pointDefinitions"][p.Key] = points;
                 }
             }
             else
+            {
                 MainNode["customData"].Remove("pointDefinitions");
+            }
 
             if (EnvironmentEnhancements.Any())
                 MainNode["customData"]["environment"] = envEnhancements;
             else
                 MainNode["customData"].Remove("environment");
-            
+
             if (Materials.Any())
             {
                 MainNode["customData"]["materials"] = new JSONObject();
-                foreach (var m in Materials)
-                {
-                    MainNode["customData"]["materials"][m.Key] = m.Value;
-                }
+                foreach (var m in Materials) MainNode["customData"]["materials"][m.Key] = m.Value;
             }
             else
+            {
                 MainNode["customData"].Remove("materials");
+            }
 
             if (Time > 0) MainNode["customData"]["time"] = Math.Round(Time, 3);
-            
+
             BeatSaberSong.CleanObject(MainNode["customData"]);
             if (!MainNode["customData"].Children.Any()) MainNode.Remove("customData");
 
@@ -238,6 +240,10 @@ namespace Beatmap.V3
                         case "lightRotationEventBoxGroups":
                             foreach (JSONNode n in node)
                                 map.LightRotationEventBoxGroups.Add(new V3LightRotationEventBoxGroup(n));
+                            break;
+                        case "lightTranslationEventBoxGroups":
+                            foreach (JSONNode n in node)
+                                map.LightTranslationEventBoxGroups.Add(new V3LightTranslationEventBoxGroup(n));
                             break;
                         case "basicEventTypesWithKeywords":
                             map.EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(node);
@@ -305,6 +311,7 @@ namespace Beatmap.V3
                         newEvents.Add(V2ToV3.BasicEvent(e));
                         break;
                 }
+
             ColorBoostEvents = newColorBoostEvents;
             RotationEvents = newRotationEvents;
             BpmEvents = newBpmEvents;
@@ -362,43 +369,33 @@ namespace Beatmap.V3
                             {
                                 if (!(n.Value is JSONObject obj)) continue;
                                 var points = new List<JSONArray>();
-                                foreach (var p in obj["points"].AsArray)
-                                {
-                                    points.Add(p.Value.AsArray);
-                                }
+                                foreach (var p in obj["points"].AsArray) points.Add(p.Value.AsArray);
 
                                 if (!pointDefinitions.ContainsKey(n.Key))
-                                {
                                     pointDefinitions.Add(obj["name"], points);
-                                }
                                 else
-                                {
                                     Debug.LogWarning($"Duplicate key {n.Key} found in point definitions");
-                                }
                             }
+
                             break;
                         }
+
                         if (node is JSONObject nodeObj)
                         {
                             foreach (var n in nodeObj)
                             {
                                 var points = new List<JSONArray>();
-                                foreach (var p in n.Value)
-                                {
-                                    points.Add(p.Value.AsArray);
-                                }
+                                foreach (var p in n.Value) points.Add(p.Value.AsArray);
 
                                 if (!pointDefinitions.ContainsKey(n.Key))
-                                {
                                     pointDefinitions.Add(n.Key, points);
-                                }
                                 else
-                                {
                                     Debug.LogWarning($"Duplicate key {n.Key} found in point definitions");
-                                }
                             }
+
                             break;
                         }
+
                         Debug.LogWarning("Could not read point definitions");
                         break;
                     case "environment":
@@ -408,18 +405,13 @@ namespace Beatmap.V3
                         if (node is JSONObject matObj)
                         {
                             foreach (var n in matObj)
-                            {
                                 if (!materials.ContainsKey(n.Key))
-                                {
                                     materials.Add(n.Key, n.Value.AsObject);
-                                }
                                 else
-                                {
                                     Debug.LogWarning($"Duplicate key {n.Key} found in materials");
-                                }
-                            }
                             break;
                         }
+
                         Debug.LogWarning("Could not read materials");
                         break;
                     case "time":

@@ -50,9 +50,7 @@ namespace Beatmap.V3.Customs
             {
                 if (Components != null && Components["ILightWithId"] != null &&
                     Components["ILightWithId"]["lightID"] != null)
-                {
                     return Components["ILightWithId"]["lightID"].AsInt;
-                }
 
                 return null;
             }

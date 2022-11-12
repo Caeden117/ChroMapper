@@ -37,6 +37,7 @@ public class MapLoader : MonoBehaviour
                 ColorBoostEvents = new List<BaseColorBoostEvent>(m.ColorBoostEvents),
                 LightColorEventBoxGroups = new List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>>(m.LightColorEventBoxGroups),
                 LightRotationEventBoxGroups = new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>(m.LightRotationEventBoxGroups),
+                LightTranslationEventBoxGroups = new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>(m.LightTranslationEventBoxGroups),
                 EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(m.EventTypesWithKeywords),
                 UseNormalEventsAsCompatibleEvents = m.UseNormalEventsAsCompatibleEvents,
                 

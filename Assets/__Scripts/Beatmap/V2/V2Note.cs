@@ -45,7 +45,7 @@ namespace Beatmap.V2
         {
             base.ParseCustom();
             if (CustomData == null) return;
-            
+
             if (CustomData[CustomKeyDirection] != null) CustomDirection = CustomData[CustomKeyDirection].AsInt;
         }
 

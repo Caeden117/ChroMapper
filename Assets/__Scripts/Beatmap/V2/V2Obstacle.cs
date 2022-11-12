@@ -57,7 +57,7 @@ namespace Beatmap.V2
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
-        public override bool IsChroma() => 
+        public override bool IsChroma() =>
             CustomData != null && CustomData.HasKey("_color") && CustomData["_color"].IsArray;
 
 

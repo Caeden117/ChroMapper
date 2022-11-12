@@ -14,10 +14,10 @@ namespace Beatmap.Base
             Param1 = param1;
             Reverse = reverse;
             Chunks = chunks;
-            Limit = limit;
-            LimitAffectsType = limitAffectsType;
             Random = random;
             Seed = seed;
+            Limit = limit;
+            LimitAffectsType = limitAffectsType;
         }
 
         public int Type { get; set; }
@@ -25,9 +25,9 @@ namespace Beatmap.Base
         public int Param1 { get; set; }
         public int Reverse { get; set; }
         public int Chunks { get; set; }
-        public float Limit { get; set; }
-        public int LimitAffectsType { get; set; }
         public int Random { get; set; }
         public int Seed { get; set; }
+        public float Limit { get; set; }
+        public int LimitAffectsType { get; set; }
     }
 }

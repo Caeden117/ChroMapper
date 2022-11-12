@@ -86,11 +86,11 @@ namespace Beatmap.Base
 
         public bool IsFlash => Value == (int)LightValue.BlueFlash || Value == (int)LightValue.RedFlash ||
                                Value == (int)LightValue.WhiteFlash;
-        
+
         public bool IsFade =>
             Value == (int)LightValue.BlueFade || Value == (int)LightValue.RedFade ||
             Value == (int)LightValue.WhiteFade;
-        
+
         public bool IsTransition =>
             Value == (int)LightValue.BlueTransition || Value == (int)LightValue.RedTransition ||
             Value == (int)LightValue.WhiteTransition;

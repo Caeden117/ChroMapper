@@ -20,6 +20,7 @@ namespace Beatmap.V3
             RotationAffectFirst = RetrieveRequiredNode(node, "b").AsInt;
             Axis = RetrieveRequiredNode(node, "a").AsInt;
             Flip = RetrieveRequiredNode(node, "r").AsInt;
+            Easing = node["i"]?.AsInt ?? 0;
             Events = RetrieveRequiredNode(node, "l").AsArray.Linq.Select(x => new V3LightRotationBase(x)).ToArray();
         }
 
@@ -27,6 +28,14 @@ namespace Beatmap.V3
             float rotationDistribution, int rotationDistributionType, int rotationAffectFirst, int axis, int flip,
             BaseLightRotationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
             rotationDistribution, rotationDistributionType, rotationAffectFirst, axis, flip, events)
+        {
+        }
+
+        public V3LightRotationEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
+            float rotationDistribution, int rotationDistributionType, int rotationAffectFirst, int axis, int flip,
+            int easing,
+            BaseLightRotationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
+            rotationDistribution, rotationDistributionType, rotationAffectFirst, axis, flip, easing, events)
         {
         }
 

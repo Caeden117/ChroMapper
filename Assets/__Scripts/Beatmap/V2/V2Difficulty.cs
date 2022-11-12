@@ -116,33 +116,32 @@ namespace Beatmap.V2
                 {
                     var obj = new JSONObject { ["_name"] = p.Key };
                     var points = new JSONArray();
-                    foreach (var ary in p.Value)
-                    {
-                        points.Add(ary);
-                    }
+                    foreach (var ary in p.Value) points.Add(ary);
                     obj["_points"] = points;
                     pAry.Add(obj);
                 }
+
                 MainNode["_customData"]["_pointDefinitions"] = pAry;
             }
             else
+            {
                 MainNode["_customData"].Remove("_pointDefinitions");
+            }
 
             if (EnvironmentEnhancements.Any())
                 MainNode["_customData"]["_environment"] = envEnhancements;
             else
                 MainNode["_customData"].Remove("_environment");
-            
+
             if (Materials.Any())
             {
                 MainNode["_customData"]["_materials"] = new JSONObject();
-                foreach (var m in Materials)
-                {
-                    MainNode["_customData"]["_materials"][m.Key] = m.Value;
-                }
+                foreach (var m in Materials) MainNode["_customData"]["_materials"][m.Key] = m.Value;
             }
             else
+            {
                 MainNode["_customData"].Remove("_materials");
+            }
 
             if (Time > 0) MainNode["_customData"]["_time"] = Math.Round(Time, 3);
 
@@ -192,8 +191,9 @@ namespace Beatmap.V2
                         newEvents.Add(V3ToV2.Event(e));
                         break;
                 }
+
             Events = newEvents;
-            
+
             Bookmarks = Bookmarks.Select(V3ToV2.Bookmark).Cast<BaseBookmark>().ToList();
             BpmChanges = BpmChanges.Select(V3ToV2.BpmChange).Cast<BaseBpmChange>().ToList();
             CustomEvents = CustomEvents.Select(V3ToV2.CustomEvent).Cast<BaseCustomEvent>().ToList();
@@ -294,19 +294,13 @@ namespace Beatmap.V2
                                     foreach (JSONNode n in node)
                                     {
                                         var points = new List<JSONArray>();
-                                        foreach (JSONArray p in n["_points"].AsArray)
-                                        {
-                                            points.Add(p);
-                                        }
+                                        foreach (JSONArray p in n["_points"].AsArray) points.Add(p);
                                         if (!pointDefinitions.ContainsKey(n["_name"]))
-                                        {
                                             pointDefinitions.Add(n["_name"], points);
-                                        }
                                         else
-                                        {
                                             Debug.LogWarning($"Duplicate key {n["_name"]} found in point definitions");
-                                        }
                                     }
+
                                     break;
                                 case "_environment":
                                     foreach (JSONNode n in dataNode)
@@ -316,18 +310,13 @@ namespace Beatmap.V2
                                     if (node is JSONObject matObj)
                                     {
                                         foreach (var n in matObj)
-                                        {
                                             if (!materials.ContainsKey(n.Key))
-                                            {
                                                 materials.Add(n.Key, n.Value.AsObject);
-                                            }
                                             else
-                                            {
                                                 Debug.LogWarning($"Duplicate key {n.Key} found in materials");
-                                            }
-                                        }
                                         break;
                                     }
+
                                     Debug.LogWarning("Could not read materials");
                                     break;
                                 case "_time":

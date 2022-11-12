@@ -179,7 +179,7 @@ namespace Beatmap.Base
         {
             base.ParseCustom();
             if (CustomData == null) return;
-            
+
             if (CustomData.HasKey(CustomKeySize) && CustomData[CustomKeySize].IsArray)
             {
                 var temp = CustomData[CustomKeySize].AsArray;

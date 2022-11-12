@@ -18,6 +18,7 @@ namespace Beatmap.V3
             BrightnessDistribution = RetrieveRequiredNode(node, "r").AsFloat;
             BrightnessDistributionType = RetrieveRequiredNode(node, "t").AsInt;
             BrightnessAffectFirst = RetrieveRequiredNode(node, "b").AsInt;
+            Easing = node["i"]?.AsInt ?? 0;
             Events = RetrieveRequiredNode(node, "e").AsArray.Linq.Select(x => new V3LightColorBase(x)).ToArray();
         }
 
@@ -25,6 +26,13 @@ namespace Beatmap.V3
             float brightnessDistribution, int brightnessDistributionType, int brightnessAffectFirst,
             BaseLightColorBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
             brightnessDistribution, brightnessDistributionType, brightnessAffectFirst, events)
+        {
+        }
+
+        public V3LightColorEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
+            float brightnessDistribution, int brightnessDistributionType, int brightnessAffectFirst, int easing,
+            BaseLightColorBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
+            brightnessDistribution, brightnessDistributionType, brightnessAffectFirst, easing, events)
         {
         }
 

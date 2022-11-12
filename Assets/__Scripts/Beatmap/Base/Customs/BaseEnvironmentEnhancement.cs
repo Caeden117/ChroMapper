@@ -134,10 +134,7 @@ namespace Beatmap.Base.Customs
             LocalPosition = ReadVector3OrNull(node, KeyLocalPosition);
             LocalRotation = ReadVector3OrNull(node, KeyLocalRotation);
             Components = node[KeyComponents];
-            if (node[KeyLightID] != null)
-            {
-                LightID = node[KeyLightID].AsInt;
-            }
+            if (node[KeyLightID] != null) LightID = node[KeyLightID].AsInt;
         }
     }
 }

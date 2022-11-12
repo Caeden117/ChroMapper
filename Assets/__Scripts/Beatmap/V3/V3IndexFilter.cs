@@ -16,10 +16,10 @@ namespace Beatmap.V3
             Param1 = RetrieveRequiredNode(node, "t").AsInt;
             Reverse = RetrieveRequiredNode(node, "r").AsInt;
             Chunks = node["c"]?.AsInt ?? 0;
-            Limit = node["l"]?.AsFloat ?? 0f;
-            LimitAffectsType = node["d"]?.AsInt ?? 0;
             Random = node["n"]?.AsInt ?? 0;
             Seed = node["s"]?.AsInt ?? 0;
+            Limit = node["l"]?.AsFloat ?? 0f;
+            LimitAffectsType = node["d"]?.AsInt ?? 0;
         }
 
         public V3IndexFilter(int type, int param0, int param1, int reverse) : base(type, param0, param1, reverse)
@@ -40,10 +40,10 @@ namespace Beatmap.V3
                 ["t"] = Param1,
                 ["r"] = Reverse,
                 ["c"] = Chunks,
-                ["l"] = Limit,
-                ["d"] = LimitAffectsType,
                 ["n"] = Random,
-                ["s"] = Seed
+                ["s"] = Seed,
+                ["l"] = Limit,
+                ["d"] = LimitAffectsType
             };
 
         public override BaseItem Clone() =>
