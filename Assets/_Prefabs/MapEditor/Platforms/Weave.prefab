@@ -8850,8 +8850,8 @@ MonoBehaviour:
   DefaultColors:
     RedColor: {r: 1, g: 0, b: 0, a: 1}
     BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
-    RedBoostColor: {r: 0, g: 1, b: 0.23288822, a: 1}
-    BlueBoostColor: {r: 0.97199535, g: 0, b: 1, a: 1}
+    RedBoostColor: {r: 0.972549, g: 0, b: 1, a: 1}
+    BlueBoostColor: {r: 1, g: 1, b: 1, a: 1}
     RedNoteColor: {r: 0.7352942, g: 0, b: 0, a: 1}
     BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
     ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
