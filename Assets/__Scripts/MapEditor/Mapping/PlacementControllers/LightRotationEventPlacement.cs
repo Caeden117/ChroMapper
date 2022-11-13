@@ -97,6 +97,7 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
             PersistentUI.Instance.ShowDialogBox("This lane cannot rotate around Y axis", null, PersistentUI.DialogBoxPresetType.Ok);
             return false;
         }
+        if (!BeatmapLightEventFilter.SanityCheck(queuedData.EventBoxes[0].Filter)) return false;
         return true;
     }
 

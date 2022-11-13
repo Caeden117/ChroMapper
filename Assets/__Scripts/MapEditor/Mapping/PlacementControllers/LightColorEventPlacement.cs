@@ -107,6 +107,7 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
         }
         else
         {
+            if (!SanityCheck()) return;
             queuedData = BeatmapObject.GenerateCopy(queuedData); // before copy, queued data is referencing binder's data
             queuedData.Group = objectGroup;
             base.ApplyToMap();
@@ -122,5 +123,11 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
     {
         if (!context.performed || !Settings.Instance.Load_MapV3) return;
         uiGenerator.ToggleDropdown();
+    }
+
+    private bool SanityCheck()
+    {
+        if (!BeatmapLightEventFilter.SanityCheck(queuedData.EventBoxes[0].Filter)) return false;
+        return true;
     }
 }
