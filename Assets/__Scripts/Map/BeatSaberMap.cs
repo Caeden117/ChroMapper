@@ -46,7 +46,7 @@ public class BeatSaberMap
 
             if (MainNode is null) MainNode = new JSONObject();
 
-            MainNode["_version"] = Version;
+            MainNode["_version"] = "2.2.0"; // Temporary fix until v3 branch is merged
 
             var events = new JSONArray();
             foreach (var e in Events) events.Add(e.ConvertToJson());
