@@ -91,9 +91,5 @@ public class MovingLightsInterscope : RotatingLightsBase
         }
     }
 
-    public override void UpdateZPosition()
-    {
-    }
-
     public override bool IsOverrideLightGroup() => false;
 }
