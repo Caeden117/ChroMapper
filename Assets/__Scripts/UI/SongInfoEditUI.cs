@@ -53,6 +53,7 @@ public class SongInfoEditUI : MenuBase
         new Environment("Spooky", "HalloweenEnvironment"),
         new Environment("The Second", "TheSecondEnvironment"), // is it called TheSecondEnvironment?
         new Environment("Weave", "WeaveEnvironment"),
+        new Environment("The Weeknd", "TheWeekndEnvironment"),
     };
 
     private static readonly List<string> vanillaDirectionalEnvironments = new List<string> { "GlassDesertEnvironment" };
