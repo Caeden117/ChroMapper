@@ -235,6 +235,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
         if (eb.Axis == 0 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].XRotatable) return;
         if (eb.Axis == 1 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].YRotatable) return;
+        if (eb.Axis == 2 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].ZRotatable) return;
 
         var filteredLights = eb.Filter.FilterType == 1
             ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)

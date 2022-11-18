@@ -93,11 +93,12 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
             if (laneIdx == -1) continue;
             var rotations = platformDescriptor.LightsManagersV3[laneIdx].ControllingRotations;
 
-            var lists = new List<BeatmapLightRotationEventData>[rotations.Count, 2];
+            var lists = new List<BeatmapLightRotationEventData>[rotations.Count, 3];
             for (int i = 0; i < rotations.Count; ++i)
             {
                 lists[i, 0] = new List<BeatmapLightRotationEventData>();
                 lists[i, 1] = new List<BeatmapLightRotationEventData>();
+                lists[i, 2] = new List<BeatmapLightRotationEventData>();
             }
 
 
@@ -145,6 +146,7 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
             {
                 nextEventDict[(groupId, rotationIdx, 0)] = lists[rotationIdx, 0];
                 nextEventDict[(groupId, rotationIdx, 1)] = lists[rotationIdx, 1];
+                nextEventDict[(groupId, rotationIdx, 2)] = lists[rotationIdx, 2];
             }
         }
     }

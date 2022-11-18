@@ -140,7 +140,8 @@ public class RotatingEvent : MonoBehaviour
 
     public RotatingEventData GetAxisData(int axis)
     {
-        return axis == 0 ? XData : YData;
+        return axis == 0 ? XData : 
+            axis == 1 ? YData : ZData;
     }
     public void ResetNoteIndex()
     {

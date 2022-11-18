@@ -84,8 +84,8 @@ public class BeatmapLightRotationEventContainer : BeatmapEventContainer
     public void SetRotationAxisAppearance(int axis)
     {
         axisMark.transform.localRotation = Quaternion.Euler(
-            0,
-            axis == 0 ? 0 : 90,
+            axis == 1 ? 90 : 0,
+            axis == 0 ? 90 : 0,
             0
             );
     }
