@@ -12,6 +12,9 @@ public class LightsManagerV3 : LightsManager
     public bool XFlip = false;
     public bool YFlip = false;
     public bool ZRotatable = false;
+    public bool ZFlip = false;
+    public bool TreatZAsX = false;
+
 
     public List<RotatingEvent> ControllingRotations = new List<RotatingEvent>();
 
@@ -40,17 +43,24 @@ public class LightsManagerV3 : LightsManager
             }
         }
 
-
-        var rotations = GetComponentsInChildren<RotatingEvent>();
-        for (int i = 0; i < rotations.Length; ++i)
+        if (ControllingRotations.Count == 0) // include all rotations
         {
-            ControllingRotations.Add(rotations[i]);
-            rotations[i].lightsManager = this;
-            rotations[i].RotationIdx = i;
-            rotations[i].XData.flip = XFlip;
-            rotations[i].YData.flip = YFlip;
+            var rotations = GetComponentsInChildren<RotatingEvent>();
+            for (int i = 0; i < rotations.Length; ++i)
+            {
+                ControllingRotations.Add(rotations[i]);
+            }
         }
-        if (ZRotatable) XRotatable = true; // for compatibility with sanity check
+        for (int i = 0; i < ControllingRotations.Count; ++i)
+        {
+            ControllingRotations[i].lightsManager = this;
+            ControllingRotations[i].RotationIdx = i;
+            ControllingRotations[i].XData.flip = XFlip;
+            ControllingRotations[i].YData.flip = YFlip;
+            ControllingRotations[i].ZData.flip = ZFlip;
+        }
+
+        if (TreatZAsX) XRotatable = true; // for compatibility with sanity check
         yield return null;
     }
 

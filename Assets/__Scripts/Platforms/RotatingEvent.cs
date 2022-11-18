@@ -110,27 +110,29 @@ public class RotatingEvent : MonoBehaviour
 
     internal LightsManagerV3 lightsManager;
     public int RotationIdx;
+    [SerializeField] private float rotationMultiplier = 1;
     public RotatingEventData XData = new RotatingEventData();
     public RotatingEventData YData = new RotatingEventData();
+    public RotatingEventData ZData = new RotatingEventData();
 
     protected void Update()
     {
         if (lightsManager == null) return;
         var dt = Time.deltaTime;
-        if (lightsManager.ZRotatable) // for rings
+        if (lightsManager.TreatZAsX) // for rings
         {
             transform.localEulerAngles = new Vector3(
                 0,
                 0,
-                XData.LerpAngle(dt)
+                XData.LerpAngle(dt) * rotationMultiplier
                 );
         }
         else // for light beams
         {
             transform.localEulerAngles = new Vector3(
-                XData.LerpAngle(dt),
-                YData.LerpAngle(dt),
-                0
+                XData.LerpAngle(dt) * rotationMultiplier,
+                YData.LerpAngle(dt) * rotationMultiplier,
+                ZData.LerpAngle(dt) * rotationMultiplier
                 );
         }
 
@@ -144,6 +146,7 @@ public class RotatingEvent : MonoBehaviour
     {
         XData.SetNoteIndex(-1, true);
         YData.SetNoteIndex(-1, true);
+        ZData.SetNoteIndex(-1, true);
     }
 }
 
