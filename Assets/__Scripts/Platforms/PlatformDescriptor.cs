@@ -203,7 +203,7 @@ public class PlatformDescriptor : MonoBehaviour
             case 12:
                 var leftEventTypes = new List<int>() {MapEvent.EventTypeLeftLasers, MapEvent.EventTypeCustomLight2, MapEvent.EventTypeCustomLight4};
 
-                foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
+                foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length > eventType && LightingManagers[eventType] != null))
                 {
                     foreach (var l in LightingManagers[eventType].RotatingLights)
                     {
@@ -216,7 +216,7 @@ public class PlatformDescriptor : MonoBehaviour
             case 13:
                 var rightEventTypes = new List<int>() {MapEvent.EventTypeRightLasers, MapEvent.EventTypeCustomLight3, MapEvent.EventTypeCustomLight5};
 
-                foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
+                foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length > eventType && LightingManagers[eventType] != null))
                 {
                     foreach (var l in LightingManagers[eventType].RotatingLights)
                     {

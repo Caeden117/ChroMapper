@@ -11,6 +11,9 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     [Tooltip("V3 LightsMangaers, which supports lightColorEvent/LightRotationEvent")]
     public LightsManagerV3[] LightsManagersV3;
 
+    [Tooltip("Map discontinuous light v2 event type")]
+    public List<int> LightV2Mapping;
+
     private Dictionary<int, int> groupIdToLaneIdx = new Dictionary<int, int>();
 
     private LightColorEventCallbackController lightColorEventCallback;
