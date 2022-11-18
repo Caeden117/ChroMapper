@@ -19,10 +19,27 @@ public class LightsManagerV3 : LightsManager
     {
         yield return base.Start();
         var lights = GetComponentsInChildren<LightingEvent>();
-        for (int i = 0; i < lights.Length; ++i)
+        if (DisableCustomInitialization) // we reuse this bool option, if it is true, we will only add those lightingEvents having same group id
         {
-            lights[i].LightIdx = i;
+            int cnt = 0;
+            foreach (var light in lights)
+            {
+                if (light.OverrideLightGroupID == GroupId)
+                {
+                    ControllingLights.Add(light);
+                    light.LightIdx = cnt;
+                    cnt++;
+                }
+            }
         }
+        else // all the lights are belonged to this group.
+        {
+            for (int i = 0; i < lights.Length; ++i)
+            {
+                lights[i].LightIdx = i;
+            }
+        }
+
 
         var rotations = GetComponentsInChildren<RotatingEvent>();
         for (int i = 0; i < rotations.Length; ++i)
