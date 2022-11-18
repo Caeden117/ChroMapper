@@ -14,7 +14,7 @@ public class LightsManagerV3 : LightsManager
     public bool ZRotatable = false;
     public bool ZFlip = false;
     public bool TreatZAsX = false;
-
+    [SerializeField] private float brightnessMultiplier = 1;
 
     public List<RotatingEvent> ControllingRotations = new List<RotatingEvent>();
 
@@ -41,6 +41,11 @@ public class LightsManagerV3 : LightsManager
             {
                 lights[i].LightIdx = i;
             }
+        }
+        if (brightnessMultiplier != 1 && brightnessMultiplier != 0)
+        {
+            foreach (var light in ControllingLights)
+                light.brightnessMultiplier = brightnessMultiplier;
         }
 
         if (ControllingRotations.Count == 0) // include all rotations

@@ -37,6 +37,7 @@ public class LightingEvent : MonoBehaviour
     public int LightIdx = -1; // each light in the group has its unique LightIdx. This is used in LightsManagerV3
     private int currentNoteIdx = -1;
     public int TargetColorId = 0;
+    [SerializeField] internal float brightnessMultiplier = 1;
 
     private void Start()
     {
@@ -90,8 +91,8 @@ public class LightingEvent : MonoBehaviour
 
         if (isLightEnabled)
         {
-            lightPropertyBlock.SetColor("_EmissionColor", color);
-            lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
+            lightPropertyBlock.SetColor("_EmissionColor", color * brightnessMultiplier);
+            lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha * brightnessMultiplier);
             foreach (var lightRenderer in lightRenderers)
                 lightRenderer.SetPropertyBlock(lightPropertyBlock);
         }
