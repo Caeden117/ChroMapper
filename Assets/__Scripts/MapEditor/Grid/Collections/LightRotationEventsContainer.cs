@@ -107,13 +107,13 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                 float baseTime = rotationEvent.Time;
                 foreach (var rotationEventBox in rotationEvent.EventBoxes)
                 {
-                    var filteredRotations = rotationEventBox.Filter.Filter(rotations);
+                    var filteredRotationChunks = rotationEventBox.Filter.Filter(rotations);
 
                     float deltaDegree = rotationEventBox.RotationDistribution;
                     if (rotationEventBox.ReverseRotation == 1) deltaDegree = -deltaDegree;
-                    if (rotationEventBox.RotationDistributionType == 1) deltaDegree /= BeatmapLightEventFilter.Intervals(filteredRotations);
+                    if (rotationEventBox.RotationDistributionType == 1) deltaDegree /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
                     float deltaTime = rotationEventBox.Distribution;
-                    if (rotationEventBox.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredRotations);
+                    if (rotationEventBox.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
                     int axis = rotationEventBox.Axis;
 
                     for (int i = 0; i < rotationEventBox.EventDatas.Count; ++i)
@@ -122,17 +122,20 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                         float degree = rotationEventData.RotationValue;
                         if (rotationEventBox.ReverseRotation == 1) degree = -degree; 
                         float extraTime = 0.0f;
-                        foreach (var singleRotation in filteredRotations)
+                        foreach (var rotationChunk in filteredRotationChunks)
                         {
-                            int rotationIdx = singleRotation.RotationIdx;
-                            var thisData = new BeatmapLightRotationEventData(baseTime + extraTime + rotationEventData.Time,
-                                rotationEventData.Transition, rotationEventData.EaseType, rotationEventData.AdditionalLoop,
-                                degree, rotationEventData.RotationDirection);
-                            while (lists[rotationIdx, axis].Count > 0 && lists[rotationIdx, axis].Last().Time > thisData.Time + 1e-3)
+                            foreach (var singleRotation in rotationChunk)
                             {
-                                lists[rotationIdx, axis].RemoveAt(lists[rotationIdx, axis].Count - 1);
+                                int rotationIdx = singleRotation.RotationIdx;
+                                var thisData = new BeatmapLightRotationEventData(baseTime + extraTime + rotationEventData.Time,
+                                    rotationEventData.Transition, rotationEventData.EaseType, rotationEventData.AdditionalLoop,
+                                    degree, rotationEventData.RotationDirection);
+                                while (lists[rotationIdx, axis].Count > 0 && lists[rotationIdx, axis].Last().Time > thisData.Time + 1e-3)
+                                {
+                                    lists[rotationIdx, axis].RemoveAt(lists[rotationIdx, axis].Count - 1);
+                                }
+                                lists[rotationIdx, axis].Add(thisData);
                             }
-                            lists[rotationIdx, axis].Add(thisData);
                             degree += (i == 0 && rotationEventBox.RotationAffectFirst == 0) ? 0 : deltaDegree;
                             extraTime += deltaTime;
                         }

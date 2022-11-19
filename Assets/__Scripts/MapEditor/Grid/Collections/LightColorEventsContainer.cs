@@ -137,28 +137,31 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
                 float baseTime = colorEvent.Time;
                 foreach (var colorEventBox in colorEvent.EventBoxes)
                 {
-                    var filteredLights = colorEventBox.Filter.Filter(lights);
+                    var filteredLightChunks = colorEventBox.Filter.Filter(lights);
 
                     float deltaAlpha = colorEventBox.BrightnessDistribution;
-                    if (colorEventBox.BrightnessDistributionType == 1) deltaAlpha /= BeatmapLightEventFilter.Intervals(filteredLights);
+                    if (colorEventBox.BrightnessDistributionType == 1) deltaAlpha /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
                     float deltaTime = colorEventBox.Distribution;
-                    if (colorEventBox.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLights);
+                    if (colorEventBox.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
 
                     for (int i = 0; i < colorEventBox.EventDatas.Count; ++i)
                     {
                         var colorEventData = colorEventBox.EventDatas[i];
                         var brightness = colorEventData.Brightness;
                         float extraTime = 0.0f;
-                        foreach (var singleLight in filteredLights)
+                        foreach (var lightChunk in filteredLightChunks)
                         {
-                            int lightIdx = singleLight.LightIdx;
-                            var thisData = new BeatmapLightColorEventData(baseTime + extraTime + colorEventData.Time, 
-                                colorEventData.TransitionType, colorEventData.Color, brightness, colorEventData.FlickerFrequency);
-                            while (lists[lightIdx].Count > 0 && lists[lightIdx].Last().Time > thisData.Time + 1e-3)
+                            foreach (var singleLight in lightChunk)
                             {
-                                lists[lightIdx].RemoveAt(lists[lightIdx].Count - 1);
+                                int lightIdx = singleLight.LightIdx;
+                                var thisData = new BeatmapLightColorEventData(baseTime + extraTime + colorEventData.Time,
+                                    colorEventData.TransitionType, colorEventData.Color, brightness, colorEventData.FlickerFrequency);
+                                while (lists[lightIdx].Count > 0 && lists[lightIdx].Last().Time > thisData.Time + 1e-3)
+                                {
+                                    lists[lightIdx].RemoveAt(lists[lightIdx].Count - 1);
+                                }
+                                lists[lightIdx].Add(thisData);
                             }
-                            lists[lightIdx].Add(thisData);
                             brightness += (i == 0 && colorEventBox.BrightnessAffectFirst == 0) ? 0 : deltaAlpha;
                             extraTime += deltaTime;
                         }

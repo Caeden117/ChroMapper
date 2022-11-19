@@ -108,20 +108,20 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingLights;
         var eb = e.EventBoxes[0];
 
-        var filteredLights = eb.Filter.Filter(allLights);
-        if (filteredLights.Count() == 0) return;
+        var filteredLightChunks = eb.Filter.Filter(allLights);
+        if (filteredLightChunks.Count() == 0) return;
 
         float deltaAlpha = eb.BrightnessDistribution;
-        if (eb.BrightnessDistributionType == 1) deltaAlpha /= BeatmapLightEventFilter.Intervals(filteredLights);
+        if (eb.BrightnessDistributionType == 1) deltaAlpha /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
         float deltaTime = eb.Distribution;
-        if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLights);
+        if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
         for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
             var ebd = eb.EventDatas[i];
             if (i == 0 && eb.BrightnessAffectFirst == 0)
-                StartCoroutine(LightColorRoutine(filteredLights, deltaTime, 0, e.Group, e.Time, idx, ebd));
+                StartCoroutine(LightColorRoutine(filteredLightChunks, deltaTime, 0, e.Group, e.Time, idx, ebd));
             else
-                StartCoroutine(LightColorRoutine(filteredLights, deltaTime, deltaAlpha, e.Group, e.Time, idx, ebd));
+                StartCoroutine(LightColorRoutine(filteredLightChunks, deltaTime, deltaAlpha, e.Group, e.Time, idx, ebd));
         }
 
     }
@@ -157,7 +157,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         light.UpdateTargetAlpha(brightness, timeToTransition);
     }
 
-    private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, 
+    private IEnumerator LightColorRoutine(IEnumerable<IEnumerable<LightingEvent>> lightChunks, float deltaTime, float deltaAlpha, 
         int group, float baseTime, int noteIdx, BeatmapLightColorEventData data)
     {
         var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
@@ -165,30 +165,33 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
         var brightness = data.Brightness;
         float extraTime = 0;
-        foreach (var light in lights)
+        foreach (var lightChunk in lightChunks)
         {
-            if (!light.SetNoteIndex(noteIdx)) continue;
-            var color = InferColor(data.Color);
-            color = color.Multiply(LightsManager.HDRIntensity);
-            if (data.TransitionType != 2)
+            foreach (var light in lightChunk)
             {
-                light.TargetColorId = data.Color;
-                light.UpdateTargetColor(color, 0);
-                light.UpdateTargetAlpha(brightness, 0);
-            }
-            if (lightColorEventsContainer.TryGetNextLightColorEventData(group, light.LightIdx, baseTime + extraTime + data.Time, out var nextData))
-            {
-                if (nextData.TransitionType == 1)
+                if (!light.SetNoteIndex(noteIdx)) continue;
+                var color = InferColor(data.Color);
+                color = color.Multiply(LightsManager.HDRIntensity);
+                if (data.TransitionType != 2)
                 {
-                    var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
-                    /*
-                    light.TargetColorId = nextData.Color;
-                    var nextColor = InferColor(nextData.Color);
-                    var nextAlpha = nextData.Brightness;
-                    light.UpdateTargetColor(nextColor.Multiply(LightsManager.HDRIntensity), timeToTransition);
-                    light.UpdateTargetAlpha(nextAlpha, timeToTransition);
-                    */
-                    SetLightColorFromData(light, nextData, timeToTransition);
+                    light.TargetColorId = data.Color;
+                    light.UpdateTargetColor(color, 0);
+                    light.UpdateTargetAlpha(brightness, 0);
+                }
+                if (lightColorEventsContainer.TryGetNextLightColorEventData(group, light.LightIdx, baseTime + extraTime + data.Time, out var nextData))
+                {
+                    if (nextData.TransitionType == 1)
+                    {
+                        var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
+                        /*
+                        light.TargetColorId = nextData.Color;
+                        var nextColor = InferColor(nextData.Color);
+                        var nextAlpha = nextData.Brightness;
+                        light.UpdateTargetColor(nextColor.Multiply(LightsManager.HDRIntensity), timeToTransition);
+                        light.UpdateTargetAlpha(nextAlpha, timeToTransition);
+                        */
+                        SetLightColorFromData(light, nextData, timeToTransition);
+                    }
                 }
             }
             if (deltaTime != 0.0f)
@@ -210,20 +213,20 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.Axis == 1 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].YRotatable) return;
         if (eb.Axis == 2 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].ZRotatable) return;
 
-        var filteredLights = eb.Filter.Filter(allLights);
-        if (filteredLights.Count() == 0) return;
+        var filteredRotationChunks = eb.Filter.Filter(allLights);
+        if (filteredRotationChunks.Count() == 0) return;
         float deltaRotation = eb.RotationDistribution;
         if (eb.ReverseRotation == 1) deltaRotation = -deltaRotation;
-        if (eb.RotationDistributionType == 1) deltaRotation /= BeatmapLightEventFilter.Intervals(filteredLights);
+        if (eb.RotationDistributionType == 1) deltaRotation /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
         float deltaTime = eb.Distribution;
-        if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLights);
+        if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
         for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
             var ebd = eb.EventDatas[i];
             if (i == 0 && eb.RotationAffectFirst == 0)
-                StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, 0, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, idx, ebd));
+                StartCoroutine(LightRotationRoutine(filteredRotationChunks, deltaTime, 0, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, idx, ebd));
             else
-                StartCoroutine(LightRotationRoutine(filteredLights, deltaTime, deltaRotation, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, idx, ebd));
+                StartCoroutine(LightRotationRoutine(filteredRotationChunks, deltaTime, deltaRotation, eb.Axis, eb.ReverseRotation == 1, e.Group, e.Time, idx, ebd));
         }
     }
 
@@ -236,7 +239,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         axisData.SetDirection(data.RotationDirection);
     }
 
-    private IEnumerator LightRotationRoutine(IEnumerable<RotatingEvent> lights, float deltaTime, float deltaRotation, int axis, bool reverse,
+    private IEnumerator LightRotationRoutine(IEnumerable<IEnumerable<RotatingEvent>> rotationChunks, float deltaTime, float deltaRotation, int axis, bool reverse,
         int group, float baseTime, int noteIdx, BeatmapLightRotationEventData data)
     {
         var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
@@ -245,27 +248,30 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         float rotation = data.RotationValue;
         if (reverse) rotation = -rotation;
         float extraTime = 0;
-        foreach (var light in lights)
+        foreach (var rotationChunk in rotationChunks)
         {
-            var axisData = light.GetAxisData(axis);
-            if (!axisData.SetNoteIndex(noteIdx)) continue;
-            if (data.Transition != 1)
+            foreach (var light in rotationChunk)
             {
-                axisData.UpdateRotation(rotation, 0);
-            }
-            if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, axis,
-                baseTime + extraTime + data.Time, out var nextData))
-            {
-                if (nextData.Transition == 0)
+                var axisData = light.GetAxisData(axis);
+                if (!axisData.SetNoteIndex(noteIdx)) continue;
+                if (data.Transition != 1)
                 {
-                    var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
-                    /*
-                    axisData.UpdateRotation(nextData.RotationValue, timeToTransition);
-                    axisData.SetEaseFunction(nextData.EaseType);
-                    axisData.SetLoop(nextData.AdditionalLoop);
-                    axisData.SetDirection(nextData.RotationDirection);
-                    */
-                    SetLightRotationFromData(light, nextData, timeToTransition, axis);
+                    axisData.UpdateRotation(rotation, 0);
+                }
+                if (lightRotationEventsContainer.TryGetNextLightRotationEventData(group, light.RotationIdx, axis,
+                    baseTime + extraTime + data.Time, out var nextData))
+                {
+                    if (nextData.Transition == 0)
+                    {
+                        var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                        /*
+                        axisData.UpdateRotation(nextData.RotationValue, timeToTransition);
+                        axisData.SetEaseFunction(nextData.EaseType);
+                        axisData.SetLoop(nextData.AdditionalLoop);
+                        axisData.SetDirection(nextData.RotationDirection);
+                        */
+                        SetLightRotationFromData(light, nextData, timeToTransition, axis);
+                    }
                 }
             }
             if (deltaTime != 0)
@@ -273,6 +279,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             rotation += deltaRotation;
             extraTime += deltaTime;
         }
+
         yield return null;
     }
 }

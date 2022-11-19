@@ -85,25 +85,47 @@ public class BeatmapLightEventFilter: BeatmapObject
         return true;
     }
 
-    public IEnumerable<T> Filter<T>(IEnumerable<T> list)
+    /// <summary>
+    /// Giving a list of elements, return filtered list[chunk][element]
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <returns>return a list of chunks, all the elements in each chunk will happen at the same time</returns>
+    public IEnumerable<IEnumerable<T>> Filter<T>(IEnumerable<T> list)
     {
         return Filter(list, this);
     }
 
-
-    public static IEnumerable<T> Filter<T>(IEnumerable<T> list, BeatmapLightEventFilter filter)
+    /// <summary>
+    /// filter pipeline will be chunk -> fraction/range -> shuffle -> limit
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    public static IEnumerable<IEnumerable<T>> Filter<T>(IEnumerable<T> list, BeatmapLightEventFilter filter)
     {
-        if (filter.RandomType == 2)
+        if (filter.Chunk != 0)
         {
-            Random.InitState(filter.RandomSeed);
-            list = Shuffle(list);
+            float chunkSize = list.Count() / (float)filter.Chunk;
+            var chunkList = list
+                .Select((filter, idx) => (filter, idx))
+                .GroupBy(t => Mathf.FloorToInt(t.idx / chunkSize));
+            var filterChunk = SubFilter(chunkList, filter);
+            var ret = filterChunk.Select(g => g.Select(t => t.filter));
+            return ret;
         }
-        int limit = -1;
-        if (filter.Limit != 0)
+        else
         {
-            limit = Mathf.RoundToInt(list.Count() * filter.Limit / 100.0f);
+            var filterList = SubFilter(list, filter);
+            // only one element in each group;
+            var ret = filterList.Select(x => new[] { x });
+            return ret;
         }
+    }
 
+    private static IEnumerable<T> SubFilter<T>(IEnumerable<T> list, BeatmapLightEventFilter filter)
+    {
         if (filter.FilterType == 1)
         {
             list = Fraction(list, filter.Section, filter.Partition, filter.Reverse == 1);
@@ -112,8 +134,14 @@ public class BeatmapLightEventFilter: BeatmapObject
         {
             list = Range(list, filter.Partition, filter.Section, filter.Reverse == 1);
         }
-        if (limit != -1)
+        if (filter.RandomType == 2)
         {
+            Random.InitState(filter.RandomSeed);
+            list = Shuffle(list);
+        }
+        if (filter.Limit != 0)
+        {
+            int limit = Mathf.RoundToInt(list.Count() * filter.Limit / 100.0f);
             list = list.Where((x, i) => i < limit);
         }
         return list;
@@ -143,8 +171,8 @@ public class BeatmapLightEventFilter: BeatmapObject
         }
         else
         {
-            int binSize = cnt / partition;
-            return list.Where((x, i) => i / binSize == section);
+            float binSize = cnt / (float)partition;
+            return list.Where((x, i) => Mathf.FloorToInt(i / (float)binSize) == section);
         }
     }
 
