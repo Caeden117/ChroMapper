@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &112086609588293719
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,6 +291,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &152369095743768449
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &179053529952097988
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +395,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &193111979712205886
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +515,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &207144351395703993
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,6 +635,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &208116311933690772
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +825,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &223613528187218157
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &230193051951928726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,6 +1095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &272757489408785001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,6 +1215,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &282628423600870764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,6 +1419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &347967865659321086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,6 +1465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &359847076270618755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,6 +1511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &383246463045346869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1731,6 +1744,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &412520731905205673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1850,6 +1864,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &413491831413306778
 GameObject:
   m_ObjectHideFlags: 0
@@ -1986,6 +2001,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &417432368549504767
 GameObject:
   m_ObjectHideFlags: 0
@@ -2150,6 +2166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &495152053352402437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2409,6 +2426,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &576723797032021417
 GameObject:
   m_ObjectHideFlags: 0
@@ -2612,6 +2630,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &595798264051433211
 GameObject:
   m_ObjectHideFlags: 0
@@ -2657,6 +2676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &614049654921529953
 GameObject:
   m_ObjectHideFlags: 0
@@ -2733,6 +2753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &661100751316417695
 GameObject:
   m_ObjectHideFlags: 0
@@ -2852,6 +2873,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &710664348470722303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3120,6 +3142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &783998294038884184
 GameObject:
   m_ObjectHideFlags: 0
@@ -3165,6 +3188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &789382894036567709
 GameObject:
   m_ObjectHideFlags: 0
@@ -3284,6 +3308,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &804449751508462782
 GameObject:
   m_ObjectHideFlags: 0
@@ -3507,6 +3532,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1009491062479818865
 GameObject:
   m_ObjectHideFlags: 0
@@ -3564,6 +3590,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1023043486709441558
 GameObject:
   m_ObjectHideFlags: 0
@@ -3810,6 +3837,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1072993569761678347
 GameObject:
   m_ObjectHideFlags: 0
@@ -3929,6 +3957,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1100429715923745952
 GameObject:
   m_ObjectHideFlags: 0
@@ -4092,6 +4121,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1172160956062638652
 GameObject:
   m_ObjectHideFlags: 0
@@ -4197,6 +4227,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1174947635909764965
 GameObject:
   m_ObjectHideFlags: 0
@@ -4324,6 +4355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1224926614158916598
 GameObject:
   m_ObjectHideFlags: 0
@@ -4369,6 +4401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1234447800278488645
 GameObject:
   m_ObjectHideFlags: 0
@@ -4615,6 +4648,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1288190013688600417
 GameObject:
   m_ObjectHideFlags: 0
@@ -4720,6 +4754,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1292567601336877838
 GameObject:
   m_ObjectHideFlags: 0
@@ -4765,6 +4800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1310583157675048444
 GameObject:
   m_ObjectHideFlags: 0
@@ -4892,6 +4928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1326944545712745107
 GameObject:
   m_ObjectHideFlags: 0
@@ -5076,6 +5113,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1384417011071743579
 GameObject:
   m_ObjectHideFlags: 0
@@ -5230,6 +5268,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1422450715033888911
 GameObject:
   m_ObjectHideFlags: 0
@@ -5297,6 +5336,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!1 &1429818570591515062
 GameObject:
@@ -5417,6 +5459,7 @@ MonoBehaviour:
   PropGroup: 4
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1434274033507124837
 GameObject:
   m_ObjectHideFlags: 0
@@ -5797,6 +5840,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1515653777078599660
 GameObject:
   m_ObjectHideFlags: 0
@@ -5985,6 +6029,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1525457862383579693
 GameObject:
   m_ObjectHideFlags: 0
@@ -6030,6 +6075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1534764037854405336
 GameObject:
   m_ObjectHideFlags: 0
@@ -6075,6 +6121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1658065903720754488
 GameObject:
   m_ObjectHideFlags: 0
@@ -6120,6 +6167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1675936701709384678
 GameObject:
   m_ObjectHideFlags: 0
@@ -6554,6 +6602,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1788888133455357057
 GameObject:
   m_ObjectHideFlags: 0
@@ -6710,6 +6759,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &1164419721355760269
 MonoBehaviour:
@@ -6773,6 +6825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1864499146365582249
 GameObject:
   m_ObjectHideFlags: 0
@@ -6827,6 +6880,7 @@ MonoBehaviour:
   PropGroup: 5
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1879197109112728015
 GameObject:
   m_ObjectHideFlags: 0
@@ -6932,6 +6986,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1879920685311660919
 GameObject:
   m_ObjectHideFlags: 0
@@ -6992,6 +7047,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 1
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &536250508573160518
 MonoBehaviour:
@@ -7129,6 +7187,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1910809662719060864
 GameObject:
   m_ObjectHideFlags: 0
@@ -7256,6 +7315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &1914878257945993180
 GameObject:
   m_ObjectHideFlags: 0
@@ -7405,6 +7465,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &1955681968864365825
 GameObject:
   m_ObjectHideFlags: 0
@@ -7541,6 +7602,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2002798972652441948
 GameObject:
   m_ObjectHideFlags: 0
@@ -7586,6 +7648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &2027626084955509664
 GameObject:
   m_ObjectHideFlags: 0
@@ -7705,6 +7768,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2060931292446833092
 GameObject:
   m_ObjectHideFlags: 0
@@ -7810,6 +7874,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2068703609382378474
 GameObject:
   m_ObjectHideFlags: 0
@@ -7855,6 +7920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &2106286032069685245
 GameObject:
   m_ObjectHideFlags: 0
@@ -7900,6 +7966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &2119770310997546367
 GameObject:
   m_ObjectHideFlags: 0
@@ -8146,6 +8213,7 @@ MonoBehaviour:
   PropGroup: 5
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2258628698247727298
 GameObject:
   m_ObjectHideFlags: 0
@@ -8275,6 +8343,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!1 &2326172764762664177
 GameObject:
@@ -8463,6 +8534,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &7012874800844918073
 MonoBehaviour:
@@ -8727,6 +8801,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2449024266822010889
 GameObject:
   m_ObjectHideFlags: 0
@@ -8846,6 +8921,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2449878190930553065
 GameObject:
   m_ObjectHideFlags: 0
@@ -8965,6 +9041,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2473922274399592729
 GameObject:
   m_ObjectHideFlags: 0
@@ -9114,6 +9191,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2482951754868115691
 GameObject:
   m_ObjectHideFlags: 0
@@ -9190,6 +9268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &2532738411567367752
 GameObject:
   m_ObjectHideFlags: 0
@@ -9295,6 +9374,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2539989403482532264
 GameObject:
   m_ObjectHideFlags: 0
@@ -9487,6 +9567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &2590229866189092054
 GameObject:
   m_ObjectHideFlags: 0
@@ -9623,6 +9704,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2595321744148783008
 GameObject:
   m_ObjectHideFlags: 0
@@ -9991,6 +10073,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &2738243342928608746
 GameObject:
   m_ObjectHideFlags: 0
@@ -10067,6 +10150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &2742551237527476113
 GameObject:
   m_ObjectHideFlags: 0
@@ -10186,6 +10270,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2749228989088554133
 GameObject:
   m_ObjectHideFlags: 0
@@ -10366,6 +10451,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2862931758124759929
 GameObject:
   m_ObjectHideFlags: 0
@@ -10663,6 +10749,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2936167106447256873
 GameObject:
   m_ObjectHideFlags: 0
@@ -10720,6 +10807,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &2955981017619938133
 GameObject:
   m_ObjectHideFlags: 0
@@ -10816,6 +10904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &2983882109608335437
 GameObject:
   m_ObjectHideFlags: 0
@@ -10873,6 +10962,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3009465475994126661
 GameObject:
   m_ObjectHideFlags: 0
@@ -10962,6 +11052,7 @@ MonoBehaviour:
   - {fileID: 1917936343521285411}
   - {fileID: 356092958153417033}
   - {fileID: 126677285961883117}
+  LightV2Mapping: 
 --- !u!1 &3028147224238506986
 GameObject:
   m_ObjectHideFlags: 0
@@ -11218,6 +11309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3095734467887861148
 GameObject:
   m_ObjectHideFlags: 0
@@ -11294,6 +11386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3137248240131578941
 GameObject:
   m_ObjectHideFlags: 0
@@ -11435,6 +11528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3170349160105262389
 GameObject:
   m_ObjectHideFlags: 0
@@ -11495,6 +11589,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &157547433444424444
 MonoBehaviour:
@@ -11835,6 +11932,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3259914531758704878
 GameObject:
   m_ObjectHideFlags: 0
@@ -11880,6 +11978,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3278210067329872126
 GameObject:
   m_ObjectHideFlags: 0
@@ -11925,6 +12024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3287938013270649230
 GameObject:
   m_ObjectHideFlags: 0
@@ -12088,6 +12188,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3371689053987471867
 GameObject:
   m_ObjectHideFlags: 0
@@ -12516,6 +12617,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 1
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &4396540557116037934
 MonoBehaviour:
@@ -12610,6 +12714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3498296915645600483
 GameObject:
   m_ObjectHideFlags: 0
@@ -12670,6 +12775,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 1
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &8044230933158800797
 MonoBehaviour:
@@ -12733,6 +12841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3531843088464842941
 GameObject:
   m_ObjectHideFlags: 0
@@ -12778,6 +12887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3534789251623995006
 GameObject:
   m_ObjectHideFlags: 0
@@ -12931,6 +13041,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3617562249268884337
 GameObject:
   m_ObjectHideFlags: 0
@@ -13050,6 +13161,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3669987281318985058
 GameObject:
   m_ObjectHideFlags: 0
@@ -13282,6 +13394,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3708405282759616679
 GameObject:
   m_ObjectHideFlags: 0
@@ -13469,6 +13582,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3768954294752054976
 GameObject:
   m_ObjectHideFlags: 0
@@ -13588,6 +13702,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3794155304247911678
 GameObject:
   m_ObjectHideFlags: 0
@@ -13633,6 +13748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3801514735286115924
 GameObject:
   m_ObjectHideFlags: 0
@@ -14043,6 +14159,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3911979048814766863
 GameObject:
   m_ObjectHideFlags: 0
@@ -14192,6 +14309,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3929047786033174047
 GameObject:
   m_ObjectHideFlags: 0
@@ -14249,6 +14367,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3940122788465487038
 GameObject:
   m_ObjectHideFlags: 0
@@ -14464,6 +14583,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &3997010601177686864
 GameObject:
   m_ObjectHideFlags: 0
@@ -14509,6 +14629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &3997921574797639370
 GameObject:
   m_ObjectHideFlags: 0
@@ -14554,6 +14675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4048185874449574788
 GameObject:
   m_ObjectHideFlags: 0
@@ -14599,6 +14721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4057143433405691346
 GameObject:
   m_ObjectHideFlags: 0
@@ -14718,6 +14841,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4057363044387891211
 GameObject:
   m_ObjectHideFlags: 0
@@ -14955,6 +15079,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4157546249336843097
 GameObject:
   m_ObjectHideFlags: 0
@@ -15000,6 +15125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4195020845743173667
 GameObject:
   m_ObjectHideFlags: 0
@@ -15171,6 +15297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4252600351765180652
 GameObject:
   m_ObjectHideFlags: 0
@@ -15216,6 +15343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4280847268374980800
 GameObject:
   m_ObjectHideFlags: 0
@@ -15383,6 +15511,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4409143331877805496
 GameObject:
   m_ObjectHideFlags: 0
@@ -15533,6 +15662,7 @@ MonoBehaviour:
   PropGroup: 5
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4438673761262320578
 GameObject:
   m_ObjectHideFlags: 0
@@ -15814,6 +15944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4463944703248560946
 GameObject:
   m_ObjectHideFlags: 0
@@ -15933,6 +16064,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4472406682628334094
 GameObject:
   m_ObjectHideFlags: 0
@@ -16052,6 +16184,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4485055447915006534
 GameObject:
   m_ObjectHideFlags: 0
@@ -16097,6 +16230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4517665800558934358
 GameObject:
   m_ObjectHideFlags: 0
@@ -16248,6 +16382,7 @@ MonoBehaviour:
   PropGroup: 4
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4537434257914310033
 GameObject:
   m_ObjectHideFlags: 0
@@ -16367,6 +16502,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4545424245450888071
 GameObject:
   m_ObjectHideFlags: 0
@@ -16508,6 +16644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4601800146878750328
 GameObject:
   m_ObjectHideFlags: 0
@@ -16785,6 +16922,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4723829634354975876
 GameObject:
   m_ObjectHideFlags: 0
@@ -17000,6 +17138,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4743084453167168571
 GameObject:
   m_ObjectHideFlags: 0
@@ -17143,6 +17282,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 1
+  ZFlip: 0
+  TreatZAsX: 1
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &5332211868260429322
 MonoBehaviour:
@@ -17228,6 +17370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &4857924447195919520
 GameObject:
   m_ObjectHideFlags: 0
@@ -17319,6 +17462,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &7449010348995987616
 MonoBehaviour:
@@ -17456,6 +17602,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4902678218921041437
 GameObject:
   m_ObjectHideFlags: 0
@@ -17606,6 +17753,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &4927349590769845359
 GameObject:
   m_ObjectHideFlags: 0
@@ -17756,6 +17904,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5018550424286014069
 GameObject:
   m_ObjectHideFlags: 0
@@ -18041,6 +18190,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5061030407571908488
 GameObject:
   m_ObjectHideFlags: 0
@@ -18086,6 +18236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &5111929972751900029
 GameObject:
   m_ObjectHideFlags: 0
@@ -18205,6 +18356,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5127340210822422639
 GameObject:
   m_ObjectHideFlags: 0
@@ -18259,6 +18411,7 @@ MonoBehaviour:
   PropGroup: 5
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5140779561117942805
 GameObject:
   m_ObjectHideFlags: 0
@@ -18409,6 +18562,7 @@ MonoBehaviour:
   PropGroup: 5
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5155091173240824452
 GameObject:
   m_ObjectHideFlags: 0
@@ -18572,6 +18726,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5181687456581618214
 GameObject:
   m_ObjectHideFlags: 0
@@ -18617,6 +18772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &5282561525955161157
 GameObject:
   m_ObjectHideFlags: 0
@@ -18780,6 +18936,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5324616288465731067
 GameObject:
   m_ObjectHideFlags: 0
@@ -18899,6 +19056,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5330270756886958596
 GameObject:
   m_ObjectHideFlags: 0
@@ -18944,6 +19102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &5354830629322001141
 GameObject:
   m_ObjectHideFlags: 0
@@ -19063,6 +19222,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5361620843142075334
 GameObject:
   m_ObjectHideFlags: 0
@@ -19108,6 +19268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &5372971947037748742
 GameObject:
   m_ObjectHideFlags: 0
@@ -19153,6 +19314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &5426184727147094995
 GameObject:
   m_ObjectHideFlags: 0
@@ -19392,6 +19554,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &3126044336233559593
 MonoBehaviour:
@@ -19582,6 +19747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &5509788422020788680
 GameObject:
   m_ObjectHideFlags: 0
@@ -19701,6 +19867,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5550032635460569316
 GameObject:
   m_ObjectHideFlags: 0
@@ -19903,6 +20070,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5569936366899916052
 GameObject:
   m_ObjectHideFlags: 0
@@ -20053,6 +20221,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 1
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &3092097547939539691
 MonoBehaviour:
@@ -20272,6 +20443,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5630971501960132960
 GameObject:
   m_ObjectHideFlags: 0
@@ -20377,6 +20549,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5659425677785656210
 GameObject:
   m_ObjectHideFlags: 0
@@ -20422,6 +20595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &5713772462075955737
 GameObject:
   m_ObjectHideFlags: 0
@@ -20541,6 +20715,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5722742834781919855
 GameObject:
   m_ObjectHideFlags: 0
@@ -20691,6 +20866,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5778694090219862070
 GameObject:
   m_ObjectHideFlags: 0
@@ -20810,6 +20986,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5796065400315567147
 GameObject:
   m_ObjectHideFlags: 0
@@ -21106,6 +21283,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5927833755375508228
 GameObject:
   m_ObjectHideFlags: 0
@@ -21225,6 +21403,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &5941084983755388073
 GameObject:
   m_ObjectHideFlags: 0
@@ -21270,6 +21449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &5972655685072231291
 GameObject:
   m_ObjectHideFlags: 0
@@ -21569,6 +21749,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6007781110787965784
 GameObject:
   m_ObjectHideFlags: 0
@@ -21689,6 +21870,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6086208864321466833
 GameObject:
   m_ObjectHideFlags: 0
@@ -21734,6 +21916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6105057496504734010
 GameObject:
   m_ObjectHideFlags: 0
@@ -21779,6 +21962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6108222853886807156
 GameObject:
   m_ObjectHideFlags: 0
@@ -21824,6 +22008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6161326981573475249
 GameObject:
   m_ObjectHideFlags: 0
@@ -21943,6 +22128,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6166080945831081592
 GameObject:
   m_ObjectHideFlags: 0
@@ -22000,6 +22186,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6189846195360158687
 GameObject:
   m_ObjectHideFlags: 0
@@ -22045,6 +22232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6193218021936958678
 GameObject:
   m_ObjectHideFlags: 0
@@ -22090,6 +22278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6207667479242521619
 GameObject:
   m_ObjectHideFlags: 0
@@ -22147,6 +22336,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6236675778377217262
 GameObject:
   m_ObjectHideFlags: 0
@@ -22337,6 +22527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6322328692882843183
 GameObject:
   m_ObjectHideFlags: 0
@@ -22442,6 +22633,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6343074028094885817
 GameObject:
   m_ObjectHideFlags: 0
@@ -22614,6 +22806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6485938659373463554
 GameObject:
   m_ObjectHideFlags: 0
@@ -22830,6 +23023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6580650981505039397
 GameObject:
   m_ObjectHideFlags: 0
@@ -22949,6 +23143,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6658342451222993654
 GameObject:
   m_ObjectHideFlags: 0
@@ -23090,6 +23285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6673521435988254910
 GameObject:
   m_ObjectHideFlags: 0
@@ -23135,6 +23331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6684933817177789233
 GameObject:
   m_ObjectHideFlags: 0
@@ -23240,6 +23437,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6692438347946400625
 GameObject:
   m_ObjectHideFlags: 0
@@ -23381,6 +23579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6721484885258663267
 GameObject:
   m_ObjectHideFlags: 0
@@ -23500,6 +23699,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6745643024685038895
 GameObject:
   m_ObjectHideFlags: 0
@@ -23820,6 +24020,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6816246246769813610
 GameObject:
   m_ObjectHideFlags: 0
@@ -23939,6 +24140,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6885420781256182394
 GameObject:
   m_ObjectHideFlags: 0
@@ -24067,6 +24269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6912894867411848225
 GameObject:
   m_ObjectHideFlags: 0
@@ -24217,6 +24420,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &6954095636542671942
 GameObject:
   m_ObjectHideFlags: 0
@@ -24293,6 +24497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &6978420681364856767
 GameObject:
   m_ObjectHideFlags: 0
@@ -24708,6 +24913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7120889669099616261
 GameObject:
   m_ObjectHideFlags: 0
@@ -24827,6 +25033,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7122479444889293618
 GameObject:
   m_ObjectHideFlags: 0
@@ -25051,6 +25258,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 1
   ZRotatable: 0
+  ZFlip: 0
+  TreatZAsX: 0
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &4271620027394527505
 MonoBehaviour:
@@ -25209,6 +25419,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7178811207973535789
 GameObject:
   m_ObjectHideFlags: 0
@@ -25328,6 +25539,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7203180186241268350
 GameObject:
   m_ObjectHideFlags: 0
@@ -25433,6 +25645,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7233680617138851770
 GameObject:
   m_ObjectHideFlags: 0
@@ -25478,6 +25691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7269551480790618098
 GameObject:
   m_ObjectHideFlags: 0
@@ -25732,6 +25946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7310569309735275173
 GameObject:
   m_ObjectHideFlags: 0
@@ -25789,6 +26004,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7348760992305736289
 GameObject:
   m_ObjectHideFlags: 0
@@ -26237,6 +26453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7415902868700132351
 GameObject:
   m_ObjectHideFlags: 0
@@ -26378,6 +26595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7439072518493425738
 GameObject:
   m_ObjectHideFlags: 0
@@ -26655,6 +26873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7504374884168638488
 GameObject:
   m_ObjectHideFlags: 0
@@ -26774,6 +26993,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7523548545514857965
 GameObject:
   m_ObjectHideFlags: 0
@@ -26893,6 +27113,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7591647864263603037
 GameObject:
   m_ObjectHideFlags: 0
@@ -26950,6 +27171,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7613932712780063325
 GameObject:
   m_ObjectHideFlags: 0
@@ -27118,6 +27340,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7634891355181313766
 GameObject:
   m_ObjectHideFlags: 0
@@ -27223,6 +27446,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7646881389945923043
 GameObject:
   m_ObjectHideFlags: 0
@@ -27294,6 +27518,9 @@ MonoBehaviour:
   XFlip: 0
   YFlip: 0
   ZRotatable: 1
+  ZFlip: 0
+  TreatZAsX: 1
+  brightnessMultiplier: 1
   ControllingRotations: []
 --- !u!114 &5272897387689834418
 MonoBehaviour:
@@ -27357,6 +27584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7656090852329731584
 GameObject:
   m_ObjectHideFlags: 0
@@ -27559,6 +27787,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7675118757240414675
 GameObject:
   m_ObjectHideFlags: 0
@@ -27700,6 +27929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7692743952605656553
 GameObject:
   m_ObjectHideFlags: 0
@@ -27850,6 +28080,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7727346800530717215
 GameObject:
   m_ObjectHideFlags: 0
@@ -27895,6 +28126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7816373752816786371
 GameObject:
   m_ObjectHideFlags: 0
@@ -28024,6 +28256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &7865792323610657985
 GameObject:
   m_ObjectHideFlags: 0
@@ -28143,6 +28376,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7868393835650772678
 GameObject:
   m_ObjectHideFlags: 0
@@ -28293,6 +28527,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &7913646302386933994
 GameObject:
   m_ObjectHideFlags: 0
@@ -28465,6 +28700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8005196471712211871
 GameObject:
   m_ObjectHideFlags: 0
@@ -28541,6 +28777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8027361773720281193
 GameObject:
   m_ObjectHideFlags: 0
@@ -28660,6 +28897,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8038991351357692897
 GameObject:
   m_ObjectHideFlags: 0
@@ -28705,6 +28943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8065764995593706547
 GameObject:
   m_ObjectHideFlags: 0
@@ -28824,6 +29063,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8107942111187797862
 GameObject:
   m_ObjectHideFlags: 0
@@ -28869,6 +29109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8108784109387182357
 GameObject:
   m_ObjectHideFlags: 0
@@ -28988,6 +29229,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8113831985782701203
 GameObject:
   m_ObjectHideFlags: 0
@@ -29124,6 +29366,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8232774406091675103
 GameObject:
   m_ObjectHideFlags: 0
@@ -29200,6 +29443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8276545759943670116
 GameObject:
   m_ObjectHideFlags: 0
@@ -30129,6 +30373,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8479642780421843210
 GameObject:
   m_ObjectHideFlags: 0
@@ -30234,6 +30479,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8485866836612639811
 GameObject:
   m_ObjectHideFlags: 0
@@ -30468,6 +30714,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8525985509416371523
 GameObject:
   m_ObjectHideFlags: 0
@@ -30609,6 +30856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8537939667863382828
 GameObject:
   m_ObjectHideFlags: 0
@@ -30750,6 +30998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8552280235663610989
 GameObject:
   m_ObjectHideFlags: 0
@@ -30795,6 +31044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8574452572143040258
 GameObject:
   m_ObjectHideFlags: 0
@@ -31029,6 +31279,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8631125809137832385
 GameObject:
   m_ObjectHideFlags: 0
@@ -31179,6 +31430,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8657236285436165003
 GameObject:
   m_ObjectHideFlags: 0
@@ -31417,6 +31669,7 @@ MonoBehaviour:
   PropGroup: 5
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8788343478129043343
 GameObject:
   m_ObjectHideFlags: 0
@@ -31567,6 +31820,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8832054087044552959
 GameObject:
   m_ObjectHideFlags: 0
@@ -31612,6 +31866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8852388296731949685
 GameObject:
   m_ObjectHideFlags: 0
@@ -31669,6 +31924,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8853855161753324000
 GameObject:
   m_ObjectHideFlags: 0
@@ -31788,6 +32044,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8861887066042743479
 GameObject:
   m_ObjectHideFlags: 0
@@ -32054,6 +32311,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &8894677860704613306
 GameObject:
   m_ObjectHideFlags: 0
@@ -32130,6 +32388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8939784514938409726
 GameObject:
   m_ObjectHideFlags: 0
@@ -32175,6 +32434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &8973876772452678916
 GameObject:
   m_ObjectHideFlags: 0
@@ -32220,6 +32480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &9010072410496583772
 GameObject:
   m_ObjectHideFlags: 0
@@ -32421,6 +32682,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &9091406379648448006
 GameObject:
   m_ObjectHideFlags: 0
@@ -32466,6 +32728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &9095860267476725384
 GameObject:
   m_ObjectHideFlags: 0
@@ -32573,6 +32836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationIdx: 0
+  rotationMultiplier: 1
 --- !u!1 &9128379219138422349
 GameObject:
   m_ObjectHideFlags: 0
@@ -32692,6 +32956,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &9183494504891720630
 GameObject:
   m_ObjectHideFlags: 0
@@ -32811,6 +33076,7 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
 --- !u!1 &9196917518253674078
 GameObject:
   m_ObjectHideFlags: 0
@@ -32916,3 +33182,4 @@ MonoBehaviour:
   PropGroup: 0
   LightIdx: -1
   TargetColorId: 0
+  brightnessMultiplier: 1
