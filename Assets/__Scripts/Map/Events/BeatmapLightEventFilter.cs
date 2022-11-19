@@ -98,16 +98,25 @@ public class BeatmapLightEventFilter: BeatmapObject
             Random.InitState(filter.RandomSeed);
             list = Shuffle(list);
         }
+        int limit = -1;
+        if (filter.Limit != 0)
+        {
+            limit = Mathf.RoundToInt(list.Count() * filter.Limit / 100.0f);
+        }
 
         if (filter.FilterType == 1)
         {
-            return Fraction(list, filter.Section, filter.Partition, filter.Reverse == 1);
+            list = Fraction(list, filter.Section, filter.Partition, filter.Reverse == 1);
         }
         else if (filter.FilterType == 2)
         {
-            return Range(list, filter.Partition, filter.Section, filter.Reverse == 1);
+            list = Range(list, filter.Partition, filter.Section, filter.Reverse == 1);
         }
-        return null;
+        if (limit != -1)
+        {
+            list = list.Where((x, i) => i < limit);
+        }
+        return list;
     }
 
     private static IEnumerable<T> Shuffle<T>(IEnumerable<T> list)
