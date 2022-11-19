@@ -144,6 +144,8 @@ public class LightColorEventsContainer : BeatmapObjectContainerCollection
                     float deltaTime = colorEventBox.Distribution;
                     if (colorEventBox.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
 
+                    BeatmapLightEventFilter.DeltaScaleByFilterLimit(lights, filteredLightChunks, colorEventBox.Filter, ref deltaTime, ref deltaAlpha);
+
                     for (int i = 0; i < colorEventBox.EventDatas.Count; ++i)
                     {
                         var colorEventData = colorEventBox.EventDatas[i];

@@ -102,6 +102,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         return color;
     }
 
+
     public void LightColorEventPassed(bool natural, int idx, BeatmapLightColorEvent e)
     {
         if (GroupIdToLaneIndex(e.Group) == -1) return;
@@ -115,6 +116,9 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.BrightnessDistributionType == 1) deltaAlpha /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
         float deltaTime = eb.Distribution;
         if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
+
+        BeatmapLightEventFilter.DeltaScaleByFilterLimit(allLights, filteredLightChunks, eb.Filter, ref deltaTime, ref deltaAlpha);
+
         for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
             var ebd = eb.EventDatas[i];
@@ -220,6 +224,9 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.RotationDistributionType == 1) deltaRotation /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
         float deltaTime = eb.Distribution;
         if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
+
+        BeatmapLightEventFilter.DeltaScaleByFilterLimit(allLights, filteredRotationChunks, eb.Filter, ref deltaTime, ref deltaRotation);
+
         for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
             var ebd = eb.EventDatas[i];

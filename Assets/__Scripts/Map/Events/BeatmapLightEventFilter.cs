@@ -14,7 +14,10 @@ public class BeatmapLightEventFilter: BeatmapObject
     public int RandomType; // n
     public int RandomSeed; // s
     public int Limit; // l
-    public int AffectAlso; // d
+    public int AlsoLimit; // d
+
+    public bool TimeLimited => FilterType == 1 && (AlsoLimit & 0x1) != 0;
+    public bool DataLimited => FilterType == 1 && (AlsoLimit & 0x2) != 0;
 
     public BeatmapLightEventFilter(JSONNode node)
     {
@@ -27,7 +30,7 @@ public class BeatmapLightEventFilter: BeatmapObject
         RandomType = node.HasKey("n") ? node["n"].AsInt : 0;
         RandomSeed = node.HasKey("s") ? node["s"].AsInt : 0;
         Limit = node.HasKey("l") ? node["l"].AsInt : 0;
-        AffectAlso = node.HasKey("d") ? node["d"].AsInt : 0;
+        AlsoLimit = node.HasKey("d") ? node["d"].AsInt : 0;
     }
 
     public BeatmapLightEventFilter() 
@@ -49,7 +52,7 @@ public class BeatmapLightEventFilter: BeatmapObject
         node["n"] = RandomType;
         node["s"] = RandomSeed;
         node["l"] = Limit;
-        node["d"] = AffectAlso;
+        node["d"] = AlsoLimit;
         return node;
     }
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false) => throw new System.NotImplementedException();
@@ -84,6 +87,17 @@ public class BeatmapLightEventFilter: BeatmapObject
         }
         return true;
     }
+
+    public static void DeltaScaleByFilterLimit<T>(IEnumerable<T> all, IEnumerable<IEnumerable<T>> filteredChunks, 
+        BeatmapLightEventFilter filter, ref float deltaTime, ref float deltaData)
+    {
+        if (filter.AlsoLimit == 0 || filter.FilterType != 1) return;
+        float scaleFactor = Intervals(all) / Intervals(filteredChunks);
+        if (filter.TimeLimited) deltaTime *= scaleFactor;
+        if (filter.DataLimited) deltaData *= scaleFactor;
+    }
+
+
 
     /// <summary>
     /// Giving a list of elements, return filtered list[chunk][element]

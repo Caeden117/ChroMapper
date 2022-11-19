@@ -116,6 +116,8 @@ public class LightRotationEventsContainer : BeatmapObjectContainerCollection
                     if (rotationEventBox.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
                     int axis = rotationEventBox.Axis;
 
+                    BeatmapLightEventFilter.DeltaScaleByFilterLimit(rotations, filteredRotationChunks, rotationEventBox.Filter, ref deltaTime, ref deltaDegree);
+
                     for (int i = 0; i < rotationEventBox.EventDatas.Count; ++i)
                     {
                         var rotationEventData = rotationEventBox.EventDatas[i];
