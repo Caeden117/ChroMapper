@@ -9,6 +9,12 @@ public class BeatmapLightEventFilter: BeatmapObject
     public int Partition; // p
     public int Section; // t
     public int Reverse; // r
+    // introduced in 3.1
+    public int Chunk; // c
+    public int RandomType; // n
+    public int RandomSeed; // s
+    public int Limit; // l
+    public int AffectAlso; // d
 
     public BeatmapLightEventFilter(JSONNode node)
     {
@@ -16,6 +22,12 @@ public class BeatmapLightEventFilter: BeatmapObject
         Partition = RetrieveRequiredNode(node, "p").AsInt;
         Section = RetrieveRequiredNode(node, "t").AsInt;
         Reverse = RetrieveRequiredNode(node, "r").AsInt;
+
+        Chunk = node.HasKey("c") ? node["c"].AsInt : 0;
+        RandomType = node.HasKey("n") ? node["n"].AsInt : 0;
+        RandomSeed = node.HasKey("s") ? node["s"].AsInt : 0;
+        Limit = node.HasKey("l") ? node["l"].AsInt : 0;
+        AffectAlso = node.HasKey("d") ? node["d"].AsInt : 0;
     }
 
     public BeatmapLightEventFilter() 
@@ -32,6 +44,12 @@ public class BeatmapLightEventFilter: BeatmapObject
         node["p"] = Partition;
         node["t"] = Section;
         node["r"] = Reverse;
+
+        node["c"] = Chunk;
+        node["n"] = RandomType;
+        node["s"] = RandomSeed;
+        node["l"] = Limit;
+        node["d"] = AffectAlso;
         return node;
     }
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion = false) => throw new System.NotImplementedException();
@@ -75,6 +93,12 @@ public class BeatmapLightEventFilter: BeatmapObject
 
     public static IEnumerable<T> Filter<T>(IEnumerable<T> list, BeatmapLightEventFilter filter)
     {
+        if (filter.RandomType == 2)
+        {
+            Random.InitState(filter.RandomSeed);
+            list = Shuffle(list);
+        }
+
         if (filter.FilterType == 1)
         {
             return Fraction(list, filter.Section, filter.Partition, filter.Reverse == 1);
@@ -86,6 +110,19 @@ public class BeatmapLightEventFilter: BeatmapObject
         return null;
     }
 
+    private static IEnumerable<T> Shuffle<T>(IEnumerable<T> list)
+    {
+        var a = list.ToArray();
+        for (int i = a.Length - 1; i > 0; --i)
+        {
+            int j = Random.Range(0, i + 1);
+            if (i != j)
+            {
+                (a[i], a[j]) = (a[j], a[i]);
+            }
+        }
+        return a;
+    }
 
     private static IEnumerable<T> Fraction<T>(IEnumerable<T> list, int section, int partition, bool reverse = false)
     {
