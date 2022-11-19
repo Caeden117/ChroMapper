@@ -148,7 +148,7 @@ public class BeatmapLightEventFilter: BeatmapObject
         {
             list = Range(list, filter.Partition, filter.Section, filter.Reverse == 1);
         }
-        if (filter.RandomType == 2)
+        if (filter.RandomType == 2) // random
         {
             Random.InitState(filter.RandomSeed);
             list = Shuffle(list);
@@ -156,7 +156,19 @@ public class BeatmapLightEventFilter: BeatmapObject
         if (filter.Limit != 0)
         {
             int limit = Mathf.RoundToInt(list.Count() * filter.Limit / 100.0f);
-            list = list.Where((x, i) => i < limit);
+            if (filter.RandomType != 1)
+            {
+                list = list.Where((x, i) => i < limit);
+            }
+            else // random, but order preserved
+            {
+                Random.InitState(filter.RandomSeed);
+                var listWithIdx = Shuffle(list.Select((x, idx) => (x, idx)))
+                    .Where((x, i) => i < limit)
+                    .ToList();
+                listWithIdx.Sort((lhs, rhs) => lhs.idx.CompareTo(rhs.idx));
+                list = listWithIdx.Select(t => t.x);
+            }
         }
         return list;
     }
