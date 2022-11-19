@@ -92,32 +92,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         return LightsManagersV3[idx].GroupId;
     }
 
-    public static IEnumerable<T> Partition<T>(IEnumerable<T> list, int section, int partition, bool reverse = false)
-    {
-        if (reverse) list = list.Reverse();
-        int cnt = list.Count();
-        if (partition > cnt)
-        {
-            return list.Where((x, i) => i == Mathf.FloorToInt(cnt * section / (float)partition));
-        }
-        else
-        {
-            int binSize = cnt / partition;
-            return list.Where((x, i) => i / binSize == section);
-        }
-    }
 
-    public static IEnumerable<T> Range<T>(IEnumerable<T> list, int start, int step, bool reverse = false)
-    {
-        if (reverse) list = list.Reverse();
-        if (step == 0) return list.Where((x, i) => i == start);
-        else return list.Where((x, i) => i >= start && (i - start)  % step == 0);
-    }
-
-    public static int Intervals<T>(IEnumerable<T> list)
-    {
-        return Mathf.Max(list.Count() - 1, 1);
-    }
 
     public Color InferColor(int c)
     {
@@ -133,15 +108,13 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingLights;
         var eb = e.EventBoxes[0];
 
-        var filteredLights = eb.Filter.FilterType == 1 
-            ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)
-            : Range(allLights, eb.Filter.Partition, eb.Filter.Section, eb.Filter.Reverse == 1);
+        var filteredLights = eb.Filter.Filter(allLights);
         if (filteredLights.Count() == 0) return;
 
         float deltaAlpha = eb.BrightnessDistribution;
-        if (eb.BrightnessDistributionType == 1) deltaAlpha /= Intervals(filteredLights);
+        if (eb.BrightnessDistributionType == 1) deltaAlpha /= BeatmapLightEventFilter.Intervals(filteredLights);
         float deltaTime = eb.Distribution;
-        if (eb.DistributionType == 1) deltaTime /= Intervals(filteredLights);
+        if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLights);
         for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
             var ebd = eb.EventDatas[i];
@@ -237,15 +210,13 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         if (eb.Axis == 1 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].YRotatable) return;
         if (eb.Axis == 2 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].ZRotatable) return;
 
-        var filteredLights = eb.Filter.FilterType == 1
-            ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)
-            : Range(allLights, eb.Filter.Partition, eb.Filter.Section, eb.Filter.Reverse == 1);
+        var filteredLights = eb.Filter.Filter(allLights);
         if (filteredLights.Count() == 0) return;
         float deltaRotation = eb.RotationDistribution;
         if (eb.ReverseRotation == 1) deltaRotation = -deltaRotation;
-        if (eb.RotationDistributionType == 1) deltaRotation /= Intervals(filteredLights);
+        if (eb.RotationDistributionType == 1) deltaRotation /= BeatmapLightEventFilter.Intervals(filteredLights);
         float deltaTime = eb.Distribution;
-        if (eb.DistributionType == 1) deltaTime /= Intervals(filteredLights);
+        if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredLights);
         for (int i = 0; i < eb.EventDatas.Count; ++i)
         {
             var ebd = eb.EventDatas[i];

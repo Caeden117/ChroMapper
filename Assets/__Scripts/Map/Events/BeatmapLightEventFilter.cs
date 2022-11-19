@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
 using SimpleJSON;
+using UnityEngine;
 
 public class BeatmapLightEventFilter: BeatmapObject
 {
@@ -62,5 +65,52 @@ public class BeatmapLightEventFilter: BeatmapObject
             }
         }
         return true;
+    }
+
+    public IEnumerable<T> Filter<T>(IEnumerable<T> list)
+    {
+        return Filter(list, this);
+    }
+
+
+    public static IEnumerable<T> Filter<T>(IEnumerable<T> list, BeatmapLightEventFilter filter)
+    {
+        if (filter.FilterType == 1)
+        {
+            return Fraction(list, filter.Section, filter.Partition, filter.Reverse == 1);
+        }
+        else if (filter.FilterType == 2)
+        {
+            return Range(list, filter.Partition, filter.Section, filter.Reverse == 1);
+        }
+        return null;
+    }
+
+
+    private static IEnumerable<T> Fraction<T>(IEnumerable<T> list, int section, int partition, bool reverse = false)
+    {
+        if (reverse) list = list.Reverse();
+        int cnt = list.Count();
+        if (partition > cnt)
+        {
+            return list.Where((x, i) => i == Mathf.FloorToInt(cnt * section / (float)partition));
+        }
+        else
+        {
+            int binSize = cnt / partition;
+            return list.Where((x, i) => i / binSize == section);
+        }
+    }
+
+    private static IEnumerable<T> Range<T>(IEnumerable<T> list, int start, int step, bool reverse = false)
+    {
+        if (reverse) list = list.Reverse();
+        if (step == 0) return list.Where((x, i) => i == start);
+        else return list.Where((x, i) => i >= start && (i - start) % step == 0);
+    }
+
+    public static int Intervals<T>(IEnumerable<T> list)
+    {
+        return Mathf.Max(list.Count() - 1, 1);
     }
 }
