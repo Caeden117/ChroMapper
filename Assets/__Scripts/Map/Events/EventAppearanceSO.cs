@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,6 +22,9 @@ public class EventAppearanceSO : ScriptableObject
     [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
     [SerializeField]
     private Color otherColor;
+
+    private readonly string[] rotationDirectionMark = { "", "↻", "↺" };
+    private readonly string[] rotationTransitionMark = { "", "T", "Ti", "To", "Tio" };
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false)
     {
@@ -187,6 +191,124 @@ public class EventAppearanceSO : ScriptableObject
         if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
 
         e.UpdateMaterials();
+    }
+
+    private string GenerateFilterString(BeatmapLightEventFilter filter)
+    {
+        switch (filter.FilterType)
+        {
+            case 1: // fraction like text, but default will be ignored for better viewing
+                if (filter.Section == 0 && filter.Partition == 1 && filter.Reverse == 0) return "";
+                return (filter.Reverse != 0 ? "-" : "") + (filter.Section + 1) + "/" + filter.Partition;
+            case 2: // python indexing like text
+                return filter.Partition + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Section;
+            default:
+                Debug.LogError("Unexpected filter type " + filter.FilterType);
+                return "";
+        }
+    }
+
+    private string GenerateDistributionString(float w, int d, bool actuallyAffect = true)
+    {
+        var connector = actuallyAffect ? "->" : "|>";
+        if (w == 0.0f) return "";
+        switch (d)
+        {
+            case 1: // Wave
+                return connector + w.ToString("n1");
+            case 2: // Step
+                return w.ToString("n1") + connector;
+            default:
+                Debug.LogError("Unexpected distribution type " + d);
+                return "";
+        }
+    }
+
+    public void SetLightColorEventAppearance(BeatmapLightColorEventContainer e, bool boost = false, int dataIdx = 0, bool final = true)
+    {
+        e.UpdateAlpha(final ? 1.0f : 0.6f, true);
+        if (!final)
+            e.transform.localScale = Vector3.one * 0.6f;
+        if (dataIdx == 0 && e.ColorEventData.EventBoxes[0].EventDatas.Count == 0)
+        {
+            e.ChangeColor(offColor);
+            e.UpdateTextDisplay(true, "??????"); // why would this happen?
+            return;
+        }
+        var color = Color.white;
+        var eb = e.ColorEventData.EventBoxes[0];
+        if (eb.EventDatas[dataIdx].Color <= 1)
+        {
+            color = eb.EventDatas[dataIdx].Color == 1
+                ? (boost ? BlueBoostColor : BlueColor)
+                : (boost ? RedBoostColor : RedColor);
+        }
+        color = Color.Lerp(offColor, color, eb.EventDatas[dataIdx].Brightness);
+
+        // first line: transition + filter 
+        var text = GenerateFilterString(eb.Filter);
+        var prefix = "";
+        switch (eb.EventDatas[dataIdx].TransitionType)
+        {
+            case 1:
+                prefix = "T";
+                break;
+            case 2:
+                prefix = "E";
+                break;
+            default:
+                break;
+        }
+        text = prefix + text;
+        // second line: two distributions
+        text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType) 
+            + "/" + GenerateDistributionString(eb.BrightnessDistribution, eb.BrightnessDistributionType, dataIdx != 0 || eb.BrightnessAffectFirst == 1);
+
+        text += "\n";
+
+        e.UpdateTextDisplay(true, text);
+
+
+        e.EventModel = Settings.Instance.EventModel;
+        e.ChangeColor(color, dataIdx != 0 || !final); // idk why we have to update materials for sub notes
+        e.ChangeBaseColor(Color.black, dataIdx != 0 || !final);
+        if (color == Color.white) e.UpdateTextColor(Color.black);
+        else e.UpdateTextColor(Color.white);
+    }
+
+    public void SetLightRotationEventAppearance(BeatmapLightRotationEventContainer e, int dataIdx = 0, bool final = true)
+    {
+        e.UpdateAlpha(final ? 1.0f : 0.6f, true);
+        if (!final)
+            e.transform.localScale = Vector3.one * 0.6f;
+        if (dataIdx == 0 && e.RotationEventData.EventBoxes[0].EventDatas.Count == 0)
+        {
+            e.ChangeColor(offColor);
+            e.UpdateTextDisplay(true, "??????"); // why would this happen again?
+            return;
+        }
+        var eb = e.RotationEventData.EventBoxes[0];
+        var ebd = eb.EventDatas[dataIdx];
+        var text = GenerateFilterString(eb.Filter);
+        var prefix = "";
+        if (ebd.Transition == 1)
+        {
+            prefix = "E";
+        }
+        else
+        {
+            prefix = rotationTransitionMark[ebd.EaseType + 1];
+        }
+        text = prefix + text;
+
+        text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
+            + "/" + GenerateDistributionString(eb.RotationDistribution, eb.RotationDistributionType, dataIdx != 0 || eb.RotationAffectFirst == 1);
+        text += "\n" + rotationDirectionMark[ebd.RotationDirection] + ebd.AdditionalLoop + (eb.ReverseRotation == 1 ? "-" : "+") + ebd.RotationValue + "°";
+
+        e.UpdateTextDisplay(true, text);
+        e.ChangeColor(offColor, dataIdx != 0 || !final);
+
+        e.SetRotationAxisAppearance(eb.Axis);
     }
 }
 

@@ -56,7 +56,8 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
             propagationEditing = value;
             boxSelectionPlacementController.CancelPlacement();
 
-            var lightingManager = platformDescriptor.LightingManagers[EventTypeToPropagate];
+            var lightingManager = EventTypeToPropagate >= platformDescriptor.LightingManagers.Length ? 
+                null : platformDescriptor.LightingManagers[EventTypeToPropagate];
 
             var propagationLength = lightingManager == null
                 ? 0

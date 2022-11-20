@@ -19,9 +19,9 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     [FormerlySerializedAs("rotationEffect")] public TrackLaneRingsRotationEffect RotationEffect;
 
     private bool zoomed;
-    public TrackLaneRing[] Rings { get; private set; }
+    public TrackLaneRing[] Rings { get; protected set; }
 
-    public void Start()
+    public virtual void Start()
     {
         Prefab.gameObject.SetActive(false);
         Rings = new TrackLaneRing[RingCount];

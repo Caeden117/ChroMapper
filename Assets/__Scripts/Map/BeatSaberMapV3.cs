@@ -24,8 +24,8 @@ public class BeatSaberMapV3 : BeatSaberMap
     public new List<JSONNode> Waypoints = new List<JSONNode>();
     public List<MapEventV3> BasicBeatmapEvents = new List<MapEventV3>();
     public List<ColorBoostEvent> ColorBoostBeatmapEvents = new List<ColorBoostEvent>();
-    public List<JSONNode> LightColorEventBoxGroups = new List<JSONNode>();
-    public List<JSONNode> LightRotationEventBoxGroups = new List<JSONNode>();
+    public List<BeatmapLightColorEvent> LightColorEventBoxGroups = new List<BeatmapLightColorEvent>();
+    public List<BeatmapLightRotationEvent> LightRotationEventBoxGroups = new List<BeatmapLightRotationEvent>();
     public Dictionary<string, JSONNode> BasicEventTypesWithKeywords = new Dictionary<string, JSONNode>(); // although idk what it is used for, save as a dict first
     public bool UseNormalEventsAsCompatibleEvents => Events.Any();
 
@@ -68,6 +68,34 @@ public class BeatSaberMapV3 : BeatSaberMap
 
             MainNode["version"] = Version;
             ParseBaseNoteToV3();
+
+            LightColorEventBoxGroups.Sort((lhs, rhs) =>
+            {
+                if (lhs.Time != rhs.Time) return lhs.Time.CompareTo(rhs.Time);
+                if (lhs.Group != rhs.Group) return lhs.Group.CompareTo(rhs.Group);
+                return lhs.GetHashCode().CompareTo(rhs.GetHashCode());
+            });
+            var mergedLightColorEventBoxGroups = MergeSplittedNotes(LightColorEventBoxGroups, 
+                (lhs, rhs) => Mathf.Approximately(lhs.Time, rhs.Time) && lhs.Group == rhs.Group,
+                (lhs, rhs) => {
+                    var ret = BeatmapObject.GenerateCopy(lhs);
+                    ret.EventBoxes.AddRange(new List<BeatmapLightColorEventBox>(rhs.EventBoxes));
+                    return ret;
+                });
+            LightRotationEventBoxGroups.Sort((lhs, rhs) =>
+            {
+                if (lhs.Time != rhs.Time) return lhs.Time.CompareTo(rhs.Time);
+                if (lhs.Group != rhs.Group) return lhs.Group.CompareTo(rhs.Group);
+                return lhs.GetHashCode().CompareTo(rhs.GetHashCode());
+            });
+            var mergedLightRotationEventBoxGroups = MergeSplittedNotes(LightRotationEventBoxGroups,
+                (lhs, rhs) => Mathf.Approximately(lhs.Time, rhs.Time) && lhs.Group == rhs.Group,
+                (lhs, rhs) => {
+                    var ret = BeatmapObject.GenerateCopy(lhs);
+                    ret.EventBoxes.AddRange(new List<BeatmapLightRotationEventBox>(rhs.EventBoxes));
+                    return ret;
+                });
+
             /// official nodes
             var bpmEvents = new JSONArray();
             foreach (var b in BpmEvents) bpmEvents.Add(b);
@@ -100,10 +128,10 @@ public class BeatSaberMapV3 : BeatSaberMap
             foreach (var c in ColorBoostBeatmapEvents) colorBoostBeatmapEvents.Add(c.ConvertToJson());
 
             var lightColorEventBoxGroups = new JSONArray();
-            foreach (var l in LightColorEventBoxGroups) lightColorEventBoxGroups.Add(l);
+            foreach (var l in mergedLightColorEventBoxGroups) lightColorEventBoxGroups.Add(l.ConvertToJson());
 
             var lightRotationEventBoxGroups = new JSONArray();
-            foreach (var l in LightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l);
+            foreach (var l in mergedLightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l.ConvertToJson());
 
             var basicEventTypesWithKeywords = new JSONObject();
             foreach (var k in BasicEventTypesWithKeywords.Keys) basicEventTypesWithKeywords[k] = BasicEventTypesWithKeywords[k];
@@ -168,8 +196,8 @@ public class BeatSaberMapV3 : BeatSaberMap
             var waypointsList = new List<JSONNode>();
             var basicBeatmapEventsList = new List<MapEventV3>();
             var colorBoostBeatmapEventsList = new List<ColorBoostEvent>();
-            var lightColorEventBoxGroupsList = new List<JSONNode>();
-            var lightRotationEventBoxGroupsList = new List<JSONNode>();
+            var lightColorEventBoxGroupsList = new List<BeatmapLightColorEvent>();
+            var lightRotationEventBoxGroupsList = new List<BeatmapLightRotationEvent>();
             var basicEventTypesWithKeywordsDict = new Dictionary<string, JSONNode>();
 
 
@@ -215,10 +243,12 @@ public class BeatSaberMapV3 : BeatSaberMap
                         foreach (JSONNode n in node) colorBoostBeatmapEventsList.Add(new ColorBoostEvent(n));
                         break;
                     case "lightColorEventBoxGroups":
-                        foreach (JSONNode n in node) lightColorEventBoxGroupsList.Add(n);
+                        foreach (JSONNode n in node) 
+                            lightColorEventBoxGroupsList.AddRange(BeatmapLightColorEvent.SplitEventBoxes(new BeatmapLightColorEvent(n)));
                         break;
                     case "lightRotationEventBoxGroups":
-                        foreach (JSONNode n in node) lightRotationEventBoxGroupsList.Add(n);
+                        foreach (JSONNode n in node) 
+                            lightRotationEventBoxGroupsList.AddRange(BeatmapLightRotationEvent.SplitEventBoxes(new BeatmapLightRotationEvent(n)));
                         break;
                     case "basicEventTypesWithKeywords":
                         foreach (var k in node.Keys)
@@ -326,5 +356,31 @@ public class BeatSaberMapV3 : BeatSaberMap
         Events.AddRange(ColorBoostBeatmapEvents.OfType<MapEvent>().ToList());
         Events.AddRange(RotationEvents.OfType<MapEvent>().ToList());
         Events.Sort((lhs, rhs) => { return lhs.Time.CompareTo(rhs.Time); });
+    }
+
+    /// <summary>
+    /// Merge an ordered list neighbor items based on the giving function.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <param name="sameFn"></param>
+    /// <param name="mergeFn"></param>
+    /// <returns></returns>
+    private List<T> MergeSplittedNotes<T>(List<T> list, Func<T, T, bool> sameFn, Func<T, T, T> mergeFn)
+    {
+        var ret = new List<T>();
+        for (int i = 0; i < list.Count;)
+        {
+            int j = i + 1;
+            var newObj = list[i];
+            while (j < list.Count && sameFn(newObj, list[j]))
+            {
+                newObj = mergeFn(newObj, list[j]);
+                ++j;
+            }
+            ret.Add(newObj);
+            i = j;
+        }
+        return ret;
     }
 }

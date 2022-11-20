@@ -25,7 +25,7 @@ public class LightsManager : MonoBehaviour
     public Dictionary<int, int> LightIDPlacementMapReverse;
     private int previousValue;
 
-    private IEnumerator Start()
+    protected IEnumerator Start()
     {
         yield return null;
         LoadOldLightOrder();
@@ -114,7 +114,7 @@ public class LightsManager : MonoBehaviour
         if (value < 0xff) previousValue = value;
     }
 
-    public void Boost(bool boost, Color a, Color b)
+    public virtual void Boost(bool boost, Color a, Color b)
     {
         // Off
         if (previousValue == 0) return;

@@ -4233,6 +4233,96 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Light V3 Placement"",
+            ""id"": ""255487cf-f07e-495c-93cb-4fd6eab85a86"",
+            ""actions"": [
+                {
+                    ""name"": ""Swap Color Rotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""94217a3f-4803-4f50-a9a3-000044daf8c4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Toggle UI"",
+                    ""type"": ""Button"",
+                    ""id"": ""ace4a9e0-471a-467c-8edb-bc897d9589ae"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""f8974627-6365-431a-9888-415f928651fb"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap Color Rotation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a1ae6d54-4591-4760-b99a-e1e389b2033c"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap Color Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""9d1defde-21ac-4543-ae4e-adb31306b365"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap Color Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""8ae3b4bc-cf64-43b7-9f13-38781a9a5be8"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c6074969-afd1-455a-82c4-699397e73082"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""dd15ce73-a2f1-43a1-b34f-b3bb7dfda668"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -4467,6 +4557,10 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Switch Version
         m_SwitchVersion = asset.FindActionMap("Switch Version", throwIfNotFound: true);
         m_SwitchVersion_SwitchingVersion = m_SwitchVersion.FindAction("SwitchingVersion", throwIfNotFound: true);
+        // Light V3 Placement
+        m_LightV3Placement = asset.FindActionMap("Light V3 Placement", throwIfNotFound: true);
+        m_LightV3Placement_SwapColorRotation = m_LightV3Placement.FindAction("Swap Color Rotation", throwIfNotFound: true);
+        m_LightV3Placement_ToggleUI = m_LightV3Placement.FindAction("Toggle UI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -6691,6 +6785,47 @@ public class @CMInput : IInputActionCollection, IDisposable
         }
     }
     public SwitchVersionActions @SwitchVersion => new SwitchVersionActions(this);
+
+    // Light V3 Placement
+    private readonly InputActionMap m_LightV3Placement;
+    private ILightV3PlacementActions m_LightV3PlacementActionsCallbackInterface;
+    private readonly InputAction m_LightV3Placement_SwapColorRotation;
+    private readonly InputAction m_LightV3Placement_ToggleUI;
+    public struct LightV3PlacementActions
+    {
+        private @CMInput m_Wrapper;
+        public LightV3PlacementActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SwapColorRotation => m_Wrapper.m_LightV3Placement_SwapColorRotation;
+        public InputAction @ToggleUI => m_Wrapper.m_LightV3Placement_ToggleUI;
+        public InputActionMap Get() { return m_Wrapper.m_LightV3Placement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(LightV3PlacementActions set) { return set.Get(); }
+        public void SetCallbacks(ILightV3PlacementActions instance)
+        {
+            if (m_Wrapper.m_LightV3PlacementActionsCallbackInterface != null)
+            {
+                @SwapColorRotation.started -= m_Wrapper.m_LightV3PlacementActionsCallbackInterface.OnSwapColorRotation;
+                @SwapColorRotation.performed -= m_Wrapper.m_LightV3PlacementActionsCallbackInterface.OnSwapColorRotation;
+                @SwapColorRotation.canceled -= m_Wrapper.m_LightV3PlacementActionsCallbackInterface.OnSwapColorRotation;
+                @ToggleUI.started -= m_Wrapper.m_LightV3PlacementActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.performed -= m_Wrapper.m_LightV3PlacementActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.canceled -= m_Wrapper.m_LightV3PlacementActionsCallbackInterface.OnToggleUI;
+            }
+            m_Wrapper.m_LightV3PlacementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SwapColorRotation.started += instance.OnSwapColorRotation;
+                @SwapColorRotation.performed += instance.OnSwapColorRotation;
+                @SwapColorRotation.canceled += instance.OnSwapColorRotation;
+                @ToggleUI.started += instance.OnToggleUI;
+                @ToggleUI.performed += instance.OnToggleUI;
+                @ToggleUI.canceled += instance.OnToggleUI;
+            }
+        }
+    }
+    public LightV3PlacementActions @LightV3Placement => new LightV3PlacementActions(this);
     private int m_ChroMapperDefaultSchemeIndex = -1;
     public InputControlScheme ChroMapperDefaultScheme
     {
@@ -6966,5 +7101,10 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface ISwitchVersionActions
     {
         void OnSwitchingVersion(InputAction.CallbackContext context);
+    }
+    public interface ILightV3PlacementActions
+    {
+        void OnSwapColorRotation(InputAction.CallbackContext context);
+        void OnToggleUI(InputAction.CallbackContext context);
     }
 }

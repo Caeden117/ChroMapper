@@ -254,6 +254,15 @@ public class MirrorSelection : MonoBehaviour
                         ? BeatmapNote.NoteTypeB
                         : BeatmapNote.NoteTypeA;
                 }
+                else if (con is BeatmapLightColorEvent colorEvent)
+                {
+                    foreach (var data in colorEvent.EventBoxes[0].EventDatas)
+                    {
+                        // white / blue -> red
+                        // red -> blue
+                        data.Color = data.Color == 0 ? 1 : 0;
+                    }
+                }
             }
 
             allActions.Add(new BeatmapObjectModifiedAction(con, con, original, "e", true));

@@ -28,6 +28,8 @@ public class MapLoader : MonoBehaviour
                 Events = new List<MapEvent>(map.Events),
                 BpmChanges = new List<BeatmapBPMChange>(map.BpmChanges),
                 ColorBoostBeatmapEvents = new List<ColorBoostEvent>((map as BeatSaberMapV3).ColorBoostBeatmapEvents),
+                LightColorEventBoxGroups = new List<BeatmapLightColorEvent>((map as BeatSaberMapV3).LightColorEventBoxGroups),
+                LightRotationEventBoxGroups = new List<BeatmapLightRotationEvent>((map as BeatSaberMapV3).LightRotationEventBoxGroups),
                 CustomEvents = new List<BeatmapCustomEvent>(map.CustomEvents)
             };
             this.map = copy;
@@ -62,6 +64,8 @@ public class MapLoader : MonoBehaviour
         {
             yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Arcs));
             yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).Chains));
+            yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).LightColorEventBoxGroups));
+            yield return StartCoroutine(LoadObjects((map as BeatSaberMapV3).LightRotationEventBoxGroups));
         }
 
         PersistentUI.Instance.LevelLoadSliderLabel.text = "Finishing up...";
