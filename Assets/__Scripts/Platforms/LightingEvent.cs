@@ -21,7 +21,7 @@ public class LightingEvent : MonoBehaviour
     private Color currentColor = Color.white;
 
     private MaterialPropertyBlock lightPropertyBlock;
-    private Renderer[] lightRenderers;
+    private Renderer lightRenderer;
     private float targetAlpha;
 
     private Color targetColor = Color.white;
@@ -34,25 +34,19 @@ public class LightingEvent : MonoBehaviour
 
     private Func<float, float> easing = Easing.ByName["easeLinear"];
 
-    public int LightIdx = -1; // each light in the group has its unique LightIdx. This is used in LightsManagerV3
-    private int currentNoteIdx = -1;
-    public int TargetColorId = 0;
-
     private void Start()
     {
         lightPropertyBlock = new MaterialPropertyBlock();
-        lightRenderers = GetComponentsInChildren<Renderer>();
+        lightRenderer = GetComponentInChildren<Renderer>();
         boostSprite = GetComponent<BoostSprite>();
 
-        foreach (var lightRenderer in lightRenderers)
-        {
-            if (lightRenderer is SpriteRenderer spriteRenderer)
-            {
-                if (boostSprite != null)
-                    boostSprite.Setup(spriteRenderer.sprite);
 
-                lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
-            }
+        if (lightRenderer is SpriteRenderer spriteRenderer)
+        {
+            if (boostSprite != null)
+                boostSprite.Setup(spriteRenderer.sprite);
+
+            lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
         }
 
         if (OverrideLightGroup)
@@ -78,8 +72,7 @@ public class LightingEvent : MonoBehaviour
             lightPropertyBlock.SetColor("_BaseColor", Color.white);
             lightPropertyBlock.SetColor("_EmissionColor", color);
             SetEmission(true);
-            foreach (var lightRenderer in lightRenderers)
-                lightRenderer.SetPropertyBlock(lightPropertyBlock);
+            lightRenderer.SetPropertyBlock(lightPropertyBlock);
             return;
         }
 
@@ -92,8 +85,7 @@ public class LightingEvent : MonoBehaviour
         {
             lightPropertyBlock.SetColor("_EmissionColor", color);
             lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
-            foreach (var lightRenderer in lightRenderers)
-                lightRenderer.SetPropertyBlock(lightPropertyBlock);
+            lightRenderer.SetPropertyBlock(lightPropertyBlock);
         }
     }
 
@@ -107,8 +99,6 @@ public class LightingEvent : MonoBehaviour
         colorTime = 0;
         if (timeToTransition == 0) currentColor = target;
     }
-
-    public void SetTargetColor(Color target) => targetColor = target;
 
     public void UpdateTargetAlpha(float target, float timeToTransition)
     {
@@ -144,26 +134,7 @@ public class LightingEvent : MonoBehaviour
     {
         if (isLightEnabled != enabled)
         {
-            isLightEnabled = enabled;
-            foreach (var lightRenderer in lightRenderers)
-                lightRenderer.enabled = isLightEnabled = enabled;
+            lightRenderer.enabled = isLightEnabled = enabled;
         }
-    }
-
-
-    public bool SetNoteIndex(int noteIdx, bool force = false)
-    {
-        if (!force && noteIdx < currentNoteIdx)
-        {
-            return false;
-        }
-        currentNoteIdx = noteIdx;
-        return true;
-    }
-
-    public void SetCurrentTimeRatio(float t)
-    {
-        colorTime = t * timeToTransitionColor;
-        alphaTime = t * timeToTransitionAlpha;
     }
 }

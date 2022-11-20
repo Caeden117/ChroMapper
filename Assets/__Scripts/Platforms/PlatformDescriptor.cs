@@ -39,7 +39,7 @@ public class PlatformDescriptor : MonoBehaviour
     private readonly Dictionary<int, List<PlatformEventHandler>> platformEventHandlers =
         new Dictionary<int, List<PlatformEventHandler>>();
 
-    protected AudioTimeSyncController Atsc;
+    private AudioTimeSyncController atsc;
 
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
@@ -49,7 +49,7 @@ public class PlatformDescriptor : MonoBehaviour
 
     public bool ColorBoost { get; private set; }
 
-    protected void Start()
+    private void Start()
     {
         var eventHandlers = GetComponentsInChildren<PlatformEventHandler>();
 
@@ -71,7 +71,7 @@ public class PlatformDescriptor : MonoBehaviour
         UpdateShinyMaterialSettings();
     }
 
-    protected void OnDestroy()
+    private void OnDestroy()
     {
         if (callbackController != null) callbackController.EventPassedThreshold -= EventPassed;
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
@@ -95,7 +95,7 @@ public class PlatformDescriptor : MonoBehaviour
     {
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
-        Atsc = rotationCallback.Atsc;
+        atsc = rotationCallback.Atsc;
         if (RotationController != null)
         {
             RotationController.RotationCallback = rotationCallback;
@@ -133,7 +133,7 @@ public class PlatformDescriptor : MonoBehaviour
         foreach (var go in DisablableObjects) go.SetActive(!go.activeInHierarchy);
     }
 
-    public virtual void KillLights()
+    public void KillLights()
     {
         foreach (var manager in LightingManagers)
         {
@@ -235,15 +235,6 @@ public class PlatformDescriptor : MonoBehaviour
                     manager.Boost(ColorBoost, ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
                         ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor);
                 }
-                if (this is PlatformDescriptorV3 descriptorV3)
-                {
-                    foreach(var manager in descriptorV3.LightsManagersV3)
-                    {
-                        if (manager == null) continue;
-                        manager.Boost(ColorBoost, ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
-                            ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor);
-                    }
-                }
 
                 break;
             default:
@@ -252,7 +243,7 @@ public class PlatformDescriptor : MonoBehaviour
                 break;
         }
 
-        if (Atsc != null && Atsc.IsPlaying && platformEventHandlers.TryGetValue(e.Type, out var eventHandlers))
+        if (atsc != null && atsc.IsPlaying && platformEventHandlers.TryGetValue(e.Type, out var eventHandlers))
         {
             foreach (var handler in eventHandlers)
                 handler.OnEventTrigger(e.Type, e);
@@ -281,7 +272,7 @@ public class PlatformDescriptor : MonoBehaviour
         if (chromaGradients.ContainsKey(group))
         {
             var gradientEvent = chromaGradients[group].GradientEvent;
-            if (Atsc.CurrentBeat >= gradientEvent.LightGradient.Duration + gradientEvent.Time ||
+            if (atsc.CurrentBeat >= gradientEvent.LightGradient.Duration + gradientEvent.Time ||
                 !Settings.Instance.EmulateChromaLite)
             {
                 StopCoroutine(chromaGradients[group].Routine);
@@ -454,7 +445,7 @@ public class PlatformDescriptor : MonoBehaviour
         if (TryGetNextTransitionNote(e, out var transition))
         {
             var targetAlpha = transition.FloatValue;
-            var transitionTime = Atsc.GetSecondsFromBeat(transition.Time - e.Time);
+            var transitionTime = atsc.GetSecondsFromBeat(transition.Time - e.Time);
             var targetColor = InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);
@@ -468,7 +459,7 @@ public class PlatformDescriptor : MonoBehaviour
         var easingFunc = Easing.ByName[gradient.EasingType];
 
         float progress;
-        while ((progress = (Atsc.CurrentBeat - gradientEvent.Time) / gradient.Duration) < 1)
+        while ((progress = (atsc.CurrentBeat - gradientEvent.Time) / gradient.Duration) < 1)
         {
             var lerped = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             if (!SoloAnEventType || gradientEvent.Type == SoloEventType)

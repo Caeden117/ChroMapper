@@ -778,10 +778,6 @@ MonoBehaviour:
     m_Localized: Objects found outside map. Do you want to remove them?
     m_Metadata:
       m_Items: []
-  - m_Id: 140000667590811648
-    m_Localized: Add V3 lights
-    m_Metadata:
-      m_Items: []
   references:
     version: 1
     00000000:

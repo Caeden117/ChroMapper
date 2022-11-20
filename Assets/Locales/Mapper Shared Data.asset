@@ -667,10 +667,6 @@ MonoBehaviour:
     m_Key: save.objects.outside
     m_Metadata:
       m_Items: []
-  - m_Id: 140000667590811648
-    m_Key: bar.v3lights.tooltip
-    m_Metadata:
-      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

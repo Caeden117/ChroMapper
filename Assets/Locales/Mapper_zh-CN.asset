@@ -541,7 +541,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "\u5237\u65B0\u5BF9\u8C61\u4EE5\u53CA\u5B83\u4EEC\u5982\u4F55\u53D7\u5230\u65CB\u8F6C\u7684\u5F71\u54CD\u3002\n\n\u53EF\u80FD\u4FEE\u590D\n\u4EFB\u4F55\u5E26\u6709\u65CB\u8F6C\u4E8B\u4EF6\u7684\u672A\u4FEE\u590D\u8FB9\u7F18\u60C5\u51B5\u3002"
+    m_Localized: "\u5237\u65B0\u5BF9\u8C61\u4EE5\u53CA\u5B83\u4EEC\u5982\u4F55\u53D7\u5230\u65CB\u8F6C\u7684\u5F71\u54CD\u3002\n\n\u53EF\u80FD\u4FEE\u590D\n
+      \u4EFB\u4F55\u5E26\u6709\u65CB\u8F6C\u4E8B\u4EF6\u7684\u672A\u4FEE\u590D\u8FB9\u7F18\u60C5\u51B5\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 28
@@ -691,10 +692,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 68889912282476544
     m_Localized: Bookmark Color
-    m_Metadata:
-      m_Items: []
-  - m_Id: 140000667590811648
-    m_Localized: 
     m_Metadata:
       m_Items: []
   references:

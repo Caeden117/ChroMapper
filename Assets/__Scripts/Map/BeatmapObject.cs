@@ -21,9 +21,7 @@ public abstract class BeatmapObject
         CustomEvent,
         BpmChange,
         Arc, // introduced in v3
-        Chain, // introduced in v3
-        LightColorEvent, // v3 light system(LightColorEvent)
-        LightRotationEvent, // v3 light system(LightRotationEvent) 
+        Chain // introduced in v3
     }
 
     public const string BeatmapObjectV3CustomDataKey = "customData";
