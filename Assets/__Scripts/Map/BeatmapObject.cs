@@ -24,6 +24,7 @@ public abstract class BeatmapObject
         Chain, // introduced in v3
         LightColorEvent, // v3 light system(LightColorEvent)
         LightRotationEvent, // v3 light system(LightRotationEvent) 
+        LightTranslationEvent, // v3 light system(LightTranslationEvent)
     }
 
     public const string BeatmapObjectV3CustomDataKey = "customData";
