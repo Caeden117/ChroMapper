@@ -11,6 +11,7 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     [SerializeField] private RectTransform lightV3GenUIRect;
     [SerializeField] private GameObject colorPanel;
     [SerializeField] private GameObject rotationPanel;
+    [SerializeField] private RefreshLayoutGroup refresh;
     public enum LightV3UIPanel
     {
         LightColorPanel,
@@ -24,6 +25,7 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     private void Start()
     {
         OnToggleUIPanelSwitch += SwitchColorRotation;
+        refresh = GetComponent<RefreshLayoutGroup>();
     }
 
     private void OnDestroy()
@@ -68,11 +70,14 @@ public class LightV3GeneratorAppearance : MonoBehaviour
                 break;
         }
         OnToggleUIPanelSwitch.Invoke(currentPanel);
+        
     }
 
     private void SwitchColorRotation(LightV3UIPanel currentPanel)
     {
         colorPanel.SetActive(currentPanel == LightV3UIPanel.LightColorPanel);
         rotationPanel.SetActive(currentPanel == LightV3UIPanel.LightRotationPanel);
+
+        refresh.TriggerRefresh();
     }
 }
