@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-public class PlatformDescriptorV3 : PlatformDescriptor 
+public class PlatformDescriptorV3 : PlatformDescriptor
 {
     [Header("V3 Configurations")]
     [Tooltip("V3 LightsMangaers, which supports lightColorEvent/LightRotationEvent")]
@@ -108,7 +108,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     {
         if (reverse) list = list.Reverse();
         if (step == 0) return list.Where((x, i) => i == start);
-        else return list.Where((x, i) => i >= start && (i - start)  % step == 0);
+        else return list.Where((x, i) => i >= start && (i - start) % step == 0);
     }
 
     public static int Intervals<T>(IEnumerable<T> list)
@@ -130,7 +130,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingLights;
         var eb = e.EventBoxes[0];
 
-        var filteredLights = eb.Filter.FilterType == 1 
+        var filteredLights = eb.Filter.FilterType == 1
             ? Partition(allLights, eb.Filter.Section, eb.Filter.Partition, eb.Filter.Reverse == 1)
             : Range(allLights, eb.Filter.Partition, eb.Filter.Section, eb.Filter.Reverse == 1);
         if (filteredLights.Count() == 0) return;
@@ -181,7 +181,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         light.UpdateTargetAlpha(brightness, timeToTransition);
     }
 
-    private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha, 
+    private IEnumerator LightColorRoutine(IEnumerable<LightingEvent> lights, float deltaTime, float deltaAlpha,
         int group, float baseTime, int noteIdx, BeatmapLightColorEventData data)
     {
         var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
@@ -205,13 +205,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 if (nextData.TransitionType == 1)
                 {
                     var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - data.Time - baseTime - extraTime);
-                    /*
-                    light.TargetColorId = nextData.Color;
-                    var nextColor = InferColor(nextData.Color);
-                    var nextAlpha = nextData.Brightness;
-                    light.UpdateTargetColor(nextColor.Multiply(LightsManager.HDRIntensity), timeToTransition);
-                    light.UpdateTargetAlpha(nextAlpha, timeToTransition);
-                    */
                     SetLightColorFromData(light, nextData, timeToTransition);
                 }
             }
@@ -284,12 +277,6 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                 if (nextData.Transition == 0)
                 {
                     var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
-                    /*
-                    axisData.UpdateRotation(nextData.RotationValue, timeToTransition);
-                    axisData.SetEaseFunction(nextData.EaseType);
-                    axisData.SetLoop(nextData.AdditionalLoop);
-                    axisData.SetDirection(nextData.RotationDirection);
-                    */
                     SetLightRotationFromData(light, nextData, timeToTransition, axis);
                 }
             }

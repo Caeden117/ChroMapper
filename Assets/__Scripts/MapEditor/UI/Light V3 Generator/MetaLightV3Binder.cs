@@ -63,14 +63,6 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
         if (SelectionController.SelectedObjects.Count > 0)
         {
             DumpGroup(SelectionController.SelectedObjects.OfType<T>());
-            /*
-            var obj = SelectionController.SelectedObjects.First();
-            if (obj is T o)
-            {
-                selectingData = o;
-                Dump(o);
-            }
-            */
         }
         else if (SelectionController.SelectedObjects.Count == 0)
         {

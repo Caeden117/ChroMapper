@@ -64,30 +64,6 @@ public class LightV3Buttons : MonoBehaviour
     }
     public void Apply()
     {
-        /*
-        if (SelectionController.SelectedObjects.Count == 1)
-        {
-            var obj = SelectionController.SelectedObjects.First();
-            if (obj is BeatmapLightColorEvent color)
-            {
-                colorBinder.Load(color);
-                if (color.HasAttachedContainer)
-                {
-                    var col = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
-                    col.RefreshPool(true);
-                }
-            }
-            if (obj is BeatmapLightRotationEvent rot)
-            {
-                rotationBinder.Load(rot);
-                if (rot.HasAttachedContainer)
-                {
-                    var col = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
-                    col.RefreshPool(true);
-                }
-            }
-        }
-        */
         if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel)
         {
             GroupApply<BeatmapLightColorEvent, LightColorEventsContainer>(colorBinder, BeatmapObject.ObjectType.LightColorEvent);
@@ -100,9 +76,9 @@ public class LightV3Buttons : MonoBehaviour
 
     private void GroupApply<T, TBocc>(MetaLightV3Binder<T> binder, BeatmapObject.ObjectType objectType)
         where T : BeatmapObject
-        where TBocc: BeatmapObjectContainerCollection
+        where TBocc : BeatmapObjectContainerCollection
     {
-        var allActions = new List<BeatmapAction>(); 
+        var allActions = new List<BeatmapAction>();
         foreach (var obj in SelectionController.SelectedObjects.OfType<T>())
         {
             var original = BeatmapObject.GenerateCopy(obj);
@@ -118,7 +94,7 @@ public class LightV3Buttons : MonoBehaviour
     {
         createTemplatedialogBox.Open();
     }
-    
+
     private void AddTemplate(string name)
     {
         if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel)
