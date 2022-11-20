@@ -195,17 +195,41 @@ public class EventAppearanceSO : ScriptableObject
 
     private string GenerateFilterString(BeatmapLightEventFilter filter)
     {
+        var ret = "";
+        if (filter.Chunk != 0)
+        {
+            ret += $"{filter.Chunk}C";
+        }
+
         switch (filter.FilterType)
         {
             case 1: // fraction like text, but default will be ignored for better viewing
-                if (filter.Section == 0 && filter.Partition == 1 && filter.Reverse == 0) return "";
-                return (filter.Reverse != 0 ? "-" : "") + (filter.Section + 1) + "/" + filter.Partition;
+                if (filter.Section == 0 && filter.Partition == 1 && filter.Reverse == 0) ret += "";
+                ret += (filter.Reverse != 0 ? "-" : "") + (filter.Section + 1) + "/" + filter.Partition;
+                break;
             case 2: // python indexing like text
-                return filter.Partition + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Section;
+                ret += filter.Partition + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Section;
+                break;
             default:
                 Debug.LogError("Unexpected filter type " + filter.FilterType);
-                return "";
+                ret += "";
+                break;
         }
+
+        if (filter.RandomType != 0 || filter.Limit != 0) ret += "\n"; 
+
+        if (filter.RandomType != 0)
+        {
+            ret += filter.RandomType == 1 ? "RS" : "R";
+        }
+
+        if (filter.Limit != 0)
+        {
+            ret += $"{filter.Limit}%L";
+            if (filter.TimeLimited) ret += "T";
+            if (filter.DataLimited) ret += "D";
+        }
+        return ret;
     }
 
     private string GenerateDistributionString(float w, int d, bool actuallyAffect = true)
