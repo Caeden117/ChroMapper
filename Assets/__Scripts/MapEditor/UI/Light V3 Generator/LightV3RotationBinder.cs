@@ -17,6 +17,9 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         InputDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].AddedBeat.ToString());
         InputDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].AdditionalLoop.ToString());
         InputDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].RotationValue.ToString());
+        InputDumpFn.Add(x => x.EventBoxes[0].Filter.Chunk.ToString());
+        InputDumpFn.Add(x => x.EventBoxes[0].Filter.RandomSeed.ToString());
+        InputDumpFn.Add(x => x.EventBoxes[0].Filter.Limit.ToString());
 
         DropdownDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType - 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].DistributionType - 1);
@@ -25,10 +28,13 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         DropdownDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].Transition);
         DropdownDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].EaseType + 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].RotationDirection);
+        DropdownDumpFn.Add(x => x.EventBoxes[0].Filter.RandomType);
 
         ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.Reverse == 1);
         ToggleDumpFn.Add(x => x.EventBoxes[0].RotationAffectFirst == 1);
         ToggleDumpFn.Add(x => x.EventBoxes[0].ReverseRotation == 1);
+        ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.TimeLimited);
+        ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.DataLimited);
 
         TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Step");
         TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Start");
@@ -41,6 +47,9 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         InputLoadFn.Add((x, s) => x.EventBoxes[0].EventDatas[DataIdx].AddedBeat = float.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].EventDatas[DataIdx].AdditionalLoop = int.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].EventDatas[DataIdx].RotationValue = float.Parse(s));
+        InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Chunk = int.Parse(s));
+        InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.RandomSeed = int.Parse(s));
+        InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Limit = int.Parse(s));
 
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Filter.FilterType = i + 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].DistributionType = i + 1);
@@ -49,10 +58,13 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].Transition = i);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].EaseType = i - 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].RotationDirection = i);
+        DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Filter.RandomType = i);
 
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].RotationAffectFirst = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].ReverseRotation = b ? 1 : 0);
+        ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.TimeLimited = b);
+        ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.DataLimited = b);
 
         for (int i = 0; i < InputFields.Length; ++i)
         {

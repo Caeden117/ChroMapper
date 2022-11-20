@@ -16,8 +16,24 @@ public class BeatmapLightEventFilter: BeatmapObject
     public int Limit; // l
     public int AlsoLimit; // d
 
-    public bool TimeLimited => FilterType == 1 && (AlsoLimit & 0x1) != 0;
-    public bool DataLimited => FilterType == 1 && (AlsoLimit & 0x2) != 0;
+    public bool TimeLimited
+    {
+        get => FilterType == 1 && (AlsoLimit & 0x1) != 0;
+        set
+        {
+            AlsoLimit |= 0x1;
+            if (!value) AlsoLimit ^= 0x1;
+        }
+    }
+    public bool DataLimited 
+    { 
+        get => FilterType == 1 && (AlsoLimit & 0x2) != 0; 
+        set 
+        {
+            AlsoLimit |= 0x2;
+            if (!value) AlsoLimit ^= 0x2;
+        } 
+    }
 
     public BeatmapLightEventFilter(JSONNode node)
     {
