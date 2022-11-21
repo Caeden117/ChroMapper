@@ -61,15 +61,7 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
         RealDespawnCallbackController.ObjectPassedThreshold += DespawnCallback;
     }
 
-    private void DespawnCallback(bool initial, int index, BeatmapObject objectData)
-    {
-        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
-    }
-    private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
-    private void SpawnCallback(bool initial, int index, BeatmapObject objectData)
-    {
-        if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
-    }
+
 
     internal override void UnsubscribeToCallbacks()
     {
@@ -121,13 +113,6 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
         }
     }
 
-    public void OnPlayToggle(bool isPlaying)
-    {
-        if (isPlaying)
-        {
-            LinkAllLightEventDatas();
-        }
-    }
     private void FlipAllContainers(LightV3GeneratorAppearance.LightV3UIPanel currentPanel)
     {
         containersUP = currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel;

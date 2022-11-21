@@ -82,6 +82,16 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
 
     }
+
+    protected void DespawnCallback(bool initial, int index, BeatmapObject objectData)
+    {
+        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
+    }
+    protected void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
+    protected void SpawnCallback(bool initial, int index, BeatmapObject objectData)
+    {
+        if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
+    }
     public void OnPlayToggle(bool isPlaying)
     {
         if (isPlaying)
