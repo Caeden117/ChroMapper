@@ -99,6 +99,15 @@ public abstract class BeatmapObject
             case BeatmapArc arc:
                 objectData = new BeatmapArc(arc) as T;
                 break;
+            case BeatmapLightColorEventData ebd:
+                objectData = new BeatmapLightColorEventData(ebd.Time, ebd.TransitionType, ebd.Color, ebd.Brightness, ebd.FlickerFrequency) as T;
+                break;
+            case BeatmapLightRotationEventData ebd:
+                objectData = new BeatmapLightRotationEventData(ebd.Time, ebd.Transition, ebd.EaseType, ebd.AdditionalLoop, ebd.RotationValue, ebd.RotationDirection) as T;
+                break;
+            case BeatmapLightTranslationEventData ebd:
+                objectData = new BeatmapLightTranslationEventData(ebd.Time, ebd.UsePrevious, ebd.EaseType, ebd.TranslateValue) as T;
+                break;
             default:
                 objectData =
                     Activator.CreateInstance(originalData.GetType(), new object[] { originalData.ConvertToJson() }) as T;
