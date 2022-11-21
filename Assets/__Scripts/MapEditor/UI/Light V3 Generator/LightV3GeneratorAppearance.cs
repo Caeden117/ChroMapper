@@ -73,6 +73,27 @@ public class LightV3GeneratorAppearance : MonoBehaviour
         
     }
 
+    public float GetContainerYOffset(LightV3UIPanel requestPanel)
+    {
+        if (currentPanel == LightV3UIPanel.LightColorPanel)
+        {
+            switch (requestPanel)
+            {
+                case LightV3UIPanel.LightRotationPanel:
+                    return 0;
+            }
+        }
+        else if (currentPanel == LightV3UIPanel.LightRotationPanel)
+        {
+            switch (requestPanel)
+            {
+                case LightV3UIPanel.LightColorPanel:
+                    return 0;
+            }
+        }
+        return 0;
+    }
+
     private void SwitchColorRotation(LightV3UIPanel currentPanel)
     {
         colorPanel.SetActive(currentPanel == LightV3UIPanel.LightColorPanel);

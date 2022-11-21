@@ -12,7 +12,6 @@ public class LightRotationEventsContainer : LightEventsContainerCollectionBase<
     RotatingEvent
     >
 {
-    [SerializeField] private LightV3GeneratorAppearance uiGenerator;
     public LightRotationEventCallbackController RealSpawnCallbackController;
     public LightRotationEventCallbackController RealDespawnCallbackController;
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightRotationEvent;
@@ -49,11 +48,11 @@ public class LightRotationEventsContainer : LightEventsContainerCollectionBase<
 
     protected override StaticGraphEnumerator GraphEnumerator => rotationGraphEnumerator;
 
+    protected override LightV3GeneratorAppearance.LightV3UIPanel ThisUIPannel => LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel;
 
     internal override void SubscribeToCallbacks()
     {
         base.SubscribeToCallbacks();
-        uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
         RealSpawnCallbackController.ObjectPassedThreshold += SpawnCallback;
         RealSpawnCallbackController.RecursiveObjectCheckFinished += RecursiveCheckFinished;
         RealDespawnCallbackController.ObjectPassedThreshold += DespawnCallback;
@@ -62,19 +61,11 @@ public class LightRotationEventsContainer : LightEventsContainerCollectionBase<
     internal override void UnsubscribeToCallbacks()
     {
         base.SubscribeToCallbacks();
-        uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
         RealSpawnCallbackController.ObjectPassedThreshold -= SpawnCallback;
         RealSpawnCallbackController.RecursiveObjectCheckFinished -= RecursiveCheckFinished;
         RealDespawnCallbackController.ObjectPassedThreshold -= DespawnCallback;
     }
 
-
-
-    private void FlipAllContainers(LightV3GeneratorAppearance.LightV3UIPanel currentPanel)
-    {
-        containersUP = currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel;
-        RefreshPool(true);
-    }
 
     protected override List<RotatingEvent> GetAllLights(int laneIdx) => platformDescriptor.LightsManagersV3[laneIdx].ControllingRotations;
 }

@@ -17,9 +17,12 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] internal EventsContainer eventsContainer;
-    internal bool containersUP;
+    [SerializeField] internal bool containersUP;
+    [SerializeField] private LightV3GeneratorAppearance uiGenerator;
 
     protected Dictionary<(int, int, int), List<TEbd>> NextEventDict = new Dictionary<(int, int, int), List<TEbd>>();
+
+    protected abstract LightV3GeneratorAppearance.LightV3UIPanel ThisUIPannel { get; }
 
     protected abstract class StaticGraphEnumerator
     {
@@ -49,6 +52,12 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
     }
     protected abstract StaticGraphEnumerator GraphEnumerator { get; }
 
+    internal float GetContainerYOffset()
+    {
+        if (containersUP) return 0;
+        return uiGenerator.GetContainerYOffset(ThisUIPannel);
+    }
+
     protected abstract List<TLightEvent> GetAllLights(int laneIdx);
 
     protected virtual void Start() => LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
@@ -74,13 +83,19 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
     internal override void SubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
-
+        uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
     }
 
     internal override void UnsubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
+    }
 
+    private void FlipAllContainers(LightV3GeneratorAppearance.LightV3UIPanel currentPanel)
+    {
+        containersUP = currentPanel == ThisUIPannel;
+        RefreshPool(true);
     }
 
     protected void DespawnCallback(bool initial, int index, BeatmapObject objectData)

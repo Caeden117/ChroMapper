@@ -17,7 +17,6 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
 
     [SerializeField] private LightColorEventPlacement lightColorEventPlacement;
     [SerializeField] private GameObject label;
-    [SerializeField] private LightV3GeneratorAppearance uiGenerator;
     public LightColorEventCallbackController RealSpawnCallbackController;
     public LightColorEventCallbackController RealDespawnCallbackController;
 
@@ -51,11 +50,11 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
     private LightStaticGraphEnumerator lightGraphEnumerator = new LightStaticGraphEnumerator();
     protected override StaticGraphEnumerator GraphEnumerator => lightGraphEnumerator;
 
+    protected override LightV3GeneratorAppearance.LightV3UIPanel ThisUIPannel => LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel;
 
     internal override void SubscribeToCallbacks()
     {
         base.SubscribeToCallbacks();
-        uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
         RealSpawnCallbackController.ObjectPassedThreshold += SpawnCallback;
         RealSpawnCallbackController.RecursiveObjectCheckFinished += RecursiveCheckFinished;
         RealDespawnCallbackController.ObjectPassedThreshold += DespawnCallback;
@@ -66,7 +65,6 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
     internal override void UnsubscribeToCallbacks()
     {
         base.SubscribeToCallbacks();
-        uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
         RealSpawnCallbackController.ObjectPassedThreshold -= SpawnCallback;
         RealSpawnCallbackController.RecursiveObjectCheckFinished -= RecursiveCheckFinished;
         RealDespawnCallbackController.ObjectPassedThreshold -= DespawnCallback;
@@ -113,11 +111,6 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
         }
     }
 
-    private void FlipAllContainers(LightV3GeneratorAppearance.LightV3UIPanel currentPanel)
-    {
-        containersUP = currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel;
-        RefreshPool(true);
-    }
 
     protected override List<LightingEvent> GetAllLights(int laneIdx) => platformDescriptor.LightsManagersV3[laneIdx].ControllingLights;
 }
