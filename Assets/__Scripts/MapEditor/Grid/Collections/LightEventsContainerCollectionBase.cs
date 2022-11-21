@@ -25,6 +25,7 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
     {
         protected TEbd EventData;
         public abstract IEnumerable<int> AdditonalField();
+        public abstract bool AdditonalFieldMatched(int additional, TEb LightEventBox);
         public abstract void DeltaScaleByFilterLimit(
             IEnumerable<TLightEvent> all, IEnumerable<IEnumerable<TLightEvent>> filtered, BeatmapLightEventFilter filter, ref float deltaTime);
         public abstract void InitDelta(TEb lightEventBox, IEnumerable<IEnumerable<TLightEvent>> filteredLightChunks);
@@ -78,6 +79,7 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
                 float baseTime = lightEvent.Time;
                 foreach (var lightEventBox in lightEvent.EventBoxes)
                 {
+                    if (!GraphEnumerator.AdditonalFieldMatched(additonalField, lightEventBox)) continue;
                     var filteredLightChunks = lightEventBox.Filter.Filter(lights);
                     GraphEnumerator.InitDelta(lightEventBox, filteredLightChunks);
                     // float deltaAlpha = lightEventBox.BrightnessDistribution;
@@ -101,7 +103,7 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
                                 if (!NextEventDict.ContainsKey(dictKey))
                                     NextEventDict[dictKey] = new List<TEbd>();
 
-                                thisData.Time = baseTime + extraTime + lightEvent.Time;
+                                thisData.Time = baseTime + extraTime + lightEventData.Time;
 
                                 while (NextEventDict[dictKey].Count > 0 && NextEventDict[dictKey].Last().Time > thisData.Time + 1e-3)
                                 {

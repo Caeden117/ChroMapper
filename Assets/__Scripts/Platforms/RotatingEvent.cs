@@ -105,7 +105,7 @@ public class RotatingEventData
 /// <summary>
 /// Although there are <see cref="TrackLaneRing"/> and <see cref="RotatingLights"/>, they could not perfectly meet v3 rotation needs.
 /// </summary>
-public class RotatingEvent : MonoBehaviour
+public class RotatingEvent : MonoBehaviour, ILightEventV3
 {
 
     internal LightsManagerV3 lightsManager;
@@ -149,5 +149,7 @@ public class RotatingEvent : MonoBehaviour
         YData.SetNoteIndex(-1, true);
         ZData.SetNoteIndex(-1, true);
     }
+
+    public int GetIndex() => RotationIdx;
 }
 

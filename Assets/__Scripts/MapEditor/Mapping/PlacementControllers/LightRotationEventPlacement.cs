@@ -44,7 +44,7 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
     public void UpdateAppearance()
     {
         if (instantiatedContainer is null) RefreshVisuals();
-        instantiatedContainer.RotationEventData = queuedData;
+        instantiatedContainer.LightEventData = queuedData;
         eventAppearanceSO.SetLightRotationEventAppearance(instantiatedContainer, 0, false);
     }
 

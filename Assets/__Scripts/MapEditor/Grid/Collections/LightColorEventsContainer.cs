@@ -30,6 +30,7 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
     {
         private float deltaAlpha;
         public override IEnumerable<int> AdditonalField() => new int[] { 0 };
+        public override bool AdditonalFieldMatched(int additional, BeatmapLightColorEventBox LightEventBox) => true;
         public override void DeltaScaleByFilterLimit(
             IEnumerable<LightingEvent> all, IEnumerable<IEnumerable<LightingEvent>> filtered, BeatmapLightEventFilter filter, ref float deltaTime)
             => BeatmapLightEventFilter.DeltaScaleByFilterLimit(all, filtered, filter, ref deltaTime, ref deltaAlpha);
