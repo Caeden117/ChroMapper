@@ -244,11 +244,13 @@ public class BeatSaberMapV3 : BeatSaberMap
                         break;
                     case "lightColorEventBoxGroups":
                         foreach (JSONNode n in node) 
-                            lightColorEventBoxGroupsList.AddRange(BeatmapLightColorEvent.SplitEventBoxes(new BeatmapLightColorEvent(n)));
+                            lightColorEventBoxGroupsList.AddRange(
+                                BeatmapLightColorEvent.SplitEventBoxes(new BeatmapLightColorEvent(n)).Cast<BeatmapLightColorEvent>());
                         break;
                     case "lightRotationEventBoxGroups":
                         foreach (JSONNode n in node) 
-                            lightRotationEventBoxGroupsList.AddRange(BeatmapLightRotationEvent.SplitEventBoxes(new BeatmapLightRotationEvent(n)));
+                            lightRotationEventBoxGroupsList.AddRange(
+                                BeatmapLightRotationEvent.SplitEventBoxes(new BeatmapLightRotationEvent(n)).Cast<BeatmapLightRotationEvent>());
                         break;
                     case "basicEventTypesWithKeywords":
                         foreach (var k in node.Keys)
