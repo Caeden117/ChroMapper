@@ -34,19 +34,17 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
         public override void DeltaScaleByFilterLimit(
             IEnumerable<LightingEvent> all, IEnumerable<IEnumerable<LightingEvent>> filtered, BeatmapLightEventFilter filter, ref float deltaTime)
             => BeatmapLightEventFilter.DeltaScaleByFilterLimit(all, filtered, filter, ref deltaTime, ref deltaAlpha);
-        public override void InitDelta(BeatmapLightColorEventBox lightEventBox, IEnumerable<IEnumerable<LightingEvent>> filteredLightChunks)
+        protected override void InitDeltaImpl(BeatmapLightColorEventBox lightEventBox, IEnumerable<IEnumerable<LightingEvent>> filteredLightChunks)
         {
             deltaAlpha = lightEventBox.BrightnessDistribution;
             if (lightEventBox.BrightnessDistributionType == 1) deltaAlpha /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
         }
-        public override BeatmapLightColorEventData InitValue(BeatmapLightColorEventData lightEventData)
+        protected override void InitValueImpl(BeatmapLightColorEventData lightEventData, int evetnDataIdx)
         {
-            EventData = BeatmapObject.GenerateCopy(lightEventData);
-            return BeatmapObject.GenerateCopy(EventData);
         }
         public override BeatmapLightColorEventData Next()
         {
-            EventData.Brightness += deltaAlpha;
+            EventData.Brightness += (EventDataIdx == 0 && EventBox.BrightnessAffectFirst == 0) ? 0 : deltaAlpha;
             return BeatmapObject.GenerateCopy(EventData);
         }
     }

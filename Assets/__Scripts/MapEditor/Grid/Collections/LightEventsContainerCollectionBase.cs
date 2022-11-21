@@ -23,13 +23,28 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
 
     protected abstract class StaticGraphEnumerator
     {
+        protected TEb EventBox;
         protected TEbd EventData;
+        protected int EventDataIdx;
         public abstract IEnumerable<int> AdditonalField();
         public abstract bool AdditonalFieldMatched(int additional, TEb LightEventBox);
         public abstract void DeltaScaleByFilterLimit(
             IEnumerable<TLightEvent> all, IEnumerable<IEnumerable<TLightEvent>> filtered, BeatmapLightEventFilter filter, ref float deltaTime);
-        public abstract void InitDelta(TEb lightEventBox, IEnumerable<IEnumerable<TLightEvent>> filteredLightChunks);
-        public abstract TEbd InitValue(TEbd lightEventData);
+        public void InitDelta(TEb lightEventBox, IEnumerable<IEnumerable<TLightEvent>> filteredLightChunks)
+        {
+            EventBox = lightEventBox;
+            InitDeltaImpl(lightEventBox, filteredLightChunks);
+        }
+        protected abstract void InitDeltaImpl(TEb lightEventBox, IEnumerable<IEnumerable<TLightEvent>> filteredLightChunks);
+        public TEbd InitValue(TEbd lightEventData, int eventDataIdx)
+        {
+            EventData = BeatmapObject.GenerateCopy(lightEventData);
+            EventDataIdx = eventDataIdx;
+            InitValueImpl(lightEventData, eventDataIdx);
+            return BeatmapObject.GenerateCopy(EventData);
+        }
+
+        protected abstract void InitValueImpl(TEbd lightEventData, int eventDataIdx);
         public abstract TEbd Next();
     }
     protected abstract StaticGraphEnumerator GraphEnumerator { get; }
@@ -110,7 +125,7 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
                     {
                         var lightEventData = lightEventBox.EventDatas[i];
                         float extraTime = 0.0f;
-                        var thisData = GraphEnumerator.InitValue(lightEventData);
+                        var thisData = GraphEnumerator.InitValue(lightEventData, i);
                         foreach (var lightChunk in filteredLightChunks)
                         {
                             foreach (var singleLight in lightChunk)
