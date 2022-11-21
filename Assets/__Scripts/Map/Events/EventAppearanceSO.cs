@@ -253,14 +253,14 @@ public class EventAppearanceSO : ScriptableObject
         e.UpdateAlpha(final ? 1.0f : 0.6f, true);
         if (!final)
             e.transform.localScale = Vector3.one * 0.6f;
-        if (dataIdx == 0 && e.ColorEventData.EventBoxes[0].EventDatas.Count == 0)
+        if (dataIdx == 0 && e.LightEventData.EventBoxes[0].EventDatas.Count == 0)
         {
             e.ChangeColor(offColor);
             e.UpdateTextDisplay(true, "??????"); // why would this happen?
             return;
         }
         var color = Color.white;
-        var eb = e.ColorEventData.EventBoxes[0];
+        var eb = e.LightEventData.EventBoxes[0];
         if (eb.EventDatas[dataIdx].Color <= 1)
         {
             color = eb.EventDatas[dataIdx].Color == 1

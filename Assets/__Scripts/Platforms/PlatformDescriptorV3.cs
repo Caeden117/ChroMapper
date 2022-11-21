@@ -182,7 +182,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
                     light.UpdateTargetColor(color, 0);
                     light.UpdateTargetAlpha(brightness, 0);
                 }
-                if (lightColorEventsContainer.TryGetNextLightColorEventData(group, light.LightIdx, baseTime + extraTime + data.Time, out var nextData))
+                if (lightColorEventsContainer.TryGetNextLightEventData(group, light.LightIdx, 0, baseTime + extraTime + data.Time, out var nextData))
                 {
                     if (nextData.TransitionType == 1)
                     {

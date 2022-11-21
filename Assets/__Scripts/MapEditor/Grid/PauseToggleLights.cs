@@ -154,10 +154,10 @@ public class PauseToggleLights : MonoBehaviour
             for (int lightIdx = 0; lightIdx < descriptorV3.LightsManagersV3[i].ControllingLights.Count; ++lightIdx)
             {
                 var light = descriptorV3.LightsManagersV3[i].ControllingLights[lightIdx];
-                if (colorCol.TryGetPreviousLightColorEventData(group, lightIdx, time, out var prev))
+                if (colorCol.TryGetPreviousLightEventData(group, lightIdx, 0, time, out var prev))
                 {
                     descriptorV3.SetLightColorFromData(light, prev, 0);
-                    if (colorCol.TryGetNextLightColorEventData(group, lightIdx, time, out var next) && next.TransitionType == 1)
+                    if (colorCol.TryGetNextLightEventData(group, lightIdx, 0, time, out var next) && next.TransitionType == 1)
                     {
                         float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
                         descriptorV3.SetLightColorFromData(light, next, timeToTransition);

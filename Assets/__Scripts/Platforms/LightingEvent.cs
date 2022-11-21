@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class LightingEvent : MonoBehaviour
+public class LightingEvent : MonoBehaviour, ILightEventV3
 {
     public bool OverrideLightGroup;
     public int OverrideLightGroupID;
@@ -167,4 +167,6 @@ public class LightingEvent : MonoBehaviour
         colorTime = t * timeToTransitionColor;
         alphaTime = t * timeToTransitionAlpha;
     }
+
+    public int GetIndex() => LightIdx;
 }
