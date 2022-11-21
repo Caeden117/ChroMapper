@@ -26,6 +26,7 @@ public class BeatSaberMapV3 : BeatSaberMap
     public List<ColorBoostEvent> ColorBoostBeatmapEvents = new List<ColorBoostEvent>();
     public List<BeatmapLightColorEvent> LightColorEventBoxGroups = new List<BeatmapLightColorEvent>();
     public List<BeatmapLightRotationEvent> LightRotationEventBoxGroups = new List<BeatmapLightRotationEvent>();
+    public List<BeatmapLightTranslationEvent> LightTranslationEventBoxGroups = new List<BeatmapLightTranslationEvent>();
     public Dictionary<string, JSONNode> BasicEventTypesWithKeywords = new Dictionary<string, JSONNode>(); // although idk what it is used for, save as a dict first
     public bool UseNormalEventsAsCompatibleEvents => Events.Any();
 
@@ -95,6 +96,19 @@ public class BeatSaberMapV3 : BeatSaberMap
                     ret.EventBoxes.AddRange(new List<BeatmapLightRotationEventBox>(rhs.EventBoxes));
                     return ret;
                 });
+            LightTranslationEventBoxGroups.Sort((lhs, rhs) =>
+            {
+                if (lhs.Time != rhs.Time) return lhs.Time.CompareTo(rhs.Time);
+                if (lhs.Group != rhs.Group) return lhs.Group.CompareTo(rhs.Group);
+                return lhs.GetHashCode().CompareTo(rhs.GetHashCode());
+            });
+            var mergedLightTranslationEventBoxGroups = MergeSplittedNotes(LightTranslationEventBoxGroups,
+                (lhs, rhs) => Mathf.Approximately(lhs.Time, rhs.Time) && lhs.Group == rhs.Group,
+                (lhs, rhs) => {
+                    var ret = BeatmapObject.GenerateCopy(lhs);
+                    ret.EventBoxes.AddRange(new List<BeatmapLightTranslationEventBox>(rhs.EventBoxes));
+                    return ret;
+                });
 
             /// official nodes
             var bpmEvents = new JSONArray();
@@ -133,6 +147,9 @@ public class BeatSaberMapV3 : BeatSaberMap
             var lightRotationEventBoxGroups = new JSONArray();
             foreach (var l in mergedLightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(l.ConvertToJson());
 
+            var lightTranslationEventBoxGroups = new JSONArray();
+            foreach (var l in mergedLightTranslationEventBoxGroups) lightTranslationEventBoxGroups.Add(l.ConvertToJson());
+
             var basicEventTypesWithKeywords = new JSONObject();
             foreach (var k in BasicEventTypesWithKeywords.Keys) basicEventTypesWithKeywords[k] = BasicEventTypesWithKeywords[k];
 
@@ -148,6 +165,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             MainNode["colorBoostBeatmapEvents"] = CleanupArray(colorBoostBeatmapEvents, "b");
             MainNode["lightColorEventBoxGroups"] = lightColorEventBoxGroups;
             MainNode["lightRotationEventBoxGroups"] = lightRotationEventBoxGroups;
+            MainNode["lightTranslationEventBoxGroups"] = lightTranslationEventBoxGroups;
             MainNode["basicEventTypesWithKeywords"] = basicEventTypesWithKeywords;
             MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
 
@@ -198,6 +216,7 @@ public class BeatSaberMapV3 : BeatSaberMap
             var colorBoostBeatmapEventsList = new List<ColorBoostEvent>();
             var lightColorEventBoxGroupsList = new List<BeatmapLightColorEvent>();
             var lightRotationEventBoxGroupsList = new List<BeatmapLightRotationEvent>();
+            var lightTranslationEventBoxGroupsList = new List<BeatmapLightTranslationEvent>();
             var basicEventTypesWithKeywordsDict = new Dictionary<string, JSONNode>();
 
 
@@ -252,6 +271,11 @@ public class BeatSaberMapV3 : BeatSaberMap
                             lightRotationEventBoxGroupsList.AddRange(
                                 BeatmapLightRotationEvent.SplitEventBoxes(new BeatmapLightRotationEvent(n)).Cast<BeatmapLightRotationEvent>());
                         break;
+                    case "lightTranslationEventBoxGroups":
+                        foreach (JSONNode n in node)
+                            lightTranslationEventBoxGroupsList.AddRange(
+                                BeatmapLightTranslationEvent.SplitEventBoxes(new BeatmapLightTranslationEvent(n)).Cast<BeatmapLightTranslationEvent>());
+                        break;
                     case "basicEventTypesWithKeywords":
                         foreach (var k in node.Keys)
                         {
@@ -276,6 +300,8 @@ public class BeatSaberMapV3 : BeatSaberMap
             mapV3.ColorBoostBeatmapEvents = colorBoostBeatmapEventsList;
             mapV3.LightColorEventBoxGroups = lightColorEventBoxGroupsList;
             mapV3.LightRotationEventBoxGroups = lightRotationEventBoxGroupsList;
+            mapV3.LightTranslationEventBoxGroups = lightTranslationEventBoxGroupsList;
+            Debug.Log(mapV3.LightTranslationEventBoxGroups.Count + " loaded");
             mapV3.BasicEventTypesWithKeywords = basicEventTypesWithKeywordsDict;
 
             var mapV2 = mapV3 as BeatSaberMap;
