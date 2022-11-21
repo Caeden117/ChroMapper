@@ -172,7 +172,7 @@ public class PauseToggleLights : MonoBehaviour
                 for (int axis = 0; axis < 2; ++axis)
                 {
                     var axisData = rot.GetAxisData(axis);
-                    if (rotCol.TryGetNextLightEventData(group, rotIdx, axis, time, out var prev))
+                    if (rotCol.TryGetPreviousLightEventData(group, rotIdx, axis, time, out var prev))
                     {
                         axisData.UpdateRotation(prev.RotationValue, 0);
                         // TODO: we should some how set reverse...
