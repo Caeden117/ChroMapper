@@ -56,7 +56,7 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
 
     internal override void SubscribeToCallbacks()
     {
-        AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        base.SubscribeToCallbacks();
         uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
         RealSpawnCallbackController.ObjectPassedThreshold += SpawnCallback;
         RealSpawnCallbackController.RecursiveObjectCheckFinished += RecursiveCheckFinished;
@@ -75,7 +75,7 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
 
     internal override void UnsubscribeToCallbacks()
     {
-        AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        base.SubscribeToCallbacks();
         uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
         RealSpawnCallbackController.ObjectPassedThreshold -= SpawnCallback;
         RealSpawnCallbackController.RecursiveObjectCheckFinished -= RecursiveCheckFinished;

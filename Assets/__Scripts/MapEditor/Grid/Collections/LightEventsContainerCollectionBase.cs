@@ -56,7 +56,24 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
         lightContainer.SpawnEventDatas(eventAppearanceSO);
     }
 
+    internal override void SubscribeToCallbacks()
+    {
+        AudioTimeSyncController.PlayToggle += OnPlayToggle;
 
+    }
+
+    internal override void UnsubscribeToCallbacks()
+    {
+        AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+
+    }
+    public void OnPlayToggle(bool isPlaying)
+    {
+        if (isPlaying)
+        {
+            LinkAllLightEventDatas();
+        }
+    }
     public void LinkAllLightEventDatas()
     {
         var groupLights = LoadedObjects.Cast<TBo>().GroupBy(x => x.Group);

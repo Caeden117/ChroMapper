@@ -56,7 +56,7 @@ public class LightRotationEventsContainer : LightEventsContainerCollectionBase<
 
     internal override void SubscribeToCallbacks()
     {
-        AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        base.SubscribeToCallbacks();
         uiGenerator.OnToggleUIPanelSwitch += FlipAllContainers;
         RealSpawnCallbackController.ObjectPassedThreshold += SpawnCallback;
         RealSpawnCallbackController.RecursiveObjectCheckFinished += RecursiveCheckFinished;
@@ -75,24 +75,14 @@ public class LightRotationEventsContainer : LightEventsContainerCollectionBase<
 
     internal override void UnsubscribeToCallbacks()
     {
-        AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        base.SubscribeToCallbacks();
         uiGenerator.OnToggleUIPanelSwitch -= FlipAllContainers;
         RealSpawnCallbackController.ObjectPassedThreshold -= SpawnCallback;
         RealSpawnCallbackController.RecursiveObjectCheckFinished -= RecursiveCheckFinished;
         RealDespawnCallbackController.ObjectPassedThreshold -= DespawnCallback;
     }
 
-    public void OnPlayToggle(bool isPlaying)
-    {
-        if (isPlaying)
-        {
-            LinkAllLightEventDatas();
-            foreach (var kv in NextEventDict)
-            {
-                Debug.Log(kv.Key + " " + kv.Value.Count());
-            }
-        }
-    }
+
 
     private void FlipAllContainers(LightV3GeneratorAppearance.LightV3UIPanel currentPanel)
     {
