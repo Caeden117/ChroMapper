@@ -68,7 +68,9 @@ public class TranslationEvent : MonoBehaviour, ILightEventV3
 {
     internal LightsManagerV3 lightsManager;
     public int TranslationIdx;
-    [SerializeField] internal float translationMultiplier = 1;
+    [SerializeField] internal float translationMultiplierX = 1;
+    [SerializeField] internal float translationMultiplierY = 1;
+    [SerializeField] internal float translationMultiplierZ = 1;
     public TranslationEventData XData;
     public TranslationEventData YData;
     public TranslationEventData ZData;
@@ -78,9 +80,9 @@ public class TranslationEvent : MonoBehaviour, ILightEventV3
         if (lightsManager == null) return;
         var dt = Time.deltaTime;
         transform.localPosition = new Vector3(
-            XData.LerpPosition(dt) * translationMultiplier,
-            YData.LerpPosition(dt) * translationMultiplier,
-            ZData.LerpPosition(dt) * translationMultiplier
+            XData.LerpPosition(dt) * translationMultiplierX,
+            YData.LerpPosition(dt) * translationMultiplierY,
+            ZData.LerpPosition(dt) * translationMultiplierZ
             );
 
     }

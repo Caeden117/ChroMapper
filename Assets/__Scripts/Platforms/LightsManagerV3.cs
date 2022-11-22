@@ -19,11 +19,13 @@ public class LightsManagerV3 : LightsManager
     {
         public bool XTranslatable = false;
         public bool XFlip = false;
+        public float TranslationMultiplierX = 1;
         public bool YTranslatable = false;
         public bool YFlip = false;
+        public float TranslationMultiplierY = 1;
         public bool ZTranslatable = false;
         public bool ZFlip = false;
-        public float TranslationMultiplier = 1;
+        public float TranslationMultiplierZ = 1;
     }
     public TranslationConfiguration TranslationConfig;
 
@@ -87,10 +89,12 @@ public class LightsManagerV3 : LightsManager
         {
             ControllingTranslations[i].lightsManager = this;
             ControllingTranslations[i].TranslationIdx = i;
-            ControllingTranslations[i].translationMultiplier *= TranslationConfig.TranslationMultiplier;
             ControllingTranslations[i].XData.flip = TranslationConfig.XFlip;
+            ControllingTranslations[i].translationMultiplierX *= TranslationConfig.TranslationMultiplierX;
             ControllingTranslations[i].YData.flip = TranslationConfig.YFlip;
+            ControllingTranslations[i].translationMultiplierY *= TranslationConfig.TranslationMultiplierY;
             ControllingTranslations[i].ZData.flip = TranslationConfig.ZFlip;
+            ControllingTranslations[i].translationMultiplierZ *= TranslationConfig.TranslationMultiplierZ;
         }
 
         if (TreatZAsX) XRotatable = true; // for compatibility with sanity check
