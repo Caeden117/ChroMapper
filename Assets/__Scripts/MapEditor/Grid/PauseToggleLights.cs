@@ -201,7 +201,7 @@ public class PauseToggleLights : MonoBehaviour
                     {
                         axisData.UpdateTranslation(prev.TranslateValue, 0);
 
-                        if (transCol.TryGetNextLightEventData(group, transIdx, axis, time, out var next))
+                        if (transCol.TryGetNextLightEventData(group, transIdx, axis, time, out var next) && next.UsePrevious == 0)
                         {
                             float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
                             descriptorV3.SetLightTranslationFromData(trans, next, timeToTransition, axis);

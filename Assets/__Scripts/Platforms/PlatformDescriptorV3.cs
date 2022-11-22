@@ -356,9 +356,12 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             {
                 var axisData = light.GetAxisData(axis);
                 if (!axisData.SetNoteIndex(noteIdx)) continue;
-                axisData.UpdateTranslation(offset, 0);
+                if (data.UsePrevious != 1)
+                {
+                    axisData.UpdateTranslation(offset, 0);
+                }
                 if (lightTranslationEventsContainer.TryGetNextLightEventData(group, light.GetIndex(), axis,
-                    baseTime + extraTime + data.Time, out var nextData))
+                    baseTime + extraTime + data.Time, out var nextData) && nextData.UsePrevious == 0)
                 {
                     var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
                     SetLightTranslationFromData(light, nextData, timeToTransition, axis);
