@@ -109,6 +109,7 @@ public class LightsManagerV3 : LightsManager
     {
         foreach (var light in ControllingLights) light.SetNoteIndex(-1, true);
         foreach (var rot in ControllingRotations) rot.ResetNoteIndex();
+        foreach (var trans in ControllingTranslations) trans.ResetNoteIndex();
     }
 
     public override void Boost(bool boost, Color red, Color blue)

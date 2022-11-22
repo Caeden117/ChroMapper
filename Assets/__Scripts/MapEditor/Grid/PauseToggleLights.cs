@@ -147,6 +147,7 @@ public class PauseToggleLights : MonoBehaviour
         var descriptorV3 = descriptor as PlatformDescriptorV3;
         var colorCol = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
         var rotCol = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
+        var transCol = BeatmapObjectContainerCollection.GetCollectionForType<LightTranslationEventsContainer>(BeatmapObject.ObjectType.LightTranslationEvent);
         var time = atsc.CurrentBeat;
         for (int i = 0; i < descriptorV3.LightsManagersV3.Length; ++i)
         {
@@ -181,6 +182,26 @@ public class PauseToggleLights : MonoBehaviour
                         {
                             float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
                             descriptorV3.SetLightRotationFromData(rot, next, timeToTransition, axis);
+                            axisData.SetCurrentTimeRatio((time - prev.Time) / (next.Time - prev.Time));
+                        }
+                    }
+                }
+            }
+
+            for (int transIdx = 0; transIdx < descriptorV3.LightsManagersV3[i].ControllingTranslations.Count; ++transIdx)
+            {
+                var trans = descriptorV3.LightsManagersV3[i].ControllingTranslations[transIdx];
+                for (int axis = 0; axis < 2; ++axis)
+                {
+                    var axisData = trans.GetAxisData(axis);
+                    if (transCol.TryGetPreviousLightEventData(group, transIdx, axis, time, out var prev))
+                    {
+                        axisData.UpdateTranslation(prev.TranslateValue, 0);
+
+                        if (transCol.TryGetNextLightEventData(group, transIdx, axis, time, out var next))
+                        {
+                            float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
+                            descriptorV3.SetLightTranslationFromData(trans, next, timeToTransition, axis);
                             axisData.SetCurrentTimeRatio((time - prev.Time) / (next.Time - prev.Time));
                         }
                     }

@@ -37,6 +37,7 @@ public class TranslationEventData
 
     private float LerpPosition(float a, float b, float t)
     {
+        if (float.IsNaN(t)) t = 0;
         t = Mathf.Clamp01(t);
         return (1 - t) * a + t * b;
     }
