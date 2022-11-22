@@ -342,7 +342,7 @@ public class EventAppearanceSO : ScriptableObject
             e.transform.localScale = Vector3.one * 0.6f;
         if (dataIdx == 0 && e.LightEventData.EventBoxes[0].EventDatas.Count == 0)
         {
-            e.ChangeColor(offColor);
+            e.ChangeColor(otherColor);
             e.UpdateTextDisplay(true, "??????"); // why would this happen again?
             return;
         }
@@ -358,9 +358,9 @@ public class EventAppearanceSO : ScriptableObject
         text += "\n" + (eb.Flip == 1 ? "-" : "+") + ebd.TranslateValue;
 
         e.UpdateTextDisplay(true, text);
-        e.ChangeColor(offColor, dataIdx != 0 || !final);
+        e.ChangeColor(otherColor, dataIdx != 0 || !final);
 
-        // e.SetRotationAxisAppearance(eb.Axis);
+        e.SetTranslationAxisAppearance(eb.Axis);
     }
 }
 
