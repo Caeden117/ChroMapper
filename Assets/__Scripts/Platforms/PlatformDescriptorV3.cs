@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-public class PlatformDescriptorV3 : PlatformDescriptor 
+public class PlatformDescriptorV3 : PlatformDescriptor
 {
     [Header("V3 Configurations")]
     [Tooltip("V3 LightsMangaers, which supports lightColorEvent/LightRotationEvent")]
@@ -18,9 +18,11 @@ public class PlatformDescriptorV3 : PlatformDescriptor
 
     private LightColorEventCallbackController lightColorEventCallback;
     private LightRotationEventCallbackController lightRotationEventCallback;
+    private LightTranslationEventCallbackController lightTranslationEventCallback;
 
     private LightColorEventsContainer lightColorEventsContainer;
     private LightRotationEventsContainer lightRotationEventsContainer;
+    private LightTranslationEventsContainer lightTranslationEventsContainer;
 
     protected new void Start()
     {
@@ -44,6 +46,13 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         }
         lightRotationEventCallback.ObjectPassedThreshold += LightRotationEventPassed;
 
+        lightTranslationEventCallback = GameObject.Find("Vertical Grid Callback").GetComponent<LightTranslationEventCallbackController>();
+        if (lightTranslationEventCallback == null)
+        {
+            Debug.LogError("Unable to find callback, maybe prerequisite is not met?");
+        }
+        lightTranslationEventCallback.ObjectPassedThreshold += LightTranslationEventPassed;
+
         lightColorEventsContainer = FindObjectOfType<LightColorEventsContainer>();
         if (lightColorEventsContainer == null)
         {
@@ -56,9 +65,16 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             Debug.LogError("Unable to find lightRotationEventsContainer");
         }
 
+        lightTranslationEventsContainer = FindObjectOfType<LightTranslationEventsContainer>();
+        if (lightTranslationEventsContainer == null)
+        {
+            Debug.LogError("Unable to find lightTranslationEventsContainer");
+        }
+
         foreach (var lighColorPlacement in FindObjectsOfType<LightColorEventPlacement>()) lighColorPlacement.platformDescriptor = this;
         foreach (var lighRotationPlacement in FindObjectsOfType<LightRotationEventPlacement>()) lighRotationPlacement.platformDescriptor = this;
     }
+
 
     protected new void OnDestroy()
     {
@@ -161,7 +177,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         light.UpdateTargetAlpha(brightness, timeToTransition);
     }
 
-    private IEnumerator LightColorRoutine(IEnumerable<IEnumerable<LightingEvent>> lightChunks, float deltaTime, float deltaAlpha, 
+    private IEnumerator LightColorRoutine(IEnumerable<IEnumerable<LightingEvent>> lightChunks, float deltaTime, float deltaAlpha,
         int group, float baseTime, int noteIdx, BeatmapLightColorEventData data)
     {
         var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
@@ -284,6 +300,74 @@ public class PlatformDescriptorV3 : PlatformDescriptor
             if (deltaTime != 0)
                 yield return new WaitForSeconds(deltaSecond);
             rotation += deltaRotation;
+            extraTime += deltaTime;
+        }
+
+        yield return null;
+    }
+    private void LightTranslationEventPassed(bool natural, int idx, BeatmapLightTranslationEvent e)
+    {
+        if (GroupIdToLaneIndex(e.Group) == -1) return;
+        var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingTranslations;
+        var eb = e.EventBoxes[0];
+
+        if (eb.Axis == 0 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].TranslationConfig.XTranslatable) return;
+        if (eb.Axis == 1 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].TranslationConfig.YTranslatable) return;
+        if (eb.Axis == 2 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].TranslationConfig.ZTranslatable) return;
+
+        var filteredRotationChunks = eb.Filter.Filter(allLights);
+        if (filteredRotationChunks.Count() == 0) return;
+        float deltaOffset = eb.TranslationDistribution;
+        if (eb.Flip == 1) deltaOffset = -deltaOffset;
+        if (eb.TranslationDistributionType == 1) deltaOffset /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
+        float deltaTime = eb.Distribution;
+        if (eb.DistributionType == 1) deltaTime /= BeatmapLightEventFilter.Intervals(filteredRotationChunks);
+
+        BeatmapLightEventFilter.DeltaScaleByFilterLimit(allLights, filteredRotationChunks, eb.Filter, ref deltaTime, ref deltaOffset);
+
+        for (int i = 0; i < eb.EventDatas.Count; ++i)
+        {
+            var ebd = eb.EventDatas[i];
+            if (i == 0 && eb.TranslationAffectFirst == 0)
+                StartCoroutine(LightTranslationRoutine(filteredRotationChunks, deltaTime, 0, eb.Axis, eb.Flip == 1, e.Group, e.Time, idx, ebd));
+            else
+                StartCoroutine(LightTranslationRoutine(filteredRotationChunks, deltaTime, deltaOffset, eb.Axis, eb.Flip == 1, e.Group, e.Time, idx, ebd));
+        }
+    }
+
+    public void SetLightTranslationFromData(TranslationEvent rot, BeatmapLightTranslationEventData data, float timeToTransition, int axis)
+    {
+        var axisData = rot.GetAxisData(axis);
+        axisData.UpdateTranslation(data.TranslateValue, timeToTransition);
+        axisData.SetEaseFunction(data.EaseType);
+    }
+
+    private IEnumerator LightTranslationRoutine(IEnumerable<IEnumerable<TranslationEvent>> rotationChunks, float deltaTime, float deltaOffset, int axis, bool reverse,
+        int group, float baseTime, int noteIdx, BeatmapLightTranslationEventData data)
+    {
+        var deltaSecond = Atsc.GetSecondsFromBeat(deltaTime);
+        float afterSeconds = Atsc.GetSecondsFromBeat(data.AddedBeat);
+        if (afterSeconds != 0.0f) yield return new WaitForSeconds(afterSeconds);
+        float offset = data.TranslateValue;
+        if (reverse) offset = -offset;
+        float extraTime = 0;
+        foreach (var rotationChunk in rotationChunks)
+        {
+            foreach (var light in rotationChunk)
+            {
+                var axisData = light.GetAxisData(axis);
+                if (!axisData.SetNoteIndex(noteIdx)) continue;
+                axisData.UpdateTranslation(offset, 0);
+                if (lightTranslationEventsContainer.TryGetNextLightEventData(group, light.GetIndex(), axis,
+                    baseTime + extraTime + data.Time, out var nextData))
+                {
+                    var timeToTransition = Atsc.GetSecondsFromBeat(nextData.Time - baseTime - extraTime - data.Time);
+                    SetLightTranslationFromData(light, nextData, timeToTransition, axis);
+                }
+            }
+            if (deltaTime != 0)
+                yield return new WaitForSeconds(deltaSecond);
+            offset += deltaOffset;
             extraTime += deltaTime;
         }
 
