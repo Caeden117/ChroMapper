@@ -15,6 +15,17 @@ public class LightsManagerV3 : LightsManager
     public bool ZFlip = false;
     public bool TreatZAsX = false;
     [SerializeField] private float brightnessMultiplier = 1;
+    [Serializable] public class TranslationConfiguration
+    {
+        public bool XTranslatable = false;
+        public bool XFlip = false;
+        public bool YTranslatable = false;
+        public bool YFlip = false;
+        public bool ZTranslatable = false;
+        public bool ZFlip = false;
+        public float TranslationMultiplier = 1;
+    }
+    public TranslationConfiguration TranslationConfig;
 
     public List<RotatingEvent> ControllingRotations = new List<RotatingEvent>();
     public List<TranslationEvent> ControllingTranslations = new List<TranslationEvent>();
@@ -64,6 +75,22 @@ public class LightsManagerV3 : LightsManager
             ControllingRotations[i].XData.flip = XFlip;
             ControllingRotations[i].YData.flip = YFlip;
             ControllingRotations[i].ZData.flip = ZFlip;
+        }
+
+        if (ControllingTranslations.Count == 0)
+        {
+            var translations = GetComponentsInChildren<TranslationEvent>();
+            foreach (var trans in translations)
+                ControllingTranslations.Add(trans);
+        }
+        for (int i = 0; i < ControllingTranslations.Count; ++i)
+        {
+            ControllingTranslations[i].lightsManager = this;
+            ControllingTranslations[i].TranslationIdx = i;
+            ControllingTranslations[i].translationMultiplier *= TranslationConfig.TranslationMultiplier;
+            ControllingTranslations[i].XData.flip = TranslationConfig.XFlip;
+            ControllingTranslations[i].YData.flip = TranslationConfig.YFlip;
+            ControllingTranslations[i].ZData.flip = TranslationConfig.ZFlip;
         }
 
         if (TreatZAsX) XRotatable = true; // for compatibility with sanity check

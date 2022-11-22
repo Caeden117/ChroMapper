@@ -68,7 +68,7 @@ public class TranslationEvent : MonoBehaviour, ILightEventV3
 {
     internal LightsManagerV3 lightsManager;
     public int TranslationIdx;
-    [SerializeField] private float translationMultiplier = 1;
+    [SerializeField] internal float translationMultiplier = 1;
     public TranslationEventData XData;
     public TranslationEventData YData;
     public TranslationEventData ZData;
