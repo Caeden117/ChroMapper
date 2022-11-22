@@ -15,7 +15,8 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     public enum LightV3UIPanel
     {
         LightColorPanel,
-        LightRotationPanel
+        LightRotationPanel,
+        LightTranslationPanel,
     };
     public Action<LightV3UIPanel> OnToggleUIPanelSwitch;
     private LightV3UIPanel currentPanel = LightV3UIPanel.LightColorPanel;

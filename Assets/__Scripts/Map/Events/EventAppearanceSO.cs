@@ -334,6 +334,34 @@ public class EventAppearanceSO : ScriptableObject
 
         e.SetRotationAxisAppearance(eb.Axis);
     }
+
+    public void SetLightTranslationEventAppearance(BeatmapLightTranslationEventContainer e, int dataIdx = 0, bool final = true)
+    {
+        e.UpdateAlpha(final ? 1.0f : 0.6f, true);
+        if (!final)
+            e.transform.localScale = Vector3.one * 0.6f;
+        if (dataIdx == 0 && e.LightEventData.EventBoxes[0].EventDatas.Count == 0)
+        {
+            e.ChangeColor(offColor);
+            e.UpdateTextDisplay(true, "??????"); // why would this happen again?
+            return;
+        }
+        var eb = e.LightEventData.EventBoxes[0];
+        var ebd = eb.EventDatas[dataIdx];
+        var text = GenerateFilterString(eb.Filter);
+        var prefix = "";
+        prefix = rotationTransitionMark[ebd.EaseType + 1];
+        text = prefix + text;
+
+        text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
+            + "/" + GenerateDistributionString(eb.TranslationDistribution, eb.TranslationDistributionType, dataIdx != 0 || eb.TranslationAffectFirst == 1);
+        text += "\n" + (eb.Flip == 1 ? "-" : "+") + ebd.TranslateValue;
+
+        e.UpdateTextDisplay(true, text);
+        e.ChangeColor(offColor, dataIdx != 0 || !final);
+
+        // e.SetRotationAxisAppearance(eb.Axis);
+    }
 }
 
 public enum EventModelType

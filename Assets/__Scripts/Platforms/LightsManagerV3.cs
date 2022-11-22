@@ -17,6 +17,7 @@ public class LightsManagerV3 : LightsManager
     [SerializeField] private float brightnessMultiplier = 1;
 
     public List<RotatingEvent> ControllingRotations = new List<RotatingEvent>();
+    public List<TranslationEvent> ControllingTranslations = new List<TranslationEvent>();
 
     protected new IEnumerator Start()
     {

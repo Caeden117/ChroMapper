@@ -11,5 +11,6 @@ public class BeatmapLightTranslationEventContainer : BeatmapLightEventContainerB
     TranslationEvent
     >
 {
-    
+    public override void SetLightEventAppearance(EventAppearanceSO so, BeatmapLightTranslationEventContainer con, float time, int i)
+        => so.SetLightTranslationEventAppearance(con, i);
 }

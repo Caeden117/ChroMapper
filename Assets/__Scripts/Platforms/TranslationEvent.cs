@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TranslationEvent : MonoBehaviour, ILightEventV3
 {
+    public int GetIndex() => throw new System.NotImplementedException();
+
     // Start is called before the first frame update
     void Start()
     {
