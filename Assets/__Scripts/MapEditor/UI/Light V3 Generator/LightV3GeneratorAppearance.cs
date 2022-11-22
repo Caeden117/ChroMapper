@@ -11,6 +11,7 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     [SerializeField] private RectTransform lightV3GenUIRect;
     [SerializeField] private GameObject colorPanel;
     [SerializeField] private GameObject rotationPanel;
+    [SerializeField] private GameObject translationPanel;
     private RefreshLayoutGroup refresh;
     [SerializeField] private LightColorEventsContainer lightColorEventsContainer;
     internal PlatformDescriptorV3 PlatformDescriptor => lightColorEventsContainer.platformDescriptor;
@@ -119,6 +120,7 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     {
         colorPanel.SetActive(currentPanel == LightV3UIPanel.LightColorPanel);
         rotationPanel.SetActive(currentPanel == LightV3UIPanel.LightRotationPanel);
+        translationPanel.SetActive(currentPanel == LightV3UIPanel.LightTranslationPanel);
 
         refresh.TriggerRefresh();
     }

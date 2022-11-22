@@ -62,43 +62,6 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.TimeLimited = b);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.DataLimited = b);
 
-        for (int i = 0; i < InputFields.Length; ++i)
-        {
-            var currentIdx = new int();
-            currentIdx = i;
-            InputFields[currentIdx].onEndEdit.AddListener((t) => {
-                if (DisplayingSelectedObject) return;
-                InputLoadFn[currentIdx](ObjectData, t);
-                UpdateToPlacement();
-            });
-        }
-
-        for (int i = 0; i < Dropdowns.Length; ++i)
-        {
-            var currentIdx = new int();
-            currentIdx = i;
-            Dropdowns[currentIdx].onValueChanged.AddListener((t) => { 
-                if (DisplayingSelectedObject) return;
-                DropdownLoadFn[currentIdx](ObjectData, t); 
-                UpdateToPlacement(); 
-            });
-        }
-        Dropdowns[0].onValueChanged.AddListener((t) =>
-        {
-            Texts[0].text = t == 0 ? "Section" : "Step";
-            Texts[1].text = t == 0 ? "Partition" : "Start";
-        });
-
-        for (int i = 0; i < Toggles.Length; ++i)
-        {
-            var currentIdx = new int();
-            currentIdx = i;
-            Toggles[currentIdx].onValueChanged.AddListener((t) => { 
-                if (DisplayingSelectedObject) return;
-                ToggleLoadFn[currentIdx](ObjectData, t); 
-                UpdateToPlacement(); 
-            });
-        }
     }
 
     public override void Dump(BeatmapLightColorEvent obj)
@@ -116,7 +79,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         base.Dump(obj);
     }
 
-    public void UpdateToPlacement()
+    public override void UpdateToPlacement()
     {
         lightColorEventPlacement.UpdateData(ObjectData);
     }

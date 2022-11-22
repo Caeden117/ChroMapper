@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LightRotationEventPlacement : PlacementController<BeatmapLightRotationEvent, BeatmapLightRotationEventContainer, LightRotationEventsContainer>
+public class LightTranslationEventPlacement : PlacementController<
+    BeatmapLightTranslationEvent, BeatmapLightTranslationEventContainer, LightTranslationEventsContainer>
 {
     internal PlatformDescriptorV3 platformDescriptor;
     [SerializeField] private EventAppearanceSO eventAppearanceSO;
     [SerializeField] private LightV3GeneratorAppearance uiGenerator;
     private int objectGroup = -1;
+    internal static readonly string[] axisName = { "X", "Y", "Z" };
 
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting)
-        => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a LightRotationEvent.");
-    public override BeatmapLightRotationEvent GenerateOriginalData() => new BeatmapLightRotationEvent();
+        => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a LightTranslationEvent.");
+    public override BeatmapLightTranslationEvent GenerateOriginalData() => new BeatmapLightTranslationEvent();
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
         instantiatedContainer.transform.localPosition = new Vector3(
@@ -35,20 +37,20 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
     }
     private void ChangeActivate(LightV3GeneratorAppearance.LightV3UIPanel currentState)
     {
-        enabled = currentState == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel; // maybe I should use isActive...
+        enabled = currentState == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel;
         instantiatedContainer.SafeSetActive(enabled);
     }
 
-    public override void TransferQueuedToDraggedObject(ref BeatmapLightRotationEvent dragged, BeatmapLightRotationEvent queued) => throw new System.NotImplementedException();
+    public override void TransferQueuedToDraggedObject(ref BeatmapLightTranslationEvent dragged, BeatmapLightTranslationEvent queued) => throw new System.NotImplementedException();
 
     public void UpdateAppearance()
     {
         if (instantiatedContainer is null) RefreshVisuals();
         instantiatedContainer.LightEventData = queuedData;
-        eventAppearanceSO.SetLightRotationEventAppearance(instantiatedContainer, 0, false);
+        eventAppearanceSO.SetLightTranslationEventAppearance(instantiatedContainer, 0, false);
     }
 
-    public void UpdateData(BeatmapLightRotationEvent e)
+    public void UpdateData(BeatmapLightTranslationEvent e)
     {
         queuedData = e;
         UpdateAppearance();
@@ -57,7 +59,7 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
     internal override void ApplyToMap()
     {
         if (SelectionController.SelectedObjects.Count == 1
-            && SelectionController.SelectedObjects.First() is BeatmapLightRotationEvent obj
+            && SelectionController.SelectedObjects.First() is BeatmapLightTranslationEvent obj
             && obj.Group == objectGroup
             && obj.Time < RoundedTime)
         {
@@ -71,7 +73,7 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
             newData.EventBoxes[0].EventDatas.Insert(idx + 1, ebd);
             if (objectContainerCollection.LoadedContainers.TryGetValue(newData, out var con))
             {
-                (con as BeatmapLightRotationEventContainer).SpawnEventDatas(eventAppearanceSO);
+                (con as BeatmapLightTranslationEventContainer).SpawnEventDatas(eventAppearanceSO);
             }
             BeatmapActionContainer.AddAction(GenerateAction(newData, new[] { originData }));
         }
@@ -87,14 +89,12 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
     private bool SanityCheck()
     {
         var groupLight = platformDescriptor.LightsManagersV3[platformDescriptor.GroupIdToLaneIndex(objectGroup)];
-        if (!groupLight.IsValidRotationAxis(queuedData.EventBoxes[0].Axis))
+        if (!groupLight.IsValidTranslationAxis(queuedData.EventBoxes[0].Axis))
         {
-            PersistentUI.Instance.ShowDialogBox($"This lane cannot rotate around " +
-                $"{LightTranslationEventPlacement.axisName[queuedData.EventBoxes[0].Axis]} axis", null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox($"This lane cannot translate on {axisName[queuedData.EventBoxes[0].Axis]} axis", null, PersistentUI.DialogBoxPresetType.Ok);
             return false;
         }
         if (!BeatmapLightEventFilter.SanityCheck(queuedData.EventBoxes[0].Filter)) return false;
         return true;
     }
-
 }
