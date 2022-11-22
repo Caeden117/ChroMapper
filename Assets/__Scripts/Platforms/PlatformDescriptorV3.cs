@@ -14,6 +14,8 @@ public class PlatformDescriptorV3 : PlatformDescriptor
     [Tooltip("Map discontinuous light v2 event type")]
     public List<int> LightV2Mapping;
 
+    public bool HasTranslationEvent = false;
+
     private Dictionary<int, int> groupIdToLaneIdx = new Dictionary<int, int>();
 
     private LightColorEventCallbackController lightColorEventCallback;
