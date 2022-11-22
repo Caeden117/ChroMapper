@@ -9,10 +9,12 @@ public class LightV3Buttons : MonoBehaviour
 {
     [SerializeField] private LightV3ColorBinder colorBinder;
     [SerializeField] private LightV3RotationBinder rotationBinder;
-
+    [SerializeField] private LightV3TranslationBinder translationBinder;
     [SerializeField] private LightV3ColorTemplateSaver colorTemplate;
     [SerializeField] private LightV3RotationTemplateSaver rotationTemplate;
+    [SerializeField] private LightV3TranslationTemplateSaver translationTemplate;
     [SerializeField] private LightV3GeneratorAppearance uiGenerator;
+
 
     [SerializeField] private TMP_Text switchText;
     private DialogBox createTemplatedialogBox;
@@ -50,6 +52,7 @@ public class LightV3Buttons : MonoBehaviour
 
         colorTemplate.AddObject(colorBinder.ObjectData, "default");
         rotationTemplate.AddObject(rotationBinder.ObjectData, "default").SetActive(false);
+        translationTemplate.AddObject(translationBinder.ObjectData, "default").SetActive(false);
     }
 
     private void StoreCurrentPanel(LightV3GeneratorAppearance.LightV3UIPanel obj)
@@ -104,9 +107,13 @@ public class LightV3Buttons : MonoBehaviour
         {
             GroupApply<BeatmapLightColorEvent, LightColorEventsContainer>(colorBinder, BeatmapObject.ObjectType.LightColorEvent);
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             GroupApply<BeatmapLightRotationEvent, LightRotationEventsContainer>(rotationBinder, BeatmapObject.ObjectType.LightRotationEvent);
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            GroupApply<BeatmapLightTranslationEvent, LightTranslationEventsContainer>(translationBinder, BeatmapObject.ObjectType.LightTranslationEvent);
         }
     }
 
@@ -137,9 +144,13 @@ public class LightV3Buttons : MonoBehaviour
         {
             colorTemplate.AddObject(colorBinder.DisplayingData, name);
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             rotationTemplate.AddObject(rotationBinder.DisplayingData, name);
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            translationTemplate.AddObject(translationBinder.DisplayingData, name);
         }
     }
 
@@ -151,11 +162,17 @@ public class LightV3Buttons : MonoBehaviour
             colorBinder.Dump(colorBinder.ObjectData);
             colorBinder.UpdateToPlacement();
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             rotationTemplate.ApplyObject(rotationBinder.ObjectData, button);
             rotationBinder.Dump(rotationBinder.ObjectData);
             rotationBinder.UpdateToPlacement();
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            translationTemplate.ApplyObject(translationBinder.ObjectData, button);
+            translationBinder.Dump(translationBinder.ObjectData);
+            translationBinder.UpdateToPlacement();
         }
     }
 
@@ -165,9 +182,13 @@ public class LightV3Buttons : MonoBehaviour
         {
             colorTemplate.RemoveObject(button);
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             rotationTemplate.RemoveObject(button);
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            translationTemplate.RemoveObject(button);
         }
     }
 
@@ -183,9 +204,13 @@ public class LightV3Buttons : MonoBehaviour
         {
             colorTemplate.UpdateObject(currentButton, name);
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             rotationTemplate.UpdateObject(currentButton, name);
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            translationTemplate.UpdateObject(currentButton, name);
         }
     }
 }
