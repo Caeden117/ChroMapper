@@ -154,6 +154,7 @@ public class PauseToggleLights : MonoBehaviour
             int group = descriptorV3.LaneIndexToGroupId(i);
             for (int lightIdx = 0; lightIdx < descriptorV3.LightsManagersV3[i].ControllingLights.Count; ++lightIdx)
             {
+                if (!descriptorV3.LightsManagersV3[i].IsValidColorLane()) break;
                 var light = descriptorV3.LightsManagersV3[i].ControllingLights[lightIdx];
                 if (colorCol.TryGetPreviousLightEventData(group, lightIdx, 0, time, out var prev))
                 {
@@ -172,6 +173,7 @@ public class PauseToggleLights : MonoBehaviour
                 var rot = descriptorV3.LightsManagersV3[i].ControllingRotations[rotIdx];
                 for (int axis = 0; axis < 2; ++axis)
                 {
+                    if (!descriptorV3.LightsManagersV3[i].IsValidRotationAxis(axis)) continue;
                     var axisData = rot.GetAxisData(axis);
                     if (rotCol.TryGetPreviousLightEventData(group, rotIdx, axis, time, out var prev))
                     {
@@ -193,6 +195,7 @@ public class PauseToggleLights : MonoBehaviour
                 var trans = descriptorV3.LightsManagersV3[i].ControllingTranslations[transIdx];
                 for (int axis = 0; axis < 2; ++axis)
                 {
+                    if (!descriptorV3.LightsManagersV3[i].IsValidTranslationAxis(axis)) continue;
                     var axisData = trans.GetAxisData(axis);
                     if (transCol.TryGetPreviousLightEventData(group, transIdx, axis, time, out var prev))
                     {

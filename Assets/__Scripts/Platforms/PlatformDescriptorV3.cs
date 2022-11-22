@@ -229,9 +229,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingRotations;
         var eb = e.EventBoxes[0];
 
-        if (eb.Axis == 0 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].XRotatable) return;
-        if (eb.Axis == 1 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].YRotatable) return;
-        if (eb.Axis == 2 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].ZRotatable) return;
+        if (!LightsManagersV3[GroupIdToLaneIndex(e.Group)].IsValidRotationAxis(eb.Axis)) return;
 
         var filteredRotationChunks = eb.Filter.Filter(allLights);
         if (filteredRotationChunks.Count() == 0) return;
@@ -311,9 +309,7 @@ public class PlatformDescriptorV3 : PlatformDescriptor
         var allLights = LightsManagersV3[GroupIdToLaneIndex(e.Group)].ControllingTranslations;
         var eb = e.EventBoxes[0];
 
-        if (eb.Axis == 0 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].TranslationConfig.XTranslatable) return;
-        if (eb.Axis == 1 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].TranslationConfig.YTranslatable) return;
-        if (eb.Axis == 2 && !LightsManagersV3[GroupIdToLaneIndex(e.Group)].TranslationConfig.ZTranslatable) return;
+        if (!LightsManagersV3[GroupIdToLaneIndex(e.Group)].IsValidTranslationAxis(eb.Axis)) return;
 
         var filteredRotationChunks = eb.Filter.Filter(allLights);
         if (filteredRotationChunks.Count() == 0) return;

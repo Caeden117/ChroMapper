@@ -29,9 +29,12 @@ public class LightsManagerV3 : LightsManager
         public float TranslationMultiplierZ = 1;
     }
     public TranslationConfiguration TranslationConfig;
-
+    public bool IsValidColorLane() => HasColorEvent;
     public bool HasRotationEvent => XRotatable || YRotatable || ZRotatable;
+    public bool IsValidRotationAxis(int axis) => (axis == 0 && XRotatable) || (axis == 1 && YRotatable) || (axis == 2 && ZRotatable);
     public bool HasTranslationEvent => TranslationConfig.XTranslatable || TranslationConfig.YTranslatable || TranslationConfig.ZTranslatable;
+    public bool IsValidTranslationAxis(int axis) => (axis == 0 && TranslationConfig.XTranslatable) || 
+        (axis == 1 && TranslationConfig.YTranslatable) || (axis == 2 && TranslationConfig.ZTranslatable);
 
     public List<RotatingEvent> ControllingRotations = new List<RotatingEvent>();
     public List<TranslationEvent> ControllingTranslations = new List<TranslationEvent>();
