@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -74,13 +74,14 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     public override void HandlePositionEvent(JSONNode customData = null)
     {
         var step = zoomed ? MAXPositionStep : MINPositionStep;
+        var isAffectedByZoom = !Mathf.Approximately(MAXPositionStep, MINPositionStep);
 
-        if (customData?.HasKey("_step") ?? false)
+        if (isAffectedByZoom && (customData?.HasKey("_step") ?? false))
         {
             step = customData["_step"];
         }
 
-        var speed = customData?.HasKey("_speed") ?? false 
+        var speed = customData?.HasKey("_speed") ?? false
             ? customData["_speed"].AsFloat
             : MoveSpeed;
 
