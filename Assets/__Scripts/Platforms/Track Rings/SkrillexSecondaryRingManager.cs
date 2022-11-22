@@ -5,8 +5,11 @@ public class SkrillexSecondaryRingManager : TrackLaneRingsManager
 {
     [SerializeField] private InterscopeRingLaserManager[] laserManagers;
 
+    protected override bool IsAffectedByZoom() => true;
+
     public override void HandlePositionEvent(JSONNode customData = null)
     {
+        base.HandlePositionEvent(customData);
         base.HandleRotationEvent(customData);
         foreach (var isRingLaserManager in laserManagers)
         {

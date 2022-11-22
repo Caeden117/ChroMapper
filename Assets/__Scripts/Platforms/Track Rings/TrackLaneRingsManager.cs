@@ -71,12 +71,13 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
         Gizmos.DrawRay(position + forward, a2 * d);
     }
 
+    protected virtual bool IsAffectedByZoom() => !Mathf.Approximately(MAXPositionStep, MINPositionStep);
+
     public override void HandlePositionEvent(JSONNode customData = null)
     {
         var step = zoomed ? MAXPositionStep : MINPositionStep;
-        var isAffectedByZoom = !Mathf.Approximately(MAXPositionStep, MINPositionStep);
 
-        if (isAffectedByZoom && (customData?.HasKey("_step") ?? false))
+        if (this.IsAffectedByZoom() && (customData?.HasKey("_step") ?? false))
         {
             step = customData["_step"];
         }
