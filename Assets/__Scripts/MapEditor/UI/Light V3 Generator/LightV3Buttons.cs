@@ -55,7 +55,19 @@ public class LightV3Buttons : MonoBehaviour
     private void StoreCurrentPanel(LightV3GeneratorAppearance.LightV3UIPanel obj)
     {
         currentPanel = obj;
-        switchText.text = "Switch to " + (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel ? "Rotation" : "Color");
+        switchText.text = "Switch to ";
+        switch (currentPanel)
+        {
+            case LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel:
+                switchText.text += "Rotation";
+                break;
+            case LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel:
+                switchText.text += uiGenerator.PlatformDescriptor.HasTranslationEvent ? "Translation" : "Color";
+                break;
+            case LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel:
+                switchText.text += "Color";
+                break;
+        }
     }
 
     private void OnDestroy()

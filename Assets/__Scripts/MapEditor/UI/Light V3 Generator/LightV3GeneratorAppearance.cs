@@ -11,7 +11,10 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     [SerializeField] private RectTransform lightV3GenUIRect;
     [SerializeField] private GameObject colorPanel;
     [SerializeField] private GameObject rotationPanel;
-    [SerializeField] private RefreshLayoutGroup refresh;
+    private RefreshLayoutGroup refresh;
+    [SerializeField] private LightColorEventsContainer lightColorEventsContainer;
+    internal PlatformDescriptorV3 PlatformDescriptor => lightColorEventsContainer.platformDescriptor;
+    private const int thirdCollectionOffset = 3; // maybe we shold set it as a setting later
     public enum LightV3UIPanel
     {
         LightColorPanel,
@@ -67,6 +70,9 @@ public class LightV3GeneratorAppearance : MonoBehaviour
                 currentPanel = LightV3UIPanel.LightRotationPanel;
                 break;
             case LightV3UIPanel.LightRotationPanel:
+                currentPanel = PlatformDescriptor.HasTranslationEvent ? LightV3UIPanel.LightTranslationPanel : LightV3UIPanel.LightColorPanel;
+                break;
+            case LightV3UIPanel.LightTranslationPanel:
                 currentPanel = LightV3UIPanel.LightColorPanel;
                 break;
         }
@@ -82,6 +88,8 @@ public class LightV3GeneratorAppearance : MonoBehaviour
             {
                 case LightV3UIPanel.LightRotationPanel:
                     return 0;
+                case LightV3UIPanel.LightTranslationPanel:
+                    return thirdCollectionOffset;
             }
         }
         else if (currentPanel == LightV3UIPanel.LightRotationPanel)
@@ -89,7 +97,19 @@ public class LightV3GeneratorAppearance : MonoBehaviour
             switch (requestPanel)
             {
                 case LightV3UIPanel.LightColorPanel:
+                    return PlatformDescriptor.HasTranslationEvent ? thirdCollectionOffset : 0;
+                case LightV3UIPanel.LightTranslationPanel:
                     return 0;
+            }
+        }
+        else if (currentPanel == LightV3UIPanel.LightTranslationPanel)
+        {
+            switch (requestPanel)
+            {
+                case LightV3UIPanel.LightColorPanel:
+                    return 0;
+                case LightV3UIPanel.LightRotationPanel:
+                    return thirdCollectionOffset;
             }
         }
         return 0;
