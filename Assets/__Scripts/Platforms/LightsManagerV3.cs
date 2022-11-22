@@ -7,6 +7,7 @@ public class LightsManagerV3 : LightsManager
 {
     [Header("V3 Configurations")]
     public int GroupId;
+    public bool HasColorEvent = true;
     public bool XRotatable = true;
     public bool YRotatable = false;
     public bool XFlip = false;
@@ -28,6 +29,9 @@ public class LightsManagerV3 : LightsManager
         public float TranslationMultiplierZ = 1;
     }
     public TranslationConfiguration TranslationConfig;
+
+    public bool HasRotationEvent => XRotatable || YRotatable || ZRotatable;
+    public bool HasTranslationEvent => TranslationConfig.XTranslatable || TranslationConfig.YTranslatable || TranslationConfig.ZTranslatable;
 
     public List<RotatingEvent> ControllingRotations = new List<RotatingEvent>();
     public List<TranslationEvent> ControllingTranslations = new List<TranslationEvent>();

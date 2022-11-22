@@ -98,6 +98,29 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
         }
     }
 
+    private string ConstructLightEventString(LightsManagerV3 lightsManager)
+    {
+        List<string> events = new List<string>();
+        if (lightsManager.HasColorEvent) events.Add("C");
+        if (lightsManager.HasRotationEvent)
+        {
+            string tmp = "R";
+            if (lightsManager.XRotatable) tmp += "x";
+            if (lightsManager.YRotatable) tmp += "y";
+            if (lightsManager.ZRotatable) tmp += "z";
+            events.Add(tmp);
+        }
+        if (lightsManager.HasTranslationEvent)
+        {
+            string tmp = "T";
+            if (lightsManager.TranslationConfig.XTranslatable) tmp += "x";
+            if (lightsManager.TranslationConfig.YTranslatable) tmp += "y";
+            if (lightsManager.TranslationConfig.ZTranslatable) tmp += "z";
+            events.Add(tmp);
+        }
+        return "{" + string.Join(", ", events) + "}";
+    }
+
     public void UpdateGrids()
     {
         lightColorEventPlacement.SetGridSize(platformDescriptor.LightsManagersV3.Length);
@@ -107,7 +130,9 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
             instantiate.SetActive(true);
             instantiate.transform.localPosition = new Vector3(i, 0, 0);
             var textMesh = instantiate.GetComponentInChildren<TextMeshProUGUI>();
-            textMesh.text = platformDescriptor.LightsManagersV3[i].name;
+            var name = platformDescriptor.LightsManagersV3[i].name;
+            var eventString = ConstructLightEventString(platformDescriptor.LightsManagersV3[i]);
+            textMesh.text = name + "\t\t" + eventString;
         }
     }
 

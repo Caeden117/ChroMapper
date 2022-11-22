@@ -71,9 +71,9 @@ public class TranslationEvent : MonoBehaviour, ILightEventV3
     [SerializeField] internal float translationMultiplierX = 1;
     [SerializeField] internal float translationMultiplierY = 1;
     [SerializeField] internal float translationMultiplierZ = 1;
-    public TranslationEventData XData;
-    public TranslationEventData YData;
-    public TranslationEventData ZData;
+    public TranslationEventData XData = new TranslationEventData();
+    public TranslationEventData YData = new TranslationEventData();
+    public TranslationEventData ZData = new TranslationEventData();
 
     protected void Update()
     {
