@@ -350,7 +350,10 @@ public class EventAppearanceSO : ScriptableObject
         var ebd = eb.EventDatas[dataIdx];
         var text = GenerateFilterString(eb.Filter);
         var prefix = "";
-        prefix = rotationTransitionMark[ebd.EaseType + 1];
+        if (ebd.UsePrevious == 1)
+            prefix = "E";
+        else
+            prefix = rotationTransitionMark[ebd.EaseType + 1];
         text = prefix + text;
 
         text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
