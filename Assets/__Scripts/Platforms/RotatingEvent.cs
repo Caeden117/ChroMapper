@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class RotatingEventData
 {
-    private static readonly Func<float, float>[] easingFunctions =
+    internal static readonly Func<float, float>[] easingFunctions =
     {
         NoneTransition,
         Easing.Linear,
