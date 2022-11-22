@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -194,7 +195,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         try
         {
             if (!isEditing || !IsActive) return;
-            var newNode = JSON.Parse(nodeText); //Parse JSON, and do some basic checks.
+            var visibleText = Regex.Replace(nodeText, @"\p{C}+", string.Empty);
+            var newNode = JSON.Parse(visibleText); //Parse JSON, and do some basic checks.
             if (string.IsNullOrEmpty(newNode.ToString())) //Damn you Jackz
                 throw new Exception("Node cannot be empty.");
 
