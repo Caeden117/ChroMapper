@@ -355,7 +355,7 @@ public class EventAppearanceSO : ScriptableObject
 
         text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
             + "/" + GenerateDistributionString(eb.TranslationDistribution, eb.TranslationDistributionType, dataIdx != 0 || eb.TranslationAffectFirst == 1);
-        text += "\n" + (eb.Flip == 1 ? "-" : "+") + ebd.TranslateValue;
+        text += "\n" + (eb.Flip == 1 ? "-" : "+") + Mathf.RoundToInt(ebd.TranslateValue * 100) + "%";
 
         e.UpdateTextDisplay(true, text);
         e.ChangeColor(otherColor, dataIdx != 0 || !final);
