@@ -29,6 +29,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         DropdownDumpFn.Add(x => x.EventBoxes[0].BrightnessDistributionType - 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].TransitionType);
         DropdownDumpFn.Add(x => x.EventBoxes[0].Filter.RandomType);
+        DropdownDumpFn.Add(x => x.EventBoxes[0].DataDistributionEaseType);
 
         TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Step");
         TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Start");
@@ -58,6 +59,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].BrightnessDistributionType = i + 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].TransitionType = i);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Filter.RandomType = i);
+        DropdownLoadFn.Add((x, i) => x.EventBoxes[0].DataDistributionEaseType = i);
 
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].BrightnessAffectFirst = b ? 1 : 0);

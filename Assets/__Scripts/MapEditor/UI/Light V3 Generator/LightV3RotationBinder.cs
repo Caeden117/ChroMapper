@@ -29,6 +29,7 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         DropdownDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].EaseType + 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].RotationDirection);
         DropdownDumpFn.Add(x => x.EventBoxes[0].Filter.RandomType);
+        DropdownDumpFn.Add(x => x.EventBoxes[0].DataDistributionEaseType);
 
         ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.Reverse == 1);
         ToggleDumpFn.Add(x => x.EventBoxes[0].RotationAffectFirst == 1);
@@ -61,6 +62,7 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].EaseType = i - 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].RotationDirection = i);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Filter.RandomType = i);
+        DropdownLoadFn.Add((x, i) => x.EventBoxes[0].DataDistributionEaseType = i);
 
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].RotationAffectFirst = b ? 1 : 0);
