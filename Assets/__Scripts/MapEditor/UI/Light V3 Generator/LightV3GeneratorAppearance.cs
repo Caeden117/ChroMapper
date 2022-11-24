@@ -50,7 +50,7 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     private IEnumerator UpdateGroup(bool enabled, RectTransform group)
     {
         IsActive = enabled;
-        float dest = enabled ? -150 : 120;
+        float dest = enabled ? -150 : 140;
         var og = group.anchoredPosition.x;
         float t = 0;
         while (t < 1)
