@@ -38,6 +38,8 @@ public class LightV3TranslationBinder : MetaLightV3Binder<BeatmapLightTranslatio
         TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Step");
         TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Start");
         TextsDumpFn.Add(x => $"{DataIdx + 1}/{x.EventBoxes[0].EventDatas.Count}");
+        TextsDumpFn.Add(x => DisplayingSelectedObject ? LightV3Appearance.GetTotalLightCount(x).ToString() : "-");
+        TextsDumpFn.Add(x => DisplayingSelectedObject ? LightV3Appearance.GetFilteredLightCount(x).ToString() : "-");
 
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Section = x.EventBoxes[0].Filter.FilterType == 1 ? int.Parse(s) - 1 : int.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Partition = int.Parse(s));

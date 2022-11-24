@@ -33,6 +33,7 @@ public abstract class MetaLightV3Binder<T> : MonoBehaviour
     protected const string MixedMark = "-";
     [SerializeField] protected Sprite CheckMark;
     [SerializeField] protected Sprite MixedIcon;
+    [SerializeField] protected LightV3GeneratorAppearance LightV3Appearance;
 
     protected void Awake()
     {

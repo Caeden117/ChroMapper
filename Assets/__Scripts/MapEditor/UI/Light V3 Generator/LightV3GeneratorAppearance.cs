@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -113,6 +114,48 @@ public class LightV3GeneratorAppearance : MonoBehaviour
                     return thirdCollectionOffset;
             }
         }
+        return 0;
+    }
+
+    public int GetTotalLightCount<TBo>(TBo x)
+    {
+        try
+        {
+            switch (x)
+            {
+                case BeatmapLightColorEvent colorEvent:
+                    return PlatformDescriptor.LightsManagersV3[PlatformDescriptor.GroupIdToLaneIndex(colorEvent.Group)].ControllingLights.Count;
+                case BeatmapLightRotationEvent rotationEvent:
+                    return PlatformDescriptor.LightsManagersV3[PlatformDescriptor.GroupIdToLaneIndex(rotationEvent.Group)].ControllingRotations.Count;
+                case BeatmapLightTranslationEvent translationEvent:
+                    return PlatformDescriptor.LightsManagersV3[PlatformDescriptor.GroupIdToLaneIndex(translationEvent.Group)].ControllingTranslations.Count;
+            }
+        }
+        catch { }
+        return 0;
+    }
+
+    public int GetFilteredLightCount<TBo>(TBo x)
+    {
+        try
+        {
+            switch (x)
+            {
+                case BeatmapLightColorEvent colorEvent:
+                    return colorEvent.EventBoxes[0].Filter.Filter(
+                        PlatformDescriptor.LightsManagersV3[PlatformDescriptor.GroupIdToLaneIndex(colorEvent.Group)]
+                        .ControllingLights).Count();
+                case BeatmapLightRotationEvent rotationEvent:
+                    return rotationEvent.EventBoxes[0].Filter.Filter(
+                        PlatformDescriptor.LightsManagersV3[PlatformDescriptor.GroupIdToLaneIndex(rotationEvent.Group)]
+                        .ControllingRotations).Count();
+                case BeatmapLightTranslationEvent translationEvent:
+                    return translationEvent.EventBoxes[0].Filter.Filter(
+                        PlatformDescriptor.LightsManagersV3[PlatformDescriptor.GroupIdToLaneIndex(translationEvent.Group)]
+                        .ControllingTranslations).Count();
+            }
+        }
+        catch { }
         return 0;
     }
 
