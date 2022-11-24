@@ -11,6 +11,10 @@ public class LightTranslationEventsContainer : LightEventsContainerCollectionBas
     TranslationEvent
     >
 {
+    public LightTranslationEventCallbackController RealSpawnCallbackController;
+    public LightTranslationEventCallbackController RealDespawnCallbackController;
+
+
     public override BeatmapObject.ObjectType ContainerType => BeatmapObject.ObjectType.LightTranslationEvent;
 
     protected override LightV3GeneratorAppearance.LightV3UIPanel ThisUIPannel => LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel;
@@ -44,4 +48,21 @@ public class LightTranslationEventsContainer : LightEventsContainerCollectionBas
     protected override StaticGraphEnumerator GraphEnumerator => translationGraphEnumerator;
 
     protected override List<TranslationEvent> GetAllLights(int laneIdx) => platformDescriptor.LightsManagersV3[laneIdx].ControllingTranslations;
+
+
+    internal override void SubscribeToCallbacks()
+    {
+        base.SubscribeToCallbacks();
+        RealSpawnCallbackController.ObjectPassedThreshold += SpawnCallback;
+        RealSpawnCallbackController.RecursiveObjectCheckFinished += RecursiveCheckFinished;
+        RealDespawnCallbackController.ObjectPassedThreshold += DespawnCallback;
+    }
+
+    internal override void UnsubscribeToCallbacks()
+    {
+        base.SubscribeToCallbacks();
+        RealSpawnCallbackController.ObjectPassedThreshold -= SpawnCallback;
+        RealSpawnCallbackController.RecursiveObjectCheckFinished -= RecursiveCheckFinished;
+        RealDespawnCallbackController.ObjectPassedThreshold -= DespawnCallback;
+    }
 }
