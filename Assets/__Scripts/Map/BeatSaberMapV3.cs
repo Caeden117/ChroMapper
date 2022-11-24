@@ -301,7 +301,6 @@ public class BeatSaberMapV3 : BeatSaberMap
             mapV3.LightColorEventBoxGroups = lightColorEventBoxGroupsList;
             mapV3.LightRotationEventBoxGroups = lightRotationEventBoxGroupsList;
             mapV3.LightTranslationEventBoxGroups = lightTranslationEventBoxGroupsList;
-            Debug.Log(mapV3.LightTranslationEventBoxGroups.Count + " loaded");
             mapV3.BasicEventTypesWithKeywords = basicEventTypesWithKeywordsDict;
 
             var mapV2 = mapV3 as BeatSaberMap;

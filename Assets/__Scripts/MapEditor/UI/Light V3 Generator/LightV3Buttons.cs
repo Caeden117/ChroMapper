@@ -213,4 +213,62 @@ public class LightV3Buttons : MonoBehaviour
             translationTemplate.UpdateObject(currentButton, name);
         }
     }
+
+    public void GenerateDefaultEventsAtStart()
+    {
+        var colorCol = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
+        var rotationCol = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
+        var translationCol = BeatmapObjectContainerCollection.GetCollectionForType<LightTranslationEventsContainer>(BeatmapObject.ObjectType.LightTranslationEvent);
+        var platformDescriptor = colorCol.platformDescriptor;
+        if (HasEventAtStart(colorCol) || HasEventAtStart(rotationCol) || (platformDescriptor.HasTranslationEvent && HasEventAtStart(translationCol)))
+        {
+            PersistentUI.Instance.ShowDialogBox("There seems to be some events at time 0. Please remove them first.", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+        var allActions = new List<BeatmapAction>();
+        for (int i = 0; i < platformDescriptor.LightsManagersV3.Length; ++i)
+        {
+            var lightManager = platformDescriptor.LightsManagersV3[i];
+            if (lightManager.HasColorEvent)
+            {
+                var obj = new BeatmapLightColorEvent();
+                obj.EventBoxes[0].EventDatas[0].Brightness = 0;
+                obj.Group = lightManager.GroupId;
+                colorCol.SpawnObject(obj, out var conflict, false, false);
+                allActions.Add(new BeatmapObjectPlacementAction(obj, conflict, ""));
+            }
+            if (lightManager.HasRotationEvent)
+            {
+                for (int axis = 0; axis <= 2; ++axis)
+                {
+                    if (!lightManager.IsValidRotationAxis(axis)) continue;
+                    var obj = new BeatmapLightRotationEvent();
+                    obj.Group = lightManager.GroupId;
+                    rotationCol.SpawnObject(obj, out var conflict, false, false);
+                    allActions.Add(new BeatmapObjectPlacementAction(obj, conflict, ""));
+                }
+            }
+            if (lightManager.HasTranslationEvent)
+            {
+                for (int axis = 0; axis <= 2; ++axis)
+                {
+                    if (!lightManager.IsValidTranslationAxis(axis)) continue;
+                    var obj = new BeatmapLightTranslationEvent();
+                    obj.Group = lightManager.GroupId;
+                    translationCol.SpawnObject(obj, out var conflict, false, false);
+                    allActions.Add(new BeatmapObjectPlacementAction(obj, conflict, ""));
+                }
+            }
+        }
+        colorCol.RefreshPool(true);
+        rotationCol.RefreshPool(true);
+        if (platformDescriptor.HasTranslationEvent) translationCol.RefreshPool(true);
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, false, $"Spawn default events at start"));
+    }
+
+    private bool HasEventAtStart<T>(T col)
+        where T: BeatmapObjectContainerCollection
+    {
+        return col.GetBetween(0, 1e-3f).Any();
+    }
 }
