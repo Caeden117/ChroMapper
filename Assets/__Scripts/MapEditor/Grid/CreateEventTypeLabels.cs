@@ -52,6 +52,8 @@ public class CreateEventTypeLabels : MonoBehaviour
         {
             var modified = (propMode == EventsContainer.PropMode.Off ? EventTypeToModifiedType(i) : i) +
                            NoRotationLaneOffset;
+
+            int eventTypeV3 = i; // v3 event may be discontinuous, see The Weeknd Environment
             if (propMode == EventsContainer.PropMode.Off && Settings.Instance.Load_MapV3)
             {
             // v3 light system may have fewer v2 light lanes
@@ -59,11 +61,16 @@ public class CreateEventTypeLabels : MonoBehaviour
                 {
                     modified += AvailableLightLaneOffset;
                 }
+                var descriptor = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.ObjectType.Event).platformDescriptor;
+                if (descriptor is PlatformDescriptorV3 descriptorV3)
+                {
+                    eventTypeV3 = i >= descriptorV3.LightV2Mapping.Count ? i : descriptorV3.LightV2Mapping[i];
+                }
             }
 
             if (modified < 0 && propMode == EventsContainer.PropMode.Off) continue;
 
-            var laneInfo = new LaneInfo(i, propMode != EventsContainer.PropMode.Off ? i : modified);
+            var laneInfo = new LaneInfo(eventTypeV3, propMode != EventsContainer.PropMode.Off ? i : modified);
 
             var instantiate = Instantiate(LayerInstantiate, LayerInstantiate.transform.parent);
             instantiate.SetActive(true);

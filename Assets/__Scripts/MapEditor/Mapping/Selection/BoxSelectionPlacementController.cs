@@ -91,6 +91,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 TestForType<ChainPlacement>(hit, BeatmapObject.ObjectType.Chain);
                 TestForType<LightColorEventPlacement>(hit, BeatmapObject.ObjectType.LightColorEvent);
                 TestForType<LightRotationEventPlacement>(hit, BeatmapObject.ObjectType.LightRotationEvent);
+                TestForType<LightTranslationEventPlacement>(hit, BeatmapObject.ObjectType.LightTranslationEvent);
             }
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
@@ -160,6 +161,11 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
                 else if (bo is BeatmapLightRotationEvent rotationEvent)
                 {
                     var pos = rotationEvent.GetPosition(lightColorEventsContainer.platformDescriptor);
+                    p = new Vector2(pos.x + Bounds.min.x, pos.y);
+                }
+                else if (bo is BeatmapLightTranslationEvent translationEvent)
+                {
+                    var pos = translationEvent.GetPosition(lightColorEventsContainer.platformDescriptor);
                     p = new Vector2(pos.x + Bounds.min.x, pos.y);
                 }
                 else if (bo is MapEvent evt)

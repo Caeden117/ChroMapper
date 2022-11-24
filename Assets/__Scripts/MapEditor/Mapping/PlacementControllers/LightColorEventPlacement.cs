@@ -74,7 +74,7 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
     public void UpdateAppearance()
     {
         if (instantiatedContainer is null) RefreshVisuals();
-        instantiatedContainer.ColorEventData = queuedData;
+        instantiatedContainer.LightEventData = queuedData;
         eventAppearanceSO.SetLightColorEventAppearance(instantiatedContainer, false, 0, false);
     }
 
@@ -101,7 +101,7 @@ public class LightColorEventPlacement : PlacementController<BeatmapLightColorEve
             newData.EventBoxes[0].EventDatas.Insert(idx + 1, ebd);
             if (objectContainerCollection.LoadedContainers.TryGetValue(newData, out var con))
             {
-                (con as BeatmapLightColorEventContainer).SpawnEventDatas(eventAppearanceSO, eventsContainer);
+                (con as BeatmapLightColorEventContainer).SpawnEventDatas(eventAppearanceSO);
             }
             BeatmapActionContainer.AddAction(GenerateAction(newData, new[] { originData }));
         }

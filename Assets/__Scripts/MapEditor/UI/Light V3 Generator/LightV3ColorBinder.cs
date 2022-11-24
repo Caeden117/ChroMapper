@@ -20,18 +20,27 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         InputDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].Color.ToString());
         InputDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].Brightness.ToString());
         InputDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].FlickerFrequency.ToString());
+        InputDumpFn.Add(x => x.EventBoxes[0].Filter.Chunk.ToString());
+        InputDumpFn.Add(x => x.EventBoxes[0].Filter.RandomSeed.ToString());
+        InputDumpFn.Add(x => x.EventBoxes[0].Filter.Limit.ToString());
 
         DropdownDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType - 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].DistributionType - 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].BrightnessDistributionType - 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].TransitionType);
+        DropdownDumpFn.Add(x => x.EventBoxes[0].Filter.RandomType);
+        DropdownDumpFn.Add(x => x.EventBoxes[0].DataDistributionEaseType);
 
         TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Section" : "Step");
         TextsDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType == 1 ? "Partition" : "Start");
         TextsDumpFn.Add(x => $"{DataIdx + 1}/{x.EventBoxes[0].EventDatas.Count}");
+        TextsDumpFn.Add(x => DisplayingSelectedObject ? LightV3Appearance.GetTotalLightCount(x).ToString() : "-");
+        TextsDumpFn.Add(x => DisplayingSelectedObject ? LightV3Appearance.GetFilteredLightCount(x).ToString() : "-");
 
         ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.Reverse == 1);
         ToggleDumpFn.Add(x => x.EventBoxes[0].BrightnessAffectFirst == 1);
+        ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.TimeLimited);
+        ToggleDumpFn.Add(x => x.EventBoxes[0].Filter.DataLimited);
 
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Section = x.EventBoxes[0].Filter.FilterType == 1 ? int.Parse(s) - 1 : int.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Partition = int.Parse(s));
@@ -41,52 +50,22 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         InputLoadFn.Add((x, s) => x.EventBoxes[0].EventDatas[DataIdx].Color = int.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].EventDatas[DataIdx].Brightness = float.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].EventDatas[DataIdx].FlickerFrequency = int.Parse(s));
+        InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Chunk = int.Parse(s));
+        InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.RandomSeed = int.Parse(s));
+        InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Limit = int.Parse(s));
 
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Filter.FilterType = i + 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].DistributionType = i + 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].BrightnessDistributionType = i + 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].TransitionType = i);
+        DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Filter.RandomType = i);
+        DropdownLoadFn.Add((x, i) => x.EventBoxes[0].DataDistributionEaseType = i);
 
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].BrightnessAffectFirst = b ? 1 : 0);
+        ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.TimeLimited = b);
+        ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.DataLimited = b);
 
-        for (int i = 0; i < InputFields.Length; ++i)
-        {
-            var currentIdx = new int();
-            currentIdx = i;
-            InputFields[currentIdx].onEndEdit.AddListener((t) => {
-                if (DisplayingSelectedObject) return;
-                InputLoadFn[currentIdx](ObjectData, t);
-                UpdateToPlacement();
-            });
-        }
-
-        for (int i = 0; i < Dropdowns.Length; ++i)
-        {
-            var currentIdx = new int();
-            currentIdx = i;
-            Dropdowns[currentIdx].onValueChanged.AddListener((t) => { 
-                if (DisplayingSelectedObject) return;
-                DropdownLoadFn[currentIdx](ObjectData, t); 
-                UpdateToPlacement(); 
-            });
-        }
-        Dropdowns[0].onValueChanged.AddListener((t) =>
-        {
-            Texts[0].text = t == 0 ? "Section" : "Step";
-            Texts[1].text = t == 0 ? "Partition" : "Start";
-        });
-
-        for (int i = 0; i < Toggles.Length; ++i)
-        {
-            var currentIdx = new int();
-            currentIdx = i;
-            Toggles[currentIdx].onValueChanged.AddListener((t) => { 
-                if (DisplayingSelectedObject) return;
-                ToggleLoadFn[currentIdx](ObjectData, t); 
-                UpdateToPlacement(); 
-            });
-        }
     }
 
     public override void Dump(BeatmapLightColorEvent obj)
@@ -104,7 +83,7 @@ public class LightV3ColorBinder : MetaLightV3Binder<BeatmapLightColorEvent>, CMI
         base.Dump(obj);
     }
 
-    public void UpdateToPlacement()
+    public override void UpdateToPlacement()
     {
         lightColorEventPlacement.UpdateData(ObjectData);
     }

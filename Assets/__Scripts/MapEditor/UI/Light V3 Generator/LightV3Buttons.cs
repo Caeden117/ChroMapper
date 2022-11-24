@@ -9,10 +9,12 @@ public class LightV3Buttons : MonoBehaviour
 {
     [SerializeField] private LightV3ColorBinder colorBinder;
     [SerializeField] private LightV3RotationBinder rotationBinder;
-
+    [SerializeField] private LightV3TranslationBinder translationBinder;
     [SerializeField] private LightV3ColorTemplateSaver colorTemplate;
     [SerializeField] private LightV3RotationTemplateSaver rotationTemplate;
+    [SerializeField] private LightV3TranslationTemplateSaver translationTemplate;
     [SerializeField] private LightV3GeneratorAppearance uiGenerator;
+
 
     [SerializeField] private TMP_Text switchText;
     private DialogBox createTemplatedialogBox;
@@ -50,12 +52,25 @@ public class LightV3Buttons : MonoBehaviour
 
         colorTemplate.AddObject(colorBinder.ObjectData, "default");
         rotationTemplate.AddObject(rotationBinder.ObjectData, "default").SetActive(false);
+        translationTemplate.AddObject(translationBinder.ObjectData, "default").SetActive(false);
     }
 
     private void StoreCurrentPanel(LightV3GeneratorAppearance.LightV3UIPanel obj)
     {
         currentPanel = obj;
-        switchText.text = "Switch to " + (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel ? "Rotation" : "Color");
+        switchText.text = "Switch to ";
+        switch (currentPanel)
+        {
+            case LightV3GeneratorAppearance.LightV3UIPanel.LightColorPanel:
+                switchText.text += "Rotation";
+                break;
+            case LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel:
+                switchText.text += uiGenerator.PlatformDescriptor.HasTranslationEvent ? "Translation" : "Color";
+                break;
+            case LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel:
+                switchText.text += "Color";
+                break;
+        }
     }
 
     private void OnDestroy()
@@ -68,9 +83,13 @@ public class LightV3Buttons : MonoBehaviour
         {
             GroupApply<BeatmapLightColorEvent, LightColorEventsContainer>(colorBinder, BeatmapObject.ObjectType.LightColorEvent);
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             GroupApply<BeatmapLightRotationEvent, LightRotationEventsContainer>(rotationBinder, BeatmapObject.ObjectType.LightRotationEvent);
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            GroupApply<BeatmapLightTranslationEvent, LightTranslationEventsContainer>(translationBinder, BeatmapObject.ObjectType.LightTranslationEvent);
         }
     }
 
@@ -101,9 +120,13 @@ public class LightV3Buttons : MonoBehaviour
         {
             colorTemplate.AddObject(colorBinder.DisplayingData, name);
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             rotationTemplate.AddObject(rotationBinder.DisplayingData, name);
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            translationTemplate.AddObject(translationBinder.DisplayingData, name);
         }
     }
 
@@ -115,11 +138,17 @@ public class LightV3Buttons : MonoBehaviour
             colorBinder.Dump(colorBinder.ObjectData);
             colorBinder.UpdateToPlacement();
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             rotationTemplate.ApplyObject(rotationBinder.ObjectData, button);
             rotationBinder.Dump(rotationBinder.ObjectData);
             rotationBinder.UpdateToPlacement();
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            translationTemplate.ApplyObject(translationBinder.ObjectData, button);
+            translationBinder.Dump(translationBinder.ObjectData);
+            translationBinder.UpdateToPlacement();
         }
     }
 
@@ -129,9 +158,13 @@ public class LightV3Buttons : MonoBehaviour
         {
             colorTemplate.RemoveObject(button);
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             rotationTemplate.RemoveObject(button);
+        }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            translationTemplate.RemoveObject(button);
         }
     }
 
@@ -147,9 +180,73 @@ public class LightV3Buttons : MonoBehaviour
         {
             colorTemplate.UpdateObject(currentButton, name);
         }
-        else
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightRotationPanel)
         {
             rotationTemplate.UpdateObject(currentButton, name);
         }
+        else if (currentPanel == LightV3GeneratorAppearance.LightV3UIPanel.LightTranslationPanel)
+        {
+            translationTemplate.UpdateObject(currentButton, name);
+        }
+    }
+
+    public void GenerateDefaultEventsAtStart()
+    {
+        var colorCol = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
+        var rotationCol = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
+        var translationCol = BeatmapObjectContainerCollection.GetCollectionForType<LightTranslationEventsContainer>(BeatmapObject.ObjectType.LightTranslationEvent);
+        var platformDescriptor = colorCol.platformDescriptor;
+        if (HasEventAtStart(colorCol) || HasEventAtStart(rotationCol) || (platformDescriptor.HasTranslationEvent && HasEventAtStart(translationCol)))
+        {
+            PersistentUI.Instance.ShowDialogBox("There seems to be some events at time 0. Please remove them first.", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+        var allActions = new List<BeatmapAction>();
+        for (int i = 0; i < platformDescriptor.LightsManagersV3.Length; ++i)
+        {
+            var lightManager = platformDescriptor.LightsManagersV3[i];
+            if (lightManager.HasColorEvent)
+            {
+                var obj = new BeatmapLightColorEvent();
+                obj.EventBoxes[0].EventDatas[0].Brightness = 0;
+                obj.Group = lightManager.GroupId;
+                colorCol.SpawnObject(obj, out var conflict, false, false);
+                allActions.Add(new BeatmapObjectPlacementAction(obj, conflict, ""));
+            }
+            if (lightManager.HasRotationEvent)
+            {
+                for (int axis = 0; axis <= 2; ++axis)
+                {
+                    if (!lightManager.IsValidRotationAxis(axis)) continue;
+                    var obj = new BeatmapLightRotationEvent();
+                    obj.Group = lightManager.GroupId;
+                    obj.EventBoxes[0].Axis = axis;
+                    rotationCol.SpawnObject(obj, out var conflict, false, false);
+                    allActions.Add(new BeatmapObjectPlacementAction(obj, conflict, ""));
+                }
+            }
+            if (lightManager.HasTranslationEvent)
+            {
+                for (int axis = 0; axis <= 2; ++axis)
+                {
+                    if (!lightManager.IsValidTranslationAxis(axis)) continue;
+                    var obj = new BeatmapLightTranslationEvent();
+                    obj.Group = lightManager.GroupId;
+                    obj.EventBoxes[0].Axis = axis;
+                    translationCol.SpawnObject(obj, out var conflict, false, false);
+                    allActions.Add(new BeatmapObjectPlacementAction(obj, conflict, ""));
+                }
+            }
+        }
+        colorCol.RefreshPool(true);
+        rotationCol.RefreshPool(true);
+        if (platformDescriptor.HasTranslationEvent) translationCol.RefreshPool(true);
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, false, $"Spawn default events at start"));
+    }
+
+    private bool HasEventAtStart<T>(T col)
+        where T: BeatmapObjectContainerCollection
+    {
+        return col.GetBetween(0, 1e-3f).Any();
     }
 }

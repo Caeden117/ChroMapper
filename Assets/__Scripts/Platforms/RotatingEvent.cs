@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class RotatingEventData
 {
-    private static readonly Func<float, float>[] easingFunctions =
+    internal static readonly Func<float, float>[] easingFunctions =
     {
         NoneTransition,
         Easing.Linear,
@@ -105,32 +105,34 @@ public class RotatingEventData
 /// <summary>
 /// Although there are <see cref="TrackLaneRing"/> and <see cref="RotatingLights"/>, they could not perfectly meet v3 rotation needs.
 /// </summary>
-public class RotatingEvent : MonoBehaviour
+public class RotatingEvent : MonoBehaviour, ILightEventV3
 {
 
     internal LightsManagerV3 lightsManager;
     public int RotationIdx;
+    [SerializeField] private float rotationMultiplier = 1;
     public RotatingEventData XData = new RotatingEventData();
     public RotatingEventData YData = new RotatingEventData();
+    public RotatingEventData ZData = new RotatingEventData();
 
     protected void Update()
     {
         if (lightsManager == null) return;
         var dt = Time.deltaTime;
-        if (lightsManager.ZRotatable) // for rings
+        if (lightsManager.TreatZAsX) // for rings
         {
             transform.localEulerAngles = new Vector3(
                 0,
                 0,
-                XData.LerpAngle(dt)
+                XData.LerpAngle(dt) * rotationMultiplier
                 );
         }
         else // for light beams
         {
             transform.localEulerAngles = new Vector3(
-                XData.LerpAngle(dt),
-                YData.LerpAngle(dt),
-                0
+                XData.LerpAngle(dt) * rotationMultiplier,
+                YData.LerpAngle(dt) * rotationMultiplier,
+                ZData.LerpAngle(dt) * rotationMultiplier
                 );
         }
 
@@ -138,12 +140,16 @@ public class RotatingEvent : MonoBehaviour
 
     public RotatingEventData GetAxisData(int axis)
     {
-        return axis == 0 ? XData : YData;
+        return axis == 0 ? XData : 
+            axis == 1 ? YData : ZData;
     }
     public void ResetNoteIndex()
     {
         XData.SetNoteIndex(-1, true);
         YData.SetNoteIndex(-1, true);
+        ZData.SetNoteIndex(-1, true);
     }
+
+    public int GetIndex() => RotationIdx;
 }
 

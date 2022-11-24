@@ -172,7 +172,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             });
             if (Settings.Instance.Load_MapV3)
             {
-                clearTypes.AddRange(new[] { BeatmapObject.ObjectType.LightColorEvent, BeatmapObject.ObjectType.LightRotationEvent });
+                clearTypes.AddRange(new[] { BeatmapObject.ObjectType.LightColorEvent, BeatmapObject.ObjectType.LightRotationEvent, BeatmapObject.ObjectType.LightTranslationEvent });
             }
         }
 
@@ -577,6 +577,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 rotEvent.Group = dscrpt.LaneIndexToGroupId(dscrpt.GroupIdToLaneIndex(rotEvent.Group) + leftRight);
                 rotEvent.Time += upDown;
             }
+            else if (data is BeatmapLightTranslationEvent transEvent)
+            {
+                var col = BeatmapObjectContainerCollection.GetCollectionForType<LightTranslationEventsContainer>(BeatmapObject.ObjectType.LightTranslationEvent);
+                var dscrpt = col.platformDescriptor;
+                transEvent.Group = dscrpt.LaneIndexToGroupId(dscrpt.GroupIdToLaneIndex(transEvent.Group) + leftRight);
+                transEvent.Time += upDown;
+            }
             else if (data is MapEvent e)
             {
                 var events = eventPlacement.objectContainerCollection;
@@ -737,6 +744,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     newObjects[BeatmapObject.ObjectType.LightColorEvent].Cast<BeatmapLightColorEvent>().ToList();
                 (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).LightRotationEventBoxGroups =
                     newObjects[BeatmapObject.ObjectType.LightRotationEvent].Cast<BeatmapLightRotationEvent>().ToList();
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).LightTranslationEventBoxGroups =
+                    newObjects[BeatmapObject.ObjectType.LightTranslationEvent].Cast<BeatmapLightTranslationEvent>().ToList();
             }
         }
     }

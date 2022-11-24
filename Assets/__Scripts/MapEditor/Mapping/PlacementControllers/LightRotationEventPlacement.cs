@@ -44,7 +44,7 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
     public void UpdateAppearance()
     {
         if (instantiatedContainer is null) RefreshVisuals();
-        instantiatedContainer.RotationEventData = queuedData;
+        instantiatedContainer.LightEventData = queuedData;
         eventAppearanceSO.SetLightRotationEventAppearance(instantiatedContainer, 0, false);
     }
 
@@ -87,14 +87,10 @@ public class LightRotationEventPlacement : PlacementController<BeatmapLightRotat
     private bool SanityCheck()
     {
         var groupLight = platformDescriptor.LightsManagersV3[platformDescriptor.GroupIdToLaneIndex(objectGroup)];
-        if (queuedData.EventBoxes[0].Axis == 0 && !groupLight.XRotatable)
+        if (!groupLight.IsValidRotationAxis(queuedData.EventBoxes[0].Axis))
         {
-            PersistentUI.Instance.ShowDialogBox("This lane cannot rotate around X axis", null, PersistentUI.DialogBoxPresetType.Ok);
-            return false;
-        }
-        if (queuedData.EventBoxes[0].Axis == 1 && !groupLight.YRotatable)
-        {
-            PersistentUI.Instance.ShowDialogBox("This lane cannot rotate around Y axis", null, PersistentUI.DialogBoxPresetType.Ok);
+            PersistentUI.Instance.ShowDialogBox($"This lane cannot rotate around " +
+                $"{LightTranslationEventPlacement.axisName[queuedData.EventBoxes[0].Axis]} axis", null, PersistentUI.DialogBoxPresetType.Ok);
             return false;
         }
         if (!BeatmapLightEventFilter.SanityCheck(queuedData.EventBoxes[0].Filter)) return false;

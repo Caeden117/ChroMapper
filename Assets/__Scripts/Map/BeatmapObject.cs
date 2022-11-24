@@ -24,6 +24,7 @@ public abstract class BeatmapObject
         Chain, // introduced in v3
         LightColorEvent, // v3 light system(LightColorEvent)
         LightRotationEvent, // v3 light system(LightRotationEvent) 
+        LightTranslationEvent, // v3 light system(LightTranslationEvent)
     }
 
     public const string BeatmapObjectV3CustomDataKey = "customData";
@@ -97,6 +98,15 @@ public abstract class BeatmapObject
                 break;
             case BeatmapArc arc:
                 objectData = new BeatmapArc(arc) as T;
+                break;
+            case BeatmapLightColorEventData ebd:
+                objectData = new BeatmapLightColorEventData(ebd.Time, ebd.TransitionType, ebd.Color, ebd.Brightness, ebd.FlickerFrequency) as T;
+                break;
+            case BeatmapLightRotationEventData ebd:
+                objectData = new BeatmapLightRotationEventData(ebd.Time, ebd.Transition, ebd.EaseType, ebd.AdditionalLoop, ebd.RotationValue, ebd.RotationDirection) as T;
+                break;
+            case BeatmapLightTranslationEventData ebd:
+                objectData = new BeatmapLightTranslationEventData(ebd.Time, ebd.UsePrevious, ebd.EaseType, ebd.TranslateValue) as T;
                 break;
             default:
                 objectData =

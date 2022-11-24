@@ -147,17 +147,19 @@ public class PauseToggleLights : MonoBehaviour
         var descriptorV3 = descriptor as PlatformDescriptorV3;
         var colorCol = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
         var rotCol = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
+        var transCol = BeatmapObjectContainerCollection.GetCollectionForType<LightTranslationEventsContainer>(BeatmapObject.ObjectType.LightTranslationEvent);
         var time = atsc.CurrentBeat;
         for (int i = 0; i < descriptorV3.LightsManagersV3.Length; ++i)
         {
             int group = descriptorV3.LaneIndexToGroupId(i);
             for (int lightIdx = 0; lightIdx < descriptorV3.LightsManagersV3[i].ControllingLights.Count; ++lightIdx)
             {
+                if (!descriptorV3.LightsManagersV3[i].IsValidColorLane()) break;
                 var light = descriptorV3.LightsManagersV3[i].ControllingLights[lightIdx];
-                if (colorCol.TryGetPreviousLightColorEventData(group, lightIdx, time, out var prev))
+                if (colorCol.TryGetPreviousLightEventData(group, lightIdx, 0, time, out var prev))
                 {
                     descriptorV3.SetLightColorFromData(light, prev, 0);
-                    if (colorCol.TryGetNextLightColorEventData(group, lightIdx, time, out var next) && next.TransitionType == 1)
+                    if (colorCol.TryGetNextLightEventData(group, lightIdx, 0, time, out var next) && next.TransitionType == 1)
                     {
                         float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
                         descriptorV3.SetLightColorFromData(light, next, timeToTransition);
@@ -171,16 +173,38 @@ public class PauseToggleLights : MonoBehaviour
                 var rot = descriptorV3.LightsManagersV3[i].ControllingRotations[rotIdx];
                 for (int axis = 0; axis < 2; ++axis)
                 {
+                    if (!descriptorV3.LightsManagersV3[i].IsValidRotationAxis(axis)) continue;
                     var axisData = rot.GetAxisData(axis);
-                    if (rotCol.TryGetPreviousLightRotationEventData(group, rotIdx, axis, time, out var prev))
+                    if (rotCol.TryGetPreviousLightEventData(group, rotIdx, axis, time, out var prev))
                     {
                         axisData.UpdateRotation(prev.RotationValue, 0);
                         // TODO: we should some how set reverse...
 
-                        if (rotCol.TryGetNextLightRotationEventData(group, rotIdx, axis, time, out var next) && next.Transition == 0)
+                        if (rotCol.TryGetNextLightEventData(group, rotIdx, axis, time, out var next) && next.Transition == 0)
                         {
                             float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
                             descriptorV3.SetLightRotationFromData(rot, next, timeToTransition, axis);
+                            axisData.SetCurrentTimeRatio((time - prev.Time) / (next.Time - prev.Time));
+                        }
+                    }
+                }
+            }
+
+            for (int transIdx = 0; transIdx < descriptorV3.LightsManagersV3[i].ControllingTranslations.Count; ++transIdx)
+            {
+                var trans = descriptorV3.LightsManagersV3[i].ControllingTranslations[transIdx];
+                for (int axis = 0; axis < 2; ++axis)
+                {
+                    if (!descriptorV3.LightsManagersV3[i].IsValidTranslationAxis(axis)) continue;
+                    var axisData = trans.GetAxisData(axis);
+                    if (transCol.TryGetPreviousLightEventData(group, transIdx, axis, time, out var prev))
+                    {
+                        axisData.UpdateTranslation(prev.TranslateValue, 0);
+
+                        if (transCol.TryGetNextLightEventData(group, transIdx, axis, time, out var next) && next.UsePrevious == 0)
+                        {
+                            float timeToTransition = atsc.GetSecondsFromBeat(next.Time - prev.Time);
+                            descriptorV3.SetLightTranslationFromData(trans, next, timeToTransition, axis);
                             axisData.SetCurrentTimeRatio((time - prev.Time) / (next.Time - prev.Time));
                         }
                     }

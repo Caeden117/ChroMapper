@@ -25,6 +25,7 @@ public class EventAppearanceSO : ScriptableObject
 
     private readonly string[] rotationDirectionMark = { "", "↻", "↺" };
     private readonly string[] rotationTransitionMark = { "", "T", "Ti", "To", "Tio" };
+    private readonly string[] distributionTransitionMark = { "", "Ti", "To", "Tio" };
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false)
     {
@@ -195,17 +196,41 @@ public class EventAppearanceSO : ScriptableObject
 
     private string GenerateFilterString(BeatmapLightEventFilter filter)
     {
+        var ret = "";
+        if (filter.Chunk != 0)
+        {
+            ret += $"{filter.Chunk}C";
+        }
+
         switch (filter.FilterType)
         {
             case 1: // fraction like text, but default will be ignored for better viewing
-                if (filter.Section == 0 && filter.Partition == 1 && filter.Reverse == 0) return "";
-                return (filter.Reverse != 0 ? "-" : "") + (filter.Section + 1) + "/" + filter.Partition;
+                if (filter.Section == 0 && filter.Partition == 1 && filter.Reverse == 0) ret += "";
+                ret += (filter.Reverse != 0 ? "-" : "") + (filter.Section + 1) + "/" + filter.Partition;
+                break;
             case 2: // python indexing like text
-                return filter.Partition + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Section;
+                ret += filter.Partition + ": :" + (filter.Reverse != 0 ? "-" : "") + filter.Section;
+                break;
             default:
                 Debug.LogError("Unexpected filter type " + filter.FilterType);
-                return "";
+                ret += "";
+                break;
         }
+
+        if (filter.RandomType != 0 || filter.Limit != 0) ret += "\n"; 
+
+        if (filter.RandomType != 0)
+        {
+            ret += filter.RandomType == 1 ? "RS" : "R";
+        }
+
+        if (filter.Limit != 0)
+        {
+            ret += $"{filter.Limit}%L";
+            if (filter.TimeLimited) ret += "T";
+            if (filter.DataLimited) ret += "D";
+        }
+        return ret;
     }
 
     private string GenerateDistributionString(float w, int d, bool actuallyAffect = true)
@@ -229,14 +254,14 @@ public class EventAppearanceSO : ScriptableObject
         e.UpdateAlpha(final ? 1.0f : 0.6f, true);
         if (!final)
             e.transform.localScale = Vector3.one * 0.6f;
-        if (dataIdx == 0 && e.ColorEventData.EventBoxes[0].EventDatas.Count == 0)
+        if (dataIdx == 0 && e.LightEventData.EventBoxes[0].EventDatas.Count == 0)
         {
             e.ChangeColor(offColor);
             e.UpdateTextDisplay(true, "??????"); // why would this happen?
             return;
         }
         var color = Color.white;
-        var eb = e.ColorEventData.EventBoxes[0];
+        var eb = e.LightEventData.EventBoxes[0];
         if (eb.EventDatas[dataIdx].Color <= 1)
         {
             color = eb.EventDatas[dataIdx].Color == 1
@@ -262,7 +287,7 @@ public class EventAppearanceSO : ScriptableObject
         text = prefix + text;
         // second line: two distributions
         text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType) 
-            + "/" + GenerateDistributionString(eb.BrightnessDistribution, eb.BrightnessDistributionType, dataIdx != 0 || eb.BrightnessAffectFirst == 1);
+            + "/" + distributionTransitionMark[eb.DataDistributionEaseType] + GenerateDistributionString(eb.BrightnessDistribution, eb.BrightnessDistributionType, dataIdx != 0 || eb.BrightnessAffectFirst == 1);
 
         text += "\n";
 
@@ -281,13 +306,13 @@ public class EventAppearanceSO : ScriptableObject
         e.UpdateAlpha(final ? 1.0f : 0.6f, true);
         if (!final)
             e.transform.localScale = Vector3.one * 0.6f;
-        if (dataIdx == 0 && e.RotationEventData.EventBoxes[0].EventDatas.Count == 0)
+        if (dataIdx == 0 && e.LightEventData.EventBoxes[0].EventDatas.Count == 0)
         {
             e.ChangeColor(offColor);
             e.UpdateTextDisplay(true, "??????"); // why would this happen again?
             return;
         }
-        var eb = e.RotationEventData.EventBoxes[0];
+        var eb = e.LightEventData.EventBoxes[0];
         var ebd = eb.EventDatas[dataIdx];
         var text = GenerateFilterString(eb.Filter);
         var prefix = "";
@@ -302,13 +327,44 @@ public class EventAppearanceSO : ScriptableObject
         text = prefix + text;
 
         text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
-            + "/" + GenerateDistributionString(eb.RotationDistribution, eb.RotationDistributionType, dataIdx != 0 || eb.RotationAffectFirst == 1);
+            + "/" + distributionTransitionMark[eb.DataDistributionEaseType] + GenerateDistributionString(eb.RotationDistribution, eb.RotationDistributionType, dataIdx != 0 || eb.RotationAffectFirst == 1);
         text += "\n" + rotationDirectionMark[ebd.RotationDirection] + ebd.AdditionalLoop + (eb.ReverseRotation == 1 ? "-" : "+") + ebd.RotationValue + "°";
 
         e.UpdateTextDisplay(true, text);
         e.ChangeColor(offColor, dataIdx != 0 || !final);
 
         e.SetRotationAxisAppearance(eb.Axis);
+    }
+
+    public void SetLightTranslationEventAppearance(BeatmapLightTranslationEventContainer e, int dataIdx = 0, bool final = true)
+    {
+        e.UpdateAlpha(final ? 1.0f : 0.6f, true);
+        if (!final)
+            e.transform.localScale = Vector3.one * 0.6f;
+        if (dataIdx == 0 && e.LightEventData.EventBoxes[0].EventDatas.Count == 0)
+        {
+            e.ChangeColor(otherColor);
+            e.UpdateTextDisplay(true, "??????"); // why would this happen again?
+            return;
+        }
+        var eb = e.LightEventData.EventBoxes[0];
+        var ebd = eb.EventDatas[dataIdx];
+        var text = GenerateFilterString(eb.Filter);
+        var prefix = "";
+        if (ebd.UsePrevious == 1)
+            prefix = "E";
+        else
+            prefix = rotationTransitionMark[ebd.EaseType + 1];
+        text = prefix + text;
+
+        text += "\n" + GenerateDistributionString(eb.Distribution, eb.DistributionType)
+            + "/" + distributionTransitionMark[eb.DataDistributionEaseType] + GenerateDistributionString(eb.TranslationDistribution, eb.TranslationDistributionType, dataIdx != 0 || eb.TranslationAffectFirst == 1);
+        text += "\n" + (eb.Flip == 1 ? "-" : "+") + Mathf.RoundToInt(ebd.TranslateValue * 100) + "%";
+
+        e.UpdateTextDisplay(true, text);
+        e.ChangeColor(otherColor, dataIdx != 0 || !final);
+
+        e.SetTranslationAxisAppearance(eb.Axis);
     }
 }
 
