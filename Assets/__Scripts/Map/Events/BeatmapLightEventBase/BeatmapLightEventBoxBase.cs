@@ -9,7 +9,7 @@ public abstract class BeatmapLightEventBoxBase<TEbd>: BeatmapObject
     public BeatmapLightEventFilter Filter; // f
     public float Distribution; // w
     public int DistributionType; // d
-    public int DistributionEaseType; // i
+    public int DataDistributionEaseType; // i
     public List<TEbd> EventDatas = new List<TEbd>(); // e or l
     public abstract string EventDataKey { get; }
 
@@ -24,7 +24,7 @@ public abstract class BeatmapLightEventBoxBase<TEbd>: BeatmapObject
         Distribution = RetrieveRequiredNode(node, "w").AsFloat;
         DistributionType = RetrieveRequiredNode(node, "d").AsInt;
         LoadFromJsonImpl(ref node);
-        DistributionEaseType = node.HasKey("i") ? node["i"].AsInt : 0;
+        DataDistributionEaseType = node.HasKey("i") ? node["i"].AsInt : 0;
         foreach (var n in RetrieveRequiredNode(node, EventDataKey))
         {
             EventDatas.Add(new TEbd().LoadFromJson(n) as TEbd);
@@ -43,7 +43,7 @@ public abstract class BeatmapLightEventBoxBase<TEbd>: BeatmapObject
         node["w"] = Distribution;
         node["d"] = DistributionType;
         ConvertToJsonImpl(ref node);
-        node["i"] = DistributionEaseType;
+        node["i"] = DataDistributionEaseType;
         var eventDatas = new JSONArray();
         foreach (var ed in EventDatas) eventDatas.Add(ed.ConvertToJson());
 

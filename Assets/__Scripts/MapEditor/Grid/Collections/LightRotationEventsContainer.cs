@@ -18,30 +18,28 @@ public class LightRotationEventsContainer : LightEventsContainerCollectionBase<
 
     protected class RotationStaticGraphEnumerator : StaticGraphEnumerator
     {
-        private float deltaDegree;
         public override IEnumerable<int> AdditonalField() => new int[] { 0, 1, 2 };
         public override bool AdditonalFieldMatched(int additional, BeatmapLightRotationEventBox LightEventBox) => additional == LightEventBox.Axis;
 
         public override void DeltaScaleByFilterLimit(
             IEnumerable<RotatingEvent> all, IEnumerable<IEnumerable<RotatingEvent>> filtered, BeatmapLightEventFilter filter, ref float deltaTime)
         {
-            BeatmapLightEventFilter.DeltaScaleByFilterLimit(all, filtered, filter, ref deltaTime, ref deltaDegree);
+            BeatmapLightEventFilter.DeltaScaleByFilterLimit(all, filtered, filter, ref deltaTime, ref DistributionEnumerator.Value);
         }
         protected override void InitDeltaImpl(BeatmapLightRotationEventBox lightEventBox, IEnumerable<IEnumerable<RotatingEvent>> filteredLightChunks)
         {
-            deltaDegree = lightEventBox.RotationDistribution;
-            if (EventBox.ReverseRotation == 1) deltaDegree = -deltaDegree;
-            if (lightEventBox.RotationDistributionType == 1) deltaDegree /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
-
+             DistributionEnumerator.Reset(filteredLightChunks, lightEventBox.RotationDistributionType,
+                lightEventBox.RotationDistribution * (EventBox.ReverseRotation == 1 ? -1 : 1), lightEventBox.DataDistributionEaseType);
         }
         protected override void InitValueImpl(BeatmapLightRotationEventData lightEventData, int eventDataIdx)
         {
             if (EventBox.ReverseRotation == 1) EventData.RotationValue = -EventData.RotationValue;
         }
-        public override BeatmapLightRotationEventData Next()
+        protected override BeatmapLightRotationEventData NextImpl()
         {
-            EventData.RotationValue += (EventDataIdx == 0 && EventBox.RotationAffectFirst == 0 ) ? 0 : deltaDegree;
-            return BeatmapObject.GenerateCopy(EventData);
+            var ret = BeatmapObject.GenerateCopy(EventData);
+            ret.RotationValue += (EventDataIdx == 0 && EventBox.RotationAffectFirst == 0 ) ? 0 : DistributionEnumerator.Next();
+            return ret;
         }
     }
     private RotationStaticGraphEnumerator rotationGraphEnumerator = new RotationStaticGraphEnumerator();

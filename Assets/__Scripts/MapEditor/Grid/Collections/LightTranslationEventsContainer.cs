@@ -17,23 +17,22 @@ public class LightTranslationEventsContainer : LightEventsContainerCollectionBas
 
     protected class TranslationStaticGraphEnumerator : StaticGraphEnumerator
     {
-        private float deltaOffset;
         public override IEnumerable<int> AdditonalField() => new int[] { 0, 1, 2 };
         public override bool AdditonalFieldMatched(int additional, BeatmapLightTranslationEventBox LightEventBox)
             => additional == LightEventBox.Axis;
         public override void DeltaScaleByFilterLimit(
             IEnumerable<TranslationEvent> all, IEnumerable<IEnumerable<TranslationEvent>> filtered, BeatmapLightEventFilter filter, ref float deltaTime)
-            => BeatmapLightEventFilter.DeltaScaleByFilterLimit(all, filtered, filter, ref deltaTime, ref deltaOffset);
-        public override BeatmapLightTranslationEventData Next()
+            => BeatmapLightEventFilter.DeltaScaleByFilterLimit(all, filtered, filter, ref deltaTime, ref DistributionEnumerator.Value);
+        protected override BeatmapLightTranslationEventData NextImpl()
         {
-            EventData.TranslateValue += (EventBox.TranslationAffectFirst == 0 && EventDataIdx == 0) ? 0 : deltaOffset;
-            return BeatmapObject.GenerateCopy(EventData);
+            var ret = BeatmapObject.GenerateCopy(EventData);
+            ret.TranslateValue += (EventBox.TranslationAffectFirst == 0 && EventDataIdx == 0) ? 0 : DistributionEnumerator.Next();
+            return ret;
         }
         protected override void InitDeltaImpl(BeatmapLightTranslationEventBox lightEventBox, IEnumerable<IEnumerable<TranslationEvent>> filteredLightChunks)
         {
-            deltaOffset = lightEventBox.TranslationDistribution;
-            if (lightEventBox.Filter.FilterType == 1) deltaOffset /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
-            if (lightEventBox.Flip == 1) deltaOffset = -deltaOffset;
+            DistributionEnumerator.Reset(filteredLightChunks, lightEventBox.TranslationDistributionType,
+                lightEventBox.TranslationDistribution * (lightEventBox.Flip == 1 ? -1 : 1), lightEventBox.DataDistributionEaseType);
         }
         protected override void InitValueImpl(BeatmapLightTranslationEventData lightEventData, int eventDataIdx)
         {

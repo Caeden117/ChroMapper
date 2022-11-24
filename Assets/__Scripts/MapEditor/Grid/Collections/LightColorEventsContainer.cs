@@ -27,24 +27,25 @@ public class LightColorEventsContainer : LightEventsContainerCollectionBase<
 
     protected class LightStaticGraphEnumerator : StaticGraphEnumerator
     {
-        private float deltaAlpha;
         public override IEnumerable<int> AdditonalField() => new int[] { 0 };
         public override bool AdditonalFieldMatched(int additional, BeatmapLightColorEventBox LightEventBox) => true;
         public override void DeltaScaleByFilterLimit(
             IEnumerable<LightingEvent> all, IEnumerable<IEnumerable<LightingEvent>> filtered, BeatmapLightEventFilter filter, ref float deltaTime)
-            => BeatmapLightEventFilter.DeltaScaleByFilterLimit(all, filtered, filter, ref deltaTime, ref deltaAlpha);
+            => BeatmapLightEventFilter.DeltaScaleByFilterLimit(all, filtered, filter, ref deltaTime, ref DistributionEnumerator.Value);
         protected override void InitDeltaImpl(BeatmapLightColorEventBox lightEventBox, IEnumerable<IEnumerable<LightingEvent>> filteredLightChunks)
         {
-            deltaAlpha = lightEventBox.BrightnessDistribution;
-            if (lightEventBox.BrightnessDistributionType == 1) deltaAlpha /= BeatmapLightEventFilter.Intervals(filteredLightChunks);
+            DistributionEnumerator.Reset(filteredLightChunks, lightEventBox.BrightnessDistributionType, 
+                lightEventBox.BrightnessDistribution, lightEventBox.DataDistributionEaseType);
         }
         protected override void InitValueImpl(BeatmapLightColorEventData lightEventData, int evetnDataIdx)
         {
         }
-        public override BeatmapLightColorEventData Next()
+
+        protected override BeatmapLightColorEventData NextImpl()
         {
-            EventData.Brightness += (EventDataIdx == 0 && EventBox.BrightnessAffectFirst == 0) ? 0 : deltaAlpha;
-            return BeatmapObject.GenerateCopy(EventData);
+            var ret = BeatmapObject.GenerateCopy(EventData);
+            ret.Brightness += (EventDataIdx == 0 && EventBox.BrightnessAffectFirst == 0) ? 0 : DistributionEnumerator.Next();
+            return ret;
         }
     }
     private LightStaticGraphEnumerator lightGraphEnumerator = new LightStaticGraphEnumerator();
