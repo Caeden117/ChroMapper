@@ -176,7 +176,7 @@ public class DifficultySelect : MonoBehaviour
 
         var map = TryGetExistingMapFromDiff(localDiff) ?? (
             Settings.Instance.Load_MapV3 ?
-            new BeatSaberMapV3 { MainNode = new JSONObject(), Version = "3.0.0" } :
+            new BeatSaberMapV3 { MainNode = new JSONObject(), Version = "3.2.0" } :
             new BeatSaberMap { MainNode = new JSONObject() });
         var oldPath = map.DirectoryAndFile;
 

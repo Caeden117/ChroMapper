@@ -31,7 +31,7 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
                 Settings.Instance.Load_MapV3 = true;
                 var map = BeatSaberSongContainer.Instance.Map;
                 var mapV3 = new BeatSaberMapV3(map);
-                mapV3.Version = "3.0.0";
+                mapV3.Version = "3.2.0";
                 BeatSaberSongContainer.Instance.Map = mapV3;
             }
             pauseManager.Quit(true);

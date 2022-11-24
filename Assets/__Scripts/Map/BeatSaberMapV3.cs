@@ -338,7 +338,7 @@ public class BeatSaberMapV3 : BeatSaberMap
                         ColorNotes.Add(new BeatmapColorNote(note));
                         break;
                     default:
-                        Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
+                        Debug.LogError("Unsupported note type for Beatmap version 3.2.0");
                         break;
                 }
             }
