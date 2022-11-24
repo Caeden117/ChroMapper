@@ -58,6 +58,7 @@ public class LightV3TranslationBinder : MetaLightV3Binder<BeatmapLightTranslatio
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Axis = i);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].EventDatas[DataIdx].EaseType = i - 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Filter.RandomType = i);
+        DropdownLoadFn.Add((x, i) => x.EventBoxes[0].DataDistributionEaseType = i);
 
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].Filter.Reverse = b ? 1 : 0);
         ToggleLoadFn.Add((x, b) => x.EventBoxes[0].TranslationAffectFirst = b ? 1 : 0);
