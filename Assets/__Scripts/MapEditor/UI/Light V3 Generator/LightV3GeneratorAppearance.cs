@@ -14,9 +14,11 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     [SerializeField] private GameObject rotationPanel;
     [SerializeField] private GameObject translationPanel;
     private RefreshLayoutGroup refresh;
-    [SerializeField] private LightColorEventsContainer lightColorEventsContainer;
+    private LightColorEventsContainer lightColorEventsContainer;
+    private LightRotationEventsContainer lightRotationEventsContainer;
+    private LightTranslationEventsContainer lightTranslationEventsContainer;
     internal PlatformDescriptorV3 PlatformDescriptor => lightColorEventsContainer.platformDescriptor;
-    private const int thirdCollectionOffset = 3; // maybe we shold set it as a setting later
+
     public enum LightV3UIPanel
     {
         LightColorPanel,
@@ -32,6 +34,10 @@ public class LightV3GeneratorAppearance : MonoBehaviour
     {
         OnToggleUIPanelSwitch += SwitchColorRotation;
         refresh = GetComponent<RefreshLayoutGroup>();
+
+        lightColorEventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<LightColorEventsContainer>(BeatmapObject.ObjectType.LightColorEvent);
+        lightRotationEventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<LightRotationEventsContainer>(BeatmapObject.ObjectType.LightRotationEvent);
+        lightTranslationEventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<LightTranslationEventsContainer>(BeatmapObject.ObjectType.LightTranslationEvent);
     }
 
     private void OnDestroy()
@@ -82,7 +88,7 @@ public class LightV3GeneratorAppearance : MonoBehaviour
         
     }
 
-    public float GetContainerYOffset(LightV3UIPanel requestPanel)
+    public float GetContainerYOffset(LightV3UIPanel requestPanel, float time, int group)
     {
         if (currentPanel == LightV3UIPanel.LightColorPanel)
         {
@@ -91,7 +97,7 @@ public class LightV3GeneratorAppearance : MonoBehaviour
                 case LightV3UIPanel.LightRotationPanel:
                     return 0;
                 case LightV3UIPanel.LightTranslationPanel:
-                    return thirdCollectionOffset;
+                    return lightRotationEventsContainer.GetStackCount(time, group);
             }
         }
         else if (currentPanel == LightV3UIPanel.LightRotationPanel)
@@ -99,7 +105,8 @@ public class LightV3GeneratorAppearance : MonoBehaviour
             switch (requestPanel)
             {
                 case LightV3UIPanel.LightColorPanel:
-                    return PlatformDescriptor.HasTranslationEvent ? thirdCollectionOffset : 0;
+                    return PlatformDescriptor.HasTranslationEvent ? 
+                        lightTranslationEventsContainer.GetStackCount(time, group) : 0;
                 case LightV3UIPanel.LightTranslationPanel:
                     return 0;
             }
@@ -111,7 +118,7 @@ public class LightV3GeneratorAppearance : MonoBehaviour
                 case LightV3UIPanel.LightColorPanel:
                     return 0;
                 case LightV3UIPanel.LightRotationPanel:
-                    return thirdCollectionOffset;
+                    return lightColorEventsContainer.GetStackCount(time, group);
             }
         }
         return 0;

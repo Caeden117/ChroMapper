@@ -20,6 +20,7 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
     [SerializeField] internal bool containersUP;
     [SerializeField] private LightV3GeneratorAppearance uiGenerator;
 
+
     protected Dictionary<(int, int, int), List<TEbd>> NextEventDict = new Dictionary<(int, int, int), List<TEbd>>();
 
     protected abstract LightV3GeneratorAppearance.LightV3UIPanel ThisUIPannel { get; }
@@ -59,10 +60,18 @@ public abstract class LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, T
     }
     protected abstract StaticGraphEnumerator GraphEnumerator { get; }
 
-    internal float GetContainerYOffset()
+    internal float GetContainerYOffset(float time, int group)
     {
         if (containersUP) return 0;
-        return uiGenerator.GetContainerYOffset(ThisUIPannel);
+        return uiGenerator.GetContainerYOffset(ThisUIPannel, time, group);
+    }
+
+    internal int GetStackCount(float time, int group)
+    {
+        return GetBetween(time - 1e-3f, time + 1e-3f)
+            .Cast<TBo>()
+            .Where(x => x.Group == group)
+            .Count();
     }
 
     protected abstract List<TLightEvent> GetAllLights(int laneIdx);

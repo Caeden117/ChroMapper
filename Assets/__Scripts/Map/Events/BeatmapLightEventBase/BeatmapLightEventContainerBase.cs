@@ -27,7 +27,7 @@ public abstract class BeatmapLightEventContainerBase<TBo, TEb, TEbd, TBoc, TBocc
         int y = stackList.IndexOf(LightEventData);
         transform.localPosition = new Vector3(
             LightEventsContainer.platformDescriptor.GroupIdToLaneIndex(LightEventData.Group) + 0.5f,
-            (LightEventsContainer.containersUP ? 1 : -1) * (y + 0.5f + LightEventsContainer.GetContainerYOffset()),
+            (LightEventsContainer.containersUP ? 1 : -1) * (y + 0.5f + LightEventsContainer.GetContainerYOffset(LightEventData.Time, LightEventData.Group)),
             LightEventData.Time * EditorScaleController.EditorScale
             );
     }
