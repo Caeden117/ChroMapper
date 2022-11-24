@@ -23,6 +23,7 @@ public class BeatmapLightTranslationEventData : BeatmapLightEventBoxDataBase
 
     public BeatmapLightTranslationEventData(): base()
     {
+        EaseType = -1;
     }
 
     protected override void LoadFromJsonImpl(ref JSONNode node)

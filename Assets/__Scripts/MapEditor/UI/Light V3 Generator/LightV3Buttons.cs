@@ -244,6 +244,7 @@ public class LightV3Buttons : MonoBehaviour
                     if (!lightManager.IsValidRotationAxis(axis)) continue;
                     var obj = new BeatmapLightRotationEvent();
                     obj.Group = lightManager.GroupId;
+                    obj.EventBoxes[0].Axis = axis;
                     rotationCol.SpawnObject(obj, out var conflict, false, false);
                     allActions.Add(new BeatmapObjectPlacementAction(obj, conflict, ""));
                 }
@@ -255,6 +256,7 @@ public class LightV3Buttons : MonoBehaviour
                     if (!lightManager.IsValidTranslationAxis(axis)) continue;
                     var obj = new BeatmapLightTranslationEvent();
                     obj.Group = lightManager.GroupId;
+                    obj.EventBoxes[0].Axis = axis;
                     translationCol.SpawnObject(obj, out var conflict, false, false);
                     allActions.Add(new BeatmapObjectPlacementAction(obj, conflict, ""));
                 }
