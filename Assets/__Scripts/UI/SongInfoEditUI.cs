@@ -478,6 +478,15 @@ public class SongInfoEditUI : MenuBase
 #endif
     }
 
+    private void SaveAllFields()
+    {
+        if (IsDirty())
+            SaveToSong();
+
+        if (difficultySelect.IsDirty())
+            difficultySelect.SaveAllDiffs();
+    }
+
     /// <summary>
     ///     Return the the song list scene, if the user has unsaved changes ask first
     /// </summary>
@@ -495,7 +504,9 @@ public class SongInfoEditUI : MenuBase
     /// <param name="r">Confirmation from the user</param>
     public void HandleReturnToSongList(int r)
     {
-        if (r == 0) SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
+        if (r == 0) SaveAllFields();
+
+        if (r != 2) SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
     }
 
     /// <summary>
@@ -536,21 +547,28 @@ public class SongInfoEditUI : MenuBase
     /// <param name="r">Confirmation from the user</param>
     private void HandleEditMapButtonPressed(int r)
     {
-        if (r == 0)
+        if (r == 0) SaveAllFields();
+
+        if (r != 2)
         {
             var map = difficultySelect.CurrentDiff;
             PersistentUI.UpdateBackground(Song);
 
-            Debug.Log("Transitioning...");
-            if (map != null)
+            if (map == null)
             {
-                Settings.Instance.LastLoadedMap = Song.Directory;
-                Settings.Instance.LastLoadedChar = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet
-                    .BeatmapCharacteristicName;
-                Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
-                BeatSaberSongContainer.Instance.Map = map;
-                SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
+                PersistentUI.Instance.ShowDialogBox(
+                    "The selected difficulty doesn't exist! Have you saved after creating it?", null,
+                    PersistentUI.DialogBoxPresetType.Ok);
+                return;
             }
+            Debug.Log("Transitioning...");
+
+            Settings.Instance.LastLoadedMap = Song.Directory;
+            Settings.Instance.LastLoadedChar = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet
+                .BeatmapCharacteristicName;
+            Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
+            BeatSaberSongContainer.Instance.Map = map;
+            SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
         }
     }
 
@@ -565,21 +583,21 @@ public class SongInfoEditUI : MenuBase
         if (IsDirty())
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaved.warning", callback,
-                PersistentUI.DialogBoxPresetType.YesNo);
+                PersistentUI.DialogBoxPresetType.YesNoCancel);
             return true;
         }
 
         if (difficultySelect.IsDirty())
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaveddiff.warning", callback,
-                PersistentUI.DialogBoxPresetType.YesNo);
+                PersistentUI.DialogBoxPresetType.YesNoCancel);
             return true;
         }
 
         if (contributorController.IsDirty())
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsavedcontributor.warning", callback,
-                PersistentUI.DialogBoxPresetType.YesNo);
+                PersistentUI.DialogBoxPresetType.YesNoCancel);
             return true;
         }
 
