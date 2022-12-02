@@ -13,7 +13,7 @@ public class BeatmapLightEventFilter: BeatmapObject
     public int Chunk; // c
     public int RandomType; // n
     public int RandomSeed; // s
-    public int Limit; // l
+    public float Limit; // l
     public int AlsoLimit; // d
 
     public bool TimeLimited
@@ -45,7 +45,7 @@ public class BeatmapLightEventFilter: BeatmapObject
         Chunk = node.HasKey("c") ? node["c"].AsInt : 0;
         RandomType = node.HasKey("n") ? node["n"].AsInt : 0;
         RandomSeed = node.HasKey("s") ? node["s"].AsInt : 0;
-        Limit = node.HasKey("l") ? node["l"].AsInt : 0;
+        Limit = node.HasKey("l") ? node["l"].AsFloat : 0;
         AlsoLimit = node.HasKey("d") ? node["d"].AsInt : 0;
     }
 
@@ -171,7 +171,7 @@ public class BeatmapLightEventFilter: BeatmapObject
         }
         if (filter.Limit != 0)
         {
-            int limit = Mathf.RoundToInt(list.Count() * filter.Limit / 100.0f);
+            int limit = Mathf.RoundToInt(list.Count() * filter.Limit);
             if (filter.RandomType != 1)
             {
                 list = list.Where((x, i) => i < limit);

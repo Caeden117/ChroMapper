@@ -226,7 +226,7 @@ public class EventAppearanceSO : ScriptableObject
 
         if (filter.Limit != 0)
         {
-            ret += $"{filter.Limit}%L";
+            ret += $"{Mathf.RoundToInt(filter.Limit * 100)}%L";
             if (filter.TimeLimited) ret += "T";
             if (filter.DataLimited) ret += "D";
         }

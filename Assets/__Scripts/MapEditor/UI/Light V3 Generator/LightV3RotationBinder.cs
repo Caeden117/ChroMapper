@@ -19,7 +19,7 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         InputDumpFn.Add(x => x.EventBoxes[0].EventDatas[DataIdx].RotationValue.ToString());
         InputDumpFn.Add(x => x.EventBoxes[0].Filter.Chunk.ToString());
         InputDumpFn.Add(x => x.EventBoxes[0].Filter.RandomSeed.ToString());
-        InputDumpFn.Add(x => x.EventBoxes[0].Filter.Limit.ToString());
+        InputDumpFn.Add(x => Mathf.RoundToInt(x.EventBoxes[0].Filter.Limit * 100).ToString());
 
         DropdownDumpFn.Add(x => x.EventBoxes[0].Filter.FilterType - 1);
         DropdownDumpFn.Add(x => x.EventBoxes[0].DistributionType - 1);
@@ -52,7 +52,7 @@ public class LightV3RotationBinder : MetaLightV3Binder<BeatmapLightRotationEvent
         InputLoadFn.Add((x, s) => x.EventBoxes[0].EventDatas[DataIdx].RotationValue = float.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Chunk = int.Parse(s));
         InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.RandomSeed = int.Parse(s));
-        InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Limit = int.Parse(s));
+        InputLoadFn.Add((x, s) => x.EventBoxes[0].Filter.Limit = int.Parse(s) / 100.0f);
 
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].Filter.FilterType = i + 1);
         DropdownLoadFn.Add((x, i) => x.EventBoxes[0].DistributionType = i + 1);
