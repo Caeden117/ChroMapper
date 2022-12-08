@@ -95,7 +95,11 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
         Type = reader.GetInt();
         Width = reader.GetInt();
         Duration = reader.GetFloat();
-        CustomData = JSON.Parse(reader.GetString());
+        var customData = reader.GetString();
+        if (!string.IsNullOrEmpty(customData))
+        {
+            CustomData = JSON.Parse(customData);
+        }
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)

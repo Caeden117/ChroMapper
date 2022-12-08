@@ -104,7 +104,11 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
         LineLayer = reader.GetInt();
         CutDirection = reader.GetInt();
         Type = reader.GetInt();
-        CustomData = JSON.Parse(reader.GetString());
+        var customData = reader.GetString();
+        if (!string.IsNullOrEmpty(customData))
+        {
+            CustomData = JSON.Parse(customData);
+        }
     }
 
     public Vector2 GetPosition()

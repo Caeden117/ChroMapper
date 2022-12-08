@@ -176,7 +176,11 @@ public class MapEvent : BeatmapObject
         Time = reader.GetFloat();
         Type = reader.GetInt();
         Value = reader.GetInt();
-        CustomData = JSON.Parse(reader.GetString());
+        var customData = reader.GetString();
+        if (!string.IsNullOrEmpty(customData))
+        {
+            CustomData = JSON.Parse(customData);
+        }
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)

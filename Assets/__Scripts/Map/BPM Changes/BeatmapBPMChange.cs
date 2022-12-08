@@ -55,7 +55,11 @@ public class BeatmapBPMChange : BeatmapObject
     {
         Time = reader.GetFloat();
         Bpm = reader.GetFloat();
-        CustomData = JSON.Parse(reader.GetString());
+        var customData = reader.GetString();
+        if (!string.IsNullOrEmpty(customData))
+        {
+            CustomData = JSON.Parse(customData);
+        }
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion) => true;
