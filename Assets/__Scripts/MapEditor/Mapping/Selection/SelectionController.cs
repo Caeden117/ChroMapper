@@ -20,6 +20,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     private static SelectionController instance;
 
     [SerializeField] private AudioTimeSyncController atsc;
+    [SerializeField] private BPMChangesContainer bpmChangesContainer;
     [SerializeField] private Material selectionMaterial;
     [SerializeField] private Transform moveableGridTransform;
     [SerializeField] private Color selectedColor;
@@ -469,7 +470,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var original = BeatmapObject.GenerateCopy(data);
 
             collection.LoadedObjects.Remove(data);
-            data.Time += beats;
+            data.Time += bpmChangesContainer.LocalBeatsToSongBeats(beats, data.Time);
             if (snapObjects)
                 data.Time = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
             collection.LoadedObjects.Add(data);
