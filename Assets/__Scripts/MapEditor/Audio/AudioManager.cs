@@ -153,8 +153,9 @@ public class AudioManager : MonoBehaviour
         preProcessedSamples = new double[numTotalSamples];
 
         // Average all audio channels together
+        // divide by 1.5 to roughly match amplitude to previous broken behavior (not just 2 because of some destructive interference)
         for (var i = 0; i < multiChannelSamples.Length; i++)
-            preProcessedSamples[i / numChannels] = multiChannelSamples[i] / numChannels;
+            preProcessedSamples[i / numChannels] += multiChannelSamples[i] / numChannels / 1.5;
 
         Debug.Log("WaveformGenerator: Combine Channels done " + preProcessedSamples.Length);
 
