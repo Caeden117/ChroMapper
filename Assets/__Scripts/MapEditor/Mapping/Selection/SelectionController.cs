@@ -326,6 +326,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 copy.Time = bpmChangesContainer.SongBeatsToLocalBeats(copy.Time, firstTime);
             }
+
+            // scale duration for walls
+            if (copy.BeatmapType == BeatmapObject.ObjectType.Obstacle)
+            {
+                var obstacle = (BeatmapObstacle)copy;
+                obstacle.Duration = bpmChangesContainer.SongBeatsToLocalBeats(obstacle.Duration, obstacle.Time);
+                copy = obstacle;
+            }
             CopiedObjects.Add(copy);
         }
 
@@ -360,6 +368,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             var newData = BeatmapObject.GenerateCopy(data);
             newData.Time = newTime;
+
+            // scale duration for walls
+            if (newData.BeatmapType == BeatmapObject.ObjectType.Obstacle)
+            {
+                var obstacle = (BeatmapObstacle)newData;
+                obstacle.Duration = bpmChangesContainer.LocalBeatsToSongBeats(obstacle.Duration, obstacle.Time);
+                newData = obstacle;
+            }
 
             if (!collections.TryGetValue(newData.BeatmapType, out var collection))
             {
