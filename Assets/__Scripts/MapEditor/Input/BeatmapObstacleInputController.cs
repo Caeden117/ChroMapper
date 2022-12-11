@@ -21,27 +21,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
             snapping *= context.ReadValue<float>() > 0 ? 1 : -1;
 
             var wallEndTime = obs.ObstacleData.Time + obs.ObstacleData.Duration;
-
-            var bpmChange = bpmChangesContainer.FindLastBpm(wallEndTime);
-
-            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            var bpmRatio = songBpm / (bpmChange?.Bpm ?? songBpm);
-            var durationTweak = snapping * bpmRatio;
-
-            var nextBpm = bpmChangesContainer.FindLastBpm(wallEndTime + durationTweak);
-
-            if (nextBpm != bpmChange)
-            {
-                if (snapping > 0)
-                {
-                    durationTweak = nextBpm.Time - wallEndTime;
-                }
-                else
-                {
-                    // I dont think any solution here will please everyone so i'll just go with my intuition
-                    durationTweak = bpmChangesContainer.FindRoundedBpmTime(wallEndTime + durationTweak, snapping * -1) - wallEndTime;
-                }
-            }
+            var durationTweak = bpmChangesContainer.LocalBeatsToSongBeats(snapping, wallEndTime);
 
             obs.ObstacleData.Duration += durationTweak;
             obs.UpdateGridPosition();
