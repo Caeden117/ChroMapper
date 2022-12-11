@@ -11,7 +11,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 {
     public static HashSet<BeatmapObject> SelectedObjects = new HashSet<BeatmapObject>();
     public static HashSet<BeatmapObject> CopiedObjects = new HashSet<BeatmapObject>();
-    private static float copiedBpm = 100;
 
     public static Action<BeatmapObject> ObjectWasSelectedEvent;
     public static Action SelectionChangedEvent;
@@ -319,15 +318,18 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.BeatmapType);
             if (collection.LoadedContainers.TryGetValue(data, out var con)) con.SetOutlineColor(instance.copiedColor);
             var copy = BeatmapObject.GenerateCopy(data);
+
             copy.Time -= firstTime;
+
+            // always use song beats for bpm changes
+            if (copy.BeatmapType != BeatmapObject.ObjectType.BpmChange)
+            {
+                copy.Time = bpmChangesContainer.SongBeatsToLocalBeats(copy.Time, firstTime);
+            }
             CopiedObjects.Add(copy);
         }
 
         if (cut) Delete();
-        var bpmChanges =
-            BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.ObjectType.BpmChange);
-        var lastBpmChange = bpmChanges.FindLastBpm(atsc.CurrentBeat);
-        copiedBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
     }
 
     /// <summary>
@@ -341,45 +343,20 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         var pasted = new List<BeatmapObject>();
         var collections = new Dictionary<BeatmapObject.ObjectType, BeatmapObjectContainerCollection>();
 
-        // Grab the last BPM Change to warp distances between copied objects and maintain BPM.
-        var bpmChanges =
-            BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.ObjectType.BpmChange);
-
-        var lowerValue = new BeatmapBPMChange(420, atsc.CurrentBeat - 0.01f);
-        var upperValue = new BeatmapBPMChange(69, atsc.CurrentBeat);
-
-        var lastBpmChangeBeforePaste = bpmChanges.FindLastBpm(atsc.CurrentBeat);
-
         // This first loop creates copy of the data to be pasted.
         foreach (var data in CopiedObjects)
         {
             if (data == null) continue;
 
-            upperValue.Time = atsc.CurrentBeat + data.Time;
-
-            var bpmChangeView = bpmChanges.LoadedObjects.GetViewBetween(lowerValue, upperValue);
-
-            var bpmTime = data.Time * (copiedBpm / (lastBpmChangeBeforePaste?.Bpm ?? copiedBpm));
-
-            if (bpmChangeView.Any())
+            var newTime = atsc.CurrentBeat;
+            // always use song beats for bpm changes
+            if (data.BeatmapType == BeatmapObject.ObjectType.BpmChange)
             {
-                var firstBpmChange = bpmChangeView.First() as BeatmapBPMChange;
-
-                bpmTime = firstBpmChange.Time - atsc.CurrentBeat;
-
-                for (var i = 0; i < bpmChangeView.Count - 1; i++)
-                {
-                    var leftBpm = bpmChangeView.ElementAt(i) as BeatmapBPMChange;
-                    var rightBpm = bpmChangeView.ElementAt(i + 1) as BeatmapBPMChange;
-
-                    bpmTime += (rightBpm.Time - leftBpm.Time) * (copiedBpm / leftBpm.Bpm);
-                }
-
-                var lastBpmChange = bpmChangeView.Last() as BeatmapBPMChange;
-                bpmTime += (atsc.CurrentBeat + data.Time - lastBpmChange.Time) * (copiedBpm / lastBpmChange.Bpm);
+                newTime += data.Time;
+            } else
+            {
+                newTime += bpmChangesContainer.LocalBeatsToSongBeats(data.Time, atsc.CurrentBeat);
             }
-
-            var newTime = bpmTime + atsc.CurrentBeat;
 
             var newData = BeatmapObject.GenerateCopy(data);
             newData.Time = newTime;

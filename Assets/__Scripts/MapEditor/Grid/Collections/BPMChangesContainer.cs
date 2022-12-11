@@ -290,6 +290,66 @@ public class BPMChangesContainer : BeatmapObjectContainerCollection
         return totalSongBeats;
     }
 
+    /// <summary>
+    ///     Calculates the number of beats in local BPM for a given number of beats in song BPM, accounting for all BPM
+    ///     changes, relative to a starting position
+    /// </summary>
+    /// <param name="songBeats">Number of beats in song BPM</param>
+    /// <param name="startBeat">The starting position from which to calculate. Number is in song BPM</param>
+    /// <returns>The number of beats in song BPM equivalent to the number of beats in local bpm around a starting position</returns>
+    public float SongBeatsToLocalBeats(float songBeats, float startBeat)
+    {
+        float totalLocalBeats = 0;
+        var songBeatsLeft = songBeats;
+        var currentBeat = startBeat;
+        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        var currentBpm = FindLastBpm(startBeat)?.Bpm ?? songBpm;
+
+        if (songBeats > 0)
+        {
+            var nextBpmChange = FindNextBpm(startBeat);
+            while (songBeatsLeft > 0)
+            {
+                if (nextBpmChange is null)
+                {
+                    totalLocalBeats += songBeatsLeft * currentBpm / songBpm;
+                    break;
+                }
+
+                var distance = Math.Min(songBeatsLeft, nextBpmChange.Time - currentBeat);
+                totalLocalBeats += distance * currentBpm / songBpm;
+                songBeatsLeft -= distance;
+
+                currentBeat = nextBpmChange.Time;
+                currentBpm = nextBpmChange.Bpm;
+                nextBpmChange = FindNextBpm(currentBeat);
+            }
+        }
+        else
+        {
+            var lastBpmChange = FindLastBpm(startBeat, false);
+            while (songBeatsLeft < 0)
+            {
+                if (lastBpmChange is null)
+                {
+                    totalLocalBeats += songBeatsLeft;
+                    break;
+                }
+
+                currentBpm = lastBpmChange.Bpm;
+
+                var distance = Math.Max(songBeatsLeft, lastBpmChange.Time - currentBeat);
+                totalLocalBeats += distance * currentBpm / songBpm;
+                songBeatsLeft -= distance;
+
+                currentBeat = lastBpmChange.Time;
+                lastBpmChange = FindLastBpm(currentBeat, false);
+            }
+        }
+
+        return totalLocalBeats;
+    }
+
     public override BeatmapObjectContainer CreateContainer() =>
         BeatmapBPMChangeContainer.SpawnBpmChange(null, ref bpmPrefab);
 
