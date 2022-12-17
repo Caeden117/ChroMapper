@@ -103,7 +103,7 @@ public static class BeatSaberSongExtensions
         var infoFileLocation = "";
         if (song.Directory != null)
         {
-            infoFileLocation = Path.Combine(song.Directory, "info.dat");
+            infoFileLocation = Path.Combine(song.Directory, "Info.dat");
         }
 
         if (!File.Exists(infoFileLocation))
