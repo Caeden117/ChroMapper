@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -156,6 +156,10 @@ public class SongInfoEditUI : MenuBase
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
         }
+        else
+        {
+            offset.interactable = false;
+        }
 
         Song.EnvironmentName = GetEnvironmentNameFromID(environmentDropdown.value);
 
@@ -214,6 +218,10 @@ public class SongInfoEditUI : MenuBase
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "songtimeoffset.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
+        }
+        else
+        {
+            offset.interactable = false;
         }
 
         bpmField.text = Song.BeatsPerMinute.ToString(CultureInfo.InvariantCulture);
