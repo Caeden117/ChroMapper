@@ -319,20 +319,20 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (collection.LoadedContainers.TryGetValue(data, out var con)) con.SetOutlineColor(instance.copiedColor);
             var copy = BeatmapObject.GenerateCopy(data);
 
-            copy.Time -= firstTime;
-
-            // always use song beats for bpm changes
-            if (copy.BeatmapType != BeatmapObject.ObjectType.BpmChange)
-            {
-                copy.Time = bpmChangesContainer.SongBeatsToLocalBeats(copy.Time, firstTime);
-            }
-
             // scale duration for walls
             if (copy.BeatmapType == BeatmapObject.ObjectType.Obstacle)
             {
                 var obstacle = (BeatmapObstacle)copy;
                 obstacle.Duration = bpmChangesContainer.SongBeatsToLocalBeats(obstacle.Duration, obstacle.Time);
                 copy = obstacle;
+            }
+
+            copy.Time -= firstTime;
+
+            // always use song beats for bpm changes
+            if (copy.BeatmapType != BeatmapObject.ObjectType.BpmChange)
+            {
+                copy.Time = bpmChangesContainer.SongBeatsToLocalBeats(copy.Time, firstTime);
             }
             CopiedObjects.Add(copy);
         }
