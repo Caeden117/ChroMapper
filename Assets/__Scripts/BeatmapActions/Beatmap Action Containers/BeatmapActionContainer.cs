@@ -151,7 +151,7 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
                     if (lastLocatedAction != firstLocatedAction && lastLocatedAction.Identity != null)
                     {
                         dialogBox.AddComponent<TextComponent>()
-                            .WithInitialValue("MultiMapping", "multi.trace.last", firstLocatedAction.Identity.Name);
+                            .WithInitialValue("MultiMapping", "multi.trace.last", lastLocatedAction.Identity.Name);
                     }
 
                     dialogBox.AddFooterButton(null, "PersistentUI", "ok");
