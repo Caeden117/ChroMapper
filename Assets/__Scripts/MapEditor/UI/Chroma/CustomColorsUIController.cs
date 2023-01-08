@@ -80,19 +80,19 @@ public class CustomColorsUIController : MonoBehaviour
     {
         platform = obj;
 
-        SetColorIfNotEqual(ref redNote.image, platform.Colors.RedNoteColor, BeatSaberSong.DefaultLeftNote,
+        SetColorIfNotEqual(ref redNote, platform.Colors.RedNoteColor, BeatSaberSong.DefaultLeftNote,
             BeatSaberSongContainer.Instance.DifficultyData.ColorLeft);
-        SetColorIfNotEqual(ref blueNote.image, platform.Colors.BlueNoteColor, BeatSaberSong.DefaultRightNote,
+        SetColorIfNotEqual(ref blueNote, platform.Colors.BlueNoteColor, BeatSaberSong.DefaultRightNote,
             BeatSaberSongContainer.Instance.DifficultyData.ColorRight);
-        SetColorIfNotEqual(ref redLight.image, platform.Colors.RedColor, BeatSaberSong.DefaultLeftColor,
+        SetColorIfNotEqual(ref redLight, platform.Colors.RedColor, BeatSaberSong.DefaultLeftColor,
             BeatSaberSongContainer.Instance.DifficultyData.EnvColorLeft);
-        SetColorIfNotEqual(ref blueLight.image, platform.Colors.BlueColor, BeatSaberSong.DefaultRightColor,
+        SetColorIfNotEqual(ref blueLight, platform.Colors.BlueColor, BeatSaberSong.DefaultRightColor,
             BeatSaberSongContainer.Instance.DifficultyData.EnvColorRight);
-        SetColorIfNotEqual(ref redBoost.image, platform.Colors.RedBoostColor, BeatSaberSong.DefaultLeftColor,
+        SetColorIfNotEqual(ref redBoost, platform.Colors.RedBoostColor, BeatSaberSong.DefaultLeftColor,
             BeatSaberSongContainer.Instance.DifficultyData.BoostColorLeft);
-        SetColorIfNotEqual(ref blueBoost.image, platform.Colors.BlueBoostColor, BeatSaberSong.DefaultRightColor,
+        SetColorIfNotEqual(ref blueBoost, platform.Colors.BlueBoostColor, BeatSaberSong.DefaultRightColor,
             BeatSaberSongContainer.Instance.DifficultyData.BoostColorRight);
-        SetColorIfNotEqual(ref obstacle.image, platform.Colors.ObstacleColor, BeatSaberSong.DefaultLeftColor,
+        SetColorIfNotEqual(ref obstacle, platform.Colors.ObstacleColor, BeatSaberSong.DefaultLeftColor,
             BeatSaberSongContainer.Instance.DifficultyData.ObstacleColor);
 
         platform.Colors.RedColor = eventAppearance.RedColor = redLight.image.color;
@@ -102,8 +102,9 @@ public class CustomColorsUIController : MonoBehaviour
         obstacleAppearance.DefaultObstacleColor = obstacle.image.color;
     }
 
-    private void SetColorIfNotEqual(ref Image uiElement, Color platformDefault, Color @default, Color? savedColor)
+    private void SetColorIfNotEqual(ref CustomColorButton colorButton, Color platformDefault, Color @default, Color? savedColor)
     {
+        var uiElement = colorButton.image;
         if (uiElement.color == @default && uiElement.color != platformDefault)
             uiElement.color = platformDefault.WithAlpha(1);
         uiElement.color = savedColor ?? uiElement.color;
