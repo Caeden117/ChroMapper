@@ -84,6 +84,7 @@ namespace Beatmap.Base
             if (originalData is BaseObstacle obstacle)
             {
                 Duration = obstacle.Duration;
+                Type = obstacle.Type;
                 Width = obstacle.Width;
                 Height = obstacle.Height;
             }

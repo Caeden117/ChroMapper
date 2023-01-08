@@ -44,6 +44,7 @@ namespace Beatmap.Base
         {
             Time = originalData.Time;
             CustomData = originalData.CustomData?.Clone();
+            RefreshCustom();
         }
 
         protected virtual void ParseCustom()

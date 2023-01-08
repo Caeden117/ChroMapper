@@ -110,6 +110,7 @@ namespace Beatmap.Base
             {
                 Color = note.Color;
                 CutDirection = note.CutDirection;
+                AngleOffset = note.AngleOffset;
             }
         }
 
