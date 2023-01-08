@@ -863,7 +863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7aad9c708e96c4fbeb8e0d230ec056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal: {r: 0.11764706, g: 0.12156863, b: 0.13725491, a: 1}
+  normal: {r: 0.11764706, g: 0.12156863, b: 0.13725491, a: 0.7490196}
   selected: {r: 0.44705883, g: 0.5372549, b: 0.85490197, a: 1}
 --- !u!114 &1757455336493702345
 MonoBehaviour:
