@@ -54,6 +54,8 @@ namespace Beatmap.Base
             if (CustomData.HasKey(CustomKeyColor)) CustomColor = CustomData[CustomKeyColor].ReadColor();
         }
 
+        public void RefreshCustom() => ParseCustom();
+
         protected internal virtual JSONNode SaveCustom()
         {
             CustomData = CustomData is JSONObject ? CustomData : new JSONObject();
