@@ -29,6 +29,7 @@ public class MapLoader : MonoBehaviour
                 BpmEvents = new List<BaseBpmEvent>(m.BpmEvents),
                 RotationEvents = new List<BaseRotationEvent>(m.RotationEvents),
                 Notes = new List<BaseNote>(m.Notes),
+                Bombs = new List<BaseBombNote>(m.Bombs),
                 Obstacles = new List<BaseObstacle>(m.Obstacles),
                 Arcs = new List<BaseArc>(m.Arcs),
                 Chains = new List<BaseChain>(m.Chains),
