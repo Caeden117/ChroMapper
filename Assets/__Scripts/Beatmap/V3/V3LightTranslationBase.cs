@@ -17,7 +17,7 @@ namespace Beatmap.V3
             Time = RetrieveRequiredNode(node, "b").AsFloat;
             UsePrevious = RetrieveRequiredNode(node, "p").AsInt;
             EaseType = RetrieveRequiredNode(node, "e").AsInt;
-            Translation = RetrieveRequiredNode(node, "r").AsFloat;
+            Translation = RetrieveRequiredNode(node, "t").AsFloat;
             CustomData = node["customData"];
         }
 
