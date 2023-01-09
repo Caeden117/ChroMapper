@@ -48,26 +48,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ca58ce40fce7e49b2b44aa558a5819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragging: 0
-  colliders:
+  Dragging: 0
+  Colliders:
   - {fileID: 1228894562538561088}
   - {fileID: 8269471942151270873}
-  selectionRenderers:
+  SelectionRenderers:
   - {fileID: 2654713343862594198}
   - {fileID: 3938364105697110404}
-  boxCollider: {fileID: 0}
-  eventData:
+  - {fileID: 8668402241456848079}
+  BoxCollider: {fileID: 0}
+  EventData:
     HasAttachedContainer: 0
-    _time: 0
+    Time: 0
     PropId: 0
-    _type: 0
-    _value: 0
-    _lightGradient:
+    Type: 0
+    Value: 0
+    LightGradient:
       Duration: 0
       StartColor: {r: 0, g: 0, b: 0, a: 0}
       EndColor: {r: 0, g: 0, b: 0, a: 0}
       EasingType: 
-  eventsContainer: {fileID: 0}
+  EventsContainer: {fileID: 0}
   eventAppearance: {fileID: 0}
   eventRenderer:
   - {fileID: 23934209316677924}
@@ -222,10 +223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c09db4d18991ef4398365f817dac8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashShaderOffset: {x: 0, y: 0, z: 1.2}
-  fadeShaderOffset: {x: 0, y: 0, z: -1.2}
-  defaultFadeSize: 0.35
-  boostEventFadeSize: 0.1
+  FlashShaderOffset: {x: 0, y: 0, z: 1.2}
+  FadeShaderOffset: {x: 0, y: 0, z: -1.2}
+  DefaultFadeSize: 0.35
+  BoostEventFadeSize: 0.1
 --- !u!1 &784725713453205920
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,10 +360,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c09db4d18991ef4398365f817dac8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashShaderOffset: {x: 0, y: 0, z: 50}
-  fadeShaderOffset: {x: 0, y: 0, z: 0}
-  defaultFadeSize: 50
-  boostEventFadeSize: 10
+  FlashShaderOffset: {x: 0, y: 0, z: 50}
+  FadeShaderOffset: {x: 0, y: 0, z: 0}
+  DefaultFadeSize: 50
+  BoostEventFadeSize: 10
 --- !u!1 &2090204300881967071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,7 +1011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c09db4d18991ef4398365f817dac8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashShaderOffset: {x: 0, y: 0, z: 1.95}
-  fadeShaderOffset: {x: 0, y: 0, z: 0}
-  defaultFadeSize: 1
-  boostEventFadeSize: 0.5
+  FlashShaderOffset: {x: 0, y: 0, z: 1.95}
+  FadeShaderOffset: {x: 0, y: 0, z: 0}
+  DefaultFadeSize: 1
+  BoostEventFadeSize: 0.5
