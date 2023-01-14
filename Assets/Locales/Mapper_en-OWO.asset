@@ -267,7 +267,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: Pwawing
+    m_Localized: Pwaying
     m_Metadata:
       m_Items: []
   - m_Id: 64
@@ -712,15 +712,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68889908591489024
-    m_Localized: Bookmark Name
+    m_Localized: Bwookmawk Name
     m_Metadata:
       m_Items: []
   - m_Id: 68889912282476544
-    m_Localized: Bookmark Color
+    m_Localized: Bwookmawk Cowor
     m_Metadata:
       m_Items: []
   - m_Id: 118373130107551744
-    m_Localized: Objects found outside map. Do you want to remove them?
+    m_Localized: "Objects fwound outside map. D-do you want to wemove thwem? \u0CA5_\u0CA5"
     m_Metadata:
       m_Items: []
   references:

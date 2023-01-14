@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: "\u9996\u6B21\u8BBE\u7F6E"
+    m_Localized: "\u9996\u6B21\u8BBE\u7F6E\uFF1A"
     m_Metadata:
       m_Items: []
   - m_Id: 2
@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: "\u5728\u9009\u5B9A\u7684\u4F4D\u7F6E\u627E\u4E0D\u5230\"Beat Saber_Data\"\u6216\"CustomLevels\"\u6587\u4EF6\u5939\uFF01"
+    m_Localized: "\u5728\u6240\u9009\u4F4D\u7F6E\u627E\u4E0D\u5230\"Beat Saber_Data\"\u6216\"CustomLevels\"\u6587\u4EF6\u5939\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -52,12 +52,12 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9
     m_Localized: "\u60A8\u4E0D\u9700\u8981\u4F7F\u7528\u771F\u6B63\u7684 Beat Saber
-      \u5B89\u88C5 - \u60A8\u53EF\u4EE5\u7B80\u5355\u5730\u6A21\u62DF\u4E00\u4E2A\u3002\u8BE5\u6587\u4EF6\u5939\u9700\u8981\u5305\u542B\u4EE5\u4E0B\u5B50\u76EE\u5F55\uFF1A\n/Beat
+      \u5B89\u88C5\u76EE\u5F55;\u60A8\u53EF\u4EE5\u7B80\u5355\u5730\u6A21\u62DF\u4E00\u4E2A\uFF0C\u8BE5\u6587\u4EF6\u5939\u9700\u8981\u5305\u542B\u4EE5\u4E0B\u5B50\u76EE\u5F55\uFF1A\n/Beat
       Saber_Data/CustomLevels/\n/Beat Saber_Data/CustomWIPLevels/"
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: "\u4E00\u5207\u51C6\u5907\u5C31\u7EEA\uFF01"
+    m_Localized: "\u51C6\u5907\u5C31\u7EEA\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 11

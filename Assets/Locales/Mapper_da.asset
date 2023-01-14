@@ -671,22 +671,22 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 234935484416
-    m_Localized: 'Current BPM: {CurrentBPM:0.###}'
+    m_Localized: "Nuv\xE6rende BPM: {CurrentBPM:0.###}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 1123800776704
-    m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
+    m_Localized: "R\xF8d/Bl\xE5 Ratio: {RedBlueRatio:F2}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 3209883108945920
-    m_Localized: 'Bombs: {BombCount}'
+    m_Localized: 'Bomber: {BombCount}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 12803634470490112
-    m_Localized: Select the new color for this bookmark.
+    m_Localized: "V\xE6lg den nye farve for dette bogm\xE6rke."
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
@@ -694,15 +694,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68889908591489024
-    m_Localized: Bookmark Name
+    m_Localized: "Bogm\xE6rkets navn"
     m_Metadata:
       m_Items: []
   - m_Id: 68889912282476544
-    m_Localized: Bookmark Color
+    m_Localized: "Bogm\xE6rkefarve"
     m_Metadata:
       m_Items: []
   - m_Id: 118373130107551744
-    m_Localized: Objects found outside map. Do you want to remove them?
+    m_Localized: Objekter fundet uden for mappet. Vil du fjerne dem?
     m_Metadata:
       m_Items: []
   references:

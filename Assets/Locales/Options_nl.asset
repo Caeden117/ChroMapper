@@ -445,8 +445,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: Wanneer je shift inhoudt, zal er een uitgebreid raster verschijnen
-      waar je met precisie noten of muren kan plaatsen.
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -948,11 +948,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3768991576559616
-    m_Localized: Archivos exportados con \xE9xito a Quest
+    m_Localized: Successfully exported files to Quest
     m_Metadata:
       m_Items: []
   - m_Id: 3769025302958080
-    m_Localized: Exportar a Quest
+    m_Localized: Export to Quest
     m_Metadata:
       m_Items: []
   - m_Id: 1698793607168

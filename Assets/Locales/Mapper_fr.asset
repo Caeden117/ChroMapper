@@ -723,7 +723,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 118373130107551744
-    m_Localized: Objects found outside map. Do you want to remove them?
+    m_Localized: "Objets trouv\xE9s en dehors de la map. Voulez-vous les supprimer\u202F?"
     m_Metadata:
       m_Items: []
   references:

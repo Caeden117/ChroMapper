@@ -326,7 +326,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Time Value Decimal Precision
+    m_Localized: Time Vawue Decimaw Pwecision~
     m_Metadata:
       m_Items: []
   - m_Id: 73
@@ -451,8 +451,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding Shift while placing walls or notes, an extended grid
-      will appear with snapping disabled.
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -563,7 +563,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls
+    m_Localized: Contwols
     m_Metadata:
       m_Items: []
   - m_Id: 130

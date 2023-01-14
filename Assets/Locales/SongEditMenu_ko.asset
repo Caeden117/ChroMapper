@@ -77,7 +77,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: "\uCD08\uB2F9 \uBE44\uD2B8 \uC218"
+    m_Localized: "\uBD84\uB2F9 \uBE44\uD2B8 \uC218"
     m_Metadata:
       m_Items: []
   - m_Id: 16
@@ -97,8 +97,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "\uB178\uB798\uB97C \uC774 \uAC12\uB9CC\uD07C \uC55E\uC73C\uB85C
-      \uB2F9\uAE41\uB2C8\uB2E4.\n(\uCD08 \uB2E8\uC704)"
+    m_Localized: 'This feature is deprecated.
+
+      Shifts the song forward by this
+      amount
+
+      (in seconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -307,8 +311,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: "\uC800\uC7A5\uB418\uC9C0 \uC54A\uC740 \uB09C\uC774\uB3C4\uAC00
-      \uC788\uC2B5\uB2C8\uB2E4. \uC815\uB9D0 \uB098\uAC00\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+    m_Localized: You have unsaved difficulties, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -361,41 +364,58 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104117528192749568
-    m_Localized: '{0}% complete.'
+    m_Localized: "{0}% \uC644\uB8CC."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 44795657592176640
-    m_Localized: Reaction Time
+    m_Localized: "\uBC18\uC751 \uC2DC\uAC04"
     m_Metadata:
       m_Items: []
   - m_Id: 44793699250667520
-    m_Localized: 'How much time the the player has to react
-
-      (in milliseconds)'
+    m_Localized: "\uD50C\uB808\uC774\uC5B4\uAC00 \uBC18\uC751\uD574\uC57C\uD558\uB294
+      \uC2DC\uAC04 (\uBC00\uB9AC\uCD08)"
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
-    m_Localized: Environment Removal
+    m_Localized: "\uD658\uACBD \uC81C\uAC70"
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
-    m_Localized: 'Removes objects using Contains lookup.
-
-      (Does not effect
-      the editor environment.)'
+    m_Localized: "\uC870\uD68C\uD55C \uAC1C\uCCB4\uB97C \uC81C\uAC70\uD569\uB2C8\uB2E4.\n(\uC5D0\uB514\uD130
+      \uD658\uACBD\uC5D0 \uC601\uD5A5\uC744 \uC8FC\uC9C0\uC54A\uC2B5\uB2C8\uB2E4.)"
     m_Metadata:
       m_Items: []
   - m_Id: 104117395359141888
-    m_Localized: Exporting song to your Quest...
+    m_Localized: "\uB178\uB798\uB97C \uB2F9\uC2E0\uC758 \uD018\uC2A4\uD2B8\uB85C
+      \uB0B4\uBCF4\uB0B4\uB294 \uC911..."
     m_Metadata:
       m_Items: []
   - m_Id: 104118050203242496
-    m_Localized: Could not find any connected devices.
+    m_Localized: "\uC5F0\uACB0\uB41C \uC7A5\uCE58\uB97C \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 104118270903324672
-    m_Localized: Could not find a connected Quest.
+    m_Localized: "\uC5F0\uACB0\uB418\uC5B4\uC788\uB294 \uD018\uC2A4\uD2B8\uB97C \uCC3E\uC744
+      \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115483511321985024
+    m_Localized: 35
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115492419843325952
+    m_Localized: 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115504465297211392
+    m_Localized: 750 ms
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115521560328208384
+    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
+      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
+      that you apply your offsets using a audio manipulator such as Audacity."
     m_Metadata:
       m_Items: []
   references:

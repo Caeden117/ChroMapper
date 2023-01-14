@@ -541,8 +541,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding Shift while placing walls or notes, an extended grid
-      will appear with snapping disabled.
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104

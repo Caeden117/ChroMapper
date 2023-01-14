@@ -20,7 +20,7 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 1
-    m_Localized: "Param\xE8tres - {tabName}"
+    m_Localized: "Param\xE8tres - {TabName}"
     m_Metadata:
       m_Items:
       - id: 0
@@ -439,8 +439,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: "Si vous maintenez Maj en pla\xE7ant des murs ou des notes, une
-      grille \xE9tendue appara\xEEtra avec l'aimantage d\xE9sactiv\xE9."
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -889,7 +889,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1664580264005632
-    m_Localized: FPS max
+    m_Localized: IPS maximum
     m_Metadata:
       m_Items: []
   - m_Id: 1664599280979968
@@ -911,7 +911,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4090246341505024
-    m_Localized: "\xC9chelle de l'\xE9diteur ind\xE9pendant BPM"
+    m_Localized: "\xC9chelle de l'\xE9diteur ind\xE9pendant du BPM"
     m_Metadata:
       m_Items: []
   - m_Id: 9689541752557568
@@ -942,7 +942,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67493661524013056
-    m_Localized: Render Scale
+    m_Localized: "\xC9chelle de rendu"
     m_Metadata:
       m_Items: []
   - m_Id: 1698793607168
@@ -950,68 +950,69 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1897456816128
-    m_Localized: Adds special Quest functionality if ADB is installed
+    m_Localized: "Ajoute une fonctionnalit\xE9 sp\xE9ciale Quest si ADB est install\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 3768991576559616
-    m_Localized: Successfully exported files to Quest
+    m_Localized: "Fichiers export\xE9s vers le Quest avec succ\xE8s"
     m_Metadata:
       m_Items: []
   - m_Id: 3769025302958080
-    m_Localized: Export to Quest
+    m_Localized: Exporter vers le Quest
     m_Metadata:
       m_Items: []
   - m_Id: 3769067959029760
-    m_Localized: Failed to download ADB. Error {0}
+    m_Localized: "Impossible de t\xE9l\xE9charger ADB. Erreur {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3769095658213376
-    m_Localized: "ADB does not seem to be installed or could not be found. Would
-      you\n      like to download it? This will allow Quest functionality."
+    m_Localized: "ADB ne semble pas \xEAtre install\xE9 ou n'a pas pu \xEAtre trouv\xE9.
+      Souhaitez-vous le t\xE9l\xE9charger ? Cela permettra le fonctionnement du Quest."
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635263
-    m_Localized: Downloading ADB
+    m_Localized: "T\xE9l\xE9chargement d'ADB"
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635264
-    m_Localized: Finished downloading ADB
+    m_Localized: "T\xE9l\xE9chargement d'ADB termin\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 3779515244679168
-    m_Localized: Extracting ADB from zip. This may take a while.
+    m_Localized: "Extraction d'ADB \xE0 partir du zip. Cela peut prendre un certain
+      temps."
     m_Metadata:
       m_Items: []
   - m_Id: 21544433260560384
-    m_Localized: Install ADB for Quest functionality
+    m_Localized: Installer ADB pour Quest
     m_Metadata:
       m_Items: []
   - m_Id: 71906481403138048
-    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Localized: "Progr\xE8s du t\xE9l\xE9chargement d'ADB: {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 91579491578740736
-    m_Localized: Appearance
+    m_Localized: Apparence
     m_Metadata:
       m_Items: []
   - m_Id: 101771971410460672
-    m_Localized: Track and Grid
+    m_Localized: Piste et grille
     m_Metadata:
       m_Items: []
   - m_Id: 101773637585141760
-    m_Localized: Makes the transitions between scenes instant.
+    m_Localized: "Rend les transitions entre sc\xE8nes instantan\xE9es."
     m_Metadata:
       m_Items: []
   - m_Id: 101773995594153984
-    m_Localized: Instant Loading Transitions
+    m_Localized: "Chargement instantan\xE9 des transitions"
     m_Metadata:
       m_Items: []
   - m_Id: 101788523392335872
-    m_Localized: Length of the track in beats
+    m_Localized: Longueur de la piste en tempo/rythme
     m_Metadata:
       m_Items: []
   - m_Id: 101788529759289344
-    m_Localized: Track Length
+    m_Localized: Longueur de la piste
     m_Metadata:
       m_Items: []
   - m_Id: 101795760294789120
@@ -1019,15 +1020,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101795765399257088
-    m_Localized: Hide Disableable Objects On Load
+    m_Localized: "Cacher les objets d\xE9sactiv\xE9s au chargement"
     m_Metadata:
       m_Items: []
   - m_Id: 101802838346366976
-    m_Localized: Changes the transparency of passed notes
+    m_Localized: "Modifie la transparence des notes pass\xE9es"
     m_Metadata:
       m_Items: []
   - m_Id: 101802902695378944
-    m_Localized: Passed Note Transparency
+    m_Localized: "Transparence des notes pass\xE9es"
     m_Metadata:
       m_Items: []
   - m_Id: 101855016515731456
@@ -1035,11 +1036,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101855364424859648
-    m_Localized: Display artist and song name in top right corner.
+    m_Localized: "Afficher l'artiste et le nom de la musique en haut \xE0 droite."
     m_Metadata:
       m_Items: []
   - m_Id: 101855374591852544
-    m_Localized: Display Song Info
+    m_Localized: "Voir les d\xE9tails sur la chanson"
     m_Metadata:
       m_Items: []
   - m_Id: 101855382842048512
@@ -1047,23 +1048,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101855392124043264
-    m_Localized: Display Difficulty Info
+    m_Localized: "Afficher les informations de difficult\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 102096011425677312
-    m_Localized: Displays bookmarks line on the editor grid track.
+    m_Localized: "Afficher la ligne des signets sur l'\xE9diteur."
     m_Metadata:
       m_Items: []
   - m_Id: 102096015523512320
-    m_Localized: Display Bookmarks On Track
+    m_Localized: Afficher les signets sur la piste
     m_Metadata:
       m_Items: []
   - m_Id: 102186250655694848
-    m_Localized: Displays an additional grid line on the bookmark.
+    m_Localized: "Affiche une ligne de grille suppl\xE9mentaire sur le signet."
     m_Metadata:
       m_Items: []
   - m_Id: 102186255848243200
-    m_Localized: Display Bookmark Grid Line
+    m_Localized: Afficher la grille des signets
     m_Metadata:
       m_Items: []
   - m_Id: 102193073215438848
@@ -1083,39 +1084,41 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 102206134429089792
-    m_Localized: How thick the bookmarks on the timeline are.
+    m_Localized: "\xC9paisseur des signets sur la frise chronologique."
     m_Metadata:
       m_Items: []
   - m_Id: 102206140842180608
-    m_Localized: Bookmark UI Width
+    m_Localized: Largeur des signets dans l'interface
     m_Metadata:
       m_Items: []
   - m_Id: 102395595171495936
-    m_Localized: Bookmarks
+    m_Localized: Signets
     m_Metadata:
       m_Items: []
   - m_Id: 102396931141206016
-    m_Localized: Camera
+    m_Localized: "Cam\xE9ra"
     m_Metadata:
       m_Items: []
   - m_Id: 102447908275814400
-    m_Localized: Saves the difficulty file as more than a single line.
+    m_Localized: "Enregistre le fichier de difficult\xE9 sur plusieurs lignes."
     m_Metadata:
       m_Items: []
   - m_Id: 102447938869067776
-    m_Localized: Save As Formatted Json
+    m_Localized: "Enregistrer en tant que Json format\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 94731652719513600
-    m_Localized: Use ADB in path if found
+    m_Localized: "Utiliser ADB dans le chemin si trouv\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 94731842968948736
-    m_Localized: If ADB is in the system environment path, it will use it if enabled.
+    m_Localized: "Si ADB est dans les variables d'environnement syst\xE8me, il l'utilisera
+      s'il est activ\xE9."
     m_Metadata:
       m_Items: []
   - m_Id: 105008036237737984
-    m_Localized: Whether objects can be shifted outside the normal 3x4 grid.
+    m_Localized: "Indique si les objets peuvent \xEAtre d\xE9plac\xE9s en dehors
+      de la grille 3x4 normale."
     m_Metadata:
       m_Items: []
   - m_Id: 105008044110446592
@@ -1123,7 +1126,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 150232748497440768
-    m_Localized: Uninstalling ADB...
+    m_Localized: "D\xE9sinstallation d'ADB..."
     m_Metadata:
       m_Items: []
   references:

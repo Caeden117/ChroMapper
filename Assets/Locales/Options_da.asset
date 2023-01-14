@@ -49,7 +49,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: Nyttig Loading besked
+    m_Localized: Nyttige Loading beskeder
     m_Metadata:
       m_Items: []
   - m_Id: 9
@@ -337,7 +337,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: Change the scale for how big you want the Past Notes Grid to be.
+    m_Localized: "\xC6ndre skalaen for, hvor stor du vil have det \"Tidligere Notes\"-gitter
+      til at v\xE6re."
     m_Metadata:
       m_Items: []
   - m_Id: 82
@@ -435,8 +436,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding Shift while placing walls or notes, an extended grid
-      will appear with snapping disabled.
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -487,7 +488,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
+    m_Localized: "Aktiv\xE9r note-editor. Pr\xF8v at v\xE6lge et objekt!"
     m_Metadata:
       m_Items: []
   - m_Id: 116
@@ -508,7 +509,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Change how fast the camera moves.
+    m_Localized: "\xC6ndre, hvor hurtigt kameraet bev\xE6ger sig."
     m_Metadata:
       m_Items: []
   - m_Id: 121
@@ -517,19 +518,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: How fast the camera rotates.
+    m_Localized: Hvor hurtigt kameraet roterer.
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Change the sound you hear when a note passes through the grid.
+    m_Localized: "\xC6ndre lyden, du h\xF8rer, n\xE5r en note passerer gennem gitteret."
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Location of your Beat Saber installation.
+    m_Localized: Placering af din Beat Saber-installation.
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: General
+    m_Localized: Generelt
     m_Metadata:
       m_Items: []
   - m_Id: 126
@@ -537,11 +538,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Audio
+    m_Localized: Lyd
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Graphics
+    m_Localized: Grafik
     m_Metadata:
       m_Items: []
   - m_Id: 129
@@ -558,11 +559,11 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 132
-    m_Localized: Experimental
+    m_Localized: Eksperimental
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Credits
+    m_Localized: Kreditering
     m_Metadata:
       m_Items: []
   - m_Id: 134
@@ -591,12 +592,12 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 139
-    m_Localized: '{TextValue} beats'
+    m_Localized: '{TextValue} slag'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 140
-    m_Localized: '{TextValue} beats'
+    m_Localized: '{TextValue} slag'
     m_Metadata:
       m_Items:
       - id: 0
@@ -619,11 +620,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: Sprog
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Localize UI
+    m_Localized: "Lokalis\xE9r UI"
     m_Metadata:
       m_Items: []
   - m_Id: 147
@@ -643,7 +644,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Enable Custom Events
+    m_Localized: Aktiver brugerdefinerede begivenheder
     m_Metadata:
       m_Items: []
   - m_Id: 152
@@ -656,11 +657,11 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 154
-    m_Localized: UI Scale
+    m_Localized: UI-skala
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Controls scale for all UI elements.
+    m_Localized: Styrer skalering for alle UI-elementer.
     m_Metadata:
       m_Items: []
   - m_Id: 156
@@ -815,7 +816,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8718720348160
-    m_Localized: Show Obstacle Count
+    m_Localized: Vis antal forhindringer
     m_Metadata:
       m_Items: []
   - m_Id: 8904158916608
@@ -823,23 +824,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9070869917696
-    m_Localized: Show BPM Change Count
+    m_Localized: "Vis antal BPM-\xE6ndringer"
     m_Metadata:
       m_Items: []
   - m_Id: 9291620331520
-    m_Localized: Show Current BPM
+    m_Localized: "Vis nuv\xE6rende BPM"
     m_Metadata:
       m_Items: []
   - m_Id: 9443374444544
-    m_Localized: Show Time Spent Mapping
+    m_Localized: "Vis tid brugt p\xE5 at mappe"
     m_Metadata:
       m_Items: []
   - m_Id: 1564790530682880
-    m_Localized: Show Bomb count in Counters+
+    m_Localized: Vis bombe-antal i Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 1565145339441152
-    m_Localized: Show Bomb Count
+    m_Localized: Vis bombe-antal
     m_Metadata:
       m_Items: []
   - m_Id: 1062316191744
@@ -869,11 +870,11 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 23812497342464
-    m_Localized: Grid Transparency
+    m_Localized: Gitter-gennemsigtighed
     m_Metadata:
       m_Items: []
   - m_Id: 1664580264005632
-    m_Localized: Maximum FPS
+    m_Localized: Maksimum FPS
     m_Metadata:
       m_Items: []
   - m_Id: 1664599280979968
@@ -1016,11 +1017,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101855364424859648
-    m_Localized: Display artist and song name in top right corner.
+    m_Localized: "Vis kunstner og sangnavn i \xF8verste h\xF8jre hj\xF8rne."
     m_Metadata:
       m_Items: []
   - m_Id: 101855374591852544
-    m_Localized: Display Song Info
+    m_Localized: Vis sang-information
     m_Metadata:
       m_Items: []
   - m_Id: 101855382842048512
@@ -1044,7 +1045,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 102186255848243200
-    m_Localized: Display Bookmark Grid Line
+    m_Localized: "Vis gitterlinjer for bogm\xE6rke"
     m_Metadata:
       m_Items: []
   - m_Id: 102193073215438848
@@ -1056,7 +1057,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 102206124970934272
-    m_Localized: Display the beat and song time on the bookmark tooltip.
+    m_Localized: "Vis rytmen for beat-og sang p\xE5 bogm\xE6rkev\xE6rkt\xF8jstippet."
     m_Metadata:
       m_Items: []
   - m_Id: 102206129182015488
@@ -1064,19 +1065,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 102206134429089792
-    m_Localized: How thick the bookmarks on the timeline are.
+    m_Localized: "Hvor tykke bogm\xE6rkerne p\xE5 tidslinjen er."
     m_Metadata:
       m_Items: []
   - m_Id: 102206140842180608
-    m_Localized: Bookmark UI Width
+    m_Localized: "Bogm\xE6rke UI-bredde"
     m_Metadata:
       m_Items: []
   - m_Id: 102395595171495936
-    m_Localized: Bookmarks
+    m_Localized: "Bogm\xE6rker"
     m_Metadata:
       m_Items: []
   - m_Id: 102396931141206016
-    m_Localized: Camera
+    m_Localized: Kamera
     m_Metadata:
       m_Items: []
   - m_Id: 102447908275814400
@@ -1088,7 +1089,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 94731652719513600
-    m_Localized: Use ADB in path if found
+    m_Localized: Brug ADB i sti, hvis det er fundet
     m_Metadata:
       m_Items: []
   - m_Id: 94731842968948736
@@ -1104,7 +1105,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 150232748497440768
-    m_Localized: Uninstalling ADB...
+    m_Localized: Afinstallerer ADB...
     m_Metadata:
       m_Items: []
   references:

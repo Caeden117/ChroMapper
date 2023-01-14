@@ -438,8 +438,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: "Si mantienes pulsada la tecla Shift mientras colocas muros o notas,
-      aparecer\xE1 una cuadr\xEDcula extendida con el encaje desactivado."
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104
