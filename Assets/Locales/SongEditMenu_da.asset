@@ -288,8 +288,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: "Du har glemt at gemme dine \xE6ndringer, er du sikker p\xE5 at
-      du vil forlade?"
+    m_Localized: You have unsaved changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 68
@@ -324,8 +323,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: "Du har glemt at gemme bidragende, er du sikker p\xE5 at du vil
-      forlade?"
+    m_Localized: You have unsaved contributor changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 76

@@ -297,8 +297,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: "Vous avez des modifications non enregistr\xE9es, \xEAtes-vous s\xFBr
-      de vouloir quitter ?"
+    m_Localized: You have unsaved changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 68
@@ -334,8 +333,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: "Vous avez des modifications des contributeurs non enregistr\xE9es,
-      \xEAtes-vous s\xFBr de vouloir quitter?"
+    m_Localized: You have unsaved contributor changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 76
