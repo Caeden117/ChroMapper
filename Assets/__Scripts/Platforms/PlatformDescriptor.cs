@@ -21,7 +21,7 @@ public class PlatformDescriptor : MonoBehaviour
     [Tooltip("If you want a thing to rotate around a 360 level with the track, place it here.")]
     public GridRotationController RotationController;
 
-    [FormerlySerializedAs("colors")] [HideInInspector] public PlatformColors Colors;
+    [FormerlySerializedAs("colors")][HideInInspector] public PlatformColors Colors;
     [FormerlySerializedAs("defaultColors")] public PlatformColors DefaultColors = new PlatformColors();
 
     [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17")]
@@ -104,8 +104,8 @@ public class PlatformDescriptor : MonoBehaviour
 
         callbackController.EventPassedThreshold += EventPassed;
         RefreshLightingManagers();
-        
-        if (Settings.Instance.HideDisablableObjectsOnLoad) ToggleDisablableObjects(); 
+
+        if (Settings.Instance.HideDisablableObjectsOnLoad) ToggleDisablableObjects();
     }
 
     public void RefreshLightingManagers()
@@ -201,27 +201,25 @@ public class PlatformDescriptor : MonoBehaviour
                     SmallRingManager.HandlePositionEvent(obj.CustomData);
                 break;
             case 12:
-                var leftEventTypes = new List<int>() {MapEvent.EventTypeLeftLasers, MapEvent.EventTypeCustomLight2, MapEvent.EventTypeCustomLight4};
+                var leftEventTypes = new List<int>() { MapEvent.EventTypeLeftLasers, MapEvent.EventTypeCustomLight2, MapEvent.EventTypeCustomLight4 };
 
                 foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
                 {
                     foreach (var l in LightingManagers[eventType].RotatingLights)
                     {
                         l.UpdateOffset(true, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
-                        if (isPlaying) l.UpdateZPosition();
                     }
                 }
 
                 break;
             case 13:
-                var rightEventTypes = new List<int>() {MapEvent.EventTypeRightLasers, MapEvent.EventTypeCustomLight3, MapEvent.EventTypeCustomLight5};
+                var rightEventTypes = new List<int>() { MapEvent.EventTypeRightLasers, MapEvent.EventTypeCustomLight3, MapEvent.EventTypeCustomLight5 };
 
                 foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
                 {
                     foreach (var l in LightingManagers[eventType].RotatingLights)
                     {
                         l.UpdateOffset(true, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
-                        if (isPlaying) l.UpdateZPosition();
                     }
                 }
 

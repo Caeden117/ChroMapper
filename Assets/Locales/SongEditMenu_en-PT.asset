@@ -98,7 +98,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'Shifts the song forward by this amount
+    m_Localized: 'This feature is deprecated.
+
+      Shifts the song forward by this
+      amount
 
       (in seconds)'
     m_Metadata:
@@ -309,7 +312,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, are you sure you want to leave?
+    m_Localized: You have unsaved changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 68
@@ -347,7 +350,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Localized: You have unsaved contributor changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -396,6 +399,24 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104118270903324672
     m_Localized: Could not find a connected Quest.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115483511321985024
+    m_Localized: 35
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115492419843325952
+    m_Localized: 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115504465297211392
+    m_Localized: 750 ms
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115521560328208384
+    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
+      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
+      that you apply your offsets using a audio manipulator such as Audacity."
     m_Metadata:
       m_Items: []
   references:

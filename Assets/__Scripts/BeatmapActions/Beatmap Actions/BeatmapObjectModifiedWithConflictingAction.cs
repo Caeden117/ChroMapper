@@ -1,6 +1,12 @@
-﻿public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedAction
+﻿using System;
+using System.Linq;
+using LiteNetLib.Utils;
+
+public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedAction
 {
-    private readonly BeatmapObject conflictingObject;
+    private BeatmapObject conflictingObject;
+
+    public BeatmapObjectModifiedWithConflictingAction() : base() { }
 
     public BeatmapObjectModifiedWithConflictingAction(BeatmapObject edited, BeatmapObject originalObject,
         BeatmapObject originalData, BeatmapObject conflicting, string comment = "No comment.") : base(edited,
@@ -11,8 +17,7 @@
         base.Undo(param);
         if (conflictingObject != null)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(conflictingObject.BeatmapType)
-                .SpawnObject(conflictingObject, false);
+            SpawnObject(conflictingObject);
         }
     }
 
@@ -21,8 +26,20 @@
         base.Redo(param);
         if (conflictingObject != null)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(conflictingObject.BeatmapType)
-                .DeleteObject(conflictingObject, false);
+            DeleteObject(conflictingObject);
         }
+    }
+
+    public override void Serialize(NetDataWriter writer)
+    {    
+        base.Serialize(writer);
+        writer.PutBeatmapObject(conflictingObject);
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        base.Deserialize(reader);
+        conflictingObject = reader.GetBeatmapObject();
+        Data = Data.Append(conflictingObject);
     }
 }

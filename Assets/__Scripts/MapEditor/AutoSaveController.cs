@@ -11,6 +11,8 @@ using UnityEngine.UI;
 
 public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 {
+    public bool IsSaving => savingThread != null && savingThread.IsAlive;
+
     private const int maximumAutosaveCount = 15;
     [SerializeField] private Toggle autoSaveToggle;
     [SerializeField] private PauseManager pauseManager;
@@ -180,7 +182,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     public void Save(bool auto = false)
     {
-        if (savingThread != null && savingThread.IsAlive)
+        if (IsSaving)
         {
             Debug.LogError(":hyperPepega: :mega: STOP TRYING TO SAVE THE SONG WHILE ITS ALREADY SAVING TO DISK");
             return;

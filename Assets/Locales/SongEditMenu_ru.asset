@@ -104,9 +104,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "\u0421\u0434\u0432\u0438\u0433\u0430\u0435\u0442 \u0430\u0443\u0434\u0438\u043E
-      \u0432\u043F\u0435\u0440\u0435\u0434 \u043D\u0430 \u0432\u0435\u043B\u0438\u0447\u0438\u043D\u0443
-      \u0432\u0440\u0435\u043C\u0435\u043D\u0438\n(\u0412 \u043C\u0438\u043B\u043B\u0438\u0441\u0435\u043A\u0443\u043D\u0434\u0430\u0445)"
+    m_Localized: 'This feature is deprecated.
+
+      Shifts the song forward by this
+      amount
+
+      (in seconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -325,16 +328,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: "\u0423 \u0432\u0430\u0441 \u0435\u0441\u0442\u044C \u043D\u0435\u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u043D\u044B\u0435
-      \u0438\u0437\u043C\u0435\u043D\u0435\u043D\u0438\u044F, \u0432\u044B \u0442\u043E\u0447\u043D\u043E
-      \u0445\u043E\u0442\u0438\u0442\u0435 \u0432\u044B\u0439\u0442\u0438?"
+    m_Localized: You have unsaved changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: "\u0423 \u0432\u0430\u0441 \u0435\u0441\u0442\u044C \u043D\u0435\u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u043D\u044B\u0435
-      \u0443\u0440\u043E\u0432\u043D\u0438 \u0441\u043B\u043E\u0436\u043D\u043E\u0441\u0442\u0438,
-      \u0432\u044B \u0442\u043E\u0447\u043D\u043E \u0445\u043E\u0442\u0438\u0442\u0435
-      \u0432\u044B\u0439\u0442\u0438?"
+    m_Localized: You have unsaved difficulties, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -384,7 +382,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, are you sure you want to leave?
+    m_Localized: You have unsaved contributor changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -413,7 +411,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
-    m_Localized: Environment Removal
+    m_Localized: "\u0423\u0434\u0430\u043B\u0435\u043D\u0438\u0435 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u043E\u0432
+      \u043E\u043A\u0440\u0443\u0436\u0435\u043D\u0438\u044F"
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
@@ -433,6 +432,24 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104118270903324672
     m_Localized: Could not find a connected Quest.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115483511321985024
+    m_Localized: 35
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115492419843325952
+    m_Localized: 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115504465297211392
+    m_Localized: 750 ms
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115521560328208384
+    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
+      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
+      that you apply your offsets using a audio manipulator such as Audacity."
     m_Metadata:
       m_Items: []
   references:

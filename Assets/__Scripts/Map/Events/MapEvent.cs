@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -53,6 +54,7 @@ public class MapEvent : BeatmapObject
     /*
      * MapEvent logic
      */
+    public MapEvent() { }
 
     public MapEvent(JSONNode node)
     {
@@ -160,6 +162,25 @@ public class MapEvent : BeatmapObject
         }
 
         return node;
+    }
+    public override void Serialize(NetDataWriter writer)
+    {
+        writer.Put(Time);
+        writer.Put(Type);
+        writer.Put(Value);
+        writer.Put(CustomData?.ToString());
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Time = reader.GetFloat();
+        Type = reader.GetInt();
+        Value = reader.GetInt();
+        var customData = reader.GetString();
+        if (!string.IsNullOrEmpty(customData))
+        {
+            CustomData = JSON.Parse(customData);
+        }
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)

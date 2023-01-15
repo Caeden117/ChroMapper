@@ -1,4 +1,5 @@
 ﻿using System;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -20,6 +21,8 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
     /*
      * Obstacle Logic
      */
+    public BeatmapObstacle() { }
+
 
     public BeatmapObstacle(JSONNode node)
     {
@@ -73,6 +76,30 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
             }
         }*/
         return node;
+    }
+
+    public override void Serialize(NetDataWriter writer)
+    {
+        writer.Put(Time);
+        writer.Put(LineIndex);
+        writer.Put(Type);
+        writer.Put(Width);
+        writer.Put(Duration);
+        writer.Put(CustomData?.ToString() ?? "null");
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Time = reader.GetFloat();
+        LineIndex = reader.GetInt();
+        Type = reader.GetInt();
+        Width = reader.GetInt();
+        Duration = reader.GetFloat();
+        var customData = reader.GetString();
+        if (!string.IsNullOrEmpty(customData))
+        {
+            CustomData = JSON.Parse(customData);
+        }
     }
 
     protected override bool IsConflictingWithObjectAtSameTime(BeatmapObject other, bool deletion)

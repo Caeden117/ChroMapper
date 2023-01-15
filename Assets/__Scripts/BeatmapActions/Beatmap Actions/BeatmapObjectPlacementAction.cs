@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using LiteNetLib.Utils;
 
 public class BeatmapObjectPlacementAction : BeatmapAction
 {
-    private readonly IEnumerable<BeatmapObject> removedConflictObjects;
+    private IEnumerable<BeatmapObject> removedConflictObjects;
+
+    public BeatmapObjectPlacementAction() : base() { }
 
     public BeatmapObjectPlacementAction(IEnumerable<BeatmapObject> placedContainers,
         IEnumerable<BeatmapObject> conflictingObjects, string comment) : base(placedContainers, comment) =>
@@ -16,14 +19,14 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     {
         foreach (var obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false, false);
+            DeleteObject(obj, false);
         }
 
         RefreshPools(Data);
 
         foreach (var data in removedConflictObjects)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(data.BeatmapType).SpawnObject(data, refreshesPool: false);
+            SpawnObject(data, true);
         }
 
         RefreshPools(removedConflictObjects);
@@ -33,16 +36,28 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     {
         foreach (var obj in removedConflictObjects)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false, false);
+            DeleteObject(obj, false);
         }
 
-        RefreshPools(Data);
+        RefreshPools(removedConflictObjects);
 
-        foreach (var con in Data)
+        foreach (var obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(con.BeatmapType).SpawnObject(con, refreshesPool: false);
+            SpawnObject(obj, true);
         }
 
         RefreshPools(Data);
+    }
+
+    public override void Serialize(NetDataWriter writer)
+    {
+        SerializeBeatmapObjectList(writer, Data);
+        SerializeBeatmapObjectList(writer, removedConflictObjects);
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Data = DeserializeBeatmapObjectList(reader);
+        removedConflictObjects = DeserializeBeatmapObjectList(reader);
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using LiteNetLib.Utils;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private readonly IEnumerable<BeatmapObject> removed;
+    private IEnumerable<BeatmapObject> removed;
+
+    public SelectionPastedAction() : base() { }
 
     public SelectionPastedAction(IEnumerable<BeatmapObject> pasteData, IEnumerable<BeatmapObject> removed) :
         base(pasteData) => this.removed = removed;
@@ -10,9 +13,9 @@ public class SelectionPastedAction : BeatmapAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var obj in Data)
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false, false);
+            DeleteObject(obj, false);
         foreach (var obj in removed)
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).SpawnObject(obj, false);
+            SpawnObject(obj);
         RefreshPools(removed);
     }
 
@@ -21,12 +24,28 @@ public class SelectionPastedAction : BeatmapAction
         SelectionController.DeselectAll();
         foreach (var obj in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).SpawnObject(obj, false, false);
-            SelectionController.Select(obj, true, false, false);
+            SpawnObject(obj);
+
+            if (!Networked)
+            {
+                SelectionController.Select(obj, true, false, false);
+            }
         }
 
         foreach (var obj in removed)
-            BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).DeleteObject(obj, false);
+            DeleteObject(obj, false);
         RefreshPools(Data);
+    }
+
+    public override void Serialize(NetDataWriter writer)
+    {
+        SerializeBeatmapObjectList(writer, Data);
+        SerializeBeatmapObjectList(writer, removed);
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        Data = DeserializeBeatmapObjectList(reader);
+        removed = DeserializeBeatmapObjectList(reader);
     }
 }

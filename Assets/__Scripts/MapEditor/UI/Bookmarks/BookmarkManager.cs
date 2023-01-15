@@ -6,8 +6,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
+// TODO: Refactor all this Bookmark bullshit to fit every other object in ChroMapper (using BeatmapObjectContainerCollection, BeatmapObjectContainer, etc. etc.)
 public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 {
+    // -10 twice for the distance from screen edges, -5 for half the width of one bookmark
+    public const float CanvasWidthOffset = -20f;
+
     private static readonly System.Random rng = new System.Random();
 
     [SerializeField] private GameObject bookmarkContainerPrefab;
@@ -17,11 +21,11 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     public InputAction.CallbackContext ShiftContext;
 
-    // -10 twice for the distance from screen edges, -5 for half the width of one bookmark
-    private readonly float canvasWidthOffset = -20f;
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
 
     public Action BookmarksUpdated;
+    public event Action<BeatmapObject> BookmarkAdded;
+    public event Action<BeatmapObject> BookmarkDeleted;
 
     private float previousCanvasWidth;
 
@@ -65,7 +69,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
             container.name = bookmark.Name;
             container.Init(this, bookmark);
-            container.RefreshPosition(timelineCanvas.sizeDelta.x + canvasWidthOffset);
+            container.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
             return container;
         }).OrderBy(it => it.Data.Time).ToList();
 
@@ -98,7 +102,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         {
             previousCanvasWidth = timelineCanvas.sizeDelta.x;
             foreach (var bookmark in bookmarkContainers)
-                bookmark.RefreshPosition(timelineCanvas.sizeDelta.x + canvasWidthOffset);
+                bookmark.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
         }
     }
 
@@ -140,21 +144,40 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             newBookmark.Color = color.Value;
         }
 
+        AddBookmark(newBookmark);
+    }
+
+    internal void AddBookmark(BeatmapBookmark bookmark, bool triggerEvent = true)
+    {
         var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
-        container.name = newBookmark.Name;
-        container.Init(this, newBookmark);
-        container.RefreshPosition(timelineCanvas.sizeDelta.x + canvasWidthOffset);
+        container.name = bookmark.Name;
+        container.Init(this, bookmark);
+        container.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
 
         bookmarkContainers = bookmarkContainers.Append(container).OrderBy(it => it.Data.Time).ToList();
         BeatSaberSongContainer.Instance.Map.Bookmarks = bookmarkContainers.Select(x => x.Data).ToList();
         BookmarksUpdated.Invoke();
+
+        if (triggerEvent) BookmarkAdded?.Invoke(bookmark);
     }
 
-    internal void DeleteBookmark(BookmarkContainer container)
+    internal void DeleteBookmark(BookmarkContainer container, bool triggerEvent = true)
     {
         bookmarkContainers.Remove(container);
         BeatSaberSongContainer.Instance.Map.Bookmarks = bookmarkContainers.Select(x => x.Data).ToList();
         BookmarksUpdated.Invoke();
+
+        if (triggerEvent) BookmarkDeleted?.Invoke(container.Data);
+    }
+
+    internal void DeleteBookmarkAtTime(float time, bool triggerEvent = true)
+    {
+        var container = bookmarkContainers.Find(it => Mathf.Abs(it.Data.Time - time) < 0.01f);
+
+        if (container != null)
+        {
+            DeleteBookmark(container, triggerEvent);
+        }
     }
 
     internal void OnNextBookmark()

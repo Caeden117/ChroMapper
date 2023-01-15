@@ -74,7 +74,7 @@ public class RotatingLights : RotatingLightsBase
         if (UseZPositionForAngleOffset &&
             !lockRotation) //BTS, FitBeat, and Timbaland has laser speeds offset by their Z position
         {
-            rotation = (Time.frameCount + (transform.position.z * zPositionOffset)) * zRotationModifier;
+            rotation = (Time.frameCount + (transform.position.z * zPositionModifier));
         }
         //Rotate by Rotation variable
         //In most cases, it is randomized, except in certain environments (see above)
@@ -86,8 +86,6 @@ public class RotatingLights : RotatingLightsBase
 
         rotationSpeed = this.speed * Multiplier * (rotateForwards ? -1 : 1) * Mathf.Sign(Multiplier); //Set rotation speed
     }
-
-    public override void UpdateZPosition() => zPositionOffset += zPositionModifier;
 
     public override bool IsOverrideLightGroup() => OverrideLightGroup;
 }

@@ -1,17 +1,19 @@
-﻿public class BeatmapObjectModifiedAction : BeatmapAction
+﻿using LiteNetLib.Utils;
+
+public class BeatmapObjectModifiedAction : BeatmapAction
 {
     private readonly bool addToSelection;
-    private readonly BeatmapObjectContainerCollection collection;
-    private readonly BeatmapObject editedData;
 
-    private readonly BeatmapObject editedObject;
-    private readonly BeatmapObject originalData;
-    private readonly BeatmapObject originalObject;
+    private BeatmapObject editedData;
+    private BeatmapObject editedObject;
+    private BeatmapObject originalData;
+    private BeatmapObject originalObject;
+
+    public BeatmapObjectModifiedAction() : base() { }
 
     public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject originalObject, BeatmapObject originalData,
-        string comment = "No comment.", bool keepSelection = false) : base(new[] { edited }, comment)
+        string comment = "No comment.", bool keepSelection = false) : base(new[] { edited, originalObject }, comment)
     {
-        collection = BeatmapObjectContainerCollection.GetCollectionForType(originalObject.BeatmapType);
         editedObject = edited;
         editedData = BeatmapObject.GenerateCopy(edited);
 
@@ -20,15 +22,17 @@
         addToSelection = keepSelection;
     }
 
+    public override BeatmapObject DoesInvolveObject(BeatmapObject obj) => obj == editedObject ? originalObject : null;
+
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         if (originalObject != editedObject || editedData.Time.CompareTo(originalData.Time) != 0)
         {
-            collection.DeleteObject(editedObject, false, false);
+            DeleteObject(editedObject, false);
             SelectionController.Deselect(editedObject, false);
 
             originalObject.Apply(originalData);
-            collection.SpawnObject(originalObject, false, !inCollection);
+            SpawnObject(originalObject, false, !inCollection);
         }
         else
         {
@@ -37,18 +41,21 @@
             if (!inCollection) RefreshPools(Data);
         }
 
-        SelectionController.Select(originalObject, addToSelection, true, !inCollection);
+        if (!Networked)
+        {
+            SelectionController.Select(originalObject, addToSelection, true, !inCollection);
+        }
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         if (originalObject != editedObject || editedData.Time.CompareTo(originalData.Time) != 0)
         {
-            collection.DeleteObject(originalObject, false, false);
+            DeleteObject(originalObject, false);
             SelectionController.Deselect(originalObject, false);
 
             editedObject.Apply(editedData);
-            collection.SpawnObject(editedObject, false, !inCollection);
+            SpawnObject(editedObject, false, !inCollection);
         }
         else
         {
@@ -57,6 +64,25 @@
             if (!inCollection) RefreshPools(Data);
         }
 
-        SelectionController.Select(editedObject, addToSelection, true, !inCollection);
+        if (!Networked)
+        {
+            SelectionController.Select(editedObject, addToSelection, true, !inCollection);
+        }
+    }
+
+    public override void Serialize(NetDataWriter writer)
+    {
+        writer.PutBeatmapObject(editedData);
+        writer.PutBeatmapObject(originalData);
+    }
+
+    public override void Deserialize(NetDataReader reader)
+    {
+        editedData = reader.GetBeatmapObject();
+        editedObject = BeatmapObject.GenerateCopy(editedData);
+        originalData = reader.GetBeatmapObject();
+        originalObject = BeatmapObject.GenerateCopy(originalData);
+
+        Data = new[] { editedObject, originalObject };
     }
 }

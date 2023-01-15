@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using LiteNetLib.Utils;
 
 public class SelectionDeletedAction : BeatmapAction
 {
-    public SelectionDeletedAction(IEnumerable<BeatmapObject> deletedData) : base(deletedData)
-    {
-    }
+    public SelectionDeletedAction() : base() { }
+
+    public SelectionDeletedAction(IEnumerable<BeatmapObject> deletedData) : base(deletedData) { }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (var data in Data.ToArray())
+        foreach (var data in Data)
         {
-            BeatmapObjectContainerCollection.GetCollectionForType(data.BeatmapType).SpawnObject(data, false, false);
-            SelectionController.Select(data, true, false, false);
+            SpawnObject(data);
+
+            if (!Networked)
+            {
+                SelectionController.Select(data, true, false, false);
+            }
         }
 
         SelectionController.RefreshSelectionMaterial(false);
@@ -21,9 +25,13 @@ public class SelectionDeletedAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (var data in Data.ToArray())
-            BeatmapObjectContainerCollection.GetCollectionForType(data.BeatmapType).DeleteObject(data, false, false);
+        foreach (var data in Data)
+            DeleteObject(data, false);
 
         RefreshPools(Data);
     }
+
+    public override void Serialize(NetDataWriter writer) => SerializeBeatmapObjectList(writer, Data);
+
+    public override void Deserialize(NetDataReader reader) => Data = DeserializeBeatmapObjectList(reader);
 }

@@ -5,11 +5,11 @@ using UnityEngine.Serialization;
 
 public class RotatingLightsLinkinPark : RotatingLightsBase
 {
-    [FormerlySerializedAs("_rotationVector")] [SerializeField] protected Vector3 RotationVector = Vector3.up;
+    [FormerlySerializedAs("_rotationVector")][SerializeField] protected Vector3 RotationVector = Vector3.up;
 
     [FormerlySerializedAs("multiplier")] public float Multiplier = 20;
     public bool Left;
-    [FormerlySerializedAs("rotatingLightsRandom")] [SerializeField] protected RotatingLightsRandom RotatingLightsRandom;
+    [FormerlySerializedAs("rotatingLightsRandom")][SerializeField] protected RotatingLightsRandom RotatingLightsRandom;
 
     protected bool UseZPositionForAngleOffset = false;
     protected float ZPositionAngleOffsetScale = 1f;
@@ -97,10 +97,6 @@ public class RotatingLightsLinkinPark : RotatingLightsBase
             rotationSpeed = beatmapEventDataValue * 20f * direction;
             if (Left) RotatingLightsRandom.rotationSpeed = rotationSpeed;
         }
-    }
-
-    public override void UpdateZPosition()
-    {
     }
 
     public override bool IsOverrideLightGroup() => false;

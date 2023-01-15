@@ -33,6 +33,7 @@ public class SceneTransitionManager : MonoBehaviour
     {
         if (IsLoading) return;
         darkThemeSo.DarkThemeifyUI();
+        Cursor.lockState = CursorLockMode.None;
         IsLoading = true;
         externalRoutines.Clear();
         foreach (var routine in routines) externalRoutines.Enqueue(routine);

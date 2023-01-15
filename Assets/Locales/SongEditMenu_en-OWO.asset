@@ -98,7 +98,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: Bweaks mop howwibwy
+    m_Localized: 'This feature is deprecated.
+
+      Shifts the song forward by this
+      amount
+
+      (in seconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -273,18 +278,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 61
-    m_Localized: 'Please make sure that your preview start time and length
+    m_Localized: 'Pwease make sure that your pweview stawt twime and wength
 
-      does
-      not continue past the end of the song.'
+      dwoesnt
+      continue past the end of the swong!'
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: 'Are you sure you want to delete {0}?
+    m_Localized: 'Awe you suwe you want to dewete {0}?!
 
 
-      The song info will
-      be saved as well, so this will be gone forever!'
+      The swong info wiww
+      be swaved as weww... so this wiww be gone fowevah!'
     m_Metadata:
       m_Items: []
   - m_Id: 64
@@ -292,37 +297,37 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: 'Error while creating the packaged zip: info.dat does not exist.
+    m_Localized: 'Ewwow while cweating the pwackaged zip: info.dat dwoesnt exist!
 
 
-      Please
-      save your map, then try packaging your zip again.'
+      Pwease
+      swave youw map, then twy pwackaging youw zip again.'
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: Save your song info before opening up song files!
+    m_Localized: Swave youw song info befowe opwening up song files!!
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, are you sure you want to leave?
+    m_Localized: You have unsaved changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, are you sure you want to leave?
+    m_Localized: You have unsaved difficulties, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 69
-    m_Localized: 'ChroMapper is currently set to not load anything enabled.
+    m_Localized: 'ChroMapper is cuwwentwy set to not load anythwing enabwed...
 
       To
-      set something to load, visit Options and scroll to the bottom of mapper settings.'
+      set swomething to woad, vwisit Options and scwoll to the bottom of mapper swettings.'
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'ChroMapper is currently set to not load everything.
+    m_Localized: 'ChroMapper is cuwwentwy set to not load evewything.
 
-      To re-enable
-      items, visit Options and scroll to the bottom of mapper settings.'
+      To we-enabwe
+      items, vwisit Options and scwoll to the bottom of mapper swettings.'
     m_Metadata:
       m_Items: []
   - m_Id: 71
@@ -342,8 +347,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: "u has unswaved contwibutow changes (\u201E\u0CA1\u03C9\u0CA1\u201E),
-      want to weave?"
+    m_Localized: You have unsaved contributor changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -357,41 +361,59 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104117528192749568
-    m_Localized: '{0}% complete.'
+    m_Localized: '{0}% compwete!'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 44795657592176640
-    m_Localized: Reaction Time
+    m_Localized: Weaction Twime
     m_Metadata:
       m_Items: []
   - m_Id: 44793699250667520
-    m_Localized: 'How much time the the player has to react
+    m_Localized: 'Hwow much twime the pwayer has to weact
 
-      (in milliseconds)'
+      (in miwwisecwonds)'
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
-    m_Localized: Environment Removal
+    m_Localized: Enviwowment Remowal
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
-    m_Localized: 'Removes objects using Contains lookup.
+    m_Localized: 'Wemoved objwects using Contains wookup.
 
-      (Does not effect
-      the editor environment.)'
+      (Dwoesn''t affect
+      the editow enviwonment.)'
     m_Metadata:
       m_Items: []
   - m_Id: 104117395359141888
-    m_Localized: Exporting song to your Quest...
+    m_Localized: Expworting swong to youw Qwest...
     m_Metadata:
       m_Items: []
   - m_Id: 104118050203242496
-    m_Localized: Could not find any connected devices.
+    m_Localized: Cwould not fwind any cwonnected devwices... >n<
     m_Metadata:
       m_Items: []
   - m_Id: 104118270903324672
-    m_Localized: Could not find a connected Quest.
+    m_Localized: Cwould not fwind a cwonnected Quest... >x<
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115483511321985024
+    m_Localized: 35
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115492419843325952
+    m_Localized: 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115504465297211392
+    m_Localized: 750 ms
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115521560328208384
+    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
+      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
+      that you apply your offsets using a audio manipulator such as Audacity."
     m_Metadata:
       m_Items: []
   references:

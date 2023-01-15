@@ -54,7 +54,8 @@ public class FirstBootMenu : MonoBehaviour
 
         if (SystemInfo.graphicsMemorySize <= 1024)
             graphicsDropdown.value = 2;
-        else if (SystemInfo.graphicsMemorySize <= 2048) graphicsDropdown.value = 1;
+        else
+            graphicsDropdown.value = 1;
 
         var posInstallationDirectory = GuessBeatSaberInstallationDirectory();
         if (!string.IsNullOrEmpty(posInstallationDirectory))

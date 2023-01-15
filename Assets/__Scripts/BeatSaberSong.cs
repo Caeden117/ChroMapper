@@ -278,7 +278,7 @@ public class BeatSaberSong
                 Debug.LogError(":hyperPepega: :mega: DONT MAKE YOUR MAP FILES READONLY");
             }
 
-            Debug.Log("Saved song info.dat for " + SongName);
+            Debug.Log("Saved song Info.dat for " + SongName);
         }
         catch (Exception e)
         {
@@ -465,6 +465,11 @@ public class BeatSaberSong
 
     public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
+        if (Directory == null)
+        {
+            Debug.LogWarning("Failed to get difficulty json file.");
+            return null;
+        }
         var fullPath = Path.Combine(Directory, data.BeatmapFilename);
 
         var mainNode = GetNodeFromFile(fullPath);

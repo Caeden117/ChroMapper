@@ -449,8 +449,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: "Pidett\xE4ess\xE4 Vaihto-n\xE4pp\xE4int\xE4 asettaessa seini\xE4
-      tai nuotteja, pidennetty ruudukko ilmestyy ilman lukitusta."
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104

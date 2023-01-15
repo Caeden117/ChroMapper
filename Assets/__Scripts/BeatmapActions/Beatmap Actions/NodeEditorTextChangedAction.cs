@@ -1,4 +1,5 @@
 ﻿using System;
+using LiteNetLib.Utils;
 using TMPro;
 
 [Obsolete("Undo/Redo is disabled when node editor is open anyway")]
@@ -22,11 +23,15 @@ public class NodeEditorTextChangedAction : BeatmapAction
     public string CurrentText { get; }
     public string OldText { get; }
 
+    public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
+
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         inputField.text = CurrentText;
         inputField.caretPosition = currentCaret;
     }
+
+    public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {

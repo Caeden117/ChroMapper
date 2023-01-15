@@ -96,7 +96,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "D\xE9place le morceau vers l'avant de ce montant\n(en secondes)"
+    m_Localized: 'This feature is deprecated.
+
+      Shifts the song forward by this
+      amount
+
+      (in seconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -292,13 +297,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: "Vous avez des modifications non enregistr\xE9es, \xEAtes-vous s\xFBr
-      de vouloir quitter ?"
+    m_Localized: You have unsaved changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: "Vous avez des difficult\xE9s non enregistr\xE9es, \xEAtes-vous
-      s\xFBr de vouloir quitter ?"
+    m_Localized: You have unsaved difficulties, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -330,8 +333,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: "Vous avez des modifications des contributeurs non enregistr\xE9es,
-      \xEAtes-vous s\xFBr de vouloir quitter?"
+    m_Localized: You have unsaved contributor changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -345,22 +347,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104117528192749568
-    m_Localized: '{0}% complete.'
+    m_Localized: "{0}% compl\xE9t\xE9."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 44795657592176640
-    m_Localized: Reaction Time
+    m_Localized: "Temps de r\xE9action"
     m_Metadata:
       m_Items: []
   - m_Id: 44793699250667520
-    m_Localized: 'How much time the the player has to react
-
-      (in milliseconds)'
+    m_Localized: "La quantit\xE9 de temps le joueur a pour r\xE9agir (en millisecondes)"
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
-    m_Localized: Environment Removal
+    m_Localized: Suppression de l'environnement
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
@@ -371,15 +371,33 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104117395359141888
-    m_Localized: Exporting song to your Quest...
+    m_Localized: Exportation de la chanson vers votre Quest...
     m_Metadata:
       m_Items: []
   - m_Id: 104118050203242496
-    m_Localized: Could not find any connected devices.
+    m_Localized: "Impossible de trouver d'appareils connect\xE9s."
     m_Metadata:
       m_Items: []
   - m_Id: 104118270903324672
-    m_Localized: Could not find a connected Quest.
+    m_Localized: "Impossible de trouver une Quest connect\xE9e."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115483511321985024
+    m_Localized: 35
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115492419843325952
+    m_Localized: 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115504465297211392
+    m_Localized: 750 ms
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115521560328208384
+    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
+      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
+      that you apply your offsets using a audio manipulator such as Audacity."
     m_Metadata:
       m_Items: []
   references:

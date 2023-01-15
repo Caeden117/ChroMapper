@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: MultiMapping Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: MultiMapping
+  m_TableCollectionNameGuidString: 4bc9586dd75931946bdf2f3334dc9397
+  m_Entries:
+  - m_Id: 34914570240
+    m_Key: multi.session.join
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104179306496
+    m_Key: multi.session.host
+    m_Metadata:
+      m_Items: []
+  - m_Id: 757656064000
+    m_Key: multi.session.downloading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1057586548736
+    m_Key: multi.session.loading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1753480302592
+    m_Key: multi.session.use-direct
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1870388137984
+    m_Key: multi.session.code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2715376816128
+    m_Key: multi.session.use-code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3327472570368
+    m_Key: multi.session.ip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3409345384448
+    m_Key: multi.session.port
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3460121628672
+    m_Key: multi.customize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4051690459136
+    m_Key: multi.customize.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4114886037504
+    m_Key: multi.customize.color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4175602782208
+    m_Key: multi.customize.server
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4250194284544
+    m_Key: multi.customize.apply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4642059718656
+    m_Key: multi.connection.reject
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4885769752576
+    m_Key: multi.connection.host-lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5357561843712
+    m_Key: multi.connection.network-error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5800807501824
+    m_Key: multi.connection.server-lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6140520960000
+    m_Key: multi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6238239854592
+    m_Key: multi.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1970841337802752
+    m_Key: multi.session.room-code-info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1970900842393600
+    m_Key: multi.session.direct-connect-info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2018274558160896
+    m_Key: multi.trace
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2018332712185856
+    m_Key: multi.trace.first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2018498240393216
+    m_Key: multi.trace.last
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2336103375384576
+    m_Key: multi.ban
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2336237542780928
+    m_Key: multi.kick
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1663871441494

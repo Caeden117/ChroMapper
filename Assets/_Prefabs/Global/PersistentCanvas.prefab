@@ -826,8 +826,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 189167866458972862}
-  - {fileID: 224910768150269024}
   - {fileID: 6126332310712033299}
+  - {fileID: 224910768150269024}
   - {fileID: 224928358164152786}
   - {fileID: 8665187035227989045}
   - {fileID: 4268376931946852640}
@@ -1085,7 +1085,7 @@ RectTransform:
   - {fileID: 5455400176522662053}
   - {fileID: 5003127208305074716}
   m_Father: {fileID: 224588149695516572}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1924,7 +1924,7 @@ RectTransform:
   m_Children:
   - {fileID: 1927818376319971566}
   m_Father: {fileID: 224588149695516572}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9791,12 +9791,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29b0e711db3f65542a213179a4cab985, type: 3}
---- !u!224 &2781278694199271411 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3267473904476242727, guid: 29b0e711db3f65542a213179a4cab985,
-    type: 3}
-  m_PrefabInstance: {fileID: 847081387809201364}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2781278694195648517 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3267473904470492369, guid: 29b0e711db3f65542a213179a4cab985,
@@ -9809,3 +9803,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8262e4a8322117f4da079921eaa72834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &2781278694199271411 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3267473904476242727, guid: 29b0e711db3f65542a213179a4cab985,
+    type: 3}
+  m_PrefabInstance: {fileID: 847081387809201364}
+  m_PrefabAsset: {fileID: 0}

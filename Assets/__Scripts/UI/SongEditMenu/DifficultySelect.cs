@@ -5,6 +5,7 @@ using System.Linq;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static BeatSaberSong;
 
 public class DifficultySelect : MonoBehaviour
@@ -14,6 +15,7 @@ public class DifficultySelect : MonoBehaviour
     [SerializeField] private CharacteristicSelect characteristicSelect;
     [SerializeField] private Color copyColor;
     [SerializeField] private EnvRemoval envRemoval;
+    [SerializeField] private Button openEditorButton;
 
     private readonly Dictionary<string, int> diffRankLookup = new Dictionary<string, int>
     {
@@ -34,7 +36,7 @@ public class DifficultySelect : MonoBehaviour
     private bool loading;
     private DifficultyRow selected;
 
-    public BeatSaberMap CurrentDiff => diffs[selected.Name].Map;
+    public BeatSaberMap CurrentDiff => selected != null ? diffs[selected.Name].Map : null;
 
     private BeatSaberSong Song => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
@@ -152,6 +154,15 @@ public class DifficultySelect : MonoBehaviour
         return null;
     }
 
+    public void SaveAllDiffs()
+    {
+        foreach (var row in rows)
+        {
+            if (diffs.ContainsKey(row.Name))
+                SaveDiff(row);
+        }
+    }
+
     /// <summary>
     ///     Save the diff
     /// </summary>
@@ -238,6 +249,7 @@ public class DifficultySelect : MonoBehaviour
         }
 
         selected = null;
+        openEditorButton.interactable = false;
     }
 
     /// <summary>
@@ -262,6 +274,7 @@ public class DifficultySelect : MonoBehaviour
 
         // Select a difficulty
         selected = row;
+        openEditorButton.interactable = true;
         if (!loading) selectedMemory[currentCharacteristic.BeatmapCharacteristicName] = selected.Name;
         var selImage = selected.Background;
         selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 1.0f);

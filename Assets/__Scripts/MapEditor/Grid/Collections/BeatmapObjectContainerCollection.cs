@@ -369,6 +369,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         UnsortedObjects.Add(obj);
         OnObjectSpawned(obj);
         ObjectSpawnedEvent?.Invoke(obj);
+
         //Debug.Log($"Total object count: {LoadedObjects.Count}");
         if (refreshesPool) RefreshPool();
     }

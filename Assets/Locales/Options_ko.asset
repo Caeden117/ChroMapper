@@ -468,9 +468,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: "Shift \uD0A4\uB97C \uB204\uB978 \uC0C1\uD0DC\uC5D0\uC11C \uBCBD\uC774\uB098
-      \uB178\uD2B8\uB97C \uBC30\uCE58\uD558\uBA74 \uC2A4\uB0C5\uC774 \uBE44\uD65C\uC131\uD654\uB418\uBA70
-      \uD655\uC7A5 \uADF8\uB9AC\uB4DC\uAC00 \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
+    m_Localized: When holding the precision placement keybind while placing walls
+      or notes, an extended grid will appear with snapping disabled.
     m_Metadata:
       m_Items: []
   - m_Id: 104

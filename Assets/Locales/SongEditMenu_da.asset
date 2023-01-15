@@ -98,7 +98,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: "Forskyd sangen fremad med den denne m\xE6nget (i millisekunder)"
+    m_Localized: 'This feature is deprecated.
+
+      Shifts the song forward by this
+      amount
+
+      (in seconds)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -283,13 +288,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: "Du har glemt at gemme dine \xE6ndringer, er du sikker p\xE5 at
-      du vil forlade?"
+    m_Localized: You have unsaved changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: "Du har glemt at gemme dine sv\xE6rhedsgrader, er du sikker p\xE5
-      at du vil forlade?"
+    m_Localized: You have unsaved difficulties, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -320,8 +323,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: "Du har glemt at gemme bidragende, er du sikker p\xE5 at du vil
-      forlade?"
+    m_Localized: You have unsaved contributor changes, do you want to save them?
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -335,41 +337,57 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104117395359141888
-    m_Localized: Exporting song to your Quest...
+    m_Localized: Eksporterer sang til din Quest...
     m_Metadata:
       m_Items: []
   - m_Id: 104117528192749568
-    m_Localized: '{0}% complete.'
+    m_Localized: "{0}% fuldf\xF8rt."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 44795657592176640
-    m_Localized: Reaction Time
+    m_Localized: Reaktionstid
     m_Metadata:
       m_Items: []
   - m_Id: 44793699250667520
-    m_Localized: 'How much time the the player has to react
+    m_Localized: 'Hvor lang tid spilleren har til at reagere
 
-      (in milliseconds)'
+      (i millisekunder)'
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
-    m_Localized: Environment Removal
+    m_Localized: Omgivelses Fjernelse
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
-    m_Localized: 'Removes objects using Contains lookup.
-
-      (Does not effect
-      the editor environment.)'
+    m_Localized: "Fjerner objekter ved hj\xE6lp af \"Indeholder\"-opslag.\n(P\xE5virker
+      ikke editormilj\xF8et.)"
     m_Metadata:
       m_Items: []
   - m_Id: 104118050203242496
-    m_Localized: Could not find any connected devices.
+    m_Localized: Kunne ikke finde nogen tilsluttede enheder.
     m_Metadata:
       m_Items: []
   - m_Id: 104118270903324672
-    m_Localized: Could not find a connected Quest.
+    m_Localized: Kunne ikke finde en forbundet Quest.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115483511321985024
+    m_Localized: 35
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115492419843325952
+    m_Localized: 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115504465297211392
+    m_Localized: 750 ms
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115521560328208384
+    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
+      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
+      that you apply your offsets using a audio manipulator such as Audacity."
     m_Metadata:
       m_Items: []
   references:

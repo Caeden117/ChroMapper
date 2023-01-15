@@ -1495,7 +1495,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 0.666
+  zPositionModifier: 1
   zRotationModifier: 1
   OverrideLightGroup: 1
   OverrideLightGroupID: 3
@@ -3346,7 +3346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplier: 20
   rotationSpeed: 0
-  zPositionModifier: 0.666
+  zPositionModifier: 1
   zRotationModifier: 1
   OverrideLightGroup: 1
   OverrideLightGroupID: 2

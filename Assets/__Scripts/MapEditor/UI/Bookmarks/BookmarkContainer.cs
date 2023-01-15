@@ -18,6 +18,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         GetComponent<Image>().color = data.Color;
 
         UpdateUI();
+        UpdateUIWidth();
     }
 
     public void UpdateUI()
@@ -29,7 +30,8 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
             name = $"<i>(This Bookmark has no name)</i>";
         }
 
-        if (Settings.Instance.BookmarkTooltipTimeInfo){
+        if (Settings.Instance.BookmarkTooltipTimeInfo)
+        {
             var beat = Data.Time;
             var span = TimeSpan.FromSeconds(manager.Atsc.GetSecondsFromBeat(beat));
             name += $" [{Math.Round(beat, 2)} | {span:mm':'ss}]";
@@ -39,7 +41,8 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         GetComponent<Image>().color = Data.Color;
     }
 
-    public void UpdateUIWidth() {
+    public void UpdateUIWidth()
+    {
         var bookRect = this.transform as RectTransform;
         bookRect.sizeDelta = new Vector2(Settings.Instance.BookmarkTimelineWidth, bookRect.sizeDelta.y);
     }
