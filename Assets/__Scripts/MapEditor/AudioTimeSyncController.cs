@@ -30,6 +30,17 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private int gridMeasureSnapping = 1;
     private float audioLatencyCompensationSeconds;
 
+    private float internalScrollStepCounter = 0;
+    private Coroutine resetScrollCounterCoroutine;
+#if UNITY_STANDALONE_WIN
+    private const float scrollSizeDivisor = 120;
+#elif UNITY_STANDALONE_OSX
+    // A bit weird but this seems to be the base scroll value regardless of scroll speed system setting
+    private const float scrollSizeDivisor = 2.000122;
+#else
+    private const float scrollSizeDivisor = 1;
+#endif
+
     private AudioClip clip;
 
     private bool controlSnap;
@@ -211,12 +222,32 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             else
             {
                 if (Settings.Instance.InvertScrollTime) value *= -1;
+
+                var scrollSize = value / scrollSizeDivisor;
+                internalScrollStepCounter += scrollSize;
+
                 // +1 beat if we're going forward, -1 beat if we're going backwards
-                var beatShiftRaw = 1f / GridMeasureSnapping * (value > 0 ? 1f : -1f);
+                var direction = Mathf.Sign(internalScrollStepCounter);
+                var beatShiftRaw = 0f;
+                while ((internalScrollStepCounter * direction) > 0.5f)
+                {
+                    beatShiftRaw += 1f / GridMeasureSnapping * direction;
+                    internalScrollStepCounter -= direction;
+                }
 
                 MoveToTimeInBeats(CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats(beatShiftRaw, CurrentBeat));
+
+                if (resetScrollCounterCoroutine != null) StopCoroutine(resetScrollCounterCoroutine);
+                resetScrollCounterCoroutine = StartCoroutine(ResetInternalScrollStepCounter());
             }
         }
+    }
+
+    private IEnumerator ResetInternalScrollStepCounter()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+        internalScrollStepCounter = 0;
+        resetScrollCounterCoroutine = null;
     }
 
     public void OnChangePrecisionModifier(InputAction.CallbackContext context) => controlSnap = context.performed;
