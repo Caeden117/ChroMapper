@@ -4,7 +4,7 @@ using Beatmap.Base;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private readonly IEnumerable<BaseObject> removed;
+    private IEnumerable<BaseObject> removed;
 
     public SelectionPastedAction() : base() { }
 

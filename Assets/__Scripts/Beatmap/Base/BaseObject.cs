@@ -2,11 +2,15 @@ using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using SimpleJSON;
 using UnityEngine;
+using LiteNetLib.Utils;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseObject : BaseItem, ICustomData, IHeckObject, IChromaObject
+    public abstract class BaseObject : BaseItem, ICustomData, IHeckObject, IChromaObject, INetSerializable
     {
+        public abstract void Serialize(NetDataWriter writer);
+        public abstract void Deserialize(NetDataReader reader);
+
         protected BaseObject()
         {
         }

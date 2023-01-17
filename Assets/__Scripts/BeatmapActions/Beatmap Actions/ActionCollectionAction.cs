@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using LiteNetLib.Utils;
+using Beatmap.Base;
 
 /*
  * Seems weird? Let me explain.
@@ -29,7 +30,7 @@ public class ActionCollectionAction : BeatmapAction
         forceRefreshesPool = forceRefreshPool;
     }
 
-    public override BeatmapObject DoesInvolveObject(BeatmapObject obj)
+    public override BaseObject DoesInvolveObject(BaseObject obj)
     {
         foreach (var action in actions)
         {

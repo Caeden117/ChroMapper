@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
@@ -27,8 +28,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
 
     public Action BookmarksUpdated;
-    public event Action<BeatmapObject> BookmarkAdded;
-    public event Action<BeatmapObject> BookmarkDeleted;
+    public event Action<BaseObject> BookmarkAdded;
+    public event Action<BaseObject> BookmarkDeleted;
 
     private float previousCanvasWidth;
 
@@ -150,7 +151,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         AddBookmark(newBookmark);
     }
 
-    internal void AddBookmark(BeatmapBookmark bookmark, bool triggerEvent = true)
+    internal void AddBookmark(BaseBookmark bookmark, bool triggerEvent = true)
     {
         var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
         container.name = bookmark.Name;

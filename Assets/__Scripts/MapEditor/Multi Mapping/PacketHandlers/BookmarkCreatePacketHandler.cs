@@ -1,5 +1,6 @@
 using System;
 using LiteNetLib.Utils;
+using Beatmap.Base.Customs;
 
 [Obsolete("TODO: Refactor bookmarks to use the same systems as every other BeatmapObject")]
 public class BookmarkCreatePacketHandler : IPacketHandler
@@ -13,7 +14,7 @@ public class BookmarkCreatePacketHandler : IPacketHandler
     {
         var creationObject = reader.GetBeatmapObject();
 
-        if (creationObject is BeatmapBookmark creationBookmark)
+        if (creationObject is BaseBookmark creationBookmark)
         {
             bookmarkManager.AddBookmark(creationBookmark, false);
         }

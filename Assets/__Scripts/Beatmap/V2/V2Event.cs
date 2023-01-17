@@ -4,10 +4,14 @@ using Beatmap.Base;
 using Beatmap.Shared;
 using SimpleJSON;
 
+using LiteNetLib.Utils;
+
 namespace Beatmap.V2
 {
     public class V2Event : BaseEvent
     {
+        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
+        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
         public V2Event()
         {
         }

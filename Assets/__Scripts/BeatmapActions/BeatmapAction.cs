@@ -53,7 +53,7 @@ public abstract class BeatmapAction : INetSerializable
     /// <param name="reader"></param>
     public abstract void Deserialize(NetDataReader reader);
 
-    public virtual BeatmapObject DoesInvolveObject(BeatmapObject obj) => Data.Any(it => it.IsConflictingWith(obj)) ? obj : null;
+    public virtual BaseObject DoesInvolveObject(BaseObject obj) => Data.Any(it => it.IsConflictingWith(obj)) ? obj : null;
 
     protected void RefreshPools(IEnumerable<BaseObject> data)
     {
@@ -66,12 +66,12 @@ public abstract class BeatmapAction : INetSerializable
         }
     }
 
-    protected void SpawnObject(BeatmapObject obj, bool removeConflicting = false, bool refreshesPool = false)
-        => BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType).SpawnObject(obj, removeConflicting, refreshesPool);
+    protected void SpawnObject(BaseObject obj, bool removeConflicting = false, bool refreshesPool = false)
+        => BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).SpawnObject(obj, removeConflicting, refreshesPool);
 
-    protected void DeleteObject(BeatmapObject obj, bool refreshesPool = true)
+    protected void DeleteObject(BaseObject obj, bool refreshesPool = true)
     {
-        var collection = BeatmapObjectContainerCollection.GetCollectionForType(obj.BeatmapType);
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType);
 
         // If this Action was received over the network, we abuse the conflict check system
         //   to delete anything that was previously there.
@@ -84,17 +84,17 @@ public abstract class BeatmapAction : INetSerializable
         collection.DeleteObject(obj, false, refreshesPool);
     }
 
-    protected void SerializeBeatmapObjectList(NetDataWriter writer, IEnumerable<BeatmapObject> list)
+    protected void SerializeBeatmapObjectList(NetDataWriter writer, IEnumerable<BaseObject> list)
     {
         writer.Put(list.Count());
 
         foreach (var obj in list) writer.PutBeatmapObject(obj);
     }
 
-    protected IEnumerable<BeatmapObject> DeserializeBeatmapObjectList(NetDataReader reader)
+    protected IEnumerable<BaseObject> DeserializeBeatmapObjectList(NetDataReader reader)
     {
         var count = reader.GetInt();
-        var deserializedObjects = new List<BeatmapObject>(count);
+        var deserializedObjects = new List<BaseObject>(count);
 
         for (var i = 0; i < count; i++)
         {

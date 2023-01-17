@@ -27,7 +27,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             snapping *= context.ReadValue<float>() > 0 ? 1 : -1;
 
             var wallEndTime = obs.ObstacleData.Time + obs.ObstacleData.Duration;
-            var durationTweak = bpmChangesContainer.LocalBeatsToSongBeats(snapping, wallEndTime);
+            var durationTweak = bpmChangeGridContainer.LocalBeatsToSongBeats(snapping, wallEndTime);
 
             // Commented this out as part of merge
 

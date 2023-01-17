@@ -5,6 +5,7 @@ namespace Beatmap.Base.Customs
 {
     public abstract class BaseCustomEvent : BaseObject
     {
+
         protected BaseCustomEvent()
         {
         }

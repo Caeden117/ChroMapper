@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Beatmap.Containers;
 
 public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 {
@@ -116,7 +117,7 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 
         if (Intersections.Raycast(ray, 9, out var hit))
         {
-            var container = hit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
+            var container = hit.GameObject.GetComponentInParent<ObjectContainer>();
 
             if (container != null)
             {

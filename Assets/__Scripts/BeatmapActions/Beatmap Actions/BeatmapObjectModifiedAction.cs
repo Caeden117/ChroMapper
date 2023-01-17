@@ -4,14 +4,14 @@ using Beatmap.Helper;
 
 public class BeatmapObjectModifiedAction : BeatmapAction
 {
-    private readonly bool addToSelection;
+    private bool addToSelection;
 
-    private readonly BeatmapObjectContainerCollection collection;
-    private readonly BaseObject editedData;
+    private BeatmapObjectContainerCollection collection;
+    private BaseObject editedData;
 
-    private readonly BaseObject editedObject;
-    private readonly BaseObject originalData;
-    private readonly BaseObject originalObject;
+    private BaseObject editedObject;
+    private BaseObject originalData;
+    private BaseObject originalObject;
 
     public BeatmapObjectModifiedAction() : base() { }
 
@@ -27,7 +27,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         addToSelection = keepSelection;
     }
 
-    public override BeatmapObject DoesInvolveObject(BeatmapObject obj) => obj == editedObject ? originalObject : null;
+    public override BaseObject DoesInvolveObject(BaseObject obj) => obj == editedObject ? originalObject : null;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
@@ -84,9 +84,9 @@ public class BeatmapObjectModifiedAction : BeatmapAction
     public override void Deserialize(NetDataReader reader)
     {
         editedData = reader.GetBeatmapObject();
-        editedObject = BeatmapObject.GenerateCopy(editedData);
+        editedObject = BeatmapFactory.Clone(editedData);
         originalData = reader.GetBeatmapObject();
-        originalObject = BeatmapObject.GenerateCopy(originalData);
+        originalObject = BeatmapFactory.Clone(originalData);
 
         Data = new[] { editedObject, originalObject };
     }

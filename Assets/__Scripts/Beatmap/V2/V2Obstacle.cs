@@ -2,11 +2,14 @@ using System;
 using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
+using LiteNetLib.Utils;
 
 namespace Beatmap.V2
 {
     public class V2Obstacle : BaseObstacle
     {
+        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
+        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
         private int type;
 
         public V2Obstacle()

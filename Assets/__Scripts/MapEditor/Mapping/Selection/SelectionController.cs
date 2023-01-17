@@ -25,7 +25,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     private static SelectionController instance;
 
     [SerializeField] private AudioTimeSyncController atsc;
-    [SerializeField] private BPMChangesContainer bpmChangesContainer;
+    [SerializeField] private BPMChangeGridContainer bpmChangesContainer;
     [SerializeField] private Material selectionMaterial;
     [SerializeField] private Transform moveableGridTransform;
     [SerializeField] private Color selectedColor;
@@ -327,12 +327,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType);
             if (collection.LoadedContainers.TryGetValue(data, out var con)) con.SetOutlineColor(instance.copiedColor);
-            var copy = BeatmapObject.GenerateCopy(data);
+            var copy = BeatmapFactory.Clone(data);
 
             // scale duration for walls
-            if (copy.BeatmapType == BeatmapObject.ObjectType.Obstacle)
+            if (copy.ObjectType == ObjectType.Obstacle)
             {
-                var obstacle = (BeatmapObstacle)copy;
+                var obstacle = (BaseObstacle)copy;
                 obstacle.Duration = bpmChangesContainer.SongBeatsToLocalBeats(obstacle.Duration, obstacle.Time);
                 copy = obstacle;
             }
@@ -340,7 +340,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             copy.Time -= firstTime;
 
             // always use song beats for bpm changes
-            if (copy.BeatmapType != BeatmapObject.ObjectType.BpmChange)
+            if (copy.ObjectType != ObjectType.BpmChange)
             {
                 copy.Time = bpmChangesContainer.SongBeatsToLocalBeats(copy.Time, firstTime);
             }
@@ -385,7 +385,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             var newTime = atsc.CurrentBeat;
             // always use song beats for bpm changes
-            if (data.BeatmapType == BeatmapObject.ObjectType.BpmChange)
+            if (data.ObjectType == ObjectType.BpmChange)
             {
                 newTime += data.Time;
             }
@@ -394,7 +394,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 newTime += bpmChangesContainer.LocalBeatsToSongBeats(data.Time, atsc.CurrentBeat);
             }
 
-            var newData = BeatmapObject.GenerateCopy(data);
+            var newData = BeatmapFactory.Clone(data);
             // var objTime = data.Time;
             // var objTailTime = objTime;
             // if (data is BaseSlider slider)
@@ -432,13 +432,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             // var newTailTime = bpmTailTime + atsc.CurrentBeat;
 
             // var newData = BeatmapFactory.Clone(data);
-            newData.Time = newTime;
-            if (newData is BaseSlider newSlider) newSlider.TailTime = newTailTime;
+            // newData.Time = newTime;
+            // if (newData is BaseSlider newSlider) newSlider.TailTime = newTailTime;
 
             // scale duration for walls
-            if (newData.BeatmapType == BeatmapObject.ObjectType.Obstacle)
+            if (newData.ObjectType == ObjectType.Obstacle)
             {
-                var obstacle = (BeatmapObstacle)newData;
+                var obstacle = (BaseObstacle)newData;
                 obstacle.Duration = bpmChangesContainer.LocalBeatsToSongBeats(obstacle.Duration, obstacle.Time);
                 newData = obstacle;
             }

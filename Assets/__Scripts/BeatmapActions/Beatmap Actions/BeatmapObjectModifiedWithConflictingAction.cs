@@ -6,7 +6,7 @@ using Beatmap.Base;
 
 public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedAction
 {
-    private readonly BaseObject conflictingObject;
+    private BaseObject conflictingObject;
 
     public BeatmapObjectModifiedWithConflictingAction() : base() { }
 

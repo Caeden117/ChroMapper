@@ -3,29 +3,38 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using LiteNetLib;
 using LiteNetLib.Utils;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
+using Beatmap.Enums;
+using Beatmap.V2;
+using Beatmap.V2.Customs;
 
 public static class NetDataExtensions
 {
-    public static BeatmapObject GetBeatmapObject(this NetDataReader reader)
+    public static BaseObject GetBeatmapObject(this NetDataReader reader)
     {
-        var beatmapObjectType = (BeatmapObject.ObjectType)reader.GetByte();
+        var beatmapObjectType = (ObjectType)reader.GetByte();
+
+        // v3 United Mapping not supported yet
 
         return beatmapObjectType switch
         {
-            BeatmapObject.ObjectType.Note => reader.Get<BeatmapNote>(),
-            BeatmapObject.ObjectType.Event => reader.Get<MapEvent>(),
-            BeatmapObject.ObjectType.Obstacle => reader.Get<BeatmapObstacle>(),
-            BeatmapObject.ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
-            BeatmapObject.ObjectType.CustomEvent => reader.Get<BeatmapCustomEvent>(),
-            BeatmapObject.ObjectType.BpmChange => reader.Get<BeatmapBPMChange>(),
-            BeatmapObject.ObjectType.Bookmark => reader.Get<BeatmapBookmark>(),
+            ObjectType.Note => reader.Get<V2Note>(),
+            ObjectType.Event => reader.Get<V2Event>(),
+            ObjectType.Obstacle => reader.Get<V2Obstacle>(),
+            ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
+            ObjectType.CustomEvent => reader.Get<V2CustomEvent>(),
+            ObjectType.BpmChange => reader.Get<V2BpmChange>(),
+            ObjectType.Arc => throw new System.NotImplementedException(), // Arc not supported
+            ObjectType.Chain => throw new System.NotImplementedException(), // Chain not supported
+            ObjectType.Bookmark => reader.Get<V2Bookmark>(),
             _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
         };
     }
 
-    public static void PutBeatmapObject(this NetDataWriter writer, BeatmapObject obj)
+    public static void PutBeatmapObject(this NetDataWriter writer, BaseObject obj)
     {
-        writer.Put((byte)obj.BeatmapType);
+        writer.Put((byte)obj.ObjectType);
         writer.Put(obj);
     }
 

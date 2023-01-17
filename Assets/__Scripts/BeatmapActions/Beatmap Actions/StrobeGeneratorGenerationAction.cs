@@ -18,7 +18,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
             DeleteObject(obj, false);
         foreach (var obj in conflictingData)
             SpawnObject(obj);
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event).RefreshPool(true);
+        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
@@ -27,7 +27,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
             DeleteObject(obj, false);
         foreach (var obj in Data)
             SpawnObject(obj);
-        BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event).RefreshPool(true);
+        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
     }
 
     public override void Serialize(NetDataWriter writer)

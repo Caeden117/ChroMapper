@@ -9,6 +9,7 @@ namespace Beatmap.Enums
         CustomEvent,
         BpmChange,
         Arc,
-        Chain
+        Chain,
+        Bookmark
     }
 }
