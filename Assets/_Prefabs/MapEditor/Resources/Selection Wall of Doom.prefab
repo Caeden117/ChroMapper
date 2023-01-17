@@ -42,32 +42,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1056647016207082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49ca58ce40fce7e49b2b44aa558a5819, type: 3}
+  m_Script: {fileID: 11500000, guid: e20e0a258e6144f45bab53b12c0ea51a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragging: 0
-  ModelMaterials: []
-  SelectionMaterials: []
-  boxCollider: {fileID: 0}
-  eventData:
-    HasAttachedContainer: 0
-    _time: 0
-    PropId: 0
-    _type: 0
-    _value: 0
-    _lightGradient:
-      Duration: 0
-      StartColor: {r: 0, g: 0, b: 0, a: 0}
-      EndColor: {r: 0, g: 0, b: 0, a: 0}
-      EasingType: 
-  eventsContainer: {fileID: 0}
+  Dragging: 0
+  Colliders: []
+  SelectionRenderers: []
+  BoxCollider: {fileID: 0}
+  EventGridContainer: {fileID: 0}
   eventAppearance: {fileID: 0}
   eventRenderer: []
   tracksManager: {fileID: 0}
   valueDisplay: {fileID: 0}
-  eventGradientController: {fileID: 0}
-  cubeModel: {fileID: 0}
-  pyramidModel: {fileID: 0}
+  lightGradientController: {fileID: 0}
+  eventModels: []
   labels: {fileID: 0}
 --- !u!1 &1453166767989322
 GameObject:
@@ -120,10 +108,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -148,6 +138,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5603620774301396515
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,10 +212,12 @@ LineRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

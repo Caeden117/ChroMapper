@@ -2,21 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.V2;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class BoxSelectionPlacementController : PlacementController<MapEvent, BeatmapEventContainer, EventsContainer>,
+public class BoxSelectionPlacementController : PlacementController<BaseEvent, EventContainer, EventGridContainer>,
     CMInput.IBoxSelectActions
 {
-    [FormerlySerializedAs("customCollection")] public CustomEventsContainer CustomCollection;
-    [FormerlySerializedAs("eventsContainer")] public EventsContainer EventsContainer;
-    [FormerlySerializedAs("labels")] public CreateEventTypeLabels Labels;
+    [SerializeField] public CustomEventGridContainer CustomCollection;
+    [SerializeField] public EventGridContainer EventGridContainer;
+    [SerializeField] public CreateEventTypeLabels Labels;
 
-    private readonly HashSet<BeatmapObject> selected = new HashSet<BeatmapObject>();
+    private readonly HashSet<BaseObject> selected = new HashSet<BaseObject>();
 
-    private readonly List<BeatmapObject.ObjectType> selectedTypes = new List<BeatmapObject.ObjectType>();
-    private HashSet<BeatmapObject> alreadySelected = new HashSet<BeatmapObject>();
+    private readonly List<ObjectType> selectedTypes = new List<ObjectType>();
+    private HashSet<BaseObject> alreadySelected = new HashSet<BaseObject>();
 
     private bool keybindPressed;
     private Vector3 originPos;
@@ -48,11 +53,12 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
     public void OnActivateBoxSelect(InputAction.CallbackContext context) => keybindPressed = context.performed;
 
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) => null;
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) => null;
 
-    public override MapEvent GenerateOriginalData() => new MapEvent(float.MaxValue, 69, 420);
+    // TODO: v3 check?
+    public override BaseEvent GenerateOriginalData() => new V2Event(float.MaxValue, 69, 420);
 
-    protected override bool TestForType<T>(Intersections.IntersectionHit hit, BeatmapObject.ObjectType type)
+    protected override bool TestForType<T>(Intersections.IntersectionHit hit, ObjectType type)
     {
         if (base.TestForType<T>(hit, type))
         {
@@ -79,15 +85,15 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             Bounds = default;
             selectedTypes.Clear();
-            TestForType<EventPlacement>(hit, BeatmapObject.ObjectType.Event);
-            TestForType<NotePlacement>(hit, BeatmapObject.ObjectType.Note);
-            TestForType<ObstaclePlacement>(hit, BeatmapObject.ObjectType.Obstacle);
-            TestForType<CustomEventPlacement>(hit, BeatmapObject.ObjectType.CustomEvent);
-            TestForType<BPMChangePlacement>(hit, BeatmapObject.ObjectType.BpmChange);
+            TestForType<EventPlacement>(hit, ObjectType.Event);
+            TestForType<NotePlacement>(hit, ObjectType.Note);
+            TestForType<ObstaclePlacement>(hit, ObjectType.Obstacle);
+            TestForType<CustomEventPlacement>(hit, ObjectType.CustomEvent);
+            TestForType<BPMChangePlacement>(hit, ObjectType.BpmChange);
             if (Settings.Instance.Load_MapV3)
             {
-                TestForType<ArcPlacement>(hit, BeatmapObject.ObjectType.Arc);
-                TestForType<ChainPlacement>(hit, BeatmapObject.ObjectType.Chain);
+                TestForType<ArcPlacement>(hit, ObjectType.Arc);
+                TestForType<ChainPlacement>(hit, ObjectType.Chain);
             }
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
@@ -131,7 +137,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
             SelectionController.ForEachObjectBetweenTimeByGroup(startBeat, endBeat, true, true, true, (bocc, bo) =>
             {
-                if (!selectedTypes.Contains(bo.BeatmapType)) return; // Must be a type we can select
+                if (!selectedTypes.Contains(bo.ObjectType)) return; // Must be a type we can select
 
                 var left = instantiatedContainer.transform.localPosition.x +
                            instantiatedContainer.transform.localScale.x;
@@ -145,21 +151,21 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
 
                 var p = new Vector2(left, bottom);
 
-                if (bo is IBeatmapObjectBounds obj)
+                if (bo is IObjectBounds obj)
                 {
                     p = obj.GetCenter();
                 }
-                else if (bo is MapEvent evt)
+                else if (bo is BaseEvent evt)
                 {
-                    var position = evt.GetPosition(Labels, EventsContainer.PropagationEditing,
-                        EventsContainer.EventTypeToPropagate);
+                    var position = evt.GetPosition(Labels, EventGridContainer.PropagationEditing,
+                        EventGridContainer.EventTypeToPropagate);
 
                     // Not visible = notselectable
                     if (position == null) return;
 
                     p = new Vector2(position?.x + Bounds.min.x ?? 0, position?.y ?? 0);
                 }
-                else if (bo is BeatmapCustomEvent custom)
+                else if (bo is BaseCustomEvent custom)
                 {
                     p = new Vector2(CustomCollection.CustomEventTypes.IndexOf(custom.Type) + Bounds.min.x + 0.5f,
                         0.5f);
@@ -195,7 +201,7 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         {
             IsSelecting = true;
             originPos = instantiatedContainer.transform.localPosition;
-            alreadySelected = new HashSet<BeatmapObject>(SelectionController.SelectedObjects);
+            alreadySelected = new HashSet<BaseObject>(SelectionController.SelectedObjects);
         }
         else
         {
@@ -220,5 +226,5 @@ public class BoxSelectionPlacementController : PlacementController<MapEvent, Bea
         foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject);
     }
 
-    public override void TransferQueuedToDraggedObject(ref MapEvent dragged, MapEvent queued) { }
+    public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued) { }
 }

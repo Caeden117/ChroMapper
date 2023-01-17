@@ -1,11 +1,18 @@
 using System;
 using System.Collections.Generic;
+using Beatmap.Appearances;
+using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObstacleContainer, ObstaclesContainer>
+public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleContainer, ObstacleGridContainer>
 {
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
@@ -44,24 +51,16 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     }
 
     private float SmallestRankableWallDuration => Atsc.GetBeatFromSeconds(0.016f);
-
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
+ 
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
-    public override BeatmapObstacle GenerateOriginalData()
-    {
-        if (Settings.Instance.Load_MapV3)
-        {
-            return new BeatmapObstacleV3(new BeatmapObstacle(0, 0, BeatmapObstacle.ValueFullBarrier, 0, 1));
-        }
-        else
-            return new BeatmapObstacle(0, 0, BeatmapObstacle.ValueFullBarrier, 0, 1);
-    }
+    public override BaseObstacle GenerateOriginalData() => BeatmapFactory.Obstacle(0, 0, 0, (int)ObstacleType.Full, 0, 1, (int)ObstacleHeight.Full);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
         Bounds = default;
-        TestForType<ObstaclePlacement>(hit, BeatmapObject.ObjectType.Obstacle);
+        TestForType<ObstaclePlacement>(hit, ObjectType.Obstacle);
 
         instantiatedContainer.ObstacleData = queuedData;
         instantiatedContainer.ObstacleData.Duration = RoundedTime - startTime;
@@ -72,14 +71,14 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.CustomColor = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomColor != null)
             {
-                queuedData.CustomData.Remove("_color");
+                queuedData.CustomColor = null;
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
@@ -94,7 +93,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             {
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-                Vector2 position = queuedData.CustomData["_position"];
+                var position = queuedData.CustomCoordinate ?? Vector2.zero;
                 var localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
                 wallTransform.localPosition = localPosition;
 
@@ -105,7 +104,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 var scale = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
                 scale[0] = Math.Round(newLocalScale.x, 3);
                 scale[1] = Math.Round(newLocalScale.y, 3);
-                queuedData.CustomData["_scale"] = scale;
+                queuedData.CustomSize = scale;
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);
@@ -119,7 +118,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 );
 
                 wallTransform.localPosition = new Vector3(
-                    originIndex - 2, queuedData.Type == BeatmapObstacle.ValueFullBarrier ? 0 : 1.5f,
+                    originIndex - 2, queuedData.Type == (int)ObstacleType.Full ? -0.5f : 1.5f,
                     startTime * EditorScaleController.EditorScale);
                 queuedData.Width = Mathf.CeilToInt(roundedHit.x + 2) - originIndex;
 
@@ -136,31 +135,33 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         {
             wallTransform.localPosition = roundedHit;
             instantiatedContainer.SetScale(Vector3.one / 2f);
-            queuedData.LineIndex = queuedData.Type = 0;
+            queuedData.PosX = queuedData.Type = 0;
 
             if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
 
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x, 3);
             position[1] = Math.Round(roundedHit.y, 3);
-            queuedData.CustomData["_position"] = position;
+            queuedData.CustomCoordinate = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {
-            var vanillaType = transformedPoint.y <= 1.5f ? 0 : 1;
+            var vanillaType = transformedPoint.y <= 2f ? (int)ObstacleType.Full : (int)ObstacleType.Crouch;
 
             wallTransform.localPosition = new Vector3(
                 wallTransform.localPosition.x - 0.5f,
-                vanillaType * 1.5f,
+                vanillaType == (int)ObstacleType.Full ? -0.5f : 1.5f,
                 wallTransform.localPosition.z);
 
-            instantiatedContainer.SetScale(new Vector3(1, wallTransform.localPosition.y == 0 ? 3.75f : 2.25f, 0));
+            instantiatedContainer.SetScale(new Vector3(1, vanillaType == (int)ObstacleType.Full ? 5f : 3f, 0));
 
             queuedData.CustomData = null;
-            queuedData.LineIndex = Mathf.RoundToInt(wallTransform.localPosition.x + 2);
+            queuedData.PosX = Mathf.RoundToInt(wallTransform.localPosition.x + 2);
+            queuedData.PosY = vanillaType == (int)ObstacleType.Full ? 0 : 2;
+            queuedData.Height = vanillaType == (int)ObstacleType.Full ? 5 : 3;
             queuedData.Type = vanillaType;
 
             precisionPlacement.TogglePrecisionPlacement(false);
@@ -201,20 +202,20 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.75f : 2.25f, 0);
+                1, instantiatedContainer.ObstacleData.Type == (int)ObstacleType.Full ? 5f : 3f, 0);
         }
         else
         {
             IsPlacing = true;
-            originIndex = queuedData.LineIndex;
+            originIndex = queuedData.PosX;
             startTime = RoundedTime;
         }
     }
 
-    public override void TransferQueuedToDraggedObject(ref BeatmapObstacle dragged, BeatmapObstacle queued)
+    public override void TransferQueuedToDraggedObject(ref BaseObstacle dragged, BaseObstacle queued)
     {
         dragged.Time = queued.Time;
-        dragged.LineIndex = queued.LineIndex;
+        dragged.PosX = queued.PosX;
     }
 
     public override void CancelPlacement()
@@ -226,7 +227,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.75f : 2.25f, 0);
+                1, instantiatedContainer.ObstacleData.Type == (int)ObstacleType.Full ? 5f : 3f, 0);
         }
     }
 }

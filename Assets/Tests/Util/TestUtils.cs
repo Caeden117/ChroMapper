@@ -1,6 +1,8 @@
 ﻿using SimpleJSON;
 using System.Collections;
 using System.Linq;
+using Beatmap.Enums;
+using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -45,29 +47,29 @@ namespace Tests.Util
 
         public static void CleanupNotes()
         {
-            CleanupType(BeatmapObject.ObjectType.Note);
+            CleanupType(ObjectType.Note);
         }
 
         public static void CleanupEvents()
         {
-            CleanupType(BeatmapObject.ObjectType.Event);
+            CleanupType(ObjectType.Event);
         }
 
         public static void CleanupObstacles()
         {
-            CleanupType(BeatmapObject.ObjectType.Obstacle);
+            CleanupType(ObjectType.Obstacle);
         }
 
         public static void CleanupBPMChanges()
         {
-            CleanupType(BeatmapObject.ObjectType.BpmChange);
+            CleanupType(ObjectType.BpmChange);
         }
 
-        private static void CleanupType(BeatmapObject.ObjectType type)
+        private static void CleanupType(ObjectType type)
         {
             BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(type);
 
-            foreach (BeatmapObject evt in eventsContainer.LoadedObjects.ToArray())
+            foreach (BaseObject evt in eventsContainer.LoadedObjects.ToArray())
             {
                 eventsContainer.DeleteObject(evt);
             }

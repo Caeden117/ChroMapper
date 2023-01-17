@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Helper;
+using Beatmap.Shared;
 using SimpleJSON;
+using UnityEngine;
 
 public class StrobeChromaPass : StrobeGeneratorPass
 {
@@ -8,34 +12,34 @@ public class StrobeChromaPass : StrobeGeneratorPass
 
     public StrobeChromaPass(string easing) => this.easing = easing;
 
-    public override bool IsEventValidForPass(MapEvent @event) => @event.IsChromaEvent && !@event.IsLightIdEvent;
+    public override bool IsEventValidForPass(BaseEvent @event) => @event.CustomColor != null && @event.CustomLightID is null;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
-        EventsContainer.PropMode propMode, JSONNode propID)
+    public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
+        EventGridContainer.PropMode propMode, int[] propID)
     {
-        var generatedObjects = new List<MapEvent>();
+        var generatedObjects = new List<BaseEvent>();
 
-        var nonGradients = original.Where(x => x.LightGradient == null);
+        var nonGradients = original.Where(x => x.CustomLightGradient == null);
         for (var i = 0; i < nonGradients.Count() - 1; i++)
         {
             var currentChroma = nonGradients.ElementAt(i);
             var nextChroma = nonGradients.ElementAt(i + 1);
 
-            var generated = BeatmapObject.GenerateCopy(currentChroma);
-            generated.LightGradient = new MapEvent.ChromaGradient(
-                currentChroma.CustomData["_color"], //Start color
-                nextChroma.CustomData["_color"], //End color
+            var generated = BeatmapFactory.Clone(currentChroma);
+            generated.CustomLightGradient = new ChromaLightGradient(
+                (Color)currentChroma.CustomColor, //Start color
+                (Color)nextChroma.CustomColor, //End color
                 nextChroma.Time - currentChroma.Time, //Duration
                 easing); //Duration
 
             // Don't forget to replace our Chroma color with a Light Gradient in _customData
-            generated.CustomData.Add("_lightGradient", generated.LightGradient.ToJsonNode());
+            generated.CustomData.Add("_lightGradient", generated.CustomLightGradient.ToJson());
             generated.CustomData.Remove("_color");
 
             generatedObjects.Add(generated);
         }
 
-        generatedObjects.Add(BeatmapObject.GenerateCopy(original.Last()));
+        generatedObjects.Add(BeatmapFactory.Clone(original.Last()));
 
         return generatedObjects;
     }

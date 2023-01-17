@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Beatmap.Base;
+using UnityEngine;
 
 // TODO remove
 public class SelectObjectOnGrid : MonoBehaviour
@@ -7,7 +8,7 @@ public class SelectObjectOnGrid : MonoBehaviour
 
     private void OnDestroy() => SelectionController.ObjectWasSelectedEvent -= ObjectSelected;
 
-    private void ObjectSelected(BeatmapObject container)
+    private void ObjectSelected(BaseObject container)
     {
     }
 }

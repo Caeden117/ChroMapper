@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 
-public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>
+public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGridContainer>
 {
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
@@ -25,16 +31,10 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public override int PlacementXMin => base.PlacementXMax * -1;
 
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a Bomb.");
 
-    public override BeatmapNote GenerateOriginalData() 
-    {
-        if (Settings.Instance.Load_MapV3)
-            return new BeatmapBombNote(0, 0, 0);
-        else
-            return new BeatmapNote(0, 0, 0, BeatmapNote.NoteTypeBomb, BeatmapNote.NoteCutDirectionDown);
-    }
+    public override BaseNote GenerateOriginalData() => BeatmapFactory.Bomb(0, 0, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {
@@ -45,14 +45,14 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.CustomColor = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null)
             {
-                queuedData.CustomData.Remove("_color");
+                queuedData.CustomColor = null;
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
@@ -61,7 +61,7 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
         if (UsePrecisionPlacement)
         {
-            queuedData.LineIndex = queuedData.LineLayer = 0;
+            queuedData.PosX = queuedData.PosY = 0;
 
             instantiatedContainer.transform.localPosition = roundedHit;
 
@@ -70,34 +70,34 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.CustomData["_position"] = position;
+            queuedData.CustomCoordinate = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
+            if (queuedData.CustomData != null)
             {
-                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+                queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
             }
 
             precisionPlacement.TogglePrecisionPlacement(false);
-            queuedData.LineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-            queuedData.LineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+            queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         }
 
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
         instantiatedContainer.UpdateMaterials();
     }
 
-    public override void TransferQueuedToDraggedObject(ref BeatmapNote dragged, BeatmapNote queued)
+    public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
     {
         dragged.Time = queued.Time;
-        dragged.LineIndex = queued.LineIndex;
-        dragged.LineLayer = queued.LineLayer;
+        dragged.PosX = queued.PosX;
+        dragged.PosY = queued.PosY;
     }
 }

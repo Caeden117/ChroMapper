@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base.Customs;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -137,7 +140,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             return;
         }
 
-        var newBookmark = new BeatmapBookmark(Atsc.CurrentBeat, name);
+        var newBookmark = Settings.Instance.Load_MapV3 ? (BaseBookmark)new V3Bookmark(Atsc.CurrentBeat, name) : new V2Bookmark(Atsc.CurrentBeat, name);
 
         if (color != null)
         {

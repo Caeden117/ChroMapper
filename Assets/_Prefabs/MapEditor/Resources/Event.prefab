@@ -45,7 +45,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1173282366639492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49ca58ce40fce7e49b2b44aa558a5819, type: 3}
+  m_Script: {fileID: 11500000, guid: e20e0a258e6144f45bab53b12c0ea51a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Dragging: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
   - {fileID: 6766682728314043683}
   tracksManager: {fileID: 0}
   valueDisplay: {fileID: 7155935288314928645}
-  eventGradientController: {fileID: 3430681651377604802}
+  lightGradientController: {fileID: 3430681651377604802}
   eventModels:
   - {fileID: 1347524282044752}
   - {fileID: 784725713453205920}
@@ -874,7 +874,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8110838772168035324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b813ce5639867940af66b6820e2a71f, type: 3}
+  m_Script: {fileID: 11500000, guid: a387ae5c34bce80408ea44c83fef8c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1018352457705622270}

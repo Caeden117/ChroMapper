@@ -449,7 +449,7 @@ public class PersistentUI : MonoBehaviour
         TMP_FontAsset b0A = null, TMP_FontAsset b1A = null, TMP_FontAsset b2A = null)
     {
         Debug.LogWarning($"Dialog box not localized '{message}'");
-        DoShowDialogBox(message, result, new[] { b0, b1, b2 }, new[] { b0A, b1A, b2A });
+        DoShowDialogBox(message, result, new[] { b0, b1, b2 }, new[] { b0A ? b0A : greenFont, b1A ? b1A : goldFont, b2A ? b2A : redFont });
     }
 
     private void DoShowDialogBox(string message, Action<int> result, IList<string> buttonText,

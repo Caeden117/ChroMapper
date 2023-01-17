@@ -1,0 +1,57 @@
+using System;
+using System.Linq;
+using Beatmap.Base;
+using SimpleJSON;
+
+namespace Beatmap.V2
+{
+    public class V2Waypoint : BaseWaypoint
+    {
+        public V2Waypoint()
+        {
+        }
+
+        public V2Waypoint(BaseWaypoint other) : base(other)
+        {
+        }
+
+        public V2Waypoint(JSONNode node)
+        {
+            Time = RetrieveRequiredNode(node, "_time").AsFloat;
+            PosX = RetrieveRequiredNode(node, "_lineIndex").AsInt;
+            PosY = RetrieveRequiredNode(node, "_lineLayer").AsInt;
+            OffsetDirection = RetrieveRequiredNode(node, "_offsetDirection").AsInt;
+            CustomData = node["_customData"];
+        }
+
+        public V2Waypoint(float time, int posX, int posY, int offsetDirection, JSONNode customData = null) : base(time,
+            posX, posY, offsetDirection, customData)
+        {
+        }
+
+        public override string CustomKeyTrack { get; } = "_track";
+
+        public override string CustomKeyColor { get; } = "_color";
+
+        public override string CustomKeyCoordinate { get; } = "_position";
+
+        public override string CustomKeyWorldRotation { get; } = "_rotation";
+
+        public override string CustomKeyLocalRotation { get; } = "_localRotation";
+
+        public override JSONNode ToJson()
+        {
+            JSONNode node = new JSONObject();
+            node["_time"] = Math.Round(Time, DecimalPrecision);
+            node["_lineIndex"] = PosX;
+            node["_lineLayer"] = PosY;
+            node["_offsetDirection"] = OffsetDirection;
+            CustomData = SaveCustom();
+            if (!CustomData.Children.Any()) return node;
+            node["_customData"] = CustomData;
+            return node;
+        }
+
+        public override BaseItem Clone() => new V2Waypoint(Time, PosX, PosY, OffsetDirection, SaveCustom().Clone());
+    }
+}

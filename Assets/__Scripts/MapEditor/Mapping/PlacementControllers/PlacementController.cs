@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Helper;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMInput.IPlacementControllersActions,
-    CMInput.ICancelPlacementActions where TBo : BeatmapObject
-    where TBoc : BeatmapObjectContainer
+    CMInput.ICancelPlacementActions where TBo : BaseObject
+    where TBoc : ObjectContainer
     where TBocc : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject objectContainerPrefab;
@@ -16,7 +20,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     [FormerlySerializedAs("parentTrack")] [SerializeField] protected Transform ParentTrack;
     [FormerlySerializedAs("interfaceGridParent")] [SerializeField] protected Transform InterfaceGridParent;
     [SerializeField] protected bool AssignTo360Tracks;
-    [SerializeField] private BeatmapObject.ObjectType objectDataType;
+    [SerializeField] private ObjectType objectDataType;
     [SerializeField] private bool startingActiveState;
     [FormerlySerializedAs("atsc")] [SerializeField] protected AudioTimeSyncController Atsc;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
@@ -43,7 +47,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private TBo originalDraggedObjectData;
     private TBo originalQueued;
 
-    internal TBo queuedData; //Data that is not yet applied to the BeatmapObjectContainer.
+    internal TBo queuedData; //Data that is not yet applied to the ObjectContainer.
     protected bool UsePrecisionPlacement;
 
     [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
@@ -125,9 +129,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
-                queuedData.GetOrCreateCustomData()["track"] = BeatmapObjectContainerCollection.TrackFilterID;
+                queuedData.CustomTrack = BeatmapObjectContainerCollection.TrackFilterID;
             else
-                queuedData?.CustomData?.Remove("track");
+                queuedData.CustomTrack = null;
 
             CalculateTimes(hit, out var roundedHit, out var roundedTime);
             RoundedTime = roundedTime;
@@ -159,7 +163,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             queuedData.Time = RoundedTime;
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
-                TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapObject.GenerateCopy(queuedData));
+                TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));
                 if (DraggedObjectContainer != null) DraggedObjectContainer.UpdateGridPosition();
             }
         }
@@ -207,7 +211,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             if (Intersections.Raycast(dragRay, 9, out var dragHit))
             {
-                var con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
+                var con = dragHit.GameObject.GetComponentInParent<ObjectContainer>();
                 if (StartDrag(con)) IsDraggingObject = true;
             }
         }
@@ -225,7 +229,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             var dragRay = MainCamera.ScreenPointToRay(MousePosition);
             if (Intersections.Raycast(dragRay, 9, out var dragHit))
             {
-                var con = dragHit.GameObject.GetComponentInParent<BeatmapObjectContainer>();
+                var con = dragHit.GameObject.GetComponentInParent<ObjectContainer>();
                 if (StartDrag(con))
                 {
                     IsDraggingObjectAtTime = true;
@@ -249,7 +253,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     public void OnPrecisionPlacementToggle(InputAction.CallbackContext context) =>
         UsePrecisionPlacement = context.performed && Settings.Instance.PrecisionPlacementGrid;
 
-    protected virtual bool TestForType<T>(Intersections.IntersectionHit hit, BeatmapObject.ObjectType type)
+    protected virtual bool TestForType<T>(Intersections.IntersectionHit hit, ObjectType type)
         where T : MonoBehaviour
     {
         var placementObj = hit.GameObject.GetComponentInParent<T>();
@@ -347,14 +351,14 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         objectData = queuedData;
         objectData.Time = RoundedTime;
-        //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BeatmapObject> conflicting);
+        //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BaseObject> conflicting);
         objectContainerCollection.SpawnObject(objectData, out var conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
-        queuedData = BeatmapObject.GenerateCopy(queuedData);
+        queuedData = BeatmapFactory.Clone(queuedData);
     }
 
     public abstract TBo GenerateOriginalData();
-    public abstract BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting);
+    public abstract BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting);
     public abstract void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint);
 
     public virtual void ClickAndDragFinished() { }
@@ -363,14 +367,14 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public abstract void TransferQueuedToDraggedObject(ref TBo dragged, TBo queued);
 
-    private bool StartDrag(BeatmapObjectContainer con)
+    private bool StartDrag(ObjectContainer con)
     {
-        if (con is null || !(con is TBoc) || con.ObjectData.BeatmapType != objectDataType || !IsActive)
+        if (con is null || !(con is TBoc) || con.ObjectData.ObjectType != objectDataType || !IsActive)
             return false; //Filter out null objects and objects that aren't what we're targetting.
         draggedObjectData = con.ObjectData as TBo;
-        originalQueued = BeatmapObject.GenerateCopy(queuedData);
-        originalDraggedObjectData = BeatmapObject.GenerateCopy(con.ObjectData as TBo);
-        queuedData = BeatmapObject.GenerateCopy(draggedObjectData);
+        originalQueued = BeatmapFactory.Clone(queuedData);
+        originalDraggedObjectData = BeatmapFactory.Clone(con.ObjectData as TBo);
+        queuedData = BeatmapFactory.Clone(draggedObjectData);
         DraggedObjectContainer = con as TBoc;
         DraggedObjectContainer.Dragging = true;
         return true;
@@ -396,7 +400,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             if (selected) SelectionController.Select(draggedObjectData);
         }
 
-        queuedData = BeatmapObject.GenerateCopy(originalQueued);
+        queuedData = BeatmapFactory.Clone(originalQueued);
         BeatmapAction action;
         // Don't queue an action if we didn't actually change anything
         if (draggedObjectData.ToString() != originalDraggedObjectData.ToString())

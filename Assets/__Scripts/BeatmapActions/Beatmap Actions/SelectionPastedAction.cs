@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using LiteNetLib.Utils;
+using Beatmap.Base;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private IEnumerable<BeatmapObject> removed;
+    private readonly IEnumerable<BaseObject> removed;
 
     public SelectionPastedAction() : base() { }
 
-    public SelectionPastedAction(IEnumerable<BeatmapObject> pasteData, IEnumerable<BeatmapObject> removed) :
+    public SelectionPastedAction(IEnumerable<BaseObject> pasteData, IEnumerable<BaseObject> removed) :
         base(pasteData) => this.removed = removed;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

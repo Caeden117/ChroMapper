@@ -1,4 +1,6 @@
 ﻿using System;
+using Beatmap.Enums;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +9,7 @@ public class LightingModeController : MonoBehaviour
     public enum LightingMode
     {
         [PickerChoice("Mapper", "bar.events.on")]
-        ON,
+        On,
 
         [PickerChoice("Mapper", "bar.events.off")]
         Off,
@@ -65,24 +67,24 @@ public class LightingModeController : MonoBehaviour
 
     public void UpdateValue()
     {
-        var red = notePlacement.queuedData.Type == BeatmapNote.NoteTypeA;
-        var white = notePlacement.queuedData.Type == BeatmapNote.NoteTypeBomb;
+        var red = notePlacement.queuedData.Type == (int)NoteType.Red;
+        var white = notePlacement.queuedData.Type == (int)NoteType.Bomb;
         switch (currentMode)
         {
             case LightingMode.Off:
-                eventPlacement.UpdateValue(MapEvent.LightValueOff);
+                eventPlacement.UpdateValue((int)LightValue.Off);
                 break;
-            case LightingMode.ON:
-                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedON : white ? MapEventV3.LightValueWhiteON : MapEvent.LightValueBlueON);
+            case LightingMode.On:
+                eventPlacement.UpdateValue(red ? (int)LightValue.RedOn : white ? (int)LightValue.WhiteOn : (int)LightValue.BlueOn);
                 break;
             case LightingMode.Flash:
-                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedFlash : white ? MapEventV3.LightValueWhiteFlash : MapEvent.LightValueBlueFlash);
+                eventPlacement.UpdateValue(red ? (int)LightValue.RedFlash : white ? (int)LightValue.WhiteFlash : (int)LightValue.BlueFlash);
                 break;
             case LightingMode.Fade:
-                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedFade : white ? MapEventV3.LightValueWhiteFade : MapEvent.LightValueBlueFade);
+                eventPlacement.UpdateValue(red ? (int)LightValue.RedFade : white ? (int)LightValue.WhiteFade : (int)LightValue.BlueFade);
                 break;
             case LightingMode.Transition:
-                eventPlacement.UpdateValue(red ? MapEventV3.LightValueRedTransition : white ? MapEventV3.LightValueWhiteTransition : MapEventV3.LightValueBlueTransition);
+                eventPlacement.UpdateValue(red ? (int)LightValue.RedTransition : white ? (int)LightValue.WhiteTransition : (int)LightValue.BlueTransition);
                 break;
         }
     }

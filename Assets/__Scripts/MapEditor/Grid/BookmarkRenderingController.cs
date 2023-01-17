@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base.Customs;
 using TMPro;
 using UnityEngine;
 
@@ -14,12 +15,12 @@ public class BookmarkRenderingController : MonoBehaviour
 
     private class CachedBookmark
     {
-        public readonly BeatmapBookmark MapBookmark;
+        public readonly BaseBookmark MapBookmark;
         public readonly TextMeshProUGUI Text;
         public string Name;
         public Color Color;
 
-        public CachedBookmark(BeatmapBookmark bookmark, TextMeshProUGUI text)
+        public CachedBookmark(BaseBookmark bookmark, TextMeshProUGUI text)
         {
             MapBookmark = bookmark;
             Text = text;
@@ -56,7 +57,7 @@ public class BookmarkRenderingController : MonoBehaviour
         }
         else if (currentBookmarks.Count > renderedBookmarks.Count) // Added bookmark
         {
-            foreach (BeatmapBookmark bookmark in currentBookmarks)
+            foreach (BaseBookmark bookmark in currentBookmarks)
             {
                 if (renderedBookmarks.All(x => x.MapBookmark != bookmark))
                 {
@@ -95,7 +96,7 @@ public class BookmarkRenderingController : MonoBehaviour
         rect.anchoredPosition3D = new Vector3(-4.5f, time * EditorScaleController.EditorScale, 0);
     }
 
-    private TextMeshProUGUI CreateGridBookmark(BeatmapBookmark bookmark)
+    private TextMeshProUGUI CreateGridBookmark(BaseBookmark bookmark)
     {
         GameObject obj = new GameObject("GridBookmark", typeof(TextMeshProUGUI));
         RectTransform rect = (RectTransform)obj.transform;

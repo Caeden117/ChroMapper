@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Beatmap.Containers;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,11 +13,11 @@ public class LoadInitialMap : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private RotationCallbackController rotationController;
 
-    [Space] [SerializeField] private NotesContainer notesContainer;
+    [FormerlySerializedAs("notesContainer")] [Space] [SerializeField] private NoteGridContainer noteGridContainer;
 
-    [SerializeField] private ObstaclesContainer obstaclesContainer;
-    [SerializeField] private ArcsContainer arcsContainer;
-    [SerializeField] private ChainsContainer chainsContainer;
+    [FormerlySerializedAs("obstaclesContainer")] [SerializeField] private ObstacleGridContainer obstacleGridContainer;
+    [FormerlySerializedAs("arcsContainer")] [SerializeField] private ArcGridContainer arcGridContainer;
+    [FormerlySerializedAs("chainsContainer")] [SerializeField] private ChainGridContainer chainGridContainer;
     [SerializeField] private MapLoader loader;
 
     [FormerlySerializedAs("PlatformPrefabs")] [Space] [SerializeField] private GameObject[] platformPrefabs;
@@ -75,7 +76,7 @@ public class LoadInitialMap : MonoBehaviour
 
         var instantiate = customPlat ? platform : Instantiate(platform, PlatformOffset, Quaternion.identity);
         var descriptor = instantiate.GetComponent<PlatformDescriptor>();
-        BeatmapEventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode
+        EventContainer.ModifyTypeMode = descriptor.SortMode; //Change sort mode
 
         descriptor.Colors = descriptor.DefaultColors.Clone();
 
@@ -90,13 +91,10 @@ public class LoadInitialMap : MonoBehaviour
             rightNote = descriptor.Colors.BlueNoteColor;
         if (diff.ColorRight != null) rightNote = diff.ColorRight ?? rightNote;
 
-        notesContainer.UpdateColor(leftNote, rightNote);
-        obstaclesContainer.UpdateColor(diff.ObstacleColor ?? BeatSaberSong.DefaultLeftColor);
-        if (Settings.Instance.Load_MapV3)
-        {
-            arcsContainer.UpdateColor(leftNote, rightNote);
-            chainsContainer.UpdateColor(leftNote, rightNote);
-        }
+        noteGridContainer.UpdateColor(leftNote, rightNote);
+        obstacleGridContainer.UpdateColor(diff.ObstacleColor ?? BeatSaberSong.DefaultLeftColor);
+        arcGridContainer.UpdateColor(leftNote, rightNote);
+        chainGridContainer.UpdateColor(leftNote, rightNote);
         if (diff.ColorLeft != null) descriptor.Colors.RedNoteColor = diff.ColorLeft ?? descriptor.Colors.RedNoteColor;
         if (diff.ColorRight != null)
             descriptor.Colors.BlueNoteColor = diff.ColorRight ?? descriptor.Colors.BlueNoteColor;

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Beatmap.Base;
+using Beatmap.Enums;
+using UnityEngine;
 
 public class InterscopeCarBounceEffect : InterscopeCarEventHandler
 {
@@ -9,9 +11,9 @@ public class InterscopeCarBounceEffect : InterscopeCarEventHandler
 
     private float timeSinceLastEvent;
 
-    public override int[] ListeningEventTypes => new[] { MapEvent.EventTypeRingsRotate };
+    public override int[] ListeningEventTypes => new[] { (int)EventTypeValue.RingRotation };
 
-    protected override void OnCarGroupTriggered(MapEvent @event)
+    protected override void OnCarGroupTriggered(BaseEvent @event)
     {
         var timeSinceLevelLoad = Time.timeSinceLevelLoad;
 

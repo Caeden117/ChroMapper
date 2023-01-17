@@ -1,6 +1,9 @@
 ﻿using NUnit.Framework;
 using System.Collections;
 using System.Linq;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V2;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -22,7 +25,7 @@ namespace Tests
 
             _actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             _mirror = Object.FindObjectOfType<MirrorSelection>();
-            _notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note);
+            _notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             _root = _notesContainer.transform.root;
             _notePlacement = _root.GetComponentInChildren<NotePlacement>();
         }
@@ -30,34 +33,34 @@ namespace Tests
         [SetUp]
         public void SpawnNotes()
         {
-            BeatmapNote noteA = new BeatmapNote
+            BaseNote baseNoteA = new V2Note
             {
                 Time = 2,
-                Type = BeatmapNote.NoteTypeA,
-                LineIndex = BeatmapNote.LineIndexFarLeft,
-                LineLayer = BeatmapNote.LineLayerBottom,
-                CutDirection = BeatmapNote.NoteCutDirectionLeft
+                Type = (int)NoteType.Red,
+                PosX = (int)GridX.Left,
+                PosY = (int)GridY.Base,
+                CutDirection = (int)NoteCutDirection.Left
             };
-            BeatmapNote noteB = new BeatmapNote
+            BaseNote baseNoteB = new V2Note
             {
                 Time = 3,
-                Type = BeatmapNote.NoteTypeB,
-                LineIndex = BeatmapNote.LineIndexFarRight,
-                LineLayer = BeatmapNote.LineLayerTop,
-                CutDirection = BeatmapNote.NoteCutDirectionUpRight
+                Type = (int)NoteType.Blue,
+                PosX = (int)GridX.Right,
+                PosY = (int)GridY.Top,
+                CutDirection = (int)NoteCutDirection.UpRight
             };
 
-            _notePlacement.queuedData = noteA;
+            _notePlacement.queuedData = baseNoteA;
             _notePlacement.RoundedTime = _notePlacement.queuedData.Time;
             _notePlacement.ApplyToMap();
 
             // Should conflict with existing note and delete it
-            _notePlacement.queuedData = noteB;
+            _notePlacement.queuedData = baseNoteB;
             _notePlacement.RoundedTime = _notePlacement.queuedData.Time;
             _notePlacement.ApplyToMap();
 
-            SelectionController.Select(noteA);
-            SelectionController.Select(noteB, true);
+            SelectionController.Select(baseNoteA);
+            SelectionController.Select(baseNoteB, true);
         }
 
         [TearDown]
@@ -73,7 +76,7 @@ namespace Tests
             _mirror.MirrorTime();
 
             // Check we can still delete our objects
-            BeatmapObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            BaseObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 
@@ -81,14 +84,14 @@ namespace Tests
 
             Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
 
-            NoteTest.CheckNote(_notesContainer, 0, 2, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarRight, BeatmapNote.LineLayerTop, BeatmapNote.NoteCutDirectionUpRight);
-            NoteTest.CheckNote(_notesContainer, 1, 3, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
+            NoteTest.CheckNote(_notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight);
+            NoteTest.CheckNote(_notesContainer, 1, 3, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
 
             // Undo mirror
             _actionContainer.Undo();
 
-            NoteTest.CheckNote(_notesContainer, 0, 2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
-            NoteTest.CheckNote(_notesContainer, 1, 3, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarRight, BeatmapNote.LineLayerTop, BeatmapNote.NoteCutDirectionUpRight);
+            NoteTest.CheckNote(_notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+            NoteTest.CheckNote(_notesContainer, 1, 3, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight);
         }
 
         [Test]
@@ -97,7 +100,7 @@ namespace Tests
             _mirror.Mirror();
 
             // Check we can still delete our objects
-            BeatmapObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            BaseObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 
@@ -105,14 +108,14 @@ namespace Tests
 
             Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
 
-            NoteTest.CheckNote(_notesContainer, 0, 2, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarRight, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionRight);
-            NoteTest.CheckNote(_notesContainer, 1, 3, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerTop, BeatmapNote.NoteCutDirectionUpLeft);
+            NoteTest.CheckNote(_notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Base, (int)NoteCutDirection.Right);
+            NoteTest.CheckNote(_notesContainer, 1, 3, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Top, (int)NoteCutDirection.UpLeft);
 
             // Undo mirror
             _actionContainer.Undo();
 
-            NoteTest.CheckNote(_notesContainer, 0, 2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
-            NoteTest.CheckNote(_notesContainer, 1, 3, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarRight, BeatmapNote.LineLayerTop, BeatmapNote.NoteCutDirectionUpRight);
+            NoteTest.CheckNote(_notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+            NoteTest.CheckNote(_notesContainer, 1, 3, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight);
         }
 
         [Test]
@@ -121,7 +124,7 @@ namespace Tests
             _mirror.Mirror(false);
 
             // Check we can still delete our objects
-            BeatmapObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            BaseObject toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 
@@ -129,14 +132,14 @@ namespace Tests
 
             Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
 
-            NoteTest.CheckNote(_notesContainer, 0, 2, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
-            NoteTest.CheckNote(_notesContainer, 1, 3, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarRight, BeatmapNote.LineLayerTop, BeatmapNote.NoteCutDirectionUpRight);
+            NoteTest.CheckNote(_notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+            NoteTest.CheckNote(_notesContainer, 1, 3, (int)NoteType.Red, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight);
 
             // Undo mirror
             _actionContainer.Undo();
 
-            NoteTest.CheckNote(_notesContainer, 0, 2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
-            NoteTest.CheckNote(_notesContainer, 1, 3, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarRight, BeatmapNote.LineLayerTop, BeatmapNote.NoteCutDirectionUpRight);
+            NoteTest.CheckNote(_notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+            NoteTest.CheckNote(_notesContainer, 1, 3, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight);
         }
     }
 }

@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1094719878252698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b36e1c33da25a904eaf51e6f13f0a85f, type: 3}
+  m_Script: {fileID: 11500000, guid: fa7519284ef0d804c962411ddc902575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Dragging: 0
@@ -330,7 +330,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4024504745793970811}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b52911612d7ca2b40ac0b286aecfdb91, type: 3}
+  m_Script: {fileID: 11500000, guid: db5574f8ede297c47872bdf83fca05cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   NoteRenderer: {fileID: 7215384984663567646}

@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 
 //TODO rename to LegacyEventsConverter
@@ -13,11 +15,11 @@ public class LegacyNotesConverter : MonoBehaviour
     {
         yield return PersistentUI.Instance.FadeInLoadingScreen();
 
-        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventsContainer>(BeatmapObject.ObjectType.Event);
+        var events = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         var chromaColorsByEventType = new Dictionary<int, Color?>();
         foreach (var obj in events.UnsortedObjects.ToArray())
         {
-            var e = obj as MapEvent;
+            var e = obj as BaseEvent;
             if (chromaColorsByEventType.TryGetValue(e.Type, out var chroma))
             {
                 if (e.Value >= ColourManager.RgbintOffset)
@@ -34,8 +36,8 @@ public class LegacyNotesConverter : MonoBehaviour
                     continue;
                 }
 
-                if (chroma != null && e.Value != MapEvent.LightValueOff)
-                    e.GetOrCreateCustomData()["_color"] = chroma;
+                if (chroma != null && e.Value != (int)LightValue.Off)
+                    e.CustomColor = chroma;
             }
             else
             {

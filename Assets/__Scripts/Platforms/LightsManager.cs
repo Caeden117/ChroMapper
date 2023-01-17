@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -131,7 +132,7 @@ public class LightsManager : MonoBehaviour
 
     private void SetTargets(LightingEvent light, Color a)
     {
-        if (previousValue == MapEvent.LightValueBlueFade || previousValue == MapEvent.LightValueRedFade)
+        if (previousValue == (int)LightValue.BlueFade || previousValue == (int)LightValue.RedFade)
         {
             light.UpdateCurrentColor(a * HDRFlashIntensity);
             light.UpdateTargetAlpha(0);

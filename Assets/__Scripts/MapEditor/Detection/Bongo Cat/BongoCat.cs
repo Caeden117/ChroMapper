@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Beatmap.Base;
+using Beatmap.Enums;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class BongoCat : MonoBehaviour
@@ -65,12 +67,12 @@ public class BongoCat : MonoBehaviour
         transform.localScale = selectedBongoCat.Scale;
     }
 
-    public void TriggerArm(BeatmapNote note, NotesContainer container)
+    public void TriggerArm(BaseNote note, NoteGridContainer container)
     {
         //Ignore bombs here to improve performance.
-        if (Settings.Instance.BongoCat == -1 || note.Type == BeatmapNote.NoteTypeBomb) return;
+        if (Settings.Instance.BongoCat == -1 || note.Type == (int)NoteType.Bomb) return;
         var next = container.UnsortedObjects.Find(x => x.Time > note.Time &&
-                                                       ((BeatmapNote)x).Type == note.Type);
+                                                       ((BaseNote)x).Type == note.Type);
         var timer = 0.125f;
         if (!(next is null))
         {
@@ -82,11 +84,11 @@ public class BongoCat : MonoBehaviour
 
         switch (note.Type)
         {
-            case BeatmapNote.NoteTypeA:
+            case (int)NoteType.Red:
                 larm = true;
                 larmTimeout = timer;
                 break;
-            case BeatmapNote.NoteTypeB:
+            case (int)NoteType.Blue:
                 rarm = true;
                 rarmTimeout = timer;
                 break;

@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Beatmap.Appearances;
+using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Helper;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class BeatmapArcInputController : BeatmapInputController<BeatmapArcContainer>, CMInput.IArcObjectsActions
+public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, CMInput.IArcObjectsActions
 {
     public const float MuChangeSpeed = 0.1f;
     [FormerlySerializedAs("arcAppearanceSO")] [SerializeField] private ArcAppearanceSO arcAppearanceSo;
@@ -20,10 +25,10 @@ public class BeatmapArcInputController : BeatmapInputController<BeatmapArcContai
         ChangeMu(e, modifier);
     }
 
-    public void ChangeMu(BeatmapArcContainer s, float modifier)
+    public void ChangeMu(ArcContainer s, float modifier)
     {
-        var original = BeatmapObject.GenerateCopy(s.ArcData);
-        s.ChangeMu(modifier);
+        var original = BeatmapFactory.Clone(s.ArcData);
+        s.ChangeHeadMultiplier(modifier);
         s.NotifySplineChanged();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
     }
@@ -40,12 +45,12 @@ public class BeatmapArcInputController : BeatmapInputController<BeatmapArcContai
         if (arc != null && !arc.Dragging) InvertArc(arc);
     }
 
-    public void InvertArc(BeatmapArcContainer arc)
+    public void InvertArc(ArcContainer arc)
     {
-        var original = BeatmapObject.GenerateCopy(arc.ArcData);
-        var newType = arc.ArcData.Color == BeatmapNote.NoteTypeA
-            ? BeatmapNote.NoteTypeB
-            : BeatmapNote.NoteTypeA;
+        var original = BeatmapFactory.Clone(arc.ArcData);
+        var newType = arc.ArcData.Color == (int)NoteColor.Red
+            ? (int)NoteColor.Blue
+            : (int)NoteColor.Red;
         arc.ArcData.Color = newType;
         arcAppearanceSo.SetArcAppearance(arc);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(arc.ObjectData, arc.ObjectData, original, "invert arc color"));
@@ -62,10 +67,10 @@ public class BeatmapArcInputController : BeatmapInputController<BeatmapArcContai
         ChangeTmu(e, modifier);
     }
 
-    public void ChangeTmu(BeatmapArcContainer s, float modifier)
+    public void ChangeTmu(ArcContainer s, float modifier)
     {
-        var original = BeatmapObject.GenerateCopy(s.ArcData);
-        s.ChangeTmu(modifier);
+        var original = BeatmapFactory.Clone(s.ArcData);
+        s.ChangeTailMultiplier(modifier);
         s.NotifySplineChanged();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
     }

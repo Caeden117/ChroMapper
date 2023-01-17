@@ -1,40 +1,46 @@
 using System.Collections.Generic;
+using Beatmap.Appearances;
+using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteContainer>, CMInput.INoteObjectsActions
+public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>, CMInput.INoteObjectsActions
 {
     [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
     public bool QuickModificationActive;
 
     private readonly Dictionary<int, int> cutDirectionMovedBackward = new Dictionary<int, int>
     {
-        {BeatmapNote.NoteCutDirectionAny, BeatmapNote.NoteCutDirectionAny},
-        {BeatmapNote.NoteCutDirectionDownLeft, BeatmapNote.NoteCutDirectionDown},
-        {BeatmapNote.NoteCutDirectionLeft, BeatmapNote.NoteCutDirectionDownLeft},
-        {BeatmapNote.NoteCutDirectionUpLeft, BeatmapNote.NoteCutDirectionLeft},
-        {BeatmapNote.NoteCutDirectionUp, BeatmapNote.NoteCutDirectionUpLeft},
-        {BeatmapNote.NoteCutDirectionUpRight, BeatmapNote.NoteCutDirectionUp},
-        {BeatmapNote.NoteCutDirectionRight, BeatmapNote.NoteCutDirectionUpRight},
-        {BeatmapNote.NoteCutDirectionDownRight, BeatmapNote.NoteCutDirectionRight},
-        {BeatmapNote.NoteCutDirectionDown, BeatmapNote.NoteCutDirectionDownRight},
-        {BeatmapNote.NoteCutDirectionNone, BeatmapNote.NoteCutDirectionNone}
+        {(int)NoteCutDirection.Any, (int)NoteCutDirection.Any},
+        {(int)NoteCutDirection.DownLeft, (int)NoteCutDirection.Down},
+        {(int)NoteCutDirection.Left, (int)NoteCutDirection.DownLeft},
+        {(int)NoteCutDirection.UpLeft, (int)NoteCutDirection.Left},
+        {(int)NoteCutDirection.Up, (int)NoteCutDirection.UpLeft},
+        {(int)NoteCutDirection.UpRight, (int)NoteCutDirection.Up},
+        {(int)NoteCutDirection.Right, (int)NoteCutDirection.UpRight},
+        {(int)NoteCutDirection.DownRight, (int)NoteCutDirection.Right},
+        {(int)NoteCutDirection.Down, (int)NoteCutDirection.DownRight},
+        {(int)NoteCutDirection.None, (int)NoteCutDirection.None}
     };
 
     private readonly Dictionary<int, int> cutDirectionMovedForward = new Dictionary<int, int>
     {
-        {BeatmapNote.NoteCutDirectionAny, BeatmapNote.NoteCutDirectionAny},
-        {BeatmapNote.NoteCutDirectionDown, BeatmapNote.NoteCutDirectionDownLeft},
-        {BeatmapNote.NoteCutDirectionDownLeft, BeatmapNote.NoteCutDirectionLeft},
-        {BeatmapNote.NoteCutDirectionLeft, BeatmapNote.NoteCutDirectionUpLeft},
-        {BeatmapNote.NoteCutDirectionUpLeft, BeatmapNote.NoteCutDirectionUp},
-        {BeatmapNote.NoteCutDirectionUp, BeatmapNote.NoteCutDirectionUpRight},
-        {BeatmapNote.NoteCutDirectionUpRight, BeatmapNote.NoteCutDirectionRight},
-        {BeatmapNote.NoteCutDirectionRight, BeatmapNote.NoteCutDirectionDownRight},
-        {BeatmapNote.NoteCutDirectionDownRight, BeatmapNote.NoteCutDirectionDown},
-        {BeatmapNote.NoteCutDirectionNone, BeatmapNote.NoteCutDirectionNone}
+        {(int)NoteCutDirection.Any, (int)NoteCutDirection.Any},
+        {(int)NoteCutDirection.Down, (int)NoteCutDirection.DownLeft},
+        {(int)NoteCutDirection.DownLeft, (int)NoteCutDirection.Left},
+        {(int)NoteCutDirection.Left, (int)NoteCutDirection.UpLeft},
+        {(int)NoteCutDirection.UpLeft, (int)NoteCutDirection.Up},
+        {(int)NoteCutDirection.Up, (int)NoteCutDirection.UpRight},
+        {(int)NoteCutDirection.UpRight, (int)NoteCutDirection.Right},
+        {(int)NoteCutDirection.Right, (int)NoteCutDirection.DownRight},
+        {(int)NoteCutDirection.DownRight, (int)NoteCutDirection.Down},
+        {(int)NoteCutDirection.None, (int)NoteCutDirection.None}
     };
 
     //Do some shit later lmao
@@ -73,38 +79,38 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
         if (note != null) UpdateNotePreciseDirection(note, shiftForward);
     }
 
-    public void InvertNote(BeatmapNoteContainer note)
+    public void InvertNote(NoteContainer note)
     {
-        if (note.MapNoteData.Type == BeatmapNote.NoteTypeBomb) return;
+        if (note.NoteData.Type == (int)NoteType.Bomb) return;
 
-        var original = BeatmapObject.GenerateCopy(note.ObjectData);
-        var newType = note.MapNoteData.Type == BeatmapNote.NoteTypeA
-            ? BeatmapNote.NoteTypeB
-            : BeatmapNote.NoteTypeA;
-        note.MapNoteData.Type = newType;
+        var original = BeatmapFactory.Clone(note.ObjectData);
+        var newType = note.NoteData.Type == (int)NoteType.Red
+            ? (int)NoteType.Blue
+            : (int)NoteType.Red;
+        note.NoteData.Type = newType;
         noteAppearanceSo.SetNoteAppearance(note);
-        var collection = BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.ObjectType.Note);
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
         collection.RefreshSpecialAngles(note.ObjectData, false, false);
         collection.RefreshSpecialAngles(original, false, false);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original));
     }
 
-    public void UpdateNoteDirection(BeatmapNoteContainer note, bool shiftForward)
+    public void UpdateNoteDirection(NoteContainer note, bool shiftForward)
     {
-        var original = BeatmapObject.GenerateCopy(note.ObjectData);
-        note.MapNoteData.CutDirection =
-            (shiftForward ? cutDirectionMovedForward : cutDirectionMovedBackward)[note.MapNoteData.CutDirection];
-        note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.MapNoteData);
-        BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.ObjectType.Note)
+        var original = BeatmapFactory.Clone(note.ObjectData);
+        note.NoteData.CutDirection =
+            (shiftForward ? cutDirectionMovedForward : cutDirectionMovedBackward)[note.NoteData.CutDirection];
+        note.transform.localEulerAngles = NoteContainer.Directionalize(note.NoteData);
+        BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note)
             .RefreshSpecialAngles(note.ObjectData, false, false);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original));
     }
 
-    public void UpdateNotePreciseDirection(BeatmapNoteContainer note, bool shiftForward)
+    public void UpdateNotePreciseDirection(NoteContainer note, bool shiftForward)
     {
-        var original = BeatmapObject.GenerateCopy(note.ObjectData);
+        var original = BeatmapFactory.Clone(note.ObjectData);
 
-        if (note.MapNoteData is BeatmapColorNote cnote) {
+        if (note.NoteData is V3ColorNote cnote) {
             if (shiftForward)
                 cnote.AngleOffset += 1;
             else
@@ -115,7 +121,7 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
             // V2 note unsupported. Could implement either ME or NE for V2 note.
         }
 
-        BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.ObjectType.Note)
+        BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note)
             .RefreshSpecialAngles(note.ObjectData, false, false);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original));
     }

@@ -2,12 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Appearances;
+using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContainer, NotesContainer>,
+public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGridContainer>,
     CMInput.INotePlacementActions
 {
     private const int upKey = 0;
@@ -17,7 +24,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
-    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [SerializeField] private NoteAppearanceSO noteAppearanceSo;
     [SerializeField] private DeleteToolController deleteToolController;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     [SerializeField] private LaserSpeedController laserSpeedController;
@@ -81,31 +88,31 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         if (!context.performed) return;
         deleteToolController.UpdateDeletion(false);
-        UpdateCut(BeatmapNote.NoteCutDirectionAny);
+        UpdateCut((int)NoteCutDirection.Any);
     }
 
     public void OnUpLeftNote(InputAction.CallbackContext context)
     {
         if (context.performed && !laserSpeedController.Activated)
-            UpdateCut(BeatmapNote.NoteCutDirectionUpLeft);
+            UpdateCut((int)NoteCutDirection.UpLeft);
     }
 
     public void OnUpRightNote(InputAction.CallbackContext context)
     {
         if (context.performed && !laserSpeedController.Activated)
-            UpdateCut(BeatmapNote.NoteCutDirectionUpRight);
+            UpdateCut((int)NoteCutDirection.UpRight);
     }
 
     public void OnDownRightNote(InputAction.CallbackContext context)
     {
         if (context.performed && !laserSpeedController.Activated)
-            UpdateCut(BeatmapNote.NoteCutDirectionDownRight);
+            UpdateCut((int)NoteCutDirection.DownRight);
     }
 
     public void OnDownLeftNote(InputAction.CallbackContext context)
     {
         if (context.performed && !laserSpeedController.Activated)
-            UpdateCut(BeatmapNote.NoteCutDirectionDownLeft);
+            UpdateCut((int)NoteCutDirection.DownLeft);
     }
 
     // Toggle Chroma Color Function
@@ -117,16 +124,10 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             Settings.NonPersistentSettings.Add(ChromaColorKey, v);
     }
 
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
 
-    public override BeatmapNote GenerateOriginalData()
-    {
-        if (Settings.Instance.Load_MapV3)
-            return new BeatmapColorNote(0, 0, 0, BeatmapNote.NoteTypeA, BeatmapNote.NoteCutDirectionDown, 0);
-        else
-            return new BeatmapNote(0, 0, 0, BeatmapNote.NoteTypeA, BeatmapNote.NoteCutDirectionDown);
-    }
+    public override BaseNote GenerateOriginalData() => BeatmapFactory.Note(0, 0, 0, (int)NoteColor.Red, (int)NoteCutDirection.Down, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {
@@ -136,31 +137,28 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         // Check if Chroma Color notes button is active and apply _color
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
-            // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            // Doing the same a Chroma 2.0 events but with notes instead
+            queuedData.CustomColor = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomColor != null)
             {
-                queuedData.CustomData.Remove("_color");
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
+                queuedData.CustomColor = null;
             }
         }
 
         if (UsePrecisionPlacement)
         {
-            queuedData.LineIndex = queuedData.LineLayer = 0;
+            queuedData.PosX = queuedData.PosY = 0;
 
             instantiatedContainer.transform.localPosition = roundedHit;
 
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.GetOrCreateCustomData()["_position"] = position;
+            queuedData.CustomCoordinate = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -168,38 +166,35 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
+            if (queuedData.CustomCoordinate != null)
             {
-                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
+                queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
             }
 
-            queuedData.LineIndex = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-            queuedData.LineLayer = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+            queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         }
-
+        
         UpdateAppearance();
     }
 
     public void UpdateCut(int value)
     {
         queuedData.CutDirection = value;
-        if (DraggedObjectContainer != null && DraggedObjectContainer.MapNoteData != null)
+        if (DraggedObjectContainer != null && DraggedObjectContainer.NoteData != null)
         {
-            DraggedObjectContainer.MapNoteData.CutDirection = value;
-            if (DraggedObjectContainer.MapNoteData is BeatmapColorNote colorNote) colorNote.AngleOffset = 0;
+            DraggedObjectContainer.NoteData.CutDirection = value;
+            if (DraggedObjectContainer.NoteData is V3ColorNote colorNote) colorNote.AngleOffset = 0;
             noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
         }
         else if (beatmapNoteInputController.QuickModificationActive && Settings.Instance.QuickNoteEditing)
         {
             var note = ObjectUnderCursor();
-            if (note != null && note.ObjectData is BeatmapNote noteData)
+            if (note != null && note.ObjectData is BaseNote noteData)
             {
-                var newData = BeatmapObject.GenerateCopy(noteData);
+                var newData = BeatmapFactory.Clone(noteData);
                 newData.CutDirection = value;
-                if (newData is BeatmapColorNote colorNote) colorNote.AngleOffset = 0;
+                if (newData is V3ColorNote colorNote) colorNote.AngleOffset = 0;
 
                 BeatmapActionContainer.AddAction(
                     new BeatmapObjectModifiedAction(newData, noteData, noteData, "Quick edit"), true);
@@ -219,10 +214,10 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     {
         if (isChromaToggleNote)
         {
-            var data = new BeatmapChromaNote(queuedData) { BombRotation = BeatmapChromaNote.Alternate };
+            var data = new V2ChromaNote(queuedData) { BombRotation = V2ChromaNote.Alternate };
             queuedData = data;
         }
-        else if (queuedData is BeatmapChromaNote data)
+        else if (queuedData is V2ChromaNote data)
         {
             queuedData = data.ConvertToNote();
         }
@@ -232,7 +227,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
     public void UpdateChromaValue(int chromaNoteValue)
     {
-        if (queuedData is BeatmapChromaNote chroma)
+        if (queuedData is V2ChromaNote chroma)
         {
             chroma.BombRotation = chromaNoteValue;
             UpdateAppearance();
@@ -242,21 +237,21 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     private void UpdateAppearance()
     {
         if (instantiatedContainer is null) return;
-        instantiatedContainer.MapNoteData = queuedData;
+        instantiatedContainer.NoteData = queuedData;
         noteAppearanceSo.SetNoteAppearance(instantiatedContainer);
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
         instantiatedContainer.UpdateMaterials();
-        instantiatedContainer.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(queuedData);
+        instantiatedContainer.transform.localEulerAngles = NoteContainer.Directionalize(queuedData);
     }
 
-    public override void TransferQueuedToDraggedObject(ref BeatmapNote dragged, BeatmapNote queued)
+    public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
     {
         dragged.Time = queued.Time;
-        dragged.LineIndex = queued.LineIndex;
-        dragged.LineLayer = queued.LineLayer;
+        dragged.PosX = queued.PosX;
+        dragged.PosY = queued.PosY;
         dragged.CutDirection = queued.CutDirection;
         if (DraggedObjectContainer != null)
-            DraggedObjectContainer.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(dragged);
+            DraggedObjectContainer.transform.localEulerAngles = NoteContainer.Directionalize(dragged);
         noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
     }
 
@@ -295,25 +290,25 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
 
         if (handleUpDownNotes && !handleLeftRightNotes) // We handle simple up/down notes
         {
-            if (upNote) UpdateCut(BeatmapNote.NoteCutDirectionUp);
-            else UpdateCut(BeatmapNote.NoteCutDirectionDown);
+            if (upNote) UpdateCut((int)NoteCutDirection.Up);
+            else UpdateCut((int)NoteCutDirection.Down);
         }
         else if (!handleUpDownNotes && handleLeftRightNotes) // We handle simple left/right notes
         {
-            if (leftNote) UpdateCut(BeatmapNote.NoteCutDirectionLeft);
-            else UpdateCut(BeatmapNote.NoteCutDirectionRight);
+            if (leftNote) UpdateCut((int)NoteCutDirection.Left);
+            else UpdateCut((int)NoteCutDirection.Right);
         }
         else if (diagonal) //We need to do a diagonal
         {
             if (leftNote)
             {
-                if (upNote) UpdateCut(BeatmapNote.NoteCutDirectionUpLeft);
-                else UpdateCut(BeatmapNote.NoteCutDirectionDownLeft);
+                if (upNote) UpdateCut((int)NoteCutDirection.UpLeft);
+                else UpdateCut((int)NoteCutDirection.DownLeft);
             }
             else
             {
-                if (upNote) UpdateCut(BeatmapNote.NoteCutDirectionUpRight);
-                else UpdateCut(BeatmapNote.NoteCutDirectionDownRight);
+                if (upNote) UpdateCut((int)NoteCutDirection.UpRight);
+                else UpdateCut((int)NoteCutDirection.DownRight);
             }
         }
     }

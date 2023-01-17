@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using LiteNetLib.Utils;
+using Beatmap.Base;
+using Beatmap.Enums;
 
 public class StrobeGeneratorGenerationAction : BeatmapAction
 {
-    private IEnumerable<BeatmapObject> conflictingData;
+    private IEnumerable<BaseObject> conflictingData;
 
     public StrobeGeneratorGenerationAction() : base() { }
 
-    public StrobeGeneratorGenerationAction(IEnumerable<BeatmapObject> generated, IEnumerable<BeatmapObject> conflicting)
+    public StrobeGeneratorGenerationAction(IEnumerable<BaseObject> generated, IEnumerable<BaseObject> conflicting)
         : base(generated) => conflictingData = conflicting;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

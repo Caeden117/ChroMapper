@@ -1,21 +1,26 @@
-﻿using LiteNetLib.Utils;
+using LiteNetLib.Utils;
+using Beatmap.Base;
+using Beatmap.Helper;
 
 public class BeatmapObjectModifiedAction : BeatmapAction
 {
     private readonly bool addToSelection;
 
-    private BeatmapObject editedData;
-    private BeatmapObject editedObject;
-    private BeatmapObject originalData;
-    private BeatmapObject originalObject;
+    private readonly BeatmapObjectContainerCollection collection;
+    private readonly BaseObject editedData;
+
+    private readonly BaseObject editedObject;
+    private readonly BaseObject originalData;
+    private readonly BaseObject originalObject;
 
     public BeatmapObjectModifiedAction() : base() { }
 
-    public BeatmapObjectModifiedAction(BeatmapObject edited, BeatmapObject originalObject, BeatmapObject originalData,
+    public BeatmapObjectModifiedAction(BaseObject edited, BaseObject originalObject, BaseObject originalData,
         string comment = "No comment.", bool keepSelection = false) : base(new[] { edited, originalObject }, comment)
     {
+        collection = BeatmapObjectContainerCollection.GetCollectionForType(originalObject.ObjectType);
         editedObject = edited;
-        editedData = BeatmapObject.GenerateCopy(edited);
+        editedData = BeatmapFactory.Clone(edited);
 
         this.originalData = originalData;
         this.originalObject = originalObject;

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -153,9 +155,9 @@ public class PlatformDescriptor : MonoBehaviour
         chromaGradients.Clear();
     }
 
-    public void EventPassed(bool isPlaying, int index, BeatmapObject obj)
+    public void EventPassed(bool isPlaying, int index, BaseObject obj)
     {
-        var e = obj as MapEvent;
+        var e = obj as BaseEvent;
 
         // Two events at the same time should yield same results
         Random.InitState(Mathf.RoundToInt(obj.Time * 100));
@@ -164,9 +166,9 @@ public class PlatformDescriptor : MonoBehaviour
         switch (e.Type)
         {
             case 8:
-                if (obj.CustomData?.HasKey("_nameFilter") ?? false)
+                if (e.CustomNameFilter != null)
                 {
-                    string filter = obj.CustomData["_nameFilter"];
+                    string filter = e.CustomNameFilter;
                     if (filter.Contains("Big") || filter.Contains("Large"))
                     {
                         if (BigRingManager != null)
@@ -201,7 +203,7 @@ public class PlatformDescriptor : MonoBehaviour
                     SmallRingManager.HandlePositionEvent(obj.CustomData);
                 break;
             case 12:
-                var leftEventTypes = new List<int>() { MapEvent.EventTypeLeftLasers, MapEvent.EventTypeCustomLight2, MapEvent.EventTypeCustomLight4 };
+                var leftEventTypes = new List<int>() { (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights };
 
                 foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
                 {
@@ -213,7 +215,7 @@ public class PlatformDescriptor : MonoBehaviour
 
                 break;
             case 13:
-                var rightEventTypes = new List<int>() { MapEvent.EventTypeRightLasers, MapEvent.EventTypeCustomLight3, MapEvent.EventTypeCustomLight5 };
+                var rightEventTypes = new List<int>() { (int)EventTypeValue.RightLasers, (int)EventTypeValue.ExtraRightLasers, (int)EventTypeValue.ExtraRightLights };
 
                 foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
                 {
@@ -248,7 +250,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
     }
 
-    private void HandleLights(LightsManager group, int value, MapEvent e)
+    private void HandleLights(LightsManager group, int value, BaseEvent e)
     {
         var mainColor = Color.white;
         var invertedColor = Color.white;
@@ -270,7 +272,7 @@ public class PlatformDescriptor : MonoBehaviour
         if (chromaGradients.ContainsKey(group))
         {
             var gradientEvent = chromaGradients[group].GradientEvent;
-            if (atsc.CurrentBeat >= gradientEvent.LightGradient.Duration + gradientEvent.Time ||
+            if (atsc.CurrentBeat >= gradientEvent.CustomLightGradient.Duration + gradientEvent.Time ||
                 !Settings.Instance.EmulateChromaLite)
             {
                 StopCoroutine(chromaGradients[group].Routine);
@@ -279,7 +281,7 @@ public class PlatformDescriptor : MonoBehaviour
             }
         }
 
-        if (e.LightGradient != null && Settings.Instance.EmulateChromaLite)
+        if (e.CustomLightGradient != null && Settings.Instance.EmulateChromaLite)
         {
             if (chromaGradients.ContainsKey(group))
             {
@@ -306,9 +308,9 @@ public class PlatformDescriptor : MonoBehaviour
         }
 
         //Check if it is a PogU new Chroma event
-        if ((e.CustomData?.HasKey("_color") ?? false) && Settings.Instance.EmulateChromaLite)
+        if ((e.CustomColor != null) && Settings.Instance.EmulateChromaLite)
         {
-            mainColor = invertedColor = e.CustomData["_color"];
+            mainColor = invertedColor = (Color)e.CustomColor;
             chromaCustomColors.Remove(group);
             if (chromaGradients.ContainsKey(group))
             {
@@ -328,9 +330,9 @@ public class PlatformDescriptor : MonoBehaviour
 
         IEnumerable<LightingEvent> allLights = group.ControllingLights;
 
-        if (e.IsLightIdEvent && Settings.Instance.EmulateChromaAdvanced)
+        if (e.CustomLightID != null && Settings.Instance.EmulateChromaAdvanced)
         {
-            var lightIDArr = e.LightId;
+            var lightIDArr = e.CustomLightID;
             allLights = group.ControllingLights.FindAll(x => lightIDArr.Contains(x.LightID));
 
             // Temporarily(?) commented as Debug.LogWarning is expensive
@@ -347,32 +349,32 @@ public class PlatformDescriptor : MonoBehaviour
 
             switch (value)
             {
-                case MapEvent.LightValueOff:
+                case (int)LightValue.Off:
                     light.UpdateTargetAlpha(0, 0);
                     light.UpdateMultiplyAlpha();
                     TrySetTransition(light, e);
                     break;
-                case MapEvent.LightValueBlueON:
-                case MapEvent.LightValueRedON:
-                case MapEventV3.LightValueWhiteON:
+                case (int)LightValue.BlueOn:
+                case (int)LightValue.RedOn:
+                case (int)LightValue.WhiteOn:
                     // light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateEasing("easeLinear");
                     TrySetTransition(light, e);
                     break;
-                case MapEvent.LightValueBlueFlash:
-                case MapEvent.LightValueRedFlash:
-                case MapEventV3.LightValueWhiteFlash:
+                case (int)LightValue.BlueFlash:
+                case (int)LightValue.RedFlash:
+                case (int)LightValue.WhiteFlash:
                     // light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
                     light.UpdateEasing("easeOutCubic");
                     break;
-                case MapEvent.LightValueBlueFade:
-                case MapEvent.LightValueRedFade:
-                case MapEventV3.LightValueWhiteFade:
+                case (int)LightValue.BlueFade:
+                case (int)LightValue.RedFade:
+                case (int)LightValue.WhiteFade:
                     // light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
@@ -388,9 +390,9 @@ public class PlatformDescriptor : MonoBehaviour
                     }
 
                     break;
-                case MapEventV3.LightValueBlueTransition:
-                case MapEventV3.LightValueRedTransition:
-                case MapEventV3.LightValueWhiteTransition:
+                case (int)LightValue.BlueTransition:
+                case (int)LightValue.RedTransition:
+                case (int)LightValue.WhiteTransition:
                     // light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
@@ -403,14 +405,12 @@ public class PlatformDescriptor : MonoBehaviour
     }
 
 
-    private bool TryGetNextTransitionNote(in MapEvent e, out MapEvent transitionEvent)
+    private bool TryGetNextTransitionNote(in BaseEvent e, out BaseEvent transitionEvent)
     {
         transitionEvent = null;
-        if (!(e is MapEventV3)) return false;
-        var e3 = e as MapEventV3;
-        if (e3.Next != null && e3.Next.IsTransitionEvent)
+        if (e.Next is { IsTransition: true })
         {
-            transitionEvent = e3.Next;
+            transitionEvent = e.Next;
             return true;
         }
         return false;
@@ -438,7 +438,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
     }
 
-    private void TrySetTransition(LightingEvent light, MapEvent e)
+    private void TrySetTransition(LightingEvent light, BaseEvent e)
     {
         if (TryGetNextTransitionNote(e, out var transition))
         {
@@ -451,9 +451,9 @@ public class PlatformDescriptor : MonoBehaviour
         }
     }
 
-    private IEnumerator GradientRoutine(MapEvent gradientEvent, LightsManager group)
+    private IEnumerator GradientRoutine(BaseEvent gradientEvent, LightsManager group)
     {
-        var gradient = gradientEvent.LightGradient;
+        var gradient = gradientEvent.CustomLightGradient;
         var easingFunc = Easing.ByName[gradient.EasingType];
 
         float progress;
@@ -477,7 +477,7 @@ public class PlatformDescriptor : MonoBehaviour
 
     private class Gradient
     {
-        public MapEvent GradientEvent;
+        public BaseEvent GradientEvent;
         public Coroutine Routine;
     }
 }

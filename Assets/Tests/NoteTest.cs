@@ -2,6 +2,10 @@
 using SimpleJSON;
 using System.Collections;
 using System.Linq;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Base;
+using Beatmap.V2;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -25,14 +29,14 @@ namespace Tests
 
         public static void CheckNote(BeatmapObjectContainerCollection container, int idx, int time, int type, int index, int layer, int cutDirection, JSONNode customData = null)
         {
-            BeatmapObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BeatmapNote>(newObjA);
-            if (newObjA is BeatmapNote newNoteA)
+            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
+            Assert.IsInstanceOf<BaseNote>(newObjA);
+            if (newObjA is BaseNote newNoteA)
             {
                 Assert.AreEqual(time, newNoteA.Time);
                 Assert.AreEqual(type, newNoteA.Type);
-                Assert.AreEqual(index, newNoteA.LineIndex);
-                Assert.AreEqual(layer, newNoteA.LineLayer);
+                Assert.AreEqual(index, newNoteA.PosX);
+                Assert.AreEqual(layer, newNoteA.PosY);
                 Assert.AreEqual(cutDirection, newNoteA.CutDirection);
 
                 if (customData != null)
@@ -46,30 +50,30 @@ namespace Tests
         public void InvertNote()
         {
             BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note);
-            if (containerCollection is NotesContainer notesContainer)
+            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            if (containerCollection is NoteGridContainer notesContainer)
             {
                 Transform root = notesContainer.transform.root;
                 NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                BeatmapNote noteA = new BeatmapNote(2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
+                BaseNote baseNoteA = new V2Note(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
 
-                notePlacement.queuedData = noteA;
+                notePlacement.queuedData = baseNoteA;
                 notePlacement.RoundedTime = notePlacement.queuedData.Time;
                 notePlacement.ApplyToMap();
 
-                if (notesContainer.LoadedContainers[noteA] is BeatmapNoteContainer containerA)
+                if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
                 {
                     inputController.InvertNote(containerA);
                 }
 
-                CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeB, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
+                CheckNote(notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
+                CheckNote(notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
             }
         }
 
@@ -77,30 +81,30 @@ namespace Tests
         public void UpdateNoteDirection()
         {
             BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note);
-            if (containerCollection is NotesContainer notesContainer)
+            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            if (containerCollection is NoteGridContainer notesContainer)
             {
                 Transform root = notesContainer.transform.root;
                 NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                BeatmapNote noteA = new BeatmapNote(2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
+                BaseNote baseNoteA = new V2Note(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
 
-                notePlacement.queuedData = noteA;
+                notePlacement.queuedData = baseNoteA;
                 notePlacement.RoundedTime = notePlacement.queuedData.Time;
                 notePlacement.ApplyToMap();
 
-                if (notesContainer.LoadedContainers[noteA] is BeatmapNoteContainer containerA)
+                if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
                 {
                     inputController.UpdateNoteDirection(containerA, true);
                 }
 
-                CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionUpLeft);
+                CheckNote(notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.UpLeft);
 
                 // Undo direction
                 actionContainer.Undo();
 
-                CheckNote(notesContainer, 0, 2, BeatmapNote.NoteTypeA, BeatmapNote.LineIndexFarLeft, BeatmapNote.LineLayerBottom, BeatmapNote.NoteCutDirectionLeft);
+                CheckNote(notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
             }
         }
     }

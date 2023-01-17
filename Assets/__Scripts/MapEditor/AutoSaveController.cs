@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Beatmap.Enums;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -134,7 +135,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     {
         if (Settings.Instance.RemoveNotesOutsideMap)
         {
-            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note);
+            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             foreach (var note in BeatSaberSongContainer.Instance.Map.Notes.Where(note => note.Time >= maxBeatTime))
             {
                 noteCollection.DeleteObject(note);
@@ -142,7 +143,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         }
         if (Settings.Instance.RemoveEventsOutsideMap)
         {
-            var eventCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Event);
+            var eventCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
             foreach (var evt in BeatSaberSongContainer.Instance.Map.Events.Where(evt => evt.Time >= maxBeatTime))
             {
                 eventCollection.DeleteObject(evt);
@@ -150,7 +151,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         }
         if (Settings.Instance.RemoveObstaclesOutsideMap)
         {
-            var obstacleCollection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle);
+            var obstacleCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
             foreach (var obst in BeatSaberSongContainer.Instance.Map.Obstacles.Where(obst => obst.Time >= maxBeatTime))
             {
                 obstacleCollection.DeleteObject(obst);

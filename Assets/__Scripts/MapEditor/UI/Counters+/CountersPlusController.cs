@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.Serialization;
 
 public class CountersPlusController : MonoBehaviour
 {
-    [SerializeField] private NotesContainer notes;
-    [SerializeField] private ObstaclesContainer obstacles;
-    [SerializeField] private EventsContainer events;
-    [SerializeField] private BPMChangesContainer bpm;
+    [FormerlySerializedAs("notes")] [SerializeField] private NoteGridContainer noteGrid;
+    [FormerlySerializedAs("obstacles")] [SerializeField] private ObstacleGridContainer obstacleGrid;
+    [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
+    [SerializeField] private BPMChangeGridContainer bpm;
     [SerializeField] private AudioSource cameraAudioSource;
     [SerializeField] private AudioTimeSyncController atsc;
 
@@ -41,14 +43,14 @@ public class CountersPlusController : MonoBehaviour
 
 
     public int NotesCount =>
-       notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type != BeatmapNote.NoteTypeBomb).Count();
+       noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type != (int)NoteType.Bomb).Count();
 
 
     public float NPSCount => NotesCount / cameraAudioSource.clip.length;
 
     public int NotesSelected
         => SelectionController.SelectedObjects
-            .Where(x => (x is BeatmapNote note && note.Type != BeatmapNote.NoteTypeBomb) || x is BeatmapChain).Count();
+            .Where(x => (x is BaseNote note && note.Type != (int)NoteType.Bomb) || x is BaseChain).Count();
 
     public float NPSselected
     {
@@ -63,11 +65,11 @@ public class CountersPlusController : MonoBehaviour
     }
 
     public int BombCount
-        => notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type == BeatmapNote.NoteTypeBomb).Count();
+        => noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Bomb).Count();
 
-    public int ObstacleCount => obstacles.LoadedObjects.Count;
+    public int ObstacleCount => obstacleGrid.LoadedObjects.Count;
 
-    public int EventCount => events.LoadedObjects.Count;
+    public int EventCount => eventGrid.LoadedObjects.Count;
 
     public int BPMCount => bpm.LoadedObjects.Count;
 
@@ -82,9 +84,9 @@ public class CountersPlusController : MonoBehaviour
     {
         get
         {
-            var redCount = notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type == BeatmapNote.NoteTypeA)
+            var redCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Red)
                 .Count();
-            var blueCount = notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type == BeatmapNote.NoteTypeB)
+            var blueCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Blue)
                 .Count();
             return blueCount == 0 ? 0f : redCount / (float)blueCount;
         }
@@ -99,7 +101,7 @@ public class CountersPlusController : MonoBehaviour
         Settings.NotifyBySettingName("CountersPlus", UpdateCountersVisibility);
         UpdateCountersVisibility(Settings.Instance.CountersPlus);
 
-        swingsPerSecond = new SwingsPerSecond(notes, obstacles);
+        swingsPerSecond = new SwingsPerSecond(noteGrid, obstacleGrid);
 
         LoadInitialMap.LevelLoadedEvent += LevelLoadedEvent;
         SelectionController.SelectionChangedEvent += SelectionChangedEvent;

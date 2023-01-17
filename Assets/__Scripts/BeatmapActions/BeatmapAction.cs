@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using LiteNetLib.Utils;
+using Beatmap.Base;
 
 /// <summary>
 ///     A BeatmapAction contains a BeatmapObjectContainer as well as a methods to Undo and Redo the action.
@@ -14,14 +16,14 @@ public abstract class BeatmapAction : INetSerializable
     public bool Networked = false;
     public string Comment = "No comment.";
     public Guid Guid = Guid.NewGuid();
-    public IEnumerable<BeatmapObject> Data;
+    public IEnumerable<BaseObject> Data;
     public MapperIdentityPacket Identity; // Only used in United Mapping, assume local user if null
 
     internal bool inCollection = false;
 
     public BeatmapAction() => Networked = true;
 
-    public BeatmapAction(IEnumerable<BeatmapObject> data, string comment = "No comment.")
+    public BeatmapAction(IEnumerable<BaseObject> data, string comment = "No comment.")
     {
         Data = data;
         Comment = comment;
@@ -38,13 +40,13 @@ public abstract class BeatmapAction : INetSerializable
     /// </summary>
     /// <param name="param">Collection of useful stuff.</param>
     public abstract void Redo(BeatmapActionContainer.BeatmapActionParams param);
-    
+
     /// <summary>
     /// Serializes the Action to be sent over the network in a Multi Mapping session.
     /// </summary>
     /// <param name="writer"></param>
     public abstract void Serialize(NetDataWriter writer);
-    
+
     /// <summary>
     /// Deserializes and populates an Action received in a Multi Mapping session.
     /// </summary>
@@ -53,14 +55,14 @@ public abstract class BeatmapAction : INetSerializable
 
     public virtual BeatmapObject DoesInvolveObject(BeatmapObject obj) => Data.Any(it => it.IsConflictingWith(obj)) ? obj : null;
 
-    protected void RefreshPools(IEnumerable<BeatmapObject> data)
+    protected void RefreshPools(IEnumerable<BaseObject> data)
     {
-        foreach (var unique in data.DistinctBy(x => x.BeatmapType))
+        foreach (var unique in data.DistinctBy(x => x.ObjectType))
         {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(unique.BeatmapType);
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(unique.ObjectType);
             collection.RefreshPool(true);
 
-            if (collection is BPMChangesContainer con) con.RefreshModifiedBeat();
+            if (collection is BPMChangeGridContainer con) con.RefreshModifiedBeat();
         }
     }
 

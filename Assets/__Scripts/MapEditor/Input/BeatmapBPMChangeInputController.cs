@@ -1,6 +1,10 @@
-﻿using UnityEngine.InputSystem;
+﻿using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.Helper;
+using UnityEngine.InputSystem;
 
-public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPMChangeContainer>,
+public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventContainer>,
     CMInput.IBPMChangeObjectsActions
 {
     public void OnReplaceBPM(InputAction.CallbackContext context)
@@ -23,7 +27,7 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
             RaycastFirstObject(out var containerToEdit);
             if (containerToEdit != null)
             {
-                var original = BeatmapObject.GenerateCopy(containerToEdit.ObjectData);
+                var original = BeatmapFactory.Clone(containerToEdit.ObjectData);
 
                 var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
 
@@ -31,7 +35,7 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
                 containerToEdit.UpdateGridPosition();
 
                 var bpmChanges =
-                    BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(BeatmapObject.ObjectType
+                    BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType
                         .BpmChange);
                 bpmChanges.RefreshModifiedBeat();
 
@@ -51,17 +55,17 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BeatmapBPM
         }
     }
 
-    internal static void ChangeBpm(BeatmapBPMChangeContainer containerToEdit, string obj)
+    internal static void ChangeBpm(BpmEventContainer containerToEdit, string obj)
     {
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj)) return;
         if (float.TryParse(obj, out var bpm))
         {
-            var original = BeatmapObject.GenerateCopy(containerToEdit.ObjectData);
+            var original = BeatmapFactory.Clone(containerToEdit.ObjectData);
             containerToEdit.BpmData.Bpm = bpm;
             containerToEdit.UpdateGridPosition();
             var bpmChanges =
-                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangesContainer>(
-                    BeatmapObject.ObjectType.BpmChange);
+                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
+                    ObjectType.BpmChange);
             bpmChanges.RefreshModifiedBeat();
             BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
                 containerToEdit.ObjectData, original));

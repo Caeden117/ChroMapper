@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using System.IO.Compression;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Serialization;
+using Beatmap.Base;
 
 public class BeatSaberSongContainer : MonoBehaviour
 {
     [FormerlySerializedAs("song")] public BeatSaberSong Song;
     [FormerlySerializedAs("difficultyData")] public BeatSaberSong.DifficultyBeatmap DifficultyData;
     [FormerlySerializedAs("loadedSong")] public AudioClip LoadedSong;
-    [FormerlySerializedAs("map")] public BeatSaberMap Map;
+    [FormerlySerializedAs("map")] public BaseDifficulty Map;
 
     [NonSerialized] public MultiClientNetListener? MultiMapperConnection;
 
@@ -46,7 +47,7 @@ public class BeatSaberSongContainer : MonoBehaviour
     {
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         PersistentUI.Instance.LevelLoadSlider.value = 0;
-        PersistentUI.Instance.LevelLoadSliderLabel.text = 
+        PersistentUI.Instance.LevelLoadSliderLabel.text =
             LocalizationSettings.StringDatabase.GetLocalizedString("MultiMapping", "multi.session.downloading");
 
         yield return new WaitUntil(() => MultiMapperConnection?.MapData != null);
