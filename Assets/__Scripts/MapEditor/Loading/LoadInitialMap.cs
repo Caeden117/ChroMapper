@@ -15,6 +15,8 @@ public class LoadInitialMap : MonoBehaviour
     [Space] [SerializeField] private NotesContainer notesContainer;
 
     [SerializeField] private ObstaclesContainer obstaclesContainer;
+    [SerializeField] private ArcsContainer arcsContainer;
+    [SerializeField] private ChainsContainer chainsContainer;
     [SerializeField] private MapLoader loader;
 
     [FormerlySerializedAs("PlatformPrefabs")] [Space] [SerializeField] private GameObject[] platformPrefabs;
@@ -90,6 +92,11 @@ public class LoadInitialMap : MonoBehaviour
 
         notesContainer.UpdateColor(leftNote, rightNote);
         obstaclesContainer.UpdateColor(diff.ObstacleColor ?? BeatSaberSong.DefaultLeftColor);
+        if (Settings.Instance.Load_MapV3)
+        {
+            arcsContainer.UpdateColor(leftNote, rightNote);
+            chainsContainer.UpdateColor(leftNote, rightNote);
+        }
         if (diff.ColorLeft != null) descriptor.Colors.RedNoteColor = diff.ColorLeft ?? descriptor.Colors.RedNoteColor;
         if (diff.ColorRight != null)
             descriptor.Colors.BlueNoteColor = diff.ColorRight ?? descriptor.Colors.BlueNoteColor;

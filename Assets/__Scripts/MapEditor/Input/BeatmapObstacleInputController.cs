@@ -30,6 +30,37 @@ public class BeatmapObstacleInputController : BeatmapInputController<BeatmapObst
         }
     }
 
+    public void OnChangeWallLowerBound(InputAction.CallbackContext context)
+    {
+        if (!Settings.Instance.Load_MapV3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        RaycastFirstObject(out var obs);
+        if (obs != null && !obs.Dragging && context.performed)
+        {
+            var original = BeatmapObject.GenerateCopy(obs.ObjectData);
+            var tweakValue = context.ReadValue<float>() > 0 ? 1 : -1;
+            var data = obs.ObjectData as BeatmapObstacleV3;
+            data.LineLayer = Mathf.Clamp(data.LineLayer + tweakValue, 0, 2);
+            obs.UpdateGridPosition();
+            obstacleAppearanceSo.SetObstacleAppearance(obs);
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
+        }
+    }
+    public void OnChangeWallUpperBound(InputAction.CallbackContext context)
+    {
+        if (!Settings.Instance.Load_MapV3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        RaycastFirstObject(out var obs);
+        if (obs != null && !obs.Dragging && context.performed)
+        {
+            var original = BeatmapObject.GenerateCopy(obs.ObjectData);
+            var tweakValue = context.ReadValue<float>() > 0 ? 1 : -1;
+            var data = obs.ObjectData as BeatmapObstacleV3;
+            data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.LineLayer);
+            obs.UpdateGridPosition();
+            obstacleAppearanceSo.SetObstacleAppearance(obs);
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
+        }
+    }
+
     public void OnToggleHyperWall(InputAction.CallbackContext context)
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;

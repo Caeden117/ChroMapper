@@ -15,7 +15,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public event Action<BeatmapObject> ObjectSpawnedEvent;
     public event Action<BeatmapObject> ObjectDeletedEvent;
-
+    public event Action<BeatmapObject> ContainerSpawnedEvent;
+    public event Action<BeatmapObject> ContainerDespawnedEvent;
     public AudioTimeSyncController AudioTimeSyncController;
 
     /// <summary>
@@ -30,6 +31,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
+
     public Transform GridTransform;
     public Transform PoolTransform;
     public bool UseChunkLoadingWhenPlaying;
@@ -196,12 +198,30 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 {
                     continue;
                 }
+                else if (Settings.Instance.Load_MapV3 )
+                {
+                    if (obj is BeatmapArc &&
+                        (obj as BeatmapArc).Time < lowerBound && (obj as BeatmapArc).TailTime >= lowerBound)
+                        continue;
+                    if (obj is BeatmapChain &&
+                        (obj as BeatmapChain).Time < lowerBound && (obj as BeatmapChain).TailTime >= lowerBound)
+                        continue;
+                }
 
                 RecycleContainer(obj);
             }
 
             if (obj is BeatmapObstacle obst && obst.Time < lowerBound && obst.Time + obst.Duration >= lowerBound)
                 CreateContainerFromPool(obj);
+            if (Settings.Instance.Load_MapV3)
+            {
+                if (obj is BeatmapArc &&
+                           (obj as BeatmapArc).Time < lowerBound && (obj as BeatmapArc).TailTime >= lowerBound)
+                    CreateContainerFromPool(obj);
+                if (obj is BeatmapChain &&
+                    (obj as BeatmapChain).Time < lowerBound && (obj as BeatmapChain).TailTime >= lowerBound)
+                    CreateContainerFromPool(obj);
+            }
         }
     }
 
@@ -225,6 +245,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         LoadedContainers.Add(obj, dequeued);
         obj.HasAttachedContainer = true;
         OnContainerSpawn(dequeued, obj);
+        ContainerSpawnedEvent?.Invoke(obj);
     }
 
     /// <summary>
@@ -244,6 +265,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         pooledContainers.Enqueue(container);
         OnContainerDespawn(container, obj);
         obj.HasAttachedContainer = false;
+        ContainerDespawnedEvent?.Invoke(obj);
     }
 
     private void CreateNewObject()

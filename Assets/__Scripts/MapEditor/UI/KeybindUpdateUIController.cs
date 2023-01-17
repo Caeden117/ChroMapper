@@ -47,6 +47,12 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
         lightMode.SetMode(LightingModeController.LightingMode.Fade);
     }
 
+    public void OnTypeTransition(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !Settings.Instance.Load_MapV3) return;
+        lightMode.SetMode(LightingModeController.LightingMode.Transition);
+    }    
+
     public void OnTogglePrecisionRotation(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -94,6 +100,11 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     {
         if (!context.performed) return;
         placeMode.SetMode(PlacementModeController.PlacementMode.Bomb);
+        if (Settings.Instance.Load_MapV3)
+        {
+            colorType.BombNote(true);
+            lightMode.UpdateValue();
+        }
     }
 
     public void OnPlaceObstacle(InputAction.CallbackContext context)

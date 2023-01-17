@@ -28,8 +28,13 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a Bomb.");
 
-    public override BeatmapNote GenerateOriginalData() =>
-        new BeatmapNote(0, 0, 0, BeatmapNote.NoteTypeBomb, BeatmapNote.NoteCutDirectionDown);
+    public override BeatmapNote GenerateOriginalData() 
+    {
+        if (Settings.Instance.Load_MapV3)
+            return new BeatmapBombNote(0, 0, 0);
+        else
+            return new BeatmapNote(0, 0, 0, BeatmapNote.NoteTypeBomb, BeatmapNote.NoteCutDirectionDown);
+    }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {

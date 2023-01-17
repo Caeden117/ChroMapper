@@ -120,8 +120,13 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
 
-    public override BeatmapNote GenerateOriginalData() =>
-        new BeatmapNote(0, 0, 0, BeatmapNote.NoteTypeA, BeatmapNote.NoteCutDirectionDown);
+    public override BeatmapNote GenerateOriginalData()
+    {
+        if (Settings.Instance.Load_MapV3)
+            return new BeatmapColorNote(0, 0, 0, BeatmapNote.NoteTypeA, BeatmapNote.NoteCutDirectionDown, 0);
+        else
+            return new BeatmapNote(0, 0, 0, BeatmapNote.NoteTypeA, BeatmapNote.NoteCutDirectionDown);
+    }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {
@@ -184,6 +189,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (DraggedObjectContainer != null && DraggedObjectContainer.MapNoteData != null)
         {
             DraggedObjectContainer.MapNoteData.CutDirection = value;
+            if (DraggedObjectContainer.MapNoteData is BeatmapColorNote colorNote) colorNote.AngleOffset = 0;
             noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
         }
         else if (beatmapNoteInputController.QuickModificationActive && Settings.Instance.QuickNoteEditing)
@@ -193,6 +199,7 @@ public class NotePlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             {
                 var newData = BeatmapObject.GenerateCopy(noteData);
                 newData.CutDirection = value;
+                if (newData is BeatmapColorNote colorNote) colorNote.AngleOffset = 0;
 
                 BeatmapActionContainer.AddAction(
                     new BeatmapObjectModifiedAction(newData, noteData, noteData, "Quick edit"), true);

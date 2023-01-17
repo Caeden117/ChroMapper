@@ -985,11 +985,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9689541752557568
-    m_Localized: Visualize Chroma event alpha using the height of the event
+    m_Localized: Visualize event alpha using the height of the event
     m_Metadata:
       m_Items: []
   - m_Id: 9689824679333888
-    m_Localized: Visualize Chroma Alpha
+    m_Localized: Visualize Event Alpha
     m_Metadata:
       m_Items: []
   - m_Id: 16675690602758144
@@ -1014,6 +1014,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 90253772483395584
+    m_Localized: Displays non-default floatValue on top of events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90254225048797184
+    m_Localized: Display FloatValue Text
+    m_Metadata:
+      m_Items: []
   - m_Id: 1698793607168
     m_Localized: Quest ADB
     m_Metadata:

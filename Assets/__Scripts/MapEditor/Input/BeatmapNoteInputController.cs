@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -63,6 +63,16 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
         if (note != null) UpdateNoteDirection(note, shiftForward);
     }
 
+    public void OnUpdateNotePreciseDirection(InputAction.CallbackContext context) 
+    {
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (!context.performed) return;
+
+        var shiftForward = context.ReadValue<float>() > 0;
+        RaycastFirstObject(out var note);
+        if (note != null) UpdateNotePreciseDirection(note, shiftForward);
+    }
+
     public void InvertNote(BeatmapNoteContainer note)
     {
         if (note.MapNoteData.Type == BeatmapNote.NoteTypeBomb) return;
@@ -85,6 +95,26 @@ public class BeatmapNoteInputController : BeatmapInputController<BeatmapNoteCont
         note.MapNoteData.CutDirection =
             (shiftForward ? cutDirectionMovedForward : cutDirectionMovedBackward)[note.MapNoteData.CutDirection];
         note.transform.localEulerAngles = BeatmapNoteContainer.Directionalize(note.MapNoteData);
+        BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.ObjectType.Note)
+            .RefreshSpecialAngles(note.ObjectData, false, false);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original));
+    }
+
+    public void UpdateNotePreciseDirection(BeatmapNoteContainer note, bool shiftForward)
+    {
+        var original = BeatmapObject.GenerateCopy(note.ObjectData);
+
+        if (note.MapNoteData is BeatmapColorNote cnote) {
+            if (shiftForward)
+                cnote.AngleOffset += 1;
+            else
+                cnote.AngleOffset -= 1;
+        }
+        else
+        {
+            // V2 note unsupported. Could implement either ME or NE for V2 note.
+        }
+
         BeatmapObjectContainerCollection.GetCollectionForType<NotesContainer>(BeatmapObject.ObjectType.Note)
             .RefreshSpecialAngles(note.ObjectData, false, false);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original));

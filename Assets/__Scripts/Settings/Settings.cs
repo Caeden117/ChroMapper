@@ -82,6 +82,7 @@ public class Settings
     public bool Load_Notes = true;
     public bool Load_Obstacles = true;
     public bool Load_Others = true;
+    public bool Load_MapV3 = false;
     public bool DisplayDiffDetailsInEditor = true;
     public bool DisplaySongDetailsInEditor = true;
     public bool ShowMoreAccurateFastWalls = false;
@@ -98,6 +99,7 @@ public class Settings
     public bool NoteJumpSpeedForEditorScale = false;
     public bool VisualizeChromaGradients = true;
     public bool VisualizeChromaAlpha = true;
+    public bool DisplayFloatValueText = false;
     public bool SimpleBlocks = false;
     public bool HelpfulLoadingMessages = false;
     public bool Reset360DisplayOnCompleteTurn = true;

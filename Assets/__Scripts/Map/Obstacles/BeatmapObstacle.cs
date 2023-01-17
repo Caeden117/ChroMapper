@@ -23,7 +23,6 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
      */
     public BeatmapObstacle() { }
 
-
     public BeatmapObstacle(JSONNode node)
     {
         Time = RetrieveRequiredNode(node, "_time").AsFloat;
@@ -131,8 +130,10 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
     {
         var position = LineIndex - 2f; //Line index
         var startHeight = Type == ValueFullBarrier ? 0 : 1.5f;
-        var height = Type == ValueFullBarrier ? 3.5f : 2;
+        var height = Type == ValueFullBarrier ? 3.75f : 2.25f;
         float width = Width;
+        if (Settings.Instance.Load_MapV3 && this is BeatmapObstacleV3)
+            (this as BeatmapObstacleV3).GetHeights(ref height, ref startHeight);
 
         // ME
 

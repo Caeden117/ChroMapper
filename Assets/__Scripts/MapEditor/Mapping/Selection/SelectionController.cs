@@ -156,6 +156,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 BeatmapObject.ObjectType.Note, BeatmapObject.ObjectType.Obstacle, BeatmapObject.ObjectType.CustomNote
             });
+            if (Settings.Instance.Load_MapV3)
+            {
+                clearTypes.AddRange(new[] { BeatmapObject.ObjectType.Arc, BeatmapObject.ObjectType.Chain });
+            }
         }
 
         if (hasNoteOrObstacle && !hasEvent)
@@ -619,7 +623,36 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                 if (data.CustomData?.Count <= 0) data.CustomData = null;
             }
-
+            else if (data is BeatmapArc arc)
+            {
+                // TODO: Do ME and NE
+                arc.X += leftRight;
+                arc.Y += upDown;
+                arc.TailX += leftRight;
+                arc.TailY += upDown;
+                if (Settings.Instance.VanillaOnlyShift)
+                {
+                    // While x is unbounded, you probably want to keep within the grid for vanilla mapping
+                    arc.X = Mathf.Clamp(arc.X, 0, 3);
+                    arc.Y = Mathf.Clamp(arc.Y, 0, 2);
+                    arc.TailX = Mathf.Clamp(arc.TailX, 0, 3);
+                    arc.TailY = Mathf.Clamp(arc.TailY, 0, 2);
+                }
+            }
+            else if (data is BeatmapChain chain)
+            {
+                chain.X += leftRight;
+                chain.Y += upDown;
+                chain.TailX += leftRight;
+                chain.TailY += upDown;
+                if (Settings.Instance.VanillaOnlyShift)
+                {
+                    chain.X = Mathf.Clamp(chain.X, 0, 3);
+                    chain.Y = Mathf.Clamp(chain.Y, 0, 2);
+                    chain.TailX = Mathf.Clamp(chain.TailX, 0, 3);
+                    chain.TailY = Mathf.Clamp(chain.TailY, 0, 2);
+                }
+            }
             return new BeatmapObjectModifiedAction(data, data, original, "", true);
         }).ToList();
 
@@ -668,6 +701,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     newObjects[BeatmapObject.ObjectType.BpmChange].Cast<BeatmapBPMChange>().ToList();
                 BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[BeatmapObject.ObjectType.CustomEvent]
                     .Cast<BeatmapCustomEvent>().ToList();
+            }
+
+            if (Settings.Instance.Load_MapV3)
+            {
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Arcs =
+                    newObjects[BeatmapObject.ObjectType.Arc].Cast<BeatmapArc>().ToList();
+                (BeatSaberSongContainer.Instance.Map as BeatSaberMapV3).Chains =
+                    newObjects[BeatmapObject.ObjectType.Chain].Cast<BeatmapChain>().ToList();
             }
         }
     }

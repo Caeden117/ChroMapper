@@ -11,6 +11,7 @@ public class SwingsPerSecond
     private readonly NotesContainer notes;
     private readonly ObstaclesContainer obstacles;
 
+
     public SwingsPerSecond(NotesContainer notes, ObstaclesContainer obstacles)
     {
         this.notes = notes;
@@ -26,7 +27,8 @@ public class SwingsPerSecond
     private float LastInteractiveObjectTime(float songBpm)
     {
         var lastNoteTime = 0f;
-        if (NotesCount > 0) lastNoteTime = notes.LoadedObjects.Last().Time / songBpm * 60;
+        if (NotesCount > 0 && notes.LoadedObjects.Count != 0) 
+            lastNoteTime = notes.LoadedObjects.Last().Time / songBpm * 60;
 
         var lastInteractiveObstacleTime = 0f;
         foreach (BeatmapObstacle obstacle in obstacles.LoadedObjects)
@@ -44,7 +46,8 @@ public class SwingsPerSecond
     private float FirstInteractiveObjectTime(float songBpm)
     {
         var firstNoteTime = float.MaxValue;
-        if (NotesCount > 0) firstNoteTime = notes.LoadedObjects.First().Time / songBpm * 60;
+        if (NotesCount > 0 && notes.LoadedObjects.Count != 0) 
+            firstNoteTime = notes.LoadedObjects.First().Time / songBpm * 60;
 
         var firstInteractiveObstacleTime = float.MaxValue;
         foreach (BeatmapObstacle obstacle in obstacles.LoadedObjects)
@@ -96,7 +99,9 @@ public class SwingsPerSecond
         var swingCountBlue = new int[Mathf.FloorToInt(lastInteraction) + 1];
 
         BeatmapNote lastRed = null, lastBlue = null;
-        foreach (BeatmapNote note in notes.LoadedObjects)
+        var notesSet = notes.LoadedObjects;
+
+        foreach (BeatmapNote note in notesSet)
         {
             var realTime = note.Time / songBpm * 60;
             if (note.Type == 0)

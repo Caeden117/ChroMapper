@@ -91,7 +91,7 @@ public class SongInfoEditUI : MenuBase
 
     [SerializeField] private GameObject questExportButton;
     private List<string> questCandidates = new List<string>();
-    
+
     private void Start()
     {
         if (BeatSaberSongContainer.Instance == null)
@@ -324,8 +324,8 @@ public class SongInfoEditUI : MenuBase
     public const string QUEST_CUSTOM_SONGS_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
     // I added this so the non-quest maintainers can use it as a reference for adding WIP uploads
     // this does indeed exist and work, please don't refrain from asking me. 
-    public const string QUEST_CUSTOM_SONGS_WIP_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels"; 
-    
+    public const string QUEST_CUSTOM_SONGS_WIP_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels";
+
     /// <summary>
     /// Exports the files to the Quest using adb
     /// </summary>
@@ -347,7 +347,7 @@ public class SongInfoEditUI : MenuBase
             if (result && string.IsNullOrEmpty(error.ErrorOut))
             {
                 questCandidates.Add(device);
-            }    
+            }
         }
 
         if (questCandidates.Count == 0)
@@ -364,9 +364,9 @@ public class SongInfoEditUI : MenuBase
             LocalizationSettings.StringDatabase
                 .GetLocalizedString("SongEditMenu", "quest.exporting_progress",
                 new object[] { f }));
-        
+
         dialog.Open();
-        
+
         // We should always be exporting to WIP Levels. CustomLevels are for downloaded BeatSaver songs.
         var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_WIP_LOCATION, Song.CleanSongName).Replace("\\", @"/");
         var exportedFiles = Song.GetFilesForArchiving();
@@ -378,7 +378,7 @@ public class SongInfoEditUI : MenuBase
 
         var totalFiles = questCandidates.Count * exportedFiles.Count;
         var fCount = 0;
-        
+
         foreach (var questCandidate in questCandidates)
         {
             var createDir = await Adb.Mkdir(songExportPath, questCandidate);
@@ -388,7 +388,7 @@ public class SongInfoEditUI : MenuBase
             foreach (var fileNamePair in exportedFiles)
             {
                 var locationRelativeToSongDir = fileNamePair.Value;
-                
+
                 var questPath = Path.Combine(songExportPath, locationRelativeToSongDir).Replace("\\", @"/");
 
                 Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
@@ -397,14 +397,14 @@ public class SongInfoEditUI : MenuBase
                 Debug.Log(log.ToString());
 
                 fCount++;
-                progressBar.UpdateProgressBar((float) fCount / totalFiles);
+                progressBar.UpdateProgressBar((float)fCount / totalFiles);
             }
         }
-        
+
         dialog.Clear();
-        
+
         Debug.Log("EXPORTED TO QUEST SUCCESSFULLY YAYAAYAYA");
-        
+
         dialog.WithTitle("Options", "quest.success");
         dialog.AddFooterButton(null, "PersistentUI", "ok");
     }
@@ -432,7 +432,7 @@ public class SongInfoEditUI : MenuBase
                 PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
-        
+
         var exportedFiles = Song.GetFilesForArchiving();
 
         if (exportedFiles == null) return;
@@ -576,6 +576,7 @@ public class SongInfoEditUI : MenuBase
                 .BeatmapCharacteristicName;
             Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
             BeatSaberSongContainer.Instance.Map = map;
+            Settings.Instance.Load_MapV3 = map.Version[0] == '3';
             SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
         }
     }

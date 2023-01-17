@@ -16,7 +16,10 @@ public class LightingModeController : MonoBehaviour
         Flash,
 
         [PickerChoice("Mapper", "bar.events.fade")]
-        Fade
+        Fade,
+
+        [PickerChoice("Mapper", "bar.events.transition")]
+        Transition
     }
 
     [SerializeField] private EnumPicker lightingPicker;
@@ -63,19 +66,23 @@ public class LightingModeController : MonoBehaviour
     public void UpdateValue()
     {
         var red = notePlacement.queuedData.Type == BeatmapNote.NoteTypeA;
+        var white = notePlacement.queuedData.Type == BeatmapNote.NoteTypeBomb;
         switch (currentMode)
         {
             case LightingMode.Off:
                 eventPlacement.UpdateValue(MapEvent.LightValueOff);
                 break;
             case LightingMode.ON:
-                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedON : MapEvent.LightValueBlueON);
+                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedON : white ? MapEventV3.LightValueWhiteON : MapEvent.LightValueBlueON);
                 break;
             case LightingMode.Flash:
-                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedFlash : MapEvent.LightValueBlueFlash);
+                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedFlash : white ? MapEventV3.LightValueWhiteFlash : MapEvent.LightValueBlueFlash);
                 break;
             case LightingMode.Fade:
-                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedFade : MapEvent.LightValueBlueFade);
+                eventPlacement.UpdateValue(red ? MapEvent.LightValueRedFade : white ? MapEventV3.LightValueWhiteFade : MapEvent.LightValueBlueFade);
+                break;
+            case LightingMode.Transition:
+                eventPlacement.UpdateValue(red ? MapEventV3.LightValueRedTransition : white ? MapEventV3.LightValueWhiteTransition : MapEventV3.LightValueBlueTransition);
                 break;
         }
     }

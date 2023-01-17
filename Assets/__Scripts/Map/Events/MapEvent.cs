@@ -50,6 +50,7 @@ public class MapEvent : BeatmapObject
     [FormerlySerializedAs("_type")] public int Type;
     [FormerlySerializedAs("_value")] public int Value;
     [FormerlySerializedAs("_lightGradient")] public ChromaGradient LightGradient;
+    public float FloatValue;
 
     /*
      * MapEvent logic
@@ -61,18 +62,24 @@ public class MapEvent : BeatmapObject
         Time = RetrieveRequiredNode(node, "_time").AsFloat; //KIIIIWIIIIII
         Type = RetrieveRequiredNode(node, "_type").AsInt;
         Value = RetrieveRequiredNode(node, "_value").AsInt;
+        if (!node.HasKey("_floatValue")) { // Convert from version "<2.5.0"
+            FloatValue = 1f; 
+        } else {
+            FloatValue = node["_floatValue"].AsFloat;
+        }
         CustomData = node["_customData"];
         if (node["_customData"]["_lightGradient"] != null)
             LightGradient = new ChromaGradient(node["_customData"]["_lightGradient"]);
     }
 
-    public MapEvent(float time, int type, int value, JSONNode customData = null)
+    public MapEvent(float time, int type, int value, JSONNode customData = null, float floatValue = 1f)
     {
         Time = time;
         Type = type;
         Value = value;
         CustomData = customData;
-
+        FloatValue = floatValue;
+        
         if (CustomData != null && CustomData.HasKey("_lightGradient"))
             LightGradient = new ChromaGradient(CustomData["_lightGradient"]);
     }
@@ -100,7 +107,7 @@ public class MapEvent : BeatmapObject
                                                            value == LightValueBlueFlash ||
                                                            value == LightValueBlueFade;
 
-    public int? GetRotationDegreeFromValue()
+    public virtual int? GetRotationDegreeFromValue()
     {
         //Mapping Extensions precision rotation from 1000 to 1720: 1000 = -360 degrees, 1360 = 0 degrees, 1720 = 360 degrees
         var val = CustomData != null && CustomData.HasKey("_queuedRotation")
@@ -150,6 +157,7 @@ public class MapEvent : BeatmapObject
         node["_time"] = Math.Round(Time, DecimalPrecision);
         node["_type"] = Type;
         node["_value"] = Value;
+        node["_floatValue"] = Math.Round(FloatValue, DecimalPrecision);
         if (CustomData != null)
         {
             node["_customData"] = CustomData;
@@ -206,6 +214,7 @@ public class MapEvent : BeatmapObject
         {
             Type = obs.Type;
             Value = obs.Value;
+            FloatValue = obs.FloatValue;
             LightGradient = obs.LightGradient?.Clone();
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using SimpleJSON;
 using UnityEngine;
@@ -48,8 +48,15 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
     public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
-    public override BeatmapObstacle GenerateOriginalData() =>
-        new BeatmapObstacle(0, 0, BeatmapObstacle.ValueFullBarrier, 0, 1);
+    public override BeatmapObstacle GenerateOriginalData()
+    {
+        if (Settings.Instance.Load_MapV3)
+        {
+            return new BeatmapObstacleV3(new BeatmapObstacle(0, 0, BeatmapObstacle.ValueFullBarrier, 0, 1));
+        }
+        else
+            return new BeatmapObstacle(0, 0, BeatmapObstacle.ValueFullBarrier, 0, 1);
+    }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
@@ -150,7 +157,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 vanillaType * 1.5f,
                 wallTransform.localPosition.z);
 
-            instantiatedContainer.SetScale(new Vector3(1, wallTransform.localPosition.y == 0 ? 3.5f : 2, 0));
+            instantiatedContainer.SetScale(new Vector3(1, wallTransform.localPosition.y == 0 ? 3.75f : 2.25f, 0));
 
             queuedData.CustomData = null;
             queuedData.LineIndex = Mathf.RoundToInt(wallTransform.localPosition.x + 2);
@@ -194,7 +201,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.75f : 2.25f, 0);
         }
         else
         {
@@ -219,7 +226,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
-                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.5f : 2, 0);
+                1, instantiatedContainer.transform.localPosition.y == 0 ? 3.75f : 2.25f, 0);
         }
     }
 }

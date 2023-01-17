@@ -21,8 +21,12 @@ public abstract class BeatmapObject : INetSerializable
         CustomNote,
         CustomEvent,
         BpmChange,
+        Arc, // introduced in v3
+        Chain, // introduced in v3
         Bookmark
     }
+
+    public const string BeatmapObjectV3CustomDataKey = "customData";
 
     public abstract ObjectType BeatmapType { get; set; }
 
@@ -62,15 +66,41 @@ public abstract class BeatmapObject : INetSerializable
         switch (originalData)
         {
             case MapEvent evt:
-                var ev = new MapEvent(evt.Time, evt.Type, evt.Value, originalData.CustomData?.Clone())
+                if (evt is RotationEvent)
+                    objectData = new RotationEvent(evt) as T;
+                else
                 {
-                    LightGradient = evt.LightGradient?.Clone()
-                };
-                objectData = ev as T;
+                    var ev = new MapEvent(evt.Time, evt.Type, evt.Value, originalData.CustomData?.Clone(), evt.FloatValue)
+                    {
+                        LightGradient = evt.LightGradient?.Clone()
+                    };
+                    if (evt is MapEventV3)
+                    {
+                        var ev3 = new MapEventV3(ev);
+                        objectData = ev3 as T;
+                    }
+                    else
+                    {
+                        objectData = ev as T;
+                    }
+                }
                 break;
             case BeatmapNote note:
-                objectData = new BeatmapNote(note.Time, note.LineIndex, note.LineLayer, note.Type,
-                    note.CutDirection, originalData.CustomData?.Clone()) as T;
+                if (note is BeatmapColorNote colorNote)
+                    objectData = new BeatmapColorNote(
+                        note.Time, note.LineIndex, note.LineLayer, note.Type,
+                        note.CutDirection, colorNote.AngleOffset, originalData.CustomData?.Clone()
+                    ) as T;
+                else if (note is BeatmapBombNote)
+                    objectData = new BeatmapBombNote(note.Time, note.LineIndex, note.LineLayer, originalData.CustomData?.Clone()) as T;
+                else
+                    objectData = new BeatmapNote(
+                        note.Time, note.LineIndex, note.LineLayer, note.Type,
+                        note.CutDirection, originalData.CustomData?.Clone()
+                    ) as T;
+                break;
+            case BeatmapArc arc:
+                objectData = new BeatmapArc(arc) as T;
                 break;
             default:
                 objectData =
