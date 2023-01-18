@@ -16,7 +16,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 {
     public static HashSet<BaseObject> SelectedObjects = new HashSet<BaseObject>();
     public static HashSet<BaseObject> CopiedObjects = new HashSet<BaseObject>();
-    private static float copiedBpm = 100;
 
     public static Action<BaseObject> ObjectWasSelectedEvent;
     public static Action SelectionChangedEvent;
@@ -369,15 +368,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         var pasted = new List<BaseObject>();
         var collections = new Dictionary<ObjectType, BeatmapObjectContainerCollection>();
 
-        // // Grab the last BPM Change to warp distances between copied objects and maintain BPM.
-        // var bpmChanges =
-        //     BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-
-        // var lowerValue = new V2BpmChange(atsc.CurrentBeat - 0.01f, 420);
-        // var upperValue = new V2BpmChange(atsc.CurrentBeat, 69);
-
-        // var lastBpmChangeBeforePaste = bpmChanges.FindLastBpm(atsc.CurrentBeat);
-
         // This first loop creates copy of the data to be pasted.
         foreach (var data in CopiedObjects)
         {
@@ -395,45 +385,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
 
             var newData = BeatmapFactory.Clone(data);
-            // var objTime = data.Time;
-            // var objTailTime = objTime;
-            // if (data is BaseSlider slider)
-            //     objTailTime = slider.TailTime;
-
-            // upperValue.Time = atsc.CurrentBeat + objTailTime;
-
-            // var bpmChangeView = bpmChanges.LoadedObjects.GetViewBetween(lowerValue, upperValue);
-
-            // var bpmTime = objTime * (copiedBpm / (lastBpmChangeBeforePaste?.Bpm ?? copiedBpm));
-            // var bpmTailTime = objTailTime * (copiedBpm / (lastBpmChangeBeforePaste?.Bpm ?? copiedBpm));
-
-            // if (bpmChangeView.Any())
-            // {
-            //     var firstBpmChange = bpmChangeView.First() as BaseBpmEvent;
-
-            //     bpmTime = firstBpmChange.Time - atsc.CurrentBeat;
-            //     bpmTailTime += firstBpmChange.Time - atsc.CurrentBeat;
-
-            //     for (var i = 0; i < bpmChangeView.Count - 1; i++)
-            //     {
-            //         var leftBpm = bpmChangeView.ElementAt(i) as BaseBpmEvent;
-            //         var rightBpm = bpmChangeView.ElementAt(i + 1) as BaseBpmEvent;
-
-            //         bpmTime += (rightBpm.Time - leftBpm.Time) * (copiedBpm / leftBpm.Bpm);
-            //         bpmTailTime += (rightBpm.Time - leftBpm.Time) * (copiedBpm / leftBpm.Bpm);
-            //     }
-
-            //     var lastBpmChange = bpmChangeView.Last() as BaseBpmEvent;
-            //     bpmTime += (atsc.CurrentBeat + objTime - lastBpmChange.Time) * (copiedBpm / lastBpmChange.Bpm);
-            //     bpmTailTime += (atsc.CurrentBeat + objTailTime - lastBpmChange.Time) * (copiedBpm / lastBpmChange.Bpm);
-            // }
-
-            // var newTime = bpmTime + atsc.CurrentBeat;
-            // var newTailTime = bpmTailTime + atsc.CurrentBeat;
-
-            // var newData = BeatmapFactory.Clone(data);
-            // newData.Time = newTime;
-            // if (newData is BaseSlider newSlider) newSlider.TailTime = newTailTime;
+            newData.Time = newTime;
 
             // scale duration for walls
             if (newData.ObjectType == ObjectType.Obstacle)
