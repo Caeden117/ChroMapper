@@ -33,8 +33,8 @@ namespace Beatmap.V2.Customs
         public override string CustomKeyTrack { get; } = "_track";
         public override string CustomKeyColor { get; } = "_color";
         public override string KeyTime { get; } = "_time";
-        public override string KeyBeatsPerBar { get; } = "_BPM";
-        public override string KeyBpm { get; } = "_beatsPerBar";
+        public override string KeyBeatsPerBar { get; } = "_beatsPerBar";
+        public override string KeyBpm { get; } = "_BPM";
         public override string KeyMetronomeOffset { get; } = "_metronomeOffset";
 
         public override BaseItem Clone() => new V2BpmChange(ToJson());
