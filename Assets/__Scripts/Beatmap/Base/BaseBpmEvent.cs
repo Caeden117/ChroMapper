@@ -33,7 +33,7 @@ namespace Beatmap.Base
         protected BaseBpmEvent(float time, float bpm, JSONNode customData = null) :
             base(time, 100, 0, bpm, customData) => Bpm = bpm;
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.Event;
+        public override ObjectType ObjectType { get; set; } = ObjectType.BpmChange;
         public float Bpm { get; set; }
         public int Beat { get; set; } = 0;
 
