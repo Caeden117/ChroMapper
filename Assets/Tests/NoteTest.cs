@@ -5,7 +5,7 @@ using System.Linq;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Base;
-using Beatmap.V2;
+using Beatmap.V3;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -27,21 +27,22 @@ namespace Tests
             TestUtils.CleanupNotes();
         }
 
-        public static void CheckNote(BeatmapObjectContainerCollection container, int idx, int time, int type, int index, int layer, int cutDirection, JSONNode customData = null)
+        public static void CheckNote(string msg, BeatmapObjectContainerCollection container, int idx, int time, int type, int index, int layer, int cutDirection, int angleOffset, JSONNode customData = null)
         {
             BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseNote>(newObjA);
             if (newObjA is BaseNote newNoteA)
             {
-                Assert.AreEqual(time, newNoteA.Time);
-                Assert.AreEqual(type, newNoteA.Type);
-                Assert.AreEqual(index, newNoteA.PosX);
-                Assert.AreEqual(layer, newNoteA.PosY);
-                Assert.AreEqual(cutDirection, newNoteA.CutDirection);
+                Assert.AreEqual(time, newNoteA.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(type, newNoteA.Type, $"{msg}: Mismatched type");
+                Assert.AreEqual(index, newNoteA.PosX, $"{msg}: Mismatched position X");
+                Assert.AreEqual(layer, newNoteA.PosY, $"{msg}: Mismatched position Y");
+                Assert.AreEqual(cutDirection, newNoteA.CutDirection, $"{msg}: Mismatched cut direction");
+                Assert.AreEqual(angleOffset, newNoteA.AngleOffset, $"{msg}: Mismatched angle offset");
 
                 if (customData != null)
                 {
-                    Assert.AreEqual(customData.ToString(), newNoteA.CustomData.ToString());
+                    Assert.AreEqual(customData.ToString(), newNoteA.CustomData.ToString(), $"{msg}: Mismatched custom data");
                 }
             }
         }
@@ -57,7 +58,7 @@ namespace Tests
                 NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                BaseNote baseNoteA = new V2Note(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                BaseNote baseNoteA = new V3ColorNote(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
 
                 notePlacement.queuedData = baseNoteA;
                 notePlacement.RoundedTime = notePlacement.queuedData.Time;
@@ -68,12 +69,12 @@ namespace Tests
                     inputController.InvertNote(containerA);
                 }
 
-                CheckNote(notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                CheckNote("Perform note inversion", notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckNote(notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                CheckNote("Undo note inversion", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
             }
         }
 
@@ -88,7 +89,7 @@ namespace Tests
                 NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                BaseNote baseNoteA = new V2Note(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                BaseNote baseNoteA = new V3ColorNote(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
 
                 notePlacement.queuedData = baseNoteA;
                 notePlacement.RoundedTime = notePlacement.queuedData.Time;
@@ -99,12 +100,12 @@ namespace Tests
                     inputController.UpdateNoteDirection(containerA, true);
                 }
 
-                CheckNote(notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.UpLeft);
+                CheckNote("Update note direction", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.UpLeft, 0);
 
                 // Undo direction
                 actionContainer.Undo();
 
-                CheckNote(notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                CheckNote("Undo note direction", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
             }
         }
     }

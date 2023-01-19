@@ -5,7 +5,7 @@ using System.Linq;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Base;
-using Beatmap.V2;
+using Beatmap.V3;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -27,20 +27,23 @@ namespace Tests
             TestUtils.CleanupEvents();
         }
 
-        public static void CheckEvent(BeatmapObjectContainerCollection container, int idx, int time, int type, int value, JSONNode customData = null)
+        public static void CheckEvent(string msg, BeatmapObjectContainerCollection container, int idx, float time, int type, int value, float floatValue = 1f, JSONNode customData = null)
         {
             BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseEvent>(newObjA);
             if (newObjA is BaseEvent newNoteA)
             {
-                Assert.AreEqual(time, newNoteA.Time);
-                Assert.AreEqual(type, newNoteA.Type);
-                Assert.AreEqual(value, newNoteA.Value);
+                Assert.AreEqual(time, newNoteA.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(type, newNoteA.Type, $"{msg}: Mismatched type");
+                Assert.AreEqual(value, newNoteA.Value, $"{msg}: Mismatched value");
+                Assert.AreEqual(floatValue, newNoteA.FloatValue, 0.001f, $"{msg}: Mismatched float value");
 
                 // ConvertToJSON causes gradient to get updated
                 if (customData != null)
                 {
-                    Assert.AreEqual(customData.ToString(), newNoteA.ToJson()["_customData"].ToString());
+                    // Custom data needed to be saved before compare
+                    newNoteA.SaveCustom();
+                    Assert.AreEqual(customData.ToString(), newNoteA.CustomData?.ToString(), $"{msg}: Mismatched custom data");
                 }
             }
         }
@@ -56,8 +59,8 @@ namespace Tests
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
                 BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
-                BaseEvent baseEventB = new V2Event(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
 
                 eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -78,19 +81,31 @@ namespace Tests
                     inputController.InvertEvent(containerB);
                 }
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
-                CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
+                CheckEvent("Perform first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckEvent("Perform first light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
+
+                if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB2)
+                {
+                    inputController.InvertEvent(containerB2);
+                }
+
+                CheckEvent("Perform second light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
-                CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                CheckEvent("Undo second light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
+                CheckEvent("Check first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
 
                 actionContainer.Undo();
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
-                CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                CheckEvent("Undo first light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                CheckEvent("Check first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                
+                actionContainer.Undo();
+                
+                CheckEvent("Undo first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                CheckEvent("Check initial light value", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
             }
         }
 
@@ -105,7 +120,7 @@ namespace Tests
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
                 BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LeftLaserRotation, 2);
+                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.LeftLaserRotation, 2);
 
                 eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -119,12 +134,12 @@ namespace Tests
                     inputController.TweakMain(containerA, 1);
                 }
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 3);
+                CheckEvent("Perform tweak value", eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 3);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 2);
+                CheckEvent("Undo tweak value", eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 2);
             }
         }
     }

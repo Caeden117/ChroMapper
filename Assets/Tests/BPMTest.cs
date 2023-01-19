@@ -4,7 +4,7 @@ using System.Linq;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Base;
-using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -26,14 +26,14 @@ namespace Tests
             TestUtils.CleanupBPMChanges();
         }
 
-        private static void CheckBPM(BeatmapObjectContainerCollection container, int idx, int time, int bpm)
+        private static void CheckBPM(string msg, BeatmapObjectContainerCollection container, int idx, int time, int bpm)
         {
             BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseBpmEvent>(newObjA);
             if (newObjA is BaseBpmEvent newNoteA)
             {
-                Assert.AreEqual(time, newNoteA.Time);
-                Assert.AreEqual(bpm, newNoteA.Bpm);
+                Assert.AreEqual(time, newNoteA.Time, $"{msg}: Mismatched time");
+                Assert.AreEqual(bpm, newNoteA.Bpm, $"{msg}: Mismatched BPM");
             }
         }
 
@@ -44,7 +44,7 @@ namespace Tests
             BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
             if (collection is BPMChangeGridContainer bpmCollection)
             {
-                BaseBpmEvent baseBpmChange = new V2BpmChange(10, 50);
+                BaseBpmEvent baseBpmChange = new V3BpmChange(10, 50);
                 bpmCollection.SpawnObject(baseBpmChange);
 
                 if (bpmCollection.LoadedContainers[baseBpmChange] is BpmEventContainer container)
@@ -53,17 +53,17 @@ namespace Tests
                 }
 
                 Assert.AreEqual(1, bpmCollection.LoadedObjects.Count);
-                CheckBPM(bpmCollection, 0, 10, 60);
+                CheckBPM("Update BPM change", bpmCollection, 0, 10, 60);
 
                 actionContainer.Undo();
 
                 Assert.AreEqual(1, bpmCollection.LoadedObjects.Count);
-                CheckBPM(bpmCollection, 0, 10, 50);
+                CheckBPM("Undo BPM change",bpmCollection, 0, 10, 50);
 
                 actionContainer.Redo();
 
                 Assert.AreEqual(1, bpmCollection.LoadedObjects.Count);
-                CheckBPM(bpmCollection, 0, 10, 60);
+                CheckBPM("Redo BPM change",bpmCollection, 0, 10, 60);
             }
         }
     }

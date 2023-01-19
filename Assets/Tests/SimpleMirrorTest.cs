@@ -5,6 +5,7 @@ using System.Linq;
 using Beatmap.Enums;
 using Beatmap.Base;
 using Beatmap.V2;
+using Beatmap.V3;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -41,7 +42,7 @@ namespace Tests
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            BaseNote baseNoteA = new V2Note(2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+            BaseNote baseNoteA = new V3ColorNote(2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
 
             notePlacement.queuedData = baseNoteA;
             notePlacement.RoundedTime = notePlacement.queuedData.Time;
@@ -50,11 +51,11 @@ namespace Tests
             SelectionController.Select(baseNoteA);
 
             _mirror.Mirror();
-            NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Blue, 5345, (int)GridY.Base, (int)NoteCutDirection.Right);
+            NoteTest.CheckNote("Perform note mirror", notesContainer, 0, 2, (int)NoteType.Blue, 5345, (int)GridY.Base, (int)NoteCutDirection.Right, 0);
 
             // Undo mirror
             _actionContainer.Undo();
-            NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Red, -2345, (int)GridY.Base, (int)NoteCutDirection.Left);
+            NoteTest.CheckNote("Undo note mirror", notesContainer, 0, 2, (int)NoteType.Red, -2345, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
         }
 
         [Test]
@@ -64,15 +65,7 @@ namespace Tests
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            BaseNote baseNoteA = new V2Note
-            {
-                Time = 2,
-                Type = (int)NoteType.Red,
-                PosX = (int)GridX.Left,
-                PosY = (int)GridY.Base,
-                CustomData = JSON.Parse("{\"_position\": [-1, 0]}"),
-                CutDirection = (int)NoteCutDirection.Left
-            };
+            BaseNote baseNoteA = new V3ColorNote(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, JSON.Parse("{\"coordinates\": [-1, 0]}"));
 
             notePlacement.queuedData = baseNoteA;
             notePlacement.RoundedTime = notePlacement.queuedData.Time;
@@ -81,11 +74,11 @@ namespace Tests
             SelectionController.Select(baseNoteA);
 
             _mirror.Mirror();
-            NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Right, JSON.Parse("{\"_position\": [0, 0]}"));
+            NoteTest.CheckNote("Perform NE note mirror", notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Base, (int)NoteCutDirection.Right, 0, JSON.Parse($"{{\"{baseNoteA.CustomKeyCoordinate}\": [0, 0]}}"));
 
             // Undo mirror
             _actionContainer.Undo();
-            NoteTest.CheckNote(notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, JSON.Parse("{\"_position\": [-1, 0]}"));
+            NoteTest.CheckNote("Undo NE note inversion", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, JSON.Parse($"{{\"{baseNoteA.CustomKeyCoordinate}\": [-1, 0]}}"));
         }
 
         [Test]
@@ -97,7 +90,7 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightID\": 2}"));
+                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f, JSON.Parse("{\"lightID\": 2}"));
 
                 eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -111,11 +104,11 @@ namespace Tests
 
                 _mirror.Mirror();
                 // I'm sorry if you're here after changing the prop mapping for default env
-                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, JSON.Parse("{\"_lightID\": 9}"));
+                EventTest.CheckEvent("Perform mirror prop event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade, 1f, JSON.Parse("{\"lightID\": [9]}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightID\": 2}"));
+                EventTest.CheckEvent("Undo mirror prop event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f, JSON.Parse("{\"lightID\": [2]}"));
 
                 eventsContainer.PropagationEditing = EventGridContainer.PropMode.Off;
             }
@@ -130,7 +123,7 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
                 eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -138,13 +131,13 @@ namespace Tests
                 eventPlacement.ApplyToMap();
 
                 SelectionController.Select(baseEventA);
-
+                
                 _mirror.Mirror();
-                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [0, 1, 0, 1], \"_endColor\": [1, 0, 0, 1], \"_easing\": \"easeLinear\"}}"));
+                EventTest.CheckEvent("Perform mirror gradient event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade, 1f, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [0, 1, 0, 1], \"_endColor\": [1, 0, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+                EventTest.CheckEvent("Undo mirror gradient event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
             }
         }
 
@@ -162,7 +155,7 @@ namespace Tests
                 //{"_time":1.5,"_lineIndex":1446,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
                 //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
                 BaseObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
-
+                
                 wallPlacement.queuedData = wallA;
                 wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
                 wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
@@ -172,11 +165,11 @@ namespace Tests
                 SelectionController.Select(wallA);
 
                 _mirror.Mirror();
-                WallTest.CheckWall(wallsContainer, 0, 2, 2958, 595141, 1, 2596);
+                WallTest.CheckWall("Perform ME wall mirror", wallsContainer, 0, 2, 2958, 0, 1, 2596, 0, 595141);
 
                 // Undo mirror
                 _actionContainer.Undo();
-                WallTest.CheckWall(wallsContainer, 0, 2, 1446, 595141, 1, 2596);
+                WallTest.CheckWall("Undo ME wall mirror", wallsContainer, 0, 2, 1446, 0, 1, 2596, 0, 595141);
             }
         }
 
@@ -190,7 +183,7 @@ namespace Tests
                 ObstaclePlacement wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
                 wallPlacement.RefreshVisuals();
 
-                BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
+                BaseObstacle wallA = new V3Obstacle(2, (int)GridX.Left, (int)GridY.Base, 1, 2, 5, JSON.Parse("{\"coordinates\": [-1.5, 0]}"));
 
                 wallPlacement.queuedData = wallA;
                 wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
@@ -201,11 +194,11 @@ namespace Tests
                 SelectionController.Select(wallA);
 
                 _mirror.Mirror();
-                WallTest.CheckWall(wallsContainer, 0, 2, (int)GridX.MiddleRight, (int)ObstacleType.Full, 1, 2, JSON.Parse("{\"_position\": [-0.5, 0]}"));
+                WallTest.CheckWall("Perform NE wall mirror", wallsContainer, 0, 2, (int)GridX.MiddleRight, (int)GridY.Base, 1, 2, 5, (int)ObstacleType.Full, JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-0.5, 0]}}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                WallTest.CheckWall(wallsContainer, 0, 2, (int)GridX.Left, (int)ObstacleType.Full, 1, 2, JSON.Parse("{\"_position\": [-1.5, 0]}"));
+                WallTest.CheckWall("Undo NE wall mirror", wallsContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, 1, 2, 5, (int)ObstacleType.Full, JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-1.5, 0]}}"));
             }
         }
 
@@ -221,7 +214,7 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45), 1f, JSON.Parse("{\"_rotation\": 33}"));
 
                 eventPlacement.queuedData = baseEventA;
                 eventPlacement.queuedValue = eventPlacement.queuedData.Value;
@@ -231,11 +224,11 @@ namespace Tests
                 SelectionController.Select(baseEventA);
 
                 _mirror.Mirror();
-                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45), JSON.Parse("{\"_rotation\": -33}"));
+                EventTest.CheckEvent("Perform mirror rotation event", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45), 1f, JSON.Parse("{\"_rotation\": -33}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                EventTest.CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45), JSON.Parse("{\"_rotation\": 33}"));
+                EventTest.CheckEvent("Undo mirror rotation event", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45), 1f, JSON.Parse("{\"_rotation\": 33}"));
             }
         }
     }

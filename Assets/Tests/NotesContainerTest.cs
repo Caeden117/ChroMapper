@@ -3,7 +3,7 @@ using System.Collections;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Base;
-using Beatmap.V2;
+using Beatmap.V3;
 using Tests.Util;
 using UnityEngine.TestTools;
 
@@ -28,7 +28,7 @@ namespace Tests
         {
             NoteGridContainer noteGridContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer;
 
-            BaseNote baseNoteA = new V2Note
+            BaseNote baseNoteA = new V3ColorNote
             {
                 Time = 14,
                 Type = (int)NoteType.Red,
@@ -37,7 +37,7 @@ namespace Tests
             noteGridContainer.SpawnObject(baseNoteA);
             NoteContainer containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
 
-            BaseNote baseNoteB = new V2Note
+            BaseNote baseNoteB = new V3ColorNote
             {
                 Time = 14,
                 Type = (int)NoteType.Red,
@@ -148,14 +148,14 @@ namespace Tests
             BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             UnityEngine.Transform root = notesContainer.transform.root;
 
-            BaseNote baseNoteA = new V2Note
+            BaseNote baseNoteA = new V3ColorNote
             {
                 Time = 2,
                 Type = (int)NoteType.Red
             };
             notesContainer.SpawnObject(baseNoteA);
 
-            BaseNote baseNoteB = new V2Note
+            BaseNote baseNoteB = new V3ColorNote
             {
                 Time = 3,
                 Type = (int)NoteType.Red

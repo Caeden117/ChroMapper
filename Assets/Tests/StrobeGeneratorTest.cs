@@ -2,10 +2,9 @@
 using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Enums;
 using Beatmap.Base;
-using Beatmap.V2;
+using Beatmap.V3;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -27,24 +26,6 @@ namespace Tests
             TestUtils.CleanupEvents();
         }
 
-        public static void CheckEvent(BeatmapObjectContainerCollection container, int idx, float time, int type, int value, JSONNode customData = null)
-        {
-            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BaseEvent>(newObjA);
-            if (newObjA is BaseEvent newNoteA)
-            {
-                Assert.AreEqual(time, newNoteA.Time);
-                Assert.AreEqual(type, newNoteA.Type);
-                Assert.AreEqual(value, newNoteA.Value);
-
-                // ToJSON causes gradient to get updated
-                if (customData != null)
-                {
-                    Assert.AreEqual(customData.ToString(), newNoteA.ToJson()["_customData"].ToString());
-                }
-            }
-        }
-
         [Test]
         public void ChromaStepGradient()
         {
@@ -54,23 +35,23 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_color"] = new Color(0, 1, 0)
+                    ["color"] = new Color(0, 1, 0)
                 });
-                BaseEvent baseEventB = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_color"] = new Color(0, 0, 1)
+                    ["color"] = new Color(0, 0, 1)
                 });
-                BaseEvent baseEventC = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventC = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_lightID"] = 1,
-                    ["_color"] = new Color(1, 0, 0)
+                    ["lightID"] = 1,
+                    ["color"] = new Color(1, 0, 0)
                 });
 
-                foreach (BaseEvent IEvent in new BaseEvent[] { baseEventA, baseEventB, baseEventC })
+                foreach (BaseEvent evt in new BaseEvent[] { baseEventA, baseEventB, baseEventC })
                 {
-                    eventPlacement.queuedData = IEvent;
+                    eventPlacement.queuedData = evt;
                     eventPlacement.queuedValue = eventPlacement.queuedData.Value;
                     eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                     eventPlacement.ApplyToMap();
@@ -86,9 +67,9 @@ namespace Tests
                     new StrobeStepGradientPass((int)LightValue.BlueOn, false, 2, Easing.Linear)
                 });
 
-                CheckEvent(eventsContainer, 1, 2.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, new JSONObject
+                EventTest.CheckEvent("Check step Chroma event color", eventsContainer, 1, 2.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn,  1f, new JSONObject
                 {
-                    ["_color"] = new Color(0, 0.5f, 0.5f)
+                    ["color"] = new Color(0, 0.5f, 0.5f)
                 });
             }
         }
@@ -102,42 +83,42 @@ namespace Tests
                 Transform root = eventsContainer.transform.root;
                 EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_color"] = new Color(0, 1, 0)
+                    ["color"] = new Color(0, 1, 0)
                 });
-                BaseEvent baseEventB = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_color"] = new Color(0, 0, 1)
+                    ["color"] = new Color(0, 0, 1)
                 });
-                BaseEvent baseEventC = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventC = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_lightID"] = 1,
-                    ["_color"] = new Color(1, 0, 0)
+                    ["lightID"] = 1,
+                    ["color"] = new Color(1, 0, 0)
                 });
-                BaseEvent baseEventD = new V2Event(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventD = new V3BasicEvent(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_lightID"] = 1,
-                    ["_color"] = new Color(1, 1, 0)
+                    ["lightID"] = 1,
+                    ["color"] = new Color(1, 1, 0)
                 });
-                BaseEvent baseEventE = new V2Event(4, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventE = new V3BasicEvent(4, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_lightID"] = new JSONArray()
+                    ["lightID"] = new JSONArray()
                     {
                         [0] = 1,
                         [1] = 2
                     },
-                    ["_color"] = new Color(1, 0, 1)
+                    ["color"] = new Color(1, 0, 1)
                 });
-                BaseEvent baseEventF = new V2Event(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, new JSONObject
+                BaseEvent baseEventF = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f, new JSONObject
                 {
-                    ["_lightID"] = 3,
-                    ["_color"] = new Color(0, 1, 1)
+                    ["lightID"] = 3,
+                    ["color"] = new Color(0, 1, 1)
                 });
 
-                foreach (BaseEvent IEvent in new BaseEvent[] { baseEventA, baseEventB, baseEventC, baseEventD, baseEventE, baseEventF })
+                foreach (BaseEvent evt in new BaseEvent[] { baseEventA, baseEventB, baseEventC, baseEventD, baseEventE, baseEventF })
                 {
-                    eventPlacement.queuedData = IEvent;
+                    eventPlacement.queuedData = evt;
                     eventPlacement.queuedValue = eventPlacement.queuedData.Value;
                     eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
                     eventPlacement.ApplyToMap();
@@ -155,15 +136,15 @@ namespace Tests
 
                 // Current _lightID from the first event is used. As eventC is added first here we always get a single light id
                 // If this changes in future then update below, this test wasn't really meant to enforce this behaviour
-                CheckEvent(eventsContainer, 2, 2.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, new JSONObject
+                EventTest.CheckEvent("Check start step Chroma light ID event color", eventsContainer, 2, 2.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, 1f, new JSONObject
                 {
-                    ["_color"] = new Color(1, 0.5f, 0),
-                    ["_lightID"] = 1
+                    ["color"] = new Color(1, 0.5f, 0),
+                    ["lightID"] = new JSONArray { [0] = 1 }
                 });
-                CheckEvent(eventsContainer, 6, 3.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, new JSONObject
+                EventTest.CheckEvent("Check end step Chroma light ID event color", eventsContainer, 6, 3.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, 1f, new JSONObject
                 {
-                    ["_color"] = new Color(1, 0, 0.5f),
-                    ["_lightID"] = 1
+                    ["color"] = new Color(1, 0, 0.5f),
+                    ["lightID"] = new JSONArray { [0] = 1 }
                 });
             }
         }

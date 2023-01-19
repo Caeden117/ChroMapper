@@ -5,6 +5,7 @@ using Beatmap.Enums;
 using Beatmap.Base;
 using Beatmap.Shared;
 using Beatmap.V2;
+using Beatmap.V3;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -89,7 +90,7 @@ namespace Tests
             SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent noteA = new V2Event(2, 1, 1);
+            BaseEvent noteA = new V3BasicEvent(2, 1, 1);
             eventPlacement.queuedData = noteA;
             eventPlacement.queuedValue = eventPlacement.queuedData.Value;
             eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
@@ -105,7 +106,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(2, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData["_color"].ReadColor());
+            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData[noteA.CustomKeyColor].ReadColor());
 
             // Undo move
             actionContainer.Undo();
@@ -113,7 +114,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData["_color"].ReadColor());
+            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData[noteA.CustomKeyColor].ReadColor());
 
             // Undo paint
             actionContainer.Undo();
@@ -121,7 +122,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey("_color"));
+            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey(noteA.CustomKeyColor));
         }
 
         [Test]
@@ -134,7 +135,7 @@ namespace Tests
             Transform root = eventsContainer.transform.root;
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent noteA = new V2Event(2, 1, 0);
+            BaseEvent noteA = new V3BasicEvent(2, 1, 0);
             eventPlacement.queuedData = noteA;
             eventPlacement.queuedValue = eventPlacement.queuedData.Value;
             eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
@@ -148,7 +149,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey("_color"));
+            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey(noteA.CustomKeyColor));
         }
     }
 }
