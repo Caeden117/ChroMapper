@@ -34,7 +34,7 @@ namespace Beatmap.V3
 
         public override string CustomKeyColor { get; } = "color";
 
-        public override string CustomKeyCoordinate { get; } = "coordinate";
+        public override string CustomKeyCoordinate { get; } = "coordinates";
 
         public override string CustomKeyWorldRotation { get; } = "worldRotation";
 
