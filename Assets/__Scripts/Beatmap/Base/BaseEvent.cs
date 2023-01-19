@@ -249,13 +249,10 @@ namespace Beatmap.Base
         public int? GetRotationDegreeFromValue()
         {
             //Mapping Extensions precision rotation from 1000 to 1720: 1000 = -360 degrees, 1360 = 0 degrees, 1720 = 360 degrees
-            var val = CustomData != null && CustomLaneRotation != null
-                ? (int)CustomLaneRotation
-                : Value;
-            if (val >= 0 && val < LightValueToRotationDegrees.Length)
-                return LightValueToRotationDegrees[val];
-            if (val >= 1000 && val <= 1720)
-                return val - 1360;
+            if (Value >= 0 && Value < LightValueToRotationDegrees.Length)
+                return LightValueToRotationDegrees[Value];
+            if (Value >= 1000 && Value <= 1720)
+                return Value - 1360;
             return null;
         }
 
