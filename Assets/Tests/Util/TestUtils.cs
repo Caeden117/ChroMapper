@@ -3,6 +3,8 @@ using System.Collections;
 using System.Linq;
 using Beatmap.Enums;
 using Beatmap.Base;
+using Beatmap.Helper;
+using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -41,6 +43,9 @@ namespace Tests.Util
             };
             BeatSaberSongContainer.Instance.DifficultyData = diff;
             BeatSaberSongContainer.Instance.LoadedSong = AudioClip.Create("Fake", 44100 * 2, 1, 44100, false);
+            var node = new JSONObject();
+            node["version"] = "3.2.0";
+            BeatSaberSongContainer.Instance.Map = BeatmapFactory.GetDifficultyFromJson(node, "testmap");
             SceneTransitionManager.Instance.LoadScene("03_Mapper");
             yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
         }
