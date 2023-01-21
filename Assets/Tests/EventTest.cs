@@ -27,27 +27,6 @@ namespace Tests
             TestUtils.CleanupEvents();
         }
 
-        public static void CheckEvent(string msg, BeatmapObjectContainerCollection container, int idx, float time, int type, int value, float floatValue = 1f, JSONNode customData = null)
-        {
-            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BaseEvent>(newObjA);
-            if (newObjA is BaseEvent newNoteA)
-            {
-                Assert.AreEqual(time, newNoteA.Time, 0.001f, $"{msg}: Mismatched time");
-                Assert.AreEqual(type, newNoteA.Type, $"{msg}: Mismatched type");
-                Assert.AreEqual(value, newNoteA.Value, $"{msg}: Mismatched value");
-                Assert.AreEqual(floatValue, newNoteA.FloatValue, 0.001f, $"{msg}: Mismatched float value");
-
-                // ConvertToJSON causes gradient to get updated
-                if (customData != null)
-                {
-                    // Custom data needed to be saved before compare
-                    newNoteA.SaveCustom();
-                    Assert.AreEqual(customData.ToString(), newNoteA.CustomData?.ToString(), $"{msg}: Mismatched custom data");
-                }
-            }
-        }
-
         [Test]
         public void Invert()
         {
@@ -81,31 +60,31 @@ namespace Tests
                     inputController.InvertEvent(containerB);
                 }
 
-                CheckEvent("Perform first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
-                CheckEvent("Perform first light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
+                CheckUtils.CheckEvent("Perform first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckUtils.CheckEvent("Perform first light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
 
                 if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB2)
                 {
                     inputController.InvertEvent(containerB2);
                 }
 
-                CheckEvent("Perform second light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
+                CheckUtils.CheckEvent("Perform second light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckEvent("Undo second light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
-                CheckEvent("Check first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckUtils.CheckEvent("Undo second light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
+                CheckUtils.CheckEvent("Check first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
 
                 actionContainer.Undo();
 
-                CheckEvent("Undo first light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
-                CheckEvent("Check first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckUtils.CheckEvent("Undo first light value inversion", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                CheckUtils.CheckEvent("Check first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
                 
                 actionContainer.Undo();
                 
-                CheckEvent("Undo first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
-                CheckEvent("Check initial light value", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                CheckUtils.CheckEvent("Undo first rotation inversion", eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                CheckUtils.CheckEvent("Check initial light value", eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
             }
         }
 
@@ -134,12 +113,12 @@ namespace Tests
                     inputController.TweakMain(containerA, 1);
                 }
 
-                CheckEvent("Perform tweak value", eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 3);
+                CheckUtils.CheckEvent("Perform tweak value", eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 3);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckEvent("Undo tweak value", eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 2);
+                CheckUtils.CheckEvent("Undo tweak value", eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 2);
             }
         }
     }

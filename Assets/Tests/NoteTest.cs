@@ -27,26 +27,6 @@ namespace Tests
             TestUtils.CleanupNotes();
         }
 
-        public static void CheckNote(string msg, BeatmapObjectContainerCollection container, int idx, int time, int type, int index, int layer, int cutDirection, int angleOffset, JSONNode customData = null)
-        {
-            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BaseNote>(newObjA);
-            if (newObjA is BaseNote newNoteA)
-            {
-                Assert.AreEqual(time, newNoteA.Time, 0.001f, $"{msg}: Mismatched time");
-                Assert.AreEqual(type, newNoteA.Type, $"{msg}: Mismatched type");
-                Assert.AreEqual(index, newNoteA.PosX, $"{msg}: Mismatched position X");
-                Assert.AreEqual(layer, newNoteA.PosY, $"{msg}: Mismatched position Y");
-                Assert.AreEqual(cutDirection, newNoteA.CutDirection, $"{msg}: Mismatched cut direction");
-                Assert.AreEqual(angleOffset, newNoteA.AngleOffset, $"{msg}: Mismatched angle offset");
-
-                if (customData != null)
-                {
-                    Assert.AreEqual(customData.ToString(), newNoteA.CustomData.ToString(), $"{msg}: Mismatched custom data");
-                }
-            }
-        }
-
         [Test]
         public void InvertNote()
         {
@@ -69,12 +49,12 @@ namespace Tests
                     inputController.InvertNote(containerA);
                 }
 
-                CheckNote("Perform note inversion", notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
+                CheckUtils.CheckNote("Perform note inversion", notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckNote("Undo note inversion", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
+                CheckUtils.CheckNote("Undo note inversion", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
             }
         }
 
@@ -100,12 +80,12 @@ namespace Tests
                     inputController.UpdateNoteDirection(containerA, true);
                 }
 
-                CheckNote("Update note direction", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.UpLeft, 0);
+                CheckUtils.CheckNote("Update note direction", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.UpLeft, 0);
 
                 // Undo direction
                 actionContainer.Undo();
 
-                CheckNote("Undo note direction", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
+                CheckUtils.CheckNote("Undo note direction", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
             }
         }
     }

@@ -67,7 +67,7 @@ namespace Tests
                     new StrobeStepGradientPass((int)LightValue.BlueOn, false, 2, Easing.Linear)
                 });
 
-                EventTest.CheckEvent("Check step Chroma event color", eventsContainer, 1, 2.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn,  1f, new JSONObject
+                CheckUtils.CheckEvent("Check step Chroma event color", eventsContainer, 1, 2.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn,  1f, new JSONObject
                 {
                     ["color"] = new Color(0, 0.5f, 0.5f)
                 });
@@ -136,12 +136,12 @@ namespace Tests
 
                 // Current _lightID from the first event is used. As eventC is added first here we always get a single light id
                 // If this changes in future then update below, this test wasn't really meant to enforce this behaviour
-                EventTest.CheckEvent("Check start step Chroma light ID event color", eventsContainer, 2, 2.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, 1f, new JSONObject
+                CheckUtils.CheckEvent("Check start step Chroma light ID event color", eventsContainer, 2, 2.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, 1f, new JSONObject
                 {
                     ["color"] = new Color(1, 0.5f, 0),
                     ["lightID"] = new JSONArray { [0] = 1 }
                 });
-                EventTest.CheckEvent("Check end step Chroma light ID event color", eventsContainer, 6, 3.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, 1f, new JSONObject
+                CheckUtils.CheckEvent("Check end step Chroma light ID event color", eventsContainer, 6, 3.5f, (int)EventTypeValue.RingLights, (int)LightValue.BlueOn, 1f, new JSONObject
                 {
                     ["color"] = new Color(1, 0, 0.5f),
                     ["lightID"] = new JSONArray { [0] = 1 }
