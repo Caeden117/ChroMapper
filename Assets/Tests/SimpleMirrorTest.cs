@@ -65,7 +65,7 @@ namespace Tests
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            BaseNote baseNoteA = new V3ColorNote(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, JSON.Parse("{\"coordinates\": [-1, 0]}"));
+            BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, JSON.Parse("{\"coordinates\": [-1, 0]}"));
 
             notePlacement.queuedData = baseNoteA;
             notePlacement.RoundedTime = notePlacement.queuedData.Time;

@@ -75,10 +75,10 @@ namespace Tests.Util
             }
         }
         
-        public static void CheckArc(string msg, BeatmapObjectContainerCollection container, int idx, float time, int color, int posX, int posY, int cutDirection, int angleOffset, float mult, float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode, JSONNode customData = null)
+        public static void CheckArc(string msg, BeatmapObjectContainerCollection container, int idx, float time, int color, int posX, int posY, int cutDirection, float mult, float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode, JSONNode customData = null)
         {
             BaseObject obj = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BaseNote>(obj);
+            Assert.IsInstanceOf<BaseArc>(obj);
             if (obj is BaseArc arc)
             {
                 Assert.AreEqual(time, arc.Time, 0.001f, $"{msg}: Mismatched time");
@@ -102,10 +102,10 @@ namespace Tests.Util
             }
         }
         
-        public static void CheckChain(string msg, BeatmapObjectContainerCollection container, int idx, float time, int color, int posX, int posY, int cutDirection, int angleOffset, float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null)
+        public static void CheckChain(string msg, BeatmapObjectContainerCollection container, int idx, float time, int color, int posX, int posY, int cutDirection, float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null)
         {
             BaseObject obj = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BaseNote>(obj);
+            Assert.IsInstanceOf<BaseChain>(obj);
             if (obj is BaseChain chain)
             {
                 Assert.AreEqual(time, chain.Time, 0.001f, $"{msg}: Mismatched time");

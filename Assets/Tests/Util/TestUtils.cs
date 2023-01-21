@@ -66,6 +66,16 @@ namespace Tests.Util
             CleanupType(ObjectType.Obstacle);
         }
 
+        public static void CleanupArcs()
+        {
+            CleanupType(ObjectType.Arc);
+        }
+
+        public static void CleanupChains()
+        {
+            CleanupType(ObjectType.Chain);
+        }
+
         public static void CleanupBPMChanges()
         {
             CleanupType(ObjectType.BpmChange);

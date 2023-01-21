@@ -17,6 +17,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     {
         if (context.performed || context.canceled) return;
         if (!Settings.Instance.Load_MapV3) return;
+        
         var objects = SelectedObjects.ToList();
         if (objects.Count != 2) { return; }
         if(!IsColorNote(objects[0]) || !IsColorNote(objects[1]))
@@ -25,10 +26,8 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         }
         var n1 = objects[0] as BaseNote;
         var n2 = objects[1] as BaseNote;
-        if (n1.Time > n2.Time) { var t = n1; n1 = n2; n2 = t; }
 
-        var arcData = new V3Arc(n1, n2);
-        SpawnArc(arcData);
+        SpawnArc(n1, n2);
     }
 
     public static bool IsColorNote(BaseObject o)
@@ -40,6 +39,15 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
+    public void SpawnArc(BaseNote n1, BaseNote n2) {
+        if (n1.Time > n2.Time)
+        {
+            (n1, n2) = (n2, n1);
+        }
+        
+        SpawnArc(new V3Arc(n1, n2));
+    }
+    
     public void SpawnArc(BaseArc arcData)
     {
         var arcContainer = objectContainerCollection;

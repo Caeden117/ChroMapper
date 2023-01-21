@@ -38,7 +38,7 @@ namespace Tests
                 NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                BaseNote baseNoteA = new V3ColorNote(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
 
                 notePlacement.queuedData = baseNoteA;
                 notePlacement.RoundedTime = notePlacement.queuedData.Time;
@@ -69,7 +69,7 @@ namespace Tests
                 NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                BaseNote baseNoteA = new V3ColorNote(2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+                BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
 
                 notePlacement.queuedData = baseNoteA;
                 notePlacement.RoundedTime = notePlacement.queuedData.Time;
