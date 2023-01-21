@@ -42,13 +42,10 @@ namespace Tests
 
             JSONObject customData = new JSONObject();
             customData["_lightGradient"] = new ChromaLightGradient(Color.blue, Color.cyan, 1, "easeLinear").ToJson();
-            BaseEvent noteA = new V2Event(2, 1, 1, 1, customData);
-            eventPlacement.queuedData = noteA;
-            eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-            eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-            eventPlacement.ApplyToMap();
+            BaseEvent baseEventA = new V2Event(2, 1, 1, 1, customData);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
-            SelectionController.Select(noteA);
+            SelectionController.Select(baseEventA);
 
             colorPicker.CurrentColor = Color.red;
             painter.Paint();
@@ -90,13 +87,10 @@ namespace Tests
             SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent noteA = new V3BasicEvent(2, 1, 1);
-            eventPlacement.queuedData = noteA;
-            eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-            eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-            eventPlacement.ApplyToMap();
+            BaseEvent baseEventA = new V3BasicEvent(2, 1, 1);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
-            SelectionController.Select(noteA);
+            SelectionController.Select(baseEventA);
 
             colorPicker.CurrentColor = Color.red;
             painter.Paint();
@@ -106,7 +100,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(2, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData[noteA.CustomKeyColor].ReadColor());
+            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData[baseEventA.CustomKeyColor].ReadColor());
 
             // Undo move
             actionContainer.Undo();
@@ -114,7 +108,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData[noteA.CustomKeyColor].ReadColor());
+            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData[baseEventA.CustomKeyColor].ReadColor());
 
             // Undo paint
             actionContainer.Undo();
@@ -122,7 +116,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey(noteA.CustomKeyColor));
+            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey(baseEventA.CustomKeyColor));
         }
 
         [Test]
@@ -135,13 +129,10 @@ namespace Tests
             Transform root = eventsContainer.transform.root;
             EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent noteA = new V3BasicEvent(2, 1, 0);
-            eventPlacement.queuedData = noteA;
-            eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-            eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-            eventPlacement.ApplyToMap();
+            BaseEvent baseEventA = new V3BasicEvent(2, 1, 0);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
-            SelectionController.Select(noteA);
+            SelectionController.Select(baseEventA);
 
             colorPicker.CurrentColor = Color.red;
             painter.Paint();
@@ -149,7 +140,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey(noteA.CustomKeyColor));
+            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey(baseEventA.CustomKeyColor));
         }
     }
 }

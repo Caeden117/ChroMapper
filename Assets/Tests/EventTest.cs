@@ -40,16 +40,8 @@ namespace Tests
 
                 BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
                 BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
-
-                eventPlacement.queuedData = baseEventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.ApplyToMap();
-
-                eventPlacement.queuedData = baseEventB;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.ApplyToMap();
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventB);
 
                 if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
                 {
@@ -100,13 +92,7 @@ namespace Tests
                 BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
                 BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.LeftLaserRotation, 2);
-
-                eventPlacement.queuedData = baseEventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.PlacePrecisionRotation = true;
-                eventPlacement.ApplyToMap();
-                eventPlacement.PlacePrecisionRotation = false;
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA, true);
 
                 if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
                 {

@@ -51,10 +51,7 @@ namespace Tests
 
                 foreach (BaseEvent evt in new BaseEvent[] { baseEventA, baseEventB, baseEventC })
                 {
-                    eventPlacement.queuedData = evt;
-                    eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                    eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                    eventPlacement.ApplyToMap();
+                    PlaceUtils.PlaceEvent(eventPlacement, evt);
                 }
 
                 SelectionController.Select(baseEventA);
@@ -118,10 +115,7 @@ namespace Tests
 
                 foreach (BaseEvent evt in new BaseEvent[] { baseEventA, baseEventB, baseEventC, baseEventD, baseEventE, baseEventF })
                 {
-                    eventPlacement.queuedData = evt;
-                    eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                    eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                    eventPlacement.ApplyToMap();
+                    PlaceUtils.PlaceEvent(eventPlacement, evt);
                 }
 
                 SelectionController.Select(baseEventC);

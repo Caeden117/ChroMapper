@@ -77,18 +77,14 @@ namespace Tests
                 PosY = 1
             };
 
-            notePlacement.queuedData = baseNoteA;
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
+            PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
             SelectionController.Select(baseNoteA);
 
             selectionController.ShiftSelection(1, 1);
 
             // Should conflict with existing note and delete it
-            notePlacement.queuedData = baseNoteB;
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
+            PlaceUtils.PlaceNote(notePlacement, baseNoteB);
 
             SelectionController.Select(baseNoteB);
             selectionController.ShiftSelection(1, 1);
@@ -183,21 +179,16 @@ namespace Tests
             Transform root = notesContainer.transform.root;
             NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            notePlacement.queuedData = new V3ColorNote
+            PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
             {
                 Time = 2,
                 Type = (int)NoteType.Red
-            };
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
-
-            notePlacement.queuedData = new V3ColorNote
+            });
+            PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
             {
                 Time = 2,
                 Type = (int)NoteType.Blue
-            };
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
+            });
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
             Assert.AreEqual(2, notesContainer.UnsortedObjects[0].Time);

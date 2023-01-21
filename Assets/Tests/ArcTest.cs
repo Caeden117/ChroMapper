@@ -38,18 +38,11 @@ namespace Tests
 
                 BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Down);
                 BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red, (int)NoteCutDirection.Up);
-
-                notePlacement.queuedData = baseNoteA;
-                notePlacement.RoundedTime = notePlacement.queuedData.Time;
-                notePlacement.ApplyToMap();
-
-                notePlacement.queuedData = baseNoteB;
-                notePlacement.RoundedTime = notePlacement.queuedData.Time;
-                notePlacement.ApplyToMap();
+                PlaceUtils.PlaceNote(notePlacement, baseNoteA);
+                PlaceUtils.PlaceNote(notePlacement, baseNoteB);
 
                 SelectionController.Select(baseNoteA);
                 SelectionController.Select(baseNoteB, true);
-                
             }
 
             BeatmapObjectContainerCollection arcContainerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
@@ -87,10 +80,7 @@ namespace Tests
                 BeatmapArcInputController inputController = root.GetComponentInChildren<BeatmapArcInputController>();
 
                 BaseArc baseArc = new V3Arc(2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
-
-                arcPlacement.queuedData = baseArc;
-                arcPlacement.RoundedTime = arcPlacement.queuedData.Time;
-                arcPlacement.ApplyToMap();
+                PlaceUtils.PlaceArc(arcPlacement, baseArc);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA)
                 {
@@ -118,10 +108,7 @@ namespace Tests
                 BeatmapArcInputController inputController = root.GetComponentInChildren<BeatmapArcInputController>();
 
                 BaseArc baseArc = new V3Arc(2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
-
-                arcPlacement.queuedData = baseArc;
-                arcPlacement.RoundedTime = arcPlacement.queuedData.Time;
-                arcPlacement.ApplyToMap();
+                PlaceUtils.PlaceArc(arcPlacement, baseArc);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA)
                 {

@@ -50,14 +50,10 @@ namespace Tests
                 CutDirection = (int)NoteCutDirection.UpRight
             };
 
-            _notePlacement.queuedData = baseNoteA;
-            _notePlacement.RoundedTime = _notePlacement.queuedData.Time;
-            _notePlacement.ApplyToMap();
+            PlaceUtils.PlaceNote(_notePlacement, baseNoteA);
 
             // Should conflict with existing note and delete it
-            _notePlacement.queuedData = baseNoteB;
-            _notePlacement.RoundedTime = _notePlacement.queuedData.Time;
-            _notePlacement.ApplyToMap();
+            PlaceUtils.PlaceNote(_notePlacement, baseNoteB);
 
             SelectionController.Select(baseNoteA);
             SelectionController.Select(baseNoteB, true);

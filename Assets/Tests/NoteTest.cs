@@ -39,10 +39,7 @@ namespace Tests
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
                 BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
-
-                notePlacement.queuedData = baseNoteA;
-                notePlacement.RoundedTime = notePlacement.queuedData.Time;
-                notePlacement.ApplyToMap();
+                PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
                 if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
                 {
@@ -70,10 +67,7 @@ namespace Tests
                 BeatmapNoteInputController inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
                 BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
-
-                notePlacement.queuedData = baseNoteA;
-                notePlacement.RoundedTime = notePlacement.queuedData.Time;
-                notePlacement.ApplyToMap();
+                PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
                 if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
                 {

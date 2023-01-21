@@ -44,9 +44,7 @@ namespace Tests
 
             BaseNote baseNoteA = new V3ColorNote(2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
 
-            notePlacement.queuedData = baseNoteA;
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
+            PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
             SelectionController.Select(baseNoteA);
 
@@ -67,9 +65,7 @@ namespace Tests
 
             BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, JSON.Parse("{\"coordinates\": [-1, 0]}"));
 
-            notePlacement.queuedData = baseNoteA;
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
+            PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
             SelectionController.Select(baseNoteA);
 
@@ -92,10 +88,7 @@ namespace Tests
 
                 BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f, JSON.Parse("{\"lightID\": 2}"));
 
-                eventPlacement.queuedData = baseEventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.ApplyToMap();
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
                 SelectionController.Select(baseEventA);
 
@@ -125,10 +118,7 @@ namespace Tests
 
                 BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f, JSON.Parse("{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
-                eventPlacement.queuedData = baseEventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.ApplyToMap();
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
                 SelectionController.Select(baseEventA);
                 
@@ -156,11 +146,7 @@ namespace Tests
                 //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
                 BaseObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
                 
-                wallPlacement.queuedData = wallA;
-                wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
-                wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
-                wallPlacement.ApplyToMap(); // Starts placement
-                wallPlacement.ApplyToMap(); // Completes placement
+                PlaceUtils.PlaceWall(wallPlacement, wallA);
 
                 SelectionController.Select(wallA);
 
@@ -185,11 +171,7 @@ namespace Tests
 
                 BaseObstacle wallA = new V3Obstacle(2, (int)GridX.Left, (int)GridY.Base, 1, 2, 5, JSON.Parse("{\"coordinates\": [-1.5, 0]}"));
 
-                wallPlacement.queuedData = wallA;
-                wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
-                wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
-                wallPlacement.ApplyToMap(); // Starts placement
-                wallPlacement.ApplyToMap(); // Completes placement
+                PlaceUtils.PlaceWall(wallPlacement, wallA);
 
                 SelectionController.Select(wallA);
 
@@ -216,10 +198,7 @@ namespace Tests
 
                 BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45), 1f, JSON.Parse("{\"_rotation\": 33}"));
 
-                eventPlacement.queuedData = baseEventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.ApplyToMap();
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
                 SelectionController.Select(baseEventA);
 

@@ -38,14 +38,8 @@ namespace Tests
 
                 BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Down);
                 BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red, (int)NoteCutDirection.Up);
-
-                notePlacement.queuedData = baseNoteA;
-                notePlacement.RoundedTime = notePlacement.queuedData.Time;
-                notePlacement.ApplyToMap();
-
-                notePlacement.queuedData = baseNoteB;
-                notePlacement.RoundedTime = notePlacement.queuedData.Time;
-                notePlacement.ApplyToMap();
+                PlaceUtils.PlaceNote(notePlacement, baseNoteA);
+                PlaceUtils.PlaceNote(notePlacement, baseNoteB);
 
                 SelectionController.Select(baseNoteA);
                 SelectionController.Select(baseNoteB, true);
@@ -87,10 +81,7 @@ namespace Tests
                 BeatmapChainInputController inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
                 BaseChain baseChain = new V3Chain(2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
-
-                chainPlacement.queuedData = baseChain;
-                chainPlacement.RoundedTime = chainPlacement.queuedData.Time;
-                chainPlacement.ApplyToMap();
+                PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
                 if (chainsContainer.LoadedContainers[baseChain] is ChainContainer containerA)
                 {
@@ -118,10 +109,7 @@ namespace Tests
                 BeatmapChainInputController inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
                 BaseChain baseChain = new V3Chain(2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
-
-                chainPlacement.queuedData = baseChain;
-                chainPlacement.RoundedTime = chainPlacement.queuedData.Time;
-                chainPlacement.ApplyToMap();
+                PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
                 if (chainsContainer.LoadedContainers[baseChain] is ChainContainer containerA)
                 {

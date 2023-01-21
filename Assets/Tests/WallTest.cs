@@ -40,11 +40,7 @@ namespace Tests
                 wallPlacement.RefreshVisuals();
 
                 BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
-                wallPlacement.queuedData = wallA;
-                wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
-                wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
-                wallPlacement.ApplyToMap(); // Starts placement
-                wallPlacement.ApplyToMap(); // Completes placement
+                PlaceUtils.PlaceWall(wallPlacement, wallA);
 
                 if (obstaclesCollection.LoadedContainers[wallA] is ObstacleContainer container)
                 {
