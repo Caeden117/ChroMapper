@@ -39,13 +39,13 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
-    public void SpawnArc(BaseNote n1, BaseNote n2) {
-        if (n1.Time > n2.Time)
+    public void SpawnArc(BaseNote head, BaseNote tail) {
+        if (head.Time > tail.Time)
         {
-            (n1, n2) = (n2, n1);
+            (head, tail) = (tail, head);
         }
         
-        SpawnArc(new V3Arc(n1, n2));
+        SpawnArc(new V3Arc(head, tail));
     }
     
     public void SpawnArc(BaseArc arcData)
@@ -54,9 +54,6 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         arcContainer.SpawnObject(arcData, false);
         BeatmapActionContainer.AddAction(GenerateAction(arcData, new List<BaseObject>()));
     }
-
-
-
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
     {
