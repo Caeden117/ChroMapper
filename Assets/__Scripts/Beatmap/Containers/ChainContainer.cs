@@ -67,9 +67,7 @@ namespace Beatmap.Containers
 
             Colliders.Clear();
             SelectionRenderers.Clear();
-            var cutDirection = NoteGridContainer.Direction(new V3ColorNote(ChainData));
             ComputeHeadPointsToTail(ChainData);
-            headTrans -= BaseChain.PosOffsetFactor / 2 * headDirection;
             var i = 0;
             for (; i < ChainData.SliceCount - 2; ++i)
             {
