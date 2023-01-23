@@ -6,7 +6,7 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3ColorNote : BaseNote
+    public class V3ColorNote : BaseNote, V3Object
     {
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
         public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();

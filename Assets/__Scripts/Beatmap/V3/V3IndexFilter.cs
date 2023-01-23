@@ -3,7 +3,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3IndexFilter : BaseIndexFilter
+    public class V3IndexFilter : BaseIndexFilter, V3Object
     {
         public V3IndexFilter()
         {

@@ -6,7 +6,7 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3.Customs
 {
-    public class V3Bookmark : BaseBookmark
+    public class V3Bookmark : BaseBookmark, V3Object
     {
 
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();

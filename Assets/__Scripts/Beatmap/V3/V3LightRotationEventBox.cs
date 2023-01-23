@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3LightRotationEventBox : BaseLightRotationEventBox
+    public class V3LightRotationEventBox : BaseLightRotationEventBox, V3Object
     {
         public V3LightRotationEventBox()
         {

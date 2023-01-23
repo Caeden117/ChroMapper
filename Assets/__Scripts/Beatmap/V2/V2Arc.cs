@@ -6,7 +6,7 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V2
 {
-    public class V2Arc : BaseArc
+    public class V2Arc : BaseArc, V2Object
     {
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
         public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
