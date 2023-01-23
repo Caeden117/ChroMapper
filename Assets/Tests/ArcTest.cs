@@ -25,6 +25,7 @@ namespace Tests
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
             TestUtils.CleanupNotes();
             TestUtils.CleanupArcs();
+            TestUtils.ReturnSettings();
         }
 
         [Test]

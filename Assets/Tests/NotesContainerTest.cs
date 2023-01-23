@@ -21,6 +21,7 @@ namespace Tests
         public void ContainerCleanup()
         {
             TestUtils.CleanupNotes();
+            TestUtils.ReturnSettings();
         }
 
         [Test]

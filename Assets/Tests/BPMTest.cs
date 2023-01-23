@@ -24,6 +24,7 @@ namespace Tests
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
             TestUtils.CleanupBPMChanges();
+            TestUtils.ReturnSettings();
         }
 
         private static void CheckBPM(string msg, BeatmapObjectContainerCollection container, int idx, int time, int bpm)

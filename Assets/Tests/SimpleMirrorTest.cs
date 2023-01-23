@@ -33,6 +33,7 @@ namespace Tests
             TestUtils.CleanupNotes();
             TestUtils.CleanupEvents();
             TestUtils.CleanupObstacles();
+            TestUtils.ReturnSettings();
         }
 
         [Test]

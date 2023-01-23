@@ -17,12 +17,8 @@ namespace Tests
         [TearDown]
         public void Cleanup()
         {
-            BookmarkManager bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
-
-            foreach (BookmarkContainer bookmark in bookmarkManager.bookmarkContainers.ToArray())
-            {
-                bookmark.HandleDeleteBookmark(0);
-            }
+            TestUtils.CleanupBookmarks();
+            TestUtils.ReturnSettings();
         }
 
         [Test]

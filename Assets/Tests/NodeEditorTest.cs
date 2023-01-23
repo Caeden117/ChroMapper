@@ -20,6 +20,13 @@ namespace Tests
             return TestUtils.LoadMapper();
         }
 
+        [TearDown]
+        public void ContainerCleanup()
+        {
+            TestUtils.CleanupEvents();
+            TestUtils.ReturnSettings();
+        }
+
         [OneTimeSetUp]
         public void Setup()
         {
@@ -83,12 +90,5 @@ namespace Tests
             Assert.AreEqual("{\"b\":2,\"et\":0,\"i\":0,\"f\":1,\"customData\":{\"matches\":{},\"differs\":{},\"typeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]},\"lenDiffer\":[1],\"updatedLenDiffer\":[1],\"updated\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedDiffer\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedTypeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]}}}", events[0].ToJson().ToString());
             Assert.AreEqual("{\"b\":2,\"et\":2,\"i\":0,\"f\":0.5,\"customData\":{\"matches\":{},\"differs\":{},\"typeDiffer\":{\"i\":{},\"s\":[],\"o\":true,\"a\":1},\"lenDiffer\":[1,2],\"updatedLenDiffer\":[1],\"updated\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedDiffer\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedTypeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]}}}", events[1].ToJson().ToString());
         }
-
-        [TearDown]
-        public void ContainerCleanup()
-        {
-            TestUtils.CleanupEvents();
-        }
-
     }
 }
