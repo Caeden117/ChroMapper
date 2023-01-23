@@ -17,7 +17,7 @@ namespace Tests
         [TearDown]
         public void Cleanup()
         {
-            TestUtils.CleanupBookmarks();
+            CleanupUtils.CleanupBookmarks();
             TestUtils.ReturnSettings();
         }
 

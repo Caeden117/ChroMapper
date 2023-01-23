@@ -23,8 +23,8 @@ namespace Tests
         public void ContainerCleanup()
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
-            TestUtils.CleanupNotes();
-            TestUtils.CleanupArcs();
+            CleanupUtils.CleanupNotes();
+            CleanupUtils.CleanupArcs();
             TestUtils.ReturnSettings();
         }
 

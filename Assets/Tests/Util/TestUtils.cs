@@ -1,11 +1,7 @@
 ﻿using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Beatmap.Enums;
-using Beatmap.Base;
 using Beatmap.Helper;
-using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -61,10 +57,10 @@ namespace Tests.Util
             if (!preTestSettings.ContainsKey("Load_Notes"))
             {
                 preTestSettings.Add("Load_Notes", Settings.Instance.Load_Notes);
-                preTestSettings.Add("Load_Events", Settings.Instance.Load_Notes);
-                preTestSettings.Add("Load_Obstacles", Settings.Instance.Load_Notes);
-                preTestSettings.Add("Load_Others", Settings.Instance.Load_Notes);
-                preTestSettings.Add("Load_MapV3", Settings.Instance.Load_Notes);
+                preTestSettings.Add("Load_Events", Settings.Instance.Load_Events);
+                preTestSettings.Add("Load_Obstacles", Settings.Instance.Load_Obstacles);
+                preTestSettings.Add("Load_Others", Settings.Instance.Load_Others);
+                preTestSettings.Add("Load_MapV3", Settings.Instance.Load_MapV3);
             }
             
             Settings.Instance.Load_Notes = true;
@@ -81,55 +77,6 @@ namespace Tests.Util
             Settings.Instance.Load_Obstacles = preTestSettings["Load_Obstacles"];
             Settings.Instance.Load_Others = preTestSettings["Load_Others"];
             Settings.Instance.Load_MapV3 = preTestSettings["Load_MapV3"];
-        }
-
-        public static void CleanupNotes()
-        {
-            CleanupType(ObjectType.Note);
-        }
-
-        public static void CleanupEvents()
-        {
-            CleanupType(ObjectType.Event);
-        }
-
-        public static void CleanupObstacles()
-        {
-            CleanupType(ObjectType.Obstacle);
-        }
-
-        public static void CleanupArcs()
-        {
-            CleanupType(ObjectType.Arc);
-        }
-
-        public static void CleanupChains()
-        {
-            CleanupType(ObjectType.Chain);
-        }
-
-        public static void CleanupBPMChanges()
-        {
-            CleanupType(ObjectType.BpmChange);
-        }
-
-        public static void CleanupBookmarks()
-        {
-            BookmarkManager bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
-            foreach (BookmarkContainer bookmark in bookmarkManager.bookmarkContainers.ToArray())
-            {
-                bookmark.HandleDeleteBookmark(0);
-            }
-        }
-        
-        private static void CleanupType(ObjectType type)
-        {
-            BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(type);
-
-            foreach (BaseObject evt in eventsContainer.LoadedObjects.ToArray())
-            {
-                eventsContainer.DeleteObject(evt);
-            }
         }
     }
 }

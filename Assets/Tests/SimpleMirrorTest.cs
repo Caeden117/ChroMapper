@@ -30,9 +30,9 @@ namespace Tests
         public void ContainerCleanup()
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
-            TestUtils.CleanupNotes();
-            TestUtils.CleanupEvents();
-            TestUtils.CleanupObstacles();
+            CleanupUtils.CleanupNotes();
+            CleanupUtils.CleanupEvents();
+            CleanupUtils.CleanupObstacles();
             TestUtils.ReturnSettings();
         }
 

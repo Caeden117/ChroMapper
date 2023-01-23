@@ -23,7 +23,7 @@ namespace Tests
         [TearDown]
         public void ContainerCleanup()
         {
-            TestUtils.CleanupEvents();
+            CleanupUtils.CleanupEvents();
             TestUtils.ReturnSettings();
         }
 
