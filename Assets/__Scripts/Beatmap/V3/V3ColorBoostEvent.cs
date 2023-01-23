@@ -26,8 +26,8 @@ namespace Beatmap.V3
         public V3ColorBoostEvent(JSONNode node)
         {
             Time = RetrieveRequiredNode(node, "b").AsFloat;
-            Toggle = RetrieveRequiredNode(node, "o").AsBool;
             Type = 5;
+            Toggle = RetrieveRequiredNode(node, "o").AsBool;
             Value = Toggle ? 1 : 0;
             CustomData = node["customData"];
         }

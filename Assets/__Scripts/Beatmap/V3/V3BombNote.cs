@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.Enums;
 using SimpleJSON;
 using LiteNetLib.Utils;
 
@@ -22,6 +23,7 @@ namespace Beatmap.V3
             Time = RetrieveRequiredNode(node, "b").AsFloat;
             PosX = RetrieveRequiredNode(node, "x").AsInt;
             PosY = RetrieveRequiredNode(node, "y").AsInt;
+            Type = (int)NoteType.Bomb;
             CustomData = node["customData"];
             ParseCustom();
         }
