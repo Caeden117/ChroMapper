@@ -20,7 +20,7 @@ namespace Tests
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap()
         {
-            yield return TestUtils.LoadMapper();
+            yield return TestUtils.LoadMap(3);
 
             _actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             _mirror = Object.FindObjectOfType<MirrorSelection>();
