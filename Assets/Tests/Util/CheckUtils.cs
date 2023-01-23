@@ -1,5 +1,7 @@
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.V2;
+using Beatmap.V3;
 using NUnit.Framework;
 using SimpleJSON;
 
@@ -124,6 +126,26 @@ namespace Tests.Util
                     chain.SaveCustom();
                     Assert.AreEqual(customData.ToString(), chain.CustomData.ToString(), $"{msg}: Mismatched custom data");
                 }
+            }
+        }
+        
+        public static void CheckV3Object(string msg, BeatmapObjectContainerCollection container, int idx)
+        {
+            BaseObject obj = container.LoadedObjects.Skip(idx).First();
+            
+            if (!(obj is V3Object))
+            {
+                Assert.Fail($"{msg}: Object is not beatmap v3 object");
+            }
+        }
+        
+        public static void CheckV2Object(string msg, BeatmapObjectContainerCollection container, int idx)
+        {
+            BaseObject obj = container.LoadedObjects.Skip(idx).First();
+            
+            if (!(obj is V2Object))
+            {
+                Assert.Fail($"{msg}: Object is not beatmap v2 object");
             }
         }
     }

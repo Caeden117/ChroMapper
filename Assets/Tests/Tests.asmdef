@@ -6,7 +6,8 @@
         "Main",
         "Plugins",
         "Unity.TextMeshPro",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "LiteNetLib"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
