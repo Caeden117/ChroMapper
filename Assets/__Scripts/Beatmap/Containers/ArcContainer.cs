@@ -8,7 +8,7 @@ namespace Beatmap.Containers
 {
     public class ArcContainer : ObjectContainer
     {
-        private const float splineYScaleFactor = 3.0f;
+        private const float splineControlPointScaleFactor = 2.5f / 0.6f; // 2.5 multiplier used by game, divide by 0.6 to scale to cm units
 
         private const float
             directionZPerturbation = 1e-3f; // a small value to avoid 'look rotation viewing vector is zero'
@@ -103,14 +103,14 @@ namespace Beatmap.Containers
             var headPointMultiplier = ArcData.CutDirection == (int)NoteCutDirection.Any
                 ? 0f
                 : ArcData.HeadControlPointLengthMultiplier;
-            var d1 = new Vector3(0, splineYScaleFactor * headPointMultiplier, directionZPerturbation);
+            var d1 = new Vector3(0, splineControlPointScaleFactor * headPointMultiplier, directionZPerturbation);
             var rot1 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.CutDirection).z - 180);
             d1 = rot1 * d1;
             n1.Direction = n1.Position + d1;
             var tailPointMultiplier = ArcData.TailCutDirection == (int)NoteCutDirection.Any
                 ? 0f
                 : ArcData.TailControlPointLengthMultiplier;
-            var d2 = new Vector3(0, splineYScaleFactor * tailPointMultiplier, directionZPerturbation);
+            var d2 = new Vector3(0, splineControlPointScaleFactor * tailPointMultiplier, directionZPerturbation);
             var rot2 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.TailCutDirection).z - 180);
             d2 = rot2 * d2;
             n2.Direction = n2.Position + d2;
