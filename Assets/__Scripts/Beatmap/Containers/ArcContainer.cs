@@ -67,7 +67,7 @@ namespace Beatmap.Containers
         public override void UpdateGridPosition()
         {
             transform.localPosition = new Vector3(-1.5f, 0.5f, ArcData.Time * EditorScaleController.EditorScale);
-            //RecomputePosition();
+            RecomputePosition();
             foreach (var gameObj in indicators) gameObj.GetComponent<ArcIndicatorContainer>().UpdateGridPosition();
             UpdateCollisionGroups();
         }
