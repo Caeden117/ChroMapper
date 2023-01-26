@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mesh: {fileID: 4300000, guid: 500594a39d643774c8e028335ee33da7, type: 3}
-  material: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  material: {fileID: 2100000, guid: ee695fcc1e09b284ba12e2c5d83c4c1c, type: 2}
   physicMaterial: {fileID: 0}
   translation: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 90, z: 0}

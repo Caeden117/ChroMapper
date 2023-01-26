@@ -11,8 +11,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     private static readonly int eventsToLookAhead = 75;
     private static readonly int notesToLookAhead = 25;
 
-    [FormerlySerializedAs("notesContainer")] [SerializeField] private NoteGridContainer noteGridContainer;
-    [FormerlySerializedAs("eventsContainer")] [SerializeField] private EventGridContainer eventGridContainer;
+    [FormerlySerializedAs("notesContainer")][SerializeField] private NoteGridContainer noteGridContainer;
+    [FormerlySerializedAs("eventsContainer")][SerializeField] private EventGridContainer eventGridContainer;
 
     [SerializeField] private AudioTimeSyncController timeSyncController;
     [SerializeField] private UIMode uiMode;
@@ -44,7 +44,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     public Action<bool, int> RecursiveNoteCheckFinished;
 
     /// v3 version fields
-    [FormerlySerializedAs("chainsContainer")] [SerializeField] private ChainGridContainer chainGridContainer; // Now it should be useless. Does chain have sound?
+    [FormerlySerializedAs("chainsContainer")][SerializeField] private ChainGridContainer chainGridContainer; // Now it should be useless. Does chain have sound?
     [SerializeField] private int nextChainIndex;
     private readonly HashSet<BaseObject> nextChains = new HashSet<BaseObject>();
     private HashSet<BaseObject> allChains = new HashSet<BaseObject>();
@@ -178,7 +178,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllChains(bool natural)
     {
-        if (chainGridContainer == null) return; // currently only use for sound effect
+        // if (chainGridContainer == null) return; // currently only use for sound effect
         curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
         allChains.Clear();
         allChains = new HashSet<BaseObject>(chainGridContainer.LoadedObjects.Where(x => x.Time >= curTime + Offset));
@@ -218,7 +218,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckChains(bool init, bool natural)
     {
-        if (chainGridContainer == null) return; // currently only use for sound effect
+        // if (chainGridContainer == null) return; // currently only use for sound effect
         var passed = nextChains.Where(x => x.Time <= curTime + Offset).ToArray();
         foreach (var newlyAdded in passed)
         {

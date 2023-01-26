@@ -17,7 +17,7 @@ namespace Beatmap.Containers
 
         private const float partition = 0.00f;
         private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
-        internal static readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
+        internal static readonly int emissionColor = Shader.PropertyToID("_ColorTint");
 
         [SerializeField] private TracksManager manager;
         [SerializeField] private GameObject indicatorMu;
@@ -67,7 +67,7 @@ namespace Beatmap.Containers
         public override void UpdateGridPosition()
         {
             transform.localPosition = new Vector3(-1.5f, 0.5f, ArcData.Time * EditorScaleController.EditorScale);
-            //RecomputePosition();
+            RecomputePosition();
             foreach (var gameObj in indicators) gameObj.GetComponent<ArcIndicatorContainer>().UpdateGridPosition();
             UpdateCollisionGroups();
         }
