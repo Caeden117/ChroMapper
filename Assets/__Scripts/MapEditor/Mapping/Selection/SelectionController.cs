@@ -338,7 +338,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             copy.Time -= firstTime;
             if (copy is BaseSlider slider)
-                slider.TailTime -= firstTime;
+            {
+                slider.TailTime = bpmChangesContainer.SongBeatsToLocalBeats(slider.TailTime - firstTime, firstTime);
+            }
 
             // always use song beats for bpm changes
             if (copy.ObjectType != ObjectType.BpmChange)
@@ -350,10 +352,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         }
 
         if (cut) Delete();
-        // var bpmChanges =
-        //     BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-        // var lastBpmChange = bpmChanges.FindLastBpm(atsc.CurrentBeat);
-        // copiedBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
     }
 
     /// <summary>
@@ -386,7 +384,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var newData = BeatmapFactory.Clone(data);
             newData.Time = newTime;
             if (newData is BaseSlider slider)
-                slider.TailTime += newTime;
+                slider.TailTime = atsc.CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats((data as BaseSlider).TailTime, atsc.CurrentBeat);
 
             // scale duration for walls
             if (newData.ObjectType == ObjectType.Obstacle)
