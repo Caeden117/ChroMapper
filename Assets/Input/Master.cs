@@ -1311,7 +1311,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6905e695-0fae-4d51-8697-c5c164a8158e"",
-                    ""path"": ""<Keyboard>/v"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
@@ -4374,7 +4374,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""58313530-3763-4263-95ce-fc5d9c62505b"",
-                    ""path"": ""<Keyboard>/i"",
+                    ""path"": ""<Keyboard>/v"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
