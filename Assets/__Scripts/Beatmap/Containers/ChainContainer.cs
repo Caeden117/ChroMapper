@@ -34,7 +34,7 @@ namespace Beatmap.Containers
         {
             base.Setup();
             MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
-            MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1);
+            MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
             UpdateMaterials();
         }
 
@@ -166,6 +166,9 @@ namespace Beatmap.Containers
             }
 
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
+
+            // TODO Apply different _ObjectTime to chain links
+            if (ChainData != null) MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.Time);
         }
 
         public void DetectHeadNote(bool detect = true)

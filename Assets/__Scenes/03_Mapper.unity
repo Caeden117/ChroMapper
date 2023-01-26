@@ -1971,7 +1971,7 @@ MonoBehaviour:
   DespawnCallbackController: {fileID: 1288723589}
   GridTransform: {fileID: 1439999959}
   PoolTransform: {fileID: 1996577492}
-  UseChunkLoadingWhenPlaying: 1
+  UseChunkLoadingWhenPlaying: 0
   ChunksLoadedWhilePlaying: 2
   IgnoreTrackFilter: 0
   chainPrefab: {fileID: 1094719878252698, guid: a14acb27bffab494cb5735e7fba61dbf,
@@ -42102,7 +42102,7 @@ MonoBehaviour:
   nextNoteIndex: 0
   nextEventIndex: 0
   UseAudioTime: 0
-  chainGridContainer: {fileID: 0}
+  chainGridContainer: {fileID: 25550681}
   nextChainIndex: 0
 --- !u!1 &1290658007
 GameObject:
@@ -56863,7 +56863,7 @@ MonoBehaviour:
   nextNoteIndex: 0
   nextEventIndex: 0
   UseAudioTime: 0
-  chainGridContainer: {fileID: 0}
+  chainGridContainer: {fileID: 25550681}
   nextChainIndex: 0
 --- !u!21 &1763742820
 Material:

@@ -22,17 +22,6 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
     {
         return ChainContainer.SpawnChain(null, ref chainPrefab);
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     internal override void LateUpdate()
     {
@@ -54,18 +43,33 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         track.AttachContainer(con);
     }
 
-    internal override void SubscribeToCallbacks() 
+    internal override void SubscribeToCallbacks()
     {
         var notesContainer = GetCollectionForType(ObjectType.Note) as NoteGridContainer;
         notesContainer.ContainerSpawnedEvent += CheckUpdatedNote;
-
+        SpawnCallbackController.ChainPassedThreshold += SpawnCallback;
+        SpawnCallbackController.RecursiveChainCheckFinished += RecursiveCheckFinished;
+        DespawnCallbackController.ChainPassedThreshold += DespawnCallback;
+        AudioTimeSyncController.PlayToggle += OnPlayToggle;
     }
-    internal override void UnsubscribeToCallbacks() 
+
+    internal override void UnsubscribeToCallbacks()
     {
         var notesContainer = GetCollectionForType(ObjectType.Note) as NoteGridContainer;
         if (notesContainer != null)
             notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
+        SpawnCallbackController.ChainPassedThreshold -= SpawnCallback;
+        SpawnCallbackController.RecursiveChainCheckFinished += RecursiveCheckFinished;
+        DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
+        AudioTimeSyncController.PlayToggle -= OnPlayToggle;
     }
+
+    private void OnPlayToggle(bool isPlaying)
+    {
+        if (!isPlaying) RefreshPool();
+    }
+
+    private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
 
     protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj)
     {
@@ -94,5 +98,17 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
                 break;
             }
         }
+    }
+
+    //We don't need to check index as that's already done further up the chain
+    private void SpawnCallback(bool initial, int index, BaseObject objectData)
+    {
+        if (!LoadedContainers.ContainsKey(objectData)) CreateContainerFromPool(objectData);
+    }
+
+    //We don't need to check index as that's already done further up the chain
+    private void DespawnCallback(bool initial, int index, BaseObject objectData)
+    {
+        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
     }
 }
