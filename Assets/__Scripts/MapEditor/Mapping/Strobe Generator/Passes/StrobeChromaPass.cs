@@ -12,7 +12,8 @@ public class StrobeChromaPass : StrobeGeneratorPass
 
     public StrobeChromaPass(string easing) => this.easing = easing;
 
-    public override bool IsEventValidForPass(BaseEvent @event) => @event.CustomColor != null && @event.CustomLightID is null;
+    // TODO: Rework 2.0 gradients to use transition event type
+    public override bool IsEventValidForPass(BaseEvent @event) => !Settings.Instance.Load_MapV3 && @event.CustomColor != null && @event.CustomLightID is null;
 
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, int[] propID)
