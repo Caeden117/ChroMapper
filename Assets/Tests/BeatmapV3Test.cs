@@ -80,7 +80,7 @@ namespace Tests
                 PlaceUtils.PlaceNote(notePlacement, noteA);
                 
                 CheckUtils.CheckV3Object("Check note object version", notesContainer, 0);
-                CheckUtils.CheckNote("Check note attributes", notesContainer, 0, 0f, 0, 1, 2, 1, 0);
+                CheckUtils.CheckNote("Check note attributes", notesContainer, 0, 0f, 1, 2, 0, 1, 0);
             }
         }
 
@@ -117,7 +117,7 @@ namespace Tests
                 PlaceUtils.PlaceNote(notePlacement, noteA);
                 
                 CheckUtils.CheckV3Object("Check bomb object version", notesContainer, 0);
-                CheckUtils.CheckNote("Check bomb attributes", notesContainer, 0, 0f, 3, 1, 2, 0, 0);
+                CheckUtils.CheckNote("Check bomb attributes", notesContainer, 0, 0f, 1, 2, 3, 0, 0);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Tests
         public void PlaceArc()
         {
             Assert.IsInstanceOf<V3Arc>(BeatmapFactory.Arc(), "Factory default does not instantiate v3 arc in beatmap v3");
-            Assert.IsInstanceOf<V3Arc>(BeatmapFactory.Arc(0f, 0, 1, 2, 1, 0, 1, 1f, 2, 1 ,0,1,0), "Factory does not instantiate v3 arc in beatmap v3");
+            Assert.IsInstanceOf<V3Arc>(BeatmapFactory.Arc(0f, 1, 2, 0, 1, 0, 1, 1f, 2 ,1,0,1, 0), "Factory does not instantiate v3 arc in beatmap v3");
             Assert.DoesNotThrow(() => BeatmapFactory.Arc(new JSONObject
             {
                 ["b"] = 0f,
@@ -166,11 +166,11 @@ namespace Tests
                 ArcPlacement arcPlacement = root.GetComponentInChildren<ArcPlacement>();
                 arcPlacement.RefreshVisuals();
 
-                BaseArc arcA = BeatmapFactory.Arc(0f, 0, 1, 2, 1, 0, 1, 1f, 2, 1 ,0,1f,0);
+                BaseArc arcA = BeatmapFactory.Arc(0f, 1, 2, 0, 1, 0, 1, 1f, 2 ,1,0,1f, 0);
                 PlaceUtils.PlaceArc(arcPlacement, arcA);
                 
                 CheckUtils.CheckV3Object("Check arc object version", arcsContainer, 0);
-                CheckUtils.CheckArc("Check arc attributes", arcsContainer, 0, 0f, 0, 1, 2, 1, 1, 1f, 2, 1 ,0,1f,0);
+                CheckUtils.CheckArc("Check arc attributes", arcsContainer, 0, 0f, 1, 2, 0, 1, 0, 1, 1f, 2 ,1,0,1f, 0);
             }
         }
 
@@ -178,7 +178,7 @@ namespace Tests
         public void PlaceChain()
         {
             Assert.IsInstanceOf<V3Chain>(BeatmapFactory.Chain(), "Factory default does not instantiate v3 chain in beatmap v3");
-            Assert.IsInstanceOf<V3Chain>(BeatmapFactory.Chain(0f, 0, 1, 2, 1, 0, 1f, 1, 2, 5 ,1), "Factory does not instantiate v3 chain in beatmap v3");
+            Assert.IsInstanceOf<V3Chain>(BeatmapFactory.Chain(0f, 1, 2, 0, 1, 0, 1f, 1, 2 ,5, 1), "Factory does not instantiate v3 chain in beatmap v3");
             Assert.DoesNotThrow(() => BeatmapFactory.Chain(new JSONObject
             {
                 ["b"] = 0f,
@@ -218,11 +218,11 @@ namespace Tests
                 ChainPlacement chainPlacement = root.GetComponentInChildren<ChainPlacement>();
                 chainPlacement.RefreshVisuals();
 
-                BaseChain chainA = BeatmapFactory.Chain(0f, 0, 1, 2, 1, 0, 1f, 1, 2, 5 ,1);
+                BaseChain chainA = BeatmapFactory.Chain(0f, 1, 2, 0, 1, 0, 1f, 1, 2 ,5, 1);
                 PlaceUtils.PlaceChain(chainPlacement, chainA);
                 
                 CheckUtils.CheckV3Object("Check chain object version", chainsContainer, 0);
-                CheckUtils.CheckChain("Check chain attributes", chainsContainer, 0, 0f, 0, 1, 2, 1, 1f, 1, 2, 5 ,1);
+                CheckUtils.CheckChain("Check chain attributes", chainsContainer, 0, 0f, 1, 2, 0, 1, 0, 1f, 1, 2 ,5, 1);
             }
         }
 
@@ -264,7 +264,7 @@ namespace Tests
                 PlaceUtils.PlaceWall(wallPlacement, wallA);
                 
                 CheckUtils.CheckV3Object("Check wall object version", obstaclesContainer, 0);
-                CheckUtils.CheckWall("Check wall attributes", obstaclesContainer, 0, 0f, 1, 0, 1f, 1, 5, 0);
+                CheckUtils.CheckWall("Check wall attributes", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
             }
         }
         

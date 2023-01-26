@@ -52,12 +52,12 @@ namespace Tests
                     inputController.InvertNote(containerA);
                 }
 
-                CheckUtils.CheckNote("Perform note inversion", notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
+                CheckUtils.CheckNote("Perform note inversion", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Blue, (int)NoteCutDirection.Left, 0);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckUtils.CheckNote("Undo note inversion", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
+                CheckUtils.CheckNote("Undo note inversion", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
             }
         }
 
@@ -80,12 +80,12 @@ namespace Tests
                     inputController.UpdateNoteDirection(containerA, true);
                 }
 
-                CheckUtils.CheckNote("Update note direction", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.UpLeft, 0);
+                CheckUtils.CheckNote("Update note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.UpLeft, 0);
 
                 // Undo direction
                 actionContainer.Undo();
 
-                CheckUtils.CheckNote("Undo note direction", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
+                CheckUtils.CheckNote("Undo note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
             }
         }
     }

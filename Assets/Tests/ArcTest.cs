@@ -70,7 +70,7 @@ namespace Tests
 
                 arcPlacement.SpawnArc(n1, n2);
                 
-                CheckUtils.CheckArc("Check generated arc", arcsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Down, 1, 3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteCutDirection.Up, 1, 0);
+                CheckUtils.CheckArc("Check generated arc", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 1, 3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteCutDirection.Up, 1, 0);
             }
         }
 
@@ -85,7 +85,7 @@ namespace Tests
                 ArcPlacement arcPlacement = root.GetComponentInChildren<ArcPlacement>();
                 BeatmapArcInputController inputController = root.GetComponentInChildren<BeatmapArcInputController>();
 
-                BaseArc baseArc = new V3Arc(2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
+                BaseArc baseArc = new V3Arc(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
                 PlaceUtils.PlaceArc(arcPlacement, baseArc);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA)
@@ -93,12 +93,12 @@ namespace Tests
                     inputController.InvertArc(containerA);
                 }
 
-                CheckUtils.CheckArc("Perform arc inversion", arcsContainer, 0, 2f, (int)NoteColor.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
+                CheckUtils.CheckArc("Perform arc inversion", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Blue, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckUtils.CheckArc("Undo arc inversion", arcsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
+                CheckUtils.CheckArc("Undo arc inversion", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
             }
         }
 
@@ -113,7 +113,7 @@ namespace Tests
                 ArcPlacement arcPlacement = root.GetComponentInChildren<ArcPlacement>();
                 BeatmapArcInputController inputController = root.GetComponentInChildren<BeatmapArcInputController>();
 
-                BaseArc baseArc = new V3Arc(2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
+                BaseArc baseArc = new V3Arc(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
                 PlaceUtils.PlaceArc(arcPlacement, baseArc);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA)
@@ -121,23 +121,23 @@ namespace Tests
                     inputController.ChangeMu(containerA, 0.5f);
                 }
 
-                CheckUtils.CheckArc("Update arc multiplier", arcsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1.5f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
+                CheckUtils.CheckArc("Update arc multiplier", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 1.5f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA2)
                 {
                     inputController.ChangeTmu(containerA2, 0.5f);
                 }
 
-                CheckUtils.CheckArc("Update arc tail multiplier", arcsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1.5f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1.5f, 0);
+                CheckUtils.CheckArc("Update arc tail multiplier", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 1.5f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1.5f, 0);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckUtils.CheckArc("Undo update arc tail multiplier", arcsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1.5f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
+                CheckUtils.CheckArc("Undo update arc tail multiplier", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 1.5f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
 
                 actionContainer.Undo();
 
-                CheckUtils.CheckArc("Undo update arc multiplier", arcsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
+                CheckUtils.CheckArc("Undo update arc multiplier", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 1f, 0);
             }
         }
     }

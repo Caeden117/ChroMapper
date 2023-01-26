@@ -1,15 +1,13 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
-using SimpleJSON;
 using LiteNetLib.Utils;
+using SimpleJSON;
 
 namespace Beatmap.V3
 {
     public class V3Chain : BaseChain, V3Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
         public V3Chain()
         {
         }
@@ -34,10 +32,16 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
-        public V3Chain(float time, int color, int posX, int posY, int cutDirection, int angleOffset,
+        public V3Chain(float time, int posX, int posY, int color, int cutDirection,
             float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish,
-            JSONNode customData = null) : base(time, color, posX, posY, cutDirection, angleOffset, tailTime,
-            tailPosX, tailPosY, sliceCount, squish, customData) =>
+            JSONNode customData = null) : base(time, posX, posY, color, cutDirection, 0,
+            tailTime, tailPosX, tailPosY, sliceCount, squish, customData) =>
+            ParseCustom();
+
+        public V3Chain(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
+            float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish,
+            JSONNode customData = null) : base(time, posX, posY, color, cutDirection, angleOffset,
+            tailTime, tailPosX, tailPosY, sliceCount, squish, customData) =>
             ParseCustom();
 
         public override string CustomKeyTrack { get; } = "track";
@@ -51,6 +55,8 @@ namespace Beatmap.V3
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
         public override string CustomKeyTailCoordinate { get; } = "tailCoordinates";
+        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
+        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
@@ -102,7 +108,7 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Chain(Time, Color, PosX, PosY, CutDirection, AngleOffset,
-                TailTime, TailPosX, TailPosY, SliceCount, Squish, SaveCustom().Clone());
+            new V3Chain(Time, PosX, PosY, Color, CutDirection,
+                AngleOffset, TailTime, TailPosX, TailPosY, SliceCount, Squish, SaveCustom().Clone());
     }
 }

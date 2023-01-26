@@ -10,7 +10,7 @@ namespace Beatmap.Base
         {
         }
 
-        protected BaseSlider(float time, int color, int posX, int posY, int cutDirection, int angleOffset,
+        protected BaseSlider(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
             float tailTime, int tailPosX, int tailPosY, JSONNode customData = null) : base(time, posX, posY, customData)
         {
             Color = color;

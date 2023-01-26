@@ -61,10 +61,10 @@ namespace Tests
                 actionContainer.Undo();
 
                 Assert.AreEqual(1, obstaclesCollection.LoadedObjects.Count);
-                CheckUtils.CheckWall("Perform hyper wall", obstaclesCollection, 0, 4, (int)GridX.Left, 0, -2.0f, 1, 5, (int)ObstacleType.Full);
+                CheckUtils.CheckWall("Perform hyper wall", obstaclesCollection, 0, 4, (int)GridX.Left, 0, (int)ObstacleType.Full, -2.0f, 1, 5);
 
                 actionContainer.Undo();
-                CheckUtils.CheckWall("Undo hyper wall", obstaclesCollection, 0, 2, (int)GridX.Left, 0, 2.0f, 1, 5, (int)ObstacleType.Full);
+                CheckUtils.CheckWall("Undo hyper wall", obstaclesCollection, 0, 2, (int)GridX.Left, 0, (int)ObstacleType.Full, 2.0f, 1, 5);
             }
         }
     }

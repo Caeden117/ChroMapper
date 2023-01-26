@@ -55,11 +55,11 @@ namespace Tests
             SelectionController.Select(baseNoteA);
 
             _mirror.Mirror();
-            CheckUtils.CheckNote("Perform note mirror", notesContainer, 0, 2, (int)NoteType.Blue, 5345, (int)GridY.Base, (int)NoteCutDirection.Right, 0);
+            CheckUtils.CheckNote("Perform note mirror", notesContainer, 0, 2, 5345, (int)GridY.Base, (int)NoteType.Blue, (int)NoteCutDirection.Right, 0);
 
             // Undo mirror
             _actionContainer.Undo();
-            CheckUtils.CheckNote("Undo note mirror", notesContainer, 0, 2, (int)NoteType.Red, -2345, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
+            CheckUtils.CheckNote("Undo note mirror", notesContainer, 0, 2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
         }
 
         [Test]
@@ -76,11 +76,11 @@ namespace Tests
             SelectionController.Select(baseNoteA);
 
             _mirror.Mirror();
-            CheckUtils.CheckNote("Perform NE note mirror", notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Base, (int)NoteCutDirection.Right, 0, JSON.Parse($"{{\"{baseNoteA.CustomKeyCoordinate}\": [0, 0]}}"));
+            CheckUtils.CheckNote("Perform NE note mirror", notesContainer, 0, 2, (int)GridX.Right, (int)GridY.Base, (int)NoteType.Blue, (int)NoteCutDirection.Right, 0, JSON.Parse($"{{\"{baseNoteA.CustomKeyCoordinate}\": [0, 0]}}"));
 
             // Undo mirror
             _actionContainer.Undo();
-            CheckUtils.CheckNote("Undo NE note inversion", notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, JSON.Parse($"{{\"{baseNoteA.CustomKeyCoordinate}\": [-1, 0]}}"));
+            CheckUtils.CheckNote("Undo NE note inversion", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, 0, JSON.Parse($"{{\"{baseNoteA.CustomKeyCoordinate}\": [-1, 0]}}"));
         }
 
         [Test]
@@ -157,11 +157,11 @@ namespace Tests
                 SelectionController.Select(wallA);
 
                 _mirror.Mirror();
-                CheckUtils.CheckWall("Perform ME wall mirror", wallsContainer, 0, 2, 2958, 0, 1, 2596, 0, 595141);
+                CheckUtils.CheckWall("Perform ME wall mirror", wallsContainer, 0, 2, 2958, 0, 595141, 1, 2596, 0);
 
                 // Undo mirror
                 _actionContainer.Undo();
-                CheckUtils.CheckWall("Undo ME wall mirror", wallsContainer, 0, 2, 1446, 0, 1, 2596, 0, 595141);
+                CheckUtils.CheckWall("Undo ME wall mirror", wallsContainer, 0, 2, 1446, 0, 595141, 1, 2596, 0);
             }
         }
 
@@ -182,11 +182,11 @@ namespace Tests
                 SelectionController.Select(wallA);
 
                 _mirror.Mirror();
-                CheckUtils.CheckWall("Perform NE wall mirror", wallsContainer, 0, 2, (int)GridX.MiddleRight, (int)GridY.Base, 1, 2, 5, (int)ObstacleType.Full, JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-0.5, 0]}}"));
+                CheckUtils.CheckWall("Perform NE wall mirror", wallsContainer, 0, 2, (int)GridX.MiddleRight, (int)GridY.Base, (int)ObstacleType.Full, 1, 2, 5, JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-0.5, 0]}}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
-                CheckUtils.CheckWall("Undo NE wall mirror", wallsContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, 1, 2, 5, (int)ObstacleType.Full, JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-1.5, 0]}}"));
+                CheckUtils.CheckWall("Undo NE wall mirror", wallsContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)ObstacleType.Full, 1, 2, 5, JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-1.5, 0]}}"));
             }
         }
 

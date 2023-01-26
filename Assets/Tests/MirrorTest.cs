@@ -86,14 +86,14 @@ namespace Tests
 
             Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
 
-            CheckUtils.CheckNote("Check first mirrored time", _notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight, 0);
-            CheckUtils.CheckNote("Check second mirrored time", _notesContainer, 1, 3, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
+            CheckUtils.CheckNote("Check first mirrored time", _notesContainer, 0, 2, (int)GridX.Right, (int)GridY.Top, (int)NoteType.Blue, (int)NoteCutDirection.UpRight, 0);
+            CheckUtils.CheckNote("Check second mirrored time", _notesContainer, 1, 3, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
 
             // Undo mirror
             _actionContainer.Undo();
 
-            CheckUtils.CheckNote("Check undo first mirrored time", _notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
-            CheckUtils.CheckNote("Check undo second mirrored time ", _notesContainer, 1, 3, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight, 0);
+            CheckUtils.CheckNote("Check undo first mirrored time", _notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
+            CheckUtils.CheckNote("Check undo second mirrored time ", _notesContainer, 1, 3, (int)GridX.Right, (int)GridY.Top, (int)NoteType.Blue, (int)NoteCutDirection.UpRight, 0);
         }
 
         [Test]
@@ -110,14 +110,14 @@ namespace Tests
 
             Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
 
-            CheckUtils.CheckNote("Check first mirrored note", _notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Base, (int)NoteCutDirection.Right, 0);
-            CheckUtils.CheckNote("Check second mirrored note", _notesContainer, 1, 3, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Top, (int)NoteCutDirection.UpLeft, 0);
+            CheckUtils.CheckNote("Check first mirrored note", _notesContainer, 0, 2, (int)GridX.Right, (int)GridY.Base, (int)NoteType.Blue, (int)NoteCutDirection.Right, 0);
+            CheckUtils.CheckNote("Check second mirrored note", _notesContainer, 1, 3, (int)GridX.Left, (int)GridY.Top, (int)NoteType.Red, (int)NoteCutDirection.UpLeft, 0);
 
             // Undo mirror
             _actionContainer.Undo();
 
-            CheckUtils.CheckNote("Check undo first mirrored note", _notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
-            CheckUtils.CheckNote("Check undo second mirrored note", _notesContainer, 1, 3, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight, 0);
+            CheckUtils.CheckNote("Check undo first mirrored note", _notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
+            CheckUtils.CheckNote("Check undo second mirrored note", _notesContainer, 1, 3, (int)GridX.Right, (int)GridY.Top, (int)NoteType.Blue, (int)NoteCutDirection.UpRight, 0);
         }
 
         [Test]
@@ -134,14 +134,14 @@ namespace Tests
 
             Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
 
-            CheckUtils.CheckNote("Check first mirrored color swap", _notesContainer, 0, 2, (int)NoteType.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
-            CheckUtils.CheckNote("Check second mirrored color swap", _notesContainer, 1, 3, (int)NoteType.Red, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight, 0);
+            CheckUtils.CheckNote("Check first mirrored color swap", _notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Blue, (int)NoteCutDirection.Left, 0);
+            CheckUtils.CheckNote("Check second mirrored color swap", _notesContainer, 1, 3, (int)GridX.Right, (int)GridY.Top, (int)NoteType.Red, (int)NoteCutDirection.UpRight, 0);
 
             // Undo mirror
             _actionContainer.Undo();
 
-            CheckUtils.CheckNote("Check undo first mirrored color swap", _notesContainer, 0, 2, (int)NoteType.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0);
-            CheckUtils.CheckNote("Check undo second mirrored color swap", _notesContainer, 1, 3, (int)NoteType.Blue, (int)GridX.Right, (int)GridY.Top, (int)NoteCutDirection.UpRight, 0);
+            CheckUtils.CheckNote("Check undo first mirrored color swap", _notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
+            CheckUtils.CheckNote("Check undo second mirrored color swap", _notesContainer, 1, 3, (int)GridX.Right, (int)GridY.Top, (int)NoteType.Blue, (int)NoteCutDirection.UpRight, 0);
         }
     }
 }

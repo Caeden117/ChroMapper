@@ -9,7 +9,8 @@ namespace Tests.Util
 {
     public class CheckUtils
     {
-        public static void CheckNote(string msg, BeatmapObjectContainerCollection container, int idx, float time, int type, int posX, int posY, int cutDirection, int angleOffset, JSONNode customData = null)
+        public static void CheckNote(string msg, BeatmapObjectContainerCollection container, int idx, float time,
+            int posX, int posY, int type, int cutDirection, int angleOffset, JSONNode customData = null)
         {
             BaseObject obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseNote>(obj);
@@ -30,7 +31,8 @@ namespace Tests.Util
             }
         }
         
-        public static void CheckWall(string msg, BeatmapObjectContainerCollection container, int idx, float time, int posX, int posY, float duration, int width, int height, int? type, JSONNode customData = null)
+        public static void CheckWall(string msg, BeatmapObjectContainerCollection container, int idx, float time,
+            int posX, int posY, int? type, float duration, int width, int height, JSONNode customData = null)
         {
             BaseObject obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseObstacle>(obj);
@@ -77,7 +79,10 @@ namespace Tests.Util
             }
         }
         
-        public static void CheckArc(string msg, BeatmapObjectContainerCollection container, int idx, float time, int color, int posX, int posY, int cutDirection, float mult, float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode, JSONNode customData = null)
+        public static void CheckArc(string msg, BeatmapObjectContainerCollection container, int idx, float time,
+            int posX, int posY, int color, int cutDirection, int angleOffset, float mult, float tailTime, int tailPosX,
+            int tailPosY,
+            int tailCutDirection, float tailMult, int midAnchorMode, JSONNode customData = null)
         {
             BaseObject obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseArc>(obj);
@@ -88,6 +93,7 @@ namespace Tests.Util
                 Assert.AreEqual(posX, arc.PosX, $"{msg}: Mismatched position X");
                 Assert.AreEqual(posY, arc.PosY, $"{msg}: Mismatched position Y");
                 Assert.AreEqual(cutDirection, arc.CutDirection, $"{msg}: Mismatched cut direction");
+                Assert.AreEqual(angleOffset, arc.AngleOffset, $"{msg}: Mismatched angle offset");
                 Assert.AreEqual(mult, arc.HeadControlPointLengthMultiplier, $"{msg}: Mismatched head control point length multiplier");
                 Assert.AreEqual(tailTime, arc.TailTime, 0.001f, $"{msg}: Mismatched tail time");
                 Assert.AreEqual(tailPosX, arc.TailPosX, $"{msg}: Mismatched tail position X");
@@ -104,7 +110,10 @@ namespace Tests.Util
             }
         }
         
-        public static void CheckChain(string msg, BeatmapObjectContainerCollection container, int idx, float time, int color, int posX, int posY, int cutDirection, float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null)
+        public static void CheckChain(string msg, BeatmapObjectContainerCollection container, int idx, float time,
+            int posX, int posY, int color, int cutDirection, int angleOffset, float tailTime, int tailPosX,
+            int tailPosY, int sliceCount,
+            float squish, JSONNode customData = null)
         {
             BaseObject obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseChain>(obj);

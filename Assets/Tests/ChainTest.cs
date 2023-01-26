@@ -71,7 +71,7 @@ namespace Tests
 
                 chainPlacement.SpawnChain(n1, n2);
                 
-                CheckUtils.CheckChain("Check generated chain", chainsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Down, 3f, (int)GridX.Left, (int)GridY.Upper, 5, 1);
+                CheckUtils.CheckChain("Check generated chain", chainsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 3f, (int)GridX.Left, (int)GridY.Upper, 5, 1);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Tests
                 ChainPlacement chainPlacement = root.GetComponentInChildren<ChainPlacement>();
                 BeatmapChainInputController inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
-                BaseChain baseChain = new V3Chain(2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                BaseChain baseChain = new V3Chain(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
                 PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
                 if (chainsContainer.LoadedContainers[baseChain] is ChainContainer containerA)
@@ -94,12 +94,12 @@ namespace Tests
                     inputController.InvertChain(containerA);
                 }
 
-                CheckUtils.CheckChain("Perform chain inversion", chainsContainer, 0, 2f, (int)NoteColor.Blue, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                CheckUtils.CheckChain("Perform chain inversion", chainsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Blue, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckUtils.CheckChain("Undo chain inversion", chainsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                CheckUtils.CheckChain("Undo chain inversion", chainsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
             }
         }
 
@@ -114,7 +114,7 @@ namespace Tests
                 ChainPlacement chainPlacement = root.GetComponentInChildren<ChainPlacement>();
                 BeatmapChainInputController inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
-                BaseChain baseChain = new V3Chain(2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                BaseChain baseChain = new V3Chain(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
                 PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
                 if (chainsContainer.LoadedContainers[baseChain] is ChainContainer containerA)
@@ -122,12 +122,12 @@ namespace Tests
                     inputController.TweakChainSquish(containerA, 0.5f);
                 }
 
-                CheckUtils.CheckChain("Update chain multiplier", chainsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1.5f);
+                CheckUtils.CheckChain("Update chain multiplier", chainsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1.5f);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckUtils.CheckChain("Undo update chain multiplier", chainsContainer, 0, 2f, (int)NoteColor.Red, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                CheckUtils.CheckChain("Undo update chain multiplier", chainsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red, (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
             }
         }
     }
