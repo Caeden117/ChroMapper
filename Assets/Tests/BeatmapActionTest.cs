@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using System.Collections;
-using Beatmap.Enums;
+﻿using System.Collections;
 using Beatmap.Base;
+using Beatmap.Enums;
 using Beatmap.V3;
+using NUnit.Framework;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -33,9 +33,9 @@ namespace Tests
         [Test]
         public void ModifiedAction()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            Transform root = notesContainer.transform.root;
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var root = notesContainer.transform.root;
 
             BaseNote baseNoteA = new V3ColorNote
             {
@@ -46,7 +46,7 @@ namespace Tests
 
             SelectionController.Select(baseNoteA);
 
-            SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
+            var selectionController = root.GetComponentInChildren<SelectionController>();
             // Default precision is 3dp, but in editor it's 6dp so check 7dp
             selectionController.MoveSelection(-0.0000001f);
 
@@ -64,11 +64,11 @@ namespace Tests
         [Test]
         public void CompositeTest()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            Transform root = notesContainer.transform.root;
-            SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
-            NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var root = notesContainer.transform.root;
+            var selectionController = root.GetComponentInChildren<SelectionController>();
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
             BaseNote baseNoteA = new V3ColorNote
             {
@@ -179,11 +179,11 @@ namespace Tests
         [Test]
         public void ModifiedWithConflictingAction()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
 
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            Transform root = notesContainer.transform.root;
-            NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var root = notesContainer.transform.root;
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
             PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
             {

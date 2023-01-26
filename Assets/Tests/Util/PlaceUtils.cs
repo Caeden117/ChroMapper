@@ -12,13 +12,14 @@ namespace Tests.Util
             obstaclePlacement.RoundedTime = obstaclePlacement.queuedData.Time;
             obstaclePlacement.ApplyToMap();
         }
-        
+
         public static void PlaceWall(
             ObstaclePlacement obstaclePlacement, BaseObstacle obstacle)
         {
             obstaclePlacement.queuedData = obstacle;
             obstaclePlacement.RoundedTime = obstaclePlacement.queuedData.Time;
-            obstaclePlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, obstaclePlacement.queuedData.Duration * EditorScaleController.EditorScale);
+            obstaclePlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0,
+                obstaclePlacement.queuedData.Duration * EditorScaleController.EditorScale);
             obstaclePlacement.ApplyToMap(); // Starts placement
             obstaclePlacement.ApplyToMap(); // Completes placement
         }
@@ -42,7 +43,7 @@ namespace Tests.Util
                 eventPlacement.ApplyToMap();
             }
         }
-        
+
         public static void PlaceArc(
             ArcPlacement arcPlacement, BaseArc arc)
         {

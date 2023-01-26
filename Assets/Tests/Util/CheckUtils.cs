@@ -12,7 +12,7 @@ namespace Tests.Util
         public static void CheckNote(string msg, BeatmapObjectContainerCollection container, int idx, float time,
             int posX, int posY, int type, int cutDirection, int angleOffset, JSONNode customData = null)
         {
-            BaseObject obj = container.LoadedObjects.Skip(idx).First();
+            var obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseNote>(obj);
             if (obj is BaseNote note)
             {
@@ -26,15 +26,16 @@ namespace Tests.Util
                 if (customData != null)
                 {
                     note.SaveCustom();
-                    Assert.AreEqual(customData.ToString(), note.CustomData.ToString(), $"{msg}: Mismatched custom data");
+                    Assert.AreEqual(customData.ToString(), note.CustomData.ToString(),
+                        $"{msg}: Mismatched custom data");
                 }
             }
         }
-        
+
         public static void CheckWall(string msg, BeatmapObjectContainerCollection container, int idx, float time,
             int posX, int posY, int? type, float duration, int width, int height, JSONNode customData = null)
         {
-            BaseObject obj = container.LoadedObjects.Skip(idx).First();
+            var obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseObstacle>(obj);
             if (obj is BaseObstacle wall)
             {
@@ -44,23 +45,22 @@ namespace Tests.Util
                 Assert.AreEqual(duration, wall.Duration, 0.001f, $"{msg}: Mismatched duration");
                 Assert.AreEqual(width, wall.Width, $"{msg}: Mismatched width");
                 Assert.AreEqual(height, wall.Height, $"{msg}: Mismatched height");
-                
-                if (type != null)
-                {
-                    Assert.AreEqual(type, wall.Type, $"{msg}: Mismatched type");
-                }
+
+                if (type != null) Assert.AreEqual(type, wall.Type, $"{msg}: Mismatched type");
 
                 if (customData != null)
                 {
                     wall.SaveCustom();
-                    Assert.AreEqual(customData.ToString(), wall.CustomData.ToString(), $"{msg}: Mismatched custom data");
+                    Assert.AreEqual(customData.ToString(), wall.CustomData.ToString(),
+                        $"{msg}: Mismatched custom data");
                 }
             }
         }
-        
-        public static void CheckEvent(string msg, BeatmapObjectContainerCollection container, int idx, float time, int type, int value, float floatValue = 1f, JSONNode customData = null)
+
+        public static void CheckEvent(string msg, BeatmapObjectContainerCollection container, int idx, float time,
+            int type, int value, float floatValue = 1f, JSONNode customData = null)
         {
-            BaseObject obj = container.LoadedObjects.Skip(idx).First();
+            var obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseEvent>(obj);
             if (obj is BaseEvent evt)
             {
@@ -74,17 +74,18 @@ namespace Tests.Util
                 {
                     // Custom data needed to be saved before compare
                     evt.SaveCustom();
-                    Assert.AreEqual(customData.ToString(), evt.CustomData?.ToString(), $"{msg}: Mismatched custom data");
+                    Assert.AreEqual(customData.ToString(), evt.CustomData?.ToString(),
+                        $"{msg}: Mismatched custom data");
                 }
             }
         }
-        
+
         public static void CheckArc(string msg, BeatmapObjectContainerCollection container, int idx, float time,
             int posX, int posY, int color, int cutDirection, int angleOffset, float mult, float tailTime, int tailPosX,
             int tailPosY,
             int tailCutDirection, float tailMult, int midAnchorMode, JSONNode customData = null)
         {
-            BaseObject obj = container.LoadedObjects.Skip(idx).First();
+            var obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseArc>(obj);
             if (obj is BaseArc arc)
             {
@@ -94,12 +95,14 @@ namespace Tests.Util
                 Assert.AreEqual(posY, arc.PosY, $"{msg}: Mismatched position Y");
                 Assert.AreEqual(cutDirection, arc.CutDirection, $"{msg}: Mismatched cut direction");
                 Assert.AreEqual(angleOffset, arc.AngleOffset, $"{msg}: Mismatched angle offset");
-                Assert.AreEqual(mult, arc.HeadControlPointLengthMultiplier, $"{msg}: Mismatched head control point length multiplier");
+                Assert.AreEqual(mult, arc.HeadControlPointLengthMultiplier,
+                    $"{msg}: Mismatched head control point length multiplier");
                 Assert.AreEqual(tailTime, arc.TailTime, 0.001f, $"{msg}: Mismatched tail time");
                 Assert.AreEqual(tailPosX, arc.TailPosX, $"{msg}: Mismatched tail position X");
                 Assert.AreEqual(tailPosY, arc.TailPosY, $"{msg}: Mismatched tail position Y");
                 Assert.AreEqual(tailCutDirection, arc.TailCutDirection, $"{msg}: Mismatched tail cut direction");
-                Assert.AreEqual(tailMult, arc.TailControlPointLengthMultiplier, $"{msg}: Mismatched tail control point length multiplier");
+                Assert.AreEqual(tailMult, arc.TailControlPointLengthMultiplier,
+                    $"{msg}: Mismatched tail control point length multiplier");
                 Assert.AreEqual(midAnchorMode, arc.MidAnchorMode, $"{msg}: Mismatched mid anchor mode");
 
                 if (customData != null)
@@ -109,13 +112,13 @@ namespace Tests.Util
                 }
             }
         }
-        
+
         public static void CheckChain(string msg, BeatmapObjectContainerCollection container, int idx, float time,
             int posX, int posY, int color, int cutDirection, int angleOffset, float tailTime, int tailPosX,
             int tailPosY, int sliceCount,
             float squish, JSONNode customData = null)
         {
-            BaseObject obj = container.LoadedObjects.Skip(idx).First();
+            var obj = container.LoadedObjects.Skip(idx).First();
             Assert.IsInstanceOf<BaseChain>(obj);
             if (obj is BaseChain chain)
             {
@@ -124,6 +127,7 @@ namespace Tests.Util
                 Assert.AreEqual(posX, chain.PosX, $"{msg}: Mismatched position X");
                 Assert.AreEqual(posY, chain.PosY, $"{msg}: Mismatched position Y");
                 Assert.AreEqual(cutDirection, chain.CutDirection, $"{msg}: Mismatched cut direction");
+                Assert.AreEqual(angleOffset, chain.AngleOffset, $"{msg}: Mismatched angle offset");
                 Assert.AreEqual(tailTime, chain.TailTime, 0.001f, $"{msg}: Mismatched tail time");
                 Assert.AreEqual(tailPosX, chain.TailPosX, $"{msg}: Mismatched tail position X");
                 Assert.AreEqual(tailPosY, chain.TailPosY, $"{msg}: Mismatched tail position Y");
@@ -133,29 +137,24 @@ namespace Tests.Util
                 if (customData != null)
                 {
                     chain.SaveCustom();
-                    Assert.AreEqual(customData.ToString(), chain.CustomData.ToString(), $"{msg}: Mismatched custom data");
+                    Assert.AreEqual(customData.ToString(), chain.CustomData.ToString(),
+                        $"{msg}: Mismatched custom data");
                 }
             }
         }
-        
+
         public static void CheckV3Object(string msg, BeatmapObjectContainerCollection container, int idx)
         {
-            BaseObject obj = container.LoadedObjects.Skip(idx).First();
-            
-            if (!(obj is V3Object))
-            {
-                Assert.Fail($"{msg}: Object is not beatmap v3 object");
-            }
+            var obj = container.LoadedObjects.Skip(idx).First();
+
+            if (!(obj is V3Object)) Assert.Fail($"{msg}: Object is not beatmap v3 object");
         }
-        
+
         public static void CheckV2Object(string msg, BeatmapObjectContainerCollection container, int idx)
         {
-            BaseObject obj = container.LoadedObjects.Skip(idx).First();
-            
-            if (!(obj is V2Object))
-            {
-                Assert.Fail($"{msg}: Object is not beatmap v2 object");
-            }
+            var obj = container.LoadedObjects.Skip(idx).First();
+
+            if (!(obj is V2Object)) Assert.Fail($"{msg}: Object is not beatmap v2 object");
         }
     }
 }

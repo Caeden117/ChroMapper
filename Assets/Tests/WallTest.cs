@@ -1,11 +1,10 @@
-﻿using NUnit.Framework;
-using SimpleJSON;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using Beatmap.V2;
+using NUnit.Framework;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -36,24 +35,22 @@ namespace Tests
         [Test]
         public void HyperWall()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
             if (collection is ObstacleGridContainer obstaclesCollection)
             {
-                Transform root = obstaclesCollection.transform.root;
-                ObstaclePlacement wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
-                BeatmapObstacleInputController inputController = root.GetComponentInChildren<BeatmapObstacleInputController>();
+                var root = obstaclesCollection.transform.root;
+                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
+                var inputController = root.GetComponentInChildren<BeatmapObstacleInputController>();
                 wallPlacement.RefreshVisuals();
 
                 BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
                 PlaceUtils.PlaceWall(wallPlacement, wallA);
 
                 if (obstaclesCollection.LoadedContainers[wallA] is ObstacleContainer container)
-                {
                     inputController.ToggleHyperWall(container);
-                }
 
-                BaseObject toDelete = obstaclesCollection.LoadedObjects.First();
+                var toDelete = obstaclesCollection.LoadedObjects.First();
                 obstaclesCollection.DeleteObject(toDelete);
 
                 Assert.AreEqual(0, obstaclesCollection.LoadedObjects.Count);
@@ -61,10 +58,12 @@ namespace Tests
                 actionContainer.Undo();
 
                 Assert.AreEqual(1, obstaclesCollection.LoadedObjects.Count);
-                CheckUtils.CheckWall("Perform hyper wall", obstaclesCollection, 0, 4, (int)GridX.Left, 0, (int)ObstacleType.Full, -2.0f, 1, 5);
+                CheckUtils.CheckWall("Perform hyper wall", obstaclesCollection, 0, 4, (int)GridX.Left, 0,
+                    (int)ObstacleType.Full, -2.0f, 1, 5);
 
                 actionContainer.Undo();
-                CheckUtils.CheckWall("Undo hyper wall", obstaclesCollection, 0, 2, (int)GridX.Left, 0, (int)ObstacleType.Full, 2.0f, 1, 5);
+                CheckUtils.CheckWall("Undo hyper wall", obstaclesCollection, 0, 2, (int)GridX.Left, 0,
+                    (int)ObstacleType.Full, 2.0f, 1, 5);
             }
         }
     }

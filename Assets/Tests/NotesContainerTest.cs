@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using System.Collections;
+﻿using System.Collections;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
 using Beatmap.V3;
+using NUnit.Framework;
 using Tests.Util;
 using UnityEngine.TestTools;
 
@@ -32,7 +32,8 @@ namespace Tests
         [Test]
         public void RefreshSpecialAngles()
         {
-            NoteGridContainer noteGridContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer;
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer;
 
             BaseNote baseNoteA = new V3ColorNote
             {
@@ -41,7 +42,7 @@ namespace Tests
                 PosX = (int)GridX.Left
             };
             noteGridContainer.SpawnObject(baseNoteA);
-            NoteContainer containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
+            var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
 
             BaseNote baseNoteB = new V3ColorNote
             {
@@ -50,7 +51,7 @@ namespace Tests
                 PosX = (int)GridX.MiddleLeft
             };
             noteGridContainer.SpawnObject(baseNoteB);
-            NoteContainer containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
+            var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
 
             // These tests are based of the examples in this image
             // https://media.discordapp.net/attachments/443569023951568906/681978249139585031/unknown.png
@@ -140,7 +141,7 @@ namespace Tests
 
         private void UpdateNote(NoteContainer container, int PosX, int PosY, int cutDirection)
         {
-            BaseNote baseNote = (BaseNote)container.ObjectData;
+            var baseNote = (BaseNote)container.ObjectData;
             baseNote.PosX = PosX;
             baseNote.PosY = PosY;
             baseNote.CutDirection = cutDirection;
@@ -151,8 +152,8 @@ namespace Tests
         [Test]
         public void ShiftInTime()
         {
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            UnityEngine.Transform root = notesContainer.transform.root;
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var root = notesContainer.transform.root;
 
             BaseNote baseNoteA = new V3ColorNote
             {
@@ -170,7 +171,7 @@ namespace Tests
 
             SelectionController.Select(baseNoteB, false, false, false);
 
-            SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
+            var selectionController = root.GetComponentInChildren<SelectionController>();
             selectionController.MoveSelection(-2);
 
             notesContainer.DeleteObject(baseNoteB);

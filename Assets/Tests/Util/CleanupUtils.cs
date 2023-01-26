@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Beatmap.Enums;
-using Beatmap.Base;
 using UnityEngine;
 
 namespace Tests.Util
@@ -39,21 +38,15 @@ namespace Tests.Util
 
         public static void CleanupBookmarks()
         {
-            BookmarkManager bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
-            foreach (BookmarkContainer bookmark in bookmarkManager.bookmarkContainers.ToArray())
-            {
-                bookmark.HandleDeleteBookmark(0);
-            }
+            var bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
+            foreach (var bookmark in bookmarkManager.bookmarkContainers.ToArray()) bookmark.HandleDeleteBookmark(0);
         }
-        
+
         private static void CleanupType(ObjectType type)
         {
-            BeatmapObjectContainerCollection eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(type);
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType(type);
 
-            foreach (BaseObject evt in eventsContainer.LoadedObjects.ToArray())
-            {
-                eventsContainer.DeleteObject(evt);
-            }
+            foreach (var evt in eventsContainer.LoadedObjects.ToArray()) eventsContainer.DeleteObject(evt);
         }
     }
 }
