@@ -337,16 +337,15 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
 
             copy.Time -= firstTime;
+            if (copy is BaseSlider slider)
+                slider.TailTime -= firstTime;
 
             // always use song beats for bpm changes
             if (copy.ObjectType != ObjectType.BpmChange)
             {
                 copy.Time = bpmChangesContainer.SongBeatsToLocalBeats(copy.Time, firstTime);
             }
-            // var copy = BeatmapFactory.Clone(data);
-            // copy.Time -= firstTime;
-            // if (copy is BaseSlider slider)
-            //     slider.TailTime -= firstTime;
+
             CopiedObjects.Add(copy);
         }
 
@@ -386,6 +385,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             var newData = BeatmapFactory.Clone(data);
             newData.Time = newTime;
+            if (newData is BaseSlider slider)
+                slider.TailTime += newTime;
 
             // scale duration for walls
             if (newData.ObjectType == ObjectType.Obstacle)
