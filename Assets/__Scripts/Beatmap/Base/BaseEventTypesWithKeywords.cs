@@ -8,8 +8,11 @@ namespace Beatmap.Base
         {
         }
 
-        protected BaseEventTypesWithKeywords(BaseEventTypesWithKeywords other) =>
-            Keywords = other.Keywords.Select(x => x.Clone() as BaseEventTypesForKeywords).ToArray();
+        protected BaseEventTypesWithKeywords(BaseEventTypesWithKeywords other)
+        {
+            if (other != null)
+                Keywords = other.Keywords.Select(x => x.Clone() as BaseEventTypesForKeywords).ToArray();
+        }
 
         protected BaseEventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Keywords = keywords;
 

@@ -1,15 +1,13 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
-using SimpleJSON;
 using LiteNetLib.Utils;
+using SimpleJSON;
 
 namespace Beatmap.V2
 {
-    public class V2Arc : BaseArc
+    public class V2Arc : BaseArc, V2Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
         public V2Arc()
         {
         }
@@ -34,10 +32,10 @@ namespace Beatmap.V2
             ParseCustom();
         }
 
-        public V2Arc(float time, int color, int posX, int posY, int cutDirection, int angleOffset, float mult,
+        public V2Arc(float time, int posX, int posY, int color, int cutDirection, int angleOffset, float mult,
             float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
-            JSONNode customData = null) : base(time, color, posX, posY, cutDirection, angleOffset, mult, tailTime,
-            tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
+            JSONNode customData = null) : base(time, posX, posY, color, cutDirection, angleOffset, mult,
+            tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
             ParseCustom();
 
         public override string CustomKeyTrack { get; } = "_track";
@@ -51,6 +49,8 @@ namespace Beatmap.V2
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
 
         public override string CustomKeyTailCoordinate { get; } = "_tailPosition";
+        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
+        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
@@ -76,8 +76,9 @@ namespace Beatmap.V2
         }
 
         public override BaseItem Clone() =>
-            new V2Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, HeadControlPointLengthMultiplier,
-                TailTime, TailPosX, TailPosY, TailCutDirection, TailControlPointLengthMultiplier, MidAnchorMode,
-                SaveCustom().Clone());
+            new V2Arc(Time, PosX, PosY, Color, CutDirection, AngleOffset,
+                HeadControlPointLengthMultiplier, TailTime, TailPosX, TailPosY, TailCutDirection,
+                TailControlPointLengthMultiplier,
+                MidAnchorMode, SaveCustom().Clone());
     }
 }

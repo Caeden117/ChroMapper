@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using System.Collections;
+﻿using System.Collections;
+using NUnit.Framework;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -11,25 +11,26 @@ namespace Tests
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap()
         {
-            return TestUtils.LoadMapper();
+            return TestUtils.LoadMap(3);
+        }
+
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
         }
 
         [TearDown]
         public void Cleanup()
         {
-            BookmarkManager bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
-
-            foreach (BookmarkContainer bookmark in bookmarkManager.bookmarkContainers.ToArray())
-            {
-                bookmark.HandleDeleteBookmark(0);
-            }
+            CleanupUtils.CleanupBookmarks();
         }
 
         [Test]
         public void CheckOrder()
         {
-            BookmarkManager bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
-            AudioTimeSyncController atsc = Object.FindObjectOfType<AudioTimeSyncController>();
+            var bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
+            var atsc = Object.FindObjectOfType<AudioTimeSyncController>();
 
             atsc.MoveToTimeInBeats(1);
             bookmarkManager.CreateNewBookmark("1");

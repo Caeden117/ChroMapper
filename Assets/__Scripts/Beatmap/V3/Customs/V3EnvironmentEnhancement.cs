@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3.Customs
 {
-    public class V3EnvironmentEnhancement : BaseEnvironmentEnhancement
+    public class V3EnvironmentEnhancement : BaseEnvironmentEnhancement, V3Object
     {
         public V3EnvironmentEnhancement()
         {

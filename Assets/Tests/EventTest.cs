@@ -1,11 +1,10 @@
-﻿using NUnit.Framework;
-using SimpleJSON;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.Base;
-using Beatmap.V2;
+using Beatmap.V3;
+using NUnit.Framework;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -17,114 +16,104 @@ namespace Tests
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap()
         {
-            return TestUtils.LoadMapper();
+            return TestUtils.LoadMap(3);
+        }
+
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
         }
 
         [TearDown]
         public void ContainerCleanup()
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
-            TestUtils.CleanupEvents();
-        }
-
-        public static void CheckEvent(BeatmapObjectContainerCollection container, int idx, int time, int type, int value, JSONNode customData = null)
-        {
-            BaseObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BaseEvent>(newObjA);
-            if (newObjA is BaseEvent newNoteA)
-            {
-                Assert.AreEqual(time, newNoteA.Time);
-                Assert.AreEqual(type, newNoteA.Type);
-                Assert.AreEqual(value, newNoteA.Value);
-
-                // ConvertToJSON causes gradient to get updated
-                if (customData != null)
-                {
-                    Assert.AreEqual(customData.ToString(), newNoteA.ToJson()["_customData"].ToString());
-                }
-            }
+            CleanupUtils.CleanupEvents();
         }
 
         [Test]
         public void Invert()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
             if (containerCollection is EventGridContainer eventsContainer)
             {
-                Transform root = eventsContainer.transform.root;
-                EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
-                BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
+                var root = eventsContainer.transform.root;
+                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+                var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
-                BaseEvent baseEventB = new V2Event(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
-
-                eventPlacement.queuedData = baseEventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.ApplyToMap();
-
-                eventPlacement.queuedData = baseEventB;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.ApplyToMap();
+                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.LateLaneRotation,
+                    BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventB);
 
                 if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
-                {
                     inputController.InvertEvent(containerA);
-                }
                 if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB)
-                {
                     inputController.InvertEvent(containerB);
-                }
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
-                CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
+                CheckUtils.CheckEvent("Perform first rotation inversion", eventsContainer, 0, 2,
+                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckUtils.CheckEvent("Perform first light value inversion", eventsContainer, 1, 3,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
+
+                if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB2)
+                    inputController.InvertEvent(containerB2);
+
+                CheckUtils.CheckEvent("Perform second light value inversion", eventsContainer, 1, 3,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
-                CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                CheckUtils.CheckEvent("Undo second light value inversion", eventsContainer, 1, 3,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
+                CheckUtils.CheckEvent("Check first rotation inversion", eventsContainer, 0, 2,
+                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
 
                 actionContainer.Undo();
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LateLaneRotation, (int)BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
-                CheckEvent(eventsContainer, 1, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                CheckUtils.CheckEvent("Undo first light value inversion", eventsContainer, 1, 3,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                CheckUtils.CheckEvent("Check first rotation inversion", eventsContainer, 0, 2,
+                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+
+                actionContainer.Undo();
+
+                CheckUtils.CheckEvent("Undo first rotation inversion", eventsContainer, 0, 2,
+                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                CheckUtils.CheckEvent("Check initial light value", eventsContainer, 1, 3,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
             }
         }
 
         [Test]
         public void TweakValue()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
             if (containerCollection is EventGridContainer eventsContainer)
             {
-                Transform root = eventsContainer.transform.root;
-                EventPlacement eventPlacement = root.GetComponentInChildren<EventPlacement>();
-                BeatmapEventInputController inputController = root.GetComponentInChildren<BeatmapEventInputController>();
+                var root = eventsContainer.transform.root;
+                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+                var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LeftLaserRotation, 2);
-
-                eventPlacement.queuedData = baseEventA;
-                eventPlacement.queuedValue = eventPlacement.queuedData.Value;
-                eventPlacement.RoundedTime = eventPlacement.queuedData.Time;
-                eventPlacement.PlacePrecisionRotation = true;
-                eventPlacement.ApplyToMap();
-                eventPlacement.PlacePrecisionRotation = false;
+                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.LeftLaserRotation, 2);
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA, true);
 
                 if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
-                {
                     inputController.TweakMain(containerA, 1);
-                }
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 3);
+                CheckUtils.CheckEvent("Perform tweak value", eventsContainer, 0, 2,
+                    (int)EventTypeValue.LeftLaserRotation, 3);
 
                 // Undo invert
                 actionContainer.Undo();
 
-                CheckEvent(eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation, 2);
+                CheckUtils.CheckEvent("Undo tweak value", eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation,
+                    2);
             }
         }
     }

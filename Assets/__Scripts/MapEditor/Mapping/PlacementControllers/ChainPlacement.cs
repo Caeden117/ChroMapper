@@ -29,25 +29,37 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
     {
         if (context.performed || context.canceled) return;
         if (!Settings.Instance.Load_MapV3) return;
+        
         var objects = SelectedObjects.ToList();
         if (objects.Count != 2) { return; }
-        if (!ArcPlacement.IsColorNote(objects[0]) || !ArcPlacement.IsColorNote(objects[1]))
+        if(!ArcPlacement.IsColorNote(objects[0]) || !ArcPlacement.IsColorNote(objects[1]))
         {
             return;
         }
         var n1 = objects[0] as BaseNote;
         var n2 = objects[1] as BaseNote;
-        if (n1.Time > n2.Time) (n1, n2) = (n2, n1);
-        if (n1.CutDirection == (int)NoteCutDirection.Any) { return; }
-        var chainData = new V3Chain(n1, n2);
-        SpawnChain(chainData, n1, n2);
+
+        SpawnChain(n1, n2);
     }
 
-    public void SpawnChain(BaseChain chainData, BaseNote headNote, BaseNote toDeleteNote)
+    public void SpawnChain(BaseNote head, BaseNote tail)
+    {
+        if (head.Time > tail.Time)
+        {
+            (head, tail) = (tail, head);
+        }
+        if (head.CutDirection == (int)NoteCutDirection.Any) { return; }
+        
+        SpawnChain(new V3Chain(head, tail), head);
+    }
+    
+    public void SpawnChain(BaseChain chainData, BaseNote toDeselect)
     {
         var chainContainer = objectContainerCollection;
         chainContainer.SpawnObject(chainData, false);
-        SelectionController.Deselect(headNote);
+        
+        SelectionController.Deselect(toDeselect);
+        
         var conflict = new List<BaseObject>(SelectedObjects);
         selectionController.Delete(false);
         BeatmapActionContainer.AddAction(GenerateAction(chainData, conflict));

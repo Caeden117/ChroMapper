@@ -7,7 +7,7 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3ColorBoostEvent : BaseColorBoostEvent
+    public class V3ColorBoostEvent : BaseColorBoostEvent, V3Object
     {
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
         public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
@@ -26,8 +26,8 @@ namespace Beatmap.V3
         public V3ColorBoostEvent(JSONNode node)
         {
             Time = RetrieveRequiredNode(node, "b").AsFloat;
-            Toggle = RetrieveRequiredNode(node, "o").AsBool;
             Type = 5;
+            Toggle = RetrieveRequiredNode(node, "o").AsBool;
             Value = Toggle ? 1 : 0;
             CustomData = node["customData"];
         }

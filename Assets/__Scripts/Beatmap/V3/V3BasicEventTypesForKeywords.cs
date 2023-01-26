@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3BasicEventTypesForKeywords : BaseEventTypesForKeywords
+    public class V3BasicEventTypesForKeywords : BaseEventTypesForKeywords, V3Object
     {
         public V3BasicEventTypesForKeywords()
         {

@@ -5,15 +5,13 @@ namespace Beatmap.Base
 {
     public abstract class BaseColorBoostEvent : BaseEvent
     {
-        protected BaseColorBoostEvent()
-        {
-        }
+        protected BaseColorBoostEvent() => Type = 5;
 
         protected BaseColorBoostEvent(BaseColorBoostEvent other)
         {
             Time = other.Time;
-            Toggle = other.Toggle;
             Type = 5;
+            Toggle = other.Toggle;
             Value = Toggle ? 1 : 0;
             CustomData = other.SaveCustom().Clone();
         }
@@ -21,8 +19,8 @@ namespace Beatmap.Base
         protected BaseColorBoostEvent(BaseEvent evt)
         {
             Time = evt.Time;
-            Toggle = evt.Value == 1;
             Type = 5;
+            Toggle = evt.Value == 1;
             Value = Toggle ? 1 : 0;
             CustomData = evt.SaveCustom().Clone();
         }

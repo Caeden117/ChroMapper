@@ -7,7 +7,7 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3BasicEvent : BaseEvent
+    public class V3BasicEvent : BaseEvent, V3Object
     {
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
         public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();

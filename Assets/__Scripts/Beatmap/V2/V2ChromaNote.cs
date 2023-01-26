@@ -3,7 +3,7 @@ using Beatmap.Enums;
 
 namespace Beatmap.V2
 {
-    public class V2ChromaNote : V2Note
+    public class V2ChromaNote : V2Note, V2Object
     {
         public const int Monochrome = (int)NoteCutDirection.Up;
         public const int Bidirectional = (int)NoteCutDirection.Left;

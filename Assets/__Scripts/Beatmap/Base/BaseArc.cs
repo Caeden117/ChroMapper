@@ -44,10 +44,10 @@ namespace Beatmap.Base
             CustomData = start.SaveCustom().Clone();
         }
 
-        protected BaseArc(float time, int color, int posX, int posY, int cutDirection, int angleOffset,
+        protected BaseArc(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
             float mult, float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult,
-            int midAnchorMode, JSONNode customData = null) : base(time, color, posX, posY, cutDirection, angleOffset,
-            tailTime, tailPosX, tailPosY, customData)
+            int midAnchorMode, JSONNode customData = null) : base(time, posX, posY, color, cutDirection,
+            angleOffset, tailTime, tailPosX, tailPosY, customData)
         {
             HeadControlPointLengthMultiplier = mult;
             TailCutDirection = tailCutDirection;

@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using System.Collections;
-using Beatmap.Enums;
+﻿using System.Collections;
 using Beatmap.Base;
+using Beatmap.Enums;
 using Beatmap.V3;
+using NUnit.Framework;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -14,22 +14,28 @@ namespace Tests
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap()
         {
-            return TestUtils.LoadMapper();
+            return TestUtils.LoadMap(3);
+        }
+
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
         }
 
         [TearDown]
         public void ContainerCleanup()
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
-            TestUtils.CleanupNotes();
+            CleanupUtils.CleanupNotes();
         }
 
         [Test]
         public void ModifiedAction()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            Transform root = notesContainer.transform.root;
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var root = notesContainer.transform.root;
 
             BaseNote baseNoteA = new V3ColorNote
             {
@@ -40,7 +46,7 @@ namespace Tests
 
             SelectionController.Select(baseNoteA);
 
-            SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
+            var selectionController = root.GetComponentInChildren<SelectionController>();
             // Default precision is 3dp, but in editor it's 6dp so check 7dp
             selectionController.MoveSelection(-0.0000001f);
 
@@ -58,11 +64,11 @@ namespace Tests
         [Test]
         public void CompositeTest()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            Transform root = notesContainer.transform.root;
-            SelectionController selectionController = root.GetComponentInChildren<SelectionController>();
-            NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var root = notesContainer.transform.root;
+            var selectionController = root.GetComponentInChildren<SelectionController>();
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
             BaseNote baseNoteA = new V3ColorNote
             {
@@ -77,18 +83,14 @@ namespace Tests
                 PosY = 1
             };
 
-            notePlacement.queuedData = baseNoteA;
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
+            PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
             SelectionController.Select(baseNoteA);
 
             selectionController.ShiftSelection(1, 1);
 
             // Should conflict with existing note and delete it
-            notePlacement.queuedData = baseNoteB;
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
+            PlaceUtils.PlaceNote(notePlacement, baseNoteB);
 
             SelectionController.Select(baseNoteB);
             selectionController.ShiftSelection(1, 1);
@@ -177,27 +179,22 @@ namespace Tests
         [Test]
         public void ModifiedWithConflictingAction()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
 
-            BeatmapObjectContainerCollection notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            Transform root = notesContainer.transform.root;
-            NotePlacement notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var root = notesContainer.transform.root;
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            notePlacement.queuedData = new V3ColorNote
+            PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
             {
                 Time = 2,
                 Type = (int)NoteType.Red
-            };
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
-
-            notePlacement.queuedData = new V3ColorNote
+            });
+            PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
             {
                 Time = 2,
                 Type = (int)NoteType.Blue
-            };
-            notePlacement.RoundedTime = notePlacement.queuedData.Time;
-            notePlacement.ApplyToMap();
+            });
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
             Assert.AreEqual(2, notesContainer.UnsortedObjects[0].Time);

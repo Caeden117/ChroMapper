@@ -1,15 +1,13 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
-using SimpleJSON;
 using LiteNetLib.Utils;
+using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3Arc : BaseArc
+    public class V3Arc : BaseArc, V3Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
         public V3Arc()
         {
         }
@@ -36,23 +34,31 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
-        public V3Arc(float time, int color, int posX, int posY, int cutDirection, int angleOffset, float mult,
+        public V3Arc(float time, int posX, int posY, int color, int cutDirection, float mult,
             float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
-            JSONNode customData = null) : base(time, color, posX, posY, cutDirection, angleOffset, mult, tailTime,
-            tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
+            JSONNode customData = null) : base(time, posX, posY, color, cutDirection, 0, mult,
+            tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
+            ParseCustom();
+
+        public V3Arc(float time, int posX, int posY, int color, int cutDirection, int angleOffset, float mult,
+            float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
+            JSONNode customData = null) : base(time, posX, posY, color, cutDirection, angleOffset, mult,
+            tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
             ParseCustom();
 
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";
 
-        public override string CustomKeyCoordinate { get; } = "coordinate";
+        public override string CustomKeyCoordinate { get; } = "coordinates";
 
         public override string CustomKeyWorldRotation { get; } = "worldRotation";
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
-        public override string CustomKeyTailCoordinate { get; } = "tailCoordinate";
+        public override string CustomKeyTailCoordinate { get; } = "tailCoordinates";
+        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
+        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
@@ -106,8 +112,9 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Arc(Time, Color, PosX, PosY, CutDirection, AngleOffset, HeadControlPointLengthMultiplier,
-                TailTime, TailPosX, TailPosY, TailCutDirection, TailControlPointLengthMultiplier, MidAnchorMode,
-                SaveCustom().Clone());
+            new V3Arc(Time, PosX, PosY, Color, CutDirection, AngleOffset,
+                HeadControlPointLengthMultiplier, TailTime, TailPosX, TailPosY, TailCutDirection,
+                TailControlPointLengthMultiplier,
+                MidAnchorMode, SaveCustom().Clone());
     }
 }

@@ -6,9 +6,7 @@ namespace Beatmap.Base
 {
     public abstract class BaseRotationEvent : BaseEvent
     {
-        protected BaseRotationEvent()
-        {
-        }
+        protected BaseRotationEvent() => Type = 13;
 
         protected BaseRotationEvent(BaseRotationEvent other)
         {

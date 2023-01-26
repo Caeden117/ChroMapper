@@ -6,7 +6,7 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3.Customs
 {
-    public class V3CustomEvent : BaseCustomEvent
+    public class V3CustomEvent : BaseCustomEvent, V3Object
     {
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
         public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();

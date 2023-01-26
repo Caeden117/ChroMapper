@@ -8,7 +8,7 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3LightRotationEventBoxGroup : BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>
+    public class V3LightRotationEventBoxGroup : BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>, V3Object
     {
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
         public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();

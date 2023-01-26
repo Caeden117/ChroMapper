@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.Enums;
 using SimpleJSON;
 using UnityEngine;
 using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3RotationEvent : BaseRotationEvent
+    public class V3RotationEvent : BaseRotationEvent, V3Object
     {
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
         public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
@@ -28,6 +29,7 @@ namespace Beatmap.V3
             Time = RetrieveRequiredNode(node, "b").AsFloat;
             ExecutionTime = RetrieveRequiredNode(node, "e").AsInt;
             Rotation = RetrieveRequiredNode(node, "r").AsFloat;
+            Type = (int)(ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
             CustomData = node["customData"];
         }
 

@@ -75,6 +75,9 @@ namespace Beatmap.Helper
         public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>
             LightRotationEventBoxGroups(JSONNode node) => new V3LightRotationEventBoxGroup(node);
 
+        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
+            LightTranslationEventBoxGroups(JSONNode node) => new V3LightTranslationEventBoxGroup(node);
+
         public static BaseEventTypesWithKeywords EventTypesWithKeywords(JSONNode node) => Settings.Instance.Load_MapV3
             ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(node)
             : new V2SpecialEventsKeywordFilters(node);
@@ -118,18 +121,18 @@ namespace Beatmap.Helper
             ? (BaseObstacle)new V3Obstacle(time, posX, posY, duration, width, height, customData)
             : new V2Obstacle(time, posX, type, duration, width, customData);
 
-        public static BaseArc Arc(float time, int color, int posX, int posY, int cutDirection, int angleOffset,
+        public static BaseArc Arc(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
             float mult, float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult,
             int midAnchorMode, JSONNode customData = null) => Settings.Instance.Load_MapV3
-            ? (BaseArc)new V3Arc(time, color, posX, posY, cutDirection, angleOffset, mult, tailTime,
-                tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData)
-            : new V2Arc(time, color, posX, posY, cutDirection, angleOffset, mult, tailTime,
-                tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData);
+            ? (BaseArc)new V3Arc(time, posX, posY, color, cutDirection, angleOffset, mult,
+                tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData)
+            : new V2Arc(time, posX, posY, color, cutDirection, angleOffset, mult,
+                tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData);
 
-        public static BaseChain Chain(float time, int color, int posX, int posY, int cutDirection, int angleOffset,
+        public static BaseChain Chain(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
             float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null) =>
-            new V3Chain(time, color, posX, posY, cutDirection, angleOffset, tailTime,
-                tailPosX, tailPosY, sliceCount, squish, customData);
+            new V3Chain(time, posX, posY, color, cutDirection, angleOffset,
+                tailTime, tailPosX, tailPosY, sliceCount, squish, customData);
 
         public static BaseWaypoint Waypoint(float time, int posX, int posY, int offsetDirection,
             JSONNode customData = null) => Settings.Instance.Load_MapV3
@@ -154,6 +157,11 @@ namespace Beatmap.Helper
         public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> LightRotationEventBoxGroups(float time,
             int id, List<BaseLightRotationEventBox> events, JSONNode customData = null) =>
             new V3LightRotationEventBoxGroup(time, id, events, customData);
+
+        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox> LightTranslationEventBoxGroups(
+            float time,
+            int id, List<BaseLightTranslationEventBox> events, JSONNode customData = null) =>
+            new V3LightTranslationEventBoxGroup(time, id, events, customData);
 
         // public static BaseEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Settings.Instance.Load_MapV3 ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(keywords) : new V2SpecialEventsKeywordFilters(keywords);
         public static BaseBpmChange BpmChange(float time, float bpm) => Settings.Instance.Load_MapV3
@@ -188,9 +196,10 @@ namespace Beatmap.Helper
         public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> LightRotationEventBoxGroups() =>
             new V3LightRotationEventBoxGroup();
 
-        public static BaseEventTypesWithKeywords EventTypesWithKeywords() => Settings.Instance.Load_MapV3
-            ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords()
-            : new V2SpecialEventsKeywordFilters();
+        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
+            LightTranslationEventBoxGroups() => new V3LightTranslationEventBoxGroup();
+
+        public static BaseEventTypesWithKeywords EventTypesWithKeywords() => new V3BasicEventTypesWithKeywords();
 
         public static BaseBpmChange BpmChange() =>
             Settings.Instance.Load_MapV3 ? (BaseBpmChange)new V3BpmChange() : new V2BpmChange();

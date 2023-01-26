@@ -4,7 +4,7 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3LightColorEventBox : BaseLightColorEventBox
+    public class V3LightColorEventBox : BaseLightColorEventBox, V3Object
     {
         public V3LightColorEventBox()
         {

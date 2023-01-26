@@ -51,9 +51,9 @@ namespace Beatmap.Base
             CustomData = start.SaveCustom().Clone();
         }
 
-        protected BaseChain(float time, int color, int posX, int posY, int cutDirection, int angleOffset,
+        protected BaseChain(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
             float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null) :
-            base(time, color, posX, posY, cutDirection, angleOffset, tailTime, tailPosX, tailPosY, customData)
+            base(time, posX, posY, color, cutDirection, angleOffset, tailTime, tailPosX, tailPosY, customData)
         {
             SliceCount = sliceCount;
             Squish = squish;

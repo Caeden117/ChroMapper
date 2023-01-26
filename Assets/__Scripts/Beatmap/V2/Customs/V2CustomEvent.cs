@@ -6,7 +6,7 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V2.Customs
 {
-    public class V2CustomEvent : BaseCustomEvent
+    public class V2CustomEvent : BaseCustomEvent, V2Object
     {
         public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
         public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
