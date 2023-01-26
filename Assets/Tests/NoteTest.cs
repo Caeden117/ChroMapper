@@ -20,12 +20,17 @@ namespace Tests
             return TestUtils.LoadMap(3);
         }
 
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
             CleanupUtils.CleanupNotes();
-            TestUtils.ReturnSettings();
         }
 
         [Test]

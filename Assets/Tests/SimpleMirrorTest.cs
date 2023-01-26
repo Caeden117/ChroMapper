@@ -26,6 +26,12 @@ namespace Tests
             _mirror = Object.FindObjectOfType<MirrorSelection>();
         }
 
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
@@ -33,7 +39,6 @@ namespace Tests
             CleanupUtils.CleanupNotes();
             CleanupUtils.CleanupEvents();
             CleanupUtils.CleanupObstacles();
-            TestUtils.ReturnSettings();
         }
 
         [Test]

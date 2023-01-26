@@ -40,16 +40,20 @@ namespace Tests.Util
             if (version != 2 && version != 3)
             {
                 throw new ArgumentException("Only beatmap version 2 and 3 is available");
-            } 
+            }
+
+            var prevVersion = loadVersion;
+            loadVersion = version;
+            InitSettings();
             
+            // check map version, switch if different
             if (SceneManager.GetActiveScene().name.StartsWith("03"))
             {
-                if (loadVersion == version)
+                if (prevVersion == version)
                 {
                     yield break;
                 }
 
-                loadVersion = version;
                 SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
                 yield return new WaitUntil(() => SceneManager.GetActiveScene().name.StartsWith("01") && !SceneTransitionManager.IsLoading);
             }
@@ -59,8 +63,6 @@ namespace Tests.Util
         
         private static IEnumerator LoadMapper()
         {
-            InitSettings();
-            
             if (SceneManager.GetActiveScene().name.StartsWith("03"))
             {
                 yield break;

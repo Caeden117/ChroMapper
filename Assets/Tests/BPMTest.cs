@@ -19,12 +19,17 @@ namespace Tests
             return TestUtils.LoadMap(3);
         }
 
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
             CleanupUtils.CleanupBPMChanges();
-            TestUtils.ReturnSettings();
         }
 
         private static void CheckBPM(string msg, BeatmapObjectContainerCollection container, int idx, int time, int bpm)

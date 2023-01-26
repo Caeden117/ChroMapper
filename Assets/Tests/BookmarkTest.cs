@@ -14,11 +14,16 @@ namespace Tests
             return TestUtils.LoadMap(3);
         }
 
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
+        }
+
         [TearDown]
         public void Cleanup()
         {
             CleanupUtils.CleanupBookmarks();
-            TestUtils.ReturnSettings();
         }
 
         [Test]

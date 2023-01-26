@@ -20,15 +20,8 @@ namespace Tests
             return TestUtils.LoadMap(3);
         }
 
-        [TearDown]
-        public void ContainerCleanup()
-        {
-            CleanupUtils.CleanupEvents();
-            TestUtils.ReturnSettings();
-        }
-
         [OneTimeSetUp]
-        public void Setup()
+        public void SetUp()
         {
             NodeEditorController.IsActive = true;
         }
@@ -36,7 +29,14 @@ namespace Tests
         [OneTimeTearDown]
         public void TearDown()
         {
+            TestUtils.ReturnSettings();
             NodeEditorController.IsActive = false;
+        }
+
+        [TearDown]
+        public void ContainerCleanup()
+        {
+            CleanupUtils.CleanupEvents();
         }
 
         [Test]

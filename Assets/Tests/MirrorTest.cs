@@ -59,12 +59,17 @@ namespace Tests
             SelectionController.Select(baseNoteB, true);
         }
 
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
             CleanupUtils.CleanupNotes();
-            TestUtils.ReturnSettings();
         }
 
         [Test]

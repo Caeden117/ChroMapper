@@ -6,6 +6,7 @@ using Beatmap.Enums;
 using Beatmap.Base;
 using Beatmap.Helper;
 using Beatmap.V2;
+using Beatmap.V3;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -20,6 +21,12 @@ namespace Tests
             return TestUtils.LoadMap(2);
         }
 
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
@@ -29,12 +36,6 @@ namespace Tests
             CleanupUtils.CleanupEvents();
             CleanupUtils.CleanupArcs();
             CleanupUtils.CleanupChains();
-        }
-
-        [OneTimeTearDown]
-        public void FinalCleanup()
-        {
-            TestUtils.ReturnSettings();
         }
 
         [Test]
@@ -176,12 +177,13 @@ namespace Tests
             }
         }
 
+        // TODO: update beatmap v2 to prevent load and save of chain in grid container
         [Test]
         public void PlaceChain()
         {
-            Assert.Throws<NotSupportedException>(() => BeatmapFactory.Chain(), "Factory default should prevent v3 chain generation in beatmap v2");
-            Assert.Throws<NotSupportedException>(() => BeatmapFactory.Chain(0f, 0, 1, 2, 1, 0, 1f, 1, 2, 5 ,1), "Factory does not instantiate v3 chain in beatmap v2");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Arc(new JSONObject
+            Assert.IsInstanceOf<V3Chain>(BeatmapFactory.Chain(), "Factory default does not instantiate v3 chain in beatmap v2");
+            Assert.IsInstanceOf<V3Chain>(BeatmapFactory.Chain(0f, 0, 1, 2, 1, 0, 1f, 1, 2, 5 ,1), "Factory does not instantiate v3 chain in beatmap v2");
+            Assert.DoesNotThrow(() => BeatmapFactory.Chain(new JSONObject
             {
                 ["b"] = 0f,
                 ["x"] = 1,
@@ -195,7 +197,37 @@ namespace Tests
                 ["sc"] = 5,
                 ["s"] = 1,
                 ["customData"] = new JSONObject()
+            }), "Factory could not instantiate chain with compatible JSON schema in beatmap v2");
+            Assert.Throws<ArgumentException>(() => BeatmapFactory.Chain(new JSONObject
+            {
+                ["_colorType"] = 0,
+                ["_headTime"] = 0f,
+                ["_headLineIndex"] = 1,
+                ["_headLineLayer"] = 2,
+                ["_headCutDirection"] = 1,
+                ["_headControlPointLengthMultiplier"] = 1f,
+                ["_tailTime"] = 1f,
+                ["_tailLineIndex"] = 2,
+                ["_tailLineLayer"] = 1,
+                ["_tailCutDirection"] = 0,
+                ["_tailControlPointLengthMultiplier"] = 1f,
+                ["_sliderMidAnchorMode"] = 0,
+                ["_customData"] = new JSONObject()
             }), "Factory should throw error instantiating chain with incompatible JSON schema in beatmap v2");
+            
+            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
+            if (collection is ChainGridContainer chainsContainer)
+            {
+                Transform root = chainsContainer.transform.root;
+                ChainPlacement chainPlacement = root.GetComponentInChildren<ChainPlacement>();
+                chainPlacement.RefreshVisuals();
+
+                BaseChain chainA = BeatmapFactory.Chain(0f, 0, 1, 2, 1, 0, 1f, 1, 2, 5 ,1);
+                PlaceUtils.PlaceChain(chainPlacement, chainA);
+                
+                CheckUtils.CheckV3Object("Check chain object version", chainsContainer, 0);
+                CheckUtils.CheckChain("Check chain attributes", chainsContainer, 0, 0f, 0, 1, 2, 1, 1f, 1, 2, 5 ,1);
+            }
         }
 
         [Test]

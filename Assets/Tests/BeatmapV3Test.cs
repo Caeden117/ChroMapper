@@ -20,6 +20,12 @@ namespace Tests
             return TestUtils.LoadMap(3);
         }
 
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
@@ -31,17 +37,11 @@ namespace Tests
             CleanupUtils.CleanupChains();
         }
 
-        [OneTimeTearDown]
-        public void FinalCleanup()
-        {
-            TestUtils.ReturnSettings();
-        }
-
         [Test]
         public void IsV3Map()
         {
             Assert.IsInstanceOf<V3Difficulty>(BeatSaberSongContainer.Instance.Map, "Beatmap instance version should be v3");
-            Assert.IsTrue(Settings.Instance.Load_MapV3, "Settings Load Beatmap V2 should be false, otherwise may cause unnecessary issue");
+            Assert.IsTrue(Settings.Instance.Load_MapV3, "Settings Load Beatmap V3 should be true, otherwise may cause unnecessary issue");
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace Tests
                 ["s"] = 1,
                 ["customData"] = new JSONObject()
             }), "Factory could not instantiate chain with compatible JSON schema in beatmap v3");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Arc(new JSONObject
+            Assert.Throws<ArgumentException>(() => BeatmapFactory.Chain(new JSONObject
             {
                 ["_colorType"] = 0,
                 ["_headTime"] = 0f,
