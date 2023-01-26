@@ -75,6 +75,9 @@ namespace Beatmap.Helper
         public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>
             LightRotationEventBoxGroups(JSONNode node) => new V3LightRotationEventBoxGroup(node);
 
+        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
+            LightTranslationEventBoxGroups(JSONNode node) => new V3LightTranslationEventBoxGroup(node);
+
         public static BaseEventTypesWithKeywords EventTypesWithKeywords(JSONNode node) => Settings.Instance.Load_MapV3
             ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(node)
             : new V2SpecialEventsKeywordFilters(node);
@@ -155,6 +158,11 @@ namespace Beatmap.Helper
             int id, List<BaseLightRotationEventBox> events, JSONNode customData = null) =>
             new V3LightRotationEventBoxGroup(time, id, events, customData);
 
+        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox> LightTranslationEventBoxGroups(
+            float time,
+            int id, List<BaseLightTranslationEventBox> events, JSONNode customData = null) =>
+            new V3LightTranslationEventBoxGroup(time, id, events, customData);
+
         // public static BaseEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Settings.Instance.Load_MapV3 ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(keywords) : new V2SpecialEventsKeywordFilters(keywords);
         public static BaseBpmChange BpmChange(float time, float bpm) => Settings.Instance.Load_MapV3
             ? (BaseBpmChange)new V3BpmChange(time, bpm)
@@ -188,9 +196,10 @@ namespace Beatmap.Helper
         public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> LightRotationEventBoxGroups() =>
             new V3LightRotationEventBoxGroup();
 
-        public static BaseEventTypesWithKeywords EventTypesWithKeywords() => Settings.Instance.Load_MapV3
-            ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords()
-            : new V2SpecialEventsKeywordFilters();
+        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
+            LightTranslationEventBoxGroups() => new V3LightTranslationEventBoxGroup();
+
+        public static BaseEventTypesWithKeywords EventTypesWithKeywords() => new V3BasicEventTypesWithKeywords();
 
         public static BaseBpmChange BpmChange() =>
             Settings.Instance.Load_MapV3 ? (BaseBpmChange)new V3BpmChange() : new V2BpmChange();
