@@ -5,7 +5,7 @@ Shader "Unlit/Transparent Colored" {
     }
 
     SubShader {
-        Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
+        Tags {"Queue"="Transparent-1" "IgnoreProjector"="True" "RenderType"="Transparent"}
         
         ZWrite Off
         Lighting Off
