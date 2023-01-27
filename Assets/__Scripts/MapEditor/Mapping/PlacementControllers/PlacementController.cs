@@ -355,6 +355,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         objectContainerCollection.SpawnObject(objectData, out var conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         queuedData = BeatmapFactory.Clone(queuedData);
+        queuedData.CustomData = null;
     }
 
     public abstract TBo GenerateOriginalData();

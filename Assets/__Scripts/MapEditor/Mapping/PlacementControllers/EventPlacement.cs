@@ -144,7 +144,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             }
         }
 
-        if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent() && queuedData.Value != (int)LightValue.Off)
+        if (CanPlaceChromaEvents && queuedData.IsLightEvent(EnvironmentInfoHelper.GetName()) && queuedData.Value != (int)LightValue.Off)
             queuedData.CustomColor = colorPicker.CurrentColor;
         else
             queuedData.CustomColor = null;

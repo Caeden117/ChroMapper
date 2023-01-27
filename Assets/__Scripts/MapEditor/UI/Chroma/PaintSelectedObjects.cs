@@ -30,13 +30,14 @@ public class PaintSelectedObjects : MonoBehaviour
 
     private bool DoPaint(BaseObject obj)
     {
-        if (obj is BaseEvent @event)
+        if (obj is BaseEvent evt)
         {
-            if (@event.Value == (int)LightValue.Off) return false; //Ignore painting Off events
-            if (@event.CustomLightGradient != null)
+            if (evt.Value == (int)LightValue.Off) return false; //Ignore painting Off events
+            if (!evt.IsLightEvent(EnvironmentInfoHelper.GetName())) return false; //Ignore non-light event
+            if (evt.CustomLightGradient != null)
             {
                 //Modify start color if we are painting a Chroma 2.0 gradient
-                @event.CustomLightGradient.StartColor = picker.CurrentColor;
+                evt.CustomLightGradient.StartColor = picker.CurrentColor;
                 return true;
             }
         }
