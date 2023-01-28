@@ -286,24 +286,25 @@ namespace Beatmap.Base
         protected override void ParseCustom()
         {
             base.ParseCustom();
-            if (CustomData == null) return;
 
-            if (CustomData.HasKey(CustomKeyLightID))
+            if (CustomData?.HasKey(CustomKeyLightID) ?? false)
             {
                 var temp = CustomData[CustomKeyLightID];
                 CustomLightID = temp.IsNumber
                     ? new[] { temp.AsInt }
                     : temp.AsArray.Linq.Where(x => x.Value.IsNumber).Select(x => x.Value.AsInt).ToArray();
             }
+            else {
+                CustomLightID = null;
+            }
 
-            if (CustomData.HasKey(CustomKeyLerpType)) CustomLerpType = CustomData[CustomKeyLerpType].Value;
-            if (CustomData.HasKey(CustomKeyEasing)) CustomEasing = CustomData[CustomKeyEasing].Value;
-            if (CustomData.HasKey(CustomKeyStep)) CustomStep = CustomData[CustomKeyStep].AsFloat;
-            if (CustomData.HasKey(CustomKeyProp)) CustomProp = CustomData[CustomKeyProp].AsFloat;
-            if (CustomData.HasKey(CustomKeySpeed)) CustomSpeed = CustomData[CustomKeySpeed].AsFloat;
-            if (CustomData.HasKey(CustomKeyDirection)) CustomDirection = CustomData[CustomKeyDirection].AsInt;
-            if (CustomData.HasKey(CustomKeyLockRotation))
-                CustomLockRotation = CustomData[CustomKeyLockRotation].AsBool;
+            CustomLerpType = (CustomData?.HasKey(CustomKeyLerpType) ?? false) ? CustomData?[CustomKeyLerpType].Value : null;
+            CustomEasing = (CustomData?.HasKey(CustomKeyEasing) ?? false) ? CustomData?[CustomKeyEasing].Value : null;
+            CustomStep = (CustomData?.HasKey(CustomKeyStep) ?? false) ? CustomData?[CustomKeyStep].AsFloat : null;
+            CustomProp = (CustomData?.HasKey(CustomKeyProp) ?? false) ? CustomData?[CustomKeyProp].AsFloat : null;
+            CustomSpeed = (CustomData?.HasKey(CustomKeySpeed) ?? false) ? CustomData?[CustomKeySpeed].AsFloat : null;
+            CustomDirection = (CustomData?.HasKey(CustomKeyDirection) ?? false) ? CustomData?[CustomKeyDirection].AsInt : null;
+            CustomLockRotation = (CustomData?.HasKey(CustomKeyLockRotation) ?? false) ? CustomData?[CustomKeyLockRotation].AsBool : null;
         }
 
         protected internal override JSONNode SaveCustom()
