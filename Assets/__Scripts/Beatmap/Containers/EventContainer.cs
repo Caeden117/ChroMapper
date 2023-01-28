@@ -167,7 +167,7 @@ namespace Beatmap.Containers
         public void UpdateGradientRendering()
         {
             if (EventData.CustomLightGradient != null &&
-                !EventData.IsLightEvent(BeatSaberSongContainer.Instance.Song.EnvironmentName))
+                EventData.IsLightEvent(BeatSaberSongContainer.Instance.Song.EnvironmentName))
             {
                 if (Settings.Instance.EmulateChromaLite && EventData.Value != (int)LightValue.Off)
                 {
