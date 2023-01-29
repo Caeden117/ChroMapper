@@ -50,9 +50,9 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
 
     public void OnTypeTransition(InputAction.CallbackContext context)
     {
-        if (!context.performed || !Settings.Instance.Load_MapV3) return;
+        if (!context.performed) return;
         lightMode.SetMode(LightingModeController.LightingMode.Transition);
-    }    
+    }
 
     public void OnTogglePrecisionRotation(InputAction.CallbackContext context)
     {

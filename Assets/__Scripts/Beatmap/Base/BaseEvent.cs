@@ -131,6 +131,8 @@ namespace Beatmap.Base
             set => customSpeed = value;
         }
 
+        public virtual float? CustomRingRotation { get; set; }
+
         public virtual float? CustomStepMult { get; set; }
 
         public virtual float? CustomPropMult { get; set; }
@@ -155,6 +157,7 @@ namespace Beatmap.Base
         public abstract string CustomKeyStep { get; }
         public abstract string CustomKeyProp { get; }
         public abstract string CustomKeySpeed { get; }
+        public abstract string CustomKeyRingRotation { get; }
         public abstract string CustomKeyStepMult { get; }
         public abstract string CustomKeyPropMult { get; }
         public abstract string CustomKeySpeedMult { get; }
@@ -301,6 +304,7 @@ namespace Beatmap.Base
             if (CustomData.HasKey(CustomKeyStep)) CustomStep = CustomData[CustomKeyStep].AsFloat;
             if (CustomData.HasKey(CustomKeyProp)) CustomProp = CustomData[CustomKeyProp].AsFloat;
             if (CustomData.HasKey(CustomKeySpeed)) CustomSpeed = CustomData[CustomKeySpeed].AsFloat;
+            if (CustomData.HasKey(CustomKeyRingRotation)) CustomRingRotation = CustomData[CustomKeyRingRotation].AsFloat;
             if (CustomData.HasKey(CustomKeyDirection)) CustomDirection = CustomData[CustomKeyDirection].AsInt;
             if (CustomData.HasKey(CustomKeyLockRotation))
                 CustomLockRotation = CustomData[CustomKeyLockRotation].AsBool;
@@ -320,6 +324,7 @@ namespace Beatmap.Base
             if (CustomStep != null) CustomData[CustomKeyStep] = CustomStep;
             if (CustomProp != null) CustomData[CustomKeyProp] = CustomProp;
             if (CustomSpeed != null) CustomData[CustomKeySpeed] = CustomSpeed;
+            if (CustomRingRotation != null) CustomData[CustomKeyRingRotation] = CustomRingRotation;
             if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection;
             if (CustomLockRotation != null) CustomData[CustomKeyLockRotation] = CustomLockRotation;
             return CustomData;

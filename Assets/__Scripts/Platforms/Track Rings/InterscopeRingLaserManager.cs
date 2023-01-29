@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SimpleJSON;
+using Beatmap.Base;
 using UnityEngine;
 
 internal class InterscopeRingLaserManager : TrackLaneRingsManagerBase
@@ -8,9 +8,9 @@ internal class InterscopeRingLaserManager : TrackLaneRingsManagerBase
 
     public override Object[] GetToDestroy() => new Object[] { this };
 
-    public override void HandlePositionEvent(JSONNode customData = null) => isLasers.ForEach(it => it.SwitchStyle());
+    public override void HandlePositionEvent(BaseEvent evt) => isLasers.ForEach(it => it.SwitchStyle());
 
-    public override void HandleRotationEvent(JSONNode customData = null)
+    public override void HandleRotationEvent(BaseEvent evt)
     {
     }
 }
