@@ -8,6 +8,10 @@ namespace Beatmap.Base
 {
     public abstract class BaseObstacle : BaseGrid, ICustomDataObstacle
     {
+        protected int InternalType;
+        protected int InternalHeight;
+        protected int InternalPosY;
+
         private const float mappingExtensionsStartHeightMultiplier = 1.35f;
         private const float mappingExtensionsUnitsToFullHeightWall = 1000 / 3.5f;
 
@@ -19,18 +23,20 @@ namespace Beatmap.Base
         {
             Time = other.Time;
             PosX = other.PosX;
-            PosY = other.PosY;
-            Type = other.Type;
+            InternalPosY = other.PosY;
+            InternalType = other.Type;
             Duration = other.Duration;
             Width = other.Width;
-            Height = other.Height;
+            InternalHeight = other.Height;
             CustomData = other.SaveCustom().Clone();
+            InferType();
+            InferPosYHeight();
         }
 
         protected BaseObstacle(float time, int posX, int type, float duration, int width,
             JSONNode customData = null) : base(time, posX, 0, customData)
         {
-            Type = type;
+            InternalType = type;
             Duration = duration;
             Width = width;
             InferPosYHeight();
@@ -41,24 +47,36 @@ namespace Beatmap.Base
         {
             Duration = duration;
             Width = width;
-            Height = height;
+            InternalHeight = height;
             InferType();
         }
 
-        protected BaseObstacle(float time, int posX, int posY, int type, float duration, int width, int height,
-            JSONNode customData = null) : base(time, posX, posY, customData)
+        public override ObjectType ObjectType { get; set; } = ObjectType.Obstacle;
+
+        public override int PosY
         {
-            Type = type;
-            Duration = duration;
-            Width = width;
-            Height = height;
+            get => InternalPosY;
+            set => InternalPosY = value;
         }
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.Obstacle;
-        public virtual int Type { get; set; }
+        // this is not making me happy since this is only v2 related stuff
+        public virtual int Type
+        {
+            get => InternalType;
+            set {
+                InternalType = value;
+                InferPosYHeight();
+            }
+        }
+
         public float Duration { get; set; }
-        public virtual int Width { get; set; }
-        public virtual int Height { get; set; }
+        public int Width { get; set; }
+
+        public virtual int Height
+        {
+            get => InternalHeight;
+            set => InternalHeight = value;
+        }
 
         public virtual Vector3? CustomSize { get; set; }
 
@@ -84,19 +102,19 @@ namespace Beatmap.Base
             if (originalData is BaseObstacle obstacle)
             {
                 Duration = obstacle.Duration;
-                Type = obstacle.Type;
                 Width = obstacle.Width;
                 Height = obstacle.Height;
+                Type = obstacle.Type;
             }
         }
 
         public ObstacleBounds GetShape()
         {
             var position = PosX - 2f; //Line index
-            var startHeight = Type == (int)ObstacleType.Crouch ? 1.5f : -0.5f;
-            var height = Type == (int)ObstacleType.Crouch ? 3f : 5f;
+            var clampedY = Mathf.Clamp(PosY, 0, 2);
+            var startHeight = -0.5f + clampedY;
+            float height = Mathf.Min(Height, 5 - clampedY);
             float width = Width;
-            GetHeights(ref height, ref startHeight);
 
             // ME
 
@@ -106,7 +124,7 @@ namespace Beatmap.Base
             else if (PosX <= -1000)
                 position = ((float)PosX - 1000) / 1000f;
 
-            if (Type > 2 && Type < 1000)
+            if (Type > 1 && Type < 1000)
             {
                 startHeight = Type / (750 / 3.5f); //start height 750 == standard wall height
                 height = 3.5f;
@@ -146,41 +164,40 @@ namespace Beatmap.Base
         }
 
         protected void InferType() =>
-            Type = PosY switch
+            InternalType = PosY switch
             {
                 (int)GridY.Base when Height is (int)ObstacleHeight.Full => (int)ObstacleType.Full,
                 (int)GridY.Top when Height is (int)ObstacleHeight.Crouch => (int)ObstacleType.Crouch,
-                _ => (int)ObstacleType.Freeform
+                _ => Type
             };
 
+        // type more than 1 will always default to full height wall
         protected void InferPosYHeight()
         {
             switch (Type)
             {
-                case (int)ObstacleType.Full:
-                    PosY = (int)GridY.Base;
-                    Height = (int)ObstacleHeight.Full;
-                    break;
                 case (int)ObstacleType.Crouch:
-                    PosY = (int)GridY.Top;
-                    Height = (int)ObstacleHeight.Crouch;
+                    InternalPosY = (int)GridY.Top;
+                    InternalHeight = (int)ObstacleHeight.Crouch;
+                    break;
+                default:
+                    InternalPosY = (int)GridY.Base;
+                    InternalHeight = (int)ObstacleHeight.Full;
                     break;
             }
-        }
-
-        private void GetHeights(ref float height, ref float startHeight)
-        {
-            if (Type != (int)ObstacleType.Freeform) return;
-            var clampedY = Mathf.Clamp(PosY, 0, 2);
-            startHeight = -0.5f + clampedY;
-            height = Mathf.Min(Height, 5 - clampedY);
         }
 
         protected override void ParseCustom()
         {
             base.ParseCustom();
+            if (CustomData == null) return;
 
-            CustomSize = (CustomData?.HasKey(CustomKeySize) ?? false) ? CustomData?[CustomKeySize].ReadVector3() : null;
+            if (CustomData.HasKey(CustomKeySize) && CustomData[CustomKeySize].IsArray)
+            {
+                var temp = CustomData[CustomKeySize].AsArray;
+                if (temp.Count < 2) temp.Add(0);
+                CustomSize = temp;
+            }
         }
 
         protected internal override JSONNode SaveCustom()

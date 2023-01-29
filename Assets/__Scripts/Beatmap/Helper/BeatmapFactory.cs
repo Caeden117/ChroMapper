@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Enums;
 using Beatmap.V2;
 using Beatmap.V2.Customs;
 using Beatmap.V3;
@@ -115,8 +116,17 @@ namespace Beatmap.Helper
                 ? (BaseNote)new V3BombNote(time, posX, posY, customData)
                 : new V2Note(time, posX, posY, 3, 0, customData);
 
-        public static BaseObstacle Obstacle(float time, int posX, int posY, int type, float duration, int width,
-            int height,
+        public static BaseObstacle Obstacle(float time, int posX, int posY, float duration, int width, int height,
+            JSONNode customData = null) => Settings.Instance.Load_MapV3
+            ? (BaseObstacle)new V3Obstacle(time, posX, posY, duration, width, height, customData)
+            : new V2Obstacle(time, posX, posY == (int)GridY.Top && height == (int)ObstacleHeight.Crouch ? 1 : 0, duration, width, customData);
+
+        public static BaseObstacle Obstacle(float time, int posX, int type, float duration, int width,
+            JSONNode customData = null) => Settings.Instance.Load_MapV3
+            ? (BaseObstacle)new V3Obstacle(time, posX, type == (int)ObstacleType.Crouch ? 2 : 0, duration, width, type == (int)ObstacleType.Crouch ? 3 : 5, customData)
+            : new V2Obstacle(time, posX, type, duration, width, customData);
+
+        public static BaseObstacle Obstacle(float time, int posX, int posY, int type, float duration, int width, int height,
             JSONNode customData = null) => Settings.Instance.Load_MapV3
             ? (BaseObstacle)new V3Obstacle(time, posX, posY, duration, width, height, customData)
             : new V2Obstacle(time, posX, type, duration, width, customData);
@@ -171,6 +181,10 @@ namespace Beatmap.Helper
         public static BaseBookmark Bookmark(float time, string name) => Settings.Instance.Load_MapV3
             ? (BaseBookmark)new V3Bookmark(time, name)
             : new V2Bookmark(time, name);
+
+        public static BaseCustomEvent CustomEvent(float time, string type, JSONNode data) => Settings.Instance.Load_MapV3
+            ? (BaseCustomEvent)new V3CustomEvent(time, type, data)
+            : new V2CustomEvent(time, type, data);
 
         // instantiate from empty
         public static BaseBpmEvent BpmEvent() => new V3BpmEvent();

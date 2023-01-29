@@ -17,7 +17,7 @@ namespace Beatmap.Base
         }
 
         public int PosX { get; set; }
-        public int PosY { get; set; }
+        public virtual int PosY { get; set; }
 
         public virtual Vector2? CustomCoordinate { get; set; }
 
