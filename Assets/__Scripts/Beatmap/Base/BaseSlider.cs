@@ -52,10 +52,8 @@ namespace Beatmap.Base
         protected override void ParseCustom()
         {
             base.ParseCustom();
-            if (CustomData == null) return;
 
-            if (CustomData.HasKey(CustomKeyTailCoordinate))
-                CustomTailCoordinate = CustomData[CustomKeyTailCoordinate].ReadVector2();
+            CustomTailCoordinate = (CustomData?.HasKey(CustomKeyTailCoordinate) ?? false) ? CustomData?[CustomKeyTailCoordinate].ReadVector2() : null;
         }
 
         protected internal override JSONNode SaveCustom()

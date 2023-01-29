@@ -179,14 +179,8 @@ namespace Beatmap.Base
         protected override void ParseCustom()
         {
             base.ParseCustom();
-            if (CustomData == null) return;
 
-            if (CustomData.HasKey(CustomKeySize) && CustomData[CustomKeySize].IsArray)
-            {
-                var temp = CustomData[CustomKeySize].AsArray;
-                if (temp.Count < 2) temp.Add(0);
-                CustomSize = temp;
-            }
+            CustomSize = (CustomData?.HasKey(CustomKeySize) ?? false) ? CustomData?[CustomKeySize].ReadVector3() : null;
         }
 
         protected internal override JSONNode SaveCustom()

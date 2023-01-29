@@ -64,14 +64,10 @@ namespace Beatmap.Base
         protected override void ParseCustom()
         {
             base.ParseCustom();
-            if (CustomData == null) return;
 
-            if (CustomData.HasKey(CustomKeyCoordinate))
-                CustomCoordinate = CustomData[CustomKeyCoordinate].ReadVector2();
-            if (CustomData.HasKey(CustomKeyWorldRotation))
-                CustomWorldRotation = CustomData[CustomKeyWorldRotation].ReadVector3();
-            if (CustomData.HasKey(CustomKeyLocalRotation))
-                CustomLocalRotation = CustomData[CustomKeyLocalRotation].ReadVector3();
+            CustomCoordinate = (CustomData?.HasKey(CustomKeyCoordinate) ?? false) ? CustomData?[CustomKeyCoordinate].ReadVector2() : null;
+            CustomWorldRotation = (CustomData?.HasKey(CustomKeyWorldRotation) ?? false) ? CustomData?[CustomKeyWorldRotation].ReadVector3() : null;
+            CustomLocalRotation = (CustomData?.HasKey(CustomKeyLocalRotation) ?? false) ? CustomData?[CustomKeyLocalRotation].ReadVector3() : null;
         }
 
         protected internal override JSONNode SaveCustom()

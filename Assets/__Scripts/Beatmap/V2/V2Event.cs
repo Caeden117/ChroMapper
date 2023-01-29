@@ -84,16 +84,14 @@ namespace Beatmap.V2
         {
             base.ParseCustom();
 
-            if (CustomData == null) return;
-            if (CustomData[CustomKeyLightGradient] != null)
-                CustomLightGradient = new ChromaLightGradient(CustomData[CustomKeyLightGradient]);
-            if (CustomData[CustomKeyPropMult] != null) CustomPropMult = CustomData[CustomKeyPropMult].AsFloat;
-            if (CustomData[CustomKeyStepMult] != null) CustomStepMult = CustomData[CustomKeyStepMult].AsFloat;
-            if (CustomData[CustomKeyPropMult] != null) CustomPropMult = CustomData[CustomKeyPropMult].AsFloat;
-            if (CustomData[CustomKeySpeedMult] != null) CustomSpeedMult = CustomData[CustomKeySpeedMult].AsFloat;
-            if (CustomData[CustomKeyPreciseSpeed] != null)
-                CustomPreciseSpeed = CustomData[CustomKeyPreciseSpeed].AsFloat;
-            if (CustomData[CustomKeyLaneRotation] != null) CustomLaneRotation = CustomData[CustomKeyLaneRotation].AsInt;
+            CustomLightGradient = (CustomData?.HasKey(CustomKeyLightGradient) ?? false)
+                ? new ChromaLightGradient(CustomData[CustomKeyLightGradient])
+                : null;
+            CustomPropMult = (CustomData?.HasKey(CustomKeyPropMult) ?? false) ? CustomData?[CustomKeyPropMult].AsFloat : null;
+            CustomStepMult = (CustomData?.HasKey(CustomKeyStepMult) ?? false) ? CustomData?[CustomKeyStepMult].AsFloat : null;
+            CustomSpeedMult = (CustomData?.HasKey(CustomKeySpeedMult) ?? false) ? CustomData?[CustomKeySpeedMult].AsFloat : null;
+            CustomPreciseSpeed = (CustomData?.HasKey(CustomKeyPreciseSpeed) ?? false) ? CustomData?[CustomKeyPreciseSpeed].AsFloat : null;
+            CustomLaneRotation = (CustomData?.HasKey(CustomKeyLaneRotation) ?? false) ? CustomData?[CustomKeyLaneRotation].AsInt : null;
         }
 
         protected internal sealed override JSONNode SaveCustom()

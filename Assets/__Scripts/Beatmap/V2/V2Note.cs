@@ -48,9 +48,8 @@ namespace Beatmap.V2
         protected sealed override void ParseCustom()
         {
             base.ParseCustom();
-            if (CustomData == null) return;
 
-            if (CustomData[CustomKeyDirection] != null) CustomDirection = CustomData[CustomKeyDirection].AsInt;
+            CustomDirection = (CustomData?.HasKey(CustomKeyDirection) ?? false) ? CustomData?[CustomKeyDirection].AsInt : null;
         }
 
         protected internal sealed override JSONNode SaveCustom()
