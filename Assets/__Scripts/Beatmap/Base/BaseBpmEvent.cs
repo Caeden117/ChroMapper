@@ -53,6 +53,8 @@ namespace Beatmap.Base
 
         public override string CustomKeySpeed { get; } = "unusedSpeed";
 
+        public override string CustomKeyRingRotation { get; } = "unusedRotation";
+
         public override string CustomKeyStepMult { get; } = "unusedStepMult";
 
         public override string CustomKeyPropMult { get; } = "unusedPropMult";

@@ -63,6 +63,8 @@ namespace Beatmap.V3
 
         public override string CustomKeySpeed { get; } = "speed";
 
+        public override string CustomKeyRingRotation { get; } = "rotation";
+
         public override string CustomKeyStepMult { get; } = "stepMult";
 
         public override string CustomKeyPropMult { get; } = "propMult";
