@@ -1,4 +1,4 @@
-﻿using SimpleJSON;
+﻿using Beatmap.Base;
 using UnityEngine;
 
 public class SkrillexSecondaryRingManager : TrackLaneRingsManager
@@ -7,17 +7,17 @@ public class SkrillexSecondaryRingManager : TrackLaneRingsManager
 
     protected override bool IsAffectedByZoom() => true;
 
-    public override void HandlePositionEvent(JSONNode customData = null)
+    public override void HandlePositionEvent(BaseEvent evt)
     {
-        base.HandlePositionEvent(customData);
-        base.HandleRotationEvent(customData);
+        base.HandlePositionEvent(evt);
+        base.HandleRotationEvent(evt);
         foreach (var isRingLaserManager in laserManagers)
         {
-            isRingLaserManager.HandlePositionEvent(customData);
+            isRingLaserManager.HandlePositionEvent(evt);
         }
     }
 
-    public override void HandleRotationEvent(JSONNode customData = null)
+    public override void HandleRotationEvent(BaseEvent evt)
     {
         // Do nothing
     }

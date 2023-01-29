@@ -172,35 +172,35 @@ public class PlatformDescriptor : MonoBehaviour
                     if (filter.Contains("Big") || filter.Contains("Large"))
                     {
                         if (BigRingManager != null)
-                            BigRingManager.HandleRotationEvent(obj.CustomData);
+                            BigRingManager.HandleRotationEvent(e);
                     }
                     else if (filter.Contains("Small") || filter.Contains("Panels") || filter.Contains("Triangle"))
                     {
                         if (SmallRingManager != null)
-                            SmallRingManager.HandleRotationEvent(obj.CustomData);
+                            SmallRingManager.HandleRotationEvent(e);
                     }
                     else
                     {
                         if (BigRingManager != null)
-                            BigRingManager.HandleRotationEvent(obj.CustomData);
+                            BigRingManager.HandleRotationEvent(e);
                         if (SmallRingManager != null)
-                            SmallRingManager.HandleRotationEvent(obj.CustomData);
+                            SmallRingManager.HandleRotationEvent(e);
                     }
                 }
                 else
                 {
                     if (BigRingManager != null)
-                        BigRingManager.HandleRotationEvent(obj.CustomData);
+                        BigRingManager.HandleRotationEvent(e);
                     if (SmallRingManager != null)
-                        SmallRingManager.HandleRotationEvent(obj.CustomData);
+                        SmallRingManager.HandleRotationEvent(e);
                 }
 
                 break;
             case 9:
                 if (BigRingManager != null)
-                    BigRingManager.HandlePositionEvent(obj.CustomData);
+                    BigRingManager.HandlePositionEvent(e);
                 if (SmallRingManager != null)
-                    SmallRingManager.HandlePositionEvent(obj.CustomData);
+                    SmallRingManager.HandlePositionEvent(e);
                 break;
             case 12:
                 var leftEventTypes = new List<int>() { (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights };
