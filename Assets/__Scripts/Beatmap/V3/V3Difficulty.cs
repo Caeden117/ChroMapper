@@ -329,7 +329,7 @@ namespace Beatmap.V3
             map.Notes.AddRange(map.Bombs);
             map.Events.AddRange(map.ColorBoostEvents);
             map.Events.AddRange(map.RotationEvents);
-            map.Events.AddRange(map.BpmEvents);
+            // map.Events.AddRange(map.BpmEvents); // we probably do not need to load this here
             map.Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
         }
 
