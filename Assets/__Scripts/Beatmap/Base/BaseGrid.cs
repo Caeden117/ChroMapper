@@ -31,9 +31,9 @@ namespace Beatmap.Base
 
         public Vector2 GetCenter() => GetPosition() + new Vector2(0f, 0.5f);
 
-        public virtual Vector2 GetPosition() => DerivePositionFromData();
+        public Vector2 GetPosition() => DerivePositionFromData();
 
-        public virtual Vector3 GetScale() => Vector3.one;
+        public Vector3 GetScale() => Vector3.one;
 
         public override void Apply(BaseObject originalData)
         {
@@ -46,8 +46,10 @@ namespace Beatmap.Base
             }
         }
 
-        protected virtual Vector2 DerivePositionFromData()
+        private Vector2 DerivePositionFromData()
         {
+            if (CustomCoordinate != null) return (Vector2)CustomCoordinate + new Vector2(0.5f, 0);
+        
             var position = PosX - 1.5f;
             float layer = PosY;
 

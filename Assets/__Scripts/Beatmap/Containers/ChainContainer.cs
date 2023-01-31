@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Enums;
@@ -52,22 +53,23 @@ namespace Beatmap.Containers
         public void GenerateChain(BaseChain chainData = null)
         {
             if (chainData != null) ChainData = chainData;
-            var headTrans = new Vector3(ChainData.PosX, ChainData.PosY, 0);
+            var chainHead = (Vector3)ChainData.GetPosition() + new Vector3(1.5f, 0, 0);
+            var chainTail = (Vector3)ChainData.GetTailPosition() + new Vector3(1.5f, 0, 0);
+            var headTrans = chainHead;
             var headRot = Quaternion.Euler(NoteContainer.Directionalize(ChainData.CutDirection));
-            tailNode.transform.localPosition = new Vector3(ChainData.TailPosX, ChainData.TailPosY,
+            tailNode.transform.localPosition = (Vector3)chainTail + new Vector3(0, 0,
                 (ChainData.TailTime - ChainData.Time) * EditorScaleController.EditorScale);
 
             var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ChainData.CutDirection).z;
             headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
 
-            interPoint = new Vector3(ChainData.PosX, ChainData.PosY, ChainData.Time);
-            var interMult = new Vector2(ChainData.PosX - ChainData.TailPosX, ChainData.PosY - ChainData.TailPosY)
-                .magnitude / 2;
+            interPoint = (Vector3)chainHead + new Vector3(0, 0, ChainData.Time);
+            var interMult = (chainHead - chainTail).magnitude / 2;
             interPoint += interMult * headDirection;
 
             Colliders.Clear();
             SelectionRenderers.Clear();
-            ComputeHeadPointsToTail(ChainData);
+            ComputeHeadPointsToTail();
             var i = 0;
             for (; i < ChainData.SliceCount - 2; ++i)
             {
@@ -97,9 +99,9 @@ namespace Beatmap.Containers
             UpdateMaterials();
         }
 
-        private void ComputeHeadPointsToTail(BaseChain chainData)
+        private void ComputeHeadPointsToTail()
         {
-            var path = new Vector2(ChainData.TailPosX - ChainData.PosX, ChainData.TailPosY - ChainData.PosY);
+            var path = ChainData.GetTailPosition() - ChainData.GetPosition() + new Vector2(1.5f, 0);
             var pathAngle = Vector2.SignedAngle(Vector2.down, path);
             var cutAngle = NoteContainer.Directionalize(ChainData.CutDirection).z;
 
@@ -214,8 +216,9 @@ namespace Beatmap.Containers
         public bool IsHeadNote(BaseNote baseNote)
         {
             if (baseNote is null) return false;
-            return Mathf.Approximately(baseNote.Time, ChainData.Time) && baseNote.PosX == ChainData.PosX &&
-                   baseNote.PosY == ChainData.PosY
+            var noteHead = baseNote.GetPosition();
+            var chainHead = ChainData.GetPosition();
+            return Mathf.Approximately(baseNote.Time, ChainData.Time) && Mathf.Approximately(noteHead.x, chainHead.x) && Mathf.Approximately(noteHead.y, chainHead.y)
                    && baseNote.CutDirection == ChainData.CutDirection && baseNote.Type == ChainData.Color;
         }
     }

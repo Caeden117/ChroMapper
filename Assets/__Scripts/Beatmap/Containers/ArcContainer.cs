@@ -96,9 +96,8 @@ namespace Beatmap.Containers
             var spline = GetComponent<Spline>();
             var n1 = spline.nodes[0];
             var n2 = spline.nodes[1];
-            n1.Position = new Vector3(ArcData.PosX, ArcData.PosY, 0);
-            n2.Position = new Vector3(ArcData.TailPosX, ArcData.TailPosY,
-                (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
+            n1.Position =  (Vector3)ArcData.GetPosition() + new Vector3(1.5f, 0, 0);
+            n2.Position = (Vector3)ArcData.GetTailPosition() + new Vector3(1.5f, 0, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
             //var distance = EditorScaleController.EditorScale;
             var headPointMultiplier = ArcData.CutDirection == (int)NoteCutDirection.Any
                 ? 0f
