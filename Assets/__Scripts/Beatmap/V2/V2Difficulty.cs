@@ -52,14 +52,11 @@ namespace Beatmap.V2
                 var waypoints = new JSONArray();
                 foreach (var w in Waypoints) waypoints.Add(w.ToJson());
 
-                var sliders = new JSONArray();
-                foreach (var s in Arcs) sliders.Add(s.ToJson());
-
                 MainNode["_notes"] = CleanupArray(notes);
                 MainNode["_obstacles"] = CleanupArray(obstacles);
                 MainNode["_events"] = CleanupArray(events);
                 MainNode["_waypoints"] = CleanupArray(waypoints);
-                MainNode["_sliders"] = CleanupArray(sliders);
+                MainNode["_sliders"] = new JSONArray();
                 if (EventTypesWithKeywords?.Keywords.Length > 0)
                     MainNode["_specialEventsKeywordFilters"] = EventTypesWithKeywords.ToJson();
 
@@ -173,6 +170,8 @@ namespace Beatmap.V2
 
             Obstacles = Obstacles.Select(V3ToV2.Obstacle).Cast<BaseObstacle>().ToList();
 
+            Arcs = new List<BaseArc>(); // we purge them anyway
+
             var newEvents = new List<BaseEvent>();
             foreach (var e in Events)
                 switch (e.Type)
@@ -230,9 +229,6 @@ namespace Beatmap.V2
                             break;
                         case "_waypoints":
                             foreach (JSONNode n in node) map.Waypoints.Add(new V2Waypoint(n));
-                            break;
-                        case "_sliders":
-                            foreach (JSONNode n in node) map.Arcs.Add(new V2Arc(n));
                             break;
                         case "_specialEventsKeywordFilter":
                             map.EventTypesWithKeywords = new V2SpecialEventsKeywordFilters(node);
