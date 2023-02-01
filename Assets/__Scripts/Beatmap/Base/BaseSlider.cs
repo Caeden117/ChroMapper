@@ -49,6 +49,25 @@ namespace Beatmap.Base
             }
         }
 
+        public Vector2 GetTailPosition() => DerivePositionFromTailData();
+
+        private Vector2 DerivePositionFromTailData()
+        {
+            if (CustomTailCoordinate != null) return (Vector2)CustomTailCoordinate + new Vector2(0.5f, 0);
+        
+            var position = TailPosX - 1.5f;
+            float layer = TailPosY;
+
+            if (TailPosX >= 1000)
+                position = (TailPosX / 1000f) - 2.5f;
+            else if (TailPosX <= -1000)
+                position = (TailPosX / 1000f) - 0.5f;
+
+            if (TailPosY >= 1000 || TailPosY <= -1000) layer = (TailPosY / 1000f) - 1f;
+
+            return new Vector2(position, layer);
+        }
+
         protected override void ParseCustom()
         {
             base.ParseCustom();

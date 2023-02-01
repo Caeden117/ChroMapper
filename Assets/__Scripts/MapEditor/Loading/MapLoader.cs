@@ -57,7 +57,7 @@ public class MapLoader : MonoBehaviour
                 Obstacles = new List<BaseObstacle>(m.Obstacles),
                 Events = new List<BaseEvent>(m.Events),
                 Waypoints = new List<BaseWaypoint>(m.Waypoints),
-                Arcs = new List<BaseArc>(m.Arcs),
+                Arcs = new List<BaseArc>(), // the purge
                 EventTypesWithKeywords = m.EventTypesWithKeywords != null ? new V2SpecialEventsKeywordFilters(m.EventTypesWithKeywords) : null,
                 
                 EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(m.EnvironmentEnhancements),

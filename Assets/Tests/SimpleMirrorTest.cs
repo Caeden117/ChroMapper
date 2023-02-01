@@ -176,11 +176,11 @@ namespace Tests
                 SelectionController.Select(wallA);
 
                 _mirror.Mirror();
-                CheckUtils.CheckWall("Perform ME wall mirror", wallsContainer, 0, 2, 2958, 0, 595141, 1, 2596, 0);
+                CheckUtils.CheckWall("Perform ME wall mirror", wallsContainer, 0, 2, 2958, 0, 595141, 1, 2596, 5);
 
                 // Undo mirror
                 _actionContainer.Undo();
-                CheckUtils.CheckWall("Undo ME wall mirror", wallsContainer, 0, 2, 1446, 0, 595141, 1, 2596, 0);
+                CheckUtils.CheckWall("Undo ME wall mirror", wallsContainer, 0, 2, 1446, 0, 595141, 1, 2596, 5);
             }
         }
 

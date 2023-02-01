@@ -142,7 +142,7 @@ namespace Beatmap.Converters
                 {
                     Position = RescaleVector3(o.Position),
                     LocalPosition = RescaleVector3(o.LocalPosition),
-                    Geometry = Geometry(other.Geometry.AsObject)
+                    Geometry = Geometry(other.Geometry?.AsObject)
                 },
                 V3EnvironmentEnhancement o => o,
                 _ => throw new ArgumentException(
@@ -151,15 +151,16 @@ namespace Beatmap.Converters
 
         public static JSONObject Geometry(JSONObject other)
         {
+            if (other == null) return null;
             var obj = new JSONObject();
 
             if (other["_type"] == "CUSTOM")
             {
                 obj["type"] = other["_type"];
-                obj["mesh"] = Mesh(obj["_mesh"].AsObject);
+                obj["mesh"] = Mesh(obj["_mesh"]?.AsObject);
                 obj["material"] = other["_material"].IsString
                     ? other["_material"]
-                    : Material(obj["_material"].AsObject);
+                    : Material(obj["_material"]?.AsObject);
                 obj["collision"] = other["_collision"];
             }
             else
@@ -167,7 +168,7 @@ namespace Beatmap.Converters
                 obj["type"] = other["_type"];
                 obj["material"] = other["_material"].IsString
                     ? other["_material"]
-                    : Material(obj["material"].AsObject);
+                    : Material(obj["material"]?.AsObject);
                 obj["collision"] = other["_collision"];
             }
 
@@ -176,6 +177,7 @@ namespace Beatmap.Converters
 
         public static JSONObject Mesh(JSONObject other)
         {
+            if (other == null) return null;
             var obj = new JSONObject { ["vertices"] = other["_vertices"] };
 
             if (other.HasKey("_uv")) obj["uv"] = other["_uv"];
@@ -186,6 +188,7 @@ namespace Beatmap.Converters
 
         public static JSONObject Material(JSONObject other)
         {
+            if (other == null) return null;
             var obj = new JSONObject { ["shader"] = other["_shader"] };
 
             if (other.HasKey("_shaderKeywords")) obj["shaderKeywords"] = other["_shaderKeywords"];

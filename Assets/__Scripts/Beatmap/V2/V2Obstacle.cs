@@ -1,17 +1,14 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
-using SimpleJSON;
+using Beatmap.Enums;
 using LiteNetLib.Utils;
+using SimpleJSON;
 
 namespace Beatmap.V2
 {
     public class V2Obstacle : BaseObstacle, V2Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        private int type;
-
         public V2Obstacle()
         {
         }
@@ -22,11 +19,9 @@ namespace Beatmap.V2
         {
             Time = RetrieveRequiredNode(node, "_time").AsFloat;
             PosX = RetrieveRequiredNode(node, "_lineIndex").AsInt;
-            PosY = node["_lineLayer"] ?? 0;
-            Type = RetrieveRequiredNode(node, "_type").AsInt;
+            InternalType = RetrieveRequiredNode(node, "_type").AsInt;
             Duration = RetrieveRequiredNode(node, "_duration").AsFloat;
             Width = RetrieveRequiredNode(node, "_width").AsInt;
-            Height = node["_height"] ?? 0;
             CustomData = node["_customData"];
             InferPosYHeight();
             ParseCustom();
@@ -36,13 +31,48 @@ namespace Beatmap.V2
             time, posX, type, duration, width, customData) =>
             ParseCustom();
 
-        public override int Type
+        // i fear plugins or anything may mess this up for v2 wall, so i had to make sure
+        public override int PosY
         {
-            get => type;
+            get => InternalPosY;
             set
             {
-                type = value;
-                InferPosYHeight();
+                if (value != (int)GridY.Base && value != (int)GridY.Top)
+                {
+                    Type = 0;
+                    return;
+                }
+                
+                InternalPosY = value;
+                InternalHeight = InternalPosY switch
+                {
+                    (int)GridY.Base => (int)ObstacleHeight.Full,
+                    (int)GridY.Top => (int)ObstacleHeight.Crouch,
+                    _ => 5
+                };
+                InferType();
+            }
+        }
+
+        public override int Height
+        {
+            get => InternalHeight;
+            set 
+            {
+                if (value != (int)ObstacleHeight.Full && value != (int)ObstacleHeight.Crouch)
+                {
+                    Type = 0;
+                    return;
+                }
+                
+                InternalHeight = value;
+                InternalPosY = InternalHeight switch
+                {
+                    (int)ObstacleHeight.Full => (int)GridY.Base,
+                    (int)ObstacleHeight.Crouch => (int)GridY.Top,
+                    _ => 0
+                };
+                InferType();
             }
         }
 
@@ -57,8 +87,10 @@ namespace Beatmap.V2
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
 
         public override string CustomKeySize { get; } = "_scale";
+        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
+        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
 
-        protected sealed override void ParseCustom() => base.ParseCustom();
+        protected override void ParseCustom() => base.ParseCustom();
 
         public override bool IsChroma() =>
             CustomData != null && CustomData.HasKey("_color") && CustomData["_color"].IsArray;
@@ -88,11 +120,9 @@ namespace Beatmap.V2
             JSONNode node = new JSONObject();
             node["_time"] = Math.Round(Time, DecimalPrecision);
             node["_lineIndex"] = PosX;
-            node["_lineLayer"] = PosY;
             node["_type"] = Type;
-            node["_duration"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
+            node["_duration"] = Math.Round(Duration, DecimalPrecision);
             node["_width"] = Width;
-            node["_height"] = Height;
             CustomData = SaveCustom();
             if (!CustomData.Children.Any()) return node;
             node["_customData"] = CustomData;

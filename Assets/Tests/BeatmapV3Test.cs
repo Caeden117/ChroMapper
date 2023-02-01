@@ -239,7 +239,7 @@ namespace Tests
         {
             Assert.IsInstanceOf<V3Obstacle>(BeatmapFactory.Obstacle(),
                 "Factory default does not instantiate v3 wall in beatmap v3");
-            Assert.IsInstanceOf<V3Obstacle>(BeatmapFactory.Obstacle(0f, 1, 0, 0, 1f, 1, 5),
+            Assert.IsInstanceOf<V3Obstacle>(BeatmapFactory.Obstacle(0f, 1, 0, 1f, 1, 5),
                 "Factory does not instantiate v3 wall in beatmap v3");
             Assert.DoesNotThrow(() => BeatmapFactory.Obstacle(new JSONObject
             {
@@ -270,7 +270,7 @@ namespace Tests
                 var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
                 wallPlacement.RefreshVisuals();
 
-                var wallA = BeatmapFactory.Obstacle(0f, 1, 0, 0, 1f, 1, 5);
+                var wallA = BeatmapFactory.Obstacle(0f, 1, 0, 1f, 1, 5);
                 PlaceUtils.PlaceWall(wallPlacement, wallA);
 
                 CheckUtils.CheckV3Object("Check wall object version", obstaclesContainer, 0);

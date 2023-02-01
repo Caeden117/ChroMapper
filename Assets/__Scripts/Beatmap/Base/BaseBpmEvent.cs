@@ -6,9 +6,7 @@ namespace Beatmap.Base
 {
     public abstract class BaseBpmEvent : BaseEvent
     {
-        protected BaseBpmEvent()
-        {
-        }
+        protected BaseBpmEvent() => Type = 100;
 
         protected BaseBpmEvent(BaseBpmEvent other)
         {

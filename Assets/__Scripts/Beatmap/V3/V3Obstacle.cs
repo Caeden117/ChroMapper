@@ -1,18 +1,14 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
-using SimpleJSON;
 using LiteNetLib.Utils;
+using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.V3
 {
     public class V3Obstacle : BaseObstacle, V3Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        private int height;
-        private int width;
-
         public V3Obstacle()
         {
         }
@@ -23,10 +19,10 @@ namespace Beatmap.V3
         {
             Time = RetrieveRequiredNode(node, "b").AsFloat;
             PosX = RetrieveRequiredNode(node, "x").AsInt;
-            PosY = RetrieveRequiredNode(node, "y").AsInt;
+            InternalPosY = RetrieveRequiredNode(node, "y").AsInt;
             Duration = RetrieveRequiredNode(node, "d").AsFloat;
             Width = RetrieveRequiredNode(node, "w").AsInt;
-            Height = RetrieveRequiredNode(node, "h").AsInt;
+            InternalHeight = RetrieveRequiredNode(node, "h").AsInt;
             CustomData = node["customData"];
             InferType();
             ParseCustom();
@@ -36,24 +32,11 @@ namespace Beatmap.V3
             JSONNode customData = null) : base(time, posX, posY, duration, width, height, customData) =>
             ParseCustom();
 
-        public override int Width
+        // srsly, u dont need to set this on v3 wall
+        public override int Type
         {
-            get => width;
-            set
-            {
-                width = value;
-                InferType();
-            }
-        }
-
-        public override int Height
-        {
-            get => height;
-            set
-            {
-                height = value;
-                InferType();
-            }
+            get => InternalType;
+            set => base.Type = value > 1 ? 0 : value;
         }
 
         public override string CustomKeyTrack { get; } = "track";
@@ -67,6 +50,8 @@ namespace Beatmap.V3
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
         public override string CustomKeySize { get; } = "size";
+        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
+        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 
