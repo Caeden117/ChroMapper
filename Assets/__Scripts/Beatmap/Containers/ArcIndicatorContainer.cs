@@ -15,13 +15,15 @@ namespace Beatmap.Containers
         public override void UpdateGridPosition()
         {
             var spline = ParentArc.GetComponent<Spline>();
-            var n1 = spline.nodes[0];
-            var n2 = spline.nodes[1];
 
             if (IndicatorType == IndicatorType.Head)
-                transform.localPosition = n1.Direction;
+            {
+                transform.localPosition = spline.nodes[0].Position;
+            }
             else if (IndicatorType == IndicatorType.Tail)
-                transform.localPosition = (2 * n2.Position) - n2.Direction; // symetric to n2 to make it comprehensible
+            {
+                transform.localPosition = spline.nodes[1].Position;
+            }
         }
 
         public void UpdateMaterials(MaterialPropertyBlock materialPropertyBlock)
