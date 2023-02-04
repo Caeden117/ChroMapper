@@ -15,10 +15,16 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     public void OnSpawnArc(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;
-        if (!Settings.Instance.Load_MapV3) return;
 
         var notes = SelectedObjects.Where(obj => IsColorNote(obj)).Cast<BaseNote>().ToList();
         notes.Sort((a, b) => a.Time.CompareTo(b.Time));
+
+        if (!Settings.Instance.Load_MapV3 && notes.Count > 1)
+        {
+            PersistentUI.Instance.ShowDialogBox("Arc placement is not supported in v2 format.\nConvert map to v3 to place arcs.",
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
 
         for (int i = 1; i < notes.Count; i++)
         {
