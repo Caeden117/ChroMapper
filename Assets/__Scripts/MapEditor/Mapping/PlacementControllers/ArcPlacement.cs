@@ -11,23 +11,19 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     CMInput.IArcPlacementActions
 {
     private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
-    
 
     public void OnSpawnArc(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;
         if (!Settings.Instance.Load_MapV3) return;
-        
-        var objects = SelectedObjects.ToList();
-        if (objects.Count != 2) { return; }
-        if(!IsColorNote(objects[0]) || !IsColorNote(objects[1]))
-        {
-            return;
-        }
-        var n1 = objects[0] as BaseNote;
-        var n2 = objects[1] as BaseNote;
 
-        SpawnArc(n1, n2);
+        var notes = SelectedObjects.Where(obj => IsColorNote(obj)).Cast<BaseNote>().ToList();
+        notes.Sort((a, b) => a.Time.CompareTo(b.Time));
+
+        for (int i = 1; i < notes.Count; i++)
+        {
+            SpawnArc(notes[i - 1], notes[i]);
+        }
     }
 
     public static bool IsColorNote(BaseObject o)
@@ -39,15 +35,16 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
-    public void SpawnArc(BaseNote head, BaseNote tail) {
+    public void SpawnArc(BaseNote head, BaseNote tail)
+    {
         if (head.Time > tail.Time)
         {
             (head, tail) = (tail, head);
         }
-        
+
         SpawnArc(new V3Arc(head, tail));
     }
-    
+
     public void SpawnArc(BaseArc arcData)
     {
         var arcContainer = objectContainerCollection;
