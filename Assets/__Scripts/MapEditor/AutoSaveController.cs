@@ -32,6 +32,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     private int objectsCheckIsComplete = FALSE;
     private int saveFlag = (int)SaveType.None;
 
+    private static MapExporter Exporter => new MapExporter(BeatSaberSongContainer.Instance.Song);
+
     public enum SaveType
     {
         None,
@@ -88,6 +90,19 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     public void OnSave(InputAction.CallbackContext context)
     {
         if (context.performed) CheckAndSave();
+    }
+
+    public void OnSaveQuest(InputAction.CallbackContext context)
+    {
+        if (context.performed) CheckAndSaveQuest();
+    }
+
+    public void CheckAndSaveQuest(int _) => CheckAndSaveQuest(); // So it shows up in Unity
+
+    public async void CheckAndSaveQuest(SaveType saveType = SaveType.None)
+    {
+        CheckAndSave();
+        await Exporter.ExportToQuest();
     }
 
     public void CheckAndSave(int _) => CheckAndSave(); // So it shows up in Unity
@@ -180,7 +195,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     }
 
     public void ToggleAutoSave(bool enabled) => Settings.Instance.AutoSave = enabled;
-
+    
     public void Save(bool auto = false)
     {
         if (IsSaving)

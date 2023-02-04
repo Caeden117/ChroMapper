@@ -1638,6 +1638,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""SaveQuest"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac4040c8-2202-4c78-bef4-db78cfcb93ba"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1671,6 +1679,39 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Save"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""20006b8c-bd85-49bc-88fd-079c90d4da19"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SaveQuest"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""16d2df17-7013-4121-923d-2be47ecf541f"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""SaveQuest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Button"",
+                    ""id"": ""9c12a5db-74d6-4478-8bb7-13ef7230f423"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""SaveQuest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -4562,6 +4603,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Saving
         m_Saving = asset.FindActionMap("Saving", throwIfNotFound: true);
         m_Saving_Save = m_Saving.FindAction("Save", throwIfNotFound: true);
+        m_Saving_SaveQuest = m_Saving.FindAction("SaveQuest", throwIfNotFound: true);
         // Bookmarks
         m_Bookmarks = asset.FindActionMap("Bookmarks", throwIfNotFound: true);
         m_Bookmarks_CreateNewBookmark = m_Bookmarks.FindAction("Create New Bookmark", throwIfNotFound: true);
@@ -5469,11 +5511,13 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Saving;
     private ISavingActions m_SavingActionsCallbackInterface;
     private readonly InputAction m_Saving_Save;
+    private readonly InputAction m_Saving_SaveQuest;
     public struct SavingActions
     {
         private @CMInput m_Wrapper;
         public SavingActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Save => m_Wrapper.m_Saving_Save;
+        public InputAction @SaveQuest => m_Wrapper.m_Saving_SaveQuest;
         public InputActionMap Get() { return m_Wrapper.m_Saving; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -5486,6 +5530,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @Save.started -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
                 @Save.performed -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
                 @Save.canceled -= m_Wrapper.m_SavingActionsCallbackInterface.OnSave;
+                @SaveQuest.started -= m_Wrapper.m_SavingActionsCallbackInterface.OnSaveQuest;
+                @SaveQuest.performed -= m_Wrapper.m_SavingActionsCallbackInterface.OnSaveQuest;
+                @SaveQuest.canceled -= m_Wrapper.m_SavingActionsCallbackInterface.OnSaveQuest;
             }
             m_Wrapper.m_SavingActionsCallbackInterface = instance;
             if (instance != null)
@@ -5493,6 +5540,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @Save.started += instance.OnSave;
                 @Save.performed += instance.OnSave;
                 @Save.canceled += instance.OnSave;
+                @SaveQuest.started += instance.OnSaveQuest;
+                @SaveQuest.performed += instance.OnSaveQuest;
+                @SaveQuest.canceled += instance.OnSaveQuest;
             }
         }
     }
@@ -7144,6 +7194,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface ISavingActions
     {
         void OnSave(InputAction.CallbackContext context);
+        void OnSaveQuest(InputAction.CallbackContext context);
     }
     public interface IBookmarksActions
     {

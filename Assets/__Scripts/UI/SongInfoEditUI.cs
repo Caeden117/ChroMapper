@@ -90,7 +90,7 @@ public class SongInfoEditUI : MenuBase
     private GameObject ContributorWrapper => contributorController.transform.parent.gameObject;
 
     [SerializeField] private GameObject questExportButton;
-    private List<string> questCandidates = new List<string>();
+    private MapExporter exporter => new MapExporter(Song);
 
     private void Start()
     {
@@ -320,170 +320,19 @@ public class SongInfoEditUI : MenuBase
         } //Middle button (ID 1) would be pressed; the user doesn't want to delete the map, so we do nothing.
     }
 
-    // TODO: Move this to a proper location or make configurable with a default
-    public const string QUEST_CUSTOM_SONGS_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
-    // I added this so the non-quest maintainers can use it as a reference for adding WIP uploads
-    // this does indeed exist and work, please don't refrain from asking me. 
-    public const string QUEST_CUSTOM_SONGS_WIP_LOCATION = "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels";
 
     /// <summary>
     /// Exports the files to the Quest using adb
     /// </summary>
-    public async void ExportToQuest()
-    {
-        var (devices, output) = await Adb.GetDevices();
-        var questCandidates = new List<string>();
-
-        if (devices == null || !string.IsNullOrEmpty(output.ErrorOut))
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.no-devices", null, PersistentUI.DialogBoxPresetType.Ok);
-            return;
-        }
-
-        foreach (var device in devices)
-        {
-            var (result, error) = await Adb.IsQuest(device);
-
-            if (result && string.IsNullOrEmpty(error.ErrorOut))
-            {
-                questCandidates.Add(device);
-            }
-        }
-
-        if (questCandidates.Count == 0)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "quest.no-quest", null, PersistentUI.DialogBoxPresetType.Ok);
-            return;
-        }
-
-        var dialog = PersistentUI.Instance.CreateNewDialogBox();
-        dialog.WithTitle("SongEditMenu", "quest.exporting");
-
-        var progressBar = dialog.AddComponent<ProgressBarComponent>();
-        progressBar.WithCustomLabelFormatter(f =>
-            LocalizationSettings.StringDatabase
-                .GetLocalizedString("SongEditMenu", "quest.exporting_progress",
-                new object[] { f }));
-
-        dialog.Open();
-
-        // We should always be exporting to WIP Levels. CustomLevels are for downloaded BeatSaver songs.
-        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_WIP_LOCATION, Song.CleanSongName).Replace("\\", @"/");
-        var exportedFiles = Song.GetFilesForArchiving();
-
-        if (exportedFiles == null) return;
-
-
-        Debug.Log($"Creating folder if needed at {songExportPath}");
-
-        var totalFiles = questCandidates.Count * exportedFiles.Count;
-        var fCount = 0;
-
-        foreach (var questCandidate in questCandidates)
-        {
-            var createDir = await Adb.Mkdir(songExportPath, questCandidate);
-            Debug.Log($"ADB Create dir: {createDir}");
-
-
-            foreach (var fileNamePair in exportedFiles)
-            {
-                var locationRelativeToSongDir = fileNamePair.Value;
-
-                var questPath = Path.Combine(songExportPath, locationRelativeToSongDir).Replace("\\", @"/");
-
-                Debug.Log($"Pushing {questPath} from {fileNamePair.Key}");
-
-                var log = await Adb.Push(fileNamePair.Key, questPath, questCandidate);
-                Debug.Log(log.ToString());
-
-                fCount++;
-                progressBar.UpdateProgressBar((float)fCount / totalFiles);
-            }
-        }
-
-        dialog.Clear();
-
-        Debug.Log("EXPORTED TO QUEST SUCCESSFULLY YAYAAYAYA");
-
-        dialog.WithTitle("Options", "quest.success");
-        dialog.AddFooterButton(null, "PersistentUI", "ok");
-    }
+    public async void ExportToQuest() => await exporter.ExportToQuest();
 
     /// <summary>
     ///     Create a zip for sharing the map
     /// </summary>
     public void PackageZip()
     {
-        var infoFileLocation = "";
-        var zipPath = "";
-        if (Song.Directory != null)
-        {
-            zipPath = Path.Combine(Song.Directory, Song.CleanSongName + ".zip");
-            // Mac doesn't seem to like overwriting existing zips, so delete the old one first
-            File.Delete(zipPath);
-
-            infoFileLocation = Path.Combine(Song.Directory, "Info.dat");
-        }
-
-        if (!File.Exists(infoFileLocation))
-        {
-            Debug.LogError(":hyperPepega: :mega: WHY TF ARE YOU TRYING TO PACKAGE A MAP WITH NO INFO.DAT FILE");
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "zip.warning", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-            return;
-        }
-
-        var exportedFiles = Song.GetFilesForArchiving();
-
-        if (exportedFiles == null) return;
-
-        using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
-        {
-            foreach (var pathFileEntryPair in exportedFiles)
-            {
-                archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
-            }
-        }
-
-        OpenSelectedMapInFileBrowser();
-    }
-
-    /// <summary>
-    ///     Open the folder containing the map's files in a native file browser
-    /// </summary>
-    public void OpenSelectedMapInFileBrowser()
-    {
-        if (Song.Directory == null)
-        {
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
-                PersistentUI.DialogBoxPresetType.Ok);
-            return;
-        }
-
-        var path = Song.Directory;
-#if UNITY_STANDALONE_WIN
-        path = path.Replace("/", "\\").Replace("\\\\", "\\");
-#else
-        path = path.Replace("\\", "/").Replace("//", "/");
-#endif
-        if (!path.StartsWith("\"")) path = "\"" + path;
-        if (!path.EndsWith("\"")) path += "\"";
-
-#if UNITY_STANDALONE_WIN
-        Debug.Log($"Opening song directory ({path}) with Windows...");
-        Process.Start("explorer.exe", path);
-#elif UNITY_STANDALONE_OSX
-        Debug.Log($"Opening song directory ({path}) with Mac...");
-        Process.Start("open", path);
-#elif UNITY_STANDALONE_LINUX
-        Debug.Log($"Opening song directory ({path}) with Linux...");
-        Process.Start("xdg-open", path);
-#else
-        Debug.Log("What is this, some UNIX bullshit?");
-        PersistentUI.Instance.ShowDialogBox(
-            "Unrecognized OS!\n\nIf you happen to know this OS and would like to contribute," +
-            " please contact me on Discord: Caeden117#0117", null, PersistentUI.DialogBoxPresetType.Ok);
-#endif
+        exporter.PackageZip();
+        exporter.OpenSelectedMapInFileBrowser();
     }
 
     private void SaveAllFields()

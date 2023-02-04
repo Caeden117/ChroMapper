@@ -1625,6 +1625,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "SaveQuest",
+                    "type": "Button",
+                    "id": "ac4040c8-2202-4c78-bef4-db78cfcb93ba",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -1658,6 +1666,39 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Save",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Keyboard",
+                    "id": "20006b8c-bd85-49bc-88fd-079c90d4da19",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SaveQuest",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Modifier",
+                    "id": "16d2df17-7013-4121-923d-2be47ecf541f",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "SaveQuest",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Button",
+                    "id": "9c12a5db-74d6-4478-8bb7-13ef7230f423",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "SaveQuest",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
