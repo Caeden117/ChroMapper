@@ -15,13 +15,23 @@ namespace Beatmap.Containers
         public override void UpdateGridPosition()
         {
             var spline = ParentArc.GetComponent<Spline>();
-            var n1 = spline.nodes[0];
-            var n2 = spline.nodes[1];
 
             if (IndicatorType == IndicatorType.Head)
-                transform.localPosition = n1.Direction;
+            {
+                var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ParentArc.ArcData.CutDirection).z;
+                var headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
+                transform.localPosition = spline.nodes[0].Position + headDirection / 2;
+
+                transform.localEulerAngles = new Vector3(NoteContainer.Directionalize(ParentArc.ArcData.CutDirection).z + 90, -90, 0);
+            }
             else if (IndicatorType == IndicatorType.Tail)
-                transform.localPosition = (2 * n2.Position) - n2.Direction; // symetric to n2 to make it comprehensible
+            {
+                var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ParentArc.ArcData.TailCutDirection).z;
+                var tailDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
+                transform.localPosition = spline.nodes[1].Position - tailDirection * 1.5f;
+
+                transform.localEulerAngles = new Vector3(NoteContainer.Directionalize(ParentArc.ArcData.TailCutDirection).z + 90, -90, 0);
+            }
         }
 
         public void UpdateMaterials(MaterialPropertyBlock materialPropertyBlock)

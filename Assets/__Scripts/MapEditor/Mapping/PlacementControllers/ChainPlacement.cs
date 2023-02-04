@@ -14,9 +14,9 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
     public const int ChainDefaultSpawnCount = 3;
     private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
     [SerializeField] private SelectionController selectionController;
-    [FormerlySerializedAs("notesContainer")] [SerializeField] private NoteGridContainer noteGridContainer;
+    [FormerlySerializedAs("notesContainer")][SerializeField] private NoteGridContainer noteGridContainer;
 
-    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) => 
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a chain.");
     public override BaseChain GenerateOriginalData() => new V3Chain();
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint) => throw new System.NotImplementedException();
@@ -28,19 +28,24 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
     public void OnSpawnChain(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;
-        if (!Settings.Instance.Load_MapV3) return;
-        
-        var objects = SelectedObjects.ToList();
-        if (objects.Count != 2) { return; }
-        if(!ArcPlacement.IsColorNote(objects[0]) || !ArcPlacement.IsColorNote(objects[1]))
+
+        var notes = SelectedObjects.Where(obj => IsColorNote(obj)).Cast<BaseNote>().ToList();
+        notes.Sort((a, b) => a.Time.CompareTo(b.Time));
+
+        if (!Settings.Instance.Load_MapV3 && notes.Count > 1)
         {
+            PersistentUI.Instance.ShowDialogBox("Chain placement is not supported in v2 format.\nConvert map to v3 to place chains.",
+                null, PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
-        var n1 = objects[0] as BaseNote;
-        var n2 = objects[1] as BaseNote;
 
-        SpawnChain(n1, n2);
+        for (int i = 1; i < notes.Count; i++)
+        {
+            SpawnChain(notes[i - 1], notes[i]);
+        }
     }
+
+    private bool IsColorNote(BaseObject o) => o is BaseNote && !(o is BaseBombNote);
 
     public void SpawnChain(BaseNote head, BaseNote tail)
     {
@@ -49,17 +54,17 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
             (head, tail) = (tail, head);
         }
         if (head.CutDirection == (int)NoteCutDirection.Any) { return; }
-        
+
         SpawnChain(new V3Chain(head, tail), head);
     }
-    
+
     public void SpawnChain(BaseChain chainData, BaseNote toDeselect)
     {
         var chainContainer = objectContainerCollection;
         chainContainer.SpawnObject(chainData, false);
-        
+
         SelectionController.Deselect(toDeselect);
-        
+
         var conflict = new List<BaseObject>(SelectedObjects);
         selectionController.Delete(false);
         BeatmapActionContainer.AddAction(GenerateAction(chainData, conflict));

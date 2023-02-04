@@ -66,7 +66,6 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = new Vector3(-1.5f, 0.5f, ArcData.Time * EditorScaleController.EditorScale);
             RecomputePosition();
             foreach (var gameObj in indicators) gameObj.GetComponent<ArcIndicatorContainer>().UpdateGridPosition();
             UpdateCollisionGroups();
@@ -94,25 +93,30 @@ namespace Beatmap.Containers
         {
             if (ArcData == null) return; // in case that this container has already been recycled when about to compute
             var spline = GetComponent<Spline>();
-            var n1 = spline.nodes[0];
-            var n2 = spline.nodes[1];
-            n1.Position =  (Vector3)ArcData.GetPosition() + new Vector3(1.5f, 0, 0);
-            n2.Position = (Vector3)ArcData.GetTailPosition() + new Vector3(1.5f, 0, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
-            //var distance = EditorScaleController.EditorScale;
+            var headNode = spline.nodes[0];
+            var tailNode = spline.nodes[1];
+            var headPos = ArcData.GetPosition();
+            var tailPos = ArcData.GetTailPosition();
+
+            headNode.Position = new Vector3(headPos.x, headPos.y + 0.5f, ArcData.Time * EditorScaleController.EditorScale);
+            tailNode.Position = new Vector3(tailPos.x, tailPos.y + 0.5f, ArcData.TailTime * EditorScaleController.EditorScale);
+
             var headPointMultiplier = ArcData.CutDirection == (int)NoteCutDirection.Any
                 ? 0f
                 : ArcData.HeadControlPointLengthMultiplier;
             var d1 = new Vector3(0, splineControlPointScaleFactor * headPointMultiplier, directionZPerturbation);
             var rot1 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.CutDirection).z - 180);
             d1 = rot1 * d1;
-            n1.Direction = n1.Position + d1;
+            headNode.Direction = headNode.Position + d1;
+
             var tailPointMultiplier = ArcData.TailCutDirection == (int)NoteCutDirection.Any
                 ? 0f
                 : ArcData.TailControlPointLengthMultiplier;
             var d2 = new Vector3(0, splineControlPointScaleFactor * tailPointMultiplier, directionZPerturbation);
             var rot2 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.TailCutDirection).z - 180);
             d2 = rot2 * d2;
-            n2.Direction = n2.Position + d2;
+            tailNode.Direction = tailNode.Position + d2;
+
             spline.RefreshCurves();
             splineRendererEnabled = true;
             if (splineRenderer != null) splineRenderer.enabled = true;

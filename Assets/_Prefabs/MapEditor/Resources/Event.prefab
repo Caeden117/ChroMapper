@@ -57,18 +57,7 @@ MonoBehaviour:
   - {fileID: 3938364105697110404}
   - {fileID: 8668402241456848079}
   BoxCollider: {fileID: 0}
-  EventData:
-    HasAttachedContainer: 0
-    Time: 0
-    PropId: 0
-    Type: 0
-    Value: 0
-    LightGradient:
-      Duration: 0
-      StartColor: {r: 0, g: 0, b: 0, a: 0}
-      EndColor: {r: 0, g: 0, b: 0, a: 0}
-      EasingType: 
-  EventsContainer: {fileID: 0}
+  EventGridContainer: {fileID: 0}
   eventAppearance: {fileID: 0}
   eventRenderer:
   - {fileID: 23934209316677924}
