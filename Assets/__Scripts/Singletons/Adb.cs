@@ -202,7 +202,7 @@ namespace QuestDumper
         }
 
         // surrounds the string as "\"{s}\""
-        private static string EscapeStringFix(string s) => $"\"\\\"{s}\\\"";
+        private static string EscapeStringFix(string s) => $"\"\\\"{s}\\\"\"";
 
         private static Task<AdbOutput> RunADBCommand(string arguments) =>
             Task.Run( () =>
