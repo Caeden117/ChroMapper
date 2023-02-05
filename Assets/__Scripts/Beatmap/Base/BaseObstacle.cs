@@ -101,8 +101,9 @@ namespace Beatmap.Base
             {
                 Duration = obstacle.Duration;
                 Width = obstacle.Width;
-                Height = obstacle.Height;
-                Type = obstacle.Type;
+                InternalPosY = obstacle.PosY;
+                InternalHeight = obstacle.Height;
+                InternalType = obstacle.Type;
             }
         }
 
