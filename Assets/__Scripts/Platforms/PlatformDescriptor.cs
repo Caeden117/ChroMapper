@@ -442,9 +442,15 @@ public class PlatformDescriptor : MonoBehaviour
     {
         if (TryGetNextTransitionNote(e, out var transition))
         {
+            var nextChromaColor = transition.CustomColor;
+            var targetColor = nextChromaColor ?? InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
             var targetAlpha = transition.FloatValue;
+            if (nextChromaColor.HasValue)
+            {
+                targetAlpha *= nextChromaColor.Value.a;
+            }
             var transitionTime = atsc.GetSecondsFromBeat(transition.Time - e.Time);
-            var targetColor = InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
+
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);
             light.UpdateEasing(Mathf.Approximately(targetAlpha, 0) ? "easeOutExpo" : "easeLinear"); // may not be the correct easing function
