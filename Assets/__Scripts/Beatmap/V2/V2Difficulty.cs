@@ -252,58 +252,57 @@ namespace Beatmap.V2
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
-            var pointDefinitions = new Dictionary<string, List<JSONArray>>();
+            var pointDefinitions = new Dictionary<string, List<JSONNode>>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
             var materials = new Dictionary<string, JSONObject>();
 
             var nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
             {
-                var key = nodeEnum.Current.Key;
-                var node = nodeEnum.Current.Value;
+                var mKey = nodeEnum.Current.Key;
+                var mNode = nodeEnum.Current.Value;
 
-                switch (key)
+                switch (mKey)
                 {
                     case "_customData":
-                        map.CustomData = node;
+                        map.CustomData = mNode;
 
-                        var dataNodeEnum = node.GetEnumerator();
+                        var dataNodeEnum = mNode.GetEnumerator();
                         while (dataNodeEnum.MoveNext())
                         {
-                            var dataKey = dataNodeEnum.Current.Key;
-                            var dataNode = dataNodeEnum.Current.Value;
-                            switch (dataKey)
+                            var cKey = dataNodeEnum.Current.Key;
+                            var cNode = dataNodeEnum.Current.Value;
+                            switch (cKey)
                             {
                                 case "_BPMChanges":
-                                    foreach (JSONNode n in dataNode) bpmList.Add(new V2BpmChange(n));
+                                    foreach (JSONNode n in cNode) bpmList.Add(new V2BpmChange(n));
                                     break;
                                 case "_bpmChanges":
-                                    foreach (JSONNode n in dataNode) bpmList.Add(new V2BpmChange(n));
+                                    foreach (JSONNode n in cNode) bpmList.Add(new V2BpmChange(n));
                                     break;
                                 case "_bookmarks":
-                                    foreach (JSONNode n in dataNode) bookmarksList.Add(new V2Bookmark(n));
+                                    foreach (JSONNode n in cNode) bookmarksList.Add(new V2Bookmark(n));
                                     break;
                                 case "_customEvents":
-                                    foreach (JSONNode n in dataNode) customEventsList.Add(new V2CustomEvent(n));
+                                    foreach (JSONNode n in cNode) customEventsList.Add(new V2CustomEvent(n));
                                     break;
                                 case "_pointDefinitions":
-                                    foreach (JSONNode n in node)
+                                    foreach (JSONNode n in cNode)
                                     {
-                                        var points = new List<JSONArray>();
-                                        foreach (JSONArray p in n["_points"].AsArray) points.Add(p);
+                                        var points = new List<JSONNode>();
+                                        foreach (var p in n["_points"]) points.Add(p);
                                         if (!pointDefinitions.ContainsKey(n["_name"]))
                                             pointDefinitions.Add(n["_name"], points);
                                         else
                                             Debug.LogWarning($"Duplicate key {n["_name"]} found in point definitions");
                                     }
-
                                     break;
                                 case "_environment":
-                                    foreach (JSONNode n in dataNode)
+                                    foreach (JSONNode n in cNode)
                                         envEnhancementsList.Add(new V2EnvironmentEnhancement(n));
                                     break;
                                 case "_materials":
-                                    if (node is JSONObject matObj)
+                                    if (cNode is JSONObject matObj)
                                     {
                                         foreach (var n in matObj)
                                             if (!materials.ContainsKey(n.Key))
@@ -312,27 +311,26 @@ namespace Beatmap.V2
                                                 Debug.LogWarning($"Duplicate key {n.Key} found in materials");
                                         break;
                                     }
-
                                     Debug.LogWarning("Could not read materials");
                                     break;
                                 case "_time":
-                                    map.Time = dataNode.AsFloat;
+                                    map.Time = cNode.AsFloat;
                                     break;
                             }
                         }
 
                         break;
                     case "_BPMChanges":
-                        foreach (JSONNode n in node) bpmList.Add(new V2BpmChange(n));
+                        foreach (JSONNode n in mNode) bpmList.Add(new V2BpmChange(n));
                         break;
                     case "_bpmChanges":
-                        foreach (JSONNode n in node) bpmList.Add(new V2BpmChange(n));
+                        foreach (JSONNode n in mNode) bpmList.Add(new V2BpmChange(n));
                         break;
                     case "_bookmarks":
-                        foreach (JSONNode n in node) bookmarksList.Add(new V2Bookmark(n));
+                        foreach (JSONNode n in mNode) bookmarksList.Add(new V2Bookmark(n));
                         break;
                     case "_customEvents":
-                        foreach (JSONNode n in node) customEventsList.Add(new V2CustomEvent(n));
+                        foreach (JSONNode n in mNode) customEventsList.Add(new V2CustomEvent(n));
                         break;
                 }
             }
