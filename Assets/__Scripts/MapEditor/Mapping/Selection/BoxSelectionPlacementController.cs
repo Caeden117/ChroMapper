@@ -155,6 +155,10 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
                 {
                     p = obj.GetCenter();
                 }
+                else if (bo is BaseBpmEvent)
+                {
+                    // Bpm events are in a separate single lane so we don't need to get position
+                }
                 else if (bo is BaseEvent evt)
                 {
                     var position = evt.GetPosition(Labels, EventGridContainer.PropagationEditing,
