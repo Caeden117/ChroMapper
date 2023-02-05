@@ -327,7 +327,7 @@ namespace Beatmap.Converters
                 BpmChanges = other.BpmChanges.Select(BpmChange).Cast<BaseBpmChange>().ToList(),
                 Bookmarks = other.Bookmarks.Select(Bookmark).Cast<BaseBookmark>().ToList(),
                 CustomEvents = other.CustomEvents.Select(CustomEvent).Cast<BaseCustomEvent>().ToList(),
-                PointDefinitions = new Dictionary<string, List<JSONArray>>(other.PointDefinitions),
+                PointDefinitions = new Dictionary<string, List<JSONNode>>(other.PointDefinitions),
                 EnvironmentEnhancements = other.EnvironmentEnhancements.Select(EnvironmentEnhancement)
                     .Cast<BaseEnvironmentEnhancement>()
                     .ToList(),

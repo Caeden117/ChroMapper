@@ -340,7 +340,7 @@ namespace Beatmap.V3
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
-            var pointDefinitions = new Dictionary<string, List<JSONArray>>();
+            var pointDefinitions = new Dictionary<string, List<JSONNode>>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
             var materials = new Dictionary<string, JSONObject>();
 
@@ -368,8 +368,8 @@ namespace Beatmap.V3
                             foreach (var n in nodeAry)
                             {
                                 if (!(n.Value is JSONObject obj)) continue;
-                                var points = new List<JSONArray>();
-                                foreach (var p in obj["points"].AsArray) points.Add(p.Value.AsArray);
+                                var points = new List<JSONNode>();
+                                foreach (var p in obj["points"]) points.Add(p.Value);
 
                                 if (!pointDefinitions.ContainsKey(n.Key))
                                     pointDefinitions.Add(obj["name"], points);
@@ -384,8 +384,8 @@ namespace Beatmap.V3
                         {
                             foreach (var n in nodeObj)
                             {
-                                var points = new List<JSONArray>();
-                                foreach (var p in n.Value) points.Add(p.Value.AsArray);
+                                var points = new List<JSONNode>();
+                                foreach (var p in n.Value) points.Add(p.Value);
 
                                 if (!pointDefinitions.ContainsKey(n.Key))
                                     pointDefinitions.Add(n.Key, points);
