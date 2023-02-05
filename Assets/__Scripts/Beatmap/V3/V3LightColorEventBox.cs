@@ -45,6 +45,7 @@ namespace Beatmap.V3
             node["r"] = BrightnessDistribution;
             node["t"] = BrightnessDistributionType;
             node["b"] = BrightnessAffectFirst;
+            node["i"] = Easing;
             var ary = new JSONArray();
             foreach (var k in Events) ary.Add(k.ToJson());
             node["e"] = ary;

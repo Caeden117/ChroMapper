@@ -51,6 +51,7 @@ namespace Beatmap.V3
             node["b"] = TranslationAffectFirst;
             node["a"] = Axis;
             node["r"] = Flip;
+            node["i"] = Easing;
             var ary = new JSONArray();
             foreach (var k in Events) ary.Add(k.ToJson());
             node["l"] = ary;
