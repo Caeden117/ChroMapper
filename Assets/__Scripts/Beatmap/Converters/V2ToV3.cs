@@ -19,53 +19,50 @@ namespace Beatmap.Converters
         public static V3BombNote BombNote(BaseNote other) =>
             other switch
             {
+                V3BombNote o => o,
                 V2Note o => new V3BombNote(o) { CustomData = CustomDataObject(o.CustomData) },
-                V3BombNote o => new V3BombNote(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v2 note to v3 color note")
             };
 
         public static V3BpmEvent BpmEvent(BaseEvent other) =>
             other switch
             {
-                V2Event o => new V3BpmEvent(o),
-                V3BasicEvent o => new V3BpmEvent(o),
                 V3BpmEvent o => o,
+                V3BasicEvent o => new V3BpmEvent(o),
+                V2Event o => new V3BpmEvent(o),
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 BPM event")
             };
 
         public static V3ColorBoostEvent ColorBoostEvent(BaseEvent other) =>
             other switch
             {
-                V2Event o => new V3ColorBoostEvent(o),
-                V3BasicEvent o => new V3ColorBoostEvent(o),
                 V3ColorBoostEvent o => o,
+                V3BasicEvent o => new V3ColorBoostEvent(o),
+                V2Event o => new V3ColorBoostEvent(o),
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 color boost event")
             };
 
         public static V3ColorNote ColorNote(BaseNote other) =>
             other switch
             {
+                V3ColorNote o => o,
                 V2Note o => new V3ColorNote(o) { CustomData = CustomDataObject(o.CustomData) },
-                V3ColorNote o => new V3ColorNote(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ParsingErrors()
             };
 
         public static V3BasicEvent BasicEvent(BaseEvent other) =>
             other switch
             {
+                V3BasicEvent o => o,
                 V2Event o => new V3BasicEvent(o) { CustomData = CustomDataEvent(o.CustomData) },
-                V3BasicEvent o => new V3BasicEvent(o) { CustomData = CustomDataEvent(o.CustomData) },
-                V3ColorBoostEvent o => new V3BasicEvent(o), // TODO: this might be bad
-                V3BpmEvent o => new V3BasicEvent(o),
-                V3RotationEvent o => new V3BasicEvent(o),
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 basic event")
             };
 
         public static V3BasicEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesWithKeywords other) =>
             other switch
             {
-                V2SpecialEventsKeywordFilters o => new V3BasicEventTypesWithKeywords(o),
                 V3BasicEventTypesWithKeywords o => o,
+                V2SpecialEventsKeywordFilters o => new V3BasicEventTypesWithKeywords(o),
                 _ => throw new ArgumentException("Unexpected object to convert")
             };
 
@@ -73,78 +70,78 @@ namespace Beatmap.Converters
             EventTypesForKeywords(BaseEventTypesForKeywords other) =>
             other switch
             {
-                V2SpecialEventsKeywordFiltersKeywords o => new V3BasicEventTypesForKeywords(o),
                 V3BasicEventTypesForKeywords o => o,
+                V2SpecialEventsKeywordFiltersKeywords o => new V3BasicEventTypesForKeywords(o),
                 _ => throw new ArgumentException("Unexpected object to convert")
             };
 
         public static V3Obstacle Obstacle(BaseObstacle other) =>
             other switch
             {
+                V3Obstacle o => o,
                 V2Obstacle o => new V3Obstacle(o) { CustomData = CustomDataObject(o.CustomData) },
-                V3Obstacle o => new V3Obstacle(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v2 obstacle to v3 obstacle")
             };
 
         public static V3RotationEvent RotationEvent(BaseEvent other) =>
             other switch
             {
+                V3RotationEvent o => o,
                 V2Event o => new V3RotationEvent(o),
                 V3BasicEvent o => new V3RotationEvent(o),
-                V3RotationEvent o => o,
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 rotation event")
             };
 
         public static V3Arc Arc(BaseArc other) =>
             other switch
             {
+                V3Arc o => o,
                 V2Arc o => new V3Arc(o) { CustomData = CustomDataObject(o.CustomData) },
-                V3Arc o => new V3Arc(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v2 arc to v3 arc")
             };
 
         public static V3Waypoint Waypoint(BaseWaypoint other) =>
             other switch
             {
+                V3Waypoint o => o,
                 V2Waypoint o => new V3Waypoint(o) { CustomData = CustomDataObject(o.CustomData) },
-                V3Waypoint o => new V3Waypoint(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v2 waypoint to v3 waypoint")
             };
 
         public static V3Bookmark Bookmark(BaseBookmark other) =>
             other switch
             {
-                V2Bookmark o => new V3Bookmark(o),
                 V3Bookmark o => o,
+                V2Bookmark o => new V3Bookmark(o),
                 _ => throw new ArgumentException("Unexpected object to convert v2 bookmark to v3 bookmark")
             };
 
         public static V3BpmChange BpmChange(BaseBpmChange other) =>
             other switch
             {
-                V2BpmChange o => new V3BpmChange(o),
                 V3BpmChange o => o,
+                V2BpmChange o => new V3BpmChange(o),
                 _ => throw new ArgumentException("Unexpected object to convert v2 BPM change to v3 BPM change")
             };
 
         public static V3CustomEvent CustomEvent(BaseCustomEvent other) =>
             other switch
             {
-                V2CustomEvent o => new V3CustomEvent(o),
                 V3CustomEvent o => o,
+                V2CustomEvent o => new V3CustomEvent(o),
                 _ => throw new ArgumentException("Unexpected object to convert v2 custom event to v3 custom event")
             };
 
         public static V3EnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
             other switch
             {
+                V3EnvironmentEnhancement o => o,
                 V2EnvironmentEnhancement o => new V3EnvironmentEnhancement(o)
                 {
                     Position = RescaleVector3(o.Position),
                     LocalPosition = RescaleVector3(o.LocalPosition),
                     Geometry = Geometry(other.Geometry?.AsObject)
                 },
-                V3EnvironmentEnhancement o => o,
                 _ => throw new ArgumentException(
                     "Unexpected object to convert v2 environment enhancement to v3 environment enhancement")
             };

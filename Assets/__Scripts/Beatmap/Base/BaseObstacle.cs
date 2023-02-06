@@ -29,8 +29,6 @@ namespace Beatmap.Base
             Width = other.Width;
             InternalHeight = other.Height;
             CustomData = other.SaveCustom().Clone();
-            InferType();
-            InferPosYHeight();
         }
 
         protected BaseObstacle(float time, int posX, int type, float duration, int width,
@@ -103,8 +101,9 @@ namespace Beatmap.Base
             {
                 Duration = obstacle.Duration;
                 Width = obstacle.Width;
-                Height = obstacle.Height;
-                Type = obstacle.Type;
+                InternalPosY = obstacle.PosY;
+                InternalHeight = obstacle.Height;
+                InternalType = obstacle.Type;
             }
         }
 
