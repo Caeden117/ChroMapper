@@ -236,7 +236,7 @@ namespace Beatmap.V2
                     }
                 }
 
-                LoadCustom(ref map, ref mainNode);
+                LoadCustom(map, mainNode);
 
                 return map;
             }
@@ -247,7 +247,7 @@ namespace Beatmap.V2
             }
         }
 
-        private static void LoadCustom(ref V2Difficulty map, ref JSONNode mainNode)
+        private static void LoadCustom(V2Difficulty map, JSONNode mainNode)
         {
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
