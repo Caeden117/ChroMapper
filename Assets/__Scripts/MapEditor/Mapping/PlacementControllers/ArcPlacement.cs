@@ -16,7 +16,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     {
         if (context.performed || context.canceled) return;
 
-        var notes = SelectedObjects.Where(obj => IsColorNote(obj)).Cast<BaseNote>().ToList();
+        var notes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
         notes.Sort((a, b) => a.Time.CompareTo(b.Time));
 
         if (!Settings.Instance.Load_MapV3 && notes.Count > 1)
@@ -25,10 +25,17 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
                 null, PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
-
-        for (int i = 1; i < notes.Count; i++)
+        
+        // is there better way than this?
+        var red = notes.Where(n => n.Color == 0).ToList();
+        var blue = notes.Where(n => n.Color == 1).ToList();
+        for (var i = 1; i < red.Count; i++)
         {
-            SpawnArc(notes[i - 1], notes[i]);
+            SpawnArc(red[i - 1], red[i]);
+        }
+        for (var i = 1; i < blue.Count; i++)
+        {
+            SpawnArc(blue[i - 1], blue[i]);
         }
     }
 

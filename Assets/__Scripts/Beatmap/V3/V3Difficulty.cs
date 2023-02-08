@@ -105,6 +105,10 @@ namespace Beatmap.V3
 
                 WriteFile(this);
 
+                // TODO: temporary fix, there is possibility better solution but this is quick band aid
+                // we need to put them back into the map 
+                ParseV3ToV2(this);
+
                 return true;
             }
             catch (Exception e)
@@ -254,8 +258,8 @@ namespace Beatmap.V3
                     }
                 }
 
-                LoadCustom(ref map, ref mainNode);
-                ParseV3ToV2(ref map);
+                LoadCustom(map, mainNode);
+                ParseV3ToV2(map);
 
                 return map;
             }
@@ -292,7 +296,7 @@ namespace Beatmap.V3
 
             var newColorBoostEvents = new List<BaseColorBoostEvent>();
             var newRotationEvents = new List<BaseRotationEvent>();
-            var newBpmEvents = new List<BaseBpmEvent>();
+            // var newBpmEvents = new List<BaseBpmEvent>(); // while there is no BPM event supported, we do not want to replace existing BPM event
             var newEvents = new List<BaseEvent>();
             foreach (var e in Events)
                 switch (e.Type)
@@ -304,9 +308,9 @@ namespace Beatmap.V3
                     case (int)EventTypeValue.LateLaneRotation:
                         newRotationEvents.Add(V2ToV3.RotationEvent(e));
                         break;
-                    case (int)EventTypeValue.BpmChange:
-                        newBpmEvents.Add(V2ToV3.BpmEvent(e));
-                        break;
+                    // case (int)EventTypeValue.BpmChange:
+                    //     newBpmEvents.Add(V2ToV3.BpmEvent(e));
+                    //     break;
                     default:
                         newEvents.Add(V2ToV3.BasicEvent(e));
                         break;
@@ -314,7 +318,7 @@ namespace Beatmap.V3
 
             ColorBoostEvents = newColorBoostEvents;
             RotationEvents = newRotationEvents;
-            BpmEvents = newBpmEvents;
+            // BpmEvents = (List<BaseBpmEvent>)BpmEvents.Concat(newBpmEvents);
             Events = newEvents;
 
             Bookmarks = Bookmarks.Select(V2ToV3.Bookmark).Cast<BaseBookmark>().ToList();
@@ -324,7 +328,7 @@ namespace Beatmap.V3
                 .Cast<BaseEnvironmentEnhancement>().ToList();
         }
 
-        private static void ParseV3ToV2(ref V3Difficulty map)
+        private static void ParseV3ToV2(V3Difficulty map)
         {
             map.Notes.AddRange(map.Bombs);
             map.Events.AddRange(map.ColorBoostEvents);
@@ -333,7 +337,7 @@ namespace Beatmap.V3
             map.Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
         }
 
-        private static void LoadCustom(ref V3Difficulty map, ref JSONNode mainNode)
+        private static void LoadCustom(V3Difficulty map, JSONNode mainNode)
         {
             if (mainNode["customData"] == null) return;
 
