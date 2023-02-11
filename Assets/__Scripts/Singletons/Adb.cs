@@ -190,7 +190,7 @@ namespace QuestDumper
         private static bool listeningToShutdown;
         private static void ListenToUnityShutdown()
         {
-            if (!listeningToShutdown) return;
+            if (listeningToShutdown) return;
             
             listeningToShutdown = true;
             Application.quitting += async () =>
@@ -204,13 +204,15 @@ namespace QuestDumper
         // surrounds the string as "\"{s}\""
         private static string EscapeStringFix(string s) => $"\"\\\"{s}\\\"\"";
 
-        private static Task<AdbOutput> RunADBCommand(string arguments) =>
-            Task.Run( () =>
-            {
-                ListenToUnityShutdown();
+        private static Task<AdbOutput> RunADBCommand(string arguments)
+        {
+            ListenToUnityShutdown();
 
+
+            return Task.Run(() =>
+            {
                 using var process = BuildProcess(arguments);
-                
+
                 process.Start();
 
                 var standardOutputBuilder = new StringBuilder();
@@ -234,8 +236,10 @@ namespace QuestDumper
                 process.CancelOutputRead();
                 process.CancelErrorRead();
 
-                return new AdbOutput(standardOutputBuilder.Replace("\r\n", "\n").ToString().Trim(), errorOutputBuilder.Replace("\r\n","\n").ToString().Trim());
+                return new AdbOutput(standardOutputBuilder.Replace("\r\n", "\n").ToString().Trim(),
+                    errorOutputBuilder.Replace("\r\n", "\n").ToString().Trim());
             });
+        }
 
         /// <summary>
         /// Checks if the device is a Quest device.
@@ -248,7 +252,7 @@ namespace QuestDumper
 
             return (ret.StdOut.Contains("Oculus"), ret);
         }
-        
+
         /// <summary>
         /// Kills the ADB server
         /// </summary>
@@ -291,7 +295,7 @@ namespace QuestDumper
             var devicesConnectedStr = ret.StdOut.Substring(requiredString.Length);
             var connectedDevices = devicesConnectedStr
                 .Split('\n')
-                .Select(s => s.Substring(0, s.IndexOf("\t", StringComparison.Ordinal)).Replace("\n","").Trim())
+                .Select(s => s.Substring(0, s.IndexOf("\t", StringComparison.Ordinal)).Replace("\n", "").Trim())
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList();
 
@@ -305,11 +309,13 @@ namespace QuestDumper
         /// <param name="makeParents">Make parent folders if needed</param>
         /// <param name="permission">the permission for the folder</param>
         /// <param name="serial">The device</param>
-        public static async Task<AdbOutput> Mkdir(string devicePath, string serial, bool makeParents = true, string permission = "770")
+        public static async Task<AdbOutput> Mkdir(string devicePath, string serial, bool makeParents = true,
+            string permission = "770")
         {
             var makeParentsFlag = makeParents ? "-p" : "";
-            
-            return await RunADBCommand($"-s {serial} shell mkdir {EscapeStringFix(devicePath)} {makeParentsFlag} -m {permission}");
+
+            return await RunADBCommand(
+                $"-s {serial} shell mkdir {EscapeStringFix(devicePath)} {makeParentsFlag} -m {permission}");
         }
 
         /// <summary>
@@ -318,7 +324,7 @@ namespace QuestDumper
         /// <param name="devicePath">Files to copy from Android device</param>
         /// <param name="localPath">Files to copy to local machine</param>
         /// <param name="serial">The device</param>
-        public static async Task<AdbOutput> Push(string localPath, string devicePath, string serial) 
+        public static async Task<AdbOutput> Push(string localPath, string devicePath, string serial)
             => await RunADBCommand($"-s {serial} push \"{localPath}\" \"{devicePath}\"");
 
         /// <summary>
@@ -327,7 +333,7 @@ namespace QuestDumper
         /// <param name="devicePath">Files to copy from Android device</param>
         /// <param name="localPath">Files to copy to local machine</param>
         /// <param name="serial">device serial</param>
-        public static async Task<AdbOutput> Pull(string devicePath, string localPath, string serial) 
+        public static async Task<AdbOutput> Pull(string devicePath, string localPath, string serial)
             => await RunADBCommand($"-s {serial} pull \"{devicePath}\" \"{localPath}\"");
 
         public static async Task<AdbOutput> Initialize() => await RunADBCommand($"start-server");
