@@ -1696,7 +1696,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Modifier"",
                     ""id"": ""16d2df17-7013-4121-923d-2be47ecf541f"",
-                    ""path"": ""<Keyboard>/ctrl"",
+                    ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
