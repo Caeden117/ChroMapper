@@ -254,7 +254,26 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             evt.FloatValue = 1;
         }
 
-        base.ApplyToMap();
+        // convert event to their respective event type
+        // TODO: cleaner factory would be better, also this is ugly as hell
+        if (Settings.Instance.Load_MapV3) {
+            if (evt.IsLaneRotationEvent())
+            {
+                queuedData = new V3RotationEvent(evt);
+            }
+
+            if (evt.IsColorBoostEvent())
+            {
+                queuedData = new V3ColorBoostEvent(evt);
+            }
+            base.ApplyToMap();
+            queuedData = new V3BasicEvent(evt); // need to convert back to regular event
+        }
+        else
+        {
+            base.ApplyToMap();
+        }
+        
 
         if (evt.IsLaneRotationEvent()) TracksManager.RefreshTracks();
     }
