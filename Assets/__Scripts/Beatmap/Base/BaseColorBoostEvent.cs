@@ -5,6 +5,7 @@ namespace Beatmap.Base
 {
     public abstract class BaseColorBoostEvent : BaseEvent
     {
+        private bool toggle;
         protected BaseColorBoostEvent() => Type = 5;
 
         protected BaseColorBoostEvent(BaseColorBoostEvent other)
@@ -29,7 +30,18 @@ namespace Beatmap.Base
             toggle ? 1 : 0, 1, customData) => Toggle = toggle;
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
-        public bool Toggle { get; set; }
+        
+        public bool Toggle
+        {
+            get => toggle;
+            set
+            {
+                toggle = value;
+                Value = toggle ? 1 : 0;
+            }
+        }
+
+        public override bool IsColorBoostEvent() => true;
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
