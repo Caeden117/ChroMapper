@@ -1683,9 +1683,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""20006b8c-bd85-49bc-88fd-079c90d4da19"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""name"": ""Button With Two Modifiers"",
+                    ""id"": ""0a847176-0064-4f47-92b9-61def082158d"",
+                    ""path"": ""ButtonWithTwoModifiers"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1694,9 +1694,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Modifier"",
-                    ""id"": ""16d2df17-7013-4121-923d-2be47ecf541f"",
-                    ""path"": ""<Keyboard>/alt"",
+                    ""name"": ""modifier1"",
+                    ""id"": ""50976825-d0ea-4ead-8903-ab292b099102"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
@@ -1705,8 +1705,19 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Button"",
-                    ""id"": ""9c12a5db-74d6-4478-8bb7-13ef7230f423"",
+                    ""name"": ""modifier2"",
+                    ""id"": ""a344a9d6-754b-4356-841f-75b437cd29e1"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""SaveQuest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""2a683b11-b5dc-4f6d-b567-80e848e8a99d"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
