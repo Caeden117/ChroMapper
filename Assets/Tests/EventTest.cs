@@ -32,6 +32,7 @@ namespace Tests
             CleanupUtils.CleanupEvents();
         }
 
+        // TODO: need to change rotation event here as well, man
         [Test]
         public void Invert()
         {
@@ -43,19 +44,18 @@ namespace Tests
                 var eventPlacement = root.GetComponentInChildren<EventPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.LateLaneRotation,
-                    BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                BaseEvent baseEventA = new V3RotationEvent(2, 1, 45);
                 BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventB);
 
+                // TODO: u know, i forgot this events get converted and now i have to suffer the wrath of test pain 
                 if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
                     inputController.InvertEvent(containerA);
                 if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB)
                     inputController.InvertEvent(containerB);
 
-                CheckUtils.CheckEvent("Perform first rotation inversion", eventsContainer, 0, 2,
-                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckUtils.CheckRotationEvent("Perform first rotation inversion", eventsContainer, 0, 2, 1, -45);
                 CheckUtils.CheckEvent("Perform first light value inversion", eventsContainer, 1, 3,
                     (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
 
@@ -70,20 +70,17 @@ namespace Tests
 
                 CheckUtils.CheckEvent("Undo second light value inversion", eventsContainer, 1, 3,
                     (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
-                CheckUtils.CheckEvent("Check first rotation inversion", eventsContainer, 0, 2,
-                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckUtils.CheckRotationEvent("Check first rotation inversion", eventsContainer, 0, 2, 1, -45);
 
                 actionContainer.Undo();
 
                 CheckUtils.CheckEvent("Undo first light value inversion", eventsContainer, 1, 3,
                     (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
-                CheckUtils.CheckEvent("Check first rotation inversion", eventsContainer, 0, 2,
-                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45));
+                CheckUtils.CheckRotationEvent("Check first rotation inversion", eventsContainer, 0, 2, 1, -45);
 
                 actionContainer.Undo();
 
-                CheckUtils.CheckEvent("Undo first rotation inversion", eventsContainer, 0, 2,
-                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45));
+                CheckUtils.CheckRotationEvent("Undo first rotation inversion", eventsContainer, 0, 2, 1, 45);
                 CheckUtils.CheckEvent("Check initial light value", eventsContainer, 1, 3,
                     (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
             }

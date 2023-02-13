@@ -259,12 +259,12 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         if (Settings.Instance.Load_MapV3) {
             if (evt.IsLaneRotationEvent())
             {
-                queuedData = new V3RotationEvent(evt);
+                queuedData = evt is V3RotationEvent ? evt : new V3RotationEvent(evt);
             }
 
             if (evt.IsColorBoostEvent())
             {
-                queuedData = new V3ColorBoostEvent(evt);
+                queuedData = evt is V3ColorBoostEvent ? evt : new V3ColorBoostEvent(evt);
             }
             base.ApplyToMap();
             queuedData = new V3BasicEvent(evt); // need to convert back to regular event

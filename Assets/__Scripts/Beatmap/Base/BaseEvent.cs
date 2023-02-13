@@ -251,7 +251,7 @@ namespace Beatmap.Base
 
         public virtual float? GetRotationDegreeFromValue()
         {
-            var queued = CustomData != null && CustomData.HasKey("_queuedRotation") ? CustomData["_queuedRotation"].AsInt : Value;
+            var queued = (CustomData?.HasKey("_queuedRotation") ?? false) ? CustomData["_queuedRotation"].AsInt : Value;
             if (queued >= 0 && queued < LightValueToRotationDegrees.Length)
                 return LightValueToRotationDegrees[queued];
             //Mapping Extensions precision rotation from 1000 to 1720: 1000 = -360 degrees, 1360 = 0 degrees, 1720 = 360 degrees

@@ -213,6 +213,7 @@ namespace Tests
             }
         }
 
+        // TODO: update rotation event test for more representative
         [Test]
         public void MirrorRotation()
         {
@@ -225,23 +226,18 @@ namespace Tests
                 var root = eventsContainer.transform.root;
                 var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.LateLaneRotation,
-                    BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45), 1f, JSON.Parse("{\"_rotation\": 33}"));
+                BaseEvent baseEventA = new V3RotationEvent(2, 1, 33);
 
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
                 SelectionController.Select(baseEventA);
 
                 _mirror.Mirror();
-                CheckUtils.CheckEvent("Perform mirror rotation event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(-45),
-                    1f, JSON.Parse("{\"_rotation\": -33}"));
+                CheckUtils.CheckRotationEvent("Perform mirror rotation event", eventsContainer, 0, 2, 1,  -33);
 
                 // Undo mirror
                 _actionContainer.Undo();
-                CheckUtils.CheckEvent("Undo mirror rotation event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.LateLaneRotation, BaseEvent.LightValueToRotationDegrees.ToList().IndexOf(45),
-                    1f, JSON.Parse("{\"_rotation\": 33}"));
+                CheckUtils.CheckRotationEvent("Undo mirror rotation event", eventsContainer, 0, 2, 1,  33);
             }
         }
     }
