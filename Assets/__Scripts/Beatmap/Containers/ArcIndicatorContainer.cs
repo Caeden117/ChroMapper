@@ -44,7 +44,7 @@ namespace Beatmap.Containers
         public override void Setup()
         {
             base.Setup();
-            MaterialPropertyBlock.SetFloat("_Lit", 1);
+            MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
             MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 0.6f);
             MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 0.6f);
 
