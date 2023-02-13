@@ -61,7 +61,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
                     if (e.EventData.Value >= 0 && e.EventData.Value < BaseEvent.LightValueToRotationDegrees.Length)
                     {
                         e.EventData.Value =
-                            BaseEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
+                            BaseEvent.LightValueToRotationDegrees.ToList().IndexOf((int)(rotation ?? 0) * -1);
                     }
                     else if (e.EventData.Value >= 1000 && e.EventData.Value <= 1720) //Invert Mapping Extensions rotation
                     {
@@ -106,9 +106,23 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         }
         else if (e.EventData.IsLaneRotationEvent())
         {
+            if (e.EventData is BaseRotationEvent re)
+            {
+                re.Rotation += 15 * modifier;
+            }
+            else {
+                if (e.EventData.Value < 8 || e.EventData.Value >= 1000)
+                {
+                    e.EventData.Value += modifier;
+                    if (e.EventData.Value == 8) e.EventData.Value = 7;
+                }
+
+                if (e.EventData.Value < 0) e.EventData.Value = 0;
+                if (e.EventData.Value > 1720) e.EventData.Value -= 720;
+            }
+            
             tracksManager.RefreshTracks();
         }
-
         else if (e.EventData.IsColorBoostEvent())
         {
             e.EventData.Value = e.EventData.Value == 0 ? 1 : 0;

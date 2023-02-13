@@ -80,6 +80,29 @@ namespace Tests.Util
             }
         }
 
+        public static void CheckRotationEvent(string msg, BeatmapObjectContainerCollection container, int idx, float time,
+            int executionTime, float rotation, JSONNode customData = null)
+        {
+            var obj = container.LoadedObjects.Skip(idx).First();
+            Assert.IsInstanceOf<BaseRotationEvent>(obj);
+            if (obj is BaseRotationEvent evt)
+            {
+                Assert.AreEqual(time, evt.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(executionTime == 0 ? 14 : 15, evt.Type, $"{msg}: Mismatched type");
+                Assert.AreEqual(executionTime, evt.ExecutionTime, $"{msg}: Mismatched execution time");
+                Assert.AreEqual(rotation, evt.Rotation, 0.001f, $"{msg}: Mismatched rotation");
+
+                // ConvertToJSON causes gradient to get updated
+                if (customData != null)
+                {
+                    // Custom data needed to be saved before compare
+                    evt.SaveCustom();
+                    Assert.AreEqual(customData.ToString(), evt.CustomData?.ToString(),
+                        $"{msg}: Mismatched custom data");
+                }
+            }
+        }
+
         public static void CheckArc(string msg, BeatmapObjectContainerCollection container, int idx, float time,
             int posX, int posY, int color, int cutDirection, int angleOffset, float mult, float tailTime, int tailPosX,
             int tailPosY,

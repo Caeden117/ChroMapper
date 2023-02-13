@@ -62,7 +62,7 @@ namespace Beatmap.Base
         }
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
-        public int Type { get; set; }
+        public virtual int Type { get; set; }
         public int Value { get; set; }
         public float FloatValue { get; set; } = 1f;
         public BaseEvent Next { get; set; }
@@ -177,7 +177,7 @@ namespace Beatmap.Base
                      Type == (int)EventTypeValue.ExtraRightLights
             };
 
-        public bool IsColorBoostEvent() => Type is (int)EventTypeValue.ColorBoost;
+        public virtual bool IsColorBoostEvent() => Type is (int)EventTypeValue.ColorBoost;
 
         public bool IsRingEvent(string environment = null) =>
             environment switch
@@ -197,7 +197,7 @@ namespace Beatmap.Base
                 _ => Type == (int)EventTypeValue.LeftLaserRotation || Type == (int)EventTypeValue.RightLaserRotation
             };
 
-        public bool IsLaneRotationEvent() => Type == (int)EventTypeValue.EarlyLaneRotation ||
+        public virtual bool IsLaneRotationEvent() => Type == (int)EventTypeValue.EarlyLaneRotation ||
                                              Type == (int)EventTypeValue.LateLaneRotation;
 
         public bool IsExtraEvent(string environment = null) =>
@@ -221,7 +221,7 @@ namespace Beatmap.Base
                      Type == (int)EventTypeValue.SpecialEvent2 || Type == (int)EventTypeValue.SpecialEvent3
             };
 
-        public bool IsBpmEvent() => Type is (int)EventTypeValue.BpmChange;
+        public virtual bool IsBpmEvent() => Type is (int)EventTypeValue.BpmChange;
 
         public Vector2? GetPosition(CreateEventTypeLabels labels, EventGridContainer.PropMode mode, int prop)
         {
@@ -249,13 +249,14 @@ namespace Beatmap.Base
                 0.5f);
         }
 
-        public int? GetRotationDegreeFromValue()
+        public virtual float? GetRotationDegreeFromValue()
         {
+            var queued = (CustomData?.HasKey("_queuedRotation") ?? false) ? CustomData["_queuedRotation"].AsInt : Value;
+            if (queued >= 0 && queued < LightValueToRotationDegrees.Length)
+                return LightValueToRotationDegrees[queued];
             //Mapping Extensions precision rotation from 1000 to 1720: 1000 = -360 degrees, 1360 = 0 degrees, 1720 = 360 degrees
-            if (Value >= 0 && Value < LightValueToRotationDegrees.Length)
-                return LightValueToRotationDegrees[Value];
-            if (Value >= 1000 && Value <= 1720)
-                return Value - 1360;
+            if (queued >= 1000 && queued <= 1720)
+                return queued - 1360;
             return null;
         }
 

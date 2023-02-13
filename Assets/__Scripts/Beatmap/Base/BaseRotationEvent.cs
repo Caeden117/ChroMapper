@@ -6,42 +6,61 @@ namespace Beatmap.Base
 {
     public abstract class BaseRotationEvent : BaseEvent
     {
-        protected BaseRotationEvent() => Type = 13;
+        private int executionTime;
+        protected BaseRotationEvent() => Type = 14;
 
         protected BaseRotationEvent(BaseRotationEvent other)
         {
             Time = other.Time;
             ExecutionTime = other.ExecutionTime;
             Rotation = other.Rotation;
-            Type = (int)(ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
             CustomData = other.SaveCustom().Clone();
         }
 
         protected BaseRotationEvent(BaseEvent evt)
         {
             Time = evt.Time;
-            Rotation = CustomData != null && evt.CustomLaneRotation != null
-                ? (int)evt.CustomLaneRotation
-                : evt.Value;
-            if (Rotation >= 0 && Rotation < LightValueToRotationDegrees.Length)
-                Rotation = LightValueToRotationDegrees[(int)Rotation];
-            if (Rotation >= 1000 && Rotation <= 1720)
-                Rotation -= 1360;
             ExecutionTime = evt.Type == (int)EventTypeValue.EarlyLaneRotation ? 0 : 1;
-            Type = (int)(ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
+            Rotation = evt.CustomLaneRotation ?? evt.GetRotationDegreeFromValue() ?? 0f;
             CustomData = evt.SaveCustom().Clone();
         }
 
         protected BaseRotationEvent(float time, int executionTime, float rotation, JSONNode customData = null) :
-            base(time, executionTime == 0 ? 14 : 15, customData)
+            base()
         {
+            Time = time;
             ExecutionTime = executionTime;
             Rotation = rotation;
+            CustomData = customData;
         }
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
-        public int ExecutionTime { get; set; }
+
+        public override int Type
+        {
+            get => base.Type;
+            set
+            {
+                executionTime = value == 15 ? 1 : 0;
+                base.Type = value == 15 ? 15 : 14;
+            }
+        }
+        
+        public int ExecutionTime
+        {
+            get => executionTime;
+            set
+            {
+                executionTime = value;
+                Type = value == 0 ? 14 : 15;
+            }
+        }
+
         public float Rotation { get; set; }
+
+        public override float? GetRotationDegreeFromValue() => Rotation;
+
+        public override bool IsLaneRotationEvent() => true;
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {

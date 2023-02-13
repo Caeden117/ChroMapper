@@ -9,12 +9,12 @@ public class GridRotationController : MonoBehaviour
     [SerializeField] private float rotationChangingTime = 1;
     [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
     [SerializeField] private bool rotateTransform = true;
-    private int cachedRotation;
+    private float cachedRotation;
 
     private float currentRotation;
 
     public Action ObjectRotationChangedEvent;
-    private int targetRotation;
+    private float targetRotation;
 
     private void Start()
     {
@@ -60,7 +60,7 @@ public class GridRotationController : MonoBehaviour
         }
     }
 
-    private void RotationChanged(bool natural, int rotation)
+    private void RotationChanged(bool natural, float rotation)
     {
         if (!RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
         cachedRotation = rotation;

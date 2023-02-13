@@ -69,6 +69,8 @@ namespace Beatmap.Base
 
         public override string CustomKeyNameFilter { get; } = "unusedNameFilter";
 
+        public override bool IsBpmEvent() => true;
+
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
             if (other is BaseBpmEvent bpm) return Math.Abs(Bpm - bpm.Bpm) < DecimalTolerance;
