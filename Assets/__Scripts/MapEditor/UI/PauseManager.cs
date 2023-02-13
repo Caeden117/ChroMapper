@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using QuestDumper;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,12 +15,18 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
     [SerializeField] private AnimationCurve fadeOutCurve;
     [SerializeField] private UIMode uiMode;
     [SerializeField] private AutoSaveController saveController;
+    [SerializeField] private GameObject questSaveButton;
 
     private readonly IEnumerable<Type> disabledActionMaps = typeof(CMInput).GetNestedTypes().Where(t =>
         t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IPauseMenuActions));
 
     private PlatformDescriptor platform;
     private UIModeType previousUIModeType = UIModeType.Normal;
+
+    private void Awake()
+    {
+        questSaveButton.SetActive(Adb.IsAdbInstalled(out _));
+    }
 
     private void Start()
     {

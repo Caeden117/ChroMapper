@@ -4,7 +4,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Beatmap.Enums;
+using QuestDumper;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +14,7 @@ using UnityEngine.UI;
 
 public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 {
-    public bool IsSaving => savingThread != null && savingThread.IsAlive;
+    public bool IsSaving => savingThread != null && !savingThread.IsCompleted;
 
     private const int maximumAutosaveCount = 15;
     [SerializeField] private Toggle autoSaveToggle;
@@ -20,17 +22,19 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     private List<DirectoryInfo> currentAutoSaves = new List<DirectoryInfo>();
 
-    private Thread savingThread;
+    private Task savingThread;
 
     private float t;
 
     private float maxBeatTime; // Does not account for official bpm changes. V3 sounds like fun
     private const int FALSE = 0; // Because Interlocked.Exchange(bool) doesn't exist
     private const int TRUE = 1;
-    private Thread objectCheckingThread;
+    private Task objectCheckingThread;
     private int objectsOutsideMap = FALSE;
     private int objectsCheckIsComplete = FALSE;
     private int saveFlag = (int)SaveType.None;
+
+    private static MapExporter Exporter => new MapExporter(BeatSaberSongContainer.Instance.Song);
 
     public enum SaveType
     {
@@ -90,27 +94,46 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         if (context.performed) CheckAndSave();
     }
 
+    public void OnSaveQuest(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (!Adb.IsAdbInstalled(out _)) return;
+        CheckAndSaveQuest();
+    }
+
+    public void CheckAndSaveQuest(int _) => CheckAndSaveQuest(); // So it shows up in Unity
+
+    public async void CheckAndSaveQuest(SaveType saveType = SaveType.None)
+    {
+        CheckAndSave(saveType);
+        await objectCheckingThread;
+        await savingThread; // wait for files to save
+        
+        // now wait for exporter to finish
+        await Exporter.ExportToQuest();
+    }
+
     public void CheckAndSave(int _) => CheckAndSave(); // So it shows up in Unity
     public void CheckAndSave(SaveType saveType = SaveType.None)
     {
-        if (objectCheckingThread != null && objectCheckingThread.IsAlive)
+        if (objectCheckingThread != null && !objectCheckingThread.IsCompleted)
         {
             Debug.LogError(":hyperPepega: :mega: PLEASE BE PATIENT THANKS");
             return;
         }
 
         SelectionController.RefreshMap();
-        objectCheckingThread = new Thread(() =>
+        objectCheckingThread = Task.Run(() =>
         {
             if (ObjectIsOutsideMap())
             {
                 Debug.Log("Found object outside of the map.");
                 Interlocked.Exchange(ref objectsOutsideMap, TRUE);
             }
+
             Interlocked.Exchange(ref saveFlag, (int)saveType);
             Interlocked.Exchange(ref objectsCheckIsComplete, TRUE);
         });
-        objectCheckingThread.Start();
     }
 
     private void CleanAndSave(int res)
@@ -149,6 +172,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 eventCollection.DeleteObject(evt);
             }
         }
+
         if (Settings.Instance.RemoveObstaclesOutsideMap)
         {
             var obstacleCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
@@ -180,7 +204,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     }
 
     public void ToggleAutoSave(bool enabled) => Settings.Instance.AutoSave = enabled;
-
+    
     public void Save(bool auto = false)
     {
         if (IsSaving)
@@ -194,7 +218,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         notification.SkipFade = true;
         notification.WaitTime = 5.0f;
         SelectionController.RefreshMap(); //Make sure our map is up to date.
-        savingThread = new Thread(
+        savingThread = Task.Run(
             () => //I could very well move this to its own function but I need access to the "auto" variable.
             {
                 Thread.CurrentThread.IsBackground = true; //Making sure this does not interfere with game thread
@@ -260,8 +284,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
                 notification.SkipDisplay = true;
             });
-
-        savingThread.Start();
     }
 
     private void CleanAutosaves()
