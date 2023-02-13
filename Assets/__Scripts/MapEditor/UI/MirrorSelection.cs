@@ -184,7 +184,7 @@ public class MirrorSelection : MonoBehaviour
                     if (rotation != null)
                     {
                         if (e.Value >= 0 && e.Value < BaseEvent.LightValueToRotationDegrees.Length)
-                            e.Value = BaseEvent.LightValueToRotationDegrees.ToList().IndexOf((rotation ?? 0) * -1);
+                            e.Value = BaseEvent.LightValueToRotationDegrees.ToList().IndexOf((int)(rotation ?? 0) * -1);
                         else if (e.Value >= 1000 && e.Value <= 1720) //Invert Mapping Extensions rotation
                             e.Value = 1720 - (e.Value - 1000);
                     }

@@ -20,6 +20,6 @@ public class Rotation90DegreesWarningController : MonoBehaviour
             rotationCallback.RotationChangedEvent -= RotationChangedEvent;
     }
 
-    private void RotationChangedEvent(bool natural, int rotation) =>
-        rotationDisplay.color = rotation < -45 || rotation > 45 ? Color.red : Color.white;
+    private void RotationChangedEvent(bool natural, float rotation) =>
+        rotationDisplay.color = rotation < -45f || rotation > 45f ? Color.red : Color.white;
 }

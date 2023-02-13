@@ -12,11 +12,11 @@ public class RotationCallbackController : MonoBehaviour
     [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
     private readonly string[] enabledCharacteristics = { "360Degree", "90Degree", "Lawless" };
 
-    public Action<bool, int> RotationChangedEvent; //Natural, degrees
+    public Action<bool, float> RotationChangedEvent; //Natural, degrees
     public bool IsActive { get; private set; }
     public BaseEvent LatestRotationEvent { get; private set; }
 
-    public int Rotation { get; private set; }
+    public float Rotation { get; private set; }
 
     // Start is called before the first frame update
     internal void Start()
@@ -67,7 +67,7 @@ public class RotationCallbackController : MonoBehaviour
         Rotation = 0;
         if (rotations.Count() > 0)
         {
-            Rotation = rotations.Sum(x => x.GetRotationDegreeFromValue() ?? 0);
+            Rotation = rotations.Sum(x => x.GetRotationDegreeFromValue() ?? 0f);
             LatestRotationEvent = rotations.LastOrDefault();
         }
         else
