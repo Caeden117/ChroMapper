@@ -63,6 +63,9 @@ MonoBehaviour:
   - {fileID: 23934209316677924}
   - {fileID: 7598263129851762604}
   - {fileID: 6766682728314043683}
+  - {fileID: 2654713343862594198}
+  - {fileID: 3938364105697110404}
+  - {fileID: 8668402241456848079}
   tracksManager: {fileID: 0}
   valueDisplay: {fileID: 7155935288314928645}
   lightGradientController: {fileID: 3430681651377604802}
