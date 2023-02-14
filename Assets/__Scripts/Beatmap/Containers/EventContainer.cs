@@ -74,6 +74,16 @@ namespace Beatmap.Containers
             return container;
         }
 
+        // This way we won't apply MaterialPropertyBlock to valueDisplay which breaks dynamic batching
+        public override void Setup()
+        {
+            if (MaterialPropertyBlock == null)
+            {
+                MaterialPropertyBlock = new MaterialPropertyBlock();
+                modelRenderers.AddRange(eventRenderer);
+            }
+        }
+
         public override void UpdateGridPosition()
         {
             var gridPos = EventData.GetPosition(labels, EventGridContainer.PropagationEditing,
