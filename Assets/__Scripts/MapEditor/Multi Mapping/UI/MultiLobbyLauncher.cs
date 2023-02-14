@@ -14,6 +14,11 @@ public class MultiLobbyLauncher : MonoBehaviour
 
     public void StartLobby()
     {
+        // Temporarily disable United Mapping on dev release channel 
+        PersistentUI.Instance.ShowDialogBox("United Mapping is not supported on dev release.",
+                    null, PersistentUI.DialogBoxPresetType.Ok);
+        return;
+
         if (roomCode != null)
         {
             PersistentUI.Instance.ShowDialogBox($"The room code for this session is: {roomCode}",
