@@ -186,8 +186,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "Uppdatera objekt och hur de p\xE5verkas av rotation.\n\nKan \xE5tg\xE4rda\n
-      eventuella ol\xF6sta udda fall med rotationsh\xE4ndelser."
+    m_Localized: "Uppdatera objekt och hur de p\xE5verkas av rotation.\n\nKan \xE5tg\xE4rda\neventuella
+      ol\xF6sta udda fall med rotationsh\xE4ndelser."
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -710,6 +710,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 118373130107551744
     m_Localized: Objects found outside map. Do you want to remove them?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160655767994621952
+    m_Localized: FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247628972130304
+    m_Localized: Easing applies to floatValue.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247577315082240
+    m_Localized: Ease FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988345160302592
+    m_Localized: Easing applies to time.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988137944907776
+    m_Localized: Easing Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42585459012075520
+    m_Localized: Transition
     m_Metadata:
       m_Items: []
   references:

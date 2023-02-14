@@ -373,8 +373,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: "Kuinka tihe\xE4 strobo/gradientti on.\nSuositellut arvot: 1/8 ja\n
-      1/16"
+    m_Localized: "Kuinka tihe\xE4 strobo/gradientti on.\nSuositellut arvot: 1/8 ja\n1/16"
     m_Metadata:
       m_Items: []
   - m_Id: 90
@@ -707,6 +706,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 118373130107551744
     m_Localized: Objects found outside map. Do you want to remove them?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160655767994621952
+    m_Localized: FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247628972130304
+    m_Localized: Easing applies to floatValue.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247577315082240
+    m_Localized: Ease FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988345160302592
+    m_Localized: Easing applies to time.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988137944907776
+    m_Localized: Easing Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42585459012075520
+    m_Localized: Transition
     m_Metadata:
       m_Items: []
   references:

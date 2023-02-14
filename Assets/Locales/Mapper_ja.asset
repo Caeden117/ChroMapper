@@ -377,8 +377,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 91
-    m_Localized: "\u30B9\u30C8\u30ED\u30FC\u30D6\u306E\u5909\u5316\u7387\u3092\u6C7A\u5B9A\u3057\u307E\u3059\u3002\n\u30A4\u30D9\u30F3\u30C8\u5BC6\u5EA6\u3092\u9AD8\u304F\u3059\u308B\u306B\u306F\u3001\n
-      \u30B9\u30C8\u30ED\u30FC\u30D6\u9593\u9694\u3092\u5897\u52A0\u3057\u307E\u3059\u3002\n\n\u8A73\u7D30\u306B\u3064\u3044\u3066\u306F\u3001https://easings.net/
+    m_Localized: "\u30B9\u30C8\u30ED\u30FC\u30D6\u306E\u5909\u5316\u7387\u3092\u6C7A\u5B9A\u3057\u307E\u3059\u3002\n\u30A4\u30D9\u30F3\u30C8\u5BC6\u5EA6\u3092\u9AD8\u304F\u3059\u308B\u306B\u306F\u3001\n\u30B9\u30C8\u30ED\u30FC\u30D6\u9593\u9694\u3092\u5897\u52A0\u3057\u307E\u3059\u3002\n\n\u8A73\u7D30\u306B\u3064\u3044\u3066\u306F\u3001https://easings.net/
       \u3092\u53C2\u7167\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
     m_Metadata:
       m_Items: []
@@ -700,6 +699,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 118373130107551744
     m_Localized: Objects found outside map. Do you want to remove them?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160655767994621952
+    m_Localized: FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247628972130304
+    m_Localized: Easing applies to floatValue.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247577315082240
+    m_Localized: Ease FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988345160302592
+    m_Localized: Easing applies to time.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988137944907776
+    m_Localized: Easing Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42585459012075520
+    m_Localized: Transition
     m_Metadata:
       m_Items: []
   references:
