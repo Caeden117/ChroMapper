@@ -21,7 +21,7 @@ namespace Beatmap.Containers
         [SerializeField] protected List<Renderer> SelectionRenderers = new List<Renderer>();
         [SerializeField] protected BoxCollider BoxCollider;
 
-        private readonly List<Renderer> modelRenderers = new List<Renderer>();
+        protected readonly List<Renderer> modelRenderers = new List<Renderer>();
         public MaterialPropertyBlock MaterialPropertyBlock;
         internal bool selectionStateChanged;
 
