@@ -41,12 +41,10 @@ public struct MapExporter
             return;
         }
 
-
         // Run async
         var questCandidatesTask =
             await Task.WhenAll(devices.Select(async device => (device, quest: (await Adb.IsQuest(device)).Item1)));
         var questCandidates = questCandidatesTask.Where(s => s.quest).Select(s => s.device).ToList();
-        
 
         if (questCandidates.Count == 0)
         {
@@ -71,7 +69,6 @@ public struct MapExporter
         var exportedFiles = song.GetFilesForArchiving();
 
         if (exportedFiles == null) return;
-
 
         Debug.Log($"Creating folder if needed at {songExportPath}");
 
@@ -143,8 +140,6 @@ public struct MapExporter
                 archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
             }
         }
-
-        OpenSelectedMapInFileBrowser();
     }
 
     /// <summary>
