@@ -335,6 +335,8 @@ public class SongInfoEditUI : MenuBase
         exporter.OpenSelectedMapInFileBrowser();
     }
 
+    public void OpenSelectedMapInFileBrowser() => exporter.OpenSelectedMapInFileBrowser();
+
     private void SaveAllFields()
     {
         if (IsDirty())
