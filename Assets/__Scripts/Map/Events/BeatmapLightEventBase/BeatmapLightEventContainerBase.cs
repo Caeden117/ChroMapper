@@ -134,4 +134,16 @@ public abstract class BeatmapLightEventContainerBase<TBo, TEb, TEbd, TBoc, TBocc
 
     protected virtual void TweakValueImpl(ref TEbd ebd, int modifier) { }
 
+    public void TweakFloatValue(int modifier)
+    {
+        var original = BeatmapObject.GenerateCopy(LightEventData);
+
+        var idx = GetThisIdx();
+        var ebd = LightEventData.EventBoxes[0].EventDatas[idx];
+        TweakFloatValueImpl(ref ebd, modifier);
+        SetLightEventAppearance(EventAppearance, (TBoc)this, LightEventData.Time + ebd.AddedBeat, idx);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(LightEventData, LightEventData, original));
+    }
+
+    protected virtual void TweakFloatValueImpl(ref TEbd ebd, int modifier) => TweakValueImpl(ref ebd, modifier);
 }

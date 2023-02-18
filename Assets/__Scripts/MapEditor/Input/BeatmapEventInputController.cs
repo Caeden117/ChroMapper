@@ -63,7 +63,18 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         if (e == null || e.Dragging || !context.performed) return;
 
         var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
-        TweakFloatValue(e, modifier);
+        switch (e.ObjectData.BeatmapType)
+        {
+            case BeatmapObject.ObjectType.LightColorEvent:
+            case BeatmapObject.ObjectType.LightRotationEvent:
+            case BeatmapObject.ObjectType.LightTranslationEvent:
+                var i = e as IEventV3Action;
+                i.TweakFloatValue(modifier);
+                break;
+            default:
+                TweakFloatValue(e, modifier);
+                break;
+        }
     }
 
     public void InvertEvent(BeatmapEventContainer e)
