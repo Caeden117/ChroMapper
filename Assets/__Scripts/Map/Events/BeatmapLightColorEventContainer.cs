@@ -20,7 +20,12 @@ public class BeatmapLightColorEventContainer : BeatmapLightEventContainerBase<
     protected override void InvertEventImpl(ref BeatmapLightColorEventData ebd)
     {
         ebd.Color = colorInvertMap.ElementAtOrDefault(ebd.Color);
-        Debug.Log($"new color is {ebd.Color}");
+    }
+
+    protected override void TweakValueImpl(ref BeatmapLightColorEventData ebd, int modifier)
+    {
+        ebd.Brightness += modifier * 0.1f;
+        ebd.Brightness = Mathf.Clamp(ebd.Brightness, 0, 1.5f);
     }
 
     public override void SetLightEventAppearance(EventAppearanceSO so, BeatmapLightColorEventContainer con, float time, int i)

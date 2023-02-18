@@ -123,7 +123,15 @@ public abstract class BeatmapLightEventContainerBase<TBo, TEb, TEbd, TBoc, TBocc
 
     public void TweakValue(int modifier)
     {
+        var original = BeatmapObject.GenerateCopy(LightEventData);
 
+        var idx = GetThisIdx();
+        var ebd = LightEventData.EventBoxes[0].EventDatas[idx];
+        TweakValueImpl(ref ebd, modifier);
+        SetLightEventAppearance(EventAppearance, (TBoc)this, LightEventData.Time + ebd.AddedBeat, idx);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(LightEventData, LightEventData, original));
     }
+
+    protected virtual void TweakValueImpl(ref TEbd ebd, int modifier) { }
 
 }
