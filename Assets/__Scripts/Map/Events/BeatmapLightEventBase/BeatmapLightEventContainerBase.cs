@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class BeatmapLightEventContainerBase<TBo, TEb, TEbd, TBoc, TBocc, TLightEvent> : BeatmapEventContainer
+public abstract class BeatmapLightEventContainerBase<TBo, TEb, TEbd, TBoc, TBocc, TLightEvent> : BeatmapEventContainer, IEventV3Action
     where TBo: BeatmapLightEventBase<TEb, TEbd>
     where TEb: BeatmapLightEventBoxBase<TEbd>, new()
     where TEbd: BeatmapLightEventBoxDataBase, new()
     where TBoc: BeatmapLightEventContainerBase<TBo, TEb, TEbd, TBoc, TBocc, TLightEvent>
     where TBocc: LightEventsContainerCollectionBase<TBo, TEb, TEbd, TBoc, TBocc, TLightEvent>
     where TLightEvent: ILightEventV3
+
 {
     public TBo LightEventData;
     public TBocc LightEventsContainer;
@@ -39,6 +40,7 @@ public abstract class BeatmapLightEventContainerBase<TBo, TEb, TEbd, TBoc, TBocc
         container.LightEventData = data;
         container.LightEventsContainer = lightEventsContainer;
         container.transform.localEulerAngles = Vector3.zero;
+        container.EventAppearance = eventAppearanceSO;
         return container;
     }
 
@@ -90,4 +92,38 @@ public abstract class BeatmapLightEventContainerBase<TBo, TEb, TEbd, TBoc, TBocc
         }
         return 0;
     }
+
+    public int GetThisIdx(TBoc con = null)
+    {
+        con ??= (TBoc)this;
+        var par = transform.parent.GetComponent<TBoc>();
+        if (par != null)
+        {
+            return par.GetThisIdx(con);
+        }
+        for (int i = 0; i < ExtraNotes.Count && ExtraNotes[i].gameObject.activeSelf; ++i)
+        {
+            if (ExtraNotes[i] == con) return i + 1;
+        }
+        return 0;
+    }
+
+    public void InvertEvent()
+    {
+        var original = BeatmapObject.GenerateCopy(LightEventData);
+
+        var idx = GetThisIdx();
+        var ebd = LightEventData.EventBoxes[0].EventDatas[idx];
+        InvertEventImpl(ref ebd);
+        SetLightEventAppearance(EventAppearance, (TBoc)this, LightEventData.Time + ebd.AddedBeat, idx);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(LightEventData, LightEventData, original));
+    }
+
+    protected virtual void InvertEventImpl(ref TEbd ebd){ }
+
+    public void TweakValue(int modifier)
+    {
+
+    }
+
 }

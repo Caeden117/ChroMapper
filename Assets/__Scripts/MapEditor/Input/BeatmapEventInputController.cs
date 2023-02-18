@@ -18,7 +18,21 @@ public class BeatmapEventInputController : BeatmapInputController<BeatmapEventCo
         }
 
         RaycastFirstObject(out var e);
-        if (e != null && !e.Dragging) InvertEvent(e);
+        if (e != null && !e.Dragging)
+        {
+            switch (e.ObjectData.BeatmapType)
+            {
+                case BeatmapObject.ObjectType.LightColorEvent:
+                case BeatmapObject.ObjectType.LightRotationEvent:
+                case BeatmapObject.ObjectType.LightTranslationEvent:
+                    var i = e as IEventV3Action;
+                    i.InvertEvent();
+                    break;
+                default:
+                    InvertEvent(e);
+                    break;
+            }
+        }
     }
 
     public void OnTweakEventValue(InputAction.CallbackContext context)

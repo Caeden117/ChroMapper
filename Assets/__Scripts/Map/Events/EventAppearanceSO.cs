@@ -295,8 +295,8 @@ public class EventAppearanceSO : ScriptableObject
 
 
         e.EventModel = Settings.Instance.EventModel;
-        e.ChangeColor(color, dataIdx != 0 || !final); // idk why we have to update materials for sub notes
-        e.ChangeBaseColor(Color.black, dataIdx != 0 || !final);
+        e.ChangeColor(color); 
+        e.ChangeBaseColor(Color.black);
         if (color == Color.white) e.UpdateTextColor(Color.black);
         else e.UpdateTextColor(Color.white);
     }
