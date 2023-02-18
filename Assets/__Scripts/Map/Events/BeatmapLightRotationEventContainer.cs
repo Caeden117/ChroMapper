@@ -28,4 +28,13 @@ public class BeatmapLightRotationEventContainer : BeatmapLightEventContainerBase
     {
         so.SetLightRotationEventAppearance(con, i);
     }
+
+    protected override void TweakValueImpl(ref BeatmapLightRotationEventData ebd, int modifier)
+    {
+        ebd.RotationValue += modifier * 5;
+    }
+    protected override void TweakFloatValueImpl(ref BeatmapLightRotationEventData ebd, int modifier)
+    {
+        ebd.RotationValue += modifier;
+    }
 }

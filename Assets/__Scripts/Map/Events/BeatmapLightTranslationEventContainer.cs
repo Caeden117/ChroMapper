@@ -24,4 +24,13 @@ public class BeatmapLightTranslationEventContainer : BeatmapLightEventContainerB
             0
             );
     }
+
+    protected override void TweakValueImpl(ref BeatmapLightTranslationEventData ebd, int modifier)
+    {
+        ebd.TranslateValue += modifier * 5;
+    }
+    protected override void TweakFloatValueImpl(ref BeatmapLightTranslationEventData ebd, int modifier)
+    {
+        ebd.TranslateValue += modifier;
+    }
 }
