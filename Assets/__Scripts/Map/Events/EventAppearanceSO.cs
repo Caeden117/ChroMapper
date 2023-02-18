@@ -26,6 +26,7 @@ public class EventAppearanceSO : ScriptableObject
     private readonly string[] rotationDirectionMark = { "", "↻", "↺" };
     private readonly string[] rotationTransitionMark = { "", "T", "Ti", "To", "Tio" };
     private readonly string[] distributionTransitionMark = { "", "Ti", "To", "Tio" };
+    private bool DisplayText => Settings.Instance.DisplayFloatValueText;
 
     public void SetEventAppearance(BeatmapEventContainer e, bool final = true, bool boost = false)
     {
@@ -291,7 +292,7 @@ public class EventAppearanceSO : ScriptableObject
 
         text += "\n";
 
-        e.UpdateTextDisplay(true, text);
+        e.UpdateTextDisplay(DisplayText, text);
 
 
         e.EventModel = Settings.Instance.EventModel;
@@ -331,7 +332,7 @@ public class EventAppearanceSO : ScriptableObject
             + "/" + distributionTransitionMark[eb.DataDistributionEaseType] + GenerateDistributionString(eb.RotationDistribution, eb.RotationDistributionType, dataIdx != 0 || eb.RotationAffectFirst == 1);
         text += "\n" + rotationDirectionMark[ebd.RotationDirection] + ebd.AdditionalLoop + (eb.ReverseRotation == 1 ? "-" : "+") + ebd.RotationValue + "°";
 
-        e.UpdateTextDisplay(true, text);
+        e.UpdateTextDisplay(DisplayText, text);
         e.ChangeColor(offColor, dataIdx != 0 || !final);
 
         e.SetRotationAxisAppearance(eb.Axis);
@@ -362,7 +363,7 @@ public class EventAppearanceSO : ScriptableObject
             + "/" + distributionTransitionMark[eb.DataDistributionEaseType] + GenerateDistributionString(eb.TranslationDistribution, eb.TranslationDistributionType, dataIdx != 0 || eb.TranslationAffectFirst == 1);
         text += "\n" + (eb.Flip == 1 ? "-" : "+") + Mathf.RoundToInt(ebd.TranslateValue * 100) + "%";
 
-        e.UpdateTextDisplay(true, text);
+        e.UpdateTextDisplay(DisplayText, text);
         e.ChangeColor(otherColor, dataIdx != 0 || !final);
 
         e.SetTranslationAxisAppearance(eb.Axis);
