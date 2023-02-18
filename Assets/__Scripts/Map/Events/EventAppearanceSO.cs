@@ -268,7 +268,7 @@ public class EventAppearanceSO : ScriptableObject
                 ? (boost ? BlueBoostColor : BlueColor)
                 : (boost ? RedBoostColor : RedColor);
         }
-        color = Color.Lerp(offColor, color, eb.EventDatas[dataIdx].Brightness);
+        color = Color.LerpUnclamped(offColor, color, eb.EventDatas[dataIdx].Brightness);
 
         // first line: transition + filter 
         var text = GenerateFilterString(eb.Filter);
