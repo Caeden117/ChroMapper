@@ -40,7 +40,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer
     public float DefaultFadeSize => eventModels[eventModel].GetComponent<MaterialParameters>().DefaultFadeSize;
     public float BoostEventFadeSize => eventModels[eventModel].GetComponent<MaterialParameters>().BoostEventFadeSize;
 
-    [SerializeField] private EventAppearanceSO eventAppearance;
+    [SerializeField] protected EventAppearanceSO EventAppearance;
     [SerializeField] private List<Renderer> eventRenderer;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private TextMesh valueDisplay;
@@ -57,7 +57,7 @@ public class BeatmapEventContainer : BeatmapObjectContainer
         var container = Instantiate(prefab).GetComponent<BeatmapEventContainer>();
         container.EventData = data;
         container.EventsContainer = eventsContainer;
-        container.eventAppearance = eventAppearanceSO;
+        container.EventAppearance = eventAppearanceSO;
         container.labels = labels;
         container.transform.localEulerAngles = Vector3.zero;
         return container;
@@ -181,5 +181,5 @@ public class BeatmapEventContainer : BeatmapObjectContainer
     {
         valueDisplay.color = color;
     }
-    public void RefreshAppearance() => eventAppearance.SetEventAppearance(this);
+    public void RefreshAppearance() => EventAppearance.SetEventAppearance(this);
 }
