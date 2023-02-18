@@ -297,7 +297,8 @@ public class EventAppearanceSO : ScriptableObject
         e.EventModel = Settings.Instance.EventModel;
         e.ChangeColor(color); 
         e.ChangeBaseColor(Color.black);
-        if (color == Color.white) e.UpdateTextColor(Color.black);
+        const float roughlyWhite = 0.9f;
+        if (color.r > roughlyWhite && color.g > roughlyWhite && color.b > roughlyWhite && color.a > roughlyWhite) e.UpdateTextColor(Color.black);
         else e.UpdateTextColor(Color.white);
     }
 
