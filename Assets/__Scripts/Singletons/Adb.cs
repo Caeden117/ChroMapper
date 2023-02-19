@@ -51,7 +51,8 @@ namespace QuestDumper
 
             var values = Environment.GetEnvironmentVariable("PATH");
 
-            return values?.Split(Path.PathSeparator).Select(path => Path.Combine(path, fileName)).FirstOrDefault(File.Exists);
+            return values?.Split(Path.PathSeparator).Select(path => Path.Combine(path, fileName))
+                .FirstOrDefault(File.Exists);
         }
 
         private static string GetADBUrl()
@@ -73,12 +74,15 @@ namespace QuestDumper
         }
 
         private static bool IsWindows => Application.platform == RuntimePlatform.WindowsPlayer ||
-                                                 Application.platform == RuntimePlatform.WindowsEditor;
-        
-        private static readonly Lazy<string> extractAdbPath = new Lazy<string>(() => Settings.AndroidPlatformTools);
-        private static readonly Lazy<string> chroMapperAdbPath = new Lazy<string>(() => Path.Combine(extractAdbPath.Value, "platform-tools", "adb" + (IsWindows ? ".exe" : "")));
+                                         Application.platform == RuntimePlatform.WindowsEditor;
 
-        public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess, [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest, bool> progressUpdate)
+        private static readonly Lazy<string> extractAdbPath = new Lazy<string>(() => Settings.AndroidPlatformTools);
+
+        private static readonly Lazy<string> chroMapperAdbPath = new Lazy<string>(() =>
+            Path.Combine(extractAdbPath.Value, "platform-tools", "adb" + (IsWindows ? ".exe" : "")));
+
+        public static IEnumerator DownloadADB([CanBeNull] Action<UnityWebRequest> onSuccess,
+            [CanBeNull] Action<UnityWebRequest, Exception> onError, Action<UnityWebRequest, bool> progressUpdate)
         {
             // We will extract the contents of the zip to the temp directory, so we will save the zip in memory.
             var downloadHandler = new DownloadHandlerBuffer();
@@ -114,15 +118,14 @@ namespace QuestDumper
 
             var task = Task.Run(() =>
             {
-
                 // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
-                var stream = new MemoryStream(downloaded);
-                var archive = new ZipArchive(stream, ZipArchiveMode.Read);
+                using var stream = new MemoryStream(downloaded);
+                using var archive = new ZipArchive(stream, ZipArchiveMode.Read);
 
                 // Create the directory for our song to go to.
                 // Path.GetTempPath() should be compatible with Windows and UNIX.
                 // See Microsoft docs on it.
-                
+
                 Directory.CreateDirectory(extractPath);
 
                 // Extract our zipped file into this directory.
@@ -143,7 +146,7 @@ namespace QuestDumper
             var adbPath = chroMapperAdbPath.Value;
             var adbFolder = Path.GetDirectoryName(adbPath)!;
             if (!File.Exists(adbPath) && !Directory.Exists(adbFolder)) yield break;
-            
+
 
             // Don't block main thread
             yield return Task.Run(async () =>
@@ -154,7 +157,7 @@ namespace QuestDumper
             }).AsCoroutine();
         }
 
-        
+
         public static bool IsAdbInstalled([CanBeNull] out string adbPath)
         {
             adbPath = GetFullPath(chroMapperAdbPath.Value);
@@ -165,7 +168,8 @@ namespace QuestDumper
         private static Process BuildProcess(string arguments)
         {
             if (!IsAdbInstalled(out var adbPath) || adbPath == null)
-                throw new InvalidOperationException($"Could not find {adbPath} in PATH or location on {Environment.OSVersion.Platform}");
+                throw new InvalidOperationException(
+                    $"Could not find {adbPath} in PATH or location on {Environment.OSVersion.Platform}");
 
             var process = new Process
             {
@@ -188,10 +192,11 @@ namespace QuestDumper
         }
 
         private static bool listeningToShutdown;
+
         private static void ListenToUnityShutdown()
         {
             if (listeningToShutdown) return;
-            
+
             listeningToShutdown = true;
             Application.quitting += async () =>
             {
