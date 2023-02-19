@@ -98,8 +98,8 @@ namespace Beatmap.Containers
             var headPos = ArcData.GetPosition();
             var tailPos = ArcData.GetTailPosition();
 
-            headNode.Position = new Vector3(headPos.x, headPos.y + 0.5f, ArcData.Time * EditorScaleController.EditorScale);
-            tailNode.Position = new Vector3(tailPos.x, tailPos.y + 0.5f, ArcData.TailTime * EditorScaleController.EditorScale);
+            headNode.SetPositionWithoutNotify(new Vector3(headPos.x, headPos.y + 0.5f, ArcData.Time * EditorScaleController.EditorScale));
+            tailNode.SetPositionWithoutNotify(new Vector3(tailPos.x, tailPos.y + 0.5f, ArcData.TailTime * EditorScaleController.EditorScale));
 
             var headPointMultiplier = ArcData.CutDirection == (int)NoteCutDirection.Any
                 ? 0f
@@ -107,7 +107,7 @@ namespace Beatmap.Containers
             var d1 = new Vector3(0, splineControlPointScaleFactor * headPointMultiplier, directionZPerturbation);
             var rot1 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.CutDirection).z - 180);
             d1 = rot1 * d1;
-            headNode.Direction = headNode.Position + d1;
+            headNode.SetDirectionWithoutNotify(headNode.Position + d1);
 
             var tailPointMultiplier = ArcData.TailCutDirection == (int)NoteCutDirection.Any
                 ? 0f
@@ -115,7 +115,7 @@ namespace Beatmap.Containers
             var d2 = new Vector3(0, splineControlPointScaleFactor * tailPointMultiplier, directionZPerturbation);
             var rot2 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.TailCutDirection).z - 180);
             d2 = rot2 * d2;
-            tailNode.Direction = tailNode.Position + d2;
+            tailNode.SetDirectionWithoutNotify(tailNode.Position + d2);
 
             spline.RefreshCurves();
             splineRendererEnabled = true;

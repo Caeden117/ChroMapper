@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +11,8 @@ namespace SplineMesh {
     /// </summary>
     [Serializable]
     public class SplineNode {
+        public void SetPositionWithoutNotify(Vector3 position) => this.position = position;
+        public void SetDirectionWithoutNotify(Vector3 direction) => this.direction = direction;
 
         /// <summary>
         /// Node position
