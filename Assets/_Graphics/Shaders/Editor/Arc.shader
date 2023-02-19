@@ -6,7 +6,6 @@
         _FadeSize("Fade Size", Float) = 1
         _MainAlpha("Main Alpha", Float) = 1
         _Rotation("Rotation", Float) = 0
-        _WorldScale("World Scale", Vector) = (1, 3.5, 1, 1)
     }
     SubShader
     {
@@ -38,7 +37,6 @@
                 UNITY_DEFINE_INSTANCED_PROP(float, _Rotation)
                 UNITY_DEFINE_INSTANCED_PROP(float, _FadeSize)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _ColorTint)
-                UNITY_DEFINE_INSTANCED_PROP(float4, _WorldScale)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             struct appdata
@@ -92,41 +90,8 @@
             {
                 UNITY_SETUP_INSTANCE_ID(i);
 
-                /// Outline ///
-                float4 worldScale = abs(UNITY_ACCESS_INSTANCED_PROP(Props, _WorldScale));
-                float uvXScalar = 0;
-                float uvYScalar = 0;
-
-                if (i.normal.x != 0)
-                {
-                    uvXScalar = worldScale.z;
-                    uvYScalar = worldScale.y;
-                }
-                else if (i.normal.y != 0)
-                {
-                    uvYScalar = worldScale.z;
-                    uvXScalar = worldScale.x;
-                }
-                else
-                {
-                    uvXScalar = worldScale.x;
-                    uvYScalar = worldScale.y;
-                }
-
-
-                float mainAlpha = 0;
-
-                float2 halfUv = 0.5 - abs(0.5 - i.uv);
-                if ((halfUv.x * uvXScalar) < 0.075 || (halfUv.y * uvYScalar) < 0.075)
-                {
-                    mainAlpha = 1;
-                }
-                else
-                {
-                    mainAlpha = UNITY_ACCESS_INSTANCED_PROP(Props, _MainAlpha);
-                }
-
                 /// Coloring ///
+                float mainAlpha = UNITY_ACCESS_INSTANCED_PROP(Props, _MainAlpha);
                 float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _ColorTint);
 
                 float mag = length(color);
