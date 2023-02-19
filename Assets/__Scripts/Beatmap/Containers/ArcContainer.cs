@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Enums;
-using SplineMesh;
 using UnityEngine;
 
 namespace Beatmap.Containers
@@ -9,14 +8,9 @@ namespace Beatmap.Containers
     public class ArcContainer : ObjectContainer
     {
         private const float splineControlPointScaleFactor = 2.5f / 0.6f; // 2.5 multiplier used by game, divide by 0.6 to scale to cm units
-
-        private const float
-            directionZPerturbation = 1e-3f; // a small value to avoid 'look rotation viewing vector is zero'
-
         internal const float arcEmissionIntensity = 6;
+        private const int numSamples = 30;
 
-        private const float partition = 0.00f;
-        private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
         internal static readonly int emissionColor = Shader.PropertyToID("_ColorTint");
 
         [SerializeField] private TracksManager manager;
@@ -27,18 +21,52 @@ namespace Beatmap.Containers
 
         private MaterialPropertyBlock indicatorMaterialPropertyBlock;
 
-        private MeshRenderer splineRenderer;
-        private bool splineRendererEnabled;
+        [SerializeField] private LineRenderer splineRenderer;
 
-        internal MeshRenderer SplineRenderer
+        public Vector3 p0()
         {
-            get => splineRenderer;
-            set
+            var position = ArcData.GetPosition();
+            return new Vector3(position.x, position.y + 0.5f, 0f);
+        }
+        public Vector3 p1()
+        {
+            var headPosition = ArcData.GetPosition();
+            if (ArcData.CutDirection == (int)NoteCutDirection.Any)
             {
-                splineRenderer = value;
-                splineRenderer.enabled = splineRendererEnabled;
-                splineRenderer.SetPropertyBlock(MaterialPropertyBlock);
+                return new Vector3(headPosition.x, headPosition.y + 0.5f, 0f);
             }
+
+            var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ArcData.CutDirection).z;
+            var headDirection = new Vector2(Mathf.Sin(zRads), -Mathf.Cos(zRads));
+            var nodePosition = headPosition + headDirection * ArcData.HeadControlPointLengthMultiplier * splineControlPointScaleFactor;
+            return new Vector3(nodePosition.x, nodePosition.y + 0.5f, 0f);
+        }
+
+        public Vector3 p2()
+        {
+            var tailPosition = ArcData.GetTailPosition();
+            if (ArcData.TailCutDirection == (int)NoteCutDirection.Any)
+            {
+                return new Vector3(tailPosition.x, tailPosition.y + 0.5f, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
+            }
+
+            var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ArcData.TailCutDirection).z;
+            var tailDirection = new Vector2(Mathf.Sin(zRads), -Mathf.Cos(zRads));
+            var tailNodePosition = tailPosition - tailDirection * ArcData.TailControlPointLengthMultiplier * splineControlPointScaleFactor;
+            return new Vector3(tailNodePosition.x, tailNodePosition.y + 0.5f, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
+        }
+
+        public Vector3 p3()
+        {
+            var tailPosition = ArcData.GetTailPosition();
+            return new Vector3(tailPosition.x, tailPosition.y + 0.5f, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
+        }
+
+        // B(t) = (1-t)^3 p0 + 3(1-t)^2 t p1 + 3(1-t)t^2 p2 + t^3 p3
+        Vector3 SampleCubicBezierPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        {
+            var tDiff = 1 - t;
+            return (Mathf.Pow(tDiff, 3) * p0) + (3 * Mathf.Pow(tDiff, 2) * t * p1) + (3 * tDiff * Mathf.Pow(t, 2) * p2) + (Mathf.Pow(t, 3) * p3);
         }
 
         public override BaseObject ObjectData
@@ -73,53 +101,36 @@ namespace Beatmap.Containers
 
         public void SetScale(Vector3 scale) => transform.localScale = scale;
 
-        //MaterialPropertyBlock.SetVector(shaderScale, scale);
-        //UpdateMaterials();
         public void NotifySplineChanged(BaseArc arcData = null)
         {
             if (arcData != null) ArcData = arcData;
             if (splineRenderer != null) // since curve has been changed, firstly disable it until it is computed.
                 splineRenderer.enabled = false;
-            splineRendererEnabled = false;
             var arcCollection =
                 BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc) as ArcGridContainer;
             arcCollection.RequestForSplineRecompute(this);
         }
 
         /// <summary>
-        ///     Defer Bezier Curve based on arc data. Not the official algorithm I guess?
+        ///     Defer Bezier Curve based on arc data.
         /// </summary>
         public void RecomputePosition()
         {
             if (ArcData == null) return; // in case that this container has already been recycled when about to compute
-            var spline = GetComponent<Spline>();
-            var headNode = spline.nodes[0];
-            var tailNode = spline.nodes[1];
-            var headPos = ArcData.GetPosition();
-            var tailPos = ArcData.GetTailPosition();
+            this.transform.localPosition = new Vector3(0, 0, ArcData.Time * EditorScaleController.EditorScale);
+            splineRenderer.positionCount = numSamples + 1;
 
-            headNode.SetPositionWithoutNotify(new Vector3(headPos.x, headPos.y + 0.5f, ArcData.Time * EditorScaleController.EditorScale));
-            tailNode.SetPositionWithoutNotify(new Vector3(tailPos.x, tailPos.y + 0.5f, ArcData.TailTime * EditorScaleController.EditorScale));
+            var p0 = this.p0();
+            var p1 = this.p1();
+            var p2 = this.p2();
+            var p3 = this.p3();
 
-            var headPointMultiplier = ArcData.CutDirection == (int)NoteCutDirection.Any
-                ? 0f
-                : ArcData.HeadControlPointLengthMultiplier;
-            var d1 = new Vector3(0, splineControlPointScaleFactor * headPointMultiplier, directionZPerturbation);
-            var rot1 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.CutDirection).z - 180);
-            d1 = rot1 * d1;
-            headNode.SetDirectionWithoutNotify(headNode.Position + d1);
+            for (int i = 0; i <= numSamples; i++)
+            {
+                splineRenderer.SetPosition(i, SampleCubicBezierPoint(p0, p1, p2, p3, (float)i / numSamples));
+            }
 
-            var tailPointMultiplier = ArcData.TailCutDirection == (int)NoteCutDirection.Any
-                ? 0f
-                : ArcData.TailControlPointLengthMultiplier;
-            var d2 = new Vector3(0, splineControlPointScaleFactor * tailPointMultiplier, directionZPerturbation);
-            var rot2 = Quaternion.Euler(0, 0, NoteContainer.Directionalize(ArcData.TailCutDirection).z - 180);
-            d2 = rot2 * d2;
-            tailNode.SetDirectionWithoutNotify(tailNode.Position + d2);
-
-            spline.RefreshCurves();
-            splineRendererEnabled = true;
-            if (splineRenderer != null) splineRenderer.enabled = true;
+            splineRenderer.enabled = true;
             ResetIndicatorsPosition();
         }
 
@@ -141,8 +152,7 @@ namespace Beatmap.Containers
                 gameObj.GetComponent<ArcIndicatorContainer>().UpdateMaterials(MaterialPropertyBlock);
             foreach (var gameObj in indicators)
                 gameObj.GetComponent<ArcIndicatorContainer>().OutlineVisible = OutlineVisible;
-            if (SplineRenderer != null)
-                SplineRenderer.SetPropertyBlock(MaterialPropertyBlock);
+            splineRenderer.SetPropertyBlock(MaterialPropertyBlock);
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
         }
 
