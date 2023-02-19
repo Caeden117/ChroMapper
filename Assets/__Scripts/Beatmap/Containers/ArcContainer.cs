@@ -8,15 +8,9 @@ namespace Beatmap.Containers
     public class ArcContainer : ObjectContainer
     {
         private const float splineControlPointScaleFactor = 2.5f / 0.6f; // 2.5 multiplier used by game, divide by 0.6 to scale to cm units
-
-        private const float
-            directionZPerturbation = 1e-3f; // a small value to avoid 'look rotation viewing vector is zero'
-
         internal const float arcEmissionIntensity = 6;
-
-        private const float partition = 0.00f;
         private const int numSamples = 30;
-        private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
+
         internal static readonly int emissionColor = Shader.PropertyToID("_ColorTint");
 
         [SerializeField] private TracksManager manager;
@@ -28,7 +22,6 @@ namespace Beatmap.Containers
         private MaterialPropertyBlock indicatorMaterialPropertyBlock;
 
         [SerializeField] private LineRenderer splineRenderer;
-        private bool splineRendererEnabled;
 
         public Vector3 p0()
         {
@@ -69,24 +62,11 @@ namespace Beatmap.Containers
             return new Vector3(tailPosition.x, tailPosition.y + 0.5f, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
         }
 
-
-
         // B(t) = (1-t)^3 p0 + 3(1-t)^2 t p1 + 3(1-t)t^2 p2 + t^3 p3
         Vector3 SampleCubicBezierPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
         {
             var tDiff = 1 - t;
             return (Mathf.Pow(tDiff, 3) * p0) + (3 * Mathf.Pow(tDiff, 2) * t * p1) + (3 * tDiff * Mathf.Pow(t, 2) * p2) + (Mathf.Pow(t, 3) * p3);
-        }
-
-        internal LineRenderer SplineRenderer
-        {
-            get => splineRenderer;
-            set
-            {
-                splineRenderer = value;
-                splineRenderer.enabled = splineRendererEnabled;
-                splineRenderer.SetPropertyBlock(MaterialPropertyBlock);
-            }
         }
 
         public override BaseObject ObjectData
@@ -121,21 +101,18 @@ namespace Beatmap.Containers
 
         public void SetScale(Vector3 scale) => transform.localScale = scale;
 
-        //MaterialPropertyBlock.SetVector(shaderScale, scale);
-        //UpdateMaterials();
         public void NotifySplineChanged(BaseArc arcData = null)
         {
             if (arcData != null) ArcData = arcData;
             if (splineRenderer != null) // since curve has been changed, firstly disable it until it is computed.
                 splineRenderer.enabled = false;
-            splineRendererEnabled = false;
             var arcCollection =
                 BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc) as ArcGridContainer;
             arcCollection.RequestForSplineRecompute(this);
         }
 
         /// <summary>
-        ///     Defer Bezier Curve based on arc data. Not the official algorithm I guess?
+        ///     Defer Bezier Curve based on arc data.
         /// </summary>
         public void RecomputePosition()
         {
@@ -153,8 +130,7 @@ namespace Beatmap.Containers
                 splineRenderer.SetPosition(i, SampleCubicBezierPoint(p0, p1, p2, p3, (float)i / numSamples));
             }
 
-            splineRendererEnabled = true;
-            if (splineRenderer != null) splineRenderer.enabled = true;
+            splineRenderer.enabled = true;
             ResetIndicatorsPosition();
         }
 
@@ -176,8 +152,7 @@ namespace Beatmap.Containers
                 gameObj.GetComponent<ArcIndicatorContainer>().UpdateMaterials(MaterialPropertyBlock);
             foreach (var gameObj in indicators)
                 gameObj.GetComponent<ArcIndicatorContainer>().OutlineVisible = OutlineVisible;
-            if (SplineRenderer != null)
-                SplineRenderer.SetPropertyBlock(MaterialPropertyBlock);
+            splineRenderer.SetPropertyBlock(MaterialPropertyBlock);
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
         }
 
