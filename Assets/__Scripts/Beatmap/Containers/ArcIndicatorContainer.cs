@@ -1,6 +1,5 @@
 ﻿using Beatmap.Base;
 using Beatmap.Enums;
-using SplineMesh;
 using UnityEngine;
 
 namespace Beatmap.Containers
@@ -14,13 +13,12 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            var spline = ParentArc.GetComponent<Spline>();
-
+            // We're not using p1 and p2 since they're *really* far away
             if (IndicatorType == IndicatorType.Head)
             {
                 var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ParentArc.ArcData.CutDirection).z;
                 var headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
-                transform.localPosition = spline.nodes[0].Position + headDirection / 2;
+                transform.localPosition = ParentArc.p0() + headDirection / 2;
 
                 transform.localEulerAngles = new Vector3(NoteContainer.Directionalize(ParentArc.ArcData.CutDirection).z + 90, -90, 0);
             }
@@ -28,7 +26,7 @@ namespace Beatmap.Containers
             {
                 var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ParentArc.ArcData.TailCutDirection).z;
                 var tailDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
-                transform.localPosition = spline.nodes[1].Position - tailDirection * 1.5f;
+                transform.localPosition = ParentArc.p3() - tailDirection * 1.5f;
 
                 transform.localEulerAngles = new Vector3(NoteContainer.Directionalize(ParentArc.ArcData.TailCutDirection).z + 90, -90, 0);
             }
