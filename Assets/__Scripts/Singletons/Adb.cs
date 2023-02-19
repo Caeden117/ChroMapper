@@ -131,6 +131,38 @@ namespace QuestDumper
                 // Extract our zipped file into this directory.
                 archive.ExtractToDirectory(extractPath);
 
+#if UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX
+
+                // https://stackoverflow.com/a/63018212/9816000
+                void Exec(string cmd)
+                {
+                    var escapedArgs = cmd.Replace("\"", "\\\"");
+
+                    using var process = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
+                            RedirectStandardOutput = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            FileName = "/bin/bash",
+                            Arguments = $"-c \"{escapedArgs}\""
+                        }
+                    };
+
+                    process.Start();
+                    process.WaitForExit();
+                }
+
+                // Screw it, we're setting the permissions manually
+                // The zip does have the permission attributes, though it seems either Mono or the ZipArchive class
+                // does not properly set them
+                // Obligatory .NET 6 wen
+                // read + write + exec perms -> user
+                Exec($"chmod u+rwx {Path.Combine(extractPath, "platform-tools", "adb")}");
+#endif
+
                 // Dispose our downloaded bytes, we don't need them.
                 downloadHandler.Dispose();
             });
