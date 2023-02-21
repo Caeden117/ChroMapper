@@ -1,10 +1,9 @@
-﻿using SimpleJSON;
+﻿using Beatmap.Base;
 using UnityEngine;
 
 public abstract class RotatingLightsBase : MonoBehaviour
 {
-    public abstract void UpdateOffset(bool isLeftEvent, int speed, float rotation, bool rotateForwards,
-        JSONNode customData = null);
+    public abstract void UpdateOffset(bool isLeftEvent, BaseEvent evt);
 
     public abstract bool IsOverrideLightGroup();
 }

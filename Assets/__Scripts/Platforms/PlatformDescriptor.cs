@@ -209,7 +209,7 @@ public class PlatformDescriptor : MonoBehaviour
                 {
                     foreach (var l in LightingManagers[eventType].RotatingLights)
                     {
-                        l.UpdateOffset(true, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
+                        l.UpdateOffset(true, e);
                     }
                 }
 
@@ -221,7 +221,7 @@ public class PlatformDescriptor : MonoBehaviour
                 {
                     foreach (var l in LightingManagers[eventType].RotatingLights)
                     {
-                        l.UpdateOffset(true, e.Value, Random.Range(0, 180), Random.Range(0, 1) == 1, obj.CustomData);
+                        l.UpdateOffset(true, e);
                     }
                 }
 
