@@ -17,7 +17,7 @@ using UnityEngine.UI;
 public class EventPlacement : PlacementController<BaseEvent, EventContainer, EventGridContainer>,
     CMInput.IEventPlacementActions
 {
-    [FormerlySerializedAs("eventAppearanceSO")] [SerializeField] private EventAppearanceSO eventAppearanceSo;
+    [FormerlySerializedAs("eventAppearanceSO")][SerializeField] private EventAppearanceSO eventAppearanceSo;
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private TMP_InputField laserSpeedInputField;
     [SerializeField] private Toggle chromaToggle;
@@ -111,9 +111,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
 
-    public override BaseEvent GenerateOriginalData() =>
-        //chromaToggle.isOn = Settings.Instance.PlaceChromaEvents;
-         BeatmapFactory.Event(0, 0, (int)LightValue.RedOn);
+    public override BaseEvent GenerateOriginalData() => BeatmapFactory.Event(0, 0, (int)LightValue.RedOn);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
@@ -135,7 +133,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             {
                 var lightIdToApply = objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Prop
                     ? labels.PropIdToLightIds(objectContainerCollection.EventTypeToPropagate, propID)
-                    : new [] { labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID) };
+                    : new[] { labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID) };
                 queuedData.CustomLightID = lightIdToApply;
             }
             else
@@ -248,7 +246,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         else if (evt.IsLaneRotationEvent()) evt.Value = 1360 + PrecisionRotationValue;
 
         if (evt.CustomData?.Count <= 0) evt.CustomData = null;
-        
+
         if (!evt.IsLightEvent()) // in case we are placing rotation/boost when pressing half/zero modifier
         {
             evt.FloatValue = 1;
@@ -256,7 +254,8 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
         // convert event to their respective event type
         // TODO: cleaner factory would be better, also this is ugly as hell
-        if (Settings.Instance.Load_MapV3) {
+        if (Settings.Instance.Load_MapV3)
+        {
             if (evt.IsLaneRotationEvent())
             {
                 queuedData = evt is V3RotationEvent ? evt : new V3RotationEvent(evt);
@@ -268,12 +267,12 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             }
             base.ApplyToMap();
             queuedData = new V3BasicEvent(evt); // need to convert back to regular event
+            queuedData.CustomData = null;
         }
         else
         {
             base.ApplyToMap();
         }
-        
 
         if (evt.IsLaneRotationEvent()) TracksManager.RefreshTracks();
     }
