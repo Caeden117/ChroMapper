@@ -15,9 +15,9 @@ namespace Beatmap.Appearances
     [CreateAssetMenu(menuName = "Beatmap/Appearance/Event Appearance SO", fileName = "EventAppearanceSO")]
     public class EventAppearanceSO : ScriptableObject
     {
-        [Space(5)] [SerializeField] private GameObject laserSpeedPrefab;
+        [Space(5)][SerializeField] private GameObject laserSpeedPrefab;
 
-        [Space(5)] [Header("Default Colors")] public Color RedColor;
+        [Space(5)][Header("Default Colors")] public Color RedColor;
         public Color BlueColor;
         public Color WhiteColor = new Color(0.7264151f, 0.7264151f, 0.7264151f);
         public Color RedBoostColor;
@@ -26,10 +26,12 @@ namespace Beatmap.Appearances
 
         [SerializeField] private Color offColor;
 
-        [Header("Other Event Colors")] [SerializeField]
+        [Header("Other Event Colors")]
+        [SerializeField]
         private Color ringEventsColor;
 
-        [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")] [SerializeField]
+        [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
+        [SerializeField]
         private Color otherColor;
 
         public void SetEventAppearance(EventContainer e, bool final = true, bool boost = false)
@@ -118,8 +120,11 @@ namespace Beatmap.Appearances
                 color = boost ? WhiteBoostColor : WhiteColor;
             }
 
-            if (Settings.Instance.EmulateChromaLite && e.EventData.CustomColor != null && e.EventData.Value > 0)
+            if (Settings.Instance.EmulateChromaLite && e.EventData.CustomColor != null && !e.EventData.IsOff
+                    && !e.EventData.IsWhite) // White overrides Chroma
+            {
                 color = (Color)e.EventData.CustomColor;
+            }
 
             // Display floatValue only where used
             if (e.EventData.IsLightEvent(envName) && e.EventData.Value != 0)

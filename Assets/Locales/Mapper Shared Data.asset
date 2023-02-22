@@ -671,6 +671,14 @@ MonoBehaviour:
     m_Key: bar.events.floatvalue
     m_Metadata:
       m_Items: []
+  - m_Id: 207122293661564928
+    m_Key: chroma.whitelight.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122782700634112
+    m_Key: chroma.whiteboost.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -16,7 +16,8 @@ using UnityEngine.Serialization;
 public class BeatSaberSong
 {
     public static readonly Color DefaultLeftColor = Color.red;
-    public static readonly Color DefaultRightColor = new Color(0, 0.282353f, 1, 1);
+    public static readonly Color DefaultRightColor = new Color(0, 0.282353f, 1);
+    public static readonly Color DefaultWhiteColor = new Color(0.7264151f, 0.7264151f, 0.7264151f);
     public static readonly Color DefaultLeftNote = new Color(0.7352942f, 0, 0);
     public static readonly Color DefaultRightNote = new Color(0, 0.3701827f, 0.7352942f);
 
@@ -226,6 +227,10 @@ public class BeatSaberSong
                         subNode["_customData"]["_envColorRight"] = diff.EnvColorRight;
                     else subNode["_customData"].Remove("_envColorRight");
 
+                    if (diff.EnvColorWhite != null)
+                        subNode["_customData"]["_envColorWhite"] = diff.EnvColorWhite;
+                    else subNode["_customData"].Remove("_envColorWhite");
+
                     if (diff.BoostColorLeft != null && diff.BoostColorLeft != (diff.EnvColorLeft ?? diff.ColorLeft))
                         subNode["_customData"]["_envColorLeftBoost"] = diff.BoostColorLeft;
                     else subNode["_customData"].Remove("_envColorLeftBoost");
@@ -233,6 +238,10 @@ public class BeatSaberSong
                     if (diff.BoostColorRight != null && diff.BoostColorRight != (diff.EnvColorRight ?? diff.ColorRight))
                         subNode["_customData"]["_envColorRightBoost"] = diff.BoostColorRight;
                     else subNode["_customData"].Remove("_envColorRightBoost");
+
+                    if (diff.BoostColorWhite != null)
+                        subNode["_customData"]["_envColorWhiteBoost"] = diff.BoostColorWhite;
+                    else subNode["_customData"].Remove("_envColorWhiteBoost");
 
                     if (diff.ObstacleColor != null)
                         subNode["_customData"]["_obstacleColor"] = diff.ObstacleColor;
@@ -422,6 +431,9 @@ public class BeatSaberSong
                                     beatmap.EnvColorRight = d["_customData"]["_envColorRight"].ReadColor();
                                 else beatmap.EnvColorRight = beatmap.ColorRight;
 
+                                if (d["_customData"]["_envColorWhite"] != null)
+                                    beatmap.EnvColorWhite = d["_customData"]["_envColorWhite"].ReadColor();
+
                                 if (d["_customData"]["_envColorLeftBoost"] != null)
                                     beatmap.BoostColorLeft = d["_customData"]["_envColorLeftBoost"].ReadColor();
                                 else beatmap.BoostColorLeft = beatmap.EnvColorLeft;
@@ -429,6 +441,9 @@ public class BeatSaberSong
                                 if (d["_customData"]["_envColorRightBoost"] != null)
                                     beatmap.BoostColorRight = d["_customData"]["_envColorRightBoost"].ReadColor();
                                 else beatmap.BoostColorRight = beatmap.EnvColorRight;
+
+                                if (d["_customData"]["_envColorWhiteBoost"] != null)
+                                    beatmap.BoostColorWhite = d["_customData"]["_envColorWhiteBoost"].ReadColor();
 
                                 if (d["_customData"]["_obstacleColor"] != null)
                                     beatmap.ObstacleColor = d["_customData"]["_obstacleColor"].ReadColor();
@@ -517,8 +532,10 @@ public class BeatSaberSong
         [FormerlySerializedAs("colorRight")] public Color? ColorRight;
         [FormerlySerializedAs("envColorLeft")] public Color? EnvColorLeft;
         [FormerlySerializedAs("envColorRight")] public Color? EnvColorRight;
+        public Color? EnvColorWhite;
         [FormerlySerializedAs("boostColorLeft")] public Color? BoostColorLeft;
         [FormerlySerializedAs("boostColorRight")] public Color? BoostColorRight;
+        public Color? BoostColorWhite;
         [FormerlySerializedAs("obstacleColor")] public Color? ObstacleColor;
         public JSONNode CustomData;
         [NonSerialized] public DifficultyBeatmapSet ParentBeatmapSet;

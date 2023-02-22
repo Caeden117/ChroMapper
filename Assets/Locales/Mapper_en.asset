@@ -782,6 +782,14 @@ MonoBehaviour:
     m_Localized: FloatValue
     m_Metadata:
       m_Items: []
+  - m_Id: 207122293661564928
+    m_Localized: Set color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122782700634112
+    m_Localized: Set boost color for White Lighting Events
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
