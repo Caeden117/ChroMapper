@@ -219,11 +219,11 @@ public class BeatSaberSong
                         subNode["_customData"]["_colorRight"] = diff.ColorRight;
                     else subNode["_customData"].Remove("_colorRight");
 
-                    if (diff.EnvColorLeft != null && diff.EnvColorLeft != diff.ColorLeft)
+                    if (diff.EnvColorLeft != null)
                         subNode["_customData"]["_envColorLeft"] = diff.EnvColorLeft;
                     else subNode["_customData"].Remove("_envColorLeft");
 
-                    if (diff.EnvColorRight != null && diff.EnvColorRight != diff.ColorRight)
+                    if (diff.EnvColorRight != null)
                         subNode["_customData"]["_envColorRight"] = diff.EnvColorRight;
                     else subNode["_customData"].Remove("_envColorRight");
 
@@ -231,11 +231,11 @@ public class BeatSaberSong
                         subNode["_customData"]["_envColorWhite"] = diff.EnvColorWhite;
                     else subNode["_customData"].Remove("_envColorWhite");
 
-                    if (diff.BoostColorLeft != null && diff.BoostColorLeft != (diff.EnvColorLeft ?? diff.ColorLeft))
+                    if (diff.BoostColorLeft != null)
                         subNode["_customData"]["_envColorLeftBoost"] = diff.BoostColorLeft;
                     else subNode["_customData"].Remove("_envColorLeftBoost");
 
-                    if (diff.BoostColorRight != null && diff.BoostColorRight != (diff.EnvColorRight ?? diff.ColorRight))
+                    if (diff.BoostColorRight != null)
                         subNode["_customData"]["_envColorRightBoost"] = diff.BoostColorRight;
                     else subNode["_customData"].Remove("_envColorRightBoost");
 
@@ -426,22 +426,15 @@ public class BeatSaberSong
 
                                 if (d["_customData"]["_envColorLeft"] != null)
                                     beatmap.EnvColorLeft = d["_customData"]["_envColorLeft"].ReadColor();
-                                else beatmap.EnvColorLeft = beatmap.ColorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
                                     beatmap.EnvColorRight = d["_customData"]["_envColorRight"].ReadColor();
-                                else beatmap.EnvColorRight = beatmap.ColorRight;
-
                                 if (d["_customData"]["_envColorWhite"] != null)
                                     beatmap.EnvColorWhite = d["_customData"]["_envColorWhite"].ReadColor();
 
                                 if (d["_customData"]["_envColorLeftBoost"] != null)
                                     beatmap.BoostColorLeft = d["_customData"]["_envColorLeftBoost"].ReadColor();
-                                else beatmap.BoostColorLeft = beatmap.EnvColorLeft;
-
                                 if (d["_customData"]["_envColorRightBoost"] != null)
                                     beatmap.BoostColorRight = d["_customData"]["_envColorRightBoost"].ReadColor();
-                                else beatmap.BoostColorRight = beatmap.EnvColorRight;
-
                                 if (d["_customData"]["_envColorWhiteBoost"] != null)
                                     beatmap.BoostColorWhite = d["_customData"]["_envColorWhiteBoost"].ReadColor();
 
