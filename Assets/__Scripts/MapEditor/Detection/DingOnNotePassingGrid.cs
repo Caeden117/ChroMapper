@@ -16,8 +16,8 @@ public class DingOnNotePassingGrid : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private AudioSource source;
     [SerializeField] private SoundList[] soundLists;
-    [FormerlySerializedAs("DensityCheckOffset")] [SerializeField] private int densityCheckOffset = 2;
-    [FormerlySerializedAs("ThresholdInNoteTime")] [SerializeField] private float thresholdInNoteTime = 0.25f;
+    [FormerlySerializedAs("DensityCheckOffset")][SerializeField] private int densityCheckOffset = 2;
+    [FormerlySerializedAs("ThresholdInNoteTime")][SerializeField] private float thresholdInNoteTime = 0.25f;
     [SerializeField] private AudioUtil audioUtil;
     [SerializeField] private NoteGridContainer container;
     [SerializeField] private BeatmapObjectCallbackController defaultCallbackController;
@@ -140,21 +140,18 @@ public class DingOnNotePassingGrid : MonoBehaviour
         bool shortCut;
         if (Settings.Instance.Load_MapV3 && objectData is BaseChain)
         {
-            if (objectData.Time == lastCheckedTime) return;
-            shortCut = false;
+            return; // Chains don't have a hitsound. May want to impplement hitsounds for links later.
         }
-        else
-        {
-            //actual ding stuff
-            if (objectData.Time == lastCheckedTime || !NoteTypeToDing[((BaseNote)objectData).Type]) return;
-            /*
-             * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
-             * the same time that are supposed to ding from triggering the sound effects.
-             */
 
-            shortCut = objectData.Time - lastCheckedTime < thresholdInNoteTime;
+        //actual ding stuff
+        if (objectData.Time == lastCheckedTime || !NoteTypeToDing[((BaseNote)objectData).Type]) return;
+        /*
+         * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
+         * the same time that are supposed to ding from triggering the sound effects.
+         */
 
-        }
+        shortCut = objectData.Time - lastCheckedTime < thresholdInNoteTime;
+
         lastCheckedTime = objectData.Time;
 
         var soundListId = Settings.Instance.NoteHitSound;
