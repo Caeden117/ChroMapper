@@ -1051,6 +1051,14 @@ MonoBehaviour:
     m_Key: quest.uninstalling_adb
     m_Metadata:
       m_Items: []
+  - m_Id: 206088741188730880
+    m_Key: experimental.lightid.transition.support
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088950463528960
+    m_Key: experimental.lightid.transition.support.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -1203,6 +1203,17 @@ MonoBehaviour:
     m_Localized: Uninstalling ADB...
     m_Metadata:
       m_Items: []
+  - m_Id: 206088741188730880
+    m_Localized: Visualize LightID Transition Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088950463528960
+    m_Localized: 'Previews and displays LightID transition events more accurately
+
+      This
+      is very heavy on performance'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

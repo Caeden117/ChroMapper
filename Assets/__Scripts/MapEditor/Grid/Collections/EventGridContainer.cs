@@ -45,7 +45,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
                 var lightList = p.Value;
                 for (var i = 0; i < lightList.Count - 1; ++i)
                 {
-                    if (Settings.Instance.EmulateChromaAdvanced) // This path is really expensive
+                    // This path is really expensive so users opt out by default for now
+                    if (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
                     {
                         lightList[i].Next = null;
                         for (var j = i + 1; j < lightList.Count; j++)
