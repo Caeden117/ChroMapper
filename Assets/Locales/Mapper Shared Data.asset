@@ -671,6 +671,18 @@ MonoBehaviour:
     m_Key: bar.events.floatvalue
     m_Metadata:
       m_Items: []
+  - m_Id: 207749379233349632
+    m_Key: gradient.pass.transition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207750905897091072
+    m_Key: gradient.lerp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207751068199878656
+    m_Key: gradient.lerp.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

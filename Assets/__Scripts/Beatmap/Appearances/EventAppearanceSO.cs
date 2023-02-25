@@ -15,9 +15,9 @@ namespace Beatmap.Appearances
     [CreateAssetMenu(menuName = "Beatmap/Appearance/Event Appearance SO", fileName = "EventAppearanceSO")]
     public class EventAppearanceSO : ScriptableObject
     {
-        [Space(5)] [SerializeField] private GameObject laserSpeedPrefab;
+        [Space(5)][SerializeField] private GameObject laserSpeedPrefab;
 
-        [Space(5)] [Header("Default Colors")] public Color RedColor;
+        [Space(5)][Header("Default Colors")] public Color RedColor;
         public Color BlueColor;
         public Color WhiteColor = new Color(0.7264151f, 0.7264151f, 0.7264151f);
         public Color RedBoostColor;
@@ -26,10 +26,12 @@ namespace Beatmap.Appearances
 
         [SerializeField] private Color offColor;
 
-        [Header("Other Event Colors")] [SerializeField]
+        [Header("Other Event Colors")]
+        [SerializeField]
         private Color ringEventsColor;
 
-        [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")] [SerializeField]
+        [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
+        [SerializeField]
         private Color otherColor;
 
         public void SetEventAppearance(EventContainer e, bool final = true, bool boost = false)
@@ -105,6 +107,10 @@ namespace Beatmap.Appearances
                 color = ColourManager.ColourFromInt(e.EventData.Value);
                 e.UpdateAlpha(final ? 0.9f : 0.6f, false);
             }
+            else if (e.EventData.IsOff)
+            {
+                color = offColor;
+            }
             else if (e.EventData.IsBlue)
             {
                 color = boost ? BlueBoostColor : BlueColor;
@@ -119,7 +125,7 @@ namespace Beatmap.Appearances
             }
 
             if (Settings.Instance.EmulateChromaLite && e.EventData.CustomColor != null && e.EventData.Value > 0)
-                color = (Color)e.EventData.CustomColor;
+                color = e.EventData.CustomColor.Value;
 
             // Display floatValue only where used
             if (e.EventData.IsLightEvent(envName) && e.EventData.Value != 0)
@@ -181,7 +187,38 @@ namespace Beatmap.Appearances
 
             e.ChangeFadeSize(e.DefaultFadeSize, false);
 
-            if (Settings.Instance.VisualizeChromaGradients) e.UpdateGradientRendering();
+            // At this point, next Event must be a light event.
+            Color? nextColor = null;
+            var nextEvent = e.EventData.Next;
+            if (nextEvent != null && nextEvent.IsTransition)
+            {
+                if (nextEvent.IsBlue)
+                {
+                    nextColor = boost ? BlueBoostColor : BlueColor;
+                }
+                else if (nextEvent.IsRed)
+                {
+                    nextColor = boost ? RedBoostColor : RedColor;
+                }
+                else if (nextEvent.IsWhite)
+                {
+                    nextColor = boost ? WhiteBoostColor : WhiteColor;
+                }
+
+                if (Settings.Instance.EmulateChromaLite && nextEvent.CustomColor != null && !nextEvent.IsWhite) // White overrides Chroma
+                {
+                    nextColor = nextEvent.CustomColor.Value;
+                }
+
+                // for clarity sake, we don't want this to be the same as off color
+                var clampedOffColor = Color.Lerp(offColor, nextColor.Value, 0.25f);
+                nextColor = Color.Lerp(clampedOffColor, nextColor.Value, nextEvent.FloatValue);
+            }
+
+            if (Settings.Instance.VisualizeChromaGradients)
+            {
+                e.UpdateGradientRendering(color, nextColor, nextEvent?.CustomEasing ?? "easeLinear");
+            }
 
             e.UpdateMaterials();
         }

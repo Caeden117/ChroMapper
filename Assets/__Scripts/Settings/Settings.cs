@@ -19,12 +19,12 @@ public class Settings
     public string CustomWIPSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomWIPLevels");
     public string CustomPlatformsFolder => Path.Combine(BeatSaberInstallation, "CustomPlatforms");
 
-    #if UNITY_STANDALONE_OSX
+#if UNITY_STANDALONE_OSX
     // TODO: Test
     public static string AndroidPlatformTools => Path.Combine(Application.dataPath,"../../", "quest-utils");
-    #else
+#else
     public static string AndroidPlatformTools => Path.Combine(Directory.GetParent(Application.dataPath)!.FullName, "quest-utils");
-    #endif
+#endif
 
     public bool DiscordRPCEnabled = true;
     public float EditorScale = 4;
@@ -117,6 +117,7 @@ public class Settings
     public bool PyramidEventModels = false;
     public float PastNoteModelAlpha = 0.4f;
     public EventModelType EventModel = EventModelType.Block;
+    public bool LightIDTransitionSupport = false; // Temporary option until lighting transitions are reworked
     public int ReleaseChannel = 0;
     public string ReleaseServer = "https://cm.topc.at";
     public int DSPBufferSize = 10;

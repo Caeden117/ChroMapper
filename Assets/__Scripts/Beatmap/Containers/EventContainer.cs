@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Enums;
+using Beatmap.Shared;
 using UnityEngine;
 
 namespace Beatmap.Containers
@@ -20,7 +21,7 @@ namespace Beatmap.Containers
         private static readonly int mainAlpha = Shader.PropertyToID("_MainAlpha");
         private static readonly int fadeSize = Shader.PropertyToID("_FadeSize");
         private static readonly int spotlightSize = Shader.PropertyToID("_SpotlightSize");
-        [SerializeField] public EventGridContainer EventGridContainer;
+        [SerializeField] private EventGridContainer EventGridContainer;
         [SerializeField] private EventAppearanceSO eventAppearance;
         [SerializeField] private List<Renderer> eventRenderer;
         [SerializeField] private TracksManager tracksManager;
@@ -174,10 +175,15 @@ namespace Beatmap.Containers
             return Mathf.Clamp(height, 0.1f, 1.5f);
         }
 
-        public void UpdateGradientRendering()
+        public void UpdateGradientRendering(Color? startColor = null, Color? endColor = null, string easing = "easeLinear")
         {
-            if (EventData.CustomLightGradient != null &&
-                EventData.IsLightEvent(BeatSaberSongContainer.Instance.Song.EnvironmentName))
+            if (!EventData.IsLightEvent(BeatSaberSongContainer.Instance.Song.EnvironmentName))
+            {
+                lightGradientController.SetVisible(false);
+                return;
+            }
+
+            if (EventData.CustomLightGradient != null)
             {
                 if (Settings.Instance.EmulateChromaLite && EventData.Value != (int)LightValue.Off)
                 {
@@ -190,7 +196,16 @@ namespace Beatmap.Containers
             }
             else
             {
-                lightGradientController.SetVisible(false);
+                if (startColor == null || endColor == null)
+                {
+                    lightGradientController.SetVisible(false);
+                    return;
+                }
+
+                var transition = new ChromaLightGradient(startColor.Value, endColor.Value, EventData.Next.Time - EventData.Time, easing);
+                lightGradientController.SetVisible(true);
+                lightGradientController.UpdateGradientData(transition);
+                lightGradientController.UpdateDuration(transition.Duration);
             }
         }
 
