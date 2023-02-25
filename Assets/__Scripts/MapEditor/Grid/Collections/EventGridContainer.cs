@@ -34,17 +34,38 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     public List<BaseEvent> AllBpmEvents = new List<BaseEvent>();
 
     private Dictionary<int, List<BaseEvent>> allLightEvents = new Dictionary<int, List<BaseEvent>>();
-    public Dictionary<int, List<BaseEvent>> AllLightEvents { get => allLightEvents;
-        set {
+    public Dictionary<int, List<BaseEvent>> AllLightEvents
+    {
+        get => allLightEvents;
+        set
+        {
             allLightEvents = value;
             foreach (var p in allLightEvents)
             {
                 var lightList = p.Value;
                 for (var i = 0; i < lightList.Count - 1; ++i)
-                    lightList[i].Next = lightList[i + 1];
+                {
+                    if (Settings.Instance.EmulateChromaAdvanced) // This path is really expensive
+                    {
+                        lightList[i].Next = null;
+                        for (var j = i + 1; j < lightList.Count; j++)
+                        {
+                            if (lightList[j].CustomLightID == null || (lightList[i].CustomLightID?.FirstOrDefault() == lightList[j].CustomLightID.First()))
+                            {
+                                lightList[i].Next = lightList[j];
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        lightList[i].Next = lightList[i + 1];
+                    }
+                }
                 lightList[lightList.Count - 1].Next = null;
             }
-        } }
+        }
+    }
 
     internal PlatformDescriptor platformDescriptor;
     private PropMode propagationEditing = PropMode.Off;
@@ -277,7 +298,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         }
         else
         {
-            LinkAllLightEvents();
+            LinkAllLightEvents(); // Need to rework this as this blocks playback until this is done
         }
     }
 
