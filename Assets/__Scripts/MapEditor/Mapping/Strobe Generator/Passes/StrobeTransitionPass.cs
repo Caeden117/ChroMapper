@@ -4,12 +4,19 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using Beatmap.Helper;
 
-// TODO rename this to StrobeTransitionPass
-public class StrobeChromaPass : StrobeGeneratorPass
+public class StrobeTransitionPass : StrobeGeneratorPass
 {
-    private readonly string easing;
+    private const string DefaultEasing = "easeLinear";
+    private const string DefaultLerpType = "RGB";
 
-    public StrobeChromaPass(string easing) => this.easing = easing;
+    private readonly string easing;
+    private readonly string lerpType;
+
+    public StrobeTransitionPass(string easing, string lerpType)
+    {
+        this.easing = (easing != DefaultEasing) ? easing : null;
+        this.lerpType = (lerpType != DefaultLerpType) ? lerpType : null;
+    }
 
     public override bool IsEventValidForPass(BaseEvent @event) => @event.IsLightEvent();
 
@@ -37,6 +44,7 @@ public class StrobeChromaPass : StrobeGeneratorPass
                 generated.Value = (int)LightValue.WhiteTransition;
             }
             generated.CustomEasing = easing;
+            generated.CustomLerpType = lerpType;
 
             generatedObjects.Add(generated);
         }

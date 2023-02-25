@@ -782,6 +782,18 @@ MonoBehaviour:
     m_Localized: FloatValue
     m_Metadata:
       m_Items: []
+  - m_Id: 207749379233349632
+    m_Localized: Color Gradients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207750905897091072
+    m_Localized: Lerp Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207751068199878656
+    m_Localized: Changes interpolation for the transition.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
