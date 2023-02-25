@@ -453,7 +453,7 @@ public class PlatformDescriptor : MonoBehaviour
 
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);
-            light.UpdateEasing(Mathf.Approximately(targetAlpha, 0) ? "easeOutExpo" : "easeLinear"); // may not be the correct easing function
+            light.UpdateEasing(transition.CustomEasing ?? "easeLinear");
         }
     }
 

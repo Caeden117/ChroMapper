@@ -175,7 +175,7 @@ namespace Beatmap.Containers
             return Mathf.Clamp(height, 0.1f, 1.5f);
         }
 
-        public void UpdateGradientRendering(Color? startColor = null, Color? endColor = null)
+        public void UpdateGradientRendering(Color? startColor = null, Color? endColor = null, string easing = "easeLinear")
         {
             if (!EventData.IsLightEvent(BeatSaberSongContainer.Instance.Song.EnvironmentName))
             {
@@ -202,7 +202,7 @@ namespace Beatmap.Containers
                     return;
                 }
 
-                var transition = new ChromaLightGradient(startColor.Value, endColor.Value, EventData.Next.Time - EventData.Time);
+                var transition = new ChromaLightGradient(startColor.Value, endColor.Value, EventData.Next.Time - EventData.Time, easing);
                 lightGradientController.SetVisible(true);
                 lightGradientController.UpdateGradientData(transition);
                 lightGradientController.UpdateDuration(transition.Duration);
