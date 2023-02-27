@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -181,7 +181,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             CancelPlacement();
     }
 
-    public void OnPlaceObject(InputAction.CallbackContext context)
+    public virtual void OnPlaceObject(InputAction.CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
             !KeybindsController.IsMouseInWindow || !context.performed)
@@ -221,6 +221,11 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         }
     }
 
+    protected virtual float GetContainerPosZ(ObjectContainer con)
+    {
+        return (con.ObjectData.Time - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+    }
+
     public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
     {
         if (UsePrecisionPlacement) return;
@@ -233,7 +238,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 if (StartDrag(con))
                 {
                     IsDraggingObjectAtTime = true;
-                    var newZ = (con.ObjectData.Time - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+                    var newZ = GetContainerPosZ(con);
                     noteGridTransform.localPosition = new Vector3(noteGridTransform.localPosition.x,
                         noteGridTransform.localPosition.y, newZ);
                 }

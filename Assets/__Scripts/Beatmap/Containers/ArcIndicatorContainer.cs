@@ -9,7 +9,11 @@ namespace Beatmap.Containers
         public IndicatorType IndicatorType;
         public ArcContainer ParentArc;
 
-        public override BaseObject ObjectData { get; set; }
+        public override BaseObject ObjectData
+        {
+            get => ParentArc.ArcData;
+            set => ParentArc.ArcData = (BaseArc)value;
+        }
 
         public override void UpdateGridPosition()
         {

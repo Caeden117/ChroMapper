@@ -68002,6 +68002,7 @@ GameObject:
   - component: {fileID: 2108936579}
   - component: {fileID: 2108936580}
   - component: {fileID: 2108936581}
+  - component: {fileID: 2108936584}
   - component: {fileID: 2108936582}
   - component: {fileID: 2108936583}
   m_Layer: 11
@@ -68197,7 +68198,7 @@ MonoBehaviour:
   objectContainerCollection: {fileID: 25550680}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
-  AssignTo360Tracks: 0
+  AssignTo360Tracks: 1
   objectDataType: 6
   startingActiveState: 0
   Atsc: {fileID: 570484802}
@@ -68227,7 +68228,7 @@ MonoBehaviour:
   objectContainerCollection: {fileID: 25550681}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
-  AssignTo360Tracks: 0
+  AssignTo360Tracks: 1
   objectDataType: 7
   startingActiveState: 0
   Atsc: {fileID: 570484802}
@@ -68242,6 +68243,38 @@ MonoBehaviour:
   IsActive: 0
   selectionController: {fileID: 1524038335}
   noteGridContainer: {fileID: 25550673}
+--- !u!114 &2108936584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108936574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d7fa281ebad87e49bf9058e713a6879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectContainerPrefab: {fileID: 4018984692264246640, guid: 7d1a52fa04a8d724e965716649bc47e5,
+    type: 3}
+  objectContainerCollection: {fileID: 25550680}
+  ParentTrack: {fileID: 1439999959}
+  InterfaceGridParent: {fileID: 2108936575}
+  AssignTo360Tracks: 1
+  objectDataType: 6
+  startingActiveState: 1
+  Atsc: {fileID: 570484802}
+  customStandaloneInputModule: {fileID: 806554}
+  TracksManager: {fileID: 25550679}
+  GridRotation: {fileID: 226696885}
+  GridChild: {fileID: 2108936579}
+  noteGridTransform: {fileID: 789623342}
+  Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  IsActive: 0
+  deleteToolController: {fileID: 1243231049}
+  laserSpeedController: {fileID: 160161773}
 --- !u!1 &2109111737
 GameObject:
   m_ObjectHideFlags: 0
