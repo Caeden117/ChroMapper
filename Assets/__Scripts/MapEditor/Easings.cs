@@ -102,6 +102,22 @@ public class Easing
         return Linear;
     }
 
+    /// <summary>
+    /// Returns the shader ID for a given easing.
+    /// </summary>
+    /// <param name="easingId">Internal easing ID (what Chroma uses)</param>
+    /// <returns>Numerical ID used for the basic gradient shader.</returns>
+    public static int EasingShaderId(string easingId)
+    {
+        var i = 0;
+        foreach (var easing in ByName.Keys)
+        {
+            if (easing == easingId) return i;
+            i++;
+        }
+        return 0;
+    }
+
     public static float Linear(float k) => k;
 
     public class Quadratic
@@ -112,8 +128,9 @@ public class Easing
 
         public static float InOut(float k)
         {
-            if ((k *= 2f) < 1f) return 0.5f * k * k;
-            return -0.5f * (((k -= 1f) * (k - 2f)) - 1f);
+            return (k *= 2f) < 1f
+                ? 0.5f * k * k
+                : -0.5f * (((k -= 1f) * (k - 2f)) - 1f);
         }
     }
 
@@ -125,8 +142,9 @@ public class Easing
 
         public static float InOut(float k)
         {
-            if ((k *= 2f) < 1f) return 0.5f * k * k * k;
-            return 0.5f * (((k -= 2f) * k * k) + 2f);
+            return (k *= 2f) < 1f
+                ? 0.5f * k * k * k
+                : 0.5f * (((k -= 2f) * k * k) + 2f);
         }
     }
 
@@ -138,8 +156,9 @@ public class Easing
 
         public static float InOut(float k)
         {
-            if ((k *= 2f) < 1f) return 0.5f * k * k * k * k;
-            return -0.5f * (((k -= 2f) * k * k * k) - 2f);
+            return (k *= 2f) < 1f
+                ? 0.5f * k * k * k * k
+                : -0.5f * (((k -= 2f) * k * k * k) - 2f);
         }
     }
 
@@ -151,8 +170,9 @@ public class Easing
 
         public static float InOut(float k)
         {
-            if ((k *= 2f) < 1f) return 0.5f * k * k * k * k * k;
-            return 0.5f * (((k -= 2f) * k * k * k * k) + 2f);
+            return (k *= 2f) < 1f
+                ? 0.5f * k * k * k * k * k
+                : 0.5f * (((k -= 2f) * k * k * k * k) + 2f);
         }
     }
 
@@ -188,8 +208,9 @@ public class Easing
 
         public static float InOut(float k)
         {
-            if ((k *= 2f) < 1f) return -0.5f * (Mathf.Sqrt(1f - (k * k)) - 1);
-            return 0.5f * (Mathf.Sqrt(1f - ((k -= 2f) * k)) + 1f);
+            return (k *= 2f) < 1f
+                ? -0.5f * (Mathf.Sqrt(1f - (k * k)) - 1)
+                : 0.5f * (Mathf.Sqrt(1f - ((k -= 2f) * k)) + 1f);
         }
     }
 
@@ -211,9 +232,9 @@ public class Easing
 
         public static float InOut(float k)
         {
-            if ((k *= 2f) < 1f)
-                return -0.5f * Mathf.Pow(2f, 10f * (k -= 1f)) * Mathf.Sin((k - 0.1f) * (2f * Mathf.PI) / 0.4f);
-            return (Mathf.Pow(2f, -10f * (k -= 1f)) * Mathf.Sin((k - 0.1f) * (2f * Mathf.PI) / 0.4f) * 0.5f) + 1f;
+            return (k *= 2f) < 1f
+                ? -0.5f * Mathf.Pow(2f, 10f * (k -= 1f)) * Mathf.Sin((k - 0.1f) * (2f * Mathf.PI) / 0.4f)
+                : (Mathf.Pow(2f, -10f * (k -= 1f)) * Mathf.Sin((k - 0.1f) * (2f * Mathf.PI) / 0.4f) * 0.5f) + 1f;
         }
     }
 
