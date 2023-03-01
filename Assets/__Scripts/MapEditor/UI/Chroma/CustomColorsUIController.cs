@@ -26,6 +26,8 @@ public class CustomColorsUIController : MonoBehaviour
     [SerializeField] private ObstacleAppearanceSO obstacleAppearance;
     [SerializeField] private EventGridContainer eventGrid;
     [SerializeField] private EventAppearanceSO eventAppearance;
+    [SerializeField] private ArcAppearanceSO arcAppearance;
+    [SerializeField] private ChainAppearanceSO chainAppearance;
 
     private PlatformDescriptor platform;
 
@@ -116,55 +118,48 @@ public class CustomColorsUIController : MonoBehaviour
     public void UpdateRedNote()
     {
         BeatSaberSongContainer.Instance.DifficultyData.ColorLeft = redNote.image.color = picker.CurrentColor.WithAlpha(1);
-        noteAppearance.UpdateColor(redNote.image.color, blueNote.image.color);
-        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note).RefreshPool(true);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshNotes();
     }
 
     public void UpdateBlueNote()
     {
         BeatSaberSongContainer.Instance.DifficultyData.ColorRight = blueNote.image.color = picker.CurrentColor.WithAlpha(1);
-        noteAppearance.UpdateColor(redNote.image.color, blueNote.image.color);
-        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note).RefreshPool(true);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshNotes();
     }
 
     public void UpdateRedLight()
     {
         BeatSaberSongContainer.Instance.DifficultyData.EnvColorLeft = redLight.image.color =
             eventAppearance.RedColor = platform.Colors.RedColor = picker.CurrentColor.WithAlpha(1);
-        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshLights();
     }
 
     public void UpdateBlueLight()
     {
         BeatSaberSongContainer.Instance.DifficultyData.EnvColorRight = eventAppearance.BlueColor =
             platform.Colors.BlueColor = blueLight.image.color = picker.CurrentColor.WithAlpha(1);
-        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshLights();
     }
 
     public void UpdateRedBoost()
     {
         BeatSaberSongContainer.Instance.DifficultyData.BoostColorLeft = redBoost.image.color = eventAppearance.RedBoostColor =
             platform.Colors.RedBoostColor = picker.CurrentColor.WithAlpha(1);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshLights();
     }
 
     public void UpdateBlueBoost()
     {
         BeatSaberSongContainer.Instance.DifficultyData.BoostColorRight = blueBoost.image.color =
             eventAppearance.BlueBoostColor = platform.Colors.BlueBoostColor = picker.CurrentColor.WithAlpha(1);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshLights();
     }
 
     public void UpdateObstacles()
     {
         BeatSaberSongContainer.Instance.DifficultyData.ObstacleColor = obstacle.image.color =
             obstacleAppearance.DefaultObstacleColor = picker.CurrentColor.WithAlpha(1);
-        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle).RefreshPool(true);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshObstacles();
     }
 
     private void SelectRedNote() => picker.CurrentColor = redNote.image.color;
@@ -180,7 +175,6 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.DifficultyData.ColorLeft = null;
         redNote.image.color = platform.DefaultColors.RedNoteColor.WithAlpha(1);
-        noteAppearance.UpdateColor(redNote.image.color, blueNote.image.color);
         RefreshNotes();
     }
 
@@ -188,13 +182,19 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.DifficultyData.ColorRight = null;
         blueNote.image.color = platform.DefaultColors.BlueNoteColor.WithAlpha(1);
-        noteAppearance.UpdateColor(redNote.image.color, blueNote.image.color);
         RefreshNotes();
     }
 
     private void RefreshNotes()
     {
+        noteAppearance.UpdateColor(redNote.image.color, blueNote.image.color);
+        arcAppearance.UpdateColor(redNote.image.color, blueNote.image.color);
+        chainAppearance.UpdateColor(redNote.image.color, blueNote.image.color);
+
         BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note).RefreshPool(true);
+        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc).RefreshPool(true);
+        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain).RefreshPool(true);
+
         CustomColorsUpdatedEvent?.Invoke();
     }
 
@@ -238,6 +238,11 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.DifficultyData.ObstacleColor = null;
         obstacleAppearance.DefaultObstacleColor = obstacle.image.color = platform.DefaultColors.ObstacleColor;
+        RefreshObstacles();
+    }
+
+    private void RefreshObstacles()
+    {
         BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle).RefreshPool(true);
         CustomColorsUpdatedEvent?.Invoke();
     }

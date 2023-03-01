@@ -70812,9 +70812,21 @@ PrefabInstance:
       objectReference: {fileID: 25550678}
     - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
         type: 3}
+      propertyPath: arcAppearance
+      value: 
+      objectReference: {fileID: 11400000, guid: c737f74f07351d441a56c84811b4d665,
+        type: 2}
+    - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
+        type: 3}
       propertyPath: noteAppearance
       value: 
       objectReference: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1,
+        type: 2}
+    - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
+        type: 3}
+      propertyPath: chainAppearance
+      value: 
+      objectReference: {fileID: 11400000, guid: 7eafe2e8b1acf5b49903b99310732bf6,
         type: 2}
     - target: {fileID: 3267473903547393812, guid: 29b0e711db3f65542a213179a4cab985,
         type: 3}
