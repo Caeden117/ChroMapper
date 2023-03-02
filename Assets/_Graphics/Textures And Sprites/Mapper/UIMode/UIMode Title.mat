@@ -82,9 +82,9 @@ Material:
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _halfSize: {r: 0, g: 12.5, b: 0, a: 0}
+    - _halfSize: {r: 35.54, g: 12.5, b: 0, a: 0}
     - _r: {r: 18, g: 18, b: 0, a: 0}
-    - _rect2props: {r: -0.0000019073486, g: -9.000003, b: 2.474874, a: 2.474874}
+    - _rect2props: {r: 0.0000019073486, g: -9.000006, b: 27.605452, a: 27.605452}
   m_BuildTextureStacks: []
 --- !u!114 &865370036408331707
 MonoBehaviour:
