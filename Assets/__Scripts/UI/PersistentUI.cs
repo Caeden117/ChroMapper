@@ -26,6 +26,8 @@ public class PersistentUI : MonoBehaviour
     [Header("Loading")] [SerializeField] private CanvasGroup loadingCanvasGroup;
     [SerializeField] private TMP_Text loadingTip;
     [SerializeField] private Image editorLoadingBackground;
+    [SerializeField] private Image editorWaifu;
+    [SerializeField] private TextMeshProUGUI editorWaifuCredits;
     [SerializeField] private ImageList editorImageList;
 
     [SerializeField] private AnimationCurve fadeInCurve;
@@ -276,6 +278,11 @@ public class PersistentUI : MonoBehaviour
     public Coroutine FadeInLoadingScreen()
     {
         loadingTip.text = localization.GetRandomLoadingMessage();
+
+        editorWaifu.gameObject.SetActive(Settings.Instance.Waifu);
+        editorWaifu.sprite = localization.GetRandomWaifuSprite();
+        editorWaifuCredits.text = editorWaifu.sprite.name;
+
         return StartCoroutine(FadeInLoadingScreen(2f));
     }
 

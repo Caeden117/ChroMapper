@@ -9,6 +9,8 @@ public class Localization : ScriptableObject
 
     [FormerlySerializedAs("loadingMessages")] [TextArea(3, 10)] public string[] LoadingMessages;
 
+    public Sprite[] WaifuSprites;
+
     public string GetRandomLoadingMessage()
     {
         if (!Settings.Instance.HelpfulLoadingMessages) return string.Empty;
@@ -16,4 +18,6 @@ public class Localization : ScriptableObject
             ? LoadingMessages[OverwriteLocalizationTextID]
             : LoadingMessages[Random.Range(0, LoadingMessages.Length)];
     }
+
+    public Sprite GetRandomWaifuSprite() => WaifuSprites[Random.Range(0, WaifuSprites.Length)];
 }

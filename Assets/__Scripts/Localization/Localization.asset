@@ -15,9 +15,7 @@ MonoBehaviour:
   OverwriteLocalizationText: 0
   OverwriteLocalizationTextID: 166
   LoadingMessages:
-  - 'Loading screen
-
-    is loading!'
+  - Loading screen is loading!
   - 'Errors?
 
     Never heard of ''em.'
@@ -27,64 +25,40 @@ MonoBehaviour:
   - 'Listen.
 
     It''s like 27 pm.'
-  - 'Chroma is my drug
-
-    and Kiwi is my dealer'
+  - Chroma is my drug, and Kiwi is my dealer
   - 'Hi.
 
     How are you?'
-  - 'Gosh darn it,
-
-    load faster!'
-  - 'Never forget
-
-    the Freeek pattern'
+  - Gosh darn it, load faster!
+  - Never forget the Freeek pattern.
   - Heck
   - Pretty RGB lights!
-  - 'Mapper? I didnt
-
-    even know her!'
+  - Mapper? I hardly know her!
   - Ha, ha! Comedy.
-  - 'Look, mom! I''m
-
-    an info text!'
+  - Look, mom! I'm an info text!
   - Ooohhh, shiny...
-  - 'Anyone want
-
-    some BBQ?'
+  - Anyone want some BBQ?
   - Hi, Aalto!
-  - 'Practice mode is only
-
-    for speeding up songs'
+  - Practice mode is only for speeding up songs.
   - Pfft, who playtests?
   - '@everyone'
   - Boop!
   - All hail ChromaLite
-  - 'Where my
-
-    beat songe?'
+  - Where my beat songe?
   - Welp, mods broke.
-  - 'Cyan is a
-
-    furry'
+  - Cyan is a furry.
   - 'Documentation?
 
     What documentation?'
   - '360 mapping?
 
     Uh oh...'
-  - 'Please playtest
-
-    your stuff'
+  - Please playtest your stuff.
   - 'ChroMapper?
 
     More like NoMapper'
-  - 'Almost garaunteed
-
-    to break!'
-  - 'Getting tired
-
-    of these messages?'
+  - Almost garaunteed to break!
+  - Getting tired of these messages?
   - 'Error 404:
 
     Map not found'
@@ -110,20 +84,14 @@ MonoBehaviour:
     (ChroMapper Beta Testing)'
   - What's that map with the cool walls?
   - Who needs Air?
-  - 'Be sure to get tested for
-
-    Pixelguy Syndrome'
-  - 'Im boutta chug jug
-
-    a bottle of advil'
+  - Be sure to get tested for Pixelguy Syndrome.
+  - Im boutta chug jug a bottle of advil
   - So, I want to use cucumber into a pickle slider and then finish with a monte
     cristo with no mayo
-  - 'Wait
+  - 'Wait...
 
     Who looks at lights?'
-  - 'Every channel is just
-
-    #pc-help'
+  - Every channel is just #pc-help
   - LiberatorSans
   - Don't break me
   - Break me
@@ -140,14 +108,10 @@ MonoBehaviour:
   - 'TODO: Insert pun'
   - Randomizing notes
   - Downloading rhythm
-  - 'Submitting bank
-
-    information'
+  - Submitting bank information
   - One does not simply beat sabers
   - Hey, that's my line!
-  - 'I should update what my
-
-    quote says on the wiki.'
+  - I should update what my quote says on the wiki.
   - 'Deleting map
 
     One moment please...'
@@ -160,13 +124,9 @@ MonoBehaviour:
   - 'Confused on what''s happening?
 
     Don''t worry, I am too.'
-  - 'Do NOT take Beat Saber
-
-    out of context'
+  - Do NOT take Beat Saber out of context.
   - Become one with the saber.
-  - 'Thomas had never seen
-
-    shit this good before'
+  - Thomas had never seen shit this good before.
   - Loading screen is loading the loading screen message to show before loading the
     actual editor.
   - 'Hey, Aalto!
@@ -222,9 +182,7 @@ MonoBehaviour:
   - 'Bug fixes happen.
 
     Eventually...'
-  - 'I didn''t know ChroMapper
-
-    was this stable!'
+  - I didn't know ChroMapper was this stable!
   - Messages totally not stolen from Discord
   - Stress tested by BeatWalls!
   - 'Transferring Credit Card Info
@@ -294,11 +252,7 @@ MonoBehaviour:
     GO TO SLEEP JOHN'
   - WHY ARE YOU EATING NACHOS AT 3 AM
   - PeepoComfee Mapping
-  - 'Hey Skyler,
-
-    if you read this,
-
-    I''m still here!'
+  - Loading messages? Still here.
   - I bet this will load so fast you can't read that cyan's a furry
   - 'Its ChroMapper
 
@@ -307,28 +261,14 @@ MonoBehaviour:
   - 'What are you loading, a 10
 
     minute long chroma wallmap?'
-  - 'Can I talk to your about our lord and savior
-
-    the Node Editor?'
+  - Can I talk to your about our lord and savior the Node Editor?
   - Say goodbye to your soul
-  - 'Find the furry
-
-    for bongo cat'
-  - 'Try out our
-
-    new Lag tool! '
-  - 'Its Data
-
-    not Data'
-  - 'This better be an
-
-    anime song loading here'
-  - 'This better not be an
-
-    anime song loading here'
-  - 'Twel do be chilling
-
-    behind Panic environment'
+  - Find the furry for bongo cat
+  - 'Try out our new lag tool! '
+  - It's data, not data.
+  - This better be an anime song loading here
+  - This better not be an anime song loading here
+  - Twel do be chilling behind Panic environment
   - Every day is slider day.
   - Crispy, like bacon!
   - Inside out track this!
@@ -404,32 +344,17 @@ MonoBehaviour:
   - 'get stickbugged
 
     lol'
-  - 'You should clean out that
-
-    WIP folder you have here'
-  - 'Thanks to all ChroMapper
-
-    Patreon supporters!'
-  - 'Sending browser
-
-    history...'
+  - You should clean out that WIP folder you have here
+  - Thanks to the Patreon supporters!
+  - Sending browser history...
   - 'You call this music?
 
     OK...'
-  - 'Viewing incognito
-
-    tabs...'
+  - Viewing incognito tabs...
   - 'Camellia detected.
 
     Automatic ranking initiated.'
-  - 'God knows I''m going to
-
-    spam windows until
-
-    Microsoft themselves
-
-    stop
-    me.'
+  - God knows I'm going to spam windows until Microsoft themselves stop me.
   - 'Double down detected.
 
     Deleting map...'
@@ -439,9 +364,7 @@ MonoBehaviour:
 
     lights...'
   - Dropping frames
-  - 'This, is, the grea-test
-
-    plaaaaaannnnn!'
+  - This, is, the grea-test plaaaaaannnnn!
   - 'woah
 
     Nice block'
@@ -466,9 +389,7 @@ MonoBehaviour:
   - Loading...
   - 'Quoth Atomosophere:
 
-    "ooh
-
-    ebay kinda a gold mine for budget heads ngl"'
+    "ooh ebay kinda a gold mine for budget heads ngl"'
   - smh my head #29
   - omg my god
   - buddy if you can make something that lets idiots like me make modcharts that
@@ -696,3 +617,41 @@ MonoBehaviour:
   - you got games on your phone?
   - i like this one
   - 711nedeaC
+  - the
+  - 'Small tweaks and fixes
+
+'
+  - '''maybe'' is a funny concept'
+  - Firing up lolighter...
+  - For security reasons, I am currently bolted to the floor.
+  - What's going on?
+  - Did you know 9/10 deaths are caused by dying?
+  - This could kill me
+  - Don't we all need a better PC?
+  - Basically MMA3
+  - The voices will get louder the more time you spend in here.
+  - Beat Saber Mapping Simulator
+  - Why?
+  - Haha, lights go brrrrrr
+  - There are 4 lights!
+  - Singlehandedly increased event counts 10-fold
+  - Here we go again, I guess...
+  - Now with 99% more Steam, 1% more Deck
+  - When are we getting arc notes?
+  - You are now manually breathing.
+  - Beatmap v4 support when?
+  - ChroMapper is secretly a horror game.
+  - check your mailbox.
+  - Not bright enough.
+  - No. You are off time.
+  - It's 2am, shouldn't you be sleeping?
+  - Every 60 seconds, a minute passes in Africa.
+  - I want some of what you're drinking, because there ain't no way you mapped that
+    while sober.
+  - Minting level onto the blockchain...
+  - C.U.M. is the superior mapping method
+  - I'm C.U.M.ing with my friends. What fun!
+  - I bet you can't C.U.M. alone.
+  WaifuSprites:
+  - {fileID: 21300000, guid: ffbd6560516bb294d8c477a9fe4b21bb, type: 3}
+  - {fileID: 21300000, guid: 47cd6bfc82037cf4fbe3fbb33bdd2def, type: 3}
