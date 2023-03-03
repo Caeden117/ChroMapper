@@ -14,21 +14,6 @@ public class CreateNewSong : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(res)) return;
 
-        if (string.Compare(res, "chromapper chan", StringComparison.InvariantCultureIgnoreCase) == 0 || 
-            string.Compare(res, "CM chan", StringComparison.InvariantCultureIgnoreCase) == 0)
-        {
-            Settings.Instance.Waifu = !Settings.Instance.Waifu;
-            
-            PersistentUI.Instance.DisplayMessage(
-                Settings.Instance.Waifu
-                    ? "CM Chan unlocked!"
-                    : "CM Chan disabled...",
-                PersistentUI.DisplayMessageType.Bottom);
-
-            SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
-            return;
-        }
-
         var song = new BeatSaberSong(list.WipLevels, res);
 
         if (list.Songs.Any(x => Path.GetFullPath(x.Directory).Equals(

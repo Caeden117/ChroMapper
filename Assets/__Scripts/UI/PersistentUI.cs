@@ -279,7 +279,6 @@ public class PersistentUI : MonoBehaviour
     {
         loadingTip.text = localization.GetRandomLoadingMessage();
 
-        editorWaifu.gameObject.SetActive(Settings.Instance.Waifu);
         editorWaifu.sprite = localization.GetRandomWaifuSprite();
         editorWaifuCredits.text = editorWaifu.sprite.name;
 
