@@ -655,3 +655,4 @@ MonoBehaviour:
   WaifuSprites:
   - {fileID: 21300000, guid: ffbd6560516bb294d8c477a9fe4b21bb, type: 3}
   - {fileID: 21300000, guid: 47cd6bfc82037cf4fbe3fbb33bdd2def, type: 3}
+  - {fileID: 21300000, guid: de47e449b491fa84281fa9c1459d4c49, type: 3}
