@@ -1214,6 +1214,14 @@ MonoBehaviour:
       is very heavy on performance'
     m_Metadata:
       m_Items: []
+  - m_Id: 208947639714189312
+    m_Localized: CM Chan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947667555979264
+    m_Localized: Adds CM Chan art to loading screens.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

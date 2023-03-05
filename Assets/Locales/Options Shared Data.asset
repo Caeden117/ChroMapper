@@ -1059,6 +1059,14 @@ MonoBehaviour:
     m_Key: experimental.lightid.transition.support.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 208947639714189312
+    m_Key: misc.waifu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947667555979264
+    m_Key: misc.waifu.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

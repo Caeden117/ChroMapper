@@ -126,6 +126,7 @@ public class Settings
     public int MaximumFPS = 9999;
     public bool IncludePathForADB = true;
     public bool VSync = true;
+    public bool Waifu = true;
 
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;
