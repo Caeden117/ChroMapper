@@ -160,7 +160,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Key: graphics.waveform
+    m_Key: graphics.spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -412,7 +412,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Key: graphics.waveform.tooltip
+    m_Key: graphics.spectrogram.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 108

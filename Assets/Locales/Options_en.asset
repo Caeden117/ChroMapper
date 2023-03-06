@@ -255,7 +255,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Waveform
+    m_Localized: Spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 37
@@ -520,7 +520,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song waveform
+    m_Localized: Show song spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 108
