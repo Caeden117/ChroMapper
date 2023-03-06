@@ -65,11 +65,11 @@ public class MirrorSelection : MonoBehaviour
             {
                 var precisionWidth = obstacle.Width >= 1000;
                 var state = obstacle.PosX;
-                
+
                 if (obstacle.CustomCoordinate != null)
                 {
                     var oldPosition = (Vector2)obstacle.CustomCoordinate;
-                    
+
                     var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
                     if (obstacle.CustomSize != null)
@@ -121,7 +121,7 @@ public class MirrorSelection : MonoBehaviour
                 if (moveNotes)
                 {
                     note.AngleOffset *= -1;
-                    
+
                     // NE Precision rotation
                     if (note.CustomCoordinate != null)
                     {
@@ -129,14 +129,14 @@ public class MirrorSelection : MonoBehaviour
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         note.CustomCoordinate = flipped;
                     }
-                    
+
                     // NE precision cut direction
                     if (note.CustomDirection != null)
                     {
                         var cutDirection = note.CustomDirection;
                         note.CustomDirection = cutDirection * -1;
                     }
-                    
+
                     var state = note.PosX; // flip line index
                     if (state > 3 || state < 0) // precision case
                     {
@@ -181,7 +181,8 @@ public class MirrorSelection : MonoBehaviour
                     {
                         re.Rotation *= -1;
                     }
-                    else {
+                    else
+                    {
                         if (e.CustomLaneRotation != null)
                             e.CustomLaneRotation *= -1;
 
@@ -220,9 +221,19 @@ public class MirrorSelection : MonoBehaviour
                         e.CustomLightID = new[] { labels.EditorToLightID(e.Type, mirroredIdx) };
                     }
 
-                    if (e.Value > 0 && e.Value <= 4) e.Value += 4; // blue to red
-                    else if (e.Value > 4 && e.Value <= 8) e.Value += 4; // red to white
-                    else if (e.Value > 8 && e.Value <= 12) e.Value -= 8; // white to blue
+                    // (M) swaps red and blue
+                    // (Shift + M) cycles red, blue, and white 
+                    if (moveNotes)
+                    {
+                        if (e.Value > 0 && e.Value <= 4) e.Value += 4; // blue to red
+                        else if (e.Value > 4 && e.Value <= 8) e.Value -= 4; // red to blue
+                    }
+                    else
+                    {
+                        if (e.Value > 0 && e.Value <= 4) e.Value += 4; // blue to red
+                        else if (e.Value > 4 && e.Value <= 8) e.Value += 4; // red to white
+                        else if (e.Value > 8 && e.Value <= 12) e.Value -= 8; // white to blue
+                    }
                 }
             }
             else if (con is BaseArc arc)
@@ -290,7 +301,7 @@ public class MirrorSelection : MonoBehaviour
                     ? (int)NoteType.Blue
                     : (int)NoteType.Red;
             }
-            
+
             allActions.Add(new BeatmapObjectModifiedAction(con, con, original, "e", true));
         }
 
