@@ -124,8 +124,11 @@ namespace Beatmap.Appearances
                 color = boost ? WhiteBoostColor : WhiteColor;
             }
 
-            if (Settings.Instance.EmulateChromaLite && e.EventData.CustomColor != null && e.EventData.Value > 0)
+            if (Settings.Instance.EmulateChromaLite && e.EventData.CustomColor != null && !e.EventData.IsOff
+                    && !e.EventData.IsWhite) // White overrides Chroma
+            {
                 color = e.EventData.CustomColor.Value;
+            }
 
             // Display floatValue only where used
             if (e.EventData.IsLightEvent(envName) && e.EventData.Value != 0)

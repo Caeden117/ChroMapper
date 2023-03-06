@@ -306,9 +306,13 @@ public class PlatformDescriptor : MonoBehaviour
             mainColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
             invertedColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
         }
+        else if (value <= 12)
+        {
+            mainColor = invertedColor = ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor;
+        }
 
         //Check if it is a PogU new Chroma event
-        if ((e.CustomColor != null) && Settings.Instance.EmulateChromaLite)
+        if ((e.CustomColor != null) && Settings.Instance.EmulateChromaLite && !e.IsWhite) // White overrides Chroma
         {
             mainColor = invertedColor = (Color)e.CustomColor;
             chromaCustomColors.Remove(group);
@@ -430,7 +434,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
         else if (value <= 12)
         {
-            return Color.white;
+            return ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor;
         }
         else
         {
@@ -443,6 +447,10 @@ public class PlatformDescriptor : MonoBehaviour
         if (TryGetNextTransitionNote(e, out var transition))
         {
             var nextChromaColor = transition.CustomColor;
+            if (e.IsWhite) // White overrides Chroma
+            {
+                nextChromaColor = null;
+            }
             var targetColor = nextChromaColor ?? InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
             var targetAlpha = transition.FloatValue;
             if (nextChromaColor.HasValue)
