@@ -174,7 +174,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
             queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
         }
-        
+
         UpdateAppearance();
     }
 
@@ -183,8 +183,8 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         queuedData.CutDirection = value;
         if (DraggedObjectContainer != null && DraggedObjectContainer.NoteData != null)
         {
+            ToggleDiagonalAngleOffset(DraggedObjectContainer.NoteData);
             DraggedObjectContainer.NoteData.CutDirection = value;
-            if (DraggedObjectContainer.NoteData is V3ColorNote colorNote) colorNote.AngleOffset = 0;
             noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
         }
         else if (beatmapNoteInputController.QuickModificationActive && Settings.Instance.QuickNoteEditing)
@@ -193,8 +193,8 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             if (note != null && note.ObjectData is BaseNote noteData)
             {
                 var newData = BeatmapFactory.Clone(noteData);
+                ToggleDiagonalAngleOffset(newData);
                 newData.CutDirection = value;
-                if (newData is V3ColorNote colorNote) colorNote.AngleOffset = 0;
 
                 BeatmapActionContainer.AddAction(
                     new BeatmapObjectModifiedAction(newData, noteData, noteData, "Quick edit"), true);
@@ -202,6 +202,21 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         }
 
         UpdateAppearance();
+    }
+
+    private void ToggleDiagonalAngleOffset(BaseNote note)
+    {
+        if (note is V3ColorNote colorNote)
+        {
+            if (colorNote.CutDirection == (int)NoteCutDirection.Any && colorNote.AngleOffset != 45)
+            {
+                colorNote.AngleOffset = 45;
+            }
+            else
+            {
+                colorNote.AngleOffset = 0;
+            }
+        }
     }
 
     public void UpdateType(int type)
