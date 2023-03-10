@@ -113,7 +113,7 @@ namespace Tests
                 _mirror.Mirror();
                 // I'm sorry if you're here after changing the prop mapping for default env
                 CheckUtils.CheckEvent("Perform mirror prop event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade, 1f, JSON.Parse("{\"lightID\": [9]}"));
+                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f, JSON.Parse("{\"lightID\": [9]}"));
 
                 // Undo mirror
                 _actionContainer.Undo();
@@ -143,7 +143,7 @@ namespace Tests
 
                 _mirror.Mirror();
                 CheckUtils.CheckEvent("Perform mirror gradient event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade, 1f,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f,
                     JSON.Parse(
                         "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [0, 1, 0, 1], \"_endColor\": [1, 0, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
@@ -153,6 +153,60 @@ namespace Tests
                     (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
                     JSON.Parse(
                         "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+            }
+        }
+
+        [Test]
+        public void MirrorEventRedBlue()
+        {
+            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            if (container is EventGridContainer eventsContainer)
+            {
+                var root = eventsContainer.transform.root;
+                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+
+                SelectionController.Select(baseEventA);
+
+                _mirror.Mirror();
+                CheckUtils.CheckEvent("Perform mirror event", eventsContainer, 0, 2,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f);
+
+                _mirror.Mirror();
+                CheckUtils.CheckEvent("Perform mirror event again", eventsContainer, 0, 2,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+            }
+        }
+
+        [Test]
+        public void MirrorEventRedWhiteBlue()
+        {
+            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            if (container is EventGridContainer eventsContainer)
+            {
+                var root = eventsContainer.transform.root;
+                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+
+                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+
+                SelectionController.Select(baseEventA);
+
+                _mirror.Mirror(false);
+                CheckUtils.CheckEvent("Perform mirror cycle event", eventsContainer, 0, 2,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade, 1f);
+
+                _mirror.Mirror(false);
+                CheckUtils.CheckEvent("Perform mirror cycle event 2", eventsContainer, 0, 2,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f);
+
+                _mirror.Mirror(false);
+                CheckUtils.CheckEvent("Perform mirror cycle event 3", eventsContainer, 0, 2,
+                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
             }
         }
 
@@ -233,11 +287,11 @@ namespace Tests
                 SelectionController.Select(baseEventA);
 
                 _mirror.Mirror();
-                CheckUtils.CheckRotationEvent("Perform mirror rotation event", eventsContainer, 0, 2, 1,  -33);
+                CheckUtils.CheckRotationEvent("Perform mirror rotation event", eventsContainer, 0, 2, 1, -33);
 
                 // Undo mirror
                 _actionContainer.Undo();
-                CheckUtils.CheckRotationEvent("Undo mirror rotation event", eventsContainer, 0, 2, 1,  33);
+                CheckUtils.CheckRotationEvent("Undo mirror rotation event", eventsContainer, 0, 2, 1, 33);
             }
         }
     }
