@@ -180,10 +180,11 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     public void UpdateCut(int value)
     {
+        ToggleDiagonalAngleOffset(queuedData, value);
         queuedData.CutDirection = value;
         if (DraggedObjectContainer != null && DraggedObjectContainer.NoteData != null)
         {
-            ToggleDiagonalAngleOffset(DraggedObjectContainer.NoteData);
+            ToggleDiagonalAngleOffset(DraggedObjectContainer.NoteData, value);
             DraggedObjectContainer.NoteData.CutDirection = value;
             noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
         }
@@ -193,7 +194,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             if (note != null && note.ObjectData is BaseNote noteData)
             {
                 var newData = BeatmapFactory.Clone(noteData);
-                ToggleDiagonalAngleOffset(newData);
+                ToggleDiagonalAngleOffset(newData, value);
                 newData.CutDirection = value;
 
                 BeatmapActionContainer.AddAction(
@@ -204,11 +205,12 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         UpdateAppearance();
     }
 
-    private void ToggleDiagonalAngleOffset(BaseNote note)
+    private void ToggleDiagonalAngleOffset(BaseNote note, int newCutDirection)
     {
         if (note is V3ColorNote colorNote)
         {
-            if (colorNote.CutDirection == (int)NoteCutDirection.Any && colorNote.AngleOffset != 45)
+            if (colorNote.CutDirection == (int)NoteCutDirection.Any && newCutDirection == (int)NoteCutDirection.Any
+                && colorNote.AngleOffset != 45)
             {
                 colorNote.AngleOffset = 45;
             }
