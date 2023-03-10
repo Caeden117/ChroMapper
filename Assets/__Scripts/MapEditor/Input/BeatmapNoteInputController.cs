@@ -69,7 +69,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
         if (note != null) UpdateNoteDirection(note, shiftForward);
     }
 
-    public void OnUpdateNotePreciseDirection(InputAction.CallbackContext context) 
+    public void OnUpdateNotePreciseDirection(InputAction.CallbackContext context)
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         if (!context.performed) return;
@@ -110,19 +110,20 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
     {
         var original = BeatmapFactory.Clone(note.ObjectData);
 
-        if (note.NoteData is V3ColorNote cnote) {
-            if (shiftForward)
-                cnote.AngleOffset += 1;
-            else
-                cnote.AngleOffset -= 1;
+        if (note.NoteData is V3ColorNote cnote)
+        {
+            cnote.AngleOffset += (shiftForward)
+                ? 5
+                : -5;
+
+            BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note)
+                .RefreshSpecialAngles(note.ObjectData, false, false);
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original));
         }
         else
         {
             // V2 note unsupported. Could implement either ME or NE for V2 note.
         }
 
-        BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note)
-            .RefreshSpecialAngles(note.ObjectData, false, false);
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original));
     }
 }
