@@ -119,10 +119,11 @@ public class SongList : MonoBehaviour
 
     public IEnumerator RefreshSongList()
     {
-        var directories =
-            Directory.GetDirectories(WipLevels
-                ? Settings.Instance.CustomWIPSongsFolder
-                : Settings.Instance.CustomSongsFolder);
+        var directories = new DirectoryInfo(WipLevels
+            ? Settings.Instance.CustomWIPSongsFolder
+            : Settings.Instance.CustomSongsFolder)
+            .GetDirectories()
+            .Where(dir => !dir.Attributes.HasFlag(FileAttributes.Hidden));
         Songs.Clear();
         newList.Clear();
         var iterBeginTime = Time.realtimeSinceStartup;
@@ -135,7 +136,7 @@ public class SongList : MonoBehaviour
                 iterBeginTime = Time.realtimeSinceStartup;
             }
 
-            var song = BeatSaberSong.GetSongFromFolder(dir);
+            var song = BeatSaberSong.GetSongFromFolder(dir.FullName);
             if (song == null)
                 Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
             /*
