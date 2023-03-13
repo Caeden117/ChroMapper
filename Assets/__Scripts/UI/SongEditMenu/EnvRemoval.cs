@@ -34,7 +34,11 @@ public class EnvRemoval : MonoBehaviour
 
     public void AddItem()
     {
-        AddItem(Settings.Instance.Load_MapV3 ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement("") : new V2EnvironmentEnhancement(""));
+        var newItem = Settings.Instance.Load_MapV3
+            ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement("")
+            : new V2EnvironmentEnhancement("");
+        newItem.Active = false;
+        AddItem(newItem);
         UpdateEnvRemoval();
         StartCoroutine(WaitToScroll());
     }
