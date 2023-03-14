@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
@@ -39,35 +38,50 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
             return;
         }
 
+        var generatedObjects = new List<BaseChain>();
         for (int i = 1; i < notes.Count; i++)
         {
-            SpawnChain(notes[i - 1], notes[i]);
+            if (TryCreateChainData(notes[i - 1], notes[i], out var chain))
+            {
+                generatedObjects.Add(chain);
+            }
+        }
+
+        if (generatedObjects.Count > 0)
+        {
+            foreach (BaseChain chainData in generatedObjects)
+            {
+                objectContainerCollection.SpawnObject(chainData, false); ;
+            }
+
+            SelectionController.DeselectAll();
+            SelectionController.SelectedObjects = new HashSet<BaseObject>(generatedObjects);
+            SelectionController.SelectionChangedEvent?.Invoke();
+            SelectionController.RefreshSelectionMaterial(false);
+            BeatmapActionContainer.AddAction(
+                new BeatmapObjectPlacementAction(generatedObjects.ToArray(), new List<BaseObject>(), $"Placed {generatedObjects.Count} chains"));
         }
     }
 
     private bool IsColorNote(BaseObject o) => o is BaseNote && !(o is BaseBombNote);
 
-    public void SpawnChain(BaseNote head, BaseNote tail)
+    public bool TryCreateChainData(BaseNote head, BaseNote tail, out BaseChain chain)
     {
         if (head.Time > tail.Time)
         {
             (head, tail) = (tail, head);
         }
-        if (head.CutDirection == (int)NoteCutDirection.Any) { return; }
 
-        SpawnChain(new V3Chain(head, tail), head);
-    }
-
-    public void SpawnChain(BaseChain chainData, BaseNote toDeselect)
-    {
-        var chainContainer = objectContainerCollection;
-        chainContainer.SpawnObject(chainData, false);
-
-        SelectionController.Deselect(toDeselect);
-
-        var conflict = new List<BaseObject>(SelectedObjects);
-        selectionController.Delete(false);
-        BeatmapActionContainer.AddAction(GenerateAction(chainData, conflict));
+        if (head.CutDirection == (int)NoteCutDirection.Any)
+        {
+            chain = null;
+            return false;
+        }
+        else
+        {
+            chain = new V3Chain(head, tail);
+            return true;
+        }
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseChain dragged, BaseChain queued) { }

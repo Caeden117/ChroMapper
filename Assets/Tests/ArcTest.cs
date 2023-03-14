@@ -68,7 +68,8 @@ namespace Tests
                 var n1 = objects[0] as BaseNote;
                 var n2 = objects[1] as BaseNote;
 
-                arcPlacement.SpawnArc(n1, n2);
+                var arc = arcPlacement.CreateArcData(n1, n2);
+                arcsContainer.SpawnObject(arc);
 
                 CheckUtils.CheckArc("Check generated arc", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base,
                     (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 1, 3f, (int)GridX.Left, (int)GridY.Upper,

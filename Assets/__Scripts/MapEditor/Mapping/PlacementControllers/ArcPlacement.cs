@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
@@ -25,17 +24,34 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
                 null, PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
-        
+
         // is there better way than this?
+        var generatedObjects = new List<BaseArc>();
         var red = notes.Where(n => n.Color == 0).ToList();
         var blue = notes.Where(n => n.Color == 1).ToList();
+
         for (var i = 1; i < red.Count; i++)
         {
-            SpawnArc(red[i - 1], red[i]);
+            generatedObjects.Add(CreateArcData(red[i - 1], red[i]));
         }
         for (var i = 1; i < blue.Count; i++)
         {
-            SpawnArc(blue[i - 1], blue[i]);
+            generatedObjects.Add(CreateArcData(blue[i - 1], blue[i]));
+        }
+
+        if (generatedObjects.Count > 0)
+        {
+            foreach (BaseArc arcData in generatedObjects)
+            {
+                objectContainerCollection.SpawnObject(arcData, false); ;
+            }
+
+            SelectionController.DeselectAll();
+            SelectionController.SelectedObjects = new HashSet<BaseObject>(generatedObjects);
+            SelectionController.SelectionChangedEvent?.Invoke();
+            SelectionController.RefreshSelectionMaterial(false);
+            BeatmapActionContainer.AddAction(
+                new BeatmapObjectPlacementAction(generatedObjects.ToArray(), new List<BaseObject>(), $"Placed {generatedObjects.Count} arcs"));
         }
     }
 
@@ -48,21 +64,14 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
-    public void SpawnArc(BaseNote head, BaseNote tail)
+    public BaseArc CreateArcData(BaseNote head, BaseNote tail)
     {
         if (head.Time > tail.Time)
         {
             (head, tail) = (tail, head);
         }
 
-        SpawnArc(new V3Arc(head, tail));
-    }
-
-    public void SpawnArc(BaseArc arcData)
-    {
-        var arcContainer = objectContainerCollection;
-        arcContainer.SpawnObject(arcData, false);
-        BeatmapActionContainer.AddAction(GenerateAction(arcData, new List<BaseObject>()));
+        return new V3Arc(head, tail);
     }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)

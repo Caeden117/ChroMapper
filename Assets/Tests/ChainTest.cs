@@ -68,7 +68,8 @@ namespace Tests
                 var n1 = objects[0] as BaseNote;
                 var n2 = objects[1] as BaseNote;
 
-                chainPlacement.SpawnChain(n1, n2);
+                chainPlacement.TryCreateChainData(n1, n2, out var chain);
+                chainsContainer.SpawnObject(chain);
 
                 CheckUtils.CheckChain("Check generated chain", chainsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base,
                     (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 3f, (int)GridX.Left, (int)GridY.Upper, 5, 1);
