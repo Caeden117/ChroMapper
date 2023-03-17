@@ -2,8 +2,6 @@
 using Beatmap.Appearances;
 using Beatmap.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class CustomColorsUIController : MonoBehaviour
 {
@@ -159,8 +157,7 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.DifficultyData.EnvColorWhite = eventAppearance.WhiteColor =
             platform.Colors.WhiteColor = whiteLight.image.color = picker.CurrentColor.WithAlpha(1);
-        BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshLights();
     }
 
     public void UpdateRedBoost()
@@ -181,7 +178,7 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.DifficultyData.BoostColorWhite = whiteBoost.image.color =
             eventAppearance.WhiteBoostColor = platform.Colors.WhiteBoostColor = picker.CurrentColor.WithAlpha(1);
-        CustomColorsUpdatedEvent?.Invoke();
+        RefreshLights();
     }
 
     public void UpdateObstacles()
@@ -195,8 +192,10 @@ public class CustomColorsUIController : MonoBehaviour
     private void SelectBlueNote() => picker.CurrentColor = blueNote.image.color;
     private void SelectRedLight() => picker.CurrentColor = redLight.image.color;
     private void SelectBlueLight() => picker.CurrentColor = blueLight.image.color;
+    private void SelectWhiteLight() => picker.CurrentColor = whiteLight.image.color;
     private void SelectRedBoost() => picker.CurrentColor = redBoost.image.color;
     private void SelectBlueBoost() => picker.CurrentColor = blueBoost.image.color;
+    private void SelectWhiteBoost() => picker.CurrentColor = whiteBoost.image.color;
     private void SelectObstacles() => picker.CurrentColor = obstacle.image.color;
 
 
@@ -241,6 +240,13 @@ public class CustomColorsUIController : MonoBehaviour
         RefreshLights();
     }
 
+    private void ResetWhiteLight()
+    {
+        BeatSaberSongContainer.Instance.DifficultyData.EnvColorWhite = null;
+        whiteLight.image.color = eventAppearance.WhiteColor = platform.Colors.WhiteColor = platform.DefaultColors.WhiteColor;
+        RefreshLights();
+    }
+
     private void ResetRedBoost()
     {
         BeatSaberSongContainer.Instance.DifficultyData.BoostColorLeft = null;
@@ -254,6 +260,14 @@ public class CustomColorsUIController : MonoBehaviour
         BeatSaberSongContainer.Instance.DifficultyData.BoostColorRight = null;
         blueBoost.image.color = eventAppearance.BlueBoostColor =
             platform.Colors.BlueBoostColor = platform.DefaultColors.BlueBoostColor;
+        RefreshLights();
+    }
+
+    private void ResetWhiteBoost()
+    {
+        BeatSaberSongContainer.Instance.DifficultyData.BoostColorWhite = null;
+        whiteBoost.image.color = eventAppearance.WhiteBoostColor =
+            platform.Colors.WhiteBoostColor = platform.DefaultColors.WhiteBoostColor;
         RefreshLights();
     }
 
@@ -290,11 +304,17 @@ public class CustomColorsUIController : MonoBehaviour
         blueLight.onRightClick += SelectBlueLight;
         blueLight.onMiddleClick += ResetBlueLight;
 
+        whiteLight.onRightClick += SelectWhiteLight;
+        whiteLight.onMiddleClick += ResetWhiteLight;
+
         redBoost.onRightClick += SelectRedBoost;
         redBoost.onMiddleClick += ResetRedBoost;
 
         blueBoost.onRightClick += SelectBlueBoost;
         blueBoost.onMiddleClick += ResetBlueBoost;
+
+        whiteBoost.onRightClick += SelectWhiteBoost;
+        whiteBoost.onMiddleClick += ResetWhiteBoost;
 
         obstacle.onRightClick += SelectObstacles;
         obstacle.onMiddleClick += ResetObstacles;
@@ -314,11 +334,17 @@ public class CustomColorsUIController : MonoBehaviour
         blueLight.onRightClick -= SelectBlueLight;
         blueLight.onMiddleClick -= ResetBlueLight;
 
+        whiteLight.onRightClick -= SelectWhiteLight;
+        whiteLight.onMiddleClick -= ResetWhiteLight;
+
         redBoost.onRightClick -= SelectRedBoost;
         redBoost.onMiddleClick -= ResetRedBoost;
 
         blueBoost.onRightClick -= SelectBlueBoost;
         blueBoost.onMiddleClick -= ResetBlueBoost;
+
+        whiteBoost.onRightClick -= SelectWhiteBoost;
+        whiteBoost.onMiddleClick -= ResetWhiteBoost;
 
         obstacle.onRightClick -= SelectObstacles;
         obstacle.onMiddleClick -= ResetObstacles;
