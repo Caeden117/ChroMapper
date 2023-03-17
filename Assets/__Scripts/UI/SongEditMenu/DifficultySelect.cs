@@ -358,9 +358,11 @@ public class DifficultySelect : MonoBehaviour
                     map.ColorRight = fromDiff.DifficultyBeatmap.ColorRight;
                     map.EnvColorLeft = fromDiff.DifficultyBeatmap.EnvColorLeft;
                     map.EnvColorRight = fromDiff.DifficultyBeatmap.EnvColorRight;
+                    map.EnvColorWhite = fromDiff.DifficultyBeatmap.EnvColorWhite;
                     map.ObstacleColor = fromDiff.DifficultyBeatmap.ObstacleColor;
                     map.BoostColorLeft = fromDiff.DifficultyBeatmap.BoostColorLeft;
                     map.BoostColorRight = fromDiff.DifficultyBeatmap.BoostColorRight;
+                    map.BoostColorWhite = fromDiff.DifficultyBeatmap.BoostColorWhite;
 
                     // This sets the current filename as the filename for another diff and will trigger the copy on save
                     map.UpdateName(fromDiff.DifficultyBeatmap.BeatmapFilename);

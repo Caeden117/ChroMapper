@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using Beatmap.Containers;
 using UnityEngine;
@@ -84,29 +84,23 @@ public class LoadInitialMap : MonoBehaviour
         var leftNote = BeatSaberSong.DefaultLeftNote; //Have default note as base
         if (descriptor.Colors.RedNoteColor != BeatSaberSong.DefaultLeftColor)
             leftNote = descriptor.Colors.RedNoteColor; //Prioritize platforms
-        if (diff.ColorLeft != null) leftNote = diff.ColorLeft ?? leftNote; //Then prioritize custom colors
+        if (diff.ColorLeft != null) leftNote = diff.ColorLeft.Value; //Then prioritize custom colors
 
         var rightNote = BeatSaberSong.DefaultRightNote;
         if (descriptor.Colors.BlueNoteColor != BeatSaberSong.DefaultRightColor)
             rightNote = descriptor.Colors.BlueNoteColor;
-        if (diff.ColorRight != null) rightNote = diff.ColorRight ?? rightNote;
+        if (diff.ColorRight != null) rightNote = diff.ColorRight.Value;
 
         noteGridContainer.UpdateColor(leftNote, rightNote);
         obstacleGridContainer.UpdateColor(diff.ObstacleColor ?? BeatSaberSong.DefaultLeftColor);
         arcGridContainer.UpdateColor(leftNote, rightNote);
         chainGridContainer.UpdateColor(leftNote, rightNote);
-        if (diff.ColorLeft != null) descriptor.Colors.RedNoteColor = diff.ColorLeft ?? descriptor.Colors.RedNoteColor;
-        if (diff.ColorRight != null)
-            descriptor.Colors.BlueNoteColor = diff.ColorRight ?? descriptor.Colors.BlueNoteColor;
+        if (diff.ColorLeft != null) descriptor.Colors.RedNoteColor = diff.ColorLeft.Value;
+        if (diff.ColorRight != null) descriptor.Colors.BlueNoteColor = diff.ColorRight.Value;
 
-        //We set light color to envColorLeft if it exists. If it does not exist, but colorLeft does, we use colorLeft.
-        //If neither, we use default platform lights.
-        if (diff.EnvColorLeft != null) descriptor.Colors.RedColor = diff.EnvColorLeft ?? descriptor.Colors.RedColor;
-        else if (diff.ColorLeft != null) descriptor.Colors.RedColor = diff.ColorLeft ?? descriptor.Colors.RedColor;
-
-        //Same thing for envColorRight
-        if (diff.EnvColorRight != null) descriptor.Colors.BlueColor = diff.EnvColorRight ?? descriptor.Colors.BlueColor;
-        else if (diff.ColorRight != null) descriptor.Colors.BlueColor = diff.ColorRight ?? descriptor.Colors.BlueColor;
+        if (diff.EnvColorLeft != null) descriptor.Colors.RedColor = diff.EnvColorLeft.Value;
+        if (diff.EnvColorRight != null) descriptor.Colors.BlueColor = diff.EnvColorRight.Value;
+        if (diff.EnvColorWhite != null) descriptor.Colors.WhiteColor = diff.EnvColorWhite.Value;
 
         PlatformLoadedEvent.Invoke(descriptor); //Trigger event for classes that use the platform
 
