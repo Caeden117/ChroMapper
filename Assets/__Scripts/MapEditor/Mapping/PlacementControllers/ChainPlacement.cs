@@ -39,16 +39,21 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         }
 
         var generatedObjects = new List<BaseChain>();
+        var tailNotes = new List<BaseNote>();
         for (int i = 1; i < notes.Count; i++)
         {
-            if (TryCreateChainData(notes[i - 1], notes[i], out var chain))
+            if (TryCreateChainData(notes[i - 1], notes[i], out var chain, out var tailNote))
             {
+                tailNotes.Add(tailNote);
                 generatedObjects.Add(chain);
             }
         }
 
         if (generatedObjects.Count > 0)
         {
+            SelectionController.SelectedObjects = new HashSet<BaseObject>(tailNotes);
+            selectionController.Delete(false);
+
             foreach (BaseChain chainData in generatedObjects)
             {
                 objectContainerCollection.SpawnObject(chainData, false); ;
@@ -59,18 +64,20 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
             SelectionController.SelectionChangedEvent?.Invoke();
             SelectionController.RefreshSelectionMaterial(false);
             BeatmapActionContainer.AddAction(
-                new BeatmapObjectPlacementAction(generatedObjects.ToArray(), new List<BaseObject>(), $"Placed {generatedObjects.Count} chains"));
+                new BeatmapObjectPlacementAction(generatedObjects.ToArray(), tailNotes, $"Placed {generatedObjects.Count} chains"));
         }
     }
 
     private bool IsColorNote(BaseObject o) => o is BaseNote && !(o is BaseBombNote);
 
-    public bool TryCreateChainData(BaseNote head, BaseNote tail, out BaseChain chain)
+    public bool TryCreateChainData(BaseNote head, BaseNote tail, out BaseChain chain, out BaseNote tailNote)
     {
         if (head.Time > tail.Time)
         {
             (head, tail) = (tail, head);
         }
+
+        tailNote = tail;
 
         if (head.CutDirection == (int)NoteCutDirection.Any)
         {
