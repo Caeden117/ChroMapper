@@ -51,6 +51,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
 
         if (generatedObjects.Count > 0)
         {
+            SelectionController.DeselectAll();
             SelectionController.SelectedObjects = new HashSet<BaseObject>(tailNotes);
             selectionController.Delete(false);
 
@@ -59,7 +60,6 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
                 objectContainerCollection.SpawnObject(chainData, false); ;
             }
 
-            SelectionController.DeselectAll();
             SelectionController.SelectedObjects = new HashSet<BaseObject>(generatedObjects);
             SelectionController.SelectionChangedEvent?.Invoke();
             SelectionController.RefreshSelectionMaterial(false);
