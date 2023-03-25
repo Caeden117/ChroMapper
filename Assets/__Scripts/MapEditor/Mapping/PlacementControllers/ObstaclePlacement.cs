@@ -51,7 +51,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
     }
 
     private float SmallestRankableWallDuration => Atsc.GetBeatFromSeconds(0.016f);
- 
+
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
@@ -223,6 +223,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
     {
         dragged.Time = queued.Time;
         dragged.PosX = queued.PosX;
+        dragged.CustomCoordinate = queued.CustomCoordinate;
     }
 
     public override void CancelPlacement()

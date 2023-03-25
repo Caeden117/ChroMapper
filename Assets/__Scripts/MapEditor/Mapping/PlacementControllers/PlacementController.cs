@@ -199,7 +199,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public void OnInitiateClickandDrag(InputAction.CallbackContext context)
     {
-        if (UsePrecisionPlacement) return;
         if (context.performed && CanClickAndDrag)
         {
             var dragRay = MainCamera.ScreenPointToRay(MousePosition);
@@ -228,7 +227,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
     {
-        if (UsePrecisionPlacement) return;
         if (context.performed && CanClickAndDrag)
         {
             var dragRay = MainCamera.ScreenPointToRay(MousePosition);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -53,9 +53,6 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             if (queuedData.CustomData != null)
             {
                 queuedData.CustomColor = null;
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
             }
         }
 
@@ -102,5 +99,6 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         dragged.Time = queued.Time;
         dragged.PosX = queued.PosX;
         dragged.PosY = queued.PosY;
+        dragged.CustomCoordinate = queued.CustomCoordinate;
     }
 }
