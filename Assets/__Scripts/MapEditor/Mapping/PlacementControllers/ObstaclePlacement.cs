@@ -16,7 +16,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 {
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
-    [FormerlySerializedAs("obstacleAppearanceSO")] [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
+    [FormerlySerializedAs("obstacleAppearanceSO")][SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private ToggleColourDropdown dropdown;
@@ -91,6 +91,9 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             if (UsePrecisionPlacement)
             {
+                var precision = Atsc.GridMeasureSnapping;
+                roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
+                roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
                 var position = queuedData.CustomCoordinate ?? Vector2.zero;
@@ -133,6 +136,10 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
         if (UsePrecisionPlacement)
         {
+            var precision = Atsc.GridMeasureSnapping;
+            roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
+            roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
+
             wallTransform.localPosition = roundedHit;
             instantiatedContainer.SetScale(Vector3.one / 2f);
             queuedData.PosX = queuedData.Type = 0;

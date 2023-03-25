@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -63,6 +63,9 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         {
             queuedData.PosX = queuedData.PosY = 0;
 
+            var precision = Atsc.GridMeasureSnapping;
+            roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
+            roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
             instantiatedContainer.transform.localPosition = roundedHit;
 
             if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();

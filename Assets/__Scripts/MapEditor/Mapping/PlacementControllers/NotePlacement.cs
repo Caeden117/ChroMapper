@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -153,6 +153,9 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         {
             queuedData.PosX = queuedData.PosY = 0;
 
+            var precision = Atsc.GridMeasureSnapping;
+            roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
+            roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
             instantiatedContainer.transform.localPosition = roundedHit;
 
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
