@@ -104,10 +104,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 0.01f), newLocalScale.z);
                 instantiatedContainer.SetScale(newLocalScale);
 
-                var scale = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
-                scale[0] = Math.Round(newLocalScale.x, 3);
-                scale[1] = Math.Round(newLocalScale.y, 3);
-                queuedData.CustomSize = scale;
+                queuedData.CustomSize = new Vector2(newLocalScale.x, newLocalScale.y);
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);
@@ -145,11 +142,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             queuedData.PosX = queuedData.Type = 0;
 
             if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
-
-            var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
-            position[0] = Math.Round(roundedHit.x, 3);
-            position[1] = Math.Round(roundedHit.y, 3);
-            queuedData.CustomCoordinate = position;
+            queuedData.CustomCoordinate = new Vector2(roundedHit.x, roundedHit.y);
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);

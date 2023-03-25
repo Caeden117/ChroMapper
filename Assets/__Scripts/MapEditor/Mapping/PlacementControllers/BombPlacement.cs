@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -65,12 +65,7 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
             instantiatedContainer.transform.localPosition = roundedHit;
 
-            if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
-
-            var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
-            position[0] = Math.Round(roundedHit.x - 0.5f, 3);
-            position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.CustomCoordinate = position;
+            queuedData.CustomCoordinate = new Vector2(roundedHit.x - 0.5f, roundedHit.y - 0.5f);
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
