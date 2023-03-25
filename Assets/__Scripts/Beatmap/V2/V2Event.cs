@@ -97,13 +97,13 @@ namespace Beatmap.V2
         protected internal sealed override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
-            if (CustomLightGradient != null) CustomData[CustomKeyLightGradient] = CustomLightGradient.ToJson();
-            if (CustomPropMult != null) CustomData[CustomKeyPropMult] = CustomPropMult;
-            if (CustomStepMult != null) CustomData[CustomKeyStepMult] = CustomStepMult;
-            if (CustomPropMult != null) CustomData[CustomKeyPropMult] = CustomPropMult;
-            if (CustomSpeedMult != null) CustomData[CustomKeySpeedMult] = CustomSpeedMult;
-            if (CustomPreciseSpeed != null) CustomData[CustomKeyPreciseSpeed] = CustomPreciseSpeed;
-            if (CustomLaneRotation != null) CustomData[CustomKeyLaneRotation] = CustomLaneRotation;
+            if (CustomLightGradient != null) CustomData[CustomKeyLightGradient] = CustomLightGradient.ToJson(); else CustomData.Remove(CustomKeyLightGradient);
+            if (CustomPropMult != null) CustomData[CustomKeyPropMult] = CustomPropMult; else CustomData.Remove(CustomKeyPropMult);
+            if (CustomStepMult != null) CustomData[CustomKeyStepMult] = CustomStepMult; else CustomData.Remove(CustomKeyStepMult);
+            if (CustomPropMult != null) CustomData[CustomKeyPropMult] = CustomPropMult; else CustomData.Remove(CustomKeyPropMult);
+            if (CustomSpeedMult != null) CustomData[CustomKeySpeedMult] = CustomSpeedMult; else CustomData.Remove(CustomKeySpeedMult);
+            if (CustomPreciseSpeed != null) CustomData[CustomKeyPreciseSpeed] = CustomPreciseSpeed; else CustomData.Remove(CustomKeyPreciseSpeed);
+            if (CustomLaneRotation != null) CustomData[CustomKeyLaneRotation] = CustomLaneRotation; else CustomData.Remove(CustomKeyLaneRotation);
             return CustomData;
         }
 
