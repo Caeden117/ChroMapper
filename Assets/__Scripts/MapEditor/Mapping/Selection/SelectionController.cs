@@ -516,6 +516,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 if (note.CustomCoordinate is null)
                 {
+                    var outsideVanillaBounds = false;
                     if (note.PosX >= 1000)
                     {
                         note.PosX += Mathf.RoundToInt(1f / atsc.GridMeasureSnapping * 1000 * leftRight);
@@ -530,10 +531,18 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     {
                         note.PosX += leftRight;
                         if (Settings.Instance.VanillaOnlyShift) note.PosX = Mathf.Clamp(note.PosX, 0, 3);
+                        else if (note.PosX < 0 || note.PosX > 3) outsideVanillaBounds = true;
                     }
 
                     note.PosY += upDown;
                     if (Settings.Instance.VanillaOnlyShift) note.PosY = Mathf.Clamp(note.PosY, 0, 2);
+                    else if (note.PosY < 0 || note.PosY > 2) outsideVanillaBounds = true;
+
+                    if (outsideVanillaBounds)
+                    {
+                        note.CustomCoordinate = new Vector2(note.PosX - 2f, note.PosY);
+                        note.PosX = note.PosY = 0;
+                    }
                 }
                 else
                 {
@@ -638,6 +647,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
             else if (data is BaseSlider slider)
             {
+                var headOutsideVanillaBounds = false;
                 if (slider.CustomCoordinate is null)
                 {
                     if (slider.PosX >= 1000)
@@ -654,10 +664,18 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     {
                         slider.PosX += leftRight;
                         if (Settings.Instance.VanillaOnlyShift) slider.PosX = Mathf.Clamp(slider.PosX, 0, 3);
+                        else if (slider.PosY < 0 || slider.PosY > 2) headOutsideVanillaBounds = true;
                     }
 
                     slider.PosY += upDown;
                     if (Settings.Instance.VanillaOnlyShift) slider.PosY = Mathf.Clamp(slider.PosY, 0, 2);
+                    else if (slider.PosY < 0 || slider.PosY > 2) headOutsideVanillaBounds = true;
+
+                    if (headOutsideVanillaBounds)
+                    {
+                        slider.CustomCoordinate = new Vector2(slider.PosX + 1f, slider.PosY);
+                        slider.PosX = slider.PosY = 0;
+                    }
                 }
                 else
                 {
@@ -667,6 +685,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                         pos.y + 1f / atsc.GridMeasureSnapping * upDown);
                 }
 
+                var tailOutsideVanillaBounds = false;
                 if (slider.CustomTailCoordinate is null)
                 {
                     if (slider.TailPosX >= 1000)
@@ -687,6 +706,13 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                     slider.TailPosY += upDown;
                     if (Settings.Instance.VanillaOnlyShift) slider.TailPosY = Mathf.Clamp(slider.TailPosY, 0, 2);
+                    else if (slider.PosY < 0 || slider.PosY > 2) tailOutsideVanillaBounds = true;
+
+                    if (tailOutsideVanillaBounds)
+                    {
+                        slider.CustomTailCoordinate = new Vector2(slider.TailPosX + 1f, slider.TailPosY);
+                        slider.TailPosX = slider.TailPosY = 0;
+                    }
                 }
                 else
                 {

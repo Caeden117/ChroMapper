@@ -8501,9 +8501,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Keywords:
-  - quick
-  - notes
-  - hover
+  - vanilla
+  - only
+  - shift
+  - bounds
 --- !u!1001 &318250223
 PrefabInstance:
   m_ObjectHideFlags: 0
