@@ -537,9 +537,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    var pos = (Vector2)note.CustomCoordinate;
-                    pos[0] += 1f / atsc.GridMeasureSnapping * leftRight;
-                    pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
+                    var pos = note.CustomCoordinate.Value;
+                    note.CustomCoordinate = new Vector2(
+                        pos.x + 1f / atsc.GridMeasureSnapping * leftRight,
+                        pos.y + 1f / atsc.GridMeasureSnapping * upDown);
                 }
             }
             else if (data is BaseObstacle obstacle)
@@ -565,9 +566,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 {
                     if (obstacle.CustomCoordinate != null)
                     {
-                        var pos = (Vector2)obstacle.CustomCoordinate;
-                        pos[0] += 1f / atsc.GridMeasureSnapping * leftRight;
-                        pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
+                        var pos = obstacle.CustomCoordinate.Value;
+                        obstacle.CustomCoordinate = new Vector2(
+                            pos.x + 1f / atsc.GridMeasureSnapping * leftRight,
+                            pos.y + 1f / atsc.GridMeasureSnapping * upDown);
                     }
                 }
             }
@@ -659,9 +661,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    var pos = (Vector2)slider.CustomCoordinate;
-                    pos[0] += 1f / atsc.GridMeasureSnapping * leftRight;
-                    pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
+                    var pos = slider.CustomCoordinate.Value;
+                    slider.CustomCoordinate = new Vector2(
+                        pos.x + 1f / atsc.GridMeasureSnapping * leftRight,
+                        pos.y + 1f / atsc.GridMeasureSnapping * upDown);
                 }
 
                 if (slider.CustomTailCoordinate is null)
@@ -687,9 +690,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    var pos = (Vector2)slider.CustomTailCoordinate;
-                    pos[0] += 1f / atsc.GridMeasureSnapping * leftRight;
-                    pos[1] += 1f / atsc.GridMeasureSnapping * upDown;
+                    var pos = slider.CustomTailCoordinate.Value;
+                    slider.CustomTailCoordinate = new Vector2(
+                        pos.x + 1f / atsc.GridMeasureSnapping * leftRight,
+                        pos.y + 1f / atsc.GridMeasureSnapping * upDown);
                 }
             }
             return new BeatmapObjectModifiedAction(data, data, original, "", true);
