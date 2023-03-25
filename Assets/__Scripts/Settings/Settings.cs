@@ -97,6 +97,7 @@ public class Settings
     public bool ColorFakeWalls = true;
     public bool InvertScrollTime = false;
     public bool PrecisionPlacementGrid = false;
+    public int PrecisionPlacementPrecision = 4;
     public bool NoteJumpSpeedForEditorScale = false;
     public bool VisualizeChromaGradients = true;
     public bool VisualizeChromaAlpha = true;

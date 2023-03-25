@@ -42,52 +42,41 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
         // Check if Chroma Color notes button is active and apply _color
-        if (CanPlaceChromaObjects && dropdown.Visible)
-        {
-            // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.CustomColor = colorPicker.CurrentColor;
-        }
-        else
-        {
-            // If not remove _color
-            if (queuedData.CustomData != null)
-            {
-                queuedData.CustomColor = null;
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
-            }
-        }
+        queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
+            ? (Color?)colorPicker.CurrentColor
+            : null;
 
         if (UsePrecisionPlacement)
         {
             queuedData.PosX = queuedData.PosY = 0;
 
+            var precision = Atsc.GridMeasureSnapping;
+            roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
+            roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
             instantiatedContainer.transform.localPosition = roundedHit;
 
-            if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
-
-            var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
-            position[0] = Math.Round(roundedHit.x - 0.5f, 3);
-            position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.CustomCoordinate = position;
+            queuedData.CustomCoordinate = new Vector2(roundedHit.x - 0.5f, roundedHit.y - 0.5f);
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {
-            if (queuedData.CustomData != null)
-            {
-                queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
-            }
-
             precisionPlacement.TogglePrecisionPlacement(false);
-            queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-            queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+            var posX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            var posY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+
+            if (posX < 0 || posX > 3 || posY < 0 || posY > 2)
+            {
+                queuedData.PosX = queuedData.PosY = 0;
+                queuedData.CustomCoordinate = new Vector2(Mathf.Round(roundedHit.x - 0.5f), Mathf.Round(roundedHit.y - 0.5f));
+            }
+            else
+            {
+                queuedData.PosX = posX;
+                queuedData.PosY = posY;
+                queuedData.CustomCoordinate = null;
+            }
         }
 
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
@@ -99,5 +88,6 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         dragged.Time = queued.Time;
         dragged.PosX = queued.PosX;
         dragged.PosY = queued.PosY;
+        dragged.CustomCoordinate = queued.CustomCoordinate;
     }
 }

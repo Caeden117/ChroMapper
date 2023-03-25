@@ -49,7 +49,7 @@ namespace Beatmap.Base
         private Vector2 DerivePositionFromData()
         {
             if (CustomCoordinate != null) return (Vector2)CustomCoordinate + new Vector2(0.5f, 0);
-        
+
             var position = PosX - 1.5f;
             float layer = PosY;
 
@@ -75,9 +75,9 @@ namespace Beatmap.Base
         protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
-            if (CustomCoordinate != null) CustomData[CustomKeyCoordinate] = CustomCoordinate;
-            if (CustomWorldRotation != null) CustomData[CustomKeyWorldRotation] = CustomWorldRotation;
-            if (CustomLocalRotation != null) CustomData[CustomKeyLocalRotation] = CustomLocalRotation;
+            if (CustomCoordinate != null) CustomData[CustomKeyCoordinate] = CustomCoordinate; else CustomData.Remove(CustomKeyCoordinate);
+            if (CustomWorldRotation != null) CustomData[CustomKeyWorldRotation] = CustomWorldRotation; else CustomData.Remove(CustomKeyWorldRotation);
+            if (CustomLocalRotation != null) CustomData[CustomKeyLocalRotation] = CustomLocalRotation; else CustomData.Remove(CustomKeyLocalRotation);
             return CustomData;
         }
     }

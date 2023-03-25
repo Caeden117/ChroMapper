@@ -55,7 +55,7 @@ namespace Beatmap.V2
         protected internal sealed override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
-            if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection;
+            if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection; else CustomData.Remove(CustomKeyDirection);
             return CustomData;
         }
 

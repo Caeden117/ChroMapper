@@ -16,7 +16,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 {
     // Chroma Color Stuff
     public static readonly string ChromaColorKey = "PlaceChromaObjects";
-    [FormerlySerializedAs("obstacleAppearanceSO")] [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
+    [FormerlySerializedAs("obstacleAppearanceSO")][SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     [SerializeField] private ColorPicker colorPicker;
     [SerializeField] private ToggleColourDropdown dropdown;
@@ -51,7 +51,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
     }
 
     private float SmallestRankableWallDuration => Atsc.GetBeatFromSeconds(0.016f);
- 
+
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Place a Wall.");
 
@@ -91,6 +91,9 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             if (UsePrecisionPlacement)
             {
+                var precision = Atsc.GridMeasureSnapping;
+                roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
+                roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
                 var position = queuedData.CustomCoordinate ?? Vector2.zero;
@@ -101,10 +104,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 0.01f), newLocalScale.z);
                 instantiatedContainer.SetScale(newLocalScale);
 
-                var scale = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
-                scale[0] = Math.Round(newLocalScale.x, 3);
-                scale[1] = Math.Round(newLocalScale.y, 3);
-                queuedData.CustomSize = scale;
+                queuedData.CustomSize = new Vector2(newLocalScale.x, newLocalScale.y);
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);
@@ -133,16 +133,16 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
         if (UsePrecisionPlacement)
         {
+            var precision = Atsc.GridMeasureSnapping;
+            roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
+            roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
+
             wallTransform.localPosition = roundedHit;
             instantiatedContainer.SetScale(Vector3.one / 2f);
             queuedData.PosX = queuedData.Type = 0;
 
             if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
-
-            var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
-            position[0] = Math.Round(roundedHit.x, 3);
-            position[1] = Math.Round(roundedHit.y, 3);
-            queuedData.CustomCoordinate = position;
+            queuedData.CustomCoordinate = new Vector2(roundedHit.x, roundedHit.y);
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -216,6 +216,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
     {
         dragged.Time = queued.Time;
         dragged.PosX = queued.PosX;
+        dragged.CustomCoordinate = queued.CustomCoordinate;
     }
 
     public override void CancelPlacement()

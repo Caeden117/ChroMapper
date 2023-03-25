@@ -54,7 +54,7 @@ namespace Beatmap.Base
         private Vector2 DerivePositionFromTailData()
         {
             if (CustomTailCoordinate != null) return (Vector2)CustomTailCoordinate + new Vector2(0.5f, 0);
-        
+
             var position = TailPosX - 1.5f;
             float layer = TailPosY;
 
@@ -78,7 +78,7 @@ namespace Beatmap.Base
         protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
-            if (CustomTailCoordinate != null) CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate;
+            if (CustomTailCoordinate != null) CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate; else CustomData.Remove(CustomKeyTailCoordinate);
             return CustomData;
         }
     }

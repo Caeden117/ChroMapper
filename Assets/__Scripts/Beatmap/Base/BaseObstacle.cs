@@ -61,7 +61,8 @@ namespace Beatmap.Base
         public virtual int Type
         {
             get => InternalType;
-            set {
+            set
+            {
                 InternalType = value;
                 InferPosYHeight();
             }
@@ -202,7 +203,7 @@ namespace Beatmap.Base
         protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
-            if (CustomSize != null) CustomData[CustomKeySize] = CustomSize;
+            if (CustomSize != null) CustomData[CustomKeySize] = CustomSize; else CustomData.Remove(CustomKeySize);
             return CustomData;
         }
     }

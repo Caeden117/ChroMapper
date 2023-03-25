@@ -62,8 +62,8 @@ namespace Beatmap.Base
         protected internal virtual JSONNode SaveCustom()
         {
             CustomData = CustomData is JSONObject ? CustomData : new JSONObject();
-            if (!string.IsNullOrEmpty(CustomTrack)) CustomData[CustomKeyTrack] = CustomTrack;
-            if (CustomColor != null) CustomData[CustomKeyColor] = CustomColor;
+            if (!string.IsNullOrEmpty(CustomTrack)) CustomData[CustomKeyTrack] = CustomTrack; else CustomData.Remove(CustomKeyTrack);
+            if (CustomColor != null) CustomData[CustomKeyColor] = CustomColor; else CustomData.Remove(CustomKeyColor);
             return CustomData;
         }
 
