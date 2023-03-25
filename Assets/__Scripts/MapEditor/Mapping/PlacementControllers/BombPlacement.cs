@@ -72,17 +72,21 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         }
         else
         {
-            if (queuedData.CustomData != null)
-            {
-                queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
-            }
-
             precisionPlacement.TogglePrecisionPlacement(false);
-            queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-            queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+            var posX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            var posY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+
+            if (posX < 0 || posX > 3 || posY < 0 || posY > 2)
+            {
+                queuedData.PosX = queuedData.PosY = 0;
+                queuedData.CustomCoordinate = new Vector2(Mathf.Round(roundedHit.x - 0.5f), Mathf.Round(roundedHit.y - 0.5f));
+            }
+            else
+            {
+                queuedData.PosX = posX;
+                queuedData.PosY = posY;
+                queuedData.CustomCoordinate = null;
+            }
         }
 
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);

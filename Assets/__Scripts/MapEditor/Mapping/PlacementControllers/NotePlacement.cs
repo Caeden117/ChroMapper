@@ -166,13 +166,20 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
-            if (queuedData.CustomCoordinate != null)
-            {
-                queuedData.CustomCoordinate = null; //Remove NE position since we are no longer working with it.
-            }
+            var posX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+            var posY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
 
-            queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-            queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+            if (posX < 0 || posX > 3 || posY < 0 || posY > 2)
+            {
+                queuedData.PosX = queuedData.PosY = 0;
+                queuedData.CustomCoordinate = new Vector2(Mathf.Round(roundedHit.x - 0.5f), Mathf.Round(roundedHit.y - 0.5f));
+            }
+            else
+            {
+                queuedData.PosX = posX;
+                queuedData.PosY = posY;
+                queuedData.CustomCoordinate = null;
+            }
         }
 
         UpdateAppearance();
