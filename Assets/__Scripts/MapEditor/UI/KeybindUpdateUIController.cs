@@ -1,4 +1,4 @@
-﻿using Beatmap.Enums;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -101,10 +101,10 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     {
         if (!context.performed) return;
         placeMode.SetMode(PlacementModeController.PlacementMode.Bomb);
+        lightMode.UpdateValue();
         if (Settings.Instance.Load_MapV3)
         {
             colorType.BombNote(true);
-            lightMode.UpdateValue();
         }
     }
 
