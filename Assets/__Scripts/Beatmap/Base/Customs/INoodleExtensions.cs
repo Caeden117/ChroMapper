@@ -27,9 +27,23 @@ namespace Beatmap.Base.Customs
         string CustomKeyTailCoordinate { get; }
     }
 
+    public struct Vector2Or3
+    {
+        public Vector2Or3(float? x, float? y, float? z = null)
+        {
+            this.x = x ?? 0f;
+            this.y = y ?? 0f;
+            this.z = z;
+        }
+
+        public float x { get; }
+        public float y { get; }
+        public float? z { get; }
+    }
+
     public interface INoodleExtensionsObstacle : INoodleExtensionsGrid
     {
-        Vector3? CustomSize { get; set; }
+        Vector2Or3? CustomSize { get; set; }
 
         string CustomKeySize { get; }
     }

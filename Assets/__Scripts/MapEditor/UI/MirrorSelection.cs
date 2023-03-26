@@ -74,8 +74,7 @@ public class MirrorSelection : MonoBehaviour
 
                     if (obstacle.CustomSize != null)
                     {
-                        var scale = (Vector2)obstacle.CustomSize;
-                        flipped.x -= scale.x;
+                        flipped.x -= obstacle.CustomSize.Value.x;
                     }
                     else
                     {
