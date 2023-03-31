@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Beatmap.V2;
 using Beatmap.V3;
 using UnityEngine;
@@ -15,6 +13,11 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
     public void OnSwitchingVersion(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;
+        PromptSwitchVersion();
+    }
+
+    public void PromptSwitchVersion()
+    {
         var v1 = Settings.Instance.Load_MapV3 ? "3" : "2";
         var v2 = Settings.Instance.Load_MapV3 ? "2" : "3";
         var extraMsg = v1 == "3" ? "\n\nNOTE: Beatmap v2 is deprecated as stated legacy in internal game code, it is unlikely to be supported in the near future." : "";

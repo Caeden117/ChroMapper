@@ -691,6 +691,14 @@ MonoBehaviour:
     m_Key: gradient.lerp.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 220101281077985280
+    m_Key: pause.beatmap.version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220102296279908352
+    m_Key: pause.beatmap.version.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

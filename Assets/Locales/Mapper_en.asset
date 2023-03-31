@@ -164,7 +164,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: Convert From Legacy
+    m_Localized: Convert From Legacy Chroma
     m_Metadata:
       m_Items: []
   - m_Id: 27
@@ -800,6 +800,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 207751068199878656
     m_Localized: Changes interpolation for the transition.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220101281077985280
+    m_Localized: Change Beatmap Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220102296279908352
+    m_Localized: Changes map version to v2 or v3
     m_Metadata:
       m_Items: []
   references:
