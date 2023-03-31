@@ -4157,7 +4157,7 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 0
+  CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
   LightID: 1
@@ -9333,7 +9333,7 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 0
+  CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
   LightID: 1
