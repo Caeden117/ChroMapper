@@ -88,8 +88,8 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
 
     public Vector2 GetPosition()
     {
-        if (CustomData?.HasKey("_position") ?? false)
-            return CustomData["_position"].ReadVector2() + new Vector2(0.5f, 0);
+        if (CustomData?.HasKey(MapLoader.heckPosition) ?? false)
+            return CustomData[MapLoader.heckPosition].ReadVector2() + new Vector2(0.5f, 0);
         return DerivePositionFromIndex(LineIndex, LineLayer);
     }
 
@@ -109,7 +109,7 @@ public class BeatmapNote : BeatmapObject, IBeatmapObjectBounds
 
     public Vector3 GetScale()
     {
-        if (CustomData?.HasKey("_scale") ?? false) return CustomData["_scale"].ReadVector3();
+        if (CustomData?.HasKey(MapLoader.heckScale) ?? false) return CustomData[MapLoader.heckScale].ReadVector3();
         return Vector3.one;
     }
 

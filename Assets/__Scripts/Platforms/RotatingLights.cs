@@ -56,17 +56,17 @@ public class RotatingLights : RotatingLightsBase
         if (customData != null) //We have custom data in this event
         {
             //Apply some chroma precision values
-            if (customData.HasKey("_lockPosition")) lockRotation = customData["_lockPosition"];
+            if (customData.HasKey(MapLoader.heckLockPosition)) lockRotation = customData[MapLoader.heckLockPosition];
 
             if (speed > 0)
             {
                 if (customData.HasKey("_preciseSpeed"))
                     this.speed = customData["_preciseSpeed"];
-                else if (customData.HasKey("_speed")) this.speed = customData["_speed"];
+                else if (customData.HasKey(MapLoader.heckUnderscore + "speed")) this.speed = customData[MapLoader.heckUnderscore + "speed"];
             }
 
-            if (customData.HasKey("_direction"))
-                rotateForwards = customData["_direction"].AsInt.Equals(0) ^ isLeftEvent;
+            if (customData.HasKey(MapLoader.heckUnderscore + "direction"))
+                rotateForwards = customData[MapLoader.heckUnderscore + "direction"].AsInt.Equals(0) ^ isLeftEvent;
         }
 
         if (!lockRotation) //If we are not locking rotation, reset it to its default.

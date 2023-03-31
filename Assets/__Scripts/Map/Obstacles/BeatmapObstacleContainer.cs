@@ -15,7 +15,7 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
     public int ChunkEnd => (int)((ObstacleData.Time + ObstacleData.Duration) / Intersections.ChunkSize);
 
     public bool IsRotatedByNoodleExtensions =>
-        ObstacleData.CustomData != null && (ObstacleData.CustomData?.HasKey("_rotation") ?? false);
+        ObstacleData.CustomData != null && (ObstacleData.CustomData?.HasKey(MapLoader.heckRotation) ?? false);
 
     public static BeatmapObstacleContainer SpawnObstacle(BeatmapObstacle data, TracksManager manager,
         ref GameObject prefab)
@@ -62,25 +62,25 @@ public class BeatmapObstacleContainer : BeatmapObjectContainer
 
         if (ObstacleData.CustomData != null)
         {
-            if (ObstacleData.CustomData.HasKey("_scale"))
+            if (ObstacleData.CustomData.HasKey(MapLoader.heckScale))
             {
-                if (ObstacleData.CustomData["_scale"].Count > 2) //Apparently scale supports Z now, ok
-                    duration = ObstacleData.CustomData["_scale"]?.ReadVector3().z ?? duration;
+                if (ObstacleData.CustomData[MapLoader.heckScale].Count > 2) //Apparently scale supports Z now, ok
+                    duration = ObstacleData.CustomData[MapLoader.heckScale]?.ReadVector3().z ?? duration;
             }
 
-            if (ObstacleData.CustomData.HasKey("_localRotation"))
-                localRotation = ObstacleData.CustomData["_localRotation"]?.ReadVector3() ?? Vector3.zero;
-            if (ObstacleData.CustomData.HasKey("_rotation"))
+            if (ObstacleData.CustomData.HasKey(MapLoader.heckUnderscore + "localRotation"))
+                localRotation = ObstacleData.CustomData[MapLoader.heckUnderscore + "localRotation"]?.ReadVector3() ?? Vector3.zero;
+            if (ObstacleData.CustomData.HasKey(MapLoader.heckRotation))
             {
                 Track track = null;
-                if (ObstacleData.CustomData["_rotation"].IsNumber)
+                if (ObstacleData.CustomData[MapLoader.heckRotation].IsNumber)
                 {
-                    float rotation = ObstacleData.CustomData["_rotation"];
+                    float rotation = ObstacleData.CustomData[MapLoader.heckRotation];
                     track = manager.CreateTrack(rotation);
                 }
-                else if (ObstacleData.CustomData["_rotation"].IsArray)
+                else if (ObstacleData.CustomData[MapLoader.heckRotation].IsArray)
                 {
-                    track = manager.CreateTrack(ObstacleData.CustomData["_rotation"].ReadVector3());
+                    track = manager.CreateTrack(ObstacleData.CustomData[MapLoader.heckRotation].ReadVector3());
                 }
 
                 if (track != null)

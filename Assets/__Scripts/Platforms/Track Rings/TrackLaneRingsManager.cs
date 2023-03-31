@@ -75,13 +75,13 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     {
         var step = zoomed ? MAXPositionStep : MINPositionStep;
 
-        if (customData?.HasKey("_step") ?? false)
+        if (customData?.HasKey(MapLoader.heckUnderscore + "step") ?? false)
         {
-            step = customData["_step"];
+            step = customData[MapLoader.heckUnderscore + "step"];
         }
 
-        var speed = customData?.HasKey("_speed") ?? false 
-            ? customData["_speed"].AsFloat
+        var speed = customData?.HasKey(MapLoader.heckUnderscore + "speed") ?? false 
+            ? customData[MapLoader.heckUnderscore + "speed"].AsFloat
             : MoveSpeed;
 
         zoomed = !zoomed;

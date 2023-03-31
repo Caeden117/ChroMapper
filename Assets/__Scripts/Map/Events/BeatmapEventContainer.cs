@@ -141,9 +141,9 @@ public class BeatmapEventContainer : BeatmapObjectContainer
     private float GetHeight()
     {
         var height = EventData.FloatValue;
-        if (EventData.CustomData != null && EventData.CustomData.HasKey("_color") && EventData.CustomData["_color"].Count == 4)
+        if (EventData.CustomData != null && EventData.CustomData.HasKey(MapLoader.heckUnderscore + "color") && EventData.CustomData[MapLoader.heckUnderscore + "color"].Count == 4)
         {
-            height *= EventData.CustomData["_color"][3];  //The alpha of the event, clamped to avoid too small/too tall events
+            height *= EventData.CustomData[MapLoader.heckUnderscore + "color"][3];  //The alpha of the event, clamped to avoid too small/too tall events
         }
         else if (EventData.CustomData != null && EventData.CustomData.HasKey("_lightGradient") && EventData.CustomData["_lightGradient"].HasKey("_startColor") && EventData.CustomData["_lightGradient"]["_startColor"].Count == 4)
         {

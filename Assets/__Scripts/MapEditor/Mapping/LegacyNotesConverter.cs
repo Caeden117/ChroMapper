@@ -35,7 +35,7 @@ public class LegacyNotesConverter : MonoBehaviour
                 }
 
                 if (chroma != null && e.Value != MapEvent.LightValueOff)
-                    e.GetOrCreateCustomData()["_color"] = chroma;
+                    e.GetOrCreateCustomData()[MapLoader.heckUnderscore + "color"] = chroma;
             }
             else
             {

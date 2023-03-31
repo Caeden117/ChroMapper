@@ -27,12 +27,12 @@ public class EnvEnhancement
 
         duplicate = node["_duplicate"].AsInt;
         active = !node.HasKey("_active") || node["_active"].IsNull ? (bool?)null : node["_active"].AsBool;
-        scale = ReadVector3OrNull(node, "_scale");
-        position = ReadVector3OrNull(node, "_position");
+        scale = ReadVector3OrNull(node, MapLoader.heckScale);
+        position = ReadVector3OrNull(node, MapLoader.heckPosition);
         localPosition = ReadVector3OrNull(node, "_localPosition");
-        rotation = ReadVector3OrNull(node, "_rotation");
-        localRotation = ReadVector3OrNull(node, "_localRotation");
-        lightID = !node.HasKey("_lightID") || node["_lightID"].IsNull ? (int?)null : node["_lightID"].AsInt;
+        rotation = ReadVector3OrNull(node, MapLoader.heckRotation);
+        localRotation = ReadVector3OrNull(node, MapLoader.heckUnderscore + "localRotation");
+        lightID = !node.HasKey(MapLoader.heckUnderscore + "lightID") || node[MapLoader.heckUnderscore + "lightID"].IsNull ? (int?)null : node[MapLoader.heckUnderscore + "lightID"].AsInt;
         track = node["_track"].Value;
     }
 
@@ -62,12 +62,12 @@ public class EnvEnhancement
         node["_lookupMethod"] = lookupMethod.ToString();
         if (duplicate > 0) node["_duplicate"] = duplicate;
         if (active.HasValue) node["_active"] = active.Value;
-        WriteVector3(node, "_scale", scale);
-        WriteVector3(node, "_position", position);
+        WriteVector3(node, MapLoader.heckScale, scale);
+        WriteVector3(node, MapLoader.heckPosition, position);
         WriteVector3(node, "_localPosition", localPosition);
-        WriteVector3(node, "_rotation", rotation);
-        WriteVector3(node, "_localRotation", localRotation);
-        if (lightID.HasValue) node["_lightID"] = lightID.Value;
+        WriteVector3(node, MapLoader.heckRotation, rotation);
+        WriteVector3(node, MapLoader.heckUnderscore + "localRotation", localRotation);
+        if (lightID.HasValue) node[MapLoader.heckUnderscore + "lightID"] = lightID.Value;
         if (!string.IsNullOrEmpty(track)) node["_track"] = track;
 
         return node;

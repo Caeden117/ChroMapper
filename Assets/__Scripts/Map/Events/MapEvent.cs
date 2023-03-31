@@ -92,13 +92,13 @@ public class MapEvent : BeatmapObject
 
     public bool IsInterscopeEvent => Type == EventTypeCustomEvent1 || Type == EventTypeCustomEvent2;
     public bool IsLegacyChromaEvent => Value >= ColourManager.RgbintOffset;
-    public bool IsChromaEvent => CustomData?.HasKey("_color") ?? false;
     public bool IsPropogationEvent => PropId > -1; //_customData["_lightID"].IsArray
-    public bool IsLightIdEvent => CustomData?.HasKey("_lightID") ?? false;
+    public bool IsChromaEvent => CustomData?.HasKey(MapLoader.heckUnderscore + "color") ?? false;
+    public bool IsLightIdEvent => CustomData?.HasKey(MapLoader.heckUnderscore + "lightID") ?? false;
 
-    public int[] LightId => !CustomData["_lightID"].IsArray
-        ? new[] { CustomData["_lightID"].AsInt }
-        : CustomData["_lightID"].AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
+    public int[] LightId => !CustomData[MapLoader.heckUnderscore + "lightID"].IsArray
+        ? new[] { CustomData[MapLoader.heckUnderscore + "lightID"].AsInt }
+        : CustomData[MapLoader.heckUnderscore + "lightID"].AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
 
     public override ObjectType BeatmapType { get; set; } = ObjectType.Event;
 
@@ -216,11 +216,11 @@ public class MapEvent : BeatmapObject
             Duration = gradientObject?["_duration"] ?? 0;
             StartColor = gradientObject["_startColor"];
             EndColor = gradientObject["_endColor"];
-            if (gradientObject.HasKey("_easing"))
+            if (gradientObject.HasKey(MapLoader.heckUnderscore + "easing"))
             {
-                if (!Easing.ByName.ContainsKey(gradientObject["_easing"]))
+                if (!Easing.ByName.ContainsKey(gradientObject[MapLoader.heckUnderscore + "easing"]))
                     throw new ArgumentException("Gradient object contains invalid easing type.");
-                EasingType = gradientObject["_easing"];
+                EasingType = gradientObject[MapLoader.heckUnderscore + "easing"];
             }
             else
             {
@@ -244,7 +244,7 @@ public class MapEvent : BeatmapObject
             obj["_duration"] = Duration;
             obj["_startColor"] = StartColor;
             obj["_endColor"] = EndColor;
-            obj["_easing"] = EasingType;
+            obj[MapLoader.heckUnderscore + "easing"] = EasingType;
             return obj;
         }
     }

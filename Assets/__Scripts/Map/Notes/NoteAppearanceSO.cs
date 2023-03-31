@@ -77,7 +77,7 @@ public class NoteAppearanceSO : ScriptableObject
             note.SetColor(null);
         }
 
-        if (note.MapNoteData.CustomData?.HasKey("_color") ?? false)
-            note.SetColor(note.MapNoteData.CustomData["_color"]);
+        if (note.MapNoteData.CustomData?.HasKey(MapLoader.heckUnderscore + "color") ?? false)
+            note.SetColor(note.MapNoteData.CustomData[MapLoader.heckUnderscore + "color"]);
     }
 }

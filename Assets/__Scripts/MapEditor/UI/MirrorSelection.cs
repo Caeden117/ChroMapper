@@ -62,15 +62,15 @@ public class MirrorSelection : MonoBehaviour
                 var state = obstacle.LineIndex;
                 if (obstacle.CustomData != null) //Noodle Extensions
                 {
-                    if (obstacle.CustomData.HasKey("_position"))
+                    if (obstacle.CustomData.HasKey(MapLoader.heckPosition))
                     {
-                        Vector2 oldPosition = obstacle.CustomData["_position"];
+                        Vector2 oldPosition = obstacle.CustomData[MapLoader.heckPosition];
                         
                         var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
-                        if (obstacle.CustomData.HasKey("_scale"))
+                        if (obstacle.CustomData.HasKey(MapLoader.heckScale))
                         {
-                            Vector2 scale = obstacle.CustomData["_scale"];
+                            Vector2 scale = obstacle.CustomData[MapLoader.heckScale];
                             flipped.x -= scale.x;
                         }
                         else
@@ -78,7 +78,7 @@ public class MirrorSelection : MonoBehaviour
                             flipped.x -= obstacle.Width;
                         }
 
-                        obstacle.CustomData["_position"] = flipped;
+                        obstacle.CustomData[MapLoader.heckPosition] = flipped;
                     }
                 }
 
@@ -121,11 +121,11 @@ public class MirrorSelection : MonoBehaviour
                     if (note.CustomData != null)
                     {
                         // NE Precision rotation
-                        if (note.CustomData.HasKey("_position"))
+                        if (note.CustomData.HasKey(MapLoader.heckPosition))
                         {
-                            Vector2 oldPosition = note.CustomData["_position"];
+                            Vector2 oldPosition = note.CustomData[MapLoader.heckPosition];
                             var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
-                            note.CustomData["_position"] = flipped;
+                            note.CustomData[MapLoader.heckPosition] = flipped;
                         }
                         
                         // NE precision cut direction
@@ -178,8 +178,8 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (e.IsRotationEvent)
                 {
-                    if (e.CustomData != null && e.CustomData.HasKey("_rotation"))
-                        e.CustomData["_rotation"] = e.CustomData["_rotation"].AsFloat * -1;
+                    if (e.CustomData != null && e.CustomData.HasKey(MapLoader.heckRotation))
+                        e.CustomData[MapLoader.heckRotation] = e.CustomData[MapLoader.heckRotation].AsFloat * -1;
 
                     var rotation = e.GetRotationDegreeFromValue();
                     if (rotation != null)
@@ -206,14 +206,14 @@ public class MirrorSelection : MonoBehaviour
                         events.PropagationEditing == EventsContainer.PropMode.Prop)
                     {
                         var mirroredIdx = events.EventTypePropagationSize - e.PropId - 1;
-                        e.CustomData["_lightID"] = labels.PropIdToLightIdsJ(e.Type, mirroredIdx);
+                        e.CustomData[MapLoader.heckUnderscore + "lightID"] = labels.PropIdToLightIdsJ(e.Type, mirroredIdx);
                     }
                     else if (moveNotes && e.IsLightIdEvent && events.EventTypeToPropagate == e.Type &&
                              events.PropagationEditing == EventsContainer.PropMode.Light)
                     {
                         var idx = labels.LightIDToEditor(e.Type, e.LightId[0]);
                         var mirroredIdx = events.EventTypePropagationSize - idx - 1;
-                        e.CustomData["_lightID"] = labels.EditorToLightID(e.Type, mirroredIdx);
+                        e.CustomData[MapLoader.heckUnderscore + "lightID"] = labels.EditorToLightID(e.Type, mirroredIdx);
                     }
 
                     if (e.Value > 4 && e.Value <= 8) e.Value -= 4;

@@ -47,8 +47,8 @@ public class EventAppearanceSO : ScriptableObject
                 {
                     if (e.EventData.CustomData.HasKey("_preciseSpeed"))
                         speed = e.EventData.CustomData["_preciseSpeed"].AsFloat;
-                    else if (e.EventData.CustomData.HasKey("_speed"))
-                        speed = e.EventData.CustomData["_speed"].AsFloat;
+                    else if (e.EventData.CustomData.HasKey(MapLoader.heckUnderscore + "speed"))
+                        speed = e.EventData.CustomData[MapLoader.heckUnderscore + "speed"].AsFloat;
                 }
 
                 e.UpdateTextDisplay(true, speed.ToString());
@@ -111,8 +111,8 @@ public class EventAppearanceSO : ScriptableObject
         {
             color = boost ? RedBoostColor : RedColor;
         }
-        if (Settings.Instance.EmulateChromaLite && e.EventData.CustomData?["_color"] != null && e.EventData.Value > 0)
-            color = e.EventData.CustomData["_color"];
+        if (Settings.Instance.EmulateChromaLite && e.EventData.CustomData?[MapLoader.heckUnderscore + "color"] != null && e.EventData.Value > 0)
+            color = e.EventData.CustomData[MapLoader.heckUnderscore + "color"];
 
         // Display floatValue only where used
         if (!e.EventData.IsUtilityEvent && e.EventData.Value != 0)

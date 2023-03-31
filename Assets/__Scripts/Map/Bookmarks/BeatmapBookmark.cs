@@ -14,7 +14,7 @@ public class BeatmapBookmark : BeatmapObject
     {
         Time = RetrieveRequiredNode(node, "_time").AsFloat;
         Name = RetrieveRequiredNode(node, "_name");
-        if (node.HasKey("_color")) Color = RetrieveRequiredNode(node, "_color");
+        if (node.HasKey(MapLoader.heckUnderscore + "color")) Color = RetrieveRequiredNode(node, MapLoader.heckUnderscore + "color");
         else Color = Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
     }
 
@@ -33,7 +33,7 @@ public class BeatmapBookmark : BeatmapObject
         JSONNode node = new JSONObject();
         node["_time"] = Math.Round(Time, DecimalPrecision);
         node["_name"] = Name;
-        node["_color"] = Color;
+        node[MapLoader.heckUnderscore + "color"] = Color;
         return node;
     }
 

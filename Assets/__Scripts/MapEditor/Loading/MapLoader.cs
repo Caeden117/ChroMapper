@@ -14,10 +14,24 @@ public class MapLoader : MonoBehaviour
     private int noteLaneSize = 2;
     private int noteLayerSize = 3;
 
+    public static string heckUnderscore = "";
+    public static string heckPosition = "";
+    public static string heckRotation = "";
+    public static string heckInteractable = "";
+    public static string heckScale = "";
+    public static string heckLockPosition = "";
+    
     public void UpdateMapData(BeatSaberMap map)
     {
         if (map is BeatSaberMapV3)
         {
+            heckUnderscore = "";
+            heckPosition = "coordinates";
+            heckRotation = "worldRotation";
+            heckInteractable = "uninteractable";
+            heckScale = "size";
+            heckLockPosition = "lockRotation";
+
             var copy = new BeatSaberMapV3
             {
                 CustomData = map.CustomData.Clone(),
@@ -36,6 +50,13 @@ public class MapLoader : MonoBehaviour
         }
         else
         {
+            heckUnderscore = "_";
+            heckPosition = "_position";
+            heckRotation = "_rotation";
+            heckInteractable = "_interactable";
+            heckScale = "_scale";
+            heckLockPosition = "_lockPosition";
+
             var copy = new BeatSaberMap
             {
                 CustomData = map.CustomData.Clone(),

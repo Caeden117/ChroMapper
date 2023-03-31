@@ -505,7 +505,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var original = BeatmapObject.GenerateCopy(data);
             if (data is BeatmapNote note)
             {
-                if (note.CustomData is null || !note.CustomData.HasKey("_position"))
+                if (note.CustomData is null || !note.CustomData.HasKey(MapLoader.heckPosition))
                 {
                     if (note.LineIndex >= 1000)
                     {
@@ -528,10 +528,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    if (data.CustomData.HasKey("_position"))
+                    if (data.CustomData.HasKey(MapLoader.heckPosition))
                     {
-                        data.CustomData["_position"][0] += 1f / atsc.GridMeasureSnapping * leftRight;
-                        data.CustomData["_position"][1] += 1f / atsc.GridMeasureSnapping * upDown;
+                        data.CustomData[MapLoader.heckPosition][0] += 1f / atsc.GridMeasureSnapping * leftRight;
+                        data.CustomData[MapLoader.heckPosition][1] += 1f / atsc.GridMeasureSnapping * upDown;
                     }
                 }
             }
@@ -556,10 +556,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
                 else
                 {
-                    if (data.CustomData.HasKey("_position"))
+                    if (data.CustomData.HasKey(MapLoader.heckPosition))
                     {
-                        data.CustomData["_position"][0] += 1f / atsc.GridMeasureSnapping * leftRight;
-                        data.CustomData["_position"][1] += 1f / atsc.GridMeasureSnapping * upDown;
+                        data.CustomData[MapLoader.heckPosition][0] += 1f / atsc.GridMeasureSnapping * leftRight;
+                        data.CustomData[MapLoader.heckPosition][1] += 1f / atsc.GridMeasureSnapping * upDown;
                     }
                 }
             }
@@ -588,9 +588,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     var curId = e.IsLightIdEvent ? e.LightId[0] : 0;
                     var newId = Math.Min(curId + leftRight, max);
                     if (newId < 1)
-                        data.CustomData?.Remove("_lightID");
+                        data.CustomData?.Remove(MapLoader.heckUnderscore + "lightID");
                     else
-                        data.GetOrCreateCustomData()["_lightID"] = newId;
+                        data.GetOrCreateCustomData()[MapLoader.heckUnderscore + "lightID"] = newId;
                 }
                 else if (eventPlacement.objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop)
                 {
@@ -603,11 +603,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                     if (newId < 0)
                     {
-                        data.CustomData?.Remove("_lightID");
+                        data.CustomData?.Remove(MapLoader.heckUnderscore + "lightID");
                     }
                     else
                     {
-                        data.GetOrCreateCustomData()["_lightID"] =
+                        data.GetOrCreateCustomData()[MapLoader.heckUnderscore + "lightID"] =
                             labels.PropIdToLightIdsJ(events.EventTypeToPropagate, newId);
                     }
                 }
@@ -627,21 +627,21 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                     e.Type = labels.LaneIdToEventType(modified);
 
-                    if (e.IsLightIdEvent && !e.CustomData["_lightID"].IsArray)
+                    if (e.IsLightIdEvent && !e.CustomData[MapLoader.heckUnderscore + "lightID"].IsArray)
                     {
                         var editorID = labels.LightIDToEditor(oldType, e.LightId[0]);
-                        e.CustomData["_lightID"] = labels.EditorToLightID(e.Type, editorID);
+                        e.CustomData[MapLoader.heckUnderscore + "lightID"] = labels.EditorToLightID(e.Type, editorID);
                     }
                     else if (e.IsLightIdEvent)
                     {
-                        e.CustomData["_lightID"] = labels.PropIdToLightIdsJ(e.Type, e.PropId);
+                        e.CustomData[MapLoader.heckUnderscore + "lightID"] = labels.PropIdToLightIdsJ(e.Type, e.PropId);
                     }
 
-                    if (e.CustomData != null && e.CustomData.HasKey("_lightID") &&
-                        e.CustomData["_lightID"].IsArray &&
-                        e.CustomData["_lightID"].Count == 0)
+                    if (e.CustomData != null && e.CustomData.HasKey(MapLoader.heckUnderscore + "lightID") &&
+                        e.CustomData[MapLoader.heckUnderscore + "lightID"].IsArray &&
+                        e.CustomData[MapLoader.heckUnderscore + "lightID"].Count == 0)
                     {
-                        e.CustomData.Remove("_lightID");
+                        e.CustomData.Remove(MapLoader.heckUnderscore + "lightID");
                     }
                 }
 

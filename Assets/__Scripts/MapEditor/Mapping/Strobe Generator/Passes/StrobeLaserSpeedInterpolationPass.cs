@@ -93,15 +93,15 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
                 switch (type)
                 {
                     case MapEvent.EventTypeLeftLasersSpeed:
-                        data.CustomData["_direction"] = Convert.ToInt32(leftRotatesClockwise);
+                        data.CustomData[MapLoader.heckUnderscore + "direction"] = Convert.ToInt32(leftRotatesClockwise);
                         break;
                     case MapEvent.EventTypeRightLasersSpeed:
-                        data.CustomData["_direction"] = Convert.ToInt32(rightRotatesClockwise);
+                        data.CustomData[MapLoader.heckUnderscore + "direction"] = Convert.ToInt32(rightRotatesClockwise);
                         break;
                 }
             }
 
-            if (lockLaserRotation) data.CustomData["_lockPosition"] = true;
+            if (lockLaserRotation) data.CustomData[MapLoader.heckLockPosition] = true;
 
             generatedObjects.Add(data);
             distanceInBeats -= 1 / interval;
@@ -114,13 +114,13 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
     {
         if (@event.CustomData == null || @event.CustomData.Children.Count() == 0
                                        || (!@event.CustomData.HasKey("_preciseSpeed") &&
-                                           !@event.CustomData.HasKey("_speed")))
+                                           !@event.CustomData.HasKey(MapLoader.heckUnderscore + "speed")))
         {
             return @event.Value;
         }
 
         return @event.CustomData.HasKey("_preciseSpeed")
             ? @event.CustomData["_preciseSpeed"].AsFloat
-            : @event.CustomData["_speed"].AsFloat;
+            : @event.CustomData[MapLoader.heckUnderscore + "speed"].AsFloat;
     }
 }

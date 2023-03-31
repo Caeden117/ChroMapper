@@ -72,14 +72,14 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()[MapLoader.heckUnderscore + "color"] = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey(MapLoader.heckUnderscore + "color"))
             {
-                queuedData.CustomData.Remove("_color");
+                queuedData.CustomData.Remove(MapLoader.heckUnderscore + "color");
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
@@ -94,7 +94,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             {
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-                Vector2 position = queuedData.CustomData["_position"];
+                Vector2 position = queuedData.CustomData[MapLoader.heckPosition];
                 var localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
                 wallTransform.localPosition = localPosition;
 
@@ -105,7 +105,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
                 var scale = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
                 scale[0] = Math.Round(newLocalScale.x, 3);
                 scale[1] = Math.Round(newLocalScale.y, 3);
-                queuedData.CustomData["_scale"] = scale;
+                queuedData.CustomData[MapLoader.heckScale] = scale;
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);
@@ -143,7 +143,7 @@ public class ObstaclePlacement : PlacementController<BeatmapObstacle, BeatmapObs
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x, 3);
             position[1] = Math.Round(roundedHit.y, 3);
-            queuedData.CustomData["_position"] = position;
+            queuedData.CustomData[MapLoader.heckPosition] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);

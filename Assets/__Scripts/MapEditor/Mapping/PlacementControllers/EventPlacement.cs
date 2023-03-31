@@ -125,7 +125,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         {
             queuedData.Type =
                 labels.LaneIdToEventType(Mathf.FloorToInt(instantiatedContainer.transform.localPosition.x));
-            queuedData.CustomData?.Remove("_lightID");
+            queuedData.CustomData?.Remove(MapLoader.heckUnderscore + "lightID");
         }
         else
         {
@@ -137,18 +137,18 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
                 var lightIdToApply = objectContainerCollection.PropagationEditing == EventsContainer.PropMode.Prop
                     ? labels.PropIdToLightIdsJ(objectContainerCollection.EventTypeToPropagate, propID)
                     : (JSONNode)labels.EditorToLightID(objectContainerCollection.EventTypeToPropagate, propID);
-                queuedData.GetOrCreateCustomData().Add("_lightID", lightIdToApply);
+                queuedData.GetOrCreateCustomData().Add(MapLoader.heckUnderscore + "lightID", lightIdToApply);
             }
             else
             {
-                queuedData.GetOrCreateCustomData().Remove("_lightID");
+                queuedData.GetOrCreateCustomData().Remove(MapLoader.heckUnderscore + "lightID");
             }
         }
 
         if (CanPlaceChromaEvents && !queuedData.IsUtilityEvent && queuedData.Value != MapEvent.LightValueOff)
-            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()[MapLoader.heckUnderscore + "color"] = colorPicker.CurrentColor;
         else
-            queuedData.CustomData?.Remove("_color");
+            queuedData.CustomData?.Remove(MapLoader.heckUnderscore + "color");
 
         UpdateQueuedValue(queuedValue);
         UpdateAppearance();
@@ -271,7 +271,7 @@ public class EventPlacement : PlacementController<MapEvent, BeatmapEventContaine
         {
             if (queued.CustomData.HasKey("_propID")) dragged.CustomData["_propID"] = queued.CustomData["_propID"];
 
-            if (queued.CustomData.HasKey("_lightID")) dragged.CustomData["_lightID"] = queued.CustomData["_lightID"];
+            if (queued.CustomData.HasKey(MapLoader.heckUnderscore + "lightID")) dragged.CustomData[MapLoader.heckUnderscore + "lightID"] = queued.CustomData[MapLoader.heckUnderscore + "lightID"];
         }
     }
 

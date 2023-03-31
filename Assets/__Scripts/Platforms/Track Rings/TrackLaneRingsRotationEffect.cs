@@ -94,15 +94,15 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         if (customData != null)
         {
             // Chroma still applies multipliers to individual values so they should be set first
-            if (customData.HasKey("_step")) step = customData["_step"];
-            if (customData.HasKey("_prop")) propagationSpeed = customData["_prop"];
-            if (customData.HasKey("_speed")) flexySpeed = customData["_speed"];
-            if (customData.HasKey("_rotation")) rotationStepLocal = customData["_rotation"];
+            if (customData.HasKey(MapLoader.heckUnderscore + "step")) step = customData[MapLoader.heckUnderscore + "step"];
+            if (customData.HasKey(MapLoader.heckUnderscore + "prop")) propagationSpeed = customData[MapLoader.heckUnderscore + "prop"];
+            if (customData.HasKey(MapLoader.heckUnderscore + "speed")) flexySpeed = customData[MapLoader.heckUnderscore + "speed"];
+            if (customData.HasKey(MapLoader.heckRotation)) rotationStepLocal = customData[MapLoader.heckRotation];
 
             if (customData.HasKey("_stepMult")) step *= customData["_stepMult"];
             if (customData.HasKey("_propMult")) propagationSpeed *= customData["_propMult"];
             if (customData.HasKey("_speedMult")) flexySpeed *= customData["_speedMult"];
-            if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0;
+            if (customData.HasKey(MapLoader.heckUnderscore + "direction")) multiplier = customData[MapLoader.heckUnderscore + "direction"] == 0;
             counterSpinEvent = customData.HasKey("_counterSpin") && customData["_counterSpin"].AsBool;
         }
 

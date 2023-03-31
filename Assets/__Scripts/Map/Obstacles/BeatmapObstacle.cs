@@ -43,9 +43,9 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
     }
 
     public bool IsNoodleExtensionsWall => CustomData != null &&
-                                          (CustomData.HasKey("_position") || CustomData.HasKey("_scale")
-                                                                           || CustomData.HasKey("_localRotation") ||
-                                                                           CustomData.HasKey("_rotation"));
+                                          (CustomData.HasKey(MapLoader.heckPosition) || CustomData.HasKey(MapLoader.heckScale)
+                                                                           || CustomData.HasKey(MapLoader.heckUnderscore + "localRotation") ||
+                                                                           CustomData.HasKey(MapLoader.heckRotation));
 
     public override ObjectType BeatmapType { get; set; } = ObjectType.Obstacle;
 
@@ -143,16 +143,16 @@ public class BeatmapObstacle : BeatmapObject, IBeatmapObjectBounds
         //Hot damn.
         if (CustomData != null)
         {
-            if (CustomData.HasKey("_position"))
+            if (CustomData.HasKey(MapLoader.heckPosition))
             {
-                var wallPos = CustomData["_position"]?.ReadVector2() ?? Vector2.zero;
+                var wallPos = CustomData[MapLoader.heckPosition]?.ReadVector2() ?? Vector2.zero;
                 position = wallPos.x;
                 startHeight = wallPos.y;
             }
 
-            if (CustomData.HasKey("_scale"))
+            if (CustomData.HasKey(MapLoader.heckScale))
             {
-                var wallSize = CustomData["_scale"]?.ReadVector2() ?? Vector2.one;
+                var wallSize = CustomData[MapLoader.heckScale]?.ReadVector2() ?? Vector2.one;
                 width = wallSize.x;
                 height = wallSize.y;
             }

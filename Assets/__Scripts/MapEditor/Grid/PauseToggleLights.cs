@@ -126,12 +126,12 @@ public class PauseToggleLights : MonoBehaviour
             {
                 CustomData = new JSONObject()
             };
-            leftSpeedReset.CustomData["_lockPosition"] = true;
+            leftSpeedReset.CustomData[MapLoader.heckLockPosition] = true;
             var rightSpeedReset = new MapEvent(0, MapEvent.EventTypeRightLasersSpeed, 0)
             {
                 CustomData = new JSONObject()
             };
-            rightSpeedReset.CustomData["_lockPosition"] = true;
+            rightSpeedReset.CustomData[MapLoader.heckLockPosition] = true;
             descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
             descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
             descriptor.KillChromaLights();

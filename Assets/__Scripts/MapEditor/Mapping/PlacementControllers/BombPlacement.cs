@@ -45,14 +45,14 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
         if (CanPlaceChromaObjects && dropdown.Visible)
         {
             // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.GetOrCreateCustomData()["_color"] = colorPicker.CurrentColor;
+            queuedData.GetOrCreateCustomData()[MapLoader.heckUnderscore + "color"] = colorPicker.CurrentColor;
         }
         else
         {
             // If not remove _color
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_color"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey(MapLoader.heckUnderscore + "color"))
             {
-                queuedData.CustomData.Remove("_color");
+                queuedData.CustomData.Remove(MapLoader.heckUnderscore + "color");
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;
@@ -70,16 +70,16 @@ public class BombPlacement : PlacementController<BeatmapNote, BeatmapNoteContain
             var position = new JSONArray(); //We do some manual array stuff to get rounding decimals to work.
             position[0] = Math.Round(roundedHit.x - 0.5f, 3);
             position[1] = Math.Round(roundedHit.y - 0.5f, 3);
-            queuedData.CustomData["_position"] = position;
+            queuedData.CustomData[MapLoader.heckPosition] = position;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
         }
         else
         {
-            if (queuedData.CustomData != null && queuedData.CustomData.HasKey("_position"))
+            if (queuedData.CustomData != null && queuedData.CustomData.HasKey(MapLoader.heckPosition))
             {
-                queuedData.CustomData.Remove("_position"); //Remove NE position since we are no longer working with it.
+                queuedData.CustomData.Remove(MapLoader.heckPosition); //Remove NE position since we are no longer working with it.
 
                 if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
                     queuedData.CustomData = null;

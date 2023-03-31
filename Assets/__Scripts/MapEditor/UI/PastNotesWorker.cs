@@ -94,9 +94,9 @@ public class PastNotesWorker : MonoBehaviour
 
         float gridPosX = note.LineIndex, gridPosY = note.LineLayer;
 
-        if (note.CustomData?.HasKey("_position") ?? false)
+        if (note.CustomData?.HasKey(MapLoader.heckPosition) ?? false)
         {
-            Vector2 pos = note.CustomData["_position"];
+            Vector2 pos = note.CustomData[MapLoader.heckPosition];
             gridPosX = pos.x + 2f;
             gridPosY = pos.y;
         }

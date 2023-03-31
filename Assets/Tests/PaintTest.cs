@@ -101,7 +101,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(2, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData["_color"].ReadColor());
+            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData[MapLoader.heckUnderscore + "color"].ReadColor());
 
             // Undo move
             actionContainer.Undo();
@@ -109,7 +109,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData["_color"].ReadColor());
+            Assert.AreEqual(Color.red, eventsContainer.UnsortedObjects[0].CustomData[MapLoader.heckUnderscore + "color"].ReadColor());
 
             // Undo paint
             actionContainer.Undo();
@@ -117,7 +117,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey("_color"));
+            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey(MapLoader.heckUnderscore + "color"));
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace Tests
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
             Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].Time);
             Assert.AreEqual(1, ((MapEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey("_color"));
+            Assert.AreEqual(true, eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData.HasKey(MapLoader.heckUnderscore + "color"));
         }
     }
 }

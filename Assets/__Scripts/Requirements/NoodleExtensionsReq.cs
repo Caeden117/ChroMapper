@@ -15,12 +15,12 @@ public class NoodleExtensionsReq : RequirementCheck
         if (mapInfo is null) return RequirementType.None;
 
         // idk why the customdata checks should be necessary, but they are.
-        return map.Obstacles.Any(ob => ob.CustomData?["_position"] != null || ob.CustomData?["_scale"] != null ||
-                                        ob.CustomData?["_rotation"] != null ||
-                                        ob.CustomData?["_localRotation"] != null ||
+        return map.Obstacles.Any(ob => ob.CustomData?[MapLoader.heckPosition] != null || ob.CustomData?[MapLoader.heckScale] != null ||
+                                        ob.CustomData?[MapLoader.heckRotation] != null ||
+                                        ob.CustomData?[MapLoader.heckUnderscore + "localRotation"] != null ||
                                         ob.CustomData?["_animation"] != null) ||
-               map.Notes.Any(ob => ob.CustomData?["_position"] != null || ob.CustomData?["_cutDirection"] != null ||
-                                    ob.CustomData?["_fake"] != null || ob.CustomData?["_interactable"] != null ||
+               map.Notes.Any(ob => ob.CustomData?[MapLoader.heckPosition] != null || ob.CustomData?["_cutDirection"] != null ||
+                                    ob.CustomData?["_fake"] != null || ob.CustomData?[MapLoader.heckInteractable] != null ||
                                     ob.CustomData?["_animation"] != null) ||
                map.CustomEvents.Any(ob => customEventsToModRequirements.Contains(ob.Type))
             ? RequirementType.Requirement

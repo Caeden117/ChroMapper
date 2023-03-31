@@ -53,16 +53,16 @@ namespace Tests
 
                 MapEvent eventA = new MapEvent(2, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_color"] = new Color(0, 1, 0)
+                    [MapLoader.heckUnderscore + "color"] = new Color(0, 1, 0)
                 });
                 MapEvent eventB = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_color"] = new Color(0, 0, 1)
+                    [MapLoader.heckUnderscore + "color"] = new Color(0, 0, 1)
                 });
                 MapEvent eventC = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_lightID"] = 1,
-                    ["_color"] = new Color(1, 0, 0)
+                    [MapLoader.heckUnderscore + "lightID"] = 1,
+                    [MapLoader.heckUnderscore + "color"] = new Color(1, 0, 0)
                 });
 
                 foreach (MapEvent mapEvent in new MapEvent[] { eventA, eventB, eventC })
@@ -85,7 +85,7 @@ namespace Tests
 
                 CheckEvent(eventsContainer, 1, 2.5f, MapEvent.EventTypeRingLights, MapEvent.LightValueBlueON, new JSONObject
                 {
-                    ["_color"] = new Color(0, 0.5f, 0.5f)
+                    [MapLoader.heckUnderscore + "color"] = new Color(0, 0.5f, 0.5f)
                 });
             }
         }
@@ -101,35 +101,35 @@ namespace Tests
 
                 MapEvent eventA = new MapEvent(2, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_color"] = new Color(0, 1, 0)
+                    [MapLoader.heckUnderscore + "color"] = new Color(0, 1, 0)
                 });
                 MapEvent eventB = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_color"] = new Color(0, 0, 1)
+                    [MapLoader.heckUnderscore + "color"] = new Color(0, 0, 1)
                 });
                 MapEvent eventC = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_lightID"] = 1,
-                    ["_color"] = new Color(1, 0, 0)
+                    [MapLoader.heckUnderscore + "lightID"] = 1,
+                    [MapLoader.heckUnderscore + "color"] = new Color(1, 0, 0)
                 });
                 MapEvent eventD = new MapEvent(2, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_lightID"] = 1,
-                    ["_color"] = new Color(1, 1, 0)
+                    [MapLoader.heckUnderscore + "lightID"] = 1,
+                    [MapLoader.heckUnderscore + "color"] = new Color(1, 1, 0)
                 });
                 MapEvent eventE = new MapEvent(4, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_lightID"] = new JSONArray()
+                    [MapLoader.heckUnderscore + "lightID"] = new JSONArray()
                     {
                         [0] = 1,
                         [1] = 2
                     },
-                    ["_color"] = new Color(1, 0, 1)
+                    [MapLoader.heckUnderscore + "color"] = new Color(1, 0, 1)
                 });
                 MapEvent eventF = new MapEvent(3, MapEvent.EventTypeRingLights, MapEvent.LightValueRedON, new JSONObject
                 {
-                    ["_lightID"] = 3,
-                    ["_color"] = new Color(0, 1, 1)
+                    [MapLoader.heckUnderscore + "lightID"] = 3,
+                    [MapLoader.heckUnderscore + "color"] = new Color(0, 1, 1)
                 });
 
                 foreach (MapEvent mapEvent in new MapEvent[] { eventA, eventB, eventC, eventD, eventE, eventF })
@@ -154,13 +154,13 @@ namespace Tests
                 // If this changes in future then update below, this test wasn't really meant to enforce this behaviour
                 CheckEvent(eventsContainer, 2, 2.5f, MapEvent.EventTypeRingLights, MapEvent.LightValueBlueON, new JSONObject
                 {
-                    ["_color"] = new Color(1, 0.5f, 0),
-                    ["_lightID"] = 1
+                    [MapLoader.heckUnderscore + "color"] = new Color(1, 0.5f, 0),
+                    [MapLoader.heckUnderscore + "lightID"] = 1
                 });
                 CheckEvent(eventsContainer, 6, 3.5f, MapEvent.EventTypeRingLights, MapEvent.LightValueBlueON, new JSONObject
                 {
-                    ["_color"] = new Color(1, 0, 0.5f),
-                    ["_lightID"] = 1
+                    [MapLoader.heckUnderscore + "color"] = new Color(1, 0, 0.5f),
+                    [MapLoader.heckUnderscore + "lightID"] = 1
                 });
             }
         }

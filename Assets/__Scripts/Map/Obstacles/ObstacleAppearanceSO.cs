@@ -20,13 +20,13 @@ public class ObstacleAppearanceSO : ScriptableObject
         {
             if (obj.ObstacleData.CustomData != null)
             {
-                var wallSize = obj.ObstacleData.CustomData["_scale"]?.ReadVector2() ?? Vector2.one;
+                var wallSize = obj.ObstacleData.CustomData[MapLoader.heckScale]?.ReadVector2() ?? Vector2.one;
                 if (wallSize.x < 0 || (wallSize.y < 0 && Settings.Instance.ColorFakeWalls))
                     obj.SetColor(negativeWidthColor);
                 else
                     obj.SetColor(DefaultObstacleColor);
-                if (obj.ObstacleData.CustomData.HasKey("_color"))
-                    obj.SetColor(obj.ObstacleData.CustomData["_color"].ReadColor(DefaultObstacleColor));
+                if (obj.ObstacleData.CustomData.HasKey(MapLoader.heckUnderscore + "color"))
+                    obj.SetColor(obj.ObstacleData.CustomData[MapLoader.heckUnderscore + "color"].ReadColor(DefaultObstacleColor));
             }
             else if (obj.ObstacleData.Width < 0 && Settings.Instance.ColorFakeWalls)
             {

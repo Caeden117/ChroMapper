@@ -37,7 +37,7 @@ public class PaintSelectedObjects : MonoBehaviour
             }
         }
 
-        obj.GetOrCreateCustomData()["_color"] = picker.CurrentColor;
+        obj.GetOrCreateCustomData()[MapLoader.heckUnderscore + "color"] = picker.CurrentColor;
 
         return true;
     }

@@ -133,7 +133,7 @@ public class EventsContainer : BeatmapObjectContainerCollection, CMInput.IEventG
 
     public static string GetKeyForProp(PropMode mode)
     {
-        if (mode == PropMode.Light) return "_lightID";
+        if (mode == PropMode.Light) return MapLoader.heckUnderscore + "lightID";
 
         return mode == PropMode.Prop ? "_propID" : null;
     }

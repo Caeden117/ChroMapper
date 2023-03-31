@@ -79,7 +79,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
             if (propMode != EventsContainer.PropMode.Off)
             {
                 data.CustomData = new JSONObject();
-                data.CustomData.Add("_lightID", propID);
+                data.CustomData.Add(MapLoader.heckUnderscore + "lightID", propID);
             }
 
             generatedObjects.Add(data);
