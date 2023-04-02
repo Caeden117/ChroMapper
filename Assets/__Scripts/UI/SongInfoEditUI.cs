@@ -111,13 +111,20 @@ public class SongInfoEditUI : MenuBase
     public static int GetDirectionalEnvironmentIDFromString(string platforms) =>
         vanillaDirectionalEnvironments.IndexOf(platforms);
 
-    public static int GetEnvironmentIDFromString(string environment)
-    {
-        var result = VanillaEnvironments.TakeWhile(i => i.JsonName != environment).Count();
-        return result == VanillaEnvironments.Count ? 0 : result;
-    }
+    public static int GetEnvironmentIDFromString(string environment) =>
+        VanillaEnvironments.TakeWhile(i => i.JsonName != environment).Count();
 
-    public static string GetEnvironmentNameFromID(int id) => VanillaEnvironments[id].JsonName;
+    public static bool TryGetEnvironmentNameFromID(int id, out string environmentName)
+    {
+        if (id >= VanillaEnvironments.Count)
+        {
+            environmentName = null;
+            return false;
+        }
+
+        environmentName = VanillaEnvironments[id].JsonName;
+        return true;
+    }
 
     /// <summary>
     ///     Default object to select when pressing Tab and nothing is selected
@@ -161,7 +168,10 @@ public class SongInfoEditUI : MenuBase
             offset.interactable = false;
         }
 
-        Song.EnvironmentName = GetEnvironmentNameFromID(environmentDropdown.value);
+        if (TryGetEnvironmentNameFromID(environmentDropdown.value, out var environmentName))
+        {
+            Song.EnvironmentName = environmentName;
+        }
 
         if (Song.CustomData == null) Song.CustomData = new JSONObject();
 
@@ -230,6 +240,13 @@ public class SongInfoEditUI : MenuBase
 
         environmentDropdown.ClearOptions();
         environmentDropdown.AddOptions(VanillaEnvironments.Select(it => it.HumanName).ToList());
+
+        // Handle unsupported environment
+        if (!VanillaEnvironments.Any(env => env.JsonName == Song.EnvironmentName))
+        {
+            environmentDropdown.AddOptions(new List<string> { Song.EnvironmentName });
+        }
+
         environmentDropdown.value = GetEnvironmentIDFromString(Song.EnvironmentName);
 
         customPlatformsDropdown.ClearOptions();
