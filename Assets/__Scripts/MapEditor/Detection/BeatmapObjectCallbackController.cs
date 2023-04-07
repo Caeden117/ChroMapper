@@ -217,7 +217,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckChains(bool init, bool natural)
     {
-        var passed = nextChains.Where(x => x.Time <= curTime + Offset).ToArray();
+        var passed = nextChains.Where(x => (x as BaseChain).TailTime <= curTime + Offset).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) ChainPassedThreshold?.Invoke(init, nextChainIndex, newlyAdded);
@@ -237,7 +237,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void ChainGridContainerObjectSpawnedEvent(BaseObject obj) => OnObjSpawn(obj, nextChains);
 
-    private void ChainGridContainerObjectDeletedEvent(BaseObject obj) => OnObjDeleted(obj);
+    private void ChainGridContainerObjectDeletedEvent(BaseObject obj) => OnChainObjDeleted(obj);
 
     private void OnObjSpawn(BaseObject obj, HashSet<BaseObject> nextObjects)
     {
@@ -254,6 +254,16 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         if (!timeSyncController.IsPlaying) return;
 
         if (obj.Time >= timeSyncController.CurrentBeat)
+        {
+            queuedToClear.Add(obj);
+        }
+    }
+
+    private void OnChainObjDeleted(BaseObject obj)
+    {
+        if (!timeSyncController.IsPlaying) return;
+
+        if ((obj as BaseChain).TailTime >= timeSyncController.CurrentBeat)
         {
             queuedToClear.Add(obj);
         }
@@ -277,7 +287,6 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         {
             chainGridContainer.ObjectSpawnedEvent -= ChainGridContainerObjectSpawnedEvent;
             chainGridContainer.ObjectDeletedEvent -= ChainGridContainerObjectDeletedEvent;
-
         }
     }
 }
