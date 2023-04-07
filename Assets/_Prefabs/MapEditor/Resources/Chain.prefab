@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 1805417307156071255}
   - component: {fileID: 3052979190135208326}
   m_Layer: 9
-  m_Name: NoteDot
+  m_Name: ChainDot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,7 +193,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 04a40c8dead8c7f4dbbe1447395ffb71, type: 2}
+  - {fileID: 2100000, guid: 52469e8b45830464d9c8ea73404f756c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

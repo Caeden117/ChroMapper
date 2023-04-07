@@ -85,8 +85,7 @@ namespace Beatmap.Containers
             {
                 var newNode = Instantiate(tailNode, transform);
                 newNode.SetActive(true);
-                newNode.GetComponent<MeshRenderer>().material
-                    .CopyPropertiesFromMaterial(tailNode.GetComponent<MeshRenderer>().material);
+                newNode.GetComponent<MeshRenderer>().sharedMaterial = tailNode.GetComponent<MeshRenderer>().sharedMaterial;
                 Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, tailNode, newNode);
                 nodes.Add(newNode);
                 Colliders.Add(nodes[i].GetComponent<IntersectionCollider>());
@@ -162,13 +161,16 @@ namespace Beatmap.Containers
             foreach (var c in Colliders)
             {
                 var r = c.GetComponent<MeshRenderer>();
+                MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.Time + c.transform.localPosition.z / EditorScaleController.EditorScale);
+                // This alpha set is a workaround as callbackController can only despawn the entire chain
+                if (UIMode.SelectedMode == UIModeType.Preview || UIMode.SelectedMode == UIModeType.Playing)
+                    MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 0f);
+                else
+                    MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
                 r.SetPropertyBlock(MaterialPropertyBlock);
             }
 
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
-
-            // TODO Apply different _ObjectTime to chain links
-            if (ChainData != null) MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.Time);
         }
 
         public void DetectHeadNote(bool detect = true)
