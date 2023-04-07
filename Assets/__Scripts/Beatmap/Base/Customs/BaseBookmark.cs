@@ -15,7 +15,7 @@ namespace Beatmap.Base.Customs
 
         protected BaseBookmark(BaseBookmark other)
         {
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             Name = other.Name;
             Color = other.Color;
         }
@@ -40,11 +40,11 @@ namespace Beatmap.Base.Customs
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => true;
 
         public override JSONNode ToJson() =>
-            new JSONObject { [KeyTime] = Time, [KeyName] = Name, [KeyColor] = Color };
+            new JSONObject { [KeyTime] = JsonTime, [KeyName] = Name, [KeyColor] = Color };
 
         private void InstantiateHelper(ref JSONNode node)
         {
-            Time = node.HasKey(KeyTime) ? node[KeyTime].AsFloat : 0f;
+            JsonTime = node.HasKey(KeyTime) ? node[KeyTime].AsFloat : 0f;
             Name = node.HasKey(KeyName) ? node[KeyName].Value : "Missing Name";
             Color = node.HasKey(KeyColor)
                 ? node[KeyColor].ReadColor()

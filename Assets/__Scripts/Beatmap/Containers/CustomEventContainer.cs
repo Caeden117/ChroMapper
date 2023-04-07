@@ -28,7 +28,7 @@ namespace Beatmap.Containers
         {
             transform.localPosition = new Vector3(
                 collection.CustomEventTypes.IndexOf(CustomEventData.Type), 0.5f,
-                CustomEventData.Time * EditorScaleController.EditorScale);
+                CustomEventData.JsonTime * EditorScaleController.EditorScale);
             UpdateCollisionGroups();
         }
     }

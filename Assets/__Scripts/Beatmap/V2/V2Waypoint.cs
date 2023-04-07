@@ -20,7 +20,7 @@ namespace Beatmap.V2
 
         public V2Waypoint(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "_time").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "_time").AsFloat;
             PosX = RetrieveRequiredNode(node, "_lineIndex").AsInt;
             PosY = RetrieveRequiredNode(node, "_lineLayer").AsInt;
             OffsetDirection = RetrieveRequiredNode(node, "_offsetDirection").AsInt;
@@ -45,7 +45,7 @@ namespace Beatmap.V2
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["_time"] = Math.Round(Time, DecimalPrecision);
+            node["_time"] = Math.Round(JsonTime, DecimalPrecision);
             node["_lineIndex"] = PosX;
             node["_lineLayer"] = PosY;
             node["_offsetDirection"] = OffsetDirection;
@@ -55,6 +55,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Waypoint(Time, PosX, PosY, OffsetDirection, SaveCustom().Clone());
+        public override BaseItem Clone() => new V2Waypoint(JsonTime, PosX, PosY, OffsetDirection, SaveCustom().Clone());
     }
 }

@@ -95,7 +95,7 @@ namespace Beatmap.Containers
                 transform.localPosition = new Vector3(
                     -0.5f,
                     0.5f,
-                    EventData.Time * EditorScaleController.EditorScale
+                    EventData.JsonTime * EditorScaleController.EditorScale
                 );
                 SafeSetActive(false);
             }
@@ -104,7 +104,7 @@ namespace Beatmap.Containers
                 transform.localPosition = new Vector3(
                     gridPos.Value.x,
                     gridPos.Value.y,
-                    EventData.Time * EditorScaleController.EditorScale
+                    EventData.JsonTime * EditorScaleController.EditorScale
                 );
             }
 
@@ -202,7 +202,7 @@ namespace Beatmap.Containers
                     return;
                 }
 
-                var transition = new ChromaLightGradient(startColor.Value, endColor.Value, EventData.Next.Time - EventData.Time, easing);
+                var transition = new ChromaLightGradient(startColor.Value, endColor.Value, EventData.Next.JsonTime - EventData.JsonTime, easing);
                 lightGradientController.SetVisible(true);
                 lightGradientController.UpdateGradientData(transition);
                 lightGradientController.UpdateDuration(transition.Duration);

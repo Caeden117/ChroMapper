@@ -27,7 +27,7 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = new Vector3(0.5f, 0.5f, BpmData.Time * EditorScaleController.EditorScale);
+            transform.localPosition = new Vector3(0.5f, 0.5f, BpmData.JsonTime * EditorScaleController.EditorScale);
             bpmText.text = BpmData.Bpm.ToString(CultureInfo.InvariantCulture);
             UpdateCollisionGroups();
         }

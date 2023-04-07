@@ -18,7 +18,7 @@ namespace Beatmap.Containers
             set => ObstacleData = (BaseObstacle)value;
         }
 
-        public int ChunkEnd => (int)((ObstacleData.Time + ObstacleData.Duration) / Intersections.ChunkSize);
+        public int ChunkEnd => (int)((ObstacleData.JsonTime + ObstacleData.Duration) / Intersections.ChunkSize);
 
         public bool IsRotatedByNoodleExtensions => ObstacleData.CustomWorldRotation != null;
 
@@ -85,7 +85,7 @@ namespace Beatmap.Containers
             transform.localPosition = new Vector3(
                 bounds.Position + (bounds.Width < 0 ? bounds.Width : 0),
                 bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0),
-                (ObstacleData.Time * EditorScaleController.EditorScale) + (duration < 0 ? duration : 0)
+                (ObstacleData.JsonTime * EditorScaleController.EditorScale) + (duration < 0 ? duration : 0)
             );
 
             SetScale(new Vector3(

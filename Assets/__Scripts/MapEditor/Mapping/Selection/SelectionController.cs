@@ -184,7 +184,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (collection == null) continue;
 
             foreach (var toCheck in collection.LoadedObjects.Where(x =>
-                x.Time > start - epsilon && x.Time < end + epsilon))
+                x.JsonTime > start - epsilon && x.JsonTime < end + epsilon))
             {
                 if (!hasEvent && toCheck is BaseEvent mapEvent &&
                     !mapEvent
@@ -240,10 +240,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         if (!addsToSelection)
             DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
-        if (first.Time > second.Time)
+        if (first.JsonTime > second.JsonTime)
             (first, second) = (second, first);
         GetObjectTypes(new[] { first, second }, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
-        ForEachObjectBetweenTimeByGroup(first.Time, second.Time, hasNoteOrObstacle, hasEvent, hasBpmChange,
+        ForEachObjectBetweenTimeByGroup(first.JsonTime, second.JsonTime, hasNoteOrObstacle, hasEvent, hasBpmChange,
             (collection, beatmapObject) =>
             {
                 if (SelectedObjects.Contains(beatmapObject)) return;
@@ -321,7 +321,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         if (!HasSelectedObjects()) return;
         CopiedObjects.Clear();
-        var firstTime = SelectedObjects.OrderBy(x => x.Time).First().Time;
+        var firstTime = SelectedObjects.OrderBy(x => x.JsonTime).First().JsonTime;
         foreach (var data in SelectedObjects)
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType);
@@ -332,11 +332,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (copy.ObjectType == ObjectType.Obstacle)
             {
                 var obstacle = (BaseObstacle)copy;
-                obstacle.Duration = bpmChangesContainer.SongBeatsToLocalBeats(obstacle.Duration, obstacle.Time);
+                obstacle.Duration = bpmChangesContainer.SongBeatsToLocalBeats(obstacle.Duration, obstacle.JsonTime);
                 copy = obstacle;
             }
 
-            copy.Time -= firstTime;
+            copy.JsonTime -= firstTime;
             if (copy is BaseSlider slider)
             {
                 slider.TailTime = bpmChangesContainer.SongBeatsToLocalBeats(slider.TailTime - firstTime, firstTime);
@@ -345,7 +345,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             // always use song beats for bpm changes
             if (copy.ObjectType != ObjectType.BpmChange)
             {
-                copy.Time = bpmChangesContainer.SongBeatsToLocalBeats(copy.Time, firstTime);
+                copy.JsonTime = bpmChangesContainer.SongBeatsToLocalBeats(copy.JsonTime, firstTime);
             }
 
             CopiedObjects.Add(copy);
@@ -374,15 +374,15 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             // always use song beats for bpm changes
             if (data.ObjectType == ObjectType.BpmChange)
             {
-                newTime += data.Time;
+                newTime += data.JsonTime;
             }
             else
             {
-                newTime += bpmChangesContainer.LocalBeatsToSongBeats(data.Time, atsc.CurrentBeat);
+                newTime += bpmChangesContainer.LocalBeatsToSongBeats(data.JsonTime, atsc.CurrentBeat);
             }
 
             var newData = BeatmapFactory.Clone(data);
-            newData.Time = newTime;
+            newData.JsonTime = newTime;
             if (newData is BaseSlider slider)
                 slider.TailTime = atsc.CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats((data as BaseSlider).TailTime, atsc.CurrentBeat);
 
@@ -390,7 +390,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (newData.ObjectType == ObjectType.Obstacle)
             {
                 var obstacle = (BaseObstacle)newData;
-                obstacle.Duration = bpmChangesContainer.LocalBeatsToSongBeats(obstacle.Duration, obstacle.Time);
+                obstacle.Duration = bpmChangesContainer.LocalBeatsToSongBeats(obstacle.Duration, obstacle.JsonTime);
                 newData = obstacle;
             }
 
@@ -415,14 +415,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         // While we're at it, we will also overwrite the entire section if we have to.
         if (overwriteSection)
         {
-            var start = pasted.First().Time;
-            var end = pasted.First().Time;
+            var start = pasted.First().JsonTime;
+            var end = pasted.First().JsonTime;
             foreach (var beatmapObject in pasted)
             {
-                if (start > beatmapObject.Time)
-                    start = beatmapObject.Time;
-                if (end < beatmapObject.Time)
-                    end = beatmapObject.Time;
+                if (start > beatmapObject.JsonTime)
+                    start = beatmapObject.JsonTime;
+                if (end < beatmapObject.JsonTime)
+                    end = beatmapObject.JsonTime;
             }
 
             GetObjectTypes(pasted, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
@@ -480,9 +480,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var original = BeatmapFactory.Clone(data);
 
             collection.LoadedObjects.Remove(data);
-            data.Time += bpmChangesContainer.LocalBeatsToSongBeats(beats, data.Time);
+            data.JsonTime += bpmChangesContainer.LocalBeatsToSongBeats(beats, data.JsonTime);
             if (snapObjects)
-                data.Time = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
+                data.JsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
             if (data is BaseSlider slider)
             {
                 slider.TailTime += beats;

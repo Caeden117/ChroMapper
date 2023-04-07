@@ -18,7 +18,7 @@ namespace Beatmap.V3
 
         public V3LightColorEventBoxGroup(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             ID = RetrieveRequiredNode(node, "g").AsInt;
             Events = new List<BaseLightColorEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq
                 .Select(x => new V3LightColorEventBox(x)).ToList());
@@ -43,7 +43,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["g"] = ID;
             var ary = new JSONArray();
             foreach (var k in Events) ary.Add(k.ToJson());
@@ -55,6 +55,6 @@ namespace Beatmap.V3
         }
 
         // TODO: proper event box group cloning
-        public override BaseItem Clone() => new V3LightColorEventBoxGroup(Time, ID, Events);
+        public override BaseItem Clone() => new V3LightColorEventBoxGroup(JsonTime, ID, Events);
     }
 }

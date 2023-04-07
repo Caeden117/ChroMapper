@@ -16,7 +16,7 @@ public class BookmarkDeletePacketHandler : IPacketHandler
 
         if (deletionObject is BaseBookmark deletionBookmark)
         {
-            bookmarkManager.DeleteBookmarkAtTime(deletionBookmark.Time, false);
+            bookmarkManager.DeleteBookmarkAtTime(deletionBookmark.JsonTime, false);
         }
     }
 }

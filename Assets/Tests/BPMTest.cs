@@ -38,7 +38,7 @@ namespace Tests
             Assert.IsInstanceOf<BaseBpmEvent>(newObjA);
             if (newObjA is BaseBpmEvent newNoteA)
             {
-                Assert.AreEqual(time, newNoteA.Time, $"{msg}: Mismatched time");
+                Assert.AreEqual(time, newNoteA.JsonTime, $"{msg}: Mismatched time");
                 Assert.AreEqual(bpm, newNoteA.Bpm, $"{msg}: Mismatched BPM");
             }
         }

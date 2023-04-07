@@ -75,7 +75,7 @@ public class MeasureLinesController : MonoBehaviour
 
             modifiedBeats++;
             var last = allBpmChanges.Last(x => x.Beat <= modifiedBeats);
-            jsonBeat = ((modifiedBeats - last.Beat) / last.Bpm * songBpm) + last.Time;
+            jsonBeat = ((modifiedBeats - last.Beat) / last.Bpm * songBpm) + last.JsonTime;
         }
 
         // Set proper spacing between Notes grid, Measure lines, and Events grid

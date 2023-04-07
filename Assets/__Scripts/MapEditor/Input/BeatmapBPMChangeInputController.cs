@@ -47,7 +47,7 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                 var lastBpmChange = bpmChanges.FindLastBpm(atsc.CurrentBeat);
                 if (lastBpmChange == containerToEdit.BpmData)
                 {
-                    var newTime = lastBpmChange.Time + ((atsc.CurrentBeat - lastBpmChange.Time) *
+                    var newTime = lastBpmChange.JsonTime + ((atsc.CurrentBeat - lastBpmChange.JsonTime) *
                         (lastBpmChange.Bpm - modifier) / lastBpmChange.Bpm);
                     atsc.MoveToTimeInBeats(newTime);
                 }

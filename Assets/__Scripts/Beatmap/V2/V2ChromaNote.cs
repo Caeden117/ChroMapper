@@ -23,7 +23,7 @@ namespace Beatmap.V2
             CutDirection = baseNote.CutDirection;
             PosX = baseNote.PosX;
             PosY = baseNote.PosY;
-            Time = baseNote.Time;
+            JsonTime = baseNote.JsonTime;
             Type = baseNote.Type;
 
             //Set custom JSON data here.
@@ -36,7 +36,7 @@ namespace Beatmap.V2
         }
 
         public V2Note ConvertToNote() =>
-            new V2Note(Time, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
+            new V2Note(JsonTime, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
 
         /*public new JSONNode ConvertToJSON() //Uncomment this when Custom JSON Data is ready.
         {

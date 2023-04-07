@@ -33,7 +33,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
 
         if (Settings.Instance.BookmarkTooltipTimeInfo)
         {
-            var beat = Data.Time;
+            var beat = Data.JsonTime;
             var span = TimeSpan.FromSeconds(manager.Atsc.GetSecondsFromBeat(beat));
             name += $" [{Math.Round(beat, 2)} | {span:mm':'ss}]";
         }
@@ -53,7 +53,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
     {
         var unitsPerBeat = width / manager.Atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length);
         var rectTransform = (RectTransform)transform;
-        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * Data.Time, 50);
+        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * Data.JsonTime, 50);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -83,7 +83,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             manager.Tipc.PointerDown();
-            manager.Atsc.MoveToTimeInBeats(Data.Time);
+            manager.Atsc.MoveToTimeInBeats(Data.JsonTime);
         }
     }
 

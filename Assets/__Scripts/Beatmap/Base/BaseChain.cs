@@ -23,7 +23,7 @@ namespace Beatmap.Base
 
         protected BaseChain(BaseChain other)
         {
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             Color = other.Color;
             PosX = other.PosX;
             PosY = other.PosY;
@@ -38,12 +38,12 @@ namespace Beatmap.Base
 
         protected BaseChain(BaseNote start, BaseNote end)
         {
-            Time = start.Time;
+            JsonTime = start.JsonTime;
             Color = start.Color;
             PosX = start.PosX;
             PosY = start.PosY;
             CutDirection = start.CutDirection;
-            TailTime = end.Time;
+            TailTime = end.JsonTime;
             TailPosX = end.PosX;
             TailPosY = end.PosY;
             SliceCount = 5;

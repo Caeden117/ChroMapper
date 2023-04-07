@@ -14,7 +14,7 @@ using UnityEngine.Serialization;
 public class ArcGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject arcPrefab;
-    [FormerlySerializedAs("arcAppearanceSO")] [SerializeField] private ArcAppearanceSO arcAppearanceSO;
+    [FormerlySerializedAs("arcAppearanceSO")][SerializeField] private ArcAppearanceSO arcAppearanceSO;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
     private bool isPlaying;
@@ -27,7 +27,7 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
     {
         return ArcContainer.SpawnArc(null, ref arcPrefab);
     }
-    internal override void SubscribeToCallbacks() 
+    internal override void SubscribeToCallbacks()
     {
         if (!Settings.Instance.Load_MapV3) return;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
@@ -82,7 +82,7 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
         arcAppearanceSO.SetArcAppearance(arc);
         arc.Setup();
         arc.SetIndicatorBlocksActive(false);
-        var track = tracksManager.GetTrackAtTime(arcData.Time);
+        var track = tracksManager.GetTrackAtTime(arcData.JsonTime);
         track.AttachContainer(con);
     }
 

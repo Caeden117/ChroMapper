@@ -12,7 +12,7 @@ namespace Beatmap.Base
 
         protected BaseArc(BaseArc other)
         {
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             Color = other.Color;
             PosX = other.PosX;
             PosY = other.PosY;
@@ -29,13 +29,13 @@ namespace Beatmap.Base
 
         protected BaseArc(BaseNote start, BaseNote end)
         {
-            Time = start.Time;
+            JsonTime = start.JsonTime;
             Color = start.Color;
             PosX = start.PosX;
             PosY = start.PosY;
             CutDirection = start.CutDirection;
             HeadControlPointLengthMultiplier = 1f;
-            TailTime = end.Time;
+            TailTime = end.JsonTime;
             TailPosX = end.PosX;
             TailPosY = end.PosY;
             TailCutDirection = end.CutDirection;

@@ -26,7 +26,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             var snapping = 1f / atsc.GridMeasureSnapping;
             snapping *= context.ReadValue<float>() > 0 ? 1 : -1;
 
-            var wallEndTime = obs.ObstacleData.Time + obs.ObstacleData.Duration;
+            var wallEndTime = obs.ObstacleData.JsonTime + obs.ObstacleData.Duration;
             var durationTweak = bpmChangeGridContainer.LocalBeatsToSongBeats(snapping, wallEndTime);
 
             // Commented this out as part of merge
@@ -100,7 +100,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
     public void ToggleHyperWall(ObstacleContainer obs)
     {
         var wall = BeatmapFactory.Clone(obs.ObjectData) as BaseObstacle;
-        wall.Time += obs.ObstacleData.Duration;
+        wall.JsonTime += obs.ObstacleData.Duration;
         wall.Duration *= -1f;
 
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(wall, obs.ObjectData, obs.ObjectData),

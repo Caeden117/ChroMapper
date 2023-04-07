@@ -87,7 +87,7 @@ public class BookmarkRenderingController : MonoBehaviour
     private void OnEditorScaleChange(float newScale)
     {
         foreach (CachedBookmark bookmarkDisplay in renderedBookmarks)
-            SetBookmarkPos(bookmarkDisplay.Text.rectTransform, bookmarkDisplay.MapBookmark.Time);
+            SetBookmarkPos(bookmarkDisplay.Text.rectTransform, bookmarkDisplay.MapBookmark.JsonTime);
     }
 
     private void SetBookmarkPos(RectTransform rect, float time)
@@ -101,7 +101,7 @@ public class BookmarkRenderingController : MonoBehaviour
         GameObject obj = new GameObject("GridBookmark", typeof(TextMeshProUGUI));
         RectTransform rect = (RectTransform)obj.transform;
         rect.SetParent(gridBookmarksParent);
-        SetBookmarkPos(rect, bookmark.Time);
+        SetBookmarkPos(rect, bookmark.JsonTime);
         rect.sizeDelta = Vector2.one;
         rect.localRotation = Quaternion.identity;
 
@@ -156,7 +156,7 @@ public class BookmarkRenderingController : MonoBehaviour
     {
         foreach (var bookmarkDisplay in renderedBookmarks)
         {
-            var time = bookmarkDisplay.MapBookmark.Time;
+            var time = bookmarkDisplay.MapBookmark.JsonTime;
             var text = bookmarkDisplay.Text;
             var enabled = time >= currentBeat - beatsBehind && time <= currentBeat + beatsAhead;
             text.gameObject.SetActive(enabled);

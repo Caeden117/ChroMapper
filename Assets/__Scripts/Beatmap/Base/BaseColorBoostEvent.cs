@@ -10,7 +10,7 @@ namespace Beatmap.Base
 
         protected BaseColorBoostEvent(BaseColorBoostEvent other)
         {
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             Type = 5;
             Toggle = other.Toggle;
             Value = Toggle ? 1 : 0;
@@ -19,7 +19,7 @@ namespace Beatmap.Base
 
         protected BaseColorBoostEvent(BaseEvent evt)
         {
-            Time = evt.Time;
+            JsonTime = evt.JsonTime;
             Type = 5;
             Toggle = evt.Value == 1;
             Value = Toggle ? 1 : 0;
@@ -30,7 +30,7 @@ namespace Beatmap.Base
             toggle ? 1 : 0, 1, customData) => Toggle = toggle;
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
-        
+
         public bool Toggle
         {
             get => toggle;

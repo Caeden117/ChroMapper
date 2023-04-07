@@ -21,7 +21,7 @@ namespace Beatmap.V3
 
         public V3ColorNote(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             PosX = RetrieveRequiredNode(node, "x").AsInt;
             PosY = RetrieveRequiredNode(node, "y").AsInt;
             AngleOffset = RetrieveRequiredNode(node, "a").AsInt;
@@ -93,7 +93,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["x"] = PosX;
             node["y"] = PosY;
             node["a"] = AngleOffset;
@@ -106,6 +106,6 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3ColorNote(Time, PosX, PosY, Color, CutDirection, AngleOffset, SaveCustom().Clone());
+            new V3ColorNote(JsonTime, PosX, PosY, Color, CutDirection, AngleOffset, SaveCustom().Clone());
     }
 }

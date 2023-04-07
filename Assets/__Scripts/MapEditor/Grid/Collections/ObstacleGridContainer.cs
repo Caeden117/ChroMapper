@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 public class ObstacleGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject obstaclePrefab;
-    [FormerlySerializedAs("obstacleAppearanceSO")] [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
+    [FormerlySerializedAs("obstacleAppearanceSO")][SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
 
@@ -41,7 +41,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         var obstacle = con as ObstacleContainer;
         if (!obstacle.IsRotatedByNoodleExtensions)
         {
-            var track = tracksManager.GetTrackAtTime(obj.Time);
+            var track = tracksManager.GetTrackAtTime(obj.JsonTime);
             track.AttachContainer(con);
         }
 

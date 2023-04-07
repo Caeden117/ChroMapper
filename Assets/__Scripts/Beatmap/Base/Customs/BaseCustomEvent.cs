@@ -12,7 +12,7 @@ namespace Beatmap.Base.Customs
 
         protected BaseCustomEvent(BaseCustomEvent other)
         {
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             Type = other.Type;
             Data = other.Data.Clone();
         }
@@ -36,11 +36,11 @@ namespace Beatmap.Base.Customs
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
         public override JSONNode ToJson() =>
-            new JSONObject { [KeyTime] = Time, [KeyType] = Type, [KeyData] = Data };
+            new JSONObject { [KeyTime] = JsonTime, [KeyType] = Type, [KeyData] = Data };
 
         private void InstantiateHelper(ref JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, KeyTime).AsFloat;
+            JsonTime = RetrieveRequiredNode(node, KeyTime).AsFloat;
             Type = RetrieveRequiredNode(node, KeyType).Value;
             Data = RetrieveRequiredNode(node, KeyData);
         }

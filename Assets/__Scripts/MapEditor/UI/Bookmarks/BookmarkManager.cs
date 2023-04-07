@@ -75,7 +75,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             container.Init(this, bookmark);
             container.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
             return container;
-        }).OrderBy(it => it.Data.Time).ToList();
+        }).OrderBy(it => it.Data.JsonTime).ToList();
 
         Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineWidth), UpdateBookmarkWidth);
         Settings.NotifyBySettingName(nameof(Settings.BookmarkTooltipTimeInfo), UpdateBookmarkTooltip);
@@ -158,7 +158,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         container.Init(this, bookmark);
         container.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
 
-        bookmarkContainers = bookmarkContainers.Append(container).OrderBy(it => it.Data.Time).ToList();
+        bookmarkContainers = bookmarkContainers.Append(container).OrderBy(it => it.Data.JsonTime).ToList();
         BeatSaberSongContainer.Instance.Map.Bookmarks = bookmarkContainers.Select(x => x.Data).ToList();
         BookmarksUpdated.Invoke();
 
@@ -176,7 +176,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     internal void DeleteBookmarkAtTime(float time, bool triggerEvent = true)
     {
-        var container = bookmarkContainers.Find(it => Mathf.Abs(it.Data.Time - time) < 0.01f);
+        var container = bookmarkContainers.Find(it => Mathf.Abs(it.Data.JsonTime - time) < 0.01f);
 
         if (container != null)
         {
@@ -186,22 +186,22 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     internal void OnNextBookmark()
     {
-        var bookmark = bookmarkContainers.Find(x => x.Data.Time > Atsc.CurrentBeat);
+        var bookmark = bookmarkContainers.Find(x => x.Data.JsonTime > Atsc.CurrentBeat);
         if (bookmark != null)
         {
             Tipc.PointerDown(); // slightly weird but it works
-            Atsc.MoveToTimeInBeats(bookmark.Data.Time);
+            Atsc.MoveToTimeInBeats(bookmark.Data.JsonTime);
             Tipc.PointerUp();
         }
     }
 
     internal void OnPreviousBookmark()
     {
-        var bookmark = bookmarkContainers.LastOrDefault(x => x.Data.Time < Atsc.CurrentBeat);
+        var bookmark = bookmarkContainers.LastOrDefault(x => x.Data.JsonTime < Atsc.CurrentBeat);
         if (bookmark != null)
         {
             Tipc.PointerDown();
-            Atsc.MoveToTimeInBeats(bookmark.Data.Time);
+            Atsc.MoveToTimeInBeats(bookmark.Data.JsonTime);
             Tipc.PointerUp();
         }
     }

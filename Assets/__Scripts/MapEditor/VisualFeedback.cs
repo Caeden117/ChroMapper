@@ -41,7 +41,7 @@ public class VisualFeedback : MonoBehaviour
 
     private void HandleCallback(bool initial, int index, BaseObject objectData)
     {
-        if (objectData.Time == lastTime ||
+        if (objectData.JsonTime == lastTime ||
             !DingOnNotePassingGrid.NoteTypeToDing[(objectData as BaseNote).Type])
         {
             return;
@@ -65,7 +65,7 @@ public class VisualFeedback : MonoBehaviour
                 default: return;
             }
 
-            color = lastTime == objectData.Time ? Color.Lerp(color, c, 0.5f) : c;
+            color = lastTime == objectData.JsonTime ? Color.Lerp(color, c, 0.5f) : c;
         }
 
         if (t <= 0)
@@ -78,7 +78,7 @@ public class VisualFeedback : MonoBehaviour
             t = 1;
         }
 
-        lastTime = objectData.Time;
+        lastTime = objectData.JsonTime;
     }
 
     private IEnumerator VisualFeedbackAnim()

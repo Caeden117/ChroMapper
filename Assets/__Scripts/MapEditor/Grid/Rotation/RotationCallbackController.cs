@@ -9,7 +9,7 @@ public class RotationCallbackController : MonoBehaviour
 {
     [SerializeField] private BeatmapObjectCallbackController interfaceCallback;
     [FormerlySerializedAs("atsc")] public AudioTimeSyncController Atsc;
-    [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
+    [FormerlySerializedAs("events")][SerializeField] private EventGridContainer eventGrid;
     private readonly string[] enabledCharacteristics = { "360Degree", "90Degree", "Lawless" };
 
     public Action<bool, float> RotationChangedEvent; //Natural, degrees
@@ -63,7 +63,7 @@ public class RotationCallbackController : MonoBehaviour
         if (!IsActive) return;
         var time = Atsc.CurrentBeat;
         var rotations = eventGrid.AllRotationEvents.Where(x =>
-            x.Time < time || (x.Time == time && x.Type == (int)EventTypeValue.EarlyLaneRotation));
+            x.JsonTime < time || (x.JsonTime == time && x.Type == (int)EventTypeValue.EarlyLaneRotation));
         Rotation = 0;
         if (rotations.Count() > 0)
         {

@@ -192,39 +192,39 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         //for (int i = 0; i < LoadedObjects.Count; i++)
         {
             if (forceRefresh) RecycleContainer(obj);
-            if (obj.Time >= lowerBound && obj.Time <= upperBound)
+            if (obj.JsonTime >= lowerBound && obj.JsonTime <= upperBound)
             {
                 if (!obj.HasAttachedContainer) CreateContainerFromPool(obj);
             }
             else if (obj.HasAttachedContainer)
             {
-                if (obj is BaseObstacle obs && obs.Time < lowerBound &&
-                    obs.Time + obs.Duration >= lowerBound)
+                if (obj is BaseObstacle obs && obs.JsonTime < lowerBound &&
+                    obs.JsonTime + obs.Duration >= lowerBound)
                 {
                     continue;
                 }
-                else if (Settings.Instance.Load_MapV3 )
+                else if (Settings.Instance.Load_MapV3)
                 {
                     if (obj is BaseArc &&
-                        (obj as BaseArc).Time < lowerBound && (obj as BaseArc).TailTime >= lowerBound)
+                        (obj as BaseArc).JsonTime < lowerBound && (obj as BaseArc).TailTime >= lowerBound)
                         continue;
                     if (obj is BaseChain &&
-                        (obj as BaseChain).Time < lowerBound && (obj as BaseChain).TailTime >= lowerBound)
+                        (obj as BaseChain).JsonTime < lowerBound && (obj as BaseChain).TailTime >= lowerBound)
                         continue;
                 }
 
                 RecycleContainer(obj);
             }
 
-            if (obj is BaseObstacle obst && obst.Time < lowerBound && obst.Time + obst.Duration >= lowerBound)
+            if (obj is BaseObstacle obst && obst.JsonTime < lowerBound && obst.JsonTime + obst.Duration >= lowerBound)
                 CreateContainerFromPool(obj);
             if (Settings.Instance.Load_MapV3)
             {
                 if (obj is BaseArc &&
-                           (obj as BaseArc).Time < lowerBound && (obj as BaseArc).TailTime >= lowerBound)
+                           (obj as BaseArc).JsonTime < lowerBound && (obj as BaseArc).TailTime >= lowerBound)
                     CreateContainerFromPool(obj);
                 if (obj is BaseChain &&
-                    (obj as BaseChain).Time < lowerBound && (obj as BaseChain).TailTime >= lowerBound)
+                    (obj as BaseChain).JsonTime < lowerBound && (obj as BaseChain).TailTime >= lowerBound)
                     CreateContainerFromPool(obj);
             }
         }
@@ -302,9 +302,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         var newSet = new HashSet<BaseObject>(newObjects);
         foreach (var newObject in newObjects)
         {
-            Debug.Log($"Performing conflicting check at {newObject.Time}");
+            Debug.Log($"Performing conflicting check at {newObject.JsonTime}");
 
-            var localWindow = GetBetween(newObject.Time - 0.1f, newObject.Time + 0.1f);
+            var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
             var conflicts = localWindow.Where(x => x.IsConflictingWith(newObject) && !newSet.Contains(x)).ToList();
             foreach (var beatmapObject in conflicts) conflictingInternal.Add(beatmapObject);
         }

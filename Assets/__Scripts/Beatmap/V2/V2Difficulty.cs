@@ -340,7 +340,7 @@ namespace Beatmap.V2
             if (mainNode.HasKey("_bookmarks")) mainNode.Remove("_bookmarks");
             if (mainNode.HasKey("_customEvents")) mainNode.Remove("_customEvents");
 
-            map.BpmChanges = bpmList.DistinctBy(x => x.Time).ToList();
+            map.BpmChanges = bpmList.DistinctBy(x => x.JsonTime).ToList();
             map.Bookmarks = bookmarksList;
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
             map.PointDefinitions = pointDefinitions;

@@ -25,7 +25,7 @@ namespace Beatmap.V3
 
         public V3ColorBoostEvent(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             Type = 5;
             Toggle = RetrieveRequiredNode(node, "o").AsBool;
             Value = Toggle ? 1 : 0;
@@ -83,7 +83,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["o"] = Toggle;
             CustomData = SaveCustom();
             if (!CustomData.Children.Any()) return node;
@@ -91,6 +91,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3ColorBoostEvent(Time, Toggle, SaveCustom().Clone());
+        public override BaseItem Clone() => new V3ColorBoostEvent(JsonTime, Toggle, SaveCustom().Clone());
     }
 }

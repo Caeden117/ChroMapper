@@ -31,7 +31,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        if (originalObject != editedObject || editedData.Time.CompareTo(originalData.Time) != 0)
+        if (originalObject != editedObject || editedData.JsonTime.CompareTo(originalData.JsonTime) != 0)
         {
             DeleteObject(editedObject, false);
             SelectionController.Deselect(editedObject, false);
@@ -54,7 +54,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        if (originalObject != editedObject || editedData.Time.CompareTo(originalData.Time) != 0)
+        if (originalObject != editedObject || editedData.JsonTime.CompareTo(originalData.JsonTime) != 0)
         {
             DeleteObject(originalObject, false);
             SelectionController.Deselect(originalObject, false);

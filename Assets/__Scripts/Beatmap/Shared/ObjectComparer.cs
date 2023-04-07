@@ -6,6 +6,6 @@ namespace Beatmap.Shared
     public class ObjectComparer : IComparer<BaseObject>
     {
         public int Compare(BaseObject x, BaseObject y) =>
-            x.Time == y.Time ? x.GetHashCode().CompareTo(y.GetHashCode()) : x.Time.CompareTo(y.Time);
+            x.JsonTime == y.JsonTime ? x.GetHashCode().CompareTo(y.GetHashCode()) : x.JsonTime.CompareTo(y.JsonTime);
     }
 }

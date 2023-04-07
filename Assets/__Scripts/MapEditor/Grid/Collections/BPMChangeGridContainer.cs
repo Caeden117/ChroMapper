@@ -120,12 +120,12 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
 
             if (lastChange == null)
             {
-                bpmChange.Beat = Mathf.CeilToInt(bpmChange.Time);
+                bpmChange.Beat = Mathf.CeilToInt(bpmChange.JsonTime);
             }
             else
             {
                 var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-                var passedBeats = (bpmChange.Time - lastChange.Time - 0.01f) / songBpm * lastChange.Bpm;
+                var passedBeats = (bpmChange.JsonTime - lastChange.JsonTime - 0.01f) / songBpm * lastChange.Bpm;
                 bpmChange.Beat = lastChange.Beat + Mathf.CeilToInt(passedBeats);
             }
 
@@ -152,7 +152,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         if (lastBpmChange != null)
         {
             bpmChangeCount = 2;
-            bpmShaderTimes[1] = lastBpmChange.Time;
+            bpmShaderTimes[1] = lastBpmChange.JsonTime;
             bpmShaderBpMs[1] = lastBpmChange.Bpm;
         }
 
@@ -160,7 +160,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         if (LoadedContainers.Count > 0)
         {
             // Ensure ordered by time (im not changing the entire collection to SortedSet just for this stfu)
-            var activeBpmChanges = LoadedContainers.OrderBy(x => x.Key.Time);
+            var activeBpmChanges = LoadedContainers.OrderBy(x => x.Key.JsonTime);
 
             // Iterate over and copy time/bpm values to arrays, and increase count
             foreach (var bpmChangeKvp in activeBpmChanges)
@@ -173,7 +173,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
                 }
 
                 var bpmChange = bpmChangeKvp.Key as BaseBpmEvent;
-                bpmShaderTimes[bpmChangeCount] = bpmChange.Time;
+                bpmShaderTimes[bpmChangeCount] = bpmChange.JsonTime;
                 bpmShaderBpMs[bpmChangeCount] = bpmChange.Bpm;
                 bpmChangeCount++;
             }
@@ -201,12 +201,12 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
                    snap; //If its null, return rounded song bpm
         }
 
-        var difference = beatTimeInSongBpm - lastBpm.Time;
+        var difference = beatTimeInSongBpm - lastBpm.JsonTime;
         var differenceInBpmBeat = difference / BeatSaberSongContainer.Instance.Song.BeatsPerMinute * lastBpm.Bpm;
         var roundedDifference = (float)Math.Round(differenceInBpmBeat / snap, MidpointRounding.AwayFromZero) * snap;
         var roundedDifferenceInSongBpm =
             roundedDifference / lastBpm.Bpm * BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-        return roundedDifferenceInSongBpm + lastBpm.Time;
+        return roundedDifferenceInSongBpm + lastBpm.JsonTime;
     }
 
     /// <summary>
@@ -218,8 +218,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     public BaseBpmEvent FindLastBpm(float beatTimeInSongBpm, bool inclusive = true)
     {
         if (inclusive)
-            return LoadedObjects.LastOrDefault(x => x.Time <= beatTimeInSongBpm + 0.01f) as BaseBpmEvent;
-        return LoadedObjects.LastOrDefault(x => x.Time + 0.01f < beatTimeInSongBpm) as BaseBpmEvent;
+            return LoadedObjects.LastOrDefault(x => x.JsonTime <= beatTimeInSongBpm + 0.01f) as BaseBpmEvent;
+        return LoadedObjects.LastOrDefault(x => x.JsonTime + 0.01f < beatTimeInSongBpm) as BaseBpmEvent;
     }
 
     /// <summary>
@@ -231,8 +231,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     public BaseBpmEvent FindNextBpm(float beatTimeInSongBpm, bool inclusive = false)
     {
         if (inclusive)
-            return LoadedObjects.FirstOrDefault(x => x.Time >= beatTimeInSongBpm - 0.01f) as BaseBpmEvent;
-        return LoadedObjects.FirstOrDefault(x => x.Time - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
+            return LoadedObjects.FirstOrDefault(x => x.JsonTime >= beatTimeInSongBpm - 0.01f) as BaseBpmEvent;
+        return LoadedObjects.FirstOrDefault(x => x.JsonTime - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
     }
 
     /// <summary>
@@ -261,11 +261,11 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
                     break;
                 }
 
-                var distance = Math.Min(localBeatsLeft * songBpm / currentBpm, nextBpmChange.Time - currentBeat);
+                var distance = Math.Min(localBeatsLeft * songBpm / currentBpm, nextBpmChange.JsonTime - currentBeat);
                 totalSongBeats += distance;
                 localBeatsLeft -= distance * currentBpm / songBpm;
 
-                currentBeat = nextBpmChange.Time;
+                currentBeat = nextBpmChange.JsonTime;
                 currentBpm = nextBpmChange.Bpm;
                 nextBpmChange = FindNextBpm(currentBeat);
             }
@@ -283,11 +283,11 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
 
                 currentBpm = lastBpmChange.Bpm;
 
-                var distance = Math.Max(localBeatsLeft * songBpm / currentBpm, lastBpmChange.Time - currentBeat);
+                var distance = Math.Max(localBeatsLeft * songBpm / currentBpm, lastBpmChange.JsonTime - currentBeat);
                 totalSongBeats += distance;
                 localBeatsLeft -= distance * currentBpm / songBpm;
 
-                currentBeat = lastBpmChange.Time;
+                currentBeat = lastBpmChange.JsonTime;
                 lastBpmChange = FindLastBpm(currentBeat, false);
             }
         }
@@ -321,11 +321,11 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
                     break;
                 }
 
-                var distance = Math.Min(songBeatsLeft, nextBpmChange.Time - currentBeat);
+                var distance = Math.Min(songBeatsLeft, nextBpmChange.JsonTime - currentBeat);
                 totalLocalBeats += distance * currentBpm / songBpm;
                 songBeatsLeft -= distance;
 
-                currentBeat = nextBpmChange.Time;
+                currentBeat = nextBpmChange.JsonTime;
                 currentBpm = nextBpmChange.Bpm;
                 nextBpmChange = FindNextBpm(currentBeat);
             }
@@ -343,11 +343,11 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
 
                 currentBpm = lastBpmChange.Bpm;
 
-                var distance = Math.Max(songBeatsLeft, lastBpmChange.Time - currentBeat);
+                var distance = Math.Max(songBeatsLeft, lastBpmChange.JsonTime - currentBeat);
                 totalLocalBeats += distance * currentBpm / songBpm;
                 songBeatsLeft -= distance;
 
-                currentBeat = lastBpmChange.Time;
+                currentBeat = lastBpmChange.JsonTime;
                 lastBpmChange = FindLastBpm(currentBeat, false);
             }
         }

@@ -17,7 +17,7 @@ namespace Beatmap.V2
 
         public V2Obstacle(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "_time").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "_time").AsFloat;
             PosX = RetrieveRequiredNode(node, "_lineIndex").AsInt;
             InternalType = RetrieveRequiredNode(node, "_type").AsInt;
             Duration = RetrieveRequiredNode(node, "_duration").AsFloat;
@@ -42,7 +42,7 @@ namespace Beatmap.V2
                     Type = 0;
                     return;
                 }
-                
+
                 InternalPosY = value;
                 InternalHeight = InternalPosY switch
                 {
@@ -57,14 +57,14 @@ namespace Beatmap.V2
         public override int Height
         {
             get => InternalHeight;
-            set 
+            set
             {
                 if (value != (int)ObstacleHeight.Full && value != (int)ObstacleHeight.Crouch)
                 {
                     Type = 0;
                     return;
                 }
-                
+
                 InternalHeight = value;
                 InternalPosY = InternalHeight switch
                 {
@@ -118,7 +118,7 @@ namespace Beatmap.V2
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["_time"] = Math.Round(Time, DecimalPrecision);
+            node["_time"] = Math.Round(JsonTime, DecimalPrecision);
             node["_lineIndex"] = PosX;
             node["_type"] = Type;
             node["_duration"] = Math.Round(Duration, DecimalPrecision);
@@ -129,6 +129,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Obstacle(Time, PosX, Type, Duration, Width, SaveCustom().Clone());
+        public override BaseItem Clone() => new V2Obstacle(JsonTime, PosX, Type, Duration, Width, SaveCustom().Clone());
     }
 }

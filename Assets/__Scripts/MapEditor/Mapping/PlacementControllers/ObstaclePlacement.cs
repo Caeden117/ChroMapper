@@ -197,7 +197,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         if (IsPlacing)
         {
             IsPlacing = false;
-            queuedData.Time = startTime;
+            queuedData.JsonTime = startTime;
             queuedData.Duration = instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale;
             if (queuedData.Duration < SmallestRankableWallDuration &&
                 Settings.Instance.DontPlacePerfectZeroDurationWalls)
@@ -223,7 +223,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
     public override void TransferQueuedToDraggedObject(ref BaseObstacle dragged, BaseObstacle queued)
     {
-        dragged.Time = queued.Time;
+        dragged.JsonTime = queued.JsonTime;
         dragged.PosX = queued.PosX;
         dragged.CustomCoordinate = queued.CustomCoordinate;
     }

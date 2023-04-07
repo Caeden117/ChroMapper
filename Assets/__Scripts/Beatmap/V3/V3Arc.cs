@@ -18,7 +18,7 @@ namespace Beatmap.V3
 
         public V3Arc(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             Color = RetrieveRequiredNode(node, "c").AsInt;
             PosX = RetrieveRequiredNode(node, "x").AsInt;
             PosY = RetrieveRequiredNode(node, "y").AsInt;
@@ -93,7 +93,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["c"] = Color;
             node["x"] = PosX;
             node["y"] = PosY;
@@ -112,7 +112,7 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Arc(Time, PosX, PosY, Color, CutDirection, AngleOffset,
+            new V3Arc(JsonTime, PosX, PosY, Color, CutDirection, AngleOffset,
                 HeadControlPointLengthMultiplier, TailTime, TailPosX, TailPosY, TailCutDirection,
                 TailControlPointLengthMultiplier,
                 MidAnchorMode, SaveCustom().Clone());

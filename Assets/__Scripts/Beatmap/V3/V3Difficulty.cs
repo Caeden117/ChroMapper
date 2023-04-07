@@ -334,7 +334,7 @@ namespace Beatmap.V3
             map.Events.AddRange(map.ColorBoostEvents);
             map.Events.AddRange(map.RotationEvents);
             // map.Events.AddRange(map.BpmEvents); // we probably do not need to load this here
-            map.Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
+            map.Events.Sort((lhs, rhs) => lhs.JsonTime.CompareTo(rhs.JsonTime));
         }
 
         private static void LoadCustom(V3Difficulty map, JSONNode mainNode)
@@ -425,7 +425,7 @@ namespace Beatmap.V3
                 }
             }
 
-            map.BpmChanges = bpmList.DistinctBy(x => x.Time).ToList();
+            map.BpmChanges = bpmList.DistinctBy(x => x.JsonTime).ToList();
             map.Bookmarks = bookmarksList;
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
             map.PointDefinitions = pointDefinitions;

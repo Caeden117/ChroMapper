@@ -19,7 +19,7 @@ namespace Beatmap.V3
 
         public V3BasicEvent(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             Type = RetrieveRequiredNode(node, "et").AsInt;
             Value = RetrieveRequiredNode(node, "i").AsInt;
             FloatValue = RetrieveRequiredNode(node, "f").AsFloat;
@@ -109,7 +109,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Time;
+            node["b"] = JsonTime;
             node["et"] = Type;
             node["i"] = Value;
             node["f"] = FloatValue;
@@ -119,6 +119,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BasicEvent(Time, Type, Value, FloatValue, SaveCustom().Clone());
+        public override BaseItem Clone() => new V3BasicEvent(JsonTime, Type, Value, FloatValue, SaveCustom().Clone());
     }
 }

@@ -16,7 +16,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         if (context.performed || context.canceled) return;
 
         var notes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
-        notes.Sort((a, b) => a.Time.CompareTo(b.Time));
+        notes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
         if (!Settings.Instance.Load_MapV3 && notes.Count > 1)
         {
@@ -66,7 +66,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
 
     public BaseArc CreateArcData(BaseNote head, BaseNote tail)
     {
-        if (head.Time > tail.Time)
+        if (head.JsonTime > tail.JsonTime)
         {
             (head, tail) = (tail, head);
         }

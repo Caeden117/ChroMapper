@@ -16,7 +16,7 @@ namespace Beatmap.Base
 
         protected BaseNote(BaseNote other)
         {
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             PosX = other.PosX;
             PosY = other.PosY;
             Color = other.Color;
@@ -28,7 +28,7 @@ namespace Beatmap.Base
 
         protected BaseNote(BaseBombNote baseBomb)
         {
-            Time = baseBomb.Time;
+            JsonTime = baseBomb.JsonTime;
             PosX = baseBomb.PosX;
             PosY = baseBomb.PosY;
             Color = (int)NoteType.Bomb;
@@ -40,7 +40,7 @@ namespace Beatmap.Base
 
         protected BaseNote(BaseSlider slider)
         {
-            Time = slider.Time;
+            JsonTime = slider.JsonTime;
             PosX = slider.PosX;
             PosY = slider.PosY;
             Color = slider.Color;

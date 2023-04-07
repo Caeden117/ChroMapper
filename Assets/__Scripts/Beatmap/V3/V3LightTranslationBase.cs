@@ -17,7 +17,7 @@ namespace Beatmap.V3
 
         public V3LightTranslationBase(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             UsePrevious = RetrieveRequiredNode(node, "p").AsInt;
             EaseType = RetrieveRequiredNode(node, "e").AsInt;
             Translation = RetrieveRequiredNode(node, "t").AsFloat;
@@ -41,7 +41,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["p"] = UsePrevious;
             node["e"] = EaseType;
             node["t"] = Translation;
@@ -51,7 +51,7 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3LightTranslationBase(Time, Translation, EaseType,
+        public override BaseItem Clone() => new V3LightTranslationBase(JsonTime, Translation, EaseType,
             UsePrevious, SaveCustom().Clone());
     }
 }

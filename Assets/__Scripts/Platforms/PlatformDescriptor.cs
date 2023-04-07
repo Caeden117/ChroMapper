@@ -160,7 +160,7 @@ public class PlatformDescriptor : MonoBehaviour
         var e = obj as BaseEvent;
 
         // Two events at the same time should yield same results
-        Random.InitState(Mathf.RoundToInt(obj.Time * 100));
+        Random.InitState(Mathf.RoundToInt(obj.JsonTime * 100));
 
         // FUN PART BOIS
         switch (e.Type)
@@ -272,7 +272,7 @@ public class PlatformDescriptor : MonoBehaviour
         if (chromaGradients.ContainsKey(group))
         {
             var gradientEvent = chromaGradients[group].GradientEvent;
-            if (atsc.CurrentBeat >= gradientEvent.CustomLightGradient.Duration + gradientEvent.Time ||
+            if (atsc.CurrentBeat >= gradientEvent.CustomLightGradient.Duration + gradientEvent.JsonTime ||
                 !Settings.Instance.EmulateChromaLite)
             {
                 StopCoroutine(chromaGradients[group].Routine);
@@ -457,7 +457,7 @@ public class PlatformDescriptor : MonoBehaviour
             {
                 targetAlpha *= nextChromaColor.Value.a;
             }
-            var transitionTime = atsc.GetSecondsFromBeat(transition.Time - e.Time);
+            var transitionTime = atsc.GetSecondsFromBeat(transition.JsonTime - e.JsonTime);
 
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);
@@ -471,7 +471,7 @@ public class PlatformDescriptor : MonoBehaviour
         var easingFunc = Easing.ByName[gradient.EasingType];
 
         float progress;
-        while ((progress = (atsc.CurrentBeat - gradientEvent.Time) / gradient.Duration) < 1)
+        while ((progress = (atsc.CurrentBeat - gradientEvent.JsonTime) / gradient.Duration) < 1)
         {
             var lerped = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             if (!SoloAnEventType || gradientEvent.Type == SoloEventType)

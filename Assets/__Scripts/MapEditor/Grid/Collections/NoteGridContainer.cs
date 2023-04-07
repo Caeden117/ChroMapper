@@ -12,7 +12,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
 {
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;
-    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [FormerlySerializedAs("noteAppearanceSO")][SerializeField] private NoteAppearanceSO noteAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
 
     [SerializeField] private CountersPlusController countersPlus;
@@ -49,7 +49,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
     public override IEnumerable<BaseObject> GrabSortedObjects()
     {
         var sorted = new List<BaseObject>();
-        var grouping = LoadedObjects.GroupBy(x => x.Time);
+        var grouping = LoadedObjects.GroupBy(x => x.JsonTime);
         foreach (var group in grouping)
         {
             sorted.AddRange(@group.OrderBy(x => ((BaseNote)x).PosX) //0 -> 3
@@ -98,7 +98,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         note.SetBomb(noteData.Type == (int)NoteType.Bomb);
         note.transform.localEulerAngles = NoteContainer.Directionalize(noteData);
 
-        var track = tracksManager.GetTrackAtTime(obj.Time);
+        var track = tracksManager.GetTrackAtTime(obj.JsonTime);
         track.AttachContainer(con);
     }
 
@@ -126,7 +126,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         objectsAtSameTime.Clear();
         foreach (var x in LoadedContainers)
         {
-            if (!(x.Key.Time - Epsilon <= obj.Time && x.Key.Time + Epsilon >= obj.Time &&
+            if (!(x.Key.JsonTime - Epsilon <= obj.JsonTime && x.Key.JsonTime + Epsilon >= obj.JsonTime &&
                   (x.Key as BaseNote).Type == (obj as BaseNote).Type))
             {
                 continue;
@@ -174,7 +174,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
             }
             else
             {
-                var originalA = (a is V3ColorNote newA) ? NoteContainer.Directionalize(a) + new Vector3(0,0,-newA.AngleOffset) : NoteContainer.Directionalize(a);
+                var originalA = (a is V3ColorNote newA) ? NoteContainer.Directionalize(a) + new Vector3(0, 0, -newA.AngleOffset) : NoteContainer.Directionalize(a);
                 var originalB = (b is V3ColorNote newB) ? NoteContainer.Directionalize(b) + new Vector3(0, 0, -newB.AngleOffset) : NoteContainer.Directionalize(b);
                 // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
                 if (Mathf.Abs(angle) <= 40)

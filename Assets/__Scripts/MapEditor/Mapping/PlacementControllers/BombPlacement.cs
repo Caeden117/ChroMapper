@@ -85,7 +85,7 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
     {
-        dragged.Time = queued.Time;
+        dragged.JsonTime = queued.JsonTime;
         dragged.PosX = queued.PosX;
         dragged.PosY = queued.PosY;
         dragged.CustomCoordinate = queued.CustomCoordinate;

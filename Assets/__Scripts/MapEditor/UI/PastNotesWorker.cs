@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class PastNotesWorker : MonoBehaviour
 {
     [SerializeField] private AudioTimeSyncController atsc;
-    [FormerlySerializedAs("notesContainer")] [SerializeField] private NoteGridContainer noteGridContainer;
+    [FormerlySerializedAs("notesContainer")][SerializeField] private NoteGridContainer noteGridContainer;
     [SerializeField] private GameObject gridNotePrefab;
     [SerializeField] private BeatmapObjectCallbackController callbackController;
     [SerializeField] private NoteAppearanceSO noteAppearance;
@@ -66,14 +66,14 @@ public class PastNotesWorker : MonoBehaviour
 
         foreach (var note in noteGridContainer.LoadedObjects)
         {
-            if (time < note.Time && note.Time < atsc.CurrentBeat)
+            if (time < note.JsonTime && note.JsonTime < atsc.CurrentBeat)
             {
-                time = note.Time;
+                time = note.JsonTime;
                 lastGroup.Clear();
                 if (((BaseNote)note).Type != (int)NoteType.Bomb)
                     lastGroup.Add(note);
             }
-            else if (time == note.Time && (note as BaseNote).Type != (int)NoteType.Bomb)
+            else if (time == note.JsonTime && (note as BaseNote).Type != (int)NoteType.Bomb)
             {
                 lastGroup.Add(note);
             }
@@ -89,7 +89,7 @@ public class PastNotesWorker : MonoBehaviour
         if (!instantiatedNotes.ContainsKey(note.Type))
             instantiatedNotes.Add(note.Type, new Dictionary<GameObject, Image>());
 
-        if (lastByType.TryGetValue(note.Type, out var lastInTime) && lastInTime.Time != obj.Time)
+        if (lastByType.TryGetValue(note.Type, out var lastInTime) && lastInTime.JsonTime != obj.JsonTime)
         {
             foreach (var child in instantiatedNotes[note.Type])
                 child.Key.SetActive(false);
