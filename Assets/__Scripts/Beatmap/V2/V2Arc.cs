@@ -22,7 +22,7 @@ namespace Beatmap.V2
             PosY = RetrieveRequiredNode(node, "_headLineLayer").AsInt;
             CutDirection = RetrieveRequiredNode(node, "_headCutDirection").AsInt;
             HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "_headControlPointLengthMultiplier").AsFloat;
-            TailTime = RetrieveRequiredNode(node, "_tailTime").AsFloat;
+            TailJsonTime = RetrieveRequiredNode(node, "_tailTime").AsFloat;
             TailPosX = RetrieveRequiredNode(node, "_tailLineIndex").AsInt;
             TailPosY = RetrieveRequiredNode(node, "_tailLineLayer").AsInt;
             TailCutDirection = RetrieveRequiredNode(node, "_tailCutDirection").AsInt;
@@ -63,7 +63,7 @@ namespace Beatmap.V2
             node["_headLineLayer"] = PosY;
             node["_headCutDirection"] = CutDirection;
             node["_headControlPointLengthMultiplier"] = HeadControlPointLengthMultiplier;
-            node["_tailTime"] = TailTime;
+            node["_tailTime"] = TailJsonTime;
             node["_tailLineIndex"] = TailPosX;
             node["_tailLineLayer"] = TailPosY;
             node["_tailCutDirection"] = TailCutDirection;
@@ -77,7 +77,7 @@ namespace Beatmap.V2
 
         public override BaseItem Clone() =>
             new V2Arc(JsonTime, PosX, PosY, Color, CutDirection, AngleOffset,
-                HeadControlPointLengthMultiplier, TailTime, TailPosX, TailPosY, TailCutDirection,
+                HeadControlPointLengthMultiplier, TailJsonTime, TailPosX, TailPosY, TailCutDirection,
                 TailControlPointLengthMultiplier,
                 MidAnchorMode, SaveCustom().Clone());
     }

@@ -217,7 +217,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckChains(bool init, bool natural)
     {
-        var passed = nextChains.Where(x => (x as BaseChain).TailTime <= curTime + Offset).ToArray();
+        var passed = nextChains.Where(x => (x as BaseChain).TailJsonTime <= curTime + Offset).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) ChainPassedThreshold?.Invoke(init, nextChainIndex, newlyAdded);
@@ -263,7 +263,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (!timeSyncController.IsPlaying) return;
 
-        if ((obj as BaseChain).TailTime >= timeSyncController.CurrentBeat)
+        if ((obj as BaseChain).TailJsonTime >= timeSyncController.CurrentBeat)
         {
             queuedToClear.Add(obj);
         }

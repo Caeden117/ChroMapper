@@ -58,7 +58,7 @@ namespace Beatmap.Containers
             var headTrans = chainHead;
             var headRot = Quaternion.Euler(NoteContainer.Directionalize(ChainData.CutDirection));
             tailNode.transform.localPosition = (Vector3)chainTail + new Vector3(0, 0,
-                (ChainData.TailTime - ChainData.JsonTime) * EditorScaleController.EditorScale);
+                (ChainData.TailJsonTime - ChainData.JsonTime) * EditorScaleController.EditorScale);
 
             var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ChainData.CutDirection).z;
             headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);

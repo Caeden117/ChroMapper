@@ -16,7 +16,7 @@ namespace Beatmap.Base
             Color = color;
             CutDirection = cutDirection;
             AngleOffset = angleOffset;
-            TailTime = tailTime;
+            TailJsonTime = tailTime;
             TailPosX = tailPosX;
             TailPosY = tailPosY;
         }
@@ -24,7 +24,7 @@ namespace Beatmap.Base
         public int Color { get; set; }
         public int CutDirection { get; set; }
         public int AngleOffset { get; set; }
-        public float TailTime { get; set; }
+        public float TailJsonTime { get; set; }
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
@@ -43,7 +43,7 @@ namespace Beatmap.Base
                 Color = baseSlider.Color;
                 CutDirection = baseSlider.CutDirection;
                 AngleOffset = baseSlider.AngleOffset;
-                TailTime = baseSlider.TailTime;
+                TailJsonTime = baseSlider.TailJsonTime;
                 TailPosX = baseSlider.TailPosX;
                 TailPosY = baseSlider.TailPosY;
             }

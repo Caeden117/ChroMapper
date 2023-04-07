@@ -43,7 +43,7 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
 
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
         {
-            dragged.TailTime = queued.JsonTime;
+            dragged.TailJsonTime = queued.JsonTime;
             dragged.TailPosX = queued.PosX;
             dragged.TailPosY = queued.PosY;
             dragged.TailCutDirection = queued.TailCutDirection;
@@ -67,7 +67,7 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
             }
             if (indicator.IndicatorType == IndicatorType.Tail)
             {
-                return (indicator.ParentArc.ArcData.TailTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+                return (indicator.ParentArc.ArcData.TailJsonTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
             }
         }
 

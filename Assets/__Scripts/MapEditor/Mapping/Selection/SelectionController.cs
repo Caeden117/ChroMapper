@@ -339,7 +339,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             copy.JsonTime -= firstTime;
             if (copy is BaseSlider slider)
             {
-                slider.TailTime = bpmChangesContainer.SongBeatsToLocalBeats(slider.TailTime - firstTime, firstTime);
+                slider.TailJsonTime = bpmChangesContainer.SongBeatsToLocalBeats(slider.TailJsonTime - firstTime, firstTime);
             }
 
             // always use song beats for bpm changes
@@ -384,7 +384,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var newData = BeatmapFactory.Clone(data);
             newData.JsonTime = newTime;
             if (newData is BaseSlider slider)
-                slider.TailTime = atsc.CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats((data as BaseSlider).TailTime, atsc.CurrentBeat);
+                slider.TailJsonTime = atsc.CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats((data as BaseSlider).TailJsonTime, atsc.CurrentBeat);
 
             // scale duration for walls
             if (newData.ObjectType == ObjectType.Obstacle)
@@ -485,9 +485,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 data.JsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
             if (data is BaseSlider slider)
             {
-                slider.TailTime += beats;
+                slider.TailJsonTime += beats;
                 if (snapObjects)
-                    slider.TailTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
+                    slider.TailJsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
             }
             collection.LoadedObjects.Add(data);
 

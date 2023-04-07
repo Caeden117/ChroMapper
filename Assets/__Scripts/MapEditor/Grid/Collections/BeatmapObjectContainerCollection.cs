@@ -206,10 +206,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 else if (Settings.Instance.Load_MapV3)
                 {
                     if (obj is BaseArc &&
-                        (obj as BaseArc).JsonTime < lowerBound && (obj as BaseArc).TailTime >= lowerBound)
+                        (obj as BaseArc).JsonTime < lowerBound && (obj as BaseArc).TailJsonTime >= lowerBound)
                         continue;
                     if (obj is BaseChain &&
-                        (obj as BaseChain).JsonTime < lowerBound && (obj as BaseChain).TailTime >= lowerBound)
+                        (obj as BaseChain).JsonTime < lowerBound && (obj as BaseChain).TailJsonTime >= lowerBound)
                         continue;
                 }
 
@@ -221,10 +221,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             if (Settings.Instance.Load_MapV3)
             {
                 if (obj is BaseArc &&
-                           (obj as BaseArc).JsonTime < lowerBound && (obj as BaseArc).TailTime >= lowerBound)
+                           (obj as BaseArc).JsonTime < lowerBound && (obj as BaseArc).TailJsonTime >= lowerBound)
                     CreateContainerFromPool(obj);
                 if (obj is BaseChain &&
-                    (obj as BaseChain).JsonTime < lowerBound && (obj as BaseChain).TailTime >= lowerBound)
+                    (obj as BaseChain).JsonTime < lowerBound && (obj as BaseChain).TailJsonTime >= lowerBound)
                     CreateContainerFromPool(obj);
             }
         }

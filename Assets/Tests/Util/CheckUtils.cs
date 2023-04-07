@@ -120,7 +120,7 @@ namespace Tests.Util
                 Assert.AreEqual(angleOffset, arc.AngleOffset, $"{msg}: Mismatched angle offset");
                 Assert.AreEqual(mult, arc.HeadControlPointLengthMultiplier,
                     $"{msg}: Mismatched head control point length multiplier");
-                Assert.AreEqual(tailTime, arc.TailTime, 0.001f, $"{msg}: Mismatched tail time");
+                Assert.AreEqual(tailTime, arc.TailJsonTime, 0.001f, $"{msg}: Mismatched tail time");
                 Assert.AreEqual(tailPosX, arc.TailPosX, $"{msg}: Mismatched tail position X");
                 Assert.AreEqual(tailPosY, arc.TailPosY, $"{msg}: Mismatched tail position Y");
                 Assert.AreEqual(tailCutDirection, arc.TailCutDirection, $"{msg}: Mismatched tail cut direction");
@@ -151,7 +151,7 @@ namespace Tests.Util
                 Assert.AreEqual(posY, chain.PosY, $"{msg}: Mismatched position Y");
                 Assert.AreEqual(cutDirection, chain.CutDirection, $"{msg}: Mismatched cut direction");
                 Assert.AreEqual(angleOffset, chain.AngleOffset, $"{msg}: Mismatched angle offset");
-                Assert.AreEqual(tailTime, chain.TailTime, 0.001f, $"{msg}: Mismatched tail time");
+                Assert.AreEqual(tailTime, chain.TailJsonTime, 0.001f, $"{msg}: Mismatched tail time");
                 Assert.AreEqual(tailPosX, chain.TailPosX, $"{msg}: Mismatched tail position X");
                 Assert.AreEqual(tailPosY, chain.TailPosY, $"{msg}: Mismatched tail position Y");
                 Assert.AreEqual(sliceCount, chain.SliceCount, $"{msg}: Mismatched slice count");

@@ -24,7 +24,7 @@ namespace Beatmap.V3
             PosY = RetrieveRequiredNode(node, "y").AsInt;
             CutDirection = RetrieveRequiredNode(node, "d").AsInt;
             HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "mu").AsFloat;
-            TailTime = RetrieveRequiredNode(node, "tb").AsFloat;
+            TailJsonTime = RetrieveRequiredNode(node, "tb").AsFloat;
             TailPosX = RetrieveRequiredNode(node, "tx").AsInt;
             TailPosY = RetrieveRequiredNode(node, "ty").AsInt;
             TailCutDirection = RetrieveRequiredNode(node, "tc").AsInt;
@@ -99,7 +99,7 @@ namespace Beatmap.V3
             node["y"] = PosY;
             node["d"] = CutDirection;
             node["mu"] = HeadControlPointLengthMultiplier;
-            node["tb"] = TailTime;
+            node["tb"] = TailJsonTime;
             node["tx"] = TailPosX;
             node["ty"] = TailPosY;
             node["tc"] = TailCutDirection;
@@ -113,7 +113,7 @@ namespace Beatmap.V3
 
         public override BaseItem Clone() =>
             new V3Arc(JsonTime, PosX, PosY, Color, CutDirection, AngleOffset,
-                HeadControlPointLengthMultiplier, TailTime, TailPosX, TailPosY, TailCutDirection,
+                HeadControlPointLengthMultiplier, TailJsonTime, TailPosX, TailPosY, TailCutDirection,
                 TailControlPointLengthMultiplier,
                 MidAnchorMode, SaveCustom().Clone());
     }

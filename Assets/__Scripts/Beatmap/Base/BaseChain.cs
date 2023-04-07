@@ -28,7 +28,7 @@ namespace Beatmap.Base
             PosX = other.PosX;
             PosY = other.PosY;
             CutDirection = other.CutDirection;
-            TailTime = other.TailTime;
+            TailJsonTime = other.TailJsonTime;
             TailPosX = other.TailPosX;
             TailPosY = other.TailPosY;
             SliceCount = other.SliceCount;
@@ -43,7 +43,7 @@ namespace Beatmap.Base
             PosX = start.PosX;
             PosY = start.PosY;
             CutDirection = start.CutDirection;
-            TailTime = end.JsonTime;
+            TailJsonTime = end.JsonTime;
             TailPosX = end.PosX;
             TailPosY = end.PosY;
             SliceCount = 5;
