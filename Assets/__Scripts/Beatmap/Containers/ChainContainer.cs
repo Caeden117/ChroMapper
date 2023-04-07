@@ -161,13 +161,11 @@ namespace Beatmap.Containers
             foreach (var c in Colliders)
             {
                 var r = c.GetComponent<MeshRenderer>();
+                MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.Time + c.transform.localPosition.z / EditorScaleController.EditorScale);
                 r.SetPropertyBlock(MaterialPropertyBlock);
             }
 
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
-
-            // TODO Apply different _ObjectTime to chain links
-            if (ChainData != null) MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.Time);
         }
 
         public void DetectHeadNote(bool detect = true)
