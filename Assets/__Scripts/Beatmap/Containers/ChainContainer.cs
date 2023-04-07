@@ -85,8 +85,7 @@ namespace Beatmap.Containers
             {
                 var newNode = Instantiate(tailNode, transform);
                 newNode.SetActive(true);
-                newNode.GetComponent<MeshRenderer>().material
-                    .CopyPropertiesFromMaterial(tailNode.GetComponent<MeshRenderer>().material);
+                newNode.GetComponent<MeshRenderer>().sharedMaterial = tailNode.GetComponent<MeshRenderer>().sharedMaterial;
                 Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, tailNode, newNode);
                 nodes.Add(newNode);
                 Colliders.Add(nodes[i].GetComponent<IntersectionCollider>());
