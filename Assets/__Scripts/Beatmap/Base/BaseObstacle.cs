@@ -77,7 +77,7 @@ namespace Beatmap.Base
             set => InternalHeight = value;
         }
 
-        public virtual Vector3? CustomSize { get; set; }
+        public virtual Vector2Or3? CustomSize { get; set; }
 
         public abstract string CustomKeySize { get; }
 
@@ -85,6 +85,7 @@ namespace Beatmap.Base
         {
             if (other is BaseObstacle obstacle)
             {
+                SaveCustom();
                 if (IsNoodleExtensions() || obstacle.IsNoodleExtensions())
                     return ToJson().ToString() == other.ToJson().ToString();
                 return PosX == obstacle.PosX && PosY == obstacle.PosY && Width == obstacle.Width &&
@@ -195,15 +196,26 @@ namespace Beatmap.Base
             if (CustomData.HasKey(CustomKeySize) && CustomData[CustomKeySize].IsArray)
             {
                 var temp = CustomData[CustomKeySize].AsArray;
-                if (temp.Count < 2) temp.Add(0);
-                CustomSize = temp;
+                while (temp.Count < 3) temp.Add(null);
+                CustomSize = new Vector2Or3(temp[0], temp[1], temp[2]);
             }
         }
 
         protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
-            if (CustomSize != null) CustomData[CustomKeySize] = CustomSize; else CustomData.Remove(CustomKeySize);
+            if (CustomSize != null)
+            {
+                var size = CustomSize.Value;
+                if (size.z == null) // Tenary assignment would implicitly convert Vector2 to Vector3
+                    CustomData[CustomKeySize] = new Vector2(size.x, size.y);
+                else
+                    CustomData[CustomKeySize] = new Vector3(size.x, size.y, size.z.Value);
+            }
+            else
+            {
+                CustomData.Remove(CustomKeySize);
+            }
             return CustomData;
         }
     }

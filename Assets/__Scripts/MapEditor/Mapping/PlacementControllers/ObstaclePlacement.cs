@@ -5,8 +5,7 @@ using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
-using Beatmap.V2;
-using Beatmap.V3;
+using Beatmap.Shared;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -104,7 +103,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 0.01f), newLocalScale.z);
                 instantiatedContainer.SetScale(newLocalScale);
 
-                queuedData.CustomSize = new Vector2(newLocalScale.x, newLocalScale.y);
+                queuedData.CustomSize = new Vector2Or3(newLocalScale.x, newLocalScale.y);
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);

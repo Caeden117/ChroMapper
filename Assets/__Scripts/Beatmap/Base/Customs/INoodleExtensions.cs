@@ -1,4 +1,5 @@
 using UnityEngine;
+using Beatmap.Shared;
 
 namespace Beatmap.Base.Customs
 {
@@ -29,7 +30,7 @@ namespace Beatmap.Base.Customs
 
     public interface INoodleExtensionsObstacle : INoodleExtensionsGrid
     {
-        Vector3? CustomSize { get; set; }
+        Vector2Or3? CustomSize { get; set; }
 
         string CustomKeySize { get; }
     }

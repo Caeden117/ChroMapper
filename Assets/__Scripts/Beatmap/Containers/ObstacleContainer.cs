@@ -66,8 +66,8 @@ namespace Beatmap.Containers
             duration *= EditorScaleController
                 .EditorScale; // Apply Editor Scale here since it can be overwritten by NE _scale Z
 
-            if (ObstacleData.CustomSize != null && ObstacleData.CustomSize.Value.z != 0)
-                duration = ObstacleData.CustomSize.Value.z;
+            if (ObstacleData.CustomSize != null && ObstacleData.CustomSize.Value.z != null)
+                duration = ObstacleData.CustomSize.Value.z.Value;
 
             if (ObstacleData.CustomLocalRotation != null)
                 localRotation = (Vector3)ObstacleData.CustomLocalRotation;

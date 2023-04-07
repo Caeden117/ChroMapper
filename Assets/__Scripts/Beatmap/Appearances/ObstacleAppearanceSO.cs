@@ -1,4 +1,5 @@
 using Beatmap.Containers;
+using Beatmap.Shared;
 using UnityEngine;
 
 namespace Beatmap.Appearances
@@ -22,7 +23,7 @@ namespace Beatmap.Appearances
             {
                 if (obj.ObstacleData.CustomData != null)
                 {
-                    var wallSize = obj.ObstacleData.CustomSize ?? Vector3.one;
+                    var wallSize = obj.ObstacleData.CustomSize ?? new Vector2Or3(1f, 1f);
                     if (wallSize.x < 0 || (wallSize.y < 0 && Settings.Instance.ColorFakeWalls))
                         obj.SetColor(negativeWidthColor);
                     else
