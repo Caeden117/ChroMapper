@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Helper;
 using Beatmap.Shared;
 using Beatmap.V2;
 using Beatmap.V3;
@@ -66,17 +67,20 @@ public class MapLoader : MonoBehaviour
             };
             map = copy;
         }
-
+        if (!map.BpmChanges.Any(x => x.JsonTime == 0))
+        {
+            map.BpmChanges.Add(BeatmapFactory.BpmChange(0, BeatSaberSongContainer.Instance.Song.BeatsPerMinute));
+        }
     }
 
     public IEnumerator HardRefresh()
     {
+        yield return StartCoroutine(LoadObjects(map.BpmChanges));
         if (Settings.Instance.Load_Notes) yield return StartCoroutine(LoadObjects(map.Notes));
         if (Settings.Instance.Load_Obstacles) yield return StartCoroutine(LoadObjects(map.Obstacles));
         if (Settings.Instance.Load_Events) yield return StartCoroutine(LoadObjects(map.Events));
         if (Settings.Instance.Load_Others)
         {
-            yield return StartCoroutine(LoadObjects(map.BpmChanges));
             yield return StartCoroutine(LoadObjects(map.CustomEvents));
         }
         if (Settings.Instance.Load_MapV3)
