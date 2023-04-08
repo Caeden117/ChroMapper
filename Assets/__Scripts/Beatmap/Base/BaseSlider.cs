@@ -25,6 +25,7 @@ namespace Beatmap.Base
         public int CutDirection { get; set; }
         public int AngleOffset { get; set; }
         public float TailJsonTime { get; set; }
+        public float TailSongBpmTime { get; set; }
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 

@@ -24,6 +24,7 @@ namespace Beatmap.Base
         public abstract ObjectType ObjectType { get; set; }
         public bool HasAttachedContainer { get; set; } = false;
         public float JsonTime { get; set; }
+        public float SongBpmTime { get; set; }
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
         public JSONNode CustomData { get; set; } = new JSONObject();
