@@ -85,7 +85,7 @@ namespace Beatmap.Containers
             transform.localPosition = new Vector3(
                 bounds.Position + (bounds.Width < 0 ? bounds.Width : 0),
                 bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0),
-                (ObstacleData.JsonTime * EditorScaleController.EditorScale) + (duration < 0 ? duration : 0)
+                (ObstacleData.SongBpmTime * EditorScaleController.EditorScale) + (duration < 0 ? duration : 0)
             );
 
             SetScale(new Vector3(

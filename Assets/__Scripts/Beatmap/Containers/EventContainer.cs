@@ -95,7 +95,7 @@ namespace Beatmap.Containers
                 transform.localPosition = new Vector3(
                     -0.5f,
                     0.5f,
-                    EventData.JsonTime * EditorScaleController.EditorScale
+                    EventData.SongBpmTime * EditorScaleController.EditorScale
                 );
                 SafeSetActive(false);
             }
@@ -104,7 +104,7 @@ namespace Beatmap.Containers
                 transform.localPosition = new Vector3(
                     gridPos.Value.x,
                     gridPos.Value.y,
-                    EventData.JsonTime * EditorScaleController.EditorScale
+                    EventData.SongBpmTime * EditorScaleController.EditorScale
                 );
             }
 
