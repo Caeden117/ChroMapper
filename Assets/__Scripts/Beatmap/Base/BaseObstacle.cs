@@ -197,7 +197,7 @@ namespace Beatmap.Base
             {
                 var temp = CustomData[CustomKeySize].AsArray;
                 while (temp.Count < 3) temp.Add(null);
-                CustomSize = new Vector2Or3(temp[0], temp[1], temp[2]);
+                CustomSize = new Vector2Or3(temp[0], temp[1], temp[2].IsNull ? null : (float?)temp[2].AsFloat);
             }
         }
 
