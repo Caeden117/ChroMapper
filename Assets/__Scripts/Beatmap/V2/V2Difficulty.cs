@@ -343,6 +343,7 @@ namespace Beatmap.V2
             map.BpmChanges = bpmList.DistinctBy(x => x.Time).ToList();
             map.Bookmarks = bookmarksList;
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
+            map.PointDefinitions = pointDefinitions;
             map.EnvironmentEnhancements = envEnhancementsList;
         }
     }
