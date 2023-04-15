@@ -549,6 +549,8 @@ public class BeatSaberSong
 
         public void RefreshRequirementsAndWarnings(BaseDifficulty map)
         {
+            if (!Settings.Instance.AutomaticModRequirements) return;
+
             //Saving Map Requirement Info
             var requiredArray = new JSONArray(); //Generate suggestions and requirements array
             var suggestedArray = new JSONArray();

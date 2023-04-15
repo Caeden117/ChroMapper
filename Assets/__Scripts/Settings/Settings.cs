@@ -62,6 +62,7 @@ public class Settings
     public bool Reminder_SettingsFailed = true;
     public bool AdvancedShit = false;
     public bool FormatJson = false;
+    public bool AutomaticModRequirements = true;
     public bool RemoveNotesOutsideMap = true; // Hidden setting
     public bool RemoveEventsOutsideMap = true; // Hidden setting
     public bool RemoveObstaclesOutsideMap = true; // Hidden setting
