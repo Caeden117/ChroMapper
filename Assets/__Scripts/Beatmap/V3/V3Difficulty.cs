@@ -340,6 +340,7 @@ namespace Beatmap.V3
         private static void LoadCustom(V3Difficulty map, JSONNode mainNode)
         {
             if (mainNode["customData"] == null) return;
+            map.CustomData = mainNode["customData"];
 
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
