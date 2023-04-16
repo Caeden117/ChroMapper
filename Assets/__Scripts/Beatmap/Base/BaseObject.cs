@@ -34,7 +34,7 @@ namespace Beatmap.Base
 
         public virtual bool IsMappingExtensions() => false;
 
-        public string CustomTrack { get; set; }
+        public JSONNode CustomTrack { get; set; }
 
         public abstract string CustomKeyTrack { get; }
 
@@ -53,7 +53,7 @@ namespace Beatmap.Base
 
         protected virtual void ParseCustom()
         {
-            CustomTrack = (CustomData?.HasKey(CustomKeyTrack) ?? false) ? CustomData?[CustomKeyTrack].Value : null;
+            CustomTrack = (CustomData?.HasKey(CustomKeyTrack) ?? false) ? CustomData?[CustomKeyTrack] : null;
             CustomColor = (CustomData?.HasKey(CustomKeyColor) ?? false) ? CustomData?[CustomKeyColor].ReadColor() : null;
         }
 
@@ -62,7 +62,7 @@ namespace Beatmap.Base
         protected internal virtual JSONNode SaveCustom()
         {
             CustomData = CustomData is JSONObject ? CustomData : new JSONObject();
-            if (!string.IsNullOrEmpty(CustomTrack)) CustomData[CustomKeyTrack] = CustomTrack; else CustomData.Remove(CustomKeyTrack);
+            if (CustomTrack != null) CustomData[CustomKeyTrack] = CustomTrack; else CustomData.Remove(CustomKeyTrack);
             if (CustomColor != null) CustomData[CustomKeyColor] = CustomColor; else CustomData.Remove(CustomKeyColor);
             return CustomData;
         }

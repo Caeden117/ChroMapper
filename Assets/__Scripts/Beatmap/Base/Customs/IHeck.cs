@@ -1,8 +1,10 @@
-﻿namespace Beatmap.Base.Customs
+﻿using SimpleJSON;
+
+namespace Beatmap.Base.Customs
 {
     public interface IHeckObject
     {
-        string CustomTrack { get; set; }
+        JSONNode CustomTrack { get; set; }
 
         string CustomKeyTrack { get; }
     }
