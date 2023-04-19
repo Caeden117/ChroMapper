@@ -72,9 +72,10 @@ public class MirrorSelection : MonoBehaviour
 
                     var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
-                    if (obstacle.CustomSize != null)
+                    var customSize = obstacle.CustomSize;
+                    if (customSize != null && customSize.IsArray && customSize[0].IsNumber)
                     {
-                        flipped.x -= obstacle.CustomSize.Value.x;
+                        flipped.x -= customSize[0];
                     }
                     else
                     {
