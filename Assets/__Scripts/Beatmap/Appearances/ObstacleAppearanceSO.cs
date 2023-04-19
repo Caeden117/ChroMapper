@@ -32,7 +32,7 @@ namespace Beatmap.Appearances
                         if (customSize[1].IsNumber) wallSize.y = customSize[1];
                     }
 
-                    if (wallSize.x < 0 || (wallSize.y < 0 && Settings.Instance.ColorFakeWalls))
+                    if ((wallSize.x < 0 || wallSize.y < 0) && Settings.Instance.ColorFakeWalls)
                         obj.SetColor(negativeWidthColor);
                     else
                         obj.SetColor(DefaultObstacleColor);
