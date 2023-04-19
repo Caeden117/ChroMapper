@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
 using Beatmap.Base;
@@ -247,9 +247,9 @@ public class MirrorSelection : MonoBehaviour
                         arc.CustomCoordinate = flipped;
                     }
 
-                    if (arc.CustomTailCoordinate != null)
+                    if (arc.CustomTailCoordinate != null && arc.CustomTailCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)arc.CustomTailCoordinate;
+                        var oldPosition = arc.CustomTailCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         arc.CustomTailCoordinate = flipped;
                     }
@@ -284,9 +284,9 @@ public class MirrorSelection : MonoBehaviour
                         chain.CustomCoordinate = flipped;
                     }
 
-                    if (chain.CustomTailCoordinate != null)
+                    if (chain.CustomTailCoordinate != null && chain.CustomTailCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)chain.CustomTailCoordinate;
+                        var oldPosition = chain.CustomTailCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         chain.CustomTailCoordinate = flipped;
                     }

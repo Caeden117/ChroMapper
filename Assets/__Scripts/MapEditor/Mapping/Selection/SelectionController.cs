@@ -676,7 +676,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
 
                 var tailOutsideVanillaBounds = false;
-                if (slider.CustomTailCoordinate is null)
+                if (slider.CustomTailCoordinate != null && slider.CustomTailCoordinate.IsArray)
+                {
+                    ShiftCustomTailCoordinates(slider, leftRight, upDown);
+                }
+                else
                 {
                     if (slider.TailPosX >= 1000)
                     {
@@ -704,13 +708,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                         slider.TailPosX = slider.TailPosY = 0;
                     }
                 }
-                else
-                {
-                    var pos = slider.CustomTailCoordinate.Value;
-                    slider.CustomTailCoordinate = new Vector2(
-                        pos.x + 1f / atsc.GridMeasureSnapping * leftRight,
-                        pos.y + 1f / atsc.GridMeasureSnapping * upDown);
-                }
             }
             return new BeatmapObjectModifiedAction(data, data, original, "", true);
         }).ToList();
@@ -729,6 +726,17 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         gridObject.CustomCoordinate = new Vector2(
             position.x + 1f / atsc.GridMeasureSnapping * leftRight,
             position.y + 1f / atsc.GridMeasureSnapping * upDown);
+    }
+
+    private void ShiftCustomTailCoordinates(BaseSlider slider, int leftRight, int upDown)
+    {
+        var tailPosition = new Vector2(slider.TailPosX - 2f, slider.TailPosY);
+        if (slider.CustomTailCoordinate[0].IsNumber) tailPosition.x = slider.CustomTailCoordinate[0];
+        if (slider.CustomTailCoordinate[1].IsNumber) tailPosition.y = slider.CustomTailCoordinate[1];
+
+        slider.CustomTailCoordinate = new Vector2(
+            tailPosition.x + 1f / atsc.GridMeasureSnapping * leftRight,
+            tailPosition.y + 1f / atsc.GridMeasureSnapping * upDown);
     }
 
     /// <summary>

@@ -23,7 +23,7 @@ namespace Beatmap.Base.Customs
 
     public interface INoodleExtensionsSlider : INoodleExtensionsGrid
     {
-        Vector2? CustomTailCoordinate { get; set; }
+        JSONNode CustomTailCoordinate { get; set; }
 
         string CustomKeyTailCoordinate { get; }
     }
