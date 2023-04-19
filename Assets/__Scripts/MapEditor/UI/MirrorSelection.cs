@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
 using Beatmap.Base;
@@ -66,9 +66,9 @@ public class MirrorSelection : MonoBehaviour
                 var precisionWidth = obstacle.Width >= 1000;
                 var state = obstacle.PosX;
 
-                if (obstacle.CustomCoordinate != null)
+                if (obstacle.CustomCoordinate != null && obstacle.CustomCoordinate.IsArray)
                 {
-                    var oldPosition = (Vector2)obstacle.CustomCoordinate;
+                    var oldPosition = obstacle.CustomCoordinate.ReadVector2();
 
                     var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
@@ -123,9 +123,9 @@ public class MirrorSelection : MonoBehaviour
                     note.AngleOffset *= -1;
 
                     // NE Precision rotation
-                    if (note.CustomCoordinate != null)
+                    if (note.CustomCoordinate != null && note.CustomCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)note.CustomCoordinate;
+                        var oldPosition = note.CustomCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         note.CustomCoordinate = flipped;
                     }
@@ -240,9 +240,9 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (moveNotes)
                 {
-                    if (arc.CustomCoordinate != null)
+                    if (arc.CustomCoordinate != null && arc.CustomCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)arc.CustomCoordinate;
+                        var oldPosition = arc.CustomCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         arc.CustomCoordinate = flipped;
                     }
@@ -277,9 +277,9 @@ public class MirrorSelection : MonoBehaviour
                 if (moveNotes)
                 {
                     // NE Precision rotation
-                    if (chain.CustomCoordinate != null)
+                    if (chain.CustomCoordinate != null && chain.CustomCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)chain.CustomCoordinate;
+                        var oldPosition = chain.CustomCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         chain.CustomCoordinate = flipped;
                     }

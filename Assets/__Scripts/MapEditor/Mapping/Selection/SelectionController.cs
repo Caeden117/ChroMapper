@@ -514,7 +514,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var original = BeatmapFactory.Clone(data);
             if (data is BaseNote note)
             {
-                if (note.CustomCoordinate is null)
+                if (note.CustomCoordinate != null && note.CustomCoordinate.IsArray)
+                {
+                    ShiftCustomCoordinates(note, leftRight, upDown);
+                }
+                else
                 {
                     var outsideVanillaBounds = false;
                     if (note.PosX >= 1000)
@@ -544,17 +548,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                         note.PosX = note.PosY = 0;
                     }
                 }
-                else
-                {
-                    var pos = note.CustomCoordinate.Value;
-                    note.CustomCoordinate = new Vector2(
-                        pos.x + 1f / atsc.GridMeasureSnapping * leftRight,
-                        pos.y + 1f / atsc.GridMeasureSnapping * upDown);
-                }
+
+
             }
             else if (data is BaseObstacle obstacle)
             {
-                if (!obstacle.IsNoodleExtensions())
+                if (obstacle.CustomCoordinate != null && obstacle.CustomCoordinate.IsArray)
+                {
+                    ShiftCustomCoordinates(obstacle, leftRight, upDown);
+                }
+                else
                 {
                     if (obstacle.PosX >= 1000)
                     {
@@ -569,16 +572,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     else
                     {
                         obstacle.PosX += leftRight;
-                    }
-                }
-                else
-                {
-                    if (obstacle.CustomCoordinate != null)
-                    {
-                        var pos = obstacle.CustomCoordinate.Value;
-                        obstacle.CustomCoordinate = new Vector2(
-                            pos.x + 1f / atsc.GridMeasureSnapping * leftRight,
-                            pos.y + 1f / atsc.GridMeasureSnapping * upDown);
                     }
                 }
             }
@@ -648,7 +641,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             else if (data is BaseSlider slider)
             {
                 var headOutsideVanillaBounds = false;
-                if (slider.CustomCoordinate is null)
+                if (slider.CustomCoordinate != null && slider.CustomCoordinate.IsArray)
+                {
+                    ShiftCustomCoordinates(slider, leftRight, upDown);
+                }
+                else
                 {
                     if (slider.PosX >= 1000)
                     {
@@ -676,13 +673,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                         slider.CustomCoordinate = new Vector2(slider.PosX + 1f, slider.PosY);
                         slider.PosX = slider.PosY = 0;
                     }
-                }
-                else
-                {
-                    var pos = slider.CustomCoordinate.Value;
-                    slider.CustomCoordinate = new Vector2(
-                        pos.x + 1f / atsc.GridMeasureSnapping * leftRight,
-                        pos.y + 1f / atsc.GridMeasureSnapping * upDown);
                 }
 
                 var tailOutsideVanillaBounds = false;
@@ -728,6 +718,17 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         BeatmapActionContainer.AddAction(
             new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."), true);
         tracksManager.RefreshTracks();
+    }
+
+    private void ShiftCustomCoordinates(BaseGrid gridObject, int leftRight, int upDown)
+    {
+        var position = new Vector2(gridObject.PosX - 2f, gridObject.PosY);
+        if (gridObject.CustomCoordinate[0].IsNumber) position.x = gridObject.CustomCoordinate[0];
+        if (gridObject.CustomCoordinate[1].IsNumber) position.y = gridObject.CustomCoordinate[1];
+
+        gridObject.CustomCoordinate = new Vector2(
+            position.x + 1f / atsc.GridMeasureSnapping * leftRight,
+            position.y + 1f / atsc.GridMeasureSnapping * upDown);
     }
 
     /// <summary>

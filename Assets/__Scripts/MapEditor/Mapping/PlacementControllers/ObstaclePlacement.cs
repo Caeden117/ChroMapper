@@ -95,7 +95,12 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-                var position = queuedData.CustomCoordinate ?? Vector2.zero;
+                var position = Vector2.zero;
+                if (queuedData.CustomCoordinate != null && queuedData.CustomCoordinate.IsArray)
+                {
+                    if (queuedData.CustomCoordinate[0].IsNumber) position.x = queuedData.CustomCoordinate[0];
+                    if (queuedData.CustomCoordinate[1].IsNumber) position.y = queuedData.CustomCoordinate[1];
+                }
                 var localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
                 wallTransform.localPosition = localPosition;
 

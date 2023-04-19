@@ -149,11 +149,10 @@ namespace Beatmap.Base
             //Just look at the difference in code complexity for Mapping Extensions support and Noodle Extensions support.
             //Hot damn.
             if (CustomData == null) return new ObstacleBounds(width, height, position, startHeight);
-            if (CustomCoordinate != null)
+            if (CustomCoordinate != null && CustomCoordinate.IsArray)
             {
-                var wallPos = CustomCoordinate;
-                position = wallPos.Value.x;
-                startHeight = wallPos.Value.y;
+                if (CustomCoordinate[0].IsNumber) position = CustomCoordinate[0];
+                if (CustomCoordinate[1].IsNumber) startHeight = CustomCoordinate[1];
             }
 
             if (CustomSize != null && CustomSize.IsArray)
