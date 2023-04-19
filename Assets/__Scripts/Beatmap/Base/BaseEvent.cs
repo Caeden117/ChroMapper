@@ -147,7 +147,7 @@ namespace Beatmap.Base
 
         public virtual string CustomNameFilter { get; set; }
 
-        public virtual int? CustomLaneRotation { get; set; }
+        public virtual float? CustomLaneRotation { get; set; }
 
         public abstract string CustomKeyPropID { get; }
         public abstract string CustomKeyLightID { get; }

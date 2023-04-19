@@ -37,7 +37,7 @@ namespace Beatmap.Base.Customs
 
     public interface INoodleExtensionsEvent
     {
-        int? CustomLaneRotation { get; set; }
+        float? CustomLaneRotation { get; set; }
 
         string CustomKeyLaneRotation { get; }
     }
