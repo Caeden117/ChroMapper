@@ -21,7 +21,7 @@ namespace Beatmap.Base
 
         public virtual Vector2? CustomCoordinate { get; set; }
 
-        public virtual Vector3? CustomWorldRotation { get; set; }
+        public virtual JSONNode CustomWorldRotation { get; set; }
 
         public virtual JSONNode CustomLocalRotation { get; set; }
 
@@ -68,7 +68,7 @@ namespace Beatmap.Base
             base.ParseCustom();
 
             CustomCoordinate = (CustomData?.HasKey(CustomKeyCoordinate) ?? false) ? CustomData?[CustomKeyCoordinate].ReadVector2() : null;
-            CustomWorldRotation = (CustomData?.HasKey(CustomKeyWorldRotation) ?? false) ? CustomData?[CustomKeyWorldRotation].ReadVector3() : null;
+            CustomWorldRotation = (CustomData?.HasKey(CustomKeyWorldRotation) ?? false) ? CustomData?[CustomKeyWorldRotation] : null;
             CustomLocalRotation = (CustomData?.HasKey(CustomKeyLocalRotation) ?? false) ? CustomData?[CustomKeyLocalRotation] : null;
         }
 

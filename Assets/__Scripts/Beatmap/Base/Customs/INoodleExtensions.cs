@@ -6,7 +6,7 @@ namespace Beatmap.Base.Customs
     public interface INoodleExtensionsGrid
     {
         Vector2? CustomCoordinate { get; set; }
-        Vector3? CustomWorldRotation { get; set; }
+        JSONNode CustomWorldRotation { get; set; }
         JSONNode CustomLocalRotation { get; set; }
 
         string CustomKeyCoordinate { get; }
