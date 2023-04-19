@@ -77,7 +77,7 @@ namespace Beatmap.Base
             set => InternalHeight = value;
         }
 
-        public virtual Vector2Or3? CustomSize { get; set; }
+        public virtual JSONNode CustomSize { get; set; }
 
         public abstract string CustomKeySize { get; }
 
@@ -149,17 +149,17 @@ namespace Beatmap.Base
             //Just look at the difference in code complexity for Mapping Extensions support and Noodle Extensions support.
             //Hot damn.
             if (CustomData == null) return new ObstacleBounds(width, height, position, startHeight);
-            if (CustomCoordinate != null)
+            if (CustomCoordinate != null && CustomCoordinate.IsArray)
             {
-                var wallPos = CustomCoordinate;
-                position = wallPos.Value.x;
-                startHeight = wallPos.Value.y;
+                if (CustomCoordinate[0].IsNumber) position = CustomCoordinate[0];
+                if (CustomCoordinate[1].IsNumber) startHeight = CustomCoordinate[1];
             }
 
-            if (CustomSize == null) return new ObstacleBounds(width, height, position, startHeight);
-            var wallSize = CustomSize;
-            width = wallSize.Value.x;
-            height = wallSize.Value.y;
+            if (CustomSize != null && CustomSize.IsArray)
+            {
+                if (CustomSize[0].IsNumber) width = CustomSize[0];
+                if (CustomSize[1].IsNumber) height = CustomSize[1];
+            }
 
             return new ObstacleBounds(width, height, position, startHeight);
         }
@@ -193,11 +193,9 @@ namespace Beatmap.Base
             base.ParseCustom();
             if (CustomData == null) return;
 
-            if (CustomData.HasKey(CustomKeySize) && CustomData[CustomKeySize].IsArray)
+            if (CustomData.HasKey(CustomKeySize))
             {
-                var temp = CustomData[CustomKeySize].AsArray;
-                while (temp.Count < 3) temp.Add(null);
-                CustomSize = new Vector2Or3(temp[0], temp[1], temp[2].IsNull ? null : (float?)temp[2].AsFloat);
+                CustomSize = CustomData[CustomKeySize];
             }
             else
             {
@@ -210,11 +208,7 @@ namespace Beatmap.Base
             CustomData = base.SaveCustom();
             if (CustomSize != null)
             {
-                var size = CustomSize.Value;
-                if (size.z == null) // Tenary assignment would implicitly convert Vector2 to Vector3
-                    CustomData[CustomKeySize] = new Vector2(size.x, size.y);
-                else
-                    CustomData[CustomKeySize] = new Vector3(size.x, size.y, size.z.Value);
+                CustomData[CustomKeySize] = CustomSize;
             }
             else
             {

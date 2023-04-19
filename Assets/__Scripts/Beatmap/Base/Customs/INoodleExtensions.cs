@@ -1,13 +1,13 @@
 using UnityEngine;
-using Beatmap.Shared;
+using SimpleJSON;
 
 namespace Beatmap.Base.Customs
 {
     public interface INoodleExtensionsGrid
     {
-        Vector2? CustomCoordinate { get; set; }
-        Vector3? CustomWorldRotation { get; set; }
-        Vector3? CustomLocalRotation { get; set; }
+        JSONNode CustomCoordinate { get; set; }
+        JSONNode CustomWorldRotation { get; set; }
+        JSONNode CustomLocalRotation { get; set; }
 
         string CustomKeyCoordinate { get; }
         string CustomKeyWorldRotation { get; }
@@ -16,28 +16,28 @@ namespace Beatmap.Base.Customs
 
     public interface INoodleExtensionsNote : INoodleExtensionsGrid
     {
-        int? CustomDirection { get; set; }
+        float? CustomDirection { get; set; }
 
         string CustomKeyDirection { get; }
     }
 
     public interface INoodleExtensionsSlider : INoodleExtensionsGrid
     {
-        Vector2? CustomTailCoordinate { get; set; }
+        JSONNode CustomTailCoordinate { get; set; }
 
         string CustomKeyTailCoordinate { get; }
     }
 
     public interface INoodleExtensionsObstacle : INoodleExtensionsGrid
     {
-        Vector2Or3? CustomSize { get; set; }
+        JSONNode CustomSize { get; set; }
 
         string CustomKeySize { get; }
     }
 
     public interface INoodleExtensionsEvent
     {
-        int? CustomLaneRotation { get; set; }
+        float? CustomLaneRotation { get; set; }
 
         string CustomKeyLaneRotation { get; }
     }

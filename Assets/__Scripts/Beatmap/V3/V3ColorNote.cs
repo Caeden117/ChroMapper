@@ -43,7 +43,7 @@ namespace Beatmap.V3
             ParseCustom();
 
         // TODO: deal with custom direction to angle offset
-        public override int? CustomDirection
+        public override float? CustomDirection
         {
             get => null;
             set { }

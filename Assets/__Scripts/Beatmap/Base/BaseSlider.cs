@@ -28,7 +28,7 @@ namespace Beatmap.Base
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
-        public Vector2? CustomTailCoordinate { get; set; }
+        public JSONNode CustomTailCoordinate { get; set; }
 
         public abstract string CustomKeyTailCoordinate { get; }
 
@@ -53,10 +53,15 @@ namespace Beatmap.Base
 
         private Vector2 DerivePositionFromTailData()
         {
-            if (CustomTailCoordinate != null) return (Vector2)CustomTailCoordinate + new Vector2(0.5f, 0);
-
             var position = TailPosX - 1.5f;
             float layer = TailPosY;
+
+            if (CustomTailCoordinate != null && CustomTailCoordinate.IsArray)
+            {
+                if (CustomTailCoordinate[0].IsNumber) position = CustomTailCoordinate[0] + 0.5f;
+                if (CustomTailCoordinate[1].IsNumber) layer = CustomTailCoordinate[1];
+                return new Vector2(position, layer);
+            }
 
             if (TailPosX >= 1000)
                 position = (TailPosX / 1000f) - 2.5f;
@@ -72,7 +77,7 @@ namespace Beatmap.Base
         {
             base.ParseCustom();
 
-            CustomTailCoordinate = (CustomData?.HasKey(CustomKeyTailCoordinate) ?? false) ? CustomData?[CustomKeyTailCoordinate].ReadVector2() : null;
+            CustomTailCoordinate = (CustomData?.HasKey(CustomKeyTailCoordinate) ?? false) ? CustomData?[CustomKeyTailCoordinate] : null;
         }
 
         protected internal override JSONNode SaveCustom()

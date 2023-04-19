@@ -19,11 +19,11 @@ namespace Beatmap.Base
         public int PosX { get; set; }
         public virtual int PosY { get; set; }
 
-        public virtual Vector2? CustomCoordinate { get; set; }
+        public virtual JSONNode CustomCoordinate { get; set; }
 
-        public virtual Vector3? CustomWorldRotation { get; set; }
+        public virtual JSONNode CustomWorldRotation { get; set; }
 
-        public virtual Vector3? CustomLocalRotation { get; set; }
+        public virtual JSONNode CustomLocalRotation { get; set; }
 
         public abstract string CustomKeyCoordinate { get; }
         public abstract string CustomKeyWorldRotation { get; }
@@ -48,10 +48,15 @@ namespace Beatmap.Base
 
         private Vector2 DerivePositionFromData()
         {
-            if (CustomCoordinate != null) return (Vector2)CustomCoordinate + new Vector2(0.5f, 0);
-
             var position = PosX - 1.5f;
             float layer = PosY;
+
+            if (CustomCoordinate != null && CustomCoordinate.IsArray)
+            {
+                if (CustomCoordinate[0].IsNumber) position = CustomCoordinate[0] + 0.5f;
+                if (CustomCoordinate[1].IsNumber) layer = CustomCoordinate[1];
+                return new Vector2(position, layer);
+            }
 
             if (PosX >= 1000)
                 position = (PosX / 1000f) - 2.5f;
@@ -67,9 +72,9 @@ namespace Beatmap.Base
         {
             base.ParseCustom();
 
-            CustomCoordinate = (CustomData?.HasKey(CustomKeyCoordinate) ?? false) ? CustomData?[CustomKeyCoordinate].ReadVector2() : null;
-            CustomWorldRotation = (CustomData?.HasKey(CustomKeyWorldRotation) ?? false) ? CustomData?[CustomKeyWorldRotation].ReadVector3() : null;
-            CustomLocalRotation = (CustomData?.HasKey(CustomKeyLocalRotation) ?? false) ? CustomData?[CustomKeyLocalRotation].ReadVector3() : null;
+            CustomCoordinate = (CustomData?.HasKey(CustomKeyCoordinate) ?? false) ? CustomData?[CustomKeyCoordinate] : null;
+            CustomWorldRotation = (CustomData?.HasKey(CustomKeyWorldRotation) ?? false) ? CustomData?[CustomKeyWorldRotation] : null;
+            CustomLocalRotation = (CustomData?.HasKey(CustomKeyLocalRotation) ?? false) ? CustomData?[CustomKeyLocalRotation] : null;
         }
 
         protected internal override JSONNode SaveCustom()

@@ -98,7 +98,7 @@ namespace Beatmap.Base
                                        CutDirection == (int)NoteCutDirection.Left ||
                                        CutDirection == (int)NoteCutDirection.Right;
 
-        public virtual int? CustomDirection { get; set; }
+        public virtual float? CustomDirection { get; set; }
 
         public abstract string CustomKeyDirection { get; }
 

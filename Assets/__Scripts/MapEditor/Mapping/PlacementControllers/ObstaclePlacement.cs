@@ -95,7 +95,12 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
 
-                var position = queuedData.CustomCoordinate ?? Vector2.zero;
+                var position = Vector2.zero;
+                if (queuedData.CustomCoordinate != null && queuedData.CustomCoordinate.IsArray)
+                {
+                    if (queuedData.CustomCoordinate[0].IsNumber) position.x = queuedData.CustomCoordinate[0];
+                    if (queuedData.CustomCoordinate[1].IsNumber) position.y = queuedData.CustomCoordinate[1];
+                }
                 var localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
                 wallTransform.localPosition = localPosition;
 
@@ -103,7 +108,12 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 newLocalScale = new Vector3(newLocalScale.x, Mathf.Max(newLocalScale.y, 0.01f), newLocalScale.z);
                 instantiatedContainer.SetScale(newLocalScale);
 
-                queuedData.CustomSize = new Vector2Or3(newLocalScale.x, newLocalScale.y);
+                if (queuedData.CustomSize == null)
+                {
+                    queuedData.CustomSize = new JSONArray();
+                }
+                queuedData.CustomSize[0] = newLocalScale.x;
+                queuedData.CustomSize[1] = newLocalScale.y;
 
                 precisionPlacement.TogglePrecisionPlacement(true);
                 precisionPlacement.UpdateMousePosition(hit.Point);

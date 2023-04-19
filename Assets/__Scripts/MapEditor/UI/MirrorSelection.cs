@@ -66,15 +66,16 @@ public class MirrorSelection : MonoBehaviour
                 var precisionWidth = obstacle.Width >= 1000;
                 var state = obstacle.PosX;
 
-                if (obstacle.CustomCoordinate != null)
+                if (obstacle.CustomCoordinate != null && obstacle.CustomCoordinate.IsArray)
                 {
-                    var oldPosition = (Vector2)obstacle.CustomCoordinate;
+                    var oldPosition = obstacle.CustomCoordinate.ReadVector2();
 
                     var flipped = new Vector2(oldPosition.x * -1, oldPosition.y);
 
-                    if (obstacle.CustomSize != null)
+                    var customSize = obstacle.CustomSize;
+                    if (customSize != null && customSize.IsArray && customSize[0].IsNumber)
                     {
-                        flipped.x -= obstacle.CustomSize.Value.x;
+                        flipped.x -= customSize[0];
                     }
                     else
                     {
@@ -122,9 +123,9 @@ public class MirrorSelection : MonoBehaviour
                     note.AngleOffset *= -1;
 
                     // NE Precision rotation
-                    if (note.CustomCoordinate != null)
+                    if (note.CustomCoordinate != null && note.CustomCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)note.CustomCoordinate;
+                        var oldPosition = note.CustomCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         note.CustomCoordinate = flipped;
                     }
@@ -239,16 +240,16 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (moveNotes)
                 {
-                    if (arc.CustomCoordinate != null)
+                    if (arc.CustomCoordinate != null && arc.CustomCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)arc.CustomCoordinate;
+                        var oldPosition = arc.CustomCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         arc.CustomCoordinate = flipped;
                     }
 
-                    if (arc.CustomTailCoordinate != null)
+                    if (arc.CustomTailCoordinate != null && arc.CustomTailCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)arc.CustomTailCoordinate;
+                        var oldPosition = arc.CustomTailCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         arc.CustomTailCoordinate = flipped;
                     }
@@ -276,16 +277,16 @@ public class MirrorSelection : MonoBehaviour
                 if (moveNotes)
                 {
                     // NE Precision rotation
-                    if (chain.CustomCoordinate != null)
+                    if (chain.CustomCoordinate != null && chain.CustomCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)chain.CustomCoordinate;
+                        var oldPosition = chain.CustomCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         chain.CustomCoordinate = flipped;
                     }
 
-                    if (chain.CustomTailCoordinate != null)
+                    if (chain.CustomTailCoordinate != null && chain.CustomTailCoordinate.IsArray)
                     {
-                        var oldPosition = (Vector2)chain.CustomTailCoordinate;
+                        var oldPosition = chain.CustomTailCoordinate.ReadVector2();
                         var flipped = new Vector2(((oldPosition.x + 0.5f) * -1) - 0.5f, oldPosition.y);
                         chain.CustomTailCoordinate = flipped;
                     }

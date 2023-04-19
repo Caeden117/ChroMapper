@@ -66,13 +66,18 @@ namespace Beatmap.Containers
             duration *= EditorScaleController
                 .EditorScale; // Apply Editor Scale here since it can be overwritten by NE _scale Z
 
-            if (ObstacleData.CustomSize != null && ObstacleData.CustomSize.Value.z != null)
-                duration = ObstacleData.CustomSize.Value.z.Value;
+            if (ObstacleData.CustomSize != null && ObstacleData.CustomSize.IsArray && ObstacleData.CustomSize[2].IsNumber)
+                duration = ObstacleData.CustomSize[2];
 
             if (ObstacleData.CustomLocalRotation != null)
-                localRotation = (Vector3)ObstacleData.CustomLocalRotation;
+                localRotation = ObstacleData.CustomLocalRotation.ReadVector3();
             if (ObstacleData.CustomWorldRotation != null)
-                manager.CreateTrack((Vector3)ObstacleData.CustomWorldRotation).AttachContainer(this);
+            {
+                if (ObstacleData.CustomWorldRotation.IsNumber)
+                    manager.CreateTrack(new Vector3(0, ObstacleData.CustomWorldRotation, 0)).AttachContainer(this);
+                else
+                    manager.CreateTrack(ObstacleData.CustomWorldRotation.ReadVector3()).AttachContainer(this);
+            }
 
             var bounds = ObstacleData.GetShape();
 
