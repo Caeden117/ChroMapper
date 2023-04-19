@@ -16,7 +16,7 @@ namespace Beatmap.Base.Customs
 
     public interface INoodleExtensionsNote : INoodleExtensionsGrid
     {
-        int? CustomDirection { get; set; }
+        float? CustomDirection { get; set; }
 
         string CustomKeyDirection { get; }
     }
