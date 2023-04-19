@@ -7,7 +7,7 @@ namespace Beatmap.Base.Customs
     {
         Vector2? CustomCoordinate { get; set; }
         Vector3? CustomWorldRotation { get; set; }
-        Vector3? CustomLocalRotation { get; set; }
+        JSONNode CustomLocalRotation { get; set; }
 
         string CustomKeyCoordinate { get; }
         string CustomKeyWorldRotation { get; }

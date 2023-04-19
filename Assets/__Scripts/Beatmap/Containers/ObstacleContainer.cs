@@ -70,7 +70,7 @@ namespace Beatmap.Containers
                 duration = ObstacleData.CustomSize[2];
 
             if (ObstacleData.CustomLocalRotation != null)
-                localRotation = (Vector3)ObstacleData.CustomLocalRotation;
+                localRotation = ObstacleData.CustomLocalRotation.ReadVector3();
             if (ObstacleData.CustomWorldRotation != null)
                 manager.CreateTrack((Vector3)ObstacleData.CustomWorldRotation).AttachContainer(this);
 
