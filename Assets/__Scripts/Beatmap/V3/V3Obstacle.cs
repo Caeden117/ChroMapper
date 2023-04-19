@@ -45,7 +45,7 @@ namespace Beatmap.V3
 
         public override string CustomKeyCoordinate { get; } = "coordinates";
 
-        public override string CustomKeyWorldRotation { get; } = "rotation";
+        public override string CustomKeyWorldRotation { get; } = "worldRotation";
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
