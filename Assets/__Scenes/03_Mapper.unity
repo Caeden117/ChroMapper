@@ -18335,6 +18335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1119461675923126, guid: e8851ff5377acfa49976aeb131fcace1,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550675}
   ParentTrack: {fileID: 866552293}
   InterfaceGridParent: {fileID: 584811692}
@@ -42436,6 +42437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550674}
   ParentTrack: {fileID: 1125491375}
   InterfaceGridParent: {fileID: 1277691435}
@@ -48754,6 +48756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1056647016207082, guid: cae5f76e2962f1f4085c6007e787e438,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550674}
   ParentTrack: {fileID: 1006741503}
   InterfaceGridParent: {fileID: 1524038328}
@@ -67142,6 +67145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1119461675923126, guid: 8947f7fdd1ff6954a9a3f01c39db6fa5,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550677}
   ParentTrack: {fileID: 1987716845}
   InterfaceGridParent: {fileID: 2070574235}
@@ -68389,6 +68393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550673}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68426,6 +68431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550673}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68459,6 +68465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550678}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68541,6 +68548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 2800143464783224911, guid: 3a289a2479446ea40b41b092b296e8e7,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550680}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68571,6 +68579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1094719878252698, guid: a14acb27bffab494cb5735e7fba61dbf,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550681}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68603,6 +68612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 4018984692264246640, guid: 7d1a52fa04a8d724e965716649bc47e5,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550680}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}

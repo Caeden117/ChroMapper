@@ -16,6 +16,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 {
     [SerializeField] private GameObject objectContainerPrefab;
     [SerializeField] private TBo objectData;
+    [SerializeField] protected BPMChangeGridContainer BpmChangeGridContainer; // This is stinky. Maybe separate song/json time to another class?
     [FormerlySerializedAs("ObjectContainerCollection")][SerializeField] internal TBocc objectContainerCollection;
     [FormerlySerializedAs("parentTrack")][SerializeField] protected Transform ParentTrack;
     [FormerlySerializedAs("interfaceGridParent")][SerializeField] protected Transform InterfaceGridParent;
@@ -160,7 +161,8 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 instantiatedContainer.transform.localPosition.z);
 
             OnPhysicsRaycast(hit, roundedHit);
-            queuedData.JsonTime = RoundedTime;
+            queuedData.SongBpmTime = RoundedTime;
+            queuedData.JsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(RoundedTime);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));
@@ -222,7 +224,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     protected virtual float GetContainerPosZ(ObjectContainer con)
     {
-        return (con.ObjectData.JsonTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+        return (con.ObjectData.SongBpmTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
     }
 
     public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
@@ -289,7 +291,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     protected void CalculateTimes(Intersections.IntersectionHit hit, out Vector3 roundedHit, out float roundedTime)
     {
-        var currentBeat = IsDraggingObjectAtTime ? draggedObjectData.JsonTime : Atsc.CurrentBeat;
+        var currentBeat = IsDraggingObjectAtTime ? draggedObjectData.SongBpmTime : Atsc.CurrentBeat;
 
         roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
         var realTime = roundedHit.z / EditorScaleController.EditorScale;
@@ -353,7 +355,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal virtual void ApplyToMap()
     {
         objectData = queuedData;
-        objectData.JsonTime = RoundedTime;
         //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BaseObject> conflicting);
         objectContainerCollection.SpawnObject(objectData, out var conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
@@ -391,10 +392,13 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         var selected = SelectionController.IsObjectSelected(draggedObjectData);
 
         // To delete properly we need to set the original time
-        var time = draggedObjectData.JsonTime;
+        var jsonTime = draggedObjectData.JsonTime;
+        var songBpmTime = draggedObjectData.SongBpmTime;
         draggedObjectData.JsonTime = originalDraggedObjectData.JsonTime;
+        draggedObjectData.SongBpmTime = originalDraggedObjectData.SongBpmTime;
         objectContainerCollection.DeleteObject(draggedObjectData, false, false);
-        draggedObjectData.JsonTime = time;
+        draggedObjectData.JsonTime = jsonTime;
+        draggedObjectData.SongBpmTime = songBpmTime;
 
         objectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
         if (conflicting.Contains(draggedObjectData))
