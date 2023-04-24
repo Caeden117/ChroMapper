@@ -192,39 +192,39 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         //for (int i = 0; i < LoadedObjects.Count; i++)
         {
             if (forceRefresh) RecycleContainer(obj);
-            if (obj.JsonTime >= lowerBound && obj.JsonTime <= upperBound)
+            if (obj.SongBpmTime >= lowerBound && obj.SongBpmTime <= upperBound)
             {
                 if (!obj.HasAttachedContainer) CreateContainerFromPool(obj);
             }
             else if (obj.HasAttachedContainer)
             {
-                if (obj is BaseObstacle obs && obs.JsonTime < lowerBound &&
-                    obs.JsonTime + obs.Duration >= lowerBound)
+                if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound &&
+                    obs.SongBpmTime + obs.Duration >= lowerBound)
                 {
                     continue;
                 }
                 else if (Settings.Instance.Load_MapV3)
                 {
                     if (obj is BaseArc &&
-                        (obj as BaseArc).JsonTime < lowerBound && (obj as BaseArc).TailJsonTime >= lowerBound)
+                        (obj as BaseArc).SongBpmTime < lowerBound && (obj as BaseArc).TailSongBpmTime >= lowerBound)
                         continue;
                     if (obj is BaseChain &&
-                        (obj as BaseChain).JsonTime < lowerBound && (obj as BaseChain).TailJsonTime >= lowerBound)
+                        (obj as BaseChain).SongBpmTime < lowerBound && (obj as BaseChain).TailSongBpmTime >= lowerBound)
                         continue;
                 }
 
                 RecycleContainer(obj);
             }
 
-            if (obj is BaseObstacle obst && obst.JsonTime < lowerBound && obst.JsonTime + obst.Duration >= lowerBound)
+            if (obj is BaseObstacle obst && obst.SongBpmTime < lowerBound && obst.SongBpmTime + obst.Duration >= lowerBound)
                 CreateContainerFromPool(obj);
             if (Settings.Instance.Load_MapV3)
             {
                 if (obj is BaseArc &&
-                           (obj as BaseArc).JsonTime < lowerBound && (obj as BaseArc).TailJsonTime >= lowerBound)
+                           (obj as BaseArc).SongBpmTime < lowerBound && (obj as BaseArc).TailSongBpmTime >= lowerBound)
                     CreateContainerFromPool(obj);
                 if (obj is BaseChain &&
-                    (obj as BaseChain).JsonTime < lowerBound && (obj as BaseChain).TailJsonTime >= lowerBound)
+                    (obj as BaseChain).SongBpmTime < lowerBound && (obj as BaseChain).TailSongBpmTime >= lowerBound)
                     CreateContainerFromPool(obj);
             }
         }

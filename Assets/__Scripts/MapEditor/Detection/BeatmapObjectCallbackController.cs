@@ -150,7 +150,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         //notesContainer.SortObjects();
         curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
         allNotes.Clear();
-        allNotes = new HashSet<BaseObject>(noteGridContainer.LoadedObjects.Where(x => x.JsonTime >= curTime + Offset));
+        allNotes = new HashSet<BaseObject>(noteGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
         nextNoteIndex = noteGridContainer.LoadedObjects.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
         nextNotes.Clear();
@@ -164,7 +164,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     private void CheckAllEvents(bool natural)
     {
         allEvents.Clear();
-        allEvents = new HashSet<BaseObject>(eventGridContainer.LoadedObjects.Where(x => x.JsonTime >= curTime + Offset));
+        allEvents = new HashSet<BaseObject>(eventGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
 
         nextEventIndex = eventGridContainer.LoadedObjects.Count - allEvents.Count;
         RecursiveEventCheckFinished?.Invoke(natural, nextEventIndex - 1);
@@ -180,7 +180,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
         allChains.Clear();
-        allChains = new HashSet<BaseObject>(chainGridContainer.LoadedObjects.Where(x => x.JsonTime >= curTime + Offset));
+        allChains = new HashSet<BaseObject>(chainGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
         nextChainIndex = chainGridContainer.LoadedObjects.Count - allChains.Count;
         RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
         nextChains.Clear();
@@ -193,7 +193,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckNotes(bool init, bool natural)
     {
-        var passed = nextNotes.Where(x => x.JsonTime <= curTime + Offset).ToArray();
+        var passed = nextNotes.Where(x => x.SongBpmTime <= curTime + Offset).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) NotePassedThreshold?.Invoke(init, nextNoteIndex, newlyAdded);
@@ -205,7 +205,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckEvents(bool init, bool natural)
     {
-        var passed = nextEvents.Where(x => x.JsonTime <= curTime + Offset).ToArray();
+        var passed = nextEvents.Where(x => x.SongBpmTime <= curTime + Offset).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) EventPassedThreshold?.Invoke(init, nextEventIndex, newlyAdded);
@@ -217,7 +217,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckChains(bool init, bool natural)
     {
-        var passed = nextChains.Where(x => (x as BaseChain).TailJsonTime <= curTime + Offset).ToArray();
+        var passed = nextChains.Where(x => (x as BaseChain).TailSongBpmTime <= curTime + Offset).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) ChainPassedThreshold?.Invoke(init, nextChainIndex, newlyAdded);
@@ -243,7 +243,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (!timeSyncController.IsPlaying) return;
 
-        if (obj.JsonTime >= timeSyncController.CurrentBeat)
+        if (obj.SongBpmTime >= timeSyncController.CurrentBeat)
         {
             nextObjects.Add(obj);
         }
@@ -253,7 +253,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (!timeSyncController.IsPlaying) return;
 
-        if (obj.JsonTime >= timeSyncController.CurrentBeat)
+        if (obj.SongBpmTime >= timeSyncController.CurrentBeat)
         {
             queuedToClear.Add(obj);
         }
@@ -263,7 +263,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (!timeSyncController.IsPlaying) return;
 
-        if ((obj as BaseChain).TailJsonTime >= timeSyncController.CurrentBeat)
+        if ((obj as BaseChain).TailSongBpmTime >= timeSyncController.CurrentBeat)
         {
             queuedToClear.Add(obj);
         }
