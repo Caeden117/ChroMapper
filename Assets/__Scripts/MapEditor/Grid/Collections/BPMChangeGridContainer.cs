@@ -413,6 +413,38 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         return lastBpm.JsonTime + lastBpm.Bpm / 60 * (seconds - currentSeconds);
     }
 
+    public void RecomputeFutureObjectsSongBpmTimes(float jsonTime)
+    {
+        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
+        {
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
+            if (collection == null) continue;
+            foreach (var obj in collection.LoadedObjects)
+            {
+                if (obj.JsonTime > jsonTime)
+                {
+                    obj.SongBpmTime = JsonTimeToSongBpmTime(obj.JsonTime);
+                }
+            }
+        }
+    }
+
+    public void RefreshFutureObjects(float jsonTime)
+    {
+        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
+        {
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
+            if (collection == null) continue;
+            foreach (var container in collection.LoadedContainers)
+            {
+                if (container.Key.JsonTime > jsonTime)
+                {
+                    container.Value.UpdateGridPosition();
+                }
+            }
+        }
+    }
+
     public override ObjectContainer CreateContainer() =>
         BpmEventContainer.SpawnBpmChange(null, ref bpmPrefab);
 

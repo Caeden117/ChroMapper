@@ -44,17 +44,23 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
 
                 // Update cursor position
                 var atsc = bpmChanges.AudioTimeSyncController;
-                var lastBpmChange = bpmChanges.FindLastBpm(atsc.CurrentBeat);
-                if (lastBpmChange == containerToEdit.BpmData)
+                if (containerToEdit.BpmData.SongBpmTime < atsc.CurrentBeat)
                 {
-                    var newTime = lastBpmChange.JsonTime + ((atsc.CurrentBeat - lastBpmChange.JsonTime) *
-                        (lastBpmChange.Bpm - modifier) / lastBpmChange.Bpm);
-                    atsc.MoveToTimeInBeats(newTime);
+                    var lastBpmChange = bpmChanges.FindLastBpm(atsc.CurrentBeat);
+                    if (lastBpmChange == containerToEdit.BpmData)
+                    {
+                        var newTime = lastBpmChange.SongBpmTime + ((atsc.CurrentBeat - lastBpmChange.SongBpmTime) *
+                            (lastBpmChange.Bpm - modifier) / lastBpmChange.Bpm);
+                        atsc.MoveToTimeInBeats(newTime);
+                    }
                 }
+
+                // TODO: Make this thing async
+                bpmChanges.RecomputeFutureObjectsSongBpmTimes(containerToEdit.BpmData.JsonTime);
+                bpmChanges.RefreshFutureObjects(containerToEdit.BpmData.JsonTime);
             }
         }
     }
-
     internal static void ChangeBpm(BpmEventContainer containerToEdit, string obj)
     {
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj)) return;
