@@ -279,6 +279,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued)
     {
+        dragged.SongBpmTime = queuedData.SongBpmTime;
         dragged.JsonTime = queued.JsonTime;
         dragged.Type = queued.Type;
         // Instead of copying the whole custom data, only copy prop ID

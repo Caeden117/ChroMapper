@@ -223,6 +223,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
     public override void TransferQueuedToDraggedObject(ref BaseObstacle dragged, BaseObstacle queued)
     {
+        dragged.SongBpmTime = queuedData.SongBpmTime;
         dragged.JsonTime = queued.JsonTime;
         dragged.PosX = queued.PosX;
         dragged.CustomCoordinate = queued.CustomCoordinate;
