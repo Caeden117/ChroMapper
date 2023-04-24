@@ -202,7 +202,7 @@ namespace Beatmap.Containers
                     return;
                 }
 
-                var transition = new ChromaLightGradient(startColor.Value, endColor.Value, EventData.Next.JsonTime - EventData.JsonTime, easing);
+                var transition = new ChromaLightGradient(startColor.Value, endColor.Value, EventData.Next.SongBpmTime - EventData.SongBpmTime, easing);
                 lightGradientController.SetVisible(true);
                 lightGradientController.UpdateGradientData(transition);
                 lightGradientController.UpdateDuration(transition.Duration);

@@ -457,7 +457,7 @@ public class PlatformDescriptor : MonoBehaviour
             {
                 targetAlpha *= nextChromaColor.Value.a;
             }
-            var transitionTime = atsc.GetSecondsFromBeat(transition.JsonTime - e.JsonTime);
+            var transitionTime = atsc.GetSecondsFromBeat(transition.SongBpmTime - e.SongBpmTime);
 
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);
