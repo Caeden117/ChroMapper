@@ -209,12 +209,12 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
                    snap; //If its null, return rounded song bpm
         }
 
-        var difference = beatTimeInSongBpm - lastBpm.JsonTime;
+        var difference = beatTimeInSongBpm - lastBpm.SongBpmTime;
         var differenceInBpmBeat = difference / BeatSaberSongContainer.Instance.Song.BeatsPerMinute * lastBpm.Bpm;
         var roundedDifference = (float)Math.Round(differenceInBpmBeat / snap, MidpointRounding.AwayFromZero) * snap;
         var roundedDifferenceInSongBpm =
             roundedDifference / lastBpm.Bpm * BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-        return roundedDifferenceInSongBpm + lastBpm.JsonTime;
+        return roundedDifferenceInSongBpm + lastBpm.SongBpmTime;
     }
 
     /// <summary>
@@ -226,8 +226,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     public BaseBpmEvent FindLastBpm(float beatTimeInSongBpm, bool inclusive = true)
     {
         if (inclusive)
-            return LoadedObjects.LastOrDefault(x => x.JsonTime <= beatTimeInSongBpm + 0.01f) as BaseBpmEvent;
-        return LoadedObjects.LastOrDefault(x => x.JsonTime + 0.01f < beatTimeInSongBpm) as BaseBpmEvent;
+            return LoadedObjects.LastOrDefault(x => x.SongBpmTime <= beatTimeInSongBpm + 0.01f) as BaseBpmEvent;
+        return LoadedObjects.LastOrDefault(x => x.SongBpmTime + 0.01f < beatTimeInSongBpm) as BaseBpmEvent;
     }
 
     /// <summary>
