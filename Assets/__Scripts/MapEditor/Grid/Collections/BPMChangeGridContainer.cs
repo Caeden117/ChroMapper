@@ -355,6 +355,56 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         return totalLocalBeats;
     }
 
+    public float JsonTimeToSongBpmTime(float jsonTime)
+    {
+        var bpms = LoadedObjects.Where(x => x.JsonTime <= jsonTime).Cast<BaseBpmChange>().ToList();
+        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+
+        var currentSongBeats = 0f;
+        for (int i = 0; i < bpms.Count() - 1; i++)
+        {
+            var bpmChange = bpms[i];
+            var nextBpmChange = bpms[i + 1];
+
+            var timeDiff = nextBpmChange.JsonTime - bpmChange.JsonTime;
+
+            currentSongBeats += timeDiff * (songBpm / bpmChange.Bpm);
+        }
+
+        currentSongBeats += (jsonTime - bpms.Last().JsonTime) * (songBpm / bpms.Last().Bpm);
+        return currentSongBeats;
+    }
+
+    public float SongBpmTimeToJsonTime(float originalBpmTime)
+    {
+        var bpms = LoadedObjects.Cast<BaseBpmChange>().ToList();
+        var originalBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+
+        var seconds = originalBpmTime * (60f / originalBpm);
+
+        var currentSeconds = 0f;
+        var nextSeconds = 0f;
+        for (int i = 0; i < bpms.Count - 1; i++)
+        {
+            var bpmChange = bpms[i];
+            var nextBpmChange = bpms[i + 1];
+
+            var timeDiff = nextBpmChange.JsonTime - bpmChange.JsonTime;
+            var scale = bpmChange.Bpm / 60;
+            nextSeconds += timeDiff / scale;
+
+            if (nextSeconds > seconds)
+            {
+                return bpmChange.JsonTime + scale * (seconds - currentSeconds);
+            }
+
+            currentSeconds = nextSeconds;
+        }
+
+        var lastBpm = bpms.Last();
+        return lastBpm.JsonTime + lastBpm.Bpm / 60 * (seconds - currentSeconds);
+    }
+
     public override ObjectContainer CreateContainer() =>
         BpmEventContainer.SpawnBpmChange(null, ref bpmPrefab);
 
