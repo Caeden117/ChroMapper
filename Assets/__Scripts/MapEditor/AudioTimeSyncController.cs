@@ -214,7 +214,9 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 // +1 beat if we're going forward, -1 beat if we're going backwards
                 var beatShiftRaw = 1f / GridMeasureSnapping * (value > 0 ? 1f : -1f);
 
-                MoveToTimeInBeats(CurrentBeat + bpmChangeGridContainer.LocalBeatsToSongBeats(beatShiftRaw, CurrentBeat));
+                var jsonTime = bpmChangeGridContainer.SongBpmTimeToJsonTime(CurrentBeat);
+                var newSongTime = bpmChangeGridContainer.JsonTimeToSongBpmTime(Mathf.Max(0, jsonTime + beatShiftRaw));
+                MoveToTimeInBeats(newSongTime);
             }
         }
     }
