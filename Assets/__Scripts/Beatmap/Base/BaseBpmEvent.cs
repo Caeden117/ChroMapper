@@ -11,6 +11,7 @@ namespace Beatmap.Base
         protected BaseBpmEvent(BaseBpmEvent other)
         {
             JsonTime = other.JsonTime;
+            SongBpmTime = other.SongBpmTime;
             Bpm = other.Bpm;
             Type = 100;
             Value = 0;
@@ -21,6 +22,7 @@ namespace Beatmap.Base
         protected BaseBpmEvent(BaseEvent evt)
         {
             JsonTime = evt.JsonTime;
+            SongBpmTime = evt.SongBpmTime;
             Bpm = evt.FloatValue;
             Type = 100;
             Value = 0;
