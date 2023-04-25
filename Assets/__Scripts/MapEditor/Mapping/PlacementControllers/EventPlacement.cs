@@ -232,8 +232,6 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             }
         }
 
-        evt.JsonTime = RoundedTime;
-
         if (evt.CustomData != null && evt.CustomData.HasKey("_queuedRotation"))
         {
             if (evt.IsLaneRotationEvent()) queuedValue = queuedData.CustomData["_queuedRotation"];
