@@ -42,6 +42,9 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
         {
             queuedData.Bpm = bpm;
             base.ApplyToMap();
+            // TODO: Make this thing async
+            BpmChangeGridContainer.RecomputeFutureObjectsSongBpmTimes(queuedData.JsonTime);
+            BpmChangeGridContainer.RefreshFutureObjects(queuedData.JsonTime);
             objectContainerCollection.RefreshModifiedBeat();
         }
         else
