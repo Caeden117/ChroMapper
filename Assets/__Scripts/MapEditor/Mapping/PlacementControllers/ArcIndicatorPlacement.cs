@@ -65,11 +65,11 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
         {
             if (indicator.IndicatorType == IndicatorType.Head)
             {
-                return (indicator.ParentArc.ArcData.JsonTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+                return (indicator.ParentArc.ArcData.SongBpmTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
             }
             if (indicator.IndicatorType == IndicatorType.Tail)
             {
-                return (indicator.ParentArc.ArcData.TailJsonTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+                return (indicator.ParentArc.ArcData.TailSongBpmTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
             }
         }
 

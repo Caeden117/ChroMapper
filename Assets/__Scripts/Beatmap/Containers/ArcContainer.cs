@@ -117,7 +117,7 @@ namespace Beatmap.Containers
         public void RecomputePosition()
         {
             if (ArcData == null) return; // in case that this container has already been recycled when about to compute
-            this.transform.localPosition = new Vector3(0, 0, ArcData.JsonTime * EditorScaleController.EditorScale);
+            this.transform.localPosition = new Vector3(0, 0, ArcData.SongBpmTime * EditorScaleController.EditorScale);
             splineRenderer.positionCount = numSamples + 1;
 
             var p0 = this.p0();
