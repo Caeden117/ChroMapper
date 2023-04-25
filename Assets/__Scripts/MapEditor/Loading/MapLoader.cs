@@ -47,6 +47,7 @@ public class MapLoader : MonoBehaviour
                 BpmChanges = new List<BaseBpmChange>(m.BpmChanges),
                 CustomEvents = new List<BaseCustomEvent>(m.CustomEvents)
             };
+            copy.BpmChanges.AddRange(copy.BpmEvents.Select(x => BeatmapFactory.BpmChange(x.JsonTime, x.Bpm)));
             map = copy;
         }
         else
