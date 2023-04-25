@@ -109,6 +109,9 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     protected override void OnObjectDelete(BaseObject obj)
     {
         RefreshModifiedBeat();
+        // TODO: Make this thing async
+        RecomputeFutureObjectsSongBpmTimes(obj.JsonTime);
+        RefreshFutureObjects(obj.JsonTime);
         countersPlus.UpdateStatistic(CountersPlusStatistic.BpmChanges);
     }
 
