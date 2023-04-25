@@ -40,7 +40,6 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj)) return;
         if (float.TryParse(obj, out var bpm))
         {
-            queuedData.JsonTime = RoundedTime;
             queuedData.Bpm = bpm;
             base.ApplyToMap();
             objectContainerCollection.RefreshModifiedBeat();
