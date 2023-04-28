@@ -371,6 +371,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         var bpms = LoadedObjects.Where(x => x.JsonTime <= jsonTime).Cast<BaseBpmChange>().ToList();
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
+        if (bpms.Count == 0) return jsonTime;
+
         var currentSongBeats = 0f;
         for (int i = 0; i < bpms.Count() - 1; i++)
         {
@@ -390,6 +392,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     {
         var bpms = LoadedObjects.Cast<BaseBpmChange>().ToList();
         var originalBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+
+        if (bpms.Count == 0) return originalBpmTime;
 
         var seconds = originalBpmTime * (60f / originalBpm);
 
