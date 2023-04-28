@@ -19,6 +19,9 @@ namespace Beatmap.Base
         {
             JsonTime = time;
             CustomData = customData;
+
+            var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+            SongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(JsonTime) ?? JsonTime;
         }
 
         public abstract ObjectType ObjectType { get; set; }
@@ -48,6 +51,7 @@ namespace Beatmap.Base
         public virtual void Apply(BaseObject originalData)
         {
             JsonTime = originalData.JsonTime;
+            SongBpmTime = originalData.SongBpmTime;
             CustomData = originalData.CustomData?.Clone();
             RefreshCustom();
         }
