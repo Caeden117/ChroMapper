@@ -108,7 +108,7 @@ public class MapLoader : MonoBehaviour
         UpdateSlider<T>();
 
         var bpmChangeCollection = (BPMChangeGridContainer)BeatmapObjectContainerCollection.GetCollectionForType(Beatmap.Enums.ObjectType.BpmChange);
-        if (typeof(T) == typeof(BaseSlider))
+        if (typeof(T) == typeof(BaseArc) || typeof(T) == typeof(BaseChain))
         {
             foreach (var obj in objects)
             {
