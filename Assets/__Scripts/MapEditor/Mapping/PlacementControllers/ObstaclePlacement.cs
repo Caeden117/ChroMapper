@@ -22,7 +22,8 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
     private int originIndex;
 
-    private float startTime;
+    private float startJsonTime;
+    private float startSongBpmTime;
 
     // Chroma Color Check
     public static bool CanPlaceChromaObjects
@@ -62,7 +63,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         TestForType<ObstaclePlacement>(hit, ObjectType.Obstacle);
 
         instantiatedContainer.ObstacleData = queuedData;
-        instantiatedContainer.ObstacleData.Duration = RoundedTime - startTime;
+        instantiatedContainer.ObstacleData.Duration = BpmChangeGridContainer.SongBpmTimeToJsonTime(RoundedTime) - startJsonTime;
         obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
 
@@ -101,7 +102,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                     if (queuedData.CustomCoordinate[0].IsNumber) position.x = queuedData.CustomCoordinate[0];
                     if (queuedData.CustomCoordinate[1].IsNumber) position.y = queuedData.CustomCoordinate[1];
                 }
-                var localPosition = new Vector3(position.x, position.y, startTime * EditorScaleController.EditorScale);
+                var localPosition = new Vector3(position.x, position.y, startSongBpmTime * EditorScaleController.EditorScale);
                 wallTransform.localPosition = localPosition;
 
                 var newLocalScale = roundedHit - localPosition;
@@ -128,7 +129,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
                 wallTransform.localPosition = new Vector3(
                     originIndex - 2, queuedData.Type == (int)ObstacleType.Full ? -0.5f : 1.5f,
-                    startTime * EditorScaleController.EditorScale);
+                    startSongBpmTime * EditorScaleController.EditorScale);
                 queuedData.Width = Mathf.CeilToInt(roundedHit.x + 2) - originIndex;
 
                 instantiatedContainer.SetScale(new Vector3(queuedData.Width,
@@ -184,11 +185,11 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
                 instantiatedContainer.transform.localPosition.y,
-                startTime * EditorScaleController.EditorScale
+                startSongBpmTime * EditorScaleController.EditorScale
             );
             instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
                 instantiatedContainer.transform.localScale.y,
-                (RoundedTime - startTime) * EditorScaleController.EditorScale);
+                (RoundedTime - startSongBpmTime) * EditorScaleController.EditorScale);
         }
     }
 
@@ -197,8 +198,13 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         if (IsPlacing)
         {
             IsPlacing = false;
-            queuedData.JsonTime = startTime;
-            queuedData.Duration = instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale;
+            queuedData.JsonTime = startJsonTime;
+            queuedData.SongBpmTime = startSongBpmTime;
+
+            var endSongBpmTime = startSongBpmTime + (instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale);
+            var endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
+            queuedData.Duration = endJsonTime - startJsonTime;
+
             if (queuedData.Duration < SmallestRankableWallDuration &&
                 Settings.Instance.DontPlacePerfectZeroDurationWalls)
             {
@@ -217,7 +223,8 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             IsPlacing = true;
             originIndex = queuedData.PosX;
-            startTime = RoundedTime;
+            startJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(RoundedTime);
+            startSongBpmTime = RoundedTime;
         }
     }
 

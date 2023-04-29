@@ -12,6 +12,8 @@ namespace Beatmap.Containers
 
         [SerializeField] public BaseObstacle ObstacleData;
 
+        private BPMChangeGridContainer bpmChangeGridContainer;
+
         public override BaseObject ObjectData
         {
             get => ObstacleData;
@@ -26,6 +28,7 @@ namespace Beatmap.Containers
             ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<ObstacleContainer>();
+            container.bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(Enums.ObjectType.BpmChange);
             container.ObstacleData = data;
             container.manager = manager;
             return container;
@@ -47,7 +50,10 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            var duration = ObstacleData.Duration;
+            var obstacleStart = ObstacleData.SongBpmTime;
+            var obstacleEnd = bpmChangeGridContainer.JsonTimeToSongBpmTime(ObstacleData.JsonTime + ObstacleData.Duration);
+            var duration = obstacleEnd - obstacleStart;
+
             var localRotation = Vector3.zero;
 
             //Take half jump duration into account if the setting is enabled.
