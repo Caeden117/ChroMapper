@@ -151,7 +151,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="hasEvent">Whether or not to include the event group</param>
     /// <param name="hasBpmChange">Whether or not to include the bpm change group</param>
     /// <param name="callback">Callback with an object container and the collection it belongs to</param>
-    public static void ForEachObjectBetweenTimeByGroup(float start, float end, bool hasNoteOrObstacle, bool hasEvent,
+    public static void ForEachObjectBetweenSongBpmTimeByGroup(float start, float end, bool hasNoteOrObstacle, bool hasEvent,
         bool hasBpmChange, Action<BeatmapObjectContainerCollection, BaseObject> callback)
     {
         var clearTypes = new List<ObjectType>();
@@ -184,7 +184,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (collection == null) continue;
 
             foreach (var toCheck in collection.LoadedObjects.Where(x =>
-                x.JsonTime > start - epsilon && x.JsonTime < end + epsilon))
+                x.SongBpmTime > start - epsilon && x.SongBpmTime < end + epsilon))
             {
                 if (!hasEvent && toCheck is BaseEvent mapEvent &&
                     !mapEvent
@@ -243,7 +243,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (first.JsonTime > second.JsonTime)
             (first, second) = (second, first);
         GetObjectTypes(new[] { first, second }, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
-        ForEachObjectBetweenTimeByGroup(first.JsonTime, second.JsonTime, hasNoteOrObstacle, hasEvent, hasBpmChange,
+        ForEachObjectBetweenSongBpmTimeByGroup(first.JsonTime, second.JsonTime, hasNoteOrObstacle, hasEvent, hasBpmChange,
             (collection, beatmapObject) =>
             {
                 if (SelectedObjects.Contains(beatmapObject)) return;
@@ -401,7 +401,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             GetObjectTypes(pasted, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
             var toRemove = new List<(BeatmapObjectContainerCollection, BaseObject)>();
-            ForEachObjectBetweenTimeByGroup(start, end, hasNoteOrObstacle, hasEvent, hasBpmChange,
+            ForEachObjectBetweenSongBpmTimeByGroup(start, end, hasNoteOrObstacle, hasEvent, hasBpmChange,
                 (collection, beatmapObject) =>
                 {
                     if (pasted.Contains(beatmapObject)) return;

@@ -130,12 +130,12 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
             newLocalScale = new Vector3(newLocalScale.x, newLocalScaleY, newLocalScale.z);
             instantiatedContainer.transform.localScale = newLocalScale;
 
-            var startBeat = instantiatedContainer.transform.localPosition.z / EditorScaleController.EditorScale;
-            var endBeat = (instantiatedContainer.transform.localPosition.z + newLocalScale.z) /
+            var startSongBpmBeat = instantiatedContainer.transform.localPosition.z / EditorScaleController.EditorScale;
+            var endSongBpmBeat = (instantiatedContainer.transform.localPosition.z + newLocalScale.z) /
                           EditorScaleController.EditorScale;
-            if (startBeat > endBeat) (startBeat, endBeat) = (endBeat, startBeat);
+            if (startSongBpmBeat > endSongBpmBeat) (startSongBpmBeat, endSongBpmBeat) = (endSongBpmBeat, startSongBpmBeat);
 
-            SelectionController.ForEachObjectBetweenTimeByGroup(startBeat, endBeat, true, true, true, (bocc, bo) =>
+            SelectionController.ForEachObjectBetweenSongBpmTimeByGroup(startSongBpmBeat, endSongBpmBeat, true, true, true, (bocc, bo) =>
             {
                 if (!selectedTypes.Contains(bo.ObjectType)) return; // Must be a type we can select
 
