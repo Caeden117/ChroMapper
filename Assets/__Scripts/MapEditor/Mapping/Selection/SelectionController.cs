@@ -321,31 +321,17 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         if (!HasSelectedObjects()) return;
         CopiedObjects.Clear();
-        var firstTime = SelectedObjects.OrderBy(x => x.JsonTime).First().JsonTime;
+        var firstJsonTime = SelectedObjects.OrderBy(x => x.JsonTime).First().JsonTime;
         foreach (var data in SelectedObjects)
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType);
             if (collection.LoadedContainers.TryGetValue(data, out var con)) con.SetOutlineColor(instance.copiedColor);
             var copy = BeatmapFactory.Clone(data);
 
-            // scale duration for walls
-            if (copy.ObjectType == ObjectType.Obstacle)
-            {
-                var obstacle = (BaseObstacle)copy;
-                obstacle.Duration = bpmChangesContainer.SongBeatsToLocalBeats(obstacle.Duration, obstacle.JsonTime);
-                copy = obstacle;
-            }
-
-            copy.JsonTime -= firstTime;
+            copy.JsonTime -= firstJsonTime;
             if (copy is BaseSlider slider)
             {
-                slider.TailJsonTime = bpmChangesContainer.SongBeatsToLocalBeats(slider.TailJsonTime - firstTime, firstTime);
-            }
-
-            // always use song beats for bpm changes
-            if (copy.ObjectType != ObjectType.BpmChange)
-            {
-                copy.JsonTime = bpmChangesContainer.SongBeatsToLocalBeats(copy.JsonTime, firstTime);
+                slider.TailJsonTime -= firstJsonTime;
             }
 
             CopiedObjects.Add(copy);
@@ -370,28 +356,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             if (data == null) continue;
 
-            var newTime = atsc.CurrentBeat;
-            // always use song beats for bpm changes
-            if (data.ObjectType == ObjectType.BpmChange)
-            {
-                newTime += data.JsonTime;
-            }
-            else
-            {
-                newTime += bpmChangesContainer.LocalBeatsToSongBeats(data.JsonTime, atsc.CurrentBeat);
-            }
+            var currentJsonTime = bpmChangesContainer.SongBpmTimeToJsonTime(atsc.CurrentBeat);
+            var newJsonTime = currentJsonTime + data.JsonTime;
 
             var newData = BeatmapFactory.Clone(data);
-            newData.JsonTime = newTime;
+            newData.JsonTime = newJsonTime;
+            newData.SongBpmTime = bpmChangesContainer.JsonTimeToSongBpmTime(newJsonTime);
             if (newData is BaseSlider slider)
-                slider.TailJsonTime = atsc.CurrentBeat + bpmChangesContainer.LocalBeatsToSongBeats((data as BaseSlider).TailJsonTime, atsc.CurrentBeat);
-
-            // scale duration for walls
-            if (newData.ObjectType == ObjectType.Obstacle)
             {
-                var obstacle = (BaseObstacle)newData;
-                obstacle.Duration = bpmChangesContainer.LocalBeatsToSongBeats(obstacle.Duration, obstacle.JsonTime);
-                newData = obstacle;
+                slider.TailJsonTime = currentJsonTime + slider.TailJsonTime;
+                slider.TailSongBpmTime = bpmChangesContainer.JsonTimeToSongBpmTime(slider.TailJsonTime);
             }
 
             if (!collections.TryGetValue(newData.ObjectType, out var collection))
