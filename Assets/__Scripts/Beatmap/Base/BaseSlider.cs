@@ -1,4 +1,5 @@
 using Beatmap.Base.Customs;
+using Beatmap.Enums;
 using SimpleJSON;
 using UnityEngine;
 
@@ -19,6 +20,9 @@ namespace Beatmap.Base
             TailJsonTime = tailTime;
             TailPosX = tailPosX;
             TailPosY = tailPosY;
+
+            var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+            TailSongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(TailJsonTime) ?? TailJsonTime;
         }
 
         public int Color { get; set; }
