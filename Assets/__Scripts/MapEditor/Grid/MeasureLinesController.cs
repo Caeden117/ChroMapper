@@ -74,7 +74,7 @@ public class MeasureLinesController : MonoBehaviour
             var jsonBeatPosition = bpmChangeGridContainer.JsonTimeToSongBpmTime(jsonBeat);
             text.transform.localPosition = new Vector3(0, jsonBeatPosition * EditorScaleController.EditorScale, 0);
             measureTextsByBeat.Add((jsonBeatPosition, text));
-            previousEnabledByBeat.Add(jsonBeatPosition, true);
+            previousEnabledByBeat[jsonBeatPosition] = true;
 
             jsonBeat++;
         }
