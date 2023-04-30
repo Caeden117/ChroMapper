@@ -76,7 +76,7 @@ public class BongoCat : MonoBehaviour
         var timer = 0.125f;
         if (!(next is null))
         {
-            var half = container.AudioTimeSyncController.GetSecondsFromBeat((next.JsonTime - note.JsonTime) / 2f);
+            var half = (next.SongBpmTime - note.SongBpmTime) * 60f / BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 2f;
             timer = next != null
                 ? Mathf.Clamp(half, 0.05f, 0.2f)
                 : 0.125f; // clamp to accommodate sliders and long gaps between notes
