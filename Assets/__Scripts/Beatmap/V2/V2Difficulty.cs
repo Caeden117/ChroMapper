@@ -62,7 +62,8 @@ namespace Beatmap.V2
 
                 SaveCustom();
 
-                WriteFile(this);
+                WriteDifficultyFile(this);
+                WriteBPMInfoFile(this);
 
                 return true;
             }

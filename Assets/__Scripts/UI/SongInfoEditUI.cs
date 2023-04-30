@@ -305,6 +305,9 @@ public class SongInfoEditUI : MenuBase
             {
                 previewAudio.clip = clip;
                 BeatSaberSongContainer.Instance.LoadedSong = clip;
+                BeatSaberSongContainer.Instance.LoadedSongSamples = clip.samples;
+                BeatSaberSongContainer.Instance.LoadedSongFrequency = clip.frequency;
+                BeatSaberSongContainer.Instance.LoadedSongLength = clip.length;
 
                 if (useTemp) TempSongLoadedEvent?.Invoke();
             }, float.Parse(offset.text), useTemp ? audioPath.text : null);

@@ -103,7 +103,8 @@ namespace Beatmap.V3
 
                 SaveCustom();
 
-                WriteFile(this);
+                WriteDifficultyFile(this);
+                WriteBPMInfoFile(this);
 
                 // TODO: temporary fix, there is possibility better solution but this is quick band aid
                 // we need to put them back into the map 

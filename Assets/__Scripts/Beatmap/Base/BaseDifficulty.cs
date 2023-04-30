@@ -128,17 +128,70 @@ namespace Beatmap.Base
         // fuick
         // public static abstract IDifficulty GetFromJson(JSONNode node, string path);
 
-        protected void WriteFile(BaseDifficulty map) =>
+        protected void WriteDifficultyFile(BaseDifficulty map) =>
             // I *believe* this automatically creates the file if it doesn't exist. Needs more experimentation
             File.WriteAllText(map.DirectoryAndFile,
                 Settings.Instance.FormatJson ? map.MainNode.ToString(2) : map.MainNode.ToString());
-        /*using (StreamWriter writer = new StreamWriter(directoryAndFile, false))
+
+        // Write BPMInfo file for official editor compatibility
+        protected void WriteBPMInfoFile(BaseDifficulty map)
+        {
+            JSONNode bpmInfo = new JSONObject();
+
+            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            var audioLength = BeatSaberSongContainer.Instance.LoadedSongLength;
+            var audioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples;
+            var audioFrequency = BeatSaberSongContainer.Instance.LoadedSongFrequency;
+
+            bpmInfo["_version"] = "2.0.0";
+            bpmInfo["_songSampleCount"] = audioSamples;
+            bpmInfo["_songFrequency"] = audioFrequency;
+
+            var regions = new JSONArray();
+            if (map.BpmEvents.Count == 0)
             {
-                //Advanced users might want human readable JSON to perform easy modifications and reload them on the fly.
-                //Thus, ChroMapper "beautifies" the JSON if you are in advanced mode.
-                if (Settings.Instance.AdvancedShit)
-                    writer.Write(mainNode.ToString(2));
-                else writer.Write(mainNode.ToString());
-            }*/
+                regions.Add(new JSONObject
+                {
+                    ["_startSampleIndex"] = 0,
+                    ["_endSampleIndex"] = audioSamples,
+                    ["_startBeat"] = 0f,
+                    ["_endBeat"] = (songBpm / 60f) * audioLength,
+                });
+            }
+            else
+            {
+                for (var i = 0; i < map.BpmEvents.Count - 1; i++)
+                {
+                    var currentBpmEvent = map.BpmEvents[i];
+                    var nextBpmEvent = map.BpmEvents[i + 1];
+
+                    regions.Add(new JSONObject
+                    {
+                        ["_startSampleIndex"] = (int)(currentBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
+                        ["_endSampleIndex"] = (int)(nextBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
+                        ["_startBeat"] = currentBpmEvent.JsonTime,
+                        ["_endBeat"] = nextBpmEvent.JsonTime,
+                    });
+                }
+
+                var lastBpmEvent = map.BpmEvents[map.BpmEvents.Count - 1];
+                var lastStartSampleIndex = (lastBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency);
+                var secondsDiff = (audioSamples - lastStartSampleIndex) / audioFrequency;
+                var jsonBeatsDiff = secondsDiff * (lastBpmEvent.Bpm / 60f);
+
+                regions.Add(new JSONObject
+                {
+                    ["_startSampleIndex"] = (int)lastStartSampleIndex,
+                    ["_endSampleIndex"] = audioSamples,
+                    ["_startBeat"] = lastBpmEvent.JsonTime,
+                    ["_endBeat"] = lastBpmEvent.JsonTime + jsonBeatsDiff,
+                });
+            }
+
+            bpmInfo["_regions"] = regions;
+
+            File.WriteAllText(Path.Combine(BeatSaberSongContainer.Instance.Song.Directory, "BPMInfo.dat"),
+                bpmInfo.ToString(2));
+        }
     }
 }

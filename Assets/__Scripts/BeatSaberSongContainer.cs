@@ -16,6 +16,11 @@ public class BeatSaberSongContainer : MonoBehaviour
 
     [NonSerialized] public MultiClientNetListener? MultiMapperConnection;
 
+    // Because Unity API is not thread safe, these are stored for later when saving difficulty file on separate thread
+    [HideInInspector] public int LoadedSongSamples;
+    [HideInInspector] public int LoadedSongFrequency;
+    [HideInInspector] public float LoadedSongLength;
+
     public static BeatSaberSongContainer Instance { get; private set; }
 
     private void Awake()
@@ -79,7 +84,13 @@ public class BeatSaberSongContainer : MonoBehaviour
 
             Map = song.GetMapFromDifficultyBeatmap(DifficultyData);
 
-            yield return Song.LoadAudio((clip) => LoadedSong = clip, Song.SongTimeOffset, null);
+            yield return Song.LoadAudio((clip) =>
+            {
+                LoadedSong = clip;
+                LoadedSongSamples = clip.samples;
+                LoadedSongFrequency = clip.frequency;
+                LoadedSongLength = clip.length;
+            }, Song.SongTimeOffset, null);
         }
 
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
