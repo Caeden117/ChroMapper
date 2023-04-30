@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Beatmap.Base.Customs;
+using Beatmap.Helper;
 using SimpleJSON;
 
 namespace Beatmap.Base
@@ -47,6 +48,63 @@ namespace Beatmap.Base
             new List<BaseEnvironmentEnhancement>();
 
         public JSONNode CustomData { get; set; } = new JSONObject();
+
+        private List<List<BaseObject>> AllBaseObjectProperties() => new List<List<BaseObject>>
+        {
+            new List<BaseObject>(RotationEvents),
+            new List<BaseObject>(Notes),
+            new List<BaseObject>(Bombs),
+            new List<BaseObject>(Obstacles),
+            new List<BaseObject>(Arcs),
+            new List<BaseObject>(Chains),
+            new List<BaseObject>(Waypoints),
+            new List<BaseObject>(Events),
+            new List<BaseObject>(ColorBoostEvents),
+            new List<BaseObject>(Bookmarks),
+        };
+
+        public void ConvertCustomBpmToOfficial()
+        {
+            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            BaseBpmEvent nextBpmChange;
+            BpmEvents.Clear();
+            for (var i = 0; i < BpmChanges.Count; i++)
+            {
+                var bpmChange = BpmChanges[i];
+                BpmEvents.Add(BeatmapFactory.BpmEvent(bpmChange.JsonTime, bpmChange.Bpm));
+
+                if (i + 1 < BpmChanges.Count)
+                    nextBpmChange = BpmChanges[i + 1];
+                else
+                    nextBpmChange = null;
+
+                var bpmSectionJsonTimeDiff = (nextBpmChange != null) ? nextBpmChange.JsonTime - bpmChange.JsonTime : 0;
+                var scale = (bpmChange.Bpm / songBpm) - 1;
+
+                foreach (var objList in AllBaseObjectProperties())
+                {
+                    if (objList == null) continue;
+
+                    foreach (BaseObject obj in objList)
+                    {
+                        if (bpmChange.JsonTime < obj.JsonTime)
+                        {
+                            if (nextBpmChange == null || obj.JsonTime < nextBpmChange.JsonTime)
+                                obj.JsonTime += (obj.JsonTime - bpmChange.JsonTime) * scale;
+                            else
+                                obj.JsonTime += bpmSectionJsonTimeDiff * scale;
+                        }
+                    }
+                }
+
+                for (var j = i + 1; j < BpmChanges.Count; j++)
+                {
+                    BpmChanges[j].JsonTime += bpmSectionJsonTimeDiff * scale;
+                }
+            }
+
+            BpmChanges.Clear();
+        }
 
         public abstract bool IsChroma();
         public abstract bool IsNoodleExtensions();

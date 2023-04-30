@@ -67,6 +67,14 @@ public class MapLoader : MonoBehaviour
             };
             map = copy;
         }
+
+        if (map.BpmChanges.Count != 0)
+        {
+            PersistentUI.Instance.ShowDialogBox("CM has detected Custom BPM changes and\nconverted these into Official BPM events",
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            map.ConvertCustomBpmToOfficial();
+        }
+
         if (!map.BpmEvents.Any(x => x.JsonTime == 0))
         {
             map.BpmEvents.Add(BeatmapFactory.BpmEvent(0, BeatSaberSongContainer.Instance.Song.BeatsPerMinute));

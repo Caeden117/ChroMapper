@@ -100,8 +100,9 @@ namespace Beatmap.Helper
             : new V2EnvironmentEnhancement(node);
 
         // instantiate from good ol parameter
-        public static BaseBpmEvent BpmEvent(float time, float bpm, JSONNode customData = null) =>
-            new V3BpmEvent(time, bpm, customData);
+        public static BaseBpmEvent BpmEvent(float time, float bpm, JSONNode customData = null) => Settings.Instance.Load_MapV3
+            ? (BaseBpmEvent)new V3BpmEvent(time, bpm, customData)
+            : new V2BpmEvent(time, bpm, customData);
 
         public static BaseRotationEvent RotationEvent(float time, int executionTime, float rotation,
             JSONNode customData = null) => new V3RotationEvent(time, executionTime, rotation, customData);
