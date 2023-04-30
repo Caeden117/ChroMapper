@@ -56,6 +56,7 @@ public class MapLoader : MonoBehaviour
                 CustomData = m.CustomData?.Clone(),
                 Notes = new List<BaseNote>(m.Notes),
                 Obstacles = new List<BaseObstacle>(m.Obstacles),
+                BpmEvents = new List<BaseBpmEvent>(m.BpmEvents),
                 Events = new List<BaseEvent>(m.Events),
                 Waypoints = new List<BaseWaypoint>(m.Waypoints),
                 Arcs = new List<BaseArc>(), // the purge
