@@ -758,6 +758,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 newObjects.Add(type, collection.GrabSortedObjects());
             }
 
+            BeatSaberSongContainer.Instance.Map.BpmEvents =
+                newObjects[ObjectType.BpmChange].Cast<BaseBpmEvent>().ToList();
+
             if (Settings.Instance.Load_Notes)
             {
                 BeatSaberSongContainer.Instance.Map.Notes =
@@ -778,8 +781,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             if (Settings.Instance.Load_Others)
             {
-                BeatSaberSongContainer.Instance.Map.BpmChanges =
-                    newObjects[ObjectType.BpmChange].Cast<BaseBpmChange>().ToList();
                 BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[ObjectType.CustomEvent]
                     .Cast<BaseCustomEvent>().ToList();
             }

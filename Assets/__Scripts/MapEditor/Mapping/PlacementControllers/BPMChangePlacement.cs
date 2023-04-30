@@ -10,9 +10,9 @@ using UnityEngine;
 public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventContainer, BPMChangeGridContainer>
 {
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
-        new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned.JsonTime}");
+        new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Event at time {spawned.JsonTime}");
 
-    public override BaseBpmEvent GenerateOriginalData() => BeatmapFactory.BpmChange(0, 0);
+    public override BaseBpmEvent GenerateOriginalData() => BeatmapFactory.BpmEvent(0, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __) =>
         instantiatedContainer.transform.localPosition =

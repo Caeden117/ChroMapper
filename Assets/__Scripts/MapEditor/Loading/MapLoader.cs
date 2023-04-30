@@ -14,7 +14,7 @@ public class MapLoader : MonoBehaviour
     [SerializeField] private TracksManager manager;
     [SerializeField] private NoteLanesController noteLanesController;
 
-    [Space] [SerializeField] private Transform containerCollectionsContainer;
+    [Space][SerializeField] private Transform containerCollectionsContainer;
 
     private BaseDifficulty map;
     private int noteLaneSize = 2;
@@ -42,12 +42,11 @@ public class MapLoader : MonoBehaviour
                 LightTranslationEventBoxGroups = new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>(m.LightTranslationEventBoxGroups),
                 EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(m.EventTypesWithKeywords),
                 UseNormalEventsAsCompatibleEvents = m.UseNormalEventsAsCompatibleEvents,
-                
+
                 EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(m.EnvironmentEnhancements),
                 BpmChanges = new List<BaseBpmChange>(m.BpmChanges),
                 CustomEvents = new List<BaseCustomEvent>(m.CustomEvents)
             };
-            copy.BpmChanges.AddRange(copy.BpmEvents.Select(x => BeatmapFactory.BpmChange(x.JsonTime, x.Bpm)));
             map = copy;
         }
         else
@@ -61,22 +60,22 @@ public class MapLoader : MonoBehaviour
                 Waypoints = new List<BaseWaypoint>(m.Waypoints),
                 Arcs = new List<BaseArc>(), // the purge
                 EventTypesWithKeywords = m.EventTypesWithKeywords != null ? new V2SpecialEventsKeywordFilters(m.EventTypesWithKeywords) : null,
-                
+
                 EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(m.EnvironmentEnhancements),
                 BpmChanges = new List<BaseBpmChange>(m.BpmChanges),
                 CustomEvents = new List<BaseCustomEvent>(m.CustomEvents)
             };
             map = copy;
         }
-        if (!map.BpmChanges.Any(x => x.JsonTime == 0))
+        if (!map.BpmEvents.Any(x => x.JsonTime == 0))
         {
-            map.BpmChanges.Add(BeatmapFactory.BpmChange(0, BeatSaberSongContainer.Instance.Song.BeatsPerMinute));
+            map.BpmEvents.Add(BeatmapFactory.BpmEvent(0, BeatSaberSongContainer.Instance.Song.BeatsPerMinute));
         }
     }
 
     public IEnumerator HardRefresh()
     {
-        yield return StartCoroutine(LoadObjects(map.BpmChanges));
+        yield return StartCoroutine(LoadObjects(map.BpmEvents));
         if (Settings.Instance.Load_Notes) yield return StartCoroutine(LoadObjects(map.Notes));
         if (Settings.Instance.Load_Obstacles) yield return StartCoroutine(LoadObjects(map.Obstacles));
         if (Settings.Instance.Load_Events) yield return StartCoroutine(LoadObjects(map.Events));
