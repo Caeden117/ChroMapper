@@ -35,7 +35,6 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
     {
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Head)
         {
-            dragged.SongBpmTime = queued.SongBpmTime;
             dragged.JsonTime = queued.JsonTime;
             dragged.PosX = queued.PosX;
             dragged.PosY = queued.PosY;
@@ -44,7 +43,6 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
 
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
         {
-            dragged.TailSongBpmTime = queued.SongBpmTime;
             dragged.TailJsonTime = queued.JsonTime;
             dragged.TailPosX = queued.PosX;
             dragged.TailPosY = queued.PosY;

@@ -199,7 +199,6 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             IsPlacing = false;
             queuedData.JsonTime = startJsonTime;
-            queuedData.SongBpmTime = startSongBpmTime;
 
             var endSongBpmTime = startSongBpmTime + (instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale);
             var endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
@@ -230,7 +229,6 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
     public override void TransferQueuedToDraggedObject(ref BaseObstacle dragged, BaseObstacle queued)
     {
-        dragged.SongBpmTime = queuedData.SongBpmTime;
         dragged.JsonTime = queued.JsonTime;
         dragged.PosX = queued.PosX;
         dragged.CustomCoordinate = queued.CustomCoordinate;

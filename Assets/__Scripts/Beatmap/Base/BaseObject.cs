@@ -19,15 +19,34 @@ namespace Beatmap.Base
         {
             JsonTime = time;
             CustomData = customData;
-
-            var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-            SongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(JsonTime) ?? JsonTime;
         }
 
         public abstract ObjectType ObjectType { get; set; }
         public bool HasAttachedContainer { get; set; } = false;
-        public float JsonTime { get; set; }
-        public float SongBpmTime { get; set; }
+
+        private float jsonTime;
+        public float JsonTime
+        {
+            get => jsonTime;
+            set
+            {
+                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                songBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(value) ?? value;
+                jsonTime = value;
+            }
+        }
+        private float songBpmTime { get; set; }
+        public float SongBpmTime
+        {
+            get => songBpmTime;
+            set
+            {
+                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                jsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
+                songBpmTime = value;
+            }
+        }
+
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
         public JSONNode CustomData { get; set; } = new JSONObject();
@@ -41,6 +60,8 @@ namespace Beatmap.Base
         public JSONNode CustomTrack { get; set; }
 
         public abstract string CustomKeyTrack { get; }
+
+        public virtual void RecomputeSongBpmTime() => JsonTime = JsonTime;
 
         public virtual bool IsConflictingWith(BaseObject other, bool deletion = false) =>
             Mathf.Abs(JsonTime - other.JsonTime) < BeatmapObjectContainerCollection.Epsilon &&

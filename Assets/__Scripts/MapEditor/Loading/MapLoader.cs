@@ -115,22 +115,7 @@ public class MapLoader : MonoBehaviour
         collection.UnsortedObjects = collection.LoadedObjects.ToList();
         UpdateSlider<T>();
 
-        var bpmChangeCollection = (BPMChangeGridContainer)BeatmapObjectContainerCollection.GetCollectionForType(Beatmap.Enums.ObjectType.BpmChange);
-        if (typeof(T) == typeof(BaseArc) || typeof(T) == typeof(BaseChain))
-        {
-            foreach (var obj in objects)
-            {
-                obj.SongBpmTime = bpmChangeCollection.JsonTimeToSongBpmTime(obj.JsonTime);
-                (obj as BaseSlider).TailSongBpmTime = bpmChangeCollection.JsonTimeToSongBpmTime((obj as BaseSlider).TailJsonTime);
-            }
-        }
-        else
-        {
-            foreach (var obj in objects)
-            {
-                obj.SongBpmTime = bpmChangeCollection.JsonTimeToSongBpmTime(obj.JsonTime);
-            }
-        }
+        foreach (var obj in objects) obj.RecomputeSongBpmTime();
 
         if (typeof(T) == typeof(BaseNote) || typeof(T) == typeof(BaseObstacle))
         {

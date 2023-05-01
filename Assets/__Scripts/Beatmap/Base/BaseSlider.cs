@@ -20,22 +20,47 @@ namespace Beatmap.Base
             TailJsonTime = tailTime;
             TailPosX = tailPosX;
             TailPosY = tailPosY;
-
-            var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-            TailSongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(TailJsonTime) ?? TailJsonTime;
         }
 
         public int Color { get; set; }
         public int CutDirection { get; set; }
         public int AngleOffset { get; set; }
-        public float TailJsonTime { get; set; }
-        public float TailSongBpmTime { get; set; }
+
+        private float tailJsonTime;
+        public float TailJsonTime
+        {
+            get => tailJsonTime;
+            set
+            {
+                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                tailSongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(value) ?? value;
+                tailJsonTime = value;
+            }
+        }
+        private float tailSongBpmTime { get; set; }
+        public float TailSongBpmTime
+        {
+            get => tailSongBpmTime;
+            set
+            {
+                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                tailJsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
+                tailSongBpmTime = value;
+            }
+        }
+
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
         public JSONNode CustomTailCoordinate { get; set; }
 
         public abstract string CustomKeyTailCoordinate { get; }
+
+        public override void RecomputeSongBpmTime()
+        {
+            base.RecomputeSongBpmTime();
+            TailJsonTime = TailJsonTime;
+        }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 

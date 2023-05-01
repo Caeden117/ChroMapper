@@ -310,7 +310,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
             {
                 if (obj.JsonTime > jsonTime)
                 {
-                    obj.SongBpmTime = JsonTimeToSongBpmTime(obj.JsonTime);
+                    obj.RecomputeSongBpmTime();
                 }
             }
         }

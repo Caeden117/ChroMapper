@@ -162,7 +162,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             OnPhysicsRaycast(hit, roundedHit);
             queuedData.SongBpmTime = RoundedTime;
-            queuedData.JsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(RoundedTime);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));
@@ -393,12 +392,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
         // To delete properly we need to set the original time
         var jsonTime = draggedObjectData.JsonTime;
-        var songBpmTime = draggedObjectData.SongBpmTime;
         draggedObjectData.JsonTime = originalDraggedObjectData.JsonTime;
-        draggedObjectData.SongBpmTime = originalDraggedObjectData.SongBpmTime;
         objectContainerCollection.DeleteObject(draggedObjectData, false, false);
         draggedObjectData.JsonTime = jsonTime;
-        draggedObjectData.SongBpmTime = songBpmTime;
 
         objectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
         if (conflicting.Contains(draggedObjectData))

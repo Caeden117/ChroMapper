@@ -361,11 +361,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             var newData = BeatmapFactory.Clone(data);
             newData.JsonTime = newJsonTime;
-            newData.SongBpmTime = bpmChangesContainer.JsonTimeToSongBpmTime(newJsonTime);
             if (newData is BaseSlider slider)
             {
                 slider.TailJsonTime = currentJsonTime + slider.TailJsonTime;
-                slider.TailSongBpmTime = bpmChangesContainer.JsonTimeToSongBpmTime(slider.TailJsonTime);
             }
 
             if (!collections.TryGetValue(newData.ObjectType, out var collection))
@@ -457,14 +455,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             data.JsonTime += beats;
             if (snapObjects)
                 data.JsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
-            data.SongBpmTime = bpmChangesContainer.JsonTimeToSongBpmTime(data.JsonTime);
 
             if (data is BaseSlider slider)
             {
                 slider.TailJsonTime += beats;
                 if (snapObjects)
                     slider.TailJsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
-                slider.TailSongBpmTime = bpmChangesContainer.JsonTimeToSongBpmTime(slider.TailJsonTime);
             }
             collection.LoadedObjects.Add(data);
 
