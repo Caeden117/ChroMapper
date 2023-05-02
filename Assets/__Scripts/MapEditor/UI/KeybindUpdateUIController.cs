@@ -90,6 +90,8 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     public void OnToggleNoteorEvent(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
+        if (eventPlacement.queuedData.IsWhite) return;
+
         if (colorType.LeftSelectedEnabled())
             blueToggle.onValueChanged.Invoke(true);
         else
@@ -101,11 +103,8 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     {
         if (!context.performed) return;
         placeMode.SetMode(PlacementModeController.PlacementMode.Bomb);
+        colorType.BombNote(true);
         lightMode.UpdateValue();
-        if (Settings.Instance.Load_MapV3)
-        {
-            colorType.BombNote(true);
-        }
     }
 
     public void OnPlaceObstacle(InputAction.CallbackContext context)
