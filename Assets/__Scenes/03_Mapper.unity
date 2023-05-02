@@ -20042,7 +20042,6 @@ GameObject:
   - component: {fileID: 625159834}
   - component: {fileID: 625159833}
   - component: {fileID: 625159832}
-  - component: {fileID: 625159836}
   m_Layer: 5
   m_Name: Change Beatmap Version
   m_TagString: Untagged
@@ -20137,7 +20136,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 625159836}
+      - m_Target: {fileID: 1546839091}
         m_TargetAssemblyTypeName: BeatmapVersionSwitchInputController, Main
         m_MethodName: PromptSwitchVersion
         m_Mode: 1
@@ -20187,19 +20186,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 625159830}
   m_CullTransparentMesh: 0
---- !u!114 &625159836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 625159830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e384ee089ded243b3dbeb08ee1ee1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pauseManager: {fileID: 614713889}
 --- !u!1 &626823567
 GameObject:
   m_ObjectHideFlags: 0
