@@ -45,8 +45,7 @@ namespace Beatmap.Base
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
-            if (other is BaseColorBoostEvent cbe) return Toggle = cbe.Toggle;
-            return false;
+            return (other is BaseColorBoostEvent cbe);
         }
 
         public override void Apply(BaseObject originalData)
