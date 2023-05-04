@@ -12,7 +12,6 @@ namespace Beatmap.Base
         protected BaseBombNote(BaseGrid other)
         {
             JsonTime = other.JsonTime;
-            SongBpmTime = other.SongBpmTime;
             PosX = other.PosX;
             PosY = other.PosY;
             Type = (int)NoteType.Bomb;

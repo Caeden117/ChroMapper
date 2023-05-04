@@ -72,7 +72,6 @@ namespace Beatmap.Base
         public virtual void Apply(BaseObject originalData)
         {
             JsonTime = originalData.JsonTime;
-            SongBpmTime = originalData.SongBpmTime;
             CustomData = originalData.CustomData?.Clone();
             RefreshCustom();
         }

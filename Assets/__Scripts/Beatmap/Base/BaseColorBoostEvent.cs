@@ -11,7 +11,6 @@ namespace Beatmap.Base
         protected BaseColorBoostEvent(BaseColorBoostEvent other)
         {
             JsonTime = other.JsonTime;
-            SongBpmTime = other.SongBpmTime;
             Type = 5;
             Toggle = other.Toggle;
             Value = Toggle ? 1 : 0;
@@ -21,7 +20,6 @@ namespace Beatmap.Base
         protected BaseColorBoostEvent(BaseEvent evt)
         {
             JsonTime = evt.JsonTime;
-            SongBpmTime = evt.SongBpmTime;
             Type = 5;
             Toggle = evt.Value == 1;
             Value = Toggle ? 1 : 0;
