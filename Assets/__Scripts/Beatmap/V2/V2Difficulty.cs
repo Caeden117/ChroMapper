@@ -45,6 +45,14 @@ namespace Beatmap.V2
                 var allEvents = new List<BaseObject>();
                 allEvents.AddRange(Events);
                 allEvents.AddRange(BpmEvents);
+                if (BpmEvents.First().JsonTime != 0)
+                {
+                    allEvents.Add(new V2BpmEvent()
+                    {
+                        JsonTime = 0,
+                        Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                    });
+                }
                 allEvents.Sort((lhs, rhs) => lhs.JsonTime.CompareTo(rhs.JsonTime));
                 foreach (var e in allEvents) events.Add(e.ToJson());
 

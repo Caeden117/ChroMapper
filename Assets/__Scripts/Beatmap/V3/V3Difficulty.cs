@@ -49,6 +49,14 @@ namespace Beatmap.V3
                 foreach (var r in RotationEvents) rotationEvents.Add(r.ToJson());
 
                 var bpmEvents = new JSONArray();
+                if (BpmEvents.First().JsonTime != 0)
+                {
+                    BpmEvents.Insert(0, new V3BpmEvent()
+                    {
+                        JsonTime = 0,
+                        Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                    });
+                }
                 foreach (var b in BpmEvents) bpmEvents.Add(b.ToJson());
 
                 var colorNotes = new JSONArray();
