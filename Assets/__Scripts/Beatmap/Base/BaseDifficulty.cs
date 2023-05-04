@@ -71,8 +71,38 @@ namespace Beatmap.Base
             for (var i = 0; i < BpmChanges.Count; i++)
             {
                 var bpmChange = BpmChanges[i];
+
+                // Account for custom bpm change original grid behaviour
+                var distanceToNearestInt = Mathf.Abs(bpmChange.JsonTime - Mathf.Round(bpmChange.JsonTime));
+                if (distanceToNearestInt > 0.01f)
+                {
+                    var oldTime = bpmChange.JsonTime;
+                    var jsonTimeOffset = 1 - bpmChange.JsonTime % 1;
+
+                    foreach (var objList in AllBaseObjectProperties())
+                    {
+                        if (objList == null) continue;
+
+                        foreach (BaseObject obj in objList)
+                        {
+                            if (obj.JsonTime >= oldTime)
+                            {
+                                obj.JsonTime += jsonTimeOffset;
+                            }
+                        }
+                    }
+
+                    for (var j = i; j < BpmChanges.Count; j++)
+                    {
+                        BpmChanges[j].JsonTime += jsonTimeOffset;
+                    }
+
+                    BpmEvents.Add(BeatmapFactory.BpmEvent(oldTime, 100000));
+                }
+
                 BpmEvents.Add(BeatmapFactory.BpmEvent(bpmChange.JsonTime, bpmChange.Bpm));
 
+                // Adjust all the objects after the bpm change accordingly
                 if (i + 1 < BpmChanges.Count)
                     nextBpmChange = BpmChanges[i + 1];
                 else
