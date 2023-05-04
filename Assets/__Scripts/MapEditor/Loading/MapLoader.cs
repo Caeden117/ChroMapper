@@ -75,11 +75,6 @@ public class MapLoader : MonoBehaviour
                 null, PersistentUI.DialogBoxPresetType.Ok);
             map.ConvertCustomBpmToOfficial();
         }
-
-        if (!map.BpmEvents.Any(x => x.JsonTime == 0))
-        {
-            map.BpmEvents.Add(BeatmapFactory.BpmEvent(0, BeatSaberSongContainer.Instance.Song.BeatsPerMinute));
-        }
     }
 
     public IEnumerator HardRefresh()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
@@ -246,12 +247,18 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         return LoadedObjects.FirstOrDefault(x => x.JsonTime - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
     }
 
+    private BaseBpmEvent DefaultEvent()
+    {
+        var defaultEvent = BeatmapFactory.BpmEvent();
+        defaultEvent.Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        return defaultEvent;
+    }
+
     public float JsonTimeToSongBpmTime(float jsonTime)
     {
-        var bpms = LoadedObjects.Where(x => x.JsonTime <= jsonTime).Cast<BaseBpmEvent>().ToList();
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-
-        if (bpms.Count == 0) return jsonTime;
+        var bpms = new List<BaseBpmEvent> { DefaultEvent() };
+        bpms.AddRange(LoadedObjects.Where(x => x.JsonTime <= jsonTime).Cast<BaseBpmEvent>());
 
         var currentSongBeats = 0f;
         for (int i = 0; i < bpms.Count() - 1; i++)
@@ -268,14 +275,13 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         return currentSongBeats;
     }
 
-    public float SongBpmTimeToJsonTime(float originalBpmTime)
+    public float SongBpmTimeToJsonTime(float songBpmTime)
     {
-        var bpms = LoadedObjects.Cast<BaseBpmEvent>().ToList();
-        var originalBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        var bpms = new List<BaseBpmEvent> { DefaultEvent() };
+        bpms.AddRange(LoadedObjects.Cast<BaseBpmEvent>());
 
-        if (bpms.Count == 0) return originalBpmTime;
-
-        var seconds = originalBpmTime * (60f / originalBpm);
+        var seconds = songBpmTime * (60f / songBpm);
 
         var currentSeconds = 0f;
         var nextSeconds = 0f;
