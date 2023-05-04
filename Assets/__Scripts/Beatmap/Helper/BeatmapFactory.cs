@@ -100,92 +100,92 @@ namespace Beatmap.Helper
             : new V2EnvironmentEnhancement(node);
 
         // instantiate from good ol parameter
-        public static BaseBpmEvent BpmEvent(float time, float bpm, JSONNode customData = null) => Settings.Instance.Load_MapV3
-            ? (BaseBpmEvent)new V3BpmEvent(time, bpm, customData)
-            : new V2BpmEvent(time, bpm, customData);
+        public static BaseBpmEvent BpmEvent(float jsonTime, float bpm, JSONNode customData = null) => Settings.Instance.Load_MapV3
+            ? (BaseBpmEvent)new V3BpmEvent(jsonTime, bpm, customData)
+            : new V2BpmEvent(jsonTime, bpm, customData);
 
-        public static BaseRotationEvent RotationEvent(float time, int executionTime, float rotation,
-            JSONNode customData = null) => new V3RotationEvent(time, executionTime, rotation, customData);
+        public static BaseRotationEvent RotationEvent(float jsonTime, int executionTime, float rotation,
+            JSONNode customData = null) => new V3RotationEvent(jsonTime, executionTime, rotation, customData);
 
-        public static BaseNote Note(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
+        public static BaseNote Note(float jsonTime, int posX, int posY, int color, int cutDirection, int angleOffset,
             JSONNode customData = null) => Settings.Instance.Load_MapV3
-            ? (BaseNote)new V3ColorNote(time, posX, posY, color, cutDirection, angleOffset, customData)
-            : new V2Note(time, posX, posY, color, cutDirection, customData);
+            ? (BaseNote)new V3ColorNote(jsonTime, posX, posY, color, cutDirection, angleOffset, customData)
+            : new V2Note(jsonTime, posX, posY, color, cutDirection, customData);
 
-        public static BaseNote Bomb(float time, int posX, int posY, JSONNode customData = null) =>
+        public static BaseNote Bomb(float jsonTime, int posX, int posY, JSONNode customData = null) =>
             Settings.Instance.Load_MapV3
-                ? (BaseNote)new V3BombNote(time, posX, posY, customData)
-                : new V2Note(time, posX, posY, 3, 0, customData);
+                ? (BaseNote)new V3BombNote(jsonTime, posX, posY, customData)
+                : new V2Note(jsonTime, posX, posY, 3, 0, customData);
 
-        public static BaseObstacle Obstacle(float time, int posX, int posY, float duration, int width, int height,
+        public static BaseObstacle Obstacle(float jsonTime, int posX, int posY, float duration, int width, int height,
             JSONNode customData = null) => Settings.Instance.Load_MapV3
-            ? (BaseObstacle)new V3Obstacle(time, posX, posY, duration, width, height, customData)
-            : new V2Obstacle(time, posX, posY == (int)GridY.Top && height == (int)ObstacleHeight.Crouch ? 1 : 0, duration, width, customData);
+            ? (BaseObstacle)new V3Obstacle(jsonTime, posX, posY, duration, width, height, customData)
+            : new V2Obstacle(jsonTime, posX, posY == (int)GridY.Top && height == (int)ObstacleHeight.Crouch ? 1 : 0, duration, width, customData);
 
-        public static BaseObstacle Obstacle(float time, int posX, int type, float duration, int width,
+        public static BaseObstacle Obstacle(float jsonTime, int posX, int type, float duration, int width,
             JSONNode customData = null) => Settings.Instance.Load_MapV3
-            ? (BaseObstacle)new V3Obstacle(time, posX, type == (int)ObstacleType.Crouch ? 2 : 0, duration, width, type == (int)ObstacleType.Crouch ? 3 : 5, customData)
-            : new V2Obstacle(time, posX, type, duration, width, customData);
+            ? (BaseObstacle)new V3Obstacle(jsonTime, posX, type == (int)ObstacleType.Crouch ? 2 : 0, duration, width, type == (int)ObstacleType.Crouch ? 3 : 5, customData)
+            : new V2Obstacle(jsonTime, posX, type, duration, width, customData);
 
-        public static BaseObstacle Obstacle(float time, int posX, int posY, int type, float duration, int width, int height,
+        public static BaseObstacle Obstacle(float jsonTime, int posX, int posY, int type, float duration, int width, int height,
             JSONNode customData = null) => Settings.Instance.Load_MapV3
-            ? (BaseObstacle)new V3Obstacle(time, posX, posY, duration, width, height, customData)
-            : new V2Obstacle(time, posX, type, duration, width, customData);
+            ? (BaseObstacle)new V3Obstacle(jsonTime, posX, posY, duration, width, height, customData)
+            : new V2Obstacle(jsonTime, posX, type, duration, width, customData);
 
-        public static BaseArc Arc(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
+        public static BaseArc Arc(float jsonTime, int posX, int posY, int color, int cutDirection, int angleOffset,
             float mult, float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult,
             int midAnchorMode, JSONNode customData = null) => Settings.Instance.Load_MapV3
-            ? (BaseArc)new V3Arc(time, posX, posY, color, cutDirection, angleOffset, mult,
+            ? (BaseArc)new V3Arc(jsonTime, posX, posY, color, cutDirection, angleOffset, mult,
                 tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData)
-            : new V2Arc(time, posX, posY, color, cutDirection, angleOffset, mult,
+            : new V2Arc(jsonTime, posX, posY, color, cutDirection, angleOffset, mult,
                 tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData);
 
-        public static BaseChain Chain(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
+        public static BaseChain Chain(float jsonTime, int posX, int posY, int color, int cutDirection, int angleOffset,
             float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null) =>
-            new V3Chain(time, posX, posY, color, cutDirection, angleOffset,
+            new V3Chain(jsonTime, posX, posY, color, cutDirection, angleOffset,
                 tailTime, tailPosX, tailPosY, sliceCount, squish, customData);
 
-        public static BaseWaypoint Waypoint(float time, int posX, int posY, int offsetDirection,
+        public static BaseWaypoint Waypoint(float jsonTime, int posX, int posY, int offsetDirection,
             JSONNode customData = null) => Settings.Instance.Load_MapV3
-            ? (BaseWaypoint)new V3Waypoint(time,
+            ? (BaseWaypoint)new V3Waypoint(jsonTime,
                 posX, posY, offsetDirection, customData)
-            : new V2Waypoint(time,
+            : new V2Waypoint(jsonTime,
                 posX, posY, offsetDirection, customData);
 
         public static BaseEvent
-            Event(float time, int type, int value, float floatValue = 1f, JSONNode customData = null) =>
+            Event(float jsonTime, int type, int value, float floatValue = 1f, JSONNode customData = null) =>
             Settings.Instance.Load_MapV3
-                ? (BaseEvent)new V3BasicEvent(time, type, value, floatValue, customData)
-                : new V2Event(time, type, value, floatValue, customData);
+                ? (BaseEvent)new V3BasicEvent(jsonTime, type, value, floatValue, customData)
+                : new V2Event(jsonTime, type, value, floatValue, customData);
 
-        public static BaseColorBoostEvent ColorBoostEvent(float time, bool toggle, JSONNode customData = null) =>
-            new V3ColorBoostEvent(time, toggle, customData);
+        public static BaseColorBoostEvent ColorBoostEvent(float jsonTime, bool toggle, JSONNode customData = null) =>
+            new V3ColorBoostEvent(jsonTime, toggle, customData);
 
-        public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups(float time, int id,
+        public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups(float jsonTime, int id,
             List<BaseLightColorEventBox> events, JSONNode customData = null) =>
-            new V3LightColorEventBoxGroup(time, id, events, customData);
+            new V3LightColorEventBoxGroup(jsonTime, id, events, customData);
 
-        public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> LightRotationEventBoxGroups(float time,
+        public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> LightRotationEventBoxGroups(float jsonTime,
             int id, List<BaseLightRotationEventBox> events, JSONNode customData = null) =>
-            new V3LightRotationEventBoxGroup(time, id, events, customData);
+            new V3LightRotationEventBoxGroup(jsonTime, id, events, customData);
 
         public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox> LightTranslationEventBoxGroups(
-            float time,
+            float jsonTime,
             int id, List<BaseLightTranslationEventBox> events, JSONNode customData = null) =>
-            new V3LightTranslationEventBoxGroup(time, id, events, customData);
+            new V3LightTranslationEventBoxGroup(jsonTime, id, events, customData);
 
         // public static BaseEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Settings.Instance.Load_MapV3 ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(keywords) : new V2SpecialEventsKeywordFilters(keywords);
-        public static BaseBpmChange BpmChange(float time, float bpm) => Settings.Instance.Load_MapV3
-            ? (BaseBpmChange)new V3BpmChange(time, bpm)
-            : new V2BpmChange(time, bpm);
+        public static BaseBpmChange BpmChange(float jsonTime, float bpm) => Settings.Instance.Load_MapV3
+            ? (BaseBpmChange)new V3BpmChange(jsonTime, bpm)
+            : new V2BpmChange(jsonTime, bpm);
 
-        public static BaseBookmark Bookmark(float time, string name) => Settings.Instance.Load_MapV3
-            ? (BaseBookmark)new V3Bookmark(time, name)
-            : new V2Bookmark(time, name);
+        public static BaseBookmark Bookmark(float jsonTime, string name) => Settings.Instance.Load_MapV3
+            ? (BaseBookmark)new V3Bookmark(jsonTime, name)
+            : new V2Bookmark(jsonTime, name);
 
-        public static BaseCustomEvent CustomEvent(float time, string type, JSONNode data) => Settings.Instance.Load_MapV3
-            ? (BaseCustomEvent)new V3CustomEvent(time, type, data)
-            : new V2CustomEvent(time, type, data);
+        public static BaseCustomEvent CustomEvent(float jsonTime, string type, JSONNode data) => Settings.Instance.Load_MapV3
+            ? (BaseCustomEvent)new V3CustomEvent(jsonTime, type, data)
+            : new V2CustomEvent(jsonTime, type, data);
 
         // instantiate from empty
         public static BaseBpmEvent BpmEvent() => new V3BpmEvent();
