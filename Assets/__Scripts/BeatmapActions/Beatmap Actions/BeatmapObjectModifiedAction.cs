@@ -46,6 +46,11 @@ public class BeatmapObjectModifiedAction : BeatmapAction
             if (!inCollection) RefreshPools(Data);
         }
 
+        if (originalObject is BaseBpmEvent)
+        {
+            BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(originalObject.JsonTime);
+        }
+
         if (!Networked)
         {
             SelectionController.Select(originalObject, addToSelection, true, !inCollection);
@@ -67,6 +72,11 @@ public class BeatmapObjectModifiedAction : BeatmapAction
             // This is an optimisation only possible if the object has not changed position in the SortedSet 
             editedObject.Apply(editedData);
             if (!inCollection) RefreshPools(Data);
+        }
+
+        if (originalObject is BaseBpmEvent)
+        {
+            BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(originalObject.JsonTime);
         }
 
         if (!Networked)

@@ -73,8 +73,7 @@ namespace Beatmap.Base
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
-            if (other is BaseBpmEvent bpm) return Math.Abs(Bpm - bpm.Bpm) < DecimalTolerance;
-            return false;
+            return (other is BaseBpmEvent bpm);
         }
 
         public override void Apply(BaseObject originalData)

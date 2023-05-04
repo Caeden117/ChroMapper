@@ -408,6 +408,29 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <returns>A list of sorted objects</returns>
     public virtual IEnumerable<BaseObject> GrabSortedObjects() => LoadedObjects;
 
+    public static void RefreshFutureObjectsPosition(float jsonTime)
+    {
+        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
+        {
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
+            if (collection == null) continue;
+            foreach (var obj in collection.LoadedObjects)
+            {
+                if (obj.JsonTime > jsonTime)
+                {
+                    obj.RecomputeSongBpmTime();
+                }
+            }
+            foreach (var container in collection.LoadedContainers)
+            {
+                if (container.Key.JsonTime > jsonTime)
+                {
+                    container.Value.UpdateGridPosition();
+                }
+            }
+        }
+    }
+
     protected virtual void UpdateContainerData(ObjectContainer con, BaseObject obj) { }
 
     protected virtual void OnObjectDelete(BaseObject obj) { }

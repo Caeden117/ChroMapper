@@ -107,17 +107,16 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         AudioTimeSyncController.TimeChanged -= OnTimeChanged;
     }
 
-    protected override void OnObjectDelete(BaseObject obj)
+    protected override void OnObjectDelete(BaseObject obj) => OnObjectDeleteOrSpawn(obj);
+
+    protected override void OnObjectSpawned(BaseObject obj) => OnObjectDeleteOrSpawn(obj);
+
+    private void OnObjectDeleteOrSpawn(BaseObject obj)
     {
         RefreshModifiedBeat();
-        // TODO: Make this thing async
-        RecomputeFutureObjectsSongBpmTimes(obj.JsonTime);
-        RefreshFutureObjects(obj.JsonTime);
         countersPlus.UpdateStatistic(CountersPlusStatistic.BpmChanges);
+        BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(obj.JsonTime);
     }
-
-    protected override void OnObjectSpawned(BaseObject obj) =>
-        countersPlus.UpdateStatistic(CountersPlusStatistic.BpmChanges);
 
     public void RefreshModifiedBeat()
     {
@@ -304,38 +303,6 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
 
         var lastBpm = bpms.Last();
         return lastBpm.JsonTime + lastBpm.Bpm / 60 * (seconds - currentSeconds);
-    }
-
-    public void RecomputeFutureObjectsSongBpmTimes(float jsonTime)
-    {
-        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
-        {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
-            if (collection == null) continue;
-            foreach (var obj in collection.LoadedObjects)
-            {
-                if (obj.JsonTime > jsonTime)
-                {
-                    obj.RecomputeSongBpmTime();
-                }
-            }
-        }
-    }
-
-    public void RefreshFutureObjects(float jsonTime)
-    {
-        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
-        {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
-            if (collection == null) continue;
-            foreach (var container in collection.LoadedContainers)
-            {
-                if (container.Key.JsonTime > jsonTime)
-                {
-                    container.Value.UpdateGridPosition();
-                }
-            }
-        }
     }
 
     public override ObjectContainer CreateContainer() =>
