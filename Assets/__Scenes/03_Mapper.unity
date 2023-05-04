@@ -2957,7 +2957,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BPM Changes
+  m_text: BPM Events
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3e5c0558f96c1a0489f92cf4863957d1, type: 2}
   m_sharedMaterial: {fileID: 21947009840950596, guid: 3e5c0558f96c1a0489f92cf4863957d1,
@@ -13876,7 +13876,7 @@ GameObject:
   m_Component:
   - component: {fileID: 458724370}
   m_Layer: 11
-  m_Name: BPM Changes Grid Front Scaling Offset
+  m_Name: BPM Events Grid Front Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18280,9 +18280,8 @@ GameObject:
   - component: {fileID: 584811692}
   - component: {fileID: 584811694}
   - component: {fileID: 584811693}
-  - component: {fileID: 584811695}
   m_Layer: 11
-  m_Name: BPM Changes Grid
+  m_Name: BPM Events Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18352,22 +18351,6 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
---- !u!114 &584811695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 584811691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2d1b345a70cfe846bf6304c1582e33b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  notes: 0
-  obstacles: 0
-  events: 0
-  otherObjects: 1
 --- !u!1001 &588043300
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27984,7 +27967,7 @@ GameObject:
   - component: {fileID: 866552293}
   - component: {fileID: 866552294}
   m_Layer: 0
-  m_Name: BPM Change Parent
+  m_Name: BPM Event Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32701,7 +32684,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1014994728}
   m_Layer: 11
-  m_Name: BPM Changes Interface Scaling Offset
+  m_Name: BPM Events Interface Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34529,7 +34512,7 @@ GameObject:
   - component: {fileID: 1057120710}
   - component: {fileID: 1057120709}
   m_Layer: 12
-  m_Name: BPM Change Label
+  m_Name: BPM Event Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62055,7 +62038,7 @@ GameObject:
   - component: {fileID: 1890332740}
   - component: {fileID: 1890332741}
   m_Layer: 0
-  m_Name: BPM Changes Grid
+  m_Name: BPM Events Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
