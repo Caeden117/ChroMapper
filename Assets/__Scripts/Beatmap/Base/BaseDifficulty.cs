@@ -81,6 +81,7 @@ namespace Beatmap.Base
             {
                 PersistentUI.Instance.ShowDialogBox("Mapper", "custom.bpm.convert",
                     null, PersistentUI.DialogBoxPresetType.Ok);
+                BpmEvents.Clear();
             }
 
             BaseBpmEvent nextBpmChange;

@@ -49,7 +49,7 @@ namespace Beatmap.V3
                 foreach (var r in RotationEvents) rotationEvents.Add(r.ToJson());
 
                 var bpmEvents = new JSONArray();
-                if (BpmEvents.First().JsonTime != 0)
+                if (BpmEvents.Count == 0 || BpmEvents.First().JsonTime != 0)
                 {
                     BpmEvents.Insert(0, new V3BpmEvent()
                     {
