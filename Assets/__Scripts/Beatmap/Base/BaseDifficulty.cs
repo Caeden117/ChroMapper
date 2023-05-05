@@ -68,7 +68,7 @@ namespace Beatmap.Base
         {
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var customData = BeatSaberSongContainer.Instance.DifficultyData.CustomData;
-            if (customData?.HasKey("_editorOffset") ?? false && customData["_editorOffset"] > 0f)
+            if ((customData?.HasKey("_editorOffset") ?? false) && customData["_editorOffset"] > 0f)
             {
                 float offset = customData["_editorOffset"];
                 customData.Remove("_editorOffset");
