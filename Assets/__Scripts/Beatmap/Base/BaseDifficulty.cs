@@ -3,6 +3,7 @@ using System.IO;
 using Beatmap.Base.Customs;
 using Beatmap.Helper;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.Base
 {
@@ -66,6 +67,22 @@ namespace Beatmap.Base
         public void ConvertCustomBpmToOfficial()
         {
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            var customData = BeatSaberSongContainer.Instance.DifficultyData.CustomData;
+            if (customData?.HasKey("_editorOffset") ?? false && customData["_editorOffset"] > 0f)
+            {
+                float offset = customData["_editorOffset"];
+                customData.Remove("_editorOffset");
+                customData.Remove("_editorOldOffset");
+                BpmChanges.Insert(0, BeatmapFactory.BpmChange(songBpm / 60 * (offset / 1000f), songBpm));
+                Debug.Log($"Editor offset detected: {songBpm / 60 * (offset / 1000f)}s");
+            }
+
+            if (BpmChanges.Count != 0)
+            {
+                PersistentUI.Instance.ShowDialogBox("Mapper", "custom.bpm.convert",
+                    null, PersistentUI.DialogBoxPresetType.Ok);
+            }
+
             BaseBpmEvent nextBpmChange;
             BpmEvents.Clear();
             for (var i = 0; i < BpmChanges.Count; i++)

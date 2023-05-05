@@ -699,6 +699,10 @@ MonoBehaviour:
     m_Key: pause.beatmap.version.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 232868047877242880
+    m_Key: custom.bpm.convert
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

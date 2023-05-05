@@ -69,12 +69,7 @@ public class MapLoader : MonoBehaviour
             map = copy;
         }
 
-        if (map.BpmChanges.Count != 0)
-        {
-            PersistentUI.Instance.ShowDialogBox("CM has detected Custom BPM changes and\nconverted these into Official BPM events",
-                null, PersistentUI.DialogBoxPresetType.Ok);
-            map.ConvertCustomBpmToOfficial();
-        }
+        map.ConvertCustomBpmToOfficial();
     }
 
     public IEnumerator HardRefresh()
