@@ -13,7 +13,7 @@ public class GlobalIntersectionCache
 
 public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsActions where T : ObjectContainer
 {
-    [FormerlySerializedAs("customStandaloneInputModule")] [SerializeField] protected CustomStandaloneInputModule CustomStandaloneInputModule;
+    [FormerlySerializedAs("customStandaloneInputModule")][SerializeField] protected CustomStandaloneInputModule CustomStandaloneInputModule;
     protected bool IsSelecting;
 
     private Camera mainCamera;
@@ -108,7 +108,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
             {
                 // TODO make this use an AudioTimeSyncController reference when Zenject is added.
                 BeatmapObjectContainerCollection.GetCollectionForType(con.ObjectData.ObjectType)
-                    .AudioTimeSyncController.MoveToTimeInBeats(con.ObjectData.Time);
+                    .AudioTimeSyncController.MoveToTimeInBeats(con.ObjectData.SongBpmTime);
             }
         }
     }

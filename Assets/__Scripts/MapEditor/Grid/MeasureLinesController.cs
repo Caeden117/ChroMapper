@@ -2,6 +2,7 @@
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Helper;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
 using TMPro;
@@ -58,28 +59,28 @@ public class MeasureLinesController : MonoBehaviour
 
         var rawBeatsInSong =
             Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length));
-        float jsonBeat = 0;
-        var modifiedBeats = 0;
+        var modifiedBeatsInSong =
+            Mathf.FloorToInt(bpmChangeGridContainer.SongBpmTimeToJsonTime(rawBeatsInSong));
+        var jsonBeat = 0;
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
-        var allBpmChanges = new List<BaseBpmEvent> { new V3BpmChange(0, songBpm) };
+        var allBpmChanges = new List<BaseBpmEvent> { BeatmapFactory.BpmEvent(0, songBpm) };
         allBpmChanges.AddRange(bpmChangeGridContainer.LoadedObjects.Cast<BaseBpmEvent>());
 
-        while (jsonBeat <= rawBeatsInSong)
+        while (jsonBeat <= modifiedBeatsInSong)
         {
             var text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
-            text.text = $"{modifiedBeats}";
-            text.transform.localPosition = new Vector3(0, jsonBeat * EditorScaleController.EditorScale, 0);
-            measureTextsByBeat.Add((jsonBeat, text));
-            previousEnabledByBeat.Add(jsonBeat, true);
+            text.text = $"{jsonBeat}";
+            var jsonBeatPosition = bpmChangeGridContainer.JsonTimeToSongBpmTime(jsonBeat);
+            text.transform.localPosition = new Vector3(0, jsonBeatPosition * EditorScaleController.EditorScale, 0);
+            measureTextsByBeat.Add((jsonBeatPosition, text));
+            previousEnabledByBeat[jsonBeatPosition] = true;
 
-            modifiedBeats++;
-            var last = allBpmChanges.Last(x => x.Beat <= modifiedBeats);
-            jsonBeat = ((modifiedBeats - last.Beat) / last.Bpm * songBpm) + last.Time;
+            jsonBeat++;
         }
 
         // Set proper spacing between Notes grid, Measure lines, and Events grid
-        measureLinesGridChild.Size = modifiedBeats > 1000 ? 1 : 0;
+        measureLinesGridChild.Size = jsonBeat > 1000 ? 1 : 0;
         foreach (var leftovers in existing) Destroy(leftovers.gameObject);
         init = true;
         RefreshVisibility();

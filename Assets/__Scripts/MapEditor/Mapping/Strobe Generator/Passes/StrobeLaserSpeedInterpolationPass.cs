@@ -56,8 +56,8 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
     {
         var generatedObjects = new List<BaseEvent>();
 
-        var startTime = original.First().Time;
-        var endTime = original.Last().Time;
+        var startTime = original.First().JsonTime;
+        var endTime = original.Last().JsonTime;
 
         var distanceInBeats = endTime - startTime;
         var originalDistance = distanceInBeats;
@@ -69,18 +69,18 @@ public class StrobeLaserSpeedInterpolationPass : StrobeGeneratorPass
 
         while (distanceInBeats >= 0)
         {
-            var any = original.LastOrDefault(x => x.Time <= endTime - distanceInBeats);
+            var any = original.LastOrDefault(x => x.JsonTime <= endTime - distanceInBeats);
             if (lastPassed != any)
             {
                 lastPassed = any;
-                nextEvent = original.FirstOrDefault(x => x.Time > lastPassed.Time);
+                nextEvent = original.FirstOrDefault(x => x.JsonTime > lastPassed.JsonTime);
                 lastSpeed = GetLaserSpeedFromEvent(lastPassed);
                 if (nextEvent == null) nextEvent = lastPassed;
                 nextSpeed = GetLaserSpeedFromEvent(nextEvent);
             }
 
             var newTime = originalDistance - distanceInBeats + startTime;
-            var progress = Mathf.InverseLerp(lastPassed.Time, nextEvent.Time, newTime);
+            var progress = Mathf.InverseLerp(lastPassed.JsonTime, nextEvent.JsonTime, newTime);
 
             var decimalPreciseSpeed =
                 (float)Math.Round(Mathf.Lerp(lastSpeed, nextSpeed, easingFunc(progress)), decimalPrecision);

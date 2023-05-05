@@ -232,8 +232,6 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             }
         }
 
-        evt.Time = RoundedTime;
-
         if (evt.CustomData != null && evt.CustomData.HasKey("_queuedRotation"))
         {
             if (evt.IsLaneRotationEvent()) queuedValue = queuedData.CustomData["_queuedRotation"];
@@ -279,7 +277,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued)
     {
-        dragged.Time = queued.Time;
+        dragged.JsonTime = queued.JsonTime;
         dragged.Type = queued.Type;
         // Instead of copying the whole custom data, only copy prop ID
         if (dragged.CustomData != null && queued.CustomData != null)
@@ -298,7 +296,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         var rotationType = early ? (int)EventTypeValue.EarlyLaneRotation : (int)EventTypeValue.LateLaneRotation;
         var epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
         var evt = objectContainerCollection.AllRotationEvents.Find(x =>
-            x.Time - epsilon < Atsc.CurrentBeat && x.Time + epsilon > Atsc.CurrentBeat && x.Type == rotationType);
+            x.JsonTime - epsilon < Atsc.CurrentBeat && x.JsonTime + epsilon > Atsc.CurrentBeat && x.Type == rotationType);
 
         //todo add support for custom rotation angles
 

@@ -30,7 +30,7 @@ namespace Beatmap.V2
 
         public V2Event(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "_time").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "_time").AsFloat;
             Type = RetrieveRequiredNode(node, "_type").AsInt;
             Value = RetrieveRequiredNode(node, "_value").AsInt;
             FloatValue = node.HasKey("_floatValue") ? node["_floatValue"].AsFloat : 1f;
@@ -142,7 +142,7 @@ namespace Beatmap.V2
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["_time"] = Math.Round(Time, DecimalPrecision);
+            node["_time"] = Math.Round(JsonTime, DecimalPrecision);
             node["_type"] = Type;
             node["_value"] = Value;
             node["_floatValue"] = FloatValue;
@@ -152,7 +152,7 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Event(Time, Type, Value, FloatValue, SaveCustom().Clone());
+        public override BaseItem Clone() => new V2Event(JsonTime, Type, Value, FloatValue, SaveCustom().Clone());
 
         public override void Apply(BaseObject originalData)
         {

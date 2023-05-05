@@ -10,9 +10,9 @@ using UnityEngine;
 public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventContainer, BPMChangeGridContainer>
 {
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
-        new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned.Time}");
+        new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Event at time {spawned.JsonTime}");
 
-    public override BaseBpmEvent GenerateOriginalData() => BeatmapFactory.BpmChange(0, 0);
+    public override BaseBpmEvent GenerateOriginalData() => BeatmapFactory.BpmEvent(0, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __) =>
         instantiatedContainer.transform.localPosition =
@@ -20,7 +20,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
 
     public override void TransferQueuedToDraggedObject(ref BaseBpmEvent dragged, BaseBpmEvent queued)
     {
-        dragged.Time = queued.Time;
+        dragged.JsonTime = queued.JsonTime;
         objectContainerCollection.RefreshModifiedBeat();
     }
 
@@ -39,10 +39,8 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj)) return;
         if (float.TryParse(obj, out var bpm))
         {
-            queuedData.Time = RoundedTime;
             queuedData.Bpm = bpm;
             base.ApplyToMap();
-            objectContainerCollection.RefreshModifiedBeat();
         }
         else
         {

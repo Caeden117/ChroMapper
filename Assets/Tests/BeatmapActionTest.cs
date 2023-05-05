@@ -39,7 +39,7 @@ namespace Tests
 
             BaseNote baseNoteA = new V3ColorNote
             {
-                Time = 2,
+                JsonTime = 2,
                 Type = (int)NoteType.Red
             };
             notesContainer.SpawnObject(baseNoteA);
@@ -53,12 +53,12 @@ namespace Tests
             actionContainer.Undo();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].Time);
+            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].JsonTime);
 
             actionContainer.Redo();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(1.9999999f, notesContainer.UnsortedObjects[0].Time);
+            Assert.AreEqual(1.9999999f, notesContainer.UnsortedObjects[0].JsonTime);
         }
 
         [Test]
@@ -72,12 +72,12 @@ namespace Tests
 
             BaseNote baseNoteA = new V3ColorNote
             {
-                Time = 2,
+                JsonTime = 2,
                 Type = (int)NoteType.Red
             };
             BaseNote baseNoteB = new V3ColorNote
             {
-                Time = 2,
+                JsonTime = 2,
                 Type = (int)NoteType.Blue,
                 PosX = 1,
                 PosY = 1
@@ -103,7 +103,7 @@ namespace Tests
             {
                 Assert.AreEqual(loadedObjects, notesContainer.LoadedObjects.Count);
                 Assert.AreEqual(selectedObjects, SelectionController.SelectedObjects.Count);
-                Assert.AreEqual(time, notesContainer.UnsortedObjects[0].Time);
+                Assert.AreEqual(time, notesContainer.UnsortedObjects[0].JsonTime);
                 Assert.AreEqual(type, ((BaseNote)notesContainer.UnsortedObjects[0]).Type);
                 Assert.AreEqual(index, ((BaseNote)notesContainer.UnsortedObjects[0]).PosX);
                 Assert.AreEqual(layer, ((BaseNote)notesContainer.UnsortedObjects[0]).PosY);
@@ -187,27 +187,27 @@ namespace Tests
 
             PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
             {
-                Time = 2,
+                JsonTime = 2,
                 Type = (int)NoteType.Red
             });
             PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
             {
-                Time = 2,
+                JsonTime = 2,
                 Type = (int)NoteType.Blue
             });
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].Time);
+            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].JsonTime);
 
             actionContainer.Undo();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].Time);
+            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].JsonTime);
 
             actionContainer.Redo();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].Time);
+            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].JsonTime);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.V3.Customs;
+using Beatmap.V3;
 using NUnit.Framework;
 using Tests.Util;
 using UnityEngine;
@@ -32,14 +32,60 @@ namespace Tests
             CleanupUtils.CleanupBPMChanges();
         }
 
-        private static void CheckBPM(string msg, BeatmapObjectContainerCollection container, int idx, int time, int bpm)
+        private static void CheckBPM(string msg, BeatmapObjectContainerCollection container, int idx, float jsonTime, float bpm, float? songBpmTime = null)
         {
-            var newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BaseBpmEvent>(newObjA);
-            if (newObjA is BaseBpmEvent newNoteA)
+            var decimalPrecision = Settings.Instance.TimeValueDecimalPrecision;
+            var delta = 1.5 * Mathf.Pow(10, -decimalPrecision);
+            var obj = container.LoadedObjects.ElementAt(idx);
+            Assert.IsInstanceOf<BaseBpmEvent>(obj);
+            if (obj is BaseBpmEvent bpmEvent)
             {
-                Assert.AreEqual(time, newNoteA.Time, $"{msg}: Mismatched time");
-                Assert.AreEqual(bpm, newNoteA.Bpm, $"{msg}: Mismatched BPM");
+                Assert.AreEqual(jsonTime, bpmEvent.JsonTime, delta, $"{msg}: Mismatched JsonTime");
+                Assert.AreEqual(bpm, bpmEvent.Bpm, delta, $"{msg}: Mismatched BPM");
+                if (songBpmTime != null) Assert.AreEqual(songBpmTime.Value, bpmEvent.SongBpmTime, delta, $"{msg}: Mismatched SongBpmTime");
+            }
+        }
+
+        [Test]
+        public void SongBpmTimes()
+        {
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
+            if (collection is BPMChangeGridContainer bpmCollection)
+            {
+                var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                BaseBpmEvent baseBpmEvent = new V3BpmEvent(0, 111);
+                bpmCollection.SpawnObject(baseBpmEvent);
+
+                baseBpmEvent = new V3BpmEvent(1, 222);
+                bpmCollection.SpawnObject(baseBpmEvent);
+
+                baseBpmEvent = new V3BpmEvent(2, 333);
+                bpmCollection.SpawnObject(baseBpmEvent);
+
+                baseBpmEvent = new V3BpmEvent(3, 444);
+                bpmCollection.SpawnObject(baseBpmEvent);
+
+                Assert.AreEqual(4, bpmCollection.LoadedObjects.Count);
+                CheckBPM("1st BPM values", bpmCollection, 0, 0, 111, 0);
+                CheckBPM("2nd BPM values", bpmCollection, 1, 1, 222, songBpm / 111);
+                CheckBPM("3rd BPM values", bpmCollection, 2, 2, 333, songBpm / 111 + songBpm / 222);
+                CheckBPM("4th BPM values", bpmCollection, 3, 3, 444, songBpm / 111 + songBpm / 222 + songBpm / 333);
+
+                baseBpmEvent = new V3BpmEvent(0, 1);
+                bpmCollection.SpawnObject(baseBpmEvent);
+
+                Assert.AreEqual(4, bpmCollection.LoadedObjects.Count);
+                CheckBPM("1st BPM values after modified", bpmCollection, 0, 0, 1, 0);
+                CheckBPM("2nd BPM values after modified", bpmCollection, 1, 1, 222, songBpm / 1);
+                CheckBPM("3rd BPM values after modified", bpmCollection, 2, 2, 333, songBpm / 1 + songBpm / 222);
+                CheckBPM("4th BPM values after modified", bpmCollection, 3, 3, 444, songBpm / 1 + songBpm / 222 + songBpm / 333);
+
+                bpmCollection.DeleteObject(baseBpmEvent);
+
+                Assert.AreEqual(3, bpmCollection.LoadedObjects.Count);
+                CheckBPM("1st BPM values after delete", bpmCollection, 0, 1, 222, 1);
+                CheckBPM("2nd BPM values after delete", bpmCollection, 1, 2, 333, 1 + songBpm / 222);
+                CheckBPM("3rd BPM values after delete", bpmCollection, 2, 3, 444, 1 + songBpm / 222 + songBpm / 333);
             }
         }
 
@@ -50,24 +96,30 @@ namespace Tests
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
             if (collection is BPMChangeGridContainer bpmCollection)
             {
-                BaseBpmEvent baseBpmChange = new V3BpmChange(10, 50);
-                bpmCollection.SpawnObject(baseBpmChange);
+                BaseBpmEvent baseBpmEvent = new V3BpmEvent(20, 20);
+                bpmCollection.SpawnObject(baseBpmEvent);
 
-                if (bpmCollection.LoadedContainers[baseBpmChange] is BpmEventContainer container)
+                baseBpmEvent = new V3BpmEvent(10, 10);
+                bpmCollection.SpawnObject(baseBpmEvent);
+
+                if (bpmCollection.LoadedContainers[baseBpmEvent] is BpmEventContainer container)
                     BeatmapBPMChangeInputController.ChangeBpm(container, "60");
 
-                Assert.AreEqual(1, bpmCollection.LoadedObjects.Count);
-                CheckBPM("Update BPM change", bpmCollection, 0, 10, 60);
+                Assert.AreEqual(2, bpmCollection.LoadedObjects.Count);
+                CheckBPM("Update BPM event", bpmCollection, 0, 10, 60);
+                CheckBPM("Update future BPM event SongTime", bpmCollection, 1, 20, 20, 10 + 10 * (100f / 60));
 
                 actionContainer.Undo();
 
-                Assert.AreEqual(1, bpmCollection.LoadedObjects.Count);
-                CheckBPM("Undo BPM change", bpmCollection, 0, 10, 50);
+                Assert.AreEqual(2, bpmCollection.LoadedObjects.Count);
+                CheckBPM("Undo BPM event", bpmCollection, 0, 10, 10);
+                CheckBPM("Undo future BPM event SongTime", bpmCollection, 1, 20, 20, 10 + 10 * (100f / 10));
 
                 actionContainer.Redo();
 
-                Assert.AreEqual(1, bpmCollection.LoadedObjects.Count);
-                CheckBPM("Redo BPM change", bpmCollection, 0, 10, 60);
+                Assert.AreEqual(2, bpmCollection.LoadedObjects.Count);
+                CheckBPM("Redo BPM event", bpmCollection, 0, 10, 60);
+                CheckBPM("Redo future BPM event SongTime", bpmCollection, 1, 20, 20, 10 + 10 * (100f / 60));
             }
         }
     }

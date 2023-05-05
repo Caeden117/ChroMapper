@@ -33,6 +33,14 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert v3 basic event to v2 event")
             };
 
+        public static V2BpmEvent BpmEvent(BaseBpmEvent other) =>
+            other switch
+            {
+                V2BpmEvent o => o,
+                V3BpmEvent o => new V2BpmEvent(o),
+                _ => throw new ArgumentException("Unexpected object to convert v3 bpm event to v2 bpm event")
+            };
+
         public static V2SpecialEventsKeywordFilters EventTypesWithKeywords(BaseEventTypesWithKeywords other) =>
             other switch
             {

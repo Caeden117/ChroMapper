@@ -108,7 +108,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         CheckAndSave(saveType);
         await objectCheckingThread;
         await savingThread; // wait for files to save
-        
+
         // now wait for exporter to finish
         await Exporter.ExportToQuest();
     }
@@ -159,7 +159,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         if (Settings.Instance.RemoveNotesOutsideMap)
         {
             var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            foreach (var note in BeatSaberSongContainer.Instance.Map.Notes.Where(note => note.Time >= maxBeatTime))
+            foreach (var note in BeatSaberSongContainer.Instance.Map.Notes.Where(note => note.JsonTime >= maxBeatTime))
             {
                 noteCollection.DeleteObject(note);
             }
@@ -167,7 +167,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         if (Settings.Instance.RemoveEventsOutsideMap)
         {
             var eventCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            foreach (var evt in BeatSaberSongContainer.Instance.Map.Events.Where(evt => evt.Time >= maxBeatTime))
+            foreach (var evt in BeatSaberSongContainer.Instance.Map.Events.Where(evt => evt.JsonTime >= maxBeatTime))
             {
                 eventCollection.DeleteObject(evt);
             }
@@ -176,7 +176,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         if (Settings.Instance.RemoveObstaclesOutsideMap)
         {
             var obstacleCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
-            foreach (var obst in BeatSaberSongContainer.Instance.Map.Obstacles.Where(obst => obst.Time >= maxBeatTime))
+            foreach (var obst in BeatSaberSongContainer.Instance.Map.Obstacles.Where(obst => obst.JsonTime >= maxBeatTime))
             {
                 obstacleCollection.DeleteObject(obst);
             }
@@ -187,24 +187,24 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     {
         if (Settings.Instance.RemoveNotesOutsideMap)
         {
-            if (BeatSaberSongContainer.Instance.Map.Notes.Any(note => note.Time >= maxBeatTime))
+            if (BeatSaberSongContainer.Instance.Map.Notes.Any(note => note.JsonTime >= maxBeatTime))
                 return true;
         }
         if (Settings.Instance.RemoveEventsOutsideMap)
         {
-            if (BeatSaberSongContainer.Instance.Map.Events.Any(evt => evt.Time >= maxBeatTime))
+            if (BeatSaberSongContainer.Instance.Map.Events.Any(evt => evt.JsonTime >= maxBeatTime))
                 return true;
         }
         if (Settings.Instance.RemoveObstaclesOutsideMap)
         {
-            if (BeatSaberSongContainer.Instance.Map.Obstacles.Any(obst => obst.Time >= maxBeatTime))
+            if (BeatSaberSongContainer.Instance.Map.Obstacles.Any(obst => obst.JsonTime >= maxBeatTime))
                 return true;
         }
         return false;
     }
 
     public void ToggleAutoSave(bool enabled) => Settings.Instance.AutoSave = enabled;
-    
+
     public void Save(bool auto = false)
     {
         if (IsSaving)
@@ -249,9 +249,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                     }
                     else // Only check on manual save
                     {
-                        if (Settings.Instance.RemoveNotesOutsideMap) BeatSaberSongContainer.Instance.Map.Notes.RemoveAll(note => note.Time >= maxBeatTime);
-                        if (Settings.Instance.RemoveEventsOutsideMap) BeatSaberSongContainer.Instance.Map.Events.RemoveAll(evt => evt.Time >= maxBeatTime);
-                        if (Settings.Instance.RemoveObstaclesOutsideMap) BeatSaberSongContainer.Instance.Map.Obstacles.RemoveAll(obst => obst.Time >= maxBeatTime);
+                        if (Settings.Instance.RemoveNotesOutsideMap) BeatSaberSongContainer.Instance.Map.Notes.RemoveAll(note => note.JsonTime >= maxBeatTime);
+                        if (Settings.Instance.RemoveEventsOutsideMap) BeatSaberSongContainer.Instance.Map.Events.RemoveAll(evt => evt.JsonTime >= maxBeatTime);
+                        if (Settings.Instance.RemoveObstaclesOutsideMap) BeatSaberSongContainer.Instance.Map.Obstacles.RemoveAll(obst => obst.JsonTime >= maxBeatTime);
                     }
 
                     BeatSaberSongContainer.Instance.Map.Save();

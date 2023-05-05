@@ -18,13 +18,13 @@ namespace Beatmap.V3
 
         public V3Arc(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             Color = RetrieveRequiredNode(node, "c").AsInt;
             PosX = RetrieveRequiredNode(node, "x").AsInt;
             PosY = RetrieveRequiredNode(node, "y").AsInt;
             CutDirection = RetrieveRequiredNode(node, "d").AsInt;
             HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "mu").AsFloat;
-            TailTime = RetrieveRequiredNode(node, "tb").AsFloat;
+            TailJsonTime = RetrieveRequiredNode(node, "tb").AsFloat;
             TailPosX = RetrieveRequiredNode(node, "tx").AsInt;
             TailPosY = RetrieveRequiredNode(node, "ty").AsInt;
             TailCutDirection = RetrieveRequiredNode(node, "tc").AsInt;
@@ -93,13 +93,13 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["c"] = Color;
             node["x"] = PosX;
             node["y"] = PosY;
             node["d"] = CutDirection;
             node["mu"] = HeadControlPointLengthMultiplier;
-            node["tb"] = TailTime;
+            node["tb"] = TailJsonTime;
             node["tx"] = TailPosX;
             node["ty"] = TailPosY;
             node["tc"] = TailCutDirection;
@@ -112,8 +112,8 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Arc(Time, PosX, PosY, Color, CutDirection, AngleOffset,
-                HeadControlPointLengthMultiplier, TailTime, TailPosX, TailPosY, TailCutDirection,
+            new V3Arc(JsonTime, PosX, PosY, Color, CutDirection, AngleOffset,
+                HeadControlPointLengthMultiplier, TailJsonTime, TailPosX, TailPosY, TailCutDirection,
                 TailControlPointLengthMultiplier,
                 MidAnchorMode, SaveCustom().Clone());
     }

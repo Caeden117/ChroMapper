@@ -40,7 +40,7 @@ namespace Beatmap.Containers
 
         public abstract BaseObject ObjectData { get; set; }
 
-        public int ChunkID => (int)(ObjectData.Time / Intersections.ChunkSize);
+        public int ChunkID => (int)(ObjectData.JsonTime / Intersections.ChunkSize);
 
         public abstract void UpdateGridPosition();
 

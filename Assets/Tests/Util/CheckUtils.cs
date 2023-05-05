@@ -16,7 +16,7 @@ namespace Tests.Util
             Assert.IsInstanceOf<BaseNote>(obj);
             if (obj is BaseNote note)
             {
-                Assert.AreEqual(time, note.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(time, note.JsonTime, 0.001f, $"{msg}: Mismatched time");
                 Assert.AreEqual(type, note.Type, $"{msg}: Mismatched type");
                 Assert.AreEqual(posX, note.PosX, $"{msg}: Mismatched position X");
                 Assert.AreEqual(posY, note.PosY, $"{msg}: Mismatched position Y");
@@ -39,7 +39,7 @@ namespace Tests.Util
             Assert.IsInstanceOf<BaseObstacle>(obj);
             if (obj is BaseObstacle wall)
             {
-                Assert.AreEqual(time, wall.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(time, wall.JsonTime, 0.001f, $"{msg}: Mismatched time");
                 Assert.AreEqual(posX, wall.PosX, $"{msg}: Mismatched position X");
                 Assert.AreEqual(posY, wall.PosY, $"{msg}: Mismatched position Y");
                 Assert.AreEqual(duration, wall.Duration, 0.001f, $"{msg}: Mismatched duration");
@@ -64,7 +64,7 @@ namespace Tests.Util
             Assert.IsInstanceOf<BaseEvent>(obj);
             if (obj is BaseEvent evt)
             {
-                Assert.AreEqual(time, evt.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(time, evt.JsonTime, 0.001f, $"{msg}: Mismatched time");
                 Assert.AreEqual(type, evt.Type, $"{msg}: Mismatched type");
                 Assert.AreEqual(value, evt.Value, $"{msg}: Mismatched value");
                 Assert.AreEqual(floatValue, evt.FloatValue, 0.001f, $"{msg}: Mismatched float value");
@@ -87,7 +87,7 @@ namespace Tests.Util
             Assert.IsInstanceOf<BaseRotationEvent>(obj);
             if (obj is BaseRotationEvent evt)
             {
-                Assert.AreEqual(time, evt.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(time, evt.JsonTime, 0.001f, $"{msg}: Mismatched time");
                 Assert.AreEqual(executionTime == 0 ? 14 : 15, evt.Type, $"{msg}: Mismatched type");
                 Assert.AreEqual(executionTime, evt.ExecutionTime, $"{msg}: Mismatched execution time");
                 Assert.AreEqual(rotation, evt.Rotation, 0.001f, $"{msg}: Mismatched rotation");
@@ -112,7 +112,7 @@ namespace Tests.Util
             Assert.IsInstanceOf<BaseArc>(obj);
             if (obj is BaseArc arc)
             {
-                Assert.AreEqual(time, arc.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(time, arc.JsonTime, 0.001f, $"{msg}: Mismatched time");
                 Assert.AreEqual(color, arc.Color, $"{msg}: Mismatched color");
                 Assert.AreEqual(posX, arc.PosX, $"{msg}: Mismatched position X");
                 Assert.AreEqual(posY, arc.PosY, $"{msg}: Mismatched position Y");
@@ -120,7 +120,7 @@ namespace Tests.Util
                 Assert.AreEqual(angleOffset, arc.AngleOffset, $"{msg}: Mismatched angle offset");
                 Assert.AreEqual(mult, arc.HeadControlPointLengthMultiplier,
                     $"{msg}: Mismatched head control point length multiplier");
-                Assert.AreEqual(tailTime, arc.TailTime, 0.001f, $"{msg}: Mismatched tail time");
+                Assert.AreEqual(tailTime, arc.TailJsonTime, 0.001f, $"{msg}: Mismatched tail time");
                 Assert.AreEqual(tailPosX, arc.TailPosX, $"{msg}: Mismatched tail position X");
                 Assert.AreEqual(tailPosY, arc.TailPosY, $"{msg}: Mismatched tail position Y");
                 Assert.AreEqual(tailCutDirection, arc.TailCutDirection, $"{msg}: Mismatched tail cut direction");
@@ -145,13 +145,13 @@ namespace Tests.Util
             Assert.IsInstanceOf<BaseChain>(obj);
             if (obj is BaseChain chain)
             {
-                Assert.AreEqual(time, chain.Time, 0.001f, $"{msg}: Mismatched time");
+                Assert.AreEqual(time, chain.JsonTime, 0.001f, $"{msg}: Mismatched time");
                 Assert.AreEqual(color, chain.Color, $"{msg}: Mismatched color");
                 Assert.AreEqual(posX, chain.PosX, $"{msg}: Mismatched position X");
                 Assert.AreEqual(posY, chain.PosY, $"{msg}: Mismatched position Y");
                 Assert.AreEqual(cutDirection, chain.CutDirection, $"{msg}: Mismatched cut direction");
                 Assert.AreEqual(angleOffset, chain.AngleOffset, $"{msg}: Mismatched angle offset");
-                Assert.AreEqual(tailTime, chain.TailTime, 0.001f, $"{msg}: Mismatched tail time");
+                Assert.AreEqual(tailTime, chain.TailJsonTime, 0.001f, $"{msg}: Mismatched tail time");
                 Assert.AreEqual(tailPosX, chain.TailPosX, $"{msg}: Mismatched tail position X");
                 Assert.AreEqual(tailPosY, chain.TailPosY, $"{msg}: Mismatched tail position Y");
                 Assert.AreEqual(sliceCount, chain.SliceCount, $"{msg}: Mismatched slice count");

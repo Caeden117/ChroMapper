@@ -2957,7 +2957,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BPM Changes
+  m_text: BPM Events
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3e5c0558f96c1a0489f92cf4863957d1, type: 2}
   m_sharedMaterial: {fileID: 21947009840950596, guid: 3e5c0558f96c1a0489f92cf4863957d1,
@@ -13876,7 +13876,7 @@ GameObject:
   m_Component:
   - component: {fileID: 458724370}
   m_Layer: 11
-  m_Name: BPM Changes Grid Front Scaling Offset
+  m_Name: BPM Events Grid Front Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18280,9 +18280,8 @@ GameObject:
   - component: {fileID: 584811692}
   - component: {fileID: 584811694}
   - component: {fileID: 584811693}
-  - component: {fileID: 584811695}
   m_Layer: 11
-  m_Name: BPM Changes Grid
+  m_Name: BPM Events Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18335,6 +18334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1119461675923126, guid: e8851ff5377acfa49976aeb131fcace1,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550675}
   ParentTrack: {fileID: 866552293}
   InterfaceGridParent: {fileID: 584811692}
@@ -18351,22 +18351,6 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
---- !u!114 &584811695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 584811691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2d1b345a70cfe846bf6304c1582e33b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  notes: 0
-  obstacles: 0
-  events: 0
-  otherObjects: 1
 --- !u!1001 &588043300
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27969,7 +27953,7 @@ GameObject:
   - component: {fileID: 866552293}
   - component: {fileID: 866552294}
   m_Layer: 0
-  m_Name: BPM Change Parent
+  m_Name: BPM Event Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32686,7 +32670,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1014994728}
   m_Layer: 11
-  m_Name: BPM Changes Interface Scaling Offset
+  m_Name: BPM Events Interface Scaling Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34514,7 +34498,7 @@ GameObject:
   - component: {fileID: 1057120710}
   - component: {fileID: 1057120709}
   m_Layer: 12
-  m_Name: BPM Change Label
+  m_Name: BPM Event Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42422,6 +42406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1173282366639492, guid: b0842dec23eed584289a320147c706c5,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550674}
   ParentTrack: {fileID: 1125491375}
   InterfaceGridParent: {fileID: 1277691435}
@@ -48740,6 +48725,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1056647016207082, guid: cae5f76e2962f1f4085c6007e787e438,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550674}
   ParentTrack: {fileID: 1006741503}
   InterfaceGridParent: {fileID: 1524038328}
@@ -62038,7 +62024,7 @@ GameObject:
   - component: {fileID: 1890332740}
   - component: {fileID: 1890332741}
   m_Layer: 0
-  m_Name: BPM Changes Grid
+  m_Name: BPM Events Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67128,6 +67114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1119461675923126, guid: 8947f7fdd1ff6954a9a3f01c39db6fa5,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550677}
   ParentTrack: {fileID: 1987716845}
   InterfaceGridParent: {fileID: 2070574235}
@@ -68375,6 +68362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550673}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68412,6 +68400,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550673}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68445,6 +68434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1446077081186018, guid: 1c30485abc64e3443867a590a7d90186,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550678}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68527,6 +68517,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 2800143464783224911, guid: 3a289a2479446ea40b41b092b296e8e7,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550680}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68557,6 +68548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 1094719878252698, guid: a14acb27bffab494cb5735e7fba61dbf,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550681}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}
@@ -68589,6 +68581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectContainerPrefab: {fileID: 4018984692264246640, guid: 7d1a52fa04a8d724e965716649bc47e5,
     type: 3}
+  BpmChangeGridContainer: {fileID: 25550675}
   objectContainerCollection: {fileID: 25550680}
   ParentTrack: {fileID: 1439999959}
   InterfaceGridParent: {fileID: 2108936575}

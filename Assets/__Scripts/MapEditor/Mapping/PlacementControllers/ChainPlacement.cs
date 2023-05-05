@@ -29,7 +29,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         if (context.performed || context.canceled) return;
 
         var notes = SelectedObjects.Where(obj => IsColorNote(obj)).Cast<BaseNote>().ToList();
-        notes.Sort((a, b) => a.Time.CompareTo(b.Time));
+        notes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
         if (!Settings.Instance.Load_MapV3 && notes.Count > 1)
         {
@@ -72,7 +72,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
 
     public bool TryCreateChainData(BaseNote head, BaseNote tail, out BaseChain chain, out BaseNote tailNote)
     {
-        if (head.Time > tail.Time)
+        if (head.JsonTime > tail.JsonTime)
         {
             (head, tail) = (tail, head);
         }

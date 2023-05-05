@@ -37,7 +37,7 @@ namespace Tests
 
             BaseNote baseNoteA = new V3ColorNote
             {
-                Time = 14,
+                JsonTime = 14,
                 Type = (int)NoteType.Red,
                 PosX = (int)GridX.Left
             };
@@ -46,7 +46,7 @@ namespace Tests
 
             BaseNote baseNoteB = new V3ColorNote
             {
-                Time = 14,
+                JsonTime = 14,
                 Type = (int)NoteType.Red,
                 PosX = (int)GridX.MiddleLeft
             };
@@ -127,7 +127,7 @@ namespace Tests
             Assert.AreEqual(63.43, containerB.transform.localEulerAngles.z, 0.01);
 
             // Changing this note to be in another beat should stop the angles snapping
-            baseNoteA.Time = 13;
+            baseNoteA.JsonTime = 13;
             UpdateNote(containerA, (int)GridX.Left, (int)GridY.Upper, (int)NoteCutDirection.DownRight);
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
@@ -136,7 +136,7 @@ namespace Tests
             Assert.AreEqual(45, containerB.transform.localEulerAngles.z, 0.01);
 
             // Make cleanup work
-            baseNoteA.Time = 14;
+            baseNoteA.JsonTime = 14;
         }
 
         private void UpdateNote(NoteContainer container, int PosX, int PosY, int cutDirection)
@@ -157,14 +157,14 @@ namespace Tests
 
             BaseNote baseNoteA = new V3ColorNote
             {
-                Time = 2,
+                JsonTime = 2,
                 Type = (int)NoteType.Red
             };
             notesContainer.SpawnObject(baseNoteA);
 
             BaseNote baseNoteB = new V3ColorNote
             {
-                Time = 3,
+                JsonTime = 3,
                 Type = (int)NoteType.Red
             };
             notesContainer.SpawnObject(baseNoteB);

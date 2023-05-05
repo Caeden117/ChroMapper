@@ -192,39 +192,39 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         //for (int i = 0; i < LoadedObjects.Count; i++)
         {
             if (forceRefresh) RecycleContainer(obj);
-            if (obj.Time >= lowerBound && obj.Time <= upperBound)
+            if (obj.SongBpmTime >= lowerBound && obj.SongBpmTime <= upperBound)
             {
                 if (!obj.HasAttachedContainer) CreateContainerFromPool(obj);
             }
             else if (obj.HasAttachedContainer)
             {
-                if (obj is BaseObstacle obs && obs.Time < lowerBound &&
-                    obs.Time + obs.Duration >= lowerBound)
+                if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound &&
+                    obs.SongBpmTime + obs.Duration >= lowerBound)
                 {
                     continue;
                 }
-                else if (Settings.Instance.Load_MapV3 )
+                else if (Settings.Instance.Load_MapV3)
                 {
                     if (obj is BaseArc &&
-                        (obj as BaseArc).Time < lowerBound && (obj as BaseArc).TailTime >= lowerBound)
+                        (obj as BaseArc).SongBpmTime < lowerBound && (obj as BaseArc).TailSongBpmTime >= lowerBound)
                         continue;
                     if (obj is BaseChain &&
-                        (obj as BaseChain).Time < lowerBound && (obj as BaseChain).TailTime >= lowerBound)
+                        (obj as BaseChain).SongBpmTime < lowerBound && (obj as BaseChain).TailSongBpmTime >= lowerBound)
                         continue;
                 }
 
                 RecycleContainer(obj);
             }
 
-            if (obj is BaseObstacle obst && obst.Time < lowerBound && obst.Time + obst.Duration >= lowerBound)
+            if (obj is BaseObstacle obst && obst.SongBpmTime < lowerBound && obst.SongBpmTime + obst.Duration >= lowerBound)
                 CreateContainerFromPool(obj);
             if (Settings.Instance.Load_MapV3)
             {
                 if (obj is BaseArc &&
-                           (obj as BaseArc).Time < lowerBound && (obj as BaseArc).TailTime >= lowerBound)
+                           (obj as BaseArc).SongBpmTime < lowerBound && (obj as BaseArc).TailSongBpmTime >= lowerBound)
                     CreateContainerFromPool(obj);
                 if (obj is BaseChain &&
-                    (obj as BaseChain).Time < lowerBound && (obj as BaseChain).TailTime >= lowerBound)
+                    (obj as BaseChain).SongBpmTime < lowerBound && (obj as BaseChain).TailSongBpmTime >= lowerBound)
                     CreateContainerFromPool(obj);
             }
         }
@@ -302,9 +302,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         var newSet = new HashSet<BaseObject>(newObjects);
         foreach (var newObject in newObjects)
         {
-            Debug.Log($"Performing conflicting check at {newObject.Time}");
+            Debug.Log($"Performing conflicting check at {newObject.JsonTime}");
 
-            var localWindow = GetBetween(newObject.Time - 0.1f, newObject.Time + 0.1f);
+            var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
             var conflicts = localWindow.Where(x => x.IsConflictingWith(newObject) && !newSet.Contains(x)).ToList();
             foreach (var beatmapObject in conflicts) conflictingInternal.Add(beatmapObject);
         }
@@ -407,6 +407,29 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// </summary>
     /// <returns>A list of sorted objects</returns>
     public virtual IEnumerable<BaseObject> GrabSortedObjects() => LoadedObjects;
+
+    public static void RefreshFutureObjectsPosition(float jsonTime)
+    {
+        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
+        {
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
+            if (collection == null) continue;
+            foreach (var obj in collection.LoadedObjects)
+            {
+                if (obj.JsonTime > jsonTime)
+                {
+                    obj.RecomputeSongBpmTime();
+                }
+            }
+            foreach (var container in collection.LoadedContainers)
+            {
+                if (container.Key.JsonTime > jsonTime)
+                {
+                    container.Value.UpdateGridPosition();
+                }
+            }
+        }
+    }
 
     protected virtual void UpdateContainerData(ObjectContainer con, BaseObject obj) { }
 

@@ -10,7 +10,7 @@ namespace Beatmap.Base
 
         protected BaseBpmEvent(BaseBpmEvent other)
         {
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             Bpm = other.Bpm;
             Type = 100;
             Value = 0;
@@ -20,7 +20,7 @@ namespace Beatmap.Base
 
         protected BaseBpmEvent(BaseEvent evt)
         {
-            Time = evt.Time;
+            JsonTime = evt.JsonTime;
             Bpm = evt.FloatValue;
             Type = 100;
             Value = 0;
@@ -73,8 +73,7 @@ namespace Beatmap.Base
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
-            if (other is BaseBpmEvent bpm) return Math.Abs(Bpm - bpm.Bpm) < DecimalTolerance;
-            return false;
+            return (other is BaseBpmEvent bpm);
         }
 
         public override void Apply(BaseObject originalData)

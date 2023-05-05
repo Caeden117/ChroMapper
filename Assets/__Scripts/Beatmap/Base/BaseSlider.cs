@@ -1,4 +1,5 @@
 using Beatmap.Base.Customs;
+using Beatmap.Enums;
 using SimpleJSON;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace Beatmap.Base
             Color = color;
             CutDirection = cutDirection;
             AngleOffset = angleOffset;
-            TailTime = tailTime;
+            TailJsonTime = tailTime;
             TailPosX = tailPosX;
             TailPosY = tailPosY;
         }
@@ -24,13 +25,42 @@ namespace Beatmap.Base
         public int Color { get; set; }
         public int CutDirection { get; set; }
         public int AngleOffset { get; set; }
-        public float TailTime { get; set; }
+
+        private float tailJsonTime;
+        public float TailJsonTime
+        {
+            get => tailJsonTime;
+            set
+            {
+                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                tailSongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(value) ?? value;
+                tailJsonTime = value;
+            }
+        }
+        private float tailSongBpmTime { get; set; }
+        public float TailSongBpmTime
+        {
+            get => tailSongBpmTime;
+            set
+            {
+                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                tailJsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
+                tailSongBpmTime = value;
+            }
+        }
+
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
         public JSONNode CustomTailCoordinate { get; set; }
 
         public abstract string CustomKeyTailCoordinate { get; }
+
+        public override void RecomputeSongBpmTime()
+        {
+            base.RecomputeSongBpmTime();
+            TailJsonTime = TailJsonTime;
+        }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
@@ -43,7 +73,7 @@ namespace Beatmap.Base
                 Color = baseSlider.Color;
                 CutDirection = baseSlider.CutDirection;
                 AngleOffset = baseSlider.AngleOffset;
-                TailTime = baseSlider.TailTime;
+                TailJsonTime = baseSlider.TailJsonTime;
                 TailPosX = baseSlider.TailPosX;
                 TailPosY = baseSlider.TailPosY;
             }

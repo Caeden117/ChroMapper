@@ -37,8 +37,8 @@ public class StrobeLightingPass : StrobeGeneratorPass
     {
         var generatedObjects = new List<BaseEvent>();
 
-        var startTime = original.First().Time;
-        var endTime = original.Last().Time;
+        var startTime = original.First().JsonTime;
+        var endTime = original.Last().JsonTime;
 
         var startFloatValue = original.First().FloatValue;
         var endFloatValue = original.Last().FloatValue;
@@ -60,7 +60,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
         {
             if (typeIndex >= alternatingTypes.Count) typeIndex = 0;
 
-            var any = original.Where(x => x.Time <= endTime - distanceInBeats).LastOrDefault();
+            var any = original.Where(x => x.JsonTime <= endTime - distanceInBeats).LastOrDefault();
             if (any != lastPassed && dynamic && LightEventHelper.IsBlueFromValue(any.Value) !=
                 LightEventHelper.IsBlueFromValue(alternatingTypes[typeIndex]))
             {

@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 public class StrobeGenerator : MonoBehaviour
 {
-    [FormerlySerializedAs("eventsContainer")] [SerializeField] private EventGridContainer eventGridContainer;
+    [FormerlySerializedAs("eventsContainer")][SerializeField] private EventGridContainer eventGridContainer;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private StrobeGeneratorUIDropdown ui;
 
@@ -42,7 +42,7 @@ public class StrobeGenerator : MonoBehaviour
                     var lightIds = propGroup.FirstOrDefault()?.CustomLightID;
                     if (propGroup.Count() >= 2)
                     {
-                        IEnumerable<BaseEvent> ordered = propGroup.OrderByDescending(x => x.Time);
+                        IEnumerable<BaseEvent> ordered = propGroup.OrderByDescending(x => x.JsonTime);
                         var end = ordered.First();
                         var start = ordered.Last();
 
@@ -59,7 +59,7 @@ public class StrobeGenerator : MonoBehaviour
                             var validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
                             if (validEvents.Count() >= 2)
                             {
-                                var strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x.Time),
+                                var strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x.JsonTime),
                                     type, propMode, lightIds).ToList();
                                 // REVIEW: Perhaps implement a "smart merge" to conflicting events, rather than outright removing those from previous passes
                                 // Now, what would a "smart merge" entail? I have no clue.
@@ -72,7 +72,7 @@ public class StrobeGenerator : MonoBehaviour
             }
         }
 
-        generatedObjects.OrderBy(x => x.Time);
+        generatedObjects.OrderBy(x => x.JsonTime);
         if (generatedObjects.Count > 0)
         {
             //Delete conflicting vanilla events

@@ -41,7 +41,20 @@ namespace Beatmap.V2
                 ParseV3ToV2();
 
                 var events = new JSONArray();
-                foreach (var e in Events) events.Add(e.ToJson());
+
+                var allEvents = new List<BaseObject>();
+                allEvents.AddRange(Events);
+                allEvents.AddRange(BpmEvents);
+                if (BpmEvents.First().JsonTime != 0)
+                {
+                    allEvents.Add(new V2BpmEvent()
+                    {
+                        JsonTime = 0,
+                        Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                    });
+                }
+                allEvents.Sort((lhs, rhs) => lhs.JsonTime.CompareTo(rhs.JsonTime));
+                foreach (var e in allEvents) events.Add(e.ToJson());
 
                 var notes = new JSONArray();
                 foreach (var n in Notes) notes.Add(n.ToJson());
@@ -62,7 +75,8 @@ namespace Beatmap.V2
 
                 SaveCustom();
 
-                WriteFile(this);
+                WriteDifficultyFile(this);
+                WriteBPMInfoFile(this);
 
                 return true;
             }
@@ -192,6 +206,7 @@ namespace Beatmap.V2
                 }
 
             Events = newEvents;
+            BpmEvents = BpmEvents.Select(V3ToV2.BpmEvent).Cast<BaseBpmEvent>().ToList();
 
             Bookmarks = Bookmarks.Select(V3ToV2.Bookmark).Cast<BaseBookmark>().ToList();
             BpmChanges = BpmChanges.Select(V3ToV2.BpmChange).Cast<BaseBpmChange>().ToList();
@@ -219,7 +234,13 @@ namespace Beatmap.V2
                     switch (key)
                     {
                         case "_events":
-                            foreach (JSONNode n in node) map.Events.Add(new V2Event(n));
+                            foreach (JSONNode n in node)
+                            {
+                                if (n["_type"] != null && n["_type"] == 100)
+                                    map.BpmEvents.Add(new V2BpmEvent(n));
+                                else
+                                    map.Events.Add(new V2Event(n));
+                            }
                             break;
                         case "_notes":
                             foreach (JSONNode n in node) map.Notes.Add(new V2Note(n));
@@ -340,7 +361,7 @@ namespace Beatmap.V2
             if (mainNode.HasKey("_bookmarks")) mainNode.Remove("_bookmarks");
             if (mainNode.HasKey("_customEvents")) mainNode.Remove("_customEvents");
 
-            map.BpmChanges = bpmList.DistinctBy(x => x.Time).ToList();
+            map.BpmChanges = bpmList.DistinctBy(x => x.JsonTime).ToList();
             map.Bookmarks = bookmarksList;
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
             map.PointDefinitions = pointDefinitions;

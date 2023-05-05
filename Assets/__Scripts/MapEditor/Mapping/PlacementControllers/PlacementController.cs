@@ -16,17 +16,18 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 {
     [SerializeField] private GameObject objectContainerPrefab;
     [SerializeField] private TBo objectData;
-    [FormerlySerializedAs("ObjectContainerCollection")] [SerializeField] internal TBocc objectContainerCollection;
-    [FormerlySerializedAs("parentTrack")] [SerializeField] protected Transform ParentTrack;
-    [FormerlySerializedAs("interfaceGridParent")] [SerializeField] protected Transform InterfaceGridParent;
+    [SerializeField] protected BPMChangeGridContainer BpmChangeGridContainer; // This is stinky. Maybe separate song/json time to another class?
+    [FormerlySerializedAs("ObjectContainerCollection")][SerializeField] internal TBocc objectContainerCollection;
+    [FormerlySerializedAs("parentTrack")][SerializeField] protected Transform ParentTrack;
+    [FormerlySerializedAs("interfaceGridParent")][SerializeField] protected Transform InterfaceGridParent;
     [SerializeField] protected bool AssignTo360Tracks;
     [SerializeField] private ObjectType objectDataType;
     [SerializeField] private bool startingActiveState;
-    [FormerlySerializedAs("atsc")] [SerializeField] protected AudioTimeSyncController Atsc;
+    [FormerlySerializedAs("atsc")][SerializeField] protected AudioTimeSyncController Atsc;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
-    [FormerlySerializedAs("tracksManager")] [SerializeField] protected TracksManager TracksManager;
-    [FormerlySerializedAs("gridRotation")] [SerializeField] protected RotationCallbackController GridRotation;
-    [FormerlySerializedAs("gridChild")] [SerializeField] protected GridChild GridChild;
+    [FormerlySerializedAs("tracksManager")][SerializeField] protected TracksManager TracksManager;
+    [FormerlySerializedAs("gridRotation")][SerializeField] protected RotationCallbackController GridRotation;
+    [FormerlySerializedAs("gridChild")][SerializeField] protected GridChild GridChild;
     [SerializeField] private Transform noteGridTransform;
 
     [FormerlySerializedAs("bounds")] public Bounds Bounds;
@@ -160,7 +161,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 instantiatedContainer.transform.localPosition.z);
 
             OnPhysicsRaycast(hit, roundedHit);
-            queuedData.Time = RoundedTime;
+            queuedData.SongBpmTime = RoundedTime;
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));
@@ -191,7 +192,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
         if (!IsDraggingObject && !IsDraggingObjectAtTime && IsOnPlacement && instantiatedContainer != null && IsValid
             && !PersistentUI.Instance.DialogBoxIsEnabled &&
-            queuedData?.Time >= 0 && !applicationFocusChanged && instantiatedContainer.gameObject.activeSelf)
+            queuedData?.JsonTime >= 0 && !applicationFocusChanged && instantiatedContainer.gameObject.activeSelf)
         {
             ApplyToMap();
         }
@@ -222,7 +223,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     protected virtual float GetContainerPosZ(ObjectContainer con)
     {
-        return (con.ObjectData.Time - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+        return (con.ObjectData.SongBpmTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
     }
 
     public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
@@ -289,7 +290,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     protected void CalculateTimes(Intersections.IntersectionHit hit, out Vector3 roundedHit, out float roundedTime)
     {
-        var currentBeat = IsDraggingObjectAtTime ? draggedObjectData.Time : Atsc.CurrentBeat;
+        var currentBeat = IsDraggingObjectAtTime ? draggedObjectData.SongBpmTime : Atsc.CurrentBeat;
 
         roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
         var realTime = roundedHit.z / EditorScaleController.EditorScale;
@@ -353,7 +354,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal virtual void ApplyToMap()
     {
         objectData = queuedData;
-        objectData.Time = RoundedTime;
         //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BaseObject> conflicting);
         objectContainerCollection.SpawnObject(objectData, out var conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
@@ -391,10 +391,10 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         var selected = SelectionController.IsObjectSelected(draggedObjectData);
 
         // To delete properly we need to set the original time
-        var time = draggedObjectData.Time;
-        draggedObjectData.Time = originalDraggedObjectData.Time;
+        var jsonTime = draggedObjectData.JsonTime;
+        draggedObjectData.JsonTime = originalDraggedObjectData.JsonTime;
         objectContainerCollection.DeleteObject(draggedObjectData, false, false);
-        draggedObjectData.Time = time;
+        draggedObjectData.JsonTime = jsonTime;
 
         objectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
         if (conflicting.Contains(draggedObjectData))

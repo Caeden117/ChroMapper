@@ -30,8 +30,10 @@ Shader "Grid ZDir" {
 			#include "UnityCG.cginc"
 
 			// These are global properties and should not be instanced
-			uniform float _BPMChange_Times[256];
-			uniform float _BPMChange_BPMs[256];
+			uniform float _SongBPM = 120;
+			uniform float _BPMChange_Times[170];
+			uniform float _BPMChange_Json_Times[170];
+			uniform float _BPMChange_BPMs[170];
 			uniform int _BPMChange_Count;
 			uniform float _Offset = 0;
 			uniform float _Rotation = 0;
@@ -117,24 +119,25 @@ Shader "Grid ZDir" {
 							time = timeButRAWWW;
 							break;
 						}
-						else if (currBpmTime < timeButRAWWW && nextBpmTime > timeButRAWWW)
+						else if (currBpmTime <= timeButRAWWW && timeButRAWWW < nextBpmTime)
 						{
 							float difference = timeButRAWWW - currBpmTime;
-							float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
+							float timeInSecond = (60 / _SongBPM) * difference;
 							float timeInNewBeat = (_BPMChange_BPMs[i] / 60) * timeInSecond;
-							time = timeInNewBeat;
+							time = timeInNewBeat + _BPMChange_Json_Times[i];
 						}
 					}
 					float lastBpmTime = _BPMChange_Times[_BPMChange_Count - 1];
 					if (lastBpmTime < timeButRAWWW)
 					{
 						float difference = timeButRAWWW - lastBpmTime;
-						float timeInSecond = (60 / _BPMChange_BPMs[0]) * difference;
+						float timeInSecond = (60 / _SongBPM) * difference;
 						float timeInNewBeat = (_BPMChange_BPMs[_BPMChange_Count - 1] / 60) * timeInSecond;
-						time = timeInNewBeat;
+						time = timeInNewBeat + _BPMChange_Json_Times[_BPMChange_Count - 1];
 					}
 				}
-				if ((abs(time * editorScaleMult) % gridSpacing) / gridSpacing <= gridThickness / 2 || (abs(time * editorScaleMult) % gridSpacing) / gridSpacing >= 1 - (gridThickness / 2)) {
+				if ((abs(time * editorScaleMult) % gridSpacing) / gridSpacing <= gridThickness / 2
+				 || (abs(time * editorScaleMult) % gridSpacing) / gridSpacing >= 1 - (gridThickness / 2)) {
 					return gridColour;
 				} else {
 					return baseColour;

@@ -35,12 +35,12 @@ public class CurrentSectionDisplay : MonoBehaviour
         {
             if (upcomingBookmarks.Count == 0)
                 return;
-            if (upcomingBookmarks.Peek().Data.Time <= atsc.CurrentBeat)
+            if (upcomingBookmarks.Peek().Data.JsonTime <= atsc.CurrentBeat)
                 textMesh.text = upcomingBookmarks.Pop().Data.Name;
         }
         else
         {
-            var lastBookmark = bookmarkManger.bookmarkContainers.FindLast(x => x.Data.Time <= atsc.CurrentBeat);
+            var lastBookmark = bookmarkManger.bookmarkContainers.FindLast(x => x.Data.JsonTime <= atsc.CurrentBeat);
 
             textMesh.text = lastBookmark != null ? lastBookmark.Data.Name : "";
         }
@@ -51,8 +51,8 @@ public class CurrentSectionDisplay : MonoBehaviour
         this.isPlaying = isPlaying;
         upcomingBookmarks.Clear();
         foreach (var container in
-            bookmarkManger.bookmarkContainers.Where(x => x.Data.Time > atsc.CurrentBeat)
-                .OrderByDescending(x => x.Data.Time))
+            bookmarkManger.bookmarkContainers.Where(x => x.Data.JsonTime > atsc.CurrentBeat)
+                .OrderByDescending(x => x.Data.JsonTime))
         {
             upcomingBookmarks.Push(container);
         }

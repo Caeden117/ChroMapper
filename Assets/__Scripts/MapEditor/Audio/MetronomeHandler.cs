@@ -109,7 +109,7 @@ public class MetronomeHandler : MonoBehaviour
             lastBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
             if (lastBpmChange != null)
             {
-                var differenceInSongBpm = atsc.CurrentSongBeats - lastBpmChange.Time;
+                var differenceInSongBpm = atsc.CurrentSongBeats - lastBpmChange.JsonTime;
                 var differenceInLastBpm = differenceInSongBpm * lastBpmChange.Bpm / atsc.Song.BeatsPerMinute;
                 beatProgress = differenceInLastBpm % 1;
             }

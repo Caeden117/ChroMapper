@@ -35,7 +35,7 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
     {
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Head)
         {
-            dragged.Time = queued.Time;
+            dragged.JsonTime = queued.JsonTime;
             dragged.PosX = queued.PosX;
             dragged.PosY = queued.PosY;
             dragged.CutDirection = queued.CutDirection;
@@ -43,7 +43,7 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
 
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
         {
-            dragged.TailTime = queued.Time;
+            dragged.TailJsonTime = queued.JsonTime;
             dragged.TailPosX = queued.PosX;
             dragged.TailPosY = queued.PosY;
             dragged.TailCutDirection = queued.TailCutDirection;
@@ -63,11 +63,11 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
         {
             if (indicator.IndicatorType == IndicatorType.Head)
             {
-                return (indicator.ParentArc.ArcData.Time - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+                return (indicator.ParentArc.ArcData.SongBpmTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
             }
             if (indicator.IndicatorType == IndicatorType.Tail)
             {
-                return (indicator.ParentArc.ArcData.TailTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+                return (indicator.ParentArc.ArcData.TailSongBpmTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
             }
         }
 

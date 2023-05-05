@@ -18,12 +18,12 @@ namespace Beatmap.V3
 
         public V3Chain(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             Color = RetrieveRequiredNode(node, "c").AsInt;
             PosX = RetrieveRequiredNode(node, "x").AsInt;
             PosY = RetrieveRequiredNode(node, "y").AsInt;
             CutDirection = RetrieveRequiredNode(node, "d").AsInt;
-            TailTime = RetrieveRequiredNode(node, "tb").AsFloat;
+            TailJsonTime = RetrieveRequiredNode(node, "tb").AsFloat;
             TailPosX = RetrieveRequiredNode(node, "tx").AsInt;
             TailPosY = RetrieveRequiredNode(node, "ty").AsInt;
             SliceCount = RetrieveRequiredNode(node, "sc").AsInt;
@@ -91,12 +91,12 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["c"] = Color;
             node["x"] = PosX;
             node["y"] = PosY;
             node["d"] = CutDirection;
-            node["tb"] = TailTime;
+            node["tb"] = TailJsonTime;
             node["tx"] = TailPosX;
             node["ty"] = TailPosY;
             node["sc"] = SliceCount;
@@ -108,7 +108,7 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Chain(Time, PosX, PosY, Color, CutDirection,
-                AngleOffset, TailTime, TailPosX, TailPosY, SliceCount, Squish, SaveCustom().Clone());
+            new V3Chain(JsonTime, PosX, PosY, Color, CutDirection,
+                AngleOffset, TailJsonTime, TailPosX, TailPosY, SliceCount, Squish, SaveCustom().Clone());
     }
 }

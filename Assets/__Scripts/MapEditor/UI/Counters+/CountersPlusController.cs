@@ -8,9 +8,9 @@ using UnityEngine.Serialization;
 
 public class CountersPlusController : MonoBehaviour
 {
-    [FormerlySerializedAs("notes")] [SerializeField] private NoteGridContainer noteGrid;
-    [FormerlySerializedAs("obstacles")] [SerializeField] private ObstacleGridContainer obstacleGrid;
-    [FormerlySerializedAs("events")] [SerializeField] private EventGridContainer eventGrid;
+    [FormerlySerializedAs("notes")][SerializeField] private NoteGridContainer noteGrid;
+    [FormerlySerializedAs("obstacles")][SerializeField] private ObstacleGridContainer obstacleGrid;
+    [FormerlySerializedAs("events")][SerializeField] private EventGridContainer eventGrid;
     [SerializeField] private BPMChangeGridContainer bpm;
     [SerializeField] private AudioSource cameraAudioSource;
     [SerializeField] private AudioTimeSyncController atsc;
@@ -24,7 +24,7 @@ public class CountersPlusController : MonoBehaviour
     [SerializeField] private LocalizeStringEvent obstacleString;
     [SerializeField] private LocalizeStringEvent eventString;
     [SerializeField] private LocalizeStringEvent bpmString;
-    [FormerlySerializedAs("currentBPMString")] [SerializeField] private LocalizeStringEvent currentBpmString;
+    [FormerlySerializedAs("currentBPMString")][SerializeField] private LocalizeStringEvent currentBpmString;
     [SerializeField] private LocalizeStringEvent selectionString;
     [SerializeField] private LocalizeStringEvent timeMappingString;
 
@@ -37,9 +37,9 @@ public class CountersPlusController : MonoBehaviour
 
     // Unfortunately the way localization is set up, we need this to be public AND with the current naming
     // We *COULD* rename every localization entry to use PascalCase versions but it's more effort to do that.
-    [FormerlySerializedAs("hours")] [HideInInspector] public int hours;
-    [FormerlySerializedAs("minutes")] [HideInInspector] public int minutes;
-    [FormerlySerializedAs("seconds")] [HideInInspector] public int seconds;
+    [FormerlySerializedAs("hours")][HideInInspector] public int hours;
+    [FormerlySerializedAs("minutes")][HideInInspector] public int minutes;
+    [FormerlySerializedAs("seconds")][HideInInspector] public int seconds;
 
 
     public int NotesCount =>
@@ -56,8 +56,8 @@ public class CountersPlusController : MonoBehaviour
     {
         get
         {
-            var sel = SelectionController.SelectedObjects.OrderBy(it => it.Time).ToList();
-            var beatTimeDiff = sel.Last().Time - sel.First().Time;
+            var sel = SelectionController.SelectedObjects.OrderBy(it => it.JsonTime).ToList();
+            var beatTimeDiff = sel.Last().JsonTime - sel.First().JsonTime;
             var secDiff = atsc.GetSecondsFromBeat(beatTimeDiff);
 
             return NotesSelected / secDiff;

@@ -12,7 +12,7 @@ namespace Beatmap.Base.Customs
         protected BaseBpmChange(BaseBpmChange other)
         {
             Bpm = other.Bpm;
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             BeatsPerBar = other.BeatsPerBar;
             MetronomeOffset = other.MetronomeOffset;
         }
@@ -20,7 +20,7 @@ namespace Beatmap.Base.Customs
         protected BaseBpmChange(BaseBpmEvent other)
         {
             Bpm = other.Bpm;
-            Time = other.Time;
+            JsonTime = other.JsonTime;
             BeatsPerBar = 4;
             MetronomeOffset = 4;
         }
@@ -30,7 +30,7 @@ namespace Beatmap.Base.Customs
         protected BaseBpmChange(float time, float bpm) : base(time, bpm)
         {
             Bpm = bpm;
-            Time = time;
+            JsonTime = time;
             BeatsPerBar = 4;
             MetronomeOffset = 4;
         }
@@ -60,7 +60,7 @@ namespace Beatmap.Base.Customs
         public override JSONNode ToJson() =>
             new JSONObject
             {
-                [KeyTime] = Math.Round(Time, DecimalPrecision),
+                [KeyTime] = Math.Round(JsonTime, DecimalPrecision),
                 [KeyBpm] = Bpm,
                 [KeyBeatsPerBar] = BeatsPerBar,
                 [KeyMetronomeOffset] = MetronomeOffset
@@ -68,7 +68,7 @@ namespace Beatmap.Base.Customs
 
         private void InstantiateHelper(ref JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, KeyTime).AsFloat;
+            JsonTime = RetrieveRequiredNode(node, KeyTime).AsFloat;
             Bpm = RetrieveRequiredNode(node, KeyBpm).AsFloat;
             BeatsPerBar = node.HasKey(KeyBeatsPerBar) ? node[KeyBeatsPerBar].AsFloat : 4f;
             MetronomeOffset = node.HasKey(KeyMetronomeOffset) ? node[KeyMetronomeOffset].AsFloat : 4f;

@@ -8,7 +8,6 @@ public class RotatingLights : RotatingLightsBase
     [FormerlySerializedAs("multiplier")] public float Multiplier = 20;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float zPositionModifier;
-    [SerializeField] private float zRotationModifier = 1;
 
     public bool OverrideLightGroup;
     public int OverrideLightGroupID;

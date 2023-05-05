@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Helper;
 using Beatmap.Shared;
 using Beatmap.V2;
 using Beatmap.V3;
@@ -13,7 +14,7 @@ public class MapLoader : MonoBehaviour
     [SerializeField] private TracksManager manager;
     [SerializeField] private NoteLanesController noteLanesController;
 
-    [Space] [SerializeField] private Transform containerCollectionsContainer;
+    [Space][SerializeField] private Transform containerCollectionsContainer;
 
     private BaseDifficulty map;
     private int noteLaneSize = 2;
@@ -41,7 +42,7 @@ public class MapLoader : MonoBehaviour
                 LightTranslationEventBoxGroups = new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>(m.LightTranslationEventBoxGroups),
                 EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(m.EventTypesWithKeywords),
                 UseNormalEventsAsCompatibleEvents = m.UseNormalEventsAsCompatibleEvents,
-                
+
                 EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(m.EnvironmentEnhancements),
                 BpmChanges = new List<BaseBpmChange>(m.BpmChanges),
                 CustomEvents = new List<BaseCustomEvent>(m.CustomEvents)
@@ -55,11 +56,12 @@ public class MapLoader : MonoBehaviour
                 CustomData = m.CustomData?.Clone(),
                 Notes = new List<BaseNote>(m.Notes),
                 Obstacles = new List<BaseObstacle>(m.Obstacles),
+                BpmEvents = new List<BaseBpmEvent>(m.BpmEvents),
                 Events = new List<BaseEvent>(m.Events),
                 Waypoints = new List<BaseWaypoint>(m.Waypoints),
                 Arcs = new List<BaseArc>(), // the purge
                 EventTypesWithKeywords = m.EventTypesWithKeywords != null ? new V2SpecialEventsKeywordFilters(m.EventTypesWithKeywords) : null,
-                
+
                 EnvironmentEnhancements = new List<BaseEnvironmentEnhancement>(m.EnvironmentEnhancements),
                 BpmChanges = new List<BaseBpmChange>(m.BpmChanges),
                 CustomEvents = new List<BaseCustomEvent>(m.CustomEvents)
@@ -67,16 +69,17 @@ public class MapLoader : MonoBehaviour
             map = copy;
         }
 
+        map.ConvertCustomBpmToOfficial();
     }
 
     public IEnumerator HardRefresh()
     {
+        yield return StartCoroutine(LoadObjects(map.BpmEvents));
         if (Settings.Instance.Load_Notes) yield return StartCoroutine(LoadObjects(map.Notes));
         if (Settings.Instance.Load_Obstacles) yield return StartCoroutine(LoadObjects(map.Obstacles));
         if (Settings.Instance.Load_Events) yield return StartCoroutine(LoadObjects(map.Events));
         if (Settings.Instance.Load_Others)
         {
-            yield return StartCoroutine(LoadObjects(map.BpmChanges));
             yield return StartCoroutine(LoadObjects(map.CustomEvents));
         }
         if (Settings.Instance.Load_MapV3)
@@ -101,6 +104,9 @@ public class MapLoader : MonoBehaviour
         collection.LoadedObjects = new SortedSet<BaseObject>(objects, new ObjectComparer());
         collection.UnsortedObjects = collection.LoadedObjects.ToList();
         UpdateSlider<T>();
+
+        foreach (var obj in objects) obj.RecomputeSongBpmTime();
+
         if (typeof(T) == typeof(BaseNote) || typeof(T) == typeof(BaseObstacle))
         {
             for (var i = 0; i < objects.Count(); i++)

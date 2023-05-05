@@ -32,14 +32,14 @@ public class MirrorSelection : MonoBehaviour
             return;
         }
 
-        var ordered = SelectionController.SelectedObjects.OrderByDescending(x => x.Time);
-        var end = ordered.First().Time;
-        var start = ordered.Last().Time;
+        var ordered = SelectionController.SelectedObjects.OrderByDescending(x => x.JsonTime);
+        var end = ordered.First().JsonTime;
+        var start = ordered.Last().JsonTime;
         var allActions = new List<BeatmapAction>();
         foreach (var con in SelectionController.SelectedObjects)
         {
             var edited = BeatmapFactory.Clone(con);
-            edited.Time = start + (end - con.Time);
+            edited.JsonTime = start + (end - con.JsonTime);
             allActions.Add(new BeatmapObjectModifiedAction(edited, con, con, "e", true));
         }
 

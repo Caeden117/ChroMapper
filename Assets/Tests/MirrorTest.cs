@@ -35,7 +35,7 @@ namespace Tests
         {
             BaseNote baseNoteA = new V3ColorNote
             {
-                Time = 2,
+                JsonTime = 2,
                 Type = (int)NoteType.Red,
                 PosX = (int)GridX.Left,
                 PosY = (int)GridY.Base,
@@ -43,7 +43,7 @@ namespace Tests
             };
             BaseNote baseNoteB = new V3ColorNote
             {
-                Time = 3,
+                JsonTime = 3,
                 Type = (int)NoteType.Blue,
                 PosX = (int)GridX.Right,
                 PosY = (int)GridY.Top,

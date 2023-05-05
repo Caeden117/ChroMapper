@@ -20,7 +20,7 @@ namespace Beatmap.V3
 
         public V3BombNote(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             PosX = RetrieveRequiredNode(node, "x").AsInt;
             PosY = RetrieveRequiredNode(node, "y").AsInt;
             Type = (int)NoteType.Bomb;
@@ -74,7 +74,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["x"] = PosX;
             node["y"] = PosY;
             CustomData = SaveCustom();
@@ -83,6 +83,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BombNote(Time, PosX, PosY, SaveCustom().Clone());
+        public override BaseItem Clone() => new V3BombNote(JsonTime, PosX, PosY, SaveCustom().Clone());
     }
 }

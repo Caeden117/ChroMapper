@@ -17,13 +17,36 @@ namespace Beatmap.Base
 
         protected BaseObject(float time, JSONNode customData = null)
         {
-            Time = time;
+            JsonTime = time;
             CustomData = customData;
         }
 
         public abstract ObjectType ObjectType { get; set; }
         public bool HasAttachedContainer { get; set; } = false;
-        public float Time { get; set; }
+
+        private float jsonTime;
+        public float JsonTime
+        {
+            get => jsonTime;
+            set
+            {
+                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                songBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(value) ?? value;
+                jsonTime = value;
+            }
+        }
+        private float songBpmTime { get; set; }
+        public float SongBpmTime
+        {
+            get => songBpmTime;
+            set
+            {
+                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                jsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
+                songBpmTime = value;
+            }
+        }
+
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
         public JSONNode CustomData { get; set; } = new JSONObject();
@@ -38,15 +61,17 @@ namespace Beatmap.Base
 
         public abstract string CustomKeyTrack { get; }
 
+        public virtual void RecomputeSongBpmTime() => JsonTime = JsonTime;
+
         public virtual bool IsConflictingWith(BaseObject other, bool deletion = false) =>
-            Mathf.Abs(Time - other.Time) < BeatmapObjectContainerCollection.Epsilon &&
+            Mathf.Abs(JsonTime - other.JsonTime) < BeatmapObjectContainerCollection.Epsilon &&
             IsConflictingWithObjectAtSameTime(other, deletion);
 
         protected abstract bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false);
 
         public virtual void Apply(BaseObject originalData)
         {
-            Time = originalData.Time;
+            JsonTime = originalData.JsonTime;
             CustomData = originalData.CustomData?.Clone();
             RefreshCustom();
         }

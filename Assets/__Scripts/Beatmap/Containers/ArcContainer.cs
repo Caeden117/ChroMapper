@@ -47,19 +47,19 @@ namespace Beatmap.Containers
             var tailPosition = ArcData.GetTailPosition();
             if (ArcData.TailCutDirection == (int)NoteCutDirection.Any)
             {
-                return new Vector3(tailPosition.x, tailPosition.y + 0.5f, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
+                return new Vector3(tailPosition.x, tailPosition.y + 0.5f, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
             }
 
             var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ArcData.TailCutDirection).z;
             var tailDirection = new Vector2(Mathf.Sin(zRads), -Mathf.Cos(zRads));
             var tailNodePosition = tailPosition - tailDirection * ArcData.TailControlPointLengthMultiplier * splineControlPointScaleFactor;
-            return new Vector3(tailNodePosition.x, tailNodePosition.y + 0.5f, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
+            return new Vector3(tailNodePosition.x, tailNodePosition.y + 0.5f, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
         }
 
         public Vector3 p3()
         {
             var tailPosition = ArcData.GetTailPosition();
-            return new Vector3(tailPosition.x, tailPosition.y + 0.5f, (ArcData.TailTime - ArcData.Time) * EditorScaleController.EditorScale);
+            return new Vector3(tailPosition.x, tailPosition.y + 0.5f, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
         }
 
         // B(t) = (1-t)^3 p0 + 3(1-t)^2 t p1 + 3(1-t)t^2 p2 + t^3 p3
@@ -117,7 +117,7 @@ namespace Beatmap.Containers
         public void RecomputePosition()
         {
             if (ArcData == null) return; // in case that this container has already been recycled when about to compute
-            this.transform.localPosition = new Vector3(0, 0, ArcData.Time * EditorScaleController.EditorScale);
+            this.transform.localPosition = new Vector3(0, 0, ArcData.SongBpmTime * EditorScaleController.EditorScale);
             splineRenderer.positionCount = numSamples + 1;
 
             var p0 = this.p0();

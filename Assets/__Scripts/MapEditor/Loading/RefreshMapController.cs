@@ -70,12 +70,12 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         yield return PersistentUI.Instance.FadeInLoadingScreen();
         map = song.GetMapFromDifficultyBeatmap(diff);
         loader.UpdateMapData(map);
+        yield return StartCoroutine(loader.LoadObjects(map.BpmChanges));
         var currentBeat = atsc.CurrentBeat;
         atsc.MoveToTimeInBeats(0);
         if (notes || full) yield return StartCoroutine(loader.LoadObjects(map.Notes));
         if (obstacles || full) yield return StartCoroutine(loader.LoadObjects(map.Obstacles));
         if (events || full) yield return StartCoroutine(loader.LoadObjects(map.Events));
-        if (others || full) yield return StartCoroutine(loader.LoadObjects(map.BpmChanges));
         if (others || full) yield return StartCoroutine(loader.LoadObjects(map.CustomEvents));
         if ((notes || full) && Settings.Instance.Load_MapV3)
         {

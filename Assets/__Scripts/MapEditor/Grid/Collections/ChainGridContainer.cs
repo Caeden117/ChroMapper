@@ -39,7 +39,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         chain.ChainData = chainData;
         chainAppearanceSO.SetChainAppearance(chain);
         chain.Setup();
-        var track = tracksManager.GetTrackAtTime(chainData.Time);
+        var track = tracksManager.GetTrackAtTime(chainData.JsonTime);
         track.AttachContainer(con);
     }
 
@@ -85,7 +85,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
     {
         var note = obj as BaseNote;
         if (note.Type == (int)NoteType.Bomb) return;
-        var chains = GetBetween(note.Time - ViewEpsilon, note.Time + ViewEpsilon);
+        var chains = GetBetween(note.JsonTime - ViewEpsilon, note.JsonTime + ViewEpsilon);
         foreach (BaseChain chain in chains)
         {
             LoadedContainers.TryGetValue(chain, out var con);

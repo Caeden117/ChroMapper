@@ -49,6 +49,14 @@ namespace Beatmap.V3
                 foreach (var r in RotationEvents) rotationEvents.Add(r.ToJson());
 
                 var bpmEvents = new JSONArray();
+                if (BpmEvents.First().JsonTime != 0)
+                {
+                    BpmEvents.Insert(0, new V3BpmEvent()
+                    {
+                        JsonTime = 0,
+                        Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                    });
+                }
                 foreach (var b in BpmEvents) bpmEvents.Add(b.ToJson());
 
                 var colorNotes = new JSONArray();
@@ -103,7 +111,8 @@ namespace Beatmap.V3
 
                 SaveCustom();
 
-                WriteFile(this);
+                WriteDifficultyFile(this);
+                WriteBPMInfoFile(this);
 
                 // TODO: temporary fix, there is possibility better solution but this is quick band aid
                 // we need to put them back into the map 
@@ -296,7 +305,7 @@ namespace Beatmap.V3
 
             var newColorBoostEvents = new List<BaseColorBoostEvent>();
             var newRotationEvents = new List<BaseRotationEvent>();
-            // var newBpmEvents = new List<BaseBpmEvent>(); // while there is no BPM event supported, we do not want to replace existing BPM event
+            var newBpmEvents = new List<BaseBpmEvent>();
             var newEvents = new List<BaseEvent>();
             foreach (var e in Events)
                 switch (e.Type)
@@ -308,9 +317,6 @@ namespace Beatmap.V3
                     case (int)EventTypeValue.LateLaneRotation:
                         newRotationEvents.Add(V2ToV3.RotationEvent(e));
                         break;
-                    // case (int)EventTypeValue.BpmChange:
-                    //     newBpmEvents.Add(V2ToV3.BpmEvent(e));
-                    //     break;
                     default:
                         newEvents.Add(V2ToV3.BasicEvent(e));
                         break;
@@ -318,7 +324,7 @@ namespace Beatmap.V3
 
             ColorBoostEvents = newColorBoostEvents;
             RotationEvents = newRotationEvents;
-            // BpmEvents = (List<BaseBpmEvent>)BpmEvents.Concat(newBpmEvents);
+            BpmEvents = BpmEvents.Select(V2ToV3.BpmEvent).Cast<BaseBpmEvent>().ToList();
             Events = newEvents;
 
             Bookmarks = Bookmarks.Select(V2ToV3.Bookmark).Cast<BaseBookmark>().ToList();
@@ -333,8 +339,7 @@ namespace Beatmap.V3
             map.Notes.AddRange(map.Bombs);
             map.Events.AddRange(map.ColorBoostEvents);
             map.Events.AddRange(map.RotationEvents);
-            // map.Events.AddRange(map.BpmEvents); // we probably do not need to load this here
-            map.Events.Sort((lhs, rhs) => lhs.Time.CompareTo(rhs.Time));
+            map.Events.Sort((lhs, rhs) => lhs.JsonTime.CompareTo(rhs.JsonTime));
         }
 
         private static void LoadCustom(V3Difficulty map, JSONNode mainNode)
@@ -425,7 +430,7 @@ namespace Beatmap.V3
                 }
             }
 
-            map.BpmChanges = bpmList.DistinctBy(x => x.Time).ToList();
+            map.BpmChanges = bpmList.DistinctBy(x => x.JsonTime).ToList();
             map.Bookmarks = bookmarksList;
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
             map.PointDefinitions = pointDefinitions;

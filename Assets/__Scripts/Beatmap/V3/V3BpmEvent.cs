@@ -25,7 +25,7 @@ namespace Beatmap.V3
 
         public V3BpmEvent(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             Bpm = RetrieveRequiredNode(node, "m").AsFloat;
             Type = 100;
             FloatValue = Bpm;
@@ -48,7 +48,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["m"] = Bpm;
             CustomData = SaveCustom();
             if (!CustomData.Children.Any()) return node;
@@ -56,6 +56,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BpmEvent(Time, Bpm, SaveCustom().Clone());
+        public override BaseItem Clone() => new V3BpmEvent(JsonTime, Bpm, SaveCustom().Clone());
     }
 }

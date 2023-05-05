@@ -17,7 +17,7 @@ namespace Beatmap.V3
 
         public V3LightRotationBase(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             Rotation = RetrieveRequiredNode(node, "r").AsFloat;
             Direction = RetrieveRequiredNode(node, "o").AsInt;
             EaseType = RetrieveRequiredNode(node, "e").AsInt;
@@ -43,7 +43,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["r"] = Rotation;
             node["o"] = Direction;
             node["e"] = EaseType;
@@ -55,7 +55,7 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3LightRotationBase(Time, Rotation, Direction, EaseType, Loop,
+        public override BaseItem Clone() => new V3LightRotationBase(JsonTime, Rotation, Direction, EaseType, Loop,
             UsePrevious, SaveCustom().Clone());
     }
 }

@@ -17,7 +17,7 @@ namespace Beatmap.V3
 
         public V3Obstacle(JSONNode node)
         {
-            Time = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
             PosX = RetrieveRequiredNode(node, "x").AsInt;
             InternalPosY = RetrieveRequiredNode(node, "y").AsInt;
             Duration = RetrieveRequiredNode(node, "d").AsFloat;
@@ -80,7 +80,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(Time, DecimalPrecision);
+            node["b"] = Math.Round(JsonTime, DecimalPrecision);
             node["x"] = PosX;
             node["y"] = PosY;
             node["d"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
@@ -93,6 +93,6 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Obstacle(Time, PosX, PosY, Duration, Width, Height, SaveCustom().Clone());
+            new V3Obstacle(JsonTime, PosX, PosY, Duration, Width, Height, SaveCustom().Clone());
     }
 }

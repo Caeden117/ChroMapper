@@ -284,7 +284,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
 
     private IEnumerator WaitForGradientThenRecycle(BaseEvent @event)
     {
-        var endTime = @event.Time + @event.CustomLightGradient.Duration;
+        var endTime = @event.JsonTime + @event.CustomLightGradient.Duration;
         yield return new WaitUntil(() =>
             endTime < AudioTimeSyncController.CurrentBeat + DespawnCallbackController.Offset);
         RecycleContainer(@event);
@@ -316,7 +316,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         eventAppearanceSo.SetEventAppearance(con as EventContainer, true,
-            AllBoostEvents.FindLast(x => x.Time <= obj.Time)?.Value == 1);
+            AllBoostEvents.FindLast(x => x.JsonTime <= obj.JsonTime)?.Value == 1);
         var e = obj as BaseEvent;
         if (PropagationEditing != PropMode.Off && e.Type != EventTypeToPropagate) con.SafeSetActive(false);
     }

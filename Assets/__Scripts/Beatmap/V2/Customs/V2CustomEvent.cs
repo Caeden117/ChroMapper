@@ -33,6 +33,6 @@ namespace Beatmap.V2.Customs
         public override string KeyType { get; } = "_type";
         public override string KeyData { get; } = "_data";
 
-        public override BaseItem Clone() => new V2CustomEvent(Time, Type, Data.Clone());
+        public override BaseItem Clone() => new V2CustomEvent(JsonTime, Type, Data.Clone());
     }
 }

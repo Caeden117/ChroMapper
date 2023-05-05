@@ -810,6 +810,13 @@ MonoBehaviour:
     m_Localized: Changes map version to v2 or v3
     m_Metadata:
       m_Items: []
+  - m_Id: 232868047877242880
+    m_Localized: 'CM has detected Custom BPM changes and
+
+      converted these into
+      Official BPM events'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

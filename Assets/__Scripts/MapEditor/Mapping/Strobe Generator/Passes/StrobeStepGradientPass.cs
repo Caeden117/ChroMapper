@@ -30,8 +30,8 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
     {
         var generatedObjects = new List<BaseEvent>();
 
-        var startTime = original.First().Time;
-        var endTime = original.Last().Time;
+        var startTime = original.First().JsonTime;
+        var endTime = original.Last().JsonTime;
 
         // Aggregate all colors points into a dictionary
         var colorPoints = new Dictionary<float, Color>();
@@ -41,18 +41,18 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             // Might as well be fancy and add support for Chroma 2.0 gradients
             if (e.CustomLightGradient != null)
             {
-                colorPoints.Add(e.Time, e.CustomLightGradient.StartColor);
-                colorPoints.Add(e.Time + e.CustomLightGradient.Duration, e.CustomLightGradient.EndColor);
+                colorPoints.Add(e.JsonTime, e.CustomLightGradient.StartColor);
+                colorPoints.Add(e.JsonTime + e.CustomLightGradient.Duration, e.CustomLightGradient.EndColor);
             }
             else if (e.CustomColor != null) // This already checks customData, so if this is true then customData exists.
             {
-                colorPoints.Add(e.Time, (Color)e.CustomColor);
+                colorPoints.Add(e.JsonTime, (Color)e.CustomColor);
             }
             else if (e.IsOff)
             {
-                var lastColor = colorPoints.Where(x => x.Key < e.Time).LastOrDefault();
+                var lastColor = colorPoints.Where(x => x.Key < e.JsonTime).LastOrDefault();
 
-                colorPoints.Add(e.Time, !lastColor.Equals(default(KeyValuePair<float, Color>))
+                colorPoints.Add(e.JsonTime, !lastColor.Equals(default(KeyValuePair<float, Color>))
                     ? lastColor.Value.WithAlpha(0)
                     : new Color(0, 0, 0, 0));
             }
