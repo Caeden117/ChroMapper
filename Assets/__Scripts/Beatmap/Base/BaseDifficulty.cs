@@ -107,6 +107,12 @@ namespace Beatmap.Base
                             {
                                 obj.JsonTime += jsonTimeOffset;
                             }
+                            // assuming there's mapper who messed up with slider tail time
+                            // or beat games non truncate float:tm: is lower than head time
+                            if (obj is BaseSlider slider && slider.TailJsonTime >= oldTime)
+                            {
+                                slider.TailJsonTime += jsonTimeOffset;
+                            }
                         }
                     }
 
@@ -141,6 +147,13 @@ namespace Beatmap.Base
                                 obj.JsonTime += (obj.JsonTime - bpmChange.JsonTime) * scale;
                             else
                                 obj.JsonTime += bpmSectionJsonTimeDiff * scale;
+                        }
+                        if (obj is BaseSlider slider && bpmChange.JsonTime < slider.TailJsonTime)
+                        {
+                            if (nextBpmChange == null || slider.TailJsonTime < nextBpmChange.JsonTime)
+                                slider.TailJsonTime += (slider.TailJsonTime - bpmChange.JsonTime) * scale;
+                            else
+                                slider.TailJsonTime += bpmSectionJsonTimeDiff * scale;
                         }
                     }
                 }
