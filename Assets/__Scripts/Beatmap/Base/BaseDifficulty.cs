@@ -31,11 +31,13 @@ namespace Beatmap.Base
             new List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>>();
 
         public List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>
-            LightRotationEventBoxGroups { get; set; } =
+            LightRotationEventBoxGroups
+        { get; set; } =
             new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>();
 
         public List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>
-            LightTranslationEventBoxGroups { get; set; } =
+            LightTranslationEventBoxGroups
+        { get; set; } =
             new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>();
 
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
@@ -85,7 +87,6 @@ namespace Beatmap.Base
             }
 
             BaseBpmEvent nextBpmChange;
-            BpmEvents.Clear();
             for (var i = 0; i < BpmChanges.Count; i++)
             {
                 var bpmChange = BpmChanges[i];

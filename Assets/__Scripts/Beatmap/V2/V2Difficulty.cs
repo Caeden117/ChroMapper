@@ -91,9 +91,6 @@ namespace Beatmap.V2
 
         public override bool SaveCustom()
         {
-            var bpm = new JSONArray();
-            foreach (var b in BpmChanges) bpm.Add(b.ToJson());
-
             var bookmarks = new JSONArray();
             foreach (var b in Bookmarks) bookmarks.Add(b.ToJson());
 
@@ -104,11 +101,7 @@ namespace Beatmap.V2
             foreach (var e in EnvironmentEnhancements) envEnhancements.Add(e.ToJson());
 
             MainNode["_customData"] = CustomData ?? new JSONObject();
-
-            if (BpmChanges.Any())
-                MainNode["_customData"]["_BPMChanges"] = CleanupArray(bpm);
-            else
-                MainNode["_customData"].Remove("_BPMChanges");
+            MainNode["_customData"].Remove("_BPMChanges");
 
             if (Bookmarks.Any())
                 MainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
