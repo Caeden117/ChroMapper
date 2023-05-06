@@ -161,7 +161,7 @@ namespace Beatmap.Containers
             foreach (var c in Colliders)
             {
                 var r = c.GetComponent<MeshRenderer>();
-                MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.JsonTime + c.transform.localPosition.z / EditorScaleController.EditorScale);
+                MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.SongBpmTime + c.transform.localPosition.z / EditorScaleController.EditorScale);
                 // This alpha set is a workaround as callbackController can only despawn the entire chain
                 if (UIMode.SelectedMode == UIModeType.Preview || UIMode.SelectedMode == UIModeType.Playing)
                     MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 0f);
