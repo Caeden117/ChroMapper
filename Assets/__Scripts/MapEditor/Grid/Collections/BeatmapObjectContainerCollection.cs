@@ -172,11 +172,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
-    public SortedSet<BaseObject> GetBetween(float time, float time2)
+    public SortedSet<BaseObject> GetBetween(float jsonTime, float jsonTime2)
     {
         // Events etc. can still have a sort order between notes
-        var now = new V2Note(time - 0.0000001f, 0, 0, 0, 0);
-        var window = new V2Note(time2 + 0.0000001f, 0, 0, 0, 0);
+        var now = new V2Note(jsonTime - 0.0000001f, 0, 0, 0, 0);
+        var window = new V2Note(jsonTime2 + 0.0000001f, 0, 0, 0, 0);
         return LoadedObjects.GetViewBetween(now, window);
     }
 

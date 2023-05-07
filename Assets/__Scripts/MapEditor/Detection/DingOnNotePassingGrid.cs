@@ -93,8 +93,10 @@ public class DingOnNotePassingGrid : MonoBehaviour
         audioUtil.StopOneShot();
         if (playing)
         {
-            var now = atsc.CurrentSongBeats;
-            var notes = container.GetBetween(now, now + beatSaberCutCallbackController.Offset);
+            var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+            var currentJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentSongBeats);
+            var endJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentSongBeats + beatSaberCutCallbackController.Offset);
+            var notes = container.GetBetween(currentJsonTime, endJsonTime);
 
             // Schedule notes between now and threshold
             foreach (var n in notes) PlaySound(false, 0, n);
