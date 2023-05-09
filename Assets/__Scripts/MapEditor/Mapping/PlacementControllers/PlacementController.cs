@@ -301,7 +301,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             if (isFirstFrameOfDraggingAtTime)
             {
                 isFirstFrameOfDraggingAtTime = false;
-                currentBeat = draggedObjectData.SongBpmTime;
+                currentBeat = draggedObjectSongBpmTime = draggedObjectData.SongBpmTime;
             }
             else
             {
