@@ -51,11 +51,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal TBo queuedData; //Data that is not yet applied to the ObjectContainer.
     protected bool UsePrecisionPlacement;
 
-    // TODO: This is a band-aid for SongBpmTime -> JsonTime -> SongBpmTime -> ... conversions slowly drifting
-    //       due to cloning while DraggingObjectAtTime 
-    private bool isFirstFrameOfDraggingAtTime = true;
-    private float draggedObjectSongBpmTime = 0f;
-
     [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
 
     [HideInInspector] internal virtual float RoundedTime { get; set; }
@@ -295,23 +290,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     protected void CalculateTimes(Intersections.IntersectionHit hit, out Vector3 roundedHit, out float roundedTime)
     {
-        float currentBeat;
-        if (IsDraggingObjectAtTime)
-        {
-            if (isFirstFrameOfDraggingAtTime)
-            {
-                isFirstFrameOfDraggingAtTime = false;
-                currentBeat = draggedObjectSongBpmTime = draggedObjectData.SongBpmTime;
-            }
-            else
-            {
-                currentBeat = draggedObjectSongBpmTime;
-            }
-        }
-        else
-        {
-            currentBeat = Atsc.CurrentBeat;
-        }
+        var currentBeat = IsDraggingObjectAtTime ? draggedObjectData.SongBpmTime : Atsc.CurrentBeat;
 
         roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
         var realTime = roundedHit.z / EditorScaleController.EditorScale;
@@ -448,7 +427,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         DraggedObjectContainer = null;
         ClickAndDragFinished();
         IsDraggingObject = IsDraggingObjectAtTime = false;
-        isFirstFrameOfDraggingAtTime = true;
     }
 
     protected TBoc ObjectUnderCursor()
