@@ -59,6 +59,14 @@ namespace Beatmap.Base
             Squish = squish;
         }
 
+        protected BaseChain(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
+            float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, posX, posY, color, cutDirection, angleOffset, tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, customData)
+        {
+            SliceCount = sliceCount;
+            Squish = squish;
+        }
+
         public override ObjectType ObjectType { get; set; } = ObjectType.Chain;
         public int SliceCount { get; set; }
         public float Squish { get; set; }

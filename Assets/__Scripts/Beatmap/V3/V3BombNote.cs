@@ -32,6 +32,10 @@ namespace Beatmap.V3
             customData) =>
             ParseCustom();
 
+        public V3BombNote(float jsonTime, float songBpmTime, int posX, int posY, JSONNode customData = null)
+            : base(jsonTime, songBpmTime, posX, posY, customData) =>
+            ParseCustom();
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";

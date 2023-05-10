@@ -38,6 +38,11 @@ namespace Beatmap.V3
         {
         }
 
+        public V3RotationEvent(float jsonTime, float songBpmTime, int executionTime, float rotation,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, executionTime, rotation, customData)
+        {
+        }
+
         public override Color? CustomColor
         {
             get => null;

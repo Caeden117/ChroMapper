@@ -61,6 +61,14 @@ namespace Beatmap.Base
             FloatValue = floatValue;
         }
 
+        protected BaseEvent(float jsonTime, float songBpmTime, int type, int value, float floatValue = 1f,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, customData)
+        {
+            Type = type;
+            Value = value;
+            FloatValue = floatValue;
+        }
+
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
         public virtual int Type { get; set; }
         public int Value { get; set; }

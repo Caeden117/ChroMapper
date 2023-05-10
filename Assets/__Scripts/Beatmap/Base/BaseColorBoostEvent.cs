@@ -29,6 +29,9 @@ namespace Beatmap.Base
         protected BaseColorBoostEvent(float time, bool toggle, JSONNode customData = null) : base(time, 5,
             toggle ? 1 : 0, 1, customData) => Toggle = toggle;
 
+        protected BaseColorBoostEvent(float jsonTime, float songBpmTime, bool toggle, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, 5, toggle ? 1 : 0, 1, customData) => Toggle = toggle;
+
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
 
         public bool Toggle

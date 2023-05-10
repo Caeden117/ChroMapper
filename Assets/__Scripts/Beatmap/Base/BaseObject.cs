@@ -21,6 +21,13 @@ namespace Beatmap.Base
             CustomData = customData;
         }
 
+        protected BaseObject(float jsonTime, float songBpmTime, JSONNode customData = null)
+        {
+            this.jsonTime = jsonTime;
+            this.songBpmTime = songBpmTime;
+            CustomData = customData;
+        }
+
         public abstract ObjectType ObjectType { get; set; }
         public bool HasAttachedContainer { get; set; } = false;
 

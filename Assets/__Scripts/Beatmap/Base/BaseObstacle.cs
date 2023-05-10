@@ -40,8 +40,26 @@ namespace Beatmap.Base
             InferPosYHeight();
         }
 
+        protected BaseObstacle(float jsonTime, float songBpmTime, int posX, int type, float duration, int width,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, 0, customData)
+        {
+            InternalType = type;
+            Duration = duration;
+            Width = width;
+            InferPosYHeight();
+        }
+
         protected BaseObstacle(float time, int posX, int posY, float duration, int width, int height,
             JSONNode customData = null) : base(time, posX, posY, customData)
+        {
+            Duration = duration;
+            Width = width;
+            InternalHeight = height;
+            InferType();
+        }
+
+        protected BaseObstacle(float jsonTime, float songBpmTime, int posX, int posY, float duration, int width, int height,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, customData)
         {
             Duration = duration;
             Width = width;

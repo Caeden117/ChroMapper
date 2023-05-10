@@ -55,6 +55,17 @@ namespace Beatmap.Base
             MidAnchorMode = midAnchorMode;
         }
 
+        protected BaseArc(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
+            float mult, float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult,
+            int midAnchorMode, JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, color, cutDirection,
+            angleOffset, tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, customData)
+        {
+            HeadControlPointLengthMultiplier = mult;
+            TailCutDirection = tailCutDirection;
+            TailControlPointLengthMultiplier = tailMult;
+            MidAnchorMode = midAnchorMode;
+        }
+
         public override ObjectType ObjectType { get; set; } = ObjectType.Arc;
         public float HeadControlPointLengthMultiplier { get; set; }
         public int TailCutDirection { get; set; }

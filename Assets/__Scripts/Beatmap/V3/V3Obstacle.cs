@@ -32,6 +32,10 @@ namespace Beatmap.V3
             JSONNode customData = null) : base(time, posX, posY, duration, width, height, customData) =>
             ParseCustom();
 
+        public V3Obstacle(float jsonTime, float songBpmTime, int posX, int posY, float duration, int width, int height,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, duration, width, height, customData) =>
+            ParseCustom();
+
         // srsly, u dont need to set this on v3 wall
         public override int Type
         {

@@ -22,6 +22,20 @@ namespace Beatmap.Base
             TailPosY = tailPosY;
         }
 
+        protected BaseSlider(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
+            float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, JSONNode customData = null)
+            : base(jsonTime, songBpmTime, posX, posY, customData)
+        {
+            Color = color;
+            CutDirection = cutDirection;
+            AngleOffset = angleOffset;
+            this.tailJsonTime = tailJsonTime;
+            this.tailSongBpmTime = tailSongBpmTime;
+            TailPosX = tailPosX;
+            TailPosY = tailPosY;
+        }
+
+
         public int Color { get; set; }
         public int CutDirection { get; set; }
         public int AngleOffset { get; set; }

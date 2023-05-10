@@ -42,6 +42,10 @@ namespace Beatmap.V2
             type, value, floatValue, customData) =>
             ParseCustom();
 
+        public V2Event(float jsonTime, float songBpmTime, int type, int value, float floatValue = 1f, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, type, value, floatValue, customData) =>
+            ParseCustom();
+
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";

@@ -42,6 +42,11 @@ namespace Beatmap.V3
             time, posX, posY, color, cutDirection, angleOffset, customData) =>
             ParseCustom();
 
+        public V3ColorNote(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
+            JSONNode customData = null) : base(
+            jsonTime, songBpmTime, posX, posY, color, cutDirection, angleOffset, customData) =>
+            ParseCustom();
+
         // TODO: deal with custom direction to angle offset
         public override float? CustomDirection
         {

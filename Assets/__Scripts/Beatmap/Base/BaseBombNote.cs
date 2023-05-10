@@ -22,6 +22,10 @@ namespace Beatmap.Base
             (int)NoteType.Bomb, 0, customData) =>
             Type = (int)NoteType.Bomb;
 
+        protected BaseBombNote(float jsonTime, float songBpmTime, int posX, int posY, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, posX, posY, (int)NoteType.Bomb, 0, customData) =>
+            Type = (int)NoteType.Bomb;
+
         public override ObjectType ObjectType { get; set; } = ObjectType.Note;
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)

@@ -36,6 +36,11 @@ namespace Beatmap.V3
         {
         }
 
+        public V3ColorBoostEvent(float jsonTime, float songBpmTime, bool toggle, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, toggle, customData)
+        {
+        }
+
         public override Color? CustomColor
         {
             get => null;

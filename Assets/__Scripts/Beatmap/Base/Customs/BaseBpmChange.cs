@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using SimpleJSON;
 
 namespace Beatmap.Base.Customs
@@ -30,7 +30,13 @@ namespace Beatmap.Base.Customs
         protected BaseBpmChange(float time, float bpm) : base(time, bpm)
         {
             Bpm = bpm;
-            JsonTime = time;
+            BeatsPerBar = 4;
+            MetronomeOffset = 4;
+        }
+
+        protected BaseBpmChange(float jsonTime, float songBpmTime, float bpm) : base(jsonTime, songBpmTime, bpm)
+        {
+            Bpm = bpm;
             BeatsPerBar = 4;
             MetronomeOffset = 4;
         }

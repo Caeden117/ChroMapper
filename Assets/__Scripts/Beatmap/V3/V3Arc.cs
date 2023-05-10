@@ -46,6 +46,12 @@ namespace Beatmap.V3
             tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
             ParseCustom();
 
+        public V3Arc(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset, float mult,
+            float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, color, cutDirection, angleOffset, mult,
+            tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
+            ParseCustom();
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";

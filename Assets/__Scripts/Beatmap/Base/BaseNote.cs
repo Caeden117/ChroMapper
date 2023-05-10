@@ -68,6 +68,16 @@ namespace Beatmap.Base
             InferType();
         }
 
+        protected BaseNote(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, customData)
+        {
+            Color = color;
+            CutDirection = cutDirection;
+            AngleOffset = angleOffset;
+            InferType();
+        }
+
+
         public override ObjectType ObjectType { get; set; } = ObjectType.Note;
 
         public int Type

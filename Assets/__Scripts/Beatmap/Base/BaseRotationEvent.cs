@@ -34,6 +34,15 @@ namespace Beatmap.Base
             CustomData = customData;
         }
 
+        protected BaseRotationEvent(float jsonTime, float songBpmTime, int executionTime, float rotation,
+           JSONNode customData = null) : base()
+        {
+            SetTimes(jsonTime, songBpmTime);
+            ExecutionTime = executionTime;
+            Rotation = rotation;
+            CustomData = customData;
+        }
+
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
 
         public override int Type

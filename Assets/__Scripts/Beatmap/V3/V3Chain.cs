@@ -44,6 +44,12 @@ namespace Beatmap.V3
             tailTime, tailPosX, tailPosY, sliceCount, squish, customData) =>
             ParseCustom();
 
+        public V3Chain(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
+            float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, int sliceCount, float squish,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, color, cutDirection, angleOffset,
+            tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, sliceCount, squish, customData) =>
+            ParseCustom();
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";
