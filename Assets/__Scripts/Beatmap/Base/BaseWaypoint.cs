@@ -12,7 +12,7 @@ namespace Beatmap.Base
 
         protected BaseWaypoint(BaseWaypoint other)
         {
-            JsonTime = other.JsonTime;
+            SetTimes(other.JsonTime, other.SongBpmTime);
             PosX = other.PosX;
             PosY = other.PosY;
             OffsetDirection = other.OffsetDirection;

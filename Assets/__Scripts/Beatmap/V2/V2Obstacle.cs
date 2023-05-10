@@ -31,6 +31,10 @@ namespace Beatmap.V2
             time, posX, type, duration, width, customData) =>
             ParseCustom();
 
+        public V2Obstacle(float jsonTime, float songBpmTime, int posX, int type, float duration, int width, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, posX, type, duration, width, customData) =>
+            ParseCustom();
+
         // i fear plugins or anything may mess this up for v2 wall, so i had to make sure
         public override int PosY
         {
@@ -129,6 +133,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Obstacle(JsonTime, PosX, Type, Duration, Width, SaveCustom().Clone());
+        public override BaseItem Clone() => new V2Obstacle(JsonTime, SongBpmTime, PosX, Type, Duration, Width, SaveCustom().Clone());
     }
 }

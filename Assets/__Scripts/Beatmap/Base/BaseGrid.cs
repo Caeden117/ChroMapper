@@ -16,6 +16,13 @@ namespace Beatmap.Base
             PosY = posY;
         }
 
+        protected BaseGrid(float jsonTime, float songBpmTime, int posX, int posY, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, customData)
+        {
+            PosX = posX;
+            PosY = posY;
+        }
+
         public int PosX { get; set; }
         public virtual int PosY { get; set; }
 

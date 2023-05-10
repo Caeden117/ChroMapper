@@ -392,9 +392,10 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
         // To delete properly we need to set the original time
         var jsonTime = draggedObjectData.JsonTime;
-        draggedObjectData.JsonTime = originalDraggedObjectData.JsonTime;
+        var songBpmTime = draggedObjectData.SongBpmTime;
+        draggedObjectData.SetTimes(originalDraggedObjectData.JsonTime, originalDraggedObjectData.SongBpmTime);
         objectContainerCollection.DeleteObject(draggedObjectData, false, false);
-        draggedObjectData.JsonTime = jsonTime;
+        draggedObjectData.SetTimes(jsonTime, songBpmTime);
 
         objectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
         if (conflicting.Contains(draggedObjectData))

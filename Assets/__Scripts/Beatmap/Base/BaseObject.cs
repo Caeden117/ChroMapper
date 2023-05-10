@@ -21,6 +21,13 @@ namespace Beatmap.Base
             CustomData = customData;
         }
 
+        protected BaseObject(float jsonTime, float songBpmTime, JSONNode customData = null)
+        {
+            this.jsonTime = jsonTime;
+            this.songBpmTime = songBpmTime;
+            CustomData = customData;
+        }
+
         public abstract ObjectType ObjectType { get; set; }
         public bool HasAttachedContainer { get; set; } = false;
 
@@ -45,6 +52,12 @@ namespace Beatmap.Base
                 jsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
                 songBpmTime = value;
             }
+        }
+
+        public void SetTimes(float jsonTime, float songBpmTime)
+        {
+            this.jsonTime = jsonTime;
+            this.songBpmTime = songBpmTime;
         }
 
         public virtual Color? CustomColor { get; set; }

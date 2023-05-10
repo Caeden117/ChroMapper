@@ -36,6 +36,11 @@ namespace Beatmap.V3
         {
         }
 
+        public V3BpmEvent(float jsonTime, float songBpmTime, float bpm, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, bpm, customData)
+        {
+        }
+
         public override Color? CustomColor
         {
             get => null;
@@ -56,6 +61,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BpmEvent(JsonTime, Bpm, SaveCustom().Clone());
+        public override BaseItem Clone() => new V3BpmEvent(JsonTime, SongBpmTime, Bpm, SaveCustom().Clone());
     }
 }

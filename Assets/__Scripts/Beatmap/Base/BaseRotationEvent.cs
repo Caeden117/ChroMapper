@@ -11,7 +11,7 @@ namespace Beatmap.Base
 
         protected BaseRotationEvent(BaseRotationEvent other)
         {
-            JsonTime = other.JsonTime;
+            SetTimes(other.JsonTime, other.SongBpmTime);
             ExecutionTime = other.ExecutionTime;
             Rotation = other.Rotation;
             CustomData = other.SaveCustom().Clone();
@@ -19,7 +19,7 @@ namespace Beatmap.Base
 
         protected BaseRotationEvent(BaseEvent evt)
         {
-            JsonTime = evt.JsonTime;
+            SetTimes(evt.JsonTime, evt.SongBpmTime);
             ExecutionTime = evt.Type == (int)EventTypeValue.EarlyLaneRotation ? 0 : 1;
             Rotation = evt.CustomLaneRotation ?? evt.GetRotationDegreeFromValue() ?? 0f;
             CustomData = evt.SaveCustom().Clone();
@@ -29,6 +29,15 @@ namespace Beatmap.Base
             base()
         {
             JsonTime = time;
+            ExecutionTime = executionTime;
+            Rotation = rotation;
+            CustomData = customData;
+        }
+
+        protected BaseRotationEvent(float jsonTime, float songBpmTime, int executionTime, float rotation,
+           JSONNode customData = null) : base()
+        {
+            SetTimes(jsonTime, songBpmTime);
             ExecutionTime = executionTime;
             Rotation = rotation;
             CustomData = customData;

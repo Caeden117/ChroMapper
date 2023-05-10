@@ -33,6 +33,10 @@ namespace Beatmap.V2
             time, posX, posY, type, cutDirection, customData) =>
             ParseCustom();
 
+        public V2Note(float jsonTime, float songBpmTime, int posX, int posY, int type, int cutDirection,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, type, cutDirection, customData) =>
+            ParseCustom();
+
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";
@@ -100,6 +104,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Note(JsonTime, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
+        public override BaseItem Clone() => new V2Note(JsonTime, SongBpmTime, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
     }
 }

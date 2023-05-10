@@ -31,6 +31,10 @@ namespace Beatmap.V3
             time, type, value, floatValue, customData) =>
             ParseCustom();
 
+        public V3BasicEvent(float jsonTime, float songBpmTime, int type, int value, float floatValue = 1f,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, type, value, floatValue, customData) =>
+            ParseCustom();
+
         public override float? CustomPreciseSpeed
         {
             get => customSpeed;
@@ -119,6 +123,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BasicEvent(JsonTime, Type, Value, FloatValue, SaveCustom().Clone());
+        public override BaseItem Clone() => new V3BasicEvent(JsonTime, SongBpmTime, Type, Value, FloatValue, SaveCustom().Clone());
     }
 }

@@ -10,7 +10,7 @@ namespace Beatmap.Base
 
         protected BaseBpmEvent(BaseBpmEvent other)
         {
-            JsonTime = other.JsonTime;
+            SetTimes(other.JsonTime, other.SongBpmTime);
             Bpm = other.Bpm;
             Type = 100;
             Value = 0;
@@ -20,7 +20,7 @@ namespace Beatmap.Base
 
         protected BaseBpmEvent(BaseEvent evt)
         {
-            JsonTime = evt.JsonTime;
+            SetTimes(evt.JsonTime, evt.SongBpmTime);
             Bpm = evt.FloatValue;
             Type = 100;
             Value = 0;
@@ -30,6 +30,9 @@ namespace Beatmap.Base
 
         protected BaseBpmEvent(float time, float bpm, JSONNode customData = null) :
             base(time, 100, 0, bpm, customData) => Bpm = bpm;
+
+        protected BaseBpmEvent(float jsonTime, float songBpmTime, float bpm, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, 100, 0, bpm, customData) => Bpm = bpm;
 
         public override ObjectType ObjectType { get; set; } = ObjectType.BpmChange;
         public float Bpm { get; set; }

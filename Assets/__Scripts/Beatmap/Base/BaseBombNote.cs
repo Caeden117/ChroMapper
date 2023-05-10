@@ -11,7 +11,7 @@ namespace Beatmap.Base
 
         protected BaseBombNote(BaseGrid other)
         {
-            JsonTime = other.JsonTime;
+            SetTimes(other.JsonTime, other.SongBpmTime);
             PosX = other.PosX;
             PosY = other.PosY;
             Type = (int)NoteType.Bomb;
@@ -20,6 +20,10 @@ namespace Beatmap.Base
 
         protected BaseBombNote(float time, int posX, int posY, JSONNode customData = null) : base(time, posX, posY,
             (int)NoteType.Bomb, 0, customData) =>
+            Type = (int)NoteType.Bomb;
+
+        protected BaseBombNote(float jsonTime, float songBpmTime, int posX, int posY, JSONNode customData = null) :
+            base(jsonTime, songBpmTime, posX, posY, (int)NoteType.Bomb, 0, customData) =>
             Type = (int)NoteType.Bomb;
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Note;
