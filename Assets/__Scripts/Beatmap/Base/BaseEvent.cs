@@ -19,7 +19,7 @@ namespace Beatmap.Base
 
         protected BaseEvent(BaseEvent other)
         {
-            JsonTime = other.JsonTime;
+            SetTimes(other.JsonTime, other.SongBpmTime);
             Type = other.Type;
             Value = other.Value;
             FloatValue = other.FloatValue;
@@ -28,7 +28,7 @@ namespace Beatmap.Base
 
         protected BaseEvent(BaseBpmEvent baseBpm)
         {
-            JsonTime = baseBpm.JsonTime;
+            SetTimes(baseBpm.JsonTime, baseBpm.SongBpmTime);
             Type = (int)EventTypeValue.BpmChange;
             Value = 0;
             FloatValue = baseBpm.Bpm;
@@ -37,7 +37,7 @@ namespace Beatmap.Base
 
         protected BaseEvent(BaseColorBoostEvent cbe)
         {
-            JsonTime = cbe.JsonTime;
+            SetTimes(cbe.JsonTime, cbe.SongBpmTime);
             Type = (int)EventTypeValue.ColorBoost;
             Value = cbe.Toggle ? 1 : 0;
             FloatValue = 1;
@@ -46,7 +46,7 @@ namespace Beatmap.Base
 
         protected BaseEvent(BaseRotationEvent re)
         {
-            JsonTime = re.JsonTime;
+            SetTimes(re.JsonTime, re.SongBpmTime);
             Type = (int)(re.ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
             Value = 0;
             FloatValue = 1;

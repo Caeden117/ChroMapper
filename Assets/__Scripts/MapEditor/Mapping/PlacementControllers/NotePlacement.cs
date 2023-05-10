@@ -260,7 +260,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
     {
-        dragged.JsonTime = queued.JsonTime;
+        dragged.SetTimes(queued.JsonTime, queued.SongBpmTime);
         dragged.PosX = queued.PosX;
         dragged.PosY = queued.PosY;
         dragged.CutDirection = queued.CutDirection;

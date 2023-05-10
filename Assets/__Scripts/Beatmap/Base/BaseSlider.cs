@@ -49,6 +49,12 @@ namespace Beatmap.Base
             }
         }
 
+        public void SetTailTimes(float jsonTime, float songBpmTime)
+        {
+            this.tailJsonTime = jsonTime;
+            this.tailSongBpmTime = songBpmTime;
+        }
+
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 

@@ -47,6 +47,12 @@ namespace Beatmap.Base
             }
         }
 
+        public void SetTimes(float jsonTime, float songBpmTime)
+        {
+            this.jsonTime = jsonTime;
+            this.songBpmTime = songBpmTime;
+        }
+
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
         public JSONNode CustomData { get; set; } = new JSONObject();

@@ -21,7 +21,7 @@ namespace Beatmap.Base
 
         protected BaseObstacle(BaseObstacle other)
         {
-            JsonTime = other.JsonTime;
+            SetTimes(other.JsonTime, other.SongBpmTime);
             PosX = other.PosX;
             InternalPosY = other.PosY;
             InternalType = other.Type;
