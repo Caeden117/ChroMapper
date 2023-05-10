@@ -87,6 +87,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BombNote(JsonTime, PosX, PosY, SaveCustom().Clone());
+        public override BaseItem Clone() => new V3BombNote(JsonTime, SongBpmTime, PosX, PosY, SaveCustom().Clone());
     }
 }

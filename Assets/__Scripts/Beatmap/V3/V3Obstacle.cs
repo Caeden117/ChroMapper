@@ -97,6 +97,6 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Obstacle(JsonTime, PosX, PosY, Duration, Width, Height, SaveCustom().Clone());
+            new V3Obstacle(JsonTime, SongBpmTime, PosX, PosY, Duration, Width, Height, SaveCustom().Clone());
     }
 }

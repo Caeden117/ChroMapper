@@ -114,7 +114,7 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Chain(JsonTime, PosX, PosY, Color, CutDirection,
-                AngleOffset, TailJsonTime, TailPosX, TailPosY, SliceCount, Squish, SaveCustom().Clone());
+            new V3Chain(JsonTime, SongBpmTime, PosX, PosY, Color, CutDirection,
+                AngleOffset, TailJsonTime, TailSongBpmTime, TailPosX, TailPosY, SliceCount, Squish, SaveCustom().Clone());
     }
 }

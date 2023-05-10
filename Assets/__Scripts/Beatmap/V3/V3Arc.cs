@@ -118,9 +118,9 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3Arc(JsonTime, PosX, PosY, Color, CutDirection, AngleOffset,
-                HeadControlPointLengthMultiplier, TailJsonTime, TailPosX, TailPosY, TailCutDirection,
-                TailControlPointLengthMultiplier,
+            new V3Arc(JsonTime, SongBpmTime, PosX, PosY, Color, CutDirection, AngleOffset,
+                HeadControlPointLengthMultiplier, TailJsonTime, TailSongBpmTime, TailPosX, TailPosY,
+                TailCutDirection, TailControlPointLengthMultiplier,
                 MidAnchorMode, SaveCustom().Clone());
     }
 }

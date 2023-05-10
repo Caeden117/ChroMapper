@@ -133,6 +133,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Obstacle(JsonTime, PosX, Type, Duration, Width, SaveCustom().Clone());
+        public override BaseItem Clone() => new V2Obstacle(JsonTime, SongBpmTime, PosX, Type, Duration, Width, SaveCustom().Clone());
     }
 }

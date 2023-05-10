@@ -104,6 +104,6 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Note(JsonTime, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
+        public override BaseItem Clone() => new V2Note(JsonTime, SongBpmTime, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
     }
 }

@@ -156,7 +156,7 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Event(JsonTime, Type, Value, FloatValue, SaveCustom().Clone());
+        public override BaseItem Clone() => new V2Event(JsonTime, SongBpmTime, Type, Value, FloatValue, SaveCustom().Clone());
 
         public override void Apply(BaseObject originalData)
         {

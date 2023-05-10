@@ -98,6 +98,6 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3RotationEvent(JsonTime, ExecutionTime, Rotation, SaveCustom().Clone());
+        public override BaseItem Clone() => new V3RotationEvent(JsonTime, SongBpmTime, ExecutionTime, Rotation, SaveCustom().Clone());
     }
 }
