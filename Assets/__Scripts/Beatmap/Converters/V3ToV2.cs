@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Enums;
 using Beatmap.V2;
 using Beatmap.V2.Customs;
 using Beatmap.V3;
@@ -13,8 +14,9 @@ namespace Beatmap.Converters
 {
     public static class V3ToV2
     {
-        public static V2Note Note(BaseNote other) =>
-            other switch
+        public static V2Note Note(BaseNote other)
+        {
+            var note = other switch
             {
                 V2Note o => o,
                 V3ColorNote o => new V2Note(o) { CustomData = CustomDataObject(o.CustomData) },
@@ -22,8 +24,31 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert v3 color note to v2 note")
             };
 
-        public static V2Event Event(BaseEvent other) =>
-            other switch
+            if (other.AngleOffset % 45 != 0)
+            {
+                var customCutDirection = other.CutDirection switch
+                {
+                    (int)NoteCutDirection.Down => 0,
+                    (int)NoteCutDirection.DownRight => 45,
+                    (int)NoteCutDirection.Right => 90,
+                    (int)NoteCutDirection.UpRight => 135,
+                    (int)NoteCutDirection.Up => 180,
+                    (int)NoteCutDirection.UpLeft => 225,
+                    (int)NoteCutDirection.Left => 270,
+                    (int)NoteCutDirection.DownLeft => 315,
+                    (int)NoteCutDirection.Any => 0,
+                    _ => 0
+                };
+                note.CustomData["_cutDirection"] += other.AngleOffset;
+            }
+
+            note.RefreshCustom();
+            return note;
+        }
+
+        public static V2Event Event(BaseEvent other)
+        {
+            var evt = other switch
             {
                 V2Event o => o,
                 V3BasicEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
@@ -32,6 +57,9 @@ namespace Beatmap.Converters
                 V3BpmEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v3 basic event to v2 event")
             };
+            evt.RefreshCustom();
+            return evt;
+        }
 
         public static V2BpmEvent BpmEvent(BaseBpmEvent other) =>
             other switch
@@ -57,29 +85,41 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert")
             };
 
-        public static V2Obstacle Obstacle(BaseObstacle other) =>
-            other switch
+        public static V2Obstacle Obstacle(BaseObstacle other)
+        {
+            var obstacle = other switch
             {
                 V2Obstacle o => o,
                 V3Obstacle o => new V2Obstacle(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v3 obstacle to v2 obstacle")
             };
+            obstacle.RefreshCustom();
+            return obstacle;
+        }
 
-        public static V2Arc Arc(BaseArc other) =>
-            other switch
+        public static V2Arc Arc(BaseArc other)
+        {
+            var arc = other switch
             {
                 V2Arc o => o,
                 V3Arc o => new V2Arc(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v3 arc to v2 arc")
             };
+            arc.RefreshCustom();
+            return arc;
+        }
 
-        public static V2Waypoint Waypoint(BaseWaypoint other) =>
-            other switch
+        public static V2Waypoint Waypoint(BaseWaypoint other)
+        {
+            var waypoint = other switch
             {
                 V2Waypoint o => o,
                 V3Waypoint o => new V2Waypoint(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v3 waypoint to v2 waypoint")
             };
+            waypoint.RefreshCustom();
+            return waypoint;
+        }
 
         public static V2Bookmark Bookmark(BaseBookmark other) =>
             other switch

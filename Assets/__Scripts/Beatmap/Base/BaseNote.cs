@@ -59,6 +59,15 @@ namespace Beatmap.Base
             InferColor();
         }
 
+        protected BaseNote(float jsonTime, float songBpmTime, int posX, int posY, int type, int cutDirection,
+            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, customData)
+        {
+            Type = type;
+            CutDirection = cutDirection;
+            AngleOffset = 0;
+            InferColor();
+        }
+
         protected BaseNote(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
             JSONNode customData = null) : base(time, posX, posY, customData)
         {

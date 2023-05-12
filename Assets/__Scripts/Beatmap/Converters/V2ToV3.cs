@@ -43,21 +43,37 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 color boost event")
             };
 
-        public static V3ColorNote ColorNote(BaseNote other) =>
-            other switch
+        public static V3ColorNote ColorNote(BaseNote other)
+        {
+            var angleOffset = (other is V2Note && other.CustomData.HasKey("_cutDirection") && other.CustomData["_cutDirection"].IsNumber)
+                ? other.CustomData["_cutDirection"].AsInt
+                : 0;
+            var note = other switch
             {
                 V3ColorNote o => o,
-                V2Note o => new V3ColorNote(o) { CustomData = CustomDataObject(o.CustomData) },
+                V2Note o => new V3ColorNote(o)
+                {
+                    CustomData = CustomDataObject(o.CustomData),
+                    CutDirection = (angleOffset == 0) ? o.CutDirection : (int)NoteCutDirection.Down,
+                    AngleOffset = angleOffset,
+                },
                 _ => throw new ParsingErrors()
             };
+            note.RefreshCustom();
+            return note;
+        }
 
-        public static V3BasicEvent BasicEvent(BaseEvent other) =>
-            other switch
+        public static V3BasicEvent BasicEvent(BaseEvent other)
+        {
+            var evt = other switch
             {
                 V3BasicEvent o => o,
                 V2Event o => new V3BasicEvent(o) { CustomData = CustomDataEvent(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 basic event")
             };
+            evt.RefreshCustom();
+            return evt;
+        }
 
         public static V3BasicEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesWithKeywords other) =>
             other switch
@@ -76,13 +92,17 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert")
             };
 
-        public static V3Obstacle Obstacle(BaseObstacle other) =>
-            other switch
+        public static V3Obstacle Obstacle(BaseObstacle other)
+        {
+            var obstacle = other switch
             {
                 V3Obstacle o => o,
                 V2Obstacle o => new V3Obstacle(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v2 obstacle to v3 obstacle")
             };
+            obstacle.RefreshCustom();
+            return obstacle;
+        }
 
         public static V3RotationEvent RotationEvent(BaseEvent other) =>
             other switch
@@ -93,21 +113,29 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 rotation event")
             };
 
-        public static V3Arc Arc(BaseArc other) =>
-            other switch
+        public static V3Arc Arc(BaseArc other)
+        {
+            var arc = other switch
             {
                 V3Arc o => o,
                 V2Arc o => new V3Arc(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v2 arc to v3 arc")
             };
+            arc.RefreshCustom();
+            return arc;
+        }
 
-        public static V3Waypoint Waypoint(BaseWaypoint other) =>
-            other switch
+        public static V3Waypoint Waypoint(BaseWaypoint other)
+        {
+            var waypoint = other switch
             {
                 V3Waypoint o => o,
                 V2Waypoint o => new V3Waypoint(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v2 waypoint to v3 waypoint")
             };
+            waypoint.RefreshCustom();
+            return waypoint;
+        }
 
         public static V3Bookmark Bookmark(BaseBookmark other) =>
             other switch
