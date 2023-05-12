@@ -45,10 +45,18 @@ namespace Beatmap.Converters
 
         public static V3ColorNote ColorNote(BaseNote other)
         {
+            var angleOffset = (other is V2Note && other.CustomData.HasKey("_cutDirection") && other.CustomData["_cutDirection"].IsNumber)
+                ? other.CustomData["_cutDirection"].AsInt
+                : 0;
             var note = other switch
             {
                 V3ColorNote o => o,
-                V2Note o => new V3ColorNote(o) { CustomData = CustomDataObject(o.CustomData) },
+                V2Note o => new V3ColorNote(o)
+                {
+                    CustomData = CustomDataObject(o.CustomData),
+                    CutDirection = (angleOffset == 0) ? o.CutDirection : (int)NoteCutDirection.Down,
+                    AngleOffset = angleOffset,
+                },
                 _ => throw new ParsingErrors()
             };
             note.RefreshCustom();

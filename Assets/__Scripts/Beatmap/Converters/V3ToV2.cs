@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Enums;
 using Beatmap.V2;
 using Beatmap.V2.Customs;
 using Beatmap.V3;
@@ -22,6 +23,25 @@ namespace Beatmap.Converters
                 V3BombNote o => new V2Note(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v3 color note to v2 note")
             };
+
+            if (other.AngleOffset % 45 != 0)
+            {
+                var customCutDirection = other.CutDirection switch
+                {
+                    (int)NoteCutDirection.Down => 0,
+                    (int)NoteCutDirection.DownRight => 45,
+                    (int)NoteCutDirection.Right => 90,
+                    (int)NoteCutDirection.UpRight => 135,
+                    (int)NoteCutDirection.Up => 180,
+                    (int)NoteCutDirection.UpLeft => 225,
+                    (int)NoteCutDirection.Left => 270,
+                    (int)NoteCutDirection.DownLeft => 315,
+                    (int)NoteCutDirection.Any => 0,
+                    _ => 0
+                };
+                note.CustomData["_cutDirection"] += other.AngleOffset;
+            }
+
             note.RefreshCustom();
             return note;
         }
