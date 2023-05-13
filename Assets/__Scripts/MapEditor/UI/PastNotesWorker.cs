@@ -66,14 +66,14 @@ public class PastNotesWorker : MonoBehaviour
 
         foreach (var note in noteGridContainer.LoadedObjects)
         {
-            if (time < note.JsonTime && note.JsonTime < atsc.CurrentBeat)
+            if (time < note.SongBpmTime && note.SongBpmTime < atsc.CurrentBeat)
             {
-                time = note.JsonTime;
+                time = note.SongBpmTime;
                 lastGroup.Clear();
                 if (((BaseNote)note).Type != (int)NoteType.Bomb)
                     lastGroup.Add(note);
             }
-            else if (time == note.JsonTime && (note as BaseNote).Type != (int)NoteType.Bomb)
+            else if (time == note.SongBpmTime && (note as BaseNote).Type != (int)NoteType.Bomb)
             {
                 lastGroup.Add(note);
             }
