@@ -9,11 +9,6 @@ public class MultiJoinLauncher : MonoBehaviour
 
     public void JoinLobby()
     {
-        // Temporarily disable United Mapping on dev release channel 
-        PersistentUI.Instance.ShowDialogBox("United Mapping is not supported on dev release.",
-                    null, PersistentUI.DialogBoxPresetType.Ok);
-        return;
-
         if (dialogBox == null)
         {
             dialogBox = PersistentUI.Instance.CreateNewDialogBox()
