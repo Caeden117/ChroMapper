@@ -3,15 +3,11 @@ using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
 using SimpleJSON;
-using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
     public class V3BombNote : BaseBombNote, V3Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-
         public V3BombNote()
         {
         }

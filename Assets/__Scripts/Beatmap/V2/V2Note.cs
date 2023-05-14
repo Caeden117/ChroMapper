@@ -2,15 +2,11 @@ using System;
 using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
-using LiteNetLib.Utils;
 
 namespace Beatmap.V2
 {
     public class V2Note : BaseNote, V2Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-
         public V2Note() => CustomData = new JSONObject();
 
         public V2Note(BaseNote other) : base(other) => ParseCustom();
