@@ -1,4 +1,5 @@
 using Beatmap.Base.Customs;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
@@ -6,6 +7,20 @@ namespace Beatmap.Base
 {
     public abstract class BaseGrid : BaseObject, IObjectBounds, INoodleExtensionsGrid
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(PosX);
+            writer.Put(PosY);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            PosX = reader.GetInt();
+            PosY = reader.GetInt();
+            base.Deserialize(reader);
+        }
+
         protected BaseGrid()
         {
         }

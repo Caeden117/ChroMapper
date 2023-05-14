@@ -1,6 +1,7 @@
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.Shared;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
@@ -8,6 +9,24 @@ namespace Beatmap.Base
 {
     public abstract class BaseObstacle : BaseGrid, ICustomDataObstacle
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(Type);
+            writer.Put(Duration);
+            writer.Put(Width);
+            writer.Put(Height);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            Type = reader.GetInt();
+            Duration = reader.GetFloat();
+            Width = reader.GetInt();
+            Height = reader.GetInt();
+            base.Deserialize(reader);
+        }
+
         protected int InternalType;
         protected int InternalHeight;
         protected int InternalPosY;

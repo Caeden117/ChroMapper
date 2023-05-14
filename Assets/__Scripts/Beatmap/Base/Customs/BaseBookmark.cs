@@ -1,4 +1,5 @@
 using Beatmap.Enums;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 using Random = System.Random;
@@ -7,6 +8,27 @@ namespace Beatmap.Base.Customs
 {
     public abstract class BaseBookmark : BaseObject
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(Name);
+            writer.Put(Color.r);
+            writer.Put(Color.g);
+            writer.Put(Color.b);
+            writer.Put(Color.a);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            Name = reader.GetString();
+            var r = reader.GetFloat();
+            var g = reader.GetFloat();
+            var b = reader.GetFloat();
+            var a = reader.GetFloat();
+            Color = new Color(r, g, b, a);
+            base.Deserialize(reader);
+        }
+
         private static readonly Random rand = new Random();
 
         protected BaseBookmark()

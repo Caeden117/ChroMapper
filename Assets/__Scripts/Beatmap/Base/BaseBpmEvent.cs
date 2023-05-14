@@ -1,11 +1,24 @@
 using System;
 using Beatmap.Enums;
+using LiteNetLib.Utils;
 using SimpleJSON;
 
 namespace Beatmap.Base
 {
     public abstract class BaseBpmEvent : BaseEvent
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(Bpm);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            Bpm = reader.GetFloat();
+            base.Deserialize(reader);
+        }
+
         protected BaseBpmEvent() => Type = 100;
 
         protected BaseBpmEvent(BaseBpmEvent other)

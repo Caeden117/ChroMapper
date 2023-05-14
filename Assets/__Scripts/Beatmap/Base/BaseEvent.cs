@@ -2,6 +2,7 @@ using System.Linq;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.Shared;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
@@ -9,6 +10,22 @@ namespace Beatmap.Base
 {
     public abstract class BaseEvent : BaseObject, ICustomDataEvent
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(Type);
+            writer.Put(Value);
+            writer.Put(FloatValue);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            Type = reader.GetInt();
+            Value = reader.GetInt();
+            FloatValue = reader.GetFloat();
+            base.Deserialize(reader);
+        }
+
         public static readonly int[] LightValueToRotationDegrees = { -60, -45, -30, -15, 15, 30, 45, 60 };
         private int[] customLightID;
         protected float? customSpeed;

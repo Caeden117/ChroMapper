@@ -1,5 +1,6 @@
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
@@ -7,6 +8,24 @@ namespace Beatmap.Base
 {
     public abstract class BaseNote : BaseGrid, ICustomDataNote
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(Color);
+            writer.Put(Type);
+            writer.Put(CutDirection);
+            writer.Put(AngleOffset);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            Color = reader.GetInt();
+            Type = reader.GetInt();
+            CutDirection = reader.GetInt();
+            AngleOffset = reader.GetInt();
+            base.Deserialize(reader);
+        }
+
         private int color;
         private int type;
 
