@@ -76,7 +76,7 @@ public class CreateEventTypeLabels : MonoBehaviour
                     }
                     else
                     {
-                        textMesh.text = $"{lightingManagers[eventType].name} ID {i}";
+                        textMesh.text = $"{lightingManagers[eventType].name} ID {EditorToLightID(eventType, i - 1)}";
                         if (i % 2 == 0)
                             textMesh.font = UtilityAsset;
                         else
