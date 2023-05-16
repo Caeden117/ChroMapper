@@ -126,7 +126,7 @@ namespace Tests.Util
 
                 if (customData != null)
                 {
-                    arc.SaveCustom();
+                    arc.WriteCustom();
                     Assert.AreEqual(customData.ToString(), arc.CustomData.ToString(), $"{msg}: Mismatched custom data");
                 }
             }
@@ -155,7 +155,7 @@ namespace Tests.Util
 
                 if (customData != null)
                 {
-                    chain.SaveCustom();
+                    chain.WriteCustom();
                     Assert.AreEqual(customData.ToString(), chain.CustomData.ToString(),
                         $"{msg}: Mismatched custom data");
                 }

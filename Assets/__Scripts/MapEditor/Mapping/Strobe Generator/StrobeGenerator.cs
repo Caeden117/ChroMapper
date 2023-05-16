@@ -80,7 +80,7 @@ public class StrobeGenerator : MonoBehaviour
             //Spawn objects that were generated
             foreach (BaseEvent data in generatedObjects)
             {
-                data.SaveCustom();
+                data.WriteCustom();
                 eventGridContainer.SpawnObject(data, false, false);
             };
             eventGridContainer.RefreshPool(true);
