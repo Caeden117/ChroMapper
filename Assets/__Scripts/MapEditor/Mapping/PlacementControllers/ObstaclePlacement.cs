@@ -121,6 +121,9 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             }
             else
             {
+                queuedData.CustomCoordinate = null;
+                queuedData.CustomSize = null;
+
                 roundedHit = new Vector3(
                     Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, Bounds.min.x + 0.01f), Bounds.max.x)),
                     Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
@@ -159,6 +162,9 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         }
         else
         {
+            queuedData.CustomCoordinate = null;
+            queuedData.CustomSize = null;
+
             var vanillaType = transformedPoint.y <= 2f ? (int)ObstacleType.Full : (int)ObstacleType.Crouch;
 
             wallTransform.localPosition = new Vector3(
@@ -168,7 +174,6 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
             instantiatedContainer.SetScale(new Vector3(1, vanillaType == (int)ObstacleType.Full ? 5f : 3f, 0));
 
-            queuedData.CustomData = null;
             queuedData.PosX = Mathf.RoundToInt(wallTransform.localPosition.x + 2);
             queuedData.PosY = vanillaType == (int)ObstacleType.Full ? 0 : 2;
             queuedData.Height = vanillaType == (int)ObstacleType.Full ? 5 : 3;
@@ -212,7 +217,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
             objectContainerCollection.SpawnObject(queuedData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(queuedData, conflicting));
-            queuedData = GenerateOriginalData();
+            queuedData = BeatmapFactory.Clone(queuedData);
             instantiatedContainer.ObstacleData = queuedData;
             obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
             instantiatedContainer.transform.localScale = new Vector3(
