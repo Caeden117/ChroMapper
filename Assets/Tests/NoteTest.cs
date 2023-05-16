@@ -2,8 +2,10 @@
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.V2;
 using Beatmap.V3;
 using NUnit.Framework;
+using SimpleJSON;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -86,6 +88,43 @@ namespace Tests
 
                 CheckUtils.CheckNote("Undo note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
                     (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
+            }
+        }
+
+        [Test]
+        public void PlacementPersistsCustomProperty()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            if (containerCollection is NoteGridContainer notesContainer)
+            {
+                var root = notesContainer.transform.root;
+                var notePlacement = root.GetComponentInChildren<NotePlacement>();
+
+                var customDirection = 69;
+                var localRotation = new JSONArray() { [0] = 0, [1] = 1, [2] = 2 };
+
+                BaseNote v3NoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
+                    (int)NoteCutDirection.Left);
+                v3NoteA.CustomLocalRotation = localRotation;
+                v3NoteA.CustomDirection = customDirection;
+
+                PlaceUtils.PlaceNote(notePlacement, v3NoteA);
+
+                CheckUtils.CheckNote("Applies CustomProperties to v3 CustomData", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
+                    (int)NoteType.Red, (int)NoteCutDirection.Left, 0,
+                    new JSONObject() { ["localRotation"] = localRotation });
+
+                BaseNote v2NoteB = new V2Note(4, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
+                (int)NoteCutDirection.Left);
+                v2NoteB.CustomDirection = customDirection;
+                v2NoteB.CustomLocalRotation = localRotation;
+
+                PlaceUtils.PlaceNote(notePlacement, v2NoteB);
+
+                CheckUtils.CheckNote("Applies CustomProperties to v2 CustomData", notesContainer, 1, 4, (int)GridX.Left, (int)GridY.Base,
+                    (int)NoteType.Red, (int)NoteCutDirection.Left, 0,
+                    new JSONObject() { ["_localRotation"] = localRotation, ["_cutDirection"] = customDirection });
             }
         }
     }

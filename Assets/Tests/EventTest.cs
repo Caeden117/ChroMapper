@@ -5,6 +5,7 @@ using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.V3;
 using NUnit.Framework;
+using SimpleJSON;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -111,6 +112,31 @@ namespace Tests
 
                 CheckUtils.CheckEvent("Undo tweak value", eventsContainer, 0, 2, (int)EventTypeValue.LeftLaserRotation,
                     2);
+            }
+        }
+
+        [Test]
+        public void PlacementPersistsCustomProperty()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            if (containerCollection is EventGridContainer eventsContainer)
+            {
+                var root = eventsContainer.transform.root;
+                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+                var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
+
+                var color = new Color(0, 1, 2, 3);
+                var easing = "easeOutQuad";
+
+                BaseEvent baseEventA = new V3BasicEvent(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                baseEventA.CustomEasing = easing;
+                baseEventA.CustomColor = color;
+
+                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+
+                CheckUtils.CheckEvent("Applies CustomProperties to CustomData", eventsContainer, 0, 3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
+                    new JSONObject() { ["color"] = color, ["easing"] = easing });
             }
         }
     }
