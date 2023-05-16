@@ -6,6 +6,7 @@ using Beatmap.Enums;
 using Beatmap.V2;
 using Beatmap.V3;
 using NUnit.Framework;
+using SimpleJSON;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -63,7 +64,7 @@ namespace Tests
                 // i generally dont expect user to do this, but i know it will happen
                 wallA.Height = 3;
                 CheckUtils.CheckWall("Height 3 make crouch height wall for v2 wall", obstaclesContainer, 0, 0f, 1, 2, 1, 1f, 1, 3);
-                
+
                 wallA.Height = 5;
                 CheckUtils.CheckWall("Height 5 make full height wall for v2 wall", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
 
@@ -75,10 +76,10 @@ namespace Tests
 
                 wallA.PosY = 2;
                 CheckUtils.CheckWall("Pos Y 2 make wall crouch wall for v2 wall", obstaclesContainer, 0, 0f, 1, 2, 1, 1f, 1, 3);
-                
+
                 wallA.PosY = 1;
                 CheckUtils.CheckWall("Invalid pos Y should revert back to full height wall for v2 wall", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
-                
+
                 // test v3 wall
                 var wallB = new V3Obstacle(1f, 1, 0, 1f, 1, 5);
                 PlaceUtils.PlaceWall(wallPlacement, wallB);
@@ -99,7 +100,7 @@ namespace Tests
 
                 wallB.Height = 3;
                 CheckUtils.CheckWall("Height 3 should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 3);
-                
+
                 wallB.Height = 5;
                 CheckUtils.CheckWall("Height 5 should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 5);
 
@@ -111,7 +112,7 @@ namespace Tests
 
                 wallB.PosY = 2;
                 CheckUtils.CheckWall("Pos Y 2 should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 2, 0, 1f, 1, 4);
-                
+
                 wallB.PosY = 1;
                 CheckUtils.CheckWall("Arbitrary pos Y should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 1, 0, 1f, 1, 4);
             }
@@ -149,6 +150,31 @@ namespace Tests
                 actionContainer.Undo();
                 CheckUtils.CheckWall("Undo hyper wall", obstaclesCollection, 0, 2, (int)GridX.Left, 0,
                     (int)ObstacleType.Full, 2.0f, 1, 5);
+            }
+        }
+
+        [Test]
+        public void PlacementPersistsCustomProperty()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
+            if (collection is ObstacleGridContainer obstaclesCollection)
+            {
+                var root = obstaclesCollection.transform.root;
+                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
+                wallPlacement.RefreshVisuals();
+
+                var customCoord = new JSONArray() { [0] = 0, [1] = 1 };
+                var customSize = new JSONArray() { [0] = 0, [1] = null, [2] = 420 };
+
+                BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
+                wallA.CustomCoordinate = customCoord;
+                wallA.CustomSize = customSize;
+                PlaceUtils.PlaceWall(wallPlacement, wallA);
+
+                CheckUtils.CheckWall("Applies CustomProperties to CustomData", obstaclesCollection, 0, 2, (int)GridX.Left, 0,
+                    (int)ObstacleType.Full, 2.0f, 1, 5,
+                    new JSONObject() { ["_position"] = customCoord, ["_scale"] = customSize });
             }
         }
     }

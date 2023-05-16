@@ -78,7 +78,11 @@ public class StrobeGenerator : MonoBehaviour
             //Delete conflicting vanilla events
             foreach (BaseEvent e in oldEvents) eventGridContainer.DeleteObject(e, false, false);
             //Spawn objects that were generated
-            foreach (BaseEvent data in generatedObjects) eventGridContainer.SpawnObject(data, false, false);
+            foreach (BaseEvent data in generatedObjects)
+            {
+                data.WriteCustom();
+                eventGridContainer.SpawnObject(data, false, false);
+            };
             eventGridContainer.RefreshPool(true);
             //yield return PersistentUI.Instance.FadeOutLoadingScreen();
             SelectionController.DeselectAll();

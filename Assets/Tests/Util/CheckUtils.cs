@@ -25,7 +25,6 @@ namespace Tests.Util
 
                 if (customData != null)
                 {
-                    note.SaveCustom();
                     Assert.AreEqual(customData.ToString(), note.CustomData.ToString(),
                         $"{msg}: Mismatched custom data");
                 }
@@ -50,7 +49,6 @@ namespace Tests.Util
 
                 if (customData != null)
                 {
-                    wall.SaveCustom();
                     Assert.AreEqual(customData.ToString(), wall.CustomData.ToString(),
                         $"{msg}: Mismatched custom data");
                 }
@@ -73,7 +71,6 @@ namespace Tests.Util
                 if (customData != null)
                 {
                     // Custom data needed to be saved before compare
-                    evt.SaveCustom();
                     Assert.AreEqual(customData.ToString(), evt.CustomData?.ToString(),
                         $"{msg}: Mismatched custom data");
                 }
@@ -96,7 +93,6 @@ namespace Tests.Util
                 if (customData != null)
                 {
                     // Custom data needed to be saved before compare
-                    evt.SaveCustom();
                     Assert.AreEqual(customData.ToString(), evt.CustomData?.ToString(),
                         $"{msg}: Mismatched custom data");
                 }
@@ -130,7 +126,7 @@ namespace Tests.Util
 
                 if (customData != null)
                 {
-                    arc.SaveCustom();
+                    arc.WriteCustom();
                     Assert.AreEqual(customData.ToString(), arc.CustomData.ToString(), $"{msg}: Mismatched custom data");
                 }
             }
@@ -159,7 +155,7 @@ namespace Tests.Util
 
                 if (customData != null)
                 {
-                    chain.SaveCustom();
+                    chain.WriteCustom();
                     Assert.AreEqual(customData.ToString(), chain.CustomData.ToString(),
                         $"{msg}: Mismatched custom data");
                 }

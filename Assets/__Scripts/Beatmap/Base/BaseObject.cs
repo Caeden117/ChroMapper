@@ -105,6 +105,8 @@ namespace Beatmap.Base
             return CustomData;
         }
 
+        public void WriteCustom() => SaveCustom();
+
         public JSONNode GetOrCreateCustom()
         {
             if (CustomData == null)

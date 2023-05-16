@@ -375,7 +375,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         SpawnObject(obj, out _, removeConflicting, refreshesPool);
 
     /// <summary>
-    ///     SSpawns an object into the collection.
+    ///     Spawns an object into the collection.
     /// </summary>
     /// <param name="obj">To spawn.</param>
     /// <param name="conflicting">An enumerable of all objects that were deleted as a conflict.</param>

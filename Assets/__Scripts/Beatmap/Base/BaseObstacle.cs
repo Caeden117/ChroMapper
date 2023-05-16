@@ -104,6 +104,7 @@ namespace Beatmap.Base
             if (other is BaseObstacle obstacle)
             {
                 SaveCustom();
+                obstacle.SaveCustom();
                 if (IsNoodleExtensions() || obstacle.IsNoodleExtensions())
                     return ToJson().ToString() == other.ToJson().ToString();
                 return PosX == obstacle.PosX && PosY == obstacle.PosY && Width == obstacle.Width &&
