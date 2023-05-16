@@ -67,23 +67,10 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
 
-        // Check if ChromaToggle notes button is active and apply _color
-        if (CanPlaceChromaObjects && dropdown.Visible)
-        {
-            // Doing the same a Chroma 2.0 events but with notes insted
-            queuedData.CustomColor = colorPicker.CurrentColor;
-        }
-        else
-        {
-            // If not remove _color
-            if (queuedData.CustomColor != null)
-            {
-                queuedData.CustomColor = null;
-
-                if (queuedData.CustomData.Count <= 0) //Set customData to null if there is no customData to store
-                    queuedData.CustomData = null;
-            }
-        }
+        // Check if Chroma Color notes button is active and apply _color
+        queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
+            ? (Color?)colorPicker.CurrentColor
+            : null;
 
         var wallTransform = instantiatedContainer.transform;
 
