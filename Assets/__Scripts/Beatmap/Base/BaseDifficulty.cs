@@ -144,10 +144,21 @@ namespace Beatmap.Base
                     {
                         if (bpmChange.JsonTime < obj.JsonTime)
                         {
+                            var jsonTimeBeforeScale = obj.JsonTime;
                             if (nextBpmChange == null || obj.JsonTime < nextBpmChange.JsonTime)
                                 obj.JsonTime += (obj.JsonTime - bpmChange.JsonTime) * scale;
                             else
                                 obj.JsonTime += bpmSectionJsonTimeDiff * scale;
+
+                            if (obj is BaseObstacle obstacle)
+                            {
+                                var endJsonTime = jsonTimeBeforeScale + obstacle.Duration;
+                                if (nextBpmChange == null || endJsonTime < nextBpmChange.JsonTime)
+                                    endJsonTime += (endJsonTime - bpmChange.JsonTime) * scale;
+                                else
+                                    endJsonTime += bpmSectionJsonTimeDiff * scale;
+                                obstacle.Duration = endJsonTime - obj.JsonTime;
+                            }
                         }
                         if (obj is BaseSlider slider && bpmChange.JsonTime < slider.TailJsonTime)
                         {
