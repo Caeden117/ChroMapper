@@ -194,13 +194,15 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
             var endSongBpmTime = startSongBpmTime + (instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale);
             var endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
-            queuedData.Duration = endJsonTime - startJsonTime;
 
-            if (queuedData.Duration < SmallestRankableWallDuration &&
+            if (endSongBpmTime - startSongBpmTime < SmallestRankableWallDuration &&
                 Settings.Instance.DontPlacePerfectZeroDurationWalls)
             {
-                queuedData.Duration = SmallestRankableWallDuration;
+                endSongBpmTime = startSongBpmTime + SmallestRankableWallDuration;
+                endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
             }
+
+            queuedData.Duration = endJsonTime - startJsonTime;
 
             objectContainerCollection.SpawnObject(queuedData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(queuedData, conflicting));
