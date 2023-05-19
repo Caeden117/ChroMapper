@@ -91,6 +91,20 @@ namespace Beatmap.Base
         public float TailControlPointLengthMultiplier { get; set; }
         public int MidAnchorMode { get; set; }
 
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
+        {
+            if (other is BaseArc arc)
+            {
+                return base.IsConflictingWithObjectAtSameTime(other)
+                    && HeadControlPointLengthMultiplier == arc.HeadControlPointLengthMultiplier
+                    && TailCutDirection == arc.TailCutDirection
+                    && TailControlPointLengthMultiplier == arc.TailControlPointLengthMultiplier
+                    && MidAnchorMode == arc.MidAnchorMode;
+            }
+
+            return false;
+        }
+
         public override void Apply(BaseObject originalData)
         {
             base.Apply(originalData);

@@ -107,7 +107,17 @@ namespace Beatmap.Base
             TailJsonTime = TailJsonTime;
         }
 
-        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
+        {
+            if (other is BaseSlider slider)
+            {
+                return Vector2.Distance(this.GetPosition(), slider.GetPosition()) < 0.1
+                    && Vector2.Distance(this.GetTailPosition(), slider.GetTailPosition()) < 0.1
+                    && CutDirection == slider.CutDirection;
+            }
+
+            return false;
+        }
 
         public override void Apply(BaseObject originalData)
         {

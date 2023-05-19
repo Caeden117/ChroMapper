@@ -86,6 +86,18 @@ namespace Beatmap.Base
         public int SliceCount { get; set; }
         public float Squish { get; set; }
 
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
+        {
+            if (other is BaseChain chain)
+            {
+                return base.IsConflictingWithObjectAtSameTime(other)
+                    && SliceCount == chain.SliceCount
+                    && Squish == chain.Squish;
+            }
+
+            return false;
+        }
+
         public override void Apply(BaseObject originalData)
         {
             base.Apply(originalData);
