@@ -98,8 +98,8 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
     public void UpdateNoteDirection(NoteContainer note, bool shiftForward)
     {
         var original = BeatmapFactory.Clone(note.ObjectData);
-        note.NoteData.CutDirection =
-            (shiftForward ? cutDirectionMovedForward : cutDirectionMovedBackward)[note.NoteData.CutDirection];
+        note.NoteData.CutDirection = ((shiftForward ^ Settings.Instance.InvertScrollNoteAngle)
+            ? cutDirectionMovedForward : cutDirectionMovedBackward)[note.NoteData.CutDirection];
         note.transform.localEulerAngles = NoteContainer.Directionalize(note.NoteData);
         BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note)
             .RefreshSpecialAngles(note.ObjectData, false, false);
@@ -112,7 +112,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
 
         if (note.NoteData is V3ColorNote cnote)
         {
-            cnote.AngleOffset += (shiftForward)
+            cnote.AngleOffset += (shiftForward ^ Settings.Instance.InvertScrollNoteAngle)
                 ? 5
                 : -5;
 

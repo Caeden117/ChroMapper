@@ -12,6 +12,7 @@ using UnityEngine.UI;
 
 public class BeatmapChainInputController : BeatmapInputController<ChainContainer>, CMInput.IChainObjectsActions
 {
+    public const float SquishChangeSpeed = 0.1f;
     [FormerlySerializedAs("chainAppearanceSO")] [SerializeField] private ChainAppearanceSO chainAppearanceSo;
     public void OnTweakChainCount(InputAction.CallbackContext context)
     {
@@ -19,7 +20,9 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
         RaycastFirstObject(out var c);
         if (c == null || c.Dragging || !context.performed) return;
 
-        var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+        var modifier = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollChainSegmentCount)
+            ? 1
+            : -1;
         TweakValue(c, modifier);
     }
 
@@ -61,7 +64,9 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
         RaycastFirstObject(out var c);
         if (c == null || c.Dragging || !context.performed) return;
 
-        var modifier = context.ReadValue<float>() > 0 ? 0.1f : -0.1f;
+        var modifier = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollChainSquish)
+            ? SquishChangeSpeed
+            : -SquishChangeSpeed;
         TweakChainSquish(c, modifier);
     }
 

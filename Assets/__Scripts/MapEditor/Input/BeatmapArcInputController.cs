@@ -21,7 +21,9 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
         if (e == null || e.Dragging || !context.performed) return;
 
         var modifier = context.ReadValue<float>();
-        modifier = modifier > 0 ? MuChangeSpeed : -MuChangeSpeed;
+        modifier = ((modifier > 0) ^ Settings.Instance.InvertScrollArcMultiplier)
+            ? MuChangeSpeed
+            : -MuChangeSpeed;
         ChangeMu(e, modifier);
     }
 
@@ -63,7 +65,9 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
         if (e == null || e.Dragging || !context.performed) return;
 
         var modifier = context.ReadValue<float>();
-        modifier = modifier > 0 ? MuChangeSpeed : -MuChangeSpeed;
+        modifier = ((modifier > 0) ^ Settings.Instance.InvertScrollArcMultiplier)
+            ? MuChangeSpeed
+            : -MuChangeSpeed;
         ChangeTmu(e, modifier);
     }
 

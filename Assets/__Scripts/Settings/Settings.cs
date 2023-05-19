@@ -144,6 +144,13 @@ public class Settings
     public bool InvertPrecisionScroll = false;
     public bool InvertNoteControls = false; // Hidden setting, does nothing
     public bool InvertScrollTime = false;
+    public bool InvertScrollEventValue = false;
+    public bool InvertScrollNoteAngle = false;
+    public bool InvertScrollWallDuration = false;
+    public bool InvertScrollWallBounds = false;
+    public bool InvertScrollArcMultiplier = false;
+    public bool InvertScrollChainSquish = false;
+    public bool InvertScrollChainSegmentCount = false;
 
     #endregion
 

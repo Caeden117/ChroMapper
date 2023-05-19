@@ -23,14 +23,16 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         RaycastFirstObject(out var e);
         if (e != null && !e.Dragging) InvertEvent(e);
     }
-    
+
     public void OnTweakEventMain(InputAction.CallbackContext context)
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
         RaycastFirstObject(out var e);
         if (e == null || e.Dragging || !context.performed) return;
 
-        var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+        var modifier = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollEventValue)
+            ? 1
+            : -1;
         TweakMain(e, modifier);
     }
 
@@ -40,7 +42,9 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         RaycastFirstObject(out var e);
         if (e == null || e.Dragging || !context.performed) return;
 
-        var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+        var modifier = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollEventValue)
+            ? 1
+            : -1;
         TweakAlternative(e, modifier);
     }
 
@@ -110,7 +114,8 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
             {
                 re.Rotation += 15 * modifier;
             }
-            else {
+            else
+            {
                 if (e.EventData.Value < 8 || e.EventData.Value >= 1000)
                 {
                     e.EventData.Value += modifier;
@@ -120,7 +125,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
                 if (e.EventData.Value < 0) e.EventData.Value = 0;
                 if (e.EventData.Value > 1720) e.EventData.Value -= 720;
             }
-            
+
             tracksManager.RefreshTracks();
         }
         else if (e.EventData.IsColorBoostEvent())
@@ -141,13 +146,14 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         eventAppearanceSo.SetEventAppearance(e);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original));
     }
-    
+
     // for event that occasionally gets changed
     public void TweakAlternative(EventContainer e, int modifier)
     {
         var original = BeatmapFactory.Clone(e.ObjectData);
 
-        if (e.EventData.IsLightEvent()) {
+        if (e.EventData.IsLightEvent())
+        {
             e.EventData.Value += modifier;
 
             if (e.EventData.Value < 0) e.EventData.Value = 0;
