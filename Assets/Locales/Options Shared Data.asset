@@ -1075,6 +1075,62 @@ MonoBehaviour:
     m_Key: map.precisionplacementprecision.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 235582333795893248
+    m_Key: scroll.event.value.invert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582635601231872
+    m_Key: scroll.event.value.invert.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582671521251328
+    m_Key: scroll.note.angle.invert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582692199170048
+    m_Key: scroll.note.angle.invert.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582713359433728
+    m_Key: scroll.arc.multiplier.invert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582733693419520
+    m_Key: scroll.arc.multiplier.invert.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582754643968000
+    m_Key: scroll.chain.squish.invert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582774030041088
+    m_Key: scroll.chain.squish.invert.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582798323449856
+    m_Key: scroll.chain.segment.invert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582820507123712
+    m_Key: scroll.chain.segment.invert.toolti
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258093237993472
+    m_Key: scroll.wall.duration.invert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258097742675968
+    m_Key: scroll.wall.duration.invert.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258102280912896
+    m_Key: scroll.wall.bounds.invert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258109335732224
+    m_Key: scroll.wall.bounds.invert.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

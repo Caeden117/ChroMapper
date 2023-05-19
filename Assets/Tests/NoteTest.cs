@@ -81,7 +81,7 @@ namespace Tests
                     inputController.UpdateNoteDirection(containerA, true);
 
                 CheckUtils.CheckNote("Update note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
-                    (int)NoteType.Red, (int)NoteCutDirection.UpLeft, 0);
+                    (int)NoteType.Red, (int)NoteCutDirection.DownLeft, 0);
 
                 // Undo direction
                 actionContainer.Undo();

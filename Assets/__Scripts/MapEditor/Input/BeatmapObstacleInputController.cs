@@ -24,7 +24,9 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
         {
             var original = BeatmapFactory.Clone(obs.ObjectData);
             var snapping = 1f / atsc.GridMeasureSnapping;
-            snapping *= context.ReadValue<float>() > 0 ? 1 : -1;
+            snapping *= ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollWallDuration)
+                ? 1
+                : -1;
 
             obs.ObstacleData.Duration += snapping;
             obs.UpdateGridPosition();
@@ -40,7 +42,9 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
         if (obs != null && !obs.Dragging && context.performed)
         {
             var original = BeatmapFactory.Clone(obs.ObjectData);
-            var tweakValue = context.ReadValue<float>() > 0 ? 1 : -1;
+            var tweakValue = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollWallDuration)
+                ? 1
+                : -1;
             var data = obs.ObjectData as V3Obstacle;
             data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
             obs.UpdateGridPosition();
@@ -55,7 +59,9 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
         if (obs != null && !obs.Dragging && context.performed)
         {
             var original = BeatmapFactory.Clone(obs.ObjectData);
-            var tweakValue = context.ReadValue<float>() > 0 ? 1 : -1;
+            var tweakValue = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollWallDuration)
+                ? 1
+                : -1;
             var data = obs.ObjectData as V3Obstacle;
             data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
             obs.UpdateGridPosition();
