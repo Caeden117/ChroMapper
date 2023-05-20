@@ -125,7 +125,7 @@ namespace Beatmap.V3
                 WriteBPMInfoFile(this);
 
                 // TODO: temporary fix, there is possibility better solution but this is quick band aid
-                // we need to put them back into the map 
+                // we need to put them back into the map
                 ParseV3ToV2(this);
 
                 return true;
@@ -168,9 +168,7 @@ namespace Beatmap.V3
                 MainNode["customData"]["pointDefinitions"] = new JSONObject();
                 foreach (var p in PointDefinitions)
                 {
-                    var points = new JSONArray();
-                    foreach (var ary in p.Value) points.Add(ary);
-                    MainNode["customData"]["pointDefinitions"][p.Key] = points;
+                    MainNode["customData"]["pointDefinitions"][p.Key] = p.Value;
                 }
             }
             else
@@ -360,7 +358,7 @@ namespace Beatmap.V3
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
-            var pointDefinitions = new Dictionary<string, List<JSONNode>>();
+            var pointDefinitions = new Dictionary<string, JSONArray>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
             var materials = new Dictionary<string, JSONObject>();
 
@@ -388,11 +386,9 @@ namespace Beatmap.V3
                             foreach (var n in nodeAry)
                             {
                                 if (!(n.Value is JSONObject obj)) continue;
-                                var points = new List<JSONNode>();
-                                foreach (var p in obj["points"]) points.Add(p.Value);
 
                                 if (!pointDefinitions.ContainsKey(n.Key))
-                                    pointDefinitions.Add(obj["name"], points);
+                                    pointDefinitions.Add(obj["name"], obj["points"].AsArray);
                                 else
                                     Debug.LogWarning($"Duplicate key {n.Key} found in point definitions");
                             }
@@ -404,11 +400,8 @@ namespace Beatmap.V3
                         {
                             foreach (var n in nodeObj)
                             {
-                                var points = new List<JSONNode>();
-                                foreach (var p in n.Value) points.Add(p.Value);
-
                                 if (!pointDefinitions.ContainsKey(n.Key))
-                                    pointDefinitions.Add(n.Key, points);
+                                    pointDefinitions.Add(n.Key, n.Value.AsArray);
                                 else
                                     Debug.LogWarning($"Duplicate key {n.Key} found in point definitions");
                             }

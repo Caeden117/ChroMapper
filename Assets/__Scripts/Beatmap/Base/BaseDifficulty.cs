@@ -12,7 +12,7 @@ namespace Beatmap.Base
         // TODO: concrete class for these bad boys
         public Dictionary<string, JSONObject> Materials = new Dictionary<string, JSONObject>();
 
-        public Dictionary<string, List<JSONNode>> PointDefinitions = new Dictionary<string, List<JSONNode>>();
+        public Dictionary<string, JSONArray> PointDefinitions = new Dictionary<string, JSONArray>();
         public JSONNode MainNode { get; set; }
         public string DirectoryAndFile { get; set; }
         public abstract string Version { get; }

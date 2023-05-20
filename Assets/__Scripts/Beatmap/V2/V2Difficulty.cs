@@ -121,9 +121,7 @@ namespace Beatmap.V2
                 foreach (var p in PointDefinitions)
                 {
                     var obj = new JSONObject { ["_name"] = p.Key };
-                    var points = new JSONArray();
-                    foreach (var ary in p.Value) points.Add(ary);
-                    obj["_points"] = points;
+                    obj["_points"] = p.Value;
                     pAry.Add(obj);
                 }
 
@@ -269,7 +267,7 @@ namespace Beatmap.V2
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
-            var pointDefinitions = new Dictionary<string, List<JSONNode>>();
+            var pointDefinitions = new Dictionary<string, JSONArray>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
             var materials = new Dictionary<string, JSONObject>();
 
@@ -306,8 +304,7 @@ namespace Beatmap.V2
                                 case "_pointDefinitions":
                                     foreach (JSONNode n in cNode)
                                     {
-                                        var points = new List<JSONNode>();
-                                        foreach (var p in n["_points"]) points.Add(p);
+                                        var points = n["_points"].AsArray;
                                         if (!pointDefinitions.ContainsKey(n["_name"]))
                                             pointDefinitions.Add(n["_name"], points);
                                         else
