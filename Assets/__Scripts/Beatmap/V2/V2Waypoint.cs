@@ -32,6 +32,8 @@ namespace Beatmap.V2
         {
         }
 
+        public override string CustomKeyAnimation { get; } = "_animation";
+
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";

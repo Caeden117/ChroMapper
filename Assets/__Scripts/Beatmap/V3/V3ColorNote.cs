@@ -50,6 +50,8 @@ namespace Beatmap.V3
             set { }
         }
 
+        public override string CustomKeyAnimation { get; } = "animation";
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";

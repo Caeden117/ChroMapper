@@ -32,6 +32,8 @@ namespace Beatmap.V3
             : base(jsonTime, songBpmTime, posX, posY, customData) =>
             ParseCustom();
 
+        public override string CustomKeyAnimation { get; } = "animation";
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";

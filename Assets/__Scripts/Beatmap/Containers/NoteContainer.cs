@@ -3,6 +3,8 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
 
+using Beatmap.Animations;
+
 namespace Beatmap.Containers
 {
     public class NoteContainer : ObjectContainer

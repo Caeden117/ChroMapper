@@ -41,12 +41,15 @@ namespace Beatmap.Base
         public int PosX { get; set; }
         public virtual int PosY { get; set; }
 
+        public virtual JSONNode CustomAnimation { get; set; }
+
         public virtual JSONNode CustomCoordinate { get; set; }
 
         public virtual JSONNode CustomWorldRotation { get; set; }
 
         public virtual JSONNode CustomLocalRotation { get; set; }
 
+        public abstract string CustomKeyAnimation { get; }
         public abstract string CustomKeyCoordinate { get; }
         public abstract string CustomKeyWorldRotation { get; }
         public abstract string CustomKeyLocalRotation { get; }
@@ -94,6 +97,7 @@ namespace Beatmap.Base
         {
             base.ParseCustom();
 
+            CustomAnimation = (CustomData?.HasKey(CustomKeyAnimation) ?? false) ? CustomData?[CustomKeyAnimation] : null;
             CustomCoordinate = (CustomData?.HasKey(CustomKeyCoordinate) ?? false) ? CustomData?[CustomKeyCoordinate] : null;
             CustomWorldRotation = (CustomData?.HasKey(CustomKeyWorldRotation) ?? false) ? CustomData?[CustomKeyWorldRotation] : null;
             CustomLocalRotation = (CustomData?.HasKey(CustomKeyLocalRotation) ?? false) ? CustomData?[CustomKeyLocalRotation] : null;
@@ -102,6 +106,7 @@ namespace Beatmap.Base
         protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
+            if (CustomAnimation != null) CustomData[CustomKeyAnimation] = CustomAnimation; else CustomData.Remove(CustomKeyAnimation);
             if (CustomCoordinate != null) CustomData[CustomKeyCoordinate] = CustomCoordinate; else CustomData.Remove(CustomKeyCoordinate);
             if (CustomWorldRotation != null) CustomData[CustomKeyWorldRotation] = CustomWorldRotation; else CustomData.Remove(CustomKeyWorldRotation);
             if (CustomLocalRotation != null) CustomData[CustomKeyLocalRotation] = CustomLocalRotation; else CustomData.Remove(CustomKeyLocalRotation);

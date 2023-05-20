@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Animations;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -86,6 +87,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
     public override ObjectContainer CreateContainer()
     {
         ObjectContainer con = NoteContainer.SpawnBeatmapNote(null, ref notePrefab);
+        con.GetComponent<AnimationComponent>().Atsc = AudioTimeSyncController;
         return con;
     }
 

@@ -26,6 +26,8 @@ namespace Beatmap.Base
         public override ObjectType ObjectType { get; set; } = ObjectType.Note;
         public int OffsetDirection { get; set; }
 
+        public override string CustomKeyAnimation { get; } = "animation";
+
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
             // Only down to 1/4 spacing

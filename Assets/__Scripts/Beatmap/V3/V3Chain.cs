@@ -49,6 +49,8 @@ namespace Beatmap.V3
             tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, sliceCount, squish, customData) =>
             ParseCustom();
 
+        public override string CustomKeyAnimation { get; } = "animation";
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";
