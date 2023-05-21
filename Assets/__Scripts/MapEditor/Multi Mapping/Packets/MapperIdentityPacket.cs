@@ -8,7 +8,7 @@ public class MapperIdentityPacket : INetSerializable
     public int ConnectionId;
     public ColorSerializable Color;
     public long DiscordId = -1;
-    public string ApplicationVersion;
+    public string ApplicationVersion = Application.version;
 
     public NetPeer? MapperPeer;
     public string? Ip;
@@ -22,7 +22,6 @@ public class MapperIdentityPacket : INetSerializable
         Name = name;
         ConnectionId = id;
         Color = color;
-        ApplicationVersion = Application.version;
 
         if (DiscordController.IsActive && DiscordController.UserManager != null)
         {
