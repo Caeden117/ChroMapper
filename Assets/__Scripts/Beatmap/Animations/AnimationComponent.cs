@@ -37,6 +37,8 @@ namespace Beatmap.Animations
             AnimationThis.transform.localEulerAngles = Vector3.zero;
             AnimationThis.transform.localPosition = Vector3.zero;
             AnimationThis.transform.localScale = Vector3.one;
+            container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
+            container.UpdateMaterials();
         }
 
         public void SetData(BaseGrid obj)
@@ -118,6 +120,8 @@ namespace Beatmap.Animations
                     AddPointDef(p, jprop.Key);
                 }
             }
+
+            Update();
         }
 
         private float lastTime = -1;
@@ -168,6 +172,10 @@ namespace Beatmap.Animations
             var target = p.track ? AnimationTrack.ObjectParentTransform.gameObject : AnimationThis.gameObject;
             switch (key)
             {
+            case "_dissolve":
+            case "dissolve":
+                AddPointDef<float>((float f) => { container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", f); container.UpdateMaterials(); }, PointDataParsers.ParseFloat, p);
+                break;
             case "_localRotation":
             case "localRotation":
                 AddPointDef<Vector3>((Vector3 v) => target.transform.localEulerAngles = v, PointDataParsers.ParseVector3, p);

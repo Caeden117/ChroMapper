@@ -195,6 +195,12 @@ namespace Beatmap.Animations
 
     public class PointDataParsers
     {
+        public static float ParseFloat(JSONArray data, out int i)
+        {
+            i = 1;
+            return data[0];
+        }
+
         public static Vector3 ParseVector3(JSONArray data, out int i)
         {
             i = 3;
