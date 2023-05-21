@@ -4,6 +4,8 @@ using System.Linq;
 using Beatmap.Base;
 using UnityEngine;
 
+using Beatmap.Animations;
+
 namespace Beatmap.Containers
 {
     public abstract class ObjectContainer : MonoBehaviour
@@ -20,6 +22,7 @@ namespace Beatmap.Containers
         [SerializeField] protected List<IntersectionCollider> Colliders;
         [SerializeField] protected List<Renderer> SelectionRenderers = new List<Renderer>();
         [SerializeField] protected BoxCollider BoxCollider;
+        [SerializeField] public AnimationComponent Animator;
 
         protected readonly List<Renderer> modelRenderers = new List<Renderer>();
         public MaterialPropertyBlock MaterialPropertyBlock;

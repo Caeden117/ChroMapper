@@ -13,6 +13,7 @@ namespace Beatmap.Containers
 
         [SerializeField] private GameObject simpleBlock;
         [SerializeField] private GameObject complexBlock;
+        [SerializeField] public GameObject directionTarget;
 
         [SerializeField] private List<MeshRenderer> noteRenderer;
         [SerializeField] private MeshRenderer bombRenderer;
@@ -26,6 +27,11 @@ namespace Beatmap.Containers
         {
             get => NoteData;
             set => NoteData = (BaseNote)value;
+        }
+
+        public Vector2 GridPosition
+        {
+            get => Animator.AnimationTrack?.transform.localPosition ?? transform.localPosition;
         }
 
         public override void Setup()
@@ -123,11 +129,11 @@ namespace Beatmap.Containers
             if (swingArcRenderer != null) swingArcRenderer.enabled = showArcVisualizer;
         }
 
-        public static NoteContainer SpawnBeatmapNote(BaseNote noteData, ref GameObject notePrefab)
+        public static NoteContainer SpawnBeatmapNote(BaseNote noteData,  ref GameObject notePrefab)
         {
             var container = Instantiate(notePrefab).GetComponent<NoteContainer>();
             container.NoteData = noteData;
-            container.transform.localEulerAngles = Directionalize(noteData);
+            container.directionTarget.transform.localEulerAngles = Directionalize(noteData);
             return container;
         }
 

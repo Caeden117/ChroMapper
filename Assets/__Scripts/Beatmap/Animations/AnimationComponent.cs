@@ -5,6 +5,7 @@ using UnityEngine;
 
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Containers;
 using Beatmap.Enums;
 using SimpleJSON;
 
@@ -12,21 +13,37 @@ namespace Beatmap.Animations
 {
     public class AnimationComponent : MonoBehaviour
     {
-        [SerializeField] private GameObject AnimationObject;
+        [SerializeField] private GameObject AnimationThis;
+        [SerializeField] private ObjectContainer container;
 
+        public Track AnimationTrack;
         public AudioTimeSyncController Atsc;
+        public TracksManager tracksManager;
+
+        public bool AnimatedTrack { get { return AnimationTrack != null; } }
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
 
-        public void SetData(BaseGrid obj)
+        public void ResetData()
         {
-            AnimationObject.transform.localEulerAngles = Vector3.zero;
-            AnimationObject.transform.localPosition = Vector3.zero;
-
-            // TODO: dictionary
             AnimatedProperties = new Dictionary<string, IAnimateProperty>();
 
-            // TODO: object-specific bpn/njs/offset
+            if (AnimatedTrack)
+            {
+                GameObject.Destroy(AnimationTrack);
+                AnimationTrack = null;
+            }
+
+            AnimationThis.transform.localEulerAngles = Vector3.zero;
+            AnimationThis.transform.localPosition = Vector3.zero;
+            AnimationThis.transform.localScale = Vector3.one;
+        }
+
+        public void SetData(BaseGrid obj)
+        {
+            ResetData();
+
+            // TODO: object-specific bpm/njs/offset
             var njs = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
             var offset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
             var bpm = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
@@ -44,6 +61,7 @@ namespace Beatmap.Animations
                     .Select(ev => ev as BaseCustomEvent);
                 foreach (var ce in events.Where(ev => ev.Type == "AssignPathAnimation"))
                 {
+                    RequireAnimationTrack();
                     if (TracksMatch(obj.CustomTrack, ce.CustomTrack))
                     {
                         foreach (var jprop in ce.Data)
@@ -58,16 +76,7 @@ namespace Beatmap.Animations
                                 start = obj.JsonTime - half_path_duration,
                                 end = obj.JsonTime + half_path_duration
                             };
-                            switch (jprop.Key) {
-                            case "_localRotation":
-                            case "localRotation":
-                                AddPointDef<Vector3>(LocalRotationSetter, PointDataParsers.ParseVector3, p);
-                                break;
-                            case "_position":
-                            case "offsetPosition":
-                                AddPointDef<Vector3>(PositionOffsetSetter, PointDataParsers.ParseVector3, p);
-                                break;
-                            }
+                            AddPointDef(p, jprop.Key);
                         }
                     }
                 }
@@ -84,18 +93,10 @@ namespace Beatmap.Animations
                                 points = jprop.Value,
                                 time = ce.JsonTime,
                                 start = ce.JsonTime,
-                                end = ce.JsonTime + (ce.DataDuration ?? 0)
+                                end = ce.JsonTime + (ce.DataDuration ?? 0),
+                                track = true
                             };
-                            switch (jprop.Key) {
-                            case "_localRotation":
-                            case "localRotation":
-                                AddPointDef<Vector3>(LocalRotationSetter, PointDataParsers.ParseVector3, p);
-                                break;
-                            case "_position":
-                            case "offsetPosition":
-                                AddPointDef<Vector3>(PositionOffsetSetter, PointDataParsers.ParseVector3, p);
-                                break;
-                            }
+                            AddPointDef(p, jprop.Key);
                         }
                     }
                 }
@@ -114,17 +115,7 @@ namespace Beatmap.Animations
                         start = obj.JsonTime - half_path_duration,
                         end = obj.JsonTime + half_path_duration
                     };
-                    switch (jprop.Key)
-                    {
-                    case "_localRotation":
-                    case "localRotation":
-                        AddPointDef<Vector3>(LocalRotationSetter, PointDataParsers.ParseVector3, p);
-                        break;
-                    case "_position":
-                    case "offsetPosition":
-                        AddPointDef<Vector3>(PositionOffsetSetter, PointDataParsers.ParseVector3, p);
-                        break;
-                    }
+                    AddPointDef(p, jprop.Key);
                 }
             }
         }
@@ -140,12 +131,23 @@ namespace Beatmap.Animations
                 {
                     prop.Value.UpdateProperty(time);
                 }
+                if (AnimationTrack != null) {
+                    AnimationTrack.UpdatePosition(-1 * time * EditorScaleController.EditorScale);
+                }
             }
             lastTime = time;
         }
 
-        private void LocalRotationSetter(Vector3 v) => AnimationObject.transform.localEulerAngles = v;
-        private void PositionOffsetSetter(Vector3 v) => AnimationObject.transform.localPosition = v * 0.7f;
+        private void RequireAnimationTrack()
+        {
+            if (AnimationTrack == null)
+            {
+                AnimationTrack = tracksManager.CreateAnimationTrack(container.ObjectData as BaseGrid);
+                AnimationTrack.AttachContainer(container);
+                AnimationTrack.transform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
+                container.transform.localPosition = new Vector3(0, 0, container.transform.localPosition.z);
+            }
+        }
 
         // My laziness knows no bounds
         private class UntypedParams
@@ -157,16 +159,44 @@ namespace Beatmap.Animations
             public float transition = 0;
             public float start;
             public float end;
+            public bool track = false;
+            // TODO: Repeat
+        }
+
+        private void AddPointDef(UntypedParams p, string key)
+        {
+            var target = p.track ? AnimationTrack.ObjectParentTransform.gameObject : AnimationThis.gameObject;
+            switch (key)
+            {
+            case "_localRotation":
+            case "localRotation":
+                AddPointDef<Vector3>((Vector3 v) => target.transform.localEulerAngles = v, PointDataParsers.ParseVector3, p);
+                break;
+            case "_rotation":
+            case "offsetWorldRotation":
+                RequireAnimationTrack();
+                AddPointDef<Vector3>((Vector3 v) => AnimationTrack.transform.localEulerAngles = v, PointDataParsers.ParseVector3, p);
+                break;
+            case "_position":
+            case "offsetPosition":
+                AddPointDef<Vector3>((Vector3 v) => target.transform.localPosition = v, PointDataParsers.ParseVector3, p);
+                break;
+            case "_scale":
+            case "scale":
+                AddPointDef<Vector3>((Vector3 v) => target.transform.localScale = v, PointDataParsers.ParseVector3, p);
+                break;
+            }
         }
 
         private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p) where T : struct
         {
+            var key = p.track ? $"track_{p.key}" : p.key;
             var pointdef = new PointDefinition<T>(
                 parser,
                 p.points switch {
                     JSONArray arr => arr,
                     JSONString pd => BeatSaberSongContainer.Instance.Map.PointDefinitions[pd],
-                    _ => new JSONArray(),
+                    _ => new JSONArray(), // TODO: Does this unset properly?
                 },
                 p.time,
                 p.transition,
@@ -176,13 +206,13 @@ namespace Beatmap.Animations
             );
             if (p.overwrite)
             {
-                AnimatedProperties[p.key] = new AnimateProperty<T>(
+                AnimatedProperties[key] = new AnimateProperty<T>(
                     new List<PointDefinition<T>>() { pointdef },
                     setter);
             }
             else
             {
-                GetAnimateProperty<T>(p.key, setter).PointDefinitions.Add(pointdef);
+                GetAnimateProperty<T>(key, setter).PointDefinitions.Add(pointdef);
             }
         }
 

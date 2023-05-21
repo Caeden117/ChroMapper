@@ -29,7 +29,7 @@ Transform:
   m_LocalPosition: {x: -1.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
-  - {fileID: 6368550486330930640}
+  - {fileID: 2772469630699406285}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -53,8 +53,10 @@ MonoBehaviour:
   - {fileID: 8423123464298783434}
   - {fileID: 3849728588848831574}
   BoxCollider: {fileID: 0}
+  Animator: {fileID: 2511166697914245830}
   simpleBlock: {fileID: 5917998450345237402}
   complexBlock: {fileID: 8487697771764994487}
+  directionTarget: {fileID: 720881814448263661}
   noteRenderer:
   - {fileID: 3686148892469938315}
   - {fileID: 8922317231100721677}
@@ -76,8 +78,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 608528e3e24bc19c28b2382e9c4950ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimationObject: {fileID: 720881814448263661}
+  AnimationThis: {fileID: 5503559681409449215}
+  container: {fileID: 3130810298530284748}
   Atsc: {fileID: 0}
+  tracksManager: {fileID: 0}
 --- !u!1 &1557584185351964
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +289,7 @@ GameObject:
   - component: {fileID: 6368550486330930640}
   - component: {fileID: 7760328661044275608}
   m_Layer: 9
-  m_Name: Animation
+  m_Name: DirectionTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -298,7 +302,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 720881814448263661}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -309,7 +313,7 @@ Transform:
   - {fileID: 4577505323836706}
   - {fileID: 1079251460017411120}
   - {fileID: 4502959743120164}
-  m_Father: {fileID: 4189720529923420}
+  m_Father: {fileID: 2772469630699406285}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7760328661044275608
@@ -849,6 +853,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5503559681409449215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2772469630699406285}
+  m_Layer: 9
+  m_Name: Animation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2772469630699406285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5503559681409449215}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6368550486330930640}
+  m_Father: {fileID: 4189720529923420}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5917998450345237402
 GameObject:
   m_ObjectHideFlags: 0

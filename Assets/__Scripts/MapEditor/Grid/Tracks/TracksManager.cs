@@ -83,6 +83,18 @@ public class TracksManager : MonoBehaviour
         return CreateTrack(vectorRotation);
     }
 
+    /// <summary>
+    ///     Used for track animation, not 90/360 maps
+    /// </summary>
+    public Track CreateAnimationTrack(BaseGrid obj)
+    {
+        // TODO: This is the same math used for 90/360 tacks, but does it actually handle BPM changes?
+        var potition = -1 * obj.JsonTime * EditorScaleController.EditorScale;
+        var track = Instantiate(trackPrefab, tracksParent).GetComponent<Track>();
+        track.UpdatePosition(potition);
+        return track;
+    }
+
     public Track GetTrackAtTime(float beatInSongBpm)
     {
         if (!Settings.Instance.RotateTrack) return CreateTrack(0);
@@ -111,6 +123,7 @@ public class TracksManager : MonoBehaviour
             foreach (var container in collection.LoadedContainers.Values)
             {
                 if (container is ObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
+                if (container.Animator?.AnimatedTrack ?? false) continue;
                 var track = GetTrackAtTime(container.ObjectData.JsonTime);
                 track.AttachContainer(container);
                 //container.UpdateGridPosition();
