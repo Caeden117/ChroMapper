@@ -32,6 +32,11 @@ namespace Beatmap.Animations
             Easing = easing;
 
             foreach (var row in data) {
+                // WTF, Jevk
+                if (row.Value.AsArray == null) {
+                    Points.Add(new PointData(parser, data, tbegin, tend));
+                    break;
+                }
                 Points.Add(new PointData(parser, row.Value.AsArray, tbegin, tend));
             }
         }
@@ -106,10 +111,18 @@ namespace Beatmap.Animations
             public PointData(Parser parser, JSONArray data, float tbegin = 0, float tend = 0)
             {
                 Value = parser(data, out int i);
-                // Track or Path animation
-                Time = (tend == 0)
-                    ? data[i++].AsFloat
-                    : Mathf.LerpUnclamped(tbegin, tend, data[i++]);
+                if (data.Count > i)
+                {
+                    // Track or Path animation
+                    Time = (tend == 0)
+                        ? data[i++].AsFloat
+                        : Mathf.LerpUnclamped(tbegin, tend, data[i++]);
+                }
+                else
+                {
+                    // WTF Jevk
+                    Time = 0;
+                }
                 if (data.Count > i && ((string)data[i]).StartsWith("easing")) {
                     Easing = global::Easing.Named(data[i++]);
                 }
@@ -197,6 +210,7 @@ namespace Beatmap.Animations
     {
         public static float ParseFloat(JSONArray data, out int i)
         {
+            if (data.Count < 1) throw new Exception($"Invalid data: {data}");
             i = 1;
             return data[0];
         }

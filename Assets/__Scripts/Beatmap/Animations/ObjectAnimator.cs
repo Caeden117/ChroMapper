@@ -11,7 +11,7 @@ using SimpleJSON;
 
 namespace Beatmap.Animations
 {
-    public class AnimationComponent : MonoBehaviour
+    public class ObjectAnimator : MonoBehaviour
     {
         [SerializeField] private GameObject AnimationThis;
         [SerializeField] private ObjectContainer container;
@@ -20,7 +20,14 @@ namespace Beatmap.Animations
         public AudioTimeSyncController Atsc;
         public TracksManager tracksManager;
 
+        public List<Vector3> LocalRotation;
+        public List<Vector3> WorldRotation;
+        public List<Vector3> OffsetPosition;
+        public List<Vector3> Scale;
+        public List<float> Dissolve;
+
         public bool AnimatedTrack { get { return AnimationTrack != null; } }
+        private List<TrackAnimator> tracks = new List<TrackAnimator>();
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
 
@@ -28,11 +35,20 @@ namespace Beatmap.Animations
         {
             AnimatedProperties = new Dictionary<string, IAnimateProperty>();
 
+            foreach (var track in tracks) track.children.Remove(this);
+            tracks.Clear();
+
             if (AnimatedTrack)
             {
                 GameObject.Destroy(AnimationTrack);
                 AnimationTrack = null;
             }
+
+            LocalRotation = new List<Vector3>();
+            WorldRotation = new List<Vector3>();
+            OffsetPosition = new List<Vector3>();
+            Scale = new List<Vector3>();
+            Dissolve = new List<float>();
 
             AnimationThis.transform.localEulerAngles = Vector3.zero;
             AnimationThis.transform.localPosition = Vector3.zero;
@@ -60,8 +76,9 @@ namespace Beatmap.Animations
                 var events = BeatmapObjectContainerCollection
                     .GetCollectionForType(ObjectType.CustomEvent)
                     .LoadedObjects
-                    .Select(ev => ev as BaseCustomEvent);
-                foreach (var ce in events.Where(ev => ev.Type == "AssignPathAnimation"))
+                    .Select(ev => ev as BaseCustomEvent)
+                    .Where(ev => ev.Type == "AssignPathAnimation");
+                foreach (var ce in events)
                 {
                     RequireAnimationTrack();
                     if (TracksMatch(obj.CustomTrack, ce.CustomTrack))
@@ -77,26 +94,6 @@ namespace Beatmap.Animations
                                 transition = ce.DataDuration ?? 0,
                                 start = obj.JsonTime - half_path_duration,
                                 end = obj.JsonTime + half_path_duration
-                            };
-                            AddPointDef(p, jprop.Key);
-                        }
-                    }
-                }
-                foreach (var ce in events.Where(ev => ev.Type == "AnimateTrack"))
-                {
-                    if (TracksMatch(obj.CustomTrack, ce.CustomTrack))
-                    {
-                        foreach (var jprop in ce.Data)
-                        {
-                            UntypedParams p = new UntypedParams
-                            {
-                                key = jprop.Key,
-                                overwrite = false,
-                                points = jprop.Value,
-                                time = ce.JsonTime,
-                                start = ce.JsonTime,
-                                end = ce.JsonTime + (ce.DataDuration ?? 0),
-                                track = true
                             };
                             AddPointDef(p, jprop.Key);
                         }
@@ -121,7 +118,28 @@ namespace Beatmap.Animations
                 }
             }
 
+            if (obj.CustomTrack != null)
+            {
+                var tracks = new List<string>();
+                switch (obj.CustomTrack)
+                {
+                case JSONArray arr:
+                    foreach (var t in arr) tracks.Add(t.Value);
+                    break;
+                case JSONString s:
+                    tracks.Add(s);
+                    break;
+                };
+                foreach (var t in tracks) {
+                    var track = tracksManager.CreateAnimationTrack(t);
+                    track.children.Add(this);
+                    track.Preload(this);
+                    this.tracks.Add(track);
+                }
+            }
+
             Update();
+            LateUpdate();
         }
 
         private float lastTime = -1;
@@ -142,6 +160,16 @@ namespace Beatmap.Animations
             lastTime = time;
         }
 
+        public void LateUpdate()
+        {
+            AnimationThis.transform.localEulerAngles = AggrigateSum(ref LocalRotation, Vector3.zero);
+            AnimationThis.transform.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero) * 0.6f; // Lane width
+            AnimationThis.transform.localScale = AggrigateSum(ref Scale, Vector3.one);
+            if (AnimatedTrack) AnimationTrack.transform.localEulerAngles = AggrigateSum(ref WorldRotation, Vector3.zero);
+            container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul(ref Dissolve));
+            container.UpdateMaterials();
+        }
+
         private void RequireAnimationTrack()
         {
             if (AnimationTrack == null)
@@ -150,6 +178,7 @@ namespace Beatmap.Animations
                 AnimationTrack.AttachContainer(container);
                 AnimationTrack.transform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
                 container.transform.localPosition = new Vector3(0, 0, container.transform.localPosition.z);
+
             }
         }
 
@@ -169,29 +198,28 @@ namespace Beatmap.Animations
 
         private void AddPointDef(UntypedParams p, string key)
         {
-            var target = p.track ? AnimationTrack.ObjectParentTransform.gameObject : AnimationThis.gameObject;
             switch (key)
             {
             case "_dissolve":
             case "dissolve":
-                AddPointDef<float>((float f) => { container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", f); container.UpdateMaterials(); }, PointDataParsers.ParseFloat, p);
+                AddPointDef<float>((float f) => Dissolve.Add(f), PointDataParsers.ParseFloat, p);
                 break;
             case "_localRotation":
             case "localRotation":
-                AddPointDef<Vector3>((Vector3 v) => target.transform.localEulerAngles = v, PointDataParsers.ParseVector3, p);
+                AddPointDef<Vector3>((Vector3 v) => LocalRotation.Add(v), PointDataParsers.ParseVector3, p);
                 break;
             case "_rotation":
             case "offsetWorldRotation":
                 RequireAnimationTrack();
-                AddPointDef<Vector3>((Vector3 v) => AnimationTrack.transform.localEulerAngles = v, PointDataParsers.ParseVector3, p);
+                AddPointDef<Vector3>((Vector3 v) => WorldRotation.Add(v), PointDataParsers.ParseVector3, p);
                 break;
             case "_position":
             case "offsetPosition":
-                AddPointDef<Vector3>((Vector3 v) => target.transform.localPosition = v, PointDataParsers.ParseVector3, p);
+                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p);
                 break;
             case "_scale":
             case "scale":
-                AddPointDef<Vector3>((Vector3 v) => target.transform.localScale = v, PointDataParsers.ParseVector3, p);
+                AddPointDef<Vector3>((Vector3 v) => Scale.Add(v), PointDataParsers.ParseVector3, p);
                 break;
             }
         }
@@ -250,6 +278,29 @@ namespace Beatmap.Animations
             };
 
             return l1.Any(a => l2.Any(b => a == b));
+        }
+
+        private T AggrigateSum<T>(ref List<T> list, T _default) where T : struct
+        {
+            if (list.Count == 0) return _default;
+            dynamic value = list[0];
+            for (int i = 1; i < list.Count; ++i)
+            {
+                value += list[i];
+            }
+            list.Clear();
+            return value;
+        }
+
+        private float AggrigateMul(ref List<float> list, float _default = 1)
+        {
+            var value = _default;
+            foreach (var it in list)
+            {
+                value *= it;
+            }
+            list.Clear();
+            return value;
         }
     }
 }

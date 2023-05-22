@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Beatmap.Animations;
 using Beatmap.Base;
+using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,6 +18,7 @@ public class TracksManager : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
 
     private readonly Dictionary<Vector3, Track> loadedTracks = new Dictionary<Vector3, Track>();
+    private readonly Dictionary<string, TrackAnimator> animationTracks = new Dictionary<string, TrackAnimator>();
 
     private readonly List<BeatmapObjectContainerCollection> objectContainerCollections =
         new List<BeatmapObjectContainerCollection>();
@@ -35,9 +40,32 @@ public class TracksManager : MonoBehaviour
             objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain));
         }
         ObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
+        LoadInitialMap.LevelLoadedEvent += LoadAnimationTracks;
     }
 
-    private void OnDestroy() => ObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
+    private void LoadAnimationTracks()
+    {
+        var events = BeatmapObjectContainerCollection
+            .GetCollectionForType(ObjectType.CustomEvent)
+            .LoadedObjects
+            .Select(ev => ev as BaseCustomEvent)
+            .Where(ev => ev.Type == "AnimateTrack");
+        foreach (var ev in events)
+        {
+            if (ev.CustomTrack is JSONArray) {
+               Debug.LogError("AAAAAAHHHHH");
+               continue;
+            }
+            var at = CreateAnimationTrack(ev.CustomTrack);
+            at.gameObject.GetComponent<TrackAnimator>().AddEvent(ev);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        ObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
+        LoadInitialMap.LevelLoadedEvent -= LoadAnimationTracks;
+    }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]
     private void FlaggedForDeletion(ObjectContainer obj, bool _, string __)
@@ -83,9 +111,18 @@ public class TracksManager : MonoBehaviour
         return CreateTrack(vectorRotation);
     }
 
-    /// <summary>
-    ///     Used for track animation, not 90/360 maps
-    /// </summary>
+    public TrackAnimator CreateAnimationTrack(string name)
+    {
+        if (animationTracks.TryGetValue(name, out var track)) return track;
+
+        var obj = new GameObject($"Track {name}");
+        track = obj.AddComponent<TrackAnimator>();
+        track.Atsc = atsc;
+        animationTracks.Add(name, track);
+        return track;
+    }
+    // Used for inline rotation animation
+    // These should not have the same name
     public Track CreateAnimationTrack(BaseGrid obj)
     {
         // TODO: This is the same math used for 90/360 tacks, but does it actually handle BPM changes?

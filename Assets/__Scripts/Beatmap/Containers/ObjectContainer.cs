@@ -22,7 +22,7 @@ namespace Beatmap.Containers
         [SerializeField] protected List<IntersectionCollider> Colliders;
         [SerializeField] protected List<Renderer> SelectionRenderers = new List<Renderer>();
         [SerializeField] protected BoxCollider BoxCollider;
-        [SerializeField] public AnimationComponent Animator;
+        [SerializeField] public ObjectAnimator Animator;
 
         protected readonly List<Renderer> modelRenderers = new List<Renderer>();
         public MaterialPropertyBlock MaterialPropertyBlock;
