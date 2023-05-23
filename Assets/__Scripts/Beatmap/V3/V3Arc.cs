@@ -63,6 +63,10 @@ namespace Beatmap.V3
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";
+
         public override string CustomKeyTailCoordinate { get; } = "tailCoordinates";
 
         protected sealed override void ParseCustom() => base.ParseCustom();

@@ -65,11 +65,11 @@ public class TracksManager : MonoBehaviour
         }
         foreach (var ev in events.Where(ev => ev.Type == "AssignTrackParent"))
         {
-            var tracks = ev.Data["_childrenTracks"] switch {
+            var tracks = ev.DataChildrenTracks switch {
                 JSONArray arr => arr,
                 JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
             };
-            var parent = CreateAnimationTrack(ev.Data["_parentTrack"]);
+            var parent = CreateAnimationTrack(ev.DataParentTrack);
             foreach (var tr in tracks) {
                 var at = CreateAnimationTrack(tr.Value);
                 parent.childTracks.Add(at);

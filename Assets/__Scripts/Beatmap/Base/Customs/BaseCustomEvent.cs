@@ -44,12 +44,16 @@ namespace Beatmap.Base.Customs
         public JSONNode Data { get; set; }
         public float? DataDuration { get; set; }
         public string? DataEasing { get; set; }
+        public JSONNode DataChildrenTracks { get; set; }
+        public JSONNode DataParentTrack { get; set; }
 
         public abstract string KeyTime { get; }
         public abstract string KeyType { get; }
         public abstract string KeyData { get; }
         public abstract string DataKeyDuration { get; }
         public abstract string DataKeyEasing { get; }
+        public abstract string DataKeyChildrenTracks { get; }
+        public abstract string DataKeyParentTrack { get; }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
@@ -69,6 +73,8 @@ namespace Beatmap.Base.Customs
             CustomTrack = Data.HasKey(CustomKeyTrack) ? Data[CustomKeyTrack] : null;
             DataDuration = Data.HasKey(DataKeyDuration) ? Data[DataKeyDuration] : null;
             DataEasing = Data.HasKey(DataKeyEasing) ? Data[DataKeyEasing] : null;
+            DataChildrenTracks = Data.HasKey(DataKeyChildrenTracks) ? Data[DataKeyChildrenTracks] : null;
+            DataParentTrack = Data.HasKey(DataKeyParentTrack) ? Data[DataKeyParentTrack] : null;
         }
 
         protected internal override JSONNode SaveCustom()
@@ -76,6 +82,8 @@ namespace Beatmap.Base.Customs
             if (CustomTrack != null) Data[CustomKeyTrack] = CustomTrack; else Data.Remove(CustomKeyTrack);
             if (DataDuration != null) Data[DataKeyDuration] = DataDuration; else Data.Remove(DataKeyDuration);
             if (DataEasing != null) Data[DataKeyEasing] = DataDuration; else Data.Remove(DataKeyEasing);
+            if (DataChildrenTracks != null) Data[DataKeyChildrenTracks] = DataChildrenTracks; else Data.Remove(DataKeyChildrenTracks);
+            if (DataParentTrack != null) Data[DataKeyParentTrack] = DataParentTrack; else Data.Remove(DataKeyParentTrack);
             return Data;
         }
     }

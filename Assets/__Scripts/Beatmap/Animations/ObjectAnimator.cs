@@ -73,9 +73,8 @@ namespace Beatmap.Animations
             enabled = isAnimated;
             if (!isAnimated) return;
 
-            // TODO: object-specific bpm/njs/offset
-            var njs = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
-            var offset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
+            var njs = obj.CustomNoteJumpMovementSpeed ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
+            var offset = obj.CustomNoteJumpStartBeatOffset ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
             var bpm = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
                 ?.FindLastBpm(obj.SongBpmTime)
                 ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;

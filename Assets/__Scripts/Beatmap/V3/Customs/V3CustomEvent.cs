@@ -29,6 +29,8 @@ namespace Beatmap.V3.Customs
         public override string KeyData { get; } = "d";
         public override string DataKeyDuration { get; } = "duration";
         public override string DataKeyEasing { get; } = "easing";
+        public override string DataKeyChildrenTracks { get; } = "childrenTracks";
+        public override string DataKeyParentTrack { get; } = "parentTrack";
 
         public override BaseItem Clone() => new V3CustomEvent(JsonTime, Type, Data.Clone());
     }

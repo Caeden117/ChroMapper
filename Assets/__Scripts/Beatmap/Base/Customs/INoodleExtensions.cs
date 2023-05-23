@@ -9,11 +9,16 @@ namespace Beatmap.Base.Customs
         JSONNode CustomCoordinate { get; set; }
         JSONNode CustomWorldRotation { get; set; }
         JSONNode CustomLocalRotation { get; set; }
+        float? CustomNoteJumpMovementSpeed { get; set; }
+        float? CustomNoteJumpStartBeatOffset { get; set; }
+
 
         string CustomKeyAnimation { get; }
         string CustomKeyCoordinate { get; }
         string CustomKeyWorldRotation { get; }
         string CustomKeyLocalRotation { get; }
+        string CustomKeyNoteJumpMovementSpeed { get; }
+        string CustomKeyNoteJumpStartBeatOffset { get; }
     }
 
     public interface INoodleExtensionsNote : INoodleExtensionsGrid

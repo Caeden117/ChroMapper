@@ -45,6 +45,10 @@ namespace Beatmap.V2
 
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
 
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "_noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "_noteJumpStartBeatOffset";
+
         public override string CustomKeyDirection { get; } = "_cutDirection";
 
         protected sealed override void ParseCustom()
