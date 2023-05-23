@@ -54,6 +54,8 @@ namespace Beatmap.Animations
             Scale = new List<Vector3>();
             Dissolve = new List<float>();
 
+            _time = null;
+
             AnimationThis.transform.localEulerAngles = Vector3.zero;
             AnimationThis.transform.localPosition = Vector3.zero;
             AnimationThis.transform.localScale = Vector3.one;
@@ -71,8 +73,6 @@ namespace Beatmap.Animations
             enabled = isAnimated;
             if (!isAnimated) return;
 
-            Debug.Log(container.transform.localPosition);
-
             // TODO: object-specific bpm/njs/offset
             var njs = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
             var offset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
@@ -82,6 +82,9 @@ namespace Beatmap.Animations
             var _hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
 
             var half_path_duration = _hjd + ((obj is BaseObstacle obs) ? (obs.Duration / 2.0f) : 0);
+
+            time_begin = obj.JsonTime - half_path_duration;
+            time_end = obj.JsonTime + half_path_duration;
 
             RequireAnimationTrack();
             LocalTarget = AnimationThis.transform;
@@ -108,8 +111,6 @@ namespace Beatmap.Animations
                                 easing = ce.DataEasing,
                                 time = ce.JsonTime,
                                 transition = ce.DataDuration ?? 0,
-                                start = obj.JsonTime - half_path_duration,
-                                end = obj.JsonTime + half_path_duration
                             };
                             AddPointDef(p, jprop.Key);
                         }
@@ -151,8 +152,6 @@ namespace Beatmap.Animations
                         overwrite = true,
                         points = jprop.Value,
                         easing = null,
-                        start = obj.JsonTime - half_path_duration,
-                        end = obj.JsonTime + half_path_duration
                     };
                     AddPointDef(p, jprop.Key);
                 }
@@ -165,10 +164,13 @@ namespace Beatmap.Animations
         private float lastTime = -1;
         private readonly float minTime = 0.001f;
         private bool updateFrame = true;
+        private float? _time = null;
+        private float time_begin;
+        private float time_end;
 
         public void Update()
         {
-            var time = Atsc?.CurrentBeat ?? 0;
+            var time = _time ?? Atsc?.CurrentBeat ?? 0;
             updateFrame = Math.Abs(time - lastTime) > minTime;
             if (updateFrame)
             {
@@ -196,6 +198,13 @@ namespace Beatmap.Animations
             }
         }
 
+        public void SetLifeTime(float normalTime)
+        {
+            _time = (normalTime < 0)
+                ? (float?)null
+                : (float?)Mathf.LerpUnclamped(time_begin, time_end, normalTime);
+        }
+
         private void RequireAnimationTrack()
         {
             if (AnimationTrack == null)
@@ -204,7 +213,6 @@ namespace Beatmap.Animations
                 AnimationTrack.AttachContainer(container);
                 AnimationTrack.transform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
                 container.transform.localPosition = new Vector3(0, 0, container.transform.localPosition.z);
-
             }
         }
 
@@ -217,8 +225,6 @@ namespace Beatmap.Animations
             public string easing;
             public float time = 0;
             public float transition = 0;
-            public float start;
-            public float end;
             // TODO: Repeat
         }
 
@@ -262,8 +268,8 @@ namespace Beatmap.Animations
                 p.time,
                 p.transition,
                 Easing.Named(p.easing ?? "easeLinear"),
-                p.start,
-                p.end
+                time_begin,
+                time_end
             );
             if (p.overwrite)
             {

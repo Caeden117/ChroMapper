@@ -137,6 +137,14 @@ namespace Beatmap.Animations
                     }
                 }, PointDataParsers.ParseVector3, p, Vector3.one);
                 break;
+            case "_time":
+                AddPointDef<float>((float f) => {
+                    foreach (var animator in cachedChildren)
+                    {
+                        animator.SetLifeTime(f);
+                    }
+                }, PointDataParsers.ParseFloat, p, -1);
+                break;
             }
         }
 
