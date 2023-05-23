@@ -17,6 +17,8 @@ namespace Beatmap.Animations
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         public List<ObjectAnimator> children = new List<ObjectAnimator>();
+        public List<ObjectAnimator> cachedChildren = new List<ObjectAnimator>();
+        public List<TrackAnimator> childTracks = new List<TrackAnimator>();
 
         public void AddEvent(BaseCustomEvent ev)
         {
@@ -26,6 +28,7 @@ namespace Beatmap.Animations
                 {
                     key = jprop.Key,
                     points = jprop.Value,
+                    easing = ev.DataEasing,
                     time = ev.JsonTime,
                     start = ev.JsonTime,
                     end = ev.JsonTime + (ev.DataDuration ?? 0)
@@ -36,33 +39,53 @@ namespace Beatmap.Animations
             Update();
         }
 
+        public List<ObjectAnimator> GetChildren()
+        {
+            var list = new List<ObjectAnimator>();
+            list.AddRange(children);
+            foreach (var child in childTracks)
+            {
+                list.AddRange(child.GetChildren());
+            }
+            return list;
+        }
+
         private float lastTime = -1;
         private readonly float minTime = 0.001f;
+        private bool preload = false;
 
         public void Update()
         {
             var time = Atsc?.CurrentBeat ?? 0;
-            if (Math.Abs(time - lastTime) > minTime) {
+            if (preload || Math.Abs(time - lastTime) > minTime)
+            {
+                if (!preload)
+                {
+                    cachedChildren = GetChildren().Distinct().ToList();
+
+                }
                 foreach (var prop in AnimatedProperties)
                 {
                     prop.Value.UpdateProperty(time);
                 }
+                lastTime = time;
             }
-            lastTime = time;
         }
 
+        // This sucks
         public void Preload(ObjectAnimator animator)
         {
-            var backup = children;
-            children = new List<ObjectAnimator>() { animator };
+            cachedChildren = new List<ObjectAnimator>() { animator };
+            preload = true;
             Update();
-            children = backup;
+            preload = false;
         }
 
         private class UntypedParams
         {
             public string key;
             public JSONNode points;
+            public string easing;
             public float time = 0;
             public float transition = 0;
             public float start;
@@ -75,54 +98,49 @@ namespace Beatmap.Animations
             switch (key)
             {
             case "_dissolve":
-            case "dissolve":
                 AddPointDef<float>((float f) => {
-                    foreach (var animator in children)
+                    foreach (var animator in cachedChildren)
                     {
                         animator.Dissolve.Add(f);
                     }
-                }, PointDataParsers.ParseFloat, p);
+                }, PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
-            case "localRotation":
                 AddPointDef<Vector3>((Vector3 v) => {
-                    foreach (var animator in children)
+                    foreach (var animator in cachedChildren)
                     {
                         animator.LocalRotation.Add(v);
                     }
                 }, PointDataParsers.ParseVector3, p);
                 break;
             case "_rotation":
-            case "offsetWorldRotation":
                 AddPointDef<Vector3>((Vector3 v) => {
-                    foreach (var animator in children)
+                    foreach (var animator in cachedChildren)
                     {
                         animator.WorldRotation.Add(v);
                     }
                 }, PointDataParsers.ParseVector3, p);
                 break;
             case "_position":
-            case "offsetPosition":
                 AddPointDef<Vector3>((Vector3 v) => {
-                    foreach (var animator in children)
+                    foreach (var animator in cachedChildren)
                     {
                         animator.OffsetPosition.Add(v);
                     }
                 }, PointDataParsers.ParseVector3, p);
                 break;
             case "_scale":
-            case "scale":
                 AddPointDef<Vector3>((Vector3 v) => {
-                    foreach (var animator in children)
+                    foreach (var animator in cachedChildren)
                     {
                         animator.Scale.Add(v);
                     }
-                }, PointDataParsers.ParseVector3, p);
+                }, PointDataParsers.ParseVector3, p, Vector3.one);
                 break;
             }
         }
 
-        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p) where T : struct
+        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p, T _default = default(T)) where T : struct
         {
             var pointdef = new PointDefinition<T>(
                 parser,
@@ -133,20 +151,21 @@ namespace Beatmap.Animations
                 },
                 p.time,
                 p.transition,
-                Easing.Linear, // TODO
+                Easing.Named(p.easing ?? "easeLinear"),
                 p.start,
                 p.end
             );
 
-            GetAnimateProperty<T>(p.key, setter).PointDefinitions.Add(pointdef);
+            GetAnimateProperty<T>(p.key, setter, _default).PointDefinitions.Add(pointdef);
         }
 
-        private AnimateProperty<T> GetAnimateProperty<T>(string key, Action<T> setter) where T : struct
+        private AnimateProperty<T> GetAnimateProperty<T>(string key, Action<T> setter, T _default) where T : struct
         {
             if (!AnimatedProperties.ContainsKey(key)) {
                 AnimatedProperties[key] = new AnimateProperty<T>(
                     new List<PointDefinition<T>>(),
-                    setter
+                    setter,
+                    _default
                 );
             }
             return AnimatedProperties[key] as AnimateProperty<T>;

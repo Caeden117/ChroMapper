@@ -7,6 +7,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.V2;
 using SimpleJSON;
 
 namespace Beatmap.Animations
@@ -19,6 +20,9 @@ namespace Beatmap.Animations
         public Track AnimationTrack;
         public AudioTimeSyncController Atsc;
         public TracksManager tracksManager;
+
+        public Transform LocalTarget;
+        public Transform WorldTarget;
 
         public List<Vector3> LocalRotation;
         public List<Vector3> WorldRotation;
@@ -40,7 +44,7 @@ namespace Beatmap.Animations
 
             if (AnimatedTrack)
             {
-                GameObject.Destroy(AnimationTrack);
+                GameObject.Destroy(AnimationTrack.gameObject);
                 AnimationTrack = null;
             }
 
@@ -61,15 +65,27 @@ namespace Beatmap.Animations
         {
             ResetData();
 
+            var isAnimated =
+                    obj.CustomData != null
+                && (obj.CustomTrack != null || obj.CustomAnimation != null);
+            enabled = isAnimated;
+            if (!isAnimated) return;
+
+            Debug.Log(container.transform.localPosition);
+
             // TODO: object-specific bpm/njs/offset
             var njs = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
             var offset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
             var bpm = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
                 ?.FindLastBpm(obj.SongBpmTime)
-                ?.Bpm ?? 0;
+                ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var _hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
 
             var half_path_duration = _hjd + ((obj is BaseObstacle obs) ? (obs.Duration / 2.0f) : 0);
+
+            RequireAnimationTrack();
+            LocalTarget = AnimationThis.transform;
+            WorldTarget = AnimationTrack.transform;
 
             if (obj.CustomTrack != null)
             {
@@ -80,16 +96,16 @@ namespace Beatmap.Animations
                     .Where(ev => ev.Type == "AssignPathAnimation");
                 foreach (var ce in events)
                 {
-                    RequireAnimationTrack();
                     if (TracksMatch(obj.CustomTrack, ce.CustomTrack))
                     {
                         foreach (var jprop in ce.Data)
                         {
                             UntypedParams p = new UntypedParams
                             {
-                                key = jprop.Key,
+                                key = $"track_{jprop.Key}",
                                 overwrite = false,
                                 points = jprop.Value,
+                                easing = ce.DataEasing,
                                 time = ce.JsonTime,
                                 transition = ce.DataDuration ?? 0,
                                 start = obj.JsonTime - half_path_duration,
@@ -98,6 +114,29 @@ namespace Beatmap.Animations
                             AddPointDef(p, jprop.Key);
                         }
                     }
+                }
+                var tracks = new List<string>();
+                switch (obj.CustomTrack)
+                {
+                case JSONArray arr:
+                    foreach (var t in arr) tracks.Add(t.Value);
+                    break;
+                case JSONString s:
+                    tracks.Add(s);
+                    break;
+                };
+                if (obj is V2Object)
+                {
+                    foreach (var t in tracks) {
+                        var track = tracksManager.CreateAnimationTrack(t);
+                        track.children.Add(this);
+                        track.Preload(this);
+                        this.tracks.Add(track);
+                    }
+                }
+                else
+                {
+                    // TODO: V3 uses parenting
                 }
             }
 
@@ -111,30 +150,11 @@ namespace Beatmap.Animations
                         key = jprop.Key,
                         overwrite = true,
                         points = jprop.Value,
+                        easing = null,
                         start = obj.JsonTime - half_path_duration,
                         end = obj.JsonTime + half_path_duration
                     };
                     AddPointDef(p, jprop.Key);
-                }
-            }
-
-            if (obj.CustomTrack != null)
-            {
-                var tracks = new List<string>();
-                switch (obj.CustomTrack)
-                {
-                case JSONArray arr:
-                    foreach (var t in arr) tracks.Add(t.Value);
-                    break;
-                case JSONString s:
-                    tracks.Add(s);
-                    break;
-                };
-                foreach (var t in tracks) {
-                    var track = tracksManager.CreateAnimationTrack(t);
-                    track.children.Add(this);
-                    track.Preload(this);
-                    this.tracks.Add(track);
                 }
             }
 
@@ -144,37 +164,43 @@ namespace Beatmap.Animations
 
         private float lastTime = -1;
         private readonly float minTime = 0.001f;
+        private bool updateFrame = true;
 
         public void Update()
         {
             var time = Atsc?.CurrentBeat ?? 0;
-            if (Math.Abs(time - lastTime) > minTime) {
+            updateFrame = Math.Abs(time - lastTime) > minTime;
+            if (updateFrame)
+            {
                 foreach (var prop in AnimatedProperties)
                 {
                     prop.Value.UpdateProperty(time);
                 }
-                if (AnimationTrack != null) {
+                if (AnimatedTrack) {
                     AnimationTrack.UpdatePosition(-1 * time * EditorScaleController.EditorScale);
                 }
+                lastTime = time;
             }
-            lastTime = time;
         }
 
         public void LateUpdate()
         {
-            AnimationThis.transform.localEulerAngles = AggrigateSum(ref LocalRotation, Vector3.zero);
-            AnimationThis.transform.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero) * 0.6f; // Lane width
-            AnimationThis.transform.localScale = AggrigateSum(ref Scale, Vector3.one);
-            if (AnimatedTrack) AnimationTrack.transform.localEulerAngles = AggrigateSum(ref WorldRotation, Vector3.zero);
-            container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul(ref Dissolve));
-            container.UpdateMaterials();
+            if (updateFrame)
+            {
+                LocalTarget.localEulerAngles = AggrigateSum(ref LocalRotation, Vector3.zero);
+                LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero) * 0.6f;
+                LocalTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
+                WorldTarget.localEulerAngles = AggrigateSum(ref WorldRotation, Vector3.zero);
+                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul(ref Dissolve, 1.0f));
+                container.UpdateMaterials();
+            }
         }
 
         private void RequireAnimationTrack()
         {
             if (AnimationTrack == null)
             {
-                AnimationTrack = tracksManager.CreateAnimationTrack(container.ObjectData as BaseGrid);
+                AnimationTrack = tracksManager.CreateIndividualTrack(container.ObjectData as BaseGrid);
                 AnimationTrack.AttachContainer(container);
                 AnimationTrack.transform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
                 container.transform.localPosition = new Vector3(0, 0, container.transform.localPosition.z);
@@ -188,11 +214,11 @@ namespace Beatmap.Animations
             public string key;
             public bool overwrite;
             public JSONNode points;
+            public string easing;
             public float time = 0;
             public float transition = 0;
             public float start;
             public float end;
-            public bool track = false;
             // TODO: Repeat
         }
 
@@ -202,7 +228,7 @@ namespace Beatmap.Animations
             {
             case "_dissolve":
             case "dissolve":
-                AddPointDef<float>((float f) => Dissolve.Add(f), PointDataParsers.ParseFloat, p);
+                AddPointDef<float>((float f) => Dissolve.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
             case "localRotation":
@@ -219,14 +245,13 @@ namespace Beatmap.Animations
                 break;
             case "_scale":
             case "scale":
-                AddPointDef<Vector3>((Vector3 v) => Scale.Add(v), PointDataParsers.ParseVector3, p);
+                AddPointDef<Vector3>((Vector3 v) => Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
                 break;
             }
         }
 
-        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p) where T : struct
+        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p, T _default = default(T)) where T : struct
         {
-            var key = p.track ? $"track_{p.key}" : p.key;
             var pointdef = new PointDefinition<T>(
                 parser,
                 p.points switch {
@@ -236,28 +261,31 @@ namespace Beatmap.Animations
                 },
                 p.time,
                 p.transition,
-                Easing.Linear, // TODO
+                Easing.Named(p.easing ?? "easeLinear"),
                 p.start,
                 p.end
             );
             if (p.overwrite)
             {
-                AnimatedProperties[key] = new AnimateProperty<T>(
+                AnimatedProperties[p.key] = new AnimateProperty<T>(
                     new List<PointDefinition<T>>() { pointdef },
-                    setter);
+                    setter,
+                    _default
+                );
             }
             else
             {
-                GetAnimateProperty<T>(key, setter).PointDefinitions.Add(pointdef);
+                GetAnimateProperty<T>(p.key, setter, _default).PointDefinitions.Add(pointdef);
             }
         }
 
-        private AnimateProperty<T> GetAnimateProperty<T>(string key, Action<T> setter) where T : struct
+        private AnimateProperty<T> GetAnimateProperty<T>(string key, Action<T> setter, T _default) where T : struct
         {
             if (!AnimatedProperties.ContainsKey(key)) {
                 AnimatedProperties[key] = new AnimateProperty<T>(
                     new List<PointDefinition<T>>(),
-                    setter
+                    setter,
+                    _default
                 );
             }
             return AnimatedProperties[key] as AnimateProperty<T>;
@@ -298,6 +326,16 @@ namespace Beatmap.Animations
             foreach (var it in list)
             {
                 value *= it;
+            }
+            list.Clear();
+            return value;
+        }
+        private Vector3 AggrigateMul(ref List<Vector3> list, Vector3 _default)
+        {
+            var value = _default;
+            foreach (var it in list)
+            {
+                value = Vector3.Scale(value, it);
             }
             list.Clear();
             return value;

@@ -14,11 +14,13 @@ namespace Beatmap.Animations
     {
         public List<PointDefinition<T>> PointDefinitions;
         public Action<T> Setter;
+        public T Default;
 
-        public AnimateProperty(List<PointDefinition<T>> points, Action<T> setter)
+        public AnimateProperty(List<PointDefinition<T>> points, Action<T> setter, T _default)
         {
             PointDefinitions = points;
             Setter = setter;
+            Default = _default;
         }
 
         public T GetLerpedValue(float time)
@@ -31,19 +33,19 @@ namespace Beatmap.Animations
                 : later;
 
             if (current < 0) {
-                return default;
+                return Default;
             }
 
             // TODO: optimizations using out var last?
 
             // Only one active definition, no interpolate
-            if (current == 0 || time > (PointDefinitions[current].StartTime + PointDefinitions[current].Duration)) {
+            if (time > (PointDefinitions[current].StartTime + PointDefinitions[current].Duration)) {
                 return PointDefinitions[current].Interpolate(time, out var _);
             }
 
             var elapsedTime = time - PointDefinitions[current].StartTime;
             float normalizedTime = Mathf.Min(elapsedTime / PointDefinitions[current].Duration, 1);
-            return PointDefinitionInterpolation.Lerp<T>(PointDefinitions[current - 1], PointDefinitions[current], normalizedTime, time);
+            return PointDefinitionInterpolation.Lerp<T>(current == 0 ? null : PointDefinitions[current - 1], PointDefinitions[current], normalizedTime, time, Default);
         }
 
         public void UpdateProperty(float time) {

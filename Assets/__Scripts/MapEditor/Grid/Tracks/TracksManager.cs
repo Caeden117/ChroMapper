@@ -6,6 +6,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.V2;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -45,19 +46,34 @@ public class TracksManager : MonoBehaviour
 
     private void LoadAnimationTracks()
     {
+        if (!(BeatSaberSongContainer.Instance.Map is V2Difficulty)) return;
         var events = BeatmapObjectContainerCollection
             .GetCollectionForType(ObjectType.CustomEvent)
             .LoadedObjects
-            .Select(ev => ev as BaseCustomEvent)
-            .Where(ev => ev.Type == "AnimateTrack");
-        foreach (var ev in events)
+            .Select(ev => ev as BaseCustomEvent);
+        foreach (var ev in events.Where(ev => ev.Type == "AnimateTrack"))
         {
-            if (ev.CustomTrack is JSONArray) {
-               Debug.LogError("AAAAAAHHHHH");
-               continue;
+            if (ev.CustomTrack == null) continue;
+            var tracks = ev.CustomTrack switch {
+                JSONArray arr => arr,
+                JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+            };
+            foreach (var tr in tracks) {
+                var at = CreateAnimationTrack(tr.Value);
+                at.AddEvent(ev);
             }
-            var at = CreateAnimationTrack(ev.CustomTrack);
-            at.gameObject.GetComponent<TrackAnimator>().AddEvent(ev);
+        }
+        foreach (var ev in events.Where(ev => ev.Type == "AssignTrackParent"))
+        {
+            var tracks = ev.Data["_childrenTracks"] switch {
+                JSONArray arr => arr,
+                JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+            };
+            var parent = CreateAnimationTrack(ev.Data["_parentTrack"]);
+            foreach (var tr in tracks) {
+                var at = CreateAnimationTrack(tr.Value);
+                parent.childTracks.Add(at);
+            }
         }
     }
 
@@ -121,9 +137,9 @@ public class TracksManager : MonoBehaviour
         animationTracks.Add(name, track);
         return track;
     }
-    // Used for inline rotation animation
-    // These should not have the same name
-    public Track CreateAnimationTrack(BaseGrid obj)
+
+    // Used for world rotation
+    public Track CreateIndividualTrack(BaseGrid obj)
     {
         // TODO: This is the same math used for 90/360 tacks, but does it actually handle BPM changes?
         var potition = -1 * obj.JsonTime * EditorScaleController.EditorScale;

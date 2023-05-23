@@ -181,7 +181,7 @@ namespace Beatmap.Animations
 
         public static Vector3 LinearVectorLerp(List<PointDefinition<Vector3>.PointData> points, int prev, int next, float time)
         {
-            return Vector3.LerpUnclamped(points[prev].Value, points[next].Value, time);
+            return Vector3.SlerpUnclamped(points[prev].Value, points[next].Value, time);
         }
 
         public static Vector3 SmoothVectorLerp(List<PointDefinition<Vector3>.PointData> points, int a, int b, float time)
