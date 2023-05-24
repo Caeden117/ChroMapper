@@ -3,14 +3,11 @@ using System.Linq;
 using Beatmap.Base;
 using SimpleJSON;
 using UnityEngine;
-using LiteNetLib.Utils;
 
 namespace Beatmap.V2
 {
     public class V2BpmEvent : BaseBpmEvent, V2Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
         public V2BpmEvent()
         {
         }

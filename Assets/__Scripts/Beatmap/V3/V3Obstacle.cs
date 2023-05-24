@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
-using LiteNetLib.Utils;
 using SimpleJSON;
-using UnityEngine;
 
 namespace Beatmap.V3
 {
@@ -54,8 +52,6 @@ namespace Beatmap.V3
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
         public override string CustomKeySize { get; } = "size";
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
 
         protected sealed override void ParseCustom() => base.ParseCustom();
 

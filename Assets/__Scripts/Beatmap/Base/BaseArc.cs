@@ -1,11 +1,30 @@
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using LiteNetLib.Utils;
 using SimpleJSON;
 
 namespace Beatmap.Base
 {
     public abstract class BaseArc : BaseSlider, ICustomDataArc
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(HeadControlPointLengthMultiplier);
+            writer.Put(TailCutDirection);
+            writer.Put(TailControlPointLengthMultiplier);
+            writer.Put(MidAnchorMode);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            HeadControlPointLengthMultiplier = reader.GetFloat();
+            TailCutDirection = reader.GetInt();
+            TailControlPointLengthMultiplier = reader.GetFloat();
+            MidAnchorMode = reader.GetInt();
+            base.Deserialize(reader);
+        }
+
         protected BaseArc()
         {
         }
@@ -71,6 +90,20 @@ namespace Beatmap.Base
         public int TailCutDirection { get; set; }
         public float TailControlPointLengthMultiplier { get; set; }
         public int MidAnchorMode { get; set; }
+
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
+        {
+            if (other is BaseArc arc)
+            {
+                return base.IsConflictingWithObjectAtSameTime(other)
+                    && HeadControlPointLengthMultiplier == arc.HeadControlPointLengthMultiplier
+                    && TailCutDirection == arc.TailCutDirection
+                    && TailControlPointLengthMultiplier == arc.TailControlPointLengthMultiplier
+                    && MidAnchorMode == arc.MidAnchorMode;
+            }
+
+            return false;
+        }
 
         public override void Apply(BaseObject originalData)
         {

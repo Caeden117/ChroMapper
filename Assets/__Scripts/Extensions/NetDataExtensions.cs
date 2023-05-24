@@ -4,10 +4,11 @@ using System.Reflection.Emit;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Beatmap.Base;
-using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.V2;
 using Beatmap.V2.Customs;
+using Beatmap.V3;
+using Beatmap.V3.Customs;
 
 public static class NetDataExtensions
 {
@@ -15,21 +16,61 @@ public static class NetDataExtensions
     {
         var beatmapObjectType = (ObjectType)reader.GetByte();
 
-        // v3 United Mapping not supported yet
-
-        return beatmapObjectType switch
+        if (Settings.Instance.Load_MapV3)
         {
-            ObjectType.Note => reader.Get<V2Note>(),
-            ObjectType.Event => reader.Get<V2Event>(),
-            ObjectType.Obstacle => reader.Get<V2Obstacle>(),
-            ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
-            ObjectType.CustomEvent => reader.Get<V2CustomEvent>(),
-            ObjectType.BpmChange => reader.Get<V2BpmChange>(),
-            ObjectType.Arc => throw new System.NotImplementedException(), // Arc not supported
-            ObjectType.Chain => throw new System.NotImplementedException(), // Chain not supported
-            ObjectType.Bookmark => reader.Get<V2Bookmark>(),
-            _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
-        };
+            BaseObject obj = beatmapObjectType switch
+            {
+                ObjectType.Note => reader.Get<V2Note>(),
+                ObjectType.Event => reader.Get<V2Event>(),
+                ObjectType.Obstacle => reader.Get<V3Obstacle>(),
+                ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
+                ObjectType.CustomEvent => reader.Get<V3CustomEvent>(),
+                ObjectType.BpmChange => reader.Get<V3BpmEvent>(),
+                ObjectType.Arc => reader.Get<V3Arc>(),
+                ObjectType.Chain => reader.Get<V3Chain>(),
+                ObjectType.Bookmark => reader.Get<V3Bookmark>(),
+                _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
+            };
+
+            if (obj is V2Note note)
+            {
+                return note.Type switch
+                {
+                    (int)NoteType.Red => new V3ColorNote(note),
+                    (int)NoteType.Blue => new V3ColorNote(note),
+                    (int)NoteType.Bomb => new V3BombNote(note),
+                    _ => throw new InvalidPacketException("Attempting to parse an invalid note"),
+                };
+            }
+
+            if (obj is V2Event evt)
+            {
+                return evt.Type switch
+                {
+                    (int)EventTypeValue.BpmChange => new V3BpmEvent(evt),
+                    (int)EventTypeValue.ColorBoost => new V3ColorBoostEvent(evt),
+                    _ => new V3BasicEvent(evt),
+                };
+            }
+
+            return obj;
+        }
+        else
+        {
+            return beatmapObjectType switch
+            {
+                ObjectType.Note => reader.Get<V2Note>(),
+                ObjectType.Event => reader.Get<V2Event>(),
+                ObjectType.Obstacle => reader.Get<V2Obstacle>(),
+                ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
+                ObjectType.CustomEvent => reader.Get<V2CustomEvent>(),
+                ObjectType.BpmChange => reader.Get<V2BpmEvent>(),
+                ObjectType.Arc => reader.Get<V2Arc>(),
+                ObjectType.Chain => throw new InvalidPacketException("Attempting to parse chains in v2"),
+                ObjectType.Bookmark => reader.Get<V2Bookmark>(),
+                _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
+            };
+        }
     }
 
     public static void PutBeatmapObject(this NetDataWriter writer, BaseObject obj)

@@ -41,6 +41,19 @@ public class MultiServerNetListener : MultiNetListener, INetAdmin
         }
 
         var identity = request.Data.Get<MapperIdentityPacket>();
+
+        var requestVersion = identity.ApplicationVersion;
+        var hostVersion = Application.version;
+        Debug.Log($"Request Version {requestVersion} | Host version {hostVersion}");
+
+        if (requestVersion != hostVersion)
+        {
+            var writer = new NetDataWriter();
+            writer.Put($"You are not using the same CM version as host ({hostVersion}).");
+            request.Reject(writer);
+            return;
+        }
+
         identity.ConnectionId = Identities.Count;
 
         var peer = request.Accept();
@@ -110,7 +123,7 @@ public class MultiServerNetListener : MultiNetListener, INetAdmin
             if (mapper.MapperPeer != null && mapper.MapperPeer != peer)
             {
                 SendPacketFrom(identity, mapper.MapperPeer, PacketId.MapperLatency, new MapperLatencyPacket()
-                { 
+                {
                     Latency = latency
                 });
             }

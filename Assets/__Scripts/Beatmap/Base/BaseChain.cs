@@ -1,5 +1,6 @@
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
@@ -7,6 +8,20 @@ namespace Beatmap.Base
 {
     public abstract class BaseChain : BaseSlider, ICustomDataChain
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(SliceCount);
+            writer.Put(Squish);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            SliceCount = reader.GetInt();
+            Squish = reader.GetFloat();
+            base.Deserialize(reader);
+        }
+
         public const int MinChainCount = 2;
         public const int MaxChainCount = 999;
         public const float MinChainSquish = 0.1f;
@@ -70,6 +85,18 @@ namespace Beatmap.Base
         public override ObjectType ObjectType { get; set; } = ObjectType.Chain;
         public int SliceCount { get; set; }
         public float Squish { get; set; }
+
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
+        {
+            if (other is BaseChain chain)
+            {
+                return base.IsConflictingWithObjectAtSameTime(other)
+                    && SliceCount == chain.SliceCount
+                    && Squish == chain.Squish;
+            }
+
+            return false;
+        }
 
         public override void Apply(BaseObject originalData)
         {

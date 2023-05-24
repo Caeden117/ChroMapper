@@ -1,10 +1,23 @@
 using Beatmap.Enums;
+using LiteNetLib.Utils;
 using SimpleJSON;
 
 namespace Beatmap.Base.Customs
 {
     public abstract class BaseCustomEvent : BaseObject
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(Type);
+            writer.Put(Data.ToString());
+            base.Serialize(writer);
+        }
+        public override void Deserialize(NetDataReader reader)
+        {
+            Type = reader.GetString();
+            Data = JSON.Parse(reader.GetString());
+            base.Deserialize(reader);
+        }
 
         protected BaseCustomEvent()
         {

@@ -76,8 +76,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: Connection rejected. If you used a room code, ensure the code was
-      entered correctly.
+    m_Localized: 'Connection rejected.
+
+      This could be because the room code
+      is invalid
+
+      or your CM version is not the same as the host.'
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
