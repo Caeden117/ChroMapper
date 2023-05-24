@@ -36,16 +36,28 @@ namespace Beatmap.Animations
                 return Default;
             }
 
-            // TODO: optimizations using out var last?
+            var cpd = PointDefinitions[current];
 
-            // Only one active definition, no interpolate
-            if (time > (PointDefinitions[current].StartTime + PointDefinitions[current].Duration)) {
-                return PointDefinitions[current].Interpolate(time, out var _);
+            // AnimateTrack
+            if (cpd.StartTime < time && time < (cpd.StartTime + cpd.Duration))
+            {
+                var elapsedTime = time - cpd.StartTime;
+                float normalizedTime = cpd.Easing(Mathf.Min(elapsedTime / cpd.Duration, 1));
+                float learpedTime = cpd.StartTime + (normalizedTime * cpd.Duration);
+                return cpd.Interpolate(learpedTime, out var _);
             }
 
-            var elapsedTime = time - PointDefinitions[current].StartTime;
-            float normalizedTime = Mathf.Min(elapsedTime / PointDefinitions[current].Duration, 1);
-            return PointDefinitionInterpolation.Lerp<T>(current == 0 ? null : PointDefinitions[current - 1], PointDefinitions[current], normalizedTime, time, Default);
+            // AssignPathAnimation
+            // Only one active definition, no interpolate
+            if (time > (cpd.StartTime + cpd.Transition)) {
+                return cpd.Interpolate(time, out var _);
+            }
+            else
+            {
+                var elapsedTime = time - cpd.StartTime;
+                float normalizedTime = cpd.Easing(Mathf.Min(elapsedTime / cpd.Transition, 1));
+                return PointDefinitionInterpolation.Lerp<T>(current == 0 ? null : PointDefinitions[current - 1], PointDefinitions[current], normalizedTime, time, Default);
+            }
         }
 
         public void UpdateProperty(float time) {

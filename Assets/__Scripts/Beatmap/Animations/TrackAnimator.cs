@@ -30,6 +30,7 @@ namespace Beatmap.Animations
                     points = jprop.Value,
                     easing = ev.DataEasing,
                     time = ev.JsonTime,
+                    duration = ev.DataDuration ?? 0,
                     start = ev.JsonTime,
                     end = ev.JsonTime + (ev.DataDuration ?? 0)
                 };
@@ -87,7 +88,7 @@ namespace Beatmap.Animations
             public JSONNode points;
             public string easing;
             public float time = 0;
-            public float transition = 0;
+            public float duration = 0;
             public float start;
             public float end;
             // TODO: Repeat
@@ -158,7 +159,8 @@ namespace Beatmap.Animations
                     _ => new JSONArray(), // TODO: Does this unset properly?
                 },
                 p.time,
-                p.transition,
+                p.duration,
+                false,
                 Easing.Named(p.easing ?? "easeLinear"),
                 p.start,
                 p.end

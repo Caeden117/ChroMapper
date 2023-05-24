@@ -266,6 +266,7 @@ namespace Beatmap.Animations
                 },
                 p.time,
                 p.transition,
+                true,
                 Easing.Named(p.easing ?? "easeLinear"),
                 time_begin,
                 time_end

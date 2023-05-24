@@ -12,7 +12,10 @@ namespace Beatmap.Animations
     {
         public List<PointData> Points;
         public float StartTime = 0;
+        // For AnimateTrack
         public float Duration = 0;
+        // For AssignPathAnimation
+        public float Transition = 0;
         public Func<float, float> Easing;
 
         public delegate T Parser(JSONArray data, out int i);
@@ -24,11 +27,18 @@ namespace Beatmap.Animations
             StartTime = start;
         }
 
-        public PointDefinition(Parser parser, JSONArray data, float start, float duration, Func<float, float> easing, float tbegin = 0, float tend = 0)
+        public PointDefinition(Parser parser, JSONArray data, float start, float duration, bool path, Func<float, float> easing, float tbegin = 0, float tend = 0)
         {
             Points = new List<PointData>();
             StartTime = start;
-            Duration = duration;
+            if (path)
+            {
+                Transition = duration;
+            }
+            else
+            {
+                Duration = duration;
+            }
             Easing = easing;
 
             foreach (var row in data) {
@@ -123,7 +133,7 @@ namespace Beatmap.Animations
                     // WTF Jevk
                     Time = 0;
                 }
-                if (data.Count > i && ((string)data[i]).StartsWith("easing")) {
+                if (data.Count > i && ((string)data[i]).StartsWith("eas")) {
                     Easing = global::Easing.Named(data[i++]);
                 }
                 else {
