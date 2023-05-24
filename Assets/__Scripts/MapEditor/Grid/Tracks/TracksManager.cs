@@ -145,6 +145,7 @@ public class TracksManager : MonoBehaviour
         var potition = -1 * obj.JsonTime * EditorScaleController.EditorScale;
         var track = Instantiate(trackPrefab, tracksParent).GetComponent<Track>();
         track.UpdatePosition(potition);
+        track.gameObject.name = $"Track Object {obj.JsonTime}";
         return track;
     }
 

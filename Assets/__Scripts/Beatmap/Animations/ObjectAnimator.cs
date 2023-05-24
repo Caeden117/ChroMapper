@@ -27,6 +27,7 @@ namespace Beatmap.Animations
         public List<Vector3> LocalRotation;
         public List<Vector3> WorldRotation;
         public List<Vector3> OffsetPosition;
+        public List<Vector3> WorldPosition;
         public List<Vector3> Scale;
         public List<float> Dissolve;
 
@@ -51,16 +52,26 @@ namespace Beatmap.Animations
             LocalRotation = new List<Vector3>();
             WorldRotation = new List<Vector3>();
             OffsetPosition = new List<Vector3>();
+            WorldPosition = new List<Vector3>();
             Scale = new List<Vector3>();
             Dissolve = new List<float>();
 
             _time = null;
 
-            AnimationThis.transform.localEulerAngles = Vector3.zero;
-            AnimationThis.transform.localPosition = Vector3.zero;
-            AnimationThis.transform.localScale = Vector3.one;
-            container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
-            container.UpdateMaterials();
+            if (LocalTarget != null) {
+                LocalTarget.localEulerAngles = Vector3.zero;
+                LocalTarget.localPosition = Vector3.zero;
+                LocalTarget.localScale = Vector3.one;
+                LocalTarget = null;
+                WorldTarget = null;
+            }
+
+            if ((container?.ObjectData ?? null) != null)
+            {
+                container.UpdateGridPosition();
+                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
+                container.UpdateMaterials();
+            }
         }
 
         public void SetData(BaseGrid obj)
@@ -73,8 +84,12 @@ namespace Beatmap.Animations
             enabled = isAnimated;
             if (!isAnimated) return;
 
-            var njs = obj.CustomNoteJumpMovementSpeed ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
-            var offset = obj.CustomNoteJumpStartBeatOffset ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
+            var njs = ((obj.CustomNoteJumpMovementSpeed ?? 0) > 0)
+                ? (float)obj.CustomNoteJumpMovementSpeed
+                : BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
+            var offset = ((obj.CustomNoteJumpStartBeatOffset ?? 0) > 0)
+                ? (float)obj.CustomNoteJumpStartBeatOffset
+                : BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
             var bpm = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
                 ?.FindLastBpm(obj.SongBpmTime)
                 ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
@@ -192,6 +207,11 @@ namespace Beatmap.Animations
                 LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero) * 0.6f;
                 LocalTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
                 WorldTarget.localEulerAngles = AggrigateSum(ref WorldRotation, Vector3.zero);
+                if (WorldPosition.Count > 0) {
+                    AnimationTrack.ObjectParentTransform.localPosition = Vector3.Scale(AggrigateSum(ref WorldPosition, Vector3.zero), new Vector3(0.6f, 0.6f, 1));
+                    container.transform.localPosition = Vector3.zero;
+                    container.gameObject.SetActive(true);
+                }
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul(ref Dissolve, 1.0f));
                 container.UpdateMaterials();
             }
@@ -247,6 +267,10 @@ namespace Beatmap.Animations
             case "_position":
             case "offsetPosition":
                 AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p);
+                break;
+            case "_definitePosition":
+            case "definitePosition":
+                AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p);
                 break;
             case "_scale":
             case "scale":
