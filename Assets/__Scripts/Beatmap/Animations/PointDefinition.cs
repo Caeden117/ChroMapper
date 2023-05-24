@@ -7,7 +7,24 @@ using SimpleJSON;
 
 namespace Beatmap.Animations
 {
-    public class PointDefinition<T> : IComparable<PointDefinition<T>>
+    public interface IPointDefinition
+    {
+        public class UntypedParams
+        {
+            public string key;
+            public bool overwrite;
+            public JSONNode points;
+            public string easing;
+            public float time = 0;
+            public float transition = 0;
+            public float duration = 0;
+            public float time_begin;
+            public float time_end;
+            // TODO: Repeat
+        }
+    }
+
+    public class PointDefinition<T> : IPointDefinition, IComparable<PointDefinition<T>>
         where T : struct
     {
         public List<PointData> Points;
@@ -27,27 +44,27 @@ namespace Beatmap.Animations
             StartTime = start;
         }
 
-        public PointDefinition(Parser parser, JSONArray data, float start, float duration, bool path, Func<float, float> easing, float tbegin = 0, float tend = 0)
+        public PointDefinition(Parser parser, IPointDefinition.UntypedParams p)
         {
             Points = new List<PointData>();
-            StartTime = start;
-            if (path)
-            {
-                Transition = duration;
-            }
-            else
-            {
-                Duration = duration;
-            }
-            Easing = easing;
+            StartTime = p.time;
+            Transition = p.transition;
+            Duration = p.duration;
+            Easing = global::Easing.Named(p.easing ?? "easeLinear");
+
+            var data = p.points switch {
+                JSONArray arr => arr,
+                JSONString pd => BeatSaberSongContainer.Instance.Map.PointDefinitions[pd],
+                _ => new JSONArray(), // TODO: Does this unset properly?
+            };
 
             foreach (var row in data) {
                 // WTF, Jevk
                 if (row.Value.AsArray == null) {
-                    Points.Add(new PointData(parser, data, tbegin, tend));
+                    Points.Add(new PointData(parser, data, p.time_begin, p.time_end));
                     break;
                 }
-                Points.Add(new PointData(parser, row.Value.AsArray, tbegin, tend));
+                Points.Add(new PointData(parser, row.Value.AsArray, p.time_begin, p.time_end));
             }
         }
 

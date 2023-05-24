@@ -117,7 +117,7 @@ namespace Beatmap.Animations
                     {
                         foreach (var jprop in ce.Data)
                         {
-                            UntypedParams p = new UntypedParams
+                            var p = new IPointDefinition.UntypedParams
                             {
                                 key = $"track_{jprop.Key}",
                                 overwrite = false,
@@ -125,6 +125,8 @@ namespace Beatmap.Animations
                                 easing = ce.DataEasing,
                                 time = ce.JsonTime,
                                 transition = ce.DataDuration ?? 0,
+                                time_begin = time_begin,
+                                time_end = time_end,
                             };
                             AddPointDef(p, jprop.Key);
                         }
@@ -160,12 +162,14 @@ namespace Beatmap.Animations
             {
                 foreach (var jprop in obj.CustomAnimation.AsObject)
                 {
-                    UntypedParams p = new UntypedParams
+                    var p = new IPointDefinition.UntypedParams
                     {
                         key = jprop.Key,
                         overwrite = true,
                         points = jprop.Value,
                         easing = null,
+                        time_begin = time_begin,
+                        time_end = time_end,
                     };
                     AddPointDef(p, jprop.Key);
                 }
@@ -235,19 +239,7 @@ namespace Beatmap.Animations
             }
         }
 
-        // My laziness knows no bounds
-        private class UntypedParams
-        {
-            public string key;
-            public bool overwrite;
-            public JSONNode points;
-            public string easing;
-            public float time = 0;
-            public float transition = 0;
-            // TODO: Repeat
-        }
-
-        private void AddPointDef(UntypedParams p, string key)
+        private void AddPointDef(IPointDefinition.UntypedParams p, string key)
         {
             switch (key)
             {
@@ -278,22 +270,9 @@ namespace Beatmap.Animations
             }
         }
 
-        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p, T _default) where T : struct
+        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
         {
-            var pointdef = new PointDefinition<T>(
-                parser,
-                p.points switch {
-                    JSONArray arr => arr,
-                    JSONString pd => BeatSaberSongContainer.Instance.Map.PointDefinitions[pd],
-                    _ => new JSONArray(), // TODO: Does this unset properly?
-                },
-                p.time,
-                p.transition,
-                true,
-                Easing.Named(p.easing ?? "easeLinear"),
-                time_begin,
-                time_end
-            );
+            var pointdef = new PointDefinition<T>(parser, p);
             if (p.overwrite)
             {
                 AnimatedProperties[p.key] = new AnimateProperty<T>(
