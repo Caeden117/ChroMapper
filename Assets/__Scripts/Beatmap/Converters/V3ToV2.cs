@@ -39,7 +39,9 @@ namespace Beatmap.Converters
                     (int)NoteCutDirection.Any => 0,
                     _ => 0
                 };
-                note.CustomData["_cutDirection"] += other.AngleOffset;
+                customCutDirection += other.AngleOffset;
+                note.CustomData ??= new JSONObject();
+                note.CustomData["_cutDirection"] = customCutDirection;
             }
 
             note.RefreshCustom();
