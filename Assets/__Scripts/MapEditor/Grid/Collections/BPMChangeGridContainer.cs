@@ -174,12 +174,10 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
                    snap; //If its null, return rounded song bpm
         }
 
-        var difference = beatTimeInSongBpm - lastBpm.SongBpmTime;
-        var differenceInBpmBeat = difference / BeatSaberSongContainer.Instance.Song.BeatsPerMinute * lastBpm.Bpm;
-        var roundedDifference = (float)Math.Round(differenceInBpmBeat / snap, MidpointRounding.AwayFromZero) * snap;
-        var roundedDifferenceInSongBpm =
-            roundedDifference / lastBpm.Bpm * BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-        return roundedDifferenceInSongBpm + lastBpm.SongBpmTime;
+        var jsonTime = SongBpmTimeToJsonTime(beatTimeInSongBpm);
+        var roundedJsonTime = (float)Math.Round(jsonTime / snap, MidpointRounding.AwayFromZero) * snap;
+
+        return JsonTimeToSongBpmTime(roundedJsonTime);
     }
 
     /// <summary>
