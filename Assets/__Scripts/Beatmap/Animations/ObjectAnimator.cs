@@ -24,8 +24,8 @@ namespace Beatmap.Animations
         public Transform LocalTarget;
         public Transform WorldTarget;
 
-        public List<Vector3> LocalRotation;
-        public List<Vector3> WorldRotation;
+        public List<Quaternion> LocalRotation;
+        public List<Quaternion> WorldRotation;
         public List<Vector3> OffsetPosition;
         public List<Vector3> WorldPosition;
         public List<Vector3> Scale;
@@ -49,8 +49,8 @@ namespace Beatmap.Animations
                 AnimationTrack = null;
             }
 
-            LocalRotation = new List<Vector3>();
-            WorldRotation = new List<Vector3>();
+            LocalRotation = new List<Quaternion>();
+            WorldRotation = new List<Quaternion>();
             OffsetPosition = new List<Vector3>();
             WorldPosition = new List<Vector3>();
             Scale = new List<Vector3>();
@@ -203,16 +203,16 @@ namespace Beatmap.Animations
         {
             if (updateFrame)
             {
-                LocalTarget.localEulerAngles = AggrigateSum(ref LocalRotation, Vector3.zero);
+                LocalTarget.localRotation = AggrigateMul<Quaternion>(ref LocalRotation, Quaternion.identity);
                 LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero) * 0.6f;
                 LocalTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
-                WorldTarget.localEulerAngles = AggrigateSum(ref WorldRotation, Vector3.zero);
+                WorldTarget.localRotation = AggrigateMul<Quaternion>(ref WorldRotation, Quaternion.identity);
                 if (WorldPosition.Count > 0) {
                     AnimationTrack.ObjectParentTransform.localPosition = Vector3.Scale(AggrigateSum(ref WorldPosition, Vector3.zero), new Vector3(0.6f, 0.6f, 1));
                     container.transform.localPosition = Vector3.zero;
                     container.gameObject.SetActive(true);
                 }
-                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul(ref Dissolve, 1.0f));
+                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Dissolve, 1.0f));
                 container.UpdateMaterials();
             }
         }
@@ -257,20 +257,19 @@ namespace Beatmap.Animations
                 break;
             case "_localRotation":
             case "localRotation":
-                AddPointDef<Vector3>((Vector3 v) => LocalRotation.Add(v), PointDataParsers.ParseVector3, p);
+                AddPointDef<Quaternion>((Quaternion v) => LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_rotation":
             case "offsetWorldRotation":
-                RequireAnimationTrack();
-                AddPointDef<Vector3>((Vector3 v) => WorldRotation.Add(v), PointDataParsers.ParseVector3, p);
+                AddPointDef<Quaternion>((Quaternion v) => WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
             case "offsetPosition":
-                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p);
+                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_definitePosition":
             case "definitePosition":
-                AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p);
+                AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
             case "scale":
@@ -279,7 +278,7 @@ namespace Beatmap.Animations
             }
         }
 
-        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p, T _default = default(T)) where T : struct
+        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p, T _default) where T : struct
         {
             var pointdef = new PointDefinition<T>(
                 parser,
@@ -350,9 +349,9 @@ namespace Beatmap.Animations
             return value;
         }
 
-        private float AggrigateMul(ref List<float> list, float _default = 1)
+        private T AggrigateMul<T>(ref List<T> list, T _default)
         {
-            var value = _default;
+            dynamic value = _default;
             foreach (var it in list)
             {
                 value *= it;

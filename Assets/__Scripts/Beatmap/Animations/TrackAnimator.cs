@@ -107,20 +107,20 @@ namespace Beatmap.Animations
                 }, PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
-                AddPointDef<Vector3>((Vector3 v) => {
+                AddPointDef<Quaternion>((Quaternion v) => {
                     foreach (var animator in cachedChildren)
                     {
                         animator.LocalRotation.Add(v);
                     }
-                }, PointDataParsers.ParseVector3, p);
+                }, PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_rotation":
-                AddPointDef<Vector3>((Vector3 v) => {
+                AddPointDef<Quaternion>((Quaternion v) => {
                     foreach (var animator in cachedChildren)
                     {
                         animator.WorldRotation.Add(v);
                     }
-                }, PointDataParsers.ParseVector3, p);
+                }, PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
                 AddPointDef<Vector3>((Vector3 v) => {
@@ -128,7 +128,7 @@ namespace Beatmap.Animations
                     {
                         animator.OffsetPosition.Add(v);
                     }
-                }, PointDataParsers.ParseVector3, p);
+                }, PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
                 AddPointDef<Vector3>((Vector3 v) => {
@@ -149,7 +149,7 @@ namespace Beatmap.Animations
             }
         }
 
-        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p, T _default = default(T)) where T : struct
+        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, UntypedParams p, T _default) where T : struct
         {
             var pointdef = new PointDefinition<T>(
                 parser,

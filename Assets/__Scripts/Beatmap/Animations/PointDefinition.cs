@@ -164,34 +164,30 @@ namespace Beatmap.Animations
     {
         public static T LinearLerp<T>(List<PointDefinition<T>.PointData> points, int prev, int next, float time) where T : struct
         {
-            switch (points)
+            return LinearLerpFunc<T>()(points[prev].Value, points[next].Value, time);
+        }
+
+        public delegate T LerpFunc<T>(T prev, T next, float time);
+
+        public static LerpFunc<T> LinearLerpFunc<T>() where T : struct
+        {
+            // I hate C#
+            return typeof(T) switch
             {
-             case List<PointDefinition<float>.PointData> floats:
-                return (T)(object)FloatLerp(floats, prev, next, time);
-            case List<PointDefinition<Vector3>.PointData> vectors:
-                return (T)(object)LinearVectorLerp(vectors, prev, next, time);
-            }
-            return default;
+                var n when n == typeof(float) => (T a, T b, float c) => Mathf.LerpUnclamped((dynamic)a, (dynamic)b, c),
+                var n when n == typeof(Vector3) => (T a, T b, float c) => Vector3.LerpUnclamped((dynamic)a, (dynamic)b, c),
+                var n when n == typeof(Quaternion) => (T a, T b, float c) => Quaternion.SlerpUnclamped((dynamic)a, (dynamic)b, c),
+                _ => throw new Exception($"Unhandled LerpFunc for type {typeof(T).Name}"),
+            };
         }
 
         public static T CatmullRomLerp<T>(List<PointDefinition<T>.PointData> points, int prev, int next, float time) where T : struct
         {
-            switch (points)
+            return typeof(T) switch
             {
-            case List<PointDefinition<Vector3>.PointData> vectors:
-                return (T)(object)LinearVectorLerp(vectors, prev, next, time);
-            }
-            return default;
-        }
-
-        public static float FloatLerp(List<PointDefinition<float>.PointData> points, int prev, int next, float time)
-        {
-            return Mathf.LerpUnclamped(points[prev].Value, points[next].Value, time);
-        }
-
-        public static Vector3 LinearVectorLerp(List<PointDefinition<Vector3>.PointData> points, int prev, int next, float time)
-        {
-            return Vector3.SlerpUnclamped(points[prev].Value, points[next].Value, time);
+                var n when n == typeof(Vector3) => SmoothVectorLerp((dynamic)points, prev, next, time),
+                _ => LinearLerp<T>(points, prev, next, time),
+            };
         }
 
         public static Vector3 SmoothVectorLerp(List<PointDefinition<Vector3>.PointData> points, int a, int b, float time)
@@ -220,7 +216,6 @@ namespace Beatmap.Animations
     {
         public static float ParseFloat(JSONArray data, out int i)
         {
-            if (data.Count < 1) throw new Exception($"Invalid data: {data}");
             i = 1;
             return data[0];
         }
@@ -229,6 +224,12 @@ namespace Beatmap.Animations
         {
             i = 3;
             return new Vector3(data[0], data[1], data[2]);
+        }
+
+        public static Quaternion ParseQuaternion(JSONArray data, out int i)
+        {
+            i = 3;
+            return Quaternion.Euler(data[0], data[1], data[2]);
         }
     }
 }
