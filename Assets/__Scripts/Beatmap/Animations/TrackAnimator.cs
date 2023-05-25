@@ -89,7 +89,10 @@ namespace Beatmap.Animations
             switch (key)
             {
             case "_dissolve":
-                AddPointDef<float>((ObjectAnimator animator, float f) => animator.Dissolve.Add(f), PointDataParsers.ParseFloat, p, 1);
+                AddPointDef<float>((ObjectAnimator animator, float f) => animator.Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
+                break;
+            case "_dissolveArrow":
+                AddPointDef<float>((ObjectAnimator animator, float f) => animator.OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
                 AddPointDef<Quaternion>((ObjectAnimator animator, Quaternion v) => animator.LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);

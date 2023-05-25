@@ -139,8 +139,11 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = (Vector3)NoteData.GetPosition() +
-                                      new Vector3(0, 0.5f, NoteData.SongBpmTime * EditorScaleController.EditorScale);
+            if (!Animator.AnimatedTrack)
+            {
+                transform.localPosition = (Vector3)NoteData.GetPosition() +
+                                          new Vector3(0, 0.5f, NoteData.SongBpmTime * EditorScaleController.EditorScale);
+            }
             transform.localScale = NoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
 
             UpdateCollisionGroups();

@@ -29,7 +29,8 @@ namespace Beatmap.Animations
         public List<Vector3> OffsetPosition;
         public List<Vector3> WorldPosition;
         public List<Vector3> Scale;
-        public List<float> Dissolve;
+        public List<float> Opacity;
+        public List<float> OpacityArrow;
 
         public bool AnimatedTrack { get { return AnimationTrack != null; } }
         private List<TrackAnimator> tracks = new List<TrackAnimator>();
@@ -54,11 +55,13 @@ namespace Beatmap.Animations
             OffsetPosition = new List<Vector3>();
             WorldPosition = new List<Vector3>();
             Scale = new List<Vector3>();
-            Dissolve = new List<float>();
+            Opacity = new List<float>();
+            OpacityArrow = new List<float>();
 
             _time = null;
 
-            if (LocalTarget != null) {
+            if (LocalTarget != null)
+            {
                 LocalTarget.localEulerAngles = Vector3.zero;
                 LocalTarget.localPosition = Vector3.zero;
                 LocalTarget.localScale = Vector3.one;
@@ -211,12 +214,31 @@ namespace Beatmap.Animations
                 LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero) * 0.6f;
                 LocalTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
                 WorldTarget.localRotation = AggrigateMul<Quaternion>(ref WorldRotation, Quaternion.identity);
-                if (WorldPosition.Count > 0) {
+                if (WorldPosition.Count > 0)
+                {
                     AnimationTrack.ObjectParentTransform.localPosition = Vector3.Scale(AggrigateSum(ref WorldPosition, Vector3.zero), new Vector3(0.6f, 0.6f, 1));
                     container.transform.localPosition = Vector3.zero;
                     container.gameObject.SetActive(true);
                 }
-                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Dissolve, 1.0f));
+                if (container is NoteContainer note && note.NoteData.Type != (int)NoteType.Bomb)
+                {
+                    if (AggrigateMul<float>(ref OpacityArrow, 1.0f) < 0.5f)
+                    {
+                        note.SetArrowVisible(false);
+                        note.SetDotVisible(false);
+                    }
+                    else if (note.NoteData.CutDirection != (int)NoteCutDirection.Any)
+                    {
+                        note.SetArrowVisible(true);
+                        note.SetDotVisible(false);
+                    }
+                    else
+                    {
+                        note.SetArrowVisible(false);
+                        note.SetDotVisible(true);
+                    }
+                }
+                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Opacity, 1.0f));
                 container.UpdateMaterials();
             }
         }
@@ -245,7 +267,11 @@ namespace Beatmap.Animations
             {
             case "_dissolve":
             case "dissolve":
-                AddPointDef<float>((float f) => Dissolve.Add(f), PointDataParsers.ParseFloat, p, 1);
+                AddPointDef<float>((float f) => Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
+                break;
+            case "_dissolveArrow":
+            case "dissolveArrow":
+                AddPointDef<float>((float f) => OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
             case "localRotation":
