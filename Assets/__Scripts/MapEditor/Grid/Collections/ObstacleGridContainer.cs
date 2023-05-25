@@ -33,8 +33,13 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     protected override void OnObjectDelete(BaseObject _, bool __ = false) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Obstacles);
 
-    public override ObjectContainer CreateContainer() =>
-        ObstacleContainer.SpawnObstacle(null, tracksManager, ref obstaclePrefab);
+    public override ObjectContainer CreateContainer()
+    {
+        var con = ObstacleContainer.SpawnObstacle(null, tracksManager, ref obstaclePrefab);
+        con.Animator.Atsc = AudioTimeSyncController;
+        con.Animator.tracksManager = tracksManager;
+        return con;
+    }
 
     protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
