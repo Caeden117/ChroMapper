@@ -6,6 +6,7 @@ namespace Beatmap.Animations
 {
     public interface IAnimateProperty
     {
+        public float StartTime { get; }
         public void UpdateProperty(float time);
     }
 
@@ -15,6 +16,8 @@ namespace Beatmap.Animations
         public List<PointDefinition<T>> PointDefinitions;
         public Action<T> Setter;
         public T Default;
+
+        public float StartTime { get { return PointDefinitions[0].StartTime; } }
 
         public AnimateProperty(List<PointDefinition<T>> points, Action<T> setter, T _default)
         {

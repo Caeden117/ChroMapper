@@ -29,6 +29,7 @@ namespace Beatmap.Animations
         public List<Vector3> OffsetPosition;
         public List<Vector3> WorldPosition;
         public List<Vector3> Scale;
+        public List<Color> Colors;
         public List<float> Opacity;
         public List<float> OpacityArrow;
 
@@ -55,6 +56,7 @@ namespace Beatmap.Animations
             OffsetPosition = new List<Vector3>();
             WorldPosition = new List<Vector3>();
             Scale = new List<Vector3>();
+            Colors = new List<Color>();
             Opacity = new List<float>();
             OpacityArrow = new List<float>();
 
@@ -197,7 +199,10 @@ namespace Beatmap.Animations
             {
                 foreach (var prop in AnimatedProperties)
                 {
-                    prop.Value.UpdateProperty(time);
+                    if (time >= prop.Value.StartTime)
+                    {
+                        prop.Value.UpdateProperty(time);
+                    }
                 }
                 if (AnimatedTrack) {
                     AnimationTrack.UpdatePosition(-1 * time * EditorScaleController.EditorScale);
@@ -220,7 +225,7 @@ namespace Beatmap.Animations
                     container.transform.localPosition = Vector3.zero;
                     container.gameObject.SetActive(true);
                 }
-                if (container is NoteContainer note && note.NoteData.Type != (int)NoteType.Bomb)
+                if (container is NoteContainer note && note.NoteData.Type != (int)NoteType.Bomb && OpacityArrow.Count > 0)
                 {
                     if (AggrigateMul<float>(ref OpacityArrow, 1.0f) < 0.5f)
                     {
@@ -237,6 +242,12 @@ namespace Beatmap.Animations
                         note.SetArrowVisible(false);
                         note.SetDotVisible(true);
                     }
+                }
+                if (container != null && Colors.Count > 0)
+                {
+                    // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:(
+                    dynamic con = container;
+                    con.SetColor(AggrigateMul<Color>(ref Colors, Color.white));
                 }
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Opacity, 1.0f));
                 container.UpdateMaterials();
@@ -292,6 +303,10 @@ namespace Beatmap.Animations
             case "_scale":
             case "scale":
                 AddPointDef<Vector3>((Vector3 v) => Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
+                break;
+            case "_color":
+            case "color":
+                AddPointDef<Color>((Color c) => Colors.Add(c), PointDataParsers.ParseColor, p, Color.white);
                 break;
             }
         }

@@ -150,18 +150,23 @@ namespace Beatmap.Animations
                     // WTF Jevk
                     Time = 0;
                 }
-                if (data.Count > i && ((string)data[i]).StartsWith("eas")) {
-                    Easing = global::Easing.Named(data[i++]);
-                }
-                else {
-                    Easing = global::Easing.Linear;
-                }
+                Easing = global::Easing.Linear;
+                Lerp = PointDataInterpolators.LinearLerp<T>;
 
-                if (data.Count > i && ((string)data[i]) == "splineCatmullRom") {
-                    Lerp = PointDataInterpolators.CatmullRomLerp<T>;
-                }
-                else {
-                    Lerp = PointDataInterpolators.LinearLerp<T>;
+                for (; i < data.Count; ++i)
+                {
+                    if (((string)data[i]).StartsWith("eas"))
+                    {
+                        Easing = global::Easing.Named(data[i]);
+                    }
+                    if (((string)data[i]) == "splineCatmullRom")
+                    {
+                        Lerp = PointDataInterpolators.CatmullRomLerp<T>;
+                    }
+                    if (((string)data[i]) == "lerpHSV")
+                    {
+                        Lerp = PointDataInterpolators.HSVLerp<T>;
+                    }
                 }
             }
 
@@ -192,6 +197,7 @@ namespace Beatmap.Animations
             return typeof(T) switch
             {
                 var n when n == typeof(float) => (T a, T b, float c) => Mathf.LerpUnclamped((dynamic)a, (dynamic)b, c),
+                var n when n == typeof(Color) => (T a, T b, float c) => Color.LerpUnclamped((dynamic)a, (dynamic)b, c),
                 var n when n == typeof(Vector3) => (T a, T b, float c) => Vector3.LerpUnclamped((dynamic)a, (dynamic)b, c),
                 var n when n == typeof(Quaternion) => (T a, T b, float c) => Quaternion.SlerpUnclamped((dynamic)a, (dynamic)b, c),
                 _ => throw new Exception($"Unhandled LerpFunc for type {typeof(T).Name}"),
@@ -203,6 +209,15 @@ namespace Beatmap.Animations
             return typeof(T) switch
             {
                 var n when n == typeof(Vector3) => SmoothVectorLerp((dynamic)points, prev, next, time),
+                _ => LinearLerp<T>(points, prev, next, time),
+            };
+        }
+
+        public static T HSVLerp<T>(List<PointDefinition<T>.PointData> points, int prev, int next, float time) where T : struct
+        {
+            return typeof(T) switch
+            {
+                var n when n == typeof(Color) => HSVColorLerp((dynamic)points, prev, next, time),
                 _ => LinearLerp<T>(points, prev, next, time),
             };
         }
@@ -227,6 +242,14 @@ namespace Beatmap.Animations
 
             return c;
         }
+
+        public static Color HSVColorLerp(List<PointDefinition<Color>.PointData> points, int a, int b, float time)
+        {
+            Color.RGBToHSV(points[a].Value, out float hl, out float sl, out float vl);
+            Color.RGBToHSV(points[b].Value, out float hr, out float sr, out float vr);
+            Color lerped = Color.HSVToRGB(Mathf.LerpUnclamped(hl, hr, time), Mathf.LerpUnclamped(sl, sr, time), Mathf.LerpUnclamped(vl, vr, time));
+            return new Color(lerped.r, lerped.g, lerped.b, Mathf.LerpUnclamped(points[a].Value.a, points[b].Value.a, time));
+        }
     }
 
     public class PointDataParsers
@@ -235,6 +258,12 @@ namespace Beatmap.Animations
         {
             i = 1;
             return data[0];
+        }
+
+        public static Color ParseColor(JSONArray data, out int i)
+        {
+            i = 4;
+            return new Color(data[0], data[1], data[2], data[3]);
         }
 
         public static Vector3 ParseVector3(JSONArray data, out int i)

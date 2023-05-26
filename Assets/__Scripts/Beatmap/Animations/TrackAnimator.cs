@@ -69,7 +69,10 @@ namespace Beatmap.Animations
                 }
                 foreach (var prop in AnimatedProperties)
                 {
-                    prop.Value.UpdateProperty(time);
+                    if (time >= prop.Value.StartTime)
+                    {
+                        prop.Value.UpdateProperty(time);
+                    }
                 }
                 lastTime = time;
             }
@@ -105,6 +108,9 @@ namespace Beatmap.Animations
                 break;
             case "_scale":
                 AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
+                break;
+            case "_color":
+                AddPointDef<Color>((ObjectAnimator animator, Color v) => animator.Colors.Add(v), PointDataParsers.ParseColor, p, Color.white);
                 break;
             case "_time":
                 AddPointDef<float>((ObjectAnimator animator, float f) => animator.SetLifeTime(f), PointDataParsers.ParseFloat, p, -1);

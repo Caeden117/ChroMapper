@@ -15,6 +15,7 @@ namespace Beatmap.Animations
             return _default switch
             {
                 float f => Mathf.LerpUnclamped(start, end, interpolation),
+                Color c => Color.LerpUnclamped(start, end, interpolation),
                 Vector3 v3 => Vector3.LerpUnclamped(start, end, interpolation),
                 Quaternion q => Quaternion.SlerpUnclamped(start, end, interpolation),
                 _ => throw new Exception($"Unhandled PointDefinition Lerp for type {typeof(T).Name}"),
