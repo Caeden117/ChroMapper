@@ -703,6 +703,10 @@ MonoBehaviour:
     m_Key: custom.bpm.convert
     m_Metadata:
       m_Items: []
+  - m_Id: 240390057914204160
+    m_Key: countersplus.bpmevents
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -10,7 +10,7 @@
         Add("Bombs", true);
         Add("Obstacles", true);
         Add("Events", true);
-        Add("BPM Changes", true);
+        Add("BPM Changes", true); // Bpm Events. Name not changed to preserve settings.
         Add("Current BPM", true);
         Add("Time Spent Mapping", true);
     }

@@ -76,7 +76,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     private void OnObjectDeleteOrSpawn(BaseObject obj)
     {
         RefreshModifiedBeat();
-        countersPlus.UpdateStatistic(CountersPlusStatistic.BpmChanges);
+        countersPlus.UpdateStatistic(CountersPlusStatistic.BpmEvents);
         BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(obj.JsonTime);
     }
 
