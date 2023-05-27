@@ -143,19 +143,16 @@ namespace Beatmap.Animations
                     tracks.Add(s);
                     break;
                 };
-                if (obj is V2Object)
+                foreach (var t in tracks)
                 {
-                    foreach (var t in tracks) {
-                        var track = tracksManager.CreateAnimationTrack(t);
-                        track.children.Add(this);
-                        track.Preload(this);
-                        this.tracks.Add(track);
-                    }
+                    var track = tracksManager.CreateAnimationTrack(t);
+                    track.children.Add(this);
+                    track.Preload(this);
+                    this.tracks.Add(track);
                 }
-                else
-                {
-                    // TODO: V3 uses parenting
-                }
+
+                 var parent = tracksManager.CreateAnimationTrack(tracks[0]);
+                 AnimationTrack.transform.parent = parent.track.ObjectParentTransform;
             }
 
             // Individual Path Animation
@@ -180,9 +177,15 @@ namespace Beatmap.Animations
             LateUpdate();
         }
 
-        private float lastTime = -1;
-        private readonly float minTime = 0.001f;
-        private bool updateFrame = true;
+        public void SetTrack(Track track, string name)
+        {
+            ResetData();
+
+            LocalTarget = track.transform;
+            ScaleTarget = track.transform;
+            WorldTarget = track.transform.parent;
+        }
+
         private float? _time = null;
         private float time_begin;
         private float time_end;
@@ -190,74 +193,67 @@ namespace Beatmap.Animations
         public void Update()
         {
             var time = _time ?? Atsc?.CurrentBeat ?? 0;
-            updateFrame = Math.Abs(time - lastTime) > minTime;
-            if (updateFrame)
+
+            foreach (var prop in AnimatedProperties)
             {
-                foreach (var prop in AnimatedProperties)
+                if (time >= prop.Value.StartTime)
                 {
-                    if (time >= prop.Value.StartTime)
-                    {
-                        prop.Value.UpdateProperty(time);
-                    }
+                    prop.Value.UpdateProperty(time);
                 }
-                if (AnimatedTrack) {
-                    AnimationTrack.UpdatePosition(-1 * time * EditorScaleController.EditorScale);
-                }
-                lastTime = time;
+            }
+            if (AnimatedTrack) {
+                AnimationTrack.UpdatePosition(-1 * time * EditorScaleController.EditorScale);
             }
         }
 
         public void LateUpdate()
         {
-            if (updateFrame)
+            LocalTarget.localRotation = AggrigateMul<Quaternion>(ref LocalRotation, Quaternion.identity);
+            LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero);
+            if (ScaleTarget != null) ScaleTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
+            if (WorldTarget != null)
             {
-                LocalTarget.localRotation = AggrigateMul<Quaternion>(ref LocalRotation, Quaternion.identity);
-                LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero);
-                if (ScaleTarget != null) ScaleTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
-                if (WorldTarget != null)
+                if ((container?.ObjectData is BaseGrid obj) && obj.CustomWorldRotation != null)
                 {
-                    if ((container?.ObjectData is BaseGrid obj) && obj.CustomWorldRotation != null)
-                    {
-                        WorldRotation.Insert(0, Quaternion.Euler(obj.CustomWorldRotation));
-                    }
-                    WorldTarget.localRotation = AggrigateMul<Quaternion>(ref WorldRotation, Quaternion.identity);
+                    WorldRotation.Insert(0, Quaternion.Euler(obj.CustomWorldRotation));
                 }
-                if (WorldPosition.Count > 0)
+                WorldTarget.localRotation = AggrigateMul<Quaternion>(ref WorldRotation, Quaternion.identity);
+            }
+            if (WorldPosition.Count > 0)
+            {
+                WorldTarget.localPosition = AggrigateSum(ref WorldPosition, Vector3.zero);
+                AnimationTrack.UpdatePosition(0);
+                container.transform.localPosition = Vector3.zero;
+            }
+            if (container is NoteContainer note && note.NoteData.Type != (int)NoteType.Bomb && OpacityArrow.Count > 0)
+            {
+                if (AggrigateMul<float>(ref OpacityArrow, 1.0f) < 0.5f)
                 {
-                    WorldTarget.localPosition = AggrigateSum(ref WorldPosition, Vector3.zero);
-                    AnimationTrack.UpdatePosition(0);
-                    container.transform.localPosition = Vector3.zero;
+                    note.SetArrowVisible(false);
+                    note.SetDotVisible(false);
                 }
-                if (container is NoteContainer note && note.NoteData.Type != (int)NoteType.Bomb && OpacityArrow.Count > 0)
+                else if (note.NoteData.CutDirection != (int)NoteCutDirection.Any)
                 {
-                    if (AggrigateMul<float>(ref OpacityArrow, 1.0f) < 0.5f)
-                    {
-                        note.SetArrowVisible(false);
-                        note.SetDotVisible(false);
-                    }
-                    else if (note.NoteData.CutDirection != (int)NoteCutDirection.Any)
-                    {
-                        note.SetArrowVisible(true);
-                        note.SetDotVisible(false);
-                    }
-                    else
-                    {
-                        note.SetArrowVisible(false);
-                        note.SetDotVisible(true);
-                    }
+                    note.SetArrowVisible(true);
+                    note.SetDotVisible(false);
                 }
-                if (container != null)
+                else
                 {
-                    if (Colors.Count > 0)
-                    {
-                        // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:(
-                        dynamic con = container;
-                        con.SetColor(AggrigateMul<Color>(ref Colors, Color.white));
-                    }
+                    note.SetArrowVisible(false);
+                    note.SetDotVisible(true);
+                }
+            }
+            if (container != null)
+            {
+                if (Colors.Count > 0)
+                {
+                    // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:(
+                    dynamic con = container;
+                    con.SetColor(AggrigateMul<Color>(ref Colors, Color.white));
+                }
 
-                    container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Opacity, 1.0f));
-                    container.UpdateMaterials();
-                }
+                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Opacity, 1.0f));
+                container.UpdateMaterials();
             }
         }
 
@@ -274,7 +270,8 @@ namespace Beatmap.Animations
             {
                 AnimationTrack = tracksManager.CreateIndividualTrack(container.ObjectData as BaseGrid);
                 AnimationTrack.AttachContainer(container);
-                AnimationTrack.transform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
+                AnimationTrack.ObjectParentTransform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
+                AnimationTrack.transform.localPosition = Vector3.zero;//new Vector3(0, 1.5f, 0);
                 container.transform.localPosition = new Vector3(0, 0, container.transform.localPosition.z);
             }
         }
@@ -301,6 +298,7 @@ namespace Beatmap.Animations
                 break;
             case "_position":
             case "offsetPosition":
+            case "localPosition":
                 AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_definitePosition":

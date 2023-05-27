@@ -44,9 +44,9 @@ public class TracksManager : MonoBehaviour
         LoadInitialMap.LevelLoadedEvent += LoadAnimationTracks;
     }
 
+    // TODO: This should be somewhere else
     private void LoadAnimationTracks()
     {
-        if (!(BeatSaberSongContainer.Instance.Map is V2Difficulty)) return;
         var events = BeatmapObjectContainerCollection
             .GetCollectionForType(ObjectType.CustomEvent)
             .LoadedObjects
@@ -72,7 +72,10 @@ public class TracksManager : MonoBehaviour
             var parent = CreateAnimationTrack(ev.DataParentTrack);
             foreach (var tr in tracks) {
                 var at = CreateAnimationTrack(tr.Value);
-                parent.childTracks.Add(at);
+                at.track.transform.parent = parent.track.ObjectParentTransform;
+                var animator = at.animator ?? at.gameObject.AddComponent<ObjectAnimator>();
+                animator.SetTrack(at.track, tr.Value);
+                parent.children.Add(animator);
             }
         }
     }
@@ -129,13 +132,15 @@ public class TracksManager : MonoBehaviour
 
     public TrackAnimator CreateAnimationTrack(string name)
     {
-        if (animationTracks.TryGetValue(name, out var track)) return track;
+        if (animationTracks.TryGetValue(name, out var animator)) return animator;
 
-        var obj = new GameObject($"Track {name}");
-        track = obj.AddComponent<TrackAnimator>();
-        track.Atsc = atsc;
-        animationTracks.Add(name, track);
-        return track;
+        var obj = Instantiate(trackPrefab, tracksParent);
+        obj.name = name;
+        animator = obj.AddComponent<TrackAnimator>();
+        animator.Atsc = atsc;
+        animator.track = obj.GetComponent<Track>();
+        animationTracks.Add(name, animator);
+        return animator;
     }
 
     // Used for world rotation
@@ -145,6 +150,7 @@ public class TracksManager : MonoBehaviour
         var potition = -1 * obj.JsonTime * EditorScaleController.EditorScale;
         var track = Instantiate(trackPrefab, tracksParent).GetComponent<Track>();
         track.UpdatePosition(potition);
+        track.AssignRotationValue(obj.CustomWorldRotation ?? Vector3.zero);
         track.gameObject.name = $"Track Object {obj.JsonTime}";
         return track;
     }

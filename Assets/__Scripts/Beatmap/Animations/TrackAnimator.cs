@@ -14,11 +14,12 @@ namespace Beatmap.Animations
     public class TrackAnimator : MonoBehaviour
     {
         public AudioTimeSyncController Atsc;
+        public Track track;
+        public ObjectAnimator animator;
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         public List<ObjectAnimator> children = new List<ObjectAnimator>();
         public List<ObjectAnimator> cachedChildren = new List<ObjectAnimator>();
-        public List<TrackAnimator> childTracks = new List<TrackAnimator>();
 
         public void AddEvent(BaseCustomEvent ev)
         {
@@ -46,35 +47,25 @@ namespace Beatmap.Animations
             children
                 .Where((child) => child.isActiveAndEnabled).ToList()
                 .ForEach((child) => list.Add(child));
-            foreach (var child in childTracks)
-            {
-                list.AddRange(child.GetChildren());
-            }
             return list;
         }
 
-        private float lastTime = -1;
-        private readonly float minTime = 0.001f;
         private bool preload = false;
 
         public void Update()
         {
             var time = Atsc?.CurrentBeat ?? 0;
-            if (preload || Math.Abs(time - lastTime) > minTime)
+            if (!preload)
             {
-                if (!preload)
-                {
-                    cachedChildren = GetChildren().Distinct().ToList();
+                cachedChildren = GetChildren().Distinct().ToList();
 
-                }
-                foreach (var prop in AnimatedProperties)
+            }
+            foreach (var prop in AnimatedProperties)
+            {
+                if (time >= prop.Value.StartTime)
                 {
-                    if (time >= prop.Value.StartTime)
-                    {
-                        prop.Value.UpdateProperty(time);
-                    }
+                    prop.Value.UpdateProperty(time);
                 }
-                lastTime = time;
             }
         }
 
@@ -92,27 +83,35 @@ namespace Beatmap.Animations
             switch (key)
             {
             case "_dissolve":
+            case "dissolve":
                 AddPointDef<float>((ObjectAnimator animator, float f) => animator.Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_dissolveArrow":
+            case "dissolveArrow":
                 AddPointDef<float>((ObjectAnimator animator, float f) => animator.OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
+            case "localRotation":
                 AddPointDef<Quaternion>((ObjectAnimator animator, Quaternion v) => animator.LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_rotation":
+            case "offsetWorldRotation":
                 AddPointDef<Quaternion>((ObjectAnimator animator, Quaternion v) => animator.WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
+            case "offsetPosition":
                 AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
+            case "scale":
                 AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
                 break;
             case "_color":
+            case "color":
                 AddPointDef<Color>((ObjectAnimator animator, Color v) => animator.Colors.Add(v), PointDataParsers.ParseColor, p, Color.white);
                 break;
             case "_time":
+            case "time":
                 AddPointDef<float>((ObjectAnimator animator, float f) => animator.SetLifeTime(f), PointDataParsers.ParseFloat, p, -1);
                 break;
             }
