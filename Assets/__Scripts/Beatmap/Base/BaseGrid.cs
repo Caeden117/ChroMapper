@@ -49,9 +49,9 @@ namespace Beatmap.Base
 
         public virtual JSONNode CustomLocalRotation { get; set; }
 
-        public virtual float? CustomNoteJumpMovementSpeed { get; set; }
+        public virtual JSONNode CustomNoteJumpMovementSpeed { get; set; }
 
-        public virtual float? CustomNoteJumpStartBeatOffset { get; set; }
+        public virtual JSONNode CustomNoteJumpStartBeatOffset { get; set; }
 
         public abstract string CustomKeyAnimation { get; }
         public abstract string CustomKeyCoordinate { get; }

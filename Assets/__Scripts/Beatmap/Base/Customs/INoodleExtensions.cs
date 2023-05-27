@@ -9,8 +9,8 @@ namespace Beatmap.Base.Customs
         JSONNode CustomCoordinate { get; set; }
         JSONNode CustomWorldRotation { get; set; }
         JSONNode CustomLocalRotation { get; set; }
-        float? CustomNoteJumpMovementSpeed { get; set; }
-        float? CustomNoteJumpStartBeatOffset { get; set; }
+        JSONNode CustomNoteJumpMovementSpeed { get; set; }
+        JSONNode CustomNoteJumpStartBeatOffset { get; set; }
 
 
         string CustomKeyAnimation { get; }

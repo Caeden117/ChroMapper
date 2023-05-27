@@ -89,12 +89,10 @@ namespace Beatmap.Animations
             enabled = isAnimated;
             if (!isAnimated) return;
 
-            var njs = ((obj.CustomNoteJumpMovementSpeed ?? 0) > 0)
-                ? (float)obj.CustomNoteJumpMovementSpeed
-                : BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
-            var offset = ((obj.CustomNoteJumpStartBeatOffset ?? 0) > 0)
-                ? (float)obj.CustomNoteJumpStartBeatOffset
-                : BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
+            var njs = obj.CustomNoteJumpMovementSpeed?.AsFloat
+                ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
+            var offset = obj.CustomNoteJumpStartBeatOffset?.AsFloat
+                ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
             var bpm = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
                 ?.FindLastBpm(obj.SongBpmTime)
                 ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
