@@ -44,19 +44,7 @@ public class
 
     internal override void ApplyToMap()
     {
-        var preset = customEventDataPresets.Find(x => x.name.Contains(queuedData.Type));
-        if (preset != null)
-        {
-            try
-            {
-                var node = JSON.Parse(preset.text);
-                queuedData.CustomData = node;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Error while trying to parse Data Preset {queuedData.Type}:\n{e}");
-            }
-        }
+        queuedData.Data = new JSONObject();
 
         base.ApplyToMap();
     }
