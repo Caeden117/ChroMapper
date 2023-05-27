@@ -83,6 +83,18 @@ MonoBehaviour:
   AnimationTrack: {fileID: 0}
   Atsc: {fileID: 0}
   tracksManager: {fileID: 0}
+  LocalTarget: {fileID: 2772469630699406285}
+  ScaleTarget: {fileID: 2772469630699406285}
+  RotationTarget: {fileID: 2772469630699406285}
+  WorldTarget: {fileID: 0}
+  LocalRotation: []
+  WorldRotation: []
+  OffsetPosition: []
+  WorldPosition: []
+  Scale: []
+  Colors: []
+  Opacity: []
+  OpacityArrow: []
 --- !u!1 &1557584185351964
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,7 +876,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2772469630699406285}
   m_Layer: 9
-  m_Name: Animation
+  m_Name: AnimationTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

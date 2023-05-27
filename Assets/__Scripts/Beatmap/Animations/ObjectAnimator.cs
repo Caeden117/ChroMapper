@@ -21,7 +21,8 @@ namespace Beatmap.Animations
         public AudioTimeSyncController Atsc;
         public TracksManager tracksManager;
 
-        public Transform LocalTarget;
+        [SerializeField] public Transform LocalTarget;
+        [SerializeField] public Transform ScaleTarget;
         public Transform WorldTarget;
 
         public List<Quaternion> LocalRotation;
@@ -67,8 +68,6 @@ namespace Beatmap.Animations
                 LocalTarget.localEulerAngles = Vector3.zero;
                 LocalTarget.localPosition = Vector3.zero;
                 LocalTarget.localScale = Vector3.one;
-                LocalTarget = null;
-                WorldTarget = null;
             }
 
             if ((container?.ObjectData ?? null) != null)
@@ -104,7 +103,6 @@ namespace Beatmap.Animations
             time_end = obj.JsonTime + half_path_duration;
 
             RequireAnimationTrack();
-            LocalTarget = AnimationThis.transform;
             WorldTarget = AnimationTrack.transform;
 
             if (obj.CustomTrack != null)
@@ -214,14 +212,21 @@ namespace Beatmap.Animations
             if (updateFrame)
             {
                 LocalTarget.localRotation = AggrigateMul<Quaternion>(ref LocalRotation, Quaternion.identity);
-                LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero) * 0.6f;
-                LocalTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
-                WorldTarget.localRotation = AggrigateMul<Quaternion>(ref WorldRotation, Quaternion.identity);
+                LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero);
+                if (ScaleTarget != null) ScaleTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
+                if (WorldTarget != null)
+                {
+                    if ((container?.ObjectData is BaseGrid obj) && obj.CustomWorldRotation != null)
+                    {
+                        WorldRotation.Insert(0, Quaternion.Euler(obj.CustomWorldRotation));
+                    }
+                    WorldTarget.localRotation = AggrigateMul<Quaternion>(ref WorldRotation, Quaternion.identity);
+                }
                 if (WorldPosition.Count > 0)
                 {
-                    AnimationTrack.ObjectParentTransform.localPosition = Vector3.Scale(AggrigateSum(ref WorldPosition, Vector3.zero), new Vector3(0.6f, 0.6f, 1));
+                    WorldTarget.localPosition = AggrigateSum(ref WorldPosition, Vector3.zero);
+                    AnimationTrack.UpdatePosition(0);
                     container.transform.localPosition = Vector3.zero;
-                    container.gameObject.SetActive(true);
                 }
                 if (container is NoteContainer note && note.NoteData.Type != (int)NoteType.Bomb && OpacityArrow.Count > 0)
                 {
@@ -241,14 +246,18 @@ namespace Beatmap.Animations
                         note.SetDotVisible(true);
                     }
                 }
-                if (container != null && Colors.Count > 0)
+                if (container != null)
                 {
-                    // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:(
-                    dynamic con = container;
-                    con.SetColor(AggrigateMul<Color>(ref Colors, Color.white));
+                    if (Colors.Count > 0)
+                    {
+                        // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:(
+                        dynamic con = container;
+                        con.SetColor(AggrigateMul<Color>(ref Colors, Color.white));
+                    }
+
+                    container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Opacity, 1.0f));
+                    container.UpdateMaterials();
                 }
-                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Opacity, 1.0f));
-                container.UpdateMaterials();
             }
         }
 
