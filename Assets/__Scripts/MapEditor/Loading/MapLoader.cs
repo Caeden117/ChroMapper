@@ -153,6 +153,12 @@ public class MapLoader : MonoBehaviour
             events.LinkAllLightEvents();
         }
 
+        if (typeof(T) == typeof(BaseCustomEvent))
+        {
+            var events = collection as CustomEventGridContainer;
+            events.RefreshEventsByTrack();
+        }
+
         collection.RefreshPool(true);
     }
 

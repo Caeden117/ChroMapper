@@ -58,7 +58,6 @@ namespace Beatmap.Animations
             if (!preload)
             {
                 cachedChildren = GetChildren();
-
             }
             foreach (var prop in AnimatedProperties)
             {

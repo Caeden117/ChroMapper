@@ -112,14 +112,24 @@ namespace Beatmap.Animations
                     JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
                     _ => new List<string>()
                 };
-                var events = BeatmapObjectContainerCollection
-                    .GetCollectionForType(ObjectType.CustomEvent)
-                    .LoadedObjects
-                    .Select(ev => ev as BaseCustomEvent)
-                    .Where(ev => ev.Type == "AssignPathAnimation");
-                foreach (var ce in events)
+                foreach (var tr in tracks)
                 {
-                    if (TracksMatch(tracks, ce.CustomTrack))
+                    var track = tracksManager.CreateAnimationTrack(tr);
+                    track.children.Add(this);
+                    track.Preload(this);
+                    this.tracks.Add(track);
+
+                    List<BaseCustomEvent> events = null;
+
+                    BeatmapObjectContainerCollection
+                        .GetCollectionForType<CustomEventGridContainer>(ObjectType.CustomEvent)
+                        .EventsByTrack
+                        ?.TryGetValue(tr, out events);
+                    if (events == null)
+                    {
+                        continue;
+                    }
+                    foreach (var ce in events.Where(ev => ev.Type == "AssignPathAnimation"))
                     {
                         foreach (var jprop in ce.Data)
                         {
@@ -137,13 +147,6 @@ namespace Beatmap.Animations
                             AddPointDef(p, jprop.Key);
                         }
                     }
-                }
-                foreach (var t in tracks)
-                {
-                    var track = tracksManager.CreateAnimationTrack(t);
-                    track.children.Add(this);
-                    track.Preload(this);
-                    this.tracks.Add(track);
                 }
 
                  var parent = tracksManager.CreateAnimationTrack(tracks[0]);
@@ -166,6 +169,11 @@ namespace Beatmap.Animations
                     };
                     AddPointDef(p, jprop.Key);
                 }
+            }
+
+            foreach (var prop in AnimatedProperties)
+            {
+                prop.Value.Sort();
             }
 
             Update();
@@ -338,17 +346,6 @@ namespace Beatmap.Animations
                 );
             }
             return AnimatedProperties[key] as AnimateProperty<T>;
-        }
-
-        private bool TracksMatch(List<string> l1, JSONNode t2)
-        {
-            List<string> l2 = t2 switch {
-                JSONString s => new List<string> { s },
-                JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
-                _ => new List<string>()
-            };
-
-            return l1.Any(a => l2.Any(b => a == b));
         }
 
         private T Aggregate<T>(ref List<T> list, T _default, Func<T, T, T> func)

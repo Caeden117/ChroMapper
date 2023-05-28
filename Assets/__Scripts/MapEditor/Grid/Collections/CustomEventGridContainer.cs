@@ -5,6 +5,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using SimpleJSON;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,6 +21,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     public override ObjectType ContainerType => ObjectType.CustomEvent;
 
     public ReadOnlyCollection<string> CustomEventTypes => customEventTypes.AsReadOnly();
+
+    public Dictionary<string, List<BaseCustomEvent>> EventsByTrack;
 
     private void Start()
     {
@@ -55,6 +58,29 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
 
     public override IEnumerable<BaseObject> GrabSortedObjects() =>
         UnsortedObjects.OrderBy(x => x.JsonTime).ThenBy(x => (x as BaseCustomEvent).Type);
+
+    public void RefreshEventsByTrack()
+    {
+        EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
+
+        foreach (var loadedObject in UnsortedObjects)
+        {
+            var customEvent = loadedObject as BaseCustomEvent;
+            List<string> tracks = customEvent.CustomTrack switch {
+                JSONString s => new List<string> { s },
+                JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
+                _ => new List<string>()
+            };
+            foreach (var track in tracks)
+            {
+                if (!EventsByTrack.ContainsKey(track))
+                {
+                    EventsByTrack[track] = new List<BaseCustomEvent>();
+                }
+                EventsByTrack[track].Add(customEvent);
+            }
+        }
+    }
 
     protected override void OnObjectSpawned(BaseObject obj, bool inCollection = false)
     {

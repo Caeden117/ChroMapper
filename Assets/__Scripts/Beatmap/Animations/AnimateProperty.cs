@@ -8,6 +8,7 @@ namespace Beatmap.Animations
     {
         public float StartTime { get; }
         public void UpdateProperty(float time);
+        public void Sort();
     }
 
     public class AnimateProperty<T> : IAnimateProperty
@@ -63,8 +64,14 @@ namespace Beatmap.Animations
             }
         }
 
-        public void UpdateProperty(float time) {
+        public void UpdateProperty(float time)
+        {
             Setter(GetLerpedValue(time));
+        }
+
+        public void Sort()
+        {
+            PointDefinitions.Sort();
         }
     }
 }
