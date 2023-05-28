@@ -107,6 +107,11 @@ namespace Beatmap.Animations
 
             if (obj.CustomTrack != null)
             {
+                List<string> tracks = obj.CustomTrack switch {
+                    JSONString s => new List<string> { s },
+                    JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
+                    _ => new List<string>()
+                };
                 var events = BeatmapObjectContainerCollection
                     .GetCollectionForType(ObjectType.CustomEvent)
                     .LoadedObjects
@@ -114,7 +119,7 @@ namespace Beatmap.Animations
                     .Where(ev => ev.Type == "AssignPathAnimation");
                 foreach (var ce in events)
                 {
-                    if (TracksMatch(obj.CustomTrack, ce.CustomTrack))
+                    if (TracksMatch(tracks, ce.CustomTrack))
                     {
                         foreach (var jprop in ce.Data)
                         {
@@ -133,16 +138,6 @@ namespace Beatmap.Animations
                         }
                     }
                 }
-                var tracks = new List<string>();
-                switch (obj.CustomTrack)
-                {
-                case JSONArray arr:
-                    foreach (var t in arr) tracks.Add(t.Value);
-                    break;
-                case JSONString s:
-                    tracks.Add(s);
-                    break;
-                };
                 foreach (var t in tracks)
                 {
                     var track = tracksManager.CreateAnimationTrack(t);
@@ -208,26 +203,26 @@ namespace Beatmap.Animations
 
         public void LateUpdate()
         {
-            LocalTarget.localRotation = AggrigateMul<Quaternion>(ref LocalRotation, Quaternion.identity);
-            LocalTarget.localPosition = AggrigateSum(ref OffsetPosition, Vector3.zero);
-            if (ScaleTarget != null) ScaleTarget.localScale = AggrigateMul(ref Scale, Vector3.one);
+            LocalTarget.localRotation = Aggregate(ref LocalRotation, Quaternion.identity, (a, b) => a * b);
+            LocalTarget.localPosition = Aggregate(ref OffsetPosition, Vector3.zero, (a, b) => a + b);
+            if (ScaleTarget != null) ScaleTarget.localScale = Aggregate(ref Scale, Vector3.one, (a, b) => Vector3.Scale(a, b));
             if (WorldTarget != null)
             {
                 if ((container?.ObjectData is BaseGrid obj) && obj.CustomWorldRotation != null)
                 {
                     WorldRotation.Insert(0, Quaternion.Euler(obj.CustomWorldRotation));
                 }
-                WorldTarget.localRotation = AggrigateMul<Quaternion>(ref WorldRotation, Quaternion.identity);
+                WorldTarget.localRotation = Aggregate(ref WorldRotation, Quaternion.identity, (a, b) => a * b);
             }
             if (WorldPosition.Count > 0)
             {
-                WorldTarget.localPosition = AggrigateSum(ref WorldPosition, Vector3.zero);
+                WorldTarget.localPosition = Aggregate(ref WorldPosition, Vector3.zero, (a, b) => a + b);
                 AnimationTrack.UpdatePosition(0);
                 container.transform.localPosition = Vector3.zero;
             }
             if (container is NoteContainer note && note.NoteData.Type != (int)NoteType.Bomb && OpacityArrow.Count > 0)
             {
-                if (AggrigateMul<float>(ref OpacityArrow, 1.0f) < 0.5f)
+                if (Aggregate(ref OpacityArrow, 1.0f, (a, b) => a * b) < 0.5f)
                 {
                     note.SetArrowVisible(false);
                     note.SetDotVisible(false);
@@ -249,10 +244,10 @@ namespace Beatmap.Animations
                 {
                     // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:(
                     dynamic con = container;
-                    con.SetColor(AggrigateMul<Color>(ref Colors, Color.white));
+                    con.SetColor(Aggregate(ref Colors, Color.white, (a, b) => a * b));
                 }
 
-                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", AggrigateMul<float>(ref Opacity, 1.0f));
+                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref Opacity, 1.0f, (a, b) => a * b));
                 container.UpdateMaterials();
             }
         }
@@ -345,14 +340,8 @@ namespace Beatmap.Animations
             return AnimatedProperties[key] as AnimateProperty<T>;
         }
 
-        private bool TracksMatch(JSONNode t1, JSONNode t2)
+        private bool TracksMatch(List<string> l1, JSONNode t2)
         {
-            List<string> l1 = t1 switch {
-                JSONString s => new List<string> { s },
-                JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
-                _ => new List<string>()
-            };
-
             List<string> l2 = t2 switch {
                 JSONString s => new List<string> { s },
                 JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
@@ -362,34 +351,13 @@ namespace Beatmap.Animations
             return l1.Any(a => l2.Any(b => a == b));
         }
 
-        private T AggrigateSum<T>(ref List<T> list, T _default) where T : struct
+        private T Aggregate<T>(ref List<T> list, T _default, Func<T, T, T> func)
         {
             if (list.Count == 0) return _default;
-            dynamic value = list[0];
+            var value = list[0];
             for (int i = 1; i < list.Count; ++i)
             {
-                value += list[i];
-            }
-            list.Clear();
-            return value;
-        }
-
-        private T AggrigateMul<T>(ref List<T> list, T _default)
-        {
-            dynamic value = _default;
-            foreach (var it in list)
-            {
-                value *= it;
-            }
-            list.Clear();
-            return value;
-        }
-        private Vector3 AggrigateMul(ref List<Vector3> list, Vector3 _default)
-        {
-            var value = _default;
-            foreach (var it in list)
-            {
-                value = Vector3.Scale(value, it);
+                value = func(value, list[i]);
             }
             list.Clear();
             return value;

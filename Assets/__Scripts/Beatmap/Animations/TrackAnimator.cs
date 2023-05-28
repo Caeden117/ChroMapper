@@ -57,7 +57,7 @@ namespace Beatmap.Animations
             var time = Atsc?.CurrentBeat ?? 0;
             if (!preload)
             {
-                cachedChildren = GetChildren().Distinct().ToList();
+                cachedChildren = GetChildren();
 
             }
             foreach (var prop in AnimatedProperties)

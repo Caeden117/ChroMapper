@@ -196,19 +196,19 @@ namespace Beatmap.Animations
             // I hate C#
             return typeof(T) switch
             {
-                var n when n == typeof(float) => (T a, T b, float c) => Mathf.LerpUnclamped((dynamic)a, (dynamic)b, c),
-                var n when n == typeof(Color) => (T a, T b, float c) => Color.LerpUnclamped((dynamic)a, (dynamic)b, c),
-                var n when n == typeof(Vector3) => (T a, T b, float c) => Vector3.LerpUnclamped((dynamic)a, (dynamic)b, c),
-                var n when n == typeof(Quaternion) => (T a, T b, float c) => Quaternion.SlerpUnclamped((dynamic)a, (dynamic)b, c),
+                var n when n == typeof(float) => (LerpFunc<T>)(object)(new LerpFunc<float>(Mathf.LerpUnclamped)),
+                var n when n == typeof(Color) => (LerpFunc<T>)(object)(new LerpFunc<Color>(Color.LerpUnclamped)),
+                var n when n == typeof(Vector3) => (LerpFunc<T>)(object)(new LerpFunc<Vector3>(Vector3.LerpUnclamped)),
+                var n when n == typeof(Quaternion) => (LerpFunc<T>)(object)(new LerpFunc<Quaternion>(Quaternion.SlerpUnclamped)),
                 _ => throw new Exception($"Unhandled LerpFunc for type {typeof(T).Name}"),
             };
         }
 
         public static T CatmullRomLerp<T>(List<PointDefinition<T>.PointData> points, int prev, int next, float time) where T : struct
         {
-            return typeof(T) switch
+            return points switch
             {
-                var n when n == typeof(Vector3) => SmoothVectorLerp((dynamic)points, prev, next, time),
+                List<PointDefinition<Vector3>.PointData> v => (T)(object)SmoothVectorLerp(v, prev, next, time),
                 _ => LinearLerp<T>(points, prev, next, time),
             };
         }
