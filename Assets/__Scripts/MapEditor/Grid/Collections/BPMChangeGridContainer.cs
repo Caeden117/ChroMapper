@@ -202,8 +202,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     public BaseBpmEvent FindNextBpm(float beatTimeInSongBpm, bool inclusive = false)
     {
         if (inclusive)
-            return LoadedObjects.FirstOrDefault(x => x.JsonTime >= beatTimeInSongBpm - 0.01f) as BaseBpmEvent;
-        return LoadedObjects.FirstOrDefault(x => x.JsonTime - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
+            return LoadedObjects.FirstOrDefault(x => x.SongBpmTime >= beatTimeInSongBpm - 0.01f) as BaseBpmEvent;
+        return LoadedObjects.FirstOrDefault(x => x.SongBpmTime - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
     }
 
     private BaseBpmEvent DefaultEvent()
