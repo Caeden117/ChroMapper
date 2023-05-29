@@ -817,6 +817,10 @@ MonoBehaviour:
       Official BPM events'
     m_Metadata:
       m_Items: []
+  - m_Id: 240390057914204160
+    m_Localized: 'BPM Events: {BPMCount}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

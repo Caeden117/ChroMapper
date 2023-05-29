@@ -71,8 +71,8 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         map = song.GetMapFromDifficultyBeatmap(diff);
         loader.UpdateMapData(map);
         yield return StartCoroutine(loader.LoadObjects(map.BpmChanges));
-        var currentBeat = atsc.CurrentBeat;
-        atsc.MoveToTimeInBeats(0);
+        var currentSongBpmTime = atsc.CurrentSongBpmTime;
+        atsc.MoveToSongBpmTime(0);
         if (notes || full) yield return StartCoroutine(loader.LoadObjects(map.Notes));
         if (obstacles || full) yield return StartCoroutine(loader.LoadObjects(map.Obstacles));
         if (events || full) yield return StartCoroutine(loader.LoadObjects(map.Events));
@@ -85,7 +85,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;
         tracksManager.RefreshTracks();
         SelectionController.RefreshMap();
-        atsc.MoveToTimeInBeats(currentBeat);
+        atsc.MoveToSongBpmTime(currentSongBpmTime);
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 }

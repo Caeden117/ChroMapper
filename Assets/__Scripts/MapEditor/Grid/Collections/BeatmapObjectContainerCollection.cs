@@ -78,12 +78,12 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal virtual void LateUpdate()
     {
         if ((AudioTimeSyncController.IsPlaying && !UseChunkLoadingWhenPlaying)
-            || AudioTimeSyncController.CurrentBeat == previousAtscBeat)
+            || AudioTimeSyncController.CurrentSongBpmTime == previousAtscBeat)
         {
             return;
         }
 
-        previousAtscBeat = AudioTimeSyncController.CurrentBeat;
+        previousAtscBeat = AudioTimeSyncController.CurrentSongBpmTime;
         var nearestChunk = (int)Math.Round(previousAtscBeat / (double)ChunkSize, MidpointRounding.AwayFromZero);
         if (nearestChunk != previousChunk)
         {
@@ -158,8 +158,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             var despawnOffset = UseChunkLoadingWhenPlaying
                 ? -ChunksLoadedWhilePlaying * ChunkSize
                 : DespawnCallbackController.Offset;
-            RefreshPool(AudioTimeSyncController.CurrentBeat + despawnOffset - epsilon,
-                AudioTimeSyncController.CurrentBeat + spawnOffset + epsilon, forceRefresh);
+            RefreshPool(AudioTimeSyncController.CurrentSongBpmTime + despawnOffset - epsilon,
+                AudioTimeSyncController.CurrentSongBpmTime + spawnOffset + epsilon, forceRefresh);
         }
         else
         {

@@ -55,7 +55,7 @@ public class MultiTimelineController
     public void JumpTo(MapperPosePacket pose)
     {
         bookmarkManager.Tipc.PointerDown();
-        bookmarkManager.Atsc.MoveToTimeInBeats(pose.SongPosition);
+        bookmarkManager.Atsc.MoveToSongBpmTime(pose.SongPosition);
         bookmarkManager.Tipc.PointerUp();
     }
 }

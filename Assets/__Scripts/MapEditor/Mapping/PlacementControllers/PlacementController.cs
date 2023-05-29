@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
@@ -53,7 +54,18 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
 
-    [HideInInspector] internal virtual float RoundedTime { get; set; }
+    private float roundedJsonTime;
+    internal float RoundedJsonTime
+    {
+        get => roundedJsonTime;
+        set
+        {
+            SongBpmTime = BpmChangeGridContainer.JsonTimeToSongBpmTime(value);
+            roundedJsonTime = value;
+        }
+    }
+
+    internal float SongBpmTime { get; set; } // No point rounding this
 
     public virtual bool IsValid => !Input.GetMouseButton(1) && !SongTimelineController.IsHovering && IsActive &&
                                    !BoxSelectionPlacementController.IsSelecting && applicationFocus &&
@@ -134,9 +146,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             else
                 queuedData.CustomTrack = null;
 
-            CalculateTimes(hit, out var roundedHit, out var roundedTime);
-            RoundedTime = roundedTime;
-            var placementZ = RoundedTime * EditorScaleController.EditorScale;
+            CalculateTimes(hit, out var roundedHit, out var roundedJsonTime);
+            RoundedJsonTime = roundedJsonTime;
+            var placementZ = SongBpmTime * EditorScaleController.EditorScale;
             Update360Tracks();
 
             //this mess of localposition and position assignments are to align the shits up with the grid
@@ -161,7 +173,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 instantiatedContainer.transform.localPosition.z);
 
             OnPhysicsRaycast(hit, roundedHit);
-            queuedData.SongBpmTime = RoundedTime;
+            queuedData.SetTimes(roundedJsonTime, SongBpmTime);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));
@@ -223,7 +235,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     protected virtual float GetContainerPosZ(ObjectContainer con)
     {
-        return (con.ObjectData.SongBpmTime - Atsc.CurrentBeat) * EditorScaleController.EditorScale;
+        return (con.ObjectData.SongBpmTime - Atsc.CurrentSongBpmTime) * EditorScaleController.EditorScale;
     }
 
     public void OnInitiateClickandDragatTime(InputAction.CallbackContext context)
@@ -288,9 +300,11 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         return false;
     }
 
-    protected void CalculateTimes(Intersections.IntersectionHit hit, out Vector3 roundedHit, out float roundedTime)
+    protected void CalculateTimes(Intersections.IntersectionHit hit, out Vector3 roundedHit, out float roundedJsonTime)
     {
-        var currentBeat = IsDraggingObjectAtTime ? draggedObjectData.SongBpmTime : Atsc.CurrentBeat;
+        var currentJsonTime = IsDraggingObjectAtTime ? draggedObjectData.JsonTime : Atsc.CurrentJsonTime;
+        var snap = 1f / Atsc.GridMeasureSnapping;
+        var offsetJsonTime = currentJsonTime - (float)Math.Round((currentJsonTime) / snap, MidpointRounding.AwayFromZero) * snap;
 
         roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
         var realTime = roundedHit.z / EditorScaleController.EditorScale;
@@ -301,12 +315,10 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                        EditorScaleController.EditorScale;
         }
 
-        var roundedCurrent = Atsc.FindRoundedBeatTime(currentBeat);
-        var offsetTime = currentBeat - roundedCurrent;
+        var hitPointJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(realTime);
+        roundedJsonTime = (float)Math.Round((hitPointJsonTime - offsetJsonTime) / snap, MidpointRounding.AwayFromZero) * snap;
 
-        roundedTime = Atsc.FindRoundedBeatTime(realTime - offsetTime);
-
-        if (!Atsc.IsPlaying) roundedTime += offsetTime;
+        if (!Atsc.IsPlaying) roundedJsonTime += offsetJsonTime;
     }
 
     private void ColliderExit()
@@ -337,7 +349,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         }
         else
         {
-            var track = manager.GetTrackAtTime(RoundedTime);
+            var track = manager.GetTrackAtTime(SongBpmTime);
             if (track != null)
             {
                 var localPos = instantiatedContainer.transform.localPosition;

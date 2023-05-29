@@ -45,7 +45,7 @@ public class PauseToggleLights : MonoBehaviour
             var allEvents = eventGrid.LoadedObjects.Cast<BaseEvent>().Reverse();
             foreach (var e in allEvents)
             {
-                if (e.JsonTime <= atsc.CurrentBeat && !e.IsLegacyChroma)
+                if (e.JsonTime <= atsc.CurrentJsonTime && !e.IsLegacyChroma)
                 {
                     if (!lastEvents.ContainsKey(e.Type)) lastEvents.Add(e.Type, new LastEvents());
 

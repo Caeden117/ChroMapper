@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
+// TODO: Fix bookmarks to account for official bpm events
 // TODO: Refactor all this Bookmark bullshit to fit every other object in ChroMapper (using BeatmapObjectContainerCollection, BeatmapObjectContainer, etc. etc.)
 public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 {
@@ -141,7 +142,9 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             return;
         }
 
-        var newBookmark = Settings.Instance.Load_MapV3 ? (BaseBookmark)new V3Bookmark(Atsc.CurrentBeat, name) : new V2Bookmark(Atsc.CurrentBeat, name);
+        var newBookmark = Settings.Instance.Load_MapV3
+            ? (BaseBookmark)new V3Bookmark(Atsc.CurrentSongBpmTime, name)
+            : new V2Bookmark(Atsc.CurrentSongBpmTime, name);
 
         if (color != null)
         {
@@ -186,24 +189,21 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     internal void OnNextBookmark()
     {
-        var bookmark = bookmarkContainers.Find(x => x.Data.JsonTime > Atsc.CurrentBeat);
-        if (bookmark != null)
-        {
-            Tipc.PointerDown(); // slightly weird but it works
-            Atsc.MoveToTimeInBeats(bookmark.Data.JsonTime);
-            Tipc.PointerUp();
-        }
+        var bookmark = bookmarkContainers.Find(x => x.Data.JsonTime > Atsc.CurrentSongBpmTime);
+        if (bookmark != null) MoveToBookmark(bookmark);
     }
 
     internal void OnPreviousBookmark()
     {
-        var bookmark = bookmarkContainers.LastOrDefault(x => x.Data.JsonTime < Atsc.CurrentBeat);
-        if (bookmark != null)
-        {
-            Tipc.PointerDown();
-            Atsc.MoveToTimeInBeats(bookmark.Data.JsonTime);
-            Tipc.PointerUp();
-        }
+        var bookmark = bookmarkContainers.LastOrDefault(x => x.Data.JsonTime < Atsc.CurrentSongBpmTime);
+        if (bookmark != null) MoveToBookmark(bookmark);
+    }
+
+    private void MoveToBookmark(BookmarkContainer bookmark)
+    {
+        Tipc.PointerDown(); // slightly weird but it works
+        Atsc.MoveToSongBpmTime(bookmark.Data.JsonTime);
+        Tipc.PointerUp();
     }
 
     private void OnDestroy()

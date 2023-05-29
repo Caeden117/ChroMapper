@@ -125,7 +125,7 @@ public class AudioManager : MonoBehaviour
     {
         if (val == int.MaxValue) return int.MaxValue;
 
-        if (atsc != null) val -= (int)atsc.CurrentBeat / chunkSize;
+        if (atsc != null) val -= (int)atsc.CurrentSongBpmTime / chunkSize;
 
         if (val < 0) return -val * 4;
         return val;

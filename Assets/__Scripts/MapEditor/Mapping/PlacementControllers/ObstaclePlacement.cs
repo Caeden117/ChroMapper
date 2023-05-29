@@ -63,7 +63,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         TestForType<ObstaclePlacement>(hit, ObjectType.Obstacle);
 
         instantiatedContainer.ObstacleData = queuedData;
-        instantiatedContainer.ObstacleData.Duration = BpmChangeGridContainer.SongBpmTimeToJsonTime(RoundedTime) - startJsonTime;
+        instantiatedContainer.ObstacleData.Duration = RoundedJsonTime - startJsonTime;
         obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
 
@@ -81,7 +81,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 var precision = Atsc.GridMeasureSnapping;
                 roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
                 roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
-                roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
+                roundedHit = new Vector3(roundedHit.x, roundedHit.y, SongBpmTime * EditorScaleController.EditorScale);
 
                 var position = Vector2.zero;
                 if (queuedData.CustomCoordinate != null && queuedData.CustomCoordinate.IsArray)
@@ -114,7 +114,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 roundedHit = new Vector3(
                     Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, Bounds.min.x + 0.01f), Bounds.max.x)),
                     Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
-                    RoundedTime * EditorScaleController.EditorScale
+                    SongBpmTime * EditorScaleController.EditorScale
                 );
 
                 wallTransform.localPosition = new Vector3(
@@ -181,7 +181,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             );
             instantiatedContainer.transform.localScale = new Vector3(instantiatedContainer.transform.localScale.x,
                 instantiatedContainer.transform.localScale.y,
-                (RoundedTime - startSongBpmTime) * EditorScaleController.EditorScale);
+                (SongBpmTime - startSongBpmTime) * EditorScaleController.EditorScale);
         }
     }
 
@@ -190,7 +190,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         if (IsPlacing)
         {
             IsPlacing = false;
-            queuedData.JsonTime = startJsonTime;
+            queuedData.SetTimes(startJsonTime, startSongBpmTime);
 
             var endSongBpmTime = startSongBpmTime + (instantiatedContainer.transform.localScale.z / EditorScaleController.EditorScale);
             var endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
@@ -200,9 +200,8 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             {
                 endSongBpmTime = startSongBpmTime + SmallestRankableWallDuration;
                 endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
+                queuedData.Duration = endJsonTime - startJsonTime;
             }
-
-            queuedData.Duration = endJsonTime - startJsonTime;
 
             objectContainerCollection.SpawnObject(queuedData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(queuedData, conflicting));
@@ -216,8 +215,8 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             IsPlacing = true;
             originIndex = queuedData.PosX;
-            startJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(RoundedTime);
-            startSongBpmTime = RoundedTime;
+            startJsonTime = RoundedJsonTime;
+            startSongBpmTime = SongBpmTime;
         }
     }
 

@@ -296,7 +296,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         var rotationType = early ? (int)EventTypeValue.EarlyLaneRotation : (int)EventTypeValue.LateLaneRotation;
         var epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
         var evt = objectContainerCollection.AllRotationEvents.Find(x =>
-            x.JsonTime - epsilon < Atsc.CurrentBeat && x.JsonTime + epsilon > Atsc.CurrentBeat && x.Type == rotationType);
+            x.JsonTime - epsilon < Atsc.CurrentJsonTime && x.JsonTime + epsilon > Atsc.CurrentJsonTime && x.Type == rotationType);
 
         //todo add support for custom rotation angles
 
@@ -314,7 +314,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         else if ((startingValue < 7 && right) || (startingValue > 0 && !right))
         {
             if (evt != null) startingValue += right ? 1 : -1;
-            var objectData = BeatmapFactory.Event(Atsc.CurrentBeat, rotationType, startingValue);
+            var objectData = BeatmapFactory.Event(Atsc.CurrentJsonTime, rotationType, startingValue);
 
             objectContainerCollection.SpawnObject(objectData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));

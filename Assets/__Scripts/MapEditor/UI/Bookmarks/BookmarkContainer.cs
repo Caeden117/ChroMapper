@@ -83,7 +83,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             manager.Tipc.PointerDown();
-            manager.Atsc.MoveToTimeInBeats(Data.JsonTime);
+            manager.Atsc.MoveToSongBpmTime(Data.JsonTime);
         }
     }
 

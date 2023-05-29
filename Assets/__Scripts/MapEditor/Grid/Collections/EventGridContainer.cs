@@ -286,7 +286,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     {
         var endTime = @event.JsonTime + @event.CustomLightGradient.Duration;
         yield return new WaitUntil(() =>
-            endTime < AudioTimeSyncController.CurrentBeat + DespawnCallbackController.Offset);
+            endTime < AudioTimeSyncController.CurrentJsonTime + DespawnCallbackController.Offset);
         RecycleContainer(@event);
     }
 
@@ -306,8 +306,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex)
     {
         var epsilon = Mathf.Pow(10, -9);
-        RefreshPool(AudioTimeSyncController.CurrentBeat + DespawnCallbackController.Offset - epsilon,
-            AudioTimeSyncController.CurrentBeat + SpawnCallbackController.Offset + epsilon);
+        RefreshPool(AudioTimeSyncController.CurrentSongBpmTime + DespawnCallbackController.Offset - epsilon,
+            AudioTimeSyncController.CurrentSongBpmTime + SpawnCallbackController.Offset + epsilon);
     }
 
     public override ObjectContainer CreateContainer() =>
