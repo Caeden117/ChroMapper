@@ -42,19 +42,25 @@ namespace Beatmap.Containers
 
         public void SetScale(Vector3 scale)
         {
-            transform.localScale = scale;
+            Animator.LocalTarget.localScale = scale;
 
             MaterialPropertyBlock.SetVector(shaderScale, scale);
             UpdateMaterials();
         }
 
-        public override void UpdateGridPosition()
+        public Vector3 GetScale()
         {
-            var obstacleStart = ObstacleData.SongBpmTime;
-            var obstacleEnd = bpmChangeGridContainer.JsonTimeToSongBpmTime(ObstacleData.JsonTime + ObstacleData.Duration);
-            var duration = obstacleEnd - obstacleStart;
+            return Animator.LocalTarget.localScale;
+        }
 
-            var localRotation = Vector3.zero;
+        public float GetLength()
+        {
+            if (ObstacleData.CustomSize != null && ObstacleData.CustomSize.IsArray && ObstacleData.CustomSize[2].IsNumber)
+                return ObstacleData.CustomSize[2];
+
+            var obstacleStart = ObstacleData.SongBpmTime;
+            var obstacleEnd = bpmChangeGridContainer?.JsonTimeToSongBpmTime(ObstacleData.JsonTime + ObstacleData.Duration) ?? 0;
+            var length = obstacleEnd - obstacleStart;
 
             //Take half jump duration into account if the setting is enabled.
             if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls)
@@ -66,14 +72,40 @@ namespace Beatmap.Containers
                 var halfJumpDuration =
                     SpawnParameterHelper.CalculateHalfJumpDuration(songNoteJumpSpeed, songStartBeatOffset, bpm);
 
-                duration -= duration * Mathf.Abs(duration / halfJumpDuration);
+                length -= length * Mathf.Abs(length / halfJumpDuration);
             }
 
-            duration *= EditorScaleController
+            length *= EditorScaleController
                 .EditorScale; // Apply Editor Scale here since it can be overwritten by NE _scale Z
 
-            if (ObstacleData.CustomSize != null && ObstacleData.CustomSize.IsArray && ObstacleData.CustomSize[2].IsNumber)
-                duration = ObstacleData.CustomSize[2];
+            return length;
+        }
+
+        public (Vector3, Vector3) ReadSizePosition()
+        {
+            var length = GetLength();
+
+            var bounds = ObstacleData.GetShape();
+
+            return (
+                new Vector3(
+                    Mathf.Abs(bounds.Width),
+                    Mathf.Abs(bounds.Height),
+                    Mathf.Abs(length)
+                ),
+                new Vector3(
+                    bounds.Position + (bounds.Width / 2.0f),
+                    bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0) + 1f,
+                    0
+                )
+            );
+        }
+
+        public override void UpdateGridPosition()
+        {
+            var localRotation = Vector3.zero;
+            var length = GetLength();
+            (var size, var position) = ReadSizePosition();
 
             if (ObstacleData.CustomLocalRotation != null)
                 localRotation = ObstacleData.CustomLocalRotation.ReadVector3();
@@ -85,30 +117,15 @@ namespace Beatmap.Containers
                     manager.CreateTrack(ObstacleData.CustomWorldRotation.ReadVector3()).AttachContainer(this);
             }
 
-            var bounds = ObstacleData.GetShape();
-
             // Enforce positive scale, offset our obstacles to match.
-            transform.localPosition = new Vector3(
-                bounds.Position + (bounds.Width < 0 ? bounds.Width : 0),
-                bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0),
-                (ObstacleData.SongBpmTime * EditorScaleController.EditorScale) + (duration < 0 ? duration : 0)
-            );
+            transform.localPosition = new Vector3(0, 0, (ObstacleData.SongBpmTime * EditorScaleController.EditorScale) + (length < 0 ? length : 0));
+            Animator.LocalTarget.localPosition = position;
 
-            SetScale(new Vector3(
-                Mathf.Abs(bounds.Width),
-                Mathf.Abs(bounds.Height),
-                Mathf.Abs(duration)
-            ));
+            SetScale(size);
 
             if (localRotation != Vector3.zero)
             {
-                transform.localEulerAngles = Vector3.zero;
-                var side = transform.right.normalized * (bounds.Width / 2);
-                var rectWorldPos = transform.position + side;
-
-                transform.RotateAround(rectWorldPos, transform.right, localRotation.x);
-                transform.RotateAround(rectWorldPos, transform.up, localRotation.y);
-                transform.RotateAround(rectWorldPos, transform.forward, localRotation.z);
+                Animator.LocalTarget.localEulerAngles = localRotation;
             }
 
             UpdateCollisionGroups();

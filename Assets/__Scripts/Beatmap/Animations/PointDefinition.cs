@@ -54,7 +54,7 @@ namespace Beatmap.Animations
 
             var data = p.points switch {
                 JSONArray arr => arr,
-                JSONString pd => BeatSaberSongContainer.Instance.Map.PointDefinitions[pd],
+                JSONString pd => (BeatSaberSongContainer.Instance.Map.PointDefinitions.ContainsKey(pd) ? BeatSaberSongContainer.Instance.Map.PointDefinitions[pd] : throw new Exception($"Missing point definition {pd}")),
                 _ => new JSONArray(), // TODO: Does this unset properly?
             };
 

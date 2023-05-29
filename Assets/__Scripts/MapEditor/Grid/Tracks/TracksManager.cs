@@ -58,7 +58,8 @@ public class TracksManager : MonoBehaviour
                 JSONArray arr => arr,
                 JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
             };
-            foreach (var tr in tracks) {
+            foreach (var tr in tracks)
+            {
                 var at = CreateAnimationTrack(tr.Value);
                 at.AddEvent(ev);
             }
@@ -70,7 +71,8 @@ public class TracksManager : MonoBehaviour
                 JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
             };
             var parent = CreateAnimationTrack(ev.DataParentTrack);
-            foreach (var tr in tracks) {
+            foreach (var tr in tracks)
+            {
                 var at = CreateAnimationTrack(tr.Value);
                 at.track.transform.parent = parent.track.ObjectParentTransform;
                 var animator = at.animator ?? at.gameObject.AddComponent<ObjectAnimator>();

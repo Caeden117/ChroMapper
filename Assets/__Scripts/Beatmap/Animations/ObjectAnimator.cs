@@ -22,7 +22,6 @@ namespace Beatmap.Animations
         public TracksManager tracksManager;
 
         [SerializeField] public Transform LocalTarget;
-        [SerializeField] public Transform ScaleTarget;
         public Transform WorldTarget;
 
         public List<Quaternion> LocalRotation;
@@ -70,7 +69,7 @@ namespace Beatmap.Animations
                 LocalTarget.localScale = Vector3.one;
             }
 
-            if ((container?.ObjectData ?? null) != null)
+            if (container?.ObjectData != null)
             {
                 container.UpdateGridPosition();
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
@@ -97,10 +96,10 @@ namespace Beatmap.Animations
                 ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var _hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
 
-            var half_path_duration = _hjd + ((obj is BaseObstacle obs) ? (obs.Duration / 2.0f) : 0);
+            var duration = (obj is BaseObstacle obs) ? (obs.Duration) : 0;
 
-            time_begin = obj.JsonTime - half_path_duration;
-            time_end = obj.JsonTime + half_path_duration;
+            time_begin = obj.JsonTime - _hjd;
+            time_end = obj.JsonTime + duration + _hjd;
 
             RequireAnimationTrack();
             WorldTarget = AnimationTrack.transform;
@@ -150,7 +149,7 @@ namespace Beatmap.Animations
                 }
 
                  var parent = tracksManager.CreateAnimationTrack(tracks[0]);
-                 AnimationTrack.transform.parent = parent.track.ObjectParentTransform;
+                 AnimationTrack.transform.SetParent(parent.track.ObjectParentTransform, false);
             }
 
             // Individual Path Animation
@@ -185,7 +184,6 @@ namespace Beatmap.Animations
             ResetData();
 
             LocalTarget = track.transform;
-            ScaleTarget = track.transform;
             WorldTarget = track.transform.parent;
         }
 
@@ -195,7 +193,7 @@ namespace Beatmap.Animations
 
         public void Update()
         {
-            var time = _time ?? Atsc?.CurrentBeat ?? 0;
+            var time = _time ?? Atsc?.CurrentJsonTime ?? 0;
 
             foreach (var prop in AnimatedProperties)
             {
@@ -211,9 +209,21 @@ namespace Beatmap.Animations
 
         public void LateUpdate()
         {
+            if (container is ObstacleContainer obs)
+            {
+                (var size, var position) = obs.ReadSizePosition();
+                OffsetPosition.Insert(0, position);
+                Scale.Insert(0, size);
+            }
+
+            if ((container?.ObjectData as BaseGrid)?.CustomLocalRotation is JSONNode rot)
+                LocalRotation.Insert(0, Quaternion.Euler(rot));
             LocalTarget.localRotation = Aggregate(ref LocalRotation, Quaternion.identity, (a, b) => a * b);
+
             LocalTarget.localPosition = Aggregate(ref OffsetPosition, Vector3.zero, (a, b) => a + b);
-            if (ScaleTarget != null) ScaleTarget.localScale = Aggregate(ref Scale, Vector3.one, (a, b) => Vector3.Scale(a, b));
+
+            LocalTarget.localScale = Aggregate(ref Scale, Vector3.one, (a, b) => Vector3.Scale(a, b));
+
             if (WorldTarget != null)
             {
                 if ((container?.ObjectData is BaseGrid obj) && obj.CustomWorldRotation != null)
@@ -250,9 +260,10 @@ namespace Beatmap.Animations
             {
                 if (Colors.Count > 0)
                 {
-                    // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:(
-                    dynamic con = container;
-                    con.SetColor(Aggregate(ref Colors, Color.white, (a, b) => a * b));
+                    // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:( TODO
+                    var color = Aggregate(ref Colors, Color.white, (a, b) => a * b);
+                    (container as NoteContainer)?.SetColor(color);
+                    (container as ObstacleContainer)?.SetColor(color);
                 }
 
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref Opacity, 1.0f, (a, b) => a * b));
@@ -293,7 +304,7 @@ namespace Beatmap.Animations
                 break;
             case "_localRotation":
             case "localRotation":
-                AddPointDef<Quaternion>((Quaternion v) => LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                AddPointDef<Quaternion>((Quaternion q) => LocalRotation.Add(q), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_rotation":
             case "offsetWorldRotation":
@@ -321,18 +332,25 @@ namespace Beatmap.Animations
 
         private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
         {
-            var pointdef = new PointDefinition<T>(parser, p);
-            if (p.overwrite)
+            try
             {
-                AnimatedProperties[p.key] = new AnimateProperty<T>(
-                    new List<PointDefinition<T>>() { pointdef },
-                    setter,
-                    _default
-                );
+                var pointdef = new PointDefinition<T>(parser, p);
+                if (p.overwrite)
+                {
+                    AnimatedProperties[p.key] = new AnimateProperty<T>(
+                        new List<PointDefinition<T>>() { pointdef },
+                        setter,
+                        _default
+                    );
+                }
+                else
+                {
+                    GetAnimateProperty<T>(p.key, setter, _default).PointDefinitions.Add(pointdef);
+                }
             }
-            else
+            catch (Exception e)
             {
-                GetAnimateProperty<T>(p.key, setter, _default).PointDefinitions.Add(pointdef);
+                Debug.LogException(e);
             }
         }
 

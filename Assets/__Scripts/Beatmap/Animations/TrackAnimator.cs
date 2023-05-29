@@ -54,7 +54,7 @@ namespace Beatmap.Animations
 
         public void Update()
         {
-            var time = Atsc?.CurrentBeat ?? 0;
+            var time = Atsc?.CurrentJsonTime ?? 0;
             if (!preload)
             {
                 cachedChildren = GetChildren();
@@ -99,6 +99,7 @@ namespace Beatmap.Animations
                 break;
             case "_position":
             case "offsetPosition":
+            case "localPosition":
                 AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
