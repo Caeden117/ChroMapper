@@ -66,7 +66,7 @@ public class PastNotesWorker : MonoBehaviour
 
         foreach (var note in noteGridContainer.LoadedObjects)
         {
-            if (time < note.SongBpmTime && note.SongBpmTime < atsc.CurrentBeat)
+            if (time < note.SongBpmTime && note.SongBpmTime < atsc.CurrentSongBpmTime)
             {
                 time = note.SongBpmTime;
                 lastGroup.Clear();

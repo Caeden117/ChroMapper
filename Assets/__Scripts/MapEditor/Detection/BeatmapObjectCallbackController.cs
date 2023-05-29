@@ -121,7 +121,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
         if (timeSyncController.IsPlaying)
         {
-            curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
+            curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
             RecursiveCheckNotes(true, true);
             RecursiveCheckEvents(true, true);
             if (Settings.Instance.Load_MapV3 && chainGridContainer != null)
@@ -148,7 +148,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     private void CheckAllNotes(bool natural)
     {
         //notesContainer.SortObjects();
-        curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
+        curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
         allNotes.Clear();
         allNotes = new HashSet<BaseObject>(noteGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
         nextNoteIndex = noteGridContainer.LoadedObjects.Count - allNotes.Count;
@@ -178,7 +178,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllChains(bool natural)
     {
-        curTime = UseAudioTime ? timeSyncController.CurrentSongBeats : timeSyncController.CurrentBeat;
+        curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
         allChains.Clear();
         allChains = new HashSet<BaseObject>(chainGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
         nextChainIndex = chainGridContainer.LoadedObjects.Count - allChains.Count;
@@ -243,7 +243,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (!timeSyncController.IsPlaying) return;
 
-        if (obj.SongBpmTime >= timeSyncController.CurrentBeat)
+        if (obj.SongBpmTime >= timeSyncController.CurrentSongBpmTime)
         {
             nextObjects.Add(obj);
         }
@@ -253,7 +253,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (!timeSyncController.IsPlaying) return;
 
-        if (obj.SongBpmTime >= timeSyncController.CurrentBeat)
+        if (obj.SongBpmTime >= timeSyncController.CurrentSongBpmTime)
         {
             queuedToClear.Add(obj);
         }
@@ -263,7 +263,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (!timeSyncController.IsPlaying) return;
 
-        if ((obj as BaseChain).TailSongBpmTime >= timeSyncController.CurrentBeat)
+        if ((obj as BaseChain).TailSongBpmTime >= timeSyncController.CurrentSongBpmTime)
         {
             queuedToClear.Add(obj);
         }

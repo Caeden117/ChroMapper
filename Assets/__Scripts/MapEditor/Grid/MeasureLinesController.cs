@@ -40,8 +40,8 @@ public class MeasureLinesController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (atsc.CurrentBeat == previousAtscBeat || !init) return;
-        previousAtscBeat = atsc.CurrentBeat;
+        if (atsc.CurrentSongBpmTime == previousAtscBeat || !init) return;
+        previousAtscBeat = atsc.CurrentSongBpmTime;
         RefreshVisibility();
     }
 
@@ -89,7 +89,7 @@ public class MeasureLinesController : MonoBehaviour
 
     private void RefreshVisibility()
     {
-        var currentBeat = atsc.CurrentBeat;
+        var currentBeat = atsc.CurrentSongBpmTime;
         var beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
         var beatsBehind = beatsAhead / 4f;
 

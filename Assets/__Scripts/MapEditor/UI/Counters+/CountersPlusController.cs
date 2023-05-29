@@ -78,7 +78,7 @@ public class CountersPlusController : MonoBehaviour
     public float OverallSPS => swingsPerSecond.Total.Overall;
 
     public float CurrentBPM
-        => bpm.FindLastBpm(atsc.CurrentBeat)?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        => bpm.FindLastBpm(atsc.CurrentSongBpmTime)?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
     public float RedBlueRatio
     {

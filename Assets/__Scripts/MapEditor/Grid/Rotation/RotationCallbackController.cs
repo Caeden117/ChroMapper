@@ -61,9 +61,9 @@ public class RotationCallbackController : MonoBehaviour
     private void PlayToggle(bool isPlaying)
     {
         if (!IsActive) return;
-        var time = Atsc.CurrentBeat;
+        var jsonTime = Atsc.CurrentJsonTime;
         var rotations = eventGrid.AllRotationEvents.Where(x =>
-            x.JsonTime < time || (x.JsonTime == time && x.Type == (int)EventTypeValue.EarlyLaneRotation));
+            x.JsonTime < jsonTime || (x.JsonTime == jsonTime && x.Type == (int)EventTypeValue.EarlyLaneRotation));
         Rotation = 0;
         if (rotations.Count() > 0)
         {

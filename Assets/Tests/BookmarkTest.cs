@@ -32,29 +32,29 @@ namespace Tests
             var bookmarkManager = Object.FindObjectOfType<BookmarkManager>();
             var atsc = Object.FindObjectOfType<AudioTimeSyncController>();
 
-            atsc.MoveToTimeInBeats(1);
+            atsc.MoveToSongBpmTime(1);
             bookmarkManager.CreateNewBookmark("1");
 
-            atsc.MoveToTimeInBeats(3);
+            atsc.MoveToSongBpmTime(3);
             bookmarkManager.CreateNewBookmark("3");
 
-            atsc.MoveToTimeInBeats(2);
+            atsc.MoveToSongBpmTime(2);
             bookmarkManager.CreateNewBookmark("2");
 
             bookmarkManager.OnPreviousBookmark();
-            Assert.AreEqual(1, atsc.CurrentBeat);
+            Assert.AreEqual(1, atsc.CurrentJsonTime);
 
             bookmarkManager.OnPreviousBookmark();
-            Assert.AreEqual(1, atsc.CurrentBeat);
+            Assert.AreEqual(1, atsc.CurrentJsonTime);
 
             bookmarkManager.OnNextBookmark();
-            Assert.AreEqual(2, atsc.CurrentBeat);
+            Assert.AreEqual(2, atsc.CurrentJsonTime);
 
             bookmarkManager.OnNextBookmark();
-            Assert.AreEqual(3, atsc.CurrentBeat);
+            Assert.AreEqual(3, atsc.CurrentJsonTime);
 
             bookmarkManager.OnNextBookmark();
-            Assert.AreEqual(3, atsc.CurrentBeat);
+            Assert.AreEqual(3, atsc.CurrentJsonTime);
         }
     }
 }

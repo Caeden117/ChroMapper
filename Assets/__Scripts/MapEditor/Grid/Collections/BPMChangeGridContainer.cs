@@ -116,7 +116,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         bpmShaderBpMs[0] = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
         // Grab the last object before grid ends
-        var lastBpmChange = FindLastBpm(AudioTimeSyncController.CurrentBeat - firstVisibleBeatTime, false);
+        var lastBpmChange = FindLastBpm(AudioTimeSyncController.CurrentSongBpmTime - firstVisibleBeatTime, false);
 
         // Plug this last bpm change in
         // Believe it or not, I cannot actually skip this BPM change if it exists
@@ -178,6 +178,14 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         var roundedJsonTime = (float)Math.Round(jsonTime / snap, MidpointRounding.AwayFromZero) * snap;
 
         return JsonTimeToSongBpmTime(roundedJsonTime);
+    }
+
+    public float SongBpmTimeToRoundedJsonTime(float songBpmTime, float snap = -1)
+    {
+        if (snap == -1) snap = 1f / AudioTimeSyncController.GridMeasureSnapping;
+
+        var jsonTime = SongBpmTimeToJsonTime(songBpmTime);
+        return (float)Math.Round(jsonTime / snap, MidpointRounding.AwayFromZero) * snap;
     }
 
     /// <summary>

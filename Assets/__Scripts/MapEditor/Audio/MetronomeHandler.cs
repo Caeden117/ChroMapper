@@ -52,7 +52,7 @@ public class MetronomeHandler : MonoBehaviour
             var collection =
                 BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
                     ObjectType.BpmChange);
-            var toCheck = collection.FindLastBpm(atsc.CurrentSongBeats);
+            var toCheck = collection.FindLastBpm(atsc.CurrentAudioBeats);
             if (lastBpmChange != toCheck)
             {
                 lastBpmChange = toCheck;
@@ -105,17 +105,17 @@ public class MetronomeHandler : MonoBehaviour
             var collection =
                 BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
                     ObjectType.BpmChange);
-            lastBpmChange = collection.FindLastBpm(atsc.CurrentSongBeats);
+            lastBpmChange = collection.FindLastBpm(atsc.CurrentAudioBeats);
             lastBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
             if (lastBpmChange != null)
             {
-                var differenceInSongBpm = atsc.CurrentSongBeats - lastBpmChange.JsonTime;
+                var differenceInSongBpm = atsc.CurrentAudioBeats - lastBpmChange.JsonTime;
                 var differenceInLastBpm = differenceInSongBpm * lastBpmChange.Bpm / atsc.Song.BeatsPerMinute;
                 beatProgress = differenceInLastBpm % 1;
             }
             else
             {
-                beatProgress = atsc.CurrentSongBeats % 1;
+                beatProgress = atsc.CurrentAudioBeats % 1;
             }
         }
     }

@@ -356,7 +356,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             if (data == null) continue;
 
-            var currentJsonTime = bpmChangesContainer.SongBpmTimeToJsonTime(atsc.CurrentBeat);
+            var currentJsonTime = bpmChangesContainer.SongBpmTimeToJsonTime(atsc.CurrentSongBpmTime);
             var newJsonTime = currentJsonTime + data.JsonTime;
 
             var newData = BeatmapFactory.Clone(data);
