@@ -238,9 +238,8 @@ namespace Beatmap.Animations
             }
             if (WorldPosition.Count > 0)
             {
-                WorldTarget.localPosition = Aggregate(ref WorldPosition, Vector3.zero, (a, b) => a + b);
                 AnimationTrack.UpdatePosition(0);
-                container.transform.localPosition = Vector3.zero;
+                container.transform.localPosition = Aggregate(ref WorldPosition, Vector3.zero, (a, b) => a + b);
             }
             if (container != null)
             {
