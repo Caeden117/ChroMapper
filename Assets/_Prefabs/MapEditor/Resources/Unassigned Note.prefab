@@ -56,7 +56,7 @@ MonoBehaviour:
   Animator: {fileID: 2511166697914245830}
   simpleBlock: {fileID: 5917998450345237402}
   complexBlock: {fileID: 8487697771764994487}
-  directionTarget: {fileID: 720881814448263661}
+  directionTarget: {fileID: 6368550486330930640}
   noteRenderer:
   - {fileID: 3686148892469938315}
   - {fileID: 8922317231100721677}
@@ -84,8 +84,6 @@ MonoBehaviour:
   Atsc: {fileID: 0}
   tracksManager: {fileID: 0}
   LocalTarget: {fileID: 2772469630699406285}
-  ScaleTarget: {fileID: 2772469630699406285}
-  RotationTarget: {fileID: 2772469630699406285}
   WorldTarget: {fileID: 0}
   LocalRotation: []
   WorldRotation: []

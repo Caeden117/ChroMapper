@@ -13,7 +13,7 @@ namespace Beatmap.Containers
 
         [SerializeField] private GameObject simpleBlock;
         [SerializeField] private GameObject complexBlock;
-        [SerializeField] public GameObject directionTarget;
+        [SerializeField] public Transform directionTarget;
 
         [SerializeField] private List<MeshRenderer> noteRenderer;
         [SerializeField] private MeshRenderer bombRenderer;
@@ -133,7 +133,7 @@ namespace Beatmap.Containers
         {
             var container = Instantiate(notePrefab).GetComponent<NoteContainer>();
             container.NoteData = noteData;
-            container.directionTarget.transform.localEulerAngles = Directionalize(noteData);
+            container.directionTarget.localEulerAngles = Directionalize(noteData);
             return container;
         }
 

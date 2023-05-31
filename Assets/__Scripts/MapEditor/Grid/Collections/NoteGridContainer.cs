@@ -99,7 +99,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         noteAppearanceSo.SetNoteAppearance(note);
         note.Setup();
         note.SetBomb(noteData.Type == (int)NoteType.Bomb);
-        note.directionTarget.transform.localEulerAngles = NoteContainer.Directionalize(noteData);
+        note.directionTarget.localEulerAngles = NoteContainer.Directionalize(noteData);
 
         if (!note.Animator.AnimatedTrack)
         {
@@ -132,6 +132,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         objectsAtSameTime.Clear();
         foreach (var x in LoadedContainers)
         {
+            // TODO: Skip fake notes
             if (!(x.Key.JsonTime - Epsilon <= obj.JsonTime && x.Key.JsonTime + Epsilon >= obj.JsonTime &&
                   (x.Key as BaseNote).Type == (obj as BaseNote).Type))
             {
@@ -175,8 +176,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
             if (a.CutDirection == (int)NoteCutDirection.Any &&
                 b.CutDirection == (int)NoteCutDirection.Any)
             {
-                containerA.directionTarget.transform.localEulerAngles = Vector3.forward * angle;
-                containerB.directionTarget.transform.localEulerAngles = Vector3.forward * angle;
+                containerA.directionTarget.localEulerAngles = Vector3.forward * angle;
+                containerB.directionTarget.localEulerAngles = Vector3.forward * angle;
             }
             else
             {
@@ -185,11 +186,11 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
                 // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
                 if (Mathf.Abs(angle) <= 40)
                 {
-                    containerA.directionTarget.transform.localEulerAngles = originalA + (Vector3.forward * angle);
+                    containerA.directionTarget.localEulerAngles = originalA + (Vector3.forward * angle);
                     if (b.CutDirection == (int)NoteCutDirection.Any && !a.IsMainDirection)
-                        containerB.directionTarget.transform.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
+                        containerB.directionTarget.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
                     else
-                        containerB.directionTarget.transform.localEulerAngles = originalB + (Vector3.forward * angle);
+                        containerB.directionTarget.localEulerAngles = originalB + (Vector3.forward * angle);
                 }
             }
         }
@@ -198,7 +199,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
             foreach (var toReset in objectsAtSameTime)
             {
                 var direction = NoteContainer.Directionalize(toReset.ObjectData as BaseNote);
-                (toReset as NoteContainer).directionTarget.transform.localEulerAngles = direction;
+                (toReset as NoteContainer).directionTarget.localEulerAngles = direction;
             }
         }
     }

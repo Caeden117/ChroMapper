@@ -19,8 +19,8 @@ namespace Tests.Util
         {
             obstaclePlacement.queuedData = obstacle;
             obstaclePlacement.RoundedJsonTime = obstaclePlacement.queuedData.JsonTime;
-            obstaclePlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0,
-                obstaclePlacement.queuedData.Duration * EditorScaleController.EditorScale);
+            obstaclePlacement.instantiatedContainer.SetScale(new Vector3(0, 0,
+                obstaclePlacement.queuedData.Duration * EditorScaleController.EditorScale));
             obstaclePlacement.ApplyToMap(); // Starts placement
             obstaclePlacement.ApplyToMap(); // Completes placement
         }
