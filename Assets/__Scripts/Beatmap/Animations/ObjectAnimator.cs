@@ -73,6 +73,10 @@ namespace Beatmap.Animations
             {
                 container.UpdateGridPosition();
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
+                if (container is NoteContainer nc)
+                {
+                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref OpacityArrow, 1.0f, (a, b) => a * b));
+                }
                 container.UpdateMaterials();
             }
         }
@@ -238,24 +242,6 @@ namespace Beatmap.Animations
                 AnimationTrack.UpdatePosition(0);
                 container.transform.localPosition = Vector3.zero;
             }
-            if (container is NoteContainer note && note.NoteData.Type != (int)NoteType.Bomb && OpacityArrow.Count > 0)
-            {
-                if (Aggregate(ref OpacityArrow, 1.0f, (a, b) => a * b) < 0.5f)
-                {
-                    note.SetArrowVisible(false);
-                    note.SetDotVisible(false);
-                }
-                else if (note.NoteData.CutDirection != (int)NoteCutDirection.Any)
-                {
-                    note.SetArrowVisible(true);
-                    note.SetDotVisible(false);
-                }
-                else
-                {
-                    note.SetArrowVisible(false);
-                    note.SetDotVisible(true);
-                }
-            }
             if (container != null)
             {
                 if (Colors.Count > 0)
@@ -264,6 +250,11 @@ namespace Beatmap.Animations
                     var color = Aggregate(ref Colors, Color.white, (a, b) => a * b);
                     (container as NoteContainer)?.SetColor(color);
                     (container as ObstacleContainer)?.SetColor(color);
+                }
+
+                if (container is NoteContainer nc)
+                {
+                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref OpacityArrow, 1.0f, (a, b) => a * b));
                 }
 
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref Opacity, 1.0f, (a, b) => a * b));

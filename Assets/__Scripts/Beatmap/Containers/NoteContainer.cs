@@ -22,6 +22,7 @@ namespace Beatmap.Containers
         [SerializeField] private SpriteRenderer swingArcRenderer;
 
         [SerializeField] public BaseNote NoteData;
+        public MaterialPropertyBlock arrowMaterialPropertyBlock;
 
         public override BaseObject ObjectData
         {
@@ -47,6 +48,11 @@ namespace Beatmap.Containers
                 MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
 
                 UpdateMaterials();
+            }
+
+            if (arrowMaterialPropertyBlock == null)
+            {
+                arrowMaterialPropertyBlock = new MaterialPropertyBlock();
             }
 
             SetArcVisible(NoteGridContainer.ShowArcVisualizer);
@@ -149,6 +155,7 @@ namespace Beatmap.Containers
             UpdateCollisionGroups();
 
             MaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
+            arrowMaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
             SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0);
             UpdateMaterials();
         }
@@ -164,6 +171,8 @@ namespace Beatmap.Containers
             foreach (var renderer in noteRenderer) renderer.SetPropertyBlock(MaterialPropertyBlock);
             foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
             bombRenderer.SetPropertyBlock(MaterialPropertyBlock);
+            dotRenderer.SetPropertyBlock(arrowMaterialPropertyBlock);
+            arrowRenderer.SetPropertyBlock(arrowMaterialPropertyBlock);
         }
     }
 }
