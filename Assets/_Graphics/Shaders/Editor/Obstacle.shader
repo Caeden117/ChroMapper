@@ -5,6 +5,7 @@
         _ColorTint("Base Color", Color) = (0.5, 0, 0, 0)
         _FadeSize("Fade Size", Float) = 1
         _MainAlpha("Main Alpha", Float) = 1
+        _OpaqueAlpha("OpaqueAlpha", Float) = 1
         _Rotation("Rotation", Float) = 0
         _WorldScale("World Scale", Vector) = (1, 3.5, 1, 1)
     }
@@ -35,6 +36,7 @@
             // Define instanced properties
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float, _MainAlpha)
+                UNITY_DEFINE_INSTANCED_PROP(float, _OpaqueAlpha)
                 UNITY_DEFINE_INSTANCED_PROP(float, _Rotation)
                 UNITY_DEFINE_INSTANCED_PROP(float, _FadeSize)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _ColorTint)
@@ -62,7 +64,7 @@
             v2f vert (appdata v)
             {
                 v2f o;
-                
+
                 UNITY_SETUP_INSTANCE_ID(v);
                 UNITY_TRANSFER_INSTANCE_ID(v, o); // necessary only if you want to access instanced properties in the fragment Shader.
 
@@ -125,6 +127,8 @@
                 {
                     mainAlpha = UNITY_ACCESS_INSTANCED_PROP(Props, _MainAlpha);
                 }
+
+                mainAlpha *= UNITY_ACCESS_INSTANCED_PROP(Props, _OpaqueAlpha);
 
                 /// Coloring ///
                 float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _ColorTint);
