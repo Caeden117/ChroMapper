@@ -31,6 +31,12 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
+        public V3Chain(JSONNode node, bool fake = false)
+            : this(node)
+        {
+            CustomFake = fake;
+        }
+
         public V3Chain(float time, int posX, int posY, int color, int cutDirection,
             float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish,
             JSONNode customData = null) : base(time, posX, posY, color, cutDirection, 0,

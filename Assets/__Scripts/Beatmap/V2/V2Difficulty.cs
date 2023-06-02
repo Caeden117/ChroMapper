@@ -207,6 +207,10 @@ namespace Beatmap.V2
             CustomEvents = CustomEvents.Select(V3ToV2.CustomEvent).Cast<BaseCustomEvent>().ToList();
             EnvironmentEnhancements = EnvironmentEnhancements.Select(V3ToV2.EnvironmentEnhancement)
                 .Cast<BaseEnvironmentEnhancement>().ToList();
+            if (CustomData?.HasKey("fakeColorNotes") ?? false) CustomData.Remove("fakeColorNotes");
+            if (CustomData?.HasKey("fakeBombNotes") ?? false) CustomData.Remove("fakeBombNotes");
+            if (CustomData?.HasKey("fakeObstacles") ?? false) CustomData.Remove("fakeObstacles");
+            if (CustomData?.HasKey("fakeBurstSliders") ?? false) CustomData.Remove("fakeBurstSliders");
         }
 
         public override JSONNode ToJson() => throw new NotImplementedException();

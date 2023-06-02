@@ -56,12 +56,14 @@ namespace Beatmap.V2
             base.ParseCustom();
 
             CustomDirection = (CustomData?.HasKey(CustomKeyDirection) ?? false) ? CustomData?[CustomKeyDirection].AsInt : null;
+            CustomFake = (CustomData?.HasKey("_fake") ?? false) ? CustomData["_fake"].AsBool : false;
         }
 
         protected internal sealed override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
             if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection; else CustomData.Remove(CustomKeyDirection);
+            if (CustomFake) CustomData["_fake"] = true; else CustomData.Remove("_fake");
             return CustomData;
         }
 

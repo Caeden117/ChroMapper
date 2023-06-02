@@ -24,6 +24,12 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
+        public V3BombNote(JSONNode node, bool fake = false)
+            : this(node)
+        {
+            CustomFake = fake;
+        }
+
         public V3BombNote(float time, int posX, int posY, JSONNode customData = null) : base(time, posX, posY,
             customData) =>
             ParseCustom();

@@ -12,6 +12,7 @@ namespace Beatmap.Base.Customs
         JSONNode CustomNoteJumpMovementSpeed { get; set; }
         JSONNode CustomNoteJumpStartBeatOffset { get; set; }
 
+        bool CustomFake { get; set; }
 
         string CustomKeyAnimation { get; }
         string CustomKeyCoordinate { get; }

@@ -53,6 +53,8 @@ namespace Beatmap.Base
 
         public virtual JSONNode CustomNoteJumpStartBeatOffset { get; set; }
 
+        public virtual bool CustomFake { get; set; }
+
         public abstract string CustomKeyAnimation { get; }
         public abstract string CustomKeyCoordinate { get; }
         public abstract string CustomKeyWorldRotation { get; }

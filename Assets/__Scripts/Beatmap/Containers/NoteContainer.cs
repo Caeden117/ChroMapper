@@ -32,7 +32,7 @@ namespace Beatmap.Containers
 
         public Vector2 GridPosition
         {
-            get => Animator.AnimationTrack?.transform.localPosition ?? transform.localPosition;
+            get => Animator.AnimationTrack?.ObjectParentTransform.localPosition ?? transform.localPosition;
         }
 
         public override void Setup()

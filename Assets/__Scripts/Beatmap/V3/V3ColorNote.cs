@@ -28,6 +28,12 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
+        public V3ColorNote(JSONNode node, bool fake = false)
+            : this(node)
+        {
+            CustomFake = fake;
+        }
+
         public V3ColorNote(float time, int posX, int posY, int type, int cutDirection,
             JSONNode customData = null) : base(
             time, posX, posY, type, cutDirection, customData) =>

@@ -125,16 +125,18 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
     {
         // Do not bother refreshing if objects are despawning naturally (while playing back the song)
         if (!objectWasSpawned && isNatural) return;
-        // Do not do special angles for bombs
-        if ((obj as BaseNote).Type == (int)NoteType.Bomb) return;
+        // Do not do special angles for bombs and fakes
+        var note = obj as BaseNote;
+        if (note.Type == (int)NoteType.Bomb || note.CustomFake) return;
+
         // Grab all objects with the same type, and time (within epsilon)
 
         objectsAtSameTime.Clear();
         foreach (var x in LoadedContainers)
         {
-            // TODO: Skip fake notes
-            if (!(x.Key.JsonTime - Epsilon <= obj.JsonTime && x.Key.JsonTime + Epsilon >= obj.JsonTime &&
-                  (x.Key as BaseNote).Type == (obj as BaseNote).Type))
+            if (note.CustomFake
+                || !(x.Key.JsonTime - Epsilon <= obj.JsonTime && x.Key.JsonTime + Epsilon >= obj.JsonTime
+                     && (x.Key as BaseNote).Type == note.Type))
             {
                 continue;
             }

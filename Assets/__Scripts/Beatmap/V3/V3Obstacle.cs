@@ -26,6 +26,12 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
+        public V3Obstacle(JSONNode node, bool fake = false)
+            : this(node)
+        {
+            CustomFake = fake;
+        }
+
         public V3Obstacle(float time, int posX, int posY, float duration, int width, int height,
             JSONNode customData = null) : base(time, posX, posY, duration, width, height, customData) =>
             ParseCustom();

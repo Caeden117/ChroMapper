@@ -48,6 +48,7 @@ namespace Beatmap.Base
             Width = other.Width;
             InternalHeight = other.Height;
             CustomData = other.SaveCustom().Clone();
+            CustomFake = other.CustomFake;
         }
 
         protected BaseObstacle(float time, int posX, int type, float duration, int width,

@@ -282,6 +282,7 @@ namespace Beatmap.Converters
             }
 
             if (n.HasKey("_color")) n.Remove("_color");
+            if (n.HasKey("_fake")) n.Remove("_fake");
             if (n.HasKey("_position")) n.Remove("_position");
             if (n.HasKey("_disableNoteGravity")) n.Remove("_disableNoteGravity");
             if (n.HasKey("_disableNoteLook")) n.Remove("_disableNoteLook");

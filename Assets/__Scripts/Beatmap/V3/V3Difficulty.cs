@@ -62,19 +62,19 @@ namespace Beatmap.V3
                 foreach (var b in BpmEvents) bpmEvents.Add(b.ToJson());
 
                 var colorNotes = new JSONArray();
-                foreach (var n in Notes) colorNotes.Add(n.ToJson());
+                foreach (var n in Notes) if (!n.CustomFake) colorNotes.Add(n.ToJson());
 
                 var bombNotes = new JSONArray();
-                foreach (var b in Bombs) bombNotes.Add(b.ToJson());
+                foreach (var b in Bombs) if (!b.CustomFake)  bombNotes.Add(b.ToJson());
 
                 var obstacles = new JSONArray();
-                foreach (var o in Obstacles) obstacles.Add(o.ToJson());
+                foreach (var o in Obstacles) if (!o.CustomFake) obstacles.Add(o.ToJson());
 
                 var arcs = new JSONArray();
                 foreach (var a in Arcs) arcs.Add(a.ToJson());
 
                 var chains = new JSONArray();
-                foreach (var c in Chains) chains.Add(c.ToJson());
+                foreach (var c in Chains) if (!c.CustomFake) chains.Add(c.ToJson());
 
                 var waypoints = new JSONArray();
                 foreach (var w in Waypoints) waypoints.Add(w.ToJson());
@@ -152,6 +152,34 @@ namespace Beatmap.V3
 
             MainNode["customData"] = CustomData ?? new JSONObject();
             MainNode["customData"].Remove("BPMChanges");
+
+            var fakeColorNotes = new JSONArray();
+            foreach (var n in Notes) if (n.CustomFake) fakeColorNotes.Add(n.ToJson());
+            if (fakeColorNotes.Count > 0)
+                MainNode["customData"]["fakeColorNotes"] = CleanupArray(fakeColorNotes, "b");
+            else
+                MainNode["customData"].Remove("fakeColorNotes");
+
+            var fakeBombNotes = new JSONArray();
+            foreach (var b in Bombs) if (b.CustomFake)  fakeBombNotes.Add(b.ToJson());
+            if (fakeBombNotes.Count > 0)
+                MainNode["customData"]["fakeBombNotes"] = CleanupArray(fakeBombNotes, "b");
+            else
+                MainNode["customData"].Remove("fakeBombNotes");
+
+            var fakeObstacles = new JSONArray();
+            foreach (var o in Obstacles) if (o.CustomFake) fakeObstacles.Add(o.ToJson());
+            if (fakeObstacles.Count > 0)
+                MainNode["customData"]["fakeObstacles"] = CleanupArray(fakeObstacles, "b");
+            else
+                MainNode["customData"].Remove("fakeObstacles");
+
+            var fakeChains = new JSONArray();
+            foreach (var c in Chains) if (c.CustomFake) fakeChains.Add(c.ToJson());
+            if (fakeChains.Count > 0)
+                MainNode["customData"]["fakeChains"] = CleanupArray(fakeChains, "b");
+            else
+                MainNode["customData"].Remove("fakeChains");
 
             if (Bookmarks.Any())
                 MainNode["customData"]["bookmarks"] = CleanupArray(bookmarks, "b");
@@ -378,6 +406,18 @@ namespace Beatmap.V3
                         break;
                     case "customEvents":
                         foreach (JSONNode n in node) customEventsList.Add(new V3CustomEvent(n));
+                        break;
+                    case "fakeColorNotes":
+                        foreach (JSONNode n in node) map.Notes.Add(new V3ColorNote(n, true));
+                        break;
+                    case "fakeBombNotes":
+                        foreach (JSONNode n in node) map.Bombs.Add(new V3BombNote(n, true));
+                        break;
+                    case "fakeObstacles":
+                        foreach (JSONNode n in node) map.Obstacles.Add(new V3Obstacle(n, true));
+                        break;
+                    case "fakeBurstSliders":
+                        foreach (JSONNode n in node) map.Chains.Add(new V3Chain(n, true));
                         break;
                     case "pointDefinitions":
                         // TODO: array is incorrect, but some old v3 NE/Chroma map uses them, temporarily this needs to be here
