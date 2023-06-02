@@ -44,7 +44,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         var obstacle = con as ObstacleContainer;
-        if (!obstacle.IsRotatedByNoodleExtensions)
+        if (!obstacle.IsRotatedByNoodleExtensions && !obstacle.Animator.AnimatedTrack)
         {
             var track = tracksManager.GetTrackAtTime(obj.JsonTime);
             track.AttachContainer(con);

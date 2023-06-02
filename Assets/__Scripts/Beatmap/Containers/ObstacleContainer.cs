@@ -109,7 +109,7 @@ namespace Beatmap.Containers
 
             if (ObstacleData.CustomLocalRotation != null)
                 localRotation = ObstacleData.CustomLocalRotation.ReadVector3();
-            if (ObstacleData.CustomWorldRotation != null)
+            if (ObstacleData.CustomWorldRotation != null && !Animator.AnimatedTrack)
             {
                 if (ObstacleData.CustomWorldRotation.IsNumber)
                     manager.CreateTrack(new Vector3(0, ObstacleData.CustomWorldRotation, 0)).AttachContainer(this);

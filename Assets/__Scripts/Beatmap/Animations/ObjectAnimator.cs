@@ -73,6 +73,7 @@ namespace Beatmap.Animations
             {
                 container.UpdateGridPosition();
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
+                container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", 0);
                 if (container is NoteContainer nc)
                 {
                     nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref OpacityArrow, 1.0f, (a, b) => a * b));
@@ -209,6 +210,8 @@ namespace Beatmap.Animations
             if (AnimatedTrack) {
                 AnimationTrack.UpdatePosition(-1 * time * EditorScaleController.EditorScale);
             }
+            //if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
+            container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", (time_begin > time || time > time_end) ? -1 : 1);
         }
 
         public void LateUpdate()

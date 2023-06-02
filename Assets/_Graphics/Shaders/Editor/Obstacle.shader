@@ -8,6 +8,7 @@
         _OpaqueAlpha("OpaqueAlpha", Float) = 1
         _Rotation("Rotation", Float) = 0
         _WorldScale("World Scale", Vector) = (1, 3.5, 1, 1)
+        _AnimationSpawned("Animation is Spawned", Float) = 0
     }
     SubShader
     {
@@ -41,6 +42,7 @@
                 UNITY_DEFINE_INSTANCED_PROP(float, _FadeSize)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _ColorTint)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _WorldScale)
+                UNITY_DEFINE_INSTANCED_PROP(float, _AnimationSpawned)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             struct appdata
@@ -138,6 +140,16 @@
                 if (mag > 1)
                 {
                     color = normalize(color) * sqrt(mag);
+                }
+
+                float animationSpawned = UNITY_ACCESS_INSTANCED_PROP(Props, _AnimationSpawned);
+                if (animationSpawned > 0)
+                {
+                    return float4(color.rgb, mainAlpha);
+                }
+                else if (animationSpawned < 0)
+                {
+                    return float4(color.rgb, 0);
                 }
 
                 float fadeSize = UNITY_ACCESS_INSTANCED_PROP(Props, _FadeSize);
