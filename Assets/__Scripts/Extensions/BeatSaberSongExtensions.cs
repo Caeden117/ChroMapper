@@ -117,6 +117,7 @@ public static class BeatSaberSongExtensions
         AddToFileDictionary(exportedFiles, song.Directory, song.CoverImageFilename);
         AddToFileDictionary(exportedFiles, song.Directory, song.SongFilename);
         AddToFileDictionary(exportedFiles, song.Directory, "cinema-video.json");
+        AddToFileDictionary(exportedFiles, song.Directory, "BPMInfo.dat");
 
         foreach (var contributor in song.Contributors.DistinctBy(it => it.LocalImageLocation))
         {
