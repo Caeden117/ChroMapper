@@ -70,7 +70,13 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
     //We don't need to check index as that's already done further up the chain
     private void DespawnCallback(bool initial, int index, BaseObject objectData)
     {
-        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
+        if (LoadedContainers.ContainsKey(objectData))
+        {
+            if (!LoadedContainers[objectData].Animator.AnimatedLife)
+                RecycleContainer(objectData);
+            else
+                LoadedContainers[objectData].Animator.ShouldRecycle = true;
+        }
     }
 
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();

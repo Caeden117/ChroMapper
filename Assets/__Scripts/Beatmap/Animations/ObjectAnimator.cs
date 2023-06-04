@@ -34,6 +34,9 @@ namespace Beatmap.Animations
         public List<float> OpacityArrow;
 
         public bool AnimatedTrack { get { return AnimationTrack != null; } }
+        public bool AnimatedLife { get; private set; }
+        public bool ShouldRecycle;
+
         private List<TrackAnimator> tracks = new List<TrackAnimator>();
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
@@ -61,6 +64,8 @@ namespace Beatmap.Animations
             OpacityArrow = new List<float>();
 
             _time = null;
+            AnimatedLife = false;
+            ShouldRecycle = false;
 
             if (LocalTarget != null)
             {
@@ -73,7 +78,8 @@ namespace Beatmap.Animations
             {
                 container.UpdateGridPosition();
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
-                container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", 0);
+                container.MaterialPropertyBlock.SetFloat("_AnimationSpawned", 0);
+                container.MaterialPropertyBlock.SetFloat("_AlwaysOpaque", 0);
                 if (container is NoteContainer nc)
                 {
                     nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref OpacityArrow, 1.0f, (a, b) => a * b));
@@ -210,8 +216,28 @@ namespace Beatmap.Animations
             if (AnimatedTrack) {
                 AnimationTrack.UpdatePosition(-1 * time * EditorScaleController.EditorScale);
             }
-            //if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
-            container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", (time_begin > time || time > time_end) ? -1 : 1);
+            if (container?.ObjectData is BaseGrid obj)
+            {
+                var NoodleAnimationLifetime = (time_begin > time || time > time_end) ? -1 : 1;
+                //if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
+                container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                AnimatedLife =
+                       (_time != null && _time < obj.JsonTime)
+                    || (WorldPosition.Any())
+                    || (obj.CustomFake && time < time_end);
+                if (ShouldRecycle)
+                {
+                    var despawn_time = (WorldPosition.Count() == 0 && !obj.CustomFake)
+                        ? obj.JsonTime
+                        : time_end;
+                    if (time > despawn_time)
+                    {
+                        BeatmapObjectContainerCollection.GetCollectionForType(container.ObjectData.ObjectType).RecycleContainer(container.ObjectData);
+                        AnimatedLife = false;
+                        return;
+                    }
+                }
+            }
         }
 
         public void LateUpdate()

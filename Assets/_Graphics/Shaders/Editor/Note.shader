@@ -14,6 +14,7 @@ Shader "Custom/Note"
 		_ObjectTime("Object Time", Float) = 0
 		[Toggle] _Lit("Lit", Float) = 0
 		[Toggle] _AlwaysTranslucent("AlwaysTranslucent", Float) = 0
+		_AnimationSpawned("AnimationSpawned", Float) = 0
 	}
 	SubShader
 	{
@@ -37,6 +38,7 @@ Shader "Custom/Note"
 				UNITY_DEFINE_INSTANCED_PROP(float, _Rotation)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Lit)
 				UNITY_DEFINE_INSTANCED_PROP(float, _AlwaysTranslucent)
+				UNITY_DEFINE_INSTANCED_PROP(float, _AnimationSpawned)
 				UNITY_DEFINE_INSTANCED_PROP(float, _ObjectTime)
 			UNITY_INSTANCING_BUFFER_END(Props)
 		ENDHLSL
@@ -151,7 +153,7 @@ Shader "Custom/Note"
 				OUT.ScreenPosition = ScreenPosition;
 
 				OUT.positionWS = positionInputs.positionWS;
-					
+
                 //Global platform offset
                 const float4 offset = float4(0, -0.5, -1.5, 0);
 
@@ -178,7 +180,7 @@ Shader "Custom/Note"
 			InputData InitializeInputData(Varyings IN, half3 normalTS)
 			{
 				UNITY_SETUP_INSTANCE_ID(IN); // necessary only if any instanced properties are going to be accessed in the fragment Shader.
-				
+
 				InputData inputData = (InputData)0;
 
 				inputData.positionWS = IN.positionWS;
@@ -260,11 +262,12 @@ Shader "Custom/Note"
 					surfaceData.emission, surfaceData.alpha);
 
 				float isTranslucent = UNITY_ACCESS_INSTANCED_PROP(Props, _AlwaysTranslucent);
+				float animation = UNITY_ACCESS_INSTANCED_PROP(Props, _AnimationSpawned);
 
 				float translucentAlpha = UNITY_ACCESS_INSTANCED_PROP(Props, _TranslucentAlpha);
 				float opaqueAlpha = UNITY_ACCESS_INSTANCED_PROP(Props, _OpaqueAlpha);
-				
-				float alpha = (isTranslucent >= 1 || IN.rotatedPos.w <= 0) ? translucentAlpha : opaqueAlpha;
+
+				float alpha = (animation < 1 && (isTranslucent >= 1 || IN.rotatedPos.w <= 0)) ? translucentAlpha : opaqueAlpha;
 
 				clip(isDithered(IN.ScreenPosition.xy / IN.ScreenPosition.w, alpha));
 

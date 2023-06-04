@@ -260,7 +260,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     pool for future use.
     /// </summary>
     /// <param name="obj">Object whose container will be recycled.</param>
-    protected void RecycleContainer(BaseObject obj)
+    protected internal void RecycleContainer(BaseObject obj)
     {
         if (!obj.HasAttachedContainer) return;
         //Debug.Log($"Recycling container with hash code {obj.GetHashCode()}");
