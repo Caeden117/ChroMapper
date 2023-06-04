@@ -219,7 +219,12 @@ namespace Beatmap.Animations
                 }
             }
             if (AnimatedTrack) {
-                AnimationTrack.UpdatePosition(-1 * time * EditorScaleController.EditorScale);
+                var map_time = (_time == null)
+                    ? Atsc.CurrentSongBpmTime
+                    : BeatmapObjectContainerCollection
+                        .GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
+                        .JsonTimeToSongBpmTime(time);
+                AnimationTrack.UpdatePosition(-1 * map_time * EditorScaleController.EditorScale);
             }
             if (container?.ObjectData is BaseGrid obj)
             {
