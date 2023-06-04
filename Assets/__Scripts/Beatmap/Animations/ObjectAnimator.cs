@@ -50,6 +50,11 @@ namespace Beatmap.Animations
 
             if (AnimatedTrack)
             {
+                if (container.transform.IsChildOf(AnimationTrack.transform))
+                {
+                    var track = tracksManager.GetTrackAtTime(container.ObjectData.JsonTime);
+                    track.AttachContainer(container);
+                }
                 GameObject.Destroy(AnimationTrack.gameObject);
                 AnimationTrack = null;
             }
