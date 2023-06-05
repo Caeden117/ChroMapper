@@ -41,6 +41,8 @@ namespace Beatmap.Base
         public int PosX { get; set; }
         public virtual int PosY { get; set; }
 
+        public float Hjd { get; private set; }
+
         public virtual JSONNode CustomAnimation { get; set; }
 
         public virtual JSONNode CustomCoordinate { get; set; }
@@ -77,6 +79,19 @@ namespace Beatmap.Base
                 PosX = note.PosX;
                 PosY = note.PosY;
             }
+        }
+
+        public override void RecomputeSongBpmTime()
+        {
+            var njs = CustomNoteJumpMovementSpeed?.AsFloat
+                ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
+            var offset = CustomNoteJumpStartBeatOffset?.AsFloat
+                ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
+            var bpm = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(Beatmap.Enums.ObjectType.BpmChange)
+                ?.FindLastBpm(SongBpmTime)
+                ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            Hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
+            base.RecomputeSongBpmTime();
         }
 
         private Vector2 DerivePositionFromData()
