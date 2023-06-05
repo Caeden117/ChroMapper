@@ -48,13 +48,13 @@ namespace Beatmap.Animations
                 var elapsedTime = time - cpd.StartTime;
                 float normalizedTime = cpd.Easing(Mathf.Min(elapsedTime / cpd.Duration, 1));
                 float learpedTime = cpd.StartTime + (normalizedTime * cpd.Duration);
-                return cpd.Interpolate(learpedTime, out var _);
+                return cpd.Interpolate(learpedTime);
             }
 
             // AssignPathAnimation
             // Only one active definition, no interpolate
             if (time > (cpd.StartTime + cpd.Transition)) {
-                return cpd.Interpolate(time, out var _);
+                return cpd.Interpolate(time);
             }
             else
             {

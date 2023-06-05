@@ -27,7 +27,7 @@ namespace Beatmap.Animations
     public class PointDefinition<T> : IPointDefinition, IComparable<PointDefinition<T>>
         where T : struct
     {
-        public List<PointData> Points;
+        public PointData[] Points;
         public float StartTime = 0;
         // For AnimateTrack
         public float Duration = 0;
@@ -36,7 +36,7 @@ namespace Beatmap.Animations
         public Func<float, float> Easing;
 
         public delegate T Parser(JSONArray data, out int i);
-        public delegate T InterpolationHandler(List<PointData> points, int prev, int next, float time);
+        public delegate T InterpolationHandler(PointData[] points, int prev, int next, float time);
 
         // Used for searching ONLY
         public PointDefinition(float start)
@@ -46,12 +46,12 @@ namespace Beatmap.Animations
 
         public PointDefinition(Parser parser, IPointDefinition.UntypedParams p)
         {
-            Points = new List<PointData>();
             StartTime = p.time;
             Transition = p.transition;
             Duration = p.duration;
             Easing = global::Easing.Named(p.easing ?? "easeLinear");
 
+            var _points = new List<PointData>();
             var data = p.points switch {
                 JSONArray arr => arr,
                 JSONString pd => (BeatSaberSongContainer.Instance.Map.PointDefinitions.ContainsKey(pd) ? BeatSaberSongContainer.Instance.Map.PointDefinitions[pd] : throw new Exception($"Missing point definition {pd}")),
@@ -61,26 +61,24 @@ namespace Beatmap.Animations
             foreach (var row in data) {
                 // WTF, Jevk
                 if (row.Value.AsArray == null) {
-                    Points.Add(new PointData(parser, data, p.time_begin, p.time_end));
+                    _points.Add(new PointData(parser, data, p.time_begin, p.time_end));
                     break;
                 }
-                Points.Add(new PointData(parser, row.Value.AsArray, p.time_begin, p.time_end));
+                _points.Add(new PointData(parser, row.Value.AsArray, p.time_begin, p.time_end));
             }
+
+            Points = _points.ToArray();
         }
 
-        public T Interpolate(float time, out bool last)
+        public T Interpolate(float time)
         {
-            last = false;
-
-            var count = Points.Count;
+            var count = Points.Length;
 
             if (count == 0) {
-                last = true;
                 return default;
             }
 
             if (Points[count - 1].Time <= time) {
-                last = true;
                 return Points[count - 1].Value;
             }
 
@@ -109,7 +107,7 @@ namespace Beatmap.Animations
         private void GetIndexes(float time, out int prev, out int next)
         {
             prev = 0;
-            next = Points.Count;
+            next = Points.Length;
 
             while (prev < next - 1)
             {
@@ -184,7 +182,7 @@ namespace Beatmap.Animations
 
     public class PointDataInterpolators
     {
-        public static T LinearLerp<T>(List<PointDefinition<T>.PointData> points, int prev, int next, float time) where T : struct
+        public static T LinearLerp<T>(PointDefinition<T>.PointData[] points, int prev, int next, float time) where T : struct
         {
             return LinearLerpFunc<T>()(points[prev].Value, points[next].Value, time);
         }
@@ -204,31 +202,31 @@ namespace Beatmap.Animations
             };
         }
 
-        public static T CatmullRomLerp<T>(List<PointDefinition<T>.PointData> points, int prev, int next, float time) where T : struct
+        public static T CatmullRomLerp<T>(PointDefinition<T>.PointData[] points, int prev, int next, float time) where T : struct
         {
             return points switch
             {
-                List<PointDefinition<Vector3>.PointData> v => (T)(object)SmoothVectorLerp(v, prev, next, time),
+                PointDefinition<Vector3>.PointData[] v => (T)(object)SmoothVectorLerp(v, prev, next, time),
                 _ => LinearLerp<T>(points, prev, next, time),
             };
         }
 
-        public static T HSVLerp<T>(List<PointDefinition<T>.PointData> points, int prev, int next, float time) where T : struct
+        public static T HSVLerp<T>(PointDefinition<T>.PointData[] points, int prev, int next, float time) where T : struct
         {
-            return typeof(T) switch
+            return points switch
             {
-                var n when n == typeof(Color) => HSVColorLerp((dynamic)points, prev, next, time),
+                PointDefinition<Color>.PointData[] colors => (T)(object)HSVColorLerp(colors, prev, next, time),
                 _ => LinearLerp<T>(points, prev, next, time),
             };
         }
 
-        public static Vector3 SmoothVectorLerp(List<PointDefinition<Vector3>.PointData> points, int a, int b, float time)
+        public static Vector3 SmoothVectorLerp(PointDefinition<Vector3>.PointData[] points, int a, int b, float time)
         {
             // Catmull-Rom Spline
             Vector3 p0 = a - 1 < 0 ? points[a].Value : points[a - 1].Value;
             Vector3 p1 = points[a].Value;
             Vector3 p2 = points[b].Value;
-            Vector3 p3 = b + 1 > points.Count - 1 ? points[b].Value : points[b + 1].Value;
+            Vector3 p3 = b + 1 > points.Length - 1 ? points[b].Value : points[b + 1].Value;
 
             float tt = time * time;
             float ttt = tt * time;
@@ -243,7 +241,7 @@ namespace Beatmap.Animations
             return c;
         }
 
-        public static Color HSVColorLerp(List<PointDefinition<Color>.PointData> points, int a, int b, float time)
+        public static Color HSVColorLerp(PointDefinition<Color>.PointData[] points, int a, int b, float time)
         {
             Color.RGBToHSV(points[a].Value, out float hl, out float sl, out float vl);
             Color.RGBToHSV(points[b].Value, out float hr, out float sr, out float vr);

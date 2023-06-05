@@ -18,36 +18,40 @@ namespace Beatmap.Animations
         public ObjectAnimator animator;
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
+        private IAnimateProperty[] properties = new IAnimateProperty[0];
+
         public List<ObjectAnimator> children = new List<ObjectAnimator>();
         public List<ObjectAnimator> cachedChildren = new List<ObjectAnimator>();
 
-        public void AddEvent(BaseCustomEvent ev)
+        public void SetEvents(List<BaseCustomEvent> events)
         {
-            foreach (var jprop in ev.Data)
+            foreach (var ev in events)
             {
-                var p = new IPointDefinition.UntypedParams
+                foreach (var jprop in ev.Data)
                 {
-                    key = jprop.Key,
-                    points = jprop.Value,
-                    easing = ev.DataEasing,
-                    time = ev.JsonTime,
-                    duration = ev.DataDuration ?? 0,
-                    time_begin = ev.JsonTime,
-                    time_end = ev.JsonTime + (ev.DataDuration ?? 0)
-                };
-                AddPointDef(p, jprop.Key);
+                    var p = new IPointDefinition.UntypedParams
+                    {
+                        key = jprop.Key,
+                        points = jprop.Value,
+                        easing = ev.DataEasing,
+                        time = ev.JsonTime,
+                        duration = ev.DataDuration ?? 0,
+                        time_begin = ev.JsonTime,
+                        time_end = ev.JsonTime + (ev.DataDuration ?? 0)
+                    };
+                    AddPointDef(p, jprop.Key);
+                }
+            }
+
+            properties = new IAnimateProperty[AnimatedProperties.Count];
+            var i = 0;
+            foreach (var prop in AnimatedProperties)
+            {
+                prop.Value.Sort();
+                properties[i++] = prop.Value;
             }
 
             Update();
-        }
-
-        public List<ObjectAnimator> GetChildren()
-        {
-            var list = new List<ObjectAnimator>();
-            children
-                .Where((child) => child.isActiveAndEnabled).ToList()
-                .ForEach((child) => list.Add(child));
-            return list;
         }
 
         private bool preload = false;
@@ -57,13 +61,15 @@ namespace Beatmap.Animations
             var time = Atsc?.CurrentJsonTime ?? 0;
             if (!preload)
             {
-                cachedChildren = GetChildren();
+                cachedChildren = children;
             }
-            foreach (var prop in AnimatedProperties)
+            if (cachedChildren.Count == 0) return;
+            for (var i = 0; i < properties.Length; ++i)
             {
-                if (time >= prop.Value.StartTime)
+                var prop = properties[i];
+                if (time >= prop.StartTime)
                 {
-                    prop.Value.UpdateProperty(time);
+                    prop.UpdateProperty(time);
                 }
             }
         }

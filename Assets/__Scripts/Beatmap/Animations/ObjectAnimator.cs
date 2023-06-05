@@ -33,17 +33,19 @@ namespace Beatmap.Animations
         public List<float> Opacity;
         public List<float> OpacityArrow;
 
-        public bool AnimatedTrack { get { return AnimationTrack != null; } }
-        public bool AnimatedLife { get; private set; }
+        public bool AnimatedTrack { get; private set; } = false;
+        public bool AnimatedLife { get; private set; } = false;
         public bool ShouldRecycle;
 
         private List<TrackAnimator> tracks = new List<TrackAnimator>();
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
+        private IAnimateProperty[] properties = new IAnimateProperty[0];
 
         public void ResetData()
         {
             AnimatedProperties = new Dictionary<string, IAnimateProperty>();
+            properties = new IAnimateProperty[0];
 
             foreach (var track in tracks) track.children.Remove(this);
             tracks.Clear();
@@ -52,11 +54,12 @@ namespace Beatmap.Animations
             {
                 if (container.transform.IsChildOf(AnimationTrack.transform))
                 {
-                    var track = tracksManager.GetTrackAtTime(container.ObjectData.JsonTime);
+                    var track = tracksManager.GetTrackAtTime(container.ObjectData?.JsonTime ?? 0);
                     track.AttachContainer(container);
                 }
                 GameObject.Destroy(AnimationTrack.gameObject);
                 AnimationTrack = null;
+                AnimatedTrack = false;
             }
 
             LocalRotation = new List<Quaternion>();
@@ -186,9 +189,12 @@ namespace Beatmap.Animations
                 }
             }
 
+            properties = new IAnimateProperty[AnimatedProperties.Count];
+            int i = 0;
             foreach (var prop in AnimatedProperties)
             {
                 prop.Value.Sort();
+                properties[i++] = prop.Value;
             }
 
             Update();
@@ -211,13 +217,16 @@ namespace Beatmap.Animations
         {
             var time = _time ?? Atsc?.CurrentJsonTime ?? 0;
 
-            foreach (var prop in AnimatedProperties)
+            var l = properties.Length;
+            for (var i = 0; i < l; ++i)
             {
-                if (time >= prop.Value.StartTime)
+                var prop = properties[i];
+                if (time >= prop.StartTime)
                 {
-                    prop.Value.UpdateProperty(time);
+                    prop.UpdateProperty(time);
                 }
             }
+
             if (AnimatedTrack) {
                 var map_time = (_time == null)
                     ? Atsc.CurrentSongBpmTime
@@ -226,6 +235,7 @@ namespace Beatmap.Animations
                         .JsonTimeToSongBpmTime(time);
                 AnimationTrack.UpdatePosition(-1 * map_time * EditorScaleController.EditorScale);
             }
+
             if (container?.ObjectData is BaseGrid obj)
             {
                 var NoodleAnimationLifetime = (time_begin > time || time > time_end) ? -1 : 1;
@@ -241,7 +251,7 @@ namespace Beatmap.Animations
                     || (obj.CustomFake && time < time_end);
                 if (ShouldRecycle)
                 {
-                    var despawn_time = (WorldPosition.Count() == 0 && !obj.CustomFake)
+                    var despawn_time = (WorldPosition.Count == 0 && !obj.CustomFake)
                         ? obj.JsonTime
                         : time_end;
                     if (time > despawn_time)
@@ -320,6 +330,7 @@ namespace Beatmap.Animations
                 AnimationTrack.ObjectParentTransform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
                 AnimationTrack.transform.localPosition = Vector3.zero;//new Vector3(0, 1.5f, 0);
                 container.transform.localPosition = new Vector3(0, 0, container.transform.localPosition.z);
+                AnimatedTrack = true;
             }
         }
 

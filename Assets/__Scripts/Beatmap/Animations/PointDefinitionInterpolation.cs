@@ -10,8 +10,8 @@ namespace Beatmap.Animations
     {
         public static T Lerp<T>(PointDefinition<T>? prev, PointDefinition<T> next, float interpolation, float time, T _default) where T : struct
         {
-            T start = prev?.Interpolate(time, out var _) ?? _default;
-            T end = next.Interpolate(time, out var _);
+            T start = prev?.Interpolate(time) ?? _default;
+            T end = next.Interpolate(time);
             return (start, end) switch
             {
                 (float f1, float f2) => (T)(object)Mathf.LerpUnclamped(f1, f2, interpolation),

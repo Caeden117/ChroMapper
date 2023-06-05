@@ -90,15 +90,6 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             };
             switch (ev.Type)
             {
-            case "AnimateTrack":
-                if (tracks == null) continue;
-
-                foreach (var tr in tracks)
-                {
-                    var at = tracksManager.CreateAnimationTrack(tr.Value);
-                    at.AddEvent(ev);
-                }
-                break;
             case "AssignTrackParent":
                 var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
                 tracks = ev.DataChildrenTracks switch {
@@ -179,6 +170,12 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
                 }
                 EventsByTrack[track].Add(customEvent);
             }
+        }
+
+        foreach (var track in EventsByTrack)
+        {
+            var at = tracksManager.CreateAnimationTrack(track.Key);
+            at.SetEvents(track.Value.Where(ev => ev.Type == "AnimateTrack").ToList());
         }
     }
 
