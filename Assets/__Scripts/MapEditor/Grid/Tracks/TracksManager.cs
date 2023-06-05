@@ -41,51 +41,11 @@ public class TracksManager : MonoBehaviour
             objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain));
         }
         ObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
-        LoadInitialMap.LevelLoadedEvent += LoadAnimationTracks;
-    }
-
-    // TODO: This should be somewhere else
-    private void LoadAnimationTracks()
-    {
-        var events = BeatmapObjectContainerCollection
-            .GetCollectionForType(ObjectType.CustomEvent)
-            .LoadedObjects
-            .Select(ev => ev as BaseCustomEvent);
-        foreach (var ev in events.Where(ev => ev.Type == "AnimateTrack"))
-        {
-            if (ev.CustomTrack == null) continue;
-            var tracks = ev.CustomTrack switch {
-                JSONArray arr => arr,
-                JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
-            };
-            foreach (var tr in tracks)
-            {
-                var at = CreateAnimationTrack(tr.Value);
-                at.AddEvent(ev);
-            }
-        }
-        foreach (var ev in events.Where(ev => ev.Type == "AssignTrackParent"))
-        {
-            var tracks = ev.DataChildrenTracks switch {
-                JSONArray arr => arr,
-                JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
-            };
-            var parent = CreateAnimationTrack(ev.DataParentTrack);
-            foreach (var tr in tracks)
-            {
-                var at = CreateAnimationTrack(tr.Value);
-                at.track.transform.parent = parent.track.ObjectParentTransform;
-                var animator = at.animator ?? at.gameObject.AddComponent<ObjectAnimator>();
-                animator.SetTrack(at.track, tr.Value);
-                parent.children.Add(animator);
-            }
-        }
     }
 
     private void OnDestroy()
     {
         ObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
-        LoadInitialMap.LevelLoadedEvent -= LoadAnimationTracks;
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]

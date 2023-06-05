@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Beatmap.Animations;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
@@ -16,6 +17,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     [SerializeField] private TextMeshProUGUI customEventLabelPrefab;
     [SerializeField] private Transform customEventLabelTransform;
     [SerializeField] private Transform[] customEventScalingOffsets;
+    [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private ObjectAnimator cameraAnimator;
+    [SerializeField] private GameObject playerCamera;
     private List<string> customEventTypes = new List<string>();
 
     public override ObjectType ContainerType => ObjectType.CustomEvent;
@@ -23,6 +27,10 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     public ReadOnlyCollection<string> CustomEventTypes => customEventTypes.AsReadOnly();
 
     public Dictionary<string, List<BaseCustomEvent>> EventsByTrack;
+
+    private List<float> playerTrackTimes;
+    private List<TrackAnimator> playerTracks;
+    private TrackAnimator currentTrack;
 
     private void Start()
     {
@@ -33,6 +41,98 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             foreach (var t in customEventScalingOffsets)
                 t.gameObject.SetActive(false);
         }
+    }
+
+    // Maybe belongs in CameraController?
+    private void Update()
+    {
+        if ((playerTrackTimes?.Count ?? 0) == 0) return;
+
+        // 1 after last point, inverted (probably)
+        var later = playerTrackTimes.BinarySearch(AudioTimeSyncController.CurrentJsonTime);
+
+        var current = (later < 0)
+            ? (~later) - 1
+            : later;
+
+        if (current < 0)
+        {
+            DisconnectPlayerTrack();
+            return;
+        }
+
+        if (playerTracks[current] != currentTrack)
+        {
+            DisconnectPlayerTrack();
+            currentTrack = playerTracks[current];
+            cameraAnimator.LocalTarget = cameraAnimator.AnimationThis.transform;
+            cameraAnimator.WorldTarget = cameraAnimator.transform;
+            cameraAnimator.enabled = true;
+
+            currentTrack.children.Add(cameraAnimator);
+        }
+    }
+
+    // During refresh? How to update when events are added
+    public void LoadAnimationTracks()
+    {
+        playerTrackTimes = new List<float>();
+        playerTracks = new List<TrackAnimator>();
+        currentTrack = null;
+
+        var events = LoadedObjects.Select(ev => ev as BaseCustomEvent);
+        foreach (var ev in events)
+        {
+            var tracks = ev.CustomTrack switch {
+                JSONArray arr => arr,
+                JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+                _ => null,
+            };
+            switch (ev.Type)
+            {
+            case "AnimateTrack":
+                if (tracks == null) continue;
+
+                foreach (var tr in tracks)
+                {
+                    var at = tracksManager.CreateAnimationTrack(tr.Value);
+                    at.AddEvent(ev);
+                }
+                break;
+            case "AssignTrackParent":
+                var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
+                tracks = ev.DataChildrenTracks switch {
+                    JSONArray arr => arr,
+                    JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+                };
+                foreach (var tr in tracks)
+                {
+                    var at = tracksManager.CreateAnimationTrack(tr.Value);
+                    at.track.transform.parent = parent.track.ObjectParentTransform;
+                    var animator = at.animator ?? at.gameObject.AddComponent<ObjectAnimator>();
+                    animator.SetTrack(at.track, tr.Value);
+                    parent.children.Add(animator);
+                }
+                break;
+            case "AssignPlayerToTrack":
+                playerCamera.SetActive(true);
+                var track = tracksManager.CreateAnimationTrack(ev.CustomTrack);
+                playerTrackTimes.Add(ev.JsonTime);
+                playerTracks.Add(track);
+                break;
+            }
+        }
+    }
+
+    private void DisconnectPlayerTrack()
+    {
+        if (currentTrack == null) return;
+
+        currentTrack.children.Remove(cameraAnimator);
+        currentTrack = null;
+
+        cameraAnimator.ResetData();
+        cameraAnimator.enabled = false;
     }
 
     public void OnAssignObjectstoTrack(InputAction.CallbackContext context)

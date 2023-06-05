@@ -14,7 +14,7 @@ namespace Beatmap.Animations
 {
     public class ObjectAnimator : MonoBehaviour
     {
-        [SerializeField] private GameObject AnimationThis;
+        [SerializeField] public GameObject AnimationThis;
         [SerializeField] private ObjectContainer container;
 
         public Track AnimationTrack;

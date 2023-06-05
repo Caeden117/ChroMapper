@@ -31,6 +31,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     [SerializeField] private float mouseX;
     [SerializeField] private float mouseY;
 
+    [SerializeField] private bool playerCamera;
+
     private readonly Type[] actionMapsDisabledWhileMoving =
     {
         typeof(CMInput.IPlacementControllersActions), typeof(CMInput.INotePlacementActions),
@@ -87,12 +89,13 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
         Camera.fieldOfView = Settings.Instance.CameraFOV;
 
-        if (UIMode.SelectedMode == UIModeType.Playing)
+        if (playerCamera)
         {
             var posY = z < 0 ? 0.25f : 1.8f;
             var posX = x < 0 ? -2f : x > 0 ? 2f : 0;
 
-            transform.SetPositionAndRotation(new Vector3(posX, posY, -6), Quaternion.Euler(new Vector3(0, -posX, 0)));
+            transform.localPosition = new Vector3(posX, posY, -6);
+            transform.localEulerAngles = new Vector3(0, -posX, 0);
 
             return;
         }

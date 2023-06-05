@@ -157,6 +157,7 @@ public class MapLoader : MonoBehaviour
         {
             var events = collection as CustomEventGridContainer;
             events.RefreshEventsByTrack();
+            events.LoadAnimationTracks();
         }
 
         collection.RefreshPool(true);

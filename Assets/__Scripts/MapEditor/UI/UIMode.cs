@@ -18,6 +18,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     [SerializeField] private GameObject modesGameObject;
     [SerializeField] private RectTransform selected;
     [FormerlySerializedAs("_cameraController")] [SerializeField] private CameraController cameraController;
+    [SerializeField] private Camera editorCamera;
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
     [FormerlySerializedAs("_rotationCallbackController")] [SerializeField] private RotationCallbackController rotationCallbackController;
@@ -68,7 +70,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             var currentOption = selected.parent.GetSiblingIndex();
             var nextOption = currentOption + 1;
 
-            var disablePlayingMode = rotationCallbackController.IsActive;
+            var disablePlayingMode = false; //rotationCallbackController.IsActive;
 
             if (nextOption == (int)UIModeType.Playing && disablePlayingMode) nextOption++;
 
@@ -126,16 +128,29 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         {
             case UIModeType.Normal:
                 HideStuff(true, true, true, true, true);
+                playerCamera.enabled = false;
+                editorCamera.enabled = true;
                 break;
             case UIModeType.HideUI:
                 HideStuff(false, true, true, true, true);
+                playerCamera.enabled = false;
+                editorCamera.enabled = true;
                 break;
             case UIModeType.HideGrids:
                 HideStuff(false, false, true, true, true);
+                playerCamera.enabled = false;
+                editorCamera.enabled = true;
                 break;
             case UIModeType.Preview:
+                HideStuff(false, false, false, false, false);
+                playerCamera.enabled = false;
+                editorCamera.enabled = true;
+                OnPlayToggle(atsc.IsPlaying);
+                break;
             case UIModeType.Playing:
                 HideStuff(false, false, false, false, false);
+                playerCamera.enabled = true;
+                editorCamera.enabled = false;
                 OnPlayToggle(atsc.IsPlaying); // kinda jank but it works
                 break;
         }
