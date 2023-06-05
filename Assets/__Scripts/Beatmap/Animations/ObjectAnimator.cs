@@ -231,6 +231,10 @@ namespace Beatmap.Animations
                 var NoodleAnimationLifetime = (time_begin > time || time > time_end) ? -1 : 1;
                 //if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
                 container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                if (container is NoteContainer nc)
+                {
+                    nc.arrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                }
                 AnimatedLife =
                        (_time != null && _time < obj.JsonTime)
                     || (WorldPosition.Any())
