@@ -147,11 +147,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllNotes(bool natural)
     {
-        var realOffsets = useOffsetFromConfig && !useDespawnOffset && (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview);
         //notesContainer.SortObjects();
         curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
         allNotes.Clear();
-        allNotes = new HashSet<BaseObject>(noteGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + (realOffsets ? (x as BaseGrid).Hjd : Offset)));
+        allNotes = new HashSet<BaseObject>(noteGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
         nextNoteIndex = noteGridContainer.LoadedObjects.Count - allNotes.Count;
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
         nextNotes.Clear();
