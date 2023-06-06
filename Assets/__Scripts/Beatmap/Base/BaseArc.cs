@@ -117,5 +117,12 @@ namespace Beatmap.Base
                 MidAnchorMode = arc.MidAnchorMode;
             }
         }
+
+        public override void SwapHeadAndTail()
+        {
+            base.SwapHeadAndTail();
+            (CutDirection, TailCutDirection) = (TailCutDirection, CutDirection);
+            (HeadControlPointLengthMultiplier, TailControlPointLengthMultiplier) = (TailControlPointLengthMultiplier, HeadControlPointLengthMultiplier);
+        }
     }
 }

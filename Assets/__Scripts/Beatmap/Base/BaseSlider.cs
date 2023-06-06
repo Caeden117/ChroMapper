@@ -134,6 +134,16 @@ namespace Beatmap.Base
             }
         }
 
+        public virtual void SwapHeadAndTail()
+        {
+            var tempJsonTime = JsonTime;
+            var tempJsonSongBpmTime = SongBpmTime;
+            SetTimes(tailJsonTime, tailSongBpmTime);
+            SetTailTimes(tempJsonTime, tempJsonSongBpmTime);
+            (PosX, TailPosX) = (TailPosX, PosX);
+            (PosY, TailPosY) = (TailPosY, PosY);
+        }
+
         public Vector2 GetTailPosition() => DerivePositionFromTailData();
 
         private Vector2 DerivePositionFromTailData()
