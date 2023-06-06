@@ -205,8 +205,8 @@ namespace Beatmap.Animations
         {
             ResetData();
 
-            LocalTarget = track.transform;
-            WorldTarget = track.transform.parent;
+            LocalTarget = track.ObjectParentTransform;
+            WorldTarget = track.transform;
         }
 
         private float? _time = null;
