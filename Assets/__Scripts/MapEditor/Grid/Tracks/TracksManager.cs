@@ -99,6 +99,7 @@ public class TracksManager : MonoBehaviour
         var obj = Instantiate(trackPrefab, tracksParent);
         obj.name = name;
         animator = obj.AddComponent<TrackAnimator>();
+        animator.enabled = false;
         animator.Atsc = atsc;
         animator.track = obj.GetComponent<Track>();
         animationTracks.Add(name, animator);

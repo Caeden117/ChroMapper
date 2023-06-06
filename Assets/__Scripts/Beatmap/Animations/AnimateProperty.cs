@@ -18,23 +18,20 @@ namespace Beatmap.Animations
         public Action<T> Setter;
         public T Default;
 
-        public float StartTime { get { return PointDefinitions[0].StartTime; } }
+        public float StartTime { get; private set; } = Mathf.Infinity;
+        private int Count;
 
         public AnimateProperty(List<PointDefinition<T>> points, Action<T> setter, T _default)
         {
             PointDefinitions = points;
             Setter = setter;
             Default = _default;
+            Count = 0;
         }
 
         public T GetLerpedValue(float time)
         {
-            // 1 after last point, inverted (probably)
-            var later = PointDefinitions.BinarySearch(new PointDefinition<T>(time));
-
-            var current = (later < 0)
-                ? (~later) - 1
-                : later;
+            GetIndexes(time, out var current, out var _);
 
             if (current < 0) {
                 return Default;
@@ -72,6 +69,29 @@ namespace Beatmap.Animations
         public void Sort()
         {
             PointDefinitions.Sort();
+            StartTime = PointDefinitions[0].StartTime;
+            Count = PointDefinitions.Count;
+        }
+
+        private void GetIndexes(float time, out int prev, out int next)
+        {
+            prev = 0;
+            next = Count;
+
+            while (prev < next - 1)
+            {
+                int m = (prev + next) / 2;
+                float pointTime = PointDefinitions[m].StartTime;
+
+                if (pointTime < time)
+                {
+                    prev = m;
+                }
+                else
+                {
+                    next = m;
+                }
+            }
         }
     }
 }

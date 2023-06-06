@@ -28,7 +28,7 @@ namespace Beatmap.Animations
         where T : struct
     {
         public PointData[] Points;
-        public float StartTime = 0;
+        public float StartTime { get; private set; } = 0;
         // For AnimateTrack
         public float Duration = 0;
         // For AssignPathAnimation
@@ -136,7 +136,8 @@ namespace Beatmap.Animations
             public PointData(Parser parser, JSONArray data, float tbegin = 0, float tend = 0)
             {
                 Value = parser(data, out int i);
-                if (data.Count > i)
+                var len = data.Count;
+                if (len > i)
                 {
                     // Track or Path animation
                     Time = (tend == 0)
@@ -151,17 +152,18 @@ namespace Beatmap.Animations
                 Easing = global::Easing.Linear;
                 Lerp = PointDataInterpolators.LinearLerp<T>;
 
-                for (; i < data.Count; ++i)
+                for (; i < len; ++i)
                 {
-                    if (((string)data[i]).StartsWith("eas"))
+                    string str = data[i];
+                    if (str[0] == 'e')
                     {
-                        Easing = global::Easing.Named(data[i]);
+                        Easing = global::Easing.Named(str);
                     }
-                    if (((string)data[i]) == "splineCatmullRom")
+                    if (str == "splineCatmullRom")
                     {
                         Lerp = PointDataInterpolators.CatmullRomLerp<T>;
                     }
-                    if (((string)data[i]) == "lerpHSV")
+                    if (str == "lerpHSV")
                     {
                         Lerp = PointDataInterpolators.HSVLerp<T>;
                     }
@@ -188,16 +190,20 @@ namespace Beatmap.Animations
         }
 
         public delegate T LerpFunc<T>(T prev, T next, float time);
+        static LerpFunc<float> LinearFloat = new LerpFunc<float>(Mathf.LerpUnclamped);
+        static LerpFunc<Color> LinearColor = new LerpFunc<Color>(Color.LerpUnclamped);
+        static LerpFunc<Vector3> LinearVector3 = new LerpFunc<Vector3>(Vector3.LerpUnclamped);
+        static LerpFunc<Quaternion> LinearQuaternion = new LerpFunc<Quaternion>(Quaternion.SlerpUnclamped);
 
         public static LerpFunc<T> LinearLerpFunc<T>() where T : struct
         {
             // I hate C#
             return typeof(T) switch
             {
-                var n when n == typeof(float) => (LerpFunc<T>)(object)(new LerpFunc<float>(Mathf.LerpUnclamped)),
-                var n when n == typeof(Color) => (LerpFunc<T>)(object)(new LerpFunc<Color>(Color.LerpUnclamped)),
-                var n when n == typeof(Vector3) => (LerpFunc<T>)(object)(new LerpFunc<Vector3>(Vector3.LerpUnclamped)),
-                var n when n == typeof(Quaternion) => (LerpFunc<T>)(object)(new LerpFunc<Quaternion>(Quaternion.SlerpUnclamped)),
+                var n when n == typeof(float) => (LerpFunc<T>)(object)(LinearFloat),
+                var n when n == typeof(Color) => (LerpFunc<T>)(object)(LinearColor),
+                var n when n == typeof(Vector3) => (LerpFunc<T>)(object)(LinearVector3),
+                var n when n == typeof(Quaternion) => (LerpFunc<T>)(object)(LinearQuaternion),
                 _ => throw new Exception($"Unhandled LerpFunc for type {typeof(T).Name}"),
             };
         }

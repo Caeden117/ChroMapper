@@ -70,6 +70,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             cameraAnimator.enabled = true;
 
             currentTrack.children.Add(cameraAnimator);
+            currentTrack.OnChildrenChanged();
         }
     }
 
@@ -100,9 +101,17 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
                 {
                     var at = tracksManager.CreateAnimationTrack(tr.Value);
                     at.track.transform.parent = parent.track.ObjectParentTransform;
-                    var animator = at.animator ?? at.gameObject.AddComponent<ObjectAnimator>();
-                    animator.SetTrack(at.track, tr.Value);
-                    parent.children.Add(animator);
+                    if (at.animator == null)
+                    {
+                        at.animator = at.gameObject.AddComponent<ObjectAnimator>();
+                        at.animator.SetTrack(at.track, tr.Value);
+                    }
+
+                    if (!parent.children.Contains(at.animator))
+                    {
+                        parent.children.Add(at.animator);
+                        parent.OnChildrenChanged();
+                    }
                 }
                 break;
             case "AssignPlayerToTrack":
@@ -120,6 +129,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         if (currentTrack == null) return;
 
         currentTrack.children.Remove(cameraAnimator);
+        currentTrack.OnChildrenChanged();
         currentTrack = null;
 
         cameraAnimator.ResetData();

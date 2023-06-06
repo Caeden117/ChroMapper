@@ -63,7 +63,12 @@ namespace Beatmap.Animations
             {
                 cachedChildren = children;
             }
-            if (cachedChildren.Count == 0) return;
+            if (cachedChildren.Count == 0)
+            {
+                enabled = false;
+                if (animator != null) animator.enabled = false;
+                return;
+            }
             for (var i = 0; i < properties.Length; ++i)
             {
                 var prop = properties[i];
@@ -72,6 +77,12 @@ namespace Beatmap.Animations
                     prop.UpdateProperty(time);
                 }
             }
+        }
+
+        public void OnChildrenChanged()
+        {
+            enabled = children.Any(o => o.enabled);
+            if (animator != null) animator.enabled = enabled;
         }
 
         // This sucks

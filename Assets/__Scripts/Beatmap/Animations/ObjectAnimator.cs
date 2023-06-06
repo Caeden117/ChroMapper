@@ -42,12 +42,21 @@ namespace Beatmap.Animations
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         private IAnimateProperty[] properties = new IAnimateProperty[0];
 
+        private Vector3? wallSize = null;
+        private Vector3? wallPosition = null;
+        private Quaternion? localRotation = null;
+        private Quaternion? worldRotation = null;
+
         public void ResetData()
         {
             AnimatedProperties = new Dictionary<string, IAnimateProperty>();
             properties = new IAnimateProperty[0];
 
-            foreach (var track in tracks) track.children.Remove(this);
+            foreach (var track in tracks)
+            {
+                track.children.Remove(this);
+                track.OnChildrenChanged();
+            }
             tracks.Clear();
 
             if (AnimatedTrack)
@@ -75,6 +84,11 @@ namespace Beatmap.Animations
             AnimatedLife = false;
             ShouldRecycle = false;
 
+            wallSize = null;
+            wallPosition = null;
+            localRotation = null;
+            worldRotation = null;
+
             if (LocalTarget != null)
             {
                 LocalTarget.localEulerAngles = Vector3.zero;
@@ -90,9 +104,22 @@ namespace Beatmap.Animations
                 container.MaterialPropertyBlock.SetFloat("_AlwaysOpaque", 0);
                 if (container is NoteContainer nc)
                 {
-                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref OpacityArrow, 1.0f, (a, b) => a * b));
+                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
                 }
                 container.UpdateMaterials();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (container?.ObjectData == null)
+            {
+                foreach (var track in tracks)
+                {
+                    track.children.Remove(this);
+                    track.OnChildrenChanged();
+                }
+                tracks.Clear();
             }
         }
 
@@ -115,7 +142,17 @@ namespace Beatmap.Animations
                 ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var _hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
 
-            var duration = (obj is BaseObstacle obs) ? (obs.Duration) : 0;
+            var duration = 0f;
+
+            if (container is ObstacleContainer obs)
+            {
+                duration = obs.ObstacleData.Duration;
+                (wallSize, wallPosition) = obs.ReadSizePosition();
+            }
+            if (obj.CustomLocalRotation is JSONNode rot)
+                localRotation = Quaternion.Euler(rot.ReadVector3());
+            if (obj.CustomWorldRotation is JSONNode wrot)
+                worldRotation = Quaternion.Euler(wrot.ReadVector3());
 
             time_begin = obj.JsonTime - _hjd;
             time_end = obj.JsonTime + duration + _hjd;
@@ -135,6 +172,7 @@ namespace Beatmap.Animations
                     var track = tracksManager.CreateAnimationTrack(tr);
                     track.children.Add(this);
                     track.Preload(this);
+                    track.OnChildrenChanged();
                     this.tracks.Add(track);
 
                     List<BaseCustomEvent> events = null;
@@ -217,6 +255,44 @@ namespace Beatmap.Animations
         {
             var time = _time ?? Atsc?.CurrentJsonTime ?? 0;
 
+            if (container?.ObjectData is BaseGrid obj)
+            {
+                if (localRotation.HasValue)
+                    LocalRotation.Insert(0, localRotation.Value);
+                if (worldRotation.HasValue)
+                    WorldRotation.Insert(0, worldRotation.Value);
+
+                if (container is ObstacleContainer obs)
+                {
+                    OffsetPosition.Add(wallPosition.Value);
+                    Scale.Add(wallSize.Value);
+                }
+
+                var NoodleAnimationLifetime = (time_begin > time || time > time_end) ? -1 : 1;
+                //if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
+                container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                if (container is NoteContainer nc)
+                {
+                    nc.arrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                }
+                AnimatedLife =
+                       (_time != null && _time < obj.JsonTime)
+                    || (WorldPosition.Count > 0)
+                    || (obj.CustomFake && time < time_end);
+                if (ShouldRecycle)
+                {
+                    var despawn_time = (WorldPosition.Count == 0 && !obj.CustomFake)
+                        ? obj.JsonTime
+                        : time_end;
+                    if (time > despawn_time)
+                    {
+                        BeatmapObjectContainerCollection.GetCollectionForType(container.ObjectData.ObjectType).RecycleContainer(container.ObjectData);
+                        AnimatedLife = false;
+                        return;
+                    }
+                }
+            }
+
             var l = properties.Length;
             for (var i = 0; i < l; ++i)
             {
@@ -235,81 +311,41 @@ namespace Beatmap.Animations
                         .JsonTimeToSongBpmTime(time);
                 AnimationTrack.UpdatePosition(-1 * map_time * EditorScaleController.EditorScale);
             }
-
-            if (container?.ObjectData is BaseGrid obj)
-            {
-                var NoodleAnimationLifetime = (time_begin > time || time > time_end) ? -1 : 1;
-                //if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
-                container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
-                if (container is NoteContainer nc)
-                {
-                    nc.arrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
-                }
-                AnimatedLife =
-                       (_time != null && _time < obj.JsonTime)
-                    || (WorldPosition.Any())
-                    || (obj.CustomFake && time < time_end);
-                if (ShouldRecycle)
-                {
-                    var despawn_time = (WorldPosition.Count == 0 && !obj.CustomFake)
-                        ? obj.JsonTime
-                        : time_end;
-                    if (time > despawn_time)
-                    {
-                        BeatmapObjectContainerCollection.GetCollectionForType(container.ObjectData.ObjectType).RecycleContainer(container.ObjectData);
-                        AnimatedLife = false;
-                        return;
-                    }
-                }
-            }
         }
 
         public void LateUpdate()
         {
-            if (container is ObstacleContainer obs)
+            LocalTarget.localRotation = Aggregate(LocalRotation, Quaternion.identity, (a, b) => a * b);
+
+            LocalTarget.localPosition = Aggregate(OffsetPosition, Vector3.zero, (a, b) => a + b);
+
+            LocalTarget.localScale = Aggregate(Scale, Vector3.one, (a, b) => Vector3.Scale(a, b));
+
+            if (WorldTarget is Transform)
             {
-                (var size, var position) = obs.ReadSizePosition();
-                OffsetPosition.Insert(0, position);
-                Scale.Insert(0, size);
-            }
-
-            if ((container?.ObjectData as BaseGrid)?.CustomLocalRotation is JSONNode rot)
-                LocalRotation.Insert(0, Quaternion.Euler(rot));
-            LocalTarget.localRotation = Aggregate(ref LocalRotation, Quaternion.identity, (a, b) => a * b);
-
-            LocalTarget.localPosition = Aggregate(ref OffsetPosition, Vector3.zero, (a, b) => a + b);
-
-            LocalTarget.localScale = Aggregate(ref Scale, Vector3.one, (a, b) => Vector3.Scale(a, b));
-
-            if (WorldTarget != null)
-            {
-                if ((container?.ObjectData is BaseGrid obj) && obj.CustomWorldRotation != null)
-                {
-                    WorldRotation.Insert(0, Quaternion.Euler(obj.CustomWorldRotation));
-                }
-                WorldTarget.localRotation = Aggregate(ref WorldRotation, Quaternion.identity, (a, b) => a * b);
+                WorldTarget.localRotation = Aggregate(WorldRotation, Quaternion.identity, (a, b) => a * b);
             }
             if (WorldPosition.Count > 0)
             {
                 AnimationTrack.UpdatePosition(0);
-                container.transform.localPosition = Aggregate(ref WorldPosition, Vector3.zero, (a, b) => a + b);
+                container.transform.localPosition = Aggregate(WorldPosition, Vector3.zero, (a, b) => a + b);
             }
-            if (container != null)
+            if (container is ObjectContainer)
             {
                 if (Colors.Count > 0)
                 {
                     // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:( TODO
-                    var color = Aggregate(ref Colors, Color.white, (a, b) => a * b);
+                    var color = Aggregate(Colors, Color.white, (a, b) => a * b);
                     (container as NoteContainer)?.SetColor(color);
                     (container as ObstacleContainer)?.SetColor(color);
                 }
 
                 if (container is NoteContainer nc)
                 {
-                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref OpacityArrow, 1.0f, (a, b) => a * b));
+                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(OpacityArrow, 1.0f, (a, b) => a * b));
                 }
 
-                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(ref Opacity, 1.0f, (a, b) => a * b));
+                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(Opacity, 1.0f, (a, b) => a * b));
                 container.UpdateMaterials();
             }
         }
@@ -410,7 +446,7 @@ namespace Beatmap.Animations
             return AnimatedProperties[key] as AnimateProperty<T>;
         }
 
-        private T Aggregate<T>(ref List<T> list, T _default, Func<T, T, T> func)
+        private T Aggregate<T>(List<T> list, T _default, Func<T, T, T> func)
         {
             if (list.Count == 0) return _default;
             var value = list[0];
