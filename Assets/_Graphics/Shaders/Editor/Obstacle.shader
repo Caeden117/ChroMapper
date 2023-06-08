@@ -157,16 +157,7 @@
 
                 float distance = abs(i.rotatedPos.z);
 
-                float t = clamp((distance - circleRadius) / fadeSize, 0, 1);
-
-                if (_OutsideAlpha > 0)
-                {
-                    return float4(color.rgb, mainAlpha);
-                }
-                else
-                {
-                    return float4(color.rgb, lerp(mainAlpha, _OutsideAlpha, t));
-                }
+                return float4(color.rgb, mainAlpha);
             }
             ENDCG
         }
