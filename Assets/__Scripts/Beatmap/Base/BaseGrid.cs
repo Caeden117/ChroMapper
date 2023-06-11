@@ -41,7 +41,16 @@ namespace Beatmap.Base
         public int PosX { get; set; }
         public virtual int PosY { get; set; }
 
+        // Half Jump Duration
         public float Hjd { get; private set; }
+
+        // Half Jump Distance
+        public float Jd { get; private set; }
+
+        public float EditorScale { get; private set; }
+
+        public virtual float SpawnJsonTime { get { return JsonTime - Hjd; } }
+        public virtual float DespawnJsonTime { get { return JsonTime + Hjd; } }
 
         public virtual JSONNode CustomAnimation { get; set; }
 
@@ -91,6 +100,9 @@ namespace Beatmap.Base
                 ?.FindLastBpm(SongBpmTime)
                 ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             Hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
+            var bps = 60f / bpm;
+            EditorScale = 5 / 3f * njs * bps;
+            Jd = Hjd * EditorScale;
             base.RecomputeSongBpmTime();
         }
 

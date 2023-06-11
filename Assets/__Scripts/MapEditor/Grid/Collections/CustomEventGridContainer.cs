@@ -68,6 +68,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             cameraAnimator.LocalTarget = cameraAnimator.AnimationThis.transform;
             cameraAnimator.WorldTarget = cameraAnimator.transform;
             cameraAnimator.enabled = true;
+            cameraAnimator.ResetData();
 
             currentTrack.children.Add(cameraAnimator);
             currentTrack.OnChildrenChanged();

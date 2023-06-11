@@ -30,6 +30,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        UIMode.UIModeSwitched += OnUIModeSwitch;
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -38,11 +39,21 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        UIMode.UIModeSwitched -= OnUIModeSwitch;
     }
 
     private void OnPlayToggle(bool isPlaying)
     {
         if (!isPlaying) RefreshPool();
+    }
+
+    private void OnUIModeSwitch(UIModeType newMode)
+    {
+        // If preview mode changed
+        if (newMode == UIModeType.Normal || newMode == UIModeType.Preview)
+        {
+            RefreshPool(true);
+        }
     }
 
     // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.

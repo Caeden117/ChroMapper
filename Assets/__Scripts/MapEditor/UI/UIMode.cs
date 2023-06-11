@@ -10,6 +10,7 @@ using UnityEngine.Serialization;
 public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 {
     public static UIModeType SelectedMode;
+    public static bool PreviewMode { get; private set; }
     private Vector3 savedCamPosition = Vector3.zero;
     private Quaternion savedCamRotation = Quaternion.identity;
 
@@ -100,7 +101,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
     private void OnPlayToggle(bool playing)
     {
-        if (SelectedMode == UIModeType.Playing || SelectedMode == UIModeType.Preview)
+        if (PreviewMode)
         {
             foreach (var group in mapEditorUi.MainUIGroup)
             {
@@ -119,6 +120,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     public void SetUIMode(int modeID, bool showUIChange = true)
     {
         SelectedMode = (UIModeType)modeID;
+        PreviewMode = (SelectedMode == UIModeType.Playing || SelectedMode == UIModeType.Preview);
         UIModeSwitched?.Invoke(SelectedMode);
         selected.SetParent(modes[modeID].transform, true);
         slideSelectionCoroutine = StartCoroutine(SlideSelection());
@@ -145,13 +147,11 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 HideStuff(false, false, false, false, false);
                 playerCamera.enabled = false;
                 editorCamera.enabled = true;
-                OnPlayToggle(atsc.IsPlaying);
                 break;
             case UIModeType.Playing:
                 HideStuff(false, false, false, false, false);
                 playerCamera.enabled = true;
                 editorCamera.enabled = false;
-                OnPlayToggle(atsc.IsPlaying); // kinda jank but it works
                 break;
         }
 

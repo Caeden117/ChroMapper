@@ -115,6 +115,8 @@ namespace Beatmap.Base
             set => InternalHeight = value;
         }
 
+        public override float DespawnJsonTime { get { return JsonTime + Duration + (Hjd * 0.5f); } }
+
         public virtual JSONNode CustomSize { get; set; }
 
         public abstract string CustomKeySize { get; }

@@ -62,20 +62,14 @@ namespace Beatmap.Containers
             var obstacleEnd = bpmChangeGridContainer?.JsonTimeToSongBpmTime(ObstacleData.JsonTime + ObstacleData.Duration) ?? 0;
             var length = obstacleEnd - obstacleStart;
 
+            // Probably remove this
             //Take half jump duration into account if the setting is enabled.
-            if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls)
+            if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls && !UIMode.PreviewMode)
             {
-                var bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-                var songNoteJumpSpeed = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
-                var songStartBeatOffset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
-
-                var halfJumpDuration =
-                    SpawnParameterHelper.CalculateHalfJumpDuration(songNoteJumpSpeed, songStartBeatOffset, bpm);
-
-                length -= length * Mathf.Abs(length / halfJumpDuration);
+                length -= length * Mathf.Abs(length / ObstacleData.Jd);
             }
 
-            length *= EditorScaleController
+            length *= ObstacleData
                 .EditorScale; // Apply Editor Scale here since it can be overwritten by NE _scale Z
 
             return length;
@@ -91,7 +85,7 @@ namespace Beatmap.Containers
                 new Vector3(
                     Mathf.Abs(bounds.Width),
                     Mathf.Abs(bounds.Height),
-                    Mathf.Abs(length)
+                    length
                 ),
                 new Vector3(
                     bounds.Position + (bounds.Width / 2.0f),

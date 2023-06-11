@@ -97,6 +97,7 @@ namespace Beatmap.Animations
                 if (container is NoteContainer nc)
                 {
                     nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
+                    nc.directionTarget.localPosition = Vector3.zero;
                 }
                 container.UpdateMaterials();
             }
@@ -119,20 +120,8 @@ namespace Beatmap.Animations
         {
             ResetData();
 
-            var isAnimated =
-                    obj.CustomData != null
-                && (obj.CustomTrack != null || obj.CustomAnimation != null);
-            enabled = isAnimated;
-            if (!isAnimated) return;
-
-            var njs = obj.CustomNoteJumpMovementSpeed?.AsFloat
-                ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
-            var offset = obj.CustomNoteJumpStartBeatOffset?.AsFloat
-                ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
-            var bpm = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
-                ?.FindLastBpm(obj.SongBpmTime)
-                ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            var _hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
+            enabled = (UIMode.PreviewMode && tracksManager != null);
+            if (!enabled) return;
 
             var duration = 0f;
 
@@ -143,6 +132,10 @@ namespace Beatmap.Animations
                 OffsetPosition.Preload(wallPosition);
                 Scale.Preload(wallSize);
             }
+            if (container is NoteContainer note)
+            {
+                note.directionTarget.localPosition = new Vector3(0, 0, 0.4f);
+            }
 
             if (obj.CustomLocalRotation is JSONNode rot)
                 LocalRotation.Preload(Quaternion.Euler(rot.ReadVector3()));
@@ -151,8 +144,8 @@ namespace Beatmap.Animations
             if (obj.CustomWorldRotation is JSONNumber yrot)
                 WorldRotation.Preload(Quaternion.Euler(0, yrot, 0));
 
-            time_begin = obj.JsonTime - _hjd;
-            time_end = obj.JsonTime + duration + _hjd;
+            time_begin = obj.SpawnJsonTime;
+            time_end = obj.DespawnJsonTime;
 
             RequireAnimationTrack();
             WorldTarget = AnimationTrack.transform;
@@ -291,12 +284,7 @@ namespace Beatmap.Animations
             }
 
             if (AnimatedTrack) {
-                var map_time = (_time == null)
-                    ? Atsc.CurrentSongBpmTime
-                    : BeatmapObjectContainerCollection
-                        .GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
-                        .JsonTimeToSongBpmTime(time);
-                AnimationTrack.UpdatePosition(-1 * map_time * EditorScaleController.EditorScale);
+                AnimationTrack.UpdateTime(time);
             }
         }
 
@@ -315,9 +303,11 @@ namespace Beatmap.Animations
             {
                 WorldTarget.localRotation = WorldRotation.Get();
             }
+            var time = _time ?? Atsc?.CurrentJsonTime ?? 0;
             if (WorldPosition.Count > 0)
             {
-                AnimationTrack.UpdatePosition(0);
+                if (time_begin < time && time < time_end)
+                    AnimationTrack.UpdatePosition(0);
                 container.transform.localPosition = WorldPosition.Get();
             }
             if (container is ObjectContainer && (Colors.Count > 0 || OpacityArrow.Count > 0 || Opacity.Count > 0))
@@ -354,8 +344,8 @@ namespace Beatmap.Animations
                 AnimationTrack = tracksManager.CreateIndividualTrack(container.ObjectData as BaseGrid);
                 AnimationTrack.AttachContainer(container);
                 AnimationTrack.ObjectParentTransform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
-                AnimationTrack.transform.localPosition = Vector3.zero;//new Vector3(0, 1.5f, 0);
-                container.transform.localPosition = new Vector3(0, 0, container.transform.localPosition.z);
+                AnimationTrack.transform.localPosition = Vector3.zero;
+                container.transform.localPosition = Vector3.zero;
                 AnimatedTrack = true;
             }
         }

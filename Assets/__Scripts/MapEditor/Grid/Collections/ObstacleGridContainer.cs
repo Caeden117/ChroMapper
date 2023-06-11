@@ -26,12 +26,27 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     {
         SpawnSortedObjects = UnsortedObjects
             .Select(o => o as BaseObstacle)
-            .OrderBy(o => o.JsonTime - o.Hjd)
+            .OrderBy(o => o.SpawnJsonTime)
             .ToArray();
         DespawnSortedObjects = UnsortedObjects
             .Select(o => o as BaseObstacle)
-            .OrderBy(o => o.JsonTime + o.Duration + o.Hjd)
+            .OrderBy(o => o.DespawnJsonTime)
             .ToArray();
+        var time = AudioTimeSyncController.CurrentJsonTime;
+        GetIndexes(
+            time,
+            (i) => SpawnSortedObjects[i].SpawnJsonTime,
+            SpawnSortedObjects.Length,
+            out SpawnIndex,
+            out var _
+        );
+        GetIndexes(
+            time,
+            (i) => DespawnSortedObjects[i].DespawnJsonTime,
+            DespawnSortedObjects.Length,
+            out DespawnIndex,
+            out var _
+        );
     }
 
     internal override void SubscribeToCallbacks()
@@ -39,36 +54,65 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         Shader.SetGlobalFloat("_OutsideAlpha", 0.25f);
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         AudioTimeSyncController.TimeChanged += OnTimeChanged;
+        UIMode.UIModeSwitched += OnUIModeSwitch;
     }
 
     internal override void UnsubscribeToCallbacks()
     {
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         AudioTimeSyncController.TimeChanged -= OnTimeChanged;
+        UIMode.UIModeSwitched -= OnUIModeSwitch;
     }
 
     private void OnPlayToggle(bool playing) => Shader.SetGlobalFloat("_OutsideAlpha", playing ? 0 : 0.25f);
+
+    private void OnUIModeSwitch(UIModeType newMode)
+    {
+        // If preview mode disabled (enabled is handled by OnTimeChanged)
+        if (newMode == UIModeType.Normal)
+        {
+            RefreshPool(true);
+        }
+    }
 
     public void UpdateColor(Color obstacle) => obstacleAppearanceSo.DefaultObstacleColor = obstacle;
 
     private bool updateFrame = false;
     internal override void LateUpdate()
     {
-        if (!updateFrame) return;
-        updateFrame = false;
+        if (!UIMode.PreviewMode)
+            base.LateUpdate();
+    }
+
+    private void OnTimeChanged()
+    {
+        if (!UIMode.PreviewMode) return;
+        // TODO: This should be somewhere else, want it to be called after all objects are added
+        if (SpawnSortedObjects is null) {
+            // Whyyyy
+            if (UnsortedObjects.Count == 0) return;
+            SortSpawners();
+        }
 
         var time = AudioTimeSyncController.CurrentJsonTime;
         if (AudioTimeSyncController.IsPlaying)
         {
-            while (SpawnIndex < SpawnSortedObjects.Length && time >= SpawnSortedObjects[SpawnIndex].JsonTime - SpawnSortedObjects[SpawnIndex].Hjd)
+            while (SpawnIndex < SpawnSortedObjects.Length && time + 1f >= SpawnSortedObjects[SpawnIndex].SpawnJsonTime)
             {
                 CreateContainerFromPool(SpawnSortedObjects[SpawnIndex]);
                 ++SpawnIndex;
             }
 
-            while (DespawnIndex < DespawnSortedObjects.Length && time >= DespawnSortedObjects[DespawnIndex].JsonTime + DespawnSortedObjects[DespawnIndex].Duration + DespawnSortedObjects[DespawnIndex].Hjd)
+            while (DespawnIndex < DespawnSortedObjects.Length && time - 1f >= DespawnSortedObjects[DespawnIndex].DespawnJsonTime)
             {
-                RecycleContainer(DespawnSortedObjects[DespawnIndex]);
+                var objectData = DespawnSortedObjects[DespawnIndex];
+                if (LoadedContainers.ContainsKey(objectData))
+                {
+                    if (!LoadedContainers[objectData].Animator.AnimatedLife)
+                        RecycleContainer(objectData);
+                    else
+                        LoadedContainers[objectData].Animator.ShouldRecycle = true;
+                }
                 ++DespawnIndex;
             }
         }
@@ -80,37 +124,24 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
             }
             GetIndexes(
                 time,
-                (i) => SpawnSortedObjects[i].JsonTime - SpawnSortedObjects[i].Hjd,
+                (i) => SpawnSortedObjects[i].SpawnJsonTime,
                 SpawnSortedObjects.Length,
-                out var _,
-                out SpawnIndex
+                out SpawnIndex,
+                out var _
             );
             GetIndexes(
                 time,
-                (i) => DespawnSortedObjects[i].JsonTime + DespawnSortedObjects[i].Duration + DespawnSortedObjects[i].Hjd,
+                (i) => DespawnSortedObjects[i].DespawnJsonTime,
                 DespawnSortedObjects.Length,
-                out var _,
-                out DespawnIndex
+                out DespawnIndex,
+                out var _
             );
-            Debug.Log($"{SpawnIndex} {DespawnIndex}");
-            var toSpawn = SpawnSortedObjects.Where(o => o.JsonTime - o.Hjd <= time && time < o.JsonTime + o.Duration + o.Hjd);
+            var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnJsonTime <= time && time < o.DespawnJsonTime));
             foreach (var obj in toSpawn)
             {
                 CreateContainerFromPool(obj);
             }
         }
-    }
-
-    private void OnTimeChanged()
-    {
-        // TODO: This should be somewhere else, want it to be called after all objects are added
-        if (SpawnSortedObjects is null) {
-            // Whyyyy
-            if (UnsortedObjects.Count == 0) return;
-            SortSpawners();
-        }
-        // spawning needs to happen in LateUpdate or else default cube jumpscare
-        updateFrame = true;
     }
 
     protected override void OnObjectSpawned(BaseObject _, bool __ = false)
