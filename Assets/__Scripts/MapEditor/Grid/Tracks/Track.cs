@@ -17,6 +17,7 @@ public class Track : MonoBehaviour
     private float despawnPosition;
 
     // this number pulled from my ass, but it looks fine
+    // oh, it's actually correct
     const float JUMP_FAR = 500f;
 
     public void AssignRotationValue(Vector3 rotation)

@@ -145,7 +145,8 @@ namespace Beatmap.Animations
                 WorldRotation.Preload(Quaternion.Euler(0, yrot, 0));
 
             time_begin = obj.SpawnJsonTime;
-            time_end = obj.DespawnJsonTime;
+            // Can't use DespawnJsonTime because obstacles jump out at 0.75
+            time_end = obj.JsonTime + duration + obj.Hjd;
 
             RequireAnimationTrack();
             WorldTarget = AnimationTrack.transform;

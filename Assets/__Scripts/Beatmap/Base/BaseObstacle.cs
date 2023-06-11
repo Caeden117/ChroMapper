@@ -115,6 +115,7 @@ namespace Beatmap.Base
             set => InternalHeight = value;
         }
 
+        // Obstacles jump out at 0.75 normal time
         public override float DespawnJsonTime { get { return JsonTime + Duration + (Hjd * 0.5f); } }
 
         public virtual JSONNode CustomSize { get; set; }

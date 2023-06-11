@@ -62,11 +62,10 @@ namespace Beatmap.Containers
             var obstacleEnd = bpmChangeGridContainer?.JsonTimeToSongBpmTime(ObstacleData.JsonTime + ObstacleData.Duration) ?? 0;
             var length = obstacleEnd - obstacleStart;
 
-            // Probably remove this
             //Take half jump duration into account if the setting is enabled.
             if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls && !UIMode.PreviewMode)
             {
-                length -= length * Mathf.Abs(length / ObstacleData.Jd);
+                length -= length * Mathf.Abs(length / ObstacleData.Hjd);
             }
 
             length *= ObstacleData
