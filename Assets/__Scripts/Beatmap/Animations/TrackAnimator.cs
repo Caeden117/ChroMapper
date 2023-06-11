@@ -20,8 +20,9 @@ namespace Beatmap.Animations
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         private IAnimateProperty[] properties = new IAnimateProperty[0];
 
+        public List<TrackAnimator> parents = new List<TrackAnimator>();
         public List<ObjectAnimator> children = new List<ObjectAnimator>();
-        public List<ObjectAnimator> cachedChildren = new List<ObjectAnimator>();
+        public ObjectAnimator[] cachedChildren = new ObjectAnimator[] {};
 
         public void SetEvents(List<BaseCustomEvent> events)
         {
@@ -59,11 +60,7 @@ namespace Beatmap.Animations
         public void Update()
         {
             var time = Atsc?.CurrentJsonTime ?? 0;
-            if (!preload)
-            {
-                cachedChildren = children;
-            }
-            if (cachedChildren.Count == 0)
+            if (cachedChildren.Length == 0)
             {
                 enabled = false;
                 if (animator != null) animator.enabled = false;
@@ -81,17 +78,10 @@ namespace Beatmap.Animations
 
         public void OnChildrenChanged()
         {
-            enabled = children.Any(o => o.enabled);
+            cachedChildren = children.Where(o => o.enabled).ToArray();
+            enabled = cachedChildren.Length > 0;
             if (animator != null) animator.enabled = enabled;
-        }
-
-        // This sucks
-        public void Preload(ObjectAnimator animator)
-        {
-            cachedChildren = new List<ObjectAnimator>() { animator };
-            preload = true;
-            Update();
-            preload = false;
+            parents.ForEach((t) => t.OnChildrenChanged());
         }
 
         private void AddPointDef(IPointDefinition.UntypedParams p, string key)
@@ -138,7 +128,7 @@ namespace Beatmap.Animations
         {
             var pointdef = new PointDefinition<T>(parser, p);
 
-            Action<T> setter = (v) => cachedChildren.ForEach((animator) => _setter(animator, v));
+            Action<T> setter = (v) => { for (var i = 0; i < cachedChildren.Length; ++i) { _setter(cachedChildren[i], v); } };
 
             GetAnimateProperty<T>(p.key, setter, _default).PointDefinitions.Add(pointdef);
         }

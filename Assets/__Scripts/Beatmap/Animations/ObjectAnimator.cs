@@ -24,14 +24,14 @@ namespace Beatmap.Animations
         [SerializeField] public Transform LocalTarget;
         public Transform WorldTarget;
 
-        public List<Quaternion> LocalRotation;
-        public List<Quaternion> WorldRotation;
-        public List<Vector3> OffsetPosition;
-        public List<Vector3> WorldPosition;
-        public List<Vector3> Scale;
-        public List<Color> Colors;
-        public List<float> Opacity;
-        public List<float> OpacityArrow;
+        public Aggregator<Quaternion> LocalRotation;
+        public Aggregator<Quaternion> WorldRotation;
+        public Aggregator<Vector3> OffsetPosition;
+        public Aggregator<Vector3> WorldPosition;
+        public Aggregator<Vector3> Scale;
+        public Aggregator<Color> Colors;
+        public Aggregator<float> Opacity;
+        public Aggregator<float> OpacityArrow;
 
         public bool AnimatedTrack { get; private set; } = false;
         public bool AnimatedLife { get; private set; } = false;
@@ -41,11 +41,6 @@ namespace Beatmap.Animations
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         private IAnimateProperty[] properties = new IAnimateProperty[0];
-
-        private Vector3? wallSize = null;
-        private Vector3? wallPosition = null;
-        private Quaternion? localRotation = null;
-        private Quaternion? worldRotation = null;
 
         public void ResetData()
         {
@@ -71,23 +66,20 @@ namespace Beatmap.Animations
                 AnimatedTrack = false;
             }
 
-            LocalRotation = new List<Quaternion>();
-            WorldRotation = new List<Quaternion>();
-            OffsetPosition = new List<Vector3>();
-            WorldPosition = new List<Vector3>();
-            Scale = new List<Vector3>();
-            Colors = new List<Color>();
-            Opacity = new List<float>();
-            OpacityArrow = new List<float>();
+            LocalRotation = new Aggregator<Quaternion>(Quaternion.identity, (a, b) => a * b);
+            WorldRotation = new Aggregator<Quaternion>(Quaternion.identity, (a, b) => a * b);
+            OffsetPosition = new Aggregator<Vector3>(Vector3.zero, (a, b) => a + b);
+            WorldPosition = new Aggregator<Vector3>(Vector3.zero, (a, b) => a + b);
+            Scale = new Aggregator<Vector3>(Vector3.one, (a, b) => Vector3.Scale(a, b));
+            Colors = new Aggregator<Color>(
+                container?.MaterialPropertyBlock?.GetColor((container is ObstacleContainer) ? "_ColorTint" : "_Color") ?? Color.white,
+                (a, b) => a * b);
+            Opacity = new Aggregator<float>(1.0f, (a, b) => a * b);
+            OpacityArrow = new Aggregator<float>(1.0f, (a, b) => a * b);
 
             _time = null;
             AnimatedLife = false;
             ShouldRecycle = false;
-
-            wallSize = null;
-            wallPosition = null;
-            localRotation = null;
-            worldRotation = null;
 
             if (LocalTarget != null)
             {
@@ -147,12 +139,17 @@ namespace Beatmap.Animations
             if (container is ObstacleContainer obs)
             {
                 duration = obs.ObstacleData.Duration;
-                (wallSize, wallPosition) = obs.ReadSizePosition();
+                (var wallSize, var wallPosition) = obs.ReadSizePosition();
+                OffsetPosition.Preload(wallPosition);
+                Scale.Preload(wallSize);
             }
+
             if (obj.CustomLocalRotation is JSONNode rot)
-                localRotation = Quaternion.Euler(rot.ReadVector3());
-            if (obj.CustomWorldRotation is JSONNode wrot)
-                worldRotation = Quaternion.Euler(wrot.ReadVector3());
+                LocalRotation.Preload(Quaternion.Euler(rot.ReadVector3()));
+            if (obj.CustomWorldRotation is JSONArray wrot)
+                WorldRotation.Preload(Quaternion.Euler(wrot.ReadVector3()));
+            if (obj.CustomWorldRotation is JSONNumber yrot)
+                WorldRotation.Preload(Quaternion.Euler(0, yrot, 0));
 
             time_begin = obj.JsonTime - _hjd;
             time_end = obj.JsonTime + duration + _hjd;
@@ -169,11 +166,7 @@ namespace Beatmap.Animations
                 };
                 foreach (var tr in tracks)
                 {
-                    var track = tracksManager.CreateAnimationTrack(tr);
-                    track.children.Add(this);
-                    track.Preload(this);
-                    track.OnChildrenChanged();
-                    this.tracks.Add(track);
+                    AddParent(tr);
 
                     List<BaseCustomEvent> events = null;
 
@@ -205,8 +198,7 @@ namespace Beatmap.Animations
                     }
                 }
 
-                 var parent = tracksManager.CreateAnimationTrack(tracks[0]);
-                 AnimationTrack.transform.SetParent(parent.track.ObjectParentTransform, false);
+                 AnimationTrack.transform.SetParent(this.tracks[0].track.ObjectParentTransform, false);
             }
 
             // Individual Path Animation
@@ -236,7 +228,6 @@ namespace Beatmap.Animations
             }
 
             Update();
-            LateUpdate();
         }
 
         public void SetTrack(Track track, string name)
@@ -245,6 +236,14 @@ namespace Beatmap.Animations
 
             LocalTarget = track.ObjectParentTransform;
             WorldTarget = track.transform;
+        }
+
+        public void AddParent(string name)
+        {
+            var track = tracksManager.CreateAnimationTrack(name);
+            track.children.Add(this);
+            track.OnChildrenChanged();
+            this.tracks.Add(track);
         }
 
         private float? _time = null;
@@ -257,19 +256,7 @@ namespace Beatmap.Animations
 
             if (container?.ObjectData is BaseGrid obj)
             {
-                if (localRotation.HasValue)
-                    LocalRotation.Insert(0, localRotation.Value);
-                if (worldRotation.HasValue)
-                    WorldRotation.Insert(0, worldRotation.Value);
-
-                if (container is ObstacleContainer obs)
-                {
-                    OffsetPosition.Add(wallPosition.Value);
-                    Scale.Add(wallSize.Value);
-                }
-
-                var NoodleAnimationLifetime = (time_begin > time || time > time_end) ? -1 : 1;
-                //if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
+                var NoodleAnimationLifetime = (time > time_end) ? -1 : 1;
                 container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
                 if (container is NoteContainer nc)
                 {
@@ -315,37 +302,40 @@ namespace Beatmap.Animations
 
         public void LateUpdate()
         {
-            LocalTarget.localRotation = Aggregate(LocalRotation, Quaternion.identity, (a, b) => a * b);
+            if (LocalRotation.Count > 0)
+                LocalTarget.localRotation = LocalRotation.Get();
 
-            LocalTarget.localPosition = Aggregate(OffsetPosition, Vector3.zero, (a, b) => a + b);
+            if (OffsetPosition.Count > 0)
+                LocalTarget.localPosition = OffsetPosition.Get();
 
-            LocalTarget.localScale = Aggregate(Scale, Vector3.one, (a, b) => Vector3.Scale(a, b));
+            if (Scale.Count > 0)
+                LocalTarget.localScale = Scale.Get();
 
-            if (WorldTarget is Transform)
+            if (WorldTarget is Transform && WorldRotation.Count > 0)
             {
-                WorldTarget.localRotation = Aggregate(WorldRotation, Quaternion.identity, (a, b) => a * b);
+                WorldTarget.localRotation = WorldRotation.Get();
             }
             if (WorldPosition.Count > 0)
             {
                 AnimationTrack.UpdatePosition(0);
-                container.transform.localPosition = Aggregate(WorldPosition, Vector3.zero, (a, b) => a + b);
+                container.transform.localPosition = WorldPosition.Get();
             }
-            if (container is ObjectContainer)
+            if (container is ObjectContainer && (Colors.Count > 0 || OpacityArrow.Count > 0 || Opacity.Count > 0))
             {
                 if (Colors.Count > 0)
                 {
                     // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:( TODO
-                    var color = Aggregate(Colors, Color.white, (a, b) => a * b);
-                    (container as NoteContainer)?.SetColor(color);
-                    (container as ObstacleContainer)?.SetColor(color);
+                    var color = Colors.Get();
+                    container.MaterialPropertyBlock
+                        .SetColor((container is ObstacleContainer) ? "_ColorTint" : "_Color", color);
                 }
 
                 if (container is NoteContainer nc)
                 {
-                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(OpacityArrow, 1.0f, (a, b) => a * b));
+                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", OpacityArrow.Get());
                 }
 
-                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Aggregate(Opacity, 1.0f, (a, b) => a * b));
+                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Opacity.Get());
                 container.UpdateMaterials();
             }
         }
@@ -446,16 +436,49 @@ namespace Beatmap.Animations
             return AnimatedProperties[key] as AnimateProperty<T>;
         }
 
-        private T Aggregate<T>(List<T> list, T _default, Func<T, T, T> func)
+        // I should never be allowed to use a profiler
+        public class Aggregator<T> where T : struct
         {
-            if (list.Count == 0) return _default;
-            var value = list[0];
-            for (int i = 1; i < list.Count; ++i)
+            public int Count = 0;
+            public Func<T, T, T> func;
+            public T _default;
+            public int Keep = 0;
+
+            public Aggregator(T _default, Func<T, T, T> func)
             {
-                value = func(value, list[i]);
+                this._default = _default;
+                this.func = func;
             }
-            list.Clear();
-            return value;
+
+            public void Add(T v)
+            {
+                // This shouldn't ever go above 3, but check anyway
+                if (Count >= 4)
+                    return;
+                else
+                    items[Count] = v;
+                ++Count;
+            }
+
+            public void Preload(T v)
+            {
+                Add(v);
+                ++Keep;
+            }
+
+            public T Get()
+            {
+                if (Count == 0) return _default;
+                var value = items[0];
+                for (int i = 1; i < Count; ++i)
+                {
+                    value = func(value, items[i]);
+                }
+                Count = Keep;
+                return value;
+            }
+
+            private T[] items = new T[4];
         }
     }
 }

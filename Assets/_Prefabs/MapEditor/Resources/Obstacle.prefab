@@ -72,14 +72,7 @@ MonoBehaviour:
   tracksManager: {fileID: 0}
   LocalTarget: {fileID: 1863206299174286176}
   WorldTarget: {fileID: 0}
-  LocalRotation: []
-  WorldRotation: []
-  OffsetPosition: []
-  WorldPosition: []
-  Scale: []
-  Colors: []
-  Opacity: []
-  OpacityArrow: []
+  ShouldRecycle: 0
 --- !u!1 &1892633844858192
 GameObject:
   m_ObjectHideFlags: 0

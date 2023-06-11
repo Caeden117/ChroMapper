@@ -110,7 +110,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
                     if (!parent.children.Contains(at.animator))
                     {
                         parent.children.Add(at.animator);
-                        parent.OnChildrenChanged();
+                        at.parents.Add(parent);
+                        at.OnChildrenChanged();
                     }
                 }
                 break;

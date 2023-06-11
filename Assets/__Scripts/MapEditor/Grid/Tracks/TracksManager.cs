@@ -149,7 +149,7 @@ public class TracksManager : MonoBehaviour
                 if (container.Animator?.AnimatedTrack ?? false) continue;
                 var track = GetTrackAtTime(container.ObjectData.JsonTime);
                 track.AttachContainer(container);
-                //container.UpdateGridPosition();
+                container.UpdateGridPosition();
             }
         }
     }
