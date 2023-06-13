@@ -151,6 +151,8 @@ namespace Beatmap.Animations
             RequireAnimationTrack();
             WorldTarget = AnimationTrack.transform;
 
+            bool bug = false;
+
             if (obj.CustomTrack != null)
             {
                 List<string> tracks = obj.CustomTrack switch {
@@ -176,6 +178,7 @@ namespace Beatmap.Animations
                     {
                         foreach (var jprop in ce.Data)
                         {
+                            if (jprop.Key == "_definitePosition" || jprop.Key == "definitePosition") bug = true;
                             var p = new IPointDefinition.UntypedParams
                             {
                                 key = $"track_{jprop.Key}",
@@ -200,6 +203,7 @@ namespace Beatmap.Animations
             {
                 foreach (var jprop in obj.CustomAnimation.AsObject)
                 {
+                    if (jprop.Key == "_definitePosition" || jprop.Key == "definitePosition") bug = true;
                     var p = new IPointDefinition.UntypedParams
                     {
                         key = jprop.Key,
@@ -211,6 +215,15 @@ namespace Beatmap.Animations
                     };
                     AddPointDef(p, jprop.Key);
                 }
+            }
+
+            // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            if (bug && (obj.CustomData["_disableNoteGravity"]?.AsBool ?? obj.CustomData["disableNoteGravity"]?.AsBool ?? false))
+            {
+                Debug.LogError("disableNoteGravity is bugged when combined with definitePosition, please remove it!");
+                var position = AnimationTrack.ObjectParentTransform.localPosition;
+                position.y = (position.y * -0.1f) + 1;
+                AnimationTrack.ObjectParentTransform.localPosition = position;
             }
 
             properties = new IAnimateProperty[AnimatedProperties.Count];
@@ -315,7 +328,6 @@ namespace Beatmap.Animations
             {
                 if (Colors.Count > 0)
                 {
-                    // SetColor is on both NoteContainer and ObstacleContainer, but not on an interface/base class >:( TODO
                     var color = Colors.Get();
                     container.MaterialPropertyBlock
                         .SetColor((container is ObstacleContainer) ? "_ColorTint" : "_Color", color);
