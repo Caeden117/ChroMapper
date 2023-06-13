@@ -48,7 +48,7 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = new Vector3(-1.5f, 0.5f, ChainData.SongBpmTime * EditorScaleController.EditorScale);
+            transform.localPosition = new Vector3(-1.5f, 1.5f, ChainData.SongBpmTime * EditorScaleController.EditorScale);
             GenerateChain();
             UpdateCollisionGroups();
         }
@@ -210,7 +210,7 @@ namespace Beatmap.Containers
                     if (!IsHeadNote((BaseNote)note)) continue;
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
-                    AttachedHead.transform.localScale = BaseChain.ChainScale;
+                    AttachedHead.directionTarget.localScale = BaseChain.ChainScale;
                     AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                     break;
                 }
@@ -225,7 +225,7 @@ namespace Beatmap.Containers
                 }
                 else
                 {
-                    AttachedHead.transform.localScale = BaseChain.ChainScale;
+                    AttachedHead.directionTarget.localScale = BaseChain.ChainScale;
                     AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                 }
             }

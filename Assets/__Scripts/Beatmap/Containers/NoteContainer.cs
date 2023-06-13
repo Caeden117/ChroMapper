@@ -151,6 +151,7 @@ namespace Beatmap.Containers
                                           new Vector3(0, 1.5f, NoteData.SongBpmTime * EditorScaleController.EditorScale);
             }
             transform.localScale = NoteData.GetScale();
+            directionTarget.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             UpdateCollisionGroups();
 

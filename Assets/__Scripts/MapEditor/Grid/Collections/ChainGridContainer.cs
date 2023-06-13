@@ -22,7 +22,10 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
 
     public override ObjectContainer CreateContainer()
     {
-        return ChainContainer.SpawnChain(null, ref chainPrefab);
+        var con = ChainContainer.SpawnChain(null, ref chainPrefab);
+        con.Animator.Atsc = AudioTimeSyncController;
+        con.Animator.tracksManager = tracksManager;
+        return con;
     }
 
     internal override void LateUpdate()
@@ -41,8 +44,12 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         chain.ChainData = chainData;
         chainAppearanceSO.SetChainAppearance(chain);
         chain.Setup();
-        var track = tracksManager.GetTrackAtTime(chainData.JsonTime);
-        track.AttachContainer(con);
+
+        if (!chain.Animator.AnimatedTrack)
+        {
+            var track = tracksManager.GetTrackAtTime(chainData.JsonTime);
+            track.AttachContainer(con);
+        }
     }
 
     internal override void SubscribeToCallbacks()

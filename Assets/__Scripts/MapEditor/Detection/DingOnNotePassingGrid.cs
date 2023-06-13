@@ -139,14 +139,14 @@ public class DingOnNotePassingGrid : MonoBehaviour
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
         if (objectData.SongBpmTime - container.AudioTimeSyncController.CurrentSongBpmTime <= -0.5f) return;
 
-        // Skip fake notes
-        if ((objectData as BaseNote).CustomFake) return;
-
         bool shortCut;
         if (Settings.Instance.Load_MapV3 && objectData is BaseChain)
         {
             return; // Chains don't have a hitsound. May want to impplement hitsounds for links later.
         }
+
+        // Skip fake notes
+        if ((objectData as BaseNote).CustomFake) return;
 
         //actual ding stuff
         if (objectData.SongBpmTime == lastCheckedTime || !NoteTypeToDing[((BaseNote)objectData).Type]) return;
