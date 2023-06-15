@@ -113,7 +113,9 @@ public class TracksManager : MonoBehaviour
         var potition = -1 * obj.JsonTime * EditorScaleController.EditorScale;
         var track = Instantiate(trackPrefab, tracksParent).GetComponent<Track>();
         track.UpdatePosition(potition);
-        track.AssignRotationValue(obj.CustomWorldRotation ?? Vector3.zero);
+
+        float rotation = GetRotationAtTime(obj.SongBpmTime);
+        track.AssignRotationValue(obj.CustomWorldRotation ?? new Vector3(0, rotation, 0));
         track.gameObject.name = $"Track Object {obj.JsonTime}";
         return track;
     }
@@ -121,11 +123,18 @@ public class TracksManager : MonoBehaviour
     public Track GetTrackAtTime(float beatInSongBpm)
     {
         if (!Settings.Instance.RotateTrack) return CreateTrack(0);
+        float rotation = GetRotationAtTime(beatInSongBpm);
+
+        return CreateTrack(rotation);
+    }
+
+    public float GetRotationAtTime(float beatInSongBpm)
+    {
         float rotation = 0;
         foreach (var rotationEvent in eventGrid.AllRotationEvents)
         {
-            if (rotationEvent.JsonTime > beatInSongBpm + 0.001f) continue;
-            if (Mathf.Approximately(rotationEvent.JsonTime, beatInSongBpm) &&
+            if (rotationEvent.SongBpmTime > beatInSongBpm + 0.001f) continue;
+            if (Mathf.Approximately(rotationEvent.SongBpmTime, beatInSongBpm) &&
                 rotationEvent.Type == (int)EventTypeValue.LateLaneRotation)
             {
                 continue;
@@ -135,8 +144,7 @@ public class TracksManager : MonoBehaviour
             if (rotation < LowestRotation) LowestRotation = rotation;
             if (rotation > HighestRotation) HighestRotation = rotation;
         }
-
-        return CreateTrack(rotation);
+        return rotation;
     }
 
     public void RefreshTracks()
@@ -147,7 +155,7 @@ public class TracksManager : MonoBehaviour
             {
                 if (container is ObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
                 if (container.Animator?.AnimatedTrack ?? false) continue;
-                var track = GetTrackAtTime(container.ObjectData.JsonTime);
+                var track = GetTrackAtTime(container.ObjectData.SongBpmTime);
                 track.AttachContainer(container);
                 container.UpdateGridPosition();
             }

@@ -58,7 +58,7 @@ namespace Beatmap.Animations
             {
                 if (container.transform.IsChildOf(AnimationTrack.transform))
                 {
-                    var track = tracksManager.GetTrackAtTime(container.ObjectData?.JsonTime ?? 0);
+                    var track = tracksManager.GetTrackAtTime(container.ObjectData?.SongBpmTime ?? 0);
                     track.AttachContainer(container);
                 }
                 GameObject.Destroy(AnimationTrack.gameObject);
@@ -297,7 +297,8 @@ namespace Beatmap.Animations
                 }
             }
 
-            if (AnimatedTrack) {
+            if (AnimatedTrack)
+            {
                 AnimationTrack.UpdateTime(time);
             }
         }

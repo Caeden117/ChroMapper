@@ -7,7 +7,7 @@ using Beatmap.Enums;
 using UnityEngine;
 
 /// <summary>
-/// <see cref="ChainGridContainer"/> doesn't contain note(even the head note on the chain). 
+/// <see cref="ChainGridContainer"/> doesn't contain note(even the head note on the chain).
 /// It only detects whether there is a note happening to be a head note
 /// </summary>
 public class ChainGridContainer : BeatmapObjectContainerCollection
@@ -47,7 +47,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
 
         if (!chain.Animator.AnimatedTrack)
         {
-            var track = tracksManager.GetTrackAtTime(chainData.JsonTime);
+            var track = tracksManager.GetTrackAtTime(chainData.SongBpmTime);
             track.AttachContainer(con);
         }
     }

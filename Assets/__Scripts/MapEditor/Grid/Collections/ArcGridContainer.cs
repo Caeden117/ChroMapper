@@ -82,7 +82,7 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
         arcAppearanceSO.SetArcAppearance(arc);
         arc.Setup();
         arc.SetIndicatorBlocksActive(false);
-        var track = tracksManager.GetTrackAtTime(arcData.JsonTime);
+        var track = tracksManager.GetTrackAtTime(arcData.SongBpmTime);
         track.AttachContainer(con);
     }
 
@@ -96,7 +96,7 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
     }
 
     /// <summary>
-    /// Only compute several splines per frame, avoid burst stuck.   
+    /// Only compute several splines per frame, avoid burst stuck.
     /// </summary>
     /// <returns></returns>
     private void ScheduleRecomputePosition()
