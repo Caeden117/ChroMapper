@@ -240,10 +240,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         if (!addsToSelection)
             DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
-        if (first.JsonTime > second.JsonTime)
+        if (first.SongBpmTime > second.SongBpmTime)
             (first, second) = (second, first);
         GetObjectTypes(new[] { first, second }, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
-        ForEachObjectBetweenSongBpmTimeByGroup(first.JsonTime, second.JsonTime, hasNoteOrObstacle, hasEvent, hasBpmChange,
+        ForEachObjectBetweenSongBpmTimeByGroup(first.SongBpmTime, second.SongBpmTime, hasNoteOrObstacle, hasEvent, hasBpmChange,
             (collection, beatmapObject) =>
             {
                 if (SelectedObjects.Contains(beatmapObject)) return;
@@ -387,14 +387,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         // While we're at it, we will also overwrite the entire section if we have to.
         if (overwriteSection)
         {
-            var start = pasted.First().JsonTime;
-            var end = pasted.First().JsonTime;
+            var start = pasted.First().SongBpmTime;
+            var end = pasted.First().SongBpmTime;
             foreach (var beatmapObject in pasted)
             {
-                if (start > beatmapObject.JsonTime)
-                    start = beatmapObject.JsonTime;
-                if (end < beatmapObject.JsonTime)
-                    end = beatmapObject.JsonTime;
+                if (start > beatmapObject.SongBpmTime)
+                    start = beatmapObject.SongBpmTime;
+                if (end < beatmapObject.SongBpmTime)
+                    end = beatmapObject.SongBpmTime;
             }
 
             GetObjectTypes(pasted, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
