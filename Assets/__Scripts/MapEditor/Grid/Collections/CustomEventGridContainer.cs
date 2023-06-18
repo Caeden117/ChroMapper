@@ -64,6 +64,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
                     if (at.animator == null)
                     {
                         at.animator = at.gameObject.AddComponent<ObjectAnimator>();
+                        at.animator.Atsc = AudioTimeSyncController;
                         at.animator.SetTrack(at.track, tr.Value);
                     }
 

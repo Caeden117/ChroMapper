@@ -20,7 +20,7 @@ namespace Beatmap.Animations
             public float duration = 0;
             public float time_begin;
             public float time_end;
-            // TODO: Repeat
+            public int repeat = 0;
         }
     }
 
@@ -58,13 +58,18 @@ namespace Beatmap.Animations
                 _ => new JSONArray(), // TODO: Does this unset properly?
             };
 
-            foreach (var row in data) {
-                // WTF, Jevk
-                if (row.Value.AsArray == null) {
-                    _points.Add(new PointData(parser, data, p.time_begin, p.time_end));
-                    break;
+            for (var i = 0; i <= p.repeat; ++i)
+            {
+                var time_begin = p.time_begin + (i * Duration);
+                var time_end = p.time_end + (i * Duration);
+                foreach (var row in data) {
+                    // WTF, Jevk
+                    if (row.Value.AsArray == null) {
+                        _points.Add(new PointData(parser, data, time_begin, time_end));
+                        break;
+                    }
+                    _points.Add(new PointData(parser, row.Value.AsArray, time_begin, time_end));
                 }
-                _points.Add(new PointData(parser, row.Value.AsArray, p.time_begin, p.time_end));
             }
 
             Points = _points.ToArray();

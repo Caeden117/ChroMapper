@@ -161,6 +161,9 @@ Shader "Basic Gradient"
                     case 30:
                         t = Bounce_InOut(t);
                         break;
+                    case 31:
+                        t = Step(t);
+                        break;
                 }
 
                 float4 color = lerp(a, b, t);

@@ -44,6 +44,7 @@ namespace Beatmap.Base.Customs
         public JSONNode Data { get; set; }
         public float? DataDuration { get; set; }
         public string? DataEasing { get; set; }
+        public int? DataRepeat { get; set; }
         public JSONNode DataChildrenTracks { get; set; }
         public JSONNode DataParentTrack { get; set; }
 
@@ -52,6 +53,7 @@ namespace Beatmap.Base.Customs
         public abstract string KeyData { get; }
         public abstract string DataKeyDuration { get; }
         public abstract string DataKeyEasing { get; }
+        public abstract string DataKeyRepeat { get; }
         public abstract string DataKeyChildrenTracks { get; }
         public abstract string DataKeyParentTrack { get; }
 
@@ -73,6 +75,7 @@ namespace Beatmap.Base.Customs
             CustomTrack = Data.HasKey(CustomKeyTrack) ? Data[CustomKeyTrack] : null;
             DataDuration = Data.HasKey(DataKeyDuration) ? Data[DataKeyDuration] : null;
             DataEasing = Data.HasKey(DataKeyEasing) ? Data[DataKeyEasing] : null;
+            DataRepeat = Data.HasKey(DataKeyRepeat) ? Data[DataKeyRepeat] : null;
             DataChildrenTracks = Data.HasKey(DataKeyChildrenTracks) ? Data[DataKeyChildrenTracks] : null;
             DataParentTrack = Data.HasKey(DataKeyParentTrack) ? Data[DataKeyParentTrack] : null;
         }
@@ -81,7 +84,8 @@ namespace Beatmap.Base.Customs
         {
             if (CustomTrack != null) Data[CustomKeyTrack] = CustomTrack; else Data.Remove(CustomKeyTrack);
             if (DataDuration != null) Data[DataKeyDuration] = DataDuration; else Data.Remove(DataKeyDuration);
-            if (DataEasing != null) Data[DataKeyEasing] = DataDuration; else Data.Remove(DataKeyEasing);
+            if (DataEasing != null) Data[DataKeyEasing] = DataEasing; else Data.Remove(DataKeyEasing);
+            if (DataRepeat != null) Data[DataKeyRepeat] = DataRepeat; else Data.Remove(DataKeyRepeat);
             if (DataChildrenTracks != null) Data[DataKeyChildrenTracks] = DataChildrenTracks; else Data.Remove(DataKeyChildrenTracks);
             if (DataParentTrack != null) Data[DataKeyParentTrack] = DataParentTrack; else Data.Remove(DataKeyParentTrack);
             return Data;

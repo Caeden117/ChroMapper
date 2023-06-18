@@ -109,7 +109,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading)
             return; //Dont move camera if we are in pause menu or loading screen
 
-        Camera.fieldOfView = Settings.Instance.CameraFOV;
+        Camera.fieldOfView = Settings.Instance.CameraFOV * (playerCamera ? 1.5f : 1);
 
         if (playerCamera)
         {
@@ -140,10 +140,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
                 currentTrack.children.Add(cameraAnimator);
                 currentTrack.OnChildrenChanged();
             }
-            return;
         }
-
-        if (canMoveCamera)
+        else if (canMoveCamera)
         {
             if (CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.ICameraActions)))
             {

@@ -323,7 +323,10 @@ namespace Beatmap.Animations
             {
                 if (time_begin < time && time < time_end)
                     AnimationTrack.UpdatePosition(0);
-                container.transform.localPosition = WorldPosition.Get();
+                if (!(container is null))
+                    container.transform.localPosition = WorldPosition.Get();
+                else
+                    WorldTarget.localPosition = WorldPosition.Get();
             }
             if (container is ObjectContainer && (Colors.Count > 0 || OpacityArrow.Count > 0 || Opacity.Count > 0))
             {
@@ -385,13 +388,18 @@ namespace Beatmap.Animations
                 AddPointDef<Quaternion>((Quaternion v) => WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
-            case "offsetPosition":
-            case "localPosition":
                 AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
+            case "offsetPosition":
+            case "localPosition":
+                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                break;
             case "_definitePosition":
-            case "definitePosition":
                 AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
+                break;
+            case "position":
+            case "definitePosition":
+                AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
             case "scale":

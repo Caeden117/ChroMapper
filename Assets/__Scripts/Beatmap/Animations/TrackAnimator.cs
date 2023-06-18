@@ -38,7 +38,8 @@ namespace Beatmap.Animations
                         time = ev.JsonTime,
                         duration = ev.DataDuration ?? 0,
                         time_begin = ev.JsonTime,
-                        time_end = ev.JsonTime + (ev.DataDuration ?? 0)
+                        time_end = ev.JsonTime + (ev.DataDuration ?? 0),
+                        repeat = ev.DataRepeat ?? 0
                     };
                     AddPointDef(p, jprop.Key);
                 }
@@ -101,13 +102,19 @@ namespace Beatmap.Animations
                 AddPointDef<Quaternion>((ObjectAnimator animator, Quaternion v) => animator.LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_rotation":
+            case "rotation":
             case "offsetWorldRotation":
                 AddPointDef<Quaternion>((ObjectAnimator animator, Quaternion v) => animator.WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
+                AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
+                break;
             case "offsetPosition":
             case "localPosition":
-                AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                break;
+            case "position":
+                AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.WorldPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
             case "scale":
