@@ -44,6 +44,10 @@ namespace Beatmap.V3.Customs
 
         public override string KeyLightID { get; } = "lightID";
 
+        public override string GeometryKeyType { get; } = "type";
+
+        public override string GeometryKeyMaterial { get; } = "material";
+
         public override int? LightID
         {
             get

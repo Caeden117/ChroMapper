@@ -237,6 +237,31 @@ namespace Beatmap.Animations
             Update();
         }
 
+        public void SetGeometry(BaseEnvironmentEnhancement eh)
+        {
+            ResetData();
+
+            LocalTarget = AnimationThis.transform;
+            WorldTarget = container.transform;
+
+            if (eh.Scale is Vector3 scale)
+                Scale.Preload(scale);
+            if (eh.Position is Vector3 p)
+                WorldPosition.Preload(p);
+            if (eh.LocalPosition is Vector3 lp)
+                OffsetPosition.Preload(lp);
+            if (eh.Rotation is Vector3 r)
+                WorldRotation.Preload(Quaternion.Euler(r.x, r.y, r.z));
+            if (eh.LocalRotation is Vector3 lr)
+                LocalRotation.Preload(Quaternion.Euler(lr.x, lr.y, lr.z));
+
+            if (eh.Track != null)
+            {
+                AddParent(eh.Track);
+                container.transform.SetParent(this.tracks[0].track.ObjectParentTransform, false);
+            }
+        }
+
         public void SetTrack(Track track, string name)
         {
             ResetData();

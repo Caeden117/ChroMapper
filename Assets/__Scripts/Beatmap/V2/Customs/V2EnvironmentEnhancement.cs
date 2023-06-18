@@ -44,6 +44,10 @@ namespace Beatmap.V2.Customs
 
         public override string KeyLightID { get; } = "_lightID";
 
+        public override string GeometryKeyType { get; } = "_type";
+
+        public override string GeometryKeyMaterial { get; } = "_material";
+
         public override JSONNode ToJson()
         {
             var node = new JSONObject();

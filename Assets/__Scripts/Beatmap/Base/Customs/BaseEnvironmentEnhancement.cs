@@ -65,6 +65,9 @@ namespace Beatmap.Base.Customs
         public abstract string KeyComponents { get; }
         public abstract string KeyLightID { get; }
 
+        public abstract string GeometryKeyType { get; }
+        public abstract string GeometryKeyMaterial { get; }
+
         private static Vector3? ReadVector3OrNull(JSONNode node, string key) =>
             !node.HasKey(key) || node[key].IsNull ? (Vector3?)null : node[key].ReadVector3();
 

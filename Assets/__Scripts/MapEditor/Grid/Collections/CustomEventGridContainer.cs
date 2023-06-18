@@ -14,6 +14,7 @@ using UnityEngine.InputSystem;
 public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInput.ICustomEventsContainerActions
 {
     [SerializeField] private GameObject customEventPrefab;
+    [SerializeField] private GameObject geometryPrefab;
     [SerializeField] private TextMeshProUGUI customEventLabelPrefab;
     [SerializeField] private Transform customEventLabelTransform;
     [SerializeField] private Transform[] customEventScalingOffsets;
@@ -83,6 +84,13 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
                 break;
             }
         }
+
+        BeatSaberSongContainer.Instance.Map.EnvironmentEnhancements.ForEach((eh) => {
+            if (eh.Geometry is JSONNode)
+            {
+                var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
+            }
+        });
     }
 
     public void OnAssignObjectstoTrack(InputAction.CallbackContext context)
