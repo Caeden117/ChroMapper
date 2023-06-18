@@ -5,7 +5,6 @@ namespace Beatmap.Base
 {
     public abstract class BaseColorBoostEvent : BaseEvent
     {
-        private bool toggle;
         protected BaseColorBoostEvent() => Type = 5;
 
         protected BaseColorBoostEvent(BaseColorBoostEvent other)
@@ -36,12 +35,8 @@ namespace Beatmap.Base
 
         public bool Toggle
         {
-            get => toggle;
-            set
-            {
-                toggle = value;
-                Value = toggle ? 1 : 0;
-            }
+            get => Value == 1;
+            set => Value = value ? 1 : 0;
         }
 
         public override bool IsColorBoostEvent() => true;
