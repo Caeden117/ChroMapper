@@ -48,6 +48,7 @@ public class Settings
     public bool DontPlacePerfectZeroDurationWalls = true;
     public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
     public bool PrecisionPlacementGrid = false;
+    public bool PrecisionPlacementGridIsToggle = false;
     public int PrecisionPlacementGridPrecision = 4;
     public bool ShowMoreAccurateFastWalls = false;
     public bool QuickNoteEditing = false;

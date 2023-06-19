@@ -266,8 +266,20 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     public virtual void OnMousePositionUpdate(InputAction.CallbackContext context) =>
         MousePosition = Mouse.current.position.ReadValue();
 
-    public void OnPrecisionPlacementToggle(InputAction.CallbackContext context) =>
-        UsePrecisionPlacement = context.performed && Settings.Instance.PrecisionPlacementGrid;
+    public void OnPrecisionPlacementToggle(InputAction.CallbackContext context)
+    {
+        if (Settings.Instance.PrecisionPlacementGridIsToggle)
+        {
+            if (context.started && !context.performed)
+            {
+                UsePrecisionPlacement = !UsePrecisionPlacement;
+            }
+        }
+        else
+        {
+            UsePrecisionPlacement = context.performed && Settings.Instance.PrecisionPlacementGrid;
+        }
+    }
 
     protected virtual bool TestForType<T>(Intersections.IntersectionHit hit, ObjectType type)
         where T : MonoBehaviour

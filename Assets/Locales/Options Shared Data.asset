@@ -1131,6 +1131,14 @@ MonoBehaviour:
     m_Key: scroll.wall.bounds.invert.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 247458017744977920
+    m_Key: map.precisionplacement.toggle.behaviour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458202206273536
+    m_Key: map.precisionplacement.toggle.behaviour.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

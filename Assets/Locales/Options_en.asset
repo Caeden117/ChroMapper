@@ -1244,6 +1244,14 @@ MonoBehaviour:
       of v3 walls.
     m_Metadata:
       m_Items: []
+  - m_Id: 247458202206273536
+    m_Localized: Whether precision placement key activates on hold or as a toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458017744977920
+    m_Localized: Precision Placement Toggle Behaviour
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
