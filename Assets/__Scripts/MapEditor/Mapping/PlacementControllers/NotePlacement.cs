@@ -58,7 +58,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     {
         get
         {
-            if (Settings.Instance.PrecisionPlacementGrid)
+            if (Settings.Instance.PrecisionPlacementMode != PrecisionPlacementMode.Off)
                 return base.IsValid || (UsePrecisionPlacement && IsActive && !NodeEditorController.IsActive);
             return base.IsValid;
         }

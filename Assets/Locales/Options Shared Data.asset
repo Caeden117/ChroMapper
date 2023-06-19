@@ -1132,11 +1132,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 247458017744977920
-    m_Key: map.precisionplacement.toggle.behaviour
+    m_Key: map.precisionplacement.mode
     m_Metadata:
       m_Items: []
   - m_Id: 247458202206273536
-    m_Key: map.precisionplacement.toggle.behaviour.tooltip
+    m_Key: map.precisionplacement.mode.tooltip
     m_Metadata:
       m_Items: []
   m_Metadata:

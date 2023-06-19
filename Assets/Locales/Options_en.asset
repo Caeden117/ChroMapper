@@ -1245,11 +1245,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 247458202206273536
-    m_Localized: Whether precision placement key activates on hold or as a toggle
+    m_Localized: 'If enabled, an extended grid will appear when using the precision
+      placement keybind while placing walls or notes. '
     m_Metadata:
       m_Items: []
   - m_Id: 247458017744977920
-    m_Localized: Precision Placement Toggle Behaviour
+    m_Localized: Precision Placement Mode
     m_Metadata:
       m_Items: []
   references:

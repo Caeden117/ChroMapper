@@ -47,8 +47,8 @@ public class Settings
     public bool Reset360DisplayOnCompleteTurn = true;
     public bool DontPlacePerfectZeroDurationWalls = true;
     public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
-    public bool PrecisionPlacementGrid = false;
-    public bool PrecisionPlacementGridIsToggle = false;
+    public bool PrecisionPlacementGrid = false; // Old setting, migrated to below
+    public PrecisionPlacementMode PrecisionPlacementMode = PrecisionPlacementMode.Off;
     public int PrecisionPlacementGridPrecision = 4;
     public bool ShowMoreAccurateFastWalls = false;
     public bool QuickNoteEditing = false;
@@ -327,6 +327,12 @@ public class Settings
 
     private void UpdateOldSettings()  //Put code in here to transfer any settings that are fundamentally changed and require conversion from an old setting to a new setting
     {
+        if (PrecisionPlacementGrid)
+        {
+            PrecisionPlacementMode = PrecisionPlacementMode.Hold;
+            PrecisionPlacementGrid = false;
+        }
+
         if (PyramidEventModels)
         {
             EventModel = EventModelType.Pyramid;

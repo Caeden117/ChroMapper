@@ -268,16 +268,20 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public void OnPrecisionPlacementToggle(InputAction.CallbackContext context)
     {
-        if (Settings.Instance.PrecisionPlacementGridIsToggle)
+        switch (Settings.Instance.PrecisionPlacementMode)
         {
-            if (context.started && !context.performed)
-            {
-                UsePrecisionPlacement = !UsePrecisionPlacement;
-            }
-        }
-        else
-        {
-            UsePrecisionPlacement = context.performed && Settings.Instance.PrecisionPlacementGrid;
+            case PrecisionPlacementMode.Off:
+                UsePrecisionPlacement = false;
+                break;
+            case PrecisionPlacementMode.Hold:
+                UsePrecisionPlacement = context.performed;
+                break;
+            case PrecisionPlacementMode.Toggle:
+                if (context.started && !context.performed)
+                {
+                    UsePrecisionPlacement = !UsePrecisionPlacement;
+                }
+                break;
         }
     }
 
