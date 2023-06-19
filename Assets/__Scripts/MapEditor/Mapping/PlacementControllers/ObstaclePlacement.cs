@@ -78,7 +78,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             if (UsePrecisionPlacement)
             {
-                var precision = Atsc.GridMeasureSnapping;
+                var precision = Settings.Instance.PrecisionPlacementGridPrecision;
                 roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
                 roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
                 roundedHit = new Vector3(roundedHit.x, roundedHit.y, SongBpmTime * EditorScaleController.EditorScale);
@@ -133,7 +133,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
         if (UsePrecisionPlacement)
         {
-            var precision = Atsc.GridMeasureSnapping;
+            var precision = Settings.Instance.PrecisionPlacementGridPrecision;
             roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
             roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
 
