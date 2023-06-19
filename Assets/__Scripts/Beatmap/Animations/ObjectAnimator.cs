@@ -123,6 +123,8 @@ namespace Beatmap.Animations
             enabled = (UIMode.PreviewMode && tracksManager != null);
             if (!enabled) return;
 
+            obj.RecomputeSongBpmTime();
+
             var duration = 0f;
 
             if (container is ObstacleContainer obs)
