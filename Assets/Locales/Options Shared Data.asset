@@ -1068,11 +1068,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211668371329187840
-    m_Key: map.precisionplacementprecision
+    m_Key: map.precisionplacementgridprecision
     m_Metadata:
       m_Items: []
   - m_Id: 211668392346845184
-    m_Key: map.precisionplacementprecision.tooltip
+    m_Key: map.precisionplacementgridprecision.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 235582333795893248
@@ -1129,6 +1129,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 236258109335732224
     m_Key: scroll.wall.bounds.invert.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458017744977920
+    m_Key: map.precisionplacement.mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458202206273536
+    m_Key: map.precisionplacement.mode.tooltip
     m_Metadata:
       m_Items: []
   m_Metadata:
