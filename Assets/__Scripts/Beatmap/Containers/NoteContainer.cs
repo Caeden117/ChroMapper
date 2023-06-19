@@ -172,8 +172,11 @@ namespace Beatmap.Containers
             foreach (var renderer in noteRenderer) renderer.SetPropertyBlock(MaterialPropertyBlock);
             foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
             bombRenderer.SetPropertyBlock(MaterialPropertyBlock);
-            dotRenderer.SetPropertyBlock(arrowMaterialPropertyBlock);
-            arrowRenderer.SetPropertyBlock(arrowMaterialPropertyBlock);
+            if (dotRenderer != null)
+            {
+                dotRenderer.SetPropertyBlock(arrowMaterialPropertyBlock);
+                arrowRenderer.SetPropertyBlock(arrowMaterialPropertyBlock);
+            }
         }
     }
 }
