@@ -46944,7 +46944,7 @@ PrefabInstance:
     - target: {fileID: 3638777525439886030, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
         type: 3}
       propertyPath: m_text
-      value: Precision Placement Precision
+      value: Precision Placement Grid Precision
       objectReference: {fileID: 0}
     - target: {fileID: 3638777525439886030, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
         type: 3}
@@ -46989,12 +46989,7 @@ PrefabInstance:
     - target: {fileID: 5906532608795520298, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
         type: 3}
       propertyPath: m_Name
-      value: Precision Placement Precision InputField
-      objectReference: {fileID: 0}
-    - target: {fileID: 5906532608795520298, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      value: Precision Placement Grid Precision InputField
       objectReference: {fileID: 0}
     - target: {fileID: 5906532608795520299, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
         type: 3}
@@ -47034,12 +47029,12 @@ PrefabInstance:
     - target: {fileID: 5906532608795520299, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 197.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5906532608795520299, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5906532608795520299, guid: 59e1419f8c9f4574f944e71a41c8a5ff,
         type: 3}
@@ -47188,7 +47183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BindedSettingSearchType: 2
-  BindedSetting: PrecisionPlacementPrecision
+  BindedSetting: PrecisionPlacementGridPrecision
   PopupEditorWarning: 0
   lowestValue: 1
   highestValue: 9999
@@ -47207,7 +47202,7 @@ MonoBehaviour:
   Keywords:
   - placement
   - internal
-  - vsync
+  - precision
 --- !u!1 &1692567072
 GameObject:
   m_ObjectHideFlags: 0

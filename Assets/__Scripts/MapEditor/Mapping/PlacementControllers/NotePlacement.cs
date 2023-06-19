@@ -143,7 +143,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         {
             queuedData.PosX = queuedData.PosY = 0;
 
-            var precision = Atsc.GridMeasureSnapping;
+            var precision = Settings.Instance.PrecisionPlacementGridPrecision;
             roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
             roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
             instantiatedContainer.transform.localPosition = roundedHit;

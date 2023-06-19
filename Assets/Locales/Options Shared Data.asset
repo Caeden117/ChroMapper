@@ -1068,11 +1068,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211668371329187840
-    m_Key: map.precisionplacementprecision
+    m_Key: map.precisionplacementgridprecision
     m_Metadata:
       m_Items: []
   - m_Id: 211668392346845184
-    m_Key: map.precisionplacementprecision.tooltip
+    m_Key: map.precisionplacementgridprecision.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 235582333795893248
