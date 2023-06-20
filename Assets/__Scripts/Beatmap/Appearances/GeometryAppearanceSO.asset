@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5e76f0d02f24262a1e27bd5a4e9da2, type: 3}
   m_Name: GeometryAppearanceSO
   m_EditorClassIdentifier: 
+  lightMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}

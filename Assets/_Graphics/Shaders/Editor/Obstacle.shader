@@ -139,7 +139,7 @@
 
                 if (mag > 1)
                 {
-                    color = normalize(color) * sqrt(mag);
+                    color = normalize(color) * min(sqrt(mag), 16);
                 }
 
                 float animationSpawned = UNITY_ACCESS_INSTANCED_PROP(Props, _AnimationSpawned);
