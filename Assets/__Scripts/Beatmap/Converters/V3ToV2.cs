@@ -338,7 +338,7 @@ namespace Beatmap.Converters
 
             if (d.Materials.Any())
             {
-                var newMat = d.Materials.ToDictionary(m => m.Key, m => Material(m.Value));
+                var newMat = d.Materials.ToDictionary(m => m.Key, m => (BaseMaterial)new V2Material(m.Value));
                 d.Materials = newMat;
             }
 

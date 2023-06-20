@@ -362,7 +362,7 @@ namespace Beatmap.Converters
                 EnvironmentEnhancements = other.EnvironmentEnhancements.Select(EnvironmentEnhancement)
                     .Cast<BaseEnvironmentEnhancement>()
                     .ToList(),
-                Materials = other.Materials.ToDictionary(m => m.Key, m => Material(m.Value)),
+                Materials = other.Materials.ToDictionary(m => m.Key, m => (BaseMaterial)new V3Material(m.Value)),
                 Time = other.Time,
                 CustomData = other.CustomData?.Clone() ?? new JSONObject()
             };

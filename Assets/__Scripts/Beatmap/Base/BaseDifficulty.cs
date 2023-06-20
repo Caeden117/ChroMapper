@@ -9,8 +9,7 @@ namespace Beatmap.Base
 {
     public abstract class BaseDifficulty : BaseItem, ICustomDataDifficulty
     {
-        // TODO: concrete class for these bad boys
-        public Dictionary<string, JSONObject> Materials = new Dictionary<string, JSONObject>();
+        public Dictionary<string, BaseMaterial> Materials = new Dictionary<string, BaseMaterial>();
 
         public Dictionary<string, JSONArray> PointDefinitions = new Dictionary<string, JSONArray>();
         public JSONNode MainNode { get; set; }

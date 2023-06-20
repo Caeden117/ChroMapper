@@ -140,7 +140,7 @@ namespace Beatmap.V2
             if (Materials.Any())
             {
                 MainNode["_customData"]["_materials"] = new JSONObject();
-                foreach (var m in Materials) MainNode["_customData"]["_materials"][m.Key] = m.Value;
+                foreach (var m in Materials) MainNode["_customData"]["_materials"][m.Key] = m.Value.ToJson();
             }
             else
             {
@@ -273,7 +273,7 @@ namespace Beatmap.V2
             var customEventsList = new List<BaseCustomEvent>();
             var pointDefinitions = new Dictionary<string, JSONArray>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
-            var materials = new Dictionary<string, JSONObject>();
+            var materials = new Dictionary<string, BaseMaterial>();
 
             var nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
@@ -324,7 +324,7 @@ namespace Beatmap.V2
                                     {
                                         foreach (var n in matObj)
                                             if (!materials.ContainsKey(n.Key))
-                                                materials.Add(n.Key, n.Value.AsObject);
+                                                materials.Add(n.Key, new V2Material(n.Value.AsObject));
                                             else
                                                 Debug.LogWarning($"Duplicate key {n.Key} found in materials");
                                         break;
