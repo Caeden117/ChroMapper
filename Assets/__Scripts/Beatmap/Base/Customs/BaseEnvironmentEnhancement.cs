@@ -50,6 +50,7 @@ namespace Beatmap.Base.Customs
         public Vector3? LocalRotation { get; set; }
         public JSONNode Components { get; set; }
         public virtual int? LightID { get; set; }
+        public virtual int? LightType { get; set; }
 
         public abstract string KeyID { get; }
         public abstract string KeyLookupMethod { get; }
@@ -64,6 +65,7 @@ namespace Beatmap.Base.Customs
         public abstract string KeyLocalRotation { get; }
         public abstract string KeyComponents { get; }
         public abstract string KeyLightID { get; }
+        public abstract string KeyLightType { get; }
 
         public abstract string GeometryKeyType { get; }
         public abstract string GeometryKeyMaterial { get; }
@@ -138,6 +140,7 @@ namespace Beatmap.Base.Customs
             LocalRotation = ReadVector3OrNull(node, KeyLocalRotation);
             Components = node[KeyComponents];
             if (node[KeyLightID] != null) LightID = node[KeyLightID].AsInt;
+            if (node[KeyLightType] != null) LightType = node[KeyLightType].AsInt;
         }
     }
 }

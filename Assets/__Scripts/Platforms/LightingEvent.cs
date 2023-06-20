@@ -51,7 +51,7 @@ public class LightingEvent : MonoBehaviour
 
         if (OverrideLightGroup)
         {
-            var descriptor = GetComponentInParent<PlatformDescriptor>();
+            var descriptor = LoadInitialMap.Platform;
 
             if (descriptor != null)
             {

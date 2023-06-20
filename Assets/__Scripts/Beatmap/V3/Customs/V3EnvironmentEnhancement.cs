@@ -44,6 +44,8 @@ namespace Beatmap.V3.Customs
 
         public override string KeyLightID { get; } = "lightID";
 
+        public override string KeyLightType { get; } = "type";
+
         public override string GeometryKeyType { get; } = "type";
 
         public override string GeometryKeyMaterial { get; } = "material";
@@ -70,6 +72,33 @@ namespace Beatmap.V3.Customs
                 else
                 {
                     var iLightWithID = new JSONObject { ["lightID"] = value };
+                    Components = new JSONObject { ["ILightWithId"] = iLightWithID };
+                }
+            }
+        }
+
+        public override int? LightType
+        {
+            get
+            {
+                if (Components != null && Components["ILightWithId"] != null &&
+                    Components["ILightWithId"]["type"] != null)
+                    return Components["ILightWithId"]["type"].AsInt;
+
+                return null;
+            }
+            set
+            {
+                if (Components != null)
+                {
+                    if (Components["ILightWithId"] != null)
+                        Components["ILightWithId"]["type"] = value;
+                    else
+                        Components["ILightWithId"] = new JSONObject { ["type"] = value };
+                }
+                else
+                {
+                    var iLightWithID = new JSONObject { ["type"] = value };
                     Components = new JSONObject { ["ILightWithId"] = iLightWithID };
                 }
             }

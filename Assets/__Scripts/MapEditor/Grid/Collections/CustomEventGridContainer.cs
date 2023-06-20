@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Beatmap.Animations;
+using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
@@ -15,6 +16,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
 {
     [SerializeField] private GameObject customEventPrefab;
     [SerializeField] private GameObject geometryPrefab;
+    [SerializeField] private GeometryAppearanceSO geometryAppearanceSo;
     [SerializeField] private TextMeshProUGUI customEventLabelPrefab;
     [SerializeField] private Transform customEventLabelTransform;
     [SerializeField] private Transform[] customEventScalingOffsets;
@@ -89,6 +91,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             if (eh.Geometry is JSONNode)
             {
                 var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
+                geometryAppearanceSo.SetGeometryAppearance(container);
             }
         });
     }
