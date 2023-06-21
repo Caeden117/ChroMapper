@@ -8,6 +8,7 @@ using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.V2;
+using Beatmap.V2.Customs;
 using SimpleJSON;
 
 namespace Beatmap.Animations
@@ -241,6 +242,7 @@ namespace Beatmap.Animations
 
         public void SetGeometry(BaseEnvironmentEnhancement eh)
         {
+            var v2 = eh is V2EnvironmentEnhancement;
             ResetData();
 
             LocalTarget = AnimationThis.transform;
@@ -249,9 +251,9 @@ namespace Beatmap.Animations
             if (eh.Scale is Vector3 scale)
                 Scale.Preload(scale);
             if (eh.Position is Vector3 p)
-                WorldPosition.Preload(p);
+                WorldPosition.Preload((v2 ? 1 : 1.667f) * p);
             if (eh.LocalPosition is Vector3 lp)
-                OffsetPosition.Preload(lp);
+                OffsetPosition.Preload((v2 ? 1 : 1.667f) * lp);
             if (eh.Rotation is Vector3 r)
                 WorldRotation.Preload(Quaternion.Euler(r.x, r.y, r.z));
             if (eh.LocalRotation is Vector3 lr)

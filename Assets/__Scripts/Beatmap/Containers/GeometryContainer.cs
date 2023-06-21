@@ -28,6 +28,7 @@ namespace Beatmap.Containers
             container.EnvironmentEnhancement = eh;
             container.Shape = GameObject.CreatePrimitive(type);
             container.Shape.transform.parent = container.Animator.AnimationThis.transform;
+            container.Shape.transform.localScale = 1.667f * Vector3.one;
             container.Animator.SetGeometry(eh);
             container.gameObject.SetActive(true);
             return container;

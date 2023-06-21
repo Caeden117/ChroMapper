@@ -14,6 +14,9 @@ namespace Beatmap.Appearances
     public class GeometryAppearanceSO : ScriptableObject
     {
         [SerializeField] private Material lightMaterial;
+        [SerializeField] private Material shinyMaterial;
+        [SerializeField] private Material obstacleMaterial;
+        [SerializeField] private Material regularMaterial;
 
         public void SetGeometryAppearance(GeometryContainer container)
         {
@@ -27,29 +30,35 @@ namespace Beatmap.Appearances
                 _ => throw new Exception("Geometry without a material!"),
             };
 
-             ShaderType shader = (ShaderType)Enum.Parse(typeof(ShaderType), basemat.Shader);
+            ShaderType shader = (ShaderType)Enum.Parse(typeof(ShaderType), basemat.Shader);
 
-             if (IsLightType(shader))
-             {
-                 var meshRenderer = container.Shape.GetComponent<MeshRenderer>();
-                 var material = UnityEngine.Object.Instantiate(lightMaterial);
+            var meshRenderer = container.Shape.GetComponent<MeshRenderer>();
 
-                 if (basemat.Color is Color color)
-                 {
-                     material.color = color;
-                 }
+            // Why can't we have C#9
+            var material = UnityEngine.Object.Instantiate(shader switch
+            {
+                ShaderType.OpaqueLight  => lightMaterial,
+                ShaderType.TransparentLight => lightMaterial,
+                ShaderType.BaseWater => shinyMaterial,
+                ShaderType.BillieWater => shinyMaterial,
+                ShaderType.WaterfallMirror => shinyMaterial,
+                _ => regularMaterial,
+            });
 
-                 meshRenderer.sharedMaterial = material;
+            if (basemat.Color is Color color)
+            {
+                material.color = color;
+            }
 
-                 var light = container.Shape.AddComponent<LightingEvent>();
-                 light.OverrideLightGroup = true;
-                 light.OverrideLightGroupID = eh.LightType ?? 0;
-                 light.LightID = eh.LightID ?? 0;
-             }
-             else
-             {
-                 // TODO
-             }
+            meshRenderer.sharedMaterial = material;
+
+            if (eh.LightID != null)
+            {
+                var light = container.Shape.AddComponent<LightingEvent>();
+                light.OverrideLightGroup = true;
+                light.OverrideLightGroupID = eh.LightType ?? 0;
+                light.LightID = eh.LightID ?? 0;
+            }
         }
 
         // Straight outta heck
