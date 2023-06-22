@@ -175,6 +175,23 @@ namespace Beatmap.Base
             CustomTailCoordinate = (CustomData?.HasKey(CustomKeyTailCoordinate) ?? false) ? CustomData?[CustomKeyTailCoordinate] : null;
         }
 
+        protected virtual JSONNode SaveCustomFromNotes(BaseNote head, BaseNote tail)
+        {
+            CustomData = head.SaveCustom().Clone();
+            tail.SaveCustom();
+            if (tail.CustomData?.HasKey(CustomKeyCoordinate) ?? false)
+            {
+                CustomTailCoordinate = tail.CustomData[CustomKeyCoordinate];
+                CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate;
+            }
+            else
+            {
+                CustomData.Remove(CustomKeyTailCoordinate);
+            }
+
+            return CustomData;
+        }
+
         protected internal override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();

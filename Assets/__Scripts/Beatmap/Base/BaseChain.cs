@@ -63,7 +63,7 @@ namespace Beatmap.Base
             TailPosY = end.PosY;
             SliceCount = 5;
             Squish = 1;
-            CustomData = start.SaveCustom().Clone();
+            CustomData = SaveCustomFromNotes(start, end);
         }
 
         protected BaseChain(float time, int posX, int posY, int color, int cutDirection, int angleOffset,

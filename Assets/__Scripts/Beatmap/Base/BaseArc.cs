@@ -60,7 +60,7 @@ namespace Beatmap.Base
             TailCutDirection = end.CutDirection;
             TailControlPointLengthMultiplier = 1f;
             MidAnchorMode = 0;
-            CustomData = start.SaveCustom().Clone();
+            CustomData = SaveCustomFromNotes(start, end);
         }
 
         protected BaseArc(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
