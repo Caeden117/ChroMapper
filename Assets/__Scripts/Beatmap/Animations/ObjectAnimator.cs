@@ -417,11 +417,8 @@ namespace Beatmap.Animations
                 AddPointDef<Quaternion>((Quaternion v) => WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
-                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
-                break;
             case "offsetPosition":
-            case "localPosition":
-                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_definitePosition":
                 AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
