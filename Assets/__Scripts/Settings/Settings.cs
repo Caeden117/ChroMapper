@@ -173,6 +173,8 @@ public class Settings
     public bool RemoveNotesOutsideMap = true;
     public bool RemoveEventsOutsideMap = true;
     public bool RemoveObstaclesOutsideMap = true;
+    public bool RemoveArcsOutsideMap = true;
+    public bool RemoveChainsOutsideMap = true;
 
     #endregion
 
