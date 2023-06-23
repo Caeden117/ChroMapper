@@ -50,7 +50,7 @@ namespace Beatmap.Base.Customs
             Color = Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
         }
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.BpmChange;
+        public override ObjectType ObjectType { get; set; } = ObjectType.Bookmark;
 
         public string Name { get; set; } = "Invalid Bookmark";
         public Color Color { get; set; }
