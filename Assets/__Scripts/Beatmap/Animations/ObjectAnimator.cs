@@ -48,6 +48,11 @@ namespace Beatmap.Animations
             AnimatedProperties = new Dictionary<string, IAnimateProperty>();
             properties = new IAnimateProperty[0];
 
+            if (Atsc != null)
+            {
+                Atsc.TimeChanged -= OnTimeChanged;
+            }
+
             foreach (var track in tracks)
             {
                 track.children.Remove(this);
@@ -238,6 +243,8 @@ namespace Beatmap.Animations
             }
 
             Update();
+
+            Atsc.TimeChanged += OnTimeChanged;
         }
 
         public void SetGeometry(BaseEnvironmentEnhancement eh)
@@ -264,6 +271,8 @@ namespace Beatmap.Animations
                 AddParent(eh.Track);
                 container.transform.SetParent(this.tracks[0].track.ObjectParentTransform, false);
             }
+
+            Atsc.TimeChanged += OnTimeChanged;
         }
 
         public void SetTrack(Track track, string name)
@@ -272,6 +281,8 @@ namespace Beatmap.Animations
 
             LocalTarget = track.ObjectParentTransform;
             WorldTarget = track.transform;
+
+            Atsc.TimeChanged += OnTimeChanged;
         }
 
         public void AddParent(string name)
@@ -381,6 +392,22 @@ namespace Beatmap.Animations
             _time = (normalTime < 0)
                 ? (float?)null
                 : (float?)Mathf.LerpUnclamped(time_begin, time_end, normalTime);
+        }
+
+        private void OnTimeChanged()
+        {
+            if (Atsc.IsPlaying) return;
+
+            LocalTarget.localRotation = LocalRotation.Get();
+
+            LocalTarget.localPosition = OffsetPosition.Get();
+
+            LocalTarget.localScale = Scale.Get();
+
+            if (WorldTarget is Transform)
+            {
+                WorldTarget.localRotation = WorldRotation.Get();
+            }
         }
 
         private void RequireAnimationTrack()
