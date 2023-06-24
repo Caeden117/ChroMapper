@@ -271,7 +271,7 @@ Shader "Custom/Note"
 
 				clip(isDithered(IN.ScreenPosition.xy / IN.ScreenPosition.w, alpha));
 
-				return color; // float4(inputData.bakedGI,1);
+				return color * 2; // float4(inputData.bakedGI,1);
 			}
 
 			ENDHLSL
