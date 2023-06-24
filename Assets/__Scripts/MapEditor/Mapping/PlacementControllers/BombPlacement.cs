@@ -46,10 +46,19 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             ? (Color?)colorPicker.CurrentColor
             : null;
 
+        var posX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
+        var posY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+
+        var vanillaX = Mathf.Clamp(posX, 0, 3);
+        var vanillaY = Mathf.Clamp(posY, 0, 2);
+
+        var vanillaBounds = vanillaX == posX && vanillaY == posY;
+
+        queuedData.PosX = vanillaX;
+        queuedData.PosY = vanillaY;
+
         if (UsePrecisionPlacement)
         {
-            queuedData.PosX = queuedData.PosY = 0;
-
             var precision = Atsc.GridMeasureSnapping;
             roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
             roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
@@ -63,20 +72,10 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         else
         {
             precisionPlacement.TogglePrecisionPlacement(false);
-            var posX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-            var posY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
 
-            if (posX < 0 || posX > 3 || posY < 0 || posY > 2)
-            {
-                queuedData.PosX = queuedData.PosY = 0;
-                queuedData.CustomCoordinate = new Vector2(Mathf.Round(roundedHit.x - 0.5f), Mathf.Round(roundedHit.y - 0.5f));
-            }
-            else
-            {
-                queuedData.PosX = posX;
-                queuedData.PosY = posY;
-                queuedData.CustomCoordinate = null;
-            }
+            queuedData.CustomCoordinate = !vanillaBounds
+                ? (JSONNode)new Vector2(Mathf.Round(roundedHit.x - 0.5f), Mathf.Round(roundedHit.y - 0.5f))
+                : null;
         }
 
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
