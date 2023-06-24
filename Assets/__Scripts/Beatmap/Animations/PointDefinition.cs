@@ -9,18 +9,18 @@ namespace Beatmap.Animations
 {
     public interface IPointDefinition
     {
-        public class UntypedParams
+        public struct UntypedParams
         {
             public string key;
             public bool overwrite;
             public JSONNode points;
             public string easing;
-            public float time = 0;
-            public float transition = 0;
-            public float duration = 0;
+            public float time;
+            public float transition;
+            public float duration;
             public float time_begin;
             public float time_end;
-            public int repeat = 0;
+            public int repeat;
         }
     }
 
@@ -58,18 +58,13 @@ namespace Beatmap.Animations
                 _ => new JSONArray(), // TODO: Does this unset properly?
             };
 
-            for (var i = 0; i <= p.repeat; ++i)
-            {
-                var time_begin = p.time_begin + (i * Duration);
-                var time_end = p.time_end + (i * Duration);
-                foreach (var row in data) {
-                    // WTF, Jevk
-                    if (row.Value.AsArray == null) {
-                        _points.Add(new PointData(parser, data, time_begin, time_end));
-                        break;
-                    }
-                    _points.Add(new PointData(parser, row.Value.AsArray, time_begin, time_end));
+            foreach (var row in data) {
+                // WTF, Jevk
+                if (row.Value.AsArray == null) {
+                    _points.Add(new PointData(parser, data, p.time_begin, p.time_end));
+                    break;
                 }
+                _points.Add(new PointData(parser, row.Value.AsArray, p.time_begin, p.time_end));
             }
 
             Points = _points.ToArray();

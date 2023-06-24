@@ -133,11 +133,9 @@ namespace Beatmap.Animations
 
         private void AddPointDef<T>(Action<ObjectAnimator, T> _setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
         {
-            var pointdef = new PointDefinition<T>(parser, p);
-
             Action<T> setter = (v) => { for (var i = 0; i < cachedChildren.Length; ++i) { _setter(cachedChildren[i], v); } };
 
-            GetAnimateProperty<T>(p.key, setter, _default).PointDefinitions.Add(pointdef);
+            GetAnimateProperty<T>(p.key, setter, _default).AddPointDef(parser, p);
         }
 
         private AnimateProperty<T> GetAnimateProperty<T>(string key, Action<T> setter, T _default) where T : struct

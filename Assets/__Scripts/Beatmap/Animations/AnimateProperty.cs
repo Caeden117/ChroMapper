@@ -29,6 +29,18 @@ namespace Beatmap.Animations
             Count = 0;
         }
 
+        public void AddPointDef(PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p)
+        {
+            for (var i = 0; i <= p.repeat; ++i)
+            {
+                var pp = p;
+                pp.time_begin = pp.time = p.time_begin + (i * p.duration);
+                pp.time_end = p.time_end + (i * p.duration);
+
+                PointDefinitions.Add(new PointDefinition<T>(parser, pp));
+            }
+        }
+
         public T GetLerpedValue(float time)
         {
             GetIndexes(time, out var current, out var _);

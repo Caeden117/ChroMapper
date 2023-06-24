@@ -469,19 +469,15 @@ namespace Beatmap.Animations
         {
             try
             {
-                var pointdef = new PointDefinition<T>(parser, p);
                 if (p.overwrite)
                 {
                     AnimatedProperties[p.key] = new AnimateProperty<T>(
-                        new List<PointDefinition<T>>() { pointdef },
+                        new List<PointDefinition<T>>(),
                         setter,
                         _default
                     );
                 }
-                else
-                {
-                    GetAnimateProperty<T>(p.key, setter, _default).PointDefinitions.Add(pointdef);
-                }
+                GetAnimateProperty<T>(p.key, setter, _default).AddPointDef(parser, p);
             }
             catch (Exception e)
             {
