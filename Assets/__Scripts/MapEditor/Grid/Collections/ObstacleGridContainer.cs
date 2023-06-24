@@ -80,13 +80,13 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     private bool updateFrame = false;
     internal override void LateUpdate()
     {
-        if (!UIMode.PreviewMode)
+        if (!UIMode.AnimationMode)
             base.LateUpdate();
     }
 
     private void OnTimeChanged()
     {
-        if (!UIMode.PreviewMode) return;
+        if (!UIMode.AnimationMode) return;
         // TODO: This should be somewhere else, want it to be called after all objects are added
         if (SpawnSortedObjects is null) {
             // Whyyyy

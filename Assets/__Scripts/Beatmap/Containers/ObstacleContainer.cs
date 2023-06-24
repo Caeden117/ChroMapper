@@ -63,7 +63,7 @@ namespace Beatmap.Containers
             var length = obstacleEnd - obstacleStart;
 
             //Take half jump duration into account if the setting is enabled.
-            if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls && !UIMode.PreviewMode)
+            if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls && !UIMode.AnimationMode)
             {
                 length -= length * Mathf.Abs(length / ObstacleData.Hjd);
             }

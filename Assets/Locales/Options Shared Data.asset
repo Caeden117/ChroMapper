@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Options Shared Data
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   m_TableCollectionName: Options
   m_TableCollectionNameGuidString: 3d3fb288927a2264891ce15662e46756
   m_Entries:
@@ -1145,6 +1145,12 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 262680318467833856
     m_Key: general.open.explorer.after.zip.tooltip
+  - m_Id: 249214922956247040
+    m_Key: map.animations.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 249224607608377344
+    m_Key: map.animations
     m_Metadata:
       m_Items: []
   - m_Id: 288364334621589504

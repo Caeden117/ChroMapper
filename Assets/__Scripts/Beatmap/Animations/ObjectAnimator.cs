@@ -121,7 +121,7 @@ namespace Beatmap.Animations
         {
             ResetData();
 
-            enabled = (UIMode.PreviewMode && tracksManager != null);
+            enabled = (UIMode.AnimationMode && tracksManager != null);
             if (!enabled) return;
 
             obj.RecomputeSongBpmTime();

@@ -11,6 +11,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 {
     public static UIModeType SelectedMode;
     public static bool PreviewMode { get; private set; }
+    public static bool AnimationMode { get; private set; }
     private Vector3 savedCamPosition = Vector3.zero;
     private Quaternion savedCamRotation = Quaternion.identity;
 
@@ -121,6 +122,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     {
         SelectedMode = (UIModeType)modeID;
         PreviewMode = (SelectedMode == UIModeType.Playing || SelectedMode == UIModeType.Preview);
+        AnimationMode = PreviewMode && Settings.Instance.Animations;
         UIModeSwitched?.Invoke(SelectedMode);
         selected.SetParent(modes[modeID].transform, true);
         slideSelectionCoroutine = StartCoroutine(SlideSelection());

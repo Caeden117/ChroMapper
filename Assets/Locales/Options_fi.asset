@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
   m_Name: Options_fi
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   m_LocaleId:
     m_Code: fi
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
@@ -1229,6 +1229,12 @@ MonoBehaviour:
   - m_Id: 247458202206273536
     m_Localized: 'If enabled, an extended grid will appear when using the precision
       placement keybind while placing walls or notes. '
+  - m_Id: 249214922956247040
+    m_Localized: Enables Noodle Extensions animations while in preview mode.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 249224607608377344
+    m_Localized: Preview Animations
     m_Metadata:
       m_Items: []
   - m_Id: 262680152746688512

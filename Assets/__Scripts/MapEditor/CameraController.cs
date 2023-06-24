@@ -86,7 +86,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     private void Start()
     {
-        Camera.fieldOfView = Settings.Instance.CameraFOV * (playerCamera ? 1.5f : 1);
+        Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;
         cameraExtraData = Camera.GetUniversalAdditionalCameraData();
         UpdateAA(Settings.Instance.CameraAA);
         UpdateRenderScale(Settings.Instance.RenderScale);
@@ -109,11 +109,11 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading)
             return; //Dont move camera if we are in pause menu or loading screen
 
-        Camera.fieldOfView = Settings.Instance.CameraFOV * (playerCamera ? 1.5f : 1);
+        Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;
 
         if (playerCamera)
         {
-            if ((playerTrackTimes?.Count ?? 0) == 0) return;
+            if (!UIMode.AnimationMode || (playerTrackTimes?.Count ?? 0) == 0) return;
 
             // 1 after last point, inverted (probably)
             var later = playerTrackTimes.BinarySearch(atsc.CurrentJsonTime);
