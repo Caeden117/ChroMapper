@@ -5,6 +5,7 @@ using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.V3;
 using NUnit.Framework;
+using SimpleJSON;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -74,6 +75,64 @@ namespace Tests
                 CheckUtils.CheckChain("Check generated chain", chainsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base,
                     (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 3f, (int)GridX.Left, (int)GridY.Upper, 5, 1);
                 Assert.AreSame(n2, tailNote);
+            }
+        }
+
+        [Test]
+        public void CreateChainWithCoordinates()
+        {
+            var headCoordinates = new JSONArray { [0] = 69, [1] = 69 };
+            var tailCoordinates = new JSONArray { [0] = 420, [1] = 420 };
+
+            var headCustomData = new JSONObject { ["coordinates"] = headCoordinates };
+            var tailCustomData = new JSONObject { ["coordinates"] = tailCoordinates };
+
+            var chainCustomData = new JSONObject
+            {
+                ["coordinates"] = headCoordinates,
+                ["tailCoordinates"] = tailCoordinates
+            };
+
+            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            if (containerCollection is NoteGridContainer notesContainer)
+            {
+                var root = notesContainer.transform.root;
+                var notePlacement = root.GetComponentInChildren<NotePlacement>();
+
+                BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
+                    (int)NoteCutDirection.Down, headCustomData);
+
+                BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red,
+                    (int)NoteCutDirection.Up, tailCustomData);
+
+                PlaceUtils.PlaceNote(notePlacement, baseNoteA);
+                PlaceUtils.PlaceNote(notePlacement, baseNoteB);
+
+                SelectionController.Select(baseNoteA);
+                SelectionController.Select(baseNoteB, true);
+            }
+
+            var chainContainerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
+            if (chainContainerCollection is ChainGridContainer chainsContainer)
+            {
+                var root = chainsContainer.transform.root;
+                var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
+
+                var objects = SelectionController.SelectedObjects.ToList();
+
+                Assert.AreEqual(2, objects.Count);
+
+                if (!ArcPlacement.IsColorNote(objects[0]) || !ArcPlacement.IsColorNote(objects[1]))
+                    Assert.Fail("Both selected objects is not color note");
+                var n1 = objects[0] as BaseNote;
+                var n2 = objects[1] as BaseNote;
+
+                var arc = chainPlacement.TryCreateChainData(n1, n2, out var chain, out var note);
+                chainsContainer.SpawnObject(chain);
+
+                CheckUtils.CheckChain("Check generated chain", chainsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base,
+                    (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 3f, (int)GridX.Left, (int)GridY.Upper,
+                    5, 1, chainCustomData);
             }
         }
 

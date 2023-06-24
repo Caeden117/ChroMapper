@@ -272,7 +272,7 @@ public class PlatformDescriptor : MonoBehaviour
         if (chromaGradients.ContainsKey(group))
         {
             var gradientEvent = chromaGradients[group].GradientEvent;
-            if (atsc.CurrentBeat >= gradientEvent.CustomLightGradient.Duration + gradientEvent.JsonTime ||
+            if (atsc.CurrentJsonTime >= gradientEvent.CustomLightGradient.Duration + gradientEvent.JsonTime ||
                 !Settings.Instance.EmulateChromaLite)
             {
                 StopCoroutine(chromaGradients[group].Routine);
@@ -470,8 +470,9 @@ public class PlatformDescriptor : MonoBehaviour
         var gradient = gradientEvent.CustomLightGradient;
         var easingFunc = Easing.ByName[gradient.EasingType];
 
+        // TODO: Proper Duration Scaling
         float progress;
-        while ((progress = (atsc.CurrentBeat - gradientEvent.JsonTime) / gradient.Duration) < 1)
+        while ((progress = (atsc.CurrentJsonTime - gradientEvent.JsonTime) / gradient.Duration) < 1)
         {
             var lerped = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
             if (!SoloAnEventType || gradientEvent.Type == SoloEventType)

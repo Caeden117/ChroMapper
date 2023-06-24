@@ -1,11 +1,30 @@
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using LiteNetLib.Utils;
 using SimpleJSON;
 
 namespace Beatmap.Base
 {
     public abstract class BaseArc : BaseSlider, ICustomDataArc
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(HeadControlPointLengthMultiplier);
+            writer.Put(TailCutDirection);
+            writer.Put(TailControlPointLengthMultiplier);
+            writer.Put(MidAnchorMode);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            HeadControlPointLengthMultiplier = reader.GetFloat();
+            TailCutDirection = reader.GetInt();
+            TailControlPointLengthMultiplier = reader.GetFloat();
+            MidAnchorMode = reader.GetInt();
+            base.Deserialize(reader);
+        }
+
         protected BaseArc()
         {
         }
@@ -41,7 +60,7 @@ namespace Beatmap.Base
             TailCutDirection = end.CutDirection;
             TailControlPointLengthMultiplier = 1f;
             MidAnchorMode = 0;
-            CustomData = start.SaveCustom().Clone();
+            CustomData = SaveCustomFromNotes(start, end);
         }
 
         protected BaseArc(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
@@ -72,6 +91,20 @@ namespace Beatmap.Base
         public float TailControlPointLengthMultiplier { get; set; }
         public int MidAnchorMode { get; set; }
 
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
+        {
+            if (other is BaseArc arc)
+            {
+                return base.IsConflictingWithObjectAtSameTime(other)
+                    && HeadControlPointLengthMultiplier == arc.HeadControlPointLengthMultiplier
+                    && TailCutDirection == arc.TailCutDirection
+                    && TailControlPointLengthMultiplier == arc.TailControlPointLengthMultiplier
+                    && MidAnchorMode == arc.MidAnchorMode;
+            }
+
+            return false;
+        }
+
         public override void Apply(BaseObject originalData)
         {
             base.Apply(originalData);
@@ -83,6 +116,13 @@ namespace Beatmap.Base
                 TailControlPointLengthMultiplier = arc.TailControlPointLengthMultiplier;
                 MidAnchorMode = arc.MidAnchorMode;
             }
+        }
+
+        public override void SwapHeadAndTail()
+        {
+            base.SwapHeadAndTail();
+            (CutDirection, TailCutDirection) = (TailCutDirection, CutDirection);
+            (HeadControlPointLengthMultiplier, TailControlPointLengthMultiplier) = (TailControlPointLengthMultiplier, HeadControlPointLengthMultiplier);
         }
     }
 }

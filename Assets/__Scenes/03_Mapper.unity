@@ -3458,7 +3458,7 @@ GameObject:
   - component: {fileID: 89530294}
   - component: {fileID: 89530296}
   m_Layer: 5
-  m_Name: BPM Changes
+  m_Name: BPM Events
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3503,7 +3503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'BPM Changes: 0'
+  m_text: 'BPM Events: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17003b886c2e57b4a9ce9d0d655a397d, type: 2}
   m_sharedMaterial: {fileID: 21947009840950596, guid: 17003b886c2e57b4a9ce9d0d655a397d,
@@ -3597,7 +3597,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:8944026aec77cf8479a89f2280c8e1ff
     m_TableEntryReference:
-      m_KeyId: 7
+      m_KeyId: 240390057914204160
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 1

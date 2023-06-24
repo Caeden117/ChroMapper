@@ -76,7 +76,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     private void OnObjectDeleteOrSpawn(BaseObject obj)
     {
         RefreshModifiedBeat();
-        countersPlus.UpdateStatistic(CountersPlusStatistic.BpmChanges);
+        countersPlus.UpdateStatistic(CountersPlusStatistic.BpmEvents);
         BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(obj.JsonTime);
     }
 
@@ -116,7 +116,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         bpmShaderBpMs[0] = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
         // Grab the last object before grid ends
-        var lastBpmChange = FindLastBpm(AudioTimeSyncController.CurrentBeat - firstVisibleBeatTime, false);
+        var lastBpmChange = FindLastBpm(AudioTimeSyncController.CurrentSongBpmTime - firstVisibleBeatTime, false);
 
         // Plug this last bpm change in
         // Believe it or not, I cannot actually skip this BPM change if it exists
@@ -174,12 +174,18 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
                    snap; //If its null, return rounded song bpm
         }
 
-        var difference = beatTimeInSongBpm - lastBpm.SongBpmTime;
-        var differenceInBpmBeat = difference / BeatSaberSongContainer.Instance.Song.BeatsPerMinute * lastBpm.Bpm;
-        var roundedDifference = (float)Math.Round(differenceInBpmBeat / snap, MidpointRounding.AwayFromZero) * snap;
-        var roundedDifferenceInSongBpm =
-            roundedDifference / lastBpm.Bpm * BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-        return roundedDifferenceInSongBpm + lastBpm.SongBpmTime;
+        var jsonTime = SongBpmTimeToJsonTime(beatTimeInSongBpm);
+        var roundedJsonTime = (float)Math.Round(jsonTime / snap, MidpointRounding.AwayFromZero) * snap;
+
+        return JsonTimeToSongBpmTime(roundedJsonTime);
+    }
+
+    public float SongBpmTimeToRoundedJsonTime(float songBpmTime, float snap = -1)
+    {
+        if (snap == -1) snap = 1f / AudioTimeSyncController.GridMeasureSnapping;
+
+        var jsonTime = SongBpmTimeToJsonTime(songBpmTime);
+        return (float)Math.Round(jsonTime / snap, MidpointRounding.AwayFromZero) * snap;
     }
 
     /// <summary>
@@ -204,8 +210,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     public BaseBpmEvent FindNextBpm(float beatTimeInSongBpm, bool inclusive = false)
     {
         if (inclusive)
-            return LoadedObjects.FirstOrDefault(x => x.JsonTime >= beatTimeInSongBpm - 0.01f) as BaseBpmEvent;
-        return LoadedObjects.FirstOrDefault(x => x.JsonTime - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
+            return LoadedObjects.FirstOrDefault(x => x.SongBpmTime >= beatTimeInSongBpm - 0.01f) as BaseBpmEvent;
+        return LoadedObjects.FirstOrDefault(x => x.SongBpmTime - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
     }
 
     private BaseBpmEvent DefaultEvent()

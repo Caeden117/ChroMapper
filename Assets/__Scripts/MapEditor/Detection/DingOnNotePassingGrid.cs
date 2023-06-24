@@ -94,8 +94,8 @@ public class DingOnNotePassingGrid : MonoBehaviour
         if (playing)
         {
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-            var currentJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentSongBeats);
-            var endJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentSongBeats + beatSaberCutCallbackController.Offset);
+            var currentJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats);
+            var endJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats + beatSaberCutCallbackController.Offset);
             var notes = container.GetBetween(currentJsonTime, endJsonTime);
 
             // Schedule notes between now and threshold
@@ -124,7 +124,7 @@ public class DingOnNotePassingGrid : MonoBehaviour
     {
         // Filter notes that are too far behind the current beat
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
-        if (objectData.SongBpmTime - container.AudioTimeSyncController.CurrentBeat <= -0.5f) return;
+        if (objectData.SongBpmTime - container.AudioTimeSyncController.CurrentSongBpmTime <= -0.5f) return;
 
         var soundListId = Settings.Instance.NoteHitSound;
         if (soundListId == (int)HitSounds.Discord) Instantiate(discordPingPrefab, gameObject.transform, true);
@@ -137,7 +137,7 @@ public class DingOnNotePassingGrid : MonoBehaviour
     {
         // Filter notes that are too far behind the current beat
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
-        if (objectData.SongBpmTime - container.AudioTimeSyncController.CurrentBeat <= -0.5f) return;
+        if (objectData.SongBpmTime - container.AudioTimeSyncController.CurrentSongBpmTime <= -0.5f) return;
 
         bool shortCut;
         if (Settings.Instance.Load_MapV3 && objectData is BaseChain)
@@ -159,7 +159,7 @@ public class DingOnNotePassingGrid : MonoBehaviour
         var soundListId = Settings.Instance.NoteHitSound;
         var list = soundLists[soundListId];
 
-        var timeUntilDing = objectData.SongBpmTime - atsc.CurrentSongBeats;
+        var timeUntilDing = objectData.SongBpmTime - atsc.CurrentAudioBeats;
         var hitTime = (atsc.GetSecondsFromBeat(timeUntilDing) / songSpeed) - offset;
         audioUtil.PlayOneShotSound(list.GetRandomClip(shortCut), Settings.Instance.NoteHitVolume, 1, hitTime);
     }

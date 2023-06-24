@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using SimpleJSON;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public static class ChroMapTogetherApi
@@ -39,7 +40,9 @@ public static class ChroMapTogetherApi
         var url = Path.Combine(Settings.Instance.MultiSettings.ChroMapTogetherServerUrl, "CreateServer")
             .Replace('\\', '/');
 
-        using (var request = UnityWebRequest.Post(url, string.Empty))
+        var form = new WWWForm();
+        form.AddField("appVersion", Application.version);
+        using (var request = UnityWebRequest.Post(url, form))
         {
             yield return request.SendWebRequest();
 

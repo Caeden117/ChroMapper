@@ -58,7 +58,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     {
         get
         {
-            if (Settings.Instance.PrecisionPlacementGrid)
+            if (Settings.Instance.PrecisionPlacementMode != PrecisionPlacementMode.Off)
                 return base.IsValid || (UsePrecisionPlacement && IsActive && !NodeEditorController.IsActive);
             return base.IsValid;
         }
@@ -132,7 +132,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
     {
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
-        roundedHit = new Vector3(roundedHit.x, roundedHit.y, RoundedTime * EditorScaleController.EditorScale);
+        roundedHit = new Vector3(roundedHit.x, roundedHit.y, SongBpmTime * EditorScaleController.EditorScale);
 
         // Check if Chroma Color notes button is active and apply _color
         queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
@@ -152,7 +152,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
         if (UsePrecisionPlacement)
         {
-            var precision = Atsc.GridMeasureSnapping;
+            var precision = Settings.Instance.PrecisionPlacementGridPrecision;
             roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
             roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
             instantiatedContainer.transform.localPosition = roundedHit;

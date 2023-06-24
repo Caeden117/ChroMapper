@@ -9,7 +9,7 @@ namespace Tests.Util
             NotePlacement obstaclePlacement, BaseNote note)
         {
             obstaclePlacement.queuedData = note;
-            obstaclePlacement.RoundedTime = obstaclePlacement.queuedData.JsonTime;
+            obstaclePlacement.RoundedJsonTime = obstaclePlacement.queuedData.JsonTime;
             obstaclePlacement.ApplyToMap();
         }
 
@@ -17,7 +17,7 @@ namespace Tests.Util
             ObstaclePlacement obstaclePlacement, BaseObstacle obstacle)
         {
             obstaclePlacement.queuedData = obstacle;
-            obstaclePlacement.RoundedTime = obstaclePlacement.queuedData.JsonTime;
+            obstaclePlacement.RoundedJsonTime = obstaclePlacement.queuedData.JsonTime;
             obstaclePlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0,
                 obstaclePlacement.queuedData.Duration * EditorScaleController.EditorScale);
             obstaclePlacement.ApplyToMap(); // Starts placement
@@ -30,7 +30,7 @@ namespace Tests.Util
             eventPlacement.queuedData = evt;
             eventPlacement.queuedValue = eventPlacement.queuedData.Value;
             eventPlacement.queuedFloatValue = eventPlacement.queuedData.FloatValue;
-            eventPlacement.RoundedTime = eventPlacement.queuedData.JsonTime;
+            eventPlacement.RoundedJsonTime = eventPlacement.queuedData.JsonTime;
 
             if (precRotation)
             {
@@ -48,7 +48,7 @@ namespace Tests.Util
             ArcPlacement arcPlacement, BaseArc arc)
         {
             arcPlacement.queuedData = arc;
-            arcPlacement.RoundedTime = arcPlacement.queuedData.JsonTime;
+            arcPlacement.RoundedJsonTime = arcPlacement.queuedData.JsonTime;
             arcPlacement.ApplyToMap();
         }
 
@@ -56,7 +56,7 @@ namespace Tests.Util
             ChainPlacement chainPlacement, BaseChain chain)
         {
             chainPlacement.queuedData = chain;
-            chainPlacement.RoundedTime = chainPlacement.queuedData.JsonTime;
+            chainPlacement.RoundedJsonTime = chainPlacement.queuedData.JsonTime;
             chainPlacement.ApplyToMap();
         }
     }

@@ -28,7 +28,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
     {
         if (context.performed || context.canceled) return;
 
-        var notes = SelectedObjects.Where(obj => IsColorNote(obj)).Cast<BaseNote>().ToList();
+        var notes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
         notes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
         if (!Settings.Instance.Load_MapV3 && notes.Count > 1)

@@ -116,6 +116,43 @@ namespace Tests
         }
 
         [Test]
+        public void TweakValueBoost()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+            if (containerCollection is EventGridContainer eventsContainer)
+            {
+                var root = eventsContainer.transform.root;
+                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+                var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
+
+                var baseBoostEvent = new V3ColorBoostEvent(3, false);
+                PlaceUtils.PlaceEvent(eventPlacement, baseBoostEvent, true);
+
+                if (eventsContainer.LoadedContainers[baseBoostEvent] is EventContainer containerBoost)
+                {
+                    inputController.TweakMain(containerBoost, 1);
+                }
+
+                CheckUtils.CheckEvent("Perform tweak value on boost", eventsContainer, 0, 3, (int)EventTypeValue.ColorBoost, 1);
+
+                if (eventsContainer.LoadedContainers[baseBoostEvent] is EventContainer containerBoostAgain)
+                {
+                    inputController.TweakMain(containerBoostAgain, 1);
+                }
+
+                CheckUtils.CheckEvent("Perform another tweak value on boost", eventsContainer, 0, 3, (int)EventTypeValue.ColorBoost, 0);
+
+                actionContainer.Undo();
+                CheckUtils.CheckEvent("Undo tweak value on boost", eventsContainer, 0, 3, (int)EventTypeValue.ColorBoost, 1);
+
+                actionContainer.Undo();
+                CheckUtils.CheckEvent("Undo tweak value on boost again", eventsContainer, 0, 3, (int)EventTypeValue.ColorBoost, 0);
+            }
+        }
+
+
+        [Test]
         public void PlacementPersistsCustomProperty()
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();

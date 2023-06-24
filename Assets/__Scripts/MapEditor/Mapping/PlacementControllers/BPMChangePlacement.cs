@@ -28,7 +28,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
 
     internal override void ApplyToMap()
     {
-        var lastBpm = objectContainerCollection.FindLastBpm(RoundedTime, false)?.Bpm ??
+        var lastBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
                       BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
         PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBpmChange,
             "", lastBpm.ToString());
@@ -44,7 +44,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
         }
         else
         {
-            var lastBpm = objectContainerCollection.FindLastBpm(RoundedTime, false)?.Bpm ??
+            var lastBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
                           BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
                 AttemptPlaceBpmChange, "", lastBpm.ToString());

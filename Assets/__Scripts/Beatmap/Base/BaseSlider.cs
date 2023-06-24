@@ -1,5 +1,6 @@
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
@@ -7,6 +8,30 @@ namespace Beatmap.Base
 {
     public abstract class BaseSlider : BaseGrid, ICustomDataSlider
     {
+        public override void Serialize(NetDataWriter writer)
+        {
+            writer.Put(Color); ;
+            writer.Put(CutDirection);
+            writer.Put(AngleOffset);
+            writer.Put(TailJsonTime);
+            writer.Put(TailSongBpmTime);
+            writer.Put(TailPosX);
+            writer.Put(TailPosY);
+            base.Serialize(writer);
+        }
+
+        public override void Deserialize(NetDataReader reader)
+        {
+            Color = reader.GetInt();
+            CutDirection = reader.GetInt();
+            AngleOffset = reader.GetInt();
+            tailJsonTime = reader.GetFloat();
+            tailSongBpmTime = reader.GetFloat();
+            TailPosX = reader.GetInt();
+            TailPosY = reader.GetInt();
+            base.Deserialize(reader);
+        }
+
         protected BaseSlider()
         {
         }
@@ -82,7 +107,17 @@ namespace Beatmap.Base
             TailJsonTime = TailJsonTime;
         }
 
-        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
+        {
+            if (other is BaseSlider slider)
+            {
+                return Vector2.Distance(this.GetPosition(), slider.GetPosition()) < 0.1
+                    && Vector2.Distance(this.GetTailPosition(), slider.GetTailPosition()) < 0.1
+                    && CutDirection == slider.CutDirection;
+            }
+
+            return false;
+        }
 
         public override void Apply(BaseObject originalData)
         {
@@ -97,6 +132,16 @@ namespace Beatmap.Base
                 TailPosX = baseSlider.TailPosX;
                 TailPosY = baseSlider.TailPosY;
             }
+        }
+
+        public virtual void SwapHeadAndTail()
+        {
+            var tempJsonTime = JsonTime;
+            var tempJsonSongBpmTime = SongBpmTime;
+            SetTimes(tailJsonTime, tailSongBpmTime);
+            SetTailTimes(tempJsonTime, tempJsonSongBpmTime);
+            (PosX, TailPosX) = (TailPosX, PosX);
+            (PosY, TailPosY) = (TailPosY, PosY);
         }
 
         public Vector2 GetTailPosition() => DerivePositionFromTailData();
@@ -128,6 +173,23 @@ namespace Beatmap.Base
             base.ParseCustom();
 
             CustomTailCoordinate = (CustomData?.HasKey(CustomKeyTailCoordinate) ?? false) ? CustomData?[CustomKeyTailCoordinate] : null;
+        }
+
+        protected virtual JSONNode SaveCustomFromNotes(BaseNote head, BaseNote tail)
+        {
+            CustomData = head.SaveCustom().Clone();
+            tail.SaveCustom();
+            if (tail.CustomData?.HasKey(CustomKeyCoordinate) ?? false)
+            {
+                CustomTailCoordinate = tail.CustomData[CustomKeyCoordinate];
+                CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate;
+            }
+            else
+            {
+                CustomData.Remove(CustomKeyTailCoordinate);
+            }
+
+            return CustomData;
         }
 
         protected internal override JSONNode SaveCustom()

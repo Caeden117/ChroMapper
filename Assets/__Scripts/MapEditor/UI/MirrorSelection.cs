@@ -33,13 +33,24 @@ public class MirrorSelection : MonoBehaviour
         }
 
         var ordered = SelectionController.SelectedObjects.OrderByDescending(x => x.JsonTime);
-        var end = ordered.First().JsonTime;
+        var maxTailJsonTime = ordered
+            .Where(x => x is BaseSlider)
+            .Max(x => (x as BaseSlider).TailJsonTime);
+
+        var end = Mathf.Max(ordered.First().JsonTime, maxTailJsonTime);
         var start = ordered.Last().JsonTime;
         var allActions = new List<BeatmapAction>();
         foreach (var con in SelectionController.SelectedObjects)
         {
             var edited = BeatmapFactory.Clone(con);
             edited.JsonTime = start + (end - con.JsonTime);
+
+            if (edited is BaseSlider edittedSlider && con is BaseSlider slider)
+            {
+                edittedSlider.TailJsonTime = start + (end - slider.TailJsonTime);
+                edittedSlider.SwapHeadAndTail();
+            }
+
             allActions.Add(new BeatmapObjectModifiedAction(edited, con, con, "e", true));
         }
 

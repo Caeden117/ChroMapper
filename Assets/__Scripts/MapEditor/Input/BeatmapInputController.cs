@@ -108,7 +108,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
             {
                 // TODO make this use an AudioTimeSyncController reference when Zenject is added.
                 BeatmapObjectContainerCollection.GetCollectionForType(con.ObjectData.ObjectType)
-                    .AudioTimeSyncController.MoveToTimeInBeats(con.ObjectData.SongBpmTime);
+                    .AudioTimeSyncController.MoveToSongBpmTime(con.ObjectData.SongBpmTime);
             }
         }
     }

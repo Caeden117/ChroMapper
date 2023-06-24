@@ -5,6 +5,7 @@ using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.V3;
 using NUnit.Framework;
+using SimpleJSON;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -74,6 +75,64 @@ namespace Tests
                 CheckUtils.CheckArc("Check generated arc", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base,
                     (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 1, 3f, (int)GridX.Left, (int)GridY.Upper,
                     (int)NoteCutDirection.Up, 1, 0);
+            }
+        }
+
+        [Test]
+        public void CreateArcWithCoordinates()
+        {
+            var headCoordinates = new JSONArray { [0] = 69, [1] = 69 };
+            var tailCoordinates = new JSONArray { [0] = 420, [1] = 420 };
+
+            var headCustomData = new JSONObject { ["coordinates"] = headCoordinates };
+            var tailCustomData = new JSONObject { ["coordinates"] = tailCoordinates };
+
+            var arcCustomData = new JSONObject
+            {
+                ["coordinates"] = headCoordinates,
+                ["tailCoordinates"] = tailCoordinates
+            };
+
+            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            if (containerCollection is NoteGridContainer notesContainer)
+            {
+                var root = notesContainer.transform.root;
+                var notePlacement = root.GetComponentInChildren<NotePlacement>();
+
+                BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
+                    (int)NoteCutDirection.Down, headCustomData);
+
+                BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red,
+                    (int)NoteCutDirection.Up, tailCustomData);
+
+                PlaceUtils.PlaceNote(notePlacement, baseNoteA);
+                PlaceUtils.PlaceNote(notePlacement, baseNoteB);
+
+                SelectionController.Select(baseNoteA);
+                SelectionController.Select(baseNoteB, true);
+            }
+
+            var arcContainerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
+            if (arcContainerCollection is ArcGridContainer arcsContainer)
+            {
+                var root = arcsContainer.transform.root;
+                var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
+
+                var objects = SelectionController.SelectedObjects.ToList();
+
+                Assert.AreEqual(2, objects.Count);
+
+                if (!ArcPlacement.IsColorNote(objects[0]) || !ArcPlacement.IsColorNote(objects[1]))
+                    Assert.Fail("Both selected objects is not color note");
+                var n1 = objects[0] as BaseNote;
+                var n2 = objects[1] as BaseNote;
+
+                var arc = arcPlacement.CreateArcData(n1, n2);
+                arcsContainer.SpawnObject(arc);
+
+                CheckUtils.CheckArc("Check generated arc", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base,
+                    (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 1, 3f, (int)GridX.Left, (int)GridY.Upper,
+                    (int)NoteCutDirection.Up, 1, 0, arcCustomData);
             }
         }
 

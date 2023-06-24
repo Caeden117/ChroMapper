@@ -67,6 +67,11 @@ namespace Tests.Util
                 Assert.AreEqual(value, evt.Value, $"{msg}: Mismatched value");
                 Assert.AreEqual(floatValue, evt.FloatValue, 0.001f, $"{msg}: Mismatched float value");
 
+                if (evt is BaseColorBoostEvent boostEvt)
+                {
+                    Assert.AreEqual(value == 1, boostEvt.Toggle, $"{msg}: Mismatched toggle");
+                }
+
                 // ConvertToJSON causes gradient to get updated
                 if (customData != null)
                 {

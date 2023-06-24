@@ -1179,7 +1179,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211668371329187840
-    m_Localized: Precision Placement Precision
+    m_Localized: Precision Placement Grid Precision
     m_Metadata:
       m_Items: []
   - m_Id: 211668392346845184
@@ -1242,6 +1242,15 @@ MonoBehaviour:
   - m_Id: 236258109335732224
     m_Localized: Invert mouse scroll direction on changing the upper and lower bounds
       of v3 walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458202206273536
+    m_Localized: 'If enabled, an extended grid will appear when using the precision
+      placement keybind while placing walls or notes. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458017744977920
+    m_Localized: Precision Placement Mode
     m_Metadata:
       m_Items: []
   references:
