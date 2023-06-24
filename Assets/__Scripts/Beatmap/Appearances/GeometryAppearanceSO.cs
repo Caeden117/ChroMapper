@@ -18,12 +18,14 @@ namespace Beatmap.Appearances
         [SerializeField] private Material obstacleMaterial;
         [SerializeField] private Material regularMaterial;
 
+        private static V3Material standard = new V3Material(new JSONObject { ["shader"] = "Standard" });
+
         public void SetGeometryAppearance(GeometryContainer container)
         {
             var eh = container.EnvironmentEnhancement;
             var basemat = eh.Geometry[eh.GeometryKeyMaterial] switch
             {
-                JSONString str => BeatSaberSongContainer.Instance.Map.Materials[str],
+                JSONString str => (str == "standard") ? standard : BeatSaberSongContainer.Instance.Map.Materials[str],
                 JSONObject obj => (eh is V2EnvironmentEnhancement)
                     ? (BaseMaterial)new V2Material(obj)
                     : (BaseMaterial)new V3Material(obj),
