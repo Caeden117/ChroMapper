@@ -84,6 +84,12 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         playerTracks.Add(track);
     }
 
+    public void ClearPlayerTracks()
+    {
+        playerTrackTimes.Clear();
+        playerTracks.Clear();
+    }
+
     private void Start()
     {
         Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;

@@ -17,7 +17,7 @@ namespace Beatmap.Animations
         public Track track;
         public ObjectAnimator animator;
 
-        public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
+        public Dictionary<string, IAnimateProperty> AnimatedProperties;
         private IAnimateProperty[] properties = new IAnimateProperty[0];
 
         public List<TrackAnimator> parents = new List<TrackAnimator>();
@@ -26,6 +26,8 @@ namespace Beatmap.Animations
 
         public void SetEvents(List<BaseCustomEvent> events)
         {
+            AnimatedProperties = new Dictionary<string, IAnimateProperty>();
+
             foreach (var ev in events)
             {
                 foreach (var jprop in ev.Data)

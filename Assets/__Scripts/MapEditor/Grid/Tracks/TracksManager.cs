@@ -106,6 +106,19 @@ public class TracksManager : MonoBehaviour
         return animator;
     }
 
+    public void ResetAnimationTracks()
+    {
+        foreach (var at in animationTracks)
+        {
+            at.Value.SetEvents(new List<BaseCustomEvent>());
+            if (at.Value.animator != null)
+            {
+                GameObject.Destroy(at.Value.animator);
+                at.Value.animator = null;
+            }
+        }
+    }
+
     // Used for world rotation
     public Track CreateIndividualTrack(BaseGrid obj)
     {

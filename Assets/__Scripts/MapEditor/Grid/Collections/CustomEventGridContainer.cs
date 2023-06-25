@@ -44,6 +44,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     // During refresh? How to update when events are added
     public void LoadAnimationTracks()
     {
+        playerCamera.ClearPlayerTracks();
         var events = LoadedObjects.Select(ev => ev as BaseCustomEvent);
         foreach (var ev in events)
         {
@@ -157,6 +158,10 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             customEventTypes.Add(customEvent.Type);
             RefreshTrack();
         }
+
+        tracksManager.ResetAnimationTracks();
+        RefreshEventsByTrack();
+        LoadAnimationTracks();
     }
 
     private void RefreshTrack()
