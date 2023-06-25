@@ -23,6 +23,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CameraController playerCamera;
     private List<string> customEventTypes = new List<string>();
+    private List<GeometryContainer> geometries = new List<GeometryContainer>();
 
     public override ObjectType ContainerType => ObjectType.CustomEvent;
 
@@ -88,10 +89,14 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             }
         }
 
+        geometries.ForEach((gc) => GameObject.Destroy(gc.gameObject));
+        geometries.Clear();
+
         BeatSaberSongContainer.Instance.Map.EnvironmentEnhancements.ForEach((eh) => {
             if (eh.Geometry is JSONNode)
             {
                 var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
+                geometries.Add(container);
                 geometryAppearanceSo.SetGeometryAppearance(container);
             }
         });

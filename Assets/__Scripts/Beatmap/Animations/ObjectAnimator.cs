@@ -48,17 +48,7 @@ namespace Beatmap.Animations
             AnimatedProperties = new Dictionary<string, IAnimateProperty>();
             properties = new IAnimateProperty[0];
 
-            if (Atsc != null)
-            {
-                Atsc.TimeChanged -= OnTimeChanged;
-            }
-
-            foreach (var track in tracks)
-            {
-                track.children.Remove(this);
-                track.OnChildrenChanged();
-            }
-            tracks.Clear();
+            OnDisable();
 
             if (AnimatedTrack)
             {
@@ -111,6 +101,11 @@ namespace Beatmap.Animations
 
         private void OnDisable()
         {
+            if (Atsc != null)
+            {
+                Atsc.TimeChanged -= OnTimeChanged;
+            }
+
             if (container?.ObjectData == null)
             {
                 foreach (var track in tracks)
