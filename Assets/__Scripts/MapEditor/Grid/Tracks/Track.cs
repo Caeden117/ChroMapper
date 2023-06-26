@@ -15,6 +15,7 @@ public class Track : MonoBehaviour
     public BaseGrid Object;
     private float spawnPosition;
     private float despawnPosition;
+    private float despawnTime;
 
     // this number pulled from my ass, but it looks fine
     // oh, it's actually correct
@@ -43,14 +44,14 @@ public class Track : MonoBehaviour
         {
             z = Mathf.Lerp(spawnPosition, JUMP_FAR, Object.SpawnJsonTime - time);
         }
-        else if (time < Object.DespawnJsonTime)
+        else if (time < despawnTime)
         {
-            z = Mathf.Lerp(spawnPosition, despawnPosition, (time - Object.SpawnJsonTime) / (Object.DespawnJsonTime - Object.SpawnJsonTime));
+            z = Mathf.Lerp(spawnPosition, despawnPosition, (time - Object.SpawnJsonTime) / (despawnTime - Object.SpawnJsonTime));
         }
         // Jump out
         else
         {
-            z = Mathf.Lerp(despawnPosition, -JUMP_FAR, time - Object.DespawnJsonTime);
+            z = Mathf.Lerp(despawnPosition, -JUMP_FAR, time - despawnTime);
         }
         ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x, ObjectParentTransform.localPosition.y, z);
     }
@@ -64,9 +65,16 @@ public class Track : MonoBehaviour
         if (obj.ObjectData is BaseGrid g) {
             Object = g;
             spawnPosition = Object.Jd;
-            despawnPosition = (Object is BaseObstacle obs)
-                ? -(Object.Jd * 0.5f) - (obs.Duration * obs.EditorScale)
-                : -Object.Jd;
+            if (Object is BaseObstacle obs)
+            {
+                despawnPosition = -(Object.Jd * 0.5f) - (obs.Duration * obs.EditorScale);
+                despawnTime = obs.JsonTime + obs.Duration + (obs.Hjd * 0.5f);
+            }
+            else
+            {
+                despawnPosition = -Object.Jd;
+                despawnTime = Object.DespawnJsonTime;
+            }
         }
     }
 

@@ -103,7 +103,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
                 ++SpawnIndex;
             }
 
-            while (DespawnIndex < DespawnSortedObjects.Length && time - 1f >= DespawnSortedObjects[DespawnIndex].DespawnJsonTime)
+            while (DespawnIndex < DespawnSortedObjects.Length && time >= DespawnSortedObjects[DespawnIndex].DespawnJsonTime)
             {
                 var objectData = DespawnSortedObjects[DespawnIndex];
                 if (LoadedContainers.ContainsKey(objectData))
