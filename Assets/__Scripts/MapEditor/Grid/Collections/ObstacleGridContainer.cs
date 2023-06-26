@@ -32,21 +32,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
             .Select(o => o as BaseObstacle)
             .OrderBy(o => o.DespawnJsonTime)
             .ToArray();
-        var time = AudioTimeSyncController.CurrentJsonTime;
-        GetIndexes(
-            time,
-            (i) => SpawnSortedObjects[i].SpawnJsonTime,
-            SpawnSortedObjects.Length,
-            out SpawnIndex,
-            out var _
-        );
-        GetIndexes(
-            time,
-            (i) => DespawnSortedObjects[i].DespawnJsonTime,
-            DespawnSortedObjects.Length,
-            out DespawnIndex,
-            out var _
-        );
+        RefreshWalls();
     }
 
     internal override void SubscribeToCallbacks()
@@ -72,6 +58,10 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         if (newMode == UIModeType.Normal)
         {
             RefreshPool(true);
+        }
+        if (newMode == UIModeType.Preview)
+        {
+            SortSpawners();
         }
     }
 
@@ -118,29 +108,35 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         }
         else
         {
-            foreach (var obj in UnsortedObjects)
-            {
-                RecycleContainer(obj);
-            }
-            GetIndexes(
-                time,
-                (i) => SpawnSortedObjects[i].SpawnJsonTime,
-                SpawnSortedObjects.Length,
-                out SpawnIndex,
-                out var _
-            );
-            GetIndexes(
-                time,
-                (i) => DespawnSortedObjects[i].DespawnJsonTime,
-                DespawnSortedObjects.Length,
-                out DespawnIndex,
-                out var _
-            );
-            var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnJsonTime <= time && time < o.DespawnJsonTime));
-            foreach (var obj in toSpawn)
-            {
-                CreateContainerFromPool(obj);
-            }
+            RefreshWalls();
+        }
+    }
+
+    private void RefreshWalls()
+    {
+        var time = AudioTimeSyncController.CurrentJsonTime;
+        foreach (var obj in UnsortedObjects)
+        {
+            RecycleContainer(obj);
+        }
+        GetIndexes(
+            time,
+            (i) => SpawnSortedObjects[i].SpawnJsonTime,
+            SpawnSortedObjects.Length,
+            out SpawnIndex,
+            out var _
+        );
+        GetIndexes(
+            time,
+            (i) => DespawnSortedObjects[i].DespawnJsonTime,
+            DespawnSortedObjects.Length,
+            out DespawnIndex,
+            out var _
+        );
+        var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnJsonTime <= time && time < o.DespawnJsonTime));
+        foreach (var obj in toSpawn)
+        {
+            CreateContainerFromPool(obj);
         }
     }
 

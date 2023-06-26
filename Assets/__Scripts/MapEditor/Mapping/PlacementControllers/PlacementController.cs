@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Animations;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
@@ -368,6 +369,8 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
         foreach (var collider in instantiatedContainer.GetComponentsInChildren<IntersectionCollider>(true))
             Destroy(collider);
+        if (instantiatedContainer.GetComponent<ObjectAnimator>() is ObjectAnimator animator)
+            animator.enabled = false;
 
         instantiatedContainer.name = $"Hover {objectDataType}";
     }
