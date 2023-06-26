@@ -52,6 +52,12 @@ namespace Beatmap.Appearances
                 material.color = color;
             }
 
+            // For animating material color
+            if (basemat.Track is string track)
+            {
+                container.Animator.AddParent(track);
+            }
+
             meshRenderer.sharedMaterial = material;
 
             if (eh.LightID != null)
