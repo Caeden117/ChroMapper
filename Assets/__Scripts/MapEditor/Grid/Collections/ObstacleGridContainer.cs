@@ -87,7 +87,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         var time = AudioTimeSyncController.CurrentJsonTime;
         if (AudioTimeSyncController.IsPlaying)
         {
-            while (SpawnIndex < SpawnSortedObjects.Length && time + 1f >= SpawnSortedObjects[SpawnIndex].SpawnJsonTime)
+            while (SpawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[SpawnIndex].SpawnJsonTime)
             {
                 CreateContainerFromPool(SpawnSortedObjects[SpawnIndex]);
                 ++SpawnIndex;

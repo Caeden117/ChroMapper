@@ -21,6 +21,9 @@ public class Track : MonoBehaviour
     // oh, it's actually correct
     const float JUMP_FAR = 500f;
 
+    // this number also pulled from my ass and used inconsistently as json time and bpm time, oh well!
+    public const float JUMP_TIME = 2f;
+
     public void AssignRotationValue(Vector3 rotation)
     {
         RotationValue = rotation;
@@ -42,7 +45,7 @@ public class Track : MonoBehaviour
         // Jump in
         if (time < Object.SpawnJsonTime)
         {
-            z = Mathf.Lerp(spawnPosition, JUMP_FAR, Object.SpawnJsonTime - time);
+            z = Mathf.Lerp(spawnPosition, JUMP_FAR, (Object.SpawnJsonTime - time) / JUMP_TIME);
         }
         else if (time < despawnTime)
         {
@@ -51,7 +54,7 @@ public class Track : MonoBehaviour
         // Jump out
         else
         {
-            z = Mathf.Lerp(despawnPosition, -JUMP_FAR, time - despawnTime);
+            z = Mathf.Lerp(despawnPosition, -JUMP_FAR, (time - despawnTime) / JUMP_TIME);
         }
         ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x, ObjectParentTransform.localPosition.y, z);
     }

@@ -133,7 +133,7 @@ namespace Beatmap.Animations
                 duration = obs.ObstacleData.Duration;
                 (var wallSize, var wallPosition) = obs.ReadSizePosition();
                 OffsetPosition.Preload(wallPosition);
-                Scale.Preload(wallSize);
+                Scale.Preload(new Vector3(WallClamp(wallSize.x), WallClamp(wallSize.y), WallClamp(wallSize.z)));
             }
             if (container is NoteContainer note)
             {
@@ -330,6 +330,11 @@ namespace Beatmap.Animations
                 {
                     prop.UpdateProperty(time);
                 }
+                // Jump in should have t=0 path animation
+                else if (time < time_begin)
+                {
+                    prop.UpdateProperty(time_begin);
+                }
             }
 
             if (AnimatedTrack)
@@ -490,6 +495,17 @@ namespace Beatmap.Animations
                 );
             }
             return AnimatedProperties[key] as AnimateProperty<T>;
+        }
+
+        private static float minWall = 0.06f;
+
+        private static float WallClamp(float a)
+        {
+            if (-minWall < a && a < minWall)
+            {
+                return minWall;
+            }
+            return a;
         }
 
         // I should never be allowed to use a profiler
