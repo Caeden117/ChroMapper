@@ -56,6 +56,7 @@ public class SongInfoEditUI : MenuBase
         "OneSaber",
         "360Degree",
         "90Degree",
+        "Legacy",
         "Lightshow",
         "Lawless"
     };
