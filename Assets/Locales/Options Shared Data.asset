@@ -1159,6 +1159,12 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 288364497993924608
     m_Key: general.savewithoutdefaultvalues.tooltip
+  - m_Id: 252032304653307904
+    m_Key: graphics.previewfov.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 252047222777614336
+    m_Key: graphics.previewfov
     m_Metadata:
       m_Items: []
   m_Metadata:

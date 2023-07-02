@@ -1252,6 +1252,12 @@ MonoBehaviour:
   - m_Id: 288364497993924608
     m_Localized: Saves the difficulty file without properties that have a default
       value.
+  - m_Id: 252032304653307904
+    m_Localized: Change Field of View of the preview camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 252047222777614336
+    m_Localized: Preview Camera FOV
     m_Metadata:
       m_Items: []
   references:
