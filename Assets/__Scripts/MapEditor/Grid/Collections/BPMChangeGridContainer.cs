@@ -39,8 +39,6 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
 
     private IEnumerator Start()
     {
-        if (BeatSaberSongContainer.Instance.DifficultyData.CustomData == null) yield break;
-
         yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
 
         Shader.SetGlobalFloat(songBpm, BeatSaberSongContainer.Instance.Song.BeatsPerMinute);
