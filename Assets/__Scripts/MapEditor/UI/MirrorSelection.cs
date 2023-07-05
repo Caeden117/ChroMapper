@@ -5,6 +5,7 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.V3;
+using SimpleJSON;
 using UnityEngine;
 
 public class MirrorSelection : MonoBehaviour
@@ -97,6 +98,44 @@ public class MirrorSelection : MonoBehaviour
                     obstacle.CustomCoordinate = flipped;
                 }
 
+                if (obstacle.CustomLocalRotation != null)
+                {
+                    if (obstacle.CustomLocalRotation.IsNumber)
+                    {
+                        obstacle.CustomLocalRotation = -obstacle.CustomLocalRotation;
+                    }
+                    else if (obstacle.CustomLocalRotation is JSONArray rot)
+                    {
+                        if (rot.Count > 1)
+                        {
+                            rot[1] = -rot[1];
+                        }
+                        if (rot.Count > 2)
+                        {
+                            rot[2] = -rot[2];
+                        }
+                    }
+                }
+
+                if (obstacle.CustomWorldRotation != null)
+                {
+                    if (obstacle.CustomWorldRotation.IsNumber)
+                    {
+                        obstacle.CustomWorldRotation = -obstacle.CustomWorldRotation;
+                    }
+                    else if (obstacle.CustomWorldRotation is JSONArray rot)
+                    {
+                        if (rot.Count > 1)
+                        {
+                            rot[1] = -rot[1];
+                        }
+                        if (rot.Count > 2)
+                        {
+                            rot[2] = -rot[2];
+                        }
+                    }
+                }
+
                 if (state >= 1000 || state <= -1000 || precisionWidth) // precision lineIndex
                 {
                     var newIndex = state;
@@ -147,6 +186,44 @@ public class MirrorSelection : MonoBehaviour
                     {
                         var cutDirection = note.CustomDirection;
                         note.CustomDirection = cutDirection * -1;
+                    }
+
+                    if (note.CustomLocalRotation != null)
+                    {
+                        if (note.CustomLocalRotation.IsNumber)
+                        {
+                            note.CustomLocalRotation = -note.CustomLocalRotation;
+                        }
+                        else if (note.CustomLocalRotation is JSONArray rot)
+                        {
+                            if (rot.Count > 1)
+                            {
+                                rot[1] = -rot[1];
+                            }
+                            if (rot.Count > 2)
+                            {
+                                rot[2] = -rot[2];
+                            }
+                        }
+                    }
+
+                    if (note.CustomWorldRotation != null)
+                    {
+                        if (note.CustomWorldRotation.IsNumber)
+                        {
+                            note.CustomWorldRotation = -note.CustomWorldRotation;
+                        }
+                        else if (note.CustomWorldRotation is JSONArray rot)
+                        {
+                            if (rot.Count > 1)
+                            {
+                                rot[1] = -rot[1];
+                            }
+                            if (rot.Count > 2)
+                            {
+                                rot[2] = -rot[2];
+                            }
+                        }
                     }
 
                     var state = note.PosX; // flip line index
