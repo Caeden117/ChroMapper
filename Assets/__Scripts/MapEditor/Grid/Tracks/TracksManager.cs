@@ -111,6 +111,7 @@ public class TracksManager : MonoBehaviour
         foreach (var at in animationTracks)
         {
             at.Value.SetEvents(new List<BaseCustomEvent>());
+            at.Value.children.Clear();
             if (at.Value.animator != null)
             {
                 GameObject.Destroy(at.Value.animator);

@@ -72,7 +72,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 var precision = Settings.Instance.PrecisionPlacementGridPrecision;
                 var precision_r = 1.0f / precision;
                 roundedHit.x = Mathf.Floor((roundedHit.x) * precision) * precision_r;
-                roundedHit.y = Mathf.Floor((roundedHit.y) * precision) * precision_r;
+                roundedHit.y = Mathf.Floor((roundedHit.y - 0.6f) * precision) * precision_r + 0.5f;
                 roundedHit.z = SongBpmTime * EditorScaleController.EditorScale;
 
                 var position = (Vector3)originPosition;
@@ -87,7 +87,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 if (newLocalScale.y <= 0)
                 {
                     position.y = originPosition.y + newLocalScale.y - precision_r;
-                    queuedData.CustomCoordinate[1] = position.y - 0.5f;
+                    queuedData.CustomCoordinate[1] = position.y;
                     newLocalScale.y = 2 * precision_r - newLocalScale.y;
                 }
 
@@ -96,7 +96,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                     position.y,
                     0);
                 wallTransform.localPosition = localPosition;
-                instantiatedContainer.transform.localPosition = new Vector3(0, 0, startSongBpmTime * EditorScaleController.EditorScale);
+                instantiatedContainer.transform.localPosition = new Vector3(0, 0.1f, startSongBpmTime * EditorScaleController.EditorScale);
 
                 instantiatedContainer.SetScale(newLocalScale);
 
@@ -133,9 +133,9 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 }
                 wallTransform.localPosition = new Vector3(
                     queuedData.PosX - 2f + (queuedData.Width / 2.0f),
-                    queuedData.Type == (int)ObstacleType.Full ? 0.5f : 2.5f,
+                    (queuedData.Type == (int)ObstacleType.Full) ? 0 : 2,
                     0);
-                instantiatedContainer.transform.localPosition = new Vector3(0, 0, startSongBpmTime * EditorScaleController.EditorScale);
+                instantiatedContainer.transform.localPosition = new Vector3(0, 0.1f, startSongBpmTime * EditorScaleController.EditorScale);
 
                 instantiatedContainer.SetScale(new Vector3(queuedData.Width,
                     wallTransform.localScale.y, queuedData.Duration * EditorScaleController.EditorScale));
@@ -153,7 +153,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             var precision = Settings.Instance.PrecisionPlacementGridPrecision;
             roundedHit.x = Mathf.Floor((roundedHit.x) * precision) / precision;
-            roundedHit.y = Mathf.Floor((roundedHit.y) * precision) / precision;
+            roundedHit.y = Mathf.Floor((roundedHit.y - 0.6f) * precision) / precision + 0.5f;
             var size = Vector3.one / precision;
 
             wallTransform.localPosition = roundedHit + new Vector3(size.x * 0.5f, 0, 0);
@@ -162,7 +162,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             queuedData.PosX = queuedData.Type = 0;
 
             if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
-            queuedData.CustomCoordinate = new Vector2(roundedHit.x, roundedHit.y - 0.5f);
+            queuedData.CustomCoordinate = (Vector2)roundedHit;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -172,20 +172,20 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             queuedData.CustomCoordinate = null;
             queuedData.CustomSize = null;
 
-            var vanillaType = roundedHit.y <= 2.5f ? (int)ObstacleType.Full : (int)ObstacleType.Crouch;
+            var vanillaType = roundedHit.y <= 2 ? (int)ObstacleType.Full : (int)ObstacleType.Crouch;
 
-            wallTransform.localPosition = new Vector3(
-                transformedPoint.x - 0.5f,
-                vanillaType == (int)ObstacleType.Full ? 0.5f : 2.5f,
-                0);
-            instantiatedContainer.transform.localPosition = new Vector3(0, 0, transformedPoint.z);
-
-            instantiatedContainer.SetScale(new Vector3(1, vanillaType == (int)ObstacleType.Full ? 5f : 3f, 0));
-
-            queuedData.PosX = Mathf.RoundToInt(wallTransform.localPosition.x + 1.5f);
+            queuedData.PosX = Mathf.RoundToInt(transformedPoint.x);
             queuedData.PosY = vanillaType == (int)ObstacleType.Full ? 0 : 2;
             queuedData.Height = vanillaType == (int)ObstacleType.Full ? 5 : 3;
             queuedData.Type = vanillaType;
+
+            wallTransform.localPosition = new Vector3(
+                transformedPoint.x - 1.5f,
+                queuedData.PosY,
+                0);
+            instantiatedContainer.transform.localPosition = new Vector3(0, 0.1f, transformedPoint.z);
+
+            instantiatedContainer.SetScale(new Vector3(1, vanillaType == (int)ObstacleType.Full ? 5f : 3f, 0));
 
             precisionPlacement.TogglePrecisionPlacement(false);
         }
@@ -233,7 +233,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         {
             IsPlacing = true;
             originIndex = queuedData.PosX;
-            originPosition = (queuedData.CustomCoordinate?.ReadVector2() ?? new Vector2(originIndex, 5 - queuedData.Height)) + new Vector2(0, 0.5f);
+            originPosition = (queuedData.CustomCoordinate?.ReadVector2() ?? new Vector2(originIndex, 5 - queuedData.Height));
             startJsonTime = RoundedJsonTime;
             startSongBpmTime = SongBpmTime;
         }

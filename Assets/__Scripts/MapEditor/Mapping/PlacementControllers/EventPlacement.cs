@@ -33,6 +33,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
     private bool halfFloatValue;
     private bool zeroFloatValue;
 
+    protected override Vector2 vanillaOffset { get; } = new Vector2(-0.5f, -1.1f);
 
     internal int queuedValue = (int)LightValue.RedOn;
     internal float queuedFloatValue = 1.0f;
@@ -115,7 +116,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
-        instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x,
+        instantiatedContainer.transform.localPosition = new Vector3(instantiatedContainer.transform.localPosition.x + 0.5f,
             0.5f,
             instantiatedContainer.transform.localPosition.z);
         if (objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Off)

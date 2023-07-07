@@ -88,7 +88,7 @@ namespace Beatmap.Containers
                 ),
                 new Vector3(
                     bounds.Position + (bounds.Width / 2.0f),
-                    bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0) + 1f,
+                    bounds.StartHeight + (bounds.Height < 0 ? bounds.Height : 0),
                     0
                 )
             );
@@ -111,7 +111,7 @@ namespace Beatmap.Containers
             }
 
             // Enforce positive scale, offset our obstacles to match.
-            transform.localPosition = new Vector3(0, 0, (ObstacleData.SongBpmTime * EditorScaleController.EditorScale) + (length < 0 ? length : 0));
+            transform.localPosition = new Vector3(0, 0.1f, (ObstacleData.SongBpmTime * EditorScaleController.EditorScale) + (length < 0 ? length : 0));
             Animator.LocalTarget.localPosition = position;
 
             SetScale(size);

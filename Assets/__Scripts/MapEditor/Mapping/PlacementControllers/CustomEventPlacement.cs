@@ -18,6 +18,8 @@ public class
 
     [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
 
+    protected override Vector2 vanillaOffset { get; } = new Vector2(0, -1.1f);
+
     internal override void Start()
     {
         gameObject.SetActive(Settings.Instance.AdvancedShit);
@@ -35,7 +37,6 @@ public class
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
         var localPosition = instantiatedContainer.transform.localPosition;
-        localPosition += Vector3.left * 0.5f;
         instantiatedContainer.transform.localPosition = new Vector3(localPosition.x, 0.5f, localPosition.z);
         var customEventTypeId = Mathf.CeilToInt(instantiatedContainer.transform.localPosition.x);
         if (customEventTypeId < objectContainerCollection.CustomEventTypes.Count && customEventTypeId >= 0)

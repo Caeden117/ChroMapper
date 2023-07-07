@@ -34,8 +34,12 @@ namespace Beatmap.Animations
             for (var i = 0; i <= p.repeat; ++i)
             {
                 var pp = p;
-                pp.time_begin = pp.time = p.time_begin + (i * p.duration);
+                pp.time_begin = p.time_begin + (i * p.duration);
                 pp.time_end = p.time_end + (i * p.duration);
+                if (i > 0)
+                {
+                    pp.time = pp.time_begin;
+                }
 
                 PointDefinitions.Add(new PointDefinition<T>(parser, pp));
             }

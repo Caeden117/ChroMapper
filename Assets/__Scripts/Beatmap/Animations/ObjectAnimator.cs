@@ -148,7 +148,7 @@ namespace Beatmap.Animations
                 WorldRotation.Preload(Quaternion.Euler(0, yrot, 0));
 
             time_begin = obj.SpawnJsonTime;
-            // Can't use DespawnJsonTime because obstacles jump out at 0.75
+            // Can't use DespawnJsonTime because obstacles jump out early
             time_end = obj.JsonTime + duration + obj.Hjd;
 
             RequireAnimationTrack();
@@ -329,11 +329,6 @@ namespace Beatmap.Animations
                 if (time >= prop.StartTime)
                 {
                     prop.UpdateProperty(time);
-                }
-                // Jump in should have t=0 path animation
-                else if (time < time_begin)
-                {
-                    prop.UpdateProperty(time_begin);
                 }
             }
 

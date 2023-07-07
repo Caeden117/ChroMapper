@@ -154,7 +154,7 @@ namespace Beatmap.Base
         {
             var position = PosX - 2f; //Line index
             var clampedY = Mathf.Clamp(PosY, 0, 2);
-            float startHeight = clampedY - 0.5f;
+            float startHeight = clampedY;
             float height = Mathf.Min(Height, 5 - clampedY);
             float width = Width;
 
@@ -193,7 +193,7 @@ namespace Beatmap.Base
             if (CustomCoordinate != null && CustomCoordinate.IsArray)
             {
                 if (CustomCoordinate[0].IsNumber) position = CustomCoordinate[0];
-                if (CustomCoordinate[1].IsNumber) startHeight = CustomCoordinate[1] - 0.5f;
+                if (CustomCoordinate[1].IsNumber) startHeight = CustomCoordinate[1];
             }
 
             if (CustomSize != null && CustomSize.IsArray)

@@ -63,6 +63,8 @@ namespace Beatmap.V3
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
+        public override string CustomKeySpawnEffect { get; } = "spawnEffect";
+
         public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
 
         public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";

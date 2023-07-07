@@ -57,6 +57,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             switch (ev.Type)
             {
             case "AssignTrackParent":
+                if (ev.DataParentTrack == null) continue;
                 var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
                 tracks = ev.DataChildrenTracks switch {
                     JSONArray arr => arr,

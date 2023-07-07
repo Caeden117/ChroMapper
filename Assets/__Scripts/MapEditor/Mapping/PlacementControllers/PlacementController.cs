@@ -65,6 +65,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal TBo queuedData; //Data that is not yet applied to the ObjectContainer.
     protected bool UsePrecisionPlacement;
 
+    protected virtual Vector2 precisionOffset { get; } = new Vector2(-0.5f, -1.1f);
+    protected virtual Vector2 vanillaOffset { get; } = new Vector2(1.5f, -1.1f);
+
     [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
 
     private float roundedJsonTime;
@@ -160,14 +163,12 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 queuedData.CustomTrack = null;
 
             CalculateTimes(hit, out var roundedHit, out var roundedJsonTime);
+            roundedHit += (Vector3)vanillaOffset;
             RoundedJsonTime = roundedJsonTime;
             var placementZ = SongBpmTime * EditorScaleController.EditorScale;
             Update360Tracks();
 
-            //this mess of localposition and position assignments are to align the shits up with the grid
-            //and to hopefully not cause IndexOutOfRangeExceptions
-            instantiatedContainer.transform.localPosition =
-                ParentTrack.InverseTransformPoint(hit.Point); //fuck transformedpoint we're doing it ourselves
+            roundedHit = new Vector3(Mathf.Round(roundedHit.x), Mathf.Round(roundedHit.y), placementZ);
 
             var localMax = ParentTrack.InverseTransformPoint(hit.Bounds.max);
             var localMin = ParentTrack.InverseTransformPoint(hit.Bounds.min);
@@ -176,14 +177,14 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             var farTopPoint = localMax.y;
             var farBottomPoint = localMin.y;
 
-            roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
-            instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
-            var x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
-            var y = instantiatedContainer.transform.localPosition.y;
+            var x = roundedHit.x; //Clamp values to prevent exceptions
+            var y = roundedHit.y;
             instantiatedContainer.transform.localPosition = new Vector3(
                 Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
-                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
-                instantiatedContainer.transform.localPosition.z);
+                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)),
+                roundedHit.z);
+
+            instantiatedContainer.transform.localPosition = roundedHit;
 
             OnPhysicsRaycast(hit, roundedHit);
             queuedData.SetTimes(roundedJsonTime, SongBpmTime);

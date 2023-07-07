@@ -9,6 +9,7 @@ namespace Beatmap.Base.Customs
         JSONNode CustomCoordinate { get; set; }
         JSONNode CustomWorldRotation { get; set; }
         JSONNode CustomLocalRotation { get; set; }
+        JSONNode CustomSpawnEffect { get; set; }
         JSONNode CustomNoteJumpMovementSpeed { get; set; }
         JSONNode CustomNoteJumpStartBeatOffset { get; set; }
 
@@ -18,6 +19,7 @@ namespace Beatmap.Base.Customs
         string CustomKeyCoordinate { get; }
         string CustomKeyWorldRotation { get; }
         string CustomKeyLocalRotation { get; }
+        string CustomKeySpawnEffect { get; }
         string CustomKeyNoteJumpMovementSpeed { get; }
         string CustomKeyNoteJumpStartBeatOffset { get; }
     }

@@ -148,7 +148,7 @@ namespace Beatmap.Containers
             if (!Animator.AnimatedTrack)
             {
                 transform.localPosition = (Vector3)NoteData.GetPosition() +
-                                          new Vector3(0, 1.5f, NoteData.SongBpmTime * EditorScaleController.EditorScale);
+                                          new Vector3(0, 1.1f, NoteData.SongBpmTime * EditorScaleController.EditorScale);
             }
             transform.localScale = NoteData.GetScale();
             directionTarget.localScale = new Vector3(1.5f, 1.5f, 1.5f);

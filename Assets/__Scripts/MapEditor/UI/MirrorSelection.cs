@@ -311,7 +311,7 @@ public class MirrorSelection : MonoBehaviour
                     }
 
                     // (M) swaps red and blue
-                    // (Shift + M) cycles red, blue, and white 
+                    // (Shift + M) cycles red, blue, and white
                     if (moveNotes)
                     {
                         if (e.Value > 0 && e.Value <= 4) e.Value += 4; // blue to red

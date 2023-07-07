@@ -1,5 +1,6 @@
 ﻿using System;
 using Beatmap.Base;
+using Beatmap.V2;
 using Beatmap.Containers;
 using UnityEngine;
 
@@ -42,10 +43,11 @@ public class Track : MonoBehaviour
     public void UpdateTime(float time)
     {
         float z = 0;
+        bool v2 = Object is V2Object;
         // Jump in
         if (time < Object.SpawnJsonTime)
         {
-            z = Mathf.Lerp(spawnPosition, JUMP_FAR, (Object.SpawnJsonTime - time) / JUMP_TIME);
+            z = ((Object.CustomSpawnEffect ?? !v2) ^ v2) ? Mathf.Lerp(spawnPosition, JUMP_FAR, (Object.SpawnJsonTime - time) / JUMP_TIME) : JUMP_FAR;
         }
         else if (time < despawnTime)
         {
