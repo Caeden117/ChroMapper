@@ -268,6 +268,30 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void OnPreciseSnapModification(InputAction.CallbackContext context) =>
         preciselyControlSnap = context.performed;
 
+    public void OnGoToBeat(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        PersistentUI.Instance.ShowInputBox("Mapper", "gotobeat.dialog", GoToBeat);
+    }
+
+    internal void GoToBeat(string beatInput)
+    {
+        if (string.IsNullOrEmpty(beatInput) || string.IsNullOrWhiteSpace(beatInput))
+        {
+            return;
+        }
+
+        if (float.TryParse(beatInput, out var jsonTime))
+        {
+            CurrentJsonTime = Mathf.Max(0, jsonTime);
+        }
+        else
+        {
+            PersistentUI.Instance.ShowInputBox("Mapper", "gotobeat.dialog.invalid", GoToBeat);
+        }
+    }
+
     private void UpdateSongVolume(object obj) => SongAudioSource.volume = (float)obj;
 
     private void UpdateSongSpeed(object obj) => songSpeed = (float)obj;

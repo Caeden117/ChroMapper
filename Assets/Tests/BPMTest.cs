@@ -122,5 +122,44 @@ namespace Tests
                 CheckBPM("Redo future BPM event SongTime", bpmCollection, 1, 20, 20, 10 + 10 * (100f / 60));
             }
         }
+
+        [Test]
+        public void GoToBeat()
+        {
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
+            if (collection is BPMChangeGridContainer bpmCollection)
+            {
+                var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                BaseBpmEvent baseBpmEvent = new V3BpmEvent(0, 111);
+                bpmCollection.SpawnObject(baseBpmEvent);
+
+                baseBpmEvent = new V3BpmEvent(1, 222);
+                bpmCollection.SpawnObject(baseBpmEvent);
+
+                Assert.AreEqual(2, bpmCollection.LoadedObjects.Count);
+
+                var atsc = Object.FindObjectOfType<AudioTimeSyncController>();
+
+                atsc.GoToBeat("0");
+                Assert.AreEqual(0, atsc.CurrentJsonTime, 0.001f);
+                Assert.AreEqual(0, atsc.CurrentSongBpmTime, 0.001f);
+
+                atsc.GoToBeat("0.5");
+                Assert.AreEqual(0.5, atsc.CurrentJsonTime, 0.001f);
+                Assert.AreEqual(0.5 * (songBpm / 111), atsc.CurrentSongBpmTime, 0.001f);
+
+                atsc.GoToBeat("1.0");
+                Assert.AreEqual(1.0, atsc.CurrentJsonTime, 0.001f);
+                Assert.AreEqual(1.0 * (songBpm / 111), atsc.CurrentSongBpmTime, 0.001f);
+
+                atsc.GoToBeat("1.5");
+                Assert.AreEqual(1.5, atsc.CurrentJsonTime, 0.001f);
+                Assert.AreEqual(1.0 * (songBpm / 111) + 0.5 * (songBpm / 222), atsc.CurrentSongBpmTime, 0.001f);
+
+                atsc.GoToBeat("Invalid number");
+                Assert.AreEqual(1.5, atsc.CurrentJsonTime, 0.001f);
+                Assert.AreEqual(1.0 * (songBpm / 111) + 0.5 * (songBpm / 222), atsc.CurrentSongBpmTime, 0.001f);
+            }
+        }
     }
 }

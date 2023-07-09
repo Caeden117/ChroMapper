@@ -2016,6 +2016,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Go To Beat",
+                    "type": "Button",
+                    "id": "3c58b5f5-3d79-4c93-8943-d8c12d215db4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -2095,6 +2103,17 @@
                     "action": "Precisely Change Time and Precision",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c6f4cd87-29c1-4ecb-a167-12c5b92d581f",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Go To Beat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

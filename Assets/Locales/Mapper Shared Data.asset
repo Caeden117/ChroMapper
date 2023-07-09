@@ -707,6 +707,14 @@ MonoBehaviour:
     m_Key: countersplus.bpmevents
     m_Metadata:
       m_Items: []
+  - m_Id: 256289992891105280
+    m_Key: gotobeat.dialog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256290009261473792
+    m_Key: gotobeat.dialog.invalid
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
