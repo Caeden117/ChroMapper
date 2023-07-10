@@ -40,16 +40,6 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
     public override int PlacementXMin => base.PlacementXMax * -1;
 
-    public override bool IsValid
-    {
-        get
-        {
-            if (Settings.Instance.PrecisionPlacementMode != PrecisionPlacementMode.Off)
-                return base.IsValid || (UsePrecisionPlacement && IsActive && !NodeEditorController.IsActive);
-            return base.IsValid;
-        }
-    }
-
     private float SmallestRankableWallDuration => Atsc.GetBeatFromSeconds(0.016f);
 
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>

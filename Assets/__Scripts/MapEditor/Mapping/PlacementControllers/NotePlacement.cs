@@ -54,16 +54,6 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         }
     }
 
-    public override bool IsValid
-    {
-        get
-        {
-            if (Settings.Instance.PrecisionPlacementMode != PrecisionPlacementMode.Off)
-                return base.IsValid || (UsePrecisionPlacement && IsActive && !NodeEditorController.IsActive);
-            return base.IsValid;
-        }
-    }
-
     public override int PlacementXMin => base.PlacementXMax * -1;
 
     private void LateUpdate()
