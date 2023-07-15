@@ -32,7 +32,7 @@ public class BeatSaberSong
     [FormerlySerializedAs("songName")] public string SongName = "New Song";
     [FormerlySerializedAs("directory")] public string Directory;
 
-    [FormerlySerializedAs("version")] public string Version = "2.0.0";
+    [FormerlySerializedAs("version")] public string Version = "2.1.0";
     [FormerlySerializedAs("songSubName")] public string SongSubName = "";
     [FormerlySerializedAs("songAuthorName")] public string SongAuthorName = "";
     [FormerlySerializedAs("levelAuthorName")] public string LevelAuthorName = "";
@@ -50,6 +50,8 @@ public class BeatSaberSong
     [FormerlySerializedAs("coverImageFilename")] public string CoverImageFilename = "cover.png";
     [FormerlySerializedAs("environmentName")] public string EnvironmentName = "DefaultEnvironment";
     [FormerlySerializedAs("allDirectionsEnvironmentName")] public string AllDirectionsEnvironmentName = "GlassDesertEnvironment";
+    public List<string> EnvironmentNames = new List<string>(); // TODO: Support editing
+    public JSONArray ColorSchemes = new JSONArray(); // TODO: Support editing
     [FormerlySerializedAs("editors")] public EditorsObject Editors = new EditorsObject(null);
 
     [FormerlySerializedAs("difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new List<DifficultyBeatmapSet>();
@@ -158,6 +160,13 @@ public class BeatSaberSong
 
             Json["_environmentName"] = EnvironmentName;
             Json["_allDirectionsEnvironmentName"] = AllDirectionsEnvironmentName;
+
+            var infoEnvironmentNames = new JSONArray();
+            foreach (var environmentName in EnvironmentNames) { infoEnvironmentNames.Add(environmentName); }
+            Json["_environmentNames"] = infoEnvironmentNames;
+
+            Json["_colorSchemes"] = ColorSchemes;
+
             Json["_customData"] = CustomData;
             Json["_customData"]["_editors"] = Editors.ToJsonNode();
 
@@ -196,6 +205,8 @@ public class BeatSaberSong
                     subNode["_beatmapFilename"] = diff.BeatmapFilename;
                     subNode["_noteJumpMovementSpeed"] = diff.NoteJumpMovementSpeed;
                     subNode["_noteJumpStartBeatOffset"] = diff.NoteJumpStartBeatOffset;
+                    subNode["_beatmapColorSchemeIdx"] = diff.BeatmapColorSchemeIndex;
+                    subNode["_environmentNameIdx"] = diff.EnvironmentNameIndex;
                     subNode["_customData"] = diff.CustomData ?? new JSONObject();
 
                     /*
@@ -391,6 +402,14 @@ public class BeatSaberSong
                     //Because there is only one option, I wont load from file.
                     //case "_allDirectionsEnvironmentName": song.allDirectionsEnvironmentName = node.Value; break;
 
+                    case "_environmentNames":
+                        song.EnvironmentNames = node.AsArray.Children.Select(x => x.Value).ToList();
+                        break;
+
+                    case "_colorSchemes":
+                        song.ColorSchemes = node.AsArray;
+                        break;
+
                     case "_customData":
                         song.CustomData = node;
                         if (node.HasKey("_contributors"))
@@ -417,6 +436,8 @@ public class BeatSaberSong
                                     DifficultyRank = d["_difficultyRank"].AsInt,
                                     NoteJumpMovementSpeed = d["_noteJumpMovementSpeed"].AsFloat,
                                     NoteJumpStartBeatOffset = d["_noteJumpStartBeatOffset"].AsFloat,
+                                    BeatmapColorSchemeIndex = d.HasKey("_beatmapColorSchemeIdx") ? d["_beatmapColorSchemeIdx"].AsInt : 0,
+                                    EnvironmentNameIndex = d.HasKey("_environmentNameIdx") ? d["_environmentNameIdx"].AsInt : 0,
                                     CustomData = d["_customData"]
                                 };
                                 if (d["_customData"]["_colorLeft"] != null)
@@ -521,6 +542,8 @@ public class BeatSaberSong
         [FormerlySerializedAs("beatmapFilename")] public string BeatmapFilename = "Easy.dat";
         [FormerlySerializedAs("noteJumpMovementSpeed")] public float NoteJumpMovementSpeed = 16;
         [FormerlySerializedAs("noteJumpStartBeatOffset")] public float NoteJumpStartBeatOffset;
+        public int BeatmapColorSchemeIndex;
+        public int EnvironmentNameIndex;
         [FormerlySerializedAs("colorLeft")] public Color? ColorLeft;
         [FormerlySerializedAs("colorRight")] public Color? ColorRight;
         [FormerlySerializedAs("envColorLeft")] public Color? EnvColorLeft;
