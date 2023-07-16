@@ -2016,14 +2016,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
-                },
-                {
-                    "name": "Go To Beat",
-                    "type": "Button",
-                    "id": "3c58b5f5-3d79-4c93-8943-d8c12d215db4",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -2103,10 +2095,26 @@
                     "action": "Precisely Change Time and Precision",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
+                }
+            ]
+        },
+        {
+            "name": "Timeline Navigation",
+            "id": "39009a52-4a45-4a85-ba35-ee7b9ebde7a2",
+            "actions": [
+                {
+                    "name": "Go To Beat",
+                    "type": "Button",
+                    "id": "54659d96-0f59-4292-a5f8-e1f03d7eecfc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "c6f4cd87-29c1-4ecb-a167-12c5b92d581f",
+                    "id": "799fde13-8c2a-4bbc-8d9b-e68f86ecdfa4",
                     "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
