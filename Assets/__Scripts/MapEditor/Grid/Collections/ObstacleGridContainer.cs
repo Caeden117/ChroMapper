@@ -41,7 +41,6 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
 
     public override void RefreshPool(bool force)
     {
-        Debug.Log("Refresh Obstacles");
         if (UIMode.AnimationMode)
         {
             SpawnSortedObjects = UnsortedObjects

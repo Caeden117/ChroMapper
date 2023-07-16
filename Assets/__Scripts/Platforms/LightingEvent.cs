@@ -57,14 +57,12 @@ public class LightingEvent : MonoBehaviour
             if (descriptor != null && OverrideLightGroupID >= 0 && OverrideLightGroupID < descriptor.LightingManagers.Length)
             {
                 var lm = descriptor.LightingManagers[OverrideLightGroupID];
-                var placement = lm.LightIDPlacementMap.Count;
-                while (lm.LightIDPlacementMapReverse.ContainsKey(LightID))
+                while (lm.LightIDPlacementMapReverse?.ContainsKey(LightID) ?? false)
                 {
                     ++LightID;
                 }
                 lm.ControllingLights.Add(this);
-                lm.LightIDPlacementMap.Add(placement, LightID);
-                lm.LightIDPlacementMapReverse.Add(LightID, placement);
+                lm.LoadOldLightOrder();
             }
         }
     }

@@ -337,7 +337,16 @@ public class PlatformDescriptor : MonoBehaviour
         if (e.CustomLightID != null && Settings.Instance.EmulateChromaAdvanced)
         {
             var lightIDArr = e.CustomLightID;
-            allLights = group.ControllingLights.FindAll(x => lightIDArr.Contains(x.LightID));
+            var deezLights = new List<LightingEvent>(lightIDArr.Length);
+            foreach (var lightID in lightIDArr)
+            {
+                group.LightIDMap.TryGetValue(lightID, out var light);
+                if (light != null)
+                {
+                    deezLights.Add(light);
+                }
+            }
+            allLights = deezLights;
 
             // Temporarily(?) commented as Debug.LogWarning is expensive
             //if (allLights.Count() < lightIDArr.Length)
