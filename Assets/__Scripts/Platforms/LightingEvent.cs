@@ -53,9 +53,18 @@ public class LightingEvent : MonoBehaviour
         {
             var descriptor = LoadInitialMap.Platform;
 
-            if (descriptor != null)
+            // TODO: Add types?
+            if (descriptor != null && OverrideLightGroupID >= 0 && OverrideLightGroupID < descriptor.LightingManagers.Length)
             {
-                descriptor.LightingManagers[OverrideLightGroupID].ControllingLights.Add(this);
+                var lm = descriptor.LightingManagers[OverrideLightGroupID];
+                var placement = lm.LightIDPlacementMap.Count;
+                while (lm.LightIDPlacementMapReverse.ContainsKey(LightID))
+                {
+                    ++LightID;
+                }
+                lm.ControllingLights.Add(this);
+                lm.LightIDPlacementMap.Add(placement, LightID);
+                lm.LightIDPlacementMapReverse.Add(LightID, placement);
             }
         }
     }
