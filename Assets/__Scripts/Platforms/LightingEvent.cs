@@ -89,6 +89,8 @@ public class LightingEvent : MonoBehaviour
 
     public void UpdateEasing(string easingName) => easing = Easing.ByName[easingName];
 
+    public void UpdateEasing(Func<float, float> _easing) => easing = _easing;
+
     public void UpdateTargetColor(Color target, float timeToTransition)
     {
         // currentColor = targetColor;
