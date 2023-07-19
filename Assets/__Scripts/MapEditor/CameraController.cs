@@ -311,6 +311,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     private void OnLocation(int id)
     {
+        if (playerCamera) return;
         // Shift for second set of hotkeys (8 total)
         if (secondSetOfLocations) id += 4;
 
