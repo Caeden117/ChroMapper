@@ -33,9 +33,10 @@ public class MirrorSelection : MonoBehaviour
         }
 
         var ordered = SelectionController.SelectedObjects.OrderByDescending(x => x.JsonTime);
-        var maxTailJsonTime = ordered
-            .Where(x => x is BaseSlider)
-            .Max(x => (x as BaseSlider).TailJsonTime);
+        var orderedSliders = ordered.Where(x => x is BaseSlider);
+        var maxTailJsonTime = orderedSliders.Any()
+            ? orderedSliders.Max(x => (x as BaseSlider).TailJsonTime)
+            : float.MinValue;
 
         var end = Mathf.Max(ordered.First().JsonTime, maxTailJsonTime);
         var start = ordered.Last().JsonTime;
