@@ -48,9 +48,18 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = new Vector3(-1.5f, 1.5f, ChainData.SongBpmTime * EditorScaleController.EditorScale);
+            transform.localPosition = new Vector3(-1.5f, offsetY, ChainData.SongBpmTime * EditorScaleController.EditorScale);
             GenerateChain();
             UpdateCollisionGroups();
+            if (AttachedHead is NoteContainer)
+            {
+                if (!AttachedHead.Animator.AnimatedTrack)
+                {
+                    AttachedHead.UpdateGridPosition();
+                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
+                }
+                AttachedHead.directionTarget.localScale = BaseChain.ChainScale;
+            }
         }
 
         /// <summary>

@@ -26,20 +26,20 @@ namespace Beatmap.Containers
         public Vector3 p0()
         {
             var position = ArcData.GetPosition();
-            return new Vector3(position.x, position.y + 1.5f, 0f);
+            return new Vector3(position.x, position.y + offsetY, 0f);
         }
         public Vector3 p1()
         {
             var headPosition = ArcData.GetPosition();
             if (ArcData.CutDirection == (int)NoteCutDirection.Any)
             {
-                return new Vector3(headPosition.x, headPosition.y + 1.5f, 0f);
+                return new Vector3(headPosition.x, headPosition.y + offsetY, 0f);
             }
 
             var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ArcData.CutDirection).z;
             var headDirection = new Vector2(Mathf.Sin(zRads), -Mathf.Cos(zRads));
             var nodePosition = headPosition + headDirection * ArcData.HeadControlPointLengthMultiplier * splineControlPointScaleFactor;
-            return new Vector3(nodePosition.x, nodePosition.y + 1.5f, 0f);
+            return new Vector3(nodePosition.x, nodePosition.y + offsetY, 0f);
         }
 
         public Vector3 p2()
@@ -47,19 +47,19 @@ namespace Beatmap.Containers
             var tailPosition = ArcData.GetTailPosition();
             if (ArcData.TailCutDirection == (int)NoteCutDirection.Any)
             {
-                return new Vector3(tailPosition.x, tailPosition.y + 1.5f, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
+                return new Vector3(tailPosition.x, tailPosition.y + offsetY, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
             }
 
             var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ArcData.TailCutDirection).z;
             var tailDirection = new Vector2(Mathf.Sin(zRads), -Mathf.Cos(zRads));
             var tailNodePosition = tailPosition - tailDirection * ArcData.TailControlPointLengthMultiplier * splineControlPointScaleFactor;
-            return new Vector3(tailNodePosition.x, tailNodePosition.y + 1.5f, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
+            return new Vector3(tailNodePosition.x, tailNodePosition.y + offsetY, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
         }
 
         public Vector3 p3()
         {
             var tailPosition = ArcData.GetTailPosition();
-            return new Vector3(tailPosition.x, tailPosition.y + 1.5f, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
+            return new Vector3(tailPosition.x, tailPosition.y + offsetY, (ArcData.TailSongBpmTime - ArcData.SongBpmTime) * EditorScaleController.EditorScale);
         }
 
         // B(t) = (1-t)^3 p0 + 3(1-t)^2 t p1 + 3(1-t)t^2 p2 + t^3 p3
