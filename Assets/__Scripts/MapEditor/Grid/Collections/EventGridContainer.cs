@@ -217,6 +217,11 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             else if (e.IsLightEvent() && !inCollection)
             {
                 RemoveLinkedLightEvents(e);
+
+                if (AllLightEvents.TryGetValue(e.Type, out var events))
+                {
+                    events.Remove(e);
+                }
             }
         }
 
@@ -234,6 +239,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             {
                 RemoveLinkedLightEvents(e);
                 LinkLightEvents(e);
+                AddToAllLightEvents(e);
             }
         }
 
@@ -242,7 +248,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
 
     private void LinkLightEvents(BaseEvent e)
     {
-        var previousEvent = GetPreviousEventOrDefault(e);
+        var previousEvent = GetPreviousEventOfSameTypeOrDefault(e);
         if (previousEvent != null)
         {
             previousEvent.Next = e;
@@ -250,7 +256,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
                 (value as EventContainer).RefreshAppearance();
         }
 
-        var nextEvent = GetNextEventOrDefault(e);
+        var nextEvent = GetNextEventOfSameTypeOrDefault(e);
         if (nextEvent != null)
         {
             nextEvent.Prev = e;
@@ -275,24 +281,45 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         }
     }
 
-    private BaseEvent GetPreviousEventOrDefault(BaseEvent e)
+    private void AddToAllLightEvents(BaseEvent e)
     {
-        return (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
-            ? LoadedObjects.LastOrDefault(x => x.JsonTime < e.JsonTime
-                && (x as BaseEvent).Type == e.Type
-                && ((x as BaseEvent).CustomLightID == null || (x as BaseEvent).CustomLightID.SequenceEqual(e.CustomLightID ?? Array.Empty<int>()))) as BaseEvent
-            : LoadedObjects.LastOrDefault(x => x.JsonTime < e.JsonTime
-                && (x as BaseEvent).Type == e.Type) as BaseEvent;
+        if (AllLightEvents.TryGetValue(e.Type, out var events))
+        {
+            if (e.Prev == null)
+                events.Add(e);
+            else
+                events.Insert(events.IndexOf(e.Prev) + 1, e);
+        }
+        else
+        {
+            AllLightEvents.Add(e.Type, new List<BaseEvent> { e });
+        }
     }
 
-    private BaseEvent GetNextEventOrDefault(BaseEvent e)
+    private BaseEvent GetPreviousEventOfSameTypeOrDefault(BaseEvent e)
     {
+        if (!AllLightEvents.TryGetValue(e.Type, out var events))
+        {
+            return null;
+        }
+
         return (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
-            ? LoadedObjects.FirstOrDefault(x => x.JsonTime > e.JsonTime
-                && (x as BaseEvent).Type == e.Type
+            ? events.FindLast(x => x.JsonTime < e.JsonTime
                 && ((x as BaseEvent).CustomLightID == null || (x as BaseEvent).CustomLightID.SequenceEqual(e.CustomLightID ?? Array.Empty<int>()))) as BaseEvent
-            : LoadedObjects.FirstOrDefault(x => x.JsonTime > e.JsonTime
-                && (x as BaseEvent).Type == e.Type) as BaseEvent;
+            : events.FindLast(x => x.JsonTime < e.JsonTime) as BaseEvent;
+    }
+
+    private BaseEvent GetNextEventOfSameTypeOrDefault(BaseEvent e)
+    {
+        if (!AllLightEvents.TryGetValue(e.Type, out var events))
+        {
+            return null;
+        }
+
+        return (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
+            ? events.Find(x => x.JsonTime > e.JsonTime
+                && ((x as BaseEvent).CustomLightID == null || (x as BaseEvent).CustomLightID.SequenceEqual(e.CustomLightID ?? Array.Empty<int>()))) as BaseEvent
+            : events.Find(x => x.JsonTime > e.JsonTime) as BaseEvent;
     }
 
     // TODO: bleh, who cares about prop ID anyway
