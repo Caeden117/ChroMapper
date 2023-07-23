@@ -20,8 +20,6 @@ public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedA
         if (conflictingObject != null)
         {
             SpawnObject(conflictingObject);
-            // BeatmapObjectContainerCollection.GetCollectionForType(conflictingObject.ObjectType)
-            //     .SpawnObject(conflictingObject, false);
         }
     }
 
@@ -31,8 +29,6 @@ public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedA
         if (conflictingObject != null)
         {
             DeleteObject(conflictingObject);
-            // BeatmapObjectContainerCollection.GetCollectionForType(conflictingObject.ObjectType)
-            //     .DeleteObject(conflictingObject, false);
         }
     }
 

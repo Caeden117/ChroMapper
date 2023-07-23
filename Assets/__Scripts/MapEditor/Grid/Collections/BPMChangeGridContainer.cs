@@ -67,9 +67,9 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
         AudioTimeSyncController.TimeChanged -= OnTimeChanged;
     }
 
-    protected override void OnObjectDelete(BaseObject obj) => OnObjectDeleteOrSpawn(obj);
+    protected override void OnObjectDelete(BaseObject obj, bool _ = false) => OnObjectDeleteOrSpawn(obj);
 
-    protected override void OnObjectSpawned(BaseObject obj) => OnObjectDeleteOrSpawn(obj);
+    protected override void OnObjectSpawned(BaseObject obj, bool _ = false) => OnObjectDeleteOrSpawn(obj);
 
     private void OnObjectDeleteOrSpawn(BaseObject obj)
     {

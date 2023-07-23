@@ -27,10 +27,10 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     public void UpdateColor(Color obstacle) => obstacleAppearanceSo.DefaultObstacleColor = obstacle;
 
 
-    protected override void OnObjectSpawned(BaseObject _) =>
+    protected override void OnObjectSpawned(BaseObject _, bool __ = false) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Obstacles);
 
-    protected override void OnObjectDelete(BaseObject _) =>
+    protected override void OnObjectDelete(BaseObject _, bool __ = false) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Obstacles);
 
     public override ObjectContainer CreateContainer() =>

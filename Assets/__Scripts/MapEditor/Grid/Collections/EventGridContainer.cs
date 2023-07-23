@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -197,7 +197,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
     }
 
-    protected override void OnObjectDelete(BaseObject obj)
+    protected override void OnObjectDelete(BaseObject obj, bool inCollection = false)
     {
         if (obj is BaseEvent e)
         {
@@ -214,29 +214,33 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             {
                 AllBpmEvents.Remove(e);
             }
-
-            RemoveLinkedEvents(e);
+            else if (e.IsLightEvent() && !inCollection)
+            {
+                RemoveLinkedLightEvents(e);
+            }
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
 
-    protected override void OnObjectSpawned(BaseObject obj)
+    protected override void OnObjectSpawned(BaseObject obj, bool inCollection = false)
     {
         if (obj is BaseEvent e)
         {
             if (e.IsLaneRotationEvent()) AllRotationEvents.Add(e);
             else if (e.IsColorBoostEvent()) AllBoostEvents.Add(e);
             else if (e.IsBpmEvent()) AllBpmEvents.Add(e);
-
-            RemoveLinkedEvents(e);
-            LinkEvent(e);
+            else if (e.IsLightEvent() && !inCollection)
+            {
+                RemoveLinkedLightEvents(e);
+                LinkLightEvents(e);
+            }
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
 
-    private void LinkEvent(BaseEvent e)
+    private void LinkLightEvents(BaseEvent e)
     {
         var previousEvent = GetPreviousEventOrDefault(e);
         if (previousEvent != null)
@@ -256,7 +260,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         e.Next = nextEvent;
     }
 
-    private void RemoveLinkedEvents(BaseEvent e)
+    private void RemoveLinkedLightEvents(BaseEvent e)
     {
         // Update appearance of previous event
         if (e.Prev != null)
@@ -386,4 +390,15 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             Where(x => x.IsLightEvent()).
             GroupBy(x => x.Type).
             ToDictionary(g => g.Key, g => g.ToList());
+
+    public void RefreshEventsAppearance(IEnumerable<BaseEvent> events)
+    {
+        foreach (var evt in events)
+        {
+            if (evt.Prev != null && LoadedContainers.TryGetValue(evt.Prev, out var evtPrevContainer))
+                (evtPrevContainer as EventContainer).RefreshAppearance();
+            if (LoadedContainers.TryGetValue(evt, out var evtContainer))
+                (evtContainer as EventContainer).RefreshAppearance();
+        }
+    }
 }

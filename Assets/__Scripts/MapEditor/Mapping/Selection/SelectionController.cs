@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.V2.Customs;
@@ -409,7 +410,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 var collection = pair.Item1;
                 var beatmapObject = pair.Item2;
-                collection.DeleteObject(beatmapObject, false);
+                collection.DeleteObject(beatmapObject, false, inCollection: true);
                 totalRemoved.Add(beatmapObject);
             }
         }
@@ -417,9 +418,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         // We then spawn our pasted objects into the map and select them.
         foreach (var data in pasted)
         {
-            collections[data.ObjectType].SpawnObject(data, false, false);
+            collections[data.ObjectType].SpawnObject(data, false, false, true);
             Select(data, true, false, false);
         }
+
+        RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
 
         foreach (var collection in collections.Values)
         {
@@ -474,6 +477,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
             allActions.Add(new BeatmapObjectModifiedAction(data, data, original, "", true));
         }
+
+        RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
 
         BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true,
             "Shifted a selection of objects."));
@@ -685,6 +690,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             return new BeatmapObjectModifiedAction(data, data, original, "", true);
         }).ToList();
 
+        RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
+
         BeatmapActionContainer.AddAction(
             new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."), true);
         tracksManager.RefreshTracks();
@@ -766,4 +773,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     }
 
     #endregion
+
+    private void RefreshMovedEventsAppearance(IEnumerable<BaseEvent> events)
+    {
+        if (!events.Any())
+        {
+            return;
+        }
+
+        var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+        eventContainer.LinkAllLightEvents();
+        eventContainer.RefreshEventsAppearance(events);
+    }
 }

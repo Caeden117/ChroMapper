@@ -321,6 +321,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="obj">To delete.</param>
     /// <param name="triggersAction">Whether or not it triggers a <see cref="BeatmapObjectDeletionAction" /></param>
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
+    public void DeleteObject(ObjectContainer obj, bool triggersAction = true, string comment = "No comment.", bool inCollection = false) =>
+        DeleteObject(obj.ObjectData, triggersAction, true, comment);
+
+    // Identical to above but I need this as the action doesn't work with option parameters
     public void DeleteObject(ObjectContainer obj, bool triggersAction = true, string comment = "No comment.") =>
         DeleteObject(obj.ObjectData, triggersAction, true, comment);
 
@@ -332,7 +336,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="refreshesPool">Whether or not the pool will be refreshed as a result of this deletion.</param>
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
     public void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
-        string comment = "No comment.")
+        string comment = "No comment.", bool inCollection = false)
     {
         var removed = UnsortedObjects.Remove(obj);
         var removed2 = LoadedObjects.Remove(obj);
@@ -344,7 +348,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
             RecycleContainer(obj);
             if (refreshesPool) RefreshPool();
-            OnObjectDelete(obj);
+            OnObjectDelete(obj, inCollection);
             ObjectDeletedEvent?.Invoke(obj);
         }
         else
@@ -371,8 +375,12 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     be called.
     /// </param>
     /// <param name="refreshesPool">Whether or not the pool will be refreshed.</param>
-    public void SpawnObject(BaseObject obj, bool removeConflicting = true, bool refreshesPool = true) =>
-        SpawnObject(obj, out _, removeConflicting, refreshesPool);
+    /// <param name="inCollection">Whether OnObjectSpawned will be called.</param>
+    /// <param name="inCollection">
+    ///     Whether or not spawning is part of a collection of spawns
+    ///</param>
+    public void SpawnObject(BaseObject obj, bool removeConflicting = true, bool refreshesPool = true, bool inCollection = false) =>
+        SpawnObject(obj, out _, removeConflicting, refreshesPool, inCollection);
 
     /// <summary>
     ///     Spawns an object into the collection.
@@ -384,8 +392,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     <see cref="RemoveConflictingObjects(IEnumerable{BaseObject}, out IEnumerable{BaseObject})" /> will be called.
     /// </param>
     /// <param name="refreshesPool">Whether or not the pool will be refreshed.</param>
+    /// <param name="inCollection">
+    ///     Whether or not spawning is part of a collection of spawns
+    ///</param>
     public void SpawnObject(BaseObject obj, out List<BaseObject> conflicting, bool removeConflicting = true,
-        bool refreshesPool = true)
+        bool refreshesPool = true, bool inCollection = false)
     {
         //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
         if (removeConflicting)
@@ -394,7 +405,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             conflicting = new List<BaseObject>();
         LoadedObjects.Add(obj);
         UnsortedObjects.Add(obj);
-        OnObjectSpawned(obj);
+        OnObjectSpawned(obj, inCollection);
         ObjectSpawnedEvent?.Invoke(obj);
 
         //Debug.Log($"Total object count: {LoadedObjects.Count}");
@@ -433,9 +444,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     protected virtual void UpdateContainerData(ObjectContainer con, BaseObject obj) { }
 
-    protected virtual void OnObjectDelete(BaseObject obj) { }
+    protected virtual void OnObjectDelete(BaseObject obj, bool inCollection = false) { }
 
-    protected virtual void OnObjectSpawned(BaseObject obj) { }
+    protected virtual void OnObjectSpawned(BaseObject obj, bool inCollection = false) { }
 
     protected virtual void OnContainerSpawn(ObjectContainer container, BaseObject obj) { }
 
