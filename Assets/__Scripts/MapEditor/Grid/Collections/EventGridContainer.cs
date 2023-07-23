@@ -1,4 +1,5 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
@@ -49,10 +50,12 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
                     if (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
                     {
                         lightList[i].Next = null;
+                        lightList[i + 1].Prev = null;
                         for (var j = i + 1; j < lightList.Count; j++)
                         {
-                            if (lightList[j].CustomLightID == null || (lightList[i].CustomLightID?.FirstOrDefault() == lightList[j].CustomLightID.First()))
+                            if (lightList[j].CustomLightID == null || (lightList[i].CustomLightID?.SequenceEqual(lightList[j].CustomLightID ?? Array.Empty<int>()) ?? false))
                             {
+                                lightList[j].Prev = lightList[i];
                                 lightList[i].Next = lightList[j];
                                 break;
                             }
@@ -60,9 +63,11 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
                     }
                     else
                     {
+                        lightList[i + 1].Prev = lightList[i];
                         lightList[i].Next = lightList[i + 1];
                     }
                 }
+                lightList[0].Prev = null;
                 lightList[lightList.Count - 1].Next = null;
             }
         }
@@ -209,6 +214,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             {
                 AllBpmEvents.Remove(e);
             }
+
+            RemoveLinkedEvents(e);
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
@@ -218,13 +225,70 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     {
         if (obj is BaseEvent e)
         {
-            if (e.IsLaneRotationEvent())
-                AllRotationEvents.Add(e);
+            if (e.IsLaneRotationEvent()) AllRotationEvents.Add(e);
             else if (e.IsColorBoostEvent()) AllBoostEvents.Add(e);
             else if (e.IsBpmEvent()) AllBpmEvents.Add(e);
+
+            RemoveLinkedEvents(e);
+            LinkEvent(e);
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
+    }
+
+    private void LinkEvent(BaseEvent e)
+    {
+        var previousEvent = GetPreviousEventOrDefault(e);
+        if (previousEvent != null)
+        {
+            previousEvent.Next = e;
+            if (LoadedContainers.TryGetValue(previousEvent, out var value))
+                (value as EventContainer).RefreshAppearance();
+        }
+
+        var nextEvent = GetNextEventOrDefault(e);
+        if (nextEvent != null)
+        {
+            nextEvent.Prev = e;
+        }
+
+        e.Prev = previousEvent;
+        e.Next = nextEvent;
+    }
+
+    private void RemoveLinkedEvents(BaseEvent e)
+    {
+        // Update appearance of previous event
+        if (e.Prev != null)
+        {
+            if (e.Next != null)
+                (e.Prev.Next, e.Next.Prev) = (e.Next, e.Prev);
+            else
+                e.Prev.Next = null;
+
+            if (LoadedContainers.TryGetValue(e.Prev, out var prevContainer))
+                (prevContainer as EventContainer).RefreshAppearance();
+        }
+    }
+
+    private BaseEvent GetPreviousEventOrDefault(BaseEvent e)
+    {
+        return (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
+            ? LoadedObjects.LastOrDefault(x => x.JsonTime < e.JsonTime
+                && (x as BaseEvent).Type == e.Type
+                && ((x as BaseEvent).CustomLightID == null || (x as BaseEvent).CustomLightID.SequenceEqual(e.CustomLightID ?? Array.Empty<int>()))) as BaseEvent
+            : LoadedObjects.LastOrDefault(x => x.JsonTime < e.JsonTime
+                && (x as BaseEvent).Type == e.Type) as BaseEvent;
+    }
+
+    private BaseEvent GetNextEventOrDefault(BaseEvent e)
+    {
+        return (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
+            ? LoadedObjects.FirstOrDefault(x => x.JsonTime > e.JsonTime
+                && (x as BaseEvent).Type == e.Type
+                && ((x as BaseEvent).CustomLightID == null || (x as BaseEvent).CustomLightID.SequenceEqual(e.CustomLightID ?? Array.Empty<int>()))) as BaseEvent
+            : LoadedObjects.FirstOrDefault(x => x.JsonTime > e.JsonTime
+                && (x as BaseEvent).Type == e.Type) as BaseEvent;
     }
 
     // TODO: bleh, who cares about prop ID anyway
@@ -296,10 +360,6 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         {
             StopCoroutine(nameof(WaitForGradientThenRecycle));
             RefreshPool();
-        }
-        else
-        {
-            LinkAllLightEvents(); // Need to rework this as this blocks playback until this is done
         }
     }
 
