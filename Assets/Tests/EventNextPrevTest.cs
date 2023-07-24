@@ -98,7 +98,7 @@ namespace Tests
                 PlaceUtils.PlaceEvent(eventPlacement, baseEvent2);
                 PlaceUtils.PlaceEvent(eventPlacement, baseEvent3);
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEvent1, baseEvent2, baseEvent3, baseEvent4 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEvent1, baseEvent2, baseEvent3, baseEvent4 }, "Place");
 
                 // Check state after deleting
                 // 1 ->   -> 3 ->
@@ -106,14 +106,14 @@ namespace Tests
                 SelectionController.Select(baseEvent4, true);
                 selectionController.Delete();
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEvent1, baseEvent3 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEvent1, baseEvent3 }, "Delete");
 
                 // Check state after undo and redo
                 actionContainer.Undo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEvent1, baseEvent2, baseEvent3, baseEvent4 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEvent1, baseEvent2, baseEvent3, baseEvent4 }, "Undo");
 
                 actionContainer.Redo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEvent1, baseEvent3 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEvent1, baseEvent3 }, "Redo");
             }
         }
 
@@ -146,8 +146,8 @@ namespace Tests
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventT2);
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventT4);
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA1, baseEventT2, baseEventA3, baseEventT4 });
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventB1, baseEventB3 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA1, baseEventT2, baseEventA3, baseEventT4 }, "Place");
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventB1, baseEventB3 }, "Place");
 
                 // Check state after shifting eventT
                 // A1 ->    -> A3 ->
@@ -156,17 +156,17 @@ namespace Tests
                 SelectionController.Select(baseEventT4, true);
                 selectionController.ShiftSelection(1, 0);
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA1, baseEventA3 });
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventB1, baseEventT2, baseEventB3, baseEventT4 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA1, baseEventA3 }, "Shift");
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventB1, baseEventT2, baseEventB3, baseEventT4 }, "Shift");
 
                 // Check state after undo and redo
                 actionContainer.Undo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA1, baseEventT2, baseEventA3, baseEventT4 });
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventB1, baseEventB3 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA1, baseEventT2, baseEventA3, baseEventT4 }, "Undo");
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventB1, baseEventB3 }, "Undo");
 
                 actionContainer.Redo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA1, baseEventA3 });
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventB1, baseEventT2, baseEventB3, baseEventT4 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA1, baseEventA3 }, "Redo");
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventB1, baseEventT2, baseEventB3, baseEventT4 }, "Redo");
             }
         }
 
@@ -194,7 +194,7 @@ namespace Tests
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventT1);
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventT2);
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventT1, baseEventB, baseEventT2 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventT1, baseEventB, baseEventT2 }, "Place");
 
                 // Check state after moving eventT
                 // A ->   -> B -> T1 -> T2
@@ -202,14 +202,14 @@ namespace Tests
                 SelectionController.Select(baseEventT2, true);
                 selectionController.MoveSelection(1);
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB, baseEventT1, baseEventT2 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB, baseEventT1, baseEventT2 }, "Move");
 
                 // Check state after undo and redo
                 actionContainer.Undo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventT1, baseEventB, baseEventT2 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventT1, baseEventB, baseEventT2 }, "Undo");
 
                 actionContainer.Redo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB, baseEventT1, baseEventT2 });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB, baseEventT1, baseEventT2 }, "Redo");
             }
         }
 
@@ -234,7 +234,7 @@ namespace Tests
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventB);
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB }, "Place");
 
                 // Check state after pasting
                 // A -> B -> A Copy -> B copy
@@ -246,35 +246,35 @@ namespace Tests
 
                 AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB,
                     containerCollection.LoadedObjects.ElementAt(2) as BaseEvent,
-                    containerCollection.LoadedObjects.ElementAt(3) as BaseEvent });
+                    containerCollection.LoadedObjects.ElementAt(3) as BaseEvent }, "Paste");
 
                 // Check state after undo and redo
                 actionContainer.Undo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB });
+                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB }, "Undo");
 
                 actionContainer.Redo();
                 AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB,
                     containerCollection.LoadedObjects.ElementAt(2) as BaseEvent,
-                    containerCollection.LoadedObjects.ElementAt(3) as BaseEvent });
+                    containerCollection.LoadedObjects.ElementAt(3) as BaseEvent }, "Redo");
             }
         }
 
-        private void AssertEventLinkOrder(IList<BaseEvent> events)
+        private void AssertEventLinkOrder(IList<BaseEvent> events, string msg = "")
         {
             if (events.Count == 1)
             {
-                CheckUtils.CheckEventPrevAndNext(events[0], null, null);
+                CheckUtils.CheckEventPrevAndNext($"{msg} - 0", events[0], null, null);
                 return;
             }
 
             for (var i = 0; i < events.Count; i++)
             {
                 if (i == 0)
-                    CheckUtils.CheckEventPrevAndNext(events[i], null, events[i + 1]);
+                    CheckUtils.CheckEventPrevAndNext($"{msg} - {i}", events[i], null, events[i + 1]);
                 else if (i == events.Count - 1)
-                    CheckUtils.CheckEventPrevAndNext(events[i], events[i - 1], null);
+                    CheckUtils.CheckEventPrevAndNext($"{msg} - {i}", events[i], events[i - 1], null);
                 else
-                    CheckUtils.CheckEventPrevAndNext(events[i], events[i - 1], events[i + 1]);
+                    CheckUtils.CheckEventPrevAndNext($"{msg} - {i}", events[i], events[i - 1], events[i + 1]);
             }
         }
     }
