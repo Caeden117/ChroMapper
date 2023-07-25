@@ -126,26 +126,15 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             return;
         }
 
-        // First event
         events[0].Prev = null;
         events[0].Next = events[1];
-        events[1].Prev = events[0];
 
-        // Middle events
         for (var i = 1; i < events.Count - 1; i++)
         {
-            if (lightEventsWithKnownPrevNext.Add(events[i]))
-            {
-                events[i + 1].Prev = events[i];
-                events[i].Next = events[i + 1];
-
-                events[i].Prev = events[i - 1];
-                events[i - 1].Next = events[i];
-            }
+            events[i].Prev = events[i - 1];
+            events[i].Next = events[i + 1];
         }
 
-        // Last event
-        events[events.Count - 2].Next = events[events.Count - 1];
         events[events.Count - 1].Prev = events[events.Count - 2];
         events[events.Count - 1].Next = null;
     }
