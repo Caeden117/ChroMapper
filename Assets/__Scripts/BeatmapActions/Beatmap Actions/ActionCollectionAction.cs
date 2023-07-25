@@ -68,24 +68,19 @@ public class ActionCollectionAction : BeatmapAction
 
     protected override void RefreshEventAppearance()
     {
-        var eventActions = actions.Where(x => (x is BeatmapObjectModifiedAction action && action.Data.Any(x => x.ObjectType == ObjectType.Event)));
-        if (!eventActions.Any())
+        var events = actions.SelectMany(x => x.Data).OfType<BaseEvent>();
+        if (!events.Any())
             return;
 
         var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+        eventContainer.MarkEventsToBeRelinked(events);
         eventContainer.LinkAllLightEvents();
-        foreach (var eventAction in eventActions)
+        foreach (var evt in events)
         {
-            foreach (var baseObject in eventAction.Data)
-            {
-                if (baseObject is BaseEvent evt)
-                {
-                    if (evt.Prev != null && eventContainer.LoadedContainers.TryGetValue(evt.Prev, out var evtPrevContainer))
-                        (evtPrevContainer as EventContainer).RefreshAppearance();
-                    if (eventContainer.LoadedContainers.TryGetValue(evt, out var evtContainer))
-                        (evtContainer as EventContainer).RefreshAppearance();
-                }
-            }
+            if (evt.Prev != null && eventContainer.LoadedContainers.TryGetValue(evt.Prev, out var evtPrevContainer))
+                (evtPrevContainer as EventContainer).RefreshAppearance();
+            if (eventContainer.LoadedContainers.TryGetValue(evt, out var evtContainer))
+                (evtContainer as EventContainer).RefreshAppearance();
         }
     }
 

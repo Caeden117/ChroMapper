@@ -321,6 +321,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="obj">To delete.</param>
     /// <param name="triggersAction">Whether or not it triggers a <see cref="BeatmapObjectDeletionAction" /></param>
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
+    /// <param name="inCollection">
+    ///     Whether or not spawning is part of a collection of spawns
+    ///     Set to true and call <see cref="DoPostObjectsDeleteWorkflow()" /> after to optimise spawning many objects
+    ///</param>
     public void DeleteObject(ObjectContainer obj, bool triggersAction = true, string comment = "No comment.", bool inCollection = false) =>
         DeleteObject(obj.ObjectData, triggersAction, true, comment);
 
@@ -335,6 +339,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="triggersAction">Whether or not it triggers a <see cref="BeatmapObjectDeletionAction" /></param>
     /// <param name="refreshesPool">Whether or not the pool will be refreshed as a result of this deletion.</param>
     /// <param name="comment">A comment that provides further description on why it was deleted.</param>
+    /// <param name="inCollection">
+    ///     Whether or not spawning is part of a collection of spawns
+    ///     Set to true and call <see cref="DoPostObjectsDeleteWorkflow()" /> after to optimise spawning many objects
+    ///</param>
     public void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
         string comment = "No comment.", bool inCollection = false)
     {
@@ -378,6 +386,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="inCollection">Whether OnObjectSpawned will be called.</param>
     /// <param name="inCollection">
     ///     Whether or not spawning is part of a collection of spawns
+    ///     Set to true and call <see cref="DoPostObjectsSpawnedWorkflow()" /> after to optimise spawning many objects
     ///</param>
     public void SpawnObject(BaseObject obj, bool removeConflicting = true, bool refreshesPool = true, bool inCollection = false) =>
         SpawnObject(obj, out _, removeConflicting, refreshesPool, inCollection);
@@ -393,7 +402,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// </param>
     /// <param name="refreshesPool">Whether or not the pool will be refreshed.</param>
     /// <param name="inCollection">
-    ///     Whether or not spawning is part of a collection of spawns
+    ///     Whether or not spawning is part of a collection of spawns.
+    ///     Set to true and call <see cref="DoPostObjectsSpawnedWorkflow()" /> after to optimise spawning many objects
     ///</param>
     public void SpawnObject(BaseObject obj, out List<BaseObject> conflicting, bool removeConflicting = true,
         bool refreshesPool = true, bool inCollection = false)
@@ -451,6 +461,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     protected virtual void OnContainerSpawn(ObjectContainer container, BaseObject obj) { }
 
     protected virtual void OnContainerDespawn(ObjectContainer container, BaseObject obj) { }
+
+    public virtual void DoPostObjectsSpawnedWorkflow() { }
+
+    public virtual void DoPostObjectsDeleteWorkflow() { }
 
     public abstract ObjectContainer CreateContainer();
 

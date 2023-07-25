@@ -782,6 +782,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         }
 
         var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+        eventContainer.MarkEventsToBeRelinked(events);
         eventContainer.LinkAllLightEvents();
         eventContainer.RefreshEventsAppearance(events);
     }

@@ -8,7 +8,6 @@ using Beatmap.Containers;
 using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEventGridActions
 {
@@ -34,6 +33,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     public List<BaseEvent> AllBoostEvents = new List<BaseEvent>();
     public List<BaseEvent> AllBpmEvents = new List<BaseEvent>();
 
+    private HashSet<BaseEvent> lightEventsWithKnownPrevNext = new HashSet<BaseEvent>();
+
     private Dictionary<int, List<BaseEvent>> allLightEvents = new Dictionary<int, List<BaseEvent>>();
     public Dictionary<int, List<BaseEvent>> AllLightEvents
     {
@@ -44,33 +45,124 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             foreach (var p in allLightEvents)
             {
                 var lightList = p.Value;
-                for (var i = 0; i < lightList.Count - 1; ++i)
+
+                if (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
                 {
-                    // This path is really expensive so users opt out by default for now
-                    if (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
-                    {
-                        lightList[i].Next = null;
-                        lightList[i + 1].Prev = null;
-                        for (var j = i + 1; j < lightList.Count; j++)
-                        {
-                            if (lightList[j].CustomLightID == null || (lightList[i].CustomLightID?.SequenceEqual(lightList[j].CustomLightID ?? Array.Empty<int>()) ?? false))
-                            {
-                                lightList[j].Prev = lightList[i];
-                                lightList[i].Next = lightList[j];
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        lightList[i + 1].Prev = lightList[i];
-                        lightList[i].Next = lightList[i + 1];
-                    }
+                    DoTheLinkingForLightIdStuff(lightList);
                 }
-                lightList[0].Prev = null;
-                lightList[lightList.Count - 1].Next = null;
+                else
+                {
+                    DoTheLinkingForEvents(lightList);
+                }
             }
         }
+    }
+
+    private void DoTheLinkingForLightIdStuff(List<BaseEvent> events)
+    {
+        var mostRecentEventByLightId = new Dictionary<int, BaseEvent>();
+
+        for (var i = 0; i < events.Count; ++i)
+        {
+            if (lightEventsWithKnownPrevNext.Add(events[i]))
+            {
+                // Previous
+                mostRecentEventByLightId.TryGetValue(events[i].CustomLightID?.FirstOrDefault() ?? int.MinValue, out var previousLightIDEvent);
+                mostRecentEventByLightId.TryGetValue(int.MinValue, out var previousVanillaEvent);
+                if (previousVanillaEvent == null && previousLightIDEvent == null)
+                {
+                    events[i].Prev = null;
+                }
+                else if (previousVanillaEvent != null && previousLightIDEvent == null)
+                {
+                    events[i].Prev = previousVanillaEvent;
+                    previousVanillaEvent.Next = events[i];
+                }
+                else if (previousVanillaEvent == null && previousLightIDEvent != null)
+                {
+                    events[i].Prev = previousLightIDEvent;
+                    previousLightIDEvent.Next = events[i];
+                }
+                else if (previousLightIDEvent.JsonTime > previousVanillaEvent.JsonTime)
+                {
+                    events[i].Prev = previousLightIDEvent;
+                    previousLightIDEvent.Next = events[i];
+                }
+                else
+                {
+                    events[i].Prev = previousVanillaEvent;
+                    previousVanillaEvent.Next = events[i];
+                }
+
+                // Next
+                events[i].Next = null;
+                for (var j = i + 1; j < events.Count; j++)
+                {
+                    if (events[j].CustomLightID == null || (events[i].CustomLightID?.FirstOrDefault() == events[j].CustomLightID?.FirstOrDefault()))
+                    {
+                        events[j].Prev = events[i];
+                        events[i].Next = events[j];
+                        break;
+                    }
+                }
+            }
+
+            // Default is int.MinValue because there's going some mapper that will use negative lightID
+            mostRecentEventByLightId[events[i].CustomLightID?.FirstOrDefault() ?? int.MinValue] = events[i];
+        }
+    }
+
+    private void DoTheLinkingForEvents(List<BaseEvent> events)
+    {
+        if (events.Count == 0)
+        {
+            return;
+        }
+
+        if (events.Count == 1)
+        {
+            events[0].Prev = null;
+            events[0].Next = null;
+            return;
+        }
+
+        // First event
+        events[0].Prev = null;
+        events[0].Next = events[1];
+        events[1].Prev = events[0];
+
+        // Middle events
+        for (var i = 1; i < events.Count - 1; i++)
+        {
+            if (lightEventsWithKnownPrevNext.Add(events[i]))
+            {
+                events[i + 1].Prev = events[i];
+                events[i].Next = events[i + 1];
+
+                events[i].Prev = events[i - 1];
+                events[i - 1].Next = events[i];
+            }
+        }
+
+        // Last event
+        events[events.Count - 2].Next = events[events.Count - 1];
+        events[events.Count - 1].Prev = events[events.Count - 2];
+        events[events.Count - 1].Next = null;
+    }
+
+    public void MarkEventsToBeRelinked(IEnumerable<BaseEvent> events)
+    {
+        foreach (var e in events)
+        {
+            MarkEventToBeRelinked(e);
+        }
+    }
+
+    public void MarkEventToBeRelinked(BaseEvent e)
+    {
+        lightEventsWithKnownPrevNext.Remove(e.Prev);
+        lightEventsWithKnownPrevNext.Remove(e);
+        lightEventsWithKnownPrevNext.Remove(e.Next);
     }
 
     internal PlatformDescriptor platformDescriptor;
@@ -223,10 +315,14 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
                     events.Remove(e);
                 }
             }
+
+            MarkEventToBeRelinked(e);
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
+
+    public override void DoPostObjectsDeleteWorkflow() => LinkAllLightEvents();
 
     protected override void OnObjectSpawned(BaseObject obj, bool inCollection = false)
     {
@@ -240,11 +336,14 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
                 RemoveLinkedLightEvents(e);
                 LinkLightEvents(e);
                 AddToAllLightEvents(e);
+                lightEventsWithKnownPrevNext.Add(e);
             }
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
+
+    public override void DoPostObjectsSpawnedWorkflow() => LinkAllLightEvents();
 
     private void LinkLightEvents(BaseEvent e)
     {
