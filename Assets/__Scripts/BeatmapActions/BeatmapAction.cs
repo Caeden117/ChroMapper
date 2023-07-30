@@ -112,6 +112,7 @@ public abstract class BeatmapAction : INetSerializable
             return;
 
         var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+        eventContainer.MarkEventsToBeRelinked(events);
         eventContainer.LinkAllLightEvents();
         eventContainer.RefreshEventsAppearance(events);
     }

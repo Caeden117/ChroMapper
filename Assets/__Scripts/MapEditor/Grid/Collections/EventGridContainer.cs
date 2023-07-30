@@ -64,51 +64,31 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
 
         for (var i = 0; i < events.Count; ++i)
         {
-            if (lightEventsWithKnownPrevNext.Add(events[i]))
+            var evt = events[i];
+            var thisLightID = evt.CustomLightID?.FirstOrDefault();
+            if (lightEventsWithKnownPrevNext.Add(evt))
             {
-                // Previous
-                mostRecentEventByLightId.TryGetValue(events[i].CustomLightID?.FirstOrDefault() ?? int.MinValue, out var previousLightIDEvent);
-                mostRecentEventByLightId.TryGetValue(int.MinValue, out var previousVanillaEvent);
-                if (previousVanillaEvent == null && previousLightIDEvent == null)
+                evt.Prev = null;
+                if (mostRecentEventByLightId.TryGetValue(evt.CustomLightID?.FirstOrDefault() ?? int.MinValue, out var previousEvent))
                 {
-                    events[i].Prev = null;
-                }
-                else if (previousVanillaEvent != null && previousLightIDEvent == null)
-                {
-                    events[i].Prev = previousVanillaEvent;
-                    previousVanillaEvent.Next = events[i];
-                }
-                else if (previousVanillaEvent == null && previousLightIDEvent != null)
-                {
-                    events[i].Prev = previousLightIDEvent;
-                    previousLightIDEvent.Next = events[i];
-                }
-                else if (previousLightIDEvent.JsonTime > previousVanillaEvent.JsonTime)
-                {
-                    events[i].Prev = previousLightIDEvent;
-                    previousLightIDEvent.Next = events[i];
-                }
-                else
-                {
-                    events[i].Prev = previousVanillaEvent;
-                    previousVanillaEvent.Next = events[i];
+                    evt.Prev = previousEvent;
+                    previousEvent.Next = evt;
                 }
 
-                // Next
-                events[i].Next = null;
+                evt.Next = null;
                 for (var j = i + 1; j < events.Count; j++)
                 {
-                    if (events[j].CustomLightID == null || (events[i].CustomLightID?.FirstOrDefault() == events[j].CustomLightID?.FirstOrDefault()))
+                    if (thisLightID == events[j].CustomLightID?.FirstOrDefault())
                     {
-                        events[j].Prev = events[i];
-                        events[i].Next = events[j];
+                        events[j].Prev = evt;
+                        evt.Next = events[j];
                         break;
                     }
                 }
             }
 
             // Default is int.MinValue because there's going some mapper that will use negative lightID
-            mostRecentEventByLightId[events[i].CustomLightID?.FirstOrDefault() ?? int.MinValue] = events[i];
+            mostRecentEventByLightId[thisLightID ?? int.MinValue] = evt;
         }
     }
 
@@ -336,7 +316,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
 
     private void LinkLightEvents(BaseEvent e)
     {
-        var previousEvent = GetPreviousEventOfSameTypeOrDefault(e);
+        var previousEvent = GetPreviousEventWithSameLightIDOrDefault(e);
         if (previousEvent != null)
         {
             previousEvent.Next = e;
@@ -344,7 +324,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
                 (value as EventContainer).RefreshAppearance();
         }
 
-        var nextEvent = GetNextEventOfSameTypeOrDefault(e);
+        var nextEvent = GetNextEventWithSameLightIDOrDefault(e);
         if (nextEvent != null)
         {
             nextEvent.Prev = e;
@@ -384,30 +364,36 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
         }
     }
 
-    private BaseEvent GetPreviousEventOfSameTypeOrDefault(BaseEvent e)
+    private BaseEvent GetPreviousEventWithSameLightIDOrDefault(BaseEvent e)
     {
         if (!AllLightEvents.TryGetValue(e.Type, out var events))
         {
             return null;
         }
 
-        return (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
-            ? events.FindLast(x => x.JsonTime < e.JsonTime
-                && ((x as BaseEvent).CustomLightID == null || (x as BaseEvent).CustomLightID.SequenceEqual(e.CustomLightID ?? Array.Empty<int>()))) as BaseEvent
-            : events.FindLast(x => x.JsonTime < e.JsonTime) as BaseEvent;
+        if (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
+        {
+            var thisLightID = e.CustomLightID?.FirstOrDefault();
+            return events.FindLast(x => x.JsonTime < e.JsonTime && thisLightID == x.CustomLightID?.FirstOrDefault());
+        }
+
+        return events.FindLast(x => x.JsonTime < e.JsonTime);
     }
 
-    private BaseEvent GetNextEventOfSameTypeOrDefault(BaseEvent e)
+    private BaseEvent GetNextEventWithSameLightIDOrDefault(BaseEvent e)
     {
         if (!AllLightEvents.TryGetValue(e.Type, out var events))
         {
             return null;
         }
 
-        return (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
-            ? events.Find(x => x.JsonTime > e.JsonTime
-                && ((x as BaseEvent).CustomLightID == null || (x as BaseEvent).CustomLightID.SequenceEqual(e.CustomLightID ?? Array.Empty<int>()))) as BaseEvent
-            : events.Find(x => x.JsonTime > e.JsonTime) as BaseEvent;
+        if (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
+        {
+            var thisLightID = e.CustomLightID?.FirstOrDefault();
+            return events.Find(x => x.JsonTime > e.JsonTime && thisLightID == x.CustomLightID?.FirstOrDefault());
+        }
+
+        return events.Find(x => x.JsonTime > e.JsonTime);
     }
 
     // TODO: bleh, who cares about prop ID anyway
