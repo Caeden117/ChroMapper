@@ -10,7 +10,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public StrobeGeneratorGenerationAction() : base() { }
 
     public StrobeGeneratorGenerationAction(IEnumerable<BaseObject> generated, IEnumerable<BaseObject> conflicting)
-        : base(generated) { inCollection = true; conflictingData = conflicting; }
+        : base(generated) { affectsSeveralObjects = true; conflictingData = conflicting; }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {

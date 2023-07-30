@@ -24,8 +24,11 @@ public class ActionCollectionAction : BeatmapAction
         : base(beatmapActions.SelectMany(x => x.Data), comment)
     {
         foreach (var beatmapAction in beatmapActions)
+        {
             // Stops the actions wastefully refreshing the object pool
             beatmapAction.inCollection = true;
+            affectsSeveralObjects = true;
+        }
 
         actions = beatmapActions;
         clearSelection = clearsSelection;

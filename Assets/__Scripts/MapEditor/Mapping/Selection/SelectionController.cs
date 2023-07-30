@@ -410,7 +410,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 var collection = pair.Item1;
                 var beatmapObject = pair.Item2;
-                collection.DeleteObject(beatmapObject, false, inCollection: true);
+                collection.DeleteObject(beatmapObject, false, inCollectionOfDeletes: true);
                 totalRemoved.Add(beatmapObject);
             }
         }

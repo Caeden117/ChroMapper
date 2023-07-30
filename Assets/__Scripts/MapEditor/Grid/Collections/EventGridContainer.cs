@@ -48,90 +48,14 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
 
                 if (Settings.Instance.EmulateChromaAdvanced && Settings.Instance.LightIDTransitionSupport)
                 {
-                    DoTheLinkingForLightIdStuff(lightList);
+                    LinkEventsForChroma(lightList);
                 }
                 else
                 {
-                    DoTheLinkingForEvents(lightList);
+                    LinkEventsForVanilla(lightList);
                 }
             }
         }
-    }
-
-    private void DoTheLinkingForLightIdStuff(List<BaseEvent> events)
-    {
-        var mostRecentEventByLightId = new Dictionary<int, BaseEvent>();
-
-        for (var i = 0; i < events.Count; ++i)
-        {
-            var evt = events[i];
-            var thisLightID = evt.CustomLightID?.FirstOrDefault();
-            if (lightEventsWithKnownPrevNext.Add(evt))
-            {
-                evt.Prev = null;
-                if (mostRecentEventByLightId.TryGetValue(evt.CustomLightID?.FirstOrDefault() ?? int.MinValue, out var previousEvent))
-                {
-                    evt.Prev = previousEvent;
-                    previousEvent.Next = evt;
-                }
-
-                evt.Next = null;
-                for (var j = i + 1; j < events.Count; j++)
-                {
-                    if (thisLightID == events[j].CustomLightID?.FirstOrDefault())
-                    {
-                        events[j].Prev = evt;
-                        evt.Next = events[j];
-                        break;
-                    }
-                }
-            }
-
-            // Default is int.MinValue because there's going some mapper that will use negative lightID
-            mostRecentEventByLightId[thisLightID ?? int.MinValue] = evt;
-        }
-    }
-
-    private void DoTheLinkingForEvents(List<BaseEvent> events)
-    {
-        if (events.Count == 0)
-        {
-            return;
-        }
-
-        if (events.Count == 1)
-        {
-            events[0].Prev = null;
-            events[0].Next = null;
-            return;
-        }
-
-        events[0].Prev = null;
-        events[0].Next = events[1];
-
-        for (var i = 1; i < events.Count - 1; i++)
-        {
-            events[i].Prev = events[i - 1];
-            events[i].Next = events[i + 1];
-        }
-
-        events[events.Count - 1].Prev = events[events.Count - 2];
-        events[events.Count - 1].Next = null;
-    }
-
-    public void MarkEventsToBeRelinked(IEnumerable<BaseEvent> events)
-    {
-        foreach (var e in events)
-        {
-            MarkEventToBeRelinked(e);
-        }
-    }
-
-    public void MarkEventToBeRelinked(BaseEvent e)
-    {
-        lightEventsWithKnownPrevNext.Remove(e.Prev);
-        lightEventsWithKnownPrevNext.Remove(e);
-        lightEventsWithKnownPrevNext.Remove(e.Next);
     }
 
     internal PlatformDescriptor platformDescriptor;
@@ -484,6 +408,82 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             AllBoostEvents.FindLast(x => x.JsonTime <= obj.JsonTime)?.Value == 1);
         var e = obj as BaseEvent;
         if (PropagationEditing != PropMode.Off && e.Type != EventTypeToPropagate) con.SafeSetActive(false);
+    }
+
+    private void LinkEventsForChroma(List<BaseEvent> events)
+    {
+        var mostRecentEventByLightId = new Dictionary<int, BaseEvent>();
+
+        for (var i = 0; i < events.Count; ++i)
+        {
+            var evt = events[i];
+            var thisLightID = evt.CustomLightID?.FirstOrDefault();
+            if (lightEventsWithKnownPrevNext.Add(evt))
+            {
+                evt.Prev = null;
+                if (mostRecentEventByLightId.TryGetValue(thisLightID ?? int.MinValue, out var previousEvent))
+                {
+                    evt.Prev = previousEvent;
+                    previousEvent.Next = evt;
+                }
+
+                evt.Next = null;
+                for (var j = i + 1; j < events.Count; j++)
+                {
+                    if (thisLightID == events[j].CustomLightID?.FirstOrDefault())
+                    {
+                        events[j].Prev = evt;
+                        evt.Next = events[j];
+                        break;
+                    }
+                }
+            }
+
+            // Default is int.MinValue because there's going some mapper that will use negative lightID
+            mostRecentEventByLightId[thisLightID ?? int.MinValue] = evt;
+        }
+    }
+
+    private void LinkEventsForVanilla(List<BaseEvent> events)
+    {
+        if (events.Count == 0)
+        {
+            return;
+        }
+
+        if (events.Count == 1)
+        {
+            events[0].Prev = null;
+            events[0].Next = null;
+            return;
+        }
+
+        events[0].Prev = null;
+        events[0].Next = events[1];
+
+        for (var i = 1; i < events.Count - 1; i++)
+        {
+            events[i].Prev = events[i - 1];
+            events[i].Next = events[i + 1];
+        }
+
+        events[events.Count - 1].Prev = events[events.Count - 2];
+        events[events.Count - 1].Next = null;
+    }
+
+    public void MarkEventsToBeRelinked(IEnumerable<BaseEvent> events)
+    {
+        foreach (var e in events)
+        {
+            MarkEventToBeRelinked(e);
+        }
+    }
+
+    public void MarkEventToBeRelinked(BaseEvent e)
+    {
+        lightEventsWithKnownPrevNext.Remove(e.Prev);
+        lightEventsWithKnownPrevNext.Remove(e);
+        lightEventsWithKnownPrevNext.Remove(e.Next);
     }
 
     public void LinkAllLightEvents() =>

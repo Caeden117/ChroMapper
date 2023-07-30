@@ -76,7 +76,7 @@ public class StrobeGenerator : MonoBehaviour
         if (generatedObjects.Count > 0)
         {
             //Delete conflicting vanilla events
-            foreach (BaseEvent e in oldEvents) eventGridContainer.DeleteObject(e, false, false, inCollection: true);
+            foreach (BaseEvent e in oldEvents) eventGridContainer.DeleteObject(e, false, false, inCollectionOfDeletes: true);
             //Spawn objects that were generated
             foreach (BaseEvent data in generatedObjects)
             {

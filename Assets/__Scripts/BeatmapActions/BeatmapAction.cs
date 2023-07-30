@@ -21,6 +21,7 @@ public abstract class BeatmapAction : INetSerializable
     public MapperIdentityPacket Identity; // Only used in United Mapping, assume local user if null
 
     internal bool inCollection = false;
+    internal bool affectsSeveralObjects = false;
 
     public BeatmapAction() => Networked = true;
 
@@ -68,7 +69,7 @@ public abstract class BeatmapAction : INetSerializable
     }
 
     protected void SpawnObject(BaseObject obj, bool removeConflicting = false, bool refreshesPool = false)
-        => BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).SpawnObject(obj, removeConflicting, refreshesPool, inCollection);
+        => BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).SpawnObject(obj, removeConflicting, refreshesPool, affectsSeveralObjects);
 
     protected void DeleteObject(BaseObject obj, bool refreshesPool = true)
     {
@@ -82,7 +83,7 @@ public abstract class BeatmapAction : INetSerializable
             return;
         }
 
-        collection.DeleteObject(obj, false, refreshesPool, inCollection: inCollection);
+        collection.DeleteObject(obj, false, refreshesPool, inCollectionOfDeletes: affectsSeveralObjects);
     }
 
     protected void SerializeBeatmapObjectList(NetDataWriter writer, IEnumerable<BaseObject> list)

@@ -9,7 +9,7 @@ public class SelectionDeletedAction : BeatmapAction
 
     public SelectionDeletedAction(IEnumerable<BaseObject> deletedData) : base(deletedData)
     {
-        this.inCollection = true;
+        this.affectsSeveralObjects = true;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)

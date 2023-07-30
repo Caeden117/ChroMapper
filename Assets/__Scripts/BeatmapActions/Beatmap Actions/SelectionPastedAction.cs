@@ -12,7 +12,7 @@ public class SelectionPastedAction : BeatmapAction
     public SelectionPastedAction(IEnumerable<BaseObject> pasteData, IEnumerable<BaseObject> removed) :
         base(pasteData)
     {
-        this.inCollection = true;
+        this.affectsSeveralObjects = true;
         this.removed = removed;
     }
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
