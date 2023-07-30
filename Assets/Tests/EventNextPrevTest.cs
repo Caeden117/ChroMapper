@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
@@ -15,6 +15,8 @@ namespace Tests
 {
     public class EventNextPrevTest
     {
+        private bool originalLightIDSetting;
+
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap()
         {
@@ -24,7 +26,15 @@ namespace Tests
         [OneTimeTearDown]
         public void FinalTearDown()
         {
+            Settings.Instance.LightIDTransitionSupport = originalLightIDSetting;
             TestUtils.ReturnSettings();
+        }
+
+        [OneTimeSetUp]
+        public void TurnOffLightID()
+        {
+            originalLightIDSetting = Settings.Instance.LightIDTransitionSupport;
+            Settings.Instance.LightIDTransitionSupport = false;
         }
 
         [TearDown]
