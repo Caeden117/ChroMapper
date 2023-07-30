@@ -56,7 +56,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     public override IEnumerable<BaseObject> GrabSortedObjects() =>
         UnsortedObjects.OrderBy(x => x.JsonTime).ThenBy(x => (x as BaseCustomEvent).Type);
 
-    protected override void OnObjectSpawned(BaseObject obj)
+    protected override void OnObjectSpawned(BaseObject obj, bool inCollection = false)
     {
         var customEvent = obj as BaseCustomEvent;
         if (!customEventTypes.Contains(customEvent.Type))

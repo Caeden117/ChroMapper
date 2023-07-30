@@ -102,10 +102,10 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         track.AttachContainer(con);
     }
 
-    protected override void OnObjectSpawned(BaseObject _) =>
+    protected override void OnObjectSpawned(BaseObject _, bool __ = false) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
 
-    protected override void OnObjectDelete(BaseObject _) =>
+    protected override void OnObjectDelete(BaseObject _, bool __ = false) =>
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
 
     // Here we check to see if any special angled notes are required.

@@ -71,7 +71,7 @@ namespace Tests.Util
                 CustomData = new JSONObject()
             };
             BeatSaberSongContainer.Instance.DifficultyData = diff;
-            BeatSaberSongContainer.Instance.LoadedSong = AudioClip.Create("Fake", 44100 * 2, 1, 44100, false);
+            BeatSaberSongContainer.Instance.LoadedSong = AudioClip.Create("Fake", 44100 * 20, 1, 44100, false);
             BeatSaberSongContainer.Instance.Map = BeatmapFactory.GetDifficultyFromJson(loadVersion == 3
                 ? new JSONObject { ["version"] = "3.2.0" }
                 : new JSONObject { ["_version"] = "2.6.0" }, "testmap");

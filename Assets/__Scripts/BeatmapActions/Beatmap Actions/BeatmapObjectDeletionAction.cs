@@ -15,7 +15,6 @@ public class BeatmapObjectDeletionAction : BeatmapAction
         foreach (var obj in Data)
         {
             SpawnObject(obj, true);
-            // BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).SpawnObject(obj, refreshesPool: false);
         }
 
         RefreshPools(Data);
@@ -26,7 +25,6 @@ public class BeatmapObjectDeletionAction : BeatmapAction
         foreach (var obj in Data)
         {
             DeleteObject(obj, false);
-            // BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).DeleteObject(obj, false, false);
         }
 
         RefreshPools(Data);

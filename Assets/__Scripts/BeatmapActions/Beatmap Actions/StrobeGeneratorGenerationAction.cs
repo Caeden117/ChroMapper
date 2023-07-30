@@ -10,7 +10,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public StrobeGeneratorGenerationAction() : base() { }
 
     public StrobeGeneratorGenerationAction(IEnumerable<BaseObject> generated, IEnumerable<BaseObject> conflicting)
-        : base(generated) => conflictingData = conflicting;
+        : base(generated) { affectsSeveralObjects = true; conflictingData = conflicting; }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
@@ -19,6 +19,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         foreach (var obj in conflictingData)
             SpawnObject(obj);
         BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
+        RefreshEventAppearance();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
@@ -28,6 +29,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         foreach (var obj in Data)
             SpawnObject(obj);
         BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
+        RefreshEventAppearance();
     }
 
     public override void Serialize(NetDataWriter writer)

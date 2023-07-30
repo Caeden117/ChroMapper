@@ -82,6 +82,18 @@ namespace Tests.Util
             }
         }
 
+        public static void CheckEventPrevAndNext(string msg, BaseEvent evt, BaseEvent prevEvt, BaseEvent nextEvt)
+        {
+            if (prevEvt != null)
+                Assert.AreEqual(evt, prevEvt.Next, $"{msg} Mismatched Prev.Next");
+
+            Assert.AreEqual(prevEvt, evt.Prev, $"{msg} Mismatched Event.Prev");
+            Assert.AreEqual(nextEvt, evt.Next, $"{msg} Mismatched Event.Next");
+
+            if (nextEvt != null)
+                Assert.AreEqual(evt, nextEvt.Prev, $"{msg} Mismatched Next.Prev");
+        }
+
         public static void CheckRotationEvent(string msg, BeatmapObjectContainerCollection container, int idx, float time,
             int executionTime, float rotation, JSONNode customData = null)
         {

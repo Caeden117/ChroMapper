@@ -90,6 +90,8 @@ namespace Beatmap.Base
         public virtual int Type { get; set; }
         public int Value { get; set; }
         public float FloatValue { get; set; } = 1f;
+
+        public BaseEvent Prev { get; set; }
         public BaseEvent Next { get; set; }
 
         public bool IsBlue => Value == (int)LightValue.BlueOn || Value == (int)LightValue.BlueFlash ||

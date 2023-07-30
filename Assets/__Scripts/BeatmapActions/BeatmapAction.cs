@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using LiteNetLib.Utils;
 using Beatmap.Base;
+using Beatmap.Enums;
+using Beatmap.Containers;
 
 /// <summary>
 ///     A BeatmapAction contains a BeatmapObjectContainer as well as a methods to Undo and Redo the action.
@@ -19,6 +21,7 @@ public abstract class BeatmapAction : INetSerializable
     public MapperIdentityPacket Identity; // Only used in United Mapping, assume local user if null
 
     internal bool inCollection = false;
+    internal bool affectsSeveralObjects = false;
 
     public BeatmapAction() => Networked = true;
 
@@ -66,7 +69,7 @@ public abstract class BeatmapAction : INetSerializable
     }
 
     protected void SpawnObject(BaseObject obj, bool removeConflicting = false, bool refreshesPool = false)
-        => BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).SpawnObject(obj, removeConflicting, refreshesPool);
+        => BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType).SpawnObject(obj, removeConflicting, refreshesPool, affectsSeveralObjects);
 
     protected void DeleteObject(BaseObject obj, bool refreshesPool = true)
     {
@@ -80,7 +83,7 @@ public abstract class BeatmapAction : INetSerializable
             return;
         }
 
-        collection.DeleteObject(obj, false, refreshesPool);
+        collection.DeleteObject(obj, false, refreshesPool, inCollectionOfDeletes: affectsSeveralObjects);
     }
 
     protected void SerializeBeatmapObjectList(NetDataWriter writer, IEnumerable<BaseObject> list)
@@ -101,5 +104,17 @@ public abstract class BeatmapAction : INetSerializable
         }
 
         return deserializedObjects;
+    }
+
+    protected virtual void RefreshEventAppearance()
+    {
+        var events = Data.OfType<BaseEvent>();
+        if (!events.Any())
+            return;
+
+        var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+        eventContainer.MarkEventsToBeRelinked(events);
+        eventContainer.LinkAllLightEvents();
+        eventContainer.RefreshEventsAppearance(events);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Beatmap.Base;
+﻿using System.Collections.Generic;
+using Beatmap.Base;
 using UnityEngine;
 
 namespace Tests.Util
@@ -22,6 +23,14 @@ namespace Tests.Util
                 obstaclePlacement.queuedData.Duration * EditorScaleController.EditorScale);
             obstaclePlacement.ApplyToMap(); // Starts placement
             obstaclePlacement.ApplyToMap(); // Completes placement
+        }
+
+        public static void PlaceEvents(EventPlacement eventPlacement, IEnumerable<BaseEvent> events, bool precRotation = false)
+        {
+            foreach (var evt in events)
+            {
+                PlaceEvent(eventPlacement, evt, precRotation);
+            }
         }
 
         public static void PlaceEvent(

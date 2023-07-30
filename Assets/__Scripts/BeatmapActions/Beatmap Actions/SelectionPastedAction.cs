@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using LiteNetLib.Utils;
 using Beatmap.Base;
+using System.Linq;
 
 public class SelectionPastedAction : BeatmapAction
 {
@@ -9,8 +10,11 @@ public class SelectionPastedAction : BeatmapAction
     public SelectionPastedAction() : base() { }
 
     public SelectionPastedAction(IEnumerable<BaseObject> pasteData, IEnumerable<BaseObject> removed) :
-        base(pasteData) => this.removed = removed;
-
+        base(pasteData)
+    {
+        this.affectsSeveralObjects = true;
+        this.removed = removed;
+    }
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var obj in Data)
@@ -18,6 +22,7 @@ public class SelectionPastedAction : BeatmapAction
         foreach (var obj in removed)
             SpawnObject(obj);
         RefreshPools(removed);
+        RefreshEventAppearance();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
@@ -36,6 +41,7 @@ public class SelectionPastedAction : BeatmapAction
         foreach (var obj in removed)
             DeleteObject(obj, false);
         RefreshPools(Data);
+        RefreshEventAppearance();
     }
 
     public override void Serialize(NetDataWriter writer)

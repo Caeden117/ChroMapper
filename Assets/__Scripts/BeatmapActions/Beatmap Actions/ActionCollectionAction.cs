@@ -2,6 +2,8 @@
 using System.Linq;
 using LiteNetLib.Utils;
 using Beatmap.Base;
+using Beatmap.Enums;
+using Beatmap.Containers;
 
 /*
  * Seems weird? Let me explain.
@@ -22,8 +24,11 @@ public class ActionCollectionAction : BeatmapAction
         : base(beatmapActions.SelectMany(x => x.Data), comment)
     {
         foreach (var beatmapAction in beatmapActions)
+        {
             // Stops the actions wastefully refreshing the object pool
             beatmapAction.inCollection = true;
+            affectsSeveralObjects = true;
+        }
 
         actions = beatmapActions;
         clearSelection = clearsSelection;
@@ -49,6 +54,8 @@ public class ActionCollectionAction : BeatmapAction
         foreach (var action in actions) action.Redo(param);
 
         if (forceRefreshesPool) RefreshPools(Data);
+
+        RefreshEventAppearance();
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
@@ -58,6 +65,26 @@ public class ActionCollectionAction : BeatmapAction
         foreach (var action in actions) action.Undo(param);
 
         if (forceRefreshesPool) RefreshPools(Data);
+
+        RefreshEventAppearance();
+    }
+
+    protected override void RefreshEventAppearance()
+    {
+        var events = actions.SelectMany(x => x.Data).OfType<BaseEvent>();
+        if (!events.Any())
+            return;
+
+        var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+        eventContainer.MarkEventsToBeRelinked(events);
+        eventContainer.LinkAllLightEvents();
+        foreach (var evt in events)
+        {
+            if (evt.Prev != null && eventContainer.LoadedContainers.TryGetValue(evt.Prev, out var evtPrevContainer))
+                (evtPrevContainer as EventContainer).RefreshAppearance();
+            if (eventContainer.LoadedContainers.TryGetValue(evt, out var evtContainer))
+                (evtContainer as EventContainer).RefreshAppearance();
+        }
     }
 
     public override void Serialize(NetDataWriter writer)
