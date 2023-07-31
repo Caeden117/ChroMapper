@@ -352,8 +352,18 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     public void PackageZip()
     {
-        exporter.PackageZip();
-        exporter.OpenSelectedMapInFileBrowser();
+        var success = exporter.PackageZip();
+        if (success)
+        {
+            PersistentUI.Instance.DisplayMessage("SongEditMenu", "package.zip.success", PersistentUI.DisplayMessageType.Bottom);
+            if (Settings.Instance.OpenFileExplorerAfterCreatingZip)
+                exporter.OpenSelectedMapInFileBrowser();
+        }
+        else
+        {
+            PersistentUI.Instance.DisplayMessage("SongEditMenu", "package.zip.error", PersistentUI.DisplayMessageType.Bottom);
+        }
+
     }
 
     public void OpenSelectedMapInFileBrowser() => exporter.OpenSelectedMapInFileBrowser();

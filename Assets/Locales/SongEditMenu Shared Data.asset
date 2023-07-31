@@ -365,6 +365,14 @@ MonoBehaviour:
     m_Key: songtimeoffset.warning
     m_Metadata:
       m_Items: []
+  - m_Id: 216566409055109120
+    m_Key: package.zip.success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566610293620736
+    m_Key: package.zip.error
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

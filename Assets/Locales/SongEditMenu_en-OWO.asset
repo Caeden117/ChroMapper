@@ -416,6 +416,16 @@ MonoBehaviour:
       that you apply your offsets using a audio manipulator such as Audacity."
     m_Metadata:
       m_Items: []
+  - m_Id: 216566409055109120
+    m_Localized: Map packaged to zip successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566610293620736
+    m_Localized: 'Error packaging map to zip.
+
+      No zip created.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

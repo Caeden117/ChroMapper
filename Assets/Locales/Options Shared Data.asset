@@ -1139,6 +1139,14 @@ MonoBehaviour:
     m_Key: map.precisionplacement.mode.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 262680152746688512
+    m_Key: general.open.explorer.after.zip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262680318467833856
+    m_Key: general.open.explorer.after.zip.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

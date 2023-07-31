@@ -27,6 +27,7 @@ public class Settings
     public bool AutoSave = true;
     public int AutoSaveInterval = 5;
     public bool FormatJson = false;
+    public bool OpenFileExplorerAfterCreatingZip = true;
     public bool InstantEscapeMenuTransitions = false;
     public bool InstantLoadingTransitions = false;
     public bool Waifu = true;

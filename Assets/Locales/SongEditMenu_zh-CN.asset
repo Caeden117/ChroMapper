@@ -374,6 +374,16 @@ MonoBehaviour:
       Audacity \u7B49\u97F3\u9891\u64CD\u7EB5\u5668\u5E94\u7528\u504F\u79FB\u3002"
     m_Metadata:
       m_Items: []
+  - m_Id: 216566409055109120
+    m_Localized: Map packaged to zip successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566610293620736
+    m_Localized: 'Error packaging map to zip.
+
+      No zip created.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

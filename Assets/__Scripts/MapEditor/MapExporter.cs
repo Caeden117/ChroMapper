@@ -108,7 +108,7 @@ public struct MapExporter
     /// <summary>
     ///     Create a zip for sharing the map
     /// </summary>
-    public void PackageZip()
+    public bool PackageZip()
     {
         var infoFileLocation = "";
         var zipPath = "";
@@ -126,12 +126,14 @@ public struct MapExporter
             Debug.LogError(":hyperPepega: :mega: WHY TF ARE YOU TRYING TO PACKAGE A MAP WITH NO INFO.DAT FILE");
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "zip.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
-            return;
+            return false;
         }
 
         var exportedFiles = song.GetFilesForArchiving();
-
-        if (exportedFiles == null) return;
+        if (exportedFiles == null)
+        {
+            return false;
+        }
 
         using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
         {
@@ -140,6 +142,8 @@ public struct MapExporter
                 archive.CreateEntryFromFile(pathFileEntryPair.Key, pathFileEntryPair.Value);
             }
         }
+
+        return true;
     }
 
     /// <summary>
