@@ -20,124 +20,129 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 34914570240
-    m_Localized: Join Session
+    m_Localized: "\uC138\uC158 \uCC38\uC5EC"
     m_Metadata:
       m_Items: []
   - m_Id: 104179306496
-    m_Localized: Host Session
+    m_Localized: "\uD638\uC2A4\uD2B8 \uC138\uC158"
     m_Metadata:
       m_Items: []
   - m_Id: 757656064000
-    m_Localized: Downloading song... this can take several moments.
+    m_Localized: "\uB178\uB798\uB97C \uB2E4\uC6B4\uB85C\uB4DC\uC911... \uBA87 \uBD84
+      \uC815\uB3C4 \uAC78\uB9B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 1057586548736
-    m_Localized: Loading song...
+    m_Localized: "\uB178\uB798 \uBD88\uB7EC\uC624\uB294 \uC911..."
     m_Metadata:
       m_Items: []
   - m_Id: 1753480302592
-    m_Localized: Use Direct Connection
+    m_Localized: "\uC9C1\uC811 \uC5F0\uACB0 \uC0AC\uC6A9"
     m_Metadata:
       m_Items: []
   - m_Id: 1870388137984
-    m_Localized: Room Code
+    m_Localized: "\uBC29 \uCF54\uB4DC"
     m_Metadata:
       m_Items: []
   - m_Id: 2715376816128
-    m_Localized: Use Room Code
+    m_Localized: "\uBC29 \uCF54\uB4DC \uC0AC\uC6A9"
     m_Metadata:
       m_Items: []
   - m_Id: 3327472570368
-    m_Localized: IP
+    m_Localized: "IP\uC8FC\uC18C"
     m_Metadata:
       m_Items: []
   - m_Id: 3409345384448
-    m_Localized: Port
+    m_Localized: "\uD3EC\uD2B8"
     m_Metadata:
       m_Items: []
   - m_Id: 3460121628672
-    m_Localized: Mapper Customization
+    m_Localized: "\uB9E4\uD37C \uC0AC\uC6A9\uC790 \uC9C0\uC815"
     m_Metadata:
       m_Items: []
   - m_Id: 4051690459136
-    m_Localized: Display Name
+    m_Localized: "\uB2C9\uB124\uC784"
     m_Metadata:
       m_Items: []
   - m_Id: 4114886037504
-    m_Localized: Grid Color
+    m_Localized: "\uADF8\uB9AC\uB4DC \uC0C9\uC0C1"
     m_Metadata:
       m_Items: []
   - m_Id: 4175602782208
-    m_Localized: ChroMapTogether Server URL
+    m_Localized: "ChroMapTogether \uC11C\uBC84 \uC8FC\uC18C"
     m_Metadata:
       m_Items: []
   - m_Id: 4250194284544
-    m_Localized: Apply Changes
+    m_Localized: "\uBCC0\uACBD \uC0AC\uD56D \uC801\uC6A9"
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: 'Connection rejected.
-
-      This could be because the room code
-      is invalid
-
-      or your CM version is not the same as the host.'
+    m_Localized: "\uC5F0\uACB0\uC774 \uAC70\uBD80\uB418\uC5C8\uC2B5\uB2C8\uB2E4.
+      \uBC29 \uCF54\uB4DC\uB97C \uC0AC\uC6A9\uD55C \uACBD\uC6B0 \uCF54\uB4DC\uAC00
+      \uC62C\uBC14\uB974\uAC8C \uC785\uB825\uB418\uC5C8\uB294\uC9C0 \uD655\uC778\uD558\uC2ED\uC2DC\uC624."
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
-    m_Localized: 'Connection with the host lost: {0}. Returning to song list...'
+    m_Localized: "\uD638\uC2A4\uD2B8\uC640\uC758 \uC5F0\uACB0\uC774 \uB04A\uC5B4\uC84C\uC2B5\uB2C8\uB2E4:
+      {0}. \uB178\uB798 \uBAA9\uB85D\uC73C\uB85C \uB3CC\uC544\uAC00\uB294 \uC911..."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 5357561843712
-    m_Localized: 'A networking error occured: {0}.'
+    m_Localized: "\uB124\uD2B8\uC6CC\uD06C \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4:
+      {0}."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 5800807501824
-    m_Localized: 'Connection with the ChroMapTogether server lost: {0}.'
+    m_Localized: "ChroMapTogether \uC11C\uBC84\uC640\uC758 \uC5F0\uACB0\uC774 \uB04A\uACBC\uC2B5\uB2C8\uB2E4:
+      {0}."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 6140520960000
-    m_Localized: United Mapping
+    m_Localized: "\uD1B5\uD569 \uB9E4\uD551"
     m_Metadata:
       m_Items: []
   - m_Id: 6238239854592
-    m_Localized: Map with friends!
+    m_Localized: "\uCE5C\uAD6C\uB4E4\uACFC \uAC19\uC774 \uB9F5\uC744 \uB9CC\uB4E4\uC5B4\uBCF4\uC138\uC694!"
     m_Metadata:
       m_Items: []
   - m_Id: 1970900842393600
-    m_Localized: Friends will need to connect using your Public IP and Port. Port
-      forwarding is required for clients to connect.
+    m_Localized: "\uCE5C\uAD6C\uB294 \uACF5\uC6A9 IP \uBC0F \uD3EC\uD2B8\uB97C \uC0AC\uC6A9\uD558\uC5EC
+      \uC5F0\uACB0\uD574\uC57C \uD569\uB2C8\uB2E4. \uD074\uB77C\uC774\uC5B8\uD2B8\uAC00
+      \uC5F0\uACB0\uD558\uB824\uBA74 \uD3EC\uD2B8 \uD3EC\uC6CC\uB529\uC774 \uD544\uC694\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 1970841337802752
-    m_Localized: The ChroMapTogether server will be used to host this session. You
-      will be given a short room code to pass to friends.
+    m_Localized: "ChroMapTogether \uC11C\uBC84\uB294 \uC774 \uC138\uC158\uC744 \uD638\uC2A4\uD2B8\uD558\uB294
+      \uB370 \uC0AC\uC6A9\uB429\uB2C8\uB2E4. \uCE5C\uAD6C\uC5D0\uAC8C \uC804\uB2EC\uD560
+      \uC9E7\uC740 \uBC29 \uCF54\uB4DC\uAC00 \uC81C\uACF5\uB429\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 2018274558160896
-    m_Localized: User Trace
+    m_Localized: "\uC0AC\uC6A9\uC790 \uCD94\uC801"
     m_Metadata:
       m_Items: []
   - m_Id: 2018332712185856
-    m_Localized: This object was first created/modified by {0}.
+    m_Localized: "\uC774 \uC624\uBE0C\uC81D\uD2B8\uB294 {0} \uC5D0 \uC758\uD574 \uCC98\uC74C
+      \uC0DD\uC131/\uC218\uC815\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2018498240393216
-    m_Localized: This object was last modified by {0}.
+    m_Localized: "\uC774 \uAC1C\uCCB4\uB294 {0} \uC5D0 \uC758\uD574 \uB9C8\uC9C0\uB9C9\uC73C\uB85C
+      \uC218\uC815\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2336103375384576
-    m_Localized: Are you sure you want to ban {0}?
+    m_Localized: "{0} \uC744 \uCC28\uB2E8\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2336237542780928
-    m_Localized: Are you sure you want to kick {0}?
+    m_Localized: "{0} \uC744 \uCD94\uBC29\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items:
       - id: 0

@@ -113,8 +113,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1970841337802752
-    m_Localized: "The ChroMapTogether server will be used to host this session. You
-      will be given a short room code to pass to friends.\t"
+    m_Localized: The ChroMapTogether server will be used to host this session. You
+      will be given a short room code to pass to friends.
     m_Metadata:
       m_Items: []
   - m_Id: 2018274558160896

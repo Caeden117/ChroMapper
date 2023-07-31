@@ -186,8 +186,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "Uppdatera objekt och hur de p\xE5verkas av rotation.\n\nKan \xE5tg\xE4rda\neventuella
-      ol\xF6sta udda fall med rotationsh\xE4ndelser."
+    m_Localized: "Uppdatera objekt och hur de p\xE5verkas av rotation.\n\nKan \xE5tg\xE4rda\n
+      eventuella ol\xF6sta udda fall med rotationsh\xE4ndelser."
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -244,7 +244,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Strobe Generator
+    m_Localized: Strobegenerator
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -393,11 +393,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Flip Colors
+    m_Localized: "V\xE4nd F\xE4rger"
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Strobe will alternate between both colors when able.
+    m_Localized: "Strobe kommer v\xE4xla mellan b\xE5da f\xE4rgerna om det \xE4r
+      m\xF6jligt."
     m_Metadata:
       m_Items: []
   - m_Id: 88
@@ -440,7 +441,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Enter the name of this new bookmark.
+    m_Localized: "Ange namnet p\xE5 den nya bokm\xE4rket."
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -525,11 +526,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Set boost color for Blue Lighting Events
+    m_Localized: "S\xE4tt boost f\xE4rg f\xF6r Bl\xE5 ljush\xE4ndelser"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Set boost color for Red Lighting Events
+    m_Localized: "S\xE4tt boost f\xE4rg f\xF6r R\xF6da ljush\xE4ndelser"
     m_Metadata:
       m_Items: []
   - m_Id: 119
@@ -537,91 +538,92 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Changes easing for Chroma gradients.
+    m_Localized: "\xC4ndrar easing-en f\xF6r Chroma-toningar."
     m_Metadata:
       m_Items: []
   - m_Id: 121
-    m_Localized: Use Red events.
+    m_Localized: "Anv\xE4nd r\xF6da h\xE4ndelser."
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: Use Blue events.
+    m_Localized: "Anv\xE4nd bl\xE5a h\xE4ndelser."
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Basic Event Strobe
+    m_Localized: "Grundl\xE4ggande Strobeh\xE4ndelse"
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Chroma 2.0 Gradients
+    m_Localized: Chroma 2.0 toningar
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: Precise Laser Speed Interpolation
+    m_Localized: Exakt laserhastighetsinterpolation
     m_Metadata:
       m_Items: []
   - m_Id: 126
-    m_Localized: Placement Interval
+    m_Localized: Placeringsintervall
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Controls the density of generated events.
+    m_Localized: "Kontrollerar densiteten f\xF6r genererade h\xE4ndelser."
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Laser Speed Easing
+    m_Localized: Laserhastighets-easing
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls easing for precise laser speed values.
+    m_Localized: "Kontrollerar easing f\xF6r precisa laserhastighetsv\xE4rden."
     m_Metadata:
       m_Items: []
   - m_Id: 130
-    m_Localized: Lock Laser Rotation
+    m_Localized: "L\xE5s Laserrotation"
     m_Metadata:
       m_Items: []
   - m_Id: 131
-    m_Localized: Prevents laser rotation from randomly changing.
+    m_Localized: "Hindrar slumpm\xE4ssig laserrotation."
     m_Metadata:
       m_Items: []
   - m_Id: 132
-    m_Localized: Spin Direction
+    m_Localized: Snurr riktning
     m_Metadata:
       m_Items: []
   - m_Id: 133
-    m_Localized: Controls which direction the lasers will spin.
+    m_Localized: Kontrollerar vilken riktning lasern snurrar.
     m_Metadata:
       m_Items: []
   - m_Id: 134
-    m_Localized: Clockwise
+    m_Localized: Medurs
     m_Metadata:
       m_Items: []
   - m_Id: 135
-    m_Localized: Counter-Clockwise
+    m_Localized: Moturs
     m_Metadata:
       m_Items: []
   - m_Id: 136
-    m_Localized: Random
+    m_Localized: "Slumpm\xE4ssig"
     m_Metadata:
       m_Items: []
   - m_Id: 137
-    m_Localized: Unique Laser Directions
+    m_Localized: Unika laserriktningar
     m_Metadata:
       m_Items: []
   - m_Id: 138
-    m_Localized: Ensures that Left and Right lasers will rotate in opposite directions.
+    m_Localized: "Garanterar att v\xE4nster och h\xF6ger lasrar roterar i motsatta
+      riktningar."
     m_Metadata:
       m_Items: []
   - m_Id: 139
-    m_Localized: Decimal Precision
+    m_Localized: Decimalprecision
     m_Metadata:
       m_Items: []
   - m_Id: 140
-    m_Localized: Controls amount of precision for speed values.
+    m_Localized: "Kontrollerar precisionen f\xF6r hastighetsv\xE4rden."
     m_Metadata:
       m_Items: []
   - m_Id: 141
-    m_Localized: 'Swings Per Second: {OverallSPS:F2}'
+    m_Localized: 'Slag Per Sekund: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
       - id: 0
@@ -630,7 +632,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 144
-    m_Localized: Note
+    m_Localized: Block
     m_Metadata:
       m_Items: []
   - m_Id: 145
@@ -638,7 +640,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Wall
+    m_Localized: "V\xE4gg"
     m_Metadata:
       m_Items: []
   - m_Id: 147
@@ -646,54 +648,54 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: Fade
+    m_Localized: Tona
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: On
+    m_Localized: "P\xE5"
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Off
+    m_Localized: Av
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Flash
+    m_Localized: Blixt
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Cursor Interval
+    m_Localized: "Mark\xF6rintervall"
     m_Metadata:
       m_Items: []
   - m_Id: 153
-    m_Localized: Precision Rotation
+    m_Localized: Precisionsrotation
     m_Metadata:
       m_Items: []
   - m_Id: 154
-    m_Localized: Swaps what side the spectrogram is on
+    m_Localized: "Byter p\xE5 vilken sida spektrogrammet \xE4r p\xE5"
     m_Metadata:
       m_Items: []
   - m_Id: 155
-    m_Localized: Enter a new name for this bookmark.
+    m_Localized: "Ange ett nytt namn f\xF6r detta bokm\xE4rket."
     m_Metadata:
       m_Items: []
   - m_Id: 234935484416
-    m_Localized: 'Current BPM: {CurrentBPM:0.###}'
+    m_Localized: 'Nuvarande BPM: {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 1123800776704
-    m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
+    m_Localized: "R\xF6tt/Bl\xE5tt F\xF6rh\xE5llande: {RedBlueRatio:F2}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 3209883108945920
-    m_Localized: 'Bombs: {BombCount}'
+    m_Localized: 'Bomber: {BombCount}'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 12803634470490112
-    m_Localized: Select the new color for this bookmark.
+    m_Localized: "V\xE4lj den nya f\xE4rgen f\xF6r detta bokm\xE4rke."
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
@@ -701,15 +703,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68889908591489024
-    m_Localized: Bookmark Name
+    m_Localized: "Bokm\xE4rkes Namn"
     m_Metadata:
       m_Items: []
   - m_Id: 68889912282476544
-    m_Localized: Bookmark Color
+    m_Localized: "Bokm\xE4rkesf\xE4rg"
     m_Metadata:
       m_Items: []
   - m_Id: 118373130107551744
-    m_Localized: Objects found outside map. Do you want to remove them?
+    m_Localized: "Objekt har blivit funna utanf\xF6r mappen. Vill du ta bort dem?"
     m_Metadata:
       m_Items: []
   - m_Id: 160655767994621952
@@ -734,6 +736,55 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 42585459012075520
     m_Localized: Transition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122293661564928
+    m_Localized: Set color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122782700634112
+    m_Localized: Set boost color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207749379233349632
+    m_Localized: Color Gradients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207750905897091072
+    m_Localized: Lerp Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207751068199878656
+    m_Localized: Changes interpolation for the transition.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220101281077985280
+    m_Localized: Change Beatmap Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220102296279908352
+    m_Localized: Changes map version to v2 or v3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 232868047877242880
+    m_Localized: 'CM has detected Custom BPM changes and
+
+      converted these into
+      Official BPM events'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 240390057914204160
+    m_Localized: 'BPM Events: {BPMCount}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256289992891105280
+    m_Localized: Enter the beat you want to go to
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256290009261473792
+    m_Localized: 'Invalid number
+
+      Enter the beat you want to go to'
     m_Metadata:
       m_Items: []
   references:

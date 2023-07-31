@@ -729,6 +729,55 @@ MonoBehaviour:
     m_Localized: Transition
     m_Metadata:
       m_Items: []
+  - m_Id: 207122293661564928
+    m_Localized: Set color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122782700634112
+    m_Localized: Set boost color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207749379233349632
+    m_Localized: Color Gradients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207750905897091072
+    m_Localized: Lerp Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207751068199878656
+    m_Localized: Changes interpolation for the transition.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220101281077985280
+    m_Localized: Change Beatmap Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220102296279908352
+    m_Localized: Changes map version to v2 or v3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 232868047877242880
+    m_Localized: 'CM has detected Custom BPM changes and
+
+      converted these into
+      Official BPM events'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 240390057914204160
+    m_Localized: 'BPM Events: {BPMCount}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256289992891105280
+    m_Localized: Enter the beat you want to go to
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256290009261473792
+    m_Localized: 'Invalid number
+
+      Enter the beat you want to go to'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

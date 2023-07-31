@@ -165,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Forme d'onde
+    m_Localized: Spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -439,8 +439,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding the precision placement keybind while placing walls
-      or notes, an extended grid will appear with snapping disabled.
+    m_Localized: "Si vous maintenez Maj en pla\xE7ant des murs ou des notes, une
+      grille \xE9tendue appara\xEEtra avec l'aimantage d\xE9sactiv\xE9."
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -459,7 +459,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: "Afficher la forme d\u2019onde du morceau"
+    m_Localized: Show song spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -937,8 +937,8 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 67492742661058560
-    m_Localized: Scales the (total) rendering resolution for performance or visual
-      improvements.
+    m_Localized: "Changer l'\xE9chelle (totale) de la r\xE9solution du rendu pour
+      les performances ou des am\xE9liorations visuelles."
     m_Metadata:
       m_Items: []
   - m_Id: 67493661524013056
@@ -1016,7 +1016,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101795760294789120
-    m_Localized: Hides disableable platform objects on load
+    m_Localized: "Cacher les objets d\xE9sactivables de la plateforme lors du chargement"
     m_Metadata:
       m_Items: []
   - m_Id: 101795765399257088
@@ -1127,6 +1127,108 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 150232748497440768
     m_Localized: "D\xE9sinstallation d'ADB..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90253772483395584
+    m_Localized: Displays non-default floatValue on top of events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90254225048797184
+    m_Localized: Display FloatValue Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088741188730880
+    m_Localized: Visualize LightID Transition Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088950463528960
+    m_Localized: 'Previews and displays LightID transition events more accurately
+
+      This
+      is very heavy on performance'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947639714189312
+    m_Localized: CM Chan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947667555979264
+    m_Localized: Adds CM Chan art to loading screens.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211668371329187840
+    m_Localized: Precision Placement Grid Precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211668392346845184
+    m_Localized: The snapping interval of precision placement grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582333795893248
+    m_Localized: Invert Event Value Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582635601231872
+    m_Localized: Invert mouse scroll direction on changing event value.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582671521251328
+    m_Localized: Invert Note Angle Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582692199170048
+    m_Localized: Invert mouse scroll direction on changing note angle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582713359433728
+    m_Localized: Invert Arc Multiplier Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582733693419520
+    m_Localized: Invert mouse scroll direction on changing arc head and tail multipliers.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582754643968000
+    m_Localized: Invert Chain Squish Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582774030041088
+    m_Localized: Invert mouse scroll direction on changing chain squish.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582798323449856
+    m_Localized: Invert Chain Segment Count Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582820507123712
+    m_Localized: Invert mouse scroll direction on changing the number of segments
+      in a chain.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258093237993472
+    m_Localized: Invert Wall Duration Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258097742675968
+    m_Localized: Invert mouse scroll direction on changing the duration of walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258102280912896
+    m_Localized: Invert Wall Bounds Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258109335732224
+    m_Localized: Invert mouse scroll direction on changing the upper and lower bounds
+      of v3 walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458017744977920
+    m_Localized: Precision Placement Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458202206273536
+    m_Localized: 'If enabled, an extended grid will appear when using the precision
+      placement keybind while placing walls or notes. '
     m_Metadata:
       m_Items: []
   references:

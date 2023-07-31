@@ -20,31 +20,31 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 34914570240
-    m_Localized: Join Session
+    m_Localized: "G\xE5 med i session"
     m_Metadata:
       m_Items: []
   - m_Id: 104179306496
-    m_Localized: Host Session
+    m_Localized: "V\xE4rdsession"
     m_Metadata:
       m_Items: []
   - m_Id: 757656064000
-    m_Localized: Downloading song... this can take several moments.
+    m_Localized: "Laddar ned l\xE5t... Det h\xE4r kan ta flera \xF6gonblick."
     m_Metadata:
       m_Items: []
   - m_Id: 1057586548736
-    m_Localized: Loading song...
+    m_Localized: "Laddar l\xE5t..."
     m_Metadata:
       m_Items: []
   - m_Id: 1753480302592
-    m_Localized: Use Direct Connection
+    m_Localized: "Anv\xE4nd Direkt Anslutning"
     m_Metadata:
       m_Items: []
   - m_Id: 1870388137984
-    m_Localized: Room Code
+    m_Localized: Rumskod
     m_Metadata:
       m_Items: []
   - m_Id: 2715376816128
-    m_Localized: Use Room Code
+    m_Localized: "Anv\xE4nd rumskod"
     m_Metadata:
       m_Items: []
   - m_Id: 3327472570368
@@ -56,15 +56,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3460121628672
-    m_Localized: Mapper Customization
+    m_Localized: "Kartl\xE4ggare anpassning"
     m_Metadata:
       m_Items: []
   - m_Id: 4051690459136
-    m_Localized: Display Name
+    m_Localized: Visningsnamn
     m_Metadata:
       m_Items: []
   - m_Id: 4114886037504
-    m_Localized: Grid Color
+    m_Localized: "Rutn\xE4tsf\xE4rg"
     m_Metadata:
       m_Items: []
   - m_Id: 4175602782208
@@ -72,16 +72,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4250194284544
-    m_Localized: Apply Changes
+    m_Localized: "Till\xE4mpa \xE4ndringar"
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: 'Connection rejected.
-
-      This could be because the room code
-      is invalid
-
-      or your CM version is not the same as the host.'
+    m_Localized: "Anslutningen avvisades. Om du anv\xE4nde en rumskod, kontrollera
+      att koden \xE4r r\xE4tt."
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
@@ -104,7 +100,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6238239854592
-    m_Localized: Map with friends!
+    m_Localized: "Skapa med v\xE4nner!"
     m_Metadata:
       m_Items: []
   - m_Id: 1970900842393600

@@ -25,15 +25,15 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 2
-    m_Localized: "\u5176\u4ED6\u9009\u9879"
+    m_Localized: "\u6742\u9879"
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: "\u662F\u5426\u542F\u7528 Discord \u6D3B\u52A8\u72B6\u6001"
+    m_Localized: "\u542F\u7528 Discord \u8BE6\u7EC6\u72B6\u6001\uFF08Rpc\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: "\u9ED1\u6697\u6A21\u5F0F"
+    m_Localized: "\u6DF1\u8272\u4E3B\u9898"
     m_Metadata:
       m_Items: []
   - m_Id: 5
@@ -81,7 +81,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "\u8FC7\u53BB\u7684\u97F3\u7B26\u7F51\u683C"
+    m_Localized: "\u97F3\u7B26\u7ECF\u8FC7\u7F51\u683C"
     m_Metadata:
       m_Items: []
   - m_Id: 18
@@ -105,7 +105,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: "\u52A0\u989D\u9009\u9879"
+    m_Localized: "\u52A0\u8F7D\u9009\u9879"
     m_Metadata:
       m_Items: []
   - m_Id: 24
@@ -117,11 +117,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26
-    m_Localized: "\u88C5\u8F7D\u969C\u788D\u7269"
+    m_Localized: "\u52A0\u8F7D\u969C\u788D\u7269"
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: "\u52A0\u8F7D\u5176\u4ED6\u5730\u56FE\u9879\u76EE"
+    m_Localized: "\u52A0\u8F7D\u5176\u4ED6\u5730\u56FE\u7269\u4F53"
     m_Metadata:
       m_Items: []
   - m_Id: 28
@@ -165,11 +165,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: "\u6CE2\u5F62"
+    m_Localized: Spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 39
-    m_Localized: "\u6A21\u62DF\u8272\u5EA6"
+    m_Localized: "\u6A21\u62DFChroma"
     m_Metadata:
       m_Items: []
   - m_Id: 40
@@ -189,11 +189,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: "\u9AD8\u8D28\u91CF\u9AD8\u5149\u6548\u679C"
+    m_Localized: "\u9AD8\u8D28\u91CFBloom\u6548\u679C"
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: "\u53EF\u89C6\u5316\u8272\u5EA6\u68AF\u5EA6"
+    m_Localized: "\u53EF\u89C6\u5316Chroma\u68AF\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 46
@@ -221,7 +221,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: "\u6CE2\u5F62\u8DDF\u968F\u5DE5\u4F5C\u6D41\u7A0B"
+    m_Localized: "\u6CE2\u5F62\u8DDF\u968F\u5DE5\u4F5C\u53F0"
     m_Metadata:
       m_Items: []
   - m_Id: 54
@@ -409,8 +409,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding the precision placement keybind while placing walls
-      or notes, an extended grid will appear with snapping disabled.
+    m_Localized: "\u5F53\u5728\u653E\u7F6E\u5899\u58C1\u6216\u97F3\u7B26\u65F6\u6309\u4F4F\u7CBE\u786E\u653E\u7F6E\u952E\uFF0C\u4F1A\u51FA\u73B0\u4E00\u4E2A\u6269\u5C55\u7684\u7F51\u683C\uFF0C\u4F46\u7981\u7528\u6355\u6349\u529F\u80FD\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -427,7 +426,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: "\u663E\u793A\u6B4C\u66F2\u6CE2\u5F62"
+    m_Localized: Show song spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -464,7 +463,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: "\u542F\u7528\u6216\u7981\u7528 RGB \u8272\u5EA6\u5149\u7EBF"
+    m_Localized: "\u542F\u7528\u6216\u7981\u7528 Chroma RGB \u706F\u5149"
     m_Metadata:
       m_Items: []
   - m_Id: 117
@@ -875,7 +874,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9689824679333888
-    m_Localized: "\u53EF\u89C6\u5316\u8272\u5EA6 Alpha"
+    m_Localized: "\u53EF\u89C6\u5316 Chroma \u900F\u660E\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 16675690602758144
@@ -965,7 +964,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101788529759289344
-    m_Localized: "\u66F2\u76EE\u957F\u5EA6"
+    m_Localized: "\u8F68\u9053\u957F\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 101795760294789120
@@ -1045,7 +1044,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 102395595171495936
-    m_Localized: "\u6536\u85CF\u5939"
+    m_Localized: "\u4E66\u7B7E"
     m_Metadata:
       m_Items: []
   - m_Id: 102396931141206016
@@ -1081,7 +1080,105 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 208947639714189312
-    m_Localized: 
+    m_Localized: CM Chan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90253772483395584
+    m_Localized: Displays non-default floatValue on top of events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90254225048797184
+    m_Localized: Display FloatValue Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088741188730880
+    m_Localized: Visualize LightID Transition Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088950463528960
+    m_Localized: 'Previews and displays LightID transition events more accurately
+
+      This
+      is very heavy on performance'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947667555979264
+    m_Localized: Adds CM Chan art to loading screens.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211668371329187840
+    m_Localized: Precision Placement Grid Precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211668392346845184
+    m_Localized: The snapping interval of precision placement grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582333795893248
+    m_Localized: Invert Event Value Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582635601231872
+    m_Localized: Invert mouse scroll direction on changing event value.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582671521251328
+    m_Localized: Invert Note Angle Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582692199170048
+    m_Localized: Invert mouse scroll direction on changing note angle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582713359433728
+    m_Localized: Invert Arc Multiplier Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582733693419520
+    m_Localized: Invert mouse scroll direction on changing arc head and tail multipliers.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582754643968000
+    m_Localized: Invert Chain Squish Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582774030041088
+    m_Localized: Invert mouse scroll direction on changing chain squish.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582798323449856
+    m_Localized: Invert Chain Segment Count Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582820507123712
+    m_Localized: Invert mouse scroll direction on changing the number of segments
+      in a chain.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258093237993472
+    m_Localized: Invert Wall Duration Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258097742675968
+    m_Localized: Invert mouse scroll direction on changing the duration of walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258102280912896
+    m_Localized: Invert Wall Bounds Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258109335732224
+    m_Localized: Invert mouse scroll direction on changing the upper and lower bounds
+      of v3 walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458017744977920
+    m_Localized: Precision Placement Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458202206273536
+    m_Localized: 'If enabled, an extended grid will appear when using the precision
+      placement keybind while placing walls or notes. '
     m_Metadata:
       m_Items: []
   references:

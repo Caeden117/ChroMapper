@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: "\u6E05\u9664"
+    m_Localized: "\u6E05\u7A7A"
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -55,11 +55,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10
-    m_Localized: "\u89D2\u8272"
+    m_Localized: "\u804C\u52A1"
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: "\u56FE\u7247"
+    m_Localized: "\u56FE\u50CF"
     m_Metadata:
       m_Items: []
   - m_Id: 12
