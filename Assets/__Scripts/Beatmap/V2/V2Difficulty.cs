@@ -326,7 +326,7 @@ namespace Beatmap.V2
                                             if (!materials.ContainsKey(n.Key))
                                                 materials.Add(n.Key, new V2Material(n.Value.AsObject));
                                             else
-                                                Debug.LogWarning($"Duplicate key {n.Key} found in materials");
+                                                Debug.LogWarning($"Duplicate key \"{n.Key}\" found in materials");
                                         break;
                                     }
                                     Debug.LogWarning("Could not read materials");
@@ -363,6 +363,7 @@ namespace Beatmap.V2
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
             map.PointDefinitions = pointDefinitions;
             map.EnvironmentEnhancements = envEnhancementsList;
+            map.Materials = materials;
         }
     }
 }

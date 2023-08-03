@@ -23,16 +23,30 @@ namespace Beatmap.Appearances
         public void SetGeometryAppearance(GeometryContainer container)
         {
             var eh = container.EnvironmentEnhancement;
-            var basemat = eh.Geometry[eh.GeometryKeyMaterial] switch
+            BaseMaterial basemat = standard;
+            switch (eh.Geometry[eh.GeometryKeyMaterial])
             {
-                JSONString str => (str == "standard") ? standard : BeatSaberSongContainer.Instance.Map.Materials[str],
-                JSONObject obj => (eh is V2EnvironmentEnhancement)
-                    ? (BaseMaterial)new V2Material(obj)
-                    : (BaseMaterial)new V3Material(obj),
-                _ => throw new Exception("Geometry without a material!"),
-            };
+                case JSONString str:
+                    if (str.Value != "standard")
+                    {
+                        if (!BeatSaberSongContainer.Instance.Map.Materials.TryGetValue(str.Value, out basemat))
+                        {
+                            Debug.LogError($"Missing material \"{str.Value}\"!");
+                            basemat = standard;
+                        }
+                    }
+                    break;
+                case JSONObject obj:
+                    basemat = (eh is V2EnvironmentEnhancement)
+                        ? (BaseMaterial)new V2Material(obj)
+                        : (BaseMaterial)new V3Material(obj);
+                    break;
+                default:
+                    Debug.LogError("Geometry with invalid material!");
+                    break;
+            }
 
-            ShaderType shader = (ShaderType)Enum.Parse(typeof(ShaderType), basemat.Shader);
+            ShaderType shader = (ShaderType)Enum.Parse(typeof(ShaderType), basemat.Shader ?? "Standard");
 
             var meshRenderer = container.Shape.GetComponent<MeshRenderer>();
 
