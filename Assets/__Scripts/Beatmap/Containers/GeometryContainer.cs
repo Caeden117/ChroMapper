@@ -7,6 +7,8 @@ namespace Beatmap.Containers
 {
     public class GeometryContainer : ObjectContainer
     {
+        private static Mesh triangleMesh = null;
+
         public GameObject Shape;
 
         public override BaseObject ObjectData
@@ -37,7 +39,12 @@ namespace Beatmap.Containers
             container.Shape = GameObject.CreatePrimitive(type);
             if (eh.Geometry[eh.GeometryKeyType] == "Triangle")
             {
-                container.Shape.GetComponent<MeshFilter>().sharedMesh = CreateTriangleMesh();
+                if (triangleMesh == null)
+                {
+                    triangleMesh = CreateTriangleMesh();
+                }
+
+                container.Shape.GetComponent<MeshFilter>().sharedMesh = triangleMesh;
             }
             container.Shape.transform.parent = container.Animator.AnimationThis.transform;
             container.Shape.transform.localScale = 1.667f * Vector3.one;
