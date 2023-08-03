@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GeometryAppearanceSO
   m_EditorClassIdentifier: 
   lightMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
-  shinyMaterial: {fileID: 2100000, guid: e0d56de761ef2944e96f8d4b185baf04, type: 2}
+  shinyMaterial: {fileID: 2100000, guid: b6ca8728b3ab4ec4cbd9c6b89b7e7efb, type: 2}
   obstacleMaterial: {fileID: 2100000, guid: ed10b4bf10ee79d49a2f63af13875bac, type: 2}
-  regularMaterial: {fileID: 2100000, guid: 83678a6b610602440a1b0f7ecc0ae928, type: 2}
+  regularMaterial: {fileID: 2100000, guid: 15d58b8add157544c857cc66ccc5e461, type: 2}

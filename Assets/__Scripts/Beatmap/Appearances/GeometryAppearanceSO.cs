@@ -51,19 +51,28 @@ namespace Beatmap.Appearances
             var meshRenderer = container.Shape.GetComponent<MeshRenderer>();
 
             // Why can't we have C#9
-            var material = UnityEngine.Object.Instantiate(shader switch
+            var material = shader switch
             {
                 ShaderType.OpaqueLight  => lightMaterial,
                 ShaderType.TransparentLight => lightMaterial,
                 ShaderType.BaseWater => shinyMaterial,
                 ShaderType.BillieWater => shinyMaterial,
                 ShaderType.WaterfallMirror => shinyMaterial,
+                ShaderType.Obstacle => obstacleMaterial,
                 _ => regularMaterial,
-            });
+            };
 
             if (basemat.Color is Color color)
             {
-                material.color = color;
+                var colorKeyword = shader switch
+                {
+                    ShaderType.OpaqueLight => "_EmissionColor",
+                    ShaderType.TransparentLight => "_EmissionColor",
+                    ShaderType.Obstacle => "_ColorTint",
+                    _ => "_Color",
+                };
+
+                container.MaterialPropertyBlock.SetColor(colorKeyword, color);
             }
 
             // For animating material color
@@ -73,6 +82,7 @@ namespace Beatmap.Appearances
             }
 
             meshRenderer.sharedMaterial = material;
+            meshRenderer.SetPropertyBlock(container.MaterialPropertyBlock);
 
             if (eh.LightID != null)
             {

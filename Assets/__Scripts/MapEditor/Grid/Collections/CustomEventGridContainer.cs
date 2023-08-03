@@ -97,6 +97,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             if (eh.Geometry is JSONNode)
             {
                 var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
+                container.Setup();
                 geometries.Add(container);
                 geometryAppearanceSo.SetGeometryAppearance(container);
             }
