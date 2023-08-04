@@ -68,6 +68,7 @@ namespace Beatmap.Base
             new List<BaseObject>(Events),
             new List<BaseObject>(ColorBoostEvents),
             new List<BaseObject>(Bookmarks),
+            new List<BaseObject>(CustomEvents),
         };
 
         public void ConvertCustomBpmToOfficial()
