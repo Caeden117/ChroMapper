@@ -86,7 +86,14 @@ public class CMInputCallbackInstaller : MonoBehaviour
                 {
                     foreach (var eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType))
                     {
-                        eventHandler.Blockers.Add(queueInfo.Owner);
+                        if (eventHandler.Blockers.TryGetValue(queueInfo.Owner, out var count))
+                        {
+                            eventHandler.Blockers[queueInfo.Owner] = count + 1;
+                        }
+                        else
+                        {
+                            eventHandler.Blockers[queueInfo.Owner] = 1;
+                        }
                         if (eventHandler.IsDisabled) continue;
                         eventHandler.DisableEventHandler();
                         disabledEventHandlers.Add(eventHandler);
@@ -105,7 +112,16 @@ public class CMInputCallbackInstaller : MonoBehaviour
                 {
                     foreach (var eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType && x.IsDisabled))
                     {
-                        eventHandler.Blockers.Remove(queueInfo.Owner);
+                        if (eventHandler.Blockers.TryGetValue(queueInfo.Owner, out var count))
+                        {
+                            count--;
+                            eventHandler.Blockers[queueInfo.Owner] = count;
+                            if (count <= 0)
+                            {
+                                eventHandler.Blockers.Remove(queueInfo.Owner);
+                            }
+                        }
+
                         if (eventHandler.Blockers.Count > 0) continue;
                         eventHandler.EnableEventHandler();
                         disabledEventHandlers.Remove(eventHandler);
@@ -288,7 +304,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     private class EventHandler
     {
-        public readonly HashSet<Type> Blockers = new HashSet<Type>();
+        public readonly Dictionary<Type, int> Blockers = new Dictionary<Type, int>();
 
         public readonly EventInfo EventInfo;
         public readonly object EventObject;
