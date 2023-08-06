@@ -350,18 +350,29 @@ public class PlatformDescriptor : MonoBehaviour
         {
             var color = light.UseInvertedPlatformColors ? invertedColor : mainColor;
             var floatValue = e.FloatValue;
+            light.UpdateMultiplyAlpha();
 
             switch (value)
             {
                 case (int)LightValue.Off:
-                    light.UpdateTargetAlpha(0, 0);
-                    light.UpdateMultiplyAlpha();
+                    if (light.CanBeTurnedOff)
+                    {
+                        light.UpdateTargetAlpha(0, 0);
+                    }
+                    else
+                    {
+                        // The game uses its floatValue but it's still dimmer than what an On would be
+                        // This factor is very quick eyeball probably not that accurate
+                        light.UpdateTargetAlpha(color.a * floatValue * (2f / 3f), 0);
+                    }
                     TrySetTransition(light, e);
                     break;
                 case (int)LightValue.BlueOn:
                 case (int)LightValue.RedOn:
                 case (int)LightValue.WhiteOn:
-                    // light.UpdateMultiplyAlpha(color.a * floatValue);
+                case (int)LightValue.BlueTransition:
+                case (int)LightValue.RedTransition:
+                case (int)LightValue.WhiteTransition:
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateEasing("easeLinear");
@@ -370,7 +381,6 @@ public class PlatformDescriptor : MonoBehaviour
                 case (int)LightValue.BlueFlash:
                 case (int)LightValue.RedFlash:
                 case (int)LightValue.WhiteFlash:
-                    // light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
@@ -379,7 +389,6 @@ public class PlatformDescriptor : MonoBehaviour
                 case (int)LightValue.BlueFade:
                 case (int)LightValue.RedFade:
                 case (int)LightValue.WhiteFade:
-                    // light.UpdateMultiplyAlpha(color.a * floatValue);
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     light.UpdateEasing("easeOutExpo");
@@ -392,15 +401,6 @@ public class PlatformDescriptor : MonoBehaviour
                     {
                         light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FadeTime);
                     }
-
-                    break;
-                case (int)LightValue.BlueTransition:
-                case (int)LightValue.RedTransition:
-                case (int)LightValue.WhiteTransition:
-                    // light.UpdateMultiplyAlpha(color.a * floatValue);
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
-                    light.UpdateTargetAlpha(color.a * floatValue, 0);
-                    TrySetTransition(light, e);
                     break;
             }
         }
@@ -458,6 +458,11 @@ public class PlatformDescriptor : MonoBehaviour
                 targetAlpha *= nextChromaColor.Value.a;
             }
             var transitionTime = atsc.GetSecondsFromBeat(transition.SongBpmTime - e.SongBpmTime);
+
+            if (e.IsOff)
+            {
+                light.UpdateTargetAlpha(0, 0);
+            }
 
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);

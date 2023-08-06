@@ -67,15 +67,6 @@ public class LightingEvent : MonoBehaviour
         colorTime += Time.deltaTime;
         var color = Color.Lerp(currentColor, targetColor, easing(colorTime / timeToTransitionColor));
 
-        if (!CanBeTurnedOff)
-        {
-            lightPropertyBlock.SetColor("_BaseColor", Color.white);
-            lightPropertyBlock.SetColor("_EmissionColor", color);
-            SetEmission(true);
-            lightRenderer.SetPropertyBlock(lightPropertyBlock);
-            return;
-        }
-
         alphaTime += Time.deltaTime;
         var alpha = Mathf.Lerp(currentAlpha, targetAlpha, easing(alphaTime / timeToTransitionAlpha)) * multiplyAlpha;
 
@@ -102,7 +93,6 @@ public class LightingEvent : MonoBehaviour
 
     public void UpdateTargetAlpha(float target, float timeToTransition)
     {
-        if (!CanBeTurnedOff) return;
         // currentAlpha = targetAlpha; //I do not believe this is needed, but will leave it just incase.
         targetAlpha = target;
         timeToTransitionAlpha = timeToTransition;
@@ -112,21 +102,19 @@ public class LightingEvent : MonoBehaviour
 
     public void UpdateMultiplyAlpha(float target = 1)
     {
-        if (!CanBeTurnedOff) return;
         multiplyAlpha = Mathf.Clamp(target, 0f, 1.5f);
     }
 
     public void UpdateBoostState(bool boost)
     {
         if (boostSprite != null)
-          lightPropertyBlock.SetTexture("_MainTex", boostSprite.GetSprite(boost).texture);
+            lightPropertyBlock.SetTexture("_MainTex", boostSprite.GetSprite(boost).texture);
     }
 
     public void UpdateCurrentColor(Color color) => currentColor = color;
 
     public void UpdateTargetAlpha(float target)
     {
-        if (!CanBeTurnedOff) return;
         targetAlpha = target;
     }
 
