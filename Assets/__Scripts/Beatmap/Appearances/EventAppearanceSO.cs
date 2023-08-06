@@ -193,7 +193,7 @@ namespace Beatmap.Appearances
             // At this point, next Event must be a light event.
             Color? nextColor = null;
             var nextEvent = e.EventData.Next;
-            if (nextEvent != null && nextEvent.IsTransition)
+            if (!e.EventData.IsFade && !e.EventData.IsFlash && nextEvent != null && nextEvent.IsTransition)
             {
                 if (nextEvent.IsBlue)
                 {
