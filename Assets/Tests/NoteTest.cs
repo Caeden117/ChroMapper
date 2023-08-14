@@ -63,6 +63,65 @@ namespace Tests
         }
 
         [Test]
+        public void InvertNoteAffectsSlider()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var arcsContainer = BeatmapObjectContainerCollection.GetCollectionForType<ArcGridContainer>(ObjectType.Arc);
+            var chainsContainer = BeatmapObjectContainerCollection.GetCollectionForType<ChainGridContainer>(ObjectType.Chain);
+
+            var root = notesContainer.transform.root;
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
+            var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
+            var inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
+
+            BaseNote baseNote1 = new V3ColorNote(1, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+            BaseNote baseNote2 = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+            BaseNote baseNote3 = new V3ColorNote(3, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+
+            BaseArc baseArc12 = new V3Arc { JsonTime = 1, TailJsonTime = 2, Color = (int)NoteColor.Red };
+            BaseChain baseChain23 = new V3Chain { JsonTime = 2, TailJsonTime = 3, Color = (int)NoteColor.Red };
+
+            PlaceUtils.PlaceNote(notePlacement, baseNote1);
+            PlaceUtils.PlaceNote(notePlacement, baseNote2);
+            PlaceUtils.PlaceNote(notePlacement, baseNote3);
+
+            PlaceUtils.PlaceArc(arcPlacement, baseArc12);
+            PlaceUtils.PlaceChain(chainPlacement, baseChain23);
+
+            if (notesContainer.LoadedContainers[baseNote1] is NoteContainer container1)
+                inputController.InvertNote(container1);
+
+            CheckUtils.CheckArc("Arc inverted", arcsContainer, 0, 1, default, default, (int)NoteColor.Blue, default, default, default, 2, default, default, default, default, default);
+            CheckUtils.CheckChain("Chain not inverted", chainsContainer, 0, 2, default, default, (int)NoteColor.Red, default, default, 3, default, default, default, default);
+
+            actionContainer.Undo();
+            CheckUtils.CheckArc("Undo arc inversion", arcsContainer, 0, 1, default, default, (int)NoteColor.Red, default, default, default, 2, default, default, default, default, default);
+            CheckUtils.CheckChain("Chain still not inverted", chainsContainer, 0, 2, default, default, (int)NoteColor.Red, default, default, 3, default, default, default, default);
+
+            if (notesContainer.LoadedContainers[baseNote2] is NoteContainer container2)
+                inputController.InvertNote(container2);
+
+            CheckUtils.CheckArc("Arc inverted", arcsContainer, 0, 1, default, default, (int)NoteColor.Blue, default, default, default, 2, default, default, default, default, default);
+            CheckUtils.CheckChain("Chain inverted", chainsContainer, 0, 2, default, default, (int)NoteColor.Blue, default, default, 3, default, default, default, default);
+
+            actionContainer.Undo();
+            CheckUtils.CheckArc("Undo arc inversion", arcsContainer, 0, 1, default, default, (int)NoteColor.Red, default, default, default, 2, default, default, default, default, default);
+            CheckUtils.CheckChain("Undo chain inversion", chainsContainer, 0, 2, default, default, (int)NoteColor.Red, default, default, 3, default, default, default, default);
+
+            if (notesContainer.LoadedContainers[baseNote3] is NoteContainer container3)
+                inputController.InvertNote(container3);
+
+            CheckUtils.CheckArc("Arc not inverted", arcsContainer, 0, 1, default, default, (int)NoteColor.Red, default, default, default, 2, default, default, default, default, default);
+            CheckUtils.CheckChain("Chain not inverted", chainsContainer, 0, 2, default, default, (int)NoteColor.Red, default, default, 3, default, default, default, default);
+
+            actionContainer.Undo();
+            CheckUtils.CheckArc("Arc still not inverted", arcsContainer, 0, 1, default, default, (int)NoteColor.Red, default, default, default, 2, default, default, default, default, default);
+            CheckUtils.CheckChain("Chain not inverted", chainsContainer, 0, 2, default, default, (int)NoteColor.Red, default, default, 3, default, default, default, default);
+        }
+
+        [Test]
         public void UpdateNoteDirection()
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
@@ -89,6 +148,65 @@ namespace Tests
                 CheckUtils.CheckNote("Undo note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
                     (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
             }
+        }
+
+        [Test]
+        public void UpdateNoteDirectionAffectsSlider()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var arcsContainer = BeatmapObjectContainerCollection.GetCollectionForType<ArcGridContainer>(ObjectType.Arc);
+            var chainsContainer = BeatmapObjectContainerCollection.GetCollectionForType<ChainGridContainer>(ObjectType.Chain);
+
+            var root = notesContainer.transform.root;
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
+            var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
+            var inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
+
+            BaseNote baseNote1 = new V3ColorNote(1, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+            BaseNote baseNote2 = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Up);
+            BaseNote baseNote3 = new V3ColorNote(3, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Right);
+
+            BaseArc baseArc12 = new V3Arc { JsonTime = 1, TailJsonTime = 2, CutDirection = (int)NoteCutDirection.Left, TailCutDirection = (int)NoteCutDirection.Up };
+            BaseChain baseChain23 = new V3Chain { JsonTime = 2, TailJsonTime = 3, CutDirection = (int)NoteCutDirection.Up };
+
+            PlaceUtils.PlaceNote(notePlacement, baseNote1);
+            PlaceUtils.PlaceNote(notePlacement, baseNote2);
+            PlaceUtils.PlaceNote(notePlacement, baseNote3);
+
+            PlaceUtils.PlaceArc(arcPlacement, baseArc12);
+            PlaceUtils.PlaceChain(chainPlacement, baseChain23);
+
+            if (notesContainer.LoadedContainers[baseNote1] is NoteContainer container1)
+                inputController.UpdateNoteDirection(container1, false);
+
+            CheckUtils.CheckArc("Arc head direction", arcsContainer, 0, 1, default, default, default, (int)NoteCutDirection.UpLeft, default, default, 2, default, default, (int)NoteCutDirection.Up, default, default);
+            CheckUtils.CheckChain("Chain direction not changed", chainsContainer, 0, 2, default, default, default, (int)NoteCutDirection.Up, default, 3, default, default, default, default);
+
+            actionContainer.Undo();
+            CheckUtils.CheckArc("Undo arc head direction", arcsContainer, 0, 1, default, default, default, (int)NoteCutDirection.Left, default, default, 2, default, default, (int)NoteCutDirection.Up, default, default);
+            CheckUtils.CheckChain("Chain direction still not changed", chainsContainer, 0, 2, default, default, default, (int)NoteCutDirection.Up, default, 3, default, default, default, default);
+
+            if (notesContainer.LoadedContainers[baseNote2] is NoteContainer container2)
+                inputController.UpdateNoteDirection(container2, false);
+
+            CheckUtils.CheckArc("Arc tail direction", arcsContainer, 0, 1, default, default, default, (int)NoteCutDirection.Left, default, default, 2, default, default, (int)NoteCutDirection.UpRight, default, default);
+            CheckUtils.CheckChain("Chain direction", chainsContainer, 0, 2, default, default, default, (int)NoteCutDirection.UpRight, default, 3, default, default, default, default);
+
+            actionContainer.Undo();
+            CheckUtils.CheckArc("Undo arc tail direction", arcsContainer, 0, 1, default, default, default, (int)NoteCutDirection.Left, default, default, 2, default, default, (int)NoteCutDirection.Up, default, default);
+            CheckUtils.CheckChain("Undo chain direction", chainsContainer, 0, 2, default, default, default, (int)NoteCutDirection.Up, default, 3, default, default, default, default);
+
+            if (notesContainer.LoadedContainers[baseNote3] is NoteContainer container3)
+                inputController.UpdateNoteDirection(container3, false);
+
+            CheckUtils.CheckArc("Arc direction not changed", arcsContainer, 0, 1, default, default, default, (int)NoteCutDirection.Left, default, default, 2, default, default, (int)NoteCutDirection.Up, default, default);
+            CheckUtils.CheckChain("Chain direction not changed", chainsContainer, 0, 2, default, default, default, (int)NoteCutDirection.Up, default, 3, default, default, default, default);
+
+            actionContainer.Undo();
+            CheckUtils.CheckArc("Arc direction still not changed", arcsContainer, 0, 1, default, default, default, (int)NoteCutDirection.Left, default, default, 2, default, default, (int)NoteCutDirection.Up, default, default);
+            CheckUtils.CheckChain("Chain direction still not changed", chainsContainer, 0, 2, default, default, default, (int)NoteCutDirection.Up, default, 3, default, default, default, default);
         }
 
         [Test]
