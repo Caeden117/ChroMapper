@@ -49876,6 +49876,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CustomStandaloneInputModule: {fileID: 806554}
   noteAppearanceSo: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
+  arcAppearanceSo: {fileID: 11400000, guid: c737f74f07351d441a56c84811b4d665, type: 2}
+  chainAppearanceSo: {fileID: 11400000, guid: 7eafe2e8b1acf5b49903b99310732bf6, type: 2}
   QuickModificationActive: 0
 --- !u!114 &1546839085
 MonoBehaviour:

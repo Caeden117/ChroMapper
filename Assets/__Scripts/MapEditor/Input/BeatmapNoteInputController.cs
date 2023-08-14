@@ -12,7 +12,10 @@ using UnityEngine.UI;
 
 public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>, CMInput.INoteObjectsActions
 {
-    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [FormerlySerializedAs("noteAppearanceSO")][SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [SerializeField] private ArcAppearanceSO arcAppearanceSo;
+    [SerializeField] private ChainAppearanceSO chainAppearanceSo;
+
     public bool QuickModificationActive;
 
     private readonly Dictionary<int, int> cutDirectionMovedBackward = new Dictionary<int, int>
@@ -92,7 +95,48 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
         var collection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
         collection.RefreshSpecialAngles(note.ObjectData, false, false);
         collection.RefreshSpecialAngles(original, false, false);
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original));
+
+        var actions = new List<BeatmapAction> { new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original) };
+        InvertAttachedSliders(note, actions);
+
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, true, "Note inversion"));
+    }
+
+    private void InvertAttachedSliders(NoteContainer note, ICollection<BeatmapAction> actions)
+    {
+        var noteData = note.NoteData;
+        var epsilon = BeatmapObjectContainerCollection.Epsilon;
+
+        var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType<ArcGridContainer>(ObjectType.Arc);
+        foreach (var arcContainer in arcCollection.LoadedContainers)
+        {
+            var arcData = arcContainer.Key as BaseArc;
+            var isConnectedToHead = Mathf.Abs(arcData.JsonTime - noteData.JsonTime) < epsilon && arcData.GetPosition() == noteData.GetPosition();
+            var isConnectedToTail = Mathf.Abs(arcData.TailJsonTime - noteData.JsonTime) < epsilon && arcData.GetTailPosition() == noteData.GetPosition();
+            if (isConnectedToHead || isConnectedToTail)
+            {
+                var arcOriginal = BeatmapFactory.Clone(arcData);
+                arcData.Color = noteData.Color;
+                arcAppearanceSo.SetArcAppearance(arcContainer.Value as ArcContainer);
+
+                actions.Add(new BeatmapObjectModifiedAction(arcData, arcData, arcOriginal));
+            }
+        }
+
+        var chainCollection = BeatmapObjectContainerCollection.GetCollectionForType<ChainGridContainer>(ObjectType.Chain);
+        foreach (var chainContainer in chainCollection.LoadedContainers)
+        {
+            var chainData = chainContainer.Key as BaseChain;
+            var isConnectedToHead = Mathf.Abs(chainData.JsonTime - noteData.JsonTime) < epsilon && chainData.GetPosition() == noteData.GetPosition();
+            if (isConnectedToHead)
+            {
+                var chainOriginal = BeatmapFactory.Clone(chainData);
+                chainData.Color = noteData.Color;
+                chainAppearanceSo.SetChainAppearance(chainContainer.Value as ChainContainer);
+
+                actions.Add(new BeatmapObjectModifiedAction(chainData, chainData, chainOriginal));
+            }
+        }
     }
 
     public void UpdateNoteDirection(NoteContainer note, bool shiftForward)
