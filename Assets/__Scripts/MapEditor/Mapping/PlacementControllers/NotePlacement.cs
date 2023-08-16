@@ -257,6 +257,40 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         if (DraggedObjectContainer != null)
             DraggedObjectContainer.transform.localEulerAngles = NoteContainer.Directionalize(dragged);
         noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
+
+        TransferQueuedToAttachedDraggedSliders(queued);
+    }
+
+    private void TransferQueuedToAttachedDraggedSliders(BaseNote queued)
+    {
+        var epsilon = BeatmapObjectContainerCollection.Epsilon;
+        foreach (var baseSlider in DraggedAttachedSliderDatas[IndicatorType.Head])
+        {
+            baseSlider.SetTimes(queued.JsonTime, queued.SongBpmTime);
+            baseSlider.PosX = queued.PosX;
+            baseSlider.PosY = queued.PosY;
+            baseSlider.CutDirection = queued.CutDirection;
+            baseSlider.CustomCoordinate = queued.CustomCoordinate;
+        }
+
+        foreach (var baseSlider in DraggedAttachedSliderDatas[IndicatorType.Tail])
+        {
+            baseSlider.SetTailTimes(queued.JsonTime, queued.SongBpmTime);
+            baseSlider.TailPosX = queued.PosX;
+            baseSlider.TailPosY = queued.PosY;
+            baseSlider.CustomTailCoordinate = queued.CustomCoordinate;
+
+            if (baseSlider is BaseArc baseArc)
+            {
+                baseArc.TailCutDirection = queued.CutDirection;
+            }
+        }
+
+        foreach (var baseSliderContainer in DraggedAttachedSliderContainers)
+        {
+            if (baseSliderContainer is ArcContainer arcContainer) arcContainer.NotifySplineChanged();
+            if (baseSliderContainer is ChainContainer chainContainer) chainContainer.GenerateChain();
+        }
     }
 
     internal override void RefreshVisuals()
