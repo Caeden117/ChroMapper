@@ -250,16 +250,18 @@ namespace Beatmap.Animations
             LocalTarget = AnimationThis.transform;
             WorldTarget = container.transform;
 
+            WorldRotation = LocalRotation;
+
             if (eh.Scale is Vector3 scale)
-                Scale.Preload(scale);
+                Scale._default = scale;
             if (eh.Position is Vector3 p)
-                WorldPosition.Preload((v2 ? 1 : 1.667f) * p);
+                OffsetPosition._default = (v2 ? 1 : 1.667f) * p;
             if (eh.LocalPosition is Vector3 lp)
-                OffsetPosition.Preload((v2 ? 1 : 1.667f) * lp);
+                OffsetPosition._default = (v2 ? 1 : 1.667f) * lp;
             if (eh.Rotation is Vector3 r)
-                WorldRotation.Preload(Quaternion.Euler(r.x, r.y, r.z));
+                LocalRotation._default = (Quaternion.Euler(r.x, r.y, r.z));
             if (eh.LocalRotation is Vector3 lr)
-                LocalRotation.Preload(Quaternion.Euler(lr.x, lr.y, lr.z));
+                LocalRotation._default = (Quaternion.Euler(lr.x, lr.y, lr.z));
 
             if (eh.Track != null)
             {
@@ -268,6 +270,8 @@ namespace Beatmap.Animations
             }
 
             Atsc.TimeChanged += OnTimeChanged;
+
+            OnTimeChanged();
         }
 
         public void SetTrack(Track track, string name)
@@ -351,7 +355,10 @@ namespace Beatmap.Animations
 
             if (WorldTarget is Transform && WorldRotation.Count > 0)
             {
-                WorldTarget.localRotation = WorldRotation.Get();
+                if (!(container is GeometryContainer))
+                {
+                    WorldTarget.localRotation = WorldRotation.Get();
+                }
             }
             var time = _time ?? Atsc?.CurrentJsonTime ?? 0;
             if (WorldPosition.Count > 0)
@@ -401,7 +408,10 @@ namespace Beatmap.Animations
 
             if (WorldTarget is Transform)
             {
-                WorldTarget.localRotation = WorldRotation.Get();
+                if (!(container is GeometryContainer))
+                {
+                    WorldTarget.localRotation = WorldRotation.Get();
+                }
             }
         }
 
