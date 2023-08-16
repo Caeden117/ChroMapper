@@ -104,8 +104,6 @@ namespace Beatmap.Containers
         public void NotifySplineChanged(BaseArc arcData = null)
         {
             if (arcData != null) ArcData = arcData;
-            if (splineRenderer != null) // since curve has been changed, firstly disable it until it is computed.
-                splineRenderer.enabled = false;
             var arcCollection =
                 BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc) as ArcGridContainer;
             arcCollection.RequestForSplineRecompute(this);
