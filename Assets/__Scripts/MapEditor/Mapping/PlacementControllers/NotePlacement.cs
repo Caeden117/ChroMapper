@@ -179,12 +179,19 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             var note = ObjectUnderCursor();
             if (note != null && note.ObjectData is BaseNote noteData)
             {
-                var newData = BeatmapFactory.Clone(noteData);
-                ToggleDiagonalAngleOffset(newData, value);
-                newData.CutDirection = value;
+                var originalData = BeatmapFactory.Clone(noteData);
+                ToggleDiagonalAngleOffset(noteData, value);
+                noteData.CutDirection = value;
 
-                BeatmapActionContainer.AddAction(
-                    new BeatmapObjectModifiedAction(newData, noteData, noteData, "Quick edit"), true);
+                var actions = new List<BeatmapAction>{
+                    new BeatmapObjectModifiedAction(noteData, noteData, originalData, "Quick edit")
+                };
+                CommonNotePlacement.UpdateAttachedSlidersDirection(noteData, actions);
+
+                if (actions.Count > 1)
+                    BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, false, "Quick edit"));
+                else
+                    BeatmapActionContainer.AddAction(actions[0]);
             }
         }
 
