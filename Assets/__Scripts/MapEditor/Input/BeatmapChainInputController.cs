@@ -12,8 +12,13 @@ using UnityEngine.UI;
 
 public class BeatmapChainInputController : BeatmapInputController<ChainContainer>, CMInput.IChainObjectsActions
 {
-    public const float SquishChangeSpeed = 0.1f;
-    [FormerlySerializedAs("chainAppearanceSO")] [SerializeField] private ChainAppearanceSO chainAppearanceSo;
+    private const int minChainCount = 1;
+    private const int maxChainCount = 999;
+    private const float minChainSquish = 0.1f;
+    private const float maxChainSquish = 999;
+    private const float squishChangeSpeed = 0.1f;
+
+    [FormerlySerializedAs("chainAppearanceSO")][SerializeField] private ChainAppearanceSO chainAppearanceSo;
     public void OnTweakChainCount(InputAction.CallbackContext context)
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
@@ -30,7 +35,7 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
     {
         var original = BeatmapFactory.Clone(c.ObjectData);
         c.ChainData.SliceCount += modifier;
-        c.ChainData.SliceCount = Mathf.Clamp(c.ChainData.SliceCount, BaseChain.MinChainCount, BaseChain.MaxChainCount);
+        c.ChainData.SliceCount = Mathf.Clamp(c.ChainData.SliceCount, minChainCount, maxChainCount);
         c.GenerateChain();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
     }
@@ -65,8 +70,8 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
         if (c == null || c.Dragging || !context.performed) return;
 
         var modifier = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollChainSquish)
-            ? SquishChangeSpeed
-            : -SquishChangeSpeed;
+            ? squishChangeSpeed
+            : -squishChangeSpeed;
         TweakChainSquish(c, modifier);
     }
 
@@ -74,7 +79,7 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
     {
         var original = BeatmapFactory.Clone(c.ObjectData);
         c.ChainData.Squish += modifier;
-        c.ChainData.Squish = Mathf.Clamp(c.ChainData.Squish, BaseChain.MinChainSquish, BaseChain.MaxChainSquish);
+        c.ChainData.Squish = Mathf.Clamp(c.ChainData.Squish, minChainSquish, maxChainSquish);
         c.GenerateChain();
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
     }

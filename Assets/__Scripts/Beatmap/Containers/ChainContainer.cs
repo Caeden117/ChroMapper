@@ -19,6 +19,9 @@ namespace Beatmap.Containers
         private bool headPointsToTail;
         private Vector3 interPoint;
 
+        public const float
+            posOffsetFactor = 0.17333f; // Hardcoded because haven't found exact relationship between ChainScale yet
+
         public override BaseObject ObjectData
         {
             get => ChainData;
@@ -94,9 +97,18 @@ namespace Beatmap.Containers
                 SelectionRenderers.Add(nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer);
             }
 
-            Interpolate(ChainData.SliceCount - 1, ChainData.SliceCount - 1, headTrans, headRot, tailNode, tailNode);
-            Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
-            SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
+            if (ChainData.SliceCount == 1)
+            {
+                tailNode.SetActive(false);
+            }
+            else
+            {
+                tailNode.SetActive(true);
+                Interpolate(ChainData.SliceCount - 1, ChainData.SliceCount - 1, headTrans, headRot, tailNode, tailNode);
+                Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
+                SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
+            }
+
             UpdateMaterials();
 
             ResetIndicatorsPosition();
@@ -198,7 +210,7 @@ namespace Beatmap.Containers
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
                     AttachedHead.transform.localScale = BaseChain.ChainScale;
-                    AttachedHead.transform.localPosition -= BaseChain.PosOffsetFactor * headDirection;
+                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                     break;
                 }
             }
@@ -213,7 +225,7 @@ namespace Beatmap.Containers
                 else
                 {
                     AttachedHead.transform.localScale = BaseChain.ChainScale;
-                    AttachedHead.transform.localPosition -= BaseChain.PosOffsetFactor * headDirection;
+                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                 }
             }
         }
