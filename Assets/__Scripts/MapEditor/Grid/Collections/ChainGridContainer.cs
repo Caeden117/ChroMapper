@@ -18,6 +18,8 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
     public const float ViewEpsilon = 0.1f; // original view is too small ?? sometimes cause error.
     public override ObjectType ContainerType => ObjectType.Chain;
 
+    private bool isPlaying;
+
     public override ObjectContainer CreateContainer()
     {
         return ChainContainer.SpawnChain(null, ref chainPrefab);
@@ -67,6 +69,12 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
     private void OnPlayToggle(bool isPlaying)
     {
         if (!isPlaying) RefreshPool();
+        this.isPlaying = isPlaying;
+
+        foreach (ChainContainer obj in LoadedContainers.Values)
+        {
+            obj.SetIndicatorBlocksActive(!this.isPlaying);
+        }
     }
 
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();

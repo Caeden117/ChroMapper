@@ -14,6 +14,7 @@ namespace Beatmap.Containers
         public NoteContainer AttachedHead;
         private readonly List<GameObject> nodes = new List<GameObject>();
         [SerializeField] public BaseChain ChainData;
+        [SerializeField] private List<GameObject> indicators;
         private Vector3 headDirection;
         private bool headPointsToTail;
         private Vector3 interPoint;
@@ -36,6 +37,7 @@ namespace Beatmap.Containers
             base.Setup();
             MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
             MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
+            foreach (var gameObj in indicators) gameObj.GetComponent<ChainIndicatorContainer>().Setup();
             UpdateMaterials();
         }
 
@@ -96,6 +98,8 @@ namespace Beatmap.Containers
             Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
             SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
             UpdateMaterials();
+
+            ResetIndicatorsPosition();
         }
 
         private void ComputeHeadPointsToTail()
@@ -171,6 +175,11 @@ namespace Beatmap.Containers
             }
 
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
+
+            foreach (var gameObj in indicators)
+                gameObj.GetComponent<ChainIndicatorContainer>().UpdateMaterials(MaterialPropertyBlock);
+            foreach (var gameObj in indicators)
+                gameObj.GetComponent<ChainIndicatorContainer>().OutlineVisible = OutlineVisible;
         }
 
         public void DetectHeadNote(bool detect = true)
@@ -222,6 +231,16 @@ namespace Beatmap.Containers
             var chainHead = ChainData.GetPosition();
             return Mathf.Approximately(baseNote.JsonTime, ChainData.JsonTime) && Mathf.Approximately(noteHead.x, chainHead.x) && Mathf.Approximately(noteHead.y, chainHead.y)
                    && baseNote.CutDirection == ChainData.CutDirection && baseNote.Type == ChainData.Color;
+        }
+
+        public void SetIndicatorBlocksActive(bool visible)
+        {
+            foreach (var gameObj in indicators) gameObj.SetActive(visible);
+        }
+
+        private void ResetIndicatorsPosition()
+        {
+            foreach (var gameObj in indicators) gameObj.GetComponent<ChainIndicatorContainer>().UpdateGridPosition();
         }
     }
 }
