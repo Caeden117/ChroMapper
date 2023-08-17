@@ -21,11 +21,13 @@ namespace Beatmap.Containers
             if (IndicatorType == IndicatorType.Head)
             {
                 transform.localPosition = (Vector3)chainData.GetPosition() + new Vector3(1.5f, 0, 0);
+                transform.localEulerAngles = new Vector3(NoteContainer.Directionalize(ParentChain.ChainData.CutDirection).z + 90, -90, 0);
             }
             else if (IndicatorType == IndicatorType.Tail)
             {
                 var zOffset = (chainData.TailSongBpmTime - chainData.SongBpmTime) * EditorScaleController.EditorScale;
                 transform.localPosition = (Vector3)chainData.GetTailPosition() + new Vector3(1.5f, 0, zOffset);
+                transform.rotation = ParentChain.GetTailNodeRotation();
             }
         }
 

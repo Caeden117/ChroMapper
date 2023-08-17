@@ -254,5 +254,7 @@ namespace Beatmap.Containers
         {
             foreach (var gameObj in indicators) gameObj.GetComponent<ChainIndicatorContainer>().UpdateGridPosition();
         }
+
+        public Quaternion GetTailNodeRotation() => tailNode.transform.rotation;
     }
 }
