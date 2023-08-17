@@ -15,6 +15,8 @@ namespace Beatmap.Containers
         private readonly List<GameObject> nodes = new List<GameObject>();
         [SerializeField] public BaseChain ChainData;
         [SerializeField] private List<GameObject> indicators;
+        [SerializeField] private GameObject tailLinkIndicator;
+        [SerializeField] private GameObject tailSphereIndicator;
         private Vector3 headDirection;
         private bool headPointsToTail;
         private Vector3 interPoint;
@@ -252,7 +254,14 @@ namespace Beatmap.Containers
 
         private void ResetIndicatorsPosition()
         {
-            foreach (var gameObj in indicators) gameObj.GetComponent<ChainIndicatorContainer>().UpdateGridPosition();
+            tailSphereIndicator.SetActive(ChainData.SliceCount == 1);
+            tailLinkIndicator.SetActive(ChainData.SliceCount != 1);
+
+            foreach (var gameObj in indicators)
+            {
+                if (gameObj.activeSelf)
+                    gameObj.GetComponent<ChainIndicatorContainer>().UpdateGridPosition();
+            }
         }
 
         public Quaternion GetTailNodeRotation() => tailNode.transform.rotation;
