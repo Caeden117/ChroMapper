@@ -249,7 +249,9 @@ namespace Beatmap.Containers
 
         public void SetIndicatorBlocksActive(bool visible)
         {
-            foreach (var gameObj in indicators) gameObj.SetActive(visible);
+            indicators[0].SetActive(visible); // Head
+            tailSphereIndicator.SetActive(visible && ChainData.SliceCount == 1);
+            tailLinkIndicator.SetActive(visible && ChainData.SliceCount != 1);
         }
 
         private void ResetIndicatorsPosition()
