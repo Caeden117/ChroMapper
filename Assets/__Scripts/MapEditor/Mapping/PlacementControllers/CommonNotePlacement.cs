@@ -23,7 +23,7 @@ public static class CommonNotePlacement
                 arcData.CutDirection = noteData.CutDirection;
                 (arcContainer.Value as ArcContainer).NotifySplineChanged();
 
-                actions.Add(new BeatmapObjectModifiedAction(arcData, arcData, arcOriginal));
+                actions.Add(new BeatmapObjectModifiedAction(arcData, arcData, arcOriginal, keepSelection: true));
             }
             else if (isConnectedToTail)
             {
@@ -31,7 +31,7 @@ public static class CommonNotePlacement
                 arcData.TailCutDirection = noteData.CutDirection;
                 (arcContainer.Value as ArcContainer).NotifySplineChanged();
 
-                actions.Add(new BeatmapObjectModifiedAction(arcData, arcData, arcOriginal));
+                actions.Add(new BeatmapObjectModifiedAction(arcData, arcData, arcOriginal, keepSelection: true));
             }
         }
 
@@ -46,7 +46,7 @@ public static class CommonNotePlacement
                 chainData.CutDirection = noteData.CutDirection;
                 (chainContainer.Value as ChainContainer).GenerateChain();
 
-                actions.Add(new BeatmapObjectModifiedAction(chainData, chainData, chainOriginal));
+                actions.Add(new BeatmapObjectModifiedAction(chainData, chainData, chainOriginal, keepSelection: true));
             }
         }
     }
