@@ -6,14 +6,14 @@ using UnityEngine;
 /**
  * A BPM and offset estimation algorithm by Bram van de Wetering, aka Fietsemaker, the creator of ArrowVortex
  * Adapted by mattmora from C++ to C# for use in Unity for Chromapper.
- * Depends on Aubio for onset detection (hard to replace)
+ * Depends on Aubio.NET for onset detection (hard to replace)
  * and MathNet.Numerics for polynomial fitting and evaluation (easier to replace)
  * Partial source as well as van de Wetering's paper describing the algorithm, 
  * and a modified C++ implementation by Nathan Stephenson can be found at
  * https://github.com/nathanstep55/bpm-offset-detector
  * Revisions (excluding translation / formatting):
  * 2023 June (initial port to Chromapper)
- * - Removed threading during interval testing (bc I don't know how to do that kind of parallel calculation in this context)
+ * - Removed threading during interval testing (bc I don't know how to do that kind of parallel calculation this context)
  * - Increased default block size to 2048 from 1024 (thinking is that this limits the low end of spectral info, 
  *   and while 1024 is good, 2048 fully encapsulates the audible range at 44100 sample rate
  * - Fix: apply new fitness when accepting rounded BPMs
@@ -116,7 +116,7 @@ public class SyncAnalysis
             onsets[i].Strength = (float)v;
         }
 
-        //Debug.Log(onsets.Count);
+        Debug.Log(onsets.Count);
 
         // Find BPM values.
         CalculateBPM(onsets);
@@ -149,7 +149,7 @@ public class SyncAnalysis
 
         public TempoResult(float bpm, float offset, float fitness)
         {
-            //Debug.Log($"TempoResult: {bpm} {offset} {fitness}");
+            Debug.Log($"TempoResult: {bpm} {offset} {fitness}");
             BPM = bpm; Offset = offset; Fitness = fitness;
         }
     };
@@ -158,6 +158,7 @@ public class SyncAnalysis
     // Gap confidence evaluation
     private class GapData
     {
+        // TODO figure out which of these should be public
         public List<Onset> Onsets;
         public int[] WrappedPos;
         public double[] WrappedOnsets;
@@ -410,7 +411,7 @@ public class SyncAnalysis
             {
                 var old = gapData.GetConfidenceForBPM(test, result.BPM);
                 var cur = gapData.GetConfidenceForBPM(test, roundBPM);
-                //Debug.Log($"round {roundBPM}<{cur}> v {result.BPM}<{old * roundingThreshold}({old})>");
+                Debug.Log($"round {roundBPM}<{cur}> v {result.BPM}<{old * roundingThreshold}({old})>");
                 if (cur > old * threshold)
                 {
                     result.BPM = roundBPM;
@@ -503,7 +504,7 @@ public class SyncAnalysis
         // If the fitness of the first and second option is very close, we ask for a second opinion now that we've stopped downsampling
         if (Results.Count >= 2 && Results[0].Fitness / Results[1].Fitness < 1.05)
         {
-            //Debug.Log("Double Check");
+            Debug.Log("Double Check");
             for (var i = 0; i < Results.Count; i++)
             {
                 Results[i].Fitness = (float)gapData.GetConfidenceForBPM(test, Results[i].BPM);
