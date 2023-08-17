@@ -79,6 +79,9 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
         instantiatedContainer.UpdateMaterials();
+
+        instantiatedContainer.NoteData = queuedData;
+        instantiatedContainer.UpdateGridPosition();
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)

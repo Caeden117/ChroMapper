@@ -145,7 +145,7 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            if (!Animator.AnimatedTrack)
+            if (!(Animator?.AnimatedTrack ?? false))
             {
                 transform.localPosition = (Vector3)NoteData.GetPosition() +
                                           new Vector3(0, offsetY, NoteData.SongBpmTime * EditorScaleController.EditorScale);
