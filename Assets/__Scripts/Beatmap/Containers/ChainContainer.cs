@@ -14,9 +14,15 @@ namespace Beatmap.Containers
         public NoteContainer AttachedHead;
         private readonly List<GameObject> nodes = new List<GameObject>();
         [SerializeField] public BaseChain ChainData;
+        [SerializeField] private List<GameObject> indicators;
+        [SerializeField] private GameObject tailLinkIndicator;
+        [SerializeField] private GameObject tailSphereIndicator;
         private Vector3 headDirection;
         private bool headPointsToTail;
         private Vector3 interPoint;
+
+        public const float
+            posOffsetFactor = 0.17333f; // Hardcoded because haven't found exact relationship between ChainScale yet
 
         public override BaseObject ObjectData
         {
@@ -36,6 +42,7 @@ namespace Beatmap.Containers
             base.Setup();
             MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
             MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
+            foreach (var gameObj in indicators) gameObj.GetComponent<ChainIndicatorContainer>().Setup();
             UpdateMaterials();
         }
 
@@ -92,10 +99,21 @@ namespace Beatmap.Containers
                 SelectionRenderers.Add(nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer);
             }
 
-            Interpolate(ChainData.SliceCount - 1, ChainData.SliceCount - 1, headTrans, headRot, tailNode, tailNode);
-            Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
-            SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
+            if (ChainData.SliceCount == 1)
+            {
+                tailNode.SetActive(false);
+            }
+            else
+            {
+                tailNode.SetActive(true);
+                Interpolate(ChainData.SliceCount - 1, ChainData.SliceCount - 1, headTrans, headRot, tailNode, tailNode);
+                Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
+                SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
+            }
+
             UpdateMaterials();
+
+            ResetIndicatorsPosition();
         }
 
         private void ComputeHeadPointsToTail()
@@ -171,6 +189,11 @@ namespace Beatmap.Containers
             }
 
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
+
+            foreach (var gameObj in indicators)
+                gameObj.GetComponent<ChainIndicatorContainer>().UpdateMaterials(MaterialPropertyBlock);
+            foreach (var gameObj in indicators)
+                gameObj.GetComponent<ChainIndicatorContainer>().OutlineVisible = OutlineVisible;
         }
 
         public void DetectHeadNote(bool detect = true)
@@ -189,7 +212,7 @@ namespace Beatmap.Containers
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
                     AttachedHead.transform.localScale = BaseChain.ChainScale;
-                    AttachedHead.transform.localPosition -= BaseChain.PosOffsetFactor * headDirection;
+                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                     break;
                 }
             }
@@ -204,7 +227,7 @@ namespace Beatmap.Containers
                 else
                 {
                     AttachedHead.transform.localScale = BaseChain.ChainScale;
-                    AttachedHead.transform.localPosition -= BaseChain.PosOffsetFactor * headDirection;
+                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                 }
             }
         }
@@ -223,5 +246,24 @@ namespace Beatmap.Containers
             return Mathf.Approximately(baseNote.JsonTime, ChainData.JsonTime) && Mathf.Approximately(noteHead.x, chainHead.x) && Mathf.Approximately(noteHead.y, chainHead.y)
                    && baseNote.CutDirection == ChainData.CutDirection && baseNote.Type == ChainData.Color;
         }
+
+        public void SetIndicatorBlocksActive(bool visible)
+        {
+            foreach (var gameObj in indicators) gameObj.SetActive(visible);
+        }
+
+        private void ResetIndicatorsPosition()
+        {
+            tailSphereIndicator.SetActive(ChainData.SliceCount == 1);
+            tailLinkIndicator.SetActive(ChainData.SliceCount != 1);
+
+            foreach (var gameObj in indicators)
+            {
+                if (gameObj.activeSelf)
+                    gameObj.GetComponent<ChainIndicatorContainer>().UpdateGridPosition();
+            }
+        }
+
+        public Quaternion GetTailNodeRotation() => tailNode.transform.rotation;
     }
 }

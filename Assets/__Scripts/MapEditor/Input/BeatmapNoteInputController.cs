@@ -149,54 +149,9 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
             .RefreshSpecialAngles(note.ObjectData, false, false);
 
         var actions = new List<BeatmapAction> { new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original) };
-        UpdateAttachedSlidersDirection(note, actions);
+        CommonNotePlacement.UpdateAttachedSlidersDirection(note.NoteData, actions);
 
         BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, true, "Update Note Direction"));
-    }
-
-    private void UpdateAttachedSlidersDirection(NoteContainer note, ICollection<BeatmapAction> actions)
-    {
-        var noteData = note.NoteData;
-        var epsilon = BeatmapObjectContainerCollection.Epsilon;
-
-        var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType<ArcGridContainer>(ObjectType.Arc);
-        foreach (var arcContainer in arcCollection.LoadedContainers)
-        {
-            var arcData = arcContainer.Key as BaseArc;
-            var isConnectedToHead = Mathf.Abs(arcData.JsonTime - noteData.JsonTime) < epsilon && arcData.GetPosition() == noteData.GetPosition();
-            var isConnectedToTail = Mathf.Abs(arcData.TailJsonTime - noteData.JsonTime) < epsilon && arcData.GetTailPosition() == noteData.GetPosition();
-            if (isConnectedToHead)
-            {
-                var arcOriginal = BeatmapFactory.Clone(arcData);
-                arcData.CutDirection = noteData.CutDirection;
-                (arcContainer.Value as ArcContainer).NotifySplineChanged();
-
-                actions.Add(new BeatmapObjectModifiedAction(arcData, arcData, arcOriginal));
-            }
-            else if (isConnectedToTail)
-            {
-                var arcOriginal = BeatmapFactory.Clone(arcData);
-                arcData.TailCutDirection = noteData.CutDirection;
-                (arcContainer.Value as ArcContainer).NotifySplineChanged();
-
-                actions.Add(new BeatmapObjectModifiedAction(arcData, arcData, arcOriginal));
-            }
-        }
-
-        var chainCollection = BeatmapObjectContainerCollection.GetCollectionForType<ChainGridContainer>(ObjectType.Chain);
-        foreach (var chainContainer in chainCollection.LoadedContainers)
-        {
-            var chainData = chainContainer.Key as BaseChain;
-            var isConnectedToHead = Mathf.Abs(chainData.JsonTime - noteData.JsonTime) < epsilon && chainData.GetPosition() == noteData.GetPosition();
-            if (isConnectedToHead)
-            {
-                var chainOriginal = BeatmapFactory.Clone(chainData);
-                chainData.CutDirection = noteData.CutDirection;
-                (chainContainer.Value as ChainContainer).GenerateChain();
-
-                actions.Add(new BeatmapObjectModifiedAction(chainData, chainData, chainOriginal));
-            }
-        }
     }
 
     public void UpdateNotePreciseDirection(NoteContainer note, bool shiftForward)
