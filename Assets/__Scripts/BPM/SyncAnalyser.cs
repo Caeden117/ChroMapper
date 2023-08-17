@@ -1,7 +1,7 @@
 using System.Threading;
 using UnityEngine;
 
-public class BPMAnalyser : MonoBehaviour
+public class SyncAnalyser : MonoBehaviour
 {
     public void Analyse()
     {
@@ -13,6 +13,7 @@ public class BPMAnalyser : MonoBehaviour
         // Get the song audio data
         if (clip.GetData(samples, 0))
         {
+            // don't block the main thread
             var thread = new Thread(() =>
             {
                 var tempo = new SyncAnalysis(89, 205);
