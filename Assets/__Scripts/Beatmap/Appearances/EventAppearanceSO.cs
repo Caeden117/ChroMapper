@@ -87,6 +87,7 @@ namespace Beatmap.Appearances
 
                     e.UpdateOffset(Vector3.forward * 1.05f, false);
                     e.ChangeFadeSize(e.BoostEventFadeSize, false);
+                    e.UpdateGradientRendering();
                     e.UpdateMaterials();
                     return;
                 }
