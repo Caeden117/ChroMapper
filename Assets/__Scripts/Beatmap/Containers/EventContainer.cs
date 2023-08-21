@@ -165,13 +165,18 @@ namespace Beatmap.Containers
         private float GetHeight()
         {
             var height = EventData.FloatValue;
-            if (EventData.CustomData != null && EventData.CustomColor != null &&
+            if (EventData.CustomColor != null &&
                 Math.Abs(EventData.CustomColor.Value.a - 1) > 0.001)
-                height *= EventData.CustomColor.Value
-                    .a; //The alpha of the event, clamped to avoid too small/too tall events
-            else if (EventData.CustomLightGradient != null && EventData.CustomData != null &&
-                     Math.Abs(EventData.CustomLightGradient.StartColor.a - 1) > 0.001)
-                height *= EventData.CustomData["_lightGradient"]["_startColor"][3];
+            {
+                height *= EventData.CustomColor.Value.a;
+            }
+            else if (EventData.CustomLightGradient != null &&
+                Math.Abs(EventData.CustomLightGradient.StartColor.a - 1) > 0.001)
+            {
+                height *= EventData.CustomLightGradient.StartColor.a;
+            }
+
+            // Clamped to avoid too small/too tall events
             return Mathf.Clamp(height, 0.1f, 1.5f);
         }
 
