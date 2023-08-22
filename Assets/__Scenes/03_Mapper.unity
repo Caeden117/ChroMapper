@@ -3458,7 +3458,7 @@ GameObject:
   - component: {fileID: 89530294}
   - component: {fileID: 89530296}
   m_Layer: 5
-  m_Name: BPM Events
+  m_Name: BPM Changes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

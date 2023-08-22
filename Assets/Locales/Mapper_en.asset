@@ -820,7 +820,8 @@ MonoBehaviour:
   - m_Id: 240390057914204160
     m_Localized: 'BPM Events: {BPMCount}'
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - id: 0
   - m_Id: 256289992891105280
     m_Localized: Enter the beat you want to go to
     m_Metadata:
@@ -836,7 +837,7 @@ MonoBehaviour:
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00
+        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b095603
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
