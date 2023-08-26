@@ -190,6 +190,11 @@ public class BeatSaberSong
                 if (!set.DifficultyBeatmaps.Any()) continue;
                 JSONNode setNode = new JSONObject();
                 setNode["_beatmapCharacteristicName"] = set.BeatmapCharacteristicName;
+                if (set.CustomData != null && set.CustomData.Count > 0)
+                {
+                    setNode["_customData"] = set.CustomData;
+                }
+
                 var diffs = new JSONArray();
                 IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.DifficultyBeatmaps.OrderBy(x => x.DifficultyRank);
                 foreach (var diff in sortedBeatmaps)
@@ -426,7 +431,8 @@ public class BeatSaberSong
                         {
                             var set = new DifficultyBeatmapSet
                             {
-                                BeatmapCharacteristicName = n["_beatmapCharacteristicName"]
+                                BeatmapCharacteristicName = n["_beatmapCharacteristicName"],
+                                CustomData = n["_customData"]
                             };
                             foreach (JSONNode d in n["_difficultyBeatmaps"])
                             {
@@ -628,6 +634,7 @@ public class BeatSaberSong
     {
         [FormerlySerializedAs("beatmapCharacteristicName")] public string BeatmapCharacteristicName = "Standard";
         [FormerlySerializedAs("difficultyBeatmaps")] public List<DifficultyBeatmap> DifficultyBeatmaps = new List<DifficultyBeatmap>();
+        public JSONNode CustomData = new JSONObject();
 
         public DifficultyBeatmapSet() => BeatmapCharacteristicName = "Standard";
         public DifficultyBeatmapSet(string characteristicName) => BeatmapCharacteristicName = characteristicName;
