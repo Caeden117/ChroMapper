@@ -45,6 +45,7 @@ namespace Beatmap.Base
         public float Time { get; set; } = 0f;
         public List<BaseBpmChange> BpmChanges { get; set; } = new List<BaseBpmChange>();
         public List<BaseBookmark> Bookmarks { get; set; } = new List<BaseBookmark>();
+        public abstract string BookmarksUseOfficialBpmEventsKey { get; }
         public List<BaseCustomEvent> CustomEvents { get; set; } = new List<BaseCustomEvent>();
 
         public List<BaseEnvironmentEnhancement> EnvironmentEnhancements { get; set; } =

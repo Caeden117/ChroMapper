@@ -348,6 +348,7 @@ namespace Beatmap.Converters
                 if (d.CustomData.HasKey("pointDefinitions")) d.CustomData.Remove("pointDefinitions");
                 if (d.CustomData.HasKey("environment")) d.CustomData.Remove("environment");
                 if (d.CustomData.HasKey("materials")) d.CustomData.Remove("materials");
+                if (d.CustomData.HasKey(other.BookmarksUseOfficialBpmEventsKey)) d.CustomData.Remove(other.BookmarksUseOfficialBpmEventsKey);
             }
 
             return d;

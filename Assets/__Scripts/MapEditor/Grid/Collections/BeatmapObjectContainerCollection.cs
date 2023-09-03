@@ -15,6 +15,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public static float Epsilon = 0.001f;
     public static float TranslucentCull = -0.001f;
 
+    private static BookmarkManager bookmarkManager;
+    private static BookmarkManager bookmarkManagerInstance { get => bookmarkManager ??= GameObject.FindObjectOfType<BookmarkManager>(); }
     private static readonly Dictionary<ObjectType, BeatmapObjectContainerCollection> loadedCollections =
         new Dictionary<ObjectType, BeatmapObjectContainerCollection>();
 
@@ -450,6 +452,16 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 }
             }
         }
+
+        // Bookmarks aren't in the ContainerCollection yet so we have this
+        foreach (var bookmark in bookmarkManagerInstance.bookmarkContainers)
+        {
+            if (bookmark.Data.JsonTime > jsonTime)
+            {
+                bookmark.Data.RecomputeSongBpmTime();
+            }
+        }
+        bookmarkManagerInstance.RefreshBookmarkTimelinePositions();
     }
 
     protected virtual void UpdateContainerData(ObjectContainer con, BaseObject obj) { }

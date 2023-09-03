@@ -87,13 +87,13 @@ public class BookmarkRenderingController : MonoBehaviour
     private void OnEditorScaleChange(float newScale)
     {
         foreach (CachedBookmark bookmarkDisplay in renderedBookmarks)
-            SetBookmarkPos(bookmarkDisplay.Text.rectTransform, bookmarkDisplay.MapBookmark.JsonTime);
+            SetBookmarkPos(bookmarkDisplay.Text.rectTransform, bookmarkDisplay.MapBookmark.SongBpmTime);
     }
 
-    private void SetBookmarkPos(RectTransform rect, float time)
+    private void SetBookmarkPos(RectTransform rect, float songBpmTime)
     {
         //Need anchoredPosition3D, so Z gets precisely set, otherwise text might get under lighting grid
-        rect.anchoredPosition3D = new Vector3(-4.5f, time * EditorScaleController.EditorScale, 0);
+        rect.anchoredPosition3D = new Vector3(-4.5f, songBpmTime * EditorScaleController.EditorScale, 0);
     }
 
     private TextMeshProUGUI CreateGridBookmark(BaseBookmark bookmark)
@@ -101,7 +101,7 @@ public class BookmarkRenderingController : MonoBehaviour
         GameObject obj = new GameObject("GridBookmark", typeof(TextMeshProUGUI));
         RectTransform rect = (RectTransform)obj.transform;
         rect.SetParent(gridBookmarksParent);
-        SetBookmarkPos(rect, bookmark.JsonTime);
+        SetBookmarkPos(rect, bookmark.SongBpmTime);
         rect.sizeDelta = Vector2.one;
         rect.localRotation = Quaternion.identity;
 
@@ -152,14 +152,15 @@ public class BookmarkRenderingController : MonoBehaviour
         ? $"#{ColorUtility.ToHtmlStringRGBA(color)}"
         : $"#{ColorUtility.ToHtmlStringRGB(color)}";
 
-    public void RefreshVisibility(float currentBeat, float beatsAhead, float beatsBehind)
+    public void RefreshVisibility(float currentSongBpm, float songBpmBeatsAhead, float songBpmBeatsBehind)
     {
         foreach (var bookmarkDisplay in renderedBookmarks)
         {
-            var time = bookmarkDisplay.MapBookmark.JsonTime;
+            var time = bookmarkDisplay.MapBookmark.SongBpmTime;
             var text = bookmarkDisplay.Text;
-            var enabled = time >= currentBeat - beatsBehind && time <= currentBeat + beatsAhead;
+            var enabled = time >= currentSongBpm - songBpmBeatsBehind && time <= currentSongBpm + songBpmBeatsAhead;
             text.gameObject.SetActive(enabled);
+            SetBookmarkPos((RectTransform)text.transform, time);
         }
     }
 

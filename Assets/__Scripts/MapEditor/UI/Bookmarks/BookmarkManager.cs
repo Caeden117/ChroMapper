@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-// TODO: Fix bookmarks to account for official bpm events
 // TODO: Refactor all this Bookmark bullshit to fit every other object in ChroMapper (using BeatmapObjectContainerCollection, BeatmapObjectContainer, etc. etc.)
 public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 {
@@ -69,6 +68,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         // Wait for time
         yield return new WaitForSeconds(0.1f);
 
+        ConvertBookmarkTimesFromOldDevVersions();
+
         bookmarkContainers = BeatSaberSongContainer.Instance.Map.Bookmarks.Select(bookmark =>
         {
             var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
@@ -83,6 +84,34 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         UpdateBookmarkWidth(true);
 
         BookmarksUpdated.Invoke();
+    }
+
+    // There was a significant amount of time where bookmarks did not account for official bpm events
+    // while the objects did. This ensures maps in this period display bookmarks in the correct place.
+    private void ConvertBookmarkTimesFromOldDevVersions()
+    {
+        var bookmarksUseOfficialBpmEventsKey = BeatSaberSongContainer.Instance.Map.BookmarksUseOfficialBpmEventsKey;
+        var bookmarksNeedConversion = !BeatSaberSongContainer.Instance.Map.CustomData.HasKey(bookmarksUseOfficialBpmEventsKey)
+            || !BeatSaberSongContainer.Instance.Map.CustomData[bookmarksUseOfficialBpmEventsKey].IsBoolean
+            || !BeatSaberSongContainer.Instance.Map.CustomData[bookmarksUseOfficialBpmEventsKey].AsBool;
+
+        foreach (var bookmark in BeatSaberSongContainer.Instance.Map.Bookmarks)
+        {
+            if (bookmarksNeedConversion)
+            {
+                bookmark.SongBpmTime = bookmark.JsonTime;
+            }
+            else
+            {
+                bookmark.RecomputeSongBpmTime();
+            }
+        }
+    }
+
+    public void RefreshBookmarkTimelinePositions()
+    {
+        foreach (var bookmark in bookmarkContainers)
+            bookmark.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
     }
 
     private void UpdateBookmarkTooltip(object _)
@@ -106,8 +135,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         if (previousCanvasWidth != timelineCanvas.sizeDelta.x)
         {
             previousCanvasWidth = timelineCanvas.sizeDelta.x;
-            foreach (var bookmark in bookmarkContainers)
-                bookmark.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
+            RefreshBookmarkTimelinePositions();
         }
     }
 
@@ -143,8 +171,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         }
 
         var newBookmark = Settings.Instance.Load_MapV3
-            ? (BaseBookmark)new V3Bookmark(Atsc.CurrentSongBpmTime, name)
-            : new V2Bookmark(Atsc.CurrentSongBpmTime, name);
+            ? (BaseBookmark)new V3Bookmark(Atsc.CurrentJsonTime, name)
+            : new V2Bookmark(Atsc.CurrentJsonTime, name);
 
         if (color != null)
         {
@@ -189,20 +217,20 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     internal void OnNextBookmark()
     {
-        var bookmark = bookmarkContainers.Find(x => x.Data.JsonTime > Atsc.CurrentSongBpmTime);
+        var bookmark = bookmarkContainers.Find(x => x.Data.JsonTime > Atsc.CurrentJsonTime);
         if (bookmark != null) MoveToBookmark(bookmark);
     }
 
     internal void OnPreviousBookmark()
     {
-        var bookmark = bookmarkContainers.LastOrDefault(x => x.Data.JsonTime < Atsc.CurrentSongBpmTime);
+        var bookmark = bookmarkContainers.LastOrDefault(x => x.Data.JsonTime < Atsc.CurrentJsonTime);
         if (bookmark != null) MoveToBookmark(bookmark);
     }
 
     private void MoveToBookmark(BookmarkContainer bookmark)
     {
         Tipc.PointerDown(); // slightly weird but it works
-        Atsc.MoveToSongBpmTime(bookmark.Data.JsonTime);
+        Atsc.MoveToJsonTime(bookmark.Data.JsonTime);
         Tipc.PointerUp();
     }
 

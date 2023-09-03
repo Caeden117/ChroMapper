@@ -17,6 +17,8 @@ namespace Beatmap.V3
     {
         public override string Version { get; } = "3.2.0";
 
+        public override string BookmarksUseOfficialBpmEventsKey { get; } = "bookmarksUseOfficialBpmEvents";
+
         public override bool IsChroma() =>
             Notes.Any(x => x.IsChroma()) || Bombs.Any(x => x.IsChroma()) || Arcs.Any(x => x.IsChroma()) ||
             Chains.Any(x => x.IsChroma()) || Obstacles.Any(x => x.IsChroma()) ||
@@ -184,6 +186,7 @@ namespace Beatmap.V3
             }
 
             if (Time > 0) MainNode["customData"]["time"] = Math.Round(Time, 3);
+            if (Bookmarks.Count > 0) MainNode["customData"][BookmarksUseOfficialBpmEventsKey] = true;
 
             BeatSaberSong.CleanObject(MainNode["customData"]);
             if (!MainNode["customData"].Children.Any()) MainNode.Remove("customData");

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Beatmap.Base.Customs;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -53,7 +53,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
     {
         var unitsPerBeat = width / manager.Atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length);
         var rectTransform = (RectTransform)transform;
-        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * Data.JsonTime, 50);
+        rectTransform.anchoredPosition = new Vector2(unitsPerBeat * Data.SongBpmTime, 50);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -83,7 +83,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             manager.Tipc.PointerDown();
-            manager.Atsc.MoveToSongBpmTime(Data.JsonTime);
+            manager.Atsc.MoveToJsonTime(Data.JsonTime);
         }
     }
 

@@ -89,15 +89,15 @@ public class MeasureLinesController : MonoBehaviour
 
     private void RefreshVisibility()
     {
-        var currentBeat = atsc.CurrentSongBpmTime;
-        var beatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
-        var beatsBehind = beatsAhead / 4f;
+        var currentSongBpmBeat = atsc.CurrentSongBpmTime;
+        var songBpmBeatsAhead = frontNoteGridScaling.localScale.z / EditorScaleController.EditorScale;
+        var songBpmBeatsBehind = songBpmBeatsAhead / 4f;
 
         foreach (var kvp in measureTextsByBeat)
         {
             var time = kvp.Item1;
             var text = kvp.Item2;
-            var enabled = time >= currentBeat - beatsBehind && time <= currentBeat + beatsAhead;
+            var enabled = time >= currentSongBpmBeat - songBpmBeatsBehind && time <= currentSongBpmBeat + songBpmBeatsAhead;
 
             if (previousEnabledByBeat[time] != enabled)
             {
@@ -106,7 +106,7 @@ public class MeasureLinesController : MonoBehaviour
             }
         }
 
-        bookmarkRenderingController.RefreshVisibility(currentBeat, beatsAhead, beatsBehind);
+        bookmarkRenderingController.RefreshVisibility(currentSongBpmBeat, songBpmBeatsAhead, songBpmBeatsBehind);
     }
 
     private void RefreshPositions()
