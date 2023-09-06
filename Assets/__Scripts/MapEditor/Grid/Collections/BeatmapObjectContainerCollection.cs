@@ -443,12 +443,33 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 {
                     obj.RecomputeSongBpmTime();
                 }
+                else if (collection is ChainGridContainer || collection is ArcGridContainer)
+                {
+                    if ((obj as BaseSlider).TailJsonTime > jsonTime)
+                    {
+                        obj.RecomputeSongBpmTime();
+                    }
+                }
             }
             foreach (var container in collection.LoadedContainers)
             {
                 if (container.Key.JsonTime > jsonTime)
                 {
                     container.Value.UpdateGridPosition();
+                }
+                else if (collection is ObstacleGridContainer)
+                {
+                    if (container.Key.JsonTime + (container.Key as BaseObstacle).Duration > jsonTime)
+                    {
+                        container.Value.UpdateGridPosition();
+                    }
+                }
+                else if (collection is ChainGridContainer || collection is ArcGridContainer)
+                {
+                    if ((container.Key as BaseSlider).TailJsonTime > jsonTime)
+                    {
+                        container.Value.UpdateGridPosition();
+                    }
                 }
             }
         }
