@@ -64,15 +64,14 @@ namespace Beatmap.Containers
             var chainTail = (Vector3)ChainData.GetTailPosition() + new Vector3(1.5f, 0, 0);
             var headTrans = chainHead;
             var headRot = Quaternion.Euler(NoteContainer.Directionalize(ChainData.CutDirection));
-            tailNode.transform.localPosition = (Vector3)chainTail + new Vector3(0, 0,
-                (ChainData.TailJsonTime - ChainData.JsonTime) * EditorScaleController.EditorScale);
+            tailNode.transform.localPosition = chainTail + new Vector3(0, 0,
+                (ChainData.TailSongBpmTime - ChainData.SongBpmTime) * EditorScaleController.EditorScale);
 
             var zRads = Mathf.Deg2Rad * NoteContainer.Directionalize(ChainData.CutDirection).z;
             headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
 
-            interPoint = (Vector3)chainHead + new Vector3(0, 0, ChainData.JsonTime);
             var interMult = (chainHead - chainTail).magnitude / 2;
-            interPoint += interMult * headDirection;
+            interPoint = chainHead + interMult * headDirection;
 
             Colliders.Clear();
             SelectionRenderers.Clear();
