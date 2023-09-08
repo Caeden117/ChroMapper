@@ -1,12 +1,10 @@
 ﻿using System;
-using Beatmap.Base;
-using Beatmap.Base.Customs;
-using Beatmap.Enums;
 using UnityEngine;
 
 public class MetronomeHandler : MonoBehaviour
 {
-    private static readonly int bpm = Animator.StringToHash("BPM");
+    private static readonly int animatorBpm = Animator.StringToHash("BPM");
+    [SerializeField] private BPMChangeGridContainer bpmChangeGridContainer;
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private AudioClip metronomeSound;
     [SerializeField] private AudioClip moreCowbellSound;
@@ -14,10 +12,8 @@ public class MetronomeHandler : MonoBehaviour
     [SerializeField] private AudioUtil audioUtil;
     [SerializeField] private GameObject metronomeUI;
     public bool CowBell;
-    private float beatProgress;
-    private bool cowBellPlayed;
-    private float lastBpm = 100;
-    private BaseBpmEvent lastBpmChange;
+    private float queuedDingSongBpmTime = 0;
+
     private Animator metronomeUIAnimator;
     private bool metronomeUIDirection = true;
 
@@ -30,45 +26,24 @@ public class MetronomeHandler : MonoBehaviour
         metronomeUIAnimator = metronomeUI.GetComponent<Animator>();
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
 
-        lastBpm = atsc.Song.BeatsPerMinute;
         atsc.PlayToggle += OnPlayToggle;
     }
 
     private void LateUpdate()
     {
-        if (CowBell && !cowBellPlayed)
-        {
-            audioUtil.PlayOneShotSound(moreCowbellSound);
-            cowBellPlayed = true;
-        }
-        else if (!CowBell)
-        {
-            cowBellPlayed = false;
-        }
-
         metronomeVolume = Settings.Instance.MetronomeVolume;
         if (metronomeVolume != 0f && atsc.IsPlaying && !atsc.StopScheduled)
         {
-            var collection =
-                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
-                    ObjectType.BpmChange);
-            var toCheck = collection.FindLastBpm(atsc.CurrentAudioBeats);
-            if (lastBpmChange != toCheck)
+            if (atsc.CurrentAudioBeats > queuedDingSongBpmTime)
             {
-                lastBpmChange = toCheck;
-                lastBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
-                audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, Settings.Instance.MetronomeVolume);
-                RunAnimation();
-                beatProgress = 0;
-            }
+                var nextJsonTime = Mathf.Ceil(atsc.CurrentJsonTime);
+                queuedDingSongBpmTime = bpmChangeGridContainer.JsonTimeToSongBpmTime(nextJsonTime);
 
-            beatProgress += lastBpm / 60f * Time.deltaTime * songSpeed;
-            if (!metronomeUI.activeInHierarchy) metronomeUI.SetActive(true);
-            if (beatProgress >= 1)
-            {
-                beatProgress %= 1;
-                audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, Settings.Instance.MetronomeVolume);
-                RunAnimation();
+                var delay = atsc.GetSecondsFromBeat(queuedDingSongBpmTime - atsc.CurrentAudioBeats) / songSpeed;
+                audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, metronomeVolume, 1f, delay);
+
+                if (!metronomeUI.activeInHierarchy) metronomeUI.SetActive(true);
+                RunAnimation(60f / delay);
             }
         }
         else
@@ -85,13 +60,13 @@ public class MetronomeHandler : MonoBehaviour
         songSpeed = speedValue / 10f;
     }
 
-    private void RunAnimation()
+    private void RunAnimation(float inferredBpm)
     {
         if (!metronomeUIAnimator.gameObject.activeInHierarchy)
             return;
 
         metronomeUIAnimator.StopPlayback();
-        metronomeUIAnimator.SetFloat(bpm, Mathf.Abs(lastBpm * atsc.SongAudioSource.pitch));
+        metronomeUIAnimator.SetFloat(animatorBpm, inferredBpm);
         metronomeUIAnimator.Play(metronomeUIDirection ? "Metronome_R2L" : "Metronome_L2R");
         metronomeUIDirection = !metronomeUIDirection;
     }
@@ -99,24 +74,9 @@ public class MetronomeHandler : MonoBehaviour
     private void OnPlayToggle(bool playing)
     {
         if (metronomeVolume == 0) return;
-        if (playing)
+        if (!playing)
         {
-            RunAnimation();
-            var collection =
-                BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
-                    ObjectType.BpmChange);
-            lastBpmChange = collection.FindLastBpm(atsc.CurrentAudioBeats);
-            lastBpm = lastBpmChange?.Bpm ?? atsc.Song.BeatsPerMinute;
-            if (lastBpmChange != null)
-            {
-                var differenceInSongBpm = atsc.CurrentAudioBeats - lastBpmChange.JsonTime;
-                var differenceInLastBpm = differenceInSongBpm * lastBpmChange.Bpm / atsc.Song.BeatsPerMinute;
-                beatProgress = differenceInLastBpm % 1;
-            }
-            else
-            {
-                beatProgress = atsc.CurrentAudioBeats % 1;
-            }
+            queuedDingSongBpmTime = 0;
         }
     }
 }
