@@ -1,15 +1,11 @@
-﻿using System;
-using Beatmap.Base;
+﻿using Beatmap.Base;
 using Beatmap.Base.Customs;
 using SimpleJSON;
-using LiteNetLib.Utils;
 
 namespace Beatmap.V3.Customs
 {
     public class V3CustomEvent : BaseCustomEvent, V3Object
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
         public V3CustomEvent()
         {
         }
