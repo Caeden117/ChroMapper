@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,7 @@ public class OptionsInputActionController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI keybindName;
     [SerializeField] private TMP_InputField[] keybindInputFields;
-    [FormerlySerializedAs("SearchableOption")] [SerializeField] internal SearchableOption searchableOption;
+    [FormerlySerializedAs("SearchableOption")][SerializeField] internal SearchableOption searchableOption;
 
     private readonly Dictionary<TMP_InputField, InputBinding> binds = new Dictionary<TMP_InputField, InputBinding>();
 
@@ -27,6 +27,12 @@ public class OptionsInputActionController : MonoBehaviour
     private int maxKeys = 3;
     private int minKeys = 1;
 
+    private Color unselectedTextColor = new Color(0.792f, 0.792f, 0.792f); // 4F4F4F
+    private Color selectedTextColor = new Color(0.162f, 0.629f, 0.802f);
+
+    private Color unselectedImageColor = new Color(0.310f, 0.310f, 0.310f);
+    private Color selectedImageColor = new Color(0.162f, 0.629f, 0.802f).Multiply(0.5f);
+
     private bool rebinding;
     private string sectionName;
 
@@ -37,6 +43,7 @@ public class OptionsInputActionController : MonoBehaviour
         action = inputAction;
         this.compositeName = compositeName;
         keybindName.text = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
+        UnselectKeybindUIs();
         searchableOption.Keywords = (keybindName.text + " " + sectionName).Split(' ');
         for (var i = 0; i < bindings.Count; i++)
         {
@@ -72,6 +79,7 @@ public class OptionsInputActionController : MonoBehaviour
     public void OnKeybindSelected(string text)
     {
         if (!keybindNameToInputField.ContainsKey(text)) return;
+        SelectKeybindUIs();
         keybindNameToInputField[text].text = "";
         Debug.Log($"Performing rebind for {action.name} ({compositeName})");
         keybindNameToInputField.Clear();
@@ -210,6 +218,30 @@ public class OptionsInputActionController : MonoBehaviour
         else
         {
             Init(sectionName, action, action.bindings.ToList());
+        }
+    }
+
+    private void UnselectKeybindUIs()
+    {
+        keybindName.color = unselectedTextColor;
+        keybindName.fontStyle = FontStyles.Normal;
+
+        foreach (var inputField in keybindInputFields)
+        {
+            inputField.image.color = unselectedImageColor;
+            inputField.textComponent.fontStyle = FontStyles.Normal;
+        }
+    }
+
+    private void SelectKeybindUIs()
+    {
+        keybindName.color = selectedTextColor;
+        keybindName.fontStyle = FontStyles.Italic;
+
+        foreach (var inputField in keybindInputFields)
+        {
+            inputField.image.color = selectedImageColor;
+            inputField.textComponent.fontStyle = FontStyles.Italic;
         }
     }
 }
