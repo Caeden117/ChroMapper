@@ -1,9 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.Serialization;
@@ -126,6 +127,10 @@ public class OptionsInputActionController : MonoBehaviour
 
         // Finalize a rebind iff rebind operation was successful (keys == maxKeys || enter key pressed)
         CompleteRebind();
+
+        // We need this deselect otherwise selecting the input afterwards 
+        // will edit the text instead of performing the rebind
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void CompleteRebind()
