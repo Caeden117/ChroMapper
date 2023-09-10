@@ -292,6 +292,20 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         }
     }
 
+    public void OnMoveCursorForward(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        CurrentJsonTime += (1f / gridMeasureSnapping);
+    }
+
+    public void OnMoveCursorBackward(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        CurrentJsonTime -= (1f / gridMeasureSnapping);
+    }
+
     private void UpdateSongVolume(object obj) => SongAudioSource.volume = (float)obj;
 
     private void UpdateSongSpeed(object obj) => songSpeed = (float)obj;

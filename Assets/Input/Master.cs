@@ -2122,6 +2122,22 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Move Cursor Forward"",
+                    ""type"": ""Button"",
+                    ""id"": ""ccdf00d2-31c0-421c-a930-95376af09eff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Move Cursor Backward"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f4d8892-1870-49cc-96a9-c5a947a24418"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -2133,6 +2149,28 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Go To Beat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""10944d1e-3f31-4695-849b-2caa995d7287"",
+                    ""path"": ""<Keyboard>/period"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Move Cursor Forward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7cd20f16-4ff6-47c9-bf2c-9eadbec69e92"",
+                    ""path"": ""<Keyboard>/comma"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Move Cursor Backward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -4711,6 +4749,8 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Timeline Navigation
         m_TimelineNavigation = asset.FindActionMap("Timeline Navigation", throwIfNotFound: true);
         m_TimelineNavigation_GoToBeat = m_TimelineNavigation.FindAction("Go To Beat", throwIfNotFound: true);
+        m_TimelineNavigation_MoveCursorForward = m_TimelineNavigation.FindAction("Move Cursor Forward", throwIfNotFound: true);
+        m_TimelineNavigation_MoveCursorBackward = m_TimelineNavigation.FindAction("Move Cursor Backward", throwIfNotFound: true);
         // Editor Scale
         m_EditorScale = asset.FindActionMap("Editor Scale", throwIfNotFound: true);
         m_EditorScale_DecreaseEditorScale = m_EditorScale.FindAction("Decrease Editor Scale", throwIfNotFound: true);
@@ -5889,11 +5929,15 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_TimelineNavigation;
     private ITimelineNavigationActions m_TimelineNavigationActionsCallbackInterface;
     private readonly InputAction m_TimelineNavigation_GoToBeat;
+    private readonly InputAction m_TimelineNavigation_MoveCursorForward;
+    private readonly InputAction m_TimelineNavigation_MoveCursorBackward;
     public struct TimelineNavigationActions
     {
         private @CMInput m_Wrapper;
         public TimelineNavigationActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @GoToBeat => m_Wrapper.m_TimelineNavigation_GoToBeat;
+        public InputAction @MoveCursorForward => m_Wrapper.m_TimelineNavigation_MoveCursorForward;
+        public InputAction @MoveCursorBackward => m_Wrapper.m_TimelineNavigation_MoveCursorBackward;
         public InputActionMap Get() { return m_Wrapper.m_TimelineNavigation; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -5906,6 +5950,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @GoToBeat.started -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnGoToBeat;
                 @GoToBeat.performed -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnGoToBeat;
                 @GoToBeat.canceled -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnGoToBeat;
+                @MoveCursorForward.started -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnMoveCursorForward;
+                @MoveCursorForward.performed -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnMoveCursorForward;
+                @MoveCursorForward.canceled -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnMoveCursorForward;
+                @MoveCursorBackward.started -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnMoveCursorBackward;
+                @MoveCursorBackward.performed -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnMoveCursorBackward;
+                @MoveCursorBackward.canceled -= m_Wrapper.m_TimelineNavigationActionsCallbackInterface.OnMoveCursorBackward;
             }
             m_Wrapper.m_TimelineNavigationActionsCallbackInterface = instance;
             if (instance != null)
@@ -5913,6 +5963,12 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @GoToBeat.started += instance.OnGoToBeat;
                 @GoToBeat.performed += instance.OnGoToBeat;
                 @GoToBeat.canceled += instance.OnGoToBeat;
+                @MoveCursorForward.started += instance.OnMoveCursorForward;
+                @MoveCursorForward.performed += instance.OnMoveCursorForward;
+                @MoveCursorForward.canceled += instance.OnMoveCursorForward;
+                @MoveCursorBackward.started += instance.OnMoveCursorBackward;
+                @MoveCursorBackward.performed += instance.OnMoveCursorBackward;
+                @MoveCursorBackward.canceled += instance.OnMoveCursorBackward;
             }
         }
     }
@@ -7354,6 +7410,8 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface ITimelineNavigationActions
     {
         void OnGoToBeat(InputAction.CallbackContext context);
+        void OnMoveCursorForward(InputAction.CallbackContext context);
+        void OnMoveCursorBackward(InputAction.CallbackContext context);
     }
     public interface IEditorScaleActions
     {

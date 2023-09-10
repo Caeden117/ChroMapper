@@ -2109,6 +2109,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Move Cursor Forward",
+                    "type": "Button",
+                    "id": "ccdf00d2-31c0-421c-a930-95376af09eff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Move Cursor Backward",
+                    "type": "Button",
+                    "id": "4f4d8892-1870-49cc-96a9-c5a947a24418",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -2120,6 +2136,28 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Go To Beat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "10944d1e-3f31-4695-849b-2caa995d7287",
+                    "path": "<Keyboard>/period",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Move Cursor Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7cd20f16-4ff6-47c9-bf2c-9eadbec69e92",
+                    "path": "<Keyboard>/comma",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Move Cursor Backward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
