@@ -20837,7 +20837,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BindedSettingSearchType: 2
   BindedSetting: ReleaseChannel
-  PopupEditorWarning: 0
+  PopupEditorWarning: 1
   Dropdown: {fileID: 723088710}
 --- !u!1 &723088712 stripped
 GameObject:
