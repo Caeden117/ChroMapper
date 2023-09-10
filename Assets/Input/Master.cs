@@ -3984,6 +3984,14 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Toggle Metronome Mute"",
+                    ""type"": ""Button"",
+                    ""id"": ""0084dff5-507c-436a-936a-41267e820e80"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -4017,6 +4025,39 @@ public class @CMInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle Hitsound Mute"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Button With One Modifier"",
+                    ""id"": ""d1d618f7-3a8b-4739-959a-166f246b4791"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Metronome Mute"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""56c075ed-2f5e-4915-86f9-4283a01f808d"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Metronome Mute"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""f0c7c881-0a6e-4678-a65b-b8c9f42e659c"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle Metronome Mute"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -4769,6 +4810,7 @@ public class @CMInput : IInputActionCollection, IDisposable
         // Audio
         m_Audio = asset.FindActionMap("Audio", throwIfNotFound: true);
         m_Audio_ToggleHitsoundMute = m_Audio.FindAction("Toggle Hitsound Mute", throwIfNotFound: true);
+        m_Audio_ToggleMetronomeMute = m_Audio.FindAction("Toggle Metronome Mute", throwIfNotFound: true);
         // Dialog Box
         m_DialogBox = asset.FindActionMap("Dialog Box", throwIfNotFound: true);
         m_DialogBox_CloseDialogBox = m_DialogBox.FindAction("Close Dialog Box", throwIfNotFound: true);
@@ -6846,11 +6888,13 @@ public class @CMInput : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Audio;
     private IAudioActions m_AudioActionsCallbackInterface;
     private readonly InputAction m_Audio_ToggleHitsoundMute;
+    private readonly InputAction m_Audio_ToggleMetronomeMute;
     public struct AudioActions
     {
         private @CMInput m_Wrapper;
         public AudioActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ToggleHitsoundMute => m_Wrapper.m_Audio_ToggleHitsoundMute;
+        public InputAction @ToggleMetronomeMute => m_Wrapper.m_Audio_ToggleMetronomeMute;
         public InputActionMap Get() { return m_Wrapper.m_Audio; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -6863,6 +6907,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleHitsoundMute.started -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
                 @ToggleHitsoundMute.performed -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
                 @ToggleHitsoundMute.canceled -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleHitsoundMute;
+                @ToggleMetronomeMute.started -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleMetronomeMute;
+                @ToggleMetronomeMute.performed -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleMetronomeMute;
+                @ToggleMetronomeMute.canceled -= m_Wrapper.m_AudioActionsCallbackInterface.OnToggleMetronomeMute;
             }
             m_Wrapper.m_AudioActionsCallbackInterface = instance;
             if (instance != null)
@@ -6870,6 +6917,9 @@ public class @CMInput : IInputActionCollection, IDisposable
                 @ToggleHitsoundMute.started += instance.OnToggleHitsoundMute;
                 @ToggleHitsoundMute.performed += instance.OnToggleHitsoundMute;
                 @ToggleHitsoundMute.canceled += instance.OnToggleHitsoundMute;
+                @ToggleMetronomeMute.started += instance.OnToggleMetronomeMute;
+                @ToggleMetronomeMute.performed += instance.OnToggleMetronomeMute;
+                @ToggleMetronomeMute.canceled += instance.OnToggleMetronomeMute;
             }
         }
     }
@@ -7426,6 +7476,7 @@ public class @CMInput : IInputActionCollection, IDisposable
     public interface IAudioActions
     {
         void OnToggleHitsoundMute(InputAction.CallbackContext context);
+        void OnToggleMetronomeMute(InputAction.CallbackContext context);
     }
     public interface IDialogBoxActions
     {

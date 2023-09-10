@@ -3971,6 +3971,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Toggle Metronome Mute",
+                    "type": "Button",
+                    "id": "0084dff5-507c-436a-936a-41267e820e80",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -4004,6 +4012,39 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Toggle Hitsound Mute",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Button With One Modifier",
+                    "id": "d1d618f7-3a8b-4739-959a-166f246b4791",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Metronome Mute",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "56c075ed-2f5e-4915-86f9-4283a01f808d",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Metronome Mute",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "f0c7c881-0a6e-4678-a65b-b8c9f42e659c",
+                    "path": "<Keyboard>/f2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Toggle Metronome Mute",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
