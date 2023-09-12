@@ -21,7 +21,6 @@ public class MeasureLinesController : MonoBehaviour
     [SerializeField] private GridChild measureLinesGridChild;
     [SerializeField] private BookmarkRenderingController bookmarkRenderingController;
     private readonly List<(float, TextMeshProUGUI)> measureTextsByBeat = new List<(float, TextMeshProUGUI)>();
-    private readonly Dictionary<float, bool> previousEnabledByBeat = new Dictionary<float, bool>();
 
     private bool init;
 
@@ -32,7 +31,6 @@ public class MeasureLinesController : MonoBehaviour
         if (!measureTextsByBeat.Any())
         {
             measureTextsByBeat.Add((0, measureLinePrefab));
-            previousEnabledByBeat.Add(0, true);
         }
 
         EditorScaleController.EditorScaleChangedEvent += EditorScaleUpdated;
@@ -55,7 +53,6 @@ public class MeasureLinesController : MonoBehaviour
         init = false;
         var existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Select(x => x.Item2));
         measureTextsByBeat.Clear();
-        previousEnabledByBeat.Clear();
 
         var rawBeatsInSong =
             Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length));
@@ -74,7 +71,6 @@ public class MeasureLinesController : MonoBehaviour
             var jsonBeatPosition = bpmChangeGridContainer.JsonTimeToSongBpmTime(jsonBeat);
             text.transform.localPosition = new Vector3(0, jsonBeatPosition * EditorScaleController.EditorScale, 0);
             measureTextsByBeat.Add((jsonBeatPosition, text));
-            previousEnabledByBeat[jsonBeatPosition] = true;
 
             jsonBeat++;
         }
@@ -99,11 +95,7 @@ public class MeasureLinesController : MonoBehaviour
             var text = kvp.Item2;
             var enabled = time >= currentSongBpmBeat - songBpmBeatsBehind && time <= currentSongBpmBeat + songBpmBeatsAhead;
 
-            if (previousEnabledByBeat[time] != enabled)
-            {
-                text.gameObject.SetActive(enabled);
-                previousEnabledByBeat[time] = enabled;
-            }
+            text.gameObject.SetActive(enabled);
         }
 
         bookmarkRenderingController.RefreshVisibility(currentSongBpmBeat, songBpmBeatsAhead, songBpmBeatsBehind);
