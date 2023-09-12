@@ -38,7 +38,6 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                 var bpmChanges =
                     BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType
                         .BpmChange);
-                bpmChanges.RefreshModifiedBeat();
 
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
                     containerToEdit.ObjectData, original, "Tweaked bpm"));
@@ -57,6 +56,7 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                 }
 
                 BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
+                bpmChanges.RefreshModifiedBeat();
             }
         }
     }
@@ -71,11 +71,11 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
             var bpmChanges =
                 BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
                     ObjectType.BpmChange);
-            bpmChanges.RefreshModifiedBeat();
             BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
                 containerToEdit.ObjectData, original, "Modified bpm"));
 
             BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
+            bpmChanges.RefreshModifiedBeat();
         }
         else
         {
