@@ -38,7 +38,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private bool applicationFocusChanged;
 
     protected TBoc DraggedObjectContainer;
-    private TBo draggedObjectData;
+    protected TBo draggedObjectData;
     internal TBoc instantiatedContainer;
 
     protected bool IsDraggingObject;
@@ -328,9 +328,14 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         return false;
     }
 
+    protected virtual float GetDraggedObjectJsonTime()
+    {
+        return draggedObjectData.JsonTime;
+    }
+
     protected void CalculateTimes(Intersections.IntersectionHit hit, out Vector3 roundedHit, out float roundedJsonTime)
     {
-        var currentJsonTime = IsDraggingObjectAtTime ? draggedObjectData.JsonTime : Atsc.CurrentJsonTime;
+        var currentJsonTime = IsDraggingObjectAtTime ? GetDraggedObjectJsonTime() : Atsc.CurrentJsonTime;
         var snap = 1f / Atsc.GridMeasureSnapping;
         var offsetJsonTime = currentJsonTime - (float)Math.Round((currentJsonTime) / snap, MidpointRounding.AwayFromZero) * snap;
 

@@ -74,6 +74,18 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
         return base.GetContainerPosZ(con);
     }
 
+    protected override float GetDraggedObjectJsonTime()
+    {
+        if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
+        {
+            return draggedObjectData.TailJsonTime;
+        }
+        else
+        {
+            return draggedObjectData.JsonTime;
+        }
+    }
+
     public void UpdateCut(int value)
     {
         if (DraggedObjectContainer != null && DraggedObjectContainer.ParentChain != null)
