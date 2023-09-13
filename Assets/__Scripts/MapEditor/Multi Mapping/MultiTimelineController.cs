@@ -38,7 +38,7 @@ public class MultiTimelineController
     {
         if (activeContainers.TryGetValue(identity, out var container))
         {
-            Object.Destroy(container);
+            Object.Destroy(container.gameObject);
             activeContainers.Remove(identity);
         }
     }
