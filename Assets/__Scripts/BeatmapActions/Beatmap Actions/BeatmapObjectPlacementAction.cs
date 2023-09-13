@@ -52,6 +52,9 @@ public class BeatmapObjectPlacementAction : BeatmapAction
 
     public override void Serialize(NetDataWriter writer)
     {
+        // Need to ensure customData is up to date before sending
+        foreach (var baseObject in Data) baseObject.WriteCustom();
+
         SerializeBeatmapObjectList(writer, Data);
         SerializeBeatmapObjectList(writer, removedConflictObjects);
     }
