@@ -144,7 +144,7 @@ public class Settings
     public int NodeEditorSize = 10;
 
     public bool InvertPrecisionScroll = false;
-    public bool InvertNoteControls = false; // Hidden setting, does nothing
+    public bool InvertNoteControls = true; // See LoadingKeyBindsController.MigrateNoteControls()
     public bool InvertScrollTime = false;
     public bool InvertScrollEventValue = false;
     public bool InvertScrollNoteAngle = false;

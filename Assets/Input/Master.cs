@@ -907,7 +907,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""752ce1da-9d61-4779-b6ed-75d0d214292a"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
@@ -918,7 +918,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d8232af9-72c8-46d6-bb23-023443cbf276"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
@@ -929,7 +929,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a24d5b1b-8b2b-4978-84e8-1257904d2017"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
@@ -940,7 +940,7 @@ public class @CMInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e8e63a70-7c85-4205-8648-1b10ca6aa84b"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
