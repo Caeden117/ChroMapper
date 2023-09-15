@@ -165,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Spectrogram
+    m_Localized: swectogwamm
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -347,22 +347,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 80
-    m_Localized: Should we load obstacles?
+    m_Localized: "should i load the obsicles? \u2267\u25E1\u2266"
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: Change the scale for how big you want the Past Notes Grid to be.
+    m_Localized: how much after grid do u want??
     m_Metadata:
       m_Items: []
   - m_Id: 82
-    m_Localized: 'Toggles Blue Notes dinging when they pass.
-
-      (Includes ChromaToggle
-      variants)'
+    m_Localized: "makes bloo note make noise when pass\n(yea chroma too (\u25E0\u203F\u25E0\u273F))"
     m_Metadata:
       m_Items: []
   - m_Id: 83
-    m_Localized: Change how often Auto Save will trigger.
+    m_Localized: how long t o auto save??
     m_Metadata:
       m_Items: []
   - m_Id: 84
@@ -382,11 +379,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 87
-    m_Localized: Should we load map events?
+    m_Localized: should we load the lights uwu??
     m_Metadata:
       m_Items: []
   - m_Id: 88
-    m_Localized: Less fancy and higher contrast block rendering
+    m_Localized: not fancy blox and contrastyy :3
     m_Metadata:
       m_Items: []
   - m_Id: 89
@@ -1225,6 +1222,14 @@ MonoBehaviour:
   - m_Id: 247458202206273536
     m_Localized: 'If enabled, an extended grid will appear when using the precision
       placement keybind while placing walls or notes. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262680152746688512
+    m_Localized: Open File Explorer After Create Zip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262680318467833856
+    m_Localized: Whether the file explorer opens automically after creating zip
     m_Metadata:
       m_Items: []
   references:

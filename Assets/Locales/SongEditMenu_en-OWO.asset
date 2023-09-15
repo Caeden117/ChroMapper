@@ -98,12 +98,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'This feature is deprecated.
+    m_Localized: 'This bit no worky~
 
-      Shifts the song forward by this
-      amount
-
-      (in seconds)'
+      Movesh songg forward uwu (seconds btw)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -309,11 +306,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, do you want to save them?
+    m_Localized: U didwn't save!! wanna do it now tho??
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, do you want to save them?
+    m_Localized: U didnw't save ur diff!!! wanna save??
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -347,12 +344,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, do you want to save them?
+    m_Localized: U diwdn't sawve da peeps, wanna save now tho??
     m_Metadata:
       m_Items: []
   - m_Id: 76
-    m_Localized: Referenced files need to be inside the song folder. Would you like
-      to copy this file to the song folder?
+    m_Localized: Da filess ned to be in folda... Copyy to folda?!?
     m_Metadata:
       m_Items: []
   - m_Id: 77
@@ -407,23 +403,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115504465297211392
-    m_Localized: 750 ms
+    m_Localized: 750 miwiseconds
     m_Metadata:
       m_Items: []
   - m_Id: 115521560328208384
-    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
-      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
-      that you apply your offsets using a audio manipulator such as Audacity."
+    m_Localized: 'usuing song time ovfset may make noisee not time right!
+
+      it
+      can also mak e bloq see thru (oh no)
+
+      u should add one in audacity pls'
     m_Metadata:
       m_Items: []
   - m_Id: 216566409055109120
-    m_Localized: Map packaged to zip successfully.
+    m_Localized: Zippy successful!!! !
     m_Metadata:
       m_Items: []
   - m_Id: 216566610293620736
-    m_Localized: 'Error packaging map to zip.
-
-      No zip created.'
+    m_Localized: "Error when zippy, so no zippy (\uFE36\uFE39\uFE3A)"
     m_Metadata:
       m_Items: []
   references:

@@ -1231,6 +1231,14 @@ MonoBehaviour:
       placement keybind while placing walls or notes. '
     m_Metadata:
       m_Items: []
+  - m_Id: 262680152746688512
+    m_Localized: Open File Explorer After Create Zip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262680318467833856
+    m_Localized: Whether the file explorer opens automically after creating zip
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
