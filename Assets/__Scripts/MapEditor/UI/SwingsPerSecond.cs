@@ -29,14 +29,14 @@ public class SwingsPerSecond
     {
         var lastNoteTime = 0f;
         if (NotesCount > 0 && noteGrid.LoadedObjects.Count != 0)
-            lastNoteTime = noteGrid.LoadedObjects.Last().JsonTime / songBpm * 60;
+            lastNoteTime = noteGrid.LoadedObjects.Last().SongBpmTime / songBpm * 60;
 
         var lastInteractiveObstacleTime = 0f;
         foreach (BaseObstacle obstacle in obstacleGrid.LoadedObjects)
         {
             if (obstacle.Width >= 2 || obstacle.PosX == 1 || obstacle.PosX == 2)
             {
-                var obstacleEnd = (obstacle.JsonTime + obstacle.Duration) / songBpm * 60;
+                var obstacleEnd = (obstacle.SongBpmTime + obstacle.Duration) / songBpm * 60;
                 lastInteractiveObstacleTime = Mathf.Max(lastInteractiveObstacleTime, obstacleEnd);
             }
         }
@@ -48,14 +48,14 @@ public class SwingsPerSecond
     {
         var firstNoteTime = float.MaxValue;
         if (NotesCount > 0 && noteGrid.LoadedObjects.Count != 0)
-            firstNoteTime = noteGrid.LoadedObjects.First().JsonTime / songBpm * 60;
+            firstNoteTime = noteGrid.LoadedObjects.First().SongBpmTime / songBpm * 60;
 
         var firstInteractiveObstacleTime = float.MaxValue;
         foreach (BaseObstacle obstacle in obstacleGrid.LoadedObjects)
         {
             if (obstacle.Width >= 2 || obstacle.PosX == 1 || obstacle.PosX == 2)
             {
-                firstInteractiveObstacleTime = (obstacle.JsonTime + obstacle.Duration) / songBpm * 60;
+                firstInteractiveObstacleTime = (obstacle.SongBpmTime + obstacle.Duration) / songBpm * 60;
                 break;
             }
         }
@@ -75,8 +75,8 @@ public class SwingsPerSecond
         if (lastNote != null)
         {
             if ((MaybeWindowed(note, lastNote) &&
-                 (note.JsonTime - lastNote.JsonTime) / songBpm * 60 > maximumWindowTolerance) ||
-                (note.JsonTime - lastNote.JsonTime) / songBpm * 60 > maximumTolerance)
+                 (note.SongBpmTime - lastNote.SongBpmTime) / songBpm * 60 > maximumWindowTolerance) ||
+                (note.SongBpmTime - lastNote.SongBpmTime) / songBpm * 60 > maximumTolerance)
             {
                 swingCount[Mathf.FloorToInt(realTime)] += 1;
             }
@@ -104,7 +104,7 @@ public class SwingsPerSecond
 
         foreach (BaseNote note in notesSet)
         {
-            var realTime = note.JsonTime / songBpm * 60;
+            var realTime = note.SongBpmTime / songBpm * 60;
             if (note.Type == 0)
                 CheckWindow(note, ref lastRed, swingCountRed, realTime, songBpm);
             else if (note.Type == 1) CheckWindow(note, ref lastBlue, swingCountBlue, realTime, songBpm);

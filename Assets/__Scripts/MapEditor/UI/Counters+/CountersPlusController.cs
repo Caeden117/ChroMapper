@@ -57,7 +57,7 @@ public class CountersPlusController : MonoBehaviour
         get
         {
             var sel = SelectionController.SelectedObjects.OrderBy(it => it.JsonTime).ToList();
-            var beatTimeDiff = sel.Last().JsonTime - sel.First().JsonTime;
+            var beatTimeDiff = sel.Last().SongBpmTime - sel.First().SongBpmTime;
             var secDiff = atsc.GetSecondsFromBeat(beatTimeDiff);
 
             return NotesSelected / secDiff;
