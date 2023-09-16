@@ -47,6 +47,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
                 : -1;
             var data = obs.ObjectData as V3Obstacle;
             data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
+            data.Height = Mathf.Min(data.Height, 5 - data.PosY);
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
             BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
