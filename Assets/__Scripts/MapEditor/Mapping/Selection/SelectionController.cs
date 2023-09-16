@@ -130,6 +130,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 case ObjectType.Note:
                 case ObjectType.Obstacle:
                 case ObjectType.CustomNote:
+                case ObjectType.Arc:
+                case ObjectType.Chain:
                     hasNoteOrObstacle = true;
                     break;
                 case ObjectType.Event:
@@ -169,27 +171,47 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         }
 
         if (hasNoteOrObstacle && !hasEvent)
+        {
             clearTypes.Add(ObjectType.Event); //for rotation events
+        }
+
         if (hasEvent)
         {
             clearTypes.AddRange(new[]
             {
-                ObjectType.Event, ObjectType.CustomEvent, ObjectType.BpmChange
+                ObjectType.Event, ObjectType.CustomEvent
             });
         }
 
-        var epsilon = 1f / Mathf.Pow(10, Settings.Instance.TimeValueDecimalPrecision);
+        if (hasBpmChange)
+        {
+            clearTypes.Add(ObjectType.BpmChange);
+        }
+
+        var epsilon = BeatmapObjectContainerCollection.Epsilon;
         foreach (var type in clearTypes)
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
             if (collection == null) continue;
 
-            foreach (var toCheck in collection.LoadedObjects.Where(x =>
-                x.SongBpmTime > start - epsilon && x.SongBpmTime < end + epsilon))
+            IEnumerable<BaseObject> objectsToCheck;
+            if (collection is ArcGridContainer || collection is ChainGridContainer)
             {
+                objectsToCheck = collection.LoadedObjects.Where(x =>
+                    (start - epsilon < x.SongBpmTime && x.SongBpmTime < end + epsilon)
+                    || (x.SongBpmTime < start + epsilon && start - epsilon < (x as BaseSlider).TailSongBpmTime));
+            }
+            else
+            {
+                objectsToCheck = collection.LoadedObjects.Where(x =>
+                    start - epsilon < x.SongBpmTime && x.SongBpmTime < end + epsilon);
+            }
+
+            foreach (var toCheck in objectsToCheck)
+            {
+                //Includes only rotation events when neither of the two objects are events
                 if (!hasEvent && toCheck is BaseEvent mapEvent &&
-                    !mapEvent
-                        .IsLaneRotationEvent()) //Includes only rotation events when neither of the two objects are events
+                   !mapEvent.IsLaneRotationEvent() && !(hasBpmChange && mapEvent.IsBpmEvent()))
                 {
                     continue;
                 }
