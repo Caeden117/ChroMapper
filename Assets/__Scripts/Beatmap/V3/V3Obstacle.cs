@@ -80,10 +80,10 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(JsonTime, DecimalPrecision);
+            node["b"] = JsonTime;
             node["x"] = PosX;
             node["y"] = PosY;
-            node["d"] = Math.Round(Duration, DecimalPrecision); //Get rid of float precision errors
+            node["d"] = Duration; //Get rid of float precision errors
             node["w"] = Width;
             node["h"] = Height;
             CustomData = SaveCustom();

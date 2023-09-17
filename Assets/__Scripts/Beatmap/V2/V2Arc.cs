@@ -61,7 +61,7 @@ namespace Beatmap.V2
         {
             JSONNode node = new JSONObject();
             node["_colorType"] = Color;
-            node["_headTime"] = Math.Round(JsonTime, DecimalPrecision);
+            node["_headTime"] = JsonTime;
             node["_headLineIndex"] = PosX;
             node["_headLineLayer"] = PosY;
             node["_headCutDirection"] = CutDirection;

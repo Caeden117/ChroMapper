@@ -50,7 +50,7 @@ namespace Beatmap.V2
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["_time"] = Math.Round(JsonTime, DecimalPrecision);
+            node["_time"] = JsonTime;
             node["_type"] = Type;
             node["_value"] = 0;
             node["_floatValue"] = Bpm;

@@ -45,7 +45,7 @@ namespace Beatmap.V2
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["_time"] = Math.Round(JsonTime, DecimalPrecision);
+            node["_time"] = JsonTime;
             node["_lineIndex"] = PosX;
             node["_lineLayer"] = PosY;
             node["_offsetDirection"] = OffsetDirection;

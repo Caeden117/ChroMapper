@@ -41,7 +41,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(JsonTime, DecimalPrecision);
+            node["b"] = JsonTime;
             node["p"] = UsePrevious;
             node["e"] = EaseType;
             node["t"] = Translation;
