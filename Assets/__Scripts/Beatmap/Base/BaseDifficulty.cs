@@ -235,7 +235,7 @@ namespace Beatmap.Base
                     ["_startSampleIndex"] = 0,
                     ["_endSampleIndex"] = audioSamples,
                     ["_startBeat"] = 0f,
-                    ["_endBeat"] = (songBpm / 60f) * audioLength,
+                    ["_endBeat"] = new JSONNumberWithOverridenRounding((songBpm / 60f) * audioLength, 6),
                 });
             }
             else
@@ -249,8 +249,8 @@ namespace Beatmap.Base
                     {
                         ["_startSampleIndex"] = (int)(currentBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
                         ["_endSampleIndex"] = (int)(nextBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
-                        ["_startBeat"] = currentBpmEvent.JsonTime,
-                        ["_endBeat"] = nextBpmEvent.JsonTime,
+                        ["_startBeat"] = new JSONNumberWithOverridenRounding(currentBpmEvent.JsonTime, 6),
+                        ["_endBeat"] = new JSONNumberWithOverridenRounding(nextBpmEvent.JsonTime, 6),
                     });
                 }
 
@@ -263,8 +263,8 @@ namespace Beatmap.Base
                 {
                     ["_startSampleIndex"] = (int)lastStartSampleIndex,
                     ["_endSampleIndex"] = audioSamples,
-                    ["_startBeat"] = lastBpmEvent.JsonTime,
-                    ["_endBeat"] = lastBpmEvent.JsonTime + jsonBeatsDiff,
+                    ["_startBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime, 6),
+                    ["_endBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime + jsonBeatsDiff, 6),
                 });
             }
 
