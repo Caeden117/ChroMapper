@@ -91,6 +91,9 @@ namespace Beatmap.Base
             for (var i = 0; i < BpmChanges.Count; i++)
             {
                 var bpmChange = BpmChanges[i];
+                var prevBpmChange = (i > 0)
+                    ? BpmChanges[i - 1]
+                    : BeatmapFactory.BpmChange(0, songBpm);
 
                 // Account for custom bpm change original grid behaviour
                 var distanceToNearestInt = Mathf.Abs(bpmChange.JsonTime - Mathf.Round(bpmChange.JsonTime));
@@ -123,7 +126,10 @@ namespace Beatmap.Base
                         BpmChanges[j].JsonTime += jsonTimeOffset;
                     }
 
-                    BpmEvents.Add(BeatmapFactory.BpmEvent(oldTime, 100000));
+                    // Place a very fast bpm event slighty behind the original event to account for drift
+                    var aVeryLargeBpm = 100000f;
+                    var offsetRequiredInBeats = jsonTimeOffset * prevBpmChange.Bpm / (aVeryLargeBpm - prevBpmChange.Bpm);
+                    BpmEvents.Add(BeatmapFactory.BpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm));
                 }
 
                 BpmEvents.Add(BeatmapFactory.BpmEvent(bpmChange.JsonTime, bpmChange.Bpm));
