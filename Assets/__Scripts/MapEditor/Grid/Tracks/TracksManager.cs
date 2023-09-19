@@ -101,7 +101,7 @@ public class TracksManager : MonoBehaviour
         animator = obj.AddComponent<TrackAnimator>();
         animator.enabled = false;
         animator.Atsc = atsc;
-        animator.track = obj.GetComponent<Track>();
+        animator.Track = obj.GetComponent<Track>();
         animationTracks.Add(name, animator);
         return animator;
     }
@@ -111,11 +111,11 @@ public class TracksManager : MonoBehaviour
         foreach (var at in animationTracks)
         {
             at.Value.SetEvents(new List<BaseCustomEvent>());
-            at.Value.children.Clear();
-            if (at.Value.animator != null)
+            at.Value.Children.Clear();
+            if (at.Value.Animator != null)
             {
-                GameObject.Destroy(at.Value.animator);
-                at.Value.animator = null;
+                GameObject.Destroy(at.Value.Animator);
+                at.Value.Animator = null;
             }
         }
     }

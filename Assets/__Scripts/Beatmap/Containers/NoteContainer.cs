@@ -13,7 +13,7 @@ namespace Beatmap.Containers
 
         [SerializeField] private GameObject simpleBlock;
         [SerializeField] private GameObject complexBlock;
-        [SerializeField] public Transform directionTarget;
+        [SerializeField] public Transform DirectionTarget;
 
         [SerializeField] private List<MeshRenderer> noteRenderer;
         [SerializeField] private MeshRenderer bombRenderer;
@@ -22,7 +22,7 @@ namespace Beatmap.Containers
         [SerializeField] private SpriteRenderer swingArcRenderer;
 
         [SerializeField] public BaseNote NoteData;
-        public MaterialPropertyBlock arrowMaterialPropertyBlock;
+        public MaterialPropertyBlock ArrowMaterialPropertyBlock;
 
         public override BaseObject ObjectData
         {
@@ -50,9 +50,9 @@ namespace Beatmap.Containers
                 UpdateMaterials();
             }
 
-            if (arrowMaterialPropertyBlock == null)
+            if (ArrowMaterialPropertyBlock == null)
             {
-                arrowMaterialPropertyBlock = new MaterialPropertyBlock();
+                ArrowMaterialPropertyBlock = new MaterialPropertyBlock();
             }
 
             SetArcVisible(NoteGridContainer.ShowArcVisualizer);
@@ -139,7 +139,7 @@ namespace Beatmap.Containers
         {
             var container = Instantiate(notePrefab).GetComponent<NoteContainer>();
             container.NoteData = noteData;
-            container.directionTarget.localEulerAngles = Directionalize(noteData);
+            container.DirectionTarget.localEulerAngles = Directionalize(noteData);
             return container;
         }
 
@@ -151,12 +151,12 @@ namespace Beatmap.Containers
                                           new Vector3(0, offsetY, NoteData.SongBpmTime * EditorScaleController.EditorScale);
             }
             transform.localScale = NoteData.GetScale();
-            directionTarget.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            DirectionTarget.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             UpdateCollisionGroups();
 
             MaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
-            arrowMaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
+            ArrowMaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
             SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0);
             UpdateMaterials();
         }
@@ -174,8 +174,8 @@ namespace Beatmap.Containers
             bombRenderer.SetPropertyBlock(MaterialPropertyBlock);
             if (dotRenderer != null)
             {
-                dotRenderer.SetPropertyBlock(arrowMaterialPropertyBlock);
-                arrowRenderer.SetPropertyBlock(arrowMaterialPropertyBlock);
+                dotRenderer.SetPropertyBlock(ArrowMaterialPropertyBlock);
+                arrowRenderer.SetPropertyBlock(ArrowMaterialPropertyBlock);
             }
         }
     }

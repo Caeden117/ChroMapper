@@ -20,7 +20,7 @@ namespace Beatmap.Animations
 
         public Track AnimationTrack;
         public AudioTimeSyncController Atsc;
-        public TracksManager tracksManager;
+        public TracksManager TracksManager;
 
         [SerializeField] public Transform LocalTarget;
         public Transform WorldTarget;
@@ -54,7 +54,7 @@ namespace Beatmap.Animations
             {
                 if (container.transform.IsChildOf(AnimationTrack.transform))
                 {
-                    var track = tracksManager.GetTrackAtTime(container.ObjectData?.SongBpmTime ?? 0);
+                    var track = TracksManager.GetTrackAtTime(container.ObjectData?.SongBpmTime ?? 0);
                     track.AttachContainer(container);
                 }
                 GameObject.Destroy(AnimationTrack.gameObject);
@@ -92,8 +92,8 @@ namespace Beatmap.Animations
                 container.MaterialPropertyBlock.SetFloat("_AlwaysOpaque", 0);
                 if (container is NoteContainer nc)
                 {
-                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
-                    nc.directionTarget.localPosition = Vector3.zero;
+                    nc.ArrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
+                    nc.DirectionTarget.localPosition = Vector3.zero;
                 }
                 container.UpdateMaterials();
             }
@@ -110,7 +110,7 @@ namespace Beatmap.Animations
             {
                 foreach (var track in tracks)
                 {
-                    track.children.Remove(this);
+                    track.Children.Remove(this);
                     track.OnChildrenChanged();
                 }
                 tracks.Clear();
@@ -121,7 +121,7 @@ namespace Beatmap.Animations
         {
             ResetData();
 
-            enabled = (UIMode.AnimationMode && tracksManager != null);
+            enabled = (UIMode.AnimationMode && TracksManager != null);
             if (!enabled) return;
 
             obj.RecomputeSongBpmTime();
@@ -137,7 +137,7 @@ namespace Beatmap.Animations
             }
             if (container is NoteContainer note)
             {
-                note.directionTarget.localPosition = new Vector3(0, 0, 0.4f);
+                note.DirectionTarget.localPosition = new Vector3(0, 0, 0.4f);
             }
 
             if (obj.CustomLocalRotation is JSONNode rot)
@@ -184,21 +184,21 @@ namespace Beatmap.Animations
                             if (jprop.Key == "_definitePosition" || jprop.Key == "definitePosition") bug = true;
                             var p = new IPointDefinition.UntypedParams
                             {
-                                key = $"track_{jprop.Key}",
-                                overwrite = false,
-                                points = jprop.Value,
-                                easing = ce.DataEasing,
-                                time = ce.JsonTime,
-                                transition = ce.DataDuration ?? 0,
-                                time_begin = time_begin,
-                                time_end = time_end,
+                                Key = $"track_{jprop.Key}",
+                                Overwrite = false,
+                                Points = jprop.Value,
+                                Easing = ce.DataEasing,
+                                Time = ce.JsonTime,
+                                Transition = ce.DataDuration ?? 0,
+                                TimeBegin = time_begin,
+                                TimeEnd = time_end,
                             };
                             AddPointDef(p, jprop.Key);
                         }
                     }
                 }
 
-                 AnimationTrack.transform.SetParent(this.tracks[0].track.ObjectParentTransform, false);
+                 AnimationTrack.transform.SetParent(this.tracks[0].Track.ObjectParentTransform, false);
             }
 
             // Individual Path Animation
@@ -209,12 +209,12 @@ namespace Beatmap.Animations
                     if (jprop.Key == "_definitePosition" || jprop.Key == "definitePosition") bug = true;
                     var p = new IPointDefinition.UntypedParams
                     {
-                        key = jprop.Key,
-                        overwrite = true,
-                        points = jprop.Value,
-                        easing = null,
-                        time_begin = time_begin,
-                        time_end = time_end,
+                        Key = jprop.Key,
+                        Overwrite = true,
+                        Points = jprop.Value,
+                        Easing = null,
+                        TimeBegin = time_begin,
+                        TimeEnd = time_end,
                     };
                     AddPointDef(p, jprop.Key);
                 }
@@ -266,7 +266,7 @@ namespace Beatmap.Animations
             if (eh.Track != null)
             {
                 AddParent(eh.Track);
-                container.transform.SetParent(this.tracks[0].track.ObjectParentTransform, false);
+                container.transform.SetParent(this.tracks[0].Track.ObjectParentTransform, false);
             }
 
             Atsc.TimeChanged += OnTimeChanged;
@@ -286,8 +286,8 @@ namespace Beatmap.Animations
 
         public void AddParent(string name)
         {
-            var track = tracksManager.CreateAnimationTrack(name);
-            track.children.Add(this);
+            var track = TracksManager.CreateAnimationTrack(name);
+            track.Children.Add(this);
             track.OnChildrenChanged();
             this.tracks.Add(track);
         }
@@ -306,7 +306,7 @@ namespace Beatmap.Animations
                 container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
                 if (container is NoteContainer nc)
                 {
-                    nc.arrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                    nc.ArrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
                 }
                 AnimatedLife =
                        (_time != null && _time < obj.JsonTime)
@@ -381,7 +381,7 @@ namespace Beatmap.Animations
 
                 if (container is NoteContainer nc)
                 {
-                    nc.arrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", OpacityArrow.Get());
+                    nc.ArrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", OpacityArrow.Get());
                 }
 
                 container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Opacity.Get());
@@ -419,7 +419,7 @@ namespace Beatmap.Animations
         {
             if (AnimationTrack == null)
             {
-                AnimationTrack = tracksManager.CreateIndividualTrack(container.ObjectData as BaseGrid);
+                AnimationTrack = TracksManager.CreateIndividualTrack(container.ObjectData as BaseGrid);
                 AnimationTrack.AttachContainer(container);
                 AnimationTrack.ObjectParentTransform.localPosition = new Vector3(container.transform.localPosition.x, container.transform.localPosition.y, 0);
                 AnimationTrack.transform.localPosition = Vector3.zero;
@@ -474,15 +474,15 @@ namespace Beatmap.Animations
         {
             try
             {
-                if (p.overwrite)
+                if (p.Overwrite)
                 {
-                    AnimatedProperties[p.key] = new AnimateProperty<T>(
+                    AnimatedProperties[p.Key] = new AnimateProperty<T>(
                         new List<PointDefinition<T>>(),
                         setter,
                         _default
                     );
                 }
-                GetAnimateProperty<T>(p.key, setter, _default).AddPointDef(parser, p);
+                GetAnimateProperty<T>(p.Key, setter, _default).AddPointDef(parser, p);
             }
             catch (Exception e)
             {

@@ -17,10 +17,10 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     public override ObjectType ContainerType => ObjectType.Obstacle;
 
     public BaseObstacle[] SpawnSortedObjects;
-    private int SpawnIndex;
+    private int spawnIndex;
 
     public BaseObstacle[] DespawnSortedObjects;
-    private int DespawnIndex;
+    private int despawnIndex;
 
     internal override void SubscribeToCallbacks()
     {
@@ -61,11 +61,8 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
 
     private void OnUIModeSwitch(UIModeType newMode)
     {
-        if (newMode == UIModeType.Normal)
-        {
-            RefreshPool(true);
-        }
-        if (newMode == UIModeType.Preview)
+        // When changing in/out of preview mode
+        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
         {
             RefreshPool(true);
         }
@@ -87,15 +84,15 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         var time = AudioTimeSyncController.CurrentJsonTime;
         if (AudioTimeSyncController.IsPlaying)
         {
-            while (SpawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[SpawnIndex].SpawnJsonTime)
+            while (spawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[spawnIndex].SpawnJsonTime)
             {
-                CreateContainerFromPool(SpawnSortedObjects[SpawnIndex]);
-                ++SpawnIndex;
+                CreateContainerFromPool(SpawnSortedObjects[spawnIndex]);
+                ++spawnIndex;
             }
 
-            while (DespawnIndex < DespawnSortedObjects.Length && time >= DespawnSortedObjects[DespawnIndex].DespawnJsonTime)
+            while (despawnIndex < DespawnSortedObjects.Length && time >= DespawnSortedObjects[despawnIndex].DespawnJsonTime)
             {
-                var objectData = DespawnSortedObjects[DespawnIndex];
+                var objectData = DespawnSortedObjects[despawnIndex];
                 if (LoadedContainers.ContainsKey(objectData))
                 {
                     if (!LoadedContainers[objectData].Animator.AnimatedLife)
@@ -103,7 +100,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
                     else
                         LoadedContainers[objectData].Animator.ShouldRecycle = true;
                 }
-                ++DespawnIndex;
+                ++despawnIndex;
             }
         }
         else
@@ -123,14 +120,14 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
             time,
             (i) => SpawnSortedObjects[i].SpawnJsonTime,
             SpawnSortedObjects.Length,
-            out SpawnIndex,
+            out spawnIndex,
             out var _
         );
         GetIndexes(
             time,
             (i) => DespawnSortedObjects[i].DespawnJsonTime,
             DespawnSortedObjects.Length,
-            out DespawnIndex,
+            out despawnIndex,
             out var _
         );
         var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnJsonTime <= time && time < o.DespawnJsonTime));
@@ -150,7 +147,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     {
         var con = ObstacleContainer.SpawnObstacle(null, tracksManager, ref obstaclePrefab);
         con.Animator.Atsc = AudioTimeSyncController;
-        con.Animator.tracksManager = tracksManager;
+        con.Animator.TracksManager = tracksManager;
         return con;
     }
 

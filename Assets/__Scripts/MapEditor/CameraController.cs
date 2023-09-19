@@ -143,7 +143,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
                 cameraAnimator.enabled = true;
                 cameraAnimator.ResetData();
 
-                currentTrack.children.Add(cameraAnimator);
+                currentTrack.Children.Add(cameraAnimator);
                 currentTrack.OnChildrenChanged();
             }
         }
@@ -353,7 +353,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     {
         if (currentTrack == null) return;
 
-        currentTrack.children.Remove(cameraAnimator);
+        currentTrack.Children.Remove(cameraAnimator);
         currentTrack.OnChildrenChanged();
         currentTrack = null;
 

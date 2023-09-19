@@ -55,7 +55,7 @@ MonoBehaviour:
   Animator: {fileID: 0}
   simpleBlock: {fileID: 0}
   complexBlock: {fileID: 0}
-  directionTarget: {fileID: 4273965621911736}
+  DirectionTarget: {fileID: 4273965621911736}
   noteRenderer: []
   bombRenderer: {fileID: 23859562417522296}
   dotRenderer: {fileID: 0}

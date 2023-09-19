@@ -97,17 +97,17 @@ namespace Beatmap.Animations
 
     public class PointDataInterpolators
     {
-        public static T LinearLerp<T>(PointDefinition<T>.PointData[] points, int prev, int next, float time) where T : struct
+        public static PointDefinition<T>.InterpolationHandler LinearLerp<T>() where T : struct
         {
-            return LinearPDI<T>.Instance.Lerp(points, prev, next, time);
+            return LinearPDI<T>.Instance.Lerp;
         }
-        public static T CatmullRomLerp<T>(PointDefinition<T>.PointData[] points, int prev, int next, float time) where T : struct
+        public static PointDefinition<T>.InterpolationHandler CatmullRomLerp<T>() where T : struct
         {
-            return CatmullRomPDI<T>.Instance.Lerp(points, prev, next, time);
+            return CatmullRomPDI<T>.Instance.Lerp;
         }
-        public static T HSVLerp<T>(PointDefinition<T>.PointData[] points, int prev, int next, float time) where T : struct
+        public static PointDefinition<T>.InterpolationHandler HSVLerp<T>() where T : struct
         {
-            return HSVPDI<T>.Instance.Lerp(points, prev, next, time);
+            return HSVPDI<T>.Instance.Lerp;
         }
     }
 }

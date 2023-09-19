@@ -132,30 +132,22 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         {
             case UIModeType.Normal:
                 HideStuff(true, true, true, true, true);
-                playerCamera.enabled = false;
-                editorCamera.enabled = true;
                 break;
             case UIModeType.HideUI:
                 HideStuff(false, true, true, true, true);
-                playerCamera.enabled = false;
-                editorCamera.enabled = true;
                 break;
             case UIModeType.HideGrids:
                 HideStuff(false, false, true, true, true);
-                playerCamera.enabled = false;
-                editorCamera.enabled = true;
                 break;
             case UIModeType.Preview:
                 HideStuff(false, false, false, false, false);
-                playerCamera.enabled = false;
-                editorCamera.enabled = true;
                 break;
             case UIModeType.Playing:
                 HideStuff(false, false, false, false, false);
-                playerCamera.enabled = true;
-                editorCamera.enabled = false;
                 break;
         }
+        playerCamera.enabled = (SelectedMode == UIModeType.Playing);
+        editorCamera.enabled = (SelectedMode != UIModeType.Playing);
 
         foreach (var boy in actions) boy?.Invoke(SelectedMode);
     }

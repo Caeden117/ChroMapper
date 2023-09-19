@@ -14,15 +14,15 @@ namespace Beatmap.Animations
     public class TrackAnimator : MonoBehaviour
     {
         public AudioTimeSyncController Atsc;
-        public Track track;
-        public ObjectAnimator animator;
+        public Track Track;
+        public ObjectAnimator Animator;
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties;
         private IAnimateProperty[] properties = new IAnimateProperty[0];
 
-        public List<TrackAnimator> parents = new List<TrackAnimator>();
-        public List<ObjectAnimator> children = new List<ObjectAnimator>();
-        public ObjectAnimator[] cachedChildren = new ObjectAnimator[] {};
+        public List<TrackAnimator> Parents = new List<TrackAnimator>();
+        public List<ObjectAnimator> Children = new List<ObjectAnimator>();
+        public ObjectAnimator[] CachedChildren = new ObjectAnimator[] {};
 
         public void SetEvents(List<BaseCustomEvent> events)
         {
@@ -34,14 +34,14 @@ namespace Beatmap.Animations
                 {
                     var p = new IPointDefinition.UntypedParams
                     {
-                        key = jprop.Key,
-                        points = jprop.Value,
-                        easing = ev.DataEasing,
-                        time = ev.JsonTime,
-                        duration = ev.DataDuration ?? 0,
-                        time_begin = ev.JsonTime,
-                        time_end = ev.JsonTime + (ev.DataDuration ?? 0),
-                        repeat = ev.DataRepeat ?? 0
+                        Key = jprop.Key,
+                        Points = jprop.Value,
+                        Easing = ev.DataEasing,
+                        Time = ev.JsonTime,
+                        Duration = ev.DataDuration ?? 0,
+                        TimeBegin = ev.JsonTime,
+                        TimeEnd = ev.JsonTime + (ev.DataDuration ?? 0),
+                        Repeat = ev.DataRepeat ?? 0
                     };
                     AddPointDef(p, jprop.Key);
                 }
@@ -63,10 +63,10 @@ namespace Beatmap.Animations
         public void Update()
         {
             var time = Atsc?.CurrentJsonTime ?? 0;
-            if (cachedChildren.Length == 0)
+            if (CachedChildren.Length == 0)
             {
                 enabled = false;
-                if (animator != null) animator.enabled = false;
+                if (Animator != null) Animator.enabled = false;
                 return;
             }
             for (var i = 0; i < properties.Length; ++i)
@@ -81,10 +81,10 @@ namespace Beatmap.Animations
 
         public void OnChildrenChanged()
         {
-            cachedChildren = children.Where(o => o.enabled).ToArray();
-            enabled = cachedChildren.Length > 0;
-            if (animator != null) animator.enabled = enabled;
-            parents.ForEach((t) => t.OnChildrenChanged());
+            CachedChildren = Children.Where(o => o.enabled).ToArray();
+            enabled = CachedChildren.Length > 0;
+            if (Animator != null) Animator.enabled = enabled;
+            Parents.ForEach((t) => t.OnChildrenChanged());
         }
 
         private void AddPointDef(IPointDefinition.UntypedParams p, string key)
@@ -135,9 +135,9 @@ namespace Beatmap.Animations
 
         private void AddPointDef<T>(Action<ObjectAnimator, T> _setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
         {
-            Action<T> setter = (v) => { for (var i = 0; i < cachedChildren.Length; ++i) { _setter(cachedChildren[i], v); } };
+            Action<T> setter = (v) => { for (var i = 0; i < CachedChildren.Length; ++i) { _setter(CachedChildren[i], v); } };
 
-            GetAnimateProperty<T>(p.key, setter, _default).AddPointDef(parser, p);
+            GetAnimateProperty<T>(p.Key, setter, _default).AddPointDef(parser, p);
         }
 
         private AnimateProperty<T> GetAnimateProperty<T>(string key, Action<T> setter, T _default) where T : struct

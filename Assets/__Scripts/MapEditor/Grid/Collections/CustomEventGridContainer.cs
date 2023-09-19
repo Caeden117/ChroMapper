@@ -66,18 +66,18 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
                 foreach (var tr in tracks)
                 {
                     var at = tracksManager.CreateAnimationTrack(tr.Value);
-                    at.track.transform.parent = parent.track.ObjectParentTransform;
-                    if (at.animator == null)
+                    at.Track.transform.parent = parent.Track.ObjectParentTransform;
+                    if (at.Animator == null)
                     {
-                        at.animator = at.gameObject.AddComponent<ObjectAnimator>();
-                        at.animator.Atsc = AudioTimeSyncController;
-                        at.animator.SetTrack(at.track, tr.Value);
+                        at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
+                        at.Animator.Atsc = AudioTimeSyncController;
+                        at.Animator.SetTrack(at.Track, tr.Value);
                     }
 
-                    if (!parent.children.Contains(at.animator))
+                    if (!parent.Children.Contains(at.Animator))
                     {
-                        parent.children.Add(at.animator);
-                        at.parents.Add(parent);
+                        parent.Children.Add(at.Animator);
+                        at.Parents.Add(parent);
                         at.OnChildrenChanged();
                     }
                 }

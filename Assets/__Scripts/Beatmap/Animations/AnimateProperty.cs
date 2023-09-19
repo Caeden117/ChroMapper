@@ -19,26 +19,26 @@ namespace Beatmap.Animations
         public T Default;
 
         public float StartTime { get; private set; } = Mathf.Infinity;
-        private int Count;
+        private int count;
 
         public AnimateProperty(List<PointDefinition<T>> points, Action<T> setter, T _default)
         {
             PointDefinitions = points;
             Setter = setter;
             Default = _default;
-            Count = 0;
+            count = 0;
         }
 
         public void AddPointDef(PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p)
         {
-            for (var i = 0; i <= p.repeat; ++i)
+            for (var i = 0; i <= p.Repeat; ++i)
             {
                 var pp = p;
-                pp.time_begin = p.time_begin + (i * p.duration);
-                pp.time_end = p.time_end + (i * p.duration);
+                pp.TimeBegin = p.TimeBegin + (i * p.Duration);
+                pp.TimeEnd = p.TimeEnd + (i * p.Duration);
                 if (i > 0)
                 {
-                    pp.time = pp.time_begin;
+                    pp.Time = pp.TimeBegin;
                 }
 
                 PointDefinitions.Add(new PointDefinition<T>(parser, pp));
@@ -86,13 +86,13 @@ namespace Beatmap.Animations
         {
             PointDefinitions.Sort();
             StartTime = PointDefinitions[0].StartTime;
-            Count = PointDefinitions.Count;
+            count = PointDefinitions.Count;
         }
 
         private void GetIndexes(float time, out int prev, out int next)
         {
             prev = 0;
-            next = Count;
+            next = count;
 
             while (prev < next - 1)
             {

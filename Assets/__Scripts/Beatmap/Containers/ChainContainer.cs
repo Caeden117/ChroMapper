@@ -58,7 +58,7 @@ namespace Beatmap.Containers
                     AttachedHead.UpdateGridPosition();
                     AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                 }
-                AttachedHead.directionTarget.localScale = BaseChain.ChainScale;
+                AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
             }
         }
 
@@ -219,7 +219,7 @@ namespace Beatmap.Containers
                     if (!IsHeadNote((BaseNote)note)) continue;
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
-                    AttachedHead.directionTarget.localScale = BaseChain.ChainScale;
+                    AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
                     AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                     break;
                 }
@@ -234,7 +234,7 @@ namespace Beatmap.Containers
                 }
                 else
                 {
-                    AttachedHead.directionTarget.localScale = BaseChain.ChainScale;
+                    AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
                     AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                 }
             }

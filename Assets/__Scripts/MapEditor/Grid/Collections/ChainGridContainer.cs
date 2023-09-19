@@ -24,7 +24,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
     {
         var con = ChainContainer.SpawnChain(null, ref chainPrefab);
         con.Animator.Atsc = AudioTimeSyncController;
-        con.Animator.tracksManager = tracksManager;
+        con.Animator.TracksManager = tracksManager;
         return con;
     }
 

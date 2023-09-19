@@ -11,16 +11,16 @@ namespace Beatmap.Animations
     {
         public struct UntypedParams
         {
-            public string key;
-            public bool overwrite;
-            public JSONNode points;
-            public string easing;
-            public float time;
-            public float transition;
-            public float duration;
-            public float time_begin;
-            public float time_end;
-            public int repeat;
+            public string Key;
+            public bool Overwrite;
+            public JSONNode Points;
+            public string Easing;
+            public float Time;
+            public float Transition;
+            public float Duration;
+            public float TimeBegin;
+            public float TimeEnd;
+            public int Repeat;
         }
     }
 
@@ -46,13 +46,13 @@ namespace Beatmap.Animations
 
         public PointDefinition(Parser parser, IPointDefinition.UntypedParams p)
         {
-            StartTime = p.time;
-            Transition = p.transition;
-            Duration = p.duration;
-            Easing = global::Easing.Named(p.easing ?? "easeLinear");
+            StartTime = p.Time;
+            Transition = p.Transition;
+            Duration = p.Duration;
+            Easing = global::Easing.Named(p.Easing ?? "easeLinear");
 
             var _points = new List<PointData>();
-            var data = p.points switch {
+            var data = p.Points switch {
                 JSONArray arr => arr,
                 JSONString pd => (BeatSaberSongContainer.Instance.Map.PointDefinitions.ContainsKey(pd) ? BeatSaberSongContainer.Instance.Map.PointDefinitions[pd] : throw new Exception($"Missing point definition {pd}")),
                 _ => new JSONArray(), // TODO: Does this unset properly?
@@ -61,10 +61,10 @@ namespace Beatmap.Animations
             foreach (var row in data) {
                 // WTF, Jevk
                 if (row.Value.AsArray == null) {
-                    _points.Add(new PointData(parser, data, p.time_begin, p.time_end));
+                    _points.Add(new PointData(parser, data, p.TimeBegin, p.TimeEnd));
                     break;
                 }
-                _points.Add(new PointData(parser, row.Value.AsArray, p.time_begin, p.time_end));
+                _points.Add(new PointData(parser, row.Value.AsArray, p.TimeBegin, p.TimeEnd));
             }
 
             Points = _points.ToArray();
@@ -150,7 +150,7 @@ namespace Beatmap.Animations
                     Time = 0;
                 }
                 Easing = global::Easing.Linear;
-                Lerp = PointDataInterpolators.LinearLerp<T>;
+                Lerp = PointDataInterpolators.LinearLerp<T>();
 
                 for (; i < len; ++i)
                 {
@@ -161,11 +161,11 @@ namespace Beatmap.Animations
                     }
                     if (str == "splineCatmullRom")
                     {
-                        Lerp = PointDataInterpolators.CatmullRomLerp<T>;
+                        Lerp = PointDataInterpolators.CatmullRomLerp<T>();
                     }
                     if (str == "lerpHSV")
                     {
-                        Lerp = PointDataInterpolators.HSVLerp<T>;
+                        Lerp = PointDataInterpolators.HSVLerp<T>();
                     }
                 }
             }

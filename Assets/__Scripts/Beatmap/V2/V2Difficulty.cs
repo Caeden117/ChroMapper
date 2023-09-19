@@ -303,7 +303,7 @@ namespace Beatmap.V2
                                     foreach (JSONNode n in cNode) bookmarksList.Add(new V2Bookmark(n));
                                     break;
                                 case "_customEvents":
-                                    foreach (JSONNode n in cNode) try { customEventsList.Add(new V2CustomEvent(n)); } catch (Exception e) { }
+                                    foreach (JSONNode n in cNode) customEventsList.Add(new V2CustomEvent(n));
                                     break;
                                 case "_pointDefinitions":
                                     foreach (JSONNode n in cNode)

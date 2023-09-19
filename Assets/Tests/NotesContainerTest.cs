@@ -63,8 +63,8 @@ namespace Tests
             UpdateNote(containerB, (int)GridX.MiddleRight, (int)GridY.Base, (int)NoteCutDirection.Right);
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
-            Assert.AreEqual(90, containerA.directionTarget.localEulerAngles.z, 0.01);
-            Assert.AreEqual(90, containerB.directionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(90, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(90, containerB.DirectionTarget.localEulerAngles.z, 0.01);
 
             // ◌◌↙◌
             // ◌◌◌◌
@@ -73,8 +73,8 @@ namespace Tests
             UpdateNote(containerB, (int)GridX.MiddleRight, (int)GridY.Base, (int)NoteCutDirection.DownLeft);
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
-            Assert.AreEqual(315, containerA.directionTarget.localEulerAngles.z, 0.01);
-            Assert.AreEqual(315, containerB.directionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerB.DirectionTarget.localEulerAngles.z, 0.01);
 
             // ◌◌↓◌
             // ◌◌◌◌
@@ -83,8 +83,8 @@ namespace Tests
             UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, (int)NoteCutDirection.Down);
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
-            Assert.AreEqual(333.43, containerA.directionTarget.localEulerAngles.z, 0.01);
-            Assert.AreEqual(333.43, containerB.directionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(333.43, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(333.43, containerB.DirectionTarget.localEulerAngles.z, 0.01);
 
             // ◌◌◌◌
             // ◌◌◌◌
@@ -93,8 +93,8 @@ namespace Tests
             UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, (int)NoteCutDirection.Down);
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
-            Assert.AreEqual(0, containerA.directionTarget.localEulerAngles.z, 0.01);
-            Assert.AreEqual(0, containerB.directionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(0, containerB.DirectionTarget.localEulerAngles.z, 0.01);
 
             // ◌◌◌◌
             // ↙◌◌◌
@@ -103,8 +103,8 @@ namespace Tests
             UpdateNote(containerB, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.DownLeft);
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
-            Assert.AreEqual(315, containerA.directionTarget.localEulerAngles.z, 0.01);
-            Assert.AreEqual(315, containerB.directionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerB.DirectionTarget.localEulerAngles.z, 0.01);
 
             // ◌◌◌◌
             // ◌◌◌◌
@@ -113,8 +113,8 @@ namespace Tests
             UpdateNote(containerB, (int)GridX.Right, (int)GridY.Base, (int)NoteCutDirection.DownLeft);
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
-            Assert.AreEqual(315, containerA.directionTarget.localEulerAngles.z, 0.01);
-            Assert.AreEqual(315, containerB.directionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerB.DirectionTarget.localEulerAngles.z, 0.01);
 
             // ◌◌◌◌
             // ↘◌◌◌
@@ -123,8 +123,8 @@ namespace Tests
             UpdateNote(containerB, (int)GridX.MiddleRight, (int)GridY.Base, (int)NoteCutDirection.DownRight);
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
-            Assert.AreEqual(63.43, containerA.directionTarget.localEulerAngles.z, 0.01);
-            Assert.AreEqual(63.43, containerB.directionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(63.43, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(63.43, containerB.DirectionTarget.localEulerAngles.z, 0.01);
 
             // Changing this note to be in another beat should stop the angles snapping
             baseNoteA.JsonTime = 13;
@@ -132,8 +132,8 @@ namespace Tests
 
             noteGridContainer.RefreshSpecialAngles(baseNoteA, true, false);
             noteGridContainer.RefreshSpecialAngles(baseNoteB, true, false);
-            Assert.AreEqual(45, containerA.directionTarget.localEulerAngles.z, 0.01);
-            Assert.AreEqual(45, containerB.directionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(45, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(45, containerB.DirectionTarget.localEulerAngles.z, 0.01);
 
             // Make cleanup work
             baseNoteA.JsonTime = 14;
@@ -146,7 +146,7 @@ namespace Tests
             baseNote.PosY = PosY;
             baseNote.CutDirection = cutDirection;
             container.UpdateGridPosition();
-            container.directionTarget.localEulerAngles = NoteContainer.Directionalize(baseNote);
+            container.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(baseNote);
         }
 
         [Test]
