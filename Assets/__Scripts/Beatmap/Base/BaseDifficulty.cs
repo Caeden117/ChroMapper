@@ -218,6 +218,8 @@ namespace Beatmap.Base
         {
             JSONNode bpmInfo = new JSONObject();
 
+            var precision = Settings.Instance.BpmTimeValueDecimalPrecision;
+
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var audioLength = BeatSaberSongContainer.Instance.LoadedSongLength;
             var audioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples;
@@ -235,7 +237,7 @@ namespace Beatmap.Base
                     ["_startSampleIndex"] = 0,
                     ["_endSampleIndex"] = audioSamples,
                     ["_startBeat"] = 0f,
-                    ["_endBeat"] = new JSONNumberWithOverridenRounding((songBpm / 60f) * audioLength, 6),
+                    ["_endBeat"] = new JSONNumberWithOverridenRounding((songBpm / 60f) * audioLength, precision),
                 });
             }
             else
@@ -249,8 +251,8 @@ namespace Beatmap.Base
                     {
                         ["_startSampleIndex"] = (int)(currentBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
                         ["_endSampleIndex"] = (int)(nextBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
-                        ["_startBeat"] = new JSONNumberWithOverridenRounding(currentBpmEvent.JsonTime, 6),
-                        ["_endBeat"] = new JSONNumberWithOverridenRounding(nextBpmEvent.JsonTime, 6),
+                        ["_startBeat"] = new JSONNumberWithOverridenRounding(currentBpmEvent.JsonTime, precision),
+                        ["_endBeat"] = new JSONNumberWithOverridenRounding(nextBpmEvent.JsonTime, precision),
                     });
                 }
 
@@ -263,8 +265,8 @@ namespace Beatmap.Base
                 {
                     ["_startSampleIndex"] = (int)lastStartSampleIndex,
                     ["_endSampleIndex"] = audioSamples,
-                    ["_startBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime, 6),
-                    ["_endBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime + jsonBeatsDiff, 6),
+                    ["_startBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime, precision),
+                    ["_endBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime + jsonBeatsDiff, precision),
                 });
             }
 
