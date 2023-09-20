@@ -96,7 +96,7 @@ namespace Beatmap.V3
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["b"] = Math.Round(JsonTime, DecimalPrecision);
+            node["b"] = JsonTime;
             node["c"] = Color;
             node["x"] = PosX;
             node["y"] = PosY;

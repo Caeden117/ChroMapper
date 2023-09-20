@@ -159,6 +159,7 @@ public class Settings
     #region Experimental
 
     public int TimeValueDecimalPrecision = 3;
+    public int BpmTimeValueDecimalPrecision = 6; // Hidden setting
     public bool AdvancedShit = false; // Custom Events
     public bool LightIDTransitionSupport = false; // Temporary option until lighting transitions are reworked
     public int ReleaseChannel = 0;

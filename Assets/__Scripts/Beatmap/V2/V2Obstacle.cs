@@ -119,10 +119,10 @@ namespace Beatmap.V2
         public override JSONNode ToJson()
         {
             JSONNode node = new JSONObject();
-            node["_time"] = Math.Round(JsonTime, DecimalPrecision);
+            node["_time"] = JsonTime;
             node["_lineIndex"] = PosX;
             node["_type"] = Type;
-            node["_duration"] = Math.Round(Duration, DecimalPrecision);
+            node["_duration"] = Duration;
             node["_width"] = Width;
             CustomData = SaveCustom();
             if (!CustomData.Children.Any()) return node;

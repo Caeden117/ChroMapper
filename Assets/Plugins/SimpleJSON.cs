@@ -1213,7 +1213,7 @@ namespace SimpleJSON
         public static bool CapNumbersToDecimals = true;
         public static int DecimalPrecision = 3;
 
-        private double m_Data;
+        protected double m_Data;
 
         public override JSONNodeType Tag => JSONNodeType.Number;
         public override bool IsNumber => true;

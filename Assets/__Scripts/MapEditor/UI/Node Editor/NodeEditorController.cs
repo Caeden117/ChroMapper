@@ -146,7 +146,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private void UpdateJson()
     {
         editingObjects = SelectionController.SelectedObjects.Select(it => it);
-        editingNode = GetSharedJson(editingObjects.Select(it => JSON.Parse(it.ToString())));
+        editingNode = GetSharedJson(editingObjects.Select(it => it.ToJson().Clone()));
 
         nodeEditorInputField.text = string.Join("", editingNode.ToString(2).Split('\r'));
 

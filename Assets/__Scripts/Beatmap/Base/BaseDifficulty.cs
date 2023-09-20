@@ -91,6 +91,9 @@ namespace Beatmap.Base
             for (var i = 0; i < BpmChanges.Count; i++)
             {
                 var bpmChange = BpmChanges[i];
+                var prevBpmChange = (i > 0)
+                    ? BpmChanges[i - 1]
+                    : BeatmapFactory.BpmChange(0, songBpm);
 
                 // Account for custom bpm change original grid behaviour
                 var distanceToNearestInt = Mathf.Abs(bpmChange.JsonTime - Mathf.Round(bpmChange.JsonTime));
@@ -123,7 +126,10 @@ namespace Beatmap.Base
                         BpmChanges[j].JsonTime += jsonTimeOffset;
                     }
 
-                    BpmEvents.Add(BeatmapFactory.BpmEvent(oldTime, 100000));
+                    // Place a very fast bpm event slighty behind the original event to account for drift
+                    var aVeryLargeBpm = 100000f;
+                    var offsetRequiredInBeats = jsonTimeOffset * prevBpmChange.Bpm / (aVeryLargeBpm - prevBpmChange.Bpm);
+                    BpmEvents.Add(BeatmapFactory.BpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm));
                 }
 
                 BpmEvents.Add(BeatmapFactory.BpmEvent(bpmChange.JsonTime, bpmChange.Bpm));
@@ -212,6 +218,8 @@ namespace Beatmap.Base
         {
             JSONNode bpmInfo = new JSONObject();
 
+            var precision = Settings.Instance.BpmTimeValueDecimalPrecision;
+
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var audioLength = BeatSaberSongContainer.Instance.LoadedSongLength;
             var audioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples;
@@ -229,7 +237,7 @@ namespace Beatmap.Base
                     ["_startSampleIndex"] = 0,
                     ["_endSampleIndex"] = audioSamples,
                     ["_startBeat"] = 0f,
-                    ["_endBeat"] = (songBpm / 60f) * audioLength,
+                    ["_endBeat"] = new JSONNumberWithOverridenRounding((songBpm / 60f) * audioLength, precision),
                 });
             }
             else
@@ -243,8 +251,8 @@ namespace Beatmap.Base
                     {
                         ["_startSampleIndex"] = (int)(currentBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
                         ["_endSampleIndex"] = (int)(nextBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
-                        ["_startBeat"] = currentBpmEvent.JsonTime,
-                        ["_endBeat"] = nextBpmEvent.JsonTime,
+                        ["_startBeat"] = new JSONNumberWithOverridenRounding(currentBpmEvent.JsonTime, precision),
+                        ["_endBeat"] = new JSONNumberWithOverridenRounding(nextBpmEvent.JsonTime, precision),
                     });
                 }
 
@@ -257,8 +265,8 @@ namespace Beatmap.Base
                 {
                     ["_startSampleIndex"] = (int)lastStartSampleIndex,
                     ["_endSampleIndex"] = audioSamples,
-                    ["_startBeat"] = lastBpmEvent.JsonTime,
-                    ["_endBeat"] = lastBpmEvent.JsonTime + jsonBeatsDiff,
+                    ["_startBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime, precision),
+                    ["_endBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime + jsonBeatsDiff, precision),
                 });
             }
 
