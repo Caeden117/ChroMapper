@@ -2491,16 +2491,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7285cbde1ee0d6b478bef7ca99e5fc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ringCount: 1
-  prefab: {fileID: 6930740627271032968}
-  moveFirstRing: 1
-  minPositionStep: 0.06
-  maxPositionStep: 0
-  moveSpeed: 1
-  rotationStep: 0
-  propagationSpeed: 1
-  flexySpeed: 1
-  rotationEffect: {fileID: 0}
+  RingCount: 1
+  Prefab: {fileID: 6930740627271032968}
+  MoveFirstRing: 1
+  MINPositionStep: 6
+  MAXPositionStep: 0
+  MoveSpeed: 1
+  RotationStep: 0
+  PropagationSpeed: 1
+  FlexySpeed: 1
+  RotationEffect: {fileID: 0}
 --- !u!1 &1570859244492375262
 GameObject:
   m_ObjectHideFlags: 0
@@ -4685,7 +4685,7 @@ Transform:
   m_GameObject: {fileID: 3888991952568310978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
   - {fileID: 5575065089381963650}
   m_Father: {fileID: 4884218375522426189}
@@ -7649,7 +7649,7 @@ Transform:
   m_GameObject: {fileID: 6323910620912038740}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
   - {fileID: 7984200058087216992}
   - {fileID: 4671657537996553361}
@@ -9255,7 +9255,7 @@ Transform:
   m_GameObject: {fileID: 7651479055599758124}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
   - {fileID: 702200042516718075}
   - {fileID: 7546403321118232926}
@@ -9367,7 +9367,7 @@ Transform:
   m_GameObject: {fileID: 7755678658745263246}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4884218375522426189}
   m_Father: {fileID: 439380587807353497}
