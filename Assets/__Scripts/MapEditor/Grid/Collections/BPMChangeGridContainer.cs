@@ -37,10 +37,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
 
     public override ObjectType ContainerType => ObjectType.BpmChange;
 
-    private IEnumerator Start()
+    private void Start()
     {
-        yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
-
         Shader.SetGlobalFloat(songBpm, BeatSaberSongContainer.Instance.Song.BeatsPerMinute);
     }
 
