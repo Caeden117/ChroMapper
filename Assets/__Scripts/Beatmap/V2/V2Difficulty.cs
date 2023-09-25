@@ -47,7 +47,7 @@ namespace Beatmap.V2
                 var allEvents = new List<BaseObject>();
                 allEvents.AddRange(Events);
                 allEvents.AddRange(BpmEvents);
-                if (BpmEvents.Count == 0 || BpmEvents.First().JsonTime != 0)
+                if (BpmEvents.Count > 0 && BpmEvents.First().JsonTime != 0)
                 {
                     allEvents.Add(new V2BpmEvent()
                     {
