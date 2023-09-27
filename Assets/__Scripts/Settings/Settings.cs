@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -30,7 +30,7 @@ public class Settings
     public bool OpenFileExplorerAfterCreatingZip = true;
     public bool InstantEscapeMenuTransitions = false;
     public bool InstantLoadingTransitions = false;
-    public bool Waifu = true;
+    public bool Waifu = false;
     public bool HelpfulLoadingMessages = false;
     public float UIScale = 1;
     public bool VSync = true;
