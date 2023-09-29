@@ -23,28 +23,24 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     public void OnTypeOn(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        placeMode.SetMode(PlacementModeController.PlacementMode.Note);
         lightMode.SetMode(LightingModeController.LightingMode.On);
     }
 
     public void OnTypeFlash(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        placeMode.SetMode(PlacementModeController.PlacementMode.Note);
         lightMode.SetMode(LightingModeController.LightingMode.Flash);
     }
 
     public void OnTypeOff(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        placeMode.SetMode(PlacementModeController.PlacementMode.Note);
         lightMode.SetMode(LightingModeController.LightingMode.Off);
     }
 
     public void OnTypeFade(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        placeMode.SetMode(PlacementModeController.PlacementMode.Note);
         lightMode.SetMode(LightingModeController.LightingMode.Fade);
     }
 
