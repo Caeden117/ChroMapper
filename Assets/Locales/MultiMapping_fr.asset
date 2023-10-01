@@ -20,31 +20,31 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 34914570240
-    m_Localized: Join Session
+    m_Localized: Rejoindre la Session
     m_Metadata:
       m_Items: []
   - m_Id: 104179306496
-    m_Localized: Host Session
+    m_Localized: "Cr\xE9er une Session"
     m_Metadata:
       m_Items: []
   - m_Id: 757656064000
-    m_Localized: Downloading song... this can take several moments.
+    m_Localized: "T\xE9l\xE9chargement de la musique... Cela peut prendre un moment."
     m_Metadata:
       m_Items: []
   - m_Id: 1057586548736
-    m_Localized: Loading song...
+    m_Localized: Chargement de la musique...
     m_Metadata:
       m_Items: []
   - m_Id: 1753480302592
-    m_Localized: Use Direct Connection
+    m_Localized: Utiliser une connexion directe
     m_Metadata:
       m_Items: []
   - m_Id: 1870388137984
-    m_Localized: Room Code
+    m_Localized: Code de Salle
     m_Metadata:
       m_Items: []
   - m_Id: 2715376816128
-    m_Localized: Use Room Code
+    m_Localized: Utiliser un Code de Salle
     m_Metadata:
       m_Items: []
   - m_Id: 3327472570368
@@ -60,38 +60,39 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4051690459136
-    m_Localized: Display Name
+    m_Localized: Nom d'affichage
     m_Metadata:
       m_Items: []
   - m_Id: 4114886037504
-    m_Localized: Grid Color
+    m_Localized: Couleur de la grille
     m_Metadata:
       m_Items: []
   - m_Id: 4175602782208
-    m_Localized: ChroMapTogether Server URL
+    m_Localized: URL du serveur ChroMapTogether
     m_Metadata:
       m_Items: []
   - m_Id: 4250194284544
-    m_Localized: Apply Changes
+    m_Localized: Appliquer les changements
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: Connection rejected. If you used a room code, ensure the code was
-      entered correctly.
+    m_Localized: "Connexion rejet\xE9e. Si vous utilisez un Code de Salle v\xE9rifiez
+      que le code ait \xE9t\xE9 entr\xE9 correctement."
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
-    m_Localized: 'Connection with the host lost: {0}. Returning to song list...'
+    m_Localized: "Connexion avec l'h\xE9bergeur perdue\_: {0}. Retour \xE0 la liste
+      des musiques..."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 5357561843712
-    m_Localized: 'A networking error occured: {0}.'
+    m_Localized: "Une erreur r\xE9seau s'est produite : {0}."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 5800807501824
-    m_Localized: 'Connection with the ChroMapTogether server lost: {0}.'
+    m_Localized: 'Connexion avec le serveur ChroMapTogether perdue : {0}.'
     m_Metadata:
       m_Items:
       - id: 0
@@ -104,36 +105,37 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1970900842393600
-    m_Localized: Friends will need to connect using your Public IP and Port. Port
-      forwarding is required for clients to connect.
+    m_Localized: "Vos amis devront utiliser votre IP publique et Port pour se connecter.
+      La Redirection de Port est n\xE9cessaire pour la connexion des clients."
     m_Metadata:
       m_Items: []
   - m_Id: 1970841337802752
-    m_Localized: The ChroMapTogether server will be used to host this session. You
-      will be given a short room code to pass to friends.
+    m_Localized: "Le serveur ChroMapTogether sera utilis\xE9 pour h\xE9berger cette
+      session. Vous allez recevoir un court code de salle \xE0 partager avec vos
+      amis."
     m_Metadata:
       m_Items: []
   - m_Id: 2018274558160896
-    m_Localized: User Trace
+    m_Localized: Suivi de l'utilisateur
     m_Metadata:
       m_Items: []
   - m_Id: 2018332712185856
-    m_Localized: This object was first created/modified by {0}.
+    m_Localized: "Cet objet a \xE9t\xE9 cr\xE9\xE9/modifi\xE9 en premier par {0}."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2018498240393216
-    m_Localized: This object was last modified by {0}.
+    m_Localized: "Cet objet a \xE9t\xE9 modifi\xE9 en dernier par {0}."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2336103375384576
-    m_Localized: Are you sure you want to ban {0}?
+    m_Localized: "\xCAtes-vous s\xFBr de vouloir bannir {0} ?"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2336237542780928
-    m_Localized: Are you sure you want to kick {0}?
+    m_Localized: "\xCAtes-vous s\xFBr de vouloir expulser {0} ?"
     m_Metadata:
       m_Items:
       - id: 0

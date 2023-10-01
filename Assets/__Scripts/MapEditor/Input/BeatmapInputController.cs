@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using Beatmap.Containers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -10,9 +11,9 @@ public class GlobalIntersectionCache
     internal static GameObject firstHit;
 }
 
-public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsActions where T : BeatmapObjectContainer
+public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsActions where T : ObjectContainer
 {
-    [FormerlySerializedAs("customStandaloneInputModule")] [SerializeField] protected CustomStandaloneInputModule CustomStandaloneInputModule;
+    [FormerlySerializedAs("customStandaloneInputModule")][SerializeField] protected CustomStandaloneInputModule CustomStandaloneInputModule;
     protected bool IsSelecting;
 
     private Camera mainCamera;
@@ -106,8 +107,8 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
             if (con != null)
             {
                 // TODO make this use an AudioTimeSyncController reference when Zenject is added.
-                BeatmapObjectContainerCollection.GetCollectionForType(con.ObjectData.BeatmapType)
-                    .AudioTimeSyncController.MoveToTimeInBeats(con.ObjectData.Time);
+                BeatmapObjectContainerCollection.GetCollectionForType(con.ObjectData.ObjectType)
+                    .AudioTimeSyncController.MoveToSongBpmTime(con.ObjectData.SongBpmTime);
             }
         }
     }
@@ -141,7 +142,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     public IEnumerator CompleteDelete(T obj)
     {
         yield return null;
-        BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectData.BeatmapType)
+        BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectData.ObjectType)
             .DeleteObject(obj.ObjectData, true, true, "Deleted by the user.");
     }
 }

@@ -26,6 +26,8 @@ public class PersistentUI : MonoBehaviour
     [Header("Loading")] [SerializeField] private CanvasGroup loadingCanvasGroup;
     [SerializeField] private TMP_Text loadingTip;
     [SerializeField] private Image editorLoadingBackground;
+    [SerializeField] private Image editorWaifu;
+    [SerializeField] private TextMeshProUGUI editorWaifuCredits;
     [SerializeField] private ImageList editorImageList;
 
     [SerializeField] private AnimationCurve fadeInCurve;
@@ -276,6 +278,11 @@ public class PersistentUI : MonoBehaviour
     public Coroutine FadeInLoadingScreen()
     {
         loadingTip.text = localization.GetRandomLoadingMessage();
+
+        editorWaifu.gameObject.SetActive(Settings.Instance.Waifu);
+        editorWaifu.sprite = localization.GetRandomWaifuSprite();
+        editorWaifuCredits.text = editorWaifu.sprite.name;
+
         return StartCoroutine(FadeInLoadingScreen(2f));
     }
 
@@ -449,7 +456,7 @@ public class PersistentUI : MonoBehaviour
         TMP_FontAsset b0A = null, TMP_FontAsset b1A = null, TMP_FontAsset b2A = null)
     {
         Debug.LogWarning($"Dialog box not localized '{message}'");
-        DoShowDialogBox(message, result, new[] { b0, b1, b2 }, new[] { b0A, b1A, b2A });
+        DoShowDialogBox(message, result, new[] { b0, b1, b2 }, new[] { b0A ? b0A : greenFont, b1A ? b1A : goldFont, b2A ? b2A : redFont });
     }
 
     private void DoShowDialogBox(string message, Action<int> result, IList<string> buttonText,

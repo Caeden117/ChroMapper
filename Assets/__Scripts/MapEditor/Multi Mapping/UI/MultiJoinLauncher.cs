@@ -36,7 +36,7 @@ public class MultiJoinLauncher : MonoBehaviour
     }
 
     private void JoinMultiSession()
-        => BeatSaberSongContainer.Instance.ConnectToMultiSession(roomCodeTextBox.Value,
+        => BeatSaberSongContainer.Instance.ConnectToMultiSession(roomCodeTextBox.Value.ToUpper(),
             Settings.Instance.MultiSettings.LocalIdentity);
 
     private void OpenDirectConnect()

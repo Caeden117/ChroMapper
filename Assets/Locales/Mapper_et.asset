@@ -712,9 +712,83 @@ MonoBehaviour:
     m_Localized: Objects found outside map. Do you want to remove them?
     m_Metadata:
       m_Items: []
+  - m_Id: 160655767994621952
+    m_Localized: FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247628972130304
+    m_Localized: Easing applies to floatValue.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247577315082240
+    m_Localized: Ease FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988345160302592
+    m_Localized: Easing applies to time.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988137944907776
+    m_Localized: Easing Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42585459012075520
+    m_Localized: Transition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207749379233349632
+    m_Localized: Color Gradients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122293661564928
+    m_Localized: Set color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122782700634112
+    m_Localized: Set boost color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207750905897091072
+    m_Localized: Lerp Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207751068199878656
+    m_Localized: Changes interpolation for the transition.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220101281077985280
+    m_Localized: Change Beatmap Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220102296279908352
+    m_Localized: Changes map version to v2 or v3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 232868047877242880
+    m_Localized: 'CM has detected Custom BPM changes and
+
+      converted these into
+      Official BPM events'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 240390057914204160
+    m_Localized: 'BPM Events: {BPMCount}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 256289992891105280
+    m_Localized: Enter the beat you want to go to
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256290009261473792
+    m_Localized: 'Invalid number
+
+      Enter the beat you want to go to'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000
+        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000000083e97b095603

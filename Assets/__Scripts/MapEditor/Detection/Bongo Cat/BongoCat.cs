@@ -1,16 +1,17 @@
-﻿using UnityEngine;
+﻿using Beatmap.Base;
+using Beatmap.Enums;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class BongoCat : MonoBehaviour
 {
     [SerializeField] private BongoCatPreset[] bongoCats;
     [SerializeField] private Transform noteGridHeight;
-    [FormerlySerializedAs("Larm")] [SerializeField] private bool larm;
-    [FormerlySerializedAs("Rarm")] [SerializeField] private bool rarm;
+    [FormerlySerializedAs("Larm")][SerializeField] private bool larm;
+    [FormerlySerializedAs("Rarm")][SerializeField] private bool rarm;
 
     private SpriteRenderer comp;
     private BongoCatPreset selectedBongoCat;
-    private int oldBongoCatValue = 0;
 
     private float larmTimeout;
     private float rarmTimeout;
@@ -65,16 +66,16 @@ public class BongoCat : MonoBehaviour
         transform.localScale = selectedBongoCat.Scale;
     }
 
-    public void TriggerArm(BeatmapNote note, NotesContainer container)
+    public void TriggerArm(BaseNote note, NoteGridContainer container)
     {
         //Ignore bombs here to improve performance.
-        if (Settings.Instance.BongoCat == -1 || note.Type == BeatmapNote.NoteTypeBomb) return;
-        var next = container.UnsortedObjects.Find(x => x.Time > note.Time &&
-                                                       ((BeatmapNote)x).Type == note.Type);
+        if (Settings.Instance.BongoCat == -1 || note.Type == (int)NoteType.Bomb) return;
+        var next = container.UnsortedObjects.Find(x => x.JsonTime > note.JsonTime &&
+                                                       ((BaseNote)x).Type == note.Type);
         var timer = 0.125f;
         if (!(next is null))
         {
-            var half = container.AudioTimeSyncController.GetSecondsFromBeat((next.Time - note.Time) / 2f);
+            var half = (next.SongBpmTime - note.SongBpmTime) * 60f / BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 2f;
             timer = next != null
                 ? Mathf.Clamp(half, 0.05f, 0.2f)
                 : 0.125f; // clamp to accommodate sliders and long gaps between notes
@@ -82,11 +83,11 @@ public class BongoCat : MonoBehaviour
 
         switch (note.Type)
         {
-            case BeatmapNote.NoteTypeA:
+            case (int)NoteType.Red:
                 larm = true;
                 larmTimeout = timer;
                 break;
-            case BeatmapNote.NoteTypeB:
+            case (int)NoteType.Blue:
                 rarm = true;
                 rarmTimeout = timer;
                 break;

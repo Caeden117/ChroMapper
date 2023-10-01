@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
 using LiteNetLib.Utils;
+using System.Linq;
+using Beatmap.Base;
 
 public class SelectionDeletedAction : BeatmapAction
 {
     public SelectionDeletedAction() : base() { }
 
-    public SelectionDeletedAction(IEnumerable<BeatmapObject> deletedData) : base(deletedData) { }
+    public SelectionDeletedAction(IEnumerable<BaseObject> deletedData) : base(deletedData)
+    {
+        this.affectsSeveralObjects = true;
+    }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
@@ -21,6 +26,7 @@ public class SelectionDeletedAction : BeatmapAction
 
         SelectionController.RefreshSelectionMaterial(false);
         RefreshPools(Data);
+        RefreshEventAppearance();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
@@ -29,6 +35,7 @@ public class SelectionDeletedAction : BeatmapAction
             DeleteObject(data, false);
 
         RefreshPools(Data);
+        RefreshEventAppearance();
     }
 
     public override void Serialize(NetDataWriter writer) => SerializeBeatmapObjectList(writer, Data);

@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 
 public class StrobeLightingPass : StrobeGeneratorPass
@@ -10,26 +15,34 @@ public class StrobeLightingPass : StrobeGeneratorPass
     private readonly Func<float, float> easingFunc;
     private readonly float precision;
     private readonly IEnumerable<int> values;
+    private readonly bool easeTime;
+    private readonly bool easeValue;
 
     public StrobeLightingPass(IEnumerable<int> alternatingValues, bool switchColors, bool dynamicStrobe,
-        float strobePrecision, string strobeEasing)
+        float strobePrecision, string strobeEasing, bool easingTimeSwitch, bool easingValueSwitch)
     {
         values = alternatingValues;
         alternateColors = switchColors;
         dynamic = dynamicStrobe;
         precision = strobePrecision;
         easingFunc = Easing.Named(strobeEasing);
+        easeTime = easingTimeSwitch;
+        easeValue = easingValueSwitch;
     }
 
-    public override bool IsEventValidForPass(MapEvent @event) => !@event.IsUtilityEvent && !@event.IsLegacyChromaEvent;
+    public override bool IsEventValidForPass(BaseEvent @event) => !@event.IsUtilityEvent() && !@event.IsLegacyChroma;
 
-    public override IEnumerable<MapEvent> StrobePassForLane(IEnumerable<MapEvent> original, int type,
-        EventsContainer.PropMode propMode, JSONNode propID)
+    public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
+        EventGridContainer.PropMode propMode, int[] propID)
     {
-        var generatedObjects = new List<MapEvent>();
+        var generatedObjects = new List<BaseEvent>();
 
-        var startTime = original.First().Time;
-        var endTime = original.Last().Time;
+        var startTime = original.First().JsonTime;
+        var endTime = original.Last().JsonTime;
+
+        var startFloatValue = original.First().FloatValue;
+        var endFloatValue = original.Last().FloatValue;
+        var floatValueDiff = endFloatValue - startFloatValue;
 
         var alternatingTypes = new List<int>(values);
         var typeIndex = 0;
@@ -41,15 +54,15 @@ public class StrobeLightingPass : StrobeGeneratorPass
 
         var distanceInBeats = endTime - startTime;
         var originalDistance = distanceInBeats;
-        MapEvent lastPassed = null;
+        BaseEvent lastPassed = null;
 
         while (distanceInBeats >= 0)
         {
             if (typeIndex >= alternatingTypes.Count) typeIndex = 0;
 
-            var any = original.Where(x => x.Time <= endTime - distanceInBeats).LastOrDefault();
-            if (any != lastPassed && dynamic && MapEvent.IsBlueEventFromValue(any.Value) !=
-                MapEvent.IsBlueEventFromValue(alternatingTypes[typeIndex]))
+            var any = original.Where(x => x.JsonTime <= endTime - distanceInBeats).LastOrDefault();
+            if (any != lastPassed && dynamic && LightEventHelper.IsBlueFromValue(any.Value) !=
+                LightEventHelper.IsBlueFromValue(alternatingTypes[typeIndex]))
             {
                 lastPassed = any;
                 for (var i = 0; i < alternatingTypes.Count; i++)
@@ -58,12 +71,19 @@ public class StrobeLightingPass : StrobeGeneratorPass
 
             var value = alternatingTypes[typeIndex];
             var progress = (originalDistance - distanceInBeats) / originalDistance;
-            var newTime = (easingFunc(progress) * originalDistance) + startTime;
-            var data = new MapEvent(newTime, type, value);
-            if (propMode != EventsContainer.PropMode.Off)
+
+            var newTime = easeTime
+                ? (easingFunc(progress) * originalDistance) + startTime
+                : (progress * originalDistance) + startTime;
+
+            var newFloatValue = easeValue
+                ? (easingFunc(progress) * floatValueDiff) + startFloatValue
+                : (progress * floatValueDiff) + startFloatValue;
+
+            var data = BeatmapFactory.Event(newTime, type, value, newFloatValue);
+            if (propMode != EventGridContainer.PropMode.Off)
             {
-                data.CustomData = new JSONObject();
-                data.CustomData.Add("_lightID", propID);
+                data.CustomLightID = propID;
             }
 
             generatedObjects.Add(data);
@@ -81,13 +101,19 @@ public class StrobeLightingPass : StrobeGeneratorPass
     {
         return colorValue switch
         {
-            MapEvent.LightValueBlueON => MapEvent.LightValueRedON,
-            MapEvent.LightValueBlueFlash => MapEvent.LightValueRedFlash,
-            MapEvent.LightValueBlueFade => MapEvent.LightValueRedFade,
-            MapEvent.LightValueRedON => MapEvent.LightValueBlueON,
-            MapEvent.LightValueRedFlash => MapEvent.LightValueBlueFlash,
-            MapEvent.LightValueRedFade => MapEvent.LightValueBlueFade,
-            _ => MapEvent.LightValueOff,
+            (int)LightValue.BlueOn => (int)LightValue.RedOn,
+            (int)LightValue.BlueFlash => (int)LightValue.RedFlash,
+            (int)LightValue.BlueFade => (int)LightValue.RedFade,
+            (int)LightValue.BlueTransition => (int)LightValue.RedTransition,
+            (int)LightValue.RedOn => (int)LightValue.BlueOn,
+            (int)LightValue.RedFlash => (int)LightValue.BlueFlash,
+            (int)LightValue.RedFade => (int)LightValue.BlueFade,
+            (int)LightValue.RedTransition => (int)LightValue.BlueTransition,
+            (int)LightValue.WhiteOn => (int)LightValue.WhiteOn,
+            (int)LightValue.WhiteFlash => (int)LightValue.WhiteFlash,
+            (int)LightValue.WhiteFade => (int)LightValue.WhiteFade,
+            (int)LightValue.WhiteTransition => (int)LightValue.WhiteTransition,
+            _ => (int)LightValue.Off,
         };
     }
 }

@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using static BeatSaberSong;
 
 /// <summary>
@@ -7,8 +11,8 @@ using static BeatSaberSong;
 /// </summary>
 public class DifficultySettings
 {
-    private List<EnvEnhancement> envEnhancements;
-    private BeatSaberMap map;
+    private List<BaseEnvironmentEnhancement> envEnhancements;
+    private BaseDifficulty map;
     public string CustomName = "";
     public bool ForceDirty;
     public float NoteJumpMovementSpeed = 16;
@@ -25,7 +29,7 @@ public class DifficultySettings
     public DifficultySettings(DifficultyBeatmap difficultyBeatmap, bool forceDirty) : this(difficultyBeatmap) =>
         ForceDirty = forceDirty;
 
-    public BeatSaberMap Map
+    public BaseDifficulty Map
     {
         get
         {
@@ -34,7 +38,7 @@ public class DifficultySettings
         }
     }
 
-    public List<EnvEnhancement> EnvEnhancements
+    public List<BaseEnvironmentEnhancement> EnvEnhancements
     {
         get
         {
@@ -60,7 +64,7 @@ public class DifficultySettings
 
     private bool EnvRemovalChanged() =>
         envEnhancements != null && Map != null &&
-        !(Map.EnvEnhancements.All(envEnhancements.Contains) && Map.EnvEnhancements.Count == envEnhancements.Count);
+        !(Map.EnvironmentEnhancements.All(envEnhancements.Contains) && Map.EnvironmentEnhancements.Count == envEnhancements.Count);
 
     /// <summary>
     ///     Save the users changes to the backing DifficultyBeatmap object
@@ -82,21 +86,21 @@ public class DifficultySettings
         // Map save is sloooow so only do it if we need to
         if (EnvRemovalChanged())
         {
-            Map.EnvEnhancements = envEnhancements;
+            Map.EnvironmentEnhancements = envEnhancements;
             Map.Save();
         }
     }
 
-    private List<EnvEnhancement> GetEnvEnhancementsFromMap()
+    private List<BaseEnvironmentEnhancement> GetEnvEnhancementsFromMap()
     {
-        var enhancements = new List<EnvEnhancement>();
+        var enhancements = new List<BaseEnvironmentEnhancement>();
         if (DifficultyBeatmap.CustomData != null)
         {
             foreach (var ent in DifficultyBeatmap.CustomData["_environmentRemoval"])
-                enhancements.Add(new EnvEnhancement(ent.Value.Value));
+                enhancements.Add(Settings.Instance.Load_MapV3 ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement(ent.Value.Value) : new V2EnvironmentEnhancement(ent.Value.Value));
         }
 
-        if (Map != null) enhancements.AddRange(Map.EnvEnhancements.Select(it => it.Clone()));
+        if (Map != null) enhancements.AddRange(Map.EnvironmentEnhancements.Select(it => it.Clone() as BaseEnvironmentEnhancement));
 
         return enhancements;
     }

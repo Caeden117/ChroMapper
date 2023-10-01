@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SimpleJSON;
+using Beatmap.Base;
 using UnityEngine;
 
 internal class LinkinParkRingLaserManager : TrackLaneRingsManagerBase
@@ -9,13 +9,13 @@ internal class LinkinParkRingLaserManager : TrackLaneRingsManagerBase
 
     public override Object[] GetToDestroy() => new Object[] { this };
 
-    public override void HandlePositionEvent(JSONNode customData = null)
+    public override void HandlePositionEvent(BaseEvent evt)
     {
         if (SwitchOnZoom)
             TriggerSwitch();
     }
 
-    public override void HandleRotationEvent(JSONNode customData = null)
+    public override void HandleRotationEvent(BaseEvent evt)
     {
         if (!SwitchOnZoom)
             TriggerSwitch();

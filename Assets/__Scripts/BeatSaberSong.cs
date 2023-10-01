@@ -4,6 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
+using Beatmap.Helper;
+using Beatmap.Info;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,7 +16,8 @@ using UnityEngine.Serialization;
 public class BeatSaberSong
 {
     public static readonly Color DefaultLeftColor = Color.red;
-    public static readonly Color DefaultRightColor = new Color(0, 0.282353f, 1, 1);
+    public static readonly Color DefaultRightColor = new Color(0, 0.282353f, 1);
+    public static readonly Color DefaultWhiteColor = new Color(0.7264151f, 0.7264151f, 0.7264151f);
     public static readonly Color DefaultLeftNote = new Color(0.7352942f, 0, 0);
     public static readonly Color DefaultRightNote = new Color(0, 0.3701827f, 0.7352942f);
 
@@ -27,7 +32,7 @@ public class BeatSaberSong
     [FormerlySerializedAs("songName")] public string SongName = "New Song";
     [FormerlySerializedAs("directory")] public string Directory;
 
-    [FormerlySerializedAs("version")] public string Version = "2.0.0";
+    [FormerlySerializedAs("version")] public string Version = "2.1.0";
     [FormerlySerializedAs("songSubName")] public string SongSubName = "";
     [FormerlySerializedAs("songAuthorName")] public string SongAuthorName = "";
     [FormerlySerializedAs("levelAuthorName")] public string LevelAuthorName = "";
@@ -45,6 +50,8 @@ public class BeatSaberSong
     [FormerlySerializedAs("coverImageFilename")] public string CoverImageFilename = "cover.png";
     [FormerlySerializedAs("environmentName")] public string EnvironmentName = "DefaultEnvironment";
     [FormerlySerializedAs("allDirectionsEnvironmentName")] public string AllDirectionsEnvironmentName = "GlassDesertEnvironment";
+    public List<string> EnvironmentNames = new List<string>(); // TODO: Support editing
+    public JSONArray ColorSchemes = new JSONArray(); // TODO: Support editing
     [FormerlySerializedAs("editors")] public EditorsObject Editors = new EditorsObject(null);
 
     [FormerlySerializedAs("difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new List<DifficultyBeatmapSet>();
@@ -52,7 +59,7 @@ public class BeatSaberSong
     [FormerlySerializedAs("warnings")] public List<string> Warnings = new List<string>();
     [FormerlySerializedAs("suggestions")] public List<string> Suggestions = new List<string>();
     [FormerlySerializedAs("requirements")] public List<string> Requirements = new List<string>();
-    [FormerlySerializedAs("contributors")] public List<MapContributor> Contributors = new List<MapContributor>();
+    [FormerlySerializedAs("contributors")] public List<BaseContributor> Contributors = new List<BaseContributor>();
 
     private readonly bool isWipMap;
 
@@ -153,6 +160,13 @@ public class BeatSaberSong
 
             Json["_environmentName"] = EnvironmentName;
             Json["_allDirectionsEnvironmentName"] = AllDirectionsEnvironmentName;
+
+            var infoEnvironmentNames = new JSONArray();
+            foreach (var environmentName in EnvironmentNames) { infoEnvironmentNames.Add(environmentName); }
+            Json["_environmentNames"] = infoEnvironmentNames;
+
+            Json["_colorSchemes"] = ColorSchemes;
+
             Json["_customData"] = CustomData;
             Json["_customData"]["_editors"] = Editors.ToJsonNode();
 
@@ -162,7 +176,7 @@ public class BeatSaberSong
             if (Contributors.Any())
             {
                 var contributorArrayFuckyougit = new JSONArray();
-                Contributors.ForEach(x => contributorArrayFuckyougit.Add(x.ToJsonNode()));
+                Contributors.ForEach(x => contributorArrayFuckyougit.Add(x.ToJson()));
                 if (Contributors.Any()) Json["_customData"]["_contributors"] = contributorArrayFuckyougit;
             }
 
@@ -176,6 +190,11 @@ public class BeatSaberSong
                 if (!set.DifficultyBeatmaps.Any()) continue;
                 JSONNode setNode = new JSONObject();
                 setNode["_beatmapCharacteristicName"] = set.BeatmapCharacteristicName;
+                if (set.CustomData != null && set.CustomData.Count > 0)
+                {
+                    setNode["_customData"] = set.CustomData;
+                }
+
                 var diffs = new JSONArray();
                 IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.DifficultyBeatmaps.OrderBy(x => x.DifficultyRank);
                 foreach (var diff in sortedBeatmaps)
@@ -191,6 +210,8 @@ public class BeatSaberSong
                     subNode["_beatmapFilename"] = diff.BeatmapFilename;
                     subNode["_noteJumpMovementSpeed"] = diff.NoteJumpMovementSpeed;
                     subNode["_noteJumpStartBeatOffset"] = diff.NoteJumpStartBeatOffset;
+                    subNode["_beatmapColorSchemeIdx"] = diff.BeatmapColorSchemeIndex;
+                    subNode["_environmentNameIdx"] = diff.EnvironmentNameIndex;
                     subNode["_customData"] = diff.CustomData ?? new JSONObject();
 
                     /*
@@ -214,21 +235,29 @@ public class BeatSaberSong
                         subNode["_customData"]["_colorRight"] = diff.ColorRight;
                     else subNode["_customData"].Remove("_colorRight");
 
-                    if (diff.EnvColorLeft != null && diff.EnvColorLeft != diff.ColorLeft)
+                    if (diff.EnvColorLeft != null)
                         subNode["_customData"]["_envColorLeft"] = diff.EnvColorLeft;
                     else subNode["_customData"].Remove("_envColorLeft");
 
-                    if (diff.EnvColorRight != null && diff.EnvColorRight != diff.ColorRight)
+                    if (diff.EnvColorRight != null)
                         subNode["_customData"]["_envColorRight"] = diff.EnvColorRight;
                     else subNode["_customData"].Remove("_envColorRight");
 
-                    if (diff.BoostColorLeft != null && diff.BoostColorLeft != (diff.EnvColorLeft ?? diff.ColorLeft))
+                    if (diff.EnvColorWhite != null)
+                        subNode["_customData"]["_envColorWhite"] = diff.EnvColorWhite;
+                    else subNode["_customData"].Remove("_envColorWhite");
+
+                    if (diff.BoostColorLeft != null)
                         subNode["_customData"]["_envColorLeftBoost"] = diff.BoostColorLeft;
                     else subNode["_customData"].Remove("_envColorLeftBoost");
 
-                    if (diff.BoostColorRight != null && diff.BoostColorRight != (diff.EnvColorRight ?? diff.ColorRight))
+                    if (diff.BoostColorRight != null)
                         subNode["_customData"]["_envColorRightBoost"] = diff.BoostColorRight;
                     else subNode["_customData"].Remove("_envColorRightBoost");
+
+                    if (diff.BoostColorWhite != null)
+                        subNode["_customData"]["_envColorWhiteBoost"] = diff.BoostColorWhite;
+                    else subNode["_customData"].Remove("_envColorWhiteBoost");
 
                     if (diff.ObstacleColor != null)
                         subNode["_customData"]["_obstacleColor"] = diff.ObstacleColor;
@@ -378,12 +407,20 @@ public class BeatSaberSong
                     //Because there is only one option, I wont load from file.
                     //case "_allDirectionsEnvironmentName": song.allDirectionsEnvironmentName = node.Value; break;
 
+                    case "_environmentNames":
+                        song.EnvironmentNames = node.AsArray.Children.Select(x => x.Value).ToList();
+                        break;
+
+                    case "_colorSchemes":
+                        song.ColorSchemes = node.AsArray;
+                        break;
+
                     case "_customData":
                         song.CustomData = node;
                         if (node.HasKey("_contributors"))
                         {
                             foreach (JSONNode contributor in song.CustomData["_contributors"])
-                                song.Contributors.Add(new MapContributor(contributor));
+                                song.Contributors.Add(new InfoContributor(contributor));
                         }
 
                         song.Editors = new EditorsObject(node["_editors"]);
@@ -394,7 +431,8 @@ public class BeatSaberSong
                         {
                             var set = new DifficultyBeatmapSet
                             {
-                                BeatmapCharacteristicName = n["_beatmapCharacteristicName"]
+                                BeatmapCharacteristicName = n["_beatmapCharacteristicName"],
+                                CustomData = n["_customData"]
                             };
                             foreach (JSONNode d in n["_difficultyBeatmaps"])
                             {
@@ -404,6 +442,8 @@ public class BeatSaberSong
                                     DifficultyRank = d["_difficultyRank"].AsInt,
                                     NoteJumpMovementSpeed = d["_noteJumpMovementSpeed"].AsFloat,
                                     NoteJumpStartBeatOffset = d["_noteJumpStartBeatOffset"].AsFloat,
+                                    BeatmapColorSchemeIndex = d.HasKey("_beatmapColorSchemeIdx") ? d["_beatmapColorSchemeIdx"].AsInt : 0,
+                                    EnvironmentNameIndex = d.HasKey("_environmentNameIdx") ? d["_environmentNameIdx"].AsInt : 0,
                                     CustomData = d["_customData"]
                                 };
                                 if (d["_customData"]["_colorLeft"] != null)
@@ -413,18 +453,17 @@ public class BeatSaberSong
 
                                 if (d["_customData"]["_envColorLeft"] != null)
                                     beatmap.EnvColorLeft = d["_customData"]["_envColorLeft"].ReadColor();
-                                else beatmap.EnvColorLeft = beatmap.ColorLeft;
                                 if (d["_customData"]["_envColorRight"] != null)
                                     beatmap.EnvColorRight = d["_customData"]["_envColorRight"].ReadColor();
-                                else beatmap.EnvColorRight = beatmap.ColorRight;
+                                if (d["_customData"]["_envColorWhite"] != null)
+                                    beatmap.EnvColorWhite = d["_customData"]["_envColorWhite"].ReadColor();
 
                                 if (d["_customData"]["_envColorLeftBoost"] != null)
                                     beatmap.BoostColorLeft = d["_customData"]["_envColorLeftBoost"].ReadColor();
-                                else beatmap.BoostColorLeft = beatmap.EnvColorLeft;
-
                                 if (d["_customData"]["_envColorRightBoost"] != null)
                                     beatmap.BoostColorRight = d["_customData"]["_envColorRightBoost"].ReadColor();
-                                else beatmap.BoostColorRight = beatmap.EnvColorRight;
+                                if (d["_customData"]["_envColorWhiteBoost"] != null)
+                                    beatmap.BoostColorWhite = d["_customData"]["_envColorWhiteBoost"].ReadColor();
 
                                 if (d["_customData"]["_obstacleColor"] != null)
                                     beatmap.ObstacleColor = d["_customData"]["_obstacleColor"].ReadColor();
@@ -463,7 +502,7 @@ public class BeatSaberSong
         }
     }
 
-    public BeatSaberMap GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
+    public BaseDifficulty GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
         if (Directory == null)
         {
@@ -479,7 +518,7 @@ public class BeatSaberSong
             return null;
         }
 
-        return BeatSaberMap.GetBeatSaberMapFromJson(mainNode, fullPath);
+        return BeatmapFactory.GetDifficultyFromJson(mainNode, fullPath);
     }
 
     private static JSONNode GetNodeFromFile(string file)
@@ -509,12 +548,16 @@ public class BeatSaberSong
         [FormerlySerializedAs("beatmapFilename")] public string BeatmapFilename = "Easy.dat";
         [FormerlySerializedAs("noteJumpMovementSpeed")] public float NoteJumpMovementSpeed = 16;
         [FormerlySerializedAs("noteJumpStartBeatOffset")] public float NoteJumpStartBeatOffset;
+        public int BeatmapColorSchemeIndex;
+        public int EnvironmentNameIndex;
         [FormerlySerializedAs("colorLeft")] public Color? ColorLeft;
         [FormerlySerializedAs("colorRight")] public Color? ColorRight;
         [FormerlySerializedAs("envColorLeft")] public Color? EnvColorLeft;
         [FormerlySerializedAs("envColorRight")] public Color? EnvColorRight;
+        public Color? EnvColorWhite;
         [FormerlySerializedAs("boostColorLeft")] public Color? BoostColorLeft;
         [FormerlySerializedAs("boostColorRight")] public Color? BoostColorRight;
+        public Color? BoostColorWhite;
         [FormerlySerializedAs("obstacleColor")] public Color? ObstacleColor;
         public JSONNode CustomData;
         [NonSerialized] public DifficultyBeatmapSet ParentBeatmapSet;
@@ -533,8 +576,10 @@ public class BeatSaberSong
             else BeatmapFilename = fileName;
         }
 
-        public void RefreshRequirementsAndWarnings(BeatSaberMap map)
+        public void RefreshRequirementsAndWarnings(BaseDifficulty map)
         {
+            if (!Settings.Instance.AutomaticModRequirements) return;
+
             //Saving Map Requirement Info
             var requiredArray = new JSONArray(); //Generate suggestions and requirements array
             var suggestedArray = new JSONArray();
@@ -589,6 +634,7 @@ public class BeatSaberSong
     {
         [FormerlySerializedAs("beatmapCharacteristicName")] public string BeatmapCharacteristicName = "Standard";
         [FormerlySerializedAs("difficultyBeatmaps")] public List<DifficultyBeatmap> DifficultyBeatmaps = new List<DifficultyBeatmap>();
+        public JSONNode CustomData = new JSONObject();
 
         public DifficultyBeatmapSet() => BeatmapCharacteristicName = "Standard";
         public DifficultyBeatmapSet(string characteristicName) => BeatmapCharacteristicName = characteristicName;

@@ -116,7 +116,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
                 b.UpdateGridPosition();
         }
 
-        atsc.MoveToTimeInBeats(atsc.CurrentBeat);
+        atsc.MoveToSongBpmTime(atsc.CurrentSongBpmTime);
         EditorScaleChangedEvent?.Invoke(EditorScale);
         previousEditorScale = EditorScale;
         foreach (var offset in scalingOffsets)

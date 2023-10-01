@@ -165,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: "\u6CE2\u5F62"
+    m_Localized: Spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -293,19 +293,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: 'ChroMapper supports the ability for developers to create and share
-      plugins.
-
-
-      ChroMapper developers will not be held liable for any damage
-      caused by loaded plugins. It is up to the user to decide which plugins they
-      want to install.
-
-
-      We recommend finding plugins made by trustworthy developers.
-      For example, look for ChroMapper plugins that are open source, where its internal
-      source code is available for all to look through and make their own informed
-      decisions.'
+    m_Localized: "ChroMapper \u306F\u3001\u958B\u767A\u8005\u304C\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u4F5C\u6210\u304A\u3088\u3073\u5171\u6709\u3059\u308B\u6A5F\u80FD\u3092\u30B5\u30DD\u30FC\u30C8\u3057\u3066\u3044\u307E\u3059\u3002\n\nChroMapper
+      \u958B\u767A\u8005\u306F\u3001\u8AAD\u307F\u8FBC\u307E\u308C\u305F\u30D7\u30E9\u30B0\u30A4\u30F3\u306B\u3088\u3063\u3066\u5F15\u304D\u8D77\u3053\u3055\u308C\u305F\u3044\u304B\u306A\u308B\u640D\u5BB3\u306B\u3064\u3044\u3066\u3082\u8CAC\u4EFB\u3092\u8CA0\u3044\u307E\u305B\u3093\u3002\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3059\u308B\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u6C7A\u5B9A\u3059\u308B\u306E\u306F\u30E6\u30FC\u30B6\u30FC\u6B21\u7B2C\u3067\u3059\u3002\n\n\u4FE1\u983C\u3067\u304D\u308B\u958B\u767A\u8005\u306B\u3088\u3063\u3066\u4F5C\u6210\u3055\u308C\u305F\u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u898B\u3064\u3051\u308B\u3053\u3068\u3092\u304A\u52E7\u3081\u3057\u307E\u3059\u3002\u305F\u3068\u3048\u3070\u3001\u30AA\u30FC\u30D7\u30F3
+      \u30BD\u30FC\u30B9\u306E ChroMapper \u30D7\u30E9\u30B0\u30A4\u30F3\u3092\u63A2\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u3053\u3053\u3067\u306F\u3001\u305D\u306E\u5185\u90E8\u30BD\u30FC\u30B9
+      \u30B3\u30FC\u30C9\u3092\u53C2\u7167\u3057\u3066\u3001\u60C5\u5831\u306B\u57FA\u3065\u3044\u3066\u72EC\u81EA\u306E\u6C7A\u5B9A\u3092\u4E0B\u3059\u3053\u3068\u304C\u3067\u304D\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -464,7 +455,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: "\u6CE2\u5F62\u3092\u8868\u793A\u3059\u308B"
+    m_Localized: Show song spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -905,11 +896,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9689541752557568
-    m_Localized: Visualize Chroma event alpha using the height of the event
+    m_Localized: Visualize event alpha using the height of the event
     m_Metadata:
       m_Items: []
   - m_Id: 9689824679333888
-    m_Localized: Visualize Chroma Alpha
+    m_Localized: Visualize Event Alpha
     m_Metadata:
       m_Items: []
   - m_Id: 16675690602758144
@@ -947,7 +938,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3769025302958080
-    m_Localized: Export to Quest
+    m_Localized: "\u30AF\u30A8\u30B9\u30C8\u306B\u30A8\u30AF\u30B9\u30DD\u30FC\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 3769067959029760
@@ -980,11 +971,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 91579491578740736
-    m_Localized: Appearance
+    m_Localized: "\u8868\u793A\u8A2D\u5B9A"
     m_Metadata:
       m_Items: []
   - m_Id: 101771971410460672
-    m_Localized: Track and Grid
+    m_Localized: "\u30C8\u30E9\u30C3\u30AF\u3068\u30B0\u30EA\u30C3\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 101773637585141760
@@ -1113,6 +1104,116 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 150232748497440768
     m_Localized: Uninstalling ADB...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90253772483395584
+    m_Localized: Displays non-default floatValue on top of events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90254225048797184
+    m_Localized: Display FloatValue Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088741188730880
+    m_Localized: Visualize LightID Transition Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088950463528960
+    m_Localized: 'Previews and displays LightID transition events more accurately
+
+      This
+      is very heavy on performance'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947639714189312
+    m_Localized: CM Chan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947667555979264
+    m_Localized: Adds CM Chan art to loading screens.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211668371329187840
+    m_Localized: Precision Placement Grid Precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211668392346845184
+    m_Localized: The snapping interval of precision placement grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582333795893248
+    m_Localized: Invert Event Value Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582635601231872
+    m_Localized: Invert mouse scroll direction on changing event value.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582671521251328
+    m_Localized: Invert Note Angle Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582692199170048
+    m_Localized: Invert mouse scroll direction on changing note angle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582713359433728
+    m_Localized: Invert Arc Multiplier Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582733693419520
+    m_Localized: Invert mouse scroll direction on changing arc head and tail multipliers.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582754643968000
+    m_Localized: Invert Chain Squish Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582774030041088
+    m_Localized: Invert mouse scroll direction on changing chain squish.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582798323449856
+    m_Localized: Invert Chain Segment Count Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582820507123712
+    m_Localized: Invert mouse scroll direction on changing the number of segments
+      in a chain.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258093237993472
+    m_Localized: Invert Wall Duration Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258097742675968
+    m_Localized: Invert mouse scroll direction on changing the duration of walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258102280912896
+    m_Localized: Invert Wall Bounds Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258109335732224
+    m_Localized: Invert mouse scroll direction on changing the upper and lower bounds
+      of v3 walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458017744977920
+    m_Localized: Precision Placement Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458202206273536
+    m_Localized: 'If enabled, an extended grid will appear when using the precision
+      placement keybind while placing walls or notes. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262680152746688512
+    m_Localized: Open File Explorer After Create Zip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262680318467833856
+    m_Localized: Whether the file explorer opens automically after creating zip
     m_Metadata:
       m_Items: []
   references:

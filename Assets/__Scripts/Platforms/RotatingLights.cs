@@ -1,5 +1,5 @@
 ﻿using System;
-using SimpleJSON;
+using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,7 +8,6 @@ public class RotatingLights : RotatingLightsBase
     [FormerlySerializedAs("multiplier")] public float Multiplier = 20;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float zPositionModifier;
-    [SerializeField] private float zRotationModifier = 1;
 
     public bool OverrideLightGroup;
     public int OverrideLightGroupID;
@@ -48,25 +47,27 @@ public class RotatingLights : RotatingLightsBase
     }
 
     // If you have any complaints about CM's inaccurate lasers, please look through this and tell me what the hell is wrong.
-    public override void UpdateOffset(bool isLeftEvent, int speed, float rotation, bool rotateForwards,
-        JSONNode customData = null)
+    public override void UpdateOffset(bool isLeftEvent, BaseEvent evt)
     {
-        this.speed = speed;
+        var rotation = UnityEngine.Random.Range(0f, 180f);
+        var rotateForwards = UnityEngine.Random.Range(0, 1) == 1;
+
+        this.speed = evt.Value;
         var lockRotation = false;
-        if (customData != null) //We have custom data in this event
+        if (evt.CustomData != null) //We have custom data in this event
         {
             //Apply some chroma precision values
-            if (customData.HasKey("_lockPosition")) lockRotation = customData["_lockPosition"];
+
+            if (evt.CustomLockRotation.HasValue) lockRotation = evt.CustomLockRotation.Value;
 
             if (speed > 0)
             {
-                if (customData.HasKey("_preciseSpeed"))
-                    this.speed = customData["_preciseSpeed"];
-                else if (customData.HasKey("_speed")) this.speed = customData["_speed"];
+                if (evt.CustomPreciseSpeed.HasValue) this.speed = evt.CustomPreciseSpeed.Value;
+                else if (evt.CustomSpeed.HasValue) this.speed = evt.CustomSpeed.Value;
             }
 
-            if (customData.HasKey("_direction"))
-                rotateForwards = customData["_direction"].AsInt.Equals(0) ^ isLeftEvent;
+            if (evt.CustomDirection.HasValue)
+                rotateForwards = evt.CustomDirection.Value.Equals(0) ^ isLeftEvent;
         }
 
         if (!lockRotation) //If we are not locking rotation, reset it to its default.
@@ -79,7 +80,7 @@ public class RotatingLights : RotatingLightsBase
         //Rotate by Rotation variable
         //In most cases, it is randomized, except in certain environments (see above)
         if (!lockRotation &&
-            (this.speed > 0 || ((customData?.HasKey("_preciseSpeed") ?? false) && customData["_preciseSpeed"] >= 0)))
+            (this.speed > 0 || (evt.CustomPreciseSpeed.HasValue) && evt.CustomPreciseSpeed.Value >= 0))
         {
             transform.Rotate(rotationVector, rotation, Space.Self);
         }

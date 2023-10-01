@@ -49,7 +49,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8
     m_Localized: "Untertitel oder eine andere Person, \ndie zum Song beigetragen
-      hat"
+      hat."
     m_Metadata:
       m_Items: []
   - m_Id: 9
@@ -61,7 +61,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11
-    m_Localized: "Hauptk\xFCnstler des Songs"
+    m_Localized: "Hauptk\xFCnstler des Songs."
     m_Metadata:
       m_Items: []
   - m_Id: 12
@@ -85,7 +85,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "Gebe das Tempo f\xFCr den Song ein"
+    m_Localized: "Gebe das Tempo f\xFCr den Song ein."
     m_Metadata:
       m_Items: []
   - m_Id: 18
@@ -97,12 +97,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'This feature is deprecated.
+    m_Localized: 'Diese Funktion ist veraltet.
 
-      Shifts the song forward by this
-      amount
+      Verschiebt den Song basierend
+      auf den eingegebenen Wert
 
-      (in seconds)'
+      (in Sekunden)'
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -138,7 +138,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: Name der Cover Bild Datei
+    m_Localized: 'Relativer Pfad des Songcovers.
+
+      (Am besten so lassen wie
+      es ist.)'
     m_Metadata:
       m_Items: []
   - m_Id: 30
@@ -150,15 +153,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: Name der Audio Datei
+    m_Localized: 'Relativer Pfad der Audiodatei.
+
+      (Am besten so lassen wie
+      es ist.)'
     m_Metadata:
       m_Items: []
   - m_Id: 33
-    m_Localized: Umgebung
+    m_Localized: Umgebungsplattform
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: Benutzerdefinierte Plattform
+    m_Localized: Benutzerdefinierte Umgebungsplattform
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -227,7 +233,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 48
-    m_Localized: Start Beat Versatz
+    m_Localized: Erster Beat Offset
     m_Metadata:
       m_Items: []
   - m_Id: 49
@@ -235,7 +241,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 50
-    m_Localized: "Erh\xF6ht Abstand in der Noten vorm Spieler erscheinen"
+    m_Localized: "Erh\xF6ht Distanz zwischen dem Spieler und den Notenbl\xF6cken,
+      welche erscheinen"
     m_Metadata:
       m_Items: []
   - m_Id: 51
@@ -280,32 +287,36 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 63
-    m_Localized: "Bist du sicher, dass du {0} l\xF6schen m\xF6chtest?\n\nDie Songeinfo
-      wird auch gespeichert, so dass {0} f\xFCr immer gel\xF6scht wird!"
+    m_Localized: "Bist du sicher, dass du {0} l\xF6schen m\xF6chtest?\n\nDie Songinfodatei
+      (info.dat) wird ebenfalls gespeichert, sodass {0} f\xFCr immer gel\xF6scht
+      wird!"
     m_Metadata:
       m_Items: []
   - m_Id: 64
-    m_Localized: "Bist du sicher das du {0} l\xF6schen m\xF6chtest?"
+    m_Localized: "Bist du sicher, dass du {0} l\xF6schen m\xF6chtest?"
     m_Metadata:
       m_Items: []
   - m_Id: 65
-    m_Localized: 'Fehler beim erstellen der zip-Datei: info.dat existiert nicht
+    m_Localized: 'Fehler beim Erstellen der Zip-Datei: info.dat existiert nicht.
 
 
       Bitte
-      speichere deine Map und versuche es nochmal'
+      speichere deine Map und versuche es nochmal.'
     m_Metadata:
       m_Items: []
   - m_Id: 66
-    m_Localized: "Speichere deine Song-Infos bevor du eine Schwierigkeit \xF6ffnest!"
+    m_Localized: "Speichere deine Song-Infos (info.dat) bevor du eine Schwierigkeit
+      \xF6ffnest!"
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, do you want to save them?
+    m_Localized: "Ungespeicherte \xC4nderungen vorhanden. Sollen diese gespeichert
+      werden?"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, do you want to save them?
+    m_Localized: Ungespeicherte Schwierigkeiten vorhanden. Sollen diese gespeichert
+      werden?
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -341,7 +352,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, do you want to save them?
+    m_Localized: Ungespeicherte Mitwirkende vorhanden. Sollen diese gespeichert werden?
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -372,10 +383,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
-    m_Localized: 'Removes objects using Contains lookup.
+    m_Localized: 'Entfernt Objekte aus der Umgebung.
 
-      (Does not effect
-      the editor environment.)'
+      (Wirkt sich nicht auf
+      den Editor aus)'
     m_Metadata:
       m_Items: []
   - m_Id: 104117395359141888
@@ -403,9 +414,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115521560328208384
-    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
-      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
-      that you apply your offsets using a audio manipulator such as Audacity."
+    m_Localized: "Die Verwendung von Song Time Offset kann zu desynchronisierten
+      schneidger\xE4uschen in Beatsaber f\xFChren.\nMit Song Time Offset k\xF6nnten
+      Bl\xF6cke auch teilweise unsichtbar werden.\nEs wird empfohlen, die Offsets
+      mit einem Audiobearbeitungsprogramm wie Audacity zu erstellen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566409055109120
+    m_Localized: Map packaged to zip successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566610293620736
+    m_Localized: 'Error packaging map to zip.
+
+      No zip created.'
     m_Metadata:
       m_Items: []
   references:

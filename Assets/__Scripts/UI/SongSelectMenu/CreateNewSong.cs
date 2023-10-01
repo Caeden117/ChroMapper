@@ -12,7 +12,7 @@ public class CreateNewSong : MonoBehaviour
 
     private void HandleNewSongName(string res)
     {
-        if (res is null) return;
+        if (string.IsNullOrWhiteSpace(res)) return;
 
         var song = new BeatSaberSong(list.WipLevels, res);
 
@@ -31,7 +31,7 @@ public class CreateNewSong : MonoBehaviour
         var standardSet = new BeatSaberSong.DifficultyBeatmapSet();
         song.DifficultyBeatmapSets.Add(standardSet);
         BeatSaberSongContainer.Instance.SelectSongForEditing(song);
-        PersistentUI.Instance.DisplayMessage("SongSelectMenu", "newmap.message",
-            PersistentUI.DisplayMessageType.Bottom);
+        PersistentUI.Instance.ShowDialogBox("SongSelectMenu", "newmap.message", null,
+            PersistentUI.DialogBoxPresetType.Ok);
     }
 }

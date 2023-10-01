@@ -19,15 +19,15 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1
-    m_Localized: Yes
+    m_Localized: Ja
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: No
+    m_Localized: Nej
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Ok
+    m_Localized: Okej
     m_Metadata:
       m_Items: []
   - m_Id: 4
@@ -35,17 +35,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: 'ChroMapper has detected that your info file has been marked as
-      read-only.
-
-
-      Please remove the read-only marker and try again, or keep
-      using the latest editor from the EditSaber family.
-
-
-      Marking your info
-      file read-only to prevent MM or CM from overwriting it is extremely dumb, so
-      undo it or take your map somewhere else.'
+    m_Localized: "ChroMapper har uppt\xE4ckt att din info-fil har blivit markerat
+      som skrivskyddad.\n\nTa bort skrivskyddsmarkeringen och f\xF6rs\xF6k igen,
+      eller forts\xE4tt att anv\xE4nda den senaste redigeraren fr\xE5n EditSaber-familjen.\n\nAtt
+      skrivskydda din info-fil f\xF6r att hindra MM eller CM att \xF6verskriva den
+      \xE4r extremt dumt, s\xE5 ta bort markeringen eller ta din map n\xE5gon annanstans."
     m_Metadata:
       m_Items: []
   - m_Id: 6

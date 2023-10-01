@@ -118,7 +118,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 25
-    m_Localized: Update available
+    m_Localized: "Uppdatering tillg\xE4nglig"
     m_Metadata:
       m_Items: []
   - m_Id: 26

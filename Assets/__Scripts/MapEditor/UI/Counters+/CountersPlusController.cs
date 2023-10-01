@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Localization.Components;
 using UnityEngine.Serialization;
 
 public class CountersPlusController : MonoBehaviour
 {
-    [SerializeField] private NotesContainer notes;
-    [SerializeField] private ObstaclesContainer obstacles;
-    [SerializeField] private EventsContainer events;
-    [SerializeField] private BPMChangesContainer bpm;
+    [FormerlySerializedAs("notes")][SerializeField] private NoteGridContainer noteGrid;
+    [FormerlySerializedAs("obstacles")][SerializeField] private ObstacleGridContainer obstacleGrid;
+    [FormerlySerializedAs("events")][SerializeField] private EventGridContainer eventGrid;
+    [SerializeField] private BPMChangeGridContainer bpm;
     [SerializeField] private AudioSource cameraAudioSource;
     [SerializeField] private AudioTimeSyncController atsc;
 
@@ -22,7 +24,7 @@ public class CountersPlusController : MonoBehaviour
     [SerializeField] private LocalizeStringEvent obstacleString;
     [SerializeField] private LocalizeStringEvent eventString;
     [SerializeField] private LocalizeStringEvent bpmString;
-    [FormerlySerializedAs("currentBPMString")] [SerializeField] private LocalizeStringEvent currentBpmString;
+    [FormerlySerializedAs("currentBPMString")][SerializeField] private LocalizeStringEvent currentBpmString;
     [SerializeField] private LocalizeStringEvent selectionString;
     [SerializeField] private LocalizeStringEvent timeMappingString;
 
@@ -35,25 +37,27 @@ public class CountersPlusController : MonoBehaviour
 
     // Unfortunately the way localization is set up, we need this to be public AND with the current naming
     // We *COULD* rename every localization entry to use PascalCase versions but it's more effort to do that.
-    [FormerlySerializedAs("hours")] [HideInInspector] public int hours;
-    [FormerlySerializedAs("minutes")] [HideInInspector] public int minutes;
-    [FormerlySerializedAs("seconds")] [HideInInspector] public int seconds;
+    [FormerlySerializedAs("hours")][HideInInspector] public int hours;
+    [FormerlySerializedAs("minutes")][HideInInspector] public int minutes;
+    [FormerlySerializedAs("seconds")][HideInInspector] public int seconds;
 
-    public int NotesCount
-        => notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type != BeatmapNote.NoteTypeBomb).Count();
+
+    public int NotesCount =>
+       noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type != (int)NoteType.Bomb).Count();
+
 
     public float NPSCount => NotesCount / cameraAudioSource.clip.length;
 
     public int NotesSelected
         => SelectionController.SelectedObjects
-            .Where(x => x is BeatmapNote note && note.Type != BeatmapNote.NoteTypeBomb).Count();
+            .Where(x => (x is BaseNote note && note.Type != (int)NoteType.Bomb) || x is BaseChain).Count();
 
     public float NPSselected
     {
         get
         {
-            var sel = SelectionController.SelectedObjects.OrderBy(it => it.Time).ToList();
-            var beatTimeDiff = sel.Last().Time - sel.First().Time;
+            var sel = SelectionController.SelectedObjects.OrderBy(it => it.JsonTime).ToList();
+            var beatTimeDiff = sel.Last().SongBpmTime - sel.First().SongBpmTime;
             var secDiff = atsc.GetSecondsFromBeat(beatTimeDiff);
 
             return NotesSelected / secDiff;
@@ -61,11 +65,11 @@ public class CountersPlusController : MonoBehaviour
     }
 
     public int BombCount
-        => notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type == BeatmapNote.NoteTypeBomb).Count();
+        => noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Bomb).Count();
 
-    public int ObstacleCount => obstacles.LoadedObjects.Count;
+    public int ObstacleCount => obstacleGrid.LoadedObjects.Count;
 
-    public int EventCount => events.LoadedObjects.Count;
+    public int EventCount => eventGrid.LoadedObjects.Count;
 
     public int BPMCount => bpm.LoadedObjects.Count;
 
@@ -74,15 +78,15 @@ public class CountersPlusController : MonoBehaviour
     public float OverallSPS => swingsPerSecond.Total.Overall;
 
     public float CurrentBPM
-        => bpm.FindLastBpm(atsc.CurrentBeat)?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        => bpm.FindLastBpm(atsc.CurrentSongBpmTime)?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
     public float RedBlueRatio
     {
         get
         {
-            var redCount = notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type == BeatmapNote.NoteTypeA)
+            var redCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Red)
                 .Count();
-            var blueCount = notes.LoadedObjects.Where(note => ((BeatmapNote)note).Type == BeatmapNote.NoteTypeB)
+            var blueCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Blue)
                 .Count();
             return blueCount == 0 ? 0f : redCount / (float)blueCount;
         }
@@ -97,7 +101,7 @@ public class CountersPlusController : MonoBehaviour
         Settings.NotifyBySettingName("CountersPlus", UpdateCountersVisibility);
         UpdateCountersVisibility(Settings.Instance.CountersPlus);
 
-        swingsPerSecond = new SwingsPerSecond(notes, obstacles);
+        swingsPerSecond = new SwingsPerSecond(noteGrid, obstacleGrid);
 
         LoadInitialMap.LevelLoadedEvent += LevelLoadedEvent;
         SelectionController.SelectionChangedEvent += SelectionChangedEvent;
@@ -143,7 +147,7 @@ public class CountersPlusController : MonoBehaviour
             if ((stringRefreshQueue & CountersPlusStatistic.Events) != 0)
                 eventString.StringReference.RefreshString();
 
-            if ((stringRefreshQueue & CountersPlusStatistic.BpmChanges) != 0)
+            if ((stringRefreshQueue & CountersPlusStatistic.BpmEvents) != 0)
                 bpmString.StringReference.RefreshString();
 
             if ((stringRefreshQueue & CountersPlusStatistic.Selection) != 0)

@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
+using Beatmap.Containers;
+using Beatmap.Helper;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using SimpleJSON;
 using UnityEngine;
 
 public class
-    CustomEventPlacement : PlacementController<BeatmapCustomEvent, BeatmapCustomEventContainer, CustomEventsContainer>
+    CustomEventPlacement : PlacementController<BaseCustomEvent, CustomEventContainer, CustomEventGridContainer>
 {
     private readonly List<TextAsset> customEventDataPresets = new List<TextAsset>();
 
@@ -21,10 +27,10 @@ public class
         base.Start();
     }
 
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) =>
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a Custom Event.");
 
-    public override BeatmapCustomEvent GenerateOriginalData() => new BeatmapCustomEvent(0, "", null);
+    public override BaseCustomEvent GenerateOriginalData() => BeatmapFactory.CustomEvent();
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
@@ -55,5 +61,5 @@ public class
         base.ApplyToMap();
     }
 
-    public override void TransferQueuedToDraggedObject(ref BeatmapCustomEvent dragged, BeatmapCustomEvent queued) { }
+    public override void TransferQueuedToDraggedObject(ref BaseCustomEvent dragged, BaseCustomEvent queued) { }
 }

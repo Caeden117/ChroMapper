@@ -1,5 +1,5 @@
 ﻿using System;
-using SimpleJSON;
+using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -67,17 +67,16 @@ public class RotatingLightsLinkinPark : RotatingLightsBase
         rotationAngle += startRotationAngle;
     }
 
-    public override void UpdateOffset(bool isLeftEvent, int speed, float rotation, bool rotateForwards,
-        JSONNode customData = null)
+    public override void UpdateOffset(bool isLeftEvent, BaseEvent evt)
     {
         RotatingLightsRandom.RandomUpdate(Left);
         if (Left)
         {
-            UpdateRotationData(speed, RotatingLightsRandom.randomStartRotation, RotatingLightsRandom.randomDirection);
+            UpdateRotationData(evt.Value, RotatingLightsRandom.randomStartRotation, RotatingLightsRandom.randomDirection);
         }
         else
         {
-            UpdateRotationData(speed, 0f - RotatingLightsRandom.randomStartRotation,
+            UpdateRotationData(evt.Value, 0f - RotatingLightsRandom.randomStartRotation,
                 0f - RotatingLightsRandom.randomDirection);
         }
     }

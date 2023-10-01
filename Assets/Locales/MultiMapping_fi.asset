@@ -20,97 +20,98 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 34914570240
-    m_Localized: Join Session
+    m_Localized: Liity istuntoon
     m_Metadata:
       m_Items: []
   - m_Id: 104179306496
-    m_Localized: Host Session
+    m_Localized: "J\xE4rjest\xE4 istunto"
     m_Metadata:
       m_Items: []
   - m_Id: 757656064000
-    m_Localized: Downloading song... this can take several moments.
+    m_Localized: "Ladataan kappaletta... t\xE4m\xE4 voi kest\xE4\xE4 hetken."
     m_Metadata:
       m_Items: []
   - m_Id: 1057586548736
-    m_Localized: Loading song...
+    m_Localized: Ladataan kappaletta...
     m_Metadata:
       m_Items: []
   - m_Id: 1753480302592
-    m_Localized: Use Direct Connection
+    m_Localized: "K\xE4yt\xE4 suoraa yhteytt\xE4"
     m_Metadata:
       m_Items: []
   - m_Id: 1870388137984
-    m_Localized: Room Code
+    m_Localized: Huonekoodi
     m_Metadata:
       m_Items: []
   - m_Id: 2715376816128
-    m_Localized: Use Room Code
+    m_Localized: "K\xE4yt\xE4 huonekoodia"
     m_Metadata:
       m_Items: []
   - m_Id: 3327472570368
-    m_Localized: IP
+    m_Localized: IP-osoite
     m_Metadata:
       m_Items: []
   - m_Id: 3409345384448
-    m_Localized: Port
+    m_Localized: Portti
     m_Metadata:
       m_Items: []
   - m_Id: 3460121628672
-    m_Localized: Mapper Customization
+    m_Localized: Mapperin mukauttaminen
     m_Metadata:
       m_Items: []
   - m_Id: 4051690459136
-    m_Localized: Display Name
+    m_Localized: "N\xE4ytt\xF6nimi"
     m_Metadata:
       m_Items: []
   - m_Id: 4114886037504
-    m_Localized: Grid Color
+    m_Localized: "Ruudukon v\xE4ri"
     m_Metadata:
       m_Items: []
   - m_Id: 4175602782208
-    m_Localized: ChroMapTogether Server URL
+    m_Localized: ChroMapTogether-palvelimen URL-osoite
     m_Metadata:
       m_Items: []
   - m_Id: 4250194284544
-    m_Localized: Apply Changes
+    m_Localized: "K\xE4yt\xE4 muutoksia"
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: Connection rejected. If you used a room code, ensure the code was
-      entered correctly.
+    m_Localized: "Yhteys hyl\xE4tty. Jos k\xE4ytit huonekoodia, varmista, ett\xE4
+      olet sy\xF6tt\xE4nyt koodin oikein."
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
-    m_Localized: 'Connection with the host lost: {0}. Returning to song list...'
+    m_Localized: "Yhteys is\xE4nt\xE4\xE4n katkesi: {0}. Palataan kappalelistaan..."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 5357561843712
-    m_Localized: 'A networking error occured: {0}.'
+    m_Localized: 'Tapahtui verkkovirhe: {0}.'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 5800807501824
-    m_Localized: 'Connection with the ChroMapTogether server lost: {0}.'
+    m_Localized: 'Yhteys ChroMapTogether-palvelimeen katkesi: {0}.'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 6140520960000
-    m_Localized: United Mapping
+    m_Localized: United Mapping (CUM)
     m_Metadata:
       m_Items: []
   - m_Id: 6238239854592
-    m_Localized: Map with friends!
+    m_Localized: "Mappaamista yst\xE4vien kanssa!"
     m_Metadata:
       m_Items: []
   - m_Id: 1970900842393600
-    m_Localized: Friends will need to connect using your Public IP and Port. Port
-      forwarding is required for clients to connect.
+    m_Localized: "Yst\xE4vien tulee muodostaa yhteys k\xE4ytt\xE4m\xE4ll\xE4 julkista
+      IP-osoitettasi ja porttiasi. Asiakkaiden yhteyden muodostaminen edellytt\xE4\xE4
+      portin edelleenl\xE4hetyst\xE4."
     m_Metadata:
       m_Items: []
   - m_Id: 1970841337802752
-    m_Localized: The ChroMapTogether server will be used to host this session. You
-      will be given a short room code to pass to friends.
+    m_Localized: "ChroMapTogether-palvelinta k\xE4ytet\xE4\xE4n t\xE4m\xE4n istunnon
+      is\xE4nn\xF6imiseen. Saat lyhyen huonekoodin yst\xE4villesi."
     m_Metadata:
       m_Items: []
   - m_Id: 2018274558160896
@@ -118,22 +119,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2018332712185856
-    m_Localized: This object was first created/modified by {0}.
+    m_Localized: "T\xE4m\xE4n objektin loi/muokkasi ensin {0}."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2018498240393216
-    m_Localized: This object was last modified by {0}.
+    m_Localized: "T\xE4t\xE4 objektia muokkasi viimeksi {0}."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2336103375384576
-    m_Localized: Are you sure you want to ban {0}?
+    m_Localized: "Oletko varma, ett\xE4 haluat antaa porttikiellon k\xE4ytt\xE4j\xE4lle
+      {0}?"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2336237542780928
-    m_Localized: Are you sure you want to kick {0}?
+    m_Localized: "Oletko varma, ett\xE4 haluat potkia {0}?"
     m_Metadata:
       m_Items:
       - id: 0

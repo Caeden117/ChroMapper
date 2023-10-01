@@ -39,6 +39,46 @@ public class LoadKeybindsController : MonoBehaviour
                 AddKeybindOverride(keybindOverride);
             }
         }
+
+        if (!Settings.Instance.InvertNoteControls)
+        {
+            MigrateNoteControls();
+            Settings.Instance.InvertNoteControls = true;
+        }
+    }
+
+    // In previous versions WASD controls were inverted. In order to change the defaults for new users
+    // without messing up existing users, we manually add overrides to the previous control scheme if
+    // the user had not overriden them
+    private void MigrateNoteControls()
+    {
+        var upOverride = AllOverrides.Find(x => x.InputActionName == "Up Note");
+        if (upOverride == null)
+        {
+            upOverride = new KeybindOverride("Up Note", "", new List<string> { "/Keyboard/s" });
+            LoadKeybindsController.AddKeybindOverride(upOverride);
+        }
+
+        var rightOverride = AllOverrides.Find(x => x.InputActionName == "Right Note");
+        if (rightOverride == null)
+        {
+            rightOverride = new KeybindOverride("Right Note", "", new List<string> { "/Keyboard/a" });
+            LoadKeybindsController.AddKeybindOverride(rightOverride);
+        }
+
+        var downOverride = AllOverrides.Find(x => x.InputActionName == "Down Note");
+        if (downOverride == null)
+        {
+            downOverride = new KeybindOverride("Down Note", "", new List<string> { "/Keyboard/w" });
+            LoadKeybindsController.AddKeybindOverride(downOverride);
+        }
+
+        var leftOverride = AllOverrides.Find(x => x.InputActionName == "Left Note");
+        if (leftOverride == null)
+        {
+            leftOverride = new KeybindOverride("Left Note", "", new List<string> { "/Keyboard/d" });
+            LoadKeybindsController.AddKeybindOverride(leftOverride);
+        }
     }
 
     /// <summary>

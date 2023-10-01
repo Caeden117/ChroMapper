@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using SimpleJSON;
+using Beatmap.Base;
+using Beatmap.Helper;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -40,7 +41,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
     }
 
     private void Start() => AddRingRotationEvent(StartupRotationAngle, StartupRotationStep,
-        StartupRotationPropagationSpeed, StartupRotationFlexySpeed);
+        StartupRotationPropagationSpeed, StartupRotationFlexySpeed, BeatmapFactory.Event());
 
     private void FixedUpdate()
     {
@@ -86,27 +87,29 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
     }
 
     public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed,
-        JSONNode customData = null)
+        BaseEvent evt)
     {
         var multiplier = Random.value < 0.5f;
         var rotationStepLocal = RotationStep;
         var counterSpinEvent = false;
-        if (customData != null)
+
+        if (evt.CustomData != null)
         {
             // Chroma still applies multipliers to individual values so they should be set first
-            if (customData.HasKey("_step")) step = customData["_step"];
-            if (customData.HasKey("_prop")) propagationSpeed = customData["_prop"];
-            if (customData.HasKey("_speed")) flexySpeed = customData["_speed"];
-            if (customData.HasKey("_rotation")) rotationStepLocal = customData["_rotation"];
+            if (evt.CustomStep != null) step = evt.CustomStep.Value;
+            if (evt.CustomProp != null) propagationSpeed = evt.CustomProp.Value;
+            if (evt.CustomSpeed != null) flexySpeed = evt.CustomSpeed.Value;
+            if (evt.CustomRingRotation != null) rotationStepLocal = evt.CustomRingRotation.Value;
 
-            if (customData.HasKey("_stepMult")) step *= customData["_stepMult"];
-            if (customData.HasKey("_propMult")) propagationSpeed *= customData["_propMult"];
-            if (customData.HasKey("_speedMult")) flexySpeed *= customData["_speedMult"];
-            if (customData.HasKey("_direction")) multiplier = customData["_direction"] == 0;
-            counterSpinEvent = customData.HasKey("_counterSpin") && customData["_counterSpin"].AsBool;
+            if (evt.CustomStepMult != null) step *= evt.CustomStepMult.Value;
+            if (evt.CustomPropMult != null) propagationSpeed *= evt.CustomPropMult.Value;
+            if (evt.CustomSpeedMult != null) flexySpeed *= evt.CustomSpeedMult.Value;
+            if (evt.CustomDirection != null) multiplier = evt.CustomDirection.Value == 0;
+
+            counterSpinEvent = evt.CustomData.HasKey("_counterSpin") && evt.CustomData["_counterSpin"].AsBool;
         }
 
-        if (customData != null && customData.HasKey("_reset") && customData["_reset"] == true)
+        if (evt.CustomData != null && evt.CustomData.HasKey("_reset") && evt.CustomData["_reset"] == true)
         {
             AddRingRotationEvent(angle, 0, 50, 50, 90, counterSpinEvent, false);
             return;

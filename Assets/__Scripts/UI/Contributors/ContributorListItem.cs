@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Globalization;
 using System.IO;
+using Beatmap.Base.Customs;
 using SFB;
 using TMPro;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class ContributorListItem : MonoBehaviour
     [SerializeField] private TMP_InputField nameText;
     [SerializeField] private TMP_InputField roleText;
     [SerializeField] private Image contributorImage;
-    public MapContributor Contributor;
+    public BaseContributor Contributor;
     private bool dirty;
     private ContributorsController controller;
     private string imagePath = "";
@@ -27,7 +28,7 @@ public class ContributorListItem : MonoBehaviour
 
     public void Awake() => CheckLoadImage();
 
-    public void Setup(MapContributor contributor, ContributorsController contributorsControllerNew, bool dirty = false)
+    public void Setup(BaseContributor contributor, ContributorsController contributorsControllerNew, bool dirty = false)
     {
         Contributor = contributor;
         controller = contributorsControllerNew;

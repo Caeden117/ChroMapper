@@ -40,7 +40,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6
     m_Localized: Keine Ordner mit dem Namen "Beat Saber_Data" oder "CustomLevels"
-      im Installationsverzeichniss gefunden!
+      im Installationsverzeichnis gefunden!
     m_Metadata:
       m_Items: []
   - m_Id: 7

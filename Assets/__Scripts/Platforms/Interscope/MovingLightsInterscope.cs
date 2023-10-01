@@ -1,5 +1,5 @@
 ﻿using System;
-using SimpleJSON;
+using Beatmap.Base;
 using UnityEngine;
 
 public class MovingLightsInterscope : RotatingLightsBase
@@ -58,11 +58,10 @@ public class MovingLightsInterscope : RotatingLightsBase
         movementValue += MovingLightsRandom.StartOffset;
     }
 
-    public override void UpdateOffset(bool isLeft, int speed, float rotation, bool rotateForwards,
-        JSONNode customData = null)
+    public override void UpdateOffset(bool isLeft, BaseEvent evt)
     {
         MovingLightsRandom.RandomUpdate(Left);
-        UpdateRotationData(speed, MovingLightsRandom.randomStartOffset);
+        UpdateRotationData(evt.Value, MovingLightsRandom.randomStartOffset);
     }
 
     private void UpdateRotationData(int beatmapEventDataValue, float startRotationOffset)

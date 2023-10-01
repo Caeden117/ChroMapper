@@ -1,130 +1,197 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Beatmap.Appearances;
 using SimpleJSON;
 using UnityEngine;
 
 public class Settings
 {
-
     private static Settings instance;
     public static Settings Instance => instance ??= Load();
+
+    #region General
+
+    public string Language = "en";
+    public bool DiscordRPCEnabled = true;
+    public bool DarkTheme = true;
 
     public string BeatSaberInstallation = "";
     public string CustomSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomLevels");
     public string CustomWIPSongsFolder => Path.Combine(BeatSaberInstallation, "Beat Saber_Data", "CustomWIPLevels");
     public string CustomPlatformsFolder => Path.Combine(BeatSaberInstallation, "CustomPlatforms");
 
-    #if UNITY_STANDALONE_OSX
-    // TODO: Test
-    public static string AndroidPlatformTools => Path.Combine(Application.dataPath,"../../", "quest-utils");
-    #else
-    public static string AndroidPlatformTools => Path.Combine(Directory.GetParent(Application.dataPath)!.FullName, "quest-utils");
-    #endif
-
-    public bool DiscordRPCEnabled = true;
-    public float EditorScale = 4;
-    public bool EditorScaleBPMIndependent = false;
-    public int ChunkDistance = 5;
-    public int TrackLength = 8;
-    public float OneBeatWidth = 0.1f;
-    public int AutoSaveInterval = 5;
-    public bool InvertNoteControls = false; // Hidden setting, does nothing
-    public int Waveform = 1;
-    public CountersPlusSettings CountersPlus = new CountersPlusSettings();
-    public bool PickColorFromChromaEvents = false;
-    public bool PlaceChromaColor = false;
-    public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
-    public bool BongoBoye = false;
-    public int BongoCat = -1;
     public bool AutoSave = true;
-    public float Volume = 1;
-    public float MetronomeVolume = 0;
-    public float SongVolume = 1;
-    public bool NodeEditor_Enabled = true;
-    public bool NodeEditor_UseKeybind = true;
-    public float PostProcessingIntensity = 0.1f;
-    public bool DarkTheme = true;
-    public bool BoxSelect = true;
-    public bool DontPlacePerfectZeroDurationWalls = true;
-    public float Camera_MovementSpeed = 15;
-    public float Camera_MouseSensitivity = 2;
-    public bool EmulateChromaLite = true; //To get Chroma RGB lights
-    public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
-    public bool RotateTrack = true; // 360/90 mode
-    public bool HighlightLastPlacedNotes = false; // Hidden setting, does nothing
-    public bool InvertPrecisionScroll = false;
-    public bool Reminder_Loading360Levels = true;
-    public bool Reminder_SettingsFailed = true;
-    public bool AdvancedShit = false;
+    public int AutoSaveInterval = 5;
     public bool FormatJson = false;
-    public bool RemoveNotesOutsideMap = true; // Hidden setting
-    public bool RemoveEventsOutsideMap = true; // Hidden setting
-    public bool RemoveObstaclesOutsideMap = true; // Hidden setting
-    public bool VanillaOnlyShift = true;
+    public bool OpenFileExplorerAfterCreatingZip = true;
     public bool InstantEscapeMenuTransitions = false;
     public bool InstantLoadingTransitions = false;
-    public bool ChromaticAberration = true;
-    public int Offset_Spawning = 4;
-    public int Offset_Despawning = 1;
-    public int NoteHitSound = 0;
-    public float NoteHitVolume = 0.5f;
+    public bool Waifu = false;
+    public bool HelpfulLoadingMessages = false;
+    public float UIScale = 1;
+    public bool VSync = true;
+    public int MaximumFPS = 9999;
+    public bool IncludePathForADB = true;
+
+    #endregion
+
+    #region Mapping
+
+    public float EditorScale = 4;
+    public bool EditorScaleBPMIndependent = false;
+    public bool NoteJumpSpeedForEditorScale = false;
+    public bool RotateTrack = true; // 360/90 mode
+    public bool Reset360DisplayOnCompleteTurn = true;
+    public bool DontPlacePerfectZeroDurationWalls = true;
+    public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
+    public bool PrecisionPlacementGrid = false; // Old setting, migrated to below
+    public PrecisionPlacementMode PrecisionPlacementMode = PrecisionPlacementMode.Off;
+    public int PrecisionPlacementGridPrecision = 4;
+    public bool ShowMoreAccurateFastWalls = false;
+    public bool QuickNoteEditing = false;
+    public bool VanillaOnlyShift = true;
     public float PastNotesGridScale = 0.5f;
-    public float CameraFOV = 60f;
-    public int CameraAA = 0;
-    public int RenderScale = 100;
-    public bool HideDisablableObjectsOnLoad = false;
-    public bool WaveformWorkflow = true;
-    public bool Load_Events = true;
+    // SongSpeed is a non-persistent setting
+    // NoteLanes is a non-persistent setting
+
+    public CountersPlusSettings CountersPlus = new CountersPlusSettings();
+
+    public bool BoxSelect = true;
+    public bool HighlightLastPlacedNotes = false; // Hidden setting, does nothing
+
     public bool Load_Notes = true;
+    public bool Load_Events = true;
     public bool Load_Obstacles = true;
     public bool Load_Others = true;
-    public bool DisplayDiffDetailsInEditor = true;
+    public bool HideDisablableObjectsOnLoad = false;
+
     public bool DisplaySongDetailsInEditor = true;
-    public bool ShowMoreAccurateFastWalls = false;
-    public int TimeValueDecimalPrecision = 3;
+    public bool DisplayDiffDetailsInEditor = true;
+
+    #endregion
+
+    #region Audio
+
+    public float Volume = 1;
+    public float SongVolume = 1;
+    public float MetronomeVolume = 0;
+    public float NoteHitVolume = 0.5f;
+
     public bool Ding_Red_Notes = true;
     public bool Ding_Blue_Notes = true;
     public bool Ding_Bombs = false;
-    public bool MeasureLinesShowOnTop = false;
-    public bool Reflections = true;
-    public bool HighQualityBloom = true;
+    public int NoteHitSound = 0;
+
+    public int AudioLatencyCompensation = 0;
+
+    #endregion
+
+    #region Graphics
+    public int Waveform = 1;
+    public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
+    public bool EmulateChromaLite = true; //To get Chroma RGB lights
     public bool ColorFakeWalls = true;
-    public bool InvertScrollTime = false;
-    public bool PrecisionPlacementGrid = false;
-    public bool NoteJumpSpeedForEditorScale = false;
     public bool VisualizeChromaGradients = true;
     public bool VisualizeChromaAlpha = true;
     public bool SimpleBlocks = false;
-    public bool HelpfulLoadingMessages = false;
-    public bool Reset360DisplayOnCompleteTurn = true;
-    public string Language = "en";
+    public bool PyramidEventModels = false; // Old setting, migrated to below
+    public EventModelType EventModel = EventModelType.Block;
+    public float PastNoteModelAlpha = 0.4f;
+    public int ChunkDistance = 5;
+    public int Offset_Spawning = 4;
+    public int Offset_Despawning = 1;
+    public bool DisplayFloatValueText = false;
+
+
+    public bool Reflections = true;
+    public bool HighQualityBloom = true;
+    public bool ChromaticAberration = true;
+    public float PostProcessingIntensity = 0.1f;
+    public float CameraFOV = 60f;
+    public int CameraAA = 0;
+    public int RenderScale = 100;
+
+    #endregion
+
+    #region Appearance
+
+    public bool MeasureLinesShowOnTop = false;
     public bool HighContrastGrids = false;
     public float GridTransparency = 0f;
+    public int TrackLength = 8;
+    public float OneBeatWidth = 0.1f;
+
     public bool DisplayGridBookmarks = true;
     public bool GridBookmarksHasLine = true;
-    public int BookmarkTimelineWidth = 10;
     public bool BookmarkTooltipTimeInfo = false;
-    public float UIScale = 1;
-    public CameraPosition[] SavedPositions = new CameraPosition[8];
-    public bool Reminder_UnsupportedEditorOffset = true;
-    public bool PyramidEventModels = false;
-    public float PastNoteModelAlpha = 0.4f;
-    public EventModelType EventModel = EventModelType.Block;
-    public int ReleaseChannel = 0;
-    public string ReleaseServer = "https://cm.topc.at";
-    public int DSPBufferSize = 10;
-    public bool QuickNoteEditing = false;
-    public int AudioLatencyCompensation = 0;
-    public int MaximumFPS = 9999;
-    public bool IncludePathForADB = true;
-    public bool VSync = true;
+    public int BookmarkTimelineWidth = 10;
+
+    #endregion
+
+    #region Controls
+
+    public float Camera_MouseSensitivity = 2;
+    public float Camera_MovementSpeed = 15;
+
+    public bool NodeEditor_Enabled = true;
+    public bool NodeEditor_UseKeybind = true;
 
     public int NodeEditorTextSize = 10;
     public int NodeEditorSize = 10;
+
+    public bool InvertPrecisionScroll = false;
+    public bool InvertNoteControls = true; // See LoadingKeyBindsController.MigrateNoteControls()
+    public bool InvertScrollTime = false;
+    public bool InvertScrollEventValue = false;
+    public bool InvertScrollNoteAngle = false;
+    public bool InvertScrollWallDuration = false;
+    public bool InvertScrollWallBounds = false;
+    public bool InvertScrollArcMultiplier = false;
+    public bool InvertScrollChainSquish = false;
+    public bool InvertScrollChainSegmentCount = false;
+
+    #endregion
+
+    #region Experimental
+
+    public int TimeValueDecimalPrecision = 3;
+    public int BpmTimeValueDecimalPrecision = 6; // Hidden setting
+    public bool AdvancedShit = false; // Custom Events
+    public bool LightIDTransitionSupport = false; // Temporary option until lighting transitions are reworked
+    public int ReleaseChannel = 0;
+    public string ReleaseServer = "https://cm.topc.at";
+    public int DSPBufferSize = 10;
+
+    #endregion
+
+    // These settings are hidden as most users will not need to touch these
+    #region Power-User
+
+    public bool AutomaticModRequirements = true;
+    public bool RemoveNotesOutsideMap = true;
+    public bool RemoveEventsOutsideMap = true;
+    public bool RemoveObstaclesOutsideMap = true;
+    public bool RemoveArcsOutsideMap = true;
+    public bool RemoveChainsOutsideMap = true;
+
+    #endregion
+
+    // These settings are not exposed in the settings menu. Mostly used to store session data
+    #region Non-Bindable
+
+    public bool PickColorFromChromaEvents = false;
+    public bool PlaceChromaColor = false;
+    public bool BongoBoye = false; // Old setting, migrated to below
+    public int BongoCat = -1;
+    public bool Reminder_Loading360Levels = true;
+    public bool Reminder_SettingsFailed = true;
+    public bool WaveformWorkflow = true;
+    public bool Load_MapV3 = false;
+    public CameraPosition[] SavedPositions = new CameraPosition[8];
 
     public int CursorPrecisionA = 1;
     public int CursorPrecisionB = 1;
@@ -132,6 +199,15 @@ public class Settings
     public string LastLoadedMap = "";
     public string LastLoadedChar = "";
     public string LastLoadedDiff = "";
+
+#if UNITY_STANDALONE_OSX
+    // TODO: Test
+    public static string AndroidPlatformTools => Path.Combine(Application.dataPath,"../../", "quest-utils");
+#else
+    public static string AndroidPlatformTools => Path.Combine(Directory.GetParent(Application.dataPath)!.FullName, "quest-utils");
+#endif
+
+    #endregion
 
     public int LastSongSortType = (int)SongList.SongSortType.Name;
 
@@ -255,6 +331,12 @@ public class Settings
 
     private void UpdateOldSettings()  //Put code in here to transfer any settings that are fundamentally changed and require conversion from an old setting to a new setting
     {
+        if (PrecisionPlacementGrid)
+        {
+            PrecisionPlacementMode = PrecisionPlacementMode.Hold;
+            PrecisionPlacementGrid = false;
+        }
+
         if (PyramidEventModels)
         {
             EventModel = EventModelType.Pyramid;

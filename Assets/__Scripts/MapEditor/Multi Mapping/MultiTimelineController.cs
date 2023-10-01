@@ -38,7 +38,7 @@ public class MultiTimelineController
     {
         if (activeContainers.TryGetValue(identity, out var container))
         {
-            Object.Destroy(container);
+            Object.Destroy(container.gameObject);
             activeContainers.Remove(identity);
         }
     }
@@ -55,7 +55,7 @@ public class MultiTimelineController
     public void JumpTo(MapperPosePacket pose)
     {
         bookmarkManager.Tipc.PointerDown();
-        bookmarkManager.Atsc.MoveToTimeInBeats(pose.SongPosition);
+        bookmarkManager.Atsc.MoveToSongBpmTime(pose.SongPosition);
         bookmarkManager.Tipc.PointerUp();
     }
 }

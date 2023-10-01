@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "\u5B57\u5E55\uFF0C\u6216\u4EFB\u4F55\u5176\u4ED6\n\u4E3A\u6B4C\u66F2\u505A\u51FA\u8D21\u732E\u7684\u4EBA\u3002"
+    m_Localized: "\u526F\u6807\u9898\uFF0C\u6216\u4EFB\u4F55\u5176\u4ED6\n\u4E3A\u6B4C\u66F2\u505A\u51FA\u8D21\u732E\u7684\u4EBA\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 9
@@ -64,19 +64,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: "\u521B\u4F5C\u8005"
+    m_Localized: "\u4F5C\u8005"
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: "\u521B\u5EFA\u8005\u59D3\u540D\uFF1A"
+    m_Localized: "\u4F5C\u8005\u59D3\u540D\uFF1A"
     m_Metadata:
       m_Items: []
   - m_Id: 14
-    m_Localized: "\u8C31\u9762\u7684\u521B\u9020\u8005\uFF08\u5C31\u662F\u4F60\uFF01\uFF09"
+    m_Localized: "\u8C31\u9762\u7684\u4F5C\u8005\uFF08\u5C31\u662F\u4F60\u5440\uFF01\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: "\u6BCF\u5206\u949F\u8282\u62CD"
+    m_Localized: "\u6BCF\u5206\u949F\u8282\u62CD\u6570\uFF08BPM\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 16
@@ -84,11 +84,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "\u8F93\u5165\u6B4C\u66F2\u7684\u8282\u594F\u3002"
+    m_Localized: "\u8F93\u5165\u6B4C\u66F2\u7684\u901F\u5EA6\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 18
-    m_Localized: "\u6B4C\u66F2\u65F6\u95F4\u504F\u79FB"
+    m_Localized: "\u6B4C\u66F2\u65F6\u95F4\u504F\u79FB\u91CF"
     m_Metadata:
       m_Items: []
   - m_Id: 19
@@ -96,12 +96,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'This feature is deprecated.
-
-      Shifts the song forward by this
-      amount
-
-      (in seconds)'
+    m_Localized: "\u4E0D\u63A8\u8350\u4F7F\u7528\u6B64\u529F\u80FD\u3002\n\u5C06\u6B4C\u66F2\u5411\u524D\u79FB\u52A8\n(
+      \u4EE5\u79D2\u8BA1)"
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -117,7 +113,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 24
-    m_Localized: "\u9884\u89C8\u65F6\u957F"
+    m_Localized: "\u9884\u89C8\u6301\u7EED\u65F6\u95F4"
     m_Metadata:
       m_Items: []
   - m_Id: 25
@@ -129,7 +125,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: "\u5C01\u9762\u56FE"
+    m_Localized: "\u5C01\u9762\u56FE\u7247"
     m_Metadata:
       m_Items: []
   - m_Id: 28
@@ -137,7 +133,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29
-    m_Localized: "\u5C01\u9762\u56FE\u7247\u7684\u76F8\u5BF9\u4F4D\u7F6E\u3002\n\uFF08\u6700\u597D\u4FDD\u6301\u539F\u6837\u3002\uFF09"
+    m_Localized: "\u5C01\u9762\u56FE\u7247\u6587\u4EF6\u7684\u76F8\u5BF9\u8DEF\u5F84\u3002\n\uFF08\u5EFA\u8BAE\u4FDD\u6301\u9ED8\u8BA4\u3002\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 30
@@ -149,7 +145,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 32
-    m_Localized: "\u97F3\u9891\u6587\u4EF6\u7684\u76F8\u5BF9\u4F4D\u7F6E\u3002\n\uFF08\u6700\u597D\u4FDD\u6301\u539F\u6837\u3002\uFF09"
+    m_Localized: "\u97F3\u9891\u6587\u4EF6\u7684\u76F8\u5BF9\u8DEF\u5F84\u3002\n\uFF08\u5EFA\u8BAE\u4FDD\u6301\u9ED8\u8BA4\u3002\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 33
@@ -157,7 +153,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "\u5B9A\u5236\u5E73\u53F0"
+    m_Localized: "\u81EA\u5B9A\u4E49\u5E73\u53F0"
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -169,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 37
-    m_Localized: "\u6B4C\u66F2\u5C06\u5728\u4EC0\u4E48\u73AF\u5883\u4E2D\u64AD\u653E\uFF1F"
+    m_Localized: "\u6B4C\u66F2\u64AD\u653E\u65F6\u7684\u73AF\u5883\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 38
@@ -185,7 +181,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 41
-    m_Localized: "\u534A\u8DF3\u6301\u7EED\u65F6\u95F4"
+    m_Localized: "\u73A9\u5BB6\u53CD\u5E94\u65F6\u95F4"
     m_Metadata:
       m_Items: []
   - m_Id: 42
@@ -193,7 +189,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: "\u8DF3\u8DC3\u8DDD\u79BB"
+    m_Localized: "\u97F3\u7B26\u751F\u6210\u8DDD\u79BB"
     m_Metadata:
       m_Items: []
   - m_Id: 44
@@ -201,7 +197,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: "\u97F3\u7B26\u8DF3\u8DC3\u901F\u5EA6"
+    m_Localized: "\u97F3\u7B26\u79FB\u52A8\u901F\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 46
@@ -283,11 +279,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, do you want to save them?
+    m_Localized: "\u60A8\u6709\u672A\u4FDD\u5B58\u7684\u66F4\u6539\u3002\u60A8\u60F3\u8981\u4FDD\u5B58\u5B83\u5417\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, do you want to save them?
+    m_Localized: "\u60A8\u6709\u672A\u4FDD\u5B58\u7684\u66F4\u6539\u3002\u60A8\u60F3\u8981\u4FDD\u5B58\u5B83\u5417\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -315,7 +311,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, do you want to save them?
+    m_Localized: "\u60A8\u6709\u672A\u4FDD\u5B58\u7684\u66F4\u6539\u3002\u60A8\u60F3\u8981\u4FDD\u5B58\u5B83\u5417\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -340,7 +336,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
-    m_Localized: "\u73AF\u5883\u53BB\u9664"
+    m_Localized: "\u73AF\u5883\u79FB\u9664"
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
@@ -369,13 +365,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115504465297211392
-    m_Localized: 750 ms
+    m_Localized: "750\u6BEB\u79D2"
     m_Metadata:
       m_Items: []
   - m_Id: 115521560328208384
-    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
-      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
-      that you apply your offsets using a audio manipulator such as Audacity."
+    m_Localized: "\u4F7F\u7528 Song Time Offset \u4F1A\u5BFC\u81F4\u6E38\u620F\u4E2D\u51FA\u73B0\u4E0D\u540C\u6B65\u7684\u526A\u5207\u566A\u97F3\u3002
+      \n\u4F7F\u7528\u6B4C\u66F2\u65F6\u95F4\u504F\u79FB\u4E5F\u53EF\u4EE5\u4F7F\u97F3\u7B26\u90E8\u5206\u4E0D\u53EF\u89C1\u3002\n\u5EFA\u8BAE\u60A8\u4F7F\u7528
+      Audacity \u7B49\u97F3\u9891\u64CD\u7EB5\u5668\u5E94\u7528\u504F\u79FB\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566409055109120
+    m_Localized: Map packaged to zip successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566610293620736
+    m_Localized: 'Error packaging map to zip.
+
+      No zip created.'
     m_Metadata:
       m_Items: []
   references:

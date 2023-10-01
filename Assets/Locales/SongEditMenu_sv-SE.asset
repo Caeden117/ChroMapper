@@ -24,7 +24,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Map Difficulties
+    m_Localized: "Karta Sv\xE5righetsgrader"
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -411,6 +411,16 @@ MonoBehaviour:
     m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
       \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
       that you apply your offsets using a audio manipulator such as Audacity."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566409055109120
+    m_Localized: Map packaged to zip successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566610293620736
+    m_Localized: 'Error packaging map to zip.
+
+      No zip created.'
     m_Metadata:
       m_Items: []
   references:

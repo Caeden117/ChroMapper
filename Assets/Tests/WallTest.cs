@@ -1,7 +1,12 @@
-﻿using NUnit.Framework;
-using SimpleJSON;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
+using Beatmap.V2;
+using Beatmap.V3;
+using NUnit.Framework;
+using SimpleJSON;
 using Tests.Util;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -13,60 +18,125 @@ namespace Tests
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap()
         {
-            return TestUtils.LoadMapper();
+            return TestUtils.LoadMap(3);
+        }
+
+        [OneTimeTearDown]
+        public void FinalTearDown()
+        {
+            TestUtils.ReturnSettings();
         }
 
         [TearDown]
         public void ContainerCleanup()
         {
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
-            TestUtils.CleanupObstacles();
+            CleanupUtils.CleanupObstacles();
         }
 
-        public static void CheckWall(BeatmapObjectContainerCollection container, int idx, int time, int lineIndex, int type, int duration, int width, JSONNode customData = null)
+        [Test]
+        public void EnsureWallIntegrity()
         {
-            BeatmapObject newObjA = container.LoadedObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BeatmapObstacle>(newObjA);
-            if (newObjA is BeatmapObstacle newNoteA)
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
+            if (collection is ObstacleGridContainer obstaclesContainer)
             {
-                Assert.AreEqual(time, newNoteA.Time);
-                Assert.AreEqual(type, newNoteA.Type);
-                Assert.AreEqual(lineIndex, newNoteA.LineIndex);
-                Assert.AreEqual(duration, newNoteA.Duration);
-                Assert.AreEqual(width, newNoteA.Width);
+                var root = obstaclesContainer.transform.root;
+                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
+                wallPlacement.RefreshVisuals();
 
-                if (customData != null)
-                {
-                    Assert.AreEqual(customData.ToString(), newNoteA.CustomData.ToString());
-                }
+                var wallA = new V2Obstacle(0f, 1, 0, 1f, 1);
+                PlaceUtils.PlaceWall(wallPlacement, wallA);
+
+                CheckUtils.CheckWall("Check v2 wall attributes", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
+
+                wallA.Type = 0;
+                CheckUtils.CheckWall("Check type 0 v2 wall attributes", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
+
+                wallA.Type = 1;
+                CheckUtils.CheckWall("Check type 1 v2 wall attributes", obstaclesContainer, 0, 0f, 1, 2, 1, 1f, 1, 3);
+
+                wallA.Type = 2;
+                CheckUtils.CheckWall("Check type 2 v2 wall attributes", obstaclesContainer, 0, 0f, 1, 0, 2, 1f, 1, 5);
+
+                wallA.Type = 5436;
+                CheckUtils.CheckWall("Check arbitrary type v2 wall attributes", obstaclesContainer, 0, 0f, 1, 0, 5436, 1f, 1, 5);
+
+                // i generally dont expect user to do this, but i know it will happen
+                wallA.Height = 3;
+                CheckUtils.CheckWall("Height 3 make crouch height wall for v2 wall", obstaclesContainer, 0, 0f, 1, 2, 1, 1f, 1, 3);
+
+                wallA.Height = 5;
+                CheckUtils.CheckWall("Height 5 make full height wall for v2 wall", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
+
+                wallA.Height = 4;
+                CheckUtils.CheckWall("Invalid height should revert back to full height wall for v2 wall", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
+
+                wallA.PosY = 0;
+                CheckUtils.CheckWall("Pos Y 0 make wall full wall for v2 wall", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
+
+                wallA.PosY = 2;
+                CheckUtils.CheckWall("Pos Y 2 make wall crouch wall for v2 wall", obstaclesContainer, 0, 0f, 1, 2, 1, 1f, 1, 3);
+
+                wallA.PosY = 1;
+                CheckUtils.CheckWall("Invalid pos Y should revert back to full height wall for v2 wall", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
+
+                // test v3 wall
+                var wallB = new V3Obstacle(1f, 1, 0, 1f, 1, 5);
+                PlaceUtils.PlaceWall(wallPlacement, wallB);
+
+                CheckUtils.CheckWall("Check v3 wall attributes", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 5);
+
+                wallB.Type = 0;
+                CheckUtils.CheckWall("Check type 0 v3 wall attributes", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 5);
+
+                wallB.Type = 1;
+                CheckUtils.CheckWall("Check type 1 v3 wall attributes", obstaclesContainer, 1, 1f, 1, 2, 1, 1f, 1, 3);
+
+                wallB.Type = 2;
+                CheckUtils.CheckWall("Check type 2 v3 wall attributes", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 5);
+
+                wallB.Type = 5436;
+                CheckUtils.CheckWall("Check arbitrary type v3 wall attributes", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 5);
+
+                wallB.Height = 3;
+                CheckUtils.CheckWall("Height 3 should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 3);
+
+                wallB.Height = 5;
+                CheckUtils.CheckWall("Height 5 should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 5);
+
+                wallB.Height = 4;
+                CheckUtils.CheckWall("Arbitrary height should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 4);
+
+                wallB.PosY = 0;
+                CheckUtils.CheckWall("Pos Y 0 should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 4);
+
+                wallB.PosY = 2;
+                CheckUtils.CheckWall("Pos Y 2 should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 2, 0, 1f, 1, 4);
+
+                wallB.PosY = 1;
+                CheckUtils.CheckWall("Arbitrary pos Y should change nothing else for v3 wall", obstaclesContainer, 1, 1f, 1, 1, 0, 1f, 1, 4);
             }
         }
 
         [Test]
         public void HyperWall()
         {
-            BeatmapActionContainer actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            BeatmapObjectContainerCollection collection = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle);
-            if (collection is ObstaclesContainer obstaclesCollection)
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
+            if (collection is ObstacleGridContainer obstaclesCollection)
             {
-                Transform root = obstaclesCollection.transform.root;
-                ObstaclePlacement wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
-                BeatmapObstacleInputController inputController = root.GetComponentInChildren<BeatmapObstacleInputController>();
+                var root = obstaclesCollection.transform.root;
+                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
+                var inputController = root.GetComponentInChildren<BeatmapObstacleInputController>();
                 wallPlacement.RefreshVisuals();
 
-                BeatmapObstacle wallA = new BeatmapObstacle(2, BeatmapNote.LineIndexFarLeft, BeatmapObstacle.ValueFullBarrier, 2, 1);
-                wallPlacement.queuedData = wallA;
-                wallPlacement.RoundedTime = wallPlacement.queuedData.Time;
-                wallPlacement.instantiatedContainer.transform.localScale = new Vector3(0, 0, wallPlacement.queuedData.Duration * EditorScaleController.EditorScale);
-                wallPlacement.ApplyToMap(); // Starts placement
-                wallPlacement.ApplyToMap(); // Completes placement
+                BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
+                PlaceUtils.PlaceWall(wallPlacement, wallA);
 
-                if (obstaclesCollection.LoadedContainers[wallA] is BeatmapObstacleContainer container)
-                {
+                if (obstaclesCollection.LoadedContainers[wallA] is ObstacleContainer container)
                     inputController.ToggleHyperWall(container);
-                }
 
-                BeatmapObject toDelete = obstaclesCollection.LoadedObjects.First();
+                var toDelete = obstaclesCollection.LoadedObjects.First();
                 obstaclesCollection.DeleteObject(toDelete);
 
                 Assert.AreEqual(0, obstaclesCollection.LoadedObjects.Count);
@@ -74,10 +144,37 @@ namespace Tests
                 actionContainer.Undo();
 
                 Assert.AreEqual(1, obstaclesCollection.LoadedObjects.Count);
-                CheckWall(obstaclesCollection, 0, 4, BeatmapNote.LineIndexFarLeft, BeatmapObstacle.ValueFullBarrier, -2, 1);
+                CheckUtils.CheckWall("Perform hyper wall", obstaclesCollection, 0, 4, (int)GridX.Left, 0,
+                    (int)ObstacleType.Full, -2.0f, 1, 5);
 
                 actionContainer.Undo();
-                CheckWall(obstaclesCollection, 0, 2, BeatmapNote.LineIndexFarLeft, BeatmapObstacle.ValueFullBarrier, 2, 1);
+                CheckUtils.CheckWall("Undo hyper wall", obstaclesCollection, 0, 2, (int)GridX.Left, 0,
+                    (int)ObstacleType.Full, 2.0f, 1, 5);
+            }
+        }
+
+        [Test]
+        public void PlacementPersistsCustomProperty()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
+            if (collection is ObstacleGridContainer obstaclesCollection)
+            {
+                var root = obstaclesCollection.transform.root;
+                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
+                wallPlacement.RefreshVisuals();
+
+                var customCoord = new JSONArray() { [0] = 0, [1] = 1 };
+                var customSize = new JSONArray() { [0] = 0, [1] = null, [2] = 420 };
+
+                BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
+                wallA.CustomCoordinate = customCoord;
+                wallA.CustomSize = customSize;
+                PlaceUtils.PlaceWall(wallPlacement, wallA);
+
+                CheckUtils.CheckWall("Applies CustomProperties to CustomData", obstaclesCollection, 0, 2, (int)GridX.Left, 0,
+                    (int)ObstacleType.Full, 2.0f, 1, 5,
+                    new JSONObject() { ["_position"] = customCoord, ["_scale"] = customSize });
             }
         }
     }

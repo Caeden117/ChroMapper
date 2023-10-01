@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Containers;
+using Beatmap.Enums;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -31,13 +33,13 @@ public class CreateEventTypeLabels : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        loadedWithRotationEvents = BeatSaberSongContainer.Instance.Map.Events.Any(i => i.IsRotationEvent);
+        loadedWithRotationEvents = BeatSaberSongContainer.Instance.Map.Events.Any(i => i.IsLaneRotationEvent());
         LoadInitialMap.PlatformLoadedEvent += PlatformLoaded;
     }
 
     private void OnDestroy() => LoadInitialMap.PlatformLoadedEvent -= PlatformLoaded;
 
-    public void UpdateLabels(EventsContainer.PropMode propMode, int eventType, int lanes = 16)
+    public void UpdateLabels(EventGridContainer.PropMode propMode, int eventType, int lanes = 16)
     {
         foreach (Transform children in LayerInstantiate.transform.parent.transform)
         {
@@ -49,22 +51,22 @@ public class CreateEventTypeLabels : MonoBehaviour
 
         for (var i = 0; i < lanes; i++)
         {
-            var modified = (propMode == EventsContainer.PropMode.Off ? EventTypeToModifiedType(i) : i) +
+            var modified = (propMode == EventGridContainer.PropMode.Off ? EventTypeToModifiedType(i) : i) +
                            NoRotationLaneOffset;
-            if (modified < 0 && propMode == EventsContainer.PropMode.Off) continue;
+            if (modified < 0 && propMode == EventGridContainer.PropMode.Off) continue;
 
-            var laneInfo = new LaneInfo(i, propMode != EventsContainer.PropMode.Off ? i : modified);
+            var laneInfo = new LaneInfo(i, propMode != EventGridContainer.PropMode.Off ? i : modified);
 
             var instantiate = Instantiate(LayerInstantiate, LayerInstantiate.transform.parent);
             instantiate.SetActive(true);
             instantiate.transform.localPosition =
-                new Vector3(propMode != EventsContainer.PropMode.Off ? i : modified, 0, 0);
+                new Vector3(propMode != EventGridContainer.PropMode.Off ? i : modified, 0, 0);
             laneObjs.Add(laneInfo);
 
             try
             {
                 var textMesh = instantiate.GetComponentInChildren<TextMeshProUGUI>();
-                if (propMode != EventsContainer.PropMode.Off)
+                if (propMode != EventGridContainer.PropMode.Off)
                 {
                     textMesh.font = UtilityAsset;
                     if (i == 0)
@@ -74,7 +76,7 @@ public class CreateEventTypeLabels : MonoBehaviour
                     }
                     else
                     {
-                        textMesh.text = $"{lightingManagers[eventType].name} ID {i}";
+                        textMesh.text = $"{lightingManagers[eventType].name} ID {EditorToLightID(eventType, i - 1)}";
                         if (i % 2 == 0)
                             textMesh.font = UtilityAsset;
                         else
@@ -85,40 +87,64 @@ public class CreateEventTypeLabels : MonoBehaviour
                 {
                     switch (i)
                     {
-                        case MapEvent.EventTypeRingsRotate:
+                        case (int)EventTypeValue.RingRotation:
                             textMesh.font = UtilityAsset;
                             textMesh.text = "Ring Rotation";
                             break;
-                        case MapEvent.EventTypeRingsZoom:
+                        case (int)EventTypeValue.RingZoom:
                             textMesh.font = UtilityAsset;
                             textMesh.text = "Ring Zoom";
                             break;
-                        case MapEvent.EventTypeLeftLasersSpeed:
+                        case (int)EventTypeValue.LeftLaserRotation:
                             textMesh.text = "Left Laser Speed";
                             textMesh.font = UtilityAsset;
                             break;
-                        case MapEvent.EventTypeRightLasersSpeed:
+                        case (int)EventTypeValue.RightLaserRotation:
                             textMesh.text = "Right Laser Speed";
                             textMesh.font = UtilityAsset;
                             break;
-                        case MapEvent.EventTypeEarlyRotation:
+                        case (int)EventTypeValue.EarlyLaneRotation:
                             textMesh.text = "Rotation (Include)";
                             textMesh.font = UtilityAsset;
                             break;
-                        case MapEvent.EventTypeLateRotation:
+                        case (int)EventTypeValue.LateLaneRotation:
                             textMesh.text = "Rotation (Exclude)";
                             textMesh.font = UtilityAsset;
                             break;
-                        case MapEvent.EventTypeBoostLights:
+                        case (int)EventTypeValue.ColorBoost:
                             textMesh.text = "Boost Lights";
                             textMesh.font = UtilityAsset;
                             break;
-                        case MapEvent.EventTypeCustomEvent1:
-                            textMesh.text = "Custom Event 1";
+                        case (int)EventTypeValue.UtilityEvent0:
+                            textMesh.text = "Utility Event 0";
                             textMesh.font = UtilityAsset;
                             break;
-                        case MapEvent.EventTypeCustomEvent2:
-                            textMesh.text = "Custom Event 2";
+                        case (int)EventTypeValue.UtilityEvent1:
+                            textMesh.text = "Utility Event 1";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case (int)EventTypeValue.UtilityEvent2:
+                            textMesh.text = "Utility Event 2";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case (int)EventTypeValue.UtilityEvent3:
+                            textMesh.text = "Utility Event 3";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case (int)EventTypeValue.SpecialEvent0:
+                            textMesh.text = "Special Event 0";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case (int)EventTypeValue.SpecialEvent1:
+                            textMesh.text = "Special Event 1";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case (int)EventTypeValue.SpecialEvent2:
+                            textMesh.text = "Special Event 2";
+                            textMesh.font = UtilityAsset;
+                            break;
+                        case (int)EventTypeValue.SpecialEvent3:
+                            textMesh.text = "Special Event 3";
                             textMesh.font = UtilityAsset;
                             break;
                         default:
@@ -199,8 +225,8 @@ public class CreateEventTypeLabels : MonoBehaviour
     /// <returns></returns>
     public static int EventTypeToModifiedType(int eventType)
     {
-        if (BeatmapEventContainer.ModifyTypeMode == -1) return eventType;
-        if (BeatmapEventContainer.ModifyTypeMode == 0)
+        if (EventContainer.ModifyTypeMode == -1) return eventType;
+        if (EventContainer.ModifyTypeMode == 0)
         {
             if (!eventToModifiedArray.Contains(eventType))
             {
@@ -211,7 +237,7 @@ public class CreateEventTypeLabels : MonoBehaviour
             return eventToModifiedArray[eventType];
         }
 
-        if (BeatmapEventContainer.ModifyTypeMode == 1)
+        if (EventContainer.ModifyTypeMode == 1)
         {
             return eventType switch
             {
@@ -230,7 +256,7 @@ public class CreateEventTypeLabels : MonoBehaviour
             };
         }
 
-        if (BeatmapEventContainer.ModifyTypeMode == 2) return eventToModifiedArrayInterscope[eventType];
+        if (EventContainer.ModifyTypeMode == 2) return eventToModifiedArrayInterscope[eventType];
 
         return -1;
     }
@@ -242,8 +268,8 @@ public class CreateEventTypeLabels : MonoBehaviour
     /// <returns></returns>
     public static int ModifiedTypeToEventType(int modifiedType)
     {
-        if (BeatmapEventContainer.ModifyTypeMode == -1) return modifiedType;
-        if (BeatmapEventContainer.ModifyTypeMode == 0)
+        if (EventContainer.ModifyTypeMode == -1) return modifiedType;
+        if (EventContainer.ModifyTypeMode == 0)
         {
             if (!modifiedToEventArray.Contains(modifiedType))
             {
@@ -254,7 +280,7 @@ public class CreateEventTypeLabels : MonoBehaviour
             return modifiedToEventArray[modifiedType];
         }
 
-        if (BeatmapEventContainer.ModifyTypeMode == 1)
+        if (EventContainer.ModifyTypeMode == 1)
         {
             return modifiedType switch
             {

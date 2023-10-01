@@ -15,7 +15,7 @@ public class RotationDisplayController : MonoBehaviour
 
     private void OnDestroy() => rotationCallback.RotationChangedEvent -= RotationChanged;
 
-    private void RotationChanged(bool natural, int rotation)
+    private void RotationChanged(bool natural, float rotation)
     {
         if (Settings.Instance.Reset360DisplayOnCompleteTurn)
             display.text = $"{BetterModulo(rotation, 360)}°";
@@ -23,5 +23,5 @@ public class RotationDisplayController : MonoBehaviour
             display.text = $"{rotation}°";
     }
 
-    private int BetterModulo(int x, int m) => ((x % m) + m) % m; //thanks stackoverflow
+    private float BetterModulo(float x, float m) => ((x % m) + m) % m; //thanks stackoverflow
 }

@@ -90,7 +90,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17
-    m_Localized: "\u0421\u0442\u0435\u043A\u0430 \u0434\u043B\u044F \"\u0443\u0448\u0435\u0434\u0448\u0438\u0445\"
+    m_Localized: "\u0421\u0435\u0442\u043A\u0430 \u0434\u043B\u044F \"\u0443\u0448\u0435\u0434\u0448\u0438\u0445\"
       \u043D\u043E\u0442"
     m_Metadata:
       m_Items: []
@@ -182,7 +182,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: "\u0424\u043E\u0440\u043C\u0430 \u0432\u043E\u043B\u043D\u044B"
+    m_Localized: Spectrogram
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -403,7 +403,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 73
-    m_Localized: '{TextValue} Decimal Place(s)'
+    m_Localized: "{TextValue} \u0437\u043D\u0430\u043A(\u043E\u0432) \u043F\u043E\u0441\u043B\u0435
+      \u0437\u0430\u043F\u044F\u0442\u043E\u0439"
     m_Metadata:
       m_Items:
       - id: 0
@@ -521,7 +522,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 98
-    m_Localized: Make it impossible to place walls with 0 Duration.
+    m_Localized: "\u0417\u0430\u043F\u0440\u0435\u0442\u0438\u0442\u044C \u0441\u0442\u0430\u0432\u0438\u0442\u044C
+      \u0441\u0442\u0435\u043D\u044B \u043D\u0443\u043B\u0435\u0432\u043E\u0439 \u0434\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u0438."
     m_Metadata:
       m_Items: []
   - m_Id: 99
@@ -546,7 +548,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104
-    m_Localized: Toggles reflections caused by lights and objects.
+    m_Localized: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u043E\u0442\u0440\u0430\u0436\u0435\u043D\u0438\u044F
+      \u0441\u0432\u0435\u0442\u0430 \u0438 \u043E\u0431\u044A\u0435\u043A\u0442\u043E\u0432."
     m_Metadata:
       m_Items: []
   - m_Id: 105
@@ -560,7 +563,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song waveform
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u044C \u0441\u043F\u0435\u043A\u0442\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0443
+      \u043F\u0435\u0441\u043D\u0438"
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -585,9 +589,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 113
-    m_Localized: 'Toggles Dark Theme.
-
-      (Does not affect Options Menu)'
+    m_Localized: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0442\u0435\u043C\u043D\u0443\u044E
+      \u0442\u0435\u043C\u0443.\n(\u041D\u0435 \u0432\u043B\u0438\u044F\u0435\u0442
+      \u043D\u0430 \u043C\u0435\u043D\u044E \u043D\u0430\u0441\u0442\u0440\u043E\u0435\u043A)"
     m_Metadata:
       m_Items: []
   - m_Id: 114
@@ -603,12 +607,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: Change Field of View of the camera
+    m_Localized: "\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u0443\u0433\u043E\u043B
+      \u043E\u0431\u0437\u043E\u0440\u0430 \u043A\u0430\u043C\u0435\u0440\u044B"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Color negative width and negative duration walls differently than
-      standard walls.
+    m_Localized: "\u041E\u043A\u0440\u0430\u0441\u0438\u0442\u044C \u0441\u0442\u0435\u043D\u044B
+      \u0441 \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u044C\u043D\u043E\u0439
+      \u0434\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C\u044E
+      \u0438\u043B\u0438 \u0448\u0438\u0440\u0438\u043D\u043E\u0439 \u0432 \u0434\u0440\u0443\u0433\u043E\u0439
+      \u0446\u0432\u0435\u0442, \u043D\u0435\u0436\u0435\u043B\u0438 \u043E\u0431\u044B\u0447\u043D\u044B\u0435
+      \u0441\u0442\u0435\u043D\u044B."
     m_Metadata:
       m_Items: []
   - m_Id: 119
@@ -616,7 +625,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Change how fast the camera moves.
+    m_Localized: "\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C
+      \u0434\u0432\u0438\u0436\u0435\u043D\u0438\u044F \u043A\u0430\u043C\u0435\u0440\u044B."
     m_Metadata:
       m_Items: []
   - m_Id: 121
@@ -625,19 +635,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: How fast the camera rotates.
+    m_Localized: "\u041A\u0430\u043A \u0431\u044B\u0441\u0442\u0440\u043E \u043F\u043E\u0432\u043E\u0440\u0430\u0447\u0438\u0432\u0430\u0435\u0442\u0441\u044F
+      \u043A\u0430\u043C\u0435\u0440\u0430."
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Change the sound you hear when a note passes through the grid.
+    m_Localized: "\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u0437\u0432\u0443\u043A
+      \u043F\u0440\u043E\u0445\u043E\u0436\u0434\u0435\u043D\u0438\u044F \u043D\u043E\u0442\u044B
+      \u0447\u0435\u0440\u0435\u0437 \u0441\u0435\u0442\u043A\u0443."
     m_Metadata:
       m_Items: []
   - m_Id: 124
-    m_Localized: Location of your Beat Saber installation.
+    m_Localized: "\u041C\u0435\u0441\u0442\u043E \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0438
+      Beat Saber."
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: General
+    m_Localized: "\u041E\u0431\u0449\u0438\u0435"
     m_Metadata:
       m_Items: []
   - m_Id: 126
@@ -645,15 +659,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 127
-    m_Localized: Audio
+    m_Localized: "\u0410\u0443\u0434\u0438\u043E"
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Graphics
+    m_Localized: "\u0412\u0438\u0434\u0435\u043E"
     m_Metadata:
       m_Items: []
   - m_Id: 129
-    m_Localized: Controls
+    m_Localized: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435"
     m_Metadata:
       m_Items: []
   - m_Id: 130
@@ -727,11 +741,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 145
-    m_Localized: Language
+    m_Localized: "\u042F\u0437\u044B\u043A"
     m_Metadata:
       m_Items: []
   - m_Id: 146
-    m_Localized: Localize UI
+    m_Localized: "\u041F\u0435\u0440\u0435\u0432\u0435\u0441\u0442\u0438 \u0438\u043D\u0442\u0435\u0440\u0444\u0435\u0439\u0441"
     m_Metadata:
       m_Items: []
   - m_Id: 147
@@ -764,7 +778,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 154
-    m_Localized: UI Scale
+    m_Localized: "\u041C\u0430\u0441\u0448\u0442\u0430\u0431 \u0438\u043D\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430"
     m_Metadata:
       m_Items: []
   - m_Id: 155
@@ -802,7 +816,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 163
-    m_Localized: That doesn't look right
+    m_Localized: "\u0427\u0442\u043E-\u0442\u043E \u043D\u0435 \u0442\u0430\u043A"
     m_Metadata:
       m_Items: []
   - m_Id: 164
@@ -847,7 +861,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 174
-    m_Localized: Song
+    m_Localized: "\u041F\u0435\u0441\u043D\u044F"
     m_Metadata:
       m_Items: []
   - m_Id: 175
@@ -923,7 +937,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8718720348160
-    m_Localized: Show Obstacle Count
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E
+      \u0441\u0442\u0435\u043D"
     m_Metadata:
       m_Items: []
   - m_Id: 8904158916608
@@ -931,15 +946,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9070869917696
-    m_Localized: Show BPM Change Count
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E
+      \u0441\u043C\u0435\u043D \u0442\u0435\u043C\u043F\u0430"
     m_Metadata:
       m_Items: []
   - m_Id: 9291620331520
-    m_Localized: Show Current BPM
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0442\u0435\u043A\u0443\u0449\u0438\u0439
+      \u0442\u0435\u043C\u043F"
     m_Metadata:
       m_Items: []
   - m_Id: 9443374444544
-    m_Localized: Show Time Spent Mapping
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0432\u0440\u0435\u043C\u044F,
+      \u043F\u0440\u043E\u0432\u0435\u0434\u0435\u043D\u043D\u043E\u0435 \u0437\u0430
+      \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u0435\u043C \u043A\u0430\u0440\u0442"
     m_Metadata:
       m_Items: []
   - m_Id: 1564790530682880
@@ -947,7 +966,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1565145339441152
-    m_Localized: Show Bomb Count
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E
+      \u0431\u043E\u043C\u0431"
     m_Metadata:
       m_Items: []
   - m_Id: 1062316191744
@@ -989,7 +1009,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1894945813565440
-    m_Localized: VSync
+    m_Localized: "\u0412\u0435\u0440\u0442\u0438\u043A\u0430\u043B\u044C\u043D\u0430\u044F
+      \u0441\u0438\u043D\u0445\u0440\u043E\u043D\u0438\u0437\u0430\u0446\u0438\u044F"
     m_Metadata:
       m_Items: []
   - m_Id: 1894950121115648
@@ -1005,11 +1026,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9689541752557568
-    m_Localized: Visualize Chroma event alpha using the height of the event
+    m_Localized: Visualize event alpha using the height of the event
     m_Metadata:
       m_Items: []
   - m_Id: 9689824679333888
-    m_Localized: Visualize Chroma Alpha
+    m_Localized: Visualize Event Alpha
     m_Metadata:
       m_Items: []
   - m_Id: 16675690602758144
@@ -1017,7 +1038,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16676035970138112
-    m_Localized: Anti-Aliasing
+    m_Localized: "\u0421\u0433\u043B\u0430\u0436\u0438\u0432\u0430\u043D\u0438\u0435"
     m_Metadata:
       m_Items: []
   - m_Id: 67494721340747776
@@ -1043,11 +1064,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3768991576559616
-    m_Localized: Successfully exported files to Quest
+    m_Localized: "\u0424\u0430\u0439\u043B\u044B \u0443\u0441\u043F\u0435\u0448\u043D\u043E
+      \u0437\u0430\u0433\u0440\u0443\u0436\u0435\u043D\u044B \u043D\u0430 Quest"
     m_Metadata:
       m_Items: []
   - m_Id: 3769025302958080
-    m_Localized: Export to Quest
+    m_Localized: "\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u043D\u0430
+      Quest"
     m_Metadata:
       m_Items: []
   - m_Id: 3769067959029760
@@ -1080,7 +1103,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 91579491578740736
-    m_Localized: Appearance
+    m_Localized: "\u0412\u043D\u0435\u0448\u043D\u0438\u0439 \u0432\u0438\u0434"
     m_Metadata:
       m_Items: []
   - m_Id: 101771971410460672
@@ -1124,11 +1147,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101855364424859648
-    m_Localized: Display artist and song name in top right corner.
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0438\u0441\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044F
+      \u0438 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u043F\u0435\u0441\u043D\u0438
+      \u0432 \u043F\u0440\u0430\u0432\u043E\u043C \u0432\u0435\u0440\u0445\u043D\u0435\u043C
+      \u0443\u0433\u043B\u0443."
     m_Metadata:
       m_Items: []
   - m_Id: 101855374591852544
-    m_Localized: Display Song Info
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044E
+      \u043E \u043F\u0435\u0441\u043D\u0435"
     m_Metadata:
       m_Items: []
   - m_Id: 101855382842048512
@@ -1136,7 +1163,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101855392124043264
-    m_Localized: Display Difficulty Info
+    m_Localized: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044E
+      \u043E \u0441\u043B\u043E\u0436\u043D\u043E\u0441\u0442\u0438"
     m_Metadata:
       m_Items: []
   - m_Id: 102096011425677312
@@ -1213,6 +1241,116 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 150232748497440768
     m_Localized: Uninstalling ADB...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90253772483395584
+    m_Localized: Displays non-default floatValue on top of events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90254225048797184
+    m_Localized: Display FloatValue Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088741188730880
+    m_Localized: Visualize LightID Transition Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 206088950463528960
+    m_Localized: 'Previews and displays LightID transition events more accurately
+
+      This
+      is very heavy on performance'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947639714189312
+    m_Localized: CM Chan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208947667555979264
+    m_Localized: Adds CM Chan art to loading screens.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211668371329187840
+    m_Localized: Precision Placement Grid Precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211668392346845184
+    m_Localized: The snapping interval of precision placement grid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582333795893248
+    m_Localized: Invert Event Value Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582635601231872
+    m_Localized: Invert mouse scroll direction on changing event value.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582671521251328
+    m_Localized: Invert Note Angle Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582692199170048
+    m_Localized: Invert mouse scroll direction on changing note angle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582713359433728
+    m_Localized: Invert Arc Multiplier Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582733693419520
+    m_Localized: Invert mouse scroll direction on changing arc head and tail multipliers.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582754643968000
+    m_Localized: Invert Chain Squish Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582774030041088
+    m_Localized: Invert mouse scroll direction on changing chain squish.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582798323449856
+    m_Localized: Invert Chain Segment Count Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235582820507123712
+    m_Localized: Invert mouse scroll direction on changing the number of segments
+      in a chain.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258093237993472
+    m_Localized: Invert Wall Duration Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258097742675968
+    m_Localized: Invert mouse scroll direction on changing the duration of walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258102280912896
+    m_Localized: Invert Wall Bounds Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236258109335732224
+    m_Localized: Invert mouse scroll direction on changing the upper and lower bounds
+      of v3 walls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458017744977920
+    m_Localized: Precision Placement Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247458202206273536
+    m_Localized: 'If enabled, an extended grid will appear when using the precision
+      placement keybind while placing walls or notes. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262680152746688512
+    m_Localized: Open File Explorer After Create Zip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262680318467833856
+    m_Localized: Whether the file explorer opens automically after creating zip
     m_Metadata:
       m_Items: []
   references:

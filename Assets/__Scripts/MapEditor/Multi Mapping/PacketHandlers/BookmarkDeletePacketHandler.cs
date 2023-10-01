@@ -1,5 +1,6 @@
 using System;
 using LiteNetLib.Utils;
+using Beatmap.Base.Customs;
 
 [Obsolete("TODO: Refactor bookmarks to use the same systems as every other BeatmapObject")]
 public class BookmarkDeletePacketHandler : IPacketHandler
@@ -13,9 +14,9 @@ public class BookmarkDeletePacketHandler : IPacketHandler
     {
         var deletionObject = reader.GetBeatmapObject();
 
-        if (deletionObject is BeatmapBookmark deletionBookmark)
+        if (deletionObject is BaseBookmark deletionBookmark)
         {
-            bookmarkManager.DeleteBookmarkAtTime(deletionBookmark.Time, false);
+            bookmarkManager.DeleteBookmarkAtTime(deletionBookmark.JsonTime, false);
         }
     }
 }

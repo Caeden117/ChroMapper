@@ -643,8 +643,76 @@ MonoBehaviour:
     m_Key: bookmark.dialog.color
     m_Metadata:
       m_Items: []
+  - m_Id: 42585459012075520
+    m_Key: bar.events.transition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988137944907776
+    m_Key: gradient.easingtime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988345160302592
+    m_Key: gradient.easingtime.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247577315082240
+    m_Key: gradient.easingfloatvalue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247628972130304
+    m_Key: gradient.easingfloatvalue.tooltip
+    m_Metadata:
+      m_Items: []
   - m_Id: 118373130107551744
     m_Key: save.objects.outside
+    m_Metadata:
+      m_Items: []
+  - m_Id: 160655767994621952
+    m_Key: bar.events.floatvalue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122293661564928
+    m_Key: chroma.whitelight.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122782700634112
+    m_Key: chroma.whiteboost.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207749379233349632
+    m_Key: gradient.pass.transition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207750905897091072
+    m_Key: gradient.lerp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207751068199878656
+    m_Key: gradient.lerp.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220101281077985280
+    m_Key: pause.beatmap.version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220102296279908352
+    m_Key: pause.beatmap.version.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 232868047877242880
+    m_Key: custom.bpm.convert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 240390057914204160
+    m_Key: countersplus.bpmevents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256289992891105280
+    m_Key: gotobeat.dialog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256290009261473792
+    m_Key: gotobeat.dialog.invalid
     m_Metadata:
       m_Items: []
   m_Metadata:

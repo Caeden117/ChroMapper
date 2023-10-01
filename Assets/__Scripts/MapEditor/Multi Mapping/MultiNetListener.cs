@@ -5,6 +5,8 @@ using System.Net.Sockets;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using UnityEngine;
+using Beatmap.Base;
+using Beatmap.Enums;
 
 public class MultiNetListener : INetEventListener, IDisposable
 {
@@ -26,7 +28,7 @@ public class MultiNetListener : INetEventListener, IDisposable
     private CustomColorsUIController customColors;
     private RemotePlayerContainer remotePlayerPrefab;
     private MultiTimelineController multiTimelineController;
-    private float previousCursorBeat = 0;
+    private float previousCursorSongBeat = 0;
     private float localSongSpeed = 1;
     private float lastPoseUpdateTime = 0;
 
@@ -246,11 +248,11 @@ public class MultiNetListener : INetEventListener, IDisposable
         multiTimelineController?.ManualUpdate();
 
         if (audioTimeSyncController != null && cameraController != null &&
-            (cameraController.MovingCamera || (!audioTimeSyncController.IsPlaying && audioTimeSyncController.CurrentBeat != previousCursorBeat))
+            (cameraController.MovingCamera || (!audioTimeSyncController.IsPlaying && audioTimeSyncController.CurrentSongBpmTime != previousCursorSongBeat))
             && Time.time - lastPoseUpdateTime >= 1f / PoseUpdateFramerate)
         {
             lastPoseUpdateTime = Time.time;
-            previousCursorBeat = audioTimeSyncController.CurrentBeat;
+            previousCursorSongBeat = audioTimeSyncController.CurrentSongBpmTime;
 
             BroadcastPose();
         }
@@ -283,7 +285,7 @@ public class MultiNetListener : INetEventListener, IDisposable
         {
             Position = cameraController.transform.position,
             Rotation = cameraController.transform.rotation,
-            SongPosition = audioTimeSyncController.CurrentBeat,
+            SongPosition = audioTimeSyncController.CurrentSongBpmTime,
             IsPlayingSong = audioTimeSyncController.IsPlaying,
             PlayingSongSpeed = localSongSpeed
         });
@@ -300,10 +302,10 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     public void SubscribeToCollectionEvents()
     {
-        audioTimeSyncController = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).AudioTimeSyncController;
+        audioTimeSyncController = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note).AudioTimeSyncController;
         audioTimeSyncController.PlayToggle += OnTogglePlaying;
         cameraController = Camera.main.GetComponent<CameraController>();
-        tracksManager = BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note).GetComponent<TracksManager>();
+        tracksManager = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note).GetComponent<TracksManager>();
 
         // sigh
         bookmarkManager = UnityEngine.Object.FindObjectOfType<BookmarkManager>();
@@ -339,7 +341,7 @@ public class MultiNetListener : INetEventListener, IDisposable
 
         bookmarkManager.BookmarkAdded -= MultiNetListener_ObjectSpawnedEvent;
         bookmarkManager.BookmarkDeleted -= MultiNetListener_ObjectDeletedEvent;
-        
+
         customColors.CustomColorsUpdatedEvent -= CustomColors_CustomColorsUpdatedEvent;
 
         Settings.ClearSettingNotifications("SongSpeed");
@@ -362,25 +364,25 @@ public class MultiNetListener : INetEventListener, IDisposable
         BroadcastPose();
     }
 
-    private void MultiNetListener_ObjectSpawnedEvent(BeatmapObject obj)
+    private void MultiNetListener_ObjectSpawnedEvent(BaseObject obj)
     {
         var writer = new NetDataWriter();
 
         writer.Put(0);
         writer.Put((byte)PacketId.BeatmapObjectCreate);
-        writer.Put((byte)obj.BeatmapType);
+        writer.Put((byte)obj.ObjectType);
         writer.Put(obj);
 
         NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);
     }
 
-    private void MultiNetListener_ObjectDeletedEvent(BeatmapObject obj)
+    private void MultiNetListener_ObjectDeletedEvent(BaseObject obj)
     {
         var writer = new NetDataWriter();
 
         writer.Put(0);
         writer.Put((byte)PacketId.BeatmapObjectDelete);
-        writer.Put((byte)obj.BeatmapType);
+        writer.Put((byte)obj.ObjectType);
         writer.Put(obj);
 
         NetManager.SendToAll(writer, DeliveryMethod.ReliableOrdered);

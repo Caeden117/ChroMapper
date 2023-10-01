@@ -1,19 +1,25 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using System.IO.Compression;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Serialization;
+using Beatmap.Base;
 
 public class BeatSaberSongContainer : MonoBehaviour
 {
     [FormerlySerializedAs("song")] public BeatSaberSong Song;
     [FormerlySerializedAs("difficultyData")] public BeatSaberSong.DifficultyBeatmap DifficultyData;
     [FormerlySerializedAs("loadedSong")] public AudioClip LoadedSong;
-    [FormerlySerializedAs("map")] public BeatSaberMap Map;
+    [FormerlySerializedAs("map")] public BaseDifficulty Map;
 
     [NonSerialized] public MultiClientNetListener? MultiMapperConnection;
+
+    // Because Unity API is not thread safe, these are stored for later when saving difficulty file on separate thread
+    [HideInInspector] public int LoadedSongSamples;
+    [HideInInspector] public int LoadedSongFrequency;
+    [HideInInspector] public float LoadedSongLength;
 
     public static BeatSaberSongContainer Instance { get; private set; }
 
@@ -46,7 +52,7 @@ public class BeatSaberSongContainer : MonoBehaviour
     {
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         PersistentUI.Instance.LevelLoadSlider.value = 0;
-        PersistentUI.Instance.LevelLoadSliderLabel.text = 
+        PersistentUI.Instance.LevelLoadSliderLabel.text =
             LocalizationSettings.StringDatabase.GetLocalizedString("MultiMapping", "multi.session.downloading");
 
         yield return new WaitUntil(() => MultiMapperConnection?.MapData != null);
@@ -77,8 +83,15 @@ public class BeatSaberSongContainer : MonoBehaviour
                 .DifficultyBeatmaps.Find(diff => diff.Difficulty == MultiMapperConnection.MapData.Diff);
 
             Map = song.GetMapFromDifficultyBeatmap(DifficultyData);
+            Settings.Instance.Load_MapV3 = Map.Version[0] == '3';
 
-            yield return Song.LoadAudio((clip) => LoadedSong = clip, Song.SongTimeOffset, null);
+            yield return Song.LoadAudio((clip) =>
+            {
+                LoadedSong = clip;
+                LoadedSongSamples = clip.samples;
+                LoadedSongFrequency = clip.frequency;
+                LoadedSongLength = clip.length;
+            }, Song.SongTimeOffset, null);
         }
 
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);

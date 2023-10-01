@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -36,7 +39,7 @@ public class DifficultySelect : MonoBehaviour
     private bool loading;
     private DifficultyRow selected;
 
-    public BeatSaberMap CurrentDiff => selected != null ? diffs[selected.Name].Map : null;
+    public BaseDifficulty CurrentDiff => selected != null ? diffs[selected.Name].Map : null;
 
     private BeatSaberSong Song => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
@@ -141,7 +144,7 @@ public class DifficultySelect : MonoBehaviour
         row.ShowDirtyObjects(localDiff);
     }
 
-    private BeatSaberMap TryGetExistingMapFromDiff(DifficultySettings diff)
+    private BaseDifficulty TryGetExistingMapFromDiff(DifficultySettings diff)
     {
         try
         {
@@ -185,7 +188,7 @@ public class DifficultySelect : MonoBehaviour
         if (!currentCharacteristic.DifficultyBeatmaps.Contains(diff))
             currentCharacteristic.DifficultyBeatmaps.Add(diff);
 
-        var map = TryGetExistingMapFromDiff(localDiff) ?? new BeatSaberMap { MainNode = new JSONObject() };
+        var map = TryGetExistingMapFromDiff(localDiff) ?? new V3Difficulty() { MainNode = new JSONObject() };
         var oldPath = map.DirectoryAndFile;
 
         diff.UpdateName();
@@ -352,9 +355,11 @@ public class DifficultySelect : MonoBehaviour
                     map.ColorRight = fromDiff.DifficultyBeatmap.ColorRight;
                     map.EnvColorLeft = fromDiff.DifficultyBeatmap.EnvColorLeft;
                     map.EnvColorRight = fromDiff.DifficultyBeatmap.EnvColorRight;
+                    map.EnvColorWhite = fromDiff.DifficultyBeatmap.EnvColorWhite;
                     map.ObstacleColor = fromDiff.DifficultyBeatmap.ObstacleColor;
                     map.BoostColorLeft = fromDiff.DifficultyBeatmap.BoostColorLeft;
                     map.BoostColorRight = fromDiff.DifficultyBeatmap.BoostColorRight;
+                    map.BoostColorWhite = fromDiff.DifficultyBeatmap.BoostColorWhite;
 
                     // This sets the current filename as the filename for another diff and will trigger the copy on save
                     map.UpdateName(fromDiff.DifficultyBeatmap.BeatmapFilename);

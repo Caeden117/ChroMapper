@@ -1,3 +1,5 @@
-﻿public class BeatmapCustomEventInputController : BeatmapInputController<BeatmapCustomEventContainer>
+﻿using Beatmap.Containers;
+
+public class BeatmapCustomEventInputController : BeatmapInputController<CustomEventContainer>
 {
 }

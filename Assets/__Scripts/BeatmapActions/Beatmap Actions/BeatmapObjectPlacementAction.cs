@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using LiteNetLib.Utils;
+using Beatmap.Base;
 
 public class BeatmapObjectPlacementAction : BeatmapAction
 {
-    private IEnumerable<BeatmapObject> removedConflictObjects;
+    private IEnumerable<BaseObject> removedConflictObjects;
 
     public BeatmapObjectPlacementAction() : base() { }
 
-    public BeatmapObjectPlacementAction(IEnumerable<BeatmapObject> placedContainers,
-        IEnumerable<BeatmapObject> conflictingObjects, string comment) : base(placedContainers, comment) =>
+    public BeatmapObjectPlacementAction(IEnumerable<BaseObject> placedContainers,
+        IEnumerable<BaseObject> conflictingObjects, string comment) : base(placedContainers, comment) =>
         removedConflictObjects = conflictingObjects;
 
-    public BeatmapObjectPlacementAction(BeatmapObject placedObject,
-        IEnumerable<BeatmapObject> conflictingObject, string comment) : base(new[] { placedObject }, comment) =>
+    public BeatmapObjectPlacementAction(BaseObject placedObject,
+        IEnumerable<BaseObject> conflictingObject, string comment) : base(new[] { placedObject }, comment) =>
         removedConflictObjects = conflictingObject;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
@@ -51,6 +52,9 @@ public class BeatmapObjectPlacementAction : BeatmapAction
 
     public override void Serialize(NetDataWriter writer)
     {
+        // Need to ensure customData is up to date before sending
+        foreach (var baseObject in Data) baseObject.WriteCustom();
+
         SerializeBeatmapObjectList(writer, Data);
         SerializeBeatmapObjectList(writer, removedConflictObjects);
     }

@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using LiteNetLib.Utils;
+using Beatmap.Base;
 
 public class BeatmapObjectDeletionAction : BeatmapAction
 {
     public BeatmapObjectDeletionAction() : base() { }
 
-    public BeatmapObjectDeletionAction(IEnumerable<BeatmapObject> objs, string comment) : base(objs, comment) { }
+    public BeatmapObjectDeletionAction(IEnumerable<BaseObject> objs, string comment) : base(objs, comment) { }
 
-    public BeatmapObjectDeletionAction(BeatmapObject obj, string comment) : base(new[] { obj }, comment) { }
+    public BeatmapObjectDeletionAction(BaseObject obj, string comment) : base(new[] { obj }, comment) { }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {

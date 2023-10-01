@@ -28,7 +28,7 @@ public class SpectrogramChunk : MonoBehaviour
     private void Update()
     {
         var nearestChunk = (int)Math.Round(
-            waveform.Atsc.CurrentBeat / (double)BeatmapObjectContainerCollection.ChunkSize
+            waveform.Atsc.CurrentSongBpmTime / (double)BeatmapObjectContainerCollection.ChunkSize
             , MidpointRounding.AwayFromZero);
         var enabled = chunkID > nearestChunk - Settings.Instance.ChunkDistance &&
                       chunkID < nearestChunk + Settings.Instance.ChunkDistance;

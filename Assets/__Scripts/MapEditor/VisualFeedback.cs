@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 
 public class VisualFeedback : MonoBehaviour
@@ -37,10 +39,10 @@ public class VisualFeedback : MonoBehaviour
 
     private void OnPlayToggle(bool playing) => lastTime = -1;
 
-    private void HandleCallback(bool initial, int index, BeatmapObject objectData)
+    private void HandleCallback(bool initial, int index, BaseObject objectData)
     {
-        if (objectData.Time == lastTime ||
-            !DingOnNotePassingGrid.NoteTypeToDing[(objectData as BeatmapNote).Type])
+        if (objectData.JsonTime == lastTime ||
+            !DingOnNotePassingGrid.NoteTypeToDing[(objectData as BaseNote).Type])
         {
             return;
         }
@@ -48,22 +50,22 @@ public class VisualFeedback : MonoBehaviour
 * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
 * the same time that are supposed to ding from triggering the sound effects.
 */
-        var noteData = (BeatmapNote)objectData;
+        var noteData = (BaseNote)objectData;
         if (useColours)
         {
             Color c;
             switch (noteData.Type)
             {
-                case BeatmapNote.NoteTypeA:
+                case (int)NoteType.Red:
                     c = red;
                     break;
-                case BeatmapNote.NoteTypeB:
+                case (int)NoteType.Blue:
                     c = blue;
                     break;
                 default: return;
             }
 
-            color = lastTime == objectData.Time ? Color.Lerp(color, c, 0.5f) : c;
+            color = lastTime == objectData.JsonTime ? Color.Lerp(color, c, 0.5f) : c;
         }
 
         if (t <= 0)
@@ -76,7 +78,7 @@ public class VisualFeedback : MonoBehaviour
             t = 1;
         }
 
-        lastTime = objectData.Time;
+        lastTime = objectData.JsonTime;
     }
 
     private IEnumerator VisualFeedbackAnim()

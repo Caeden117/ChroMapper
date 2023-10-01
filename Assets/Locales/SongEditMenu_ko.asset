@@ -97,12 +97,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'This feature is deprecated.
-
-      Shifts the song forward by this
-      amount
-
-      (in seconds)'
+    m_Localized: "\uC774 \uAE30\uB2A5\uC740 \uB354 \uC774\uC0C1 \uC0AC\uC6A9\uB418\uC9C0
+      \uC54A\uC2B5\uB2C8\uB2E4.\n\uB178\uB798\uB97C \uCD08 \uB2E8\uC704 \uB9CC\uD07C
+      \uC55E\uC73C\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -306,11 +303,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, do you want to save them?
+    m_Localized: "\uC800\uC7A5\uD558\uC9C0 \uC54A\uC740 \uBCC0\uACBD\uC0AC\uD56D\uC774
+      \uC874\uC7AC\uD569\uB2C8\uB2E4. \uBCC0\uACBD \uB0B4\uC6A9\uC744 \uC800\uC7A5\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, do you want to save them?
+    m_Localized: "\uC800\uC7A5\uD558\uC9C0 \uC54A\uC740 \uB09C\uC774\uB3C4\uAC00
+      \uC874\uC7AC\uD569\uB2C8\uB2E4. \uBCC0\uACBD \uB0B4\uC6A9\uC744 \uC800\uC7A5\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -346,7 +345,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, do you want to save them?
+    m_Localized: "\uC800\uC7A5\uD558\uC9C0 \uC54A\uC740 \uAE30\uC5EC\uC790 \uBCC0\uACBD\uC774
+      \uC874\uC7AC\uD569\uB2C8\uB2E4. \uBCC0\uACBD \uB0B4\uC6A9\uC744 \uC800\uC7A5\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -411,9 +411,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115521560328208384
-    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
-      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
-      that you apply your offsets using a audio manipulator such as Audacity."
+    m_Localized: "\uB178\uB798 \uD0C0\uC774\uBC0D \uC624\uD504\uC14B\uC744 \uC0AC\uC6A9\uD560
+      \uACBD\uC6B0 \uAC8C\uC784\uB0B4\uC5D0\uC11C \uB3D9\uAE30\uD654\uB418\uC9C0
+      \uC54A\uC740 \uCEF7 \uB178\uC774\uC988\uAC00 \uBC1C\uC0DD\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n\uB178\uB798
+      \uD0C0\uC774\uBC0D \uC624\uD504\uC14B\uC744 \uC0AC\uC6A9\uD558\uBA74 \uBD80\uBD84\uC801\uC73C\uB85C
+      \uB178\uD2B8\uAC00 \uBD80\uBD84\uC801\uC73C\uB85C \uBCF4\uC774\uC9C0 \uC54A\uC744
+      \uC218 \uC788\uC2B5\uB2C8\uB2E4.\nAudacity\uC640 \uAC19\uC740 \uC624\uB514\uC624
+      \uD3B8\uC9D1\uAE30\uB97C \uC0AC\uC6A9\uD558\uC5EC \uC624\uD504\uC14B\uC744
+      \uC801\uC6A9\uD558\uB294 \uAC83\uC774 \uC88B\uC2B5\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566409055109120
+    m_Localized: Map packaged to zip successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566610293620736
+    m_Localized: 'Error packaging map to zip.
+
+      No zip created.'
     m_Metadata:
       m_Items: []
   references:

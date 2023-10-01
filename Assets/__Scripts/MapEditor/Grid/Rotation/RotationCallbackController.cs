@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Beatmap.Base;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,14 +9,14 @@ public class RotationCallbackController : MonoBehaviour
 {
     [SerializeField] private BeatmapObjectCallbackController interfaceCallback;
     [FormerlySerializedAs("atsc")] public AudioTimeSyncController Atsc;
-    [SerializeField] private EventsContainer events;
+    [FormerlySerializedAs("events")][SerializeField] private EventGridContainer eventGrid;
     private readonly string[] enabledCharacteristics = { "360Degree", "90Degree", "Lawless" };
 
-    public Action<bool, int> RotationChangedEvent; //Natural, degrees
+    public Action<bool, float> RotationChangedEvent; //Natural, degrees
     public bool IsActive { get; private set; }
-    public MapEvent LatestRotationEvent { get; private set; }
+    public BaseEvent LatestRotationEvent { get; private set; }
 
-    public int Rotation { get; private set; }
+    public float Rotation { get; private set; }
 
     // Start is called before the first frame update
     internal void Start()
@@ -59,13 +61,13 @@ public class RotationCallbackController : MonoBehaviour
     private void PlayToggle(bool isPlaying)
     {
         if (!IsActive) return;
-        var time = Atsc.CurrentBeat;
-        var rotations = events.AllRotationEvents.Where(x =>
-            x.Time < time || (x.Time == time && x.Type == MapEvent.EventTypeEarlyRotation));
+        var jsonTime = Atsc.CurrentJsonTime;
+        var rotations = eventGrid.AllRotationEvents.Where(x =>
+            x.JsonTime < jsonTime || (x.JsonTime == jsonTime && x.Type == (int)EventTypeValue.EarlyLaneRotation));
         Rotation = 0;
         if (rotations.Count() > 0)
         {
-            Rotation = rotations.Sum(x => x.GetRotationDegreeFromValue() ?? 0);
+            Rotation = rotations.Sum(x => x.GetRotationDegreeFromValue() ?? 0f);
             LatestRotationEvent = rotations.LastOrDefault();
         }
         else
@@ -76,11 +78,11 @@ public class RotationCallbackController : MonoBehaviour
         RotationChangedEvent.Invoke(false, Rotation);
     }
 
-    private void EventPassedThreshold(bool initial, int index, BeatmapObject obj)
+    private void EventPassedThreshold(bool initial, int index, BaseObject obj)
     {
-        var e = obj as MapEvent;
-        if (e is null || !IsActive || (e == LatestRotationEvent && e.Type == MapEvent.EventTypeEarlyRotation) ||
-            !e.IsRotationEvent)
+        var e = obj as BaseEvent;
+        if (e is null || !IsActive || (e == LatestRotationEvent && e.Type == (int)EventTypeValue.EarlyLaneRotation) ||
+            !e.IsLaneRotationEvent())
         {
             return;
         }

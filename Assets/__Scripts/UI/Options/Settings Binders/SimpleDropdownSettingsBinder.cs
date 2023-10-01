@@ -9,7 +9,10 @@ public class SimpleDropdownSettingsBinder : SettingsBinder
 {
     [FormerlySerializedAs("dropdown")] public TMP_Dropdown Dropdown;
 
-    private void Start() => Dropdown.value = (int)RetrieveValueFromSettings();
+    private void Start()
+    {
+        Dropdown.SetValueWithoutNotify((int)RetrieveValueFromSettings());
+    }
 
     public void SendDropdownToSettings(int value) => SendValueToSettings(value);
 

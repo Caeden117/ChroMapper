@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using Beatmap.Enums;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -22,29 +23,31 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     public void OnTypeOn(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        placeMode.SetMode(PlacementModeController.PlacementMode.Note);
-        lightMode.SetMode(LightingModeController.LightingMode.ON);
+        lightMode.SetMode(LightingModeController.LightingMode.On);
     }
 
     public void OnTypeFlash(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        placeMode.SetMode(PlacementModeController.PlacementMode.Note);
         lightMode.SetMode(LightingModeController.LightingMode.Flash);
     }
 
     public void OnTypeOff(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        placeMode.SetMode(PlacementModeController.PlacementMode.Note);
         lightMode.SetMode(LightingModeController.LightingMode.Off);
     }
 
     public void OnTypeFade(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        placeMode.SetMode(PlacementModeController.PlacementMode.Note);
         lightMode.SetMode(LightingModeController.LightingMode.Fade);
+    }
+
+    public void OnTypeTransition(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        lightMode.SetMode(LightingModeController.LightingMode.Transition);
     }
 
     public void OnTogglePrecisionRotation(InputAction.CallbackContext context)
@@ -83,6 +86,8 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     public void OnToggleNoteorEvent(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
+        if (eventPlacement.queuedData.IsWhite) return;
+
         if (colorType.LeftSelectedEnabled())
             blueToggle.onValueChanged.Invoke(true);
         else
@@ -94,6 +99,8 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     {
         if (!context.performed) return;
         placeMode.SetMode(PlacementModeController.PlacementMode.Bomb);
+        colorType.BombNote(true);
+        lightMode.UpdateValue();
     }
 
     public void OnPlaceObstacle(InputAction.CallbackContext context)
@@ -129,7 +136,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     public void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        (BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note) as NotesContainer)
+        (BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer)
             .UpdateSwingArcVisualizer();
     }
 

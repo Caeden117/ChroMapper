@@ -61,11 +61,14 @@ public class OptionsController : MenuBase
     private IEnumerator Close(float rate, CanvasGroup group)
     {
         float t = 1;
-        while (t > 0)
+        if (!Settings.Instance.InstantEscapeMenuTransitions)
         {
-            group.alpha = fadeOutCurve.Evaluate(t);
-            t -= Time.deltaTime * rate;
-            yield return new WaitForEndOfFrame();
+            while (t > 0)
+            {
+                group.alpha = fadeOutCurve.Evaluate(t);
+                t -= Time.deltaTime * rate;
+                yield return new WaitForEndOfFrame();
+            }
         }
 
         group.alpha = 0;

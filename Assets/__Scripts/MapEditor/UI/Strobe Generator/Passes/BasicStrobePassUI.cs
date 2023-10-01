@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,6 +14,8 @@ public class BasicStrobePassUI : StrobeGeneratorPassUIController
     [FormerlySerializedAs("Values")] [SerializeField] private StrobeGeneratorEventSelector values;
     [SerializeField] private TMP_InputField strobeInterval;
     [SerializeField] private TMP_Dropdown regularEventEasings;
+    [SerializeField] private Toggle easingTime;
+    [SerializeField] private Toggle easingFloatValue;
 
     // The following functions are filtered from this Pass for the following reasons:
     // "Back" results in times outside the bounds set by the user
@@ -36,17 +39,18 @@ public class BasicStrobePassUI : StrobeGeneratorPassUIController
         foreach (var selector in eventTypes) values.Add(GetTypeFromEventIds(selector.SelectedNum, this.values.SelectedNum));
         var precision = float.Parse(strobeInterval.text);
         var internalName = Easing.DisplayNameToInternalName[regularEventEasings.captionText.text];
-        return new StrobeLightingPass(values, swapColors.isOn, dynamicallyChangeTypeA.isOn, precision, internalName);
+        return new StrobeLightingPass(values, swapColors.isOn, dynamicallyChangeTypeA.isOn, precision, internalName, easingTime.isOn, easingFloatValue.isOn);
     }
 
     private int GetTypeFromEventIds(int eventValue, int eventColor)
     {
         return eventValue switch
         {
-            0 => MapEvent.LightValueOff,
-            1 => eventColor == 0 ? MapEvent.LightValueRedON : MapEvent.LightValueBlueON,
-            2 => eventColor == 0 ? MapEvent.LightValueRedFlash : MapEvent.LightValueBlueFlash,
-            3 => eventColor == 0 ? MapEvent.LightValueRedFade : MapEvent.LightValueBlueFade,
+            0 => (int)LightValue.Off,
+            1 => eventColor == 0 ? (int)LightValue.RedOn : (int)LightValue.BlueOn,
+            2 => eventColor == 0 ? (int)LightValue.RedFlash : (int)LightValue.BlueFlash,
+            3 => eventColor == 0 ? (int)LightValue.RedFade : (int)LightValue.BlueFade,
+            4 => eventColor == 0 ? (int)LightValue.RedTransition : (int)LightValue.BlueTransition,
             _ => -1,
         };
     }

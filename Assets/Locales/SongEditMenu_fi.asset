@@ -96,12 +96,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'This feature is deprecated.
-
-      Shifts the song forward by this
-      amount
-
-      (in seconds)'
+    m_Localized: "T\xE4m\xE4 ominaisuus on vanhentunut.\nSiirt\xE4\xE4 kappaletta
+      eteenp\xE4in t\xE4ll\xE4 m\xE4\xE4r\xE4ll\xE4\n(sekunneissa)"
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -298,11 +294,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, do you want to save them?
+    m_Localized: Sinulla on tallentamattomia muutoksia. Haluatko tallentaa ne?
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, do you want to save them?
+    m_Localized: Sinulla on tallentamattomia vaikeusasteita. Haluatko tallentaa ne?
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -334,7 +330,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, do you want to save them?
+    m_Localized: Sinulla on tallentamattomia muutoksia osallistujissa. Haluatko tallentaa
+      ne?
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -348,18 +345,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104117528192749568
-    m_Localized: '{0}% complete.'
+    m_Localized: '{0}% valmiina'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 44795657592176640
-    m_Localized: Reaction Time
+    m_Localized: Reaktioaika
     m_Metadata:
       m_Items: []
   - m_Id: 44793699250667520
-    m_Localized: 'How much time the the player has to react
+    m_Localized: 'Kuinka paljon aikaa pelaajalla on reagoida
 
-      (in milliseconds)'
+      (millisekunteina)'
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
@@ -367,22 +364,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
-    m_Localized: 'Removes objects using Contains lookup.
-
-      (Does not effect
-      the editor environment.)'
+    m_Localized: "Poistaa objektit, joissa k\xE4ytet\xE4\xE4n Contains-hakua.\n(ei
+      vaikuta muokkausymp\xE4rist\xF6\xF6n.)"
     m_Metadata:
       m_Items: []
   - m_Id: 104117395359141888
-    m_Localized: Exporting song to your Quest...
+    m_Localized: "Vied\xE4\xE4n kappaletta Questillesi..."
     m_Metadata:
       m_Items: []
   - m_Id: 104118050203242496
-    m_Localized: Could not find any connected devices.
+    m_Localized: "Yht\xE4\xE4n yhdistetty\xE4 laitetta ei l\xF6ytynyt."
     m_Metadata:
       m_Items: []
   - m_Id: 104118270903324672
-    m_Localized: Could not find a connected Quest.
+    m_Localized: "Yhdistetty\xE4 Questia ei l\xF6ytynyt."
     m_Metadata:
       m_Items: []
   - m_Id: 115483511321985024
@@ -398,9 +393,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115521560328208384
-    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
-      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
-      that you apply your offsets using a audio manipulator such as Audacity."
+    m_Localized: "Song Time Offset -toiminnon k\xE4ytt\xE4minen voi johtaa ep\xE4synkronoituihin
+      leikkaus\xE4\xE4niin peliss\xE4. \nSong Time Offset -toiminnon k\xE4ytt\xE4minen
+      voi my\xF6s tehd\xE4 muistiinpanoista osittain n\xE4kym\xE4tt\xF6mi\xE4.\nSuosittelemme,
+      ett\xE4 muutat audion latenssia k\xE4ytt\xE4m\xE4ll\xE4 audiomanipulaattoria,
+      kuten Audacity\xE4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566409055109120
+    m_Localized: Map packaged to zip successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 216566610293620736
+    m_Localized: 'Error packaging map to zip.
+
+      No zip created.'
     m_Metadata:
       m_Items: []
   references:

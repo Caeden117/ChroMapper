@@ -32,19 +32,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 148
-    m_Localized: "\u6E10\u53D8"
+    m_Localized: "\u95EA\u7184"
     m_Metadata:
       m_Items: []
   - m_Id: 45
-    m_Localized: "\u706F\u5149\u5C06\u9010\u6E10\u53D8\u6697\u3002"
+    m_Localized: "\u706F\u5149\u5C06\u5FEB\u901F\u53D8\u6697\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: "\u95EA\u5149"
+    m_Localized: "\u95EA\u4EAE"
     m_Metadata:
       m_Items: []
   - m_Id: 46
-    m_Localized: "\u706F\u5149\u5C06\u5FEB\u901F\u53D8\u6697\u3002"
+    m_Localized: "\u706F\u5149\u5C06\u4ECE\u9ED1\u95EA\u4EAE\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 48
@@ -121,11 +121,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: "\u60A8\u786E\u5B9A\u8981\u5220\u9664\u6B64\u6807\u8BB0\u5417\uFF1F"
+    m_Localized: "\u60A8\u786E\u5B9A\u8981\u5220\u9664\u6B64\u4E66\u7B7E\u5417\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: "\u8F93\u5165\u8FD9\u4E2A\u65B0\u6807\u8BB0\u7684\u540D\u79F0\u3002"
+    m_Localized: "\u8F93\u5165\u8FD9\u4E2A\u65B0\u4E66\u7B7E\u7684\u540D\u79F0\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -280,7 +280,7 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 141
-    m_Localized: "\u6BCF\u79D2\u6446\u52A8\u6570\uFF1A {OverallSPS:F2}"
+    m_Localized: "\u6BCF\u79D2\u6325\u51FB\u6570\uFF1A {OverallSPS:F2}"
     m_Metadata:
       m_Items:
       - id: 0
@@ -364,7 +364,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: "\u6FC0\u5149\u901F\u5EA6\u7F13\u548C"
+    m_Localized: "\u6FC0\u5149\u52A0\u901F"
     m_Metadata:
       m_Items: []
   - m_Id: 129
@@ -697,9 +697,83 @@ MonoBehaviour:
     m_Localized: "\u5728\u5730\u56FE\u5916\u627E\u5230\u7684\u7269\u4F53\uFF0C\u4F60\u60F3\u5220\u9664\u5B83\u4EEC\u5417\uFF1F"
     m_Metadata:
       m_Items: []
+  - m_Id: 160655767994621952
+    m_Localized: FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247628972130304
+    m_Localized: Easing applies to floatValue.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43247577315082240
+    m_Localized: Ease FloatValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988345160302592
+    m_Localized: Easing applies to time.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42988137944907776
+    m_Localized: Easing Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 42585459012075520
+    m_Localized: Transition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122293661564928
+    m_Localized: Set color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207122782700634112
+    m_Localized: Set boost color for White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207749379233349632
+    m_Localized: Color Gradients
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207750905897091072
+    m_Localized: Lerp Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 207751068199878656
+    m_Localized: Changes interpolation for the transition.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220101281077985280
+    m_Localized: Change Beatmap Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220102296279908352
+    m_Localized: Changes map version to v2 or v3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 232868047877242880
+    m_Localized: 'CM has detected Custom BPM changes and
+
+      converted these into
+      Official BPM events'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 240390057914204160
+    m_Localized: 'BPM Events: {BPMCount}'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 256289992891105280
+    m_Localized: Enter the beat you want to go to
+    m_Metadata:
+      m_Items: []
+  - m_Id: 256290009261473792
+    m_Localized: 'Invalid number
+
+      Enter the beat you want to go to'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000
+        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000000083e97b095603

@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Let's Go!
+    m_Localized: "Nu k\xF6r vi!"
     m_Metadata:
       m_Items: []
   - m_Id: 3

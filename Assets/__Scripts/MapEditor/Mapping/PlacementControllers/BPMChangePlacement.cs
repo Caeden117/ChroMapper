@@ -1,20 +1,26 @@
 ﻿using System.Collections.Generic;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
+using Beatmap.Containers;
+using Beatmap.Helper;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using UnityEngine;
 
-public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapBPMChangeContainer, BPMChangesContainer>
+public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventContainer, BPMChangeGridContainer>
 {
-    public override BeatmapAction GenerateAction(BeatmapObject spawned, IEnumerable<BeatmapObject> conflicting) =>
-        new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Change at time {spawned.Time}");
+    public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
+        new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Event at time {spawned.JsonTime}");
 
-    public override BeatmapBPMChange GenerateOriginalData() => new BeatmapBPMChange(0, 0);
+    public override BaseBpmEvent GenerateOriginalData() => BeatmapFactory.BpmEvent(0, 0);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __) =>
         instantiatedContainer.transform.localPosition =
             new Vector3(0.5f, 0.5f, instantiatedContainer.transform.localPosition.z);
 
-    public override void TransferQueuedToDraggedObject(ref BeatmapBPMChange dragged, BeatmapBPMChange queued)
+    public override void TransferQueuedToDraggedObject(ref BaseBpmEvent dragged, BaseBpmEvent queued)
     {
-        dragged.Time = queued.Time;
+        dragged.SetTimes(queued.JsonTime, queued.SongBpmTime);
         objectContainerCollection.RefreshModifiedBeat();
     }
 
@@ -22,7 +28,7 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
 
     internal override void ApplyToMap()
     {
-        var lastBpm = objectContainerCollection.FindLastBpm(RoundedTime, false)?.Bpm ??
+        var lastBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
                       BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
         PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog", AttemptPlaceBpmChange,
             "", lastBpm.ToString());
@@ -33,14 +39,12 @@ public class BPMChangePlacement : PlacementController<BeatmapBPMChange, BeatmapB
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj)) return;
         if (float.TryParse(obj, out var bpm))
         {
-            queuedData.Time = RoundedTime;
             queuedData.Bpm = bpm;
             base.ApplyToMap();
-            objectContainerCollection.RefreshModifiedBeat();
         }
         else
         {
-            var lastBpm = objectContainerCollection.FindLastBpm(RoundedTime, false)?.Bpm ??
+            var lastBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
                           BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             PersistentUI.Instance.ShowInputBox("Mapper", "bpm.dialog.invalid",
                 AttemptPlaceBpmChange, "", lastBpm.ToString());

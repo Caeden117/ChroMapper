@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base.Customs;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +19,7 @@ public class EnvRemoval : MonoBehaviour
     [SerializeField] private Image envRemovalToggle;
 
     private readonly List<EnvRemovalListItem> envRemovalList = new List<EnvRemovalListItem>();
-    public List<EnvEnhancement> EnvRemovalList => envRemovalList.Select(it => it.Value).ToList();
+    public List<BaseEnvironmentEnhancement> EnvRemovalList => envRemovalList.Select(it => it.Value).ToList();
 
     public void ToggleEnvRemoval()
     {
@@ -31,12 +34,16 @@ public class EnvRemoval : MonoBehaviour
 
     public void AddItem()
     {
-        AddItem(new EnvEnhancement(""));
+        var newItem = Settings.Instance.Load_MapV3
+            ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement("")
+            : new V2EnvironmentEnhancement("");
+        newItem.Active = false;
+        AddItem(newItem);
         UpdateEnvRemoval();
         StartCoroutine(WaitToScroll());
     }
 
-    public void AddItem(EnvEnhancement text)
+    public void AddItem(BaseEnvironmentEnhancement text)
     {
         var obj = Instantiate(listItemPrefab, listContainer.transform).GetComponent<EnvRemovalListItem>();
         obj.Setup(this, text);
@@ -63,7 +70,7 @@ public class EnvRemoval : MonoBehaviour
         envRemovalList.Clear();
     }
 
-    public void UpdateFromDiff(List<EnvEnhancement> localEnvRemoval)
+    public void UpdateFromDiff(List<BaseEnvironmentEnhancement> localEnvRemoval)
     {
         ClearList();
 

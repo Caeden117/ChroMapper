@@ -35,15 +35,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: "ChroMapper hat festgestellt das deine info Datai als schreibgesch\xFCtzt
+    m_Localized: "ChroMapper hat festgestellt das info.dat als schreibgesch\xFCtzt
       markiert wurde.\n\nBitte entferne den Schreibschutz und versuche es nochmal
-      oder verwende den aktuelsten Editor der EditSaber Familie."
+      oder verwende den aktuellsten Editor der EditSaber Familie."
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: "360 Grad mappen kann eine Map sehr schnell unspielbar machen wenn
-      sie nicht gen\xFCgend getestet wird.\n\nBitte teste die Map h\xE4ufig und/oder
-      lass sie von anderen testen."
+    m_Localized: "360 Grad Mapping ist noch relativ neu und kann deine Map schnell
+      unspielbar machen, wenn sie nicht getestet wird.\n\nAus Liebe zu allem und
+      was heilig ist, schau, dass du die Map h\xE4ufig und/oder von anderen testen
+      l\xE4sst."
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -51,12 +52,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "Bist du sicher das du den Ladevorgang abbrechen m\xF6chtest?"
+    m_Localized: "Bist du sicher, dass du den Ladevorgang abbrechen m\xF6chtest?"
     m_Metadata:
       m_Items: []
   - m_Id: 9
     m_Localized: "Einige ChroMapper Einstellungen konnten nicht geladen werden.\n\nWenn
-      dieses Dialogfeld beim starten von ChroMapper weiterhin angezeigt wird, l\xF6schen
+      dieses Dialogfeld beim Starten von ChroMapper weiterhin angezeigt wird, l\xF6schen
       Sie die Einstellungsdatei in:\n{0}/ChroMapperSettings.json"
     m_Metadata:
       m_Items: []
@@ -64,7 +65,7 @@ MonoBehaviour:
     m_Localized: 'Discord RPC hat einen Fehler festgestellt: {0}
 
       Discord RPC
-      wird deaktiviert, bis ChroMapper neu gestartet wird'
+      wird deaktiviert, bis ChroMapper neu gestartet wird.'
     m_Metadata:
       m_Items: []
   - m_Id: 11

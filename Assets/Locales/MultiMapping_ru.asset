@@ -76,8 +76,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: Connection rejected. If you used a room code, ensure the code was
-      entered correctly.
+    m_Localized: 'Connection rejected.
+
+      This could be because the room code
+      is invalid
+
+      or your CM version is not the same as the host.'
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
@@ -109,8 +113,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1970841337802752
-    m_Localized: "The ChroMapTogether server will be used to host this session. You
-      will be given a short room code to pass to friends.\t"
+    m_Localized: The ChroMapTogether server will be used to host this session. You
+      will be given a short room code to pass to friends.
     m_Metadata:
       m_Items: []
   - m_Id: 2018274558160896

@@ -20,11 +20,11 @@ MonoBehaviour:
     - id: 0
   m_TableData:
   - m_Id: 34914570240
-    m_Localized: Join Session
+    m_Localized: Deelnemen aan sessie
     m_Metadata:
       m_Items: []
   - m_Id: 104179306496
-    m_Localized: Host Session
+    m_Localized: Maak een sessie aan
     m_Metadata:
       m_Items: []
   - m_Id: 757656064000
@@ -52,7 +52,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3409345384448
-    m_Localized: Port
+    m_Localized: Poort
     m_Metadata:
       m_Items: []
   - m_Id: 3460121628672
@@ -72,12 +72,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4250194284544
-    m_Localized: Apply Changes
+    m_Localized: Wijzigingen Toepassen
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: Connection rejected. If you used a room code, ensure the code was
-      entered correctly.
+    m_Localized: 'Connection rejected.
+
+      This could be because the room code
+      is invalid
+
+      or your CM version is not the same as the host.'
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
@@ -86,12 +90,12 @@ MonoBehaviour:
       m_Items:
       - id: 0
   - m_Id: 5357561843712
-    m_Localized: 'A networking error occured: {0}.'
+    m_Localized: 'Er is een netwerkfout opgetreden: {0}.'
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 5800807501824
-    m_Localized: 'Connection with the ChroMapTogether server lost: {0}.'
+    m_Localized: 'Verbinding met de ChroMapTogether-server is verbroken: {0}.'
     m_Metadata:
       m_Items:
       - id: 0
@@ -104,13 +108,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1970900842393600
-    m_Localized: Friends will need to connect using your Public IP and Port. Port
-      forwarding is required for clients to connect.
+    m_Localized: Vrienden moeten verbinden via jouw openbare IP en poort. Port forwarding
+      is dus vereist om te verbinden als client.
     m_Metadata:
       m_Items: []
   - m_Id: 1970841337802752
-    m_Localized: The ChroMapTogether server will be used to host this session. You
-      will be given a short room code to pass to friends.
+    m_Localized: De ChroMapTogether-server wordt gebruikt om deze sessie te hosten.
+      Je krijgt een room-code om door te geven aan je vrienden.
     m_Metadata:
       m_Items: []
   - m_Id: 2018274558160896
@@ -118,17 +122,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2018332712185856
-    m_Localized: This object was first created/modified by {0}.
+    m_Localized: "Dit object is gecre\xEBerd/voor het eerst aangepast door {0}."
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2018498240393216
-    m_Localized: This object was last modified by {0}.
+    m_Localized: Dit object is voor het laatst aangepast door {0}.
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 2336103375384576
-    m_Localized: Are you sure you want to ban {0}?
+    m_Localized: Weet je zeker dat je {0} wil verbannen?
     m_Metadata:
       m_Items:
       - id: 0

@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Beatmap.Base;
+using Beatmap.Containers;
+using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class TracksManager : MonoBehaviour
 {
-    [FormerlySerializedAs("TrackPrefab")] [SerializeField] private GameObject trackPrefab;
-    [FormerlySerializedAs("TracksParent")] [SerializeField] private Transform tracksParent;
-    [SerializeField] private EventsContainer events;
+    [FormerlySerializedAs("TrackPrefab")][SerializeField] private GameObject trackPrefab;
+    [FormerlySerializedAs("TracksParent")][SerializeField] private Transform tracksParent;
+    [FormerlySerializedAs("events")][SerializeField] private EventGridContainer eventGrid;
     [SerializeField] private AudioTimeSyncController atsc;
 
     private readonly Dictionary<Vector3, Track> loadedTracks = new Dictionary<Vector3, Track>();
@@ -23,21 +26,26 @@ public class TracksManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Note));
+        objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note));
         objectContainerCollections.Add(
-            BeatmapObjectContainerCollection.GetCollectionForType(BeatmapObject.ObjectType.Obstacle));
-        BeatmapObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
+            BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle));
+        if (Settings.Instance.Load_MapV3)
+        {
+            objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc));
+            objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain));
+        }
+        ObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
     }
 
-    private void OnDestroy() => BeatmapObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
+    private void OnDestroy() => ObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]
-    private void FlaggedForDeletion(BeatmapObjectContainer obj, bool _, string __)
+    private void FlaggedForDeletion(ObjectContainer obj, bool _, string __)
     {
-        if (obj is BeatmapEventContainer)
+        if (obj is EventContainer)
         {
-            var e = obj.ObjectData as MapEvent;
-            if (e.Type == MapEvent.EventTypeEarlyRotation || e.Type == MapEvent.EventTypeLateRotation)
+            var e = obj.ObjectData as BaseEvent;
+            if (e.IsLaneRotationEvent())
             {
                 foreach (var collection in objectContainerCollections)
                     collection.RefreshPool();
@@ -79,11 +87,11 @@ public class TracksManager : MonoBehaviour
     {
         if (!Settings.Instance.RotateTrack) return CreateTrack(0);
         float rotation = 0;
-        foreach (var rotationEvent in events.AllRotationEvents)
+        foreach (var rotationEvent in eventGrid.AllRotationEvents)
         {
-            if (rotationEvent.Time > beatInSongBpm + 0.001f) continue;
-            if (Mathf.Approximately(rotationEvent.Time, beatInSongBpm) &&
-                rotationEvent.Type == MapEvent.EventTypeLateRotation)
+            if (rotationEvent.JsonTime > beatInSongBpm + 0.001f) continue;
+            if (Mathf.Approximately(rotationEvent.JsonTime, beatInSongBpm) &&
+                rotationEvent.Type == (int)EventTypeValue.LateLaneRotation)
             {
                 continue;
             }
@@ -102,8 +110,8 @@ public class TracksManager : MonoBehaviour
         {
             foreach (var container in collection.LoadedContainers.Values)
             {
-                if (container is BeatmapObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
-                var track = GetTrackAtTime(container.ObjectData.Time);
+                if (container is ObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
+                var track = GetTrackAtTime(container.ObjectData.JsonTime);
                 track.AttachContainer(container);
                 //container.UpdateGridPosition();
             }

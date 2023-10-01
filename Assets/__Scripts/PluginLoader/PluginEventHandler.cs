@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Beatmap.Base;
 using UnityEngine;
 
 internal class PluginEventHandler : MonoBehaviour
@@ -18,10 +19,10 @@ internal class PluginEventHandler : MonoBehaviour
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]
-    private void EventPassedThreshold(bool _, int __, BeatmapObject newlyAdded) =>
-        PluginLoader.BroadcastEvent<EventPassedThresholdAttribute, BeatmapObject>(newlyAdded);
+    private void EventPassedThreshold(bool _, int __, BaseObject newlyAdded) =>
+        PluginLoader.BroadcastEvent<EventPassedThresholdAttribute, BaseObject>(newlyAdded);
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]
-    private void NotePassedThreshold(bool _, int __, BeatmapObject newlyAdded) =>
-        PluginLoader.BroadcastEvent<NotePassedThresholdAttribute, BeatmapObject>(newlyAdded);
+    private void NotePassedThreshold(bool _, int __, BaseObject newlyAdded) =>
+        PluginLoader.BroadcastEvent<NotePassedThresholdAttribute, BaseObject>(newlyAdded);
 }

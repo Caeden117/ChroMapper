@@ -3737,7 +3737,7 @@ GameObject:
   - component: {fileID: 4911823319864835601}
   - component: {fileID: 6894399899424985703}
   m_Layer: 0
-  m_Name: Lane
+  m_Name: Secondary Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4157,7 +4157,7 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 0
+  CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
   LightID: 1
@@ -9333,7 +9333,7 @@ MonoBehaviour:
   OverrideLightGroup: 0
   OverrideLightGroupID: 0
   UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 0
+  CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
   LightID: 1
@@ -11265,7 +11265,7 @@ GameObject:
   - component: {fileID: 4801853962182502154}
   - component: {fileID: 6861973098144335116}
   m_Layer: 0
-  m_Name: Main Ring
+  m_Name: Primary Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12045,10 +12045,10 @@ MonoBehaviour:
   BigRingManager: {fileID: 4801853962182502154}
   LightingManagers:
   - {fileID: 7200131473833522684}
-  - {fileID: 7725483143464009000}
+  - {fileID: 4012917504663827733}
   - {fileID: 3380891424607919547}
   - {fileID: 6681223353741177224}
-  - {fileID: 4012917504663827733}
+  - {fileID: 7725483143464009000}
   - {fileID: 0}
   - {fileID: 1952758202215201995}
   - {fileID: 4292953834980821323}
@@ -12056,16 +12056,20 @@ MonoBehaviour:
   Colors:
     RedColor: {r: 1, g: 0, b: 0, a: 1}
     BlueColor: {r: 0, g: 0.282353, b: 1, a: 1}
+    WhiteColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
     RedBoostColor: {r: 1, g: 0, b: 0, a: 1}
     BlueBoostColor: {r: 0, g: 0.282353, b: 1, a: 1}
+    WhiteBoostColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
     RedNoteColor: {r: 0.7352942, g: 0, b: 0, a: 1}
     BlueNoteColor: {r: 0, g: 0.3701827, b: 0.7352942, a: 1}
     ObstacleColor: {r: 0.7352942, g: 0, b: 0, a: 1}
   DefaultColors:
     RedColor: {r: 0.8, g: 0.28, b: 0.5859449, a: 1}
     BlueColor: {r: 0.06552581, g: 0.578, b: 0.5686774, a: 1}
+    WhiteColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
     RedBoostColor: {r: 0.8117648, g: 0.30588236, b: 0.30588236, a: 1}
     BlueBoostColor: {r: 0.2784314, g: 0.8, b: 0.44597632, a: 1}
+    WhiteBoostColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
     RedNoteColor: {r: 0.69803923, g: 0.14117648, b: 0.36862746, a: 1}
     BlueNoteColor: {r: 0.32933334, g: 0.32299998, b: 0.38, a: 1}
     ObstacleColor: {r: 0.15686275, g: 0.6039216, b: 0.6039216, a: 1}

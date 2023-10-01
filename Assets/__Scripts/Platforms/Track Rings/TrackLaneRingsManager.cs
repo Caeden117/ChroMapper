@@ -1,5 +1,5 @@
 using System.Linq;
-using SimpleJSON;
+using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,7 +12,7 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     [FormerlySerializedAs("maxPositionStep")] public float MAXPositionStep = 2;
     [FormerlySerializedAs("moveSpeed")] public float MoveSpeed = 1;
 
-    [FormerlySerializedAs("rotationStep")] [Header("Rotation")] public float RotationStep = 5;
+    [FormerlySerializedAs("rotationStep")][Header("Rotation")] public float RotationStep = 5;
 
     [FormerlySerializedAs("propagationSpeed")] public float PropagationSpeed = 1;
     [FormerlySerializedAs("flexySpeed")] public float FlexySpeed = 1;
@@ -73,18 +73,16 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 
     protected virtual bool IsAffectedByZoom() => !Mathf.Approximately(MAXPositionStep, MINPositionStep);
 
-    public override void HandlePositionEvent(JSONNode customData = null)
+    public override void HandlePositionEvent(BaseEvent evt)
     {
         var step = zoomed ? MAXPositionStep : MINPositionStep;
 
-        if (this.IsAffectedByZoom() && (customData?.HasKey("_step") ?? false))
+        if (this.IsAffectedByZoom() && (evt.CustomStep != null))
         {
-            step = customData["_step"];
+            step = evt.CustomStep.Value;
         }
 
-        var speed = customData?.HasKey("_speed") ?? false
-            ? customData["_speed"].AsFloat
-            : MoveSpeed;
+        var speed = evt.CustomSpeed ?? MoveSpeed;
 
         zoomed = !zoomed;
         for (var i = 0; i < Rings.Length; i++)
@@ -94,12 +92,12 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
         }
     }
 
-    public override void HandleRotationEvent(JSONNode customData = null)
+    public override void HandleRotationEvent(BaseEvent evt)
     {
         if (RotationEffect != null)
         {
             RotationEffect.AddRingRotationEvent(Rings[0].GetDestinationRotation(),
-                Random.Range(0, RotationStep), PropagationSpeed, FlexySpeed, customData);
+                Random.Range(0, RotationStep), PropagationSpeed, FlexySpeed, evt);
         }
     }
 

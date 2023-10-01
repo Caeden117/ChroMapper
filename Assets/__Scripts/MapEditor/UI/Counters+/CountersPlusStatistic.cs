@@ -7,6 +7,6 @@ public enum CountersPlusStatistic
     Notes = 1,
     Obstacles = 2,
     Events = 4,
-    BpmChanges = 8,
+    BpmEvents = 8,
     Selection = 16
 }
