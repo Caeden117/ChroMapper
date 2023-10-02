@@ -163,7 +163,16 @@ Shader "Basic Gradient"
                         break;
                 }
 
-                return lerp(a, b, t);
+                float4 color = lerp(a, b, t);
+
+                float mult = max(color.a, 1);
+                color.r *= mult;
+                color.g *= mult;
+                color.b *= mult;
+
+                color.a = clamp(color.a, 0, 1);
+
+                return color;
             }
             ENDCG
         }
