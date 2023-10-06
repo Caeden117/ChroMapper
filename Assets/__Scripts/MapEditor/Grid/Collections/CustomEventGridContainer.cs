@@ -171,6 +171,30 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         LoadAnimationTracks();
     }
 
+    private void OnUIModeSwitch(UIModeType newMode)
+    {
+        // When changing in/out of preview mode
+        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
+        {
+            RefreshPool(true);
+        }
+    }
+
+    public override void RefreshPool(bool force)
+    {
+        if (UIMode.AnimationMode)
+        {
+            foreach (var obj in UnsortedObjects)
+            {
+                RecycleContainer(obj);
+            }
+        }
+        else
+        {
+            base.RefreshPool(force);
+        }
+    }
+
     private void RefreshTrack()
     {
         foreach (var t in customEventScalingOffsets)
@@ -200,7 +224,11 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         foreach (var obj in LoadedContainers.Values) obj.UpdateGridPosition();
     }
 
-    internal override void SubscribeToCallbacks() => LoadInitialMap.LevelLoadedEvent += SetInitialTracks;
+    internal override void SubscribeToCallbacks()
+    {
+        LoadInitialMap.LevelLoadedEvent += SetInitialTracks;
+        UIMode.UIModeSwitched += OnUIModeSwitch;
+    }
 
     private void SetInitialTracks()
     {
@@ -215,7 +243,11 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         }
     }
 
-    internal override void UnsubscribeToCallbacks() => LoadInitialMap.LevelLoadedEvent -= SetInitialTracks;
+    internal override void UnsubscribeToCallbacks()
+    {
+        LoadInitialMap.LevelLoadedEvent -= SetInitialTracks;
+        UIMode.UIModeSwitched -= OnUIModeSwitch;
+    }
 
     private void CreateNewType()
     {
