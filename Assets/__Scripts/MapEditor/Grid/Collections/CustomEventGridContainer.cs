@@ -184,9 +184,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     {
         if (UIMode.AnimationMode)
         {
-            foreach (var obj in UnsortedObjects)
+            foreach (var obj in LoadedContainers.Values.ToList())
             {
-                RecycleContainer(obj);
+                RecycleContainer(obj.ObjectData);
             }
         }
         else
