@@ -16,10 +16,10 @@ namespace Beatmap.V3
 
         public V3BasicEvent(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            Type = RetrieveRequiredNode(node, "et").AsInt;
-            Value = RetrieveRequiredNode(node, "i").AsInt;
-            FloatValue = RetrieveRequiredNode(node, "f").AsFloat;
+            JsonTime = node["b"].AsFloat;
+            Type = node["et"].AsInt;
+            Value = node["i"].AsInt;
+            FloatValue = node["f"].AsFloat;
             CustomData = node["customData"];
             ParseCustom();
         }

@@ -22,9 +22,9 @@ namespace Beatmap.V3
 
         public V3ColorBoostEvent(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = node["b"].AsFloat;
             Type = 5;
-            Toggle = RetrieveRequiredNode(node, "o").AsBool;
+            Toggle = node["o"].AsBool;
             Value = Toggle ? 1 : 0;
             CustomData = node["customData"];
         }

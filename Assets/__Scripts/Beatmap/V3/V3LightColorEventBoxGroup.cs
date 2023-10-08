@@ -18,8 +18,8 @@ namespace Beatmap.V3
 
         public V3LightColorEventBoxGroup(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            ID = RetrieveRequiredNode(node, "g").AsInt;
+            JsonTime = node["b"].AsFloat;
+            ID = node["g"].AsInt;
             Events = new List<BaseLightColorEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq
                 .Select(x => new V3LightColorEventBox(x)).ToList());
             CustomData = node["customData"];

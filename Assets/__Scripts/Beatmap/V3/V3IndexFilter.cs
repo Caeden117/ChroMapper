@@ -11,15 +11,15 @@ namespace Beatmap.V3
 
         public V3IndexFilter(JSONNode node)
         {
-            Type = RetrieveRequiredNode(node, "f").AsInt;
-            Param0 = RetrieveRequiredNode(node, "p").AsInt;
-            Param1 = RetrieveRequiredNode(node, "t").AsInt;
-            Reverse = RetrieveRequiredNode(node, "r").AsInt;
-            Chunks = node["c"]?.AsInt ?? 0;
-            Random = node["n"]?.AsInt ?? 0;
-            Seed = node["s"]?.AsInt ?? 0;
-            Limit = node["l"]?.AsFloat ?? 0f;
-            LimitAffectsType = node["d"]?.AsInt ?? 0;
+            Type = node["f"].AsInt;
+            Param0 = node["p"].AsInt;
+            Param1 = node["t"].AsInt;
+            Reverse = node["r"].AsInt;
+            Chunks = node["c"].AsInt;
+            Random = node["n"].AsInt;
+            Seed = node["s"].AsInt;
+            Limit = node["l"].AsFloat;
+            LimitAffectsType = node["d"].AsInt;
         }
 
         public V3IndexFilter(int type, int param0, int param1, int reverse) : base(type, param0, param1, reverse)

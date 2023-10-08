@@ -17,12 +17,12 @@ namespace Beatmap.V3
 
         public V3ColorNote(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            PosX = RetrieveRequiredNode(node, "x").AsInt;
-            PosY = RetrieveRequiredNode(node, "y").AsInt;
-            AngleOffset = RetrieveRequiredNode(node, "a").AsInt;
-            Color = RetrieveRequiredNode(node, "c").AsInt;
-            CutDirection = RetrieveRequiredNode(node, "d").AsInt;
+            JsonTime = node["b"].AsFloat;
+            PosX = node["x"].AsInt;
+            PosY = node["y"].AsInt;
+            AngleOffset = node["a"].AsInt;
+            Color = node["c"].AsInt;
+            CutDirection = node["d"].AsInt;
             CustomData = node["customData"];
             InferType();
             ParseCustom();

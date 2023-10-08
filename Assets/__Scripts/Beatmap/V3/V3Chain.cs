@@ -17,16 +17,16 @@ namespace Beatmap.V3
 
         public V3Chain(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            Color = RetrieveRequiredNode(node, "c").AsInt;
-            PosX = RetrieveRequiredNode(node, "x").AsInt;
-            PosY = RetrieveRequiredNode(node, "y").AsInt;
-            CutDirection = RetrieveRequiredNode(node, "d").AsInt;
-            TailJsonTime = RetrieveRequiredNode(node, "tb").AsFloat;
-            TailPosX = RetrieveRequiredNode(node, "tx").AsInt;
-            TailPosY = RetrieveRequiredNode(node, "ty").AsInt;
-            SliceCount = RetrieveRequiredNode(node, "sc").AsInt;
-            Squish = RetrieveRequiredNode(node, "s").AsFloat;
+            JsonTime = node["b"].AsFloat;
+            Color = node["c"].AsInt;
+            PosX = node["x"].AsInt;
+            PosY = node["y"].AsInt;
+            CutDirection = node["d"].AsInt;
+            TailJsonTime = node["tb"].AsFloat;
+            TailPosX = node["tx"].AsInt;
+            TailPosY = node["ty"].AsInt;
+            SliceCount = node["sc"].AsInt;
+            Squish = node["s"].AsFloat;
             CustomData = node["customData"];
             ParseCustom();
         }

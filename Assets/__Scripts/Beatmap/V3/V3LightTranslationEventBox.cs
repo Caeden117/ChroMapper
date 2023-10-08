@@ -13,14 +13,14 @@ namespace Beatmap.V3
         public V3LightTranslationEventBox(JSONNode node)
         {
             IndexFilter = new V3IndexFilter(RetrieveRequiredNode(node, "f"));
-            BeatDistribution = RetrieveRequiredNode(node, "w").AsFloat;
-            BeatDistributionType = RetrieveRequiredNode(node, "d").AsInt;
-            TranslationDistribution = RetrieveRequiredNode(node, "s").AsFloat;
-            TranslationDistributionType = RetrieveRequiredNode(node, "t").AsInt;
-            TranslationAffectFirst = RetrieveRequiredNode(node, "b").AsInt;
-            Axis = RetrieveRequiredNode(node, "a").AsInt;
-            Flip = RetrieveRequiredNode(node, "r").AsInt;
-            Easing = node["i"]?.AsInt ?? 0;
+            BeatDistribution = node["w"].AsFloat;
+            BeatDistributionType = node["d"].AsInt;
+            TranslationDistribution = node["s"].AsFloat;
+            TranslationDistributionType = node["t"].AsInt;
+            TranslationAffectFirst = node["b"].AsInt;
+            Axis = node["a"].AsInt;
+            Flip = node["r"].AsInt;
+            Easing = node["i"].AsInt;
             Events = RetrieveRequiredNode(node, "l").AsArray.Linq.Select(x => new V3LightTranslationBase(x)).ToArray();
         }
 
