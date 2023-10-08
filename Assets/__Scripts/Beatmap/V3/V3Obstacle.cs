@@ -15,12 +15,12 @@ namespace Beatmap.V3
 
         public V3Obstacle(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            PosX = RetrieveRequiredNode(node, "x").AsInt;
-            InternalPosY = RetrieveRequiredNode(node, "y").AsInt;
-            Duration = RetrieveRequiredNode(node, "d").AsFloat;
-            Width = RetrieveRequiredNode(node, "w").AsInt;
-            InternalHeight = RetrieveRequiredNode(node, "h").AsInt;
+            JsonTime = node["b"].AsFloat;
+            PosX = node["x"].AsInt;
+            InternalPosY = node["y"].AsInt;
+            Duration = node["d"].AsFloat;
+            Width = node["w"].AsInt;
+            InternalHeight = node["h"].AsInt;
             CustomData = node["customData"];
             InferType();
             ParseCustom();

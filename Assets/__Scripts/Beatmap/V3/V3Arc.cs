@@ -17,18 +17,18 @@ namespace Beatmap.V3
 
         public V3Arc(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            Color = RetrieveRequiredNode(node, "c").AsInt;
-            PosX = RetrieveRequiredNode(node, "x").AsInt;
-            PosY = RetrieveRequiredNode(node, "y").AsInt;
-            CutDirection = RetrieveRequiredNode(node, "d").AsInt;
-            HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "mu").AsFloat;
-            TailJsonTime = RetrieveRequiredNode(node, "tb").AsFloat;
-            TailPosX = RetrieveRequiredNode(node, "tx").AsInt;
-            TailPosY = RetrieveRequiredNode(node, "ty").AsInt;
-            TailCutDirection = RetrieveRequiredNode(node, "tc").AsInt;
-            TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "tmu").AsFloat;
-            MidAnchorMode = RetrieveRequiredNode(node, "m").AsInt;
+            JsonTime = node["b"].AsFloat;
+            Color = node["c"].AsInt;
+            PosX = node["x"].AsInt;
+            PosY = node["y"].AsInt;
+            CutDirection = node["d"].AsInt;
+            HeadControlPointLengthMultiplier = node["mu"].AsFloat;
+            TailJsonTime = node["tb"].AsFloat;
+            TailPosX = node["tx"].AsInt;
+            TailPosY = node["ty"].AsInt;
+            TailCutDirection = node["tc"].AsInt;
+            TailControlPointLengthMultiplier = node["tmu"].AsFloat;
+            MidAnchorMode = node["m"].AsInt;
             CustomData = node["customData"];
             ParseCustom();
         }

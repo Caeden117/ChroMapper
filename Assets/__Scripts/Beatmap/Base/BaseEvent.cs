@@ -89,7 +89,7 @@ namespace Beatmap.Base
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
         public virtual int Type { get; set; }
         public int Value { get; set; }
-        public float FloatValue { get; set; } = 1f;
+        public float FloatValue { get; set; }
 
         public BaseEvent Prev { get; set; }
         public BaseEvent Next { get; set; }

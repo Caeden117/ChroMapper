@@ -18,8 +18,8 @@ namespace Beatmap.V3
 
         public V3LightRotationEventBoxGroup(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            ID = RetrieveRequiredNode(node, "g").AsInt;
+            JsonTime = node["b"].AsFloat;
+            ID = node["g"].AsInt;
             Events = new List<BaseLightRotationEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq
                 .Select(x => new V3LightRotationEventBox(x)).ToList());
             CustomData = node["customData"];
