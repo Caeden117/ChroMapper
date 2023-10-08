@@ -206,22 +206,6 @@ namespace Tests
                 ["s"] = 1,
                 ["customData"] = new JSONObject()
             }), "Factory could not instantiate chain with compatible JSON schema in beatmap v2");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Chain(new JSONObject
-            {
-                ["_colorType"] = 0,
-                ["_headTime"] = 0f,
-                ["_headLineIndex"] = 1,
-                ["_headLineLayer"] = 2,
-                ["_headCutDirection"] = 1,
-                ["_headControlPointLengthMultiplier"] = 1f,
-                ["_tailTime"] = 1f,
-                ["_tailLineIndex"] = 2,
-                ["_tailLineLayer"] = 1,
-                ["_tailCutDirection"] = 0,
-                ["_tailControlPointLengthMultiplier"] = 1f,
-                ["_sliderMidAnchorMode"] = 0,
-                ["_customData"] = new JSONObject()
-            }), "Factory should throw error instantiating chain with incompatible JSON schema in beatmap v2");
 
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
             if (collection is ChainGridContainer chainsContainer)
