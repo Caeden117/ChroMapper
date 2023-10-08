@@ -113,6 +113,9 @@ namespace Beatmap.V3
                     EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
                 MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
 
+                // Do this before adding customData
+                SimpleJSONHelper.RemovePropertiesWithDefaultValues(MainNode);
+
                 SaveCustom();
 
                 WriteDifficultyFile(this);
