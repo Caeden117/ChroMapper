@@ -4,6 +4,9 @@ namespace SimpleJSON
 {
     public static class SimpleJSONHelper
     {
+        private const string v2CustomData = "_customData";
+        private const string v3CustomData = "customData";
+
         public static void RemovePropertiesWithDefaultValues(JSONNode node)
         {
             if (node.IsArray)
@@ -18,6 +21,8 @@ namespace SimpleJSON
                 var keysToRemove = new List<string>();
                 foreach (var key in node.Keys)
                 {
+                    if (key == v2CustomData || key == v3CustomData) continue;
+
                     var value = node[key];
                     if (value.IsObject || value.IsArray)
                     {

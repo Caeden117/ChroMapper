@@ -1,3 +1,4 @@
+using Beatmap.V2;
 using Beatmap.V3;
 using NUnit.Framework;
 using SimpleJSON;
@@ -102,6 +103,36 @@ namespace TestsEditMode
             Assert.False(json.HasKey("x"));
             Assert.False(json.HasKey("y"));
             Assert.False(json.HasKey("c"));
+        }
+
+        [Test]
+        public void DoesNotRemoveV3CustomData()
+        {
+            var note = new V3ColorNote
+            {
+                CustomColor = new UnityEngine.Color(0, 1, 0)
+            };
+            note.WriteCustom();
+            var json = note.ToJson();
+
+            SimpleJSONHelper.RemovePropertiesWithDefaultValues(json);
+
+            Assert.True(json.HasKey("customData"));
+        }
+
+        [Test]
+        public void DoesNotRemoveV2CustomData()
+        {
+            var note = new V2Note
+            {
+                CustomColor = new UnityEngine.Color(0, 1, 0)
+            };
+            note.WriteCustom();
+            var json = note.ToJson();
+
+            SimpleJSONHelper.RemovePropertiesWithDefaultValues(json);
+
+            Assert.True(json.HasKey("_customData"));
         }
     }
 
