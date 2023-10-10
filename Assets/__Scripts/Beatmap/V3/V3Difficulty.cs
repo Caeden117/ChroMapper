@@ -114,7 +114,10 @@ namespace Beatmap.V3
                 MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
 
                 // Do this before adding customData
-                SimpleJSONHelper.RemovePropertiesWithDefaultValues(MainNode);
+                if (Settings.Instance.SaveWithoutDefaultValues)
+                {
+                    SimpleJSONHelper.RemovePropertiesWithDefaultValues(MainNode);
+                }
 
                 SaveCustom();
 

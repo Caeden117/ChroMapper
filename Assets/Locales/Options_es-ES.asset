@@ -1231,6 +1231,15 @@ MonoBehaviour:
     m_Localized: Whether the file explorer opens automically after creating zip
     m_Metadata:
       m_Items: []
+  - m_Id: 288364334621589504
+    m_Localized: Save Without Default Values
+    m_Metadata:
+      m_Items: []
+  - m_Id: 288364497993924608
+    m_Localized: Saves the difficulty file without properties that have a default
+      value.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

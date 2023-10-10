@@ -1147,6 +1147,14 @@ MonoBehaviour:
     m_Key: general.open.explorer.after.zip.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 288364334621589504
+    m_Key: general.savewithoutdefaultvalues
+    m_Metadata:
+      m_Items: []
+  - m_Id: 288364497993924608
+    m_Key: general.savewithoutdefaultvalues.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
