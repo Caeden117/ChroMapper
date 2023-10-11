@@ -41,7 +41,7 @@ namespace Beatmap.Base
             new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>();
 
         // TODO - Figure out what this actually looks like
-        public JSONNode VfxEventBoxGroups { get; set; } = new JSONArray();
+        public BaseFxEventsCollection FxEventsCollection { get; set; }
         public JSONNode FxEventsCollection { get; set; } = new JSONObject();
 
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }

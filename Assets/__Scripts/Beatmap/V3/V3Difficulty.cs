@@ -108,7 +108,7 @@ namespace Beatmap.V3
                 MainNode["lightRotationEventBoxGroups"] = CleanupArray(lightRotationEventBoxGroups, "b");
                 MainNode["lightTranslationEventBoxGroups"] = CleanupArray(lightTranslationEventBoxGroups, "b");
                 MainNode["vfxEventBoxGroups"] = VfxEventBoxGroups;
-                MainNode["_fxEventsCollection"] = FxEventsCollection;
+                MainNode["_fxEventsCollection"] = FxEventsCollection?.ToJson() ?? new V3FxEventsCollection().ToJson();
                 MainNode["basicEventTypesWithKeywords"] =
                     EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
                 MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
@@ -266,7 +266,7 @@ namespace Beatmap.V3
                             map.VfxEventBoxGroups = node;
                             break;
                         case "_fxEventsCollection":
-                            map.FxEventsCollection = node;
+                            map.FxEventsCollection = new V3FxEventsCollection(node);
                             break;
                         case "basicEventTypesWithKeywords":
                             map.EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(node);
