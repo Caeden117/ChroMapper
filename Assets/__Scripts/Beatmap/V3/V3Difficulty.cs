@@ -94,6 +94,9 @@ namespace Beatmap.V3
                 var lightTranslationEventBoxGroups = new JSONArray();
                 foreach (var e in LightTranslationEventBoxGroups) lightTranslationEventBoxGroups.Add(e.ToJson());
 
+                var vfxEventBoxGroups = new JSONArray();
+                foreach (var e in VfxEventBoxGroups) vfxEventBoxGroups.Add(e.ToJson());
+
                 MainNode["bpmEvents"] = CleanupArray(bpmEvents, "b");
                 MainNode["rotationEvents"] = CleanupArray(rotationEvents, "b");
                 MainNode["colorNotes"] = CleanupArray(colorNotes, "b");
@@ -107,7 +110,7 @@ namespace Beatmap.V3
                 MainNode["lightColorEventBoxGroups"] = CleanupArray(lightColorEventBoxGroups, "b");
                 MainNode["lightRotationEventBoxGroups"] = CleanupArray(lightRotationEventBoxGroups, "b");
                 MainNode["lightTranslationEventBoxGroups"] = CleanupArray(lightTranslationEventBoxGroups, "b");
-                MainNode["vfxEventBoxGroups"] = VfxEventBoxGroups;
+                MainNode["vfxEventBoxGroups"] = CleanupArray(vfxEventBoxGroups, "b");
                 MainNode["_fxEventsCollection"] = FxEventsCollection?.ToJson() ?? new V3FxEventsCollection().ToJson();
                 MainNode["basicEventTypesWithKeywords"] =
                     EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
@@ -263,7 +266,8 @@ namespace Beatmap.V3
                                 map.LightTranslationEventBoxGroups.Add(new V3LightTranslationEventBoxGroup(n));
                             break;
                         case "vfxEventBoxGroups":
-                            map.VfxEventBoxGroups = node;
+                            foreach (JSONNode n in node)
+                                map.VfxEventBoxGroups.Add(new V3VfxEventEventBoxGroup(n));
                             break;
                         case "_fxEventsCollection":
                             map.FxEventsCollection = new V3FxEventsCollection(node);
