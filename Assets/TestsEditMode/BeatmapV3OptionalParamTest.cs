@@ -26,6 +26,8 @@ namespace TestsEditMode
             V3LightRotationBase();
             V3LightTranslationEventBoxGroup();
             V3LightTranslationBase();
+            V3VfxEventEventBoxGroup();
+            V3FxEventsCollection();
             V3IndexFilter();
         }
 
@@ -323,6 +325,47 @@ namespace TestsEditMode
         }
 
         [Test]
+        public void V3VfxEventEventBoxGroup()
+        {
+            Assert.Throws<ArgumentException>(() => new V3VfxEventEventBoxGroup(new JSONObject()));
+            Assert.DoesNotThrow(() => new V3VfxEventEventBoxGroup(new JSONObject
+            {
+                ["e"] = new JSONArray
+                {
+                    [0] = new JSONObject
+                    {
+                        ["f"] = new JSONObject()
+                    }
+                }
+            }));
+
+            var json = new JSONObject
+            {
+                ["e"] = new JSONArray
+                {
+                    [0] = new JSONObject
+                    {
+                        ["f"] = new JSONObject(),
+                        ["l"] = new JSONArray()
+                    }
+                }
+            };
+            var group = new V3VfxEventEventBoxGroup(json);
+
+            AssertBaseEventBoxGroupDefaults(group);
+        }
+
+        [Test]
+        public void V3FxEventsCollection()
+        {
+            var json = new JSONObject();
+            var evt = new V3FxEventsCollection(json);
+
+            Assert.AreEqual(0, evt.IntFxEvents.Length);
+            Assert.AreEqual(0, evt.FloatFxEvents.Length);
+        }
+
+        [Test]
         public void V3IndexFilter()
         {
             var json = new JSONObject();
@@ -375,6 +418,14 @@ namespace TestsEditMode
                 Assert.AreEqual(0, lightTranslationEventBox.Flip);
                 Assert.AreEqual(0, lightTranslationEventBox.Easing);
                 Assert.AreEqual(0, lightTranslationEventBox.Events.Length);
+            }
+            else if (box is V3VfxEventEventBox vfxEventEventBox)
+            {
+                Assert.AreEqual(0, vfxEventEventBox.VfxDistribution);
+                Assert.AreEqual(0, vfxEventEventBox.VfxDistributionType);
+                Assert.AreEqual(0, vfxEventEventBox.VfxAffectFirst);
+                Assert.AreEqual(0, vfxEventEventBox.Easing);
+                Assert.AreEqual(0, vfxEventEventBox.VfxData.Length);
             }
         }
 
