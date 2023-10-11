@@ -12,14 +12,14 @@ namespace Beatmap.V3
 
         public V3FxEventsCollection(JSONNode node)
         {
-            if (node.HasKey("il"))
+            if (node.HasKey("_il"))
             {
-                IntFxEvents = node["il"].AsArray.Linq.Select(childNode => new V3IntFxEvent(childNode)).ToArray();
+                IntFxEvents = node["_il"].AsArray.Linq.Select(childNode => new V3IntFxEvent(childNode)).ToArray();
             }
 
-            if (node.HasKey("fl"))
+            if (node.HasKey("_fl"))
             {
-                FloatFxEvents = node["fl"].AsArray.Linq.Select(childNode => new V3FloatFxEvent(childNode)).ToArray();
+                FloatFxEvents = node["_fl"].AsArray.Linq.Select(childNode => new V3FloatFxEvent(childNode)).ToArray();
             }
         }
 
@@ -34,11 +34,11 @@ namespace Beatmap.V3
         {
             var node = new JSONObject();
 
-            node["il"] = new JSONArray();
-            foreach (var intFxEvent in IntFxEvents) node["il"].Add(intFxEvent.ToJson());
+            node["_il"] = new JSONArray();
+            foreach (var intFxEvent in IntFxEvents) node["_il"].Add(intFxEvent.ToJson());
 
-            node["fl"] = new JSONArray();
-            foreach (var floatFxEvent in FloatFxEvents) node["fl"].Add(floatFxEvent.ToJson());
+            node["_fl"] = new JSONArray();
+            foreach (var floatFxEvent in FloatFxEvents) node["_fl"].Add(floatFxEvent.ToJson());
 
             return node;
         }
