@@ -136,8 +136,11 @@ namespace Beatmap.Containers
         private void Interpolate(int n, int i, in Vector3 head, in Quaternion headRot, in GameObject tail,
             in GameObject linkSegment)
         {
+            // This is how the game displays squish
+            var gameSquish = (ChainData.Squish < 0.001f) ? 1f : ChainData.Squish;
+
             var t = (float)i / n;
-            var tSquish = t * ChainData.Squish;
+            var tSquish = t * gameSquish;
 
             var p0 = head;
             var p1 = interPoint;
