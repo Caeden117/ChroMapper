@@ -68,8 +68,9 @@ namespace Beatmap.Containers
                 length -= length * Mathf.Abs(length / ObstacleData.Hjd);
             }
 
-            length *= ObstacleData
-                .EditorScale; // Apply Editor Scale here since it can be overwritten by NE _scale Z
+            length *= (UIMode.AnimationMode)
+                ? ObstacleData.EditorScale
+                : EditorScaleController.EditorScale;
 
             return length;
         }
