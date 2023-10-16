@@ -16,7 +16,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public static float TranslucentCull = -0.001f;
 
     private static BookmarkManager bookmarkManager;
-    private static BookmarkManager bookmarkManagerInstance { get => bookmarkManager ??= GameObject.FindObjectOfType<BookmarkManager>(); }
+    private static BookmarkManager bookmarkManagerInstance
+        => bookmarkManager = bookmarkManager != null
+            ? bookmarkManager
+            : FindObjectOfType<BookmarkManager>();
+
     private static readonly Dictionary<ObjectType, BeatmapObjectContainerCollection> loadedCollections =
         new Dictionary<ObjectType, BeatmapObjectContainerCollection>();
 
