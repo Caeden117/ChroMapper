@@ -245,8 +245,10 @@ namespace Beatmap.Containers
             if (baseNote is null) return false;
             var noteHead = baseNote.GetPosition();
             var chainHead = ChainData.GetPosition();
-            return Mathf.Approximately(baseNote.JsonTime, ChainData.JsonTime) && Mathf.Approximately(noteHead.x, chainHead.x) && Mathf.Approximately(noteHead.y, chainHead.y)
-                   && baseNote.CutDirection == ChainData.CutDirection && baseNote.Type == ChainData.Color;
+            return Mathf.Approximately(baseNote.JsonTime, ChainData.JsonTime)
+                && Mathf.Approximately(noteHead.x, chainHead.x)
+                && Mathf.Approximately(noteHead.y, chainHead.y)
+                && baseNote.Type == ChainData.Color;
         }
 
         public void SetIndicatorBlocksActive(bool visible)
