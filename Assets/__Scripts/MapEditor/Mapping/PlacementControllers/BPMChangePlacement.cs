@@ -9,35 +9,6 @@ using UnityEngine;
 
 public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventContainer, BPMChangeGridContainer>
 {
-    private DialogBox createBpmEventDialogueBox;
-    private TextBoxComponent bpmTextInput;
-    private ToggleComponent resetBeatToggle;
-
-    internal override void Start()
-    {
-        base.Start();
-
-        // Create and cache dialog box for later use
-        createBpmEventDialogueBox = PersistentUI.Instance
-            .CreateNewDialogBox()
-            .DontDestroyOnClose();
-
-        // TODO: Localise these & and initialise with last bpm value
-        bpmTextInput = createBpmEventDialogueBox
-            .AddComponent<TextBoxComponent>()
-            .WithLabel("Bpm");
-
-        resetBeatToggle = createBpmEventDialogueBox
-            .AddComponent<ToggleComponent>()
-            .WithLabel("Reset Beat")
-            .WithInitialValue(false);
-
-        createBpmEventDialogueBox.OnQuickSubmit(() => AttemptPlaceBpmChange(bpmTextInput.Value, resetBeatToggle.Value));
-
-        createBpmEventDialogueBox.AddFooterButton(null, "PersistentUI", "cancel");
-        createBpmEventDialogueBox.AddFooterButton(() => AttemptPlaceBpmChange(bpmTextInput.Value, resetBeatToggle.Value), "PersistentUI", "ok");
-    }
-
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Event at time {spawned.JsonTime}");
 
@@ -57,9 +28,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
 
     internal override void ApplyToMap()
     {
-        createBpmEventDialogueBox
-            .WithTitle("Mapper", "bpm.dialog")
-            .Open();
+        CreateAndOpenBpmDialogue(isInitialPlacement: true);
     }
 
     private void AttemptPlaceBpmChange(string obj, bool willResetGrid)
@@ -78,14 +47,14 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
                 var aVeryLargeBpm = 100000f;
                 var offsetRequiredInBeats = jsonTimeOffset * prevBpm / (aVeryLargeBpm - prevBpm);
                 var offsetEvent = BeatmapFactory.BpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm);
-                objectContainerCollection.SpawnObject(offsetEvent, out var fatConflicting);
+                objectContainerCollection.SpawnObject(offsetEvent, out var offsetConflicting);
 
                 // Place the bpm event on the next beat
                 var queuedEvent = BeatmapFactory.BpmEvent(Mathf.Ceil(oldTime), bpm);
                 objectContainerCollection.SpawnObject(queuedEvent, out var queuedConflicting);
 
                 BeatmapActionContainer.AddAction(new ActionCollectionAction(new List<BeatmapAction>{
-                    GenerateAction(offsetEvent, fatConflicting),
+                    GenerateAction(offsetEvent, offsetConflicting),
                     GenerateAction(queuedEvent, queuedConflicting)
                 }));
             }
@@ -97,10 +66,44 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
         }
         else
         {
-            // TODO: This path doesn't work
-            createBpmEventDialogueBox
-                .WithTitle("Mapper", "bpm.dialog.invalid")
-                .Open();
+            CreateAndOpenBpmDialogue(isInitialPlacement: false);
         }
+    }
+
+    private void CreateAndOpenBpmDialogue(bool isInitialPlacement)
+    {
+        // TODO: Why aren't we caching this dialogue box? Two bugs:
+        //    1) The footer buttons can trigger off the same click that opens this dialogue which causes an instant close
+        //    2) Immediately reopening the dialogue box after closing it doesn't work
+
+        var createBpmEventDialogueBox = PersistentUI.Instance
+            .CreateNewDialogBox()
+            .WithTitle("Mapper", "bpm.dialog");
+
+        if (!isInitialPlacement)
+        {
+            createBpmEventDialogueBox
+                .AddComponent<TextComponent>()
+                .WithInitialValue("Mapper", "bpm.dialogue.invalidnumber");
+        }
+
+        var lastBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
+                      BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        var bpmTextInput = createBpmEventDialogueBox
+            .AddComponent<TextBoxComponent>()
+            .WithLabel("Mapper", "bpm.dialogue.beatsperminute")
+            .WithInitialValue(lastBpm.ToString());
+
+        var resetBeatToggle = createBpmEventDialogueBox
+            .AddComponent<ToggleComponent>()
+            .WithLabel("Mapper", "bpm.dialogue.resetbeat")
+            .WithInitialValue(false);
+
+        createBpmEventDialogueBox.OnQuickSubmit(() => AttemptPlaceBpmChange(bpmTextInput.Value, resetBeatToggle.Value));
+
+        createBpmEventDialogueBox.AddFooterButton(null, "PersistentUI", "cancel");
+        createBpmEventDialogueBox.AddFooterButton(() => AttemptPlaceBpmChange(bpmTextInput.Value, resetBeatToggle.Value), "PersistentUI", "ok");
+
+        createBpmEventDialogueBox.Open();
     }
 }
