@@ -795,6 +795,18 @@ MonoBehaviour:
       Enter the beat you want to go to'
     m_Metadata:
       m_Items: []
+  - m_Id: 294393564396453888
+    m_Localized: Ongeldig getal.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393379213737984
+    m_Localized: Reset Beat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393312377503744
+    m_Localized: Beats per minuut
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
