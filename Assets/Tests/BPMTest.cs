@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -160,6 +161,56 @@ namespace Tests
                 Assert.AreEqual(1.5, atsc.CurrentJsonTime, 0.001f);
                 Assert.AreEqual(1.0 * (songBpm / 111) + 0.5 * (songBpm / 222), atsc.CurrentSongBpmTime, 0.001f);
             }
+        }
+
+        [Test]
+        public void UndoActionCollection()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+
+            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            var baseBpmEvent0 = new V3BpmEvent(0, 111);
+            bpmCollection.SpawnObject(baseBpmEvent0, out var conflicting0);
+
+            var baseBpmEvent1 = new V3BpmEvent(1, 222);
+            bpmCollection.SpawnObject(baseBpmEvent1, out var conflicting1);
+
+            var baseBpmEvent2 = new V3BpmEvent(2, 333);
+            bpmCollection.SpawnObject(baseBpmEvent2, out var conflicting2);
+
+            BeatmapActionContainer.AddAction(new ActionCollectionAction(new List<BeatmapAction>{
+                new BeatmapObjectPlacementAction(baseBpmEvent0, conflicting0, ""),
+                new BeatmapObjectPlacementAction(baseBpmEvent1, conflicting1, ""),
+                new BeatmapObjectPlacementAction(baseBpmEvent2, conflicting2, ""),
+            }));
+
+            // Check songBpm after placing
+            Assert.AreEqual(3, bpmCollection.LoadedObjects.Count);
+
+            Assert.AreEqual(0, bpmCollection.LoadedObjects.ElementAt(0).JsonTime, 0.001f);
+            Assert.AreEqual(1, bpmCollection.LoadedObjects.ElementAt(1).JsonTime, 0.001f);
+            Assert.AreEqual(2, bpmCollection.LoadedObjects.ElementAt(2).JsonTime, 0.001f);
+
+            Assert.AreEqual(0, bpmCollection.LoadedObjects.ElementAt(0).SongBpmTime, 0.001f);
+            Assert.AreEqual(songBpm / 111, bpmCollection.LoadedObjects.ElementAt(1).SongBpmTime, 0.001f);
+            Assert.AreEqual(songBpm / 111 + songBpm / 222, bpmCollection.LoadedObjects.ElementAt(2).SongBpmTime, 0.001f);
+
+            // Undo should remove everyhting
+            actionContainer.Undo();
+            Assert.AreEqual(0, bpmCollection.LoadedObjects.Count);
+
+            // Redo should replace objects in the same positions
+            actionContainer.Redo();
+            Assert.AreEqual(3, bpmCollection.LoadedObjects.Count);
+
+            Assert.AreEqual(0, bpmCollection.LoadedObjects.ElementAt(0).JsonTime, 0.001f);
+            Assert.AreEqual(1, bpmCollection.LoadedObjects.ElementAt(1).JsonTime, 0.001f);
+            Assert.AreEqual(2, bpmCollection.LoadedObjects.ElementAt(2).JsonTime, 0.001f);
+
+            Assert.AreEqual(0, bpmCollection.LoadedObjects.ElementAt(0).SongBpmTime, 0.001f);
+            Assert.AreEqual(songBpm / 111, bpmCollection.LoadedObjects.ElementAt(1).SongBpmTime, 0.001f);
+            Assert.AreEqual(songBpm / 111 + songBpm / 222, bpmCollection.LoadedObjects.ElementAt(2).SongBpmTime, 0.001f);
         }
     }
 }
