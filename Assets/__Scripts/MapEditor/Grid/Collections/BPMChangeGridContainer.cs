@@ -72,6 +72,10 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     private void OnObjectDeleteOrSpawn(BaseObject obj)
     {
         countersPlus.UpdateStatistic(CountersPlusStatistic.BpmEvents);
+
+        // This is needed so bpm events that are part of a group action are in the right position
+        obj.RecomputeSongBpmTime();
+
         BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(obj.JsonTime);
         RefreshModifiedBeat();
     }
