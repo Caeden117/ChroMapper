@@ -715,6 +715,18 @@ MonoBehaviour:
     m_Key: gotobeat.dialog.invalid
     m_Metadata:
       m_Items: []
+  - m_Id: 294393312377503744
+    m_Key: bpm.dialogue.beatsperminute
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393379213737984
+    m_Key: bpm.dialogue.resetbeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393564396453888
+    m_Key: bpm.dialogue.invalidnumber
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

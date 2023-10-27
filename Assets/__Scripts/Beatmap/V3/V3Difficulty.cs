@@ -15,7 +15,7 @@ namespace Beatmap.V3
 {
     public class V3Difficulty : BaseDifficulty
     {
-        public override string Version { get; } = "3.2.0";
+        public override string Version { get; } = "3.3.0";
 
         public override string BookmarksUseOfficialBpmEventsKey { get; } = "bookmarksUseOfficialBpmEvents";
 
@@ -94,6 +94,9 @@ namespace Beatmap.V3
                 var lightTranslationEventBoxGroups = new JSONArray();
                 foreach (var e in LightTranslationEventBoxGroups) lightTranslationEventBoxGroups.Add(e.ToJson());
 
+                var vfxEventBoxGroups = new JSONArray();
+                foreach (var e in VfxEventBoxGroups) vfxEventBoxGroups.Add(e.ToJson());
+
                 MainNode["bpmEvents"] = CleanupArray(bpmEvents, "b");
                 MainNode["rotationEvents"] = CleanupArray(rotationEvents, "b");
                 MainNode["colorNotes"] = CleanupArray(colorNotes, "b");
@@ -107,9 +110,17 @@ namespace Beatmap.V3
                 MainNode["lightColorEventBoxGroups"] = CleanupArray(lightColorEventBoxGroups, "b");
                 MainNode["lightRotationEventBoxGroups"] = CleanupArray(lightRotationEventBoxGroups, "b");
                 MainNode["lightTranslationEventBoxGroups"] = CleanupArray(lightTranslationEventBoxGroups, "b");
+                MainNode["vfxEventBoxGroups"] = CleanupArray(vfxEventBoxGroups, "b");
+                MainNode["_fxEventsCollection"] = FxEventsCollection?.ToJson() ?? new V3FxEventsCollection().ToJson();
                 MainNode["basicEventTypesWithKeywords"] =
                     EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
                 MainNode["useNormalEventsAsCompatibleEvents"] = UseNormalEventsAsCompatibleEvents;
+
+                // Do this before adding customData
+                if (Settings.Instance.SaveWithoutDefaultValues)
+                {
+                    SimpleJSONHelper.RemovePropertiesWithDefaultValues(MainNode);
+                }
 
                 SaveCustom();
 
@@ -253,6 +264,13 @@ namespace Beatmap.V3
                         case "lightTranslationEventBoxGroups":
                             foreach (JSONNode n in node)
                                 map.LightTranslationEventBoxGroups.Add(new V3LightTranslationEventBoxGroup(n));
+                            break;
+                        case "vfxEventBoxGroups":
+                            foreach (JSONNode n in node)
+                                map.VfxEventBoxGroups.Add(new V3VfxEventEventBoxGroup(n));
+                            break;
+                        case "_fxEventsCollection":
+                            map.FxEventsCollection = new V3FxEventsCollection(node);
                             break;
                         case "basicEventTypesWithKeywords":
                             map.EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(node);

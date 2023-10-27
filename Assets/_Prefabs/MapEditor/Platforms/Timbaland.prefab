@@ -955,7 +955,7 @@ Transform:
   m_GameObject: {fileID: 2375921150086038291}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6297940535639536464}
   - {fileID: 6297940536159356482}
@@ -2406,7 +2406,7 @@ Transform:
   m_GameObject: {fileID: 6297940535317592005}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 4706064227331427405}
   - {fileID: 9202486059518197944}
@@ -2466,7 +2466,7 @@ Transform:
   m_GameObject: {fileID: 6297940535639536471}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 2375921150086038518}
   m_RootOrder: 0
@@ -2516,7 +2516,7 @@ Transform:
   m_GameObject: {fileID: 6297940535645761564}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 2375921150086038518}
   m_RootOrder: 2
@@ -2566,7 +2566,7 @@ Transform:
   m_GameObject: {fileID: 6297940536159356481}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: -1, z: 1}
+  m_LocalScale: {x: 3, y: -3, z: 3}
   m_Children: []
   m_Father: {fileID: 2375921150086038518}
   m_RootOrder: 1
@@ -2616,7 +2616,7 @@ Transform:
   m_GameObject: {fileID: 6297940537080751554}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 8407784945121306311}
   - {fileID: 8407784944325967289}
@@ -2667,7 +2667,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6297940537143348082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 8}
+  m_LocalPosition: {x: 0, y: 1, z: 28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6297940537080751555}
@@ -2705,16 +2705,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7285cbde1ee0d6b478bef7ca99e5fc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ringCount: 10
-  prefab: {fileID: 6297940537080751564}
-  moveFirstRing: 0
-  minPositionStep: 1
-  maxPositionStep: 2
-  moveSpeed: 1
-  rotationStep: 1
-  propagationSpeed: 1
-  flexySpeed: 1
-  rotationEffect: {fileID: 6297940537143348092}
+  RingCount: 10
+  Prefab: {fileID: 6297940537080751564}
+  MoveFirstRing: 0
+  MINPositionStep: 1.5
+  MAXPositionStep: 3
+  MoveSpeed: 1
+  RotationStep: 1
+  PropagationSpeed: 1
+  FlexySpeed: 1
+  RotationEffect: {fileID: 6297940537143348092}
 --- !u!114 &6297940537143348092
 MonoBehaviour:
   m_ObjectHideFlags: 0

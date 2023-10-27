@@ -16,9 +16,9 @@ namespace Beatmap.V3
 
         public V3BombNote(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            PosX = RetrieveRequiredNode(node, "x").AsInt;
-            PosY = RetrieveRequiredNode(node, "y").AsInt;
+            JsonTime = node["b"].AsFloat;
+            PosX = node["x"].AsInt;
+            PosY = node["y"].AsInt;
             Type = (int)NoteType.Bomb;
             CustomData = node["customData"];
             ParseCustom();

@@ -17,10 +17,10 @@ namespace Beatmap.V3
 
         public V3LightTranslationBase(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            UsePrevious = RetrieveRequiredNode(node, "p").AsInt;
-            EaseType = RetrieveRequiredNode(node, "e").AsInt;
-            Translation = RetrieveRequiredNode(node, "t").AsFloat;
+            JsonTime = node["b"].AsFloat;
+            UsePrevious = node["p"].AsInt;
+            EaseType = node["e"].AsInt;
+            Translation = node["t"].AsFloat;
             CustomData = node["customData"];
         }
 

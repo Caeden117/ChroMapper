@@ -13,12 +13,12 @@ namespace Beatmap.V3
         public V3LightColorEventBox(JSONNode node)
         {
             IndexFilter = new V3IndexFilter(RetrieveRequiredNode(node, "f"));
-            BeatDistribution = RetrieveRequiredNode(node, "w").AsFloat;
-            BeatDistributionType = RetrieveRequiredNode(node, "d").AsInt;
-            BrightnessDistribution = RetrieveRequiredNode(node, "r").AsFloat;
-            BrightnessDistributionType = RetrieveRequiredNode(node, "t").AsInt;
-            BrightnessAffectFirst = RetrieveRequiredNode(node, "b").AsInt;
-            Easing = node["i"]?.AsInt ?? 0;
+            BeatDistribution = node["w"].AsFloat;
+            BeatDistributionType = node["d"].AsInt;
+            BrightnessDistribution = node["r"].AsFloat;
+            BrightnessDistributionType = node["t"].AsInt;
+            BrightnessAffectFirst = node["b"].AsInt;
+            Easing = node["i"].AsInt;
             Events = RetrieveRequiredNode(node, "e").AsArray.Linq.Select(x => new V3LightColorBase(x)).ToArray();
         }
 

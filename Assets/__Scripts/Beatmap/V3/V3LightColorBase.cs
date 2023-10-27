@@ -18,11 +18,11 @@ namespace Beatmap.V3
 
         public V3LightColorBase(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            Color = RetrieveRequiredNode(node, "c").AsInt;
-            Brightness = RetrieveRequiredNode(node, "s").AsFloat;
-            TransitionType = RetrieveRequiredNode(node, "i").AsInt;
-            Frequency = RetrieveRequiredNode(node, "f").AsInt;
+            JsonTime = node["b"].AsFloat;
+            Color = node["c"].AsInt;
+            Brightness = node["s"].AsFloat;
+            TransitionType = node["i"].AsInt;
+            Frequency = node["f"].AsInt;
             CustomData = node["customData"];
         }
 

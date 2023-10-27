@@ -13,14 +13,14 @@ namespace Beatmap.V3
         public V3LightRotationEventBox(JSONNode node)
         {
             IndexFilter = new V3IndexFilter(RetrieveRequiredNode(node, "f"));
-            BeatDistribution = RetrieveRequiredNode(node, "w").AsFloat;
-            BeatDistributionType = RetrieveRequiredNode(node, "d").AsInt;
-            RotationDistribution = RetrieveRequiredNode(node, "s").AsFloat;
-            RotationDistributionType = RetrieveRequiredNode(node, "t").AsInt;
-            RotationAffectFirst = RetrieveRequiredNode(node, "b").AsInt;
-            Axis = RetrieveRequiredNode(node, "a").AsInt;
-            Flip = RetrieveRequiredNode(node, "r").AsInt;
-            Easing = node["i"]?.AsInt ?? 0;
+            BeatDistribution = node["w"].AsFloat;
+            BeatDistributionType = node["d"].AsInt;
+            RotationDistribution = node["s"].AsFloat;
+            RotationDistributionType = node["t"].AsInt;
+            RotationAffectFirst = node["b"].AsInt;
+            Axis = node["a"].AsInt;
+            Flip = node["r"].AsInt;
+            Easing = node["i"].AsInt;
             Events = RetrieveRequiredNode(node, "l").AsArray.Linq.Select(x => new V3LightRotationBase(x)).ToArray();
         }
 

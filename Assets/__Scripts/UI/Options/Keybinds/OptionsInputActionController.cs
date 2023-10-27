@@ -45,11 +45,18 @@ public class OptionsInputActionController : MonoBehaviour
         keybindName.text = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
         UnselectKeybindUIs();
         searchableOption.Keywords = (keybindName.text + " " + sectionName).Split(' ');
+
+        var splitSlashParam = new[] { '/' };
+
         for (var i = 0; i < bindings.Count; i++)
         {
             binds.Add(keybindInputFields[i], bindings[i]);
-            // TODO replace with "prettify text"
-            var name = PrettifyName(bindings[i].path.Split('/').Last());
+
+            // Default paths have the format "<Device>/Key"
+            // Overriden paths have the format "/Device/Key"
+            var name = (bindings[i].path.FirstOrDefault() == '<')
+                ? PrettifyName(bindings[i].path.Split(splitSlashParam, 2).Last())
+                : PrettifyName(bindings[i].path.Split(splitSlashParam, 3).Last());
             keybindNameToInputField.Add(name, keybindInputFields[i]);
 
             keybindInputFields[i].text = name;
@@ -163,7 +170,6 @@ public class OptionsInputActionController : MonoBehaviour
         Reinitialize();
     }
 
-    // this code totally not yoinked from ChromaToggle reloaded
     public string PrettifyName(string name)
     {
         var gamemodeCharacters = name.ToCharArray();
@@ -172,17 +178,23 @@ public class OptionsInputActionController : MonoBehaviour
         {
             if (i == 0)
             {
-                builtFormat.Append(gamemodeCharacters[i].ToString().ToUpper());
+                builtFormat.Append(char.ToUpper(gamemodeCharacters[i]));
                 continue;
             }
 
-            if (gamemodeCharacters[i].ToString().ToUpper() == gamemodeCharacters[i].ToString() &&
-                !char.IsNumber(gamemodeCharacters[i]))
+            if (char.IsUpper(gamemodeCharacters[i]))
+            {
+                builtFormat.Append(" ");
+                builtFormat.Append(gamemodeCharacters[i]);
+            }
+            else if (char.IsLetterOrDigit(gamemodeCharacters[i]))
+            {
+                builtFormat.Append(gamemodeCharacters[i]);
+            }
+            else
             {
                 builtFormat.Append(" ");
             }
-
-            builtFormat.Append(gamemodeCharacters[i]);
         }
 
         return builtFormat.ToString();

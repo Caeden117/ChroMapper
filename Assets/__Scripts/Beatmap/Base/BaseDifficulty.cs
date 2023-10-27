@@ -40,6 +40,9 @@ namespace Beatmap.Base
         { get; set; } =
             new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>();
 
+        public List<BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>> VfxEventBoxGroups { get; set; } = new List<BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>>();
+        public BaseFxEventsCollection FxEventsCollection { get; set; }
+
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
         public bool UseNormalEventsAsCompatibleEvents { get; set; } = true;
         public float Time { get; set; } = 0f;

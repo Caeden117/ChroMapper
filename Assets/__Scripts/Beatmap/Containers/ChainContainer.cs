@@ -136,8 +136,11 @@ namespace Beatmap.Containers
         private void Interpolate(int n, int i, in Vector3 head, in Quaternion headRot, in GameObject tail,
             in GameObject linkSegment)
         {
+            // This is how the game displays squish
+            var gameSquish = (ChainData.Squish < 0.001f) ? 1f : ChainData.Squish;
+
             var t = (float)i / n;
-            var tSquish = t * ChainData.Squish;
+            var tSquish = t * gameSquish;
 
             var p0 = head;
             var p1 = interPoint;
@@ -242,8 +245,9 @@ namespace Beatmap.Containers
             if (baseNote is null) return false;
             var noteHead = baseNote.GetPosition();
             var chainHead = ChainData.GetPosition();
-            return Mathf.Approximately(baseNote.JsonTime, ChainData.JsonTime) && Mathf.Approximately(noteHead.x, chainHead.x) && Mathf.Approximately(noteHead.y, chainHead.y)
-                   && baseNote.CutDirection == ChainData.CutDirection && baseNote.Type == ChainData.Color;
+            return Mathf.Abs(baseNote.JsonTime - ChainData.JsonTime) < BeatmapObjectContainerCollection.Epsilon
+                && Vector2.Distance(noteHead, chainHead) < 0.1
+                && baseNote.Type == ChainData.Color;
         }
 
         public void SetIndicatorBlocksActive(bool visible)

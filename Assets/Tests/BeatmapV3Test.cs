@@ -61,15 +61,6 @@ namespace Tests
                 ["a"] = 0,
                 ["customData"] = new JSONObject()
             }), "Factory could not instantiate note with compatible JSON schema in beatmap v3");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Note(new JSONObject
-            {
-                ["_time"] = 0f,
-                ["_lineIndex"] = 1,
-                ["_lineLayer"] = 2,
-                ["_type"] = 0,
-                ["_cutDirection"] = 1,
-                ["_customData"] = new JSONObject()
-            }), "Factory should throw error instantiating note with incompatible JSON schema in beatmap v3");
 
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             if (collection is NoteGridContainer notesContainer)
@@ -100,15 +91,6 @@ namespace Tests
                 ["y"] = 2,
                 ["customData"] = new JSONObject()
             }), "Factory could not instantiate bomb with compatible JSON schema in beatmap v3");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Note(new JSONObject
-            {
-                ["_time"] = 0f,
-                ["_lineIndex"] = 1,
-                ["_lineLayer"] = 2,
-                ["_type"] = 3,
-                ["_cutDirection"] = 0,
-                ["_customData"] = new JSONObject()
-            }), "Factory should throw error instantiating bomb with incompatible JSON schema in beatmap v3");
 
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             if (collection is NoteGridContainer notesContainer)
@@ -148,22 +130,6 @@ namespace Tests
                 ["m"] = 0,
                 ["customData"] = new JSONObject()
             }), "Factory could not instantiate arc with compatible JSON schema in beatmap v3");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Arc(new JSONObject
-            {
-                ["_colorType"] = 0,
-                ["_headTime"] = 0f,
-                ["_headLineIndex"] = 1,
-                ["_headLineLayer"] = 2,
-                ["_headCutDirection"] = 1,
-                ["_headControlPointLengthMultiplier"] = 1f,
-                ["_tailTime"] = 1f,
-                ["_tailLineIndex"] = 2,
-                ["_tailLineLayer"] = 1,
-                ["_tailCutDirection"] = 0,
-                ["_tailControlPointLengthMultiplier"] = 1f,
-                ["_sliderMidAnchorMode"] = 0,
-                ["_customData"] = new JSONObject()
-            }), "Factory should throw error instantiating arc with incompatible JSON schema in beatmap v3");
 
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
             if (collection is ArcGridContainer arcsContainer)
@@ -202,22 +168,6 @@ namespace Tests
                 ["s"] = 1,
                 ["customData"] = new JSONObject()
             }), "Factory could not instantiate chain with compatible JSON schema in beatmap v3");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Chain(new JSONObject
-            {
-                ["_colorType"] = 0,
-                ["_headTime"] = 0f,
-                ["_headLineIndex"] = 1,
-                ["_headLineLayer"] = 2,
-                ["_headCutDirection"] = 1,
-                ["_headControlPointLengthMultiplier"] = 1f,
-                ["_tailTime"] = 1f,
-                ["_tailLineIndex"] = 2,
-                ["_tailLineLayer"] = 1,
-                ["_tailCutDirection"] = 0,
-                ["_tailControlPointLengthMultiplier"] = 1f,
-                ["_sliderMidAnchorMode"] = 0,
-                ["_customData"] = new JSONObject()
-            }), "Factory should throw error instantiating chain with incompatible JSON schema in beatmap v3");
 
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
             if (collection is ChainGridContainer chainsContainer)
@@ -251,17 +201,6 @@ namespace Tests
                 ["h"] = 5,
                 ["customData"] = new JSONObject()
             }), "Factory could not instantiate wall with compatible JSON schema in beatmap v3");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Obstacle(new JSONObject
-            {
-                ["_time"] = 0f,
-                ["_lineIndex"] = 1,
-                ["_lineLayer"] = 0,
-                ["_type"] = 0,
-                ["_duration"] = 1f,
-                ["_width"] = 1,
-                ["_height"] = 5,
-                ["_customData"] = new JSONObject()
-            }), "Factory should throw error instantiating wall with incompatible JSON schema in beatmap v3");
 
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
             if (collection is ObstacleGridContainer obstaclesContainer)
@@ -293,14 +232,6 @@ namespace Tests
                 ["f"] = 1f,
                 ["customData"] = new JSONObject()
             }), "Factory could not instantiate event with compatible JSON schema in beatmap v3");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Event(new JSONObject
-            {
-                ["_time"] = 0f,
-                ["_type"] = 0,
-                ["_value"] = 1,
-                ["_floatValue"] = 1f,
-                ["_customData"] = new JSONObject()
-            }), "Factory should throw error instantiating event with incompatible JSON schema in beatmap v3");
 
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
             if (collection is EventGridContainer eventsContainer)

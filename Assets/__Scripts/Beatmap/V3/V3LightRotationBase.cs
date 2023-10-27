@@ -17,12 +17,12 @@ namespace Beatmap.V3
 
         public V3LightRotationBase(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            Rotation = RetrieveRequiredNode(node, "r").AsFloat;
-            Direction = RetrieveRequiredNode(node, "o").AsInt;
-            EaseType = RetrieveRequiredNode(node, "e").AsInt;
-            Loop = RetrieveRequiredNode(node, "l").AsInt;
-            UsePrevious = RetrieveRequiredNode(node, "p").AsInt;
+            JsonTime = node["b"].AsFloat;
+            Rotation = node["r"].AsFloat;
+            Direction = node["o"].AsInt;
+            EaseType = node["e"].AsInt;
+            Loop = node["l"].AsInt;
+            UsePrevious = node["p"].AsInt;
             CustomData = node["customData"];
         }
 

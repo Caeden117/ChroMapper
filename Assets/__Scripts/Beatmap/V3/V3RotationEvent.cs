@@ -23,9 +23,9 @@ namespace Beatmap.V3
 
         public V3RotationEvent(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
-            ExecutionTime = RetrieveRequiredNode(node, "e").AsInt;
-            Rotation = RetrieveRequiredNode(node, "r").AsFloat;
+            JsonTime = node["b"].AsFloat;
+            ExecutionTime = node["e"].AsInt;
+            Rotation = node["r"].AsFloat;
             Type = (int)(ExecutionTime == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
             CustomData = node["customData"];
         }

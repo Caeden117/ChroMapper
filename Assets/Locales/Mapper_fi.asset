@@ -373,8 +373,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: "Kuinka tihe\xE4 strobo/gradientti on.\nSuositellut arvot: 1/8 ja\n
-      1/16"
+    m_Localized: "Kuinka tihe\xE4 strobo/gradientti on.\nSuositellut arvot: 1/8 ja\n1/16"
     m_Metadata:
       m_Items: []
   - m_Id: 90
@@ -782,6 +781,18 @@ MonoBehaviour:
     m_Localized: 'Invalid number
 
       Enter the beat you want to go to'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393564396453888
+    m_Localized: Virheellinen numero.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393379213737984
+    m_Localized: Reset Beat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393312377503744
+    m_Localized: "Ly\xF6nti\xE4 Minuutissa"
     m_Metadata:
       m_Items: []
   references:

@@ -22,7 +22,7 @@ namespace Beatmap.V3
 
         public V3BpmEvent(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "b").AsFloat;
+            JsonTime = node["b"];
             Bpm = RetrieveRequiredNode(node, "m").AsFloat;
             Type = 100;
             FloatValue = Bpm;

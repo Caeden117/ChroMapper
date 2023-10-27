@@ -186,8 +186,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 34
-    m_Localized: "Uppdatera objekt och hur de p\xE5verkas av rotation.\n\nKan \xE5tg\xE4rda\n
-      eventuella ol\xF6sta udda fall med rotationsh\xE4ndelser."
+    m_Localized: "Uppdatera objekt och hur de p\xE5verkas av rotation.\n\nKan \xE5tg\xE4rda\neventuella
+      ol\xF6sta udda fall med rotationsh\xE4ndelser."
     m_Metadata:
       m_Items: []
   - m_Id: 35
@@ -786,6 +786,18 @@ MonoBehaviour:
     m_Localized: 'Invalid number
 
       Enter the beat you want to go to'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393564396453888
+    m_Localized: Ogiltigt nummer.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393379213737984
+    m_Localized: Reset Beat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 294393312377503744
+    m_Localized: Slag per minut
     m_Metadata:
       m_Items: []
   references:

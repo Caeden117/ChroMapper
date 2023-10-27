@@ -31,18 +31,19 @@ public class TempLoaderController : MonoBehaviour
         }
         else // If not, handle it as a direct link to a zip file.
         {
-            if (location.ToLower().EndsWith(".zip"))
+            if (!Uri.TryCreate(location, UriKind.Absolute, out var uri))
             {
-                // This is definitely more open so let's see if we can even create a Uri out of this.
-                if (Uri.TryCreate(location, UriKind.Absolute, out var uri))
-                    SceneTransitionManager.Instance.LoadScene("02_SongEditMenu", GetBeatmapFromLocation(uri));
-                else
-                    CancelTempLoader("Could not retrieve a proper location to download from.");
+                CancelTempLoader("Could not retrieve a proper location to download from.");
+                return;
             }
-            else
+
+            if (!uri.AbsolutePath.ToLower().EndsWith("zip"))
             {
                 CancelTempLoader("Provided URL does not point to a zipped file.");
+                return;
             }
+
+            SceneTransitionManager.Instance.LoadScene("02_SongEditMenu", GetBeatmapFromLocation(uri));
         }
     }
 
