@@ -58,6 +58,11 @@ public class MeasureLinesController : MonoBehaviour
             Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length));
         var modifiedBeatsInSong =
             Mathf.FloorToInt(bpmChangeGridContainer.SongBpmTimeToJsonTime(rawBeatsInSong));
+
+        // This stops CM freezing for a few seconds as a result of instantiating a bajillion lines from insanely
+        // high bpm events. Should be reasonable to assume that you're not mapping at >10x the info bpm
+        modifiedBeatsInSong = Mathf.Min(rawBeatsInSong * 10, modifiedBeatsInSong);
+
         var jsonBeat = 0;
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
 
