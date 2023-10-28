@@ -27,7 +27,7 @@ public class Settings
     public bool AutoSave = true;
     public int AutoSaveInterval = 5;
     public bool FormatJson = false;
-    public bool SaveWithoutDefaultValues = true;
+    public bool SaveWithoutDefaultValues = false;
     public bool OpenFileExplorerAfterCreatingZip = true;
     public bool InstantEscapeMenuTransitions = false;
     public bool InstantLoadingTransitions = false;
