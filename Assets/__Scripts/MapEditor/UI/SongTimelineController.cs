@@ -9,7 +9,7 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI timeMesh;
-    [SerializeField] private AudioSource mainAudioSource;
+    //ELECAST TEST [SerializeField] private AudioSource mainAudioSource;
     public bool IsClicked;
     private float lastSongTime;
 
@@ -20,8 +20,10 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
     // Use this for initialization
     private IEnumerator Start()
     {
-        yield return new WaitUntil(() => mainAudioSource.clip != null);
-        songLength = mainAudioSource.clip.length;
+        //ELECAST TEST yield return new WaitUntil(() => mainAudioSource.clip != null);
+        //ELECAST TEST songLength = mainAudioSource.clip.length;
+        yield return new WaitUntil(() => atsc.Vorbis != null);//ELECAST TEST
+        songLength = atsc.GetTotalSeconds();//ELECAST TEST
         slider.value = 0;
     }
 
