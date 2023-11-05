@@ -11,7 +11,8 @@
                     "id": "37c4e574-0aea-4a6a-a4f2-575104bfd259",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Move Camera",
@@ -19,7 +20,8 @@
                     "id": "b690809d-6128-4967-aa54-ad3b44b03278",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "+Rotate Camera",
@@ -27,7 +29,8 @@
                     "id": "2accd882-d6d0-439c-a1ed-189931751453",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Elevate Camera",
@@ -35,7 +38,8 @@
                     "id": "3fbaee37-d68e-4db9-8b0a-93d06160b118",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Attach to Note Grid",
@@ -43,7 +47,8 @@
                     "id": "3a674479-bfd9-4f9e-8d57-8c5eebd67e5e",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Toggle Fullscreen",
@@ -51,7 +56,8 @@
                     "id": "15237594-4027-4cbc-92ed-cad40331f90e",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Location 1",
@@ -59,7 +65,8 @@
                     "id": "6eff2680-b351-48d1-ade1-024ef991d7bb",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Location 2",
@@ -67,7 +74,8 @@
                     "id": "31fc282b-3de2-4eec-bf02-2fbeb5927c39",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Location 3",
@@ -75,7 +83,8 @@
                     "id": "4420a6bd-184a-4ad4-ba40-f16ed673a74f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Location 4",
@@ -83,7 +92,8 @@
                     "id": "9bed9d33-1ae7-4eb2-bda6-00e8d932c487",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Second Set Modifier",
@@ -91,7 +101,8 @@
                     "id": "7a88eefa-a24b-474d-bf6e-94546642f826",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Overwrite Location Modifier",
@@ -99,7 +110,8 @@
                     "id": "d07f611a-4dad-4460-90c3-bed5e359444b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -335,7 +347,8 @@
                     "id": "a5c857c0-7636-4e1c-8510-22f4e72d2b01",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Alt Modifier",
@@ -343,7 +356,8 @@
                     "id": "e5b2efee-cf71-4d04-ba3a-c544cc5b2be2",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Shift Modifier",
@@ -351,15 +365,17 @@
                     "id": "80d43d78-82d6-4589-8fd9-89580f03b9c4",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Mouse Movement",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "965f30e2-f75b-4a64-a00c-e21258ef8eb3",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -441,7 +457,8 @@
                     "id": "fedad900-9c47-459d-bddd-f46d2be3e180",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Undo (Method 2)",
@@ -449,7 +466,8 @@
                     "id": "c62387e5-adc8-4366-b018-e897233be233",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Redo (Method 1)",
@@ -457,7 +475,8 @@
                     "id": "7d4b7471-e9f7-4b02-86f8-93f38fad7792",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Redo (Method 2)",
@@ -465,7 +484,8 @@
                     "id": "06f077ed-f9cc-43ae-87f3-7be30bd3ff5b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "User Trace",
@@ -473,7 +493,8 @@
                     "id": "576418be-2d18-4d65-b217-11a268d3756f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -676,7 +697,8 @@
                     "id": "12ac2167-b8c0-4f4f-aa6e-17a1aacc42ca",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Initiate Click and Drag",
@@ -684,7 +706,8 @@
                     "id": "15cbdd9a-b2fe-489a-b70c-81e0261ba8b8",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Initiate Click and Drag at Time",
@@ -692,15 +715,17 @@
                     "id": "fbb3f339-0978-4e67-ad3c-e7410c4c6eae",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "+Mouse Position Update",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "3c3cb17e-12c8-41c6-b727-8f8f86c0f325",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Precision Placement Toggle",
@@ -708,7 +733,8 @@
                     "id": "c9b513cc-9aed-4742-af25-61c6d1f08dbe",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -823,7 +849,8 @@
                     "id": "91d9fcf9-57ed-4bfa-a024-bd388f56a3f2",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Right Note",
@@ -831,7 +858,8 @@
                     "id": "e63abaea-687c-486a-aee9-133901bc362c",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Up Note",
@@ -839,7 +867,8 @@
                     "id": "16488a28-3686-46ed-9637-285b7e5a9e72",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Left Note",
@@ -847,7 +876,8 @@
                     "id": "ea80fd88-1337-4dbd-a7a9-9f1bdd9ecae4",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Dot Note",
@@ -855,7 +885,8 @@
                     "id": "2235cb33-d8e5-4ee9-bfad-a0e197fdd475",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Up Left Note",
@@ -863,7 +894,8 @@
                     "id": "7f5e8c8d-3b2f-409d-9668-c7c4a9df525a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Up Right Note",
@@ -871,7 +903,8 @@
                     "id": "4d74a4f6-9e93-4c6c-9a37-8105e93970ac",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Down Right Note",
@@ -879,7 +912,8 @@
                     "id": "ce5e5868-b0ad-4ff9-907e-9a85015e8e30",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Down Left Note",
@@ -887,7 +921,8 @@
                     "id": "e4a4c2c7-8c29-41f4-a5b8-a720c348738d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1002,7 +1037,8 @@
                     "id": "51596ba1-f128-48c4-b563-b4553f121a1e",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Rotation: 30 Degrees",
@@ -1010,7 +1046,8 @@
                     "id": "cb255ff2-9a90-44fd-a139-433a56a04612",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Rotation: 45 Degrees",
@@ -1018,7 +1055,8 @@
                     "id": "2aa190df-15aa-4507-a947-7f4aaa7175bc",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Rotation: 60 Degrees",
@@ -1026,7 +1064,8 @@
                     "id": "666291dd-9d51-4f5d-87a2-8ce834a7779c",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Negative Rotation Modifier",
@@ -1034,7 +1073,8 @@
                     "id": "88d0b651-1178-4c79-a5f1-8ea75fafec79",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Rotate In Place Left",
@@ -1042,7 +1082,8 @@
                     "id": "495ff970-c1be-4d9e-b6e5-25d4656ac258",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Rotate In Place Right",
@@ -1050,7 +1091,8 @@
                     "id": "b4f5c09c-5a5b-456d-b383-ce9277daae64",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Rotate In Place Modifier",
@@ -1058,7 +1100,8 @@
                     "id": "0708fcf5-8b14-46b7-97c2-4a9c7577075d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Half Float Value Modifier",
@@ -1066,7 +1109,8 @@
                     "id": "6a30f614-a6c1-4e78-8548-4a6f830a1f42",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Zero Float Value Modifier",
@@ -1074,7 +1118,8 @@
                     "id": "2bf1eac9-7e28-479f-8095-bdf4caf9cee3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1200,7 +1245,8 @@
                     "id": "1bc86c2e-a434-46ba-a207-5dff13f2f156",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Update Swing Arc Visualizer",
@@ -1208,7 +1254,8 @@
                     "id": "5eb56c46-9493-4c8b-978c-195255f0f76d",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Toggle Note or Event",
@@ -1216,7 +1263,8 @@
                     "id": "1ef71b14-df3b-4fc2-bdf9-602b8848435b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Place Red Note or Event",
@@ -1224,7 +1272,8 @@
                     "id": "7c3ce073-947a-41d5-900e-0afddf733685",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Place Blue Note or Event",
@@ -1232,7 +1281,8 @@
                     "id": "15a1d710-c76f-42b5-81fd-53dc8bde4712",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Place Bomb",
@@ -1240,7 +1290,8 @@
                     "id": "15214433-d512-4df1-aec5-3c973cef11d7",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Place Obstacle",
@@ -1248,7 +1299,8 @@
                     "id": "17d2e577-2bd7-44f2-95ad-81ce299fc218",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Toggle Delete Tool",
@@ -1256,7 +1308,8 @@
                     "id": "093f99e8-5a4f-4d76-aa7d-cce4ecfe95f1",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Mirror",
@@ -1264,7 +1317,8 @@
                     "id": "4b2fa447-5ce7-4170-b3db-e1998f0c5bf3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Mirror in Time",
@@ -1272,7 +1326,8 @@
                     "id": "c00d60fa-c8b5-4bde-b5ef-e7ac2e468d23",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Mirror Colours Only",
@@ -1280,7 +1335,8 @@
                     "id": "49a26cd7-a4f5-474b-b589-5836d7849685",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1483,7 +1539,8 @@
                     "id": "8f441098-22d1-491e-bb41-46164b9694c0",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Type Flash",
@@ -1491,7 +1548,8 @@
                     "id": "35cfcf0a-ccbf-4566-9b8e-1679430fd208",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Type Off",
@@ -1499,7 +1557,8 @@
                     "id": "2fd3f72d-db72-4f1d-bc42-ac9c9bc86a64",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Type Fade",
@@ -1507,7 +1566,8 @@
                     "id": "a417adc0-d77b-4879-8069-94d24fa7fd06",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Toggle Precision Rotation",
@@ -1515,7 +1575,8 @@
                     "id": "b8d7a87e-0bba-4071-9b9c-2591b84ff365",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Swap Cursor Interval",
@@ -1523,7 +1584,8 @@
                     "id": "7e0cf090-9778-483f-8b25-205046cf1770",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Type Transition",
@@ -1531,7 +1593,8 @@
                     "id": "d0e2fa9c-2582-4133-8e7a-ff118fea77ff",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1624,7 +1687,8 @@
                     "id": "2ee88999-e5b4-4f09-a327-2ef63121ca4b",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "SaveQuest",
@@ -1632,7 +1696,8 @@
                     "id": "ac4040c8-2202-4c78-bef4-db78cfcb93ba",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1725,7 +1790,8 @@
                     "id": "5bd99bac-a957-4d98-b68e-e74a153090fe",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Next Bookmark",
@@ -1733,7 +1799,8 @@
                     "id": "9cf9a467-5b4f-4564-af39-2d2dc34ae6c8",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Previous Bookmark",
@@ -1741,7 +1808,8 @@
                     "id": "a52b1ae8-89b5-4136-a550-f09b65a78fe8",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Color Bookmark Modifier",
@@ -1749,7 +1817,8 @@
                     "id": "4439bbde-d3c0-49f8-9005-d710ca8202b0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1809,7 +1878,8 @@
                     "id": "3ae94594-1532-421a-b6c2-1e1f4cded029",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1869,7 +1939,8 @@
                     "id": "4f7e5c53-1468-4229-bd30-2b74b9696191",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1918,7 +1989,8 @@
                     "id": "993b4b91-a432-4657-997d-21b116b30dea",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1945,7 +2017,8 @@
                     "id": "84057134-9c36-4d2f-bcc5-ba76c04e98fa",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Reset Time",
@@ -1953,7 +2026,8 @@
                     "id": "996859cc-5dc0-4ef5-9e53-27c5a45f9e7d",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1987,11 +2061,12 @@
             "actions": [
                 {
                     "name": "+Change Time and Precision",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "e046fbab-3ebb-4a53-8594-08a0ae193ab6",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Change Precision Modifier",
@@ -1999,7 +2074,8 @@
                     "id": "77c42d52-fde6-407d-baa5-a18d9ce1a755",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Precise Snap Modification",
@@ -2007,15 +2083,17 @@
                     "id": "6710a953-988b-430d-94ad-561bcd9b5c2a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Precisely Change Time and Precision",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "c6493d05-ae82-41a4-8f68-aa3424334d49",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -2108,7 +2186,8 @@
                     "id": "54659d96-0f59-4292-a5f8-e1f03d7eecfc",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Move Cursor Forward",
@@ -2116,7 +2195,8 @@
                     "id": "ccdf00d2-31c0-421c-a930-95376af09eff",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Move Cursor Backward",
@@ -2124,7 +2204,8 @@
                     "id": "4f4d8892-1870-49cc-96a9-c5a947a24418",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2173,7 +2254,8 @@
                     "id": "843d7818-4304-4540-94d4-1e1693a9eea5",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Increase Editor Scale",
@@ -2181,7 +2263,8 @@
                     "id": "fd88cf86-8a74-4ccf-871c-784f047ee448",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2263,7 +2346,8 @@
                     "id": "99ccd235-d96f-4545-b9da-116c171bb16b",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Mass Select Modifier",
@@ -2271,7 +2355,8 @@
                     "id": "3266236c-fda3-4697-bd0e-2a659c9cb072",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Quick Delete",
@@ -2279,7 +2364,8 @@
                     "id": "f1e5f862-455a-4d77-bc08-92e2c7849e0d",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Delete Tool",
@@ -2287,15 +2373,17 @@
                     "id": "0b907b9a-c55c-4ff8-a752-aba188528875",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "+Mouse Position Update",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "0ad31924-f097-4801-a571-a40b54af42e6",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Jump to Object Time",
@@ -2303,7 +2391,8 @@
                     "id": "ed95bf18-89cf-4c3c-8bb5-c4464ccaff0f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2458,19 +2547,21 @@
             "actions": [
                 {
                     "name": "Update Note Direction",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "bc91082a-7c68-45d3-b368-0e6984e98661",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Update Note Precise Direction",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "d86ce8a1-fd6d-4d89-9d96-e3202280feb7",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Invert Note Colors",
@@ -2478,7 +2569,8 @@
                     "id": "5bf4f065-0e9f-4166-a219-7ec603ae88c6",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Quick Direction Modifier",
@@ -2486,14 +2578,15 @@
                     "id": "1b6c3334-9477-4c00-8cdd-b205854dcc67",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "Keyboard",
                     "id": "1171f62c-0f8d-4675-acfd-6179c6acc22e",
-                    "path": "ButtonWithOneModifier",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -2502,7 +2595,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
+                    "name": "Modifier",
                     "id": "c671d9c9-3509-4aab-aa3f-6b774b73fab2",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -2513,7 +2606,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "6a07e536-7c00-4341-85fd-f27f37e449b1",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -2546,9 +2639,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Button With Two Modifiers",
+                    "name": "Two Modifiers",
                     "id": "d27bc266-bae4-4dec-a2d4-7b61e92c0b5f",
-                    "path": "ButtonWithTwoModifiers",
+                    "path": "TwoModifiers",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -2579,7 +2672,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "6c4a7451-e1d4-48e7-a85a-13884dbbed3b",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -2601,31 +2694,35 @@
                     "id": "2c396990-1761-4b06-8301-2d3bad5e169a",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "+Change Wall Duration",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "29d1bb17-443a-4e78-88a6-46d1ccb56ffc",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Change Wall Upper Bound",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "c96a86f2-ac04-4573-9564-edcfb6f556a0",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Change Wall Lower Bound",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "f6f09066-b710-48d1-ab68-306ecdc7306a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -2643,7 +2740,7 @@
                 {
                     "name": "Keyboard",
                     "id": "a644b0b6-5e6b-46fe-a1b4-65550b15a973",
-                    "path": "ButtonWithOneModifier",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -2652,7 +2749,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
+                    "name": "Modifier",
                     "id": "572079c8-8d93-4a2f-bb9e-7c28b1ab8df0",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -2663,7 +2760,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "b1fe3a7b-ae79-4c48-ad32-b51015c775b3",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -2762,23 +2859,26 @@
                     "id": "1a34df05-8e5b-4e52-b486-6eaceeca0b52",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Tweak Event Main",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "276c98b6-1db9-4975-be8c-23de8b862b07",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Tweak Event Alternative",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "7a637f25-63f4-434a-b1bc-5db5e34f9e04",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -2794,9 +2894,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Button With One Modifier",
+                    "name": "One Modifier",
                     "id": "70af3a21-80b6-491d-b247-6e0629fd31b6",
-                    "path": "ButtonWithOneModifier",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -2805,7 +2905,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
+                    "name": "Modifier",
                     "id": "7f25e490-2349-411c-92c8-8a13ff9fc1c0",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -2816,7 +2916,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "2029a0a6-b94d-4213-8310-913895de92a9",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -2827,9 +2927,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Button With Two Modifiers",
+                    "name": "One Modifier",
                     "id": "f6def448-a684-444f-a5c0-f94272a62c7c",
-                    "path": "ButtonWithTwoModifiers",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -2838,7 +2938,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier1",
+                    "name": "Modifier",
                     "id": "526cf1ec-bbc2-4012-b7bd-3f0e88ad9c99",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -2849,20 +2949,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "modifier2",
+                    "name": "Binding",
                     "id": "bbbaec30-1693-470a-9e0a-cd32f6162128",
                     "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Tweak Event Alternative",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "button",
-                    "id": "93deb5e4-8f8e-4dda-bcf7-cd2b675cfda2",
-                    "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -2882,7 +2971,8 @@
                     "id": "7b9d7a9c-c2bf-4d85-acfb-2d4d60bb846a",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Set Track Filter",
@@ -2890,7 +2980,8 @@
                     "id": "3bb98cf0-faf0-4b09-a8db-c2ce67a39072",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Create New Event Type",
@@ -2898,7 +2989,8 @@
                     "id": "0066a42b-9006-49c9-9b8f-1b96aefb6bb4",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3002,7 +3094,8 @@
                     "id": "e5f38e68-a6a9-4c76-92b0-4aec1f8fc9c2",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3029,7 +3122,8 @@
                     "id": "c9a9c9a6-a5d3-488f-b54a-aba65b60d56a",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3056,7 +3150,8 @@
                     "id": "fa86a48b-260e-44cc-9436-e4155eaeb871",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3083,7 +3178,8 @@
                     "id": "843ec7df-2ea7-4a04-bdd8-dab6f351222c",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3132,7 +3228,8 @@
                     "id": "9b6770ad-b031-4ab2-86fe-c85f0b55501f",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Cut",
@@ -3140,7 +3237,8 @@
                     "id": "e9677e31-a29a-40d9-9831-3b0bf425e410",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Paste",
@@ -3148,7 +3246,8 @@
                     "id": "1dc463d8-b058-4507-92da-42817903ce61",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Copy",
@@ -3156,7 +3255,8 @@
                     "id": "ba0f5eb7-64f2-46b8-afd4-219d6a5b9321",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Overwrite Paste",
@@ -3164,15 +3264,17 @@
                     "id": "17cb35a5-a1b3-4c1f-a450-ceb25a448d18",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Shifting Movement",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "27818e31-e5a6-4b4d-806a-f8de698ba4ee",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Activate Shift in Time",
@@ -3180,7 +3282,8 @@
                     "id": "cb168158-3262-4a23-bc37-4217c8213895",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Activate Shift in Place",
@@ -3188,7 +3291,8 @@
                     "id": "b2cb2cac-5832-474b-a652-497dd6f3e167",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3446,7 +3550,8 @@
                     "id": "d49f10e6-ab3d-4821-b386-3083cb9ef3d1",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3495,7 +3600,8 @@
                     "id": "1810e054-2601-41ff-96dc-d7d407c30f99",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Increase Song Speed",
@@ -3503,7 +3609,8 @@
                     "id": "27b6f64a-429b-4433-97e3-135d5092ace9",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3541,7 +3648,8 @@
                     "id": "e5739486-8857-4097-bff2-191f94393ee5",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3568,15 +3676,17 @@
                     "id": "9f9b573b-d4b1-439c-b3f9-17336ada4933",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Tweak BPM Value",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "d5500879-426b-4d21-b2e8-b9e11de4c331",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -3616,7 +3726,7 @@
                 {
                     "name": "Keyboard",
                     "id": "b9437e71-7074-402d-9abe-9f1ef4071e15",
-                    "path": "ButtonWithOneModifier",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -3625,7 +3735,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
+                    "name": "Modifier",
                     "id": "64333cae-86d5-436c-a120-2657519d7464",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -3636,7 +3746,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "02a89018-2048-45e5-bcf2-61356550f061",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -3658,7 +3768,8 @@
                     "id": "6bf43256-b1f0-4d4a-ba4d-876b58744144",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Cycle Light Propagation Up",
@@ -3666,7 +3777,8 @@
                     "id": "d3e63cd4-46d0-4a81-b686-0594c5aa6074",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Cycle Light Propagation Down",
@@ -3674,7 +3786,8 @@
                     "id": "5937d0d7-0f16-49e8-9739-fc490da69a6d",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Toggle LightId Mode",
@@ -3682,7 +3795,8 @@
                     "id": "c3d199f1-ab09-48d9-b2df-a66c3136f415",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Reset Rings",
@@ -3690,7 +3804,8 @@
                     "id": "2579eef3-e102-495c-b920-dba664627b0b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3783,7 +3898,8 @@
                     "id": "4468e9ca-6edd-4a3f-a163-91afa51f77c8",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Leave Menu",
@@ -3791,7 +3907,8 @@
                     "id": "ad0f8cea-e5cf-486e-bb47-dac40c46f9bc",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3829,7 +3946,8 @@
                     "id": "ffa7e0a4-2351-457e-916c-c219fe7f7698",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3856,7 +3974,8 @@
                     "id": "74ebab00-0761-45e6-9441-ae61e9b17cb3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3905,7 +4024,8 @@
                     "id": "1a8334f3-ea56-4d8f-bf47-67256e7f54d1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3954,7 +4074,8 @@
                     "id": "1bfcb620-0275-4b3e-a89d-2e5d52203c8d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -3981,7 +4102,8 @@
                     "id": "ac441c0b-6cdd-45a8-ae25-6816a6f90fc6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -4008,7 +4130,8 @@
                     "id": "330cfd81-242f-446b-b926-955336819490",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Toggle Metronome Mute",
@@ -4016,7 +4139,8 @@
                     "id": "0084dff5-507c-436a-936a-41267e820e80",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -4098,7 +4222,8 @@
                     "id": "e1e777e1-a6f9-4429-9ec7-e7ebdbe200b3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Navigate Down",
@@ -4106,7 +4231,8 @@
                     "id": "7b483cd8-c327-447e-8dff-8fe9a024f605",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Navigate Up",
@@ -4114,7 +4240,8 @@
                     "id": "6f021b79-389c-4d77-bcf9-4a70e1029024",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Attempt Quick Submit",
@@ -4122,7 +4249,8 @@
                     "id": "89d37833-7319-4153-bba8-764383b9fb70",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -4204,7 +4332,8 @@
                     "id": "7f419f15-99fd-40bd-a734-6569e88ccc43",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Ban Player",
@@ -4212,7 +4341,8 @@
                     "id": "1d776b67-ed30-4f25-b252-5ac42577c2df",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -4294,23 +4424,26 @@
                     "id": "ee16de4f-c84f-40f4-bf15-2ed62d872ec4",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "ChangingMu",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "5ecf55da-5762-4a6c-921f-2b702e9078da",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "ChangingTmu",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "c37b5919-0bb5-4248-a944-50d9a28f9f9f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -4328,7 +4461,7 @@
                 {
                     "name": "Keyboard",
                     "id": "bdb70de1-9017-48f5-9a56-a7cbc3e8b6d5",
-                    "path": "ButtonWithOneModifier",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -4337,7 +4470,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
+                    "name": "Modifier",
                     "id": "e25bae57-8ba5-4bc3-8f4f-a85d16689882",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -4348,7 +4481,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "e9e80f81-e46a-410f-8ede-772001402513",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -4361,7 +4494,7 @@
                 {
                     "name": "Keyboard",
                     "id": "4e9815d9-195d-42b0-beee-c5dbbe007881",
-                    "path": "ButtonWithOneModifier",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -4370,7 +4503,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
+                    "name": "Modifier",
                     "id": "13be3721-d736-47fb-996f-37a6a7f691b7",
                     "path": "<Keyboard>/shift",
                     "interactions": "",
@@ -4381,7 +4514,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "9cbbc1b6-0ba7-4515-b623-618c9186acc3",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -4399,11 +4532,12 @@
             "actions": [
                 {
                     "name": "TweakChainCount",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "1c7ce6e2-975c-4349-ad23-ec3d12a4c640",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "InvertChainColor",
@@ -4411,22 +4545,24 @@
                     "id": "1b3dedb1-d750-438f-b20f-2226fd1f83f7",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "TweakChainSquish",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "afed819c-0511-4541-be42-2272b16fd4cb",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "Keyboard",
                     "id": "1ad09872-ef84-423c-b7f6-6c123f28c38f",
-                    "path": "ButtonWithOneModifier",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -4435,7 +4571,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
+                    "name": "Modifier",
                     "id": "03792ffb-15ab-40e3-aba5-0203e1c73c53",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -4446,7 +4582,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "a315ed00-b449-4c42-b26d-86edd9418c56",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -4470,7 +4606,7 @@
                 {
                     "name": "Keyboard",
                     "id": "cc108959-3e88-4e89-916e-3ab53746fa3e",
-                    "path": "ButtonWithOneModifier",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -4479,7 +4615,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
+                    "name": "Modifier",
                     "id": "a559ede2-9e25-4701-a5a7-6227ebfbe571",
                     "path": "<Keyboard>/shift",
                     "interactions": "",
@@ -4490,7 +4626,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "button",
+                    "name": "Binding",
                     "id": "bc2e6b3e-eb7c-4595-8219-3658277c5093",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -4512,7 +4648,8 @@
                     "id": "4d226cfd-3abc-43ea-86e9-73299a8e46f5",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -4539,7 +4676,8 @@
                     "id": "8332b2c6-9345-4508-8f4e-af7eeb7ebc7e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -4566,7 +4704,8 @@
                     "id": "b1ec0be6-4853-4fc6-bbe0-f3e05393d2c1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
