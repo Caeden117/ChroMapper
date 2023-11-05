@@ -16,7 +16,47 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 4e3c43f4e56bf1e408ec7a906a6b655b
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 980b25747d747f241a0301a8b7c65f2a
+    m_Address: Contributors_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+  - m_GUID: 31885116beacb504c96e24fc9c389d4e
+    m_Address: Mapper_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+  - m_GUID: 46e8c95eac0ea8c4397f3ec1716fdb87
+    m_Address: SongEditMenu_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+  - m_GUID: 752554318cf7d754fb548b47247e8323
+    m_Address: PersistentUI_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+  - m_GUID: 5e480b63f9d727d44bf2d82e1179a829
+    m_Address: Options_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+  - m_GUID: 6c6933da0c60299429fe6f01fbd92e61
+    m_Address: SongSelectMenu_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+  - m_GUID: 47fe0fceafeed1c4eaa2ff55d11a3c80
+    m_Address: FirstBoot_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+  - m_GUID: 07eddf1b3052ac541a1e362426755f30
+    m_Address: MultiMapping_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:
