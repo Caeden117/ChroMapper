@@ -392,12 +392,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Mouse Movement"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""965f30e2-f75b-4a64-a00c-e21258ef8eb3"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -742,12 +742,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""+Mouse Position Update"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""3c3cb17e-12c8-41c6-b727-8f8f86c0f325"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Precision Placement Toggle"",
@@ -2083,12 +2083,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""+Change Time and Precision"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""e046fbab-3ebb-4a53-8594-08a0ae193ab6"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Change Precision Modifier"",
@@ -2110,12 +2110,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Precisely Change Time and Precision"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""c6493d05-ae82-41a4-8f68-aa3424334d49"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -2400,12 +2400,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""+Mouse Position Update"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""0ad31924-f097-4801-a571-a40b54af42e6"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Jump to Object Time"",
@@ -2569,21 +2569,21 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Update Note Direction"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""bc91082a-7c68-45d3-b368-0e6984e98661"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Update Note Precise Direction"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""d86ce8a1-fd6d-4d89-9d96-e3202280feb7"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Invert Note Colors"",
@@ -2608,7 +2608,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""1171f62c-0f8d-4675-acfd-6179c6acc22e"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -2617,7 +2617,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""c671d9c9-3509-4aab-aa3f-6b774b73fab2"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -2628,7 +2628,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""6a07e536-7c00-4341-85fd-f27f37e449b1"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
@@ -2661,9 +2661,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Button With Two Modifiers"",
+                    ""name"": ""Two Modifiers"",
                     ""id"": ""d27bc266-bae4-4dec-a2d4-7b61e92c0b5f"",
-                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""path"": ""TwoModifiers"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -2694,7 +2694,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""6c4a7451-e1d4-48e7-a85a-13884dbbed3b"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
@@ -2721,30 +2721,30 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""+Change Wall Duration"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""29d1bb17-443a-4e78-88a6-46d1ccb56ffc"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Change Wall Upper Bound"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""c96a86f2-ac04-4573-9564-edcfb6f556a0"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Change Wall Lower Bound"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""f6f09066-b710-48d1-ab68-306ecdc7306a"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -2762,7 +2762,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""a644b0b6-5e6b-46fe-a1b4-65550b15a973"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -2771,7 +2771,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""572079c8-8d93-4a2f-bb9e-7c28b1ab8df0"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -2782,7 +2782,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""b1fe3a7b-ae79-4c48-ad32-b51015c775b3"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
@@ -2886,21 +2886,21 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Tweak Event Main"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""276c98b6-1db9-4975-be8c-23de8b862b07"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Tweak Event Alternative"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""7a637f25-63f4-434a-b1bc-5db5e34f9e04"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -2916,9 +2916,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Button With One Modifier"",
+                    ""name"": ""One Modifier"",
                     ""id"": ""70af3a21-80b6-491d-b247-6e0629fd31b6"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -2927,7 +2927,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""7f25e490-2349-411c-92c8-8a13ff9fc1c0"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -2938,7 +2938,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""2029a0a6-b94d-4213-8310-913895de92a9"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
@@ -2949,9 +2949,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Button With Two Modifiers"",
+                    ""name"": ""One Modifier"",
                     ""id"": ""f6def448-a684-444f-a5c0-f94272a62c7c"",
-                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -2960,7 +2960,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier1"",
+                    ""name"": ""Modifier"",
                     ""id"": ""526cf1ec-bbc2-4012-b7bd-3f0e88ad9c99"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -2971,20 +2971,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""modifier2"",
+                    ""name"": ""Binding"",
                     ""id"": ""bbbaec30-1693-470a-9e0a-cd32f6162128"",
                     ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Tweak Event Alternative"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""button"",
-                    ""id"": ""93deb5e4-8f8e-4dda-bcf7-cd2b675cfda2"",
-                    ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -3302,12 +3291,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Shifting Movement"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""27818e31-e5a6-4b4d-806a-f8de698ba4ee"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Activate Shift in Time"",
@@ -3714,12 +3703,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Tweak BPM Value"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""d5500879-426b-4d21-b2e8-b9e11de4c331"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -3759,7 +3748,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""b9437e71-7074-402d-9abe-9f1ef4071e15"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -3768,7 +3757,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""64333cae-86d5-436c-a120-2657519d7464"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -3779,7 +3768,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""02a89018-2048-45e5-bcf2-61356550f061"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
@@ -4462,21 +4451,21 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""ChangingMu"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""5ecf55da-5762-4a6c-921f-2b702e9078da"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""ChangingTmu"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""c37b5919-0bb5-4248-a944-50d9a28f9f9f"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -4494,7 +4483,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""bdb70de1-9017-48f5-9a56-a7cbc3e8b6d5"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -4503,7 +4492,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""e25bae57-8ba5-4bc3-8f4f-a85d16689882"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -4514,7 +4503,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""e9e80f81-e46a-410f-8ede-772001402513"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
@@ -4527,7 +4516,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""4e9815d9-195d-42b0-beee-c5dbbe007881"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -4536,7 +4525,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""13be3721-d736-47fb-996f-37a6a7f691b7"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
@@ -4547,7 +4536,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""9cbbc1b6-0ba7-4515-b623-618c9186acc3"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
@@ -4565,12 +4554,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""TweakChainCount"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""1c7ce6e2-975c-4349-ad23-ec3d12a4c640"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""InvertChainColor"",
@@ -4583,19 +4572,19 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""TweakChainSquish"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""afed819c-0511-4541-be42-2272b16fd4cb"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""1ad09872-ef84-423c-b7f6-6c123f28c38f"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -4604,7 +4593,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""03792ffb-15ab-40e3-aba5-0203e1c73c53"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -4615,7 +4604,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""a315ed00-b449-4c42-b26d-86edd9418c56"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
@@ -4639,7 +4628,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""cc108959-3e88-4e89-916e-3ab53746fa3e"",
-                    ""path"": ""ButtonWithOneModifier"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -4648,7 +4637,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""modifier"",
+                    ""name"": ""Modifier"",
                     ""id"": ""a559ede2-9e25-4701-a5a7-6227ebfbe571"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
@@ -4659,7 +4648,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""button"",
+                    ""name"": ""Binding"",
                     ""id"": ""bc2e6b3e-eb7c-4595-8219-3658277c5093"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
