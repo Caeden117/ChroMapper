@@ -24,6 +24,12 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
+        public V3BombNote(JSONNode node, bool fake = false)
+            : this(node)
+        {
+            CustomFake = fake;
+        }
+
         public V3BombNote(float time, int posX, int posY, JSONNode customData = null) : base(time, posX, posY,
             customData) =>
             ParseCustom();
@@ -31,6 +37,8 @@ namespace Beatmap.V3
         public V3BombNote(float jsonTime, float songBpmTime, int posX, int posY, JSONNode customData = null)
             : base(jsonTime, songBpmTime, posX, posY, customData) =>
             ParseCustom();
+
+        public override string CustomKeyAnimation { get; } = "animation";
 
         public override string CustomKeyTrack { get; } = "track";
 
@@ -41,6 +49,13 @@ namespace Beatmap.V3
         public override string CustomKeyWorldRotation { get; } = "worldRotation";
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
+
+        public override string CustomKeySpawnEffect { get; } = "spawnEffect";
+
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";
+
         public override string CustomKeyDirection { get; } = "direction";
 
         protected sealed override void ParseCustom() => base.ParseCustom();

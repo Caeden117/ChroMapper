@@ -153,7 +153,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     Refreshes the pool, with lower and upper bounds being automatically defined by chunks or spawn/despawn offsets.
     /// </summary>
     /// <param name="forceRefresh">All currently active containers will be recycled, even if they shouldn't be.</param>
-    public void RefreshPool(bool forceRefresh = false)
+    public virtual void RefreshPool(bool forceRefresh = false)
     {
         var epsilon = Mathf.Pow(10, -9);
         if (AudioTimeSyncController.IsPlaying)
@@ -264,7 +264,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     pool for future use.
     /// </summary>
     /// <param name="obj">Object whose container will be recycled.</param>
-    protected void RecycleContainer(BaseObject obj)
+    protected internal void RecycleContainer(BaseObject obj)
     {
         if (!obj.HasAttachedContainer) return;
         //Debug.Log($"Recycling container with hash code {obj.GetHashCode()}");

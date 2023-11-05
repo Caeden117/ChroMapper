@@ -337,7 +337,16 @@ public class PlatformDescriptor : MonoBehaviour
         if (e.CustomLightID != null && Settings.Instance.EmulateChromaAdvanced)
         {
             var lightIDArr = e.CustomLightID;
-            allLights = group.ControllingLights.FindAll(x => lightIDArr.Contains(x.LightID));
+            var deezLights = new List<LightingEvent>(lightIDArr.Length);
+            foreach (var lightID in lightIDArr)
+            {
+                group.LightIDMap.TryGetValue(lightID, out var light);
+                if (light is LightingEvent)
+                {
+                    deezLights.Add(light);
+                }
+            }
+            allLights = deezLights;
 
             // Temporarily(?) commented as Debug.LogWarning is expensive
             //if (allLights.Count() < lightIDArr.Length)
@@ -375,7 +384,7 @@ public class PlatformDescriptor : MonoBehaviour
                 case (int)LightValue.WhiteTransition:
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
-                    light.UpdateEasing("easeLinear");
+                    light.UpdateEasing(Easing.Linear);
                     TrySetTransition(light, e);
                     break;
                 case (int)LightValue.BlueFlash:
@@ -384,14 +393,14 @@ public class PlatformDescriptor : MonoBehaviour
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
-                    light.UpdateEasing("easeOutCubic");
+                    light.UpdateEasing(Easing.Cubic.Out);
                     break;
                 case (int)LightValue.BlueFade:
                 case (int)LightValue.RedFade:
                 case (int)LightValue.WhiteFade:
                     light.UpdateTargetAlpha(color.a * floatValue, 0);
                     light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
-                    light.UpdateEasing("easeOutExpo");
+                    light.UpdateEasing(Easing.Exponential.Out);
                     if (light.CanBeTurnedOff)
                     {
                         light.UpdateTargetAlpha(0, LightsManager.FadeTime);

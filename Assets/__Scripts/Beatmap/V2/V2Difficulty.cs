@@ -121,9 +121,7 @@ namespace Beatmap.V2
                 foreach (var p in PointDefinitions)
                 {
                     var obj = new JSONObject { ["_name"] = p.Key };
-                    var points = new JSONArray();
-                    foreach (var ary in p.Value) points.Add(ary);
-                    obj["_points"] = points;
+                    obj["_points"] = p.Value;
                     pAry.Add(obj);
                 }
 
@@ -142,7 +140,7 @@ namespace Beatmap.V2
             if (Materials.Any())
             {
                 MainNode["_customData"]["_materials"] = new JSONObject();
-                foreach (var m in Materials) MainNode["_customData"]["_materials"][m.Key] = m.Value;
+                foreach (var m in Materials) MainNode["_customData"]["_materials"][m.Key] = m.Value.ToJson();
             }
             else
             {
@@ -209,6 +207,10 @@ namespace Beatmap.V2
             CustomEvents = CustomEvents.Select(V3ToV2.CustomEvent).Cast<BaseCustomEvent>().ToList();
             EnvironmentEnhancements = EnvironmentEnhancements.Select(V3ToV2.EnvironmentEnhancement)
                 .Cast<BaseEnvironmentEnhancement>().ToList();
+            if (CustomData?.HasKey("fakeColorNotes") ?? false) CustomData.Remove("fakeColorNotes");
+            if (CustomData?.HasKey("fakeBombNotes") ?? false) CustomData.Remove("fakeBombNotes");
+            if (CustomData?.HasKey("fakeObstacles") ?? false) CustomData.Remove("fakeObstacles");
+            if (CustomData?.HasKey("fakeBurstSliders") ?? false) CustomData.Remove("fakeBurstSliders");
         }
 
         public override JSONNode ToJson() => throw new NotImplementedException();
@@ -269,9 +271,9 @@ namespace Beatmap.V2
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
-            var pointDefinitions = new Dictionary<string, List<JSONNode>>();
+            var pointDefinitions = new Dictionary<string, JSONArray>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
-            var materials = new Dictionary<string, JSONObject>();
+            var materials = new Dictionary<string, BaseMaterial>();
 
             var nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
@@ -306,8 +308,7 @@ namespace Beatmap.V2
                                 case "_pointDefinitions":
                                     foreach (JSONNode n in cNode)
                                     {
-                                        var points = new List<JSONNode>();
-                                        foreach (var p in n["_points"]) points.Add(p);
+                                        var points = n["_points"].AsArray;
                                         if (!pointDefinitions.ContainsKey(n["_name"]))
                                             pointDefinitions.Add(n["_name"], points);
                                         else
@@ -323,9 +324,9 @@ namespace Beatmap.V2
                                     {
                                         foreach (var n in matObj)
                                             if (!materials.ContainsKey(n.Key))
-                                                materials.Add(n.Key, n.Value.AsObject);
+                                                materials.Add(n.Key, new V2Material(n.Value.AsObject));
                                             else
-                                                Debug.LogWarning($"Duplicate key {n.Key} found in materials");
+                                                Debug.LogWarning($"Duplicate key \"{n.Key}\" found in materials");
                                         break;
                                     }
                                     Debug.LogWarning("Could not read materials");
@@ -362,6 +363,7 @@ namespace Beatmap.V2
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
             map.PointDefinitions = pointDefinitions;
             map.EnvironmentEnhancements = envEnhancementsList;
+            map.Materials = materials;
         }
     }
 }

@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using Beatmap.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
@@ -31,6 +34,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     [SerializeField] private float mouseX;
     [SerializeField] private float mouseY;
 
+    [SerializeField] private bool playerCamera;
+    [SerializeField] private ObjectAnimator cameraAnimator;
+    [SerializeField] private AudioTimeSyncController atsc;
+
     private readonly Type[] actionMapsDisabledWhileMoving =
     {
         typeof(CMInput.IPlacementControllersActions), typeof(CMInput.INotePlacementActions),
@@ -53,6 +60,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     private bool secondSetOfLocations;
     private bool setLocation;
 
+    private List<float> playerTrackTimes = new List<float>();
+    private List<TrackAnimator> playerTracks = new List<TrackAnimator>();
+    private TrackAnimator currentTrack = null;
+
     public bool LockedOntoNoteGrid
     {
         get => lockOntoNoteGrid;
@@ -67,17 +78,36 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public bool MovingCamera => canMoveCamera;
 
+    public void AddPlayerTrack(float time, TrackAnimator track)
+    {
+        playerTrackTimes.Add(time);
+        playerTracks.Add(track);
+    }
+
+    public void ClearPlayerTracks()
+    {
+        playerTrackTimes.Clear();
+        playerTracks.Clear();
+    }
+
     private void Start()
     {
-        instance = this;
-        Camera.fieldOfView = Settings.Instance.CameraFOV;
+        Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;
         cameraExtraData = Camera.GetUniversalAdditionalCameraData();
         UpdateAA(Settings.Instance.CameraAA);
         UpdateRenderScale(Settings.Instance.RenderScale);
         Settings.NotifyBySettingName(nameof(Settings.CameraAA), UpdateAA);
         Settings.NotifyBySettingName(nameof(Settings.RenderScale), UpdateRenderScale);
-        OnLocation(0);
-        LockedOntoNoteGrid = true;
+        if (!playerCamera)
+        {
+            instance = this;
+            OnLocation(0);
+            LockedOntoNoteGrid = true;
+        }
+        else
+        {
+            RotationCallbackController.RotationChangedEvent += OnRotation;
+        }
     }
 
     private void Update()
@@ -85,19 +115,39 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         if (PauseManager.IsPaused || SceneTransitionManager.IsLoading)
             return; //Dont move camera if we are in pause menu or loading screen
 
-        Camera.fieldOfView = Settings.Instance.CameraFOV;
+        Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;
 
-        if (UIMode.SelectedMode == UIModeType.Playing)
+        if (playerCamera)
         {
-            var posY = z < 0 ? 0.25f : 1.8f;
-            var posX = x < 0 ? -2f : x > 0 ? 2f : 0;
+            if (!UIMode.AnimationMode || (playerTrackTimes?.Count ?? 0) == 0) return;
 
-            transform.SetPositionAndRotation(new Vector3(posX, posY, -6), Quaternion.Euler(new Vector3(0, -posX, 0)));
+            // 1 after last point, inverted (probably)
+            var later = playerTrackTimes.BinarySearch(atsc.CurrentJsonTime);
 
-            return;
+            var current = (later < 0)
+                ? (~later) - 1
+                : later;
+
+            if (current < 0)
+            {
+                DisconnectPlayerTrack();
+                return;
+            }
+
+            if (playerTracks[current] != currentTrack)
+            {
+                DisconnectPlayerTrack();
+                currentTrack = playerTracks[current];
+                cameraAnimator.LocalTarget = cameraAnimator.AnimationThis.transform;
+                cameraAnimator.WorldTarget = cameraAnimator.transform;
+                cameraAnimator.enabled = true;
+                cameraAnimator.ResetData();
+
+                currentTrack.Children.Add(cameraAnimator);
+                currentTrack.OnChildrenChanged();
+            }
         }
-
-        if (canMoveCamera)
+        else if (canMoveCamera)
         {
             if (CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.ICameraActions)))
             {
@@ -226,7 +276,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public void OnAttachtoNoteGrid(CallbackContext context)
     {
-        if (RotationCallbackController.IsActive && context.performed && noteGridTransform.gameObject.activeInHierarchy)
+        if (RotationCallbackController.IsActive && context.performed && noteGridTransform.gameObject.activeInHierarchy && !playerCamera)
             LockedOntoNoteGrid = !LockedOntoNoteGrid;
     }
 
@@ -261,6 +311,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     private void OnLocation(int id)
     {
+        if (playerCamera) return;
         // Shift for second set of hotkeys (8 total)
         if (secondSetOfLocations) id += 4;
 
@@ -272,5 +323,41 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         {
             transform.SetPositionAndRotation(Settings.Instance.SavedPositions[id].Position, Settings.Instance.SavedPositions[id].Rotation);
         }
+    }
+
+    private void OnRotation(bool natural, float rotation)
+    {
+        if (natural)
+        {
+            StartCoroutine(RotationCoroutine(Quaternion.Euler(0, rotation, 0)));
+        }
+        else
+        {
+            cameraAnimator.LocalTarget.localEulerAngles = new Vector3(0, rotation, 0);
+        }
+    }
+
+    private IEnumerator RotationCoroutine(Quaternion current)
+    {
+        float t = 0;
+        var previous = cameraAnimator.LocalTarget.localRotation;
+        while (t < 1)
+        {
+            t += Time.deltaTime * 2;
+            cameraAnimator.LocalTarget.localRotation = Quaternion.SlerpUnclamped(previous, current, t);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private void DisconnectPlayerTrack()
+    {
+        if (currentTrack == null) return;
+
+        currentTrack.Children.Remove(cameraAnimator);
+        currentTrack.OnChildrenChanged();
+        currentTrack = null;
+
+        cameraAnimator.ResetData();
+        cameraAnimator.enabled = false;
     }
 }

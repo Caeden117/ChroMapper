@@ -10,6 +10,8 @@ using UnityEngine.Serialization;
 public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 {
     public static UIModeType SelectedMode;
+    public static bool PreviewMode { get; private set; }
+    public static bool AnimationMode { get; private set; }
     private Vector3 savedCamPosition = Vector3.zero;
     private Quaternion savedCamRotation = Quaternion.identity;
 
@@ -18,6 +20,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     [SerializeField] private GameObject modesGameObject;
     [SerializeField] private RectTransform selected;
     [FormerlySerializedAs("_cameraController")] [SerializeField] private CameraController cameraController;
+    [SerializeField] private Camera editorCamera;
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
     [FormerlySerializedAs("_rotationCallbackController")] [SerializeField] private RotationCallbackController rotationCallbackController;
@@ -68,7 +72,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             var currentOption = selected.parent.GetSiblingIndex();
             var nextOption = currentOption + 1;
 
-            var disablePlayingMode = rotationCallbackController.IsActive;
+            var disablePlayingMode = false; //rotationCallbackController.IsActive;
 
             if (nextOption == (int)UIModeType.Playing && disablePlayingMode) nextOption++;
 
@@ -98,7 +102,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
     private void OnPlayToggle(bool playing)
     {
-        if (SelectedMode == UIModeType.Playing || SelectedMode == UIModeType.Preview)
+        if (PreviewMode)
         {
             foreach (var group in mapEditorUi.MainUIGroup)
             {
@@ -117,6 +121,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     public void SetUIMode(int modeID, bool showUIChange = true)
     {
         SelectedMode = (UIModeType)modeID;
+        PreviewMode = (SelectedMode == UIModeType.Playing || SelectedMode == UIModeType.Preview);
+        AnimationMode = PreviewMode && Settings.Instance.Animations;
         UIModeSwitched?.Invoke(SelectedMode);
         selected.SetParent(modes[modeID].transform, true);
         slideSelectionCoroutine = StartCoroutine(SlideSelection());
@@ -134,11 +140,14 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 HideStuff(false, false, true, true, true);
                 break;
             case UIModeType.Preview:
+                HideStuff(false, false, false, false, false);
+                break;
             case UIModeType.Playing:
                 HideStuff(false, false, false, false, false);
-                OnPlayToggle(atsc.IsPlaying); // kinda jank but it works
                 break;
         }
+        playerCamera.enabled = (SelectedMode == UIModeType.Playing);
+        editorCamera.enabled = (SelectedMode != UIModeType.Playing);
 
         foreach (var boy in actions) boy?.Invoke(SelectedMode);
     }

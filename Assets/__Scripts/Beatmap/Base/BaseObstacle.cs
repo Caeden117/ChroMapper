@@ -48,6 +48,7 @@ namespace Beatmap.Base
             Width = other.Width;
             InternalHeight = other.Height;
             CustomData = other.SaveCustom().Clone();
+            CustomFake = other.CustomFake;
         }
 
         protected BaseObstacle(float time, int posX, int type, float duration, int width,
@@ -114,6 +115,8 @@ namespace Beatmap.Base
             set => InternalHeight = value;
         }
 
+        public override float DespawnJsonTime { get { return JsonTime + Duration + Hjd; } }
+
         public virtual JSONNode CustomSize { get; set; }
 
         public abstract string CustomKeySize { get; }
@@ -151,7 +154,7 @@ namespace Beatmap.Base
         {
             var position = PosX - 2f; //Line index
             var clampedY = Mathf.Clamp(PosY, 0, 2);
-            var startHeight = -0.5f + clampedY;
+            float startHeight = clampedY;
             float height = Mathf.Min(Height, 5 - clampedY);
             float width = Width;
 

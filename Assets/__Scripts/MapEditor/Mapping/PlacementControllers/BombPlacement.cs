@@ -36,18 +36,18 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     public override BaseNote GenerateOriginalData() => BeatmapFactory.Bomb(0, 0, 0);
 
-    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 _)
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 roundedHit)
     {
-        var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
-        roundedHit = new Vector3(roundedHit.x, roundedHit.y, SongBpmTime * EditorScaleController.EditorScale);
+        var rawHit = ParentTrack.InverseTransformPoint(hit.Point);
+        rawHit.z = SongBpmTime * EditorScaleController.EditorScale;
 
         // Check if Chroma Color notes button is active and apply _color
         queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
             ? (Color?)colorPicker.CurrentColor
             : null;
 
-        var posX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-        var posY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+        var posX = (int)roundedHit.x;
+        var posY = (int)roundedHit.y;
 
         var vanillaX = Mathf.Clamp(posX, 0, 3);
         var vanillaY = Mathf.Clamp(posY, 0, 2);
@@ -60,11 +60,10 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         if (UsePrecisionPlacement)
         {
             var precision = Settings.Instance.PrecisionPlacementGridPrecision;
-            roundedHit.x = Mathf.Round(roundedHit.x * precision) / precision;
-            roundedHit.y = Mathf.Round(roundedHit.y * precision) / precision;
+            roundedHit = ((Vector2)Vector2Int.RoundToInt((precisionOffset + (Vector2)rawHit) * precision)) / precision;
             instantiatedContainer.transform.localPosition = roundedHit;
 
-            queuedData.CustomCoordinate = new Vector2(roundedHit.x - 0.5f, roundedHit.y - 0.5f);
+            queuedData.CustomCoordinate = (Vector2)roundedHit;
 
             precisionPlacement.TogglePrecisionPlacement(true);
             precisionPlacement.UpdateMousePosition(hit.Point);
@@ -74,12 +73,15 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             precisionPlacement.TogglePrecisionPlacement(false);
 
             queuedData.CustomCoordinate = !vanillaBounds
-                ? (JSONNode)new Vector2(Mathf.Round(roundedHit.x - 0.5f), Mathf.Round(roundedHit.y - 0.5f))
+                ? (JSONNode)((Vector2)roundedHit - vanillaOffset + precisionOffset)
                 : null;
         }
 
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
         instantiatedContainer.UpdateMaterials();
+
+        instantiatedContainer.NoteData = queuedData;
+        instantiatedContainer.UpdateGridPosition();
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)

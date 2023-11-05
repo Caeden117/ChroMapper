@@ -28,6 +28,12 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
+        public V3ColorNote(JSONNode node, bool fake = false)
+            : this(node)
+        {
+            CustomFake = fake;
+        }
+
         public V3ColorNote(float time, int posX, int posY, int type, int cutDirection,
             JSONNode customData = null) : base(
             time, posX, posY, type, cutDirection, customData) =>
@@ -50,6 +56,8 @@ namespace Beatmap.V3
             set { }
         }
 
+        public override string CustomKeyAnimation { get; } = "animation";
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";
@@ -59,6 +67,12 @@ namespace Beatmap.V3
         public override string CustomKeyWorldRotation { get; } = "worldRotation";
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
+
+        public override string CustomKeySpawnEffect { get; } = "spawnEffect";
+
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";
 
         public override string CustomKeyDirection { get; } = "cutDirection";
 

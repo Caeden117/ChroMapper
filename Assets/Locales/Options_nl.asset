@@ -1245,6 +1245,20 @@ MonoBehaviour:
   - m_Id: 288364497993924608
     m_Localized: Saves the difficulty file without properties that have a default
       value.
+  - m_Id: 249214922956247040
+    m_Localized: Enables Noodle Extensions animations while in preview mode.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 249224607608377344
+    m_Localized: Preview Animations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 252032304653307904
+    m_Localized: Change Field of View of the preview camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 252047222777614336
+    m_Localized: Preview Camera FOV
     m_Metadata:
       m_Items: []
   references:

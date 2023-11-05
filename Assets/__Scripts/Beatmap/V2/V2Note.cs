@@ -33,6 +33,8 @@ namespace Beatmap.V2
             JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, type, cutDirection, customData) =>
             ParseCustom();
 
+        public override string CustomKeyAnimation { get; } = "_animation";
+
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";
@@ -43,6 +45,12 @@ namespace Beatmap.V2
 
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
 
+        public override string CustomKeySpawnEffect { get; } = "_disableSpawnEffect";
+
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "_noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "_noteJumpStartBeatOffset";
+
         public override string CustomKeyDirection { get; } = "_cutDirection";
 
         protected sealed override void ParseCustom()
@@ -50,12 +58,14 @@ namespace Beatmap.V2
             base.ParseCustom();
 
             CustomDirection = (CustomData?.HasKey(CustomKeyDirection) ?? false) ? CustomData?[CustomKeyDirection].AsInt : null;
+            CustomFake = (CustomData?.HasKey("_fake") ?? false) ? CustomData["_fake"].AsBool : false;
         }
 
         protected internal sealed override JSONNode SaveCustom()
         {
             CustomData = base.SaveCustom();
             if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection; else CustomData.Remove(CustomKeyDirection);
+            if (CustomFake) CustomData["_fake"] = true; else CustomData.Remove("_fake");
             return CustomData;
         }
 

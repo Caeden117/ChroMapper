@@ -51,11 +51,18 @@ public class LightingEvent : MonoBehaviour
 
         if (OverrideLightGroup)
         {
-            var descriptor = GetComponentInParent<PlatformDescriptor>();
+            var descriptor = LoadInitialMap.Platform;
 
-            if (descriptor != null)
+            // TODO: Add types?
+            if (descriptor != null && OverrideLightGroupID >= 0 && OverrideLightGroupID < descriptor.LightingManagers.Length)
             {
-                descriptor.LightingManagers[OverrideLightGroupID].ControllingLights.Add(this);
+                var lm = descriptor.LightingManagers[OverrideLightGroupID];
+                while (lm.LightIDPlacementMapReverse?.ContainsKey(LightID) ?? false)
+                {
+                    ++LightID;
+                }
+                lm.ControllingLights.Add(this);
+                lm.LoadOldLightOrder();
             }
         }
     }
@@ -81,6 +88,8 @@ public class LightingEvent : MonoBehaviour
     }
 
     public void UpdateEasing(string easingName) => easing = Easing.ByName[easingName];
+
+    public void UpdateEasing(Func<float, float> _easing) => easing = _easing;
 
     public void UpdateTargetColor(Color target, float timeToTransition)
     {

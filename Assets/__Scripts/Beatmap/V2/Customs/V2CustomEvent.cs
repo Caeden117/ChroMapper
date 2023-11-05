@@ -27,6 +27,11 @@ namespace Beatmap.V2.Customs
         public override string KeyTime { get; } = "_time";
         public override string KeyType { get; } = "_type";
         public override string KeyData { get; } = "_data";
+        public override string DataKeyDuration { get; } = "_duration";
+        public override string DataKeyEasing { get; } = "_easing";
+        public override string DataKeyRepeat { get; } = "_repeat";
+        public override string DataKeyChildrenTracks { get; } = "_childrenTracks";
+        public override string DataKeyParentTrack { get; } = "_parentTrack";
 
         public override BaseItem Clone() => new V2CustomEvent(JsonTime, Type, Data.Clone());
     }

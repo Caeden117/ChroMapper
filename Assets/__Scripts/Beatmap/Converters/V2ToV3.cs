@@ -282,6 +282,7 @@ namespace Beatmap.Converters
             }
 
             if (n.HasKey("_color")) n.Remove("_color");
+            if (n.HasKey("_fake")) n.Remove("_fake");
             if (n.HasKey("_position")) n.Remove("_position");
             if (n.HasKey("_disableNoteGravity")) n.Remove("_disableNoteGravity");
             if (n.HasKey("_disableNoteLook")) n.Remove("_disableNoteLook");
@@ -357,11 +358,11 @@ namespace Beatmap.Converters
                 BpmChanges = other.BpmChanges.Select(BpmChange).Cast<BaseBpmChange>().ToList(),
                 Bookmarks = other.Bookmarks.Select(Bookmark).Cast<BaseBookmark>().ToList(),
                 CustomEvents = other.CustomEvents.Select(CustomEvent).Cast<BaseCustomEvent>().ToList(),
-                PointDefinitions = new Dictionary<string, List<JSONNode>>(other.PointDefinitions),
+                PointDefinitions = new Dictionary<string, JSONArray>(other.PointDefinitions),
                 EnvironmentEnhancements = other.EnvironmentEnhancements.Select(EnvironmentEnhancement)
                     .Cast<BaseEnvironmentEnhancement>()
                     .ToList(),
-                Materials = other.Materials.ToDictionary(m => m.Key, m => Material(m.Value)),
+                Materials = other.Materials.ToDictionary(m => m.Key, m => (BaseMaterial)new V3Material(m.Value)),
                 Time = other.Time,
                 CustomData = other.CustomData?.Clone() ?? new JSONObject()
             };

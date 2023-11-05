@@ -47,7 +47,8 @@ public class Easing
         {"easeInOutElastic", Elastic.InOut},
         {"easeInBounce", Bounce.In},
         {"easeOutBounce", Bounce.Out},
-        {"easeInOutBounce", Bounce.InOut}
+        {"easeInOutBounce", Bounce.InOut},
+        {"easeStep", Step}
     };
 
     /// <summary>
@@ -86,7 +87,8 @@ public class Easing
         {"Elastic In/Out", "easeInOutElastic"},
         {"Bounce In", "easeInBounce"},
         {"Bounce Out", "easeOutBounce"},
-        {"Bounce In/Out", "easeInOutBounce"}
+        {"Bounce In/Out", "easeInOutBounce"},
+        {"Step", "easeStep"}
     };
 
     /// <summary>
@@ -119,6 +121,8 @@ public class Easing
     }
 
     public static float Linear(float k) => k;
+
+    public static float Step(float k) => Mathf.Floor(k);
 
     public class Quadratic
     {

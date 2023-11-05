@@ -79,6 +79,8 @@ namespace Beatmap.V2
             }
         }
 
+        public override string CustomKeyAnimation { get; } = "_animation";
+
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";
@@ -89,9 +91,27 @@ namespace Beatmap.V2
 
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
 
+        public override string CustomKeySpawnEffect { get; } = "_disableSpawnEffect";
+
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "_noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "_noteJumpStartBeatOffset";
+
         public override string CustomKeySize { get; } = "_scale";
 
-        protected override void ParseCustom() => base.ParseCustom();
+        protected sealed override void ParseCustom()
+        {
+            base.ParseCustom();
+
+            CustomFake = (CustomData?.HasKey("_fake") ?? false) ? CustomData["_fake"].AsBool : false;
+        }
+
+        protected internal override JSONNode SaveCustom()
+        {
+            CustomData = base.SaveCustom();
+            if (CustomFake) CustomData["_fake"] = true; else CustomData.Remove("_fake");
+            return CustomData;
+        }
 
         public override bool IsChroma() =>
             CustomData != null && CustomData.HasKey("_color") && CustomData["_color"].IsArray;

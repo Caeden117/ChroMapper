@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
   m_Name: Options_fr
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   m_LocaleId:
     m_Code: fr
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
@@ -1229,6 +1229,12 @@ MonoBehaviour:
   - m_Id: 247458202206273536
     m_Localized: 'If enabled, an extended grid will appear when using the precision
       placement keybind while placing walls or notes. '
+  - m_Id: 249214922956247040
+    m_Localized: Enables Noodle Extensions animations while in preview mode.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 249224607608377344
+    m_Localized: Preview Animations
     m_Metadata:
       m_Items: []
   - m_Id: 262680152746688512
@@ -1246,6 +1252,12 @@ MonoBehaviour:
   - m_Id: 288364497993924608
     m_Localized: Saves the difficulty file without properties that have a default
       value.
+  - m_Id: 252032304653307904
+    m_Localized: Change Field of View of the preview camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 252047222777614336
+    m_Localized: Preview Camera FOV
     m_Metadata:
       m_Items: []
   references:

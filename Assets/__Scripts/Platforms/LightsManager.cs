@@ -24,6 +24,7 @@ public class LightsManager : MonoBehaviour
 
     public Dictionary<int, int> LightIDPlacementMap;
     public Dictionary<int, int> LightIDPlacementMapReverse;
+    public Dictionary<int, LightingEvent> LightIDMap;
     private int previousValue;
 
     private IEnumerator Start()
@@ -53,6 +54,7 @@ public class LightsManager : MonoBehaviour
                 .ToList();
             LightIDPlacementMap = lightIdOrder.ToDictionary(x => lightIdOrder.IndexOf(x), x => x.LightID);
             LightIDPlacementMapReverse = lightIdOrder.ToDictionary(x => x.LightID, x => lightIdOrder.IndexOf(x));
+            LightIDMap = lightIdOrder.ToDictionary(x => x.LightID, x => x);
 
             LightsGroupedByZ = GroupLightsBasedOnZ();
             RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();

@@ -3,6 +3,8 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
 
+using Beatmap.Animations;
+
 namespace Beatmap.Containers
 {
     public class NoteContainer : ObjectContainer
@@ -11,6 +13,7 @@ namespace Beatmap.Containers
 
         [SerializeField] private GameObject simpleBlock;
         [SerializeField] private GameObject complexBlock;
+        [SerializeField] public Transform DirectionTarget;
 
         [SerializeField] private List<MeshRenderer> noteRenderer;
         [SerializeField] private MeshRenderer bombRenderer;
@@ -19,11 +22,17 @@ namespace Beatmap.Containers
         [SerializeField] private SpriteRenderer swingArcRenderer;
 
         [SerializeField] public BaseNote NoteData;
+        public MaterialPropertyBlock ArrowMaterialPropertyBlock;
 
         public override BaseObject ObjectData
         {
             get => NoteData;
             set => NoteData = (BaseNote)value;
+        }
+
+        public Vector2 GridPosition
+        {
+            get => Animator.AnimationTrack?.ObjectParentTransform.localPosition ?? transform.localPosition;
         }
 
         public override void Setup()
@@ -39,6 +48,11 @@ namespace Beatmap.Containers
                 MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
 
                 UpdateMaterials();
+            }
+
+            if (ArrowMaterialPropertyBlock == null)
+            {
+                ArrowMaterialPropertyBlock = new MaterialPropertyBlock();
             }
 
             SetArcVisible(NoteGridContainer.ShowArcVisualizer);
@@ -121,23 +135,28 @@ namespace Beatmap.Containers
             if (swingArcRenderer != null) swingArcRenderer.enabled = showArcVisualizer;
         }
 
-        public static NoteContainer SpawnBeatmapNote(BaseNote noteData, ref GameObject notePrefab)
+        public static NoteContainer SpawnBeatmapNote(BaseNote noteData,  ref GameObject notePrefab)
         {
             var container = Instantiate(notePrefab).GetComponent<NoteContainer>();
             container.NoteData = noteData;
-            container.transform.localEulerAngles = Directionalize(noteData);
+            container.DirectionTarget.localEulerAngles = Directionalize(noteData);
             return container;
         }
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = (Vector3)NoteData.GetPosition() +
-                                      new Vector3(0, 0.5f, NoteData.SongBpmTime * EditorScaleController.EditorScale);
-            transform.localScale = NoteData.GetScale() + new Vector3(0.5f, 0.5f, 0.5f);
+            if (!(Animator?.AnimatedTrack ?? false))
+            {
+                transform.localPosition = (Vector3)NoteData.GetPosition() +
+                                          new Vector3(0, offsetY, NoteData.SongBpmTime * EditorScaleController.EditorScale);
+            }
+            transform.localScale = NoteData.GetScale();
+            DirectionTarget.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             UpdateCollisionGroups();
 
             MaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
+            ArrowMaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
             SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0);
             UpdateMaterials();
         }
@@ -153,6 +172,11 @@ namespace Beatmap.Containers
             foreach (var renderer in noteRenderer) renderer.SetPropertyBlock(MaterialPropertyBlock);
             foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
             bombRenderer.SetPropertyBlock(MaterialPropertyBlock);
+            if (dotRenderer != null)
+            {
+                dotRenderer.SetPropertyBlock(ArrowMaterialPropertyBlock);
+                arrowRenderer.SetPropertyBlock(ArrowMaterialPropertyBlock);
+            }
         }
     }
 }

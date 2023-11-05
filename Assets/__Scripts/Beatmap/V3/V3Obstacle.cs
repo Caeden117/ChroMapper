@@ -26,6 +26,12 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
+        public V3Obstacle(JSONNode node, bool fake = false)
+            : this(node)
+        {
+            CustomFake = fake;
+        }
+
         public V3Obstacle(float time, int posX, int posY, float duration, int width, int height,
             JSONNode customData = null) : base(time, posX, posY, duration, width, height, customData) =>
             ParseCustom();
@@ -41,6 +47,8 @@ namespace Beatmap.V3
             set => base.Type = value > 1 ? 0 : value;
         }
 
+        public override string CustomKeyAnimation { get; } = "animation";
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";
@@ -50,6 +58,12 @@ namespace Beatmap.V3
         public override string CustomKeyWorldRotation { get; } = "worldRotation";
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
+
+        public override string CustomKeySpawnEffect { get; } = "spawnEffect";
+
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";
 
         public override string CustomKeySize { get; } = "size";
 

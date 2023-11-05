@@ -4,6 +4,8 @@ using System.Linq;
 using Beatmap.Base;
 using UnityEngine;
 
+using Beatmap.Animations;
+
 namespace Beatmap.Containers
 {
     public abstract class ObjectContainer : MonoBehaviour
@@ -15,11 +17,15 @@ namespace Beatmap.Containers
         internal static readonly int outline = Shader.PropertyToID("_Outline");
         internal static readonly int outlineColor = Shader.PropertyToID("_OutlineColor");
 
+        // 0.5 (?) + 0.6 (world rotation origin y)
+        protected static readonly float offsetY = 1.1f;
+
         public bool Dragging;
 
         [SerializeField] protected List<IntersectionCollider> Colliders;
         [SerializeField] protected List<Renderer> SelectionRenderers = new List<Renderer>();
         [SerializeField] protected BoxCollider BoxCollider;
+        [SerializeField] public ObjectAnimator Animator;
 
         protected readonly List<Renderer> modelRenderers = new List<Renderer>();
         public MaterialPropertyBlock MaterialPropertyBlock;

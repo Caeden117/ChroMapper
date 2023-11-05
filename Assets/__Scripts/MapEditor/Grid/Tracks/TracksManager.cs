@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Beatmap.Animations;
 using Beatmap.Base;
+using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.V2;
+using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,6 +19,7 @@ public class TracksManager : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
 
     private readonly Dictionary<Vector3, Track> loadedTracks = new Dictionary<Vector3, Track>();
+    private readonly Dictionary<string, TrackAnimator> animationTracks = new Dictionary<string, TrackAnimator>();
 
     private readonly List<BeatmapObjectContainerCollection> objectContainerCollections =
         new List<BeatmapObjectContainerCollection>();
@@ -37,7 +43,10 @@ public class TracksManager : MonoBehaviour
         ObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
     }
 
-    private void OnDestroy() => ObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
+    private void OnDestroy()
+    {
+        ObjectContainer.FlaggedForDeletionEvent -= FlaggedForDeletion;
+    }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Discarding multiple variables")]
     private void FlaggedForDeletion(ObjectContainer obj, bool _, string __)
@@ -83,14 +92,63 @@ public class TracksManager : MonoBehaviour
         return CreateTrack(vectorRotation);
     }
 
+    public TrackAnimator CreateAnimationTrack(string name)
+    {
+        if (animationTracks.TryGetValue(name, out var animator)) return animator;
+
+        var obj = Instantiate(trackPrefab, tracksParent);
+        obj.name = name;
+        animator = obj.AddComponent<TrackAnimator>();
+        animator.enabled = false;
+        animator.Atsc = atsc;
+        animator.Track = obj.GetComponent<Track>();
+        animationTracks.Add(name, animator);
+        return animator;
+    }
+
+    public void ResetAnimationTracks()
+    {
+        foreach (var at in animationTracks)
+        {
+            at.Value.SetEvents(new List<BaseCustomEvent>());
+            at.Value.Children.Clear();
+            if (at.Value.Animator != null)
+            {
+                GameObject.Destroy(at.Value.Animator);
+                at.Value.Animator = null;
+            }
+        }
+    }
+
+    // Used for world rotation
+    public Track CreateIndividualTrack(BaseGrid obj)
+    {
+        // TODO: This is the same math used for 90/360 tacks, but does it actually handle BPM changes?
+        var potition = -1 * obj.JsonTime * EditorScaleController.EditorScale;
+        var track = Instantiate(trackPrefab, tracksParent).GetComponent<Track>();
+        track.UpdatePosition(potition);
+
+        float rotation = GetRotationAtTime(obj.SongBpmTime);
+        track.AssignRotationValue(obj.CustomWorldRotation ?? new Vector3(0, rotation, 0));
+        track.gameObject.name = $"Track Object {obj.JsonTime}";
+        return track;
+    }
+
     public Track GetTrackAtTime(float beatInSongBpm)
     {
         if (!Settings.Instance.RotateTrack) return CreateTrack(0);
+        float rotation = GetRotationAtTime(beatInSongBpm);
+
+        return CreateTrack(rotation);
+    }
+
+    public float GetRotationAtTime(float beatInSongBpm)
+    {
         float rotation = 0;
         foreach (var rotationEvent in eventGrid.AllRotationEvents)
         {
-            if (rotationEvent.JsonTime > beatInSongBpm + 0.001f) continue;
-            if (Mathf.Approximately(rotationEvent.JsonTime, beatInSongBpm) &&
+            if (rotationEvent.SongBpmTime > beatInSongBpm + 0.001f) continue;
+            if (Mathf.Approximately(rotationEvent.SongBpmTime, beatInSongBpm) &&
                 rotationEvent.Type == (int)EventTypeValue.LateLaneRotation)
             {
                 continue;
@@ -100,8 +158,7 @@ public class TracksManager : MonoBehaviour
             if (rotation < LowestRotation) LowestRotation = rotation;
             if (rotation > HighestRotation) HighestRotation = rotation;
         }
-
-        return CreateTrack(rotation);
+        return rotation;
     }
 
     public void RefreshTracks()
@@ -111,9 +168,10 @@ public class TracksManager : MonoBehaviour
             foreach (var container in collection.LoadedContainers.Values)
             {
                 if (container is ObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
-                var track = GetTrackAtTime(container.ObjectData.JsonTime);
+                if (container.Animator?.AnimatedTrack ?? false) continue;
+                var track = GetTrackAtTime(container.ObjectData.SongBpmTime);
                 track.AttachContainer(container);
-                //container.UpdateGridPosition();
+                container.UpdateGridPosition();
             }
         }
     }

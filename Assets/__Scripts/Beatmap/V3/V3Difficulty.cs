@@ -62,19 +62,19 @@ namespace Beatmap.V3
                 foreach (var b in BpmEvents) bpmEvents.Add(b.ToJson());
 
                 var colorNotes = new JSONArray();
-                foreach (var n in Notes) colorNotes.Add(n.ToJson());
+                foreach (var n in Notes) if (!n.CustomFake) colorNotes.Add(n.ToJson());
 
                 var bombNotes = new JSONArray();
-                foreach (var b in Bombs) bombNotes.Add(b.ToJson());
+                foreach (var b in Bombs) if (!b.CustomFake)  bombNotes.Add(b.ToJson());
 
                 var obstacles = new JSONArray();
-                foreach (var o in Obstacles) obstacles.Add(o.ToJson());
+                foreach (var o in Obstacles) if (!o.CustomFake) obstacles.Add(o.ToJson());
 
                 var arcs = new JSONArray();
                 foreach (var a in Arcs) arcs.Add(a.ToJson());
 
                 var chains = new JSONArray();
-                foreach (var c in Chains) chains.Add(c.ToJson());
+                foreach (var c in Chains) if (!c.CustomFake) chains.Add(c.ToJson());
 
                 var waypoints = new JSONArray();
                 foreach (var w in Waypoints) waypoints.Add(w.ToJson());
@@ -128,7 +128,7 @@ namespace Beatmap.V3
                 WriteBPMInfoFile(this);
 
                 // TODO: temporary fix, there is possibility better solution but this is quick band aid
-                // we need to put them back into the map 
+                // we need to put them back into the map
                 ParseV3ToV2(this);
 
                 return true;
@@ -156,6 +156,34 @@ namespace Beatmap.V3
             MainNode["customData"] = CustomData ?? new JSONObject();
             MainNode["customData"].Remove("BPMChanges");
 
+            var fakeColorNotes = new JSONArray();
+            foreach (var n in Notes) if (n.CustomFake) fakeColorNotes.Add(n.ToJson());
+            if (fakeColorNotes.Count > 0)
+                MainNode["customData"]["fakeColorNotes"] = CleanupArray(fakeColorNotes, "b");
+            else
+                MainNode["customData"].Remove("fakeColorNotes");
+
+            var fakeBombNotes = new JSONArray();
+            foreach (var b in Bombs) if (b.CustomFake)  fakeBombNotes.Add(b.ToJson());
+            if (fakeBombNotes.Count > 0)
+                MainNode["customData"]["fakeBombNotes"] = CleanupArray(fakeBombNotes, "b");
+            else
+                MainNode["customData"].Remove("fakeBombNotes");
+
+            var fakeObstacles = new JSONArray();
+            foreach (var o in Obstacles) if (o.CustomFake) fakeObstacles.Add(o.ToJson());
+            if (fakeObstacles.Count > 0)
+                MainNode["customData"]["fakeObstacles"] = CleanupArray(fakeObstacles, "b");
+            else
+                MainNode["customData"].Remove("fakeObstacles");
+
+            var fakeChains = new JSONArray();
+            foreach (var c in Chains) if (c.CustomFake) fakeChains.Add(c.ToJson());
+            if (fakeChains.Count > 0)
+                MainNode["customData"]["fakeChains"] = CleanupArray(fakeChains, "b");
+            else
+                MainNode["customData"].Remove("fakeChains");
+
             if (Bookmarks.Any())
                 MainNode["customData"]["bookmarks"] = CleanupArray(bookmarks, "b");
             else
@@ -171,9 +199,7 @@ namespace Beatmap.V3
                 MainNode["customData"]["pointDefinitions"] = new JSONObject();
                 foreach (var p in PointDefinitions)
                 {
-                    var points = new JSONArray();
-                    foreach (var ary in p.Value) points.Add(ary);
-                    MainNode["customData"]["pointDefinitions"][p.Key] = points;
+                    MainNode["customData"]["pointDefinitions"][p.Key] = p.Value;
                 }
             }
             else
@@ -189,7 +215,7 @@ namespace Beatmap.V3
             if (Materials.Any())
             {
                 MainNode["customData"]["materials"] = new JSONObject();
-                foreach (var m in Materials) MainNode["customData"]["materials"][m.Key] = m.Value;
+                foreach (var m in Materials) MainNode["customData"]["materials"][m.Key] = m.Value.ToJson();
             }
             else
             {
@@ -364,9 +390,9 @@ namespace Beatmap.V3
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
             var customEventsList = new List<BaseCustomEvent>();
-            var pointDefinitions = new Dictionary<string, List<JSONNode>>();
+            var pointDefinitions = new Dictionary<string, JSONArray>();
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
-            var materials = new Dictionary<string, JSONObject>();
+            var materials = new Dictionary<string, BaseMaterial>();
 
             var nodeEnum = mainNode["customData"].GetEnumerator();
             while (nodeEnum.MoveNext())
@@ -385,6 +411,18 @@ namespace Beatmap.V3
                     case "customEvents":
                         foreach (JSONNode n in node) customEventsList.Add(new V3CustomEvent(n));
                         break;
+                    case "fakeColorNotes":
+                        foreach (JSONNode n in node) map.Notes.Add(new V3ColorNote(n, true));
+                        break;
+                    case "fakeBombNotes":
+                        foreach (JSONNode n in node) map.Bombs.Add(new V3BombNote(n, true));
+                        break;
+                    case "fakeObstacles":
+                        foreach (JSONNode n in node) map.Obstacles.Add(new V3Obstacle(n, true));
+                        break;
+                    case "fakeBurstSliders":
+                        foreach (JSONNode n in node) map.Chains.Add(new V3Chain(n, true));
+                        break;
                     case "pointDefinitions":
                         // TODO: array is incorrect, but some old v3 NE/Chroma map uses them, temporarily this needs to be here
                         if (node is JSONArray nodeAry)
@@ -392,11 +430,9 @@ namespace Beatmap.V3
                             foreach (var n in nodeAry)
                             {
                                 if (!(n.Value is JSONObject obj)) continue;
-                                var points = new List<JSONNode>();
-                                foreach (var p in obj["points"]) points.Add(p.Value);
 
                                 if (!pointDefinitions.ContainsKey(n.Key))
-                                    pointDefinitions.Add(obj["name"], points);
+                                    pointDefinitions.Add(obj["name"], obj["points"].AsArray);
                                 else
                                     Debug.LogWarning($"Duplicate key {n.Key} found in point definitions");
                             }
@@ -408,11 +444,8 @@ namespace Beatmap.V3
                         {
                             foreach (var n in nodeObj)
                             {
-                                var points = new List<JSONNode>();
-                                foreach (var p in n.Value) points.Add(p.Value);
-
                                 if (!pointDefinitions.ContainsKey(n.Key))
-                                    pointDefinitions.Add(n.Key, points);
+                                    pointDefinitions.Add(n.Key, n.Value.AsArray);
                                 else
                                     Debug.LogWarning($"Duplicate key {n.Key} found in point definitions");
                             }
@@ -430,7 +463,7 @@ namespace Beatmap.V3
                         {
                             foreach (var n in matObj)
                                 if (!materials.ContainsKey(n.Key))
-                                    materials.Add(n.Key, n.Value.AsObject);
+                                    materials.Add(n.Key, new V3Material(n.Value.AsObject));
                                 else
                                     Debug.LogWarning($"Duplicate key {n.Key} found in materials");
                             break;

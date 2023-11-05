@@ -43,6 +43,7 @@ namespace Beatmap.Base
             CutDirection = other.CutDirection;
             AngleOffset = other.AngleOffset;
             CustomData = other.SaveCustom().Clone();
+            CustomFake = other.CustomFake;
         }
 
         protected BaseNote(BaseBombNote baseBomb)
@@ -55,6 +56,7 @@ namespace Beatmap.Base
             CutDirection = 0;
             AngleOffset = 0;
             CustomData = baseBomb.SaveCustom().Clone();
+            CustomFake = baseBomb.CustomFake;
         }
 
         protected BaseNote(BaseSlider slider)
@@ -67,6 +69,7 @@ namespace Beatmap.Base
             CutDirection = slider.CutDirection;
             AngleOffset = 0;
             CustomData = slider.SaveCustom().Clone();
+            CustomFake = slider.CustomFake;
         }
 
         protected BaseNote(float time, int posX, int posY, int type, int cutDirection,

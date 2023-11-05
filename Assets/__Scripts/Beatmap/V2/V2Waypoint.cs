@@ -32,6 +32,8 @@ namespace Beatmap.V2
         {
         }
 
+        public override string CustomKeyAnimation { get; } = "_animation";
+
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";
@@ -41,6 +43,12 @@ namespace Beatmap.V2
         public override string CustomKeyWorldRotation { get; } = "_rotation";
 
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
+
+        public override string CustomKeySpawnEffect { get; } = "_disableSpawnEffect";
+
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "_noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "_noteJumpStartBeatOffset";
 
         public override JSONNode ToJson()
         {

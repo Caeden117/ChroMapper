@@ -44,6 +44,8 @@ namespace Beatmap.Converters
                 note.CustomData["_cutDirection"] = customCutDirection;
             }
 
+            if (other.CustomFake) note.GetOrCreateCustom()["_fake"] = true;
+
             note.RefreshCustom();
             return note;
         }
@@ -95,6 +97,7 @@ namespace Beatmap.Converters
                 V3Obstacle o => new V2Obstacle(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v3 obstacle to v2 obstacle")
             };
+            if (other.CustomFake) obstacle.GetOrCreateCustom()["_fake"] = true;
             obstacle.RefreshCustom();
             return obstacle;
         }
@@ -335,7 +338,7 @@ namespace Beatmap.Converters
 
             if (d.Materials.Any())
             {
-                var newMat = d.Materials.ToDictionary(m => m.Key, m => Material(m.Value));
+                var newMat = d.Materials.ToDictionary(m => m.Key, m => (BaseMaterial)new V2Material(m.Value));
                 d.Materials = newMat;
             }
 

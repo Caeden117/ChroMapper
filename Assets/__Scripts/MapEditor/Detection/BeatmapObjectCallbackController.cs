@@ -193,7 +193,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckNotes(bool init, bool natural)
     {
-        var passed = nextNotes.Where(x => x.SongBpmTime <= curTime + Offset).ToArray();
+        var realOffsets = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
+        var passed = nextNotes.Where(x => x.SongBpmTime <= curTime + (realOffsets ? (x as BaseGrid).Hjd + Track.JUMP_TIME : Offset)).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) NotePassedThreshold?.Invoke(init, nextNoteIndex, newlyAdded);
@@ -217,7 +218,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckChains(bool init, bool natural)
     {
-        var passed = nextChains.Where(x => (x as BaseChain).TailSongBpmTime <= curTime + Offset).ToArray();
+        var realOffsets = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
+        var passed = nextChains.Where(x => x.SongBpmTime <= curTime + (realOffsets ? (x as BaseGrid).Hjd + Track.JUMP_TIME : Offset)).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) ChainPassedThreshold?.Invoke(init, nextChainIndex, newlyAdded);
