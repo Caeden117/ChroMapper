@@ -51,9 +51,9 @@ namespace Beatmap.Containers
             transform.localPosition = new Vector3(-1.5f, offsetY, ChainData.SongBpmTime * EditorScaleController.EditorScale);
             GenerateChain();
             UpdateCollisionGroups();
-            if (AttachedHead is NoteContainer)
+            if (AttachedHead != null)
             {
-                if (!AttachedHead.Animator.AnimatedTrack)
+                if (!AttachedHead.Animator.AnimatedTrack && AttachedHead.NoteData != null)
                 {
                     AttachedHead.UpdateGridPosition();
                     AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
