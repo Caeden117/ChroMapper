@@ -57,7 +57,7 @@ public class LightingModeController : MonoBehaviour
         {
             img.sprite = modeLocked ? lockedSprite : unlockedSprite;
         }
-        else if (modeLock is SVGImage svg)
+        else if (modeLock is Unity.VectorGraphics.SVGImage svg)
         {
             svg.sprite = modeLocked ? lockedSprite : unlockedSprite;
         }
