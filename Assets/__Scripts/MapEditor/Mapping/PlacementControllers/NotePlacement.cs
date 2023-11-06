@@ -121,9 +121,6 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 roundedHit)
     {
-        var rawHit = ParentTrack.InverseTransformPoint(hit.Point);
-        rawHit.z = SongBpmTime * EditorScaleController.EditorScale;
-
         // Check if Chroma Color notes button is active and apply _color
         queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
             ? (Color?)colorPicker.CurrentColor
@@ -142,6 +139,9 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
         if (UsePrecisionPlacement)
         {
+            var rawHit = ParentTrack.InverseTransformPoint(hit.Point);
+            rawHit.z = SongBpmTime * EditorScaleController.EditorScale;
+
             var precision = Settings.Instance.PrecisionPlacementGridPrecision;
             roundedHit = ((Vector2)Vector2Int.RoundToInt((precisionOffset + (Vector2)rawHit) * precision)) / precision;
             instantiatedContainer.transform.localPosition = roundedHit;
@@ -255,7 +255,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         noteAppearanceSo.SetNoteAppearance(instantiatedContainer);
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
         instantiatedContainer.UpdateMaterials();
-        instantiatedContainer.transform.localEulerAngles = NoteContainer.Directionalize(queuedData);
+        instantiatedContainer.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(queuedData);
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
@@ -266,7 +266,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         dragged.CutDirection = queued.CutDirection;
         dragged.CustomCoordinate = queued.CustomCoordinate;
         if (DraggedObjectContainer != null)
-            DraggedObjectContainer.transform.localEulerAngles = NoteContainer.Directionalize(dragged);
+            DraggedObjectContainer.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(dragged);
         noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
 
         TransferQueuedToAttachedDraggedSliders(queued);

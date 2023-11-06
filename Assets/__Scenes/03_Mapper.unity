@@ -69377,6 +69377,7 @@ MonoBehaviour:
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
   deleteToolController: {fileID: 1243231049}
+  precisionPlacement: {fileID: 2108936580}
   laserSpeedController: {fileID: 160161773}
 --- !u!114 &2108936585
 MonoBehaviour:
@@ -69410,6 +69411,7 @@ MonoBehaviour:
     m_Extent: {x: 0, y: 0, z: 0}
   IsActive: 0
   deleteToolController: {fileID: 1243231049}
+  precisionPlacement: {fileID: 2108936580}
   laserSpeedController: {fileID: 160161773}
 --- !u!1 &2109111737
 GameObject:

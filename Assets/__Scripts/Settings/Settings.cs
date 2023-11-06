@@ -55,10 +55,10 @@ public class Settings
     public bool ShowMoreAccurateFastWalls = false;
     public bool QuickNoteEditing = false;
     public bool VanillaOnlyShift = true;
+    public bool Animations = true;
     public float PastNotesGridScale = 0.5f;
     // SongSpeed is a non-persistent setting
     // NoteLanes is a non-persistent setting
-    public bool Animations = true;
 
     public CountersPlusSettings CountersPlus = new CountersPlusSettings();
 

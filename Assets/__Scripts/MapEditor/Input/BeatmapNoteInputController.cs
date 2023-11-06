@@ -144,7 +144,6 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
         var original = BeatmapFactory.Clone(note.ObjectData);
         note.NoteData.CutDirection = ((shiftForward ^ Settings.Instance.InvertScrollNoteAngle)
             ? cutDirectionMovedBackward : cutDirectionMovedForward)[note.NoteData.CutDirection];
-        note.transform.localEulerAngles = NoteContainer.Directionalize(note.NoteData);
         BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note)
             .RefreshSpecialAngles(note.ObjectData, false, false);
 
