@@ -39,7 +39,7 @@ public class BetterBloomController : MonoBehaviour
         }
     }
 
-    private void OnDestroy() => betterBloomHarmony.UnpatchAll(betterBloomID);
+    private void OnDestroy() => betterBloomHarmony.UnpatchSelf();
 
     /*
      * Replace the native IL for the "SetupBloom" function to remove bit shifting to the right.
