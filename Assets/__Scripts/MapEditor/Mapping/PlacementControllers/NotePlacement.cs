@@ -255,7 +255,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         noteAppearanceSo.SetNoteAppearance(instantiatedContainer);
         instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
         instantiatedContainer.UpdateMaterials();
-        instantiatedContainer.transform.localEulerAngles = NoteContainer.Directionalize(queuedData);
+        instantiatedContainer.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(queuedData);
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
@@ -266,7 +266,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         dragged.CutDirection = queued.CutDirection;
         dragged.CustomCoordinate = queued.CustomCoordinate;
         if (DraggedObjectContainer != null)
-            DraggedObjectContainer.transform.localEulerAngles = NoteContainer.Directionalize(dragged);
+            DraggedObjectContainer.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(dragged);
         noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
 
         TransferQueuedToAttachedDraggedSliders(queued);
