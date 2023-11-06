@@ -23,10 +23,17 @@ public class JSONDictionarySettingsBinder : SettingsBinder
     protected override object UIValueToSettings(object input)
     {
         var settings = (JSONDictionarySetting)Settings.AllFieldInfos[BindedSetting].GetValue(Settings.Instance);
+        var setting = settings[DictionaryKey];
 
-        // must be dynamic for casting to JSONNode to work properly
-        dynamic setting = Convert.ChangeType(input, input.GetType());
-        settings[DictionaryKey] = (JSONNode)setting;
+        // dynamic causes compile errors on .NET Standard
+        settings[DictionaryKey] = setting.Tag switch
+        {
+            JSONNodeType.String => (string)input,
+            JSONNodeType.Number => (double)input,
+            JSONNodeType.Boolean => (bool)input,
+            _ => throw new InvalidOperationException($"Unknown JSON Tag '{setting.Tag}'.")
+        };
+
         return settings;
     }
 }
