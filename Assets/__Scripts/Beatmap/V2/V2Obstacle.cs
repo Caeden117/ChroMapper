@@ -119,7 +119,7 @@ namespace Beatmap.V2
 
         public override bool IsNoodleExtensions() =>
             CustomData != null &&
-            ((CustomData.HasKey("_animation") && CustomData["_animation"].IsArray) ||
+            (CustomData.HasKey("_animation") ||
              (CustomData.HasKey("_fake") && CustomData["_fake"].IsBoolean) ||
              (CustomData.HasKey("_interactable") && CustomData["_interactable"].IsBoolean) ||
              (CustomData.HasKey("_localRotation") && CustomData["_localRotation"].IsArray) ||
