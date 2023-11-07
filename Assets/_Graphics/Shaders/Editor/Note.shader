@@ -9,6 +9,7 @@ Shader "Custom/Note"
 		_TranslucentAlpha("TranslucentAlpha", Float) = 0.5
 		_OpaqueAlpha("OpaqueAlpha", Float) = 1
 		_Color("NoteColor", Color) = (0, 0, 0, 0)
+		_ColorMult("NoteColorMult", Float) = 1
 		_OverNoteInterfaceColor("OverNoteInterfaceColor", Color) = (1, 1, 1, 0)
 		_Rotation("Rotation", Float) = 0
 		_ObjectTime("Object Time", Float) = 0
@@ -32,6 +33,7 @@ Shader "Custom/Note"
 			UNITY_INSTANCING_BUFFER_START(Props)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _OverNoteInterfaceColor)
+				UNITY_DEFINE_INSTANCED_PROP(float, _ColorMult)
 				UNITY_DEFINE_INSTANCED_PROP(float, _OutlineWidth)
 				UNITY_DEFINE_INSTANCED_PROP(float, _TranslucentAlpha)
 				UNITY_DEFINE_INSTANCED_PROP(float, _OpaqueAlpha)
@@ -271,7 +273,8 @@ Shader "Custom/Note"
 
 				clip(isDithered(IN.ScreenPosition.xy / IN.ScreenPosition.w, alpha));
 
-				return color * 2; // float4(inputData.bakedGI,1);
+				float colorMult = UNITY_ACCESS_INSTANCED_PROP(Props, _ColorMult);
+				return color * colorMult; // float4(inputData.bakedGI,1);
 			}
 
 			ENDHLSL
