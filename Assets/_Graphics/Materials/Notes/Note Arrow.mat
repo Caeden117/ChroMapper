@@ -63,8 +63,10 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlwaysTranslucent: 0
+    - _AnimationSpawned: 0
     - _Blend: 0
     - _BumpScale: 1
+    - _ColorMult: 1.71875
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
