@@ -1,10 +1,15 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using AudioSync;
+using AudioSync.Util;
 using UnityEngine;
 
 public class SyncAnalyser : MonoBehaviour
 {
-    private SyncAnalysis syncAnalysis = new SyncAnalysis(89, 205);
+    private readonly AudioSync.SyncAnalyser syncAnalysis = new AudioSync.SyncAnalyser(89, 205);
+
+    private IList<SyncResult> results;
     private Thread detectionThread;
     private DialogBox dialogBox;
 
@@ -29,7 +34,14 @@ public class SyncAnalyser : MonoBehaviour
             // don't block the main thread
             detectionThread = new Thread(() =>
             {
-                syncAnalysis.Run(samples, numChannels, sampleRate);
+                var doubles = samples.ConvertToMonoSamples(numChannels);
+
+
+                Debug.Log("Starting...");
+
+                results = syncAnalysis.Run(doubles, sampleRate);
+
+                Debug.Log(results.Count);
             });
             detectionThread.Start();
         }
@@ -56,7 +68,7 @@ public class SyncAnalyser : MonoBehaviour
         dialogBox.AddComponent<TextComponent>()
             .WithInitialValue("BPM detection complete.\n\nSelect a BPM from the results below, and ChroMapper will automatically apply the BPM and offset to your song.");
 
-        var items = syncAnalysis.Results.Select(it => $"{it.BPM} BPM");
+        var items = results.Select(it => $"{it.BPM} BPM");
         dialogBox.AddComponent<DropdownComponent>()
             .WithLabel("BPM")
             .WithOptions(items);
