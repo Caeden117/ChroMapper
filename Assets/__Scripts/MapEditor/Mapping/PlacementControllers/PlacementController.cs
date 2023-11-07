@@ -186,8 +186,8 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             instantiatedContainer.transform.localPosition = roundedHit;
 
-            OnPhysicsRaycast(hit, roundedHit);
             queuedData.SetTimes(roundedJsonTime, SongBpmTime);
+            OnPhysicsRaycast(hit, roundedHit);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));

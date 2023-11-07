@@ -17,6 +17,7 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
     private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
 
     [SerializeField] private DeleteToolController deleteToolController;
+    [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     [SerializeField] private LaserSpeedController laserSpeedController;
 
     public override int PlacementXMin => PlacementXMax * -1;
@@ -26,10 +27,65 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
 
     public override BaseChain GenerateOriginalData() => new V3Chain();
 
-    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)
+    public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 roundedHit)
     {
-        queuedData.PosX = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.x + 1.5f);
-        queuedData.PosY = Mathf.RoundToInt(instantiatedContainer.transform.localPosition.y - 0.5f);
+        var posX = (int)roundedHit.x;
+        var posY = (int)roundedHit.y;
+
+        var vanillaX = Mathf.Clamp(posX, 0, 3);
+        var vanillaY = Mathf.Clamp(posY, 0, 2);
+
+        var vanillaBounds = vanillaX == posX && vanillaY == posY;
+
+        queuedData.PosX = vanillaX;
+        queuedData.PosY = vanillaY;
+
+        if (UsePrecisionPlacement)
+        {
+            var rawHit = ParentTrack.InverseTransformPoint(hit.Point);
+            rawHit.z = SongBpmTime * EditorScaleController.EditorScale;
+
+            var precision = Settings.Instance.PrecisionPlacementGridPrecision;
+            roundedHit = ((Vector2)Vector2Int.RoundToInt((precisionOffset + (Vector2)rawHit) * precision)) / precision;
+            instantiatedContainer.transform.localPosition = roundedHit;
+
+            if (IsDraggingObject || IsDraggingObjectAtTime)
+            {
+                if (DraggedObjectContainer.IndicatorType == IndicatorType.Head)
+                {
+                    queuedData.CustomCoordinate = (Vector2)roundedHit;
+                }
+
+                if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
+                {
+                    queuedData.CustomTailCoordinate = (Vector2)roundedHit;
+                }
+            }
+
+            precisionPlacement.TogglePrecisionPlacement(true);
+            precisionPlacement.UpdateMousePosition(hit.Point);
+        }
+        else
+        {
+            precisionPlacement.TogglePrecisionPlacement(false);
+
+            if (IsDraggingObject || IsDraggingObjectAtTime)
+            {
+                if (DraggedObjectContainer.IndicatorType == IndicatorType.Head)
+                {
+                    queuedData.CustomCoordinate = !vanillaBounds
+                        ? (JSONNode)((Vector2)roundedHit - vanillaOffset + precisionOffset)
+                        : null;
+                }
+
+                if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
+                {
+                    queuedData.CustomTailCoordinate = !vanillaBounds
+                        ? (JSONNode)((Vector2)roundedHit - vanillaOffset + precisionOffset)
+                        : null;
+                }
+            }
+        }
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseChain dragged, BaseChain queued)
@@ -40,6 +96,7 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
             dragged.PosX = queued.PosX;
             dragged.PosY = queued.PosY;
             dragged.CutDirection = queued.CutDirection;
+            dragged.CustomCoordinate = queued.CustomCoordinate;
         }
 
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
@@ -47,6 +104,7 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
             dragged.SetTailTimes(queued.JsonTime, queued.SongBpmTime);
             dragged.TailPosX = queued.PosX;
             dragged.TailPosY = queued.PosY;
+            dragged.CustomTailCoordinate = queued.CustomTailCoordinate;
         }
 
         DraggedObjectContainer.ParentChain.GenerateChain(dragged);

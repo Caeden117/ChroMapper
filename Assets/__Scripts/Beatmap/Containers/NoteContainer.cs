@@ -135,7 +135,7 @@ namespace Beatmap.Containers
             if (swingArcRenderer != null) swingArcRenderer.enabled = showArcVisualizer;
         }
 
-        public static NoteContainer SpawnBeatmapNote(BaseNote noteData,  ref GameObject notePrefab)
+        public static NoteContainer SpawnBeatmapNote(BaseNote noteData, ref GameObject notePrefab)
         {
             var container = Instantiate(notePrefab).GetComponent<NoteContainer>();
             container.NoteData = noteData;
