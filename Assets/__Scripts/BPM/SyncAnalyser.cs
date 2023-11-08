@@ -11,7 +11,10 @@ public class SyncAnalyser : MonoBehaviour
 
     private IList<SyncResult> results;
     private Thread detectionThread;
-    private DialogBox dialogBox;
+
+    private DialogBox detectingBPMBox;
+    private DialogBox bpmResultsBox;
+    private DropdownComponent bpmResultsDropdown;
 
     public void Analyse()
     {
@@ -23,13 +26,7 @@ public class SyncAnalyser : MonoBehaviour
         // Get the song audio data
         if (clip.GetData(samples, 0))
         {
-            dialogBox = PersistentUI.Instance.CreateNewDialogBox()
-                .WithTitle("Detecting BPM...");
-
-            dialogBox.AddComponent<TextComponent>()
-                .WithInitialValue("Attempting to detect the BPM of your song.\n\nThis can take several moments...");
-
-            dialogBox.Open();
+            detectingBPMBox.Open();
 
             // don't block the main thread
             detectionThread = new Thread(() =>
@@ -55,27 +52,41 @@ public class SyncAnalyser : MonoBehaviour
 
     private void OnComplete()
     {
-        dialogBox.Close();
-
-        dialogBox = PersistentUI.Instance.CreateNewDialogBox()
-            .WithTitle("BPM Detection Results");
-
-        dialogBox.AddComponent<TextComponent>()
-            .WithInitialValue("BPM detection complete.\n\nSelect a BPM from the results below, and ChroMapper will automatically apply the BPM and offset to your song.");
+        detectingBPMBox.Close();
 
         var items = results.Select(it => $"{it.BPM:N2} BPM | Offset: {it.Offset:N2} sec");
-        dialogBox.AddComponent<DropdownComponent>()
-            .WithLabel("BPM")
-            .WithOptions(items);
+        bpmResultsDropdown.WithOptions(items);
 
-        dialogBox.AddFooterButton(ApplyBPM, "PersistentUI", "submit");
-        dialogBox.AddFooterButton(null, "PersistentUI", "cancel");
-
-        dialogBox.Open();
+        bpmResultsBox.Open();
     }
 
     private void ApplyBPM()
     {
 
+    }
+
+    private void Start()
+    {
+        // Detecting BPM
+        detectingBPMBox = PersistentUI.Instance.CreateNewDialogBox()
+            .WithTitle("Detecting BPM...")
+            .DontDestroyOnClose();
+
+        detectingBPMBox.AddComponent<TextComponent>()
+            .WithInitialValue("Attempting to detect the BPM of your song.\n\nThis can take several moments...");
+
+        // BPM Results
+        bpmResultsBox = PersistentUI.Instance.CreateNewDialogBox()
+            .WithTitle("BPM Detection Results")
+            .DontDestroyOnClose();
+
+        bpmResultsBox.AddComponent<TextComponent>()
+            .WithInitialValue("BPM detection complete.\n\nSelect a BPM from the results below, and ChroMapper will automatically apply the BPM and offset to your song.");
+
+        bpmResultsDropdown = bpmResultsBox.AddComponent<DropdownComponent>()
+            .WithLabel("BPM");
+
+        bpmResultsBox.AddFooterButton(ApplyBPM, "PersistentUI", "submit");
+        bpmResultsBox.AddFooterButton(null, "PersistentUI", "cancel");
     }
 }
