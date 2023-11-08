@@ -68,7 +68,7 @@ public class SyncAnalyser : MonoBehaviour
         dialogBox.AddComponent<TextComponent>()
             .WithInitialValue("BPM detection complete.\n\nSelect a BPM from the results below, and ChroMapper will automatically apply the BPM and offset to your song.");
 
-        var items = results.Select(it => $"{it.BPM} BPM");
+        var items = results.Select(it => $"{it.BPM:N2} BPM | Offset: {it.Offset:N2} sec");
         dialogBox.AddComponent<DropdownComponent>()
             .WithLabel("BPM")
             .WithOptions(items);
