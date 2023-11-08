@@ -36,12 +36,7 @@ public class SyncAnalyser : MonoBehaviour
             {
                 var doubles = samples.ConvertToMonoSamples(numChannels);
 
-
-                Debug.Log("Starting...");
-
                 results = syncAnalysis.Run(doubles, sampleRate);
-
-                Debug.Log(results.Count);
             });
             detectionThread.Start();
         }
