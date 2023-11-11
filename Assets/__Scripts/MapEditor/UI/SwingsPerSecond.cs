@@ -104,6 +104,10 @@ public class SwingsPerSecond
 
         foreach (var note in notesSet)
         {
+            // The buckets above do not account for negative time notes. The user would also probably 
+            // want to remove negative time notes on save so I will just ignore these
+            if (note.JsonTime < 0) continue;
+
             var realTime = note.SongBpmTime / songBpm * 60;
             if (note.Type == 0)
                 CheckWindow(note, ref lastRed, swingCountRed, realTime, songBpm);
