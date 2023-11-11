@@ -51,8 +51,16 @@ namespace QuestDumper
 
             var values = Environment.GetEnvironmentVariable("PATH");
 
-            return values?.Split(Path.PathSeparator).Select(path => Path.Combine(path, fileName))
-                .FirstOrDefault(File.Exists);
+            try
+            {
+                return values?.Split(Path.PathSeparator).Select(path => Path.Combine(path, fileName))
+                    .FirstOrDefault(File.Exists);
+            }
+            catch (ArgumentException)
+            {
+                UnityEngine.Debug.LogWarning("Environment variable contains illegal characters in path. ADB will be disabled.");
+                return null;
+            }
         }
 
         private static string GetADBUrl()
