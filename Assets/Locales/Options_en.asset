@@ -1290,12 +1290,25 @@ MonoBehaviour:
     m_Localized: Open Plugins Folder
     m_Metadata:
       m_Items: []
+  - m_Id: 300616661902491648
+    m_Localized: Preview Camera Z Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300616655971745792
+    m_Localized: Offsets the preview camera backwards (in metres)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300618005946236928
+    m_Localized: '{TextValue}m'
+    m_Metadata:
+      m_Items:
+      - id: 0
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0000b21e8704000000b0ba6917caef00
+        m_Entries: 0000b21e8704000000b0ba6917caef00000083d17b022c04
     00000001:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:

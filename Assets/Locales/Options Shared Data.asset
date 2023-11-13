@@ -1175,6 +1175,18 @@ MonoBehaviour:
     m_Key: plugins.openfolder
     m_Metadata:
       m_Items: []
+  - m_Id: 300616655971745792
+    m_Key: graphics.previewoffsetz.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300616661902491648
+    m_Key: graphics.previewoffsetz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300618005946236928
+    m_Key: graphics.previewoffsetz.info
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

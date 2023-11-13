@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     [SerializeField] private float movementSpeed;
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private Transform noteGridTransform;
-    [FormerlySerializedAs("_uiMode")] [SerializeField] private UIMode uiMode;
+    [FormerlySerializedAs("_uiMode")][SerializeField] private UIMode uiMode;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
 
     [FormerlySerializedAs("_rotationCallbackController")] public RotationCallbackController RotationCallbackController;
@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     [FormerlySerializedAs("camera")] public Camera Camera;
     [SerializeField] private UniversalRenderPipelineAsset urpAsset;
 
-    [Header("Debug")] [SerializeField] private float x;
+    [Header("Debug")][SerializeField] private float x;
 
     [SerializeField] private float y;
     [SerializeField] private float z;
@@ -96,8 +96,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         cameraExtraData = Camera.GetUniversalAdditionalCameraData();
         UpdateAA(Settings.Instance.CameraAA);
         UpdateRenderScale(Settings.Instance.RenderScale);
+        UpdatePlayerCameraOffsetZ(Settings.Instance.PlayerCameraOffsetZ);
         Settings.NotifyBySettingName(nameof(Settings.CameraAA), UpdateAA);
         Settings.NotifyBySettingName(nameof(Settings.RenderScale), UpdateRenderScale);
+        Settings.NotifyBySettingName(nameof(Settings.PlayerCameraOffsetZ), UpdatePlayerCameraOffsetZ);
         if (!playerCamera)
         {
             instance = this;
@@ -214,6 +216,16 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         urpAsset.renderScale = Mathf.Sqrt((int)renderScale / 100f); // Sqrt to get scale per dimension
     }
 
+    private void UpdatePlayerCameraOffsetZ(object posZ)
+    {
+        if (playerCamera)
+        {
+            var newLocalPosition = this.transform.localPosition;
+            newLocalPosition.z = (float)posZ / -0.6f; // Convert metres to CM scaled units
+            this.transform.localPosition = newLocalPosition;
+        }
+    }
+
     public void SetLockState(bool lockMouse)
     {
         var mouseLocked = Cursor.lockState == CursorLockMode.Locked;
@@ -296,6 +308,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     private void OnDisable()
     {
         Settings.ClearSettingNotifications(nameof(Settings.CameraAA));
+        Settings.ClearSettingNotifications(nameof(Settings.RenderScale));
+        Settings.ClearSettingNotifications(nameof(Settings.PlayerCameraOffsetZ));
         instance = null;
     }
 
