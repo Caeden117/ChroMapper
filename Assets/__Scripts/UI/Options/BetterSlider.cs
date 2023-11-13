@@ -25,7 +25,7 @@ public class BetterSlider : MonoBehaviour
     [Header("Value Settings:")]
     public bool ShowValue;
 
-    [FormerlySerializedAs("decimalPlaces")] [Header("\n")] public int DecimalPlaces;
+    [FormerlySerializedAs("decimalPlaces")][Header("\n")] public int DecimalPlaces;
 
     [FormerlySerializedAs("defaultSliderValue")]
     [Header("Other Settings")]
@@ -101,7 +101,9 @@ public class BetterSlider : MonoBehaviour
 
         if (DecimalsMustMatchForDefault)
         {
-            ValueText.color = DefaultSliderValue == Value ? new Color(1f, 0.75f, 0.23f) : Color.white;
+            ValueText.color = DefaultSliderValue.ToString($"F{DecimalPlaces}") == Value.ToString($"F{DecimalPlaces}")
+                ? new Color(1f, 0.75f, 0.23f)
+                : Color.white;
         }
         else
         {
