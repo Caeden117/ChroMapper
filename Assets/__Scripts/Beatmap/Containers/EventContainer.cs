@@ -164,6 +164,9 @@ namespace Beatmap.Containers
         //you can do this instead//Change the scale of the event height based on the alpha of the event if alpha visualization is on
         private float GetHeight()
         {
+            // Non-light events should not have different heights
+            if (!EventData.IsLightEvent()) return 1f;
+
             var height = EventData.FloatValue;
             if (EventData.CustomColor != null &&
                 Math.Abs(EventData.CustomColor.Value.a - 1) > 0.001)
