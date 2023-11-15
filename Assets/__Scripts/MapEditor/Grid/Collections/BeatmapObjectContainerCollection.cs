@@ -31,12 +31,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public AudioTimeSyncController AudioTimeSyncController;
 
     /// <summary>
-    ///     A sorted set of loaded BeatmapObjects that is garaunteed to be sorted by time.
-    /// </summary>
-    public SortedSet<BaseObject> LoadedObjects = new SortedSet<BaseObject>(new ObjectComparer());
-
-    /// <summary>
-    ///     A list of unsorted BeatmapObjects. Recommended only for fast iteration.
+    ///     Loaded objects in this collection.
     /// </summary>
     public List<BaseObject> UnsortedObjects = new List<BaseObject>();
 
