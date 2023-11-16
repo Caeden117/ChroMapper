@@ -125,10 +125,6 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             CreateNewType();
     }
 
-    // TODO(Caeden): Remove. Should be handled by BaseCustomEvent.Compare
-    public override IEnumerable<BaseObject> GrabSortedObjects() =>
-        LoadedObjects.OrderBy(x => x.JsonTime).ThenBy(x => (x as BaseCustomEvent).Type);
-
     public void RefreshEventsByTrack()
     {
         EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();

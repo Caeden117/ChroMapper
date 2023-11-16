@@ -50,26 +50,10 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
     private void OnUIModeSwitch(UIModeType newMode)
     {
         // If preview mode changed
-        if (newMode == UIModeType.Normal || newMode == UIModeType.Preview)
+        if (newMode is UIModeType.Normal or UIModeType.Preview)
         {
             RefreshPool(true);
         }
-    }
-
-    // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
-    // (I'm done with note sorting; if you don't like it, go fix it yourself.)
-    public override IEnumerable<BaseObject> GrabSortedObjects()
-    {
-        var sorted = new List<BaseObject>();
-        var grouping = LoadedObjects.GroupBy(x => x.JsonTime);
-        foreach (var group in grouping)
-        {
-            sorted.AddRange(@group.OrderBy(x => ((BaseNote)x).PosX) //0 -> 3
-                .ThenBy(x => ((BaseNote)x).PosY) //0 -> 2
-                .ThenBy(x => ((BaseNote)x).Type));
-        }
-
-        return sorted;
     }
 
     //We don't need to check index as that's already done further up the chain

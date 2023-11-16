@@ -129,6 +129,6 @@ namespace Beatmap.Base
         }
 
         // Generic comparison function that only cares about time
-        public int CompareTo(BaseObject other) => JsonTime.CompareTo(other.JsonTime);
+        public virtual int CompareTo(BaseObject other) => JsonTime.CompareTo(other.JsonTime);
     }
 }

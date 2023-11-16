@@ -107,6 +107,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         UpdateTranslucentCull(EditorScaleController.EditorScale);
     }
 
+    // TODO(Caeden): Remove (unneeded)
     private void UpdateTranslucentCull(float editorScale) => TranslucentCull = -editorScale * Epsilon;
 
     /// <summary>
@@ -183,6 +184,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         // Considering we're only concerned with time, we'll strictly use the default time-based comparer here.
         var startIdx = LoadedObjects.BinarySearch(start);
         var endIdx = LoadedObjects.BinarySearch(end);
+
+        if (startIdx < 0) startIdx = ~startIdx;
+        if (endIdx < 0) endIdx = ~endIdx;
 
         return LoadedObjects.GetRange(startIdx, endIdx - startIdx);
     }
@@ -435,13 +439,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// Returns <c>true</c> if the given object exists within this collection, and <c>false</c> otherwise.
     /// </summary>
     public bool ContainsObject(BaseObject obj) => LoadedObjects.BinarySearch(obj) >= 0;
-
-    /// <summary>
-    ///     Grabs <see cref="LoadedObjects" /> with other potential orderings added in.
-    ///     This should not be used unless saving into a map file. Use <see cref="LoadedObjects" /> instead.
-    /// </summary>
-    /// <returns>A list of sorted objects</returns>
-    public virtual IEnumerable<BaseObject> GrabSortedObjects() => LoadedObjects;
 
     public static void RefreshFutureObjectsPosition(float jsonTime)
     {

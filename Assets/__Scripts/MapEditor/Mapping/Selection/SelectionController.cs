@@ -753,8 +753,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             {
                 var type = (ObjectType)num;
                 var collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
-                if (collection is null) continue;
-                newObjects.Add(type, collection.GrabSortedObjects());
+                if (collection == null) continue;
+                newObjects.Add(type, collection.LoadedObjects);
             }
 
             BeatSaberSongContainer.Instance.Map.BpmEvents =

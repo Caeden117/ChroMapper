@@ -134,10 +134,10 @@ namespace Beatmap.Base
         public int CutDirection { get; set; }
         public int AngleOffset { get; set; }
 
-        public bool IsMainDirection => CutDirection == (int)NoteCutDirection.Up ||
-                                       CutDirection == (int)NoteCutDirection.Down ||
-                                       CutDirection == (int)NoteCutDirection.Left ||
-                                       CutDirection == (int)NoteCutDirection.Right;
+        public bool IsMainDirection => CutDirection is ((int)NoteCutDirection.Up) or
+                                       ((int)NoteCutDirection.Down) or
+                                       ((int)NoteCutDirection.Left) or
+                                       ((int)NoteCutDirection.Right);
 
         public virtual float? CustomDirection { get; set; }
 
@@ -156,15 +156,33 @@ namespace Beatmap.Base
         }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
-        {
-            // Only down to 1/4 spacing
-            if (other is BaseBombNote || other is BaseNote)
-                return Vector2.Distance(((BaseGrid)other).GetPosition(), GetPosition()) < 0.1;
-            return false;
-        }
+           => other is BaseBombNote or BaseNote && Vector2.Distance(((BaseGrid)other).GetPosition(), GetPosition()) < 0.1;
 
         protected void InferType() => Type = Color;
 
         protected void InferColor() => Color = Type;
+
+        // This should hopefully prevent flipped stack notes when playing in game.
+        // (I'm done with note sorting; if you don't like it, go fix it yourself.)
+        // TODO(Caeden): can this be done better
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseNote note) return comparison;
+
+            // Compare by X pos if times match
+            if (comparison == 0) comparison = PosX.CompareTo(note.PosX);
+
+            // Compare by Y pos if X pos match
+            if (comparison == 0) comparison = PosY.CompareTo(note.PosY);
+            
+            // Compare by type if Y pos match
+            if (comparison == 0) comparison = Type.CompareTo(note.Type);
+
+            // ...i give up.
+            return comparison;
+        }
     }
 }
