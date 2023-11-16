@@ -1,3 +1,4 @@
+using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using LiteNetLib.Utils;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseObject : BaseItem, ICustomData, IHeckObject, IChromaObject, INetSerializable
+    public abstract class BaseObject : BaseItem, ICustomData, IHeckObject, IChromaObject, INetSerializable, IComparable<BaseObject>
     {
         public virtual void Serialize(NetDataWriter writer)
         {
@@ -126,5 +127,8 @@ namespace Beatmap.Base
 
             return CustomData;
         }
+
+        // Generic comparison function that only cares about time
+        public int CompareTo(BaseObject other) => JsonTime.CompareTo(other.JsonTime);
     }
 }

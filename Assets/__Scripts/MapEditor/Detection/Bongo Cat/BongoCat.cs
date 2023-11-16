@@ -70,15 +70,18 @@ public class BongoCat : MonoBehaviour
     {
         //Ignore bombs here to improve performance.
         if (Settings.Instance.BongoCat == -1 || note.Type == (int)NoteType.Bomb) return;
-        var next = container.UnsortedObjects.Find(x => x.JsonTime > note.JsonTime &&
-                                                       ((BaseNote)x).Type == note.Type);
+
+        // TODO(Caeden): This can be optimized:
+        //   - Pass note idx through the caller (DingOnNotePassingGrid? should be a direct callback subscriber tbh)
+        //   - Manually march forward until the next object that matches our predicate is found
+        var next = container.LoadedObjects.Find(x => x.JsonTime > note.JsonTime && ((BaseNote)x).Type == note.Type);
+        
         var timer = 0.125f;
-        if (!(next is null))
+        if (next is not null)
         {
+            // clamp to accommodate sliders and long gaps between notes
             var half = (next.SongBpmTime - note.SongBpmTime) * 60f / BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 2f;
-            timer = next != null
-                ? Mathf.Clamp(half, 0.05f, 0.2f)
-                : 0.125f; // clamp to accommodate sliders and long gaps between notes
+            timer = Mathf.Clamp(half, 0.05f, 0.2f);
         }
 
         switch (note.Type)

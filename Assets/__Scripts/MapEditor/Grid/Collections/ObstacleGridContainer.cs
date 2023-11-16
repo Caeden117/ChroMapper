@@ -43,12 +43,12 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     {
         if (UIMode.AnimationMode)
         {
-            SpawnSortedObjects = UnsortedObjects
-                .Select(o => o as BaseObstacle)
+            SpawnSortedObjects = LoadedObjects
+                .Cast<BaseObstacle>()
                 .OrderBy(o => o.SpawnJsonTime)
                 .ToArray();
-            DespawnSortedObjects = UnsortedObjects
-                .Select(o => o as BaseObstacle)
+            DespawnSortedObjects = LoadedObjects
+                .Cast<BaseObstacle>()
                 .OrderBy(o => o.DespawnJsonTime)
                 .ToArray();
             RefreshWalls();
@@ -62,7 +62,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     private void OnUIModeSwitch(UIModeType newMode)
     {
         // When changing in/out of preview mode
-        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
+        if (newMode is UIModeType.Normal or UIModeType.Preview)
         {
             RefreshPool(true);
         }
@@ -164,6 +164,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     }
 
     // Where is a good global place to dump this? It's much faster than List.BinarySearch
+    // TODO(Caeden): Determine purpose and abstract this into an extension method
     private void GetIndexes(float time, Func<int, float> getter, int count, out int prev, out int next)
     {
         prev = 0;
@@ -171,8 +172,8 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
 
         while (prev < next - 1)
         {
-            int m = (prev + next) / 2;
-            float itemTime = getter(m);
+            var m = (prev + next) / 2;
+            var itemTime = getter(m);
 
             if (itemTime < time)
             {

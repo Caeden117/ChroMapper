@@ -4,7 +4,7 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
 
-//TODO rename to LegacyEventsConverter
+// TODO(Caeden): Remove if unused (optimize if used)
 public class LegacyNotesConverter : MonoBehaviour
 {
     public void ConvertFrom() => StartCoroutine(ConvertFromLegacy());
@@ -17,7 +17,7 @@ public class LegacyNotesConverter : MonoBehaviour
 
         var events = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         var chromaColorsByEventType = new Dictionary<int, Color?>();
-        foreach (var obj in events.UnsortedObjects.ToArray())
+        foreach (var obj in events.LoadedObjects.ToArray())
         {
             var e = obj as BaseEvent;
             if (chromaColorsByEventType.TryGetValue(e.Type, out var chroma))

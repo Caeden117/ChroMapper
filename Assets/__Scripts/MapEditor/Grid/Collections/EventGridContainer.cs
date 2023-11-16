@@ -338,13 +338,11 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     {
         foreach (var con in LoadedContainers.Values)
         {
-            if (!(con is EventContainer e)) continue;
+            if (con is not EventContainer e) continue;
+
             if (propagationEditing != PropMode.Off)
             {
-                if (e.EventData.Type != EventTypeToPropagate)
-                    con.SafeSetActive(false);
-                else
-                    con.SafeSetActive(true);
+                con.SafeSetActive(e.EventData.Type == EventTypeToPropagate);
             }
             else
             {
@@ -467,8 +465,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
             events[i].Next = events[i + 1];
         }
 
-        events[events.Count - 1].Prev = events[events.Count - 2];
-        events[events.Count - 1].Next = null;
+        events[^1].Prev = events[^2];
+        events[^1].Next = null;
     }
 
     public void MarkEventsToBeRelinked(IEnumerable<BaseEvent> events)
@@ -487,7 +485,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEve
     }
 
     public void LinkAllLightEvents() =>
-        AllLightEvents = LoadedObjects.OfType<BaseEvent>().
+        AllLightEvents = LoadedObjects.Cast<BaseEvent>().
             Where(x => x.IsLightEvent()).
             GroupBy(x => x.Type).
             ToDictionary(g => g.Key, g => g.ToList());

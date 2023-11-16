@@ -125,21 +125,25 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             CreateNewType();
     }
 
+    // TODO(Caeden): Remove. Should be handled by BaseCustomEvent.Compare
     public override IEnumerable<BaseObject> GrabSortedObjects() =>
-        UnsortedObjects.OrderBy(x => x.JsonTime).ThenBy(x => (x as BaseCustomEvent).Type);
+        LoadedObjects.OrderBy(x => x.JsonTime).ThenBy(x => (x as BaseCustomEvent).Type);
 
     public void RefreshEventsByTrack()
     {
         EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
 
-        foreach (var loadedObject in UnsortedObjects)
+        //foreach (var loadedObject in UnsortedObjects)
+        for (var i = 0; i < LoadedObjects.Count; i++)
         {
-            var customEvent = loadedObject as BaseCustomEvent;
-            List<string> tracks = customEvent.CustomTrack switch {
+            var customEvent = LoadedObjects[i] as BaseCustomEvent;
+
+            var tracks = customEvent.CustomTrack switch {
                 JSONString s => new List<string> { s },
                 JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
                 _ => new List<string>()
             };
+
             foreach (var track in tracks)
             {
                 if (!EventsByTrack.ContainsKey(track))
@@ -174,7 +178,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     private void OnUIModeSwitch(UIModeType newMode)
     {
         // When changing in/out of preview mode
-        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
+        if (newMode is UIModeType.Normal or UIModeType.Preview)
         {
             RefreshPool(true);
         }
@@ -232,9 +236,10 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
 
     private void SetInitialTracks()
     {
-        foreach (var loadedObject in UnsortedObjects)
+        for (var i = 0; i < LoadedObjects.Count; i++)
         {
-            var customEvent = loadedObject as BaseCustomEvent;
+            var customEvent = LoadedObjects[i] as BaseCustomEvent;
+
             if (!customEventTypes.Contains(customEvent.Type))
             {
                 customEventTypes.Add(customEvent.Type);

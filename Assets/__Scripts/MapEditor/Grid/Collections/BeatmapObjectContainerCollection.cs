@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.Comparers;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Shared;
@@ -33,7 +34,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <summary>
     ///     Loaded objects in this collection.
     /// </summary>
-    public List<BaseObject> UnsortedObjects = new List<BaseObject>();
+    public List<BaseObject> LoadedObjects = new List<BaseObject>();
 
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
@@ -173,12 +174,17 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
-    public SortedSet<BaseObject> GetBetween(float jsonTime, float jsonTime2)
+    public List<BaseObject> GetBetween(float jsonTime, float jsonTime2)
     {
-        // Events etc. can still have a sort order between notes
-        var now = new V2Note(jsonTime - 0.0000001f, 0f, 0, 0, 0, 0);
-        var window = new V2Note(jsonTime2 + 0.0000001f, 0f, 0, 0, 0, 0);
-        return LoadedObjects.GetViewBetween(now, window);
+        // Dummy objects used to determine start/end indices
+        var start = new V2Note(jsonTime - 0.0000001f, 0f, 0, 0, 0, 0);
+        var end = new V2Note(jsonTime2 + 0.0000001f, 0f, 0, 0, 0, 0);
+        
+        // Considering we're only concerned with time, we'll strictly use the default time-based comparer here.
+        var startIdx = LoadedObjects.BinarySearch(start);
+        var endIdx = LoadedObjects.BinarySearch(end);
+
+        return LoadedObjects.GetRange(startIdx, endIdx - startIdx);
     }
 
     /// <summary>
@@ -189,44 +195,35 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="forceRefresh">All currently active containers will be recycled, even if they shouldn't be.</param>
     public void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
-        foreach (var obj in UnsortedObjects)
-        //for (int i = 0; i < LoadedObjects.Count; i++)
+        //foreach (var obj in LoadedObjects)
+        for (var i = 0; i < LoadedObjects.Count; i++)
         {
+            var obj = LoadedObjects[i];
+
             if (forceRefresh) RecycleContainer(obj);
-            if (obj.SongBpmTime >= lowerBound && obj.SongBpmTime <= upperBound)
+
+            switch (obj)
             {
-                if (!obj.HasAttachedContainer) CreateContainerFromPool(obj);
-            }
-            else if (obj.HasAttachedContainer)
-            {
-                if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound &&
-                    obs.SongBpmTime + obs.Duration >= lowerBound)
-                {
+                // Create container if obj is within bounds
+                case BaseObject when obj.SongBpmTime >= lowerBound && obj.SongBpmTime <= upperBound:
+                    CreateContainerFromPool(obj);
                     continue;
-                }
-                else if (Settings.Instance.Load_MapV3)
-                {
-                    if (obj is BaseArc &&
-                        (obj as BaseArc).SongBpmTime < lowerBound && (obj as BaseArc).TailSongBpmTime >= lowerBound)
-                        continue;
-                    if (obj is BaseChain &&
-                        (obj as BaseChain).SongBpmTime < lowerBound && (obj as BaseChain).TailSongBpmTime >= lowerBound)
-                        continue;
-                }
 
-                RecycleContainer(obj);
-            }
+                // Handle special cases for certain objects exist over a period of time
+                case BaseObstacle obs when obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound:
+                    CreateContainerFromPool(obj);
+                    continue;
+                case BaseArc arc when arc.SongBpmTime < lowerBound && arc.TailSongBpmTime >= lowerBound:
+                    CreateContainerFromPool(obj);
+                    continue;
+                case BaseChain chain when chain.SongBpmTime < lowerBound && chain.TailSongBpmTime >= lowerBound:
+                    CreateContainerFromPool(obj);
+                    continue;
 
-            if (obj is BaseObstacle obst && obst.SongBpmTime < lowerBound && obst.SongBpmTime + obst.Duration >= lowerBound)
-                CreateContainerFromPool(obj);
-            if (Settings.Instance.Load_MapV3)
-            {
-                if (obj is BaseArc &&
-                           (obj as BaseArc).SongBpmTime < lowerBound && (obj as BaseArc).TailSongBpmTime >= lowerBound)
-                    CreateContainerFromPool(obj);
-                if (obj is BaseChain &&
-                    (obj as BaseChain).SongBpmTime < lowerBound && (obj as BaseChain).TailSongBpmTime >= lowerBound)
-                    CreateContainerFromPool(obj);
+                // Outside of bounds; recycle
+                default:
+                    RecycleContainer(obj);
+                    break;
             }
         }
     }
@@ -347,16 +344,20 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
         string comment = "No comment.", bool inCollectionOfDeletes = false)
     {
-        var removed = UnsortedObjects.Remove(obj);
-        var removed2 = LoadedObjects.Remove(obj);
+        var search = LoadedObjects.BinarySearch(obj);
+        
+        RecycleContainer(obj);
 
-        if (removed && removed2)
+        if (search >= 0)
         {
-            //Debug.Log($"Deleting container with hash code {toDelete.GetHashCode()}");
+            LoadedObjects.RemoveAt(search);
+
             SelectionController.Deselect(obj, triggersAction);
+
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
-            RecycleContainer(obj);
+            
             if (refreshesPool) RefreshPool();
+            
             OnObjectDelete(obj, inCollectionOfDeletes);
             ObjectDeletedEvent?.Invoke(obj);
         }
@@ -364,7 +365,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         {
             // The objects are not in the collection, but are still being removed.
             // This could be because of ghost blocks, so let's try forcefully recycling that container.
-            Debug.LogError($"Object could not be deleted, please report this ({removed}, {removed2})");
+            Debug.LogError($"This object appears to be a ghost. Please report this.");
         }
     }
 
@@ -411,17 +412,29 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
         if (removeConflicting)
+        {
             RemoveConflictingObjects(new[] { obj }, out conflicting);
+        }
         else
+        {
             conflicting = new List<BaseObject>();
-        LoadedObjects.Add(obj);
-        UnsortedObjects.Add(obj);
+        }
+
+        var search = LoadedObjects.BinarySearch(obj);
+        var insertIdx = search >= 0 ? search : ~search;
+        LoadedObjects.Insert(search, obj);
+
         OnObjectSpawned(obj, inCollectionOfSpawns);
         ObjectSpawnedEvent?.Invoke(obj);
 
         //Debug.Log($"Total object count: {LoadedObjects.Count}");
         if (refreshesPool) RefreshPool();
     }
+
+    /// <summary>
+    /// Returns <c>true</c> if the given object exists within this collection, and <c>false</c> otherwise.
+    /// </summary>
+    public bool ContainsObject(BaseObject obj) => LoadedObjects.BinarySearch(obj) >= 0;
 
     /// <summary>
     ///     Grabs <see cref="LoadedObjects" /> with other potential orderings added in.
