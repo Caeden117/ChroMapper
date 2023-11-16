@@ -744,6 +744,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <summary>
     ///     Applies objects to the loaded <see cref="BeatSaberMap" />. Should be done before saving the map.
     /// </summary>
+    // TODO(Caeden): god can we PLEASE get rid of this at some point
     public static void RefreshMap()
     {
         if (BeatSaberSongContainer.Instance.Map != null)

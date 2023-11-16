@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
+using Beatmap.V2;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -27,29 +27,21 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     [SerializeField] private int nextNoteIndex;
     [SerializeField] private int nextEventIndex;
+    [SerializeField] private int nextChainIndex;
 
     [FormerlySerializedAs("useAudioTime")] public bool UseAudioTime;
 
-    private readonly HashSet<BaseObject> nextEvents = new HashSet<BaseObject>();
-    private readonly HashSet<BaseObject> nextNotes = new HashSet<BaseObject>();
-    private HashSet<BaseObject> allEvents = new HashSet<BaseObject>();
-    private HashSet<BaseObject> allNotes = new HashSet<BaseObject>();
-    private HashSet<BaseObject> queuedToClear = new HashSet<BaseObject>();
-
     private float curTime;
-    public Action<bool, int, BaseObject> EventPassedThreshold;
 
     public Action<bool, int, BaseObject> NotePassedThreshold;
-    public Action<bool, int> RecursiveEventCheckFinished;
     public Action<bool, int> RecursiveNoteCheckFinished;
+    public Action<bool, int, BaseObject> EventPassedThreshold;
+    public Action<bool, int> RecursiveEventCheckFinished;
+    public Action<bool, int, BaseObject> ChainPassedThreshold;
+    public Action<bool, int> RecursiveChainCheckFinished;
 
     /// v3 version fields
     [FormerlySerializedAs("chainsContainer")][SerializeField] private ChainGridContainer chainGridContainer;
-    [SerializeField] private int nextChainIndex;
-    private readonly HashSet<BaseObject> nextChains = new HashSet<BaseObject>();
-    private HashSet<BaseObject> allChains = new HashSet<BaseObject>();
-    public Action<bool, int, BaseObject> ChainPassedThreshold;
-    public Action<bool, int> RecursiveChainCheckFinished;
 
     private void Start()
     {
@@ -68,7 +60,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     {
         if (useOffsetFromConfig)
         {
-            if (UIMode.SelectedMode == UIModeType.Playing || UIMode.SelectedMode == UIModeType.Preview)
+            if (UIMode.SelectedMode is UIModeType.Playing or UIModeType.Preview)
             {
                 if (useDespawnOffset)
                 {
@@ -92,39 +84,13 @@ public class BeatmapObjectCallbackController : MonoBehaviour
             if (!useDespawnOffset) Shader.SetGlobalFloat("_ObstacleFadeRadius", Offset * EditorScaleController.EditorScale);
         }
 
-        if (queuedToClear.Count > 0)
-        {
-            foreach (var toClear in queuedToClear)
-            {
-                if (toClear is BaseNote)
-                {
-                    allNotes.Remove(toClear);
-                    nextNotes.Remove(toClear);
-                }
-                else if (toClear is BaseEvent)
-                {
-                    allEvents.Remove(toClear);
-                    nextEvents.Remove(toClear);
-                }
-                else if (Settings.Instance.Load_MapV3)
-                {
-                    if (toClear is BaseChain)
-                    {
-                        allChains.Remove(toClear);
-                        nextChains.Remove(toClear);
-                    }
-                }
-            }
-
-            queuedToClear.Clear();
-        }
-
         if (timeSyncController.IsPlaying)
         {
             curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
             RecursiveCheckNotes(true, true);
             RecursiveCheckEvents(true, true);
-            if (Settings.Instance.Load_MapV3 && chainGridContainer != null)
+
+            if (chainGridContainer != null)
             {
                 RecursiveCheckChains(true, true);
             }
@@ -141,142 +107,110 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         {
             CheckAllNotes(false);
             CheckAllEvents(false);
-            if (Settings.Instance.Load_MapV3 && chainGridContainer != null) CheckAllChains(false);
+
+            if (chainGridContainer != null)
+            {
+                CheckAllChains(false);
+            }
         }
     }
 
     private void CheckAllNotes(bool natural)
     {
-        //notesContainer.SortObjects();
-        curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
-        allNotes.Clear();
-        allNotes = new HashSet<BaseObject>(noteGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
-        nextNoteIndex = noteGridContainer.LoadedObjects.Count - allNotes.Count;
-        RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
-        nextNotes.Clear();
+        var dummy = new V2Note(timeSyncController.CurrentJsonTime, 0, 0, 0, 0);
 
-        for (var i = 0; i < notesToLookAhead; i++)
-        {
-            if (allNotes.Count > 0) QueueNextObject(allNotes, nextNotes);
-        }
+        nextNoteIndex = noteGridContainer.LoadedObjects.BinarySearch(dummy);
+        if (nextNoteIndex < 0) nextNoteIndex = ~nextNoteIndex;
+
+        RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
     }
 
     private void CheckAllEvents(bool natural)
     {
-        allEvents.Clear();
-        allEvents = new HashSet<BaseObject>(eventGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
+        var dummy = new V2Note(timeSyncController.CurrentJsonTime, 0, 0, 0, 0);
 
-        nextEventIndex = eventGridContainer.LoadedObjects.Count - allEvents.Count;
+        nextEventIndex = eventGridContainer.LoadedObjects.BinarySearch(dummy);
+        if (nextEventIndex < 0) nextEventIndex = ~nextEventIndex;
+
         RecursiveEventCheckFinished?.Invoke(natural, nextEventIndex - 1);
-        nextEvents.Clear();
-
-        for (var i = 0; i < eventsToLookAhead; i++)
-        {
-            if (allEvents.Count > 0) QueueNextObject(allEvents, nextEvents);
-        }
     }
 
     private void CheckAllChains(bool natural)
     {
-        curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
-        allChains.Clear();
-        allChains = new HashSet<BaseObject>(chainGridContainer.LoadedObjects.Where(x => x.SongBpmTime >= curTime + Offset));
-        nextChainIndex = chainGridContainer.LoadedObjects.Count - allChains.Count;
-        RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
-        nextChains.Clear();
+        var dummy = new V2Note(timeSyncController.CurrentJsonTime, 0, 0, 0, 0);
 
-        for (var i = 0; i < notesToLookAhead; i++)
-        {
-            if (allChains.Count > 0) QueueNextObject(allChains, nextChains);
-        }
+        nextChainIndex = eventGridContainer.LoadedObjects.BinarySearch(dummy);
+        if (nextChainIndex < 0) nextChainIndex = ~nextChainIndex;
+
+        RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
     }
 
     private void RecursiveCheckNotes(bool init, bool natural)
     {
-        var realOffsets = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
-        var passed = nextNotes.Where(x => x.SongBpmTime <= curTime + (realOffsets ? (x as BaseGrid).Hjd + Track.JUMP_TIME : Offset)).ToArray();
-        foreach (var newlyAdded in passed)
+        var objects = noteGridContainer.LoadedObjects;
+        var useAnimationsOffset = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
+        while (nextNoteIndex < objects.Count)
         {
-            if (natural) NotePassedThreshold?.Invoke(init, nextNoteIndex, newlyAdded);
-            nextNotes.Remove(newlyAdded);
-            if (allNotes.Count > 0 && natural) QueueNextObject(allNotes, nextNotes);
+            var obj = objects[nextNoteIndex];
+            var offset = useAnimationsOffset ? (obj as BaseGrid).Hjd + Track.JUMP_TIME : Offset;
+
+            if (obj.SongBpmTime > curTime + offset) return;
+
+            NotePassedThreshold?.Invoke(natural, nextNoteIndex, objects[nextNoteIndex]);
             nextNoteIndex++;
         }
     }
 
     private void RecursiveCheckEvents(bool init, bool natural)
     {
-        var passed = nextEvents.Where(x => x.SongBpmTime <= curTime + Offset).ToArray();
-        foreach (var newlyAdded in passed)
+        var objects = eventGridContainer.LoadedObjects;
+        while (nextEventIndex < objects.Count && objects[nextEventIndex].SongBpmTime <= curTime + Offset)
         {
-            if (natural) EventPassedThreshold?.Invoke(init, nextEventIndex, newlyAdded);
-            nextEvents.Remove(newlyAdded);
-            if (allEvents.Count > 0 && natural) QueueNextObject(allEvents, nextEvents);
+            EventPassedThreshold?.Invoke(natural, nextEventIndex, objects[nextEventIndex]);
             nextEventIndex++;
         }
     }
 
     private void RecursiveCheckChains(bool init, bool natural)
     {
-        var realOffsets = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
-        var passed = nextChains.Where(x => x.SongBpmTime <= curTime + (realOffsets ? (x as BaseGrid).Hjd + Track.JUMP_TIME : Offset)).ToArray();
-        foreach (var newlyAdded in passed)
+        var objects = chainGridContainer.LoadedObjects;
+        var useAnimationsOffset = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
+        while (nextChainIndex < objects.Count)
         {
-            if (natural) ChainPassedThreshold?.Invoke(init, nextChainIndex, newlyAdded);
-            nextChains.Remove(newlyAdded);
-            if (allChains.Count > 0 && natural) QueueNextObject(allChains, nextChains);
+            var obj = objects[nextChainIndex];
+            var offset = useAnimationsOffset ? (obj as BaseGrid).Hjd + Track.JUMP_TIME : Offset;
+
+            if (obj.SongBpmTime > curTime + offset) return;
+
+            ChainPassedThreshold?.Invoke(natural, nextChainIndex, objects[nextChainIndex]);
             nextChainIndex++;
         }
     }
 
-    private void NoteGridContainerObjectSpawnedEvent(BaseObject obj) => OnObjSpawn(obj, nextNotes);
+    private void NoteGridContainerObjectSpawnedEvent(BaseObject obj) => OnObjSpawn(obj, ref nextNoteIndex);
 
-    private void NoteGridContainerObjectDeletedEvent(BaseObject obj) => OnObjDeleted(obj);
+    private void NoteGridContainerObjectDeletedEvent(BaseObject obj) => OnObjDeleted(obj, ref nextNoteIndex);
 
-    private void EventGridContainerObjectSpawnedEventGrid(BaseObject obj) => OnObjSpawn(obj, nextEvents);
+    private void EventGridContainerObjectSpawnedEventGrid(BaseObject obj) => OnObjSpawn(obj, ref nextEventIndex);
 
-    private void EventGridContainerObjectDeletedEventGrid(BaseObject obj) => OnObjDeleted(obj);
+    private void EventGridContainerObjectDeletedEventGrid(BaseObject obj) => OnObjDeleted(obj, ref nextEventIndex);
 
-    private void ChainGridContainerObjectSpawnedEvent(BaseObject obj) => OnObjSpawn(obj, nextChains);
+    private void ChainGridContainerObjectSpawnedEvent(BaseObject obj) => OnObjSpawn(obj, ref nextChainIndex);
 
-    private void ChainGridContainerObjectDeletedEvent(BaseObject obj) => OnChainObjDeleted(obj);
+    private void ChainGridContainerObjectDeletedEvent(BaseObject obj) => OnObjDeleted(obj, ref nextChainIndex);
 
-    private void OnObjSpawn(BaseObject obj, HashSet<BaseObject> nextObjects)
+    private void OnObjSpawn(BaseObject obj, ref int idx)
     {
-        if (!timeSyncController.IsPlaying) return;
+        if (!timeSyncController.IsPlaying || obj.SongBpmTime >= curTime + Offset) return;
 
-        if (obj.SongBpmTime >= timeSyncController.CurrentSongBpmTime)
-        {
-            nextObjects.Add(obj);
-        }
+        idx++;
     }
 
-    private void OnObjDeleted(BaseObject obj)
+    private void OnObjDeleted(BaseObject obj, ref int idx)
     {
-        if (!timeSyncController.IsPlaying) return;
+        if (!timeSyncController.IsPlaying || obj.SongBpmTime >= curTime + Offset) return;
 
-        if (obj.SongBpmTime >= timeSyncController.CurrentSongBpmTime)
-        {
-            queuedToClear.Add(obj);
-        }
-    }
-
-    private void OnChainObjDeleted(BaseObject obj)
-    {
-        if (!timeSyncController.IsPlaying) return;
-
-        if ((obj as BaseChain).TailSongBpmTime >= timeSyncController.CurrentSongBpmTime)
-        {
-            queuedToClear.Add(obj);
-        }
-    }
-
-    private void QueueNextObject(HashSet<BaseObject> allObjs, HashSet<BaseObject> nextObjs)
-    {
-        // Assumes that the "Count > 0" check happens before this is called
-        var first = allObjs.First();
-        nextObjs.Add(first);
-        allObjs.Remove(first);
+        idx--;
     }
 
     private void OnDestroy()
