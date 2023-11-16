@@ -426,7 +426,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
         var search = LoadedObjects.BinarySearch(obj);
         var insertIdx = search >= 0 ? search : ~search;
-        LoadedObjects.Insert(search, obj);
+        LoadedObjects.Insert(insertIdx, obj);
 
         OnObjectSpawned(obj, inCollectionOfSpawns);
         ObjectSpawnedEvent?.Invoke(obj);
