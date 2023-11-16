@@ -53,12 +53,12 @@ namespace Tests
             actionContainer.Undo();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].JsonTime);
+            Assert.AreEqual(2, notesContainer.LoadedObjects[0].JsonTime);
 
             actionContainer.Redo();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(1.9999999f, notesContainer.UnsortedObjects[0].JsonTime);
+            Assert.AreEqual(1.9999999f, notesContainer.LoadedObjects[0].JsonTime);
         }
 
         [Test]
@@ -103,15 +103,15 @@ namespace Tests
             {
                 Assert.AreEqual(loadedObjects, notesContainer.LoadedObjects.Count);
                 Assert.AreEqual(selectedObjects, SelectionController.SelectedObjects.Count);
-                Assert.AreEqual(time, notesContainer.UnsortedObjects[0].JsonTime);
-                Assert.AreEqual(type, ((BaseNote)notesContainer.UnsortedObjects[0]).Type);
-                Assert.AreEqual(index, ((BaseNote)notesContainer.UnsortedObjects[0]).PosX);
-                Assert.AreEqual(layer, ((BaseNote)notesContainer.UnsortedObjects[0]).PosY);
+                Assert.AreEqual(time, notesContainer.LoadedObjects[0].JsonTime);
+                Assert.AreEqual(type, ((BaseNote)notesContainer.LoadedObjects[0]).Type);
+                Assert.AreEqual(index, ((BaseNote)notesContainer.LoadedObjects[0]).PosX);
+                Assert.AreEqual(layer, ((BaseNote)notesContainer.LoadedObjects[0]).PosY);
             }
 
             // No notes loaded
             Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(0, notesContainer.UnsortedObjects.Count);
+            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
 
             // Undo delete action
             actionContainer.Undo();
@@ -120,7 +120,7 @@ namespace Tests
             // Undo paste action
             actionContainer.Undo();
             Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(0, notesContainer.UnsortedObjects.Count);
+            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
 
             // Undo cut action
             actionContainer.Undo();
@@ -161,7 +161,7 @@ namespace Tests
 
             actionContainer.Redo();
             Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(0, notesContainer.UnsortedObjects.Count);
+            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
 
             // Redo paste
             actionContainer.Redo();
@@ -173,7 +173,7 @@ namespace Tests
             // Redo delete
             actionContainer.Redo();
             Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(0, notesContainer.UnsortedObjects.Count);
+            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
         }
 
         [Test]
@@ -197,17 +197,17 @@ namespace Tests
             });
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].JsonTime);
+            Assert.AreEqual(2, notesContainer.LoadedObjects[0].JsonTime);
 
             actionContainer.Undo();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].JsonTime);
+            Assert.AreEqual(2, notesContainer.LoadedObjects[0].JsonTime);
 
             actionContainer.Redo();
 
             Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.UnsortedObjects[0].JsonTime);
+            Assert.AreEqual(2, notesContainer.LoadedObjects[0].JsonTime);
         }
     }
 }

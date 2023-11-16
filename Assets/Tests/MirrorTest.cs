@@ -100,7 +100,7 @@ namespace Tests
             _mirror.MirrorTime();
 
             // Check we can still delete our objects
-            var toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            var toDelete = _notesContainer.LoadedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 
@@ -133,7 +133,7 @@ namespace Tests
             _mirror.Mirror();
 
             // Check we can still delete our objects
-            var toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            var toDelete = _notesContainer.LoadedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 
@@ -166,7 +166,7 @@ namespace Tests
             _mirror.Mirror(false);
 
             // Check we can still delete our objects
-            var toDelete = _notesContainer.UnsortedObjects.FirstOrDefault();
+            var toDelete = _notesContainer.LoadedObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
             Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
 

@@ -59,25 +59,25 @@ namespace Tests
             selectionController.ShiftSelection(1, 0);
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].JsonTime);
-            Assert.AreEqual(2, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, ((BaseEvent)eventsContainer.UnsortedObjects[0]).CustomLightGradient.StartColor);
+            Assert.AreEqual(2, eventsContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(2, ((BaseEvent)eventsContainer.LoadedObjects[0]).Type);
+            Assert.AreEqual(Color.red, ((BaseEvent)eventsContainer.LoadedObjects[0]).CustomLightGradient.StartColor);
 
             // Undo move
             actionContainer.Undo();
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].JsonTime);
-            Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.red, ((BaseEvent)eventsContainer.UnsortedObjects[0]).CustomLightGradient.StartColor);
+            Assert.AreEqual(2, eventsContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, ((BaseEvent)eventsContainer.LoadedObjects[0]).Type);
+            Assert.AreEqual(Color.red, ((BaseEvent)eventsContainer.LoadedObjects[0]).CustomLightGradient.StartColor);
 
             // Undo paint
             actionContainer.Undo();
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].JsonTime);
-            Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
-            Assert.AreEqual(Color.blue, ((BaseEvent)eventsContainer.UnsortedObjects[0]).CustomLightGradient.StartColor);
+            Assert.AreEqual(2, eventsContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, ((BaseEvent)eventsContainer.LoadedObjects[0]).Type);
+            Assert.AreEqual(Color.blue, ((BaseEvent)eventsContainer.LoadedObjects[0]).CustomLightGradient.StartColor);
         }
 
         [Test]
@@ -104,28 +104,28 @@ namespace Tests
             selectionController.ShiftSelection(1, 0);
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].JsonTime);
-            Assert.AreEqual(2, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(2, eventsContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(2, ((BaseEvent)eventsContainer.LoadedObjects[0]).Type);
             Assert.AreEqual(Color.red,
-                eventsContainer.UnsortedObjects[0].CustomData[baseEventA.CustomKeyColor].ReadColor());
+                eventsContainer.LoadedObjects[0].CustomData[baseEventA.CustomKeyColor].ReadColor());
 
             // Undo move
             actionContainer.Undo();
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].JsonTime);
-            Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(2, eventsContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, ((BaseEvent)eventsContainer.LoadedObjects[0]).Type);
             Assert.AreEqual(Color.red,
-                eventsContainer.UnsortedObjects[0].CustomData[baseEventA.CustomKeyColor].ReadColor());
+                eventsContainer.LoadedObjects[0].CustomData[baseEventA.CustomKeyColor].ReadColor());
 
             // Undo paint
             actionContainer.Undo();
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].JsonTime);
-            Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(2, eventsContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, ((BaseEvent)eventsContainer.LoadedObjects[0]).Type);
             Assert.AreEqual(true,
-                eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData
+                eventsContainer.LoadedObjects[0].CustomData == null || !eventsContainer.LoadedObjects[0].CustomData
                     .HasKey(baseEventA.CustomKeyColor));
         }
 
@@ -148,10 +148,10 @@ namespace Tests
             painter.Paint();
 
             Assert.AreEqual(1, eventsContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, eventsContainer.UnsortedObjects[0].JsonTime);
-            Assert.AreEqual(1, ((BaseEvent)eventsContainer.UnsortedObjects[0]).Type);
+            Assert.AreEqual(2, eventsContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, ((BaseEvent)eventsContainer.LoadedObjects[0]).Type);
             Assert.AreEqual(true,
-                eventsContainer.UnsortedObjects[0].CustomData == null || !eventsContainer.UnsortedObjects[0].CustomData
+                eventsContainer.LoadedObjects[0].CustomData == null || !eventsContainer.LoadedObjects[0].CustomData
                     .HasKey(baseEventA.CustomKeyColor));
         }
     }
