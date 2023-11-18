@@ -737,73 +737,72 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43247628972130304
-    m_Localized: Easing applies to floatValue.
+    m_Localized: "\uC644\uD654\uB294 floatValue\uC5D0 \uC801\uC6A9\uB429\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 43247577315082240
-    m_Localized: Ease FloatValue
+    m_Localized: "FloatValue \uC6A9\uC774\uC131"
     m_Metadata:
       m_Items: []
   - m_Id: 42988345160302592
-    m_Localized: Easing applies to time.
+    m_Localized: "\uC644\uD654\uB294 \uC2DC\uAC04\uC5D0 \uC801\uC6A9\uB429\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 42988137944907776
-    m_Localized: Easing Time
+    m_Localized: "\uC644\uD654 \uC2DC\uAC04"
     m_Metadata:
       m_Items: []
   - m_Id: 42585459012075520
-    m_Localized: Transition
+    m_Localized: "\uC804\uD658"
     m_Metadata:
       m_Items: []
   - m_Id: 207122293661564928
-    m_Localized: Set color for White Lighting Events
+    m_Localized: "\uBC31\uC0C9 \uC870\uBA85 \uC774\uBCA4\uD2B8\uC5D0 \uB300\uD55C
+      \uC0C9\uC0C1 \uC124\uC815"
     m_Metadata:
       m_Items: []
   - m_Id: 207122782700634112
-    m_Localized: Set boost color for White Lighting Events
+    m_Localized: "\uBC31\uC0C9 \uC870\uBA85 \uC774\uBCA4\uD2B8\uC5D0 \uB300\uD55C
+      \uBD80\uC2A4\uD2B8 \uC0C9\uC0C1 \uC124\uC815"
     m_Metadata:
       m_Items: []
   - m_Id: 207749379233349632
-    m_Localized: Color Gradients
+    m_Localized: "\uC0C9 \uADF8\uB77C\uB370\uC774\uC158"
     m_Metadata:
       m_Items: []
   - m_Id: 207750905897091072
-    m_Localized: Lerp Type
+    m_Localized: "\uBCF4\uAC04 \uD0C0\uC785"
     m_Metadata:
       m_Items: []
   - m_Id: 207751068199878656
-    m_Localized: Changes interpolation for the transition.
+    m_Localized: "\uC804\uD658\uC5D0 \uB300\uD55C \uBCF4\uAC04\uBC95\uC744 \uBCC0\uACBD\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 220101281077985280
-    m_Localized: Change Beatmap Version
+    m_Localized: "\uBE44\uD2B8\uB9F5 \uBC84\uC804 \uBCC0\uACBD"
     m_Metadata:
       m_Items: []
   - m_Id: 220102296279908352
-    m_Localized: Changes map version to v2 or v3
+    m_Localized: "\uB9F5 \uBC84\uC804\uC744 v2 \uB610\uB294 v3\uC73C\uB85C \uBCC0\uACBD\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 232868047877242880
-    m_Localized: 'CM has detected Custom BPM changes and
-
-      converted these into
-      Official BPM events'
+    m_Localized: "CM\uC774 \uB9E4\uD37C\uAC00 \uBCC0\uACBD\uD55C BPM\uC744 \uAC10\uC9C0\uD588\uC73C\uBA70\n\uC774\uB97C
+      \uACF5\uC2DD BPM \uC774\uBCA4\uD2B8\uB85C \uBCC0\uD658\uD588\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 240390057914204160
-    m_Localized: 'BPM Events: {BPMCount}'
+    m_Localized: "BPM \uBCC0\uACBD \uD69F\uC218: {BPMCount}"
     m_Metadata:
       m_Items:
       - id: 0
   - m_Id: 256289992891105280
-    m_Localized: Enter the beat you want to go to
+    m_Localized: "\uAC00\uACE0 \uC2F6\uC740 \uBE44\uD2B8\uB97C \uC785\uB825\uD558\uC138\uC694"
     m_Metadata:
       m_Items: []
   - m_Id: 256290009261473792
-    m_Localized: 'Invalid number
-
-      Enter the beat you want to go to'
+    m_Localized: "\uC798\uBABB\uB41C \uC22B\uC790\n\uAC00\uACE0 \uC2F6\uC740 \uBE44\uD2B8\uB97C
+      \uC785\uB825\uD558\uC138\uC694"
     m_Metadata:
       m_Items: []
   - m_Id: 294393564396453888

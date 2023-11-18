@@ -166,7 +166,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Spectrogram
+    m_Localized: "\uC2A4\uD399\uD2B8\uB85C\uADF8\uB7A8"
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -479,7 +479,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 105
     m_Localized: "\uC2DC\uAC04 \uD14D\uC2A4\uD2B8\uAC00 <i>\uAC00\uC7A5</i>\uC704\uC5D0
-      \uB098\uD0C0\uB098\uB3C4\uB85D \uD569\uB2C8\uB2E4. \uBA54\uBAA8\uB97C \uBCFC
+      \uB098\uD0C0\uB098\uB3C4\uB85D \uD569\uB2C8\uB2E4. \uB178\uD2B8\uB97C \uBCFC
       \uB54C \uC57D\uAC04\uC758 \uBC84\uBC85\uAC70\uB9BC\uC774 \uBC1C\uC0DD\uD560
       \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     m_Metadata:
@@ -490,7 +490,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song spectrogram
+    m_Localized: "\uACE1 \uC2A4\uD399\uD2B8\uB85C\uADF8\uB7A8 \uD45C\uC2DC"
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -564,7 +564,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 122
-    m_Localized: "\uCE74\uBA54\uB77C\uAC00 \uD68C\uC804\uD558\uB294 \uC18D\uB3C4\uC785\uB2C8\uB2E4."
+    m_Localized: "\uCE74\uBA54\uB77C\uC758 \uD68C\uC804\uD558\uB294 \uC18D\uB3C4\uAC00
+      \uC5B4\uB290\uC815\uB3C4\uC778\uC9C0."
     m_Metadata:
       m_Items: []
   - m_Id: 123
@@ -1195,113 +1196,126 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 90253772483395584
-    m_Localized: Displays non-default floatValue on top of events
+    m_Localized: "\uC774\uBCA4\uD2B8 \uC704\uC5D0 \uAE30\uBCF8\uAC12\uC774 \uC544\uB2CC
+      floatValue\uB97C \uD45C\uC2DC\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 90254225048797184
-    m_Localized: Display FloatValue Text
+    m_Localized: "FloatValue \uD14D\uC2A4\uD2B8 \uD45C\uC2DC\uD558\uAE30"
     m_Metadata:
       m_Items: []
   - m_Id: 206088741188730880
-    m_Localized: Visualize LightID Transition Events
+    m_Localized: "LightID \uC804\uD658 \uC774\uBCA4\uD2B8 \uC2DC\uAC01\uD654"
     m_Metadata:
       m_Items: []
   - m_Id: 206088950463528960
-    m_Localized: 'Previews and displays LightID transition events more accurately
-
-      This
-      is very heavy on performance'
+    m_Localized: "LightID \uC804\uD658 \uC774\uBCA4\uD2B8\uB97C \uBCF4\uB2E4 \uC815\uD655\uD558\uAC8C
+      \uBBF8\uB9AC \uBCF4\uACE0 \uD45C\uC2DC\uD569\uB2C8\uB2E4\n\uC774\uB294 \uC131\uB2A5\uC5D0
+      \uB9E4\uC6B0 \uBD80\uB2F4\uC774 \uB429\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 208947639714189312
-    m_Localized: CM Chan
+    m_Localized: "CM \uCA29"
     m_Metadata:
       m_Items: []
   - m_Id: 208947667555979264
-    m_Localized: Adds CM Chan art to loading screens.
+    m_Localized: "\uB85C\uB529 \uD654\uBA74\uC5D0 CM \uCA29 \uADF8\uB9BC\uC744 \uCD94\uAC00\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 211668371329187840
-    m_Localized: Precision Placement Grid Precision
+    m_Localized: "\uC815\uBC00 \uBC30\uCE58 \uADF8\uB9AC\uB4DC \uC815\uBC00\uB3C4"
     m_Metadata:
       m_Items: []
   - m_Id: 211668392346845184
-    m_Localized: The snapping interval of precision placement grid
+    m_Localized: "\uC815\uBC00 \uBC30\uCE58 \uADF8\uB9AC\uB4DC\uC758 \uC2A4\uB0C5
+      \uAC04\uACA9"
     m_Metadata:
       m_Items: []
   - m_Id: 235582333795893248
-    m_Localized: Invert Event Value Scroll
+    m_Localized: "\uC774\uBCA4\uD2B8 \uAC12 \uC2A4\uD06C\uB864 \uBC18\uC804"
     m_Metadata:
       m_Items: []
   - m_Id: 235582635601231872
-    m_Localized: Invert mouse scroll direction on changing event value.
+    m_Localized: "\uC774\uBCA4\uD2B8 \uAC12 \uBCC0\uACBD\uC2DC \uB9C8\uC6B0\uC2A4
+      \uC2A4\uD06C\uB864 \uBC29\uD5A5\uC744 \uBC18\uC804\uC2DC\uD0B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 235582671521251328
-    m_Localized: Invert Note Angle Scroll
+    m_Localized: "\uB178\uD2B8 \uAC01\uB3C4 \uC2A4\uD06C\uB864 \uBC18\uC804"
     m_Metadata:
       m_Items: []
   - m_Id: 235582692199170048
-    m_Localized: Invert mouse scroll direction on changing note angle.
+    m_Localized: "\uB178\uD2B8 \uAC01\uB3C4 \uBCC0\uACBD \uC2DC \uB9C8\uC6B0\uC2A4
+      \uC2A4\uD06C\uB864 \uBC29\uD5A5\uC744 \uBC18\uC804\uC2DC\uD0B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 235582713359433728
-    m_Localized: Invert Arc Multiplier Scroll
+    m_Localized: "\uC544\uD06C \uC99D\uD3ED \uC2A4\uD06C\uB864 \uBC18\uC804"
     m_Metadata:
       m_Items: []
   - m_Id: 235582733693419520
-    m_Localized: Invert mouse scroll direction on changing arc head and tail multipliers.
+    m_Localized: "\uC544\uD06C \uBA38\uB9AC\uC640 \uAF2C\uB9AC \uC99D\uD3ED\uC744
+      \uBCC0\uACBD\uD560 \uB54C \uB9C8\uC6B0\uC2A4 \uC2A4\uD06C\uB864 \uBC29\uD5A5\uC744
+      \uBC18\uC804\uC2DC\uD0B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 235582754643968000
-    m_Localized: Invert Chain Squish Scroll
+    m_Localized: "\uCCB4\uC778 \uC870\uAC01 \uC2A4\uD06C\uB864 \uBC18\uC804"
     m_Metadata:
       m_Items: []
   - m_Id: 235582774030041088
-    m_Localized: Invert mouse scroll direction on changing chain squish.
+    m_Localized: "\uCCB4\uC778 \uC870\uAC01 \uBCC0\uACBD \uC2DC \uB9C8\uC6B0\uC2A4
+      \uC2A4\uD06C\uB864 \uBC29\uD5A5\uC744 \uBC18\uC804\uC2DC\uD0B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 235582798323449856
-    m_Localized: Invert Chain Segment Count Scroll
+    m_Localized: "\uCCB4\uC778 \uBD80\uBD84 \uCE74\uC6B4\uD2B8 \uC2A4\uD06C\uB864
+      \uBC18\uC804"
     m_Metadata:
       m_Items: []
   - m_Id: 235582820507123712
-    m_Localized: Invert mouse scroll direction on changing the number of segments
-      in a chain.
+    m_Localized: "v3 \uCCB4\uC778 \uC870\uAC01\uC758 \uC218\uB97C \uBCC0\uACBD\uD560
+      \uB54C \uB9C8\uC6B0\uC2A4 \uC2A4\uD06C\uB864 \uBC29\uD5A5\uC744 \uBC18\uC804\uC2DC\uD0B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 236258093237993472
-    m_Localized: Invert Wall Duration Scroll
+    m_Localized: "\uBCBD \uC9C0\uC18D \uC2DC\uAC04 \uC2A4\uD06C\uB864 \uBC18\uC804"
     m_Metadata:
       m_Items: []
   - m_Id: 236258097742675968
-    m_Localized: Invert mouse scroll direction on changing the duration of walls.
+    m_Localized: "\uBCBD\uC758 \uC9C0\uC18D \uC2DC\uAC04\uC744 \uBCC0\uACBD\uD560
+      \uB54C \uB9C8\uC6B0\uC2A4 \uC2A4\uD06C\uB864 \uBC29\uD5A5\uC744 \uBC18\uC804\uC2DC\uD0B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 236258102280912896
-    m_Localized: Invert Wall Bounds Scroll
+    m_Localized: "\uBCBD \uACBD\uACC4 \uC2A4\uD06C\uB864 \uBC18\uC804"
     m_Metadata:
       m_Items: []
   - m_Id: 236258109335732224
-    m_Localized: Invert mouse scroll direction on changing the upper and lower bounds
-      of v3 walls.
+    m_Localized: "v3 \uBCBD\uC758 \uC0C1\uD55C \uBC0F \uD558\uD55C \uACBD\uACC4\uB97C
+      \uBCC0\uACBD\uD560 \uB54C \uB9C8\uC6B0\uC2A4 \uC2A4\uD06C\uB864 \uBC29\uD5A5\uC744
+      \uBC18\uC804\uC2DC\uD0B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 247458017744977920
-    m_Localized: Precision Placement Mode
+    m_Localized: "\uC815\uBC00 \uBC30\uCE58 \uBAA8\uB4DC"
     m_Metadata:
       m_Items: []
   - m_Id: 247458202206273536
-    m_Localized: 'If enabled, an extended grid will appear when using the precision
-      placement keybind while placing walls or notes. '
+    m_Localized: "\uD65C\uC131\uD654 \uB418\uC5B4\uC788\uB294 \uACBD\uC6B0, \uBCBD\uC774\uB098
+      \uB178\uD2B8\uB97C \uBC30\uCE58\uD558\uB294 \uB3D9\uC548 \uC815\uBC00 \uBC30\uCE58
+      \uD0A4 \uBC14\uC778\uB529\uC744 \uC0AC\uC6A9\uD560 \uB54C \uD655\uC7A5\uB41C
+      \uADF8\uB9AC\uB4DC\uAC00 \uB098\uD0C0\uB0A9\uB2C8\uB2E4. "
     m_Metadata:
       m_Items: []
   - m_Id: 262680152746688512
-    m_Localized: Open File Explorer After Create Zip
+    m_Localized: "\uC555\uCD95 \uD30C\uC77C \uC0DD\uC131 \uD6C4 \uD30C\uC77C \uD0D0\uC0C9\uAE30
+      \uC5F4\uAE30"
     m_Metadata:
       m_Items: []
   - m_Id: 262680318467833856
-    m_Localized: Whether the file explorer opens automically after creating zip
+    m_Localized: "\uC555\uCD95 \uD30C\uC77C \uC0DD\uC131 \uD6C4 \uD30C\uC77C \uD0D0\uC0C9\uAE30\uAC00
+      \uC790\uB3D9\uC73C\uB85C \uC5F4\uB9AC\uB294\uC9C0\uC758 \uC5EC\uBD80"
     m_Metadata:
       m_Items: []
   - m_Id: 288364334621589504
