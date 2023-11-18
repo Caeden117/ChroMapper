@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using SimpleJSON;
 using UnityEditor;
 using UnityEditor.Localization;
@@ -15,6 +17,20 @@ using UnityEngine.Localization.Tables;
 public class LocalizationWindow : EditorWindow
 {
     private static readonly string projectIdentifier = "chromapper";
+    
+    // I don't want to write code to parse all the steps so I'm skipping some steps and putting the values here
+    private static readonly int projectId = 414106;
+    private static readonly Dictionary<string, int> tableNameIdMap = new Dictionary<string, int>
+    {
+        { "FirstBoot", 20 },
+        { "SongEditMenu", 22 },
+        { "SongSelectMenu", 24 },
+        { "Contributors", 26 },
+        { "Options", 28 },
+        { "Mapper", 30 },
+        { "PersistentUI", 32 },
+        { "MultiMapping", 33 }
+    };
 
     private string apiKey = "";
 
@@ -181,7 +197,7 @@ public class LocalizationWindow : EditorWindow
 
     public static void FromJson(string apiKey = "", bool download = false)
     {
-        var downloadUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/export-file?key={apiKey}";
+        var translationsExportsUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/translations/exports";
 
         foreach (var collection in LocalizationEditorSettings.GetStringTableCollections())
         {
@@ -192,29 +208,57 @@ public class LocalizationWindow : EditorWindow
             {
                 if (culture.Code.Equals("en")) continue;
 
-                JSONNode json;
+                JSONNode json = new JSONObject();
                 if (download)
                 {
-                    using (var client = new HttpClient())
+                    
+                    // First we need to get export the translation and get the url to it
+                    var fileUrl = "";
+                    if (tableNameIdMap.TryGetValue(collectionName, out var id))
                     {
-                        var downloadTask =
-                            client.GetAsync($"{downloadUrl}&file={collectionName}.json&language={culture.Code}");
+                        using var client = new HttpClient();
+                        var stringContent =
+                            new StringContent(
+                                new JSONObject
+                                {
+                                    ["targetLanguageId"] = culture.Code,
+                                    ["fileIds"] = new JSONArray { [0] = id }
+                                }.ToString(), Encoding.UTF8, "application/json");
+                        
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                        var translationExportTask = client.PostAsync(translationsExportsUrl, stringContent);
+
                         try
                         {
-                            downloadTask.Wait();
-                            var stringTask = downloadTask.Result.Content.ReadAsStringAsync();
+                            translationExportTask.Wait();
+                            var fileUrlTask = translationExportTask.Result.Content.ReadAsStringAsync();
+                            fileUrlTask.Wait();
+
+                            fileUrl = JSON.Parse(fileUrlTask.Result)["data"]["url"];
+                        }
+                        catch (Exception)
+                        {
+                            // 404 = Import empty, anything else = skip
+                            if (translationExportTask.Result.StatusCode != HttpStatusCode.NotFound) continue;
+                        }
+                    }
+
+                    // Now get retrieve the exported translation file from that url
+                    if (!string.IsNullOrEmpty(fileUrl))
+                    {
+                        using var client = new HttpClient();
+                        var translationFileTask = client.GetAsync(fileUrl);
+                        try
+                        {
+                            translationFileTask.Wait();
+                            var stringTask = translationFileTask.Result.Content.ReadAsStringAsync();
                             stringTask.Wait();
-
-                            if (stringTask.Result.Contains("Language was not found"))
-                                Debug.LogError($"Language with code {culture.Code} was not found on CrowdIn");
-
                             json = JSON.Parse(stringTask.Result);
                         }
                         catch (Exception)
                         {
                             // 404 = Import empty, anything else = skip
-                            if (downloadTask.Result.StatusCode != HttpStatusCode.NotFound) continue;
-                            json = new JSONObject();
+                            if (translationFileTask.Result.StatusCode != HttpStatusCode.NotFound) continue;
                         }
                     }
                 }
