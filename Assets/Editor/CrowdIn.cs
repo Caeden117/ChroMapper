@@ -16,21 +16,7 @@ using UnityEngine.Localization.Tables;
 
 public class LocalizationWindow : EditorWindow
 {
-    private static readonly string projectIdentifier = "chromapper";
-    
-    // I don't want to write code to parse all the steps so I'm skipping some steps and putting the values here
-    private static readonly int projectId = 414106;
-    private static readonly Dictionary<string, int> tableNameIdMap = new Dictionary<string, int>
-    {
-        { "FirstBoot", 20 },
-        { "SongEditMenu", 22 },
-        { "SongSelectMenu", 24 },
-        { "Contributors", 26 },
-        { "Options", 28 },
-        { "Mapper", 30 },
-        { "PersistentUI", 32 },
-        { "MultiMapping", 33 }
-    };
+    private const int projectId = 414106;
 
     private string apiKey = "";
 
@@ -56,6 +42,21 @@ public class LocalizationWindow : EditorWindow
         var cultures = new List<LocaleIdentifier>();
         foreach (var table in collection.StringTables) cultures.Add(table.LocaleIdentifier);
         return cultures;
+    }
+
+    private static Dictionary<string, int> GetTableNameIdMap(string apiKey)
+    {
+        var filesUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/files";
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+
+        var filesTask = client.GetStringAsync(filesUrl);
+        filesTask.Wait();
+        var filesInfo = JSON.Parse(filesTask.Result);
+
+        var fileData = filesInfo["data"].AsArray.Children.Select(x => x["data"]);
+        return fileData.ToDictionary<JSONNode, string, int>(data => data["name"], data => data["id"]);
     }
 
     public static void ToJson(string apiKey = "", bool upload = false)
@@ -199,6 +200,8 @@ public class LocalizationWindow : EditorWindow
     {
         var translationsExportsUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/translations/exports";
 
+        var tableNameIdMap = download ? GetTableNameIdMap(apiKey): new Dictionary<string, int>();
+
         foreach (var collection in LocalizationEditorSettings.GetStringTableCollections())
         {
             var collectionName = collection.TableCollectionName;
@@ -214,7 +217,7 @@ public class LocalizationWindow : EditorWindow
                     
                     // First we need to get export the translation and get the url to it
                     var fileUrl = "";
-                    if (tableNameIdMap.TryGetValue(collectionName, out var id))
+                    if (tableNameIdMap.TryGetValue($"{collectionName}.json", out var id))
                     {
                         using var client = new HttpClient();
                         var stringContent =
