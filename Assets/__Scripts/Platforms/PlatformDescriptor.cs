@@ -233,7 +233,8 @@ public class PlatformDescriptor : MonoBehaviour
                     if (manager == null) continue;
 
                     manager.Boost(ColorBoost, ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
-                        ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor);
+                        ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor,
+                        ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor);
                 }
 
                 break;
