@@ -57,6 +57,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         instantiatedContainer.ObstacleData.Duration = RoundedJsonTime - startJsonTime;
         obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
+        var songBpmDuration = BpmChangeGridContainer.JsonTimeToSongBpmTime(RoundedJsonTime) - startSongBpmTime;
 
         // Check if Chroma Color notes button is active and apply _color
         queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
@@ -73,7 +74,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 var precision_r = 1.0f / precision;
                 roundedHit.x = Mathf.Floor((roundedHit.x) * precision) * precision_r;
                 roundedHit.y = Mathf.Floor((roundedHit.y - 0.6f) * precision) * precision_r + 0.5f;
-                roundedHit.z = SongBpmTime * EditorScaleController.EditorScale;
+                roundedHit.z = songBpmDuration * EditorScaleController.EditorScale;
 
                 var position = (Vector3)originPosition;
                 position.z = startSongBpmTime * EditorScaleController.EditorScale;
@@ -84,6 +85,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                     queuedData.CustomCoordinate[0] = position.x;
                     newLocalScale.x = 2 * precision_r - newLocalScale.x;
                 }
+
                 if (newLocalScale.y <= 0)
                 {
                     position.y = originPosition.y + newLocalScale.y - precision_r;
@@ -96,7 +98,8 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                     position.y,
                     0);
                 wallTransform.localPosition = localPosition;
-                instantiatedContainer.transform.localPosition = new Vector3(0, 0.1f, startSongBpmTime * EditorScaleController.EditorScale);
+                instantiatedContainer.transform.localPosition =
+                    new Vector3(0, 0.1f, startSongBpmTime * EditorScaleController.EditorScale);
 
                 instantiatedContainer.SetScale(newLocalScale);
 
@@ -104,6 +107,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 {
                     queuedData.CustomSize = new JSONArray();
                 }
+
                 queuedData.CustomSize[0] = newLocalScale.x;
                 queuedData.CustomSize[1] = newLocalScale.y;
 
@@ -131,14 +135,16 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 {
                     queuedData.PosX = originIndex;
                 }
+
                 wallTransform.localPosition = new Vector3(
                     queuedData.PosX - 2f + (queuedData.Width / 2.0f),
                     (queuedData.Type == (int)ObstacleType.Full) ? 0 : 2,
                     0);
-                instantiatedContainer.transform.localPosition = new Vector3(0, 0.1f, startSongBpmTime * EditorScaleController.EditorScale);
+                instantiatedContainer.transform.localPosition =
+                    new Vector3(0, 0.1f, startSongBpmTime * EditorScaleController.EditorScale);
 
-                instantiatedContainer.SetScale(new Vector3(queuedData.Width,
-                    wallTransform.localScale.y, queuedData.Duration * EditorScaleController.EditorScale));
+                instantiatedContainer.SetScale(new Vector3(queuedData.Width, wallTransform.localScale.y,
+                    songBpmDuration * EditorScaleController.EditorScale));
 
                 precisionPlacement.TogglePrecisionPlacement(false);
             }
