@@ -15,7 +15,14 @@ public class CreateNewSong : MonoBehaviour
         if (string.IsNullOrWhiteSpace(res)) return;
 
         var song = new BeatSaberSong(list.WipLevels, res);
-
+        
+        if (string.IsNullOrWhiteSpace(song.CleanSongName))
+        {
+            PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.invalid", HandleNewSongName,
+                "newmap.dialog.default");
+            return;
+        }
+        
         if (list.Songs.Any(x => Path.GetFullPath(x.Directory).Equals(
             Path.GetFullPath(Path.Combine(
                 list.WipLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder,
