@@ -133,6 +133,14 @@ MonoBehaviour:
     m_Localized: "\u6309\u4FEE\u6539\u65F6\u95F4\u6392\u5E8F"
     m_Metadata:
       m_Items: []
+  - m_Id: 161103413248
+    m_Localized: 'Could not create a folder with that name.
+
+
+      Please enter
+      a different name for the new beatmap.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
