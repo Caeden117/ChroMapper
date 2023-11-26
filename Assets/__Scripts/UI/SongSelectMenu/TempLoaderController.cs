@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -10,6 +11,9 @@ public class TempLoaderController : MonoBehaviour
 {
     // Location to the API endpoint to download a map from its BeatSaver ID
     private const string beatSaverDownloadURL = "https://beatsaver.com/api/download/key/";
+
+    private readonly Regex bsrBeatSaverIdRegex =
+        new Regex(@"(!bsr )?(.*)", RegexOptions.Compiled | RegexOptions.IgnoreCase); 
 
     public void OpenTempLoader() =>
         PersistentUI.Instance.ShowInputBox(
@@ -22,10 +26,12 @@ public class TempLoaderController : MonoBehaviour
         if (string.IsNullOrEmpty(location) || string.IsNullOrWhiteSpace(location)) return;
         // Trim whitespace from the beginning and end of our location
         location = location.Trim();
+
         // Check if it is a valid BeatSaver ID
-        if (location.ToCharArray().All(c => c.IsHex()))
+        var beatSaverId = bsrBeatSaverIdRegex.Matches(location)[0].Groups[2].Value;
+        if (beatSaverId.ToCharArray().All(c => c.IsHex()))
         {
-            var escaped = $"{beatSaverDownloadURL}{location}";
+            var escaped = $"{beatSaverDownloadURL}{beatSaverId}";
             var uri = new Uri(escaped, UriKind.Absolute);
             SceneTransitionManager.Instance.LoadScene("02_SongEditMenu", GetBeatmapFromLocation(uri));
         }
