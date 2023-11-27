@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
@@ -20,57 +19,52 @@ public class MapLoader : MonoBehaviour
         map.ConvertCustomBpmToOfficial();
     }
 
-    public IEnumerator HardRefresh()
+    public void HardRefresh()
     {
-        yield return StartCoroutine(LoadObjects(map.BpmEvents));
-        if (Settings.Instance.Load_Others)
-        {
-            yield return StartCoroutine(LoadObjects(map.CustomEvents));
-        }
-        if (Settings.Instance.Load_Notes) yield return StartCoroutine(LoadObjects(map.Notes));
-        if (Settings.Instance.Load_Obstacles) yield return StartCoroutine(LoadObjects(map.Obstacles));
-        if (Settings.Instance.Load_Events) yield return StartCoroutine(LoadObjects(map.Events));
+        LoadObjects(map.BpmEvents);
+        
+        if (Settings.Instance.Load_Others) LoadObjects(map.CustomEvents);
+
+        if (Settings.Instance.Load_Notes) LoadObjects(map.Notes);
+        
+        if (Settings.Instance.Load_Obstacles) LoadObjects(map.Obstacles);
+        
+        if (Settings.Instance.Load_Events) LoadObjects(map.Events);
+        
         if (Settings.Instance.Load_MapV3)
         {
-            yield return StartCoroutine(LoadObjects(map.Arcs));
-            yield return StartCoroutine(LoadObjects(map.Chains));
+            LoadObjects(map.Arcs);
+            LoadObjects(map.Chains);
         }
 
         manager.RefreshTracks();
     }
 
-    public IEnumerator LoadObjects<T>(List<T> objects) where T : BaseObject
+    public void LoadObjects<T>(List<T> objects) where T : BaseObject
     {
-        if (!objects.Any()) yield break;
+        if (objects.Count == 0) return;
         
         var collection = BeatmapObjectContainerCollection.GetCollectionForType<BeatmapObjectContainerCollection<T>>(objects.First().ObjectType);
-        if (collection == null) yield break;
+        if (collection == null) return;
 
         collection.MapObjects = objects;
 
         // TODO: speed up with Span<> iteration
         objects.ForEach(obj => obj.RecomputeSongBpmTime());
-        //foreach (var obj in objects) obj.RecomputeSongBpmTime();
-
-        // removed note lane resizing (relied entirely on Mapping Extensions; everyone should be on Noodle now)
-
-        // TODO(Caeden): Remove all of this bullshit
-        if (typeof(T) == typeof(BaseEvent))
+        
+        if (objects is List<BaseEvent> eventsList)
         {
             manager.RefreshTracks();
 
-            // TODO(Caeden): ugh.
             var events = collection as EventGridContainer;
-            events.AllRotationEvents = objects.Cast<BaseEvent>().Where(x => x.IsLaneRotationEvent()).ToList();
-            events.AllBoostEvents = objects.Cast<BaseEvent>().Where(x => x.IsColorBoostEvent())
-                .ToList();
-            events.AllBpmEvents = objects.Cast<BaseEvent>().Where(x => x.IsBpmEvent())
-                .ToList();
+            events.AllRotationEvents = eventsList.FindAll(it => it.IsLaneRotationEvent());
+            events.AllBoostEvents = eventsList.FindAll(it => it.IsColorBoostEvent());
+            events.AllBpmEvents = eventsList.FindAll(it => it.IsBpmEvent());
 
             events.LinkAllLightEvents();
         }
 
-        if (typeof(T) == typeof(BaseCustomEvent))
+        if (objects is List<BaseCustomEvent> customEventsList)
         {
             var events = collection as CustomEventGridContainer;
             events.RefreshEventsByTrack();
