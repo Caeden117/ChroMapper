@@ -36,10 +36,7 @@ public class MapLoader : MonoBehaviour
             yield return StartCoroutine(LoadObjects(map.Chains));
         }
 
-        PersistentUI.Instance.LevelLoadSliderLabel.text = "Finishing up...";
         manager.RefreshTracks();
-
-        PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }
 
     public IEnumerator LoadObjects<T>(List<T> objects) where T : BaseObject
@@ -48,13 +45,12 @@ public class MapLoader : MonoBehaviour
         
         var collection = BeatmapObjectContainerCollection.GetCollectionForType<BeatmapObjectContainerCollection<T>>(objects.First().ObjectType);
         if (collection == null) yield break;
-        
-        PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
 
         collection.MapObjects = objects;
-        UpdateSlider<T>();
 
-        foreach (var obj in objects) obj.RecomputeSongBpmTime();
+        // TODO: speed up with Span<> iteration
+        objects.ForEach(obj => obj.RecomputeSongBpmTime());
+        //foreach (var obj in objects) obj.RecomputeSongBpmTime();
 
         // removed note lane resizing (relied entirely on Mapping Extensions; everyone should be on Noodle now)
 
@@ -82,11 +78,5 @@ public class MapLoader : MonoBehaviour
         }
 
         collection.RefreshPool(true);
-    }
-
-    private void UpdateSlider<T>() where T : BaseObject
-    {
-        PersistentUI.Instance.LevelLoadSliderLabel.text = $"Loading {typeof(T).Name}s... ";
-        PersistentUI.Instance.LevelLoadSlider.value = 1;
     }
 }
