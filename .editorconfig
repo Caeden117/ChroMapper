@@ -384,8 +384,11 @@ dotnet_diagnostic.UNT0015.severity=warning
 dotnet_diagnostic.UNT0016.severity=error
 dotnet_diagnostic.UNT0021.severity=suggestion
 
-[*.Tests/**.cs]
+[Assets/Tests/**.cs]
 
 # In tests specifically, we want to not warn on variable non-usage
 dotnet_diagnostic.IDE0058.severity = suggestion
 csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
+
+# LoadedObjects copy allocation is not super critical for tests, so we'll disable this warning
+dotnet_diagnostic.CS0618.severity = none

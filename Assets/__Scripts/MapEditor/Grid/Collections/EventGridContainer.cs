@@ -485,10 +485,10 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
     }
 
     public void LinkAllLightEvents() =>
-        AllLightEvents = LoadedObjects.Cast<BaseEvent>().
-            Where(x => x.IsLightEvent()).
-            GroupBy(x => x.Type).
-            ToDictionary(g => g.Key, g => g.ToList());
+        AllLightEvents = MapObjects.
+            Where(x => x.IsLightEvent())
+            .GroupBy(x => x.Type)
+            .ToDictionary(g => g.Key, g => g.ToList());
 
     public void RefreshEventsAppearance(IEnumerable<BaseEvent> events)
     {

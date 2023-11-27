@@ -74,7 +74,7 @@ public class BongoCat : MonoBehaviour
         // TODO(Caeden): This can be optimized:
         //   - Pass note idx through the caller (DingOnNotePassingGrid? should be a direct callback subscriber tbh)
         //   - Manually march forward until the next object that matches our predicate is found
-        var next = container.LoadedObjects.Find(x => x.JsonTime > note.JsonTime && ((BaseNote)x).Type == note.Type);
+        var next = container.MapObjects.Find(x => x.JsonTime > note.JsonTime && x.Type == note.Type);
         
         var timer = 0.125f;
         if (next is not null)

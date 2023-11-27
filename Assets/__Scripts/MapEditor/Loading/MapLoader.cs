@@ -44,7 +44,7 @@ public class MapLoader : MonoBehaviour
     {
         if (objects.Count == 0) return;
         
-        var collection = BeatmapObjectContainerCollection.GetCollectionForType<BeatmapObjectContainerCollection<T>>(objects.First().ObjectType);
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType<BeatmapObjectContainerCollection<T>>(objects[0].ObjectType);
         if (collection == null) return;
 
         collection.MapObjects = objects;

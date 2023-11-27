@@ -182,40 +182,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <param name="lowerBound">Objects below this point in time will not be given a container.</param>
     /// <param name="upperBound">Objects above this point in time will not be given a container.</param>
     /// <param name="forceRefresh">All currently active containers will be recycled, even if they shouldn't be.</param>
-    public void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
-    {
-        //foreach (var obj in LoadedObjects)
-        for (var i = 0; i < LoadedObjects.Count; i++)
-        {
-            var obj = LoadedObjects[i];
-
-            if (forceRefresh) RecycleContainer(obj);
-
-            switch (obj)
-            {
-                // Create container if obj is within bounds
-                case BaseObject when obj.SongBpmTime >= lowerBound && obj.SongBpmTime <= upperBound:
-                    CreateContainerFromPool(obj);
-                    continue;
-
-                // Handle special cases for certain objects exist over a period of time
-                case BaseObstacle obs when obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound:
-                    CreateContainerFromPool(obj);
-                    continue;
-                case BaseArc arc when arc.SongBpmTime < lowerBound && arc.TailSongBpmTime >= lowerBound:
-                    CreateContainerFromPool(obj);
-                    continue;
-                case BaseChain chain when chain.SongBpmTime < lowerBound && chain.TailSongBpmTime >= lowerBound:
-                    CreateContainerFromPool(obj);
-                    continue;
-
-                // Outside of bounds; recycle
-                default:
-                    RecycleContainer(obj);
-                    break;
-            }
-        }
-    }
+    public abstract void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false);
 
     /// <summary>
     ///     Dequeues a container from the pool and attaches it to a provided <see cref="BaseObject" />
@@ -274,8 +241,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     Given a list of objects, remove all existing ones that conflict.
     /// </summary>
     /// <param name="newObjects">Enumerable of new objects</param>
-    public void RemoveConflictingObjects(IEnumerable<BaseObject> newObjects) =>
-        RemoveConflictingObjects(newObjects, out _);
+    public void RemoveConflictingObjects(IEnumerable<BaseObject> newObjects) => RemoveConflictingObjects(newObjects, out _);
 
     /// <summary>
     ///     Given a list of objects, remove all existing ones that conflict.
@@ -367,6 +333,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
             if (collection == null) continue;
+            // REVIEW: not sure if allocation is avoidable
             foreach (var obj in collection.LoadedObjects)
             {
                 if (obj.JsonTime > jsonTime)
@@ -504,6 +471,42 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     }
 
     /// <inheritdoc/>
+    public override void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
+    {
+        // TODO: Convert to Span<> iteration
+        for (var i = 0; i < MapObjects.Count; i++)
+        {
+            var obj = MapObjects[i];
+
+            if (forceRefresh) RecycleContainer(obj);
+
+            switch (obj)
+            {
+                // Create container if obj is within bounds
+                case not null when obj.SongBpmTime >= lowerBound && obj.SongBpmTime <= upperBound:
+                    CreateContainerFromPool(obj);
+                    continue;
+
+                // Handle special cases for certain objects exist over a period of time
+                case BaseObstacle obs when obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound:
+                    CreateContainerFromPool(obj);
+                    continue;
+                case BaseArc arc when arc.SongBpmTime < lowerBound && arc.TailSongBpmTime >= lowerBound:
+                    CreateContainerFromPool(obj);
+                    continue;
+                case BaseChain chain when chain.SongBpmTime < lowerBound && chain.TailSongBpmTime >= lowerBound:
+                    CreateContainerFromPool(obj);
+                    continue;
+
+                // Outside of bounds; recycle
+                default:
+                    RecycleContainer(obj);
+                    break;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
     public override void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
         string comment = "No comment.", bool inCollectionOfDeletes = false)
     {
@@ -513,6 +516,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     }
 
     /// <inheritdoc/>
+    // TODO(Caeden): Overload to delete/spawn without recycling or creating a container
     public void DeleteObject(T obj, bool triggersAction = true, bool refreshesPool = true,
         string comment = "No comment.", bool inCollectionOfDeletes = false)
     {
@@ -562,6 +566,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         SpawnObject(obj, out _, removeConflicting, refreshesPool, inCollectionOfSpawns);
 
     /// <inheritdoc/>
+    // TODO(Caeden): Overload to delete/spawn without recycling or creating a container
     public void SpawnObject(T obj, out List<T> conflicting, bool removeConflicting = true,
         bool refreshesPool = true, bool inCollectionOfSpawns = false)
     {

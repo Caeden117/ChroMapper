@@ -60,4 +60,17 @@ public static class IEnumerableExtensions
 
         return ~mid;
     }
+
+    // TODO(Caeden): Optimize with Span<> iteration
+    public static int CountNoAlloc<T>(this IList<T> list, Func<T, bool> predicate)
+    {
+        var count = 0;
+
+        for (var i = 0; i < list.Count; i++)
+        {
+            if (predicate(list[i])) count++;
+        }
+
+        return count;
+    }
 }

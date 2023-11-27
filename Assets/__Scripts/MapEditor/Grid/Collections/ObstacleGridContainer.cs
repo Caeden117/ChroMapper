@@ -43,12 +43,10 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
     {
         if (UIMode.AnimationMode)
         {
-            SpawnSortedObjects = LoadedObjects
-                .Cast<BaseObstacle>()
+            SpawnSortedObjects = MapObjects
                 .OrderBy(o => o.SpawnJsonTime)
                 .ToArray();
-            DespawnSortedObjects = LoadedObjects
-                .Cast<BaseObstacle>()
+            DespawnSortedObjects = MapObjects
                 .OrderBy(o => o.DespawnJsonTime)
                 .ToArray();
             RefreshWalls();

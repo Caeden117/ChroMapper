@@ -195,7 +195,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (collection == null) continue;
 
             IEnumerable<BaseObject> objectsToCheck;
-            if (collection is ArcGridContainer || collection is ChainGridContainer)
+
+            // REVIEW: Considering a downcast appears to be necessary, I am not sure if
+            //   a LoadedObjects (or similar) allocation is avoidable without a complete
+            //   rewrite to this function.
+            if (collection is ArcGridContainer or ChainGridContainer)
             {
                 objectsToCheck = collection.LoadedObjects.Where(x =>
                     (start - epsilon < x.SongBpmTime && x.SongBpmTime < end + epsilon)
@@ -238,7 +242,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
         var collection = BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType);
 
-        if (!collection.LoadedObjects.Contains(obj))
+        if (!collection.ContainsObject(obj))
             return;
 
         SelectedObjects.Add(obj);
@@ -476,7 +480,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType);
             var original = BeatmapFactory.Clone(data);
 
-            collection.LoadedObjects.Remove(data);
             data.JsonTime += beats;
             if (snapObjects)
                 data.JsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
@@ -487,15 +490,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 if (snapObjects)
                     slider.TailJsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
             }
-            collection.LoadedObjects.Add(data);
-
-            if (collection.LoadedContainers.TryGetValue(data, out var con)) con.UpdateGridPosition();
-
-            if (collection is NoteGridContainer notesContainer)
-            {
-                notesContainer.RefreshSpecialAngles(original, false, false);
-                notesContainer.RefreshSpecialAngles(data, false, false);
-            }
 
             allActions.Add(new BeatmapObjectModifiedAction(data, data, original, "", true));
         }
@@ -503,7 +497,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
 
         BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true,
-            "Shifted a selection of objects."));
+            "Shifted a selection of objects."), true);
         BeatmapObjectContainerCollection.RefreshAllPools();
     }
 

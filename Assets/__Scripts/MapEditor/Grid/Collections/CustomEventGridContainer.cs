@@ -46,8 +46,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     public void LoadAnimationTracks()
     {
         playerCamera.ClearPlayerTracks();
-        var events = LoadedObjects.Select(ev => ev as BaseCustomEvent);
-        foreach (var ev in events)
+        // TODO(Caeden): Convert to Span<> iteration
+        foreach (var ev in MapObjects)
         {
             var tracks = ev.CustomTrack switch {
                 JSONArray arr => arr,
@@ -130,9 +130,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
 
         //foreach (var loadedObject in UnsortedObjects)
-        for (var i = 0; i < LoadedObjects.Count; i++)
+        for (var i = 0; i < MapObjects.Count; i++)
         {
-            var customEvent = LoadedObjects[i] as BaseCustomEvent;
+            var customEvent = MapObjects[i];
 
             var tracks = customEvent.CustomTrack switch {
                 JSONString s => new List<string> { s },
@@ -232,9 +232,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
     private void SetInitialTracks()
     {
-        for (var i = 0; i < LoadedObjects.Count; i++)
+        for (var i = 0; i < MapObjects.Count; i++)
         {
-            var customEvent = LoadedObjects[i] as BaseCustomEvent;
+            var customEvent = MapObjects[i];
 
             if (!customEventTypes.Contains(customEvent.Type))
             {

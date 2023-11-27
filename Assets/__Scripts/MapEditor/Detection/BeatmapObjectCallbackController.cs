@@ -117,9 +117,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllNotes(bool natural)
     {
-        var dummy = new V2Note(timeSyncController.CurrentJsonTime, 0, 0, 0, 0);
-
-        nextNoteIndex = noteGridContainer.LoadedObjects.BinarySearch(dummy);
+        nextNoteIndex = noteGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.JsonTime);
         if (nextNoteIndex < 0) nextNoteIndex = ~nextNoteIndex;
 
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
@@ -127,9 +125,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllEvents(bool natural)
     {
-        var dummy = new V2Note(timeSyncController.CurrentJsonTime, 0, 0, 0, 0);
-
-        nextEventIndex = eventGridContainer.LoadedObjects.BinarySearch(dummy);
+        nextEventIndex = eventGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.JsonTime);
         if (nextEventIndex < 0) nextEventIndex = ~nextEventIndex;
 
         RecursiveEventCheckFinished?.Invoke(natural, nextEventIndex - 1);
@@ -137,9 +133,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllChains(bool natural)
     {
-        var dummy = new V2Note(timeSyncController.CurrentJsonTime, 0, 0, 0, 0);
-
-        nextChainIndex = eventGridContainer.LoadedObjects.BinarySearch(dummy);
+        nextChainIndex = eventGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.JsonTime);
         if (nextChainIndex < 0) nextChainIndex = ~nextChainIndex;
 
         RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
@@ -147,12 +141,12 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckNotes(bool init, bool natural)
     {
-        var objects = noteGridContainer.LoadedObjects;
+        var objects = noteGridContainer.MapObjects;
         var useAnimationsOffset = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
         while (nextNoteIndex < objects.Count)
         {
             var obj = objects[nextNoteIndex];
-            var offset = useAnimationsOffset ? (obj as BaseGrid).Hjd + Track.JUMP_TIME : Offset;
+            var offset = useAnimationsOffset ? obj.Hjd + Track.JUMP_TIME : Offset;
 
             if (obj.SongBpmTime > curTime + offset) return;
 
@@ -163,7 +157,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckEvents(bool init, bool natural)
     {
-        var objects = eventGridContainer.LoadedObjects;
+        var objects = eventGridContainer.MapObjects;
         while (nextEventIndex < objects.Count && objects[nextEventIndex].SongBpmTime <= curTime + Offset)
         {
             EventPassedThreshold?.Invoke(natural, nextEventIndex, objects[nextEventIndex]);
@@ -173,12 +167,12 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void RecursiveCheckChains(bool init, bool natural)
     {
-        var objects = chainGridContainer.LoadedObjects;
+        var objects = chainGridContainer.MapObjects;
         var useAnimationsOffset = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
         while (nextChainIndex < objects.Count)
         {
             var obj = objects[nextChainIndex];
-            var offset = useAnimationsOffset ? (obj as BaseGrid).Hjd + Track.JUMP_TIME : Offset;
+            var offset = useAnimationsOffset ? obj.Hjd + Track.JUMP_TIME : Offset;
 
             if (obj.SongBpmTime > curTime + offset) return;
 
