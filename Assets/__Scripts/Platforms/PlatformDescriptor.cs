@@ -51,6 +51,12 @@ public class PlatformDescriptor : MonoBehaviour
 
     public bool ColorBoost { get; private set; }
 
+    // loading happens too fast now
+    private void Awake()
+    {
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
+    }
+
     private void Start()
     {
         var eventHandlers = GetComponentsInChildren<PlatformEventHandler>();
@@ -69,7 +75,6 @@ public class PlatformDescriptor : MonoBehaviour
             }
         }
 
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
         UpdateShinyMaterialSettings();
     }
 

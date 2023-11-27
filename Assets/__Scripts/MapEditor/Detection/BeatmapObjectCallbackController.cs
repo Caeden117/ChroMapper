@@ -150,7 +150,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
             if (obj.SongBpmTime > curTime + offset) return;
 
-            NotePassedThreshold?.Invoke(natural, nextNoteIndex, objects[nextNoteIndex]);
+            NotePassedThreshold?.Invoke(natural, nextNoteIndex, obj);
             nextNoteIndex++;
         }
     }
@@ -158,9 +158,13 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     private void RecursiveCheckEvents(bool init, bool natural)
     {
         var objects = eventGridContainer.MapObjects;
-        while (nextEventIndex < objects.Count && objects[nextEventIndex].SongBpmTime <= curTime + Offset)
+        while (nextEventIndex < objects.Count)
         {
-            EventPassedThreshold?.Invoke(natural, nextEventIndex, objects[nextEventIndex]);
+            var obj = objects[nextEventIndex];
+
+            if (obj.SongBpmTime > curTime + Offset) return;
+
+            EventPassedThreshold?.Invoke(natural, nextEventIndex, obj);
             nextEventIndex++;
         }
     }
@@ -176,7 +180,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
             if (obj.SongBpmTime > curTime + offset) return;
 
-            ChainPassedThreshold?.Invoke(natural, nextChainIndex, objects[nextChainIndex]);
+            ChainPassedThreshold?.Invoke(natural, nextChainIndex, obj);
             nextChainIndex++;
         }
     }
