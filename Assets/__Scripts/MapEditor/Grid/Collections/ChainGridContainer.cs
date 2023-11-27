@@ -10,7 +10,7 @@ using UnityEngine;
 /// <see cref="ChainGridContainer"/> doesn't contain note(even the head note on the chain).
 /// It only detects whether there is a note happening to be a head note
 /// </summary>
-public class ChainGridContainer : BeatmapObjectContainerCollection
+public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
 {
     [SerializeField] private GameObject chainPrefab;
     [SerializeField] private TracksManager tracksManager;

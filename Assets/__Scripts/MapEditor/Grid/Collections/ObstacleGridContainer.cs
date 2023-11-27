@@ -7,7 +7,7 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class ObstacleGridContainer : BeatmapObjectContainerCollection
+public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstacle>
 {
     [SerializeField] private GameObject obstaclePrefab;
     [FormerlySerializedAs("obstacleAppearanceSO")][SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;

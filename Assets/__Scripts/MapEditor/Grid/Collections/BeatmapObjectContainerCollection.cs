@@ -34,7 +34,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <summary>
     ///     Loaded objects in this collection.
     /// </summary>
-    public List<BaseObject> LoadedObjects = new List<BaseObject>();
+    [Obsolete("LoadedObjects allocates a copy of the backing list of objects. Please avoid this unless you absolutely cannot grab a more precise type.")]
+    public abstract List<BaseObject> LoadedObjects { get; }
 
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
@@ -513,4 +514,130 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     internal abstract void SubscribeToCallbacks();
 
     internal abstract void UnsubscribeToCallbacks();
+}
+
+public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContainerCollection where T : BaseObject
+{
+    public event Action<T> ObjectSpawnedEvent;
+    public event Action<T> ObjectDeletedEvent;
+    public event Action<T> ContainerSpawnedEvent;
+    public event Action<T> ContainerDespawnedEvent;
+
+    public override List<BaseObject> LoadedObjects => MapObjects.ConvertAll(it => it as BaseObject);
+
+    public List<T> MapObjects = new();
+
+    public List<T> GetBetween(float jsonTime, float jsonTime2)
+    {
+        // Dummy objects used to determine start/end indices
+        var start = new V2Note(jsonTime - 0.0000001f, 0f, 0, 0, 0, 0);
+        var end = new V2Note(jsonTime2 + 0.0000001f, 0f, 0, 0, 0, 0);
+
+        // Considering we're only concerned with time, we'll strictly use the default time-based comparer here.
+        var startIdx = LoadedObjects.BinarySearch(start);
+        var endIdx = LoadedObjects.BinarySearch(end);
+
+        if (startIdx < 0) startIdx = ~startIdx;
+        if (endIdx < 0) endIdx = ~endIdx;
+
+        return MapObjects.GetRange(startIdx, endIdx - startIdx);
+    }
+
+    /// <summary>
+    ///     Given a list of objects, remove all existing ones that conflict.
+    /// </summary>
+    /// <param name="newObjects">Enumerable of new objects</param>
+    public void RemoveConflictingObjects(IEnumerable<T> newObjects) =>
+        RemoveConflictingObjects(newObjects, out _);
+
+    /// <summary>
+    ///     Given a list of objects, remove all existing ones that conflict.
+    /// </summary>
+    /// <param name="newObjects">Enumerable of new objects</param>
+    /// <param name="conflicting">Enumerable of all existing objects that were deleted as a conflict.</param>
+    public void RemoveConflictingObjects(IEnumerable<T> newObjects, out List<T> conflicting)
+    {
+        conflicting = new List<T>();
+        var conflictingInternal = new HashSet<T>();
+        var newSet = new HashSet<T>(newObjects);
+        foreach (var newObject in newObjects)
+        {
+            Debug.Log($"Performing conflicting check at {newObject.JsonTime}");
+
+            var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
+
+            for (var i = 0; i < localWindow.Count; i++)
+            {
+                var obj = localWindow[i];
+
+                if (obj.IsConflictingWith(newObject) && !newSet.Contains(obj)) conflictingInternal.Add(obj);
+            }
+        }
+
+        foreach (var conflict in conflictingInternal) //Haha InvalidOperationException go brrrrrrrrr
+            DeleteObject(conflict, false, false);
+        Debug.Log($"Removed {conflictingInternal.Count} conflicting {ContainerType}s.");
+        conflicting.AddRange(conflictingInternal);
+    }
+
+    /// <inheritdoc/>
+    public void DeleteObject(T obj, bool triggersAction = true, bool refreshesPool = true,
+        string comment = "No comment.", bool inCollectionOfDeletes = false)
+    {
+        var search = MapObjects.BinarySearch(obj);
+
+        RecycleContainer(obj);
+
+        if (search >= 0)
+        {
+            MapObjects.RemoveAt(search);
+
+            SelectionController.Deselect(obj, triggersAction);
+
+            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
+
+            if (refreshesPool) RefreshPool();
+
+            OnObjectDelete(obj, inCollectionOfDeletes);
+            ObjectDeletedEvent?.Invoke(obj);
+        }
+        else
+        {
+            // The objects are not in the collection, but are still being removed.
+            // This could be because of ghost blocks, so let's try forcefully recycling that container.
+            Debug.LogError($"This object appears to be a ghost. Please report this.");
+        }
+    }
+
+    /// <inheritdoc/>
+    public void SpawnObject(T obj, bool removeConflicting = true, bool refreshesPool = true, bool inCollectionOfSpawns = false) =>
+        SpawnObject(obj, out _, removeConflicting, refreshesPool, inCollectionOfSpawns);
+
+    /// <inheritdoc/>
+    public void SpawnObject(T obj, out List<BaseObject> conflicting, bool removeConflicting = true,
+        bool refreshesPool = true, bool inCollectionOfSpawns = false)
+    {
+        //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
+        if (removeConflicting)
+        {
+            RemoveConflictingObjects(new[] { obj }, out conflicting);
+        }
+        else
+        {
+            conflicting = new List<BaseObject>();
+        }
+
+        var search = MapObjects.BinarySearch(obj);
+        var insertIdx = search >= 0 ? search : ~search;
+        MapObjects.Insert(insertIdx, obj);
+
+        OnObjectSpawned(obj, inCollectionOfSpawns);
+        ObjectSpawnedEvent?.Invoke(obj);
+
+        //Debug.Log($"Total object count: {LoadedObjects.Count}");
+        if (refreshesPool) RefreshPool();
+    }
+
+    /// <inheritdoc/>
+    public bool ContainsObject(T obj) => MapObjects.BinarySearch(obj) >= 0;
 }

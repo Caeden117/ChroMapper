@@ -9,7 +9,7 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class EventGridContainer : BeatmapObjectContainerCollection, CMInput.IEventGridActions
+public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, CMInput.IEventGridActions
 {
     public enum PropMode
     {

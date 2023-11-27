@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 /// <summary>
 /// Note that <see cref="ArcGridContainer"></see> uses `UseChunkLoadingWhenPlaying`. Therefore arc doesn't fade after passing through.
 /// </summary>
-public class ArcGridContainer : BeatmapObjectContainerCollection
+public class ArcGridContainer : BeatmapObjectContainerCollection<BaseArc>
 {
     [SerializeField] private GameObject arcPrefab;
     [FormerlySerializedAs("arcAppearanceSO")][SerializeField] private ArcAppearanceSO arcAppearanceSO;

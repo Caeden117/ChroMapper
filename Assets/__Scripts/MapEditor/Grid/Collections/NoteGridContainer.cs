@@ -9,7 +9,7 @@ using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class NoteGridContainer : BeatmapObjectContainerCollection
+public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 {
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;

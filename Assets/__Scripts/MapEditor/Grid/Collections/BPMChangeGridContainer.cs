@@ -12,7 +12,7 @@ using Beatmap.V3.Customs;
 using SimpleJSON;
 using UnityEngine;
 
-public class BPMChangeGridContainer : BeatmapObjectContainerCollection
+public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmChange>
 {
     // We cap the amount of BPM Changes in the shader to reduce memory and have it work on OpenGL/Vulkan/Metal.
     // Unless you have over 170 BPM Changes within a section of a song, this SHOULD be fine.

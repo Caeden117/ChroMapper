@@ -12,7 +12,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInput.ICustomEventsContainerActions
+public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCustomEvent>, CMInput.ICustomEventsContainerActions
 {
     [SerializeField] private GameObject customEventPrefab;
     [SerializeField] private GameObject geometryPrefab;
