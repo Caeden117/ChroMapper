@@ -122,7 +122,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             return;
         }
 
-        SelectionController.RefreshMap();
         objectCheckingThread = Task.Run(() =>
         {
             if (ObjectIsOutsideMap())
@@ -249,7 +248,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             PersistentUI.DisplayMessageType.Bottom);
         notification.SkipFade = true;
         notification.WaitTime = 5.0f;
-        SelectionController.RefreshMap(); //Make sure our map is up to date.
+
         savingThread = Task.Run(
             () => //I could very well move this to its own function but I need access to the "auto" variable.
             {

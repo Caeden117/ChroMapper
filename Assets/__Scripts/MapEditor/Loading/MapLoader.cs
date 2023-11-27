@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
-using Beatmap.V3;
 using UnityEngine;
 
 public class MapLoader : MonoBehaviour
@@ -14,8 +13,6 @@ public class MapLoader : MonoBehaviour
     [Space][SerializeField] private Transform containerCollectionsContainer;
 
     private BaseDifficulty map;
-    private int noteLaneSize = 2;
-    private int noteLayerSize = 3;
 
     public void UpdateMapData(BaseDifficulty m)
     {
@@ -41,7 +38,7 @@ public class MapLoader : MonoBehaviour
 
         PersistentUI.Instance.LevelLoadSliderLabel.text = "Finishing up...";
         manager.RefreshTracks();
-        SelectionController.RefreshMap();
+
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
     }
 
@@ -49,13 +46,12 @@ public class MapLoader : MonoBehaviour
     {
         if (!objects.Any()) yield break;
         
-        var collection = BeatmapObjectContainerCollection.GetCollectionForType(objects.First().ObjectType);
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType<BeatmapObjectContainerCollection<T>>(objects.First().ObjectType);
         if (collection == null) yield break;
         
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
 
-        // TODO(Caeden): Optimize to use a direct reference rather than a copy
-        collection.LoadedObjects = objects.Cast<BaseObject>().ToList();
+        collection.MapObjects = objects;
         UpdateSlider<T>();
 
         foreach (var obj in objects) obj.RecomputeSongBpmTime();
@@ -66,6 +62,8 @@ public class MapLoader : MonoBehaviour
         if (typeof(T) == typeof(BaseEvent))
         {
             manager.RefreshTracks();
+
+            // TODO(Caeden): ugh.
             var events = collection as EventGridContainer;
             events.AllRotationEvents = objects.Cast<BaseEvent>().Where(x => x.IsLaneRotationEvent()).ToList();
             events.AllBoostEvents = objects.Cast<BaseEvent>().Where(x => x.IsColorBoostEvent())

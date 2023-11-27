@@ -741,60 +741,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             tailPosition.y + 1f / atsc.GridMeasureSnapping * upDown);
     }
 
-    /// <summary>
-    ///     Applies objects to the loaded <see cref="BeatSaberMap" />. Should be done before saving the map.
-    /// </summary>
-    // TODO(Caeden): god can we PLEASE get rid of this at some point
-    public static void RefreshMap()
-    {
-        if (BeatSaberSongContainer.Instance.Map != null)
-        {
-            var newObjects = new Dictionary<ObjectType, IEnumerable<BaseObject>>();
-            foreach (int num in Enum.GetValues(typeof(ObjectType)))
-            {
-                var type = (ObjectType)num;
-                var collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
-                if (collection == null) continue;
-                newObjects.Add(type, collection.LoadedObjects);
-            }
-
-            BeatSaberSongContainer.Instance.Map.BpmEvents =
-                newObjects[ObjectType.BpmChange].Cast<BaseBpmEvent>().ToList();
-
-            if (Settings.Instance.Load_Notes)
-            {
-                BeatSaberSongContainer.Instance.Map.Notes =
-                    newObjects[ObjectType.Note].Cast<BaseNote>().ToList();
-            }
-
-            if (Settings.Instance.Load_Obstacles)
-            {
-                BeatSaberSongContainer.Instance.Map.Obstacles =
-                    newObjects[ObjectType.Obstacle].Cast<BaseObstacle>().ToList();
-            }
-
-            if (Settings.Instance.Load_Events)
-            {
-                BeatSaberSongContainer.Instance.Map.Events =
-                    newObjects[ObjectType.Event].Cast<BaseEvent>().ToList();
-            }
-
-            if (Settings.Instance.Load_Others)
-            {
-                BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[ObjectType.CustomEvent]
-                    .Cast<BaseCustomEvent>().ToList();
-            }
-
-            if (Settings.Instance.Load_MapV3)
-            {
-                BeatSaberSongContainer.Instance.Map.Arcs =
-                    newObjects[ObjectType.Arc].Cast<BaseArc>().ToList();
-                BeatSaberSongContainer.Instance.Map.Chains =
-                    newObjects[ObjectType.Chain].Cast<BaseChain>().ToList();
-            }
-        }
-    }
-
     #endregion
 
     private void RefreshMovedEventsAppearance(IEnumerable<BaseEvent> events)

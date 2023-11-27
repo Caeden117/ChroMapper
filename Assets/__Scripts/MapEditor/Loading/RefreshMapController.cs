@@ -84,7 +84,6 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         }
         if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;
         tracksManager.RefreshTracks();
-        SelectionController.RefreshMap();
         atsc.MoveToSongBpmTime(currentSongBpmTime);
         yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
