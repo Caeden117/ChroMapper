@@ -415,6 +415,8 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
     public List<T> GetBetween(float jsonTime, float jsonTime2)
     {
+        return MapObjects.FindAll(it => it.JsonTime >= jsonTime - Epsilon && it.JsonTime <= jsonTime2 + Epsilon);
+        /*
         // Considering we're only concerned with time, we'll use a time-based comparer here.
         var startIdx = MapObjects.BinarySearchBy(jsonTime, obj => obj.JsonTime);
         var endIdx = MapObjects.BinarySearchBy(jsonTime2, obj => obj.JsonTime);
@@ -423,6 +425,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         if (endIdx < 0) endIdx = ~endIdx;
 
         return MapObjects.GetRange(startIdx, endIdx - startIdx);
+        */
     }
 
     /// <summary>
@@ -448,8 +451,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     public void RemoveConflictingObjects(IEnumerable<T> newObjects, out List<T> conflicting)
     {
         conflicting = new List<T>();
-        var conflictingInternal = new HashSet<T>();
-        var newSet = new HashSet<T>(newObjects);
+
         foreach (var newObject in newObjects)
         {
             Debug.Log($"Performing conflicting check at {newObject.JsonTime}");
@@ -460,14 +462,13 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
             {
                 var obj = localWindow[i];
 
-                if (obj.IsConflictingWith(newObject) && !newSet.Contains(obj)) conflictingInternal.Add(obj);
+                if (obj.IsConflictingWith(newObject) && newObject != obj) conflicting.Add(obj);
             }
         }
 
-        foreach (var conflict in conflictingInternal) //Haha InvalidOperationException go brrrrrrrrr
-            DeleteObject(conflict, false, false);
-        Debug.Log($"Removed {conflictingInternal.Count} conflicting {ContainerType}s.");
-        conflicting.AddRange(conflictingInternal);
+        conflicting.ForEach(conflict => DeleteObject(conflict, false, false));
+
+        Debug.Log($"Removed {conflicting.Count} conflicting {ContainerType}s.");
     }
 
     /// <inheritdoc/>
