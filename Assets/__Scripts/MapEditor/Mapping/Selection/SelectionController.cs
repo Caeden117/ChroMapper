@@ -480,6 +480,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType);
             var original = BeatmapFactory.Clone(data);
 
+            collection.DeleteObject(data, false, false, default, false, false);
+
             data.JsonTime += beats;
             if (snapObjects)
                 data.JsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
@@ -491,14 +493,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     slider.TailJsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
             }
 
+            collection.SpawnObject(data, false, false);
+
             allActions.Add(new BeatmapObjectModifiedAction(data, data, original, "", true));
         }
 
-        RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."));
 
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true,
-            "Shifted a selection of objects."), true);
-        BeatmapObjectContainerCollection.RefreshAllPools();
+        RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
     }
 
     public void ShiftSelection(int leftRight, int upDown)

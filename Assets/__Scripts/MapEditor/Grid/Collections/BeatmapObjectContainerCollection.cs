@@ -278,8 +278,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     Whether or not spawning is part of a collection of spawns
     ///     Set to true and call <see cref="DoPostObjectsDeleteWorkflow()" /> after to optimise spawning many objects
     ///</param>
+    ///<param name="deselect">Whether or not this object is immediately deselected upon deletion.</param>
     public abstract void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
-        string comment = "No comment.", bool inCollectionOfDeletes = false);
+        string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true);
 
     protected void SetTrackFilter() =>
         PersistentUI.Instance.ShowInputBox("Filter notes and obstacles shown while editing to a certain track ID.\n\n" +
@@ -509,17 +510,17 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
     /// <inheritdoc/>
     public override void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
-        string comment = "No comment.", bool inCollectionOfDeletes = false)
+        string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true)
     {
         if (obj is not T localObj) return;
 
-        DeleteObject(localObj, triggersAction, refreshesPool, comment, inCollectionOfDeletes);
+        DeleteObject(localObj, triggersAction, refreshesPool, comment, inCollectionOfDeletes, deselect);
     }
 
     /// <inheritdoc/>
     // TODO(Caeden): Overload to delete/spawn without recycling or creating a container
     public void DeleteObject(T obj, bool triggersAction = true, bool refreshesPool = true,
-        string comment = "No comment.", bool inCollectionOfDeletes = false)
+        string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true)
     {
         var search = MapObjects.BinarySearch(obj);
 
@@ -529,7 +530,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         {
             MapObjects.RemoveAt(search);
 
-            SelectionController.Deselect(obj, triggersAction);
+            if (deselect) SelectionController.Deselect(obj, triggersAction);
 
             if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
 
