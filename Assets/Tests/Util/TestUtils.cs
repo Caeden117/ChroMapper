@@ -20,6 +20,7 @@ namespace Tests.Util
         private static IEnumerator InitMapper()
         {
             CMInputCallbackInstaller.TestMode = true;
+            Settings.TestMode = true;
             yield return SceneManager.LoadSceneAsync("00_FirstBoot", LoadSceneMode.Single);
             PersistentUI.Instance.EnableTransitions = false;
 
@@ -42,7 +43,6 @@ namespace Tests.Util
 
             var prevVersion = loadVersion;
             loadVersion = version;
-            InitSettings();
 
             // check map version, switch if different
             if (SceneManager.GetActiveScene().name.StartsWith("03"))
@@ -79,33 +79,6 @@ namespace Tests.Util
             yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
         }
 
-        private static void InitSettings()
-        {
-            Settings.Instance.Reminder_Loading360Levels = false; // is this needed to be saved & returned?
-
-            if (!preTestSettings.ContainsKey("Load_Notes"))
-            {
-                preTestSettings.Add("Load_Notes", Settings.Instance.Load_Notes);
-                preTestSettings.Add("Load_Events", Settings.Instance.Load_Events);
-                preTestSettings.Add("Load_Obstacles", Settings.Instance.Load_Obstacles);
-                preTestSettings.Add("Load_Others", Settings.Instance.Load_Others);
-                preTestSettings.Add("Load_MapV3", Settings.Instance.Load_MapV3);
-            }
-
-            Settings.Instance.Load_Notes = true;
-            Settings.Instance.Load_Events = true;
-            Settings.Instance.Load_Obstacles = true;
-            Settings.Instance.Load_Others = true;
-            Settings.Instance.Load_MapV3 = loadVersion == 3; // this feels wrong
-        }
-
-        public static void ReturnSettings()
-        {
-            Settings.Instance.Load_Notes = preTestSettings["Load_Notes"];
-            Settings.Instance.Load_Events = preTestSettings["Load_Events"];
-            Settings.Instance.Load_Obstacles = preTestSettings["Load_Obstacles"];
-            Settings.Instance.Load_Others = preTestSettings["Load_Others"];
-            Settings.Instance.Load_MapV3 = preTestSettings["Load_MapV3"];
-        }
+        public static void ReturnSettings() => Settings.TestMode = false;
     }
 }

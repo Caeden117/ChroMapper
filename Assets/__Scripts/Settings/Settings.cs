@@ -10,6 +10,14 @@ using UnityEngine;
 
 public class Settings
 {
+    // Local settings object used when running tests
+    public static bool TestMode = false;
+    private static Settings testRunnerSettings = new()
+    {
+        Reminder_SettingsFailed = false,
+        Reminder_Loading360Levels = false,
+    };
+
     private static Settings instance;
     public static Settings Instance => instance ??= Load();
 
@@ -223,6 +231,8 @@ public class Settings
 
     private static Settings Load()
     {
+        if (TestMode) return testRunnerSettings;
+
         //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
         //This should be thread-wide, but I have this set throughout just in case it isnt.
         System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -355,6 +365,8 @@ public class Settings
 
     public void Save()
     {
+        if (TestMode) return;
+
         var mainNode = new JSONObject();
         var type = GetType();
         var infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance)

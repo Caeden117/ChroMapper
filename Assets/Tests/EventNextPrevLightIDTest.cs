@@ -24,22 +24,9 @@ namespace Tests
             return TestUtils.LoadMap(3);
         }
 
-        [OneTimeSetUp]
-        public void SetOnLightIDSettings()
-        {
-            originalChromaAdvancedSetting = Settings.Instance.EmulateChromaAdvanced;
-            originalLightIDSetting = Settings.Instance.LightIDTransitionSupport;
-
-            Settings.Instance.EmulateChromaAdvanced = true;
-            Settings.Instance.LightIDTransitionSupport = true;
-        }
-
         [OneTimeTearDown]
         public void FinalTearDown()
         {
-            Settings.Instance.EmulateChromaAdvanced = originalChromaAdvancedSetting;
-            Settings.Instance.LightIDTransitionSupport = originalLightIDSetting;
-
             TestUtils.ReturnSettings();
         }
 
