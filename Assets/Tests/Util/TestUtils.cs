@@ -11,9 +11,6 @@ namespace Tests.Util
 {
     internal class TestUtils
     {
-        // while not important for CI, it's affecting other dev looking into this if they have any of this changed
-        private static readonly Dictionary<string, bool> preTestSettings = new Dictionary<string, bool>();
-
         private static bool mapperInit;
         private static int loadVersion = 3;
 
@@ -25,10 +22,9 @@ namespace Tests.Util
             PersistentUI.Instance.EnableTransitions = false;
 
             // On pipeline this may be run fresh
-            if (!Settings.ValidateDirectory())
+            if (Settings.TestMode)
             {
                 var firstBootMenu = Object.FindObjectOfType<FirstBootMenu>();
-                Settings.Instance.BeatSaberInstallation = "/root/bs";
                 firstBootMenu.HandleGenerateMissingFolders(0);
             }
 
@@ -53,6 +49,8 @@ namespace Tests.Util
                 yield return new WaitUntil(() =>
                     SceneManager.GetActiveScene().name.StartsWith("01") && !SceneTransitionManager.IsLoading);
             }
+
+            Settings.TestRunnerSettings.Load_MapV3 = version == 3;
 
             yield return LoadMapper();
         }

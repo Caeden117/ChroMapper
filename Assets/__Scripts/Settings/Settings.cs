@@ -10,13 +10,16 @@ using UnityEngine;
 
 public class Settings
 {
+#if UNITY_EDITOR
     // Local settings object used when running tests
     public static bool TestMode = false;
-    private static Settings testRunnerSettings = new()
+    public static Settings TestRunnerSettings = new()
     {
         Reminder_SettingsFailed = false,
         Reminder_Loading360Levels = false,
+        BeatSaberInstallation = "/root/bs",
     };
+#endif
 
     private static Settings instance;
     public static Settings Instance => instance ??= Load();
@@ -231,7 +234,7 @@ public class Settings
 
     private static Settings Load()
     {
-        if (TestMode) return testRunnerSettings;
+        if (TestMode) return TestRunnerSettings;
 
         //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
         //This should be thread-wide, but I have this set throughout just in case it isnt.
