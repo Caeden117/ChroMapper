@@ -234,7 +234,9 @@ public class Settings
 
     private static Settings Load()
     {
+#if UNITY_EDITOR
         if (TestMode) return TestRunnerSettings;
+#endif
 
         //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
         //This should be thread-wide, but I have this set throughout just in case it isnt.
@@ -368,7 +370,9 @@ public class Settings
 
     public void Save()
     {
-        if (TestMode) return;
+#if UNITY_EDITOR
+        if (TestMode || this == TestRunnerSettings) return;
+#endif
 
         var mainNode = new JSONObject();
         var type = GetType();
