@@ -11,12 +11,14 @@ namespace Beatmap.Base
         }
 
         protected BaseLightColorBase(float time, int color, float brightness, int transitionType, int frequency,
-            JSONNode customData = null) : base(time, customData)
+            float strobeBrightness, int strobeFade, JSONNode customData = null) : base(time, customData)
         {
             Color = color;
             Brightness = brightness;
             TransitionType = transitionType;
             Frequency = frequency;
+            StrobeBrightness = strobeBrightness;
+            StrobeFade = strobeFade;
         }
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
@@ -24,6 +26,8 @@ namespace Beatmap.Base
         public float Brightness { get; set; }
         public int TransitionType { get; set; }
         public int Frequency { get; set; }
+        public float StrobeBrightness { get; set; }
+        public int StrobeFade { get; set; }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {

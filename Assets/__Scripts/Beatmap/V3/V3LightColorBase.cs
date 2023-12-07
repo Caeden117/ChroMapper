@@ -23,11 +23,14 @@ namespace Beatmap.V3
             Brightness = node["s"].AsFloat;
             TransitionType = node["i"].AsInt;
             Frequency = node["f"].AsInt;
+            StrobeBrightness = node["sb"].AsFloat;
+            StrobeFade = node["sf"].AsInt;
             CustomData = node["customData"];
         }
 
         public V3LightColorBase(float time, int color, float brightness, int transitionType, int frequency,
-            JSONNode customData = null) : base(time, color, brightness, transitionType, frequency, customData)
+            float strobeBrightness, int strobeFade, JSONNode customData = null) : base(time, color, brightness,
+            transitionType, frequency, strobeBrightness, strobeFade, customData)
         {
         }
 
@@ -42,6 +45,8 @@ namespace Beatmap.V3
             node["s"] = Brightness;
             node["i"] = TransitionType;
             node["f"] = Frequency;
+            node["sb"] = StrobeBrightness;
+            node["sf"] = StrobeFade;
             CustomData = SaveCustom();
             if (!CustomData.Children.Any()) return node;
             node["customData"] = CustomData;
@@ -49,6 +54,7 @@ namespace Beatmap.V3
         }
 
         public override BaseItem Clone() =>
-            new V3LightColorBase(JsonTime, Color, Brightness, TransitionType, Frequency, SaveCustom().Clone());
+            new V3LightColorBase(JsonTime, Color, Brightness, TransitionType, Frequency, StrobeBrightness, StrobeFade,
+                SaveCustom().Clone());
     }
 }
