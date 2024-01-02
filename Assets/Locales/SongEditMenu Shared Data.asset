@@ -373,6 +373,10 @@ MonoBehaviour:
     m_Key: package.zip.error
     m_Metadata:
       m_Items: []
+  - m_Id: 272807305041276928
+    m_Key: zip.path.error
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
