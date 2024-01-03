@@ -202,7 +202,7 @@ namespace Tests
                 // A ->   -> B -> T1 -> T2
                 SelectionController.Select(baseEventT1);
                 SelectionController.Select(baseEventT2, true);
-                selectionController.MoveSelection(1);
+                selectionController.MoveSelection(0.75f);
 
                 AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB, baseEventT1, baseEventT2 }, "Move");
 

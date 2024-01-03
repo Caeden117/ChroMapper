@@ -27,7 +27,15 @@ namespace Tests
         [OneTimeTearDown]
         public void FinalTearDown()
         {
+            Settings.Instance.LightIDTransitionSupport = false;
             TestUtils.ReturnSettings();
+        }
+        
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            // This is an opt-in setting
+            Settings.Instance.LightIDTransitionSupport = true;
         }
 
         [TearDown]
