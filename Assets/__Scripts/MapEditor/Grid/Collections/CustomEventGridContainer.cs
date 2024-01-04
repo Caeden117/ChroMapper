@@ -83,6 +83,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
                 }
                 break;
             case "AssignPlayerToTrack":
+                if (ev.CustomTrack == null) continue;
                 playerCamera.gameObject.SetActive(true);
                 var track = tracksManager.CreateAnimationTrack(ev.CustomTrack);
                 playerCamera.AddPlayerTrack(ev.JsonTime, track);
