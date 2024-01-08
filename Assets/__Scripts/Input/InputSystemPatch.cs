@@ -21,6 +21,7 @@ using UnityEngine.InputSystem.Controls;
  */
 public class InputSystemPatch : MonoBehaviour
 {
+#if !UNITY_STANDALONE_OSX
     private const string inputPatchID = "com.caeden117.chromapper.inputpatch";
 
     private static readonly MethodInfo returnFromFunctionInfo =
@@ -144,4 +145,5 @@ public class InputSystemPatch : MonoBehaviour
 
         return moreBindings && sameBindings;
     }
+#endif
 }
