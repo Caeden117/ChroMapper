@@ -45,11 +45,11 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         {
             SpawnSortedObjects = UnsortedObjects
                 .Select(o => o as BaseObstacle)
-                .OrderBy(o => o.SpawnJsonTime)
+                .OrderBy(o => o.SpawnSongBpmTime)
                 .ToArray();
             DespawnSortedObjects = UnsortedObjects
                 .Select(o => o as BaseObstacle)
-                .OrderBy(o => o.DespawnJsonTime)
+                .OrderBy(o => o.DespawnSongBpmTime)
                 .ToArray();
             RefreshWalls();
         }
@@ -81,16 +81,16 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     {
         if (!UIMode.AnimationMode) return;
 
-        var time = AudioTimeSyncController.CurrentJsonTime;
+        var time = AudioTimeSyncController.CurrentSongBpmTime;
         if (AudioTimeSyncController.IsPlaying)
         {
-            while (spawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[spawnIndex].SpawnJsonTime)
+            while (spawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[spawnIndex].SpawnSongBpmTime)
             {
                 CreateContainerFromPool(SpawnSortedObjects[spawnIndex]);
                 ++spawnIndex;
             }
 
-            while (despawnIndex < DespawnSortedObjects.Length && time >= DespawnSortedObjects[despawnIndex].DespawnJsonTime)
+            while (despawnIndex < DespawnSortedObjects.Length && time >= DespawnSortedObjects[despawnIndex].DespawnSongBpmTime)
             {
                 var objectData = DespawnSortedObjects[despawnIndex];
                 if (LoadedContainers.ContainsKey(objectData))
@@ -111,26 +111,26 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
 
     private void RefreshWalls()
     {
-        var time = AudioTimeSyncController.CurrentJsonTime;
+        var time = AudioTimeSyncController.CurrentSongBpmTime;
         foreach (var obj in LoadedContainers.Values.ToList())
         {
             RecycleContainer(obj.ObjectData);
         }
         GetIndexes(
             time,
-            (i) => SpawnSortedObjects[i].SpawnJsonTime,
+            (i) => SpawnSortedObjects[i].SpawnSongBpmTime,
             SpawnSortedObjects.Length,
             out spawnIndex,
             out var _
         );
         GetIndexes(
             time,
-            (i) => DespawnSortedObjects[i].DespawnJsonTime,
+            (i) => DespawnSortedObjects[i].DespawnSongBpmTime,
             DespawnSortedObjects.Length,
             out despawnIndex,
             out var _
         );
-        var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnJsonTime <= time && time < o.DespawnJsonTime));
+        var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnSongBpmTime <= time && time < o.DespawnSongBpmTime));
         foreach (var obj in toSpawn)
         {
             CreateContainerFromPool(obj);
