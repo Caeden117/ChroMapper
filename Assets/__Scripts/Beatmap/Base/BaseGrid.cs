@@ -43,7 +43,7 @@ namespace Beatmap.Base
         public int PosX { get; set; }
         public virtual int PosY { get; set; }
 
-        // Half Jump Duration
+        // Half Jump Duration (SongBpmTime)
         public float Hjd { get; private set; }
 
         // Half Jump Distance
@@ -51,8 +51,8 @@ namespace Beatmap.Base
 
         public float EditorScale { get; private set; }
 
-        public virtual float SpawnJsonTime { get { return JsonTime - Hjd; } }
-        public virtual float DespawnJsonTime { get { return JsonTime + Hjd; } }
+        public virtual float SpawnSongBpmTime { get { return SongBpmTime - Hjd; } }
+        public virtual float DespawnSongBpmTime { get { return SongBpmTime + Hjd; } }
 
         public virtual JSONNode CustomAnimation { get; set; }
 
@@ -102,12 +102,10 @@ namespace Beatmap.Base
                 ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
             var offset = CustomNoteJumpStartBeatOffset?.AsFloat
                 ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
-            var bpm = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(Beatmap.Enums.ObjectType.BpmChange)
-                ?.FindLastBpm(SongBpmTime)
-                ?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            var bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             Hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
-            var bps = 60f / bpm;
-            EditorScale = 5 / 3f * njs * bps;
+            // (5 / 3) * njs * (60 / bpm) = 100
+            EditorScale = 100f * njs / bpm;
             Jd = Hjd * EditorScale;
             base.RecomputeSongBpmTime();
         }

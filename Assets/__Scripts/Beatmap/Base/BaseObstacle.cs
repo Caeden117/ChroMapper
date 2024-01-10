@@ -107,6 +107,7 @@ namespace Beatmap.Base
         }
 
         public float Duration { get; set; }
+        public float DurationSongBpm { get; set; }
         public int Width { get; set; }
 
         public virtual int Height
@@ -115,7 +116,7 @@ namespace Beatmap.Base
             set => InternalHeight = value;
         }
 
-        public override float DespawnJsonTime { get { return JsonTime + Duration + Hjd; } }
+        public override float DespawnSongBpmTime { get { return SongBpmTime + DurationSongBpm + Hjd; } }
 
         public virtual JSONNode CustomSize { get; set; }
 
@@ -203,6 +204,13 @@ namespace Beatmap.Base
             }
 
             return new ObstacleBounds(width, height, position, startHeight);
+        }
+
+        public override void RecomputeSongBpmTime()
+        {
+            base.RecomputeSongBpmTime();
+            DurationSongBpm = (BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange)
+                ?.JsonTimeToSongBpmTime(JsonTime + Duration) ?? (JsonTime + Duration)) - SongBpmTime;
         }
 
         protected void InferType() =>
