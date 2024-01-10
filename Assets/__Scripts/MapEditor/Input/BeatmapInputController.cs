@@ -56,6 +56,9 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true))
             return; //Returns if the mouse is on top of UI
+
+        if (!Application.isFocused) return;
+        
         RaycastFirstObject(out var obj);
         if (obj != null && !obj.Dragging && context.performed) StartCoroutine(CompleteDelete(obj));
     }
