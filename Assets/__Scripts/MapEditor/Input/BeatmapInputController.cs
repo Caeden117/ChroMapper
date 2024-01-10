@@ -16,13 +16,10 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     [FormerlySerializedAs("customStandaloneInputModule")][SerializeField] protected CustomStandaloneInputModule CustomStandaloneInputModule;
     protected bool IsSelecting;
 
-    private Camera mainCamera;
+    [SerializeField] private CameraManager cameraManager;
     private bool massSelect;
     protected Vector2 MousePosition;
     private float timeWhenFirstSelecting;
-
-    // Start is called before the first frame update
-    private void Start() => mainCamera = Camera.main;
 
     // Update is called once per frame
     private void Update()
@@ -36,7 +33,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
         }
 
         if (!IsSelecting || Time.time - timeWhenFirstSelecting < 0.5f) return;
-        var ray = mainCamera.ScreenPointToRay(MousePosition);
+        var ray = cameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
         foreach (var hit in Intersections.RaycastAll(ray, 9))
         {
             if (GetComponentFromTransform(hit.GameObject, out var obj))
@@ -119,7 +116,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     protected void RaycastFirstObject(out T firstObject)
     {
-        var ray = mainCamera.ScreenPointToRay(MousePosition);
+        var ray = cameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
         if (GlobalIntersectionCache.firstHit == null)
         {
             if (Intersections.Raycast(ray, 9, out var hit))

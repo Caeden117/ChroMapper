@@ -19,9 +19,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
     [SerializeField] private GameObject modesGameObject;
     [SerializeField] private RectTransform selected;
-    [FormerlySerializedAs("_cameraController")] [SerializeField] private CameraController cameraController;
-    [SerializeField] private Camera editorCamera;
-    [SerializeField] private Camera playerCamera;
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
     [FormerlySerializedAs("_rotationCallbackController")] [SerializeField] private RotationCallbackController rotationCallbackController;
@@ -72,14 +70,9 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             var currentOption = selected.parent.GetSiblingIndex();
             var nextOption = currentOption + 1;
 
-            var disablePlayingMode = false; //rotationCallbackController.IsActive;
-
-            if (nextOption == (int)UIModeType.Playing && disablePlayingMode) nextOption++;
-
             if (nextOption < 0)
             {
                 nextOption = modes.Count - 1;
-                if (disablePlayingMode) nextOption--;
             }
 
             if (nextOption >= modes.Count) nextOption = 0;
@@ -87,13 +80,17 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             if (currentOption == (int)UIModeType.Playing && nextOption != currentOption)
             {
                 // restore cam position/rotation
-                cameraController.transform.SetPositionAndRotation(savedCamPosition, savedCamRotation);
+                cameraManager.SelectCamera(CameraType.Editing);
+                cameraManager.SelectedCameraController.transform.SetPositionAndRotation(savedCamPosition,
+                    savedCamRotation);
             }
             else if (nextOption == (int)UIModeType.Playing)
             {
                 // save cam position/rotation
-                savedCamPosition = cameraController.transform.position;
-                savedCamRotation = cameraController.transform.rotation;
+                var cameraTransform = cameraManager.SelectedCameraController.transform;
+                savedCamPosition = cameraTransform.position;
+                savedCamRotation = cameraTransform.rotation;
+                cameraManager.SelectCamera(CameraType.Playing);
             }
 
             SetUIMode(nextOption);
@@ -113,7 +110,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             }
         }
 
-        if (SelectedMode == UIModeType.Playing) cameraController.SetLockState(playing);
+        if (SelectedMode == UIModeType.Playing) cameraManager.SelectedCameraController.SetLockState(playing);
     }
 
     public void SetUIMode(UIModeType mode, bool showUIChange = true) => SetUIMode((int)mode, showUIChange);
@@ -146,8 +143,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 HideStuff(false, false, false, false, false);
                 break;
         }
-        playerCamera.enabled = (SelectedMode == UIModeType.Playing);
-        editorCamera.enabled = (SelectedMode != UIModeType.Playing);
 
         foreach (var boy in actions) boy?.Invoke(SelectedMode);
     }
@@ -158,10 +153,9 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         foreach (var r in renderers) r.enabled = showExtras;
         foreach (var c in canvases) c.enabled = showCanvases;
 
-        var fixTheCam =
-            cameraController
-                .LockedOntoNoteGrid; //If this is not used, then there is a chance the moved items may break.
-        if (fixTheCam) cameraController.LockedOntoNoteGrid = false;
+        // If this is not used, then there is a chance the moved items may break.
+        var fixTheCam = cameraManager.SelectedCameraController.LockedOntoNoteGrid; 
+        if (fixTheCam) cameraManager.SelectedCameraController.LockedOntoNoteGrid = false;
 
         if (showPlacement)
         {
@@ -201,7 +195,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             }
         }
 
-        if (fixTheCam) cameraController.LockedOntoNoteGrid = true;
+        if (fixTheCam) cameraManager.SelectedCameraController.LockedOntoNoteGrid = true;
         //foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
         atsc.RefreshGridSnapping();
     }
