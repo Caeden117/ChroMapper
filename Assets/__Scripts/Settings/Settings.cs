@@ -129,6 +129,7 @@ public class Settings
     public int TrackLength = 8;
     public float OneBeatWidth = 0.1f;
     public bool ColoredNoteArrows = true;
+    public float ObstacleOpacity = 0.25f;
 
     public bool DisplayGridBookmarks = true;
     public bool GridBookmarksHasLine = true;
