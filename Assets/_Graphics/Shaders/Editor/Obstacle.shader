@@ -4,7 +4,6 @@
     {
         _ColorTint("Base Color", Color) = (0.5, 0, 0, 0)
         _FadeSize("Fade Size", Float) = 1
-        _MainAlpha("Main Alpha", Float) = 1
         _OpaqueAlpha("OpaqueAlpha", Float) = 1
         _Rotation("Rotation", Float) = 0
         _WorldScale("World Scale", Vector) = (1, 3.5, 1, 1)
@@ -31,12 +30,12 @@
             #include "UnityCG.cginc"
 
             // These are global properties and should not be instanced
+            uniform float _MainAlpha = 0.25;
             uniform float _OutsideAlpha = 1;
             uniform float _ObstacleFadeRadius = 8;
 
             // Define instanced properties
             UNITY_INSTANCING_BUFFER_START(Props)
-                UNITY_DEFINE_INSTANCED_PROP(float, _MainAlpha)
                 UNITY_DEFINE_INSTANCED_PROP(float, _OpaqueAlpha)
                 UNITY_DEFINE_INSTANCED_PROP(float, _Rotation)
                 UNITY_DEFINE_INSTANCED_PROP(float, _FadeSize)
@@ -127,7 +126,7 @@
                 }
                 else
                 {
-                    mainAlpha = UNITY_ACCESS_INSTANCED_PROP(Props, _MainAlpha);
+                    mainAlpha = _MainAlpha;
                 }
 
                 mainAlpha *= UNITY_ACCESS_INSTANCED_PROP(Props, _OpaqueAlpha);
