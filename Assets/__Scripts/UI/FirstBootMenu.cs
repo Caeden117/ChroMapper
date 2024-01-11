@@ -21,6 +21,8 @@ public class FirstBootMenu : MonoBehaviour
 
     [SerializeField] private TMP_Dropdown graphicsDropdown;
 
+    [SerializeField] private TMP_Dropdown lightingDropdown;
+
     [SerializeField] private GameObject helpPanel;
 
     [SerializeField] private InputBoxFileValidator validation;
@@ -112,6 +114,35 @@ public class FirstBootMenu : MonoBehaviour
                 Settings.Instance.Offset_Spawning = 8;
                 Settings.Instance.Offset_Despawning = 2;
                 Settings.Instance.ChunkDistance = 10;
+                break;
+        }
+
+        switch (lightingDropdown.value)
+        {
+            // default ChroMapper lighting
+            case 0:
+                Settings.Instance.NoteColorMultiplier = 1.0f;
+                Settings.Instance.ArrowColorMultiplier = 1.72f;
+                Settings.Instance.ArrowColorWhiteBlend = 0.75f;
+                Settings.Instance.ObstacleOpacity = 0.25f;
+                Settings.Instance.AlternateLighting = false;
+                break;
+            // MMA2-based lighting
+            case 1:
+                Settings.Instance.NoteColorMultiplier = 0.3f;
+                Settings.Instance.ArrowColorMultiplier = 3f;
+                Settings.Instance.ArrowColorWhiteBlend = 0.25f;
+                Settings.Instance.ObstacleOpacity = 0.1f;
+                Settings.Instance.AlternateLighting = true;
+                break;
+            // Official editor based lighting
+            // (i just eyeballed this preset, please dont get mad)
+            case 2:
+                Settings.Instance.NoteColorMultiplier = 1.0f;
+                Settings.Instance.ArrowColorMultiplier = 3f;
+                Settings.Instance.ArrowColorWhiteBlend = 1f;
+                Settings.Instance.ObstacleOpacity = 0.25f;
+                Settings.Instance.AlternateLighting = true;
                 break;
         }
     }

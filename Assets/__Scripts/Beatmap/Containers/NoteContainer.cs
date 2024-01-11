@@ -9,6 +9,8 @@ namespace Beatmap.Containers
 {
     public class NoteContainer : ObjectContainer
     {
+        private static readonly int colorMultiplier = Shader.PropertyToID("_ColorMult");
+
         private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 
         [SerializeField] private GameObject simpleBlock;
@@ -164,6 +166,13 @@ namespace Beatmap.Containers
         public void SetColor(Color? c)
         {
             MaterialPropertyBlock.SetColor(color, c ?? unassignedColor);
+
+            var arrowColor = Color.Lerp(c ?? unassignedColor, Color.white, Settings.Instance.ArrowColorWhiteBlend);
+            ArrowMaterialPropertyBlock.SetColor(color, arrowColor);
+
+            MaterialPropertyBlock.SetFloat(colorMultiplier, Settings.Instance.NoteColorMultiplier);
+            ArrowMaterialPropertyBlock.SetFloat(colorMultiplier, Settings.Instance.ArrowColorMultiplier);
+
             UpdateMaterials();
         }
 

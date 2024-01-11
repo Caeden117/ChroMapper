@@ -28,6 +28,9 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         AudioTimeSyncController.TimeChanged += OnTimeChanged;
         UIMode.UIModeSwitched += OnUIModeSwitch;
+
+        Settings.NotifyBySettingName(nameof(Settings.ObstacleOpacity), ObstacleOpacityChanged);
+        ObstacleOpacityChanged(Settings.Instance.ObstacleOpacity);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -35,7 +38,11 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         AudioTimeSyncController.TimeChanged -= OnTimeChanged;
         UIMode.UIModeSwitched -= OnUIModeSwitch;
+
+        Settings.ClearSettingNotifications(nameof(Settings.ObstacleOpacity));
     }
+
+    private void ObstacleOpacityChanged(object obj) => Shader.SetGlobalFloat("_MainAlpha", (float)obj);
 
     private void OnPlayToggle(bool playing) => Shader.SetGlobalFloat("_OutsideAlpha", playing ? 0 : 0.25f);
 

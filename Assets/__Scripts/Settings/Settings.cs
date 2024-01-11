@@ -129,6 +129,12 @@ public class Settings
     public int TrackLength = 8;
     public float OneBeatWidth = 0.1f;
 
+    public float NoteColorMultiplier = 1f;
+    public float ArrowColorMultiplier = 1.72f;
+    public float ArrowColorWhiteBlend = 0.75f;
+    public float ObstacleOpacity = 0.25f;
+    public bool AlternateLighting = false;
+
     public bool DisplayGridBookmarks = true;
     public bool GridBookmarksHasLine = true;
     public bool BookmarkTooltipTimeInfo = false;
