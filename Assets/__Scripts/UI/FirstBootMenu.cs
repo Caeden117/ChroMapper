@@ -135,6 +135,15 @@ public class FirstBootMenu : MonoBehaviour
                 Settings.Instance.ObstacleOpacity = 0.1f;
                 Settings.Instance.AlternateLighting = true;
                 break;
+            // Official editor based lighting
+            // (i just eyeballed this preset, please dont get mad)
+            case 2:
+                Settings.Instance.NoteColorMultiplier = 1.0f;
+                Settings.Instance.ArrowColorMultiplier = 3f;
+                Settings.Instance.ArrowColorWhiteBlend = 1f;
+                Settings.Instance.ObstacleOpacity = 0.25f;
+                Settings.Instance.AlternateLighting = true;
+                break;
         }
     }
 
