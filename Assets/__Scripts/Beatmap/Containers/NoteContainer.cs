@@ -164,6 +164,12 @@ namespace Beatmap.Containers
         public void SetColor(Color? c)
         {
             MaterialPropertyBlock.SetColor(color, c ?? unassignedColor);
+
+            if (Settings.Instance.ColoredNoteArrows)
+            {
+                ArrowMaterialPropertyBlock.SetColor(color, Color.Lerp(Color.white, c ?? unassignedColor, 0.35f));
+            }
+
             UpdateMaterials();
         }
 
