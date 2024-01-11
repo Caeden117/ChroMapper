@@ -130,6 +130,7 @@ public class Settings
     public float OneBeatWidth = 0.1f;
     public bool ColoredNoteArrows = true;
     public float ObstacleOpacity = 0.25f;
+    public bool AlternateLighting = false;
 
     public bool DisplayGridBookmarks = true;
     public bool GridBookmarksHasLine = true;
