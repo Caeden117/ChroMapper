@@ -42,10 +42,11 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     protected TBo draggedObjectData;
     internal TBoc instantiatedContainer;
 
+    [SerializeField] protected CameraManager CameraManager;
+    
     protected bool IsDraggingObject;
     protected bool IsDraggingObjectAtTime;
     protected bool IsOnPlacement;
-    protected Camera MainCamera;
     protected Vector2 MousePosition;
     private TBo originalDraggedObjectData;
     private TBo originalQueued;
@@ -96,7 +97,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         queuedData = GenerateOriginalData();
         IsActive = startingActiveState;
-        MainCamera = Camera.main;
     }
 
     protected virtual void Update()
@@ -117,7 +117,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
         if (applicationFocusChanged) applicationFocusChanged = false;
 
-        var ray = MainCamera.ScreenPointToRay(MousePosition);
+        var ray = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
         var gridsHit = Intersections.RaycastAll(ray, 11);
         IsOnPlacement = false;
 
@@ -228,7 +228,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         if (context.performed && CanClickAndDrag)
         {
-            var dragRay = MainCamera.ScreenPointToRay(MousePosition);
+            var dragRay = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
 
             if (instantiatedContainer != null)
             {
@@ -256,7 +256,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         if (context.performed && CanClickAndDrag)
         {
-            var dragRay = MainCamera.ScreenPointToRay(MousePosition);
+            var dragRay = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
             if (Intersections.Raycast(dragRay, 9, out var dragHit))
             {
                 var con = dragHit.GameObject.GetComponentInParent<ObjectContainer>();
@@ -498,7 +498,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return null;
 
-        var ray = MainCamera.ScreenPointToRay(MousePosition);
+        var ray = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
         return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<TBoc>();
     }
 
