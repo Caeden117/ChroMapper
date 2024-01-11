@@ -7,7 +7,6 @@ namespace Beatmap.Containers
     {
         private static readonly int colorTint = Shader.PropertyToID("_ColorTint");
         private static readonly int shaderScale = Shader.PropertyToID("_WorldScale");
-        private static readonly int mainAlpha = Shader.PropertyToID("_MainAlpha");
 
         [SerializeField] private TracksManager manager;
 
@@ -38,7 +37,6 @@ namespace Beatmap.Containers
         public void SetColor(Color c)
         {
             MaterialPropertyBlock.SetColor(colorTint, c);
-            MaterialPropertyBlock.SetFloat(mainAlpha, Settings.Instance.ObstacleOpacity);
             UpdateMaterials();
         }
 

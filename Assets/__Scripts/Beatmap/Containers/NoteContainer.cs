@@ -9,7 +9,7 @@ namespace Beatmap.Containers
 {
     public class NoteContainer : ObjectContainer
     {
-        private static readonly int colorMultiplier = Shader.PropertyToID("_NoteColorMult");
+        private static readonly int colorMultiplier = Shader.PropertyToID("_ColorMult");
 
         private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 

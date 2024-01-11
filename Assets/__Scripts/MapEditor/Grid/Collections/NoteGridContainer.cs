@@ -31,6 +31,10 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         DespawnCallbackController.NotePassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         UIMode.UIModeSwitched += OnUIModeSwitch;
+
+        Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -40,6 +44,10 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         UIMode.UIModeSwitched -= OnUIModeSwitch;
+
+        Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
     }
 
     private void OnPlayToggle(bool isPlaying)
@@ -55,6 +63,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
             RefreshPool(true);
         }
     }
+
+    private void AppearanceChanged(object _) => RefreshPool(true);
 
     // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
     // (I'm done with note sorting; if you don't like it, go fix it yourself.)

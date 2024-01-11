@@ -1187,6 +1187,50 @@ MonoBehaviour:
     m_Key: graphics.previewoffsetz.info
     m_Metadata:
       m_Items: []
+  - m_Id: 322078335378526208
+    m_Key: objectappearance.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078433017729024
+    m_Key: appearance.notecolormul
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078544036761600
+    m_Key: appearance.notecolormul.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078560457461760
+    m_Key: appearance.arrowcolormul
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078585577148416
+    m_Key: appearance.arrowcolormul.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078609908305920
+    m_Key: appearance.arrowcolorblend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078641902456832
+    m_Key: appearance.arrowcolorblend.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078668309794816
+    m_Key: appearance.obstacleopacity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078693966352384
+    m_Key: appearance.obstacleopacity.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078715722207232
+    m_Key: appearance.altlighting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078739269029888
+    m_Key: appearance.altlighting.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
