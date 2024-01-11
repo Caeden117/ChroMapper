@@ -128,7 +128,10 @@ public class Settings
     public float GridTransparency = 0f;
     public int TrackLength = 8;
     public float OneBeatWidth = 0.1f;
-    public bool ColoredNoteArrows = true;
+
+    public float NoteColorMultiplier = 1f;
+    public float ArrowColorMultiplier = 1.7181f;
+    public float ArrowColorWhiteBlend = 1f;
     public float ObstacleOpacity = 0.25f;
     public bool AlternateLighting = false;
 
