@@ -71,5 +71,13 @@ MonoBehaviour:
       asetuksia my\xF6hemmin"
     m_Metadata:
       m_Items: []
+  - m_Id: 300762992517451776
+    m_Localized: Lighting Preset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300762994845290496
+    m_Localized: Tweak ChroMapper's lighting to match other map editors.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

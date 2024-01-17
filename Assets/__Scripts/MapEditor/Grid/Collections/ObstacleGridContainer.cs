@@ -28,6 +28,9 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         AudioTimeSyncController.TimeChanged += OnTimeChanged;
         UIMode.UIModeSwitched += OnUIModeSwitch;
+
+        Settings.NotifyBySettingName(nameof(Settings.ObstacleOpacity), ObstacleOpacityChanged);
+        ObstacleOpacityChanged(Settings.Instance.ObstacleOpacity);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -35,7 +38,11 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         AudioTimeSyncController.TimeChanged -= OnTimeChanged;
         UIMode.UIModeSwitched -= OnUIModeSwitch;
+
+        Settings.ClearSettingNotifications(nameof(Settings.ObstacleOpacity));
     }
+
+    private void ObstacleOpacityChanged(object obj) => Shader.SetGlobalFloat("_MainAlpha", (float)obj);
 
     private void OnPlayToggle(bool playing) => Shader.SetGlobalFloat("_OutsideAlpha", playing ? 0 : 0.25f);
 
@@ -60,7 +67,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
     private void OnUIModeSwitch(UIModeType newMode)
     {
         // When changing in/out of preview mode
-        if (newMode is UIModeType.Normal or UIModeType.Preview)
+        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
         {
             RefreshPool(true);
         }
@@ -162,7 +169,6 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
     }
 
     // Where is a good global place to dump this? It's much faster than List.BinarySearch
-    // TODO(Caeden): Determine purpose and abstract this into an extension method
     private void GetIndexes(float time, Func<int, float> getter, int count, out int prev, out int next)
     {
         prev = 0;
@@ -170,8 +176,8 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
 
         while (prev < next - 1)
         {
-            var m = (prev + next) / 2;
-            var itemTime = getter(m);
+            int m = (prev + next) / 2;
+            float itemTime = getter(m);
 
             if (itemTime < time)
             {

@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa7519284ef0d804c962411ddc902575, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   Dragging: 0
   Colliders: []
   SelectionRenderers:
@@ -72,13 +72,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dfa63442a68762d0ae8f09657dc70e8, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   AnimationThis: {fileID: 3164418257874701166}
   container: {fileID: 4686637857457952692}
   AnimationTrack: {fileID: 0}
   Atsc: {fileID: 0}
-  tracksManager: {fileID: 0}
+  TracksManager: {fileID: 0}
   LocalTarget: {fileID: 1696387735763417625}
   WorldTarget: {fileID: 0}
   ShouldRecycle: 0
@@ -306,7 +306,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 52469e8b45830464d9c8ea73404f756c, type: 2}
+  - {fileID: 2100000, guid: 04a40c8dead8c7f4dbbe1447395ffb71, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -357,7 +357,7 @@ Transform:
   m_Children:
   - {fileID: 4066870542700460570}
   m_Father: {fileID: 4189720529923420}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4024504745793970811
 GameObject:
@@ -455,13 +455,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   BoundsRenderer: {fileID: 7215384984663567646}
   Center: {x: 0, y: 0, z: 0}
   Size: {x: 0.5, y: 0.5, z: 0.5}
-  MeshTriangles:
+  MeshTriangles: 
   MeshVertices: []
   CollisionLayer: 0
   CollisionGroups: 00000000
@@ -475,8 +475,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db5574f8ede297c47872bdf83fca05cc, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   NoteRenderer: {fileID: 7215384984663567646}
   SelectionRenderer: {fileID: 2154384043825347722}
 --- !u!1 &5115815254482434299
@@ -498,7 +498,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6236521647835672510
 Transform:
   m_ObjectHideFlags: 0
@@ -512,7 +512,7 @@ Transform:
   m_Children:
   - {fileID: 3582569012495434657}
   m_Father: {fileID: 4189720529923420}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5994393628273709891
 MeshFilter:
@@ -574,13 +574,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   BoundsRenderer: {fileID: 8915762485564771560}
   Center: {x: 0, y: 0, z: 0}
   Size: {x: 0.525, y: 0.525, z: 0.525}
-  MeshTriangles:
+  MeshTriangles: 
   MeshVertices: []
   CollisionLayer: 0
   CollisionGroups: 00000000
@@ -594,8 +594,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c5d47ea7dfd1d34da03cb45cbd563cf, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   Dragging: 0
   Colliders:
   - {fileID: 9199052276877070810}
@@ -604,6 +604,7 @@ MonoBehaviour:
   - {fileID: 6764716090972206748}
   - {fileID: 270126397379667099}
   BoxCollider: {fileID: 0}
+  Animator: {fileID: 0}
   IndicatorType: 1
   ParentChain: {fileID: 4686637857457952692}
 --- !u!1 &5799560996493218943
@@ -639,7 +640,7 @@ Transform:
   m_Children:
   - {fileID: 8236126438777302229}
   m_Father: {fileID: 4189720529923420}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1645586318299652352
 MeshFilter:
@@ -701,13 +702,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   Mesh: {fileID: 4300000, guid: 557fda82dc624ef5a3cad5ee3f37625f, type: 2}
   BoundsRenderer: {fileID: 6393667918856138788}
   Center: {x: 0, y: 0, z: 0}
   Size: {x: 1, y: 1, z: 1}
-  MeshTriangles:
+  MeshTriangles: 
   MeshVertices: []
   CollisionLayer: 0
   CollisionGroups: 00000000
@@ -721,8 +722,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c5d47ea7dfd1d34da03cb45cbd563cf, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   Dragging: 0
   Colliders:
   - {fileID: 9199052276877070810}
@@ -733,6 +734,7 @@ MonoBehaviour:
   - {fileID: 270126397379667099}
   - {fileID: 6200896567377893622}
   BoxCollider: {fileID: 0}
+  Animator: {fileID: 0}
   IndicatorType: 0
   ParentChain: {fileID: 4686637857457952692}
 --- !u!1 &8203737603240197814
@@ -850,7 +852,7 @@ Transform:
   m_Children:
   - {fileID: 8665601194787349632}
   m_Father: {fileID: 4189720529923420}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2248309064455263651
 MeshFilter:
@@ -912,13 +914,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   BoundsRenderer: {fileID: 975723956525706240}
   Center: {x: 0, y: 0, z: 0}
   Size: {x: 1, y: 1, z: 1}
-  MeshTriangles:
+  MeshTriangles: 
   MeshVertices: []
   CollisionLayer: 0
   CollisionGroups: 00000000
@@ -932,8 +934,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c5d47ea7dfd1d34da03cb45cbd563cf, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   Dragging: 0
   Colliders:
   - {fileID: 9199052276877070810}
@@ -942,6 +944,7 @@ MonoBehaviour:
   - {fileID: 6764716090972206748}
   - {fileID: 6200896567377893622}
   BoxCollider: {fileID: 0}
+  Animator: {fileID: 0}
   IndicatorType: 1
   ParentChain: {fileID: 4686637857457952692}
 --- !u!1 &8456018241599587326

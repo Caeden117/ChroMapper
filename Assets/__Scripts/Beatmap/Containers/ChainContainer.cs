@@ -10,6 +10,8 @@ namespace Beatmap.Containers
 {
     public class ChainContainer : ObjectContainer
     {
+        private static readonly int colorMultiplier = Shader.PropertyToID("_ColorMult");
+        
         [SerializeField] private GameObject tailNode;
         public NoteContainer AttachedHead;
         private readonly List<GameObject> nodes = new List<GameObject>();
@@ -20,6 +22,7 @@ namespace Beatmap.Containers
         private Vector3 headDirection;
         private bool headPointsToTail;
         private Vector3 interPoint;
+        private MaterialPropertyBlock arrowMaterialPropertyBlock;
 
         public const float
             posOffsetFactor = 0.17333f; // Hardcoded because haven't found exact relationship between ChainScale yet
@@ -40,9 +43,14 @@ namespace Beatmap.Containers
         public override void Setup()
         {
             base.Setup();
+            
             MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
             MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
+
+            arrowMaterialPropertyBlock ??= new MaterialPropertyBlock();
+            
             foreach (var gameObj in indicators) gameObj.GetComponent<ChainIndicatorContainer>().Setup();
+            
             UpdateMaterials();
         }
 
@@ -182,6 +190,13 @@ namespace Beatmap.Containers
         public void SetColor(Color c)
         {
             MaterialPropertyBlock.SetColor(color, c);
+            
+            var arrowColor = Color.Lerp(c, Color.white, Settings.Instance.ArrowColorWhiteBlend);
+            arrowMaterialPropertyBlock.SetColor(color, arrowColor);
+
+            MaterialPropertyBlock.SetFloat(colorMultiplier, Settings.Instance.NoteColorMultiplier);
+            arrowMaterialPropertyBlock.SetFloat(colorMultiplier, Settings.Instance.ArrowColorMultiplier);
+            
             UpdateMaterials();
         }
 
@@ -190,13 +205,24 @@ namespace Beatmap.Containers
             foreach (var c in Colliders)
             {
                 var r = c.GetComponent<MeshRenderer>();
-                MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.SongBpmTime + c.transform.localPosition.z / EditorScaleController.EditorScale);
+                
+                // i dont like this code smell but whatever
+                var dot = c.transform.GetChild(0).GetComponent<MeshRenderer>();
+
+                var objectTime = ChainData.SongBpmTime + c.transform.localPosition.z / EditorScaleController.EditorScale;
+                MaterialPropertyBlock.SetFloat("_ObjectTime", objectTime);
+                arrowMaterialPropertyBlock.SetFloat("_ObjectTime", objectTime);
+                
                 // This alpha set is a workaround as callbackController can only despawn the entire chain
-                if (UIMode.SelectedMode == UIModeType.Preview || UIMode.SelectedMode == UIModeType.Playing)
-                    MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 0f);
-                else
-                    MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
+                var translucentAlpha = UIMode.SelectedMode == UIModeType.Preview || UIMode.SelectedMode == UIModeType.Playing
+                        ? 0
+                        : Settings.Instance.PastNoteModelAlpha;
+                
+                MaterialPropertyBlock.SetFloat("_TranslucentAlpha", translucentAlpha);
+                arrowMaterialPropertyBlock.SetFloat("_TranslucentAlpha", translucentAlpha);
+                
                 r.SetPropertyBlock(MaterialPropertyBlock);
+                dot.SetPropertyBlock(arrowMaterialPropertyBlock);
             }
 
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);

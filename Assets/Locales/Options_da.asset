@@ -1260,6 +1260,52 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - id: 0
+  - m_Id: 322078335378526208
+    m_Localized: Objects and Lighting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078433017729024
+    m_Localized: Note Color Multiplier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078544036761600
+    m_Localized: Brightens or darkens the color of the note block.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078560457461760
+    m_Localized: Arrow Color Multiplier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078585577148416
+    m_Localized: Brightens or darkens the color of the note arrow.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078609908305920
+    m_Localized: Arrow White Blend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078641902456832
+    m_Localized: Blends the color of the arrow, from the assigned note color to a
+      pure white.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078668309794816
+    m_Localized: Obstacle Opacity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078693966352384
+    m_Localized: Changes the opacity of the obstacle's inner body.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078715722207232
+    m_Localized: Alternate Lighting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078739269029888
+    m_Localized: Tweaks ChroMapper's lighting to give an appearance more similar
+      to MMA2.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

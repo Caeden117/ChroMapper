@@ -130,7 +130,7 @@ namespace Beatmap.Animations
 
             if (container is ObstacleContainer obs)
             {
-                duration = obs.ObstacleData.Duration;
+                duration = obs.ObstacleData.DurationSongBpm;
                 (var wallSize, var wallPosition) = obs.ReadSizePosition();
                 OffsetPosition.Preload(wallPosition);
                 Scale.Preload(new Vector3(WallClamp(wallSize.x), WallClamp(wallSize.y), WallClamp(wallSize.z)));
@@ -147,9 +147,9 @@ namespace Beatmap.Animations
             if (obj.CustomWorldRotation is JSONNumber yrot)
                 WorldRotation.Preload(Quaternion.Euler(0, yrot, 0));
 
-            time_begin = obj.SpawnJsonTime;
-            // Can't use DespawnJsonTime because obstacles jump out early
-            time_end = obj.JsonTime + duration + obj.Hjd;
+            time_begin = obj.SpawnSongBpmTime;
+            // Can't use DespawnSongBpmTime because obstacles jump out early
+            time_end = obj.SongBpmTime + duration + obj.Hjd;
 
             RequireAnimationTrack();
             WorldTarget = AnimationTrack.transform;
@@ -177,6 +177,7 @@ namespace Beatmap.Animations
                     {
                         continue;
                     }
+                    var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
                     foreach (var ce in events.Where(ev => ev.Type == "AssignPathAnimation"))
                     {
                         foreach (var jprop in ce.Data)
@@ -188,11 +189,14 @@ namespace Beatmap.Animations
                                 Overwrite = false,
                                 Points = jprop.Value,
                                 Easing = ce.DataEasing,
-                                Time = ce.JsonTime,
+                                Time = ce.SongBpmTime,
                                 Transition = ce.DataDuration ?? 0,
                                 TimeBegin = time_begin,
                                 TimeEnd = time_end,
                             };
+                            if (p.Transition != 0) {
+                                p.Transition = bpmChangeGridContainer.JsonTimeToSongBpmTime(ce.JsonTime + p.Transition) - ce.SongBpmTime;
+                            }
                             AddPointDef(p, jprop.Key);
                         }
                     }
@@ -298,7 +302,7 @@ namespace Beatmap.Animations
 
         public void Update()
         {
-            var time = _time ?? Atsc?.CurrentJsonTime ?? 0;
+            var time = _time ?? Atsc?.CurrentSongBpmTime ?? 0;
 
             if (container?.ObjectData is BaseGrid obj)
             {
@@ -309,13 +313,13 @@ namespace Beatmap.Animations
                     nc.ArrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
                 }
                 AnimatedLife =
-                       (_time != null && _time < obj.JsonTime)
+                       (_time != null && _time < obj.SongBpmTime)
                     || (WorldPosition.Count > 0)
                     || (obj.CustomFake && time < time_end);
                 if (ShouldRecycle)
                 {
                     var despawn_time = (WorldPosition.Count == 0 && !obj.CustomFake)
-                        ? obj.JsonTime
+                        ? obj.SongBpmTime
                         : time_end;
                     if (time > despawn_time)
                     {
@@ -360,7 +364,7 @@ namespace Beatmap.Animations
                     WorldTarget.localRotation = WorldRotation.Get();
                 }
             }
-            var time = _time ?? Atsc?.CurrentJsonTime ?? 0;
+            var time = _time ?? Atsc?.CurrentSongBpmTime ?? 0;
             if (WorldPosition.Count > 0)
             {
                 if (time_begin < time && time < time_end)

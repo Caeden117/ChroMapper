@@ -18,6 +18,7 @@ using UnityEngine.Rendering.Universal.Internal;
  */
 public class BetterBloomController : MonoBehaviour
 {
+#if !UNITY_STANDALONE_OSX
     private const string betterBloomID = "com.caeden117.chromapper.betterbloom";
 
     private Harmony betterBloomHarmony;
@@ -76,4 +77,5 @@ public class BetterBloomController : MonoBehaviour
 
         return resList;
     }
+#endif
 }

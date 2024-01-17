@@ -31,6 +31,10 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         DespawnCallbackController.NotePassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         UIMode.UIModeSwitched += OnUIModeSwitch;
+
+        Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -40,6 +44,10 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         UIMode.UIModeSwitched -= OnUIModeSwitch;
+
+        Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
     }
 
     private void OnPlayToggle(bool isPlaying)
@@ -50,11 +58,13 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
     private void OnUIModeSwitch(UIModeType newMode)
     {
         // If preview mode changed
-        if (newMode is UIModeType.Normal or UIModeType.Preview)
+        if (newMode == UIModeType.Normal || newMode == UIModeType.Preview)
         {
             RefreshPool(true);
         }
     }
+    
+    private void AppearanceChanged(object _) => RefreshPool(true);
 
     //We don't need to check index as that's already done further up the chain
     private void SpawnCallback(bool initial, int index, BaseObject objectData)

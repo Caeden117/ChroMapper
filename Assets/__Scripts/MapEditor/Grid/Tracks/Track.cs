@@ -22,7 +22,7 @@ public class Track : MonoBehaviour
     // oh, it's actually correct
     const float JUMP_FAR = 500f;
 
-    // this number also pulled from my ass and used inconsistently as json time and bpm time, oh well!
+    // this number also pulled from my ass, song bpm time
     public const float JUMP_TIME = 2f;
 
     public void AssignRotationValue(Vector3 rotation)
@@ -45,13 +45,13 @@ public class Track : MonoBehaviour
         float z = 0;
         bool v2 = Object is V2Object;
         // Jump in
-        if (time < Object.SpawnJsonTime)
+        if (time < Object.SpawnSongBpmTime)
         {
-            z = ((Object.CustomSpawnEffect ?? !v2) ^ v2) ? Mathf.Lerp(spawnPosition, JUMP_FAR, (Object.SpawnJsonTime - time) / JUMP_TIME) : JUMP_FAR;
+            z = ((Object.CustomSpawnEffect ?? !v2) ^ v2) ? Mathf.Lerp(spawnPosition, JUMP_FAR, (Object.SpawnSongBpmTime - time) / JUMP_TIME) : JUMP_FAR;
         }
         else if (time < despawnTime)
         {
-            z = Mathf.Lerp(spawnPosition, despawnPosition, (time - Object.SpawnJsonTime) / (despawnTime - Object.SpawnJsonTime));
+            z = Mathf.Lerp(spawnPosition, despawnPosition, (time - Object.SpawnSongBpmTime) / (despawnTime - Object.SpawnSongBpmTime));
         }
         // Jump out
         else
@@ -72,13 +72,13 @@ public class Track : MonoBehaviour
             spawnPosition = Object.Jd;
             if (Object is BaseObstacle obs)
             {
-                despawnPosition = -(Object.Jd * 0.5f) - (obs.Duration * obs.EditorScale);
-                despawnTime = obs.JsonTime + obs.Duration + (obs.Hjd * 0.5f);
+                despawnPosition = -(Object.Jd * 0.5f) - (obs.DurationSongBpm * obs.EditorScale);
+                despawnTime = obs.SongBpmTime + obs.DurationSongBpm + (obs.Hjd * 0.5f);
             }
             else
             {
                 despawnPosition = -Object.Jd;
-                despawnTime = Object.DespawnJsonTime;
+                despawnTime = Object.DespawnSongBpmTime;
             }
         }
     }

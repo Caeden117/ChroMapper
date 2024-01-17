@@ -60,6 +60,10 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         SpawnCallbackController.RecursiveChainCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        
+        Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -71,6 +75,10 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         SpawnCallbackController.RecursiveChainCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        
+        Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
     }
 
     private void OnPlayToggle(bool isPlaying)
@@ -85,6 +93,8 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
     }
 
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
+    
+    private void AppearanceChanged(object _) => RefreshPool(true);
 
     protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj)
     {
