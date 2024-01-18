@@ -28,7 +28,7 @@ namespace Beatmap.V3
         public override bool IsNoodleExtensions() =>
             Notes.Any(x => x.IsNoodleExtensions()) || Bombs.Any(x => x.IsNoodleExtensions()) ||
             Arcs.Any(x => x.IsNoodleExtensions()) || Chains.Any(x => x.IsNoodleExtensions()) ||
-            Obstacles.Any(x => x.IsNoodleExtensions()) || CustomEvents.Any();
+            Obstacles.Any(x => x.IsNoodleExtensions());
 
 
         public override bool IsMappingExtensions() =>
