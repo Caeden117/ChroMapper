@@ -301,7 +301,6 @@ namespace Beatmap.Converters
             if (n.HasKey("direction")) n["_direction"] = n.HasKey("_direction") ? n["_direction"] : n["direction"];
             if (n.HasKey("lockRotation"))
                 n["_lockPosition"] = n.HasKey("_lockPosition") ? n["_lockPosition"] : n["lockRotation"];
-            if (n.HasKey("speed")) n["_preciseSpeed"] = n.HasKey("_preciseSpeed") ? n["_preciseSpeed"] : n["speed"];
 
             if (n.HasKey("color")) n.Remove("color");
             if (n.HasKey("lightID")) n.Remove("lightID");
