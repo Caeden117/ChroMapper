@@ -74,8 +74,7 @@ namespace Beatmap.V3
 
         public override bool IsNoodleExtensions() =>
             CustomData != null &&
-            (CustomData.HasKey("animation") ||
-             (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
+            ((CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
              (CustomData.HasKey("localRotation") && CustomData["localRotation"].IsArray) ||
              (CustomData.HasKey("noteJumpMovementSpeed") && CustomData["noteJumpMovementSpeed"].IsNumber) ||
              (CustomData.HasKey("noteJumpStartBeatOffset") &&
@@ -83,8 +82,7 @@ namespace Beatmap.V3
              (CustomData.HasKey("coordinates") && CustomData["coordinates"].IsArray) ||
              (CustomData.HasKey("worldRotation") &&
               (CustomData["worldRotation"].IsArray || CustomData["worldRotation"].IsNumber)) ||
-             (CustomData.HasKey("size") && CustomData["size"].IsArray) ||
-             (CustomData.HasKey("track") && CustomData["track"].IsString));
+             (CustomData.HasKey("size") && CustomData["size"].IsArray));
 
         public override bool IsMappingExtensions() =>
             (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 || Width <= -1000 || Width >= 1000 ||
