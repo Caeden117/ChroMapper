@@ -72,7 +72,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         if (notesContainer != null)
             notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
         SpawnCallbackController.ChainPassedThreshold -= SpawnCallback;
-        SpawnCallbackController.RecursiveChainCheckFinished += RecursiveCheckFinished;
+        SpawnCallbackController.RecursiveChainCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         
