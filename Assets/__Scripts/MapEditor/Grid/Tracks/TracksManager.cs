@@ -189,8 +189,6 @@ public class TracksManager : MonoBehaviour
         UpdatePosition(
             float position) //Take our position from AudioTimeSyncController and broadcast that to every track.
     {
-        if (UIMode.AnimationMode)
-            position += 0.4f;
         this.position = position;
         foreach (var track in loadedTracks.Values) track.UpdatePosition(position);
     }
