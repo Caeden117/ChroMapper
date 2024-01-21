@@ -56,7 +56,12 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = new Vector3(-1.5f, offsetY, ChainData.SongBpmTime * EditorScaleController.EditorScale);
+            if (!(Animator != null && Animator.AnimatedTrack))
+            {
+                transform.localPosition =
+                    new Vector3(-1.5f, offsetY, ChainData.SongBpmTime * EditorScaleController.EditorScale);
+            }
+
             GenerateChain();
             UpdateCollisionGroups();
             if (AttachedHead != null && AttachedHead.NoteData != null)

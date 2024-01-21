@@ -168,7 +168,7 @@ public class TracksManager : MonoBehaviour
             foreach (var container in collection.LoadedContainers.Values)
             {
                 if (container is ObstacleContainer obstacle && obstacle.IsRotatedByNoodleExtensions) continue;
-                if (container.Animator?.AnimatedTrack ?? false) continue;
+                if (container.Animator != null && container.Animator.AnimatedTrack) continue;
                 var track = GetTrackAtTime(container.ObjectData.SongBpmTime);
                 track.AttachContainer(container);
                 container.UpdateGridPosition();
