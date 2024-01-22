@@ -194,7 +194,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     private void RecursiveCheckNotes(bool init, bool natural)
     {
         var realOffsets = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
-        var passed = nextNotes.Where(x => x.SongBpmTime <= curTime + (realOffsets ? (x as BaseGrid).Hjd + Track.JUMP_TIME : Offset)).ToArray();
+        var passed = nextNotes.Where(x =>
+            x.SongBpmTime <= curTime + (realOffsets ? (x as BaseGrid).Hjd + Track.JUMP_TIME : Offset)).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) NotePassedThreshold?.Invoke(init, nextNoteIndex, newlyAdded);
