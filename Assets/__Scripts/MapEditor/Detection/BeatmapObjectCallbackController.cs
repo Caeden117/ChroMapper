@@ -219,7 +219,9 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     private void RecursiveCheckChains(bool init, bool natural)
     {
         var realOffsets = useOffsetFromConfig && !useDespawnOffset && UIMode.AnimationMode;
-        var passed = nextChains.Where(x => x.SongBpmTime <= curTime + (realOffsets ? (x as BaseGrid).Hjd + Track.JUMP_TIME : Offset)).ToArray();
+        var passed = nextChains.Where(x =>
+            (x as BaseChain).TailSongBpmTime <=
+            curTime + (realOffsets ? (x as BaseGrid).Hjd + Track.JUMP_TIME : Offset)).ToArray();
         foreach (var newlyAdded in passed)
         {
             if (natural) ChainPassedThreshold?.Invoke(init, nextChainIndex, newlyAdded);

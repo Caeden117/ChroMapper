@@ -60,6 +60,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         SpawnCallbackController.RecursiveChainCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        UIMode.UIModeSwitched += OnUIModeSwitch;
         
         Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
@@ -75,6 +76,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         SpawnCallbackController.RecursiveChainCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        UIMode.UIModeSwitched -= OnUIModeSwitch;
         
         Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
@@ -89,6 +91,15 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         foreach (ChainContainer obj in LoadedContainers.Values)
         {
             obj.SetIndicatorBlocksActive(!this.isPlaying);
+        }
+    }
+
+    private void OnUIModeSwitch(UIModeType newMode)
+    {
+        // If preview mode changed
+        if (newMode == UIModeType.Normal || newMode == UIModeType.Preview)
+        {
+            RefreshPool(true);
         }
     }
 
