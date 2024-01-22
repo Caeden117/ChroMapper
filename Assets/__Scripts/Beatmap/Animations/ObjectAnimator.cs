@@ -304,10 +304,13 @@ namespace Beatmap.Animations
             if (container?.ObjectData is BaseGrid obj)
             {
                 var NoodleAnimationLifetime = (time > time_end) ? -1 : 1;
-                container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
-                if (container is NoteContainer nc)
+                if (!(container is ChainContainer))
                 {
-                    nc.ArrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                    container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                    if (container is NoteContainer nc)
+                    {
+                        nc.ArrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                    }
                 }
                 AnimatedLife =
                        (_time != null && _time < obj.SongBpmTime)
