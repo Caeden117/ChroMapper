@@ -141,8 +141,9 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 20
     m_Localized: 'This feature is deprecated.
-    
-      Shifts the song forward by this amount
+
+      Shifts the song forward by this
+      amount
 
       (in seconds)'
     m_Metadata:
@@ -426,6 +427,13 @@ MonoBehaviour:
     m_Localized: 'Error packaging map to zip.
 
       No zip created.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 272807305041276928
+    m_Localized: 'Error while creating the packaged zip:
+
+      Cannot use absolute
+      paths for files.'
     m_Metadata:
       m_Items: []
   references:

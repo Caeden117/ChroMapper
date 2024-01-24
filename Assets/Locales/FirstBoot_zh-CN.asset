@@ -68,5 +68,13 @@ MonoBehaviour:
     m_Localized: "\u9ED8\u8BA4\u56FE\u5F62\u914D\u7F6E\uFF0C\u60A8\u53EF\u4EE5\u7A0D\u540E\u518D\u8C03\u6574\u8BBE\u7F6E"
     m_Metadata:
       m_Items: []
+  - m_Id: 300762992517451776
+    m_Localized: Lighting Preset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300762994845290496
+    m_Localized: Tweak ChroMapper's lighting to match other map editors.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

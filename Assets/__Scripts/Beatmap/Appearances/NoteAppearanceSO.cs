@@ -81,6 +81,8 @@ namespace Beatmap.Appearances
 
             if (note.NoteData.CustomColor != null)
                 note.SetColor(note.NoteData.CustomColor);
+
+            note.Animator.SetData(note.NoteData);
         }
     }
 }

@@ -1,19 +1,20 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Beatmap.Base;
+using Beatmap.V3;
 
-public class ChromaReq : RequirementCheck
+public class ChromaReq : HeckRequirementCheck
 {
     public override string Name => "Chroma";
 
     public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map)
     {
-        if (mapInfo != null && (HasEnvironmentRemoval(mapInfo, map) || HasChromaEvents(map)))
+        if (mapInfo != null && (HasEnvironmentRemoval(mapInfo, map) || HasChromaEvents(map) || HasChromaTracks(map)))
             return RequiresChroma(mapInfo, map) ? RequirementType.Requirement : RequirementType.Suggestion;
 
         return RequirementType.None;
     }
 
-    //Bold assumption for events, but so far Chroma is the only mod that uses Custom Data in vanilla events.
     private bool HasChromaEvents(BaseDifficulty map) =>
         map.IsChroma();
 
@@ -27,4 +28,18 @@ public class ChromaReq : RequirementCheck
         (map.MainNode.HasKey("_customData") && map.MainNode["_customData"] != null &&
          map.MainNode["_customData"].HasKey("_environment") &&
          map.MainNode["_customData"]["_environment"].AsArray.Count > 0);
+    
+    private static readonly List<string> chromaSpecificTrackTypes = new List<string> { "AnimateComponent" };
+
+    private static readonly List<string> v3ChromaAnimationKeys = new List<string> { "color" };
+
+    private static readonly List<string> v2ChromaAnimationKeys = new List<string> { "_color" };
+
+    private bool HasChromaTracks(BaseDifficulty map)
+    {
+        var chromaAnimationKeys = map is V3Difficulty
+            ? v3ChromaAnimationKeys
+            : v2ChromaAnimationKeys;
+        return HasAnimationsFromMod(map, chromaSpecificTrackTypes, chromaAnimationKeys);
+    }
 }

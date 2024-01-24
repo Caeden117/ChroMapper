@@ -7,7 +7,7 @@ using Beatmap.Enums;
 using UnityEngine;
 
 /// <summary>
-/// <see cref="ChainGridContainer"/> doesn't contain note(even the head note on the chain). 
+/// <see cref="ChainGridContainer"/> doesn't contain note(even the head note on the chain).
 /// It only detects whether there is a note happening to be a head note
 /// </summary>
 public class ChainGridContainer : BeatmapObjectContainerCollection
@@ -22,7 +22,10 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
 
     public override ObjectContainer CreateContainer()
     {
-        return ChainContainer.SpawnChain(null, ref chainPrefab);
+        var con = ChainContainer.SpawnChain(null, ref chainPrefab);
+        con.Animator.Atsc = AudioTimeSyncController;
+        con.Animator.TracksManager = tracksManager;
+        return con;
     }
 
     internal override void LateUpdate()
@@ -41,8 +44,12 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         chain.ChainData = chainData;
         chainAppearanceSO.SetChainAppearance(chain);
         chain.Setup();
-        var track = tracksManager.GetTrackAtTime(chainData.JsonTime);
-        track.AttachContainer(con);
+
+        if (!chain.Animator.AnimatedTrack)
+        {
+            var track = tracksManager.GetTrackAtTime(chainData.SongBpmTime);
+            track.AttachContainer(con);
+        }
     }
 
     internal override void SubscribeToCallbacks()
@@ -53,6 +60,11 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         SpawnCallbackController.RecursiveChainCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        UIMode.UIModeSwitched += OnUIModeSwitch;
+        
+        Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -61,9 +73,14 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         if (notesContainer != null)
             notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
         SpawnCallbackController.ChainPassedThreshold -= SpawnCallback;
-        SpawnCallbackController.RecursiveChainCheckFinished += RecursiveCheckFinished;
+        SpawnCallbackController.RecursiveChainCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        UIMode.UIModeSwitched -= OnUIModeSwitch;
+        
+        Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
     }
 
     private void OnPlayToggle(bool isPlaying)
@@ -77,7 +94,18 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
         }
     }
 
+    private void OnUIModeSwitch(UIModeType newMode)
+    {
+        // If preview mode changed
+        if (newMode == UIModeType.Normal || newMode == UIModeType.Preview)
+        {
+            RefreshPool(true);
+        }
+    }
+
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
+    
+    private void AppearanceChanged(object _) => RefreshPool(true);
 
     protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj)
     {

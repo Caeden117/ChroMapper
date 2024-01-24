@@ -423,6 +423,13 @@ MonoBehaviour:
     m_Localized: "Error when zippy, so no zippy (\uFE36\uFE39\uFE3A)"
     m_Metadata:
       m_Items: []
+  - m_Id: 272807305041276928
+    m_Localized: 'Error while creating the packaged zip:
+
+      Cannot use absolute
+      paths for files.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

@@ -231,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 51
-    m_Localized: "Zip \uD30C\uC77C \uC0DD\uC131"
+    m_Localized: "\uC555\uCD95 \uD30C\uC77C \uC0DD\uC131"
     m_Metadata:
       m_Items: []
   - m_Id: 52
@@ -422,13 +422,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 216566409055109120
-    m_Localized: Map packaged to zip successfully.
+    m_Localized: "\uB9F5\uC774 \uC555\uCD95 \uD30C\uC77C\uB85C \uD328\uD0A4\uC9D5\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 216566610293620736
-    m_Localized: 'Error packaging map to zip.
+    m_Localized: "\uB9F5\uC744 \uC555\uCD95 \uD30C\uC77C\uB85C \uD328\uD0A4\uC9D5\uD558\uB294
+      \uC911\uC5D0 \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4.\n\uC555\uCD95
+      \uD30C\uC77C\uC774 \uC0DD\uC131\uB418\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 272807305041276928
+    m_Localized: 'Error while creating the packaged zip:
 
-      No zip created.'
+      Cannot use absolute
+      paths for files.'
     m_Metadata:
       m_Items: []
   references:

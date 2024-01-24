@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Animations;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -29,20 +30,41 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
+        UIMode.UIModeSwitched += OnUIModeSwitch;
+
+        Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
     }
 
     internal override void UnsubscribeToCallbacks()
     {
         SpawnCallbackController.NotePassedThreshold -= SpawnCallback;
-        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        SpawnCallbackController.RecursiveNoteCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
+        UIMode.UIModeSwitched -= OnUIModeSwitch;
+
+        Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
+        Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
     }
 
     private void OnPlayToggle(bool isPlaying)
     {
         if (!isPlaying) RefreshPool();
     }
+
+    private void OnUIModeSwitch(UIModeType newMode)
+    {
+        // If preview mode changed
+        if (newMode == UIModeType.Normal || newMode == UIModeType.Preview)
+        {
+            RefreshPool(true);
+        }
+    }
+
+    private void AppearanceChanged(object _) => RefreshPool(true);
 
     // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
     // (I'm done with note sorting; if you don't like it, go fix it yourself.)
@@ -69,7 +91,13 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
     //We don't need to check index as that's already done further up the chain
     private void DespawnCallback(bool initial, int index, BaseObject objectData)
     {
-        if (LoadedContainers.ContainsKey(objectData)) RecycleContainer(objectData);
+        if (LoadedContainers.ContainsKey(objectData))
+        {
+            if (!LoadedContainers[objectData].Animator.AnimatedLife)
+                RecycleContainer(objectData);
+            else
+                LoadedContainers[objectData].Animator.ShouldRecycle = true;
+        }
     }
 
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
@@ -86,6 +114,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
     public override ObjectContainer CreateContainer()
     {
         ObjectContainer con = NoteContainer.SpawnBeatmapNote(null, ref notePrefab);
+        con.Animator.Atsc = AudioTimeSyncController;
+        con.Animator.TracksManager = tracksManager;
         return con;
     }
 
@@ -96,10 +126,13 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
         noteAppearanceSo.SetNoteAppearance(note);
         note.Setup();
         note.SetBomb(noteData.Type == (int)NoteType.Bomb);
-        note.transform.localEulerAngles = NoteContainer.Directionalize(noteData);
+        note.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(noteData);
 
-        var track = tracksManager.GetTrackAtTime(obj.JsonTime);
-        track.AttachContainer(con);
+        if (!note.Animator.AnimatedTrack)
+        {
+            var track = tracksManager.GetTrackAtTime(obj.SongBpmTime);
+            track.AttachContainer(con);
+        }
     }
 
     protected override void OnObjectSpawned(BaseObject _, bool __ = false) =>
@@ -119,15 +152,18 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
     {
         // Do not bother refreshing if objects are despawning naturally (while playing back the song)
         if (!objectWasSpawned && isNatural) return;
-        // Do not do special angles for bombs
-        if ((obj as BaseNote).Type == (int)NoteType.Bomb) return;
+        // Do not do special angles for bombs and fakes
+        var note = obj as BaseNote;
+        if (note.Type == (int)NoteType.Bomb || note.CustomFake) return;
+
         // Grab all objects with the same type, and time (within epsilon)
 
         objectsAtSameTime.Clear();
         foreach (var x in LoadedContainers)
         {
-            if (!(x.Key.JsonTime - Epsilon <= obj.JsonTime && x.Key.JsonTime + Epsilon >= obj.JsonTime &&
-                  (x.Key as BaseNote).Type == (obj as BaseNote).Type))
+            if (note.CustomFake
+                || !(x.Key.JsonTime - Epsilon <= obj.JsonTime && x.Key.JsonTime + Epsilon >= obj.JsonTime
+                     && (x.Key as BaseNote).Type == note.Type))
             {
                 continue;
             }
@@ -143,8 +179,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
             var b = objectsAtSameTime.Last().ObjectData as BaseNote;
 
             // Grab the containers we will be flipping
-            var containerA = objectsAtSameTime.First();
-            var containerB = objectsAtSameTime.Last();
+            var containerA = objectsAtSameTime.First() as NoteContainer;
+            var containerB = objectsAtSameTime.Last() as NoteContainer;
 
             // Do not execute if cut directions are not the same (and both are not dot notes)
             if (a.CutDirection != b.CutDirection && a.CutDirection != (int)NoteCutDirection.Any &&
@@ -159,8 +195,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
                 (containerA, containerB) = (containerB, containerA);
             }
 
-            Vector2 posA = containerA.transform.localPosition;
-            Vector2 posB = containerB.transform.localPosition;
+            Vector2 posA = containerA.GridPosition;
+            Vector2 posB = containerB.GridPosition;
             var cutVector = a.CutDirection == (int)NoteCutDirection.Any ? Vector2.up : Direction(a);
             var line = posA - posB;
             var angle = SignedAngleToLine(cutVector, line);
@@ -169,8 +205,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
             if (a.CutDirection == (int)NoteCutDirection.Any &&
                 b.CutDirection == (int)NoteCutDirection.Any)
             {
-                containerA.transform.localEulerAngles = Vector3.forward * angle;
-                containerB.transform.localEulerAngles = Vector3.forward * angle;
+                containerA.DirectionTarget.localEulerAngles = Vector3.forward * angle;
+                containerB.DirectionTarget.localEulerAngles = Vector3.forward * angle;
             }
             else
             {
@@ -179,11 +215,11 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
                 // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
                 if (Mathf.Abs(angle) <= 40)
                 {
-                    containerA.transform.localEulerAngles = originalA + (Vector3.forward * angle);
+                    containerA.DirectionTarget.localEulerAngles = originalA + (Vector3.forward * angle);
                     if (b.CutDirection == (int)NoteCutDirection.Any && !a.IsMainDirection)
-                        containerB.transform.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
+                        containerB.DirectionTarget.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
                     else
-                        containerB.transform.localEulerAngles = originalB + (Vector3.forward * angle);
+                        containerB.DirectionTarget.localEulerAngles = originalB + (Vector3.forward * angle);
                 }
             }
         }
@@ -192,7 +228,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
             foreach (var toReset in objectsAtSameTime)
             {
                 var direction = NoteContainer.Directionalize(toReset.ObjectData as BaseNote);
-                toReset.transform.localEulerAngles = direction;
+                (toReset as NoteContainer).DirectionTarget.localEulerAngles = direction;
             }
         }
     }

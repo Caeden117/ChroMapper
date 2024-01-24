@@ -43,7 +43,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         {
             foreach (BaseArc arcData in generatedObjects)
             {
-                objectContainerCollection.SpawnObject(arcData, false); ;
+                objectContainerCollection.SpawnObject(arcData, false);
             }
 
             SelectionController.DeselectAll();

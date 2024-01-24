@@ -6,6 +6,10 @@ inline float Linear(float k) {
 	return k;
 }
 
+inline float Step(float k) {
+	return floor(k);
+}
+
 inline float Quadratic_In(float k) {
 	return k * k;
 }

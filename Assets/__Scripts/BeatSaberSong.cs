@@ -51,7 +51,7 @@ public class BeatSaberSong
     [FormerlySerializedAs("environmentName")] public string EnvironmentName = "DefaultEnvironment";
     [FormerlySerializedAs("allDirectionsEnvironmentName")] public string AllDirectionsEnvironmentName = "GlassDesertEnvironment";
     public List<string> EnvironmentNames = new List<string>(); // TODO: Support editing
-    public JSONArray ColorSchemes = new JSONArray(); // TODO: Support editing
+    public JSONNode ColorSchemes = new JSONArray(); // TODO: Support editing
     [FormerlySerializedAs("editors")] public EditorsObject Editors = new EditorsObject(null);
 
     [FormerlySerializedAs("difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new List<DifficultyBeatmapSet>();
@@ -412,7 +412,7 @@ public class BeatSaberSong
                         break;
 
                     case "_colorSchemes":
-                        song.ColorSchemes = node.AsArray;
+                        song.ColorSchemes = node;
                         break;
 
                     case "_customData":

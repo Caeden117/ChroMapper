@@ -9,10 +9,9 @@ namespace Beatmap.Base
 {
     public abstract class BaseDifficulty : BaseItem, ICustomDataDifficulty
     {
-        // TODO: concrete class for these bad boys
-        public Dictionary<string, JSONObject> Materials = new Dictionary<string, JSONObject>();
+        public Dictionary<string, BaseMaterial> Materials = new Dictionary<string, BaseMaterial>();
 
-        public Dictionary<string, List<JSONNode>> PointDefinitions = new Dictionary<string, List<JSONNode>>();
+        public Dictionary<string, JSONArray> PointDefinitions = new Dictionary<string, JSONArray>();
         public JSONNode MainNode { get; set; }
         public string DirectoryAndFile { get; set; }
         public abstract string Version { get; }
@@ -68,6 +67,7 @@ namespace Beatmap.Base
             new List<BaseObject>(Events),
             new List<BaseObject>(ColorBoostEvents),
             new List<BaseObject>(Bookmarks),
+            new List<BaseObject>(CustomEvents),
         };
 
         public void ConvertCustomBpmToOfficial()

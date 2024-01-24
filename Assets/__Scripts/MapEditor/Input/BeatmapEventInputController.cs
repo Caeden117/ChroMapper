@@ -166,6 +166,10 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
 
             RefreshPrevEventContainer(e);
         }
+        else if (e.EventData is BaseRotationEvent re)
+        {
+            re.Rotation += modifier;
+        }
 
         eventAppearanceSo.SetEventAppearance(e);
         BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original));

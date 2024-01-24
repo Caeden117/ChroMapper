@@ -134,6 +134,13 @@ public static class BeatSaberSongExtensions
             AddToFileDictionary(exportedFiles, song.Directory, map.BeatmapFilename);
         }
 
+        // Don't package to zip if any paths are absolute or rooted
+        if (exportedFiles.Any(file => Path.IsPathRooted(file.Value)))
+        {
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "zip.path.error", null, PersistentUI.DialogBoxPresetType.Ok);
+            return null;
+        }
+
         return exportedFiles;
     }
 

@@ -55,6 +55,7 @@ public class Settings
     public bool ShowMoreAccurateFastWalls = false;
     public bool QuickNoteEditing = false;
     public bool VanillaOnlyShift = true;
+    public bool Animations = true;
     public float PastNotesGridScale = 0.5f;
     // SongSpeed is a non-persistent setting
     // NoteLanes is a non-persistent setting
@@ -113,6 +114,8 @@ public class Settings
     public bool ChromaticAberration = true;
     public float PostProcessingIntensity = 0.1f;
     public float CameraFOV = 60f;
+    public float PlayerCameraFOV = 60f;
+    public float PlayerCameraOffsetZ = 3.6f; // 3.6m => 6 Z
     public int CameraAA = 0;
     public int RenderScale = 100;
 
@@ -125,6 +128,12 @@ public class Settings
     public float GridTransparency = 0f;
     public int TrackLength = 8;
     public float OneBeatWidth = 0.1f;
+
+    public float NoteColorMultiplier = 1f;
+    public float ArrowColorMultiplier = 1.72f;
+    public float ArrowColorWhiteBlend = 0.75f;
+    public float ObstacleOpacity = 0.25f;
+    public bool AlternateLighting = false;
 
     public bool DisplayGridBookmarks = true;
     public bool GridBookmarksHasLine = true;

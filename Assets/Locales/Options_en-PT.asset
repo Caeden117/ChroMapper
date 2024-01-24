@@ -1227,6 +1227,14 @@ MonoBehaviour:
       placement keybind while placing walls or notes. '
     m_Metadata:
       m_Items: []
+  - m_Id: 249214922956247040
+    m_Localized: Enables Noodle Extensions animations while in preview mode.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 249224607608377344
+    m_Localized: Preview Animations
+    m_Metadata:
+      m_Items: []
   - m_Id: 262680152746688512
     m_Localized: Open File Explorer After Create Zip
     m_Metadata:
@@ -1244,9 +1252,80 @@ MonoBehaviour:
       value.
     m_Metadata:
       m_Items: []
+  - m_Id: 252032304653307904
+    m_Localized: Change Field of View of the preview camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 252047222777614336
+    m_Localized: Preview Camera FOV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 298177154557083648
+    m_Localized: Open Plugins Folder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300616661902491648
+    m_Localized: Preview Camera Z Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300616655971745792
+    m_Localized: Offsets the preview camera backwards (in metres)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300618005946236928
+    m_Localized: '{TextValue}m'
+    m_Metadata:
+      m_Items:
+      - id: 0
+  - m_Id: 322078335378526208
+    m_Localized: Objects and Lighting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078433017729024
+    m_Localized: Note Color Multiplier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078544036761600
+    m_Localized: Brightens or darkens the color of the note block.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078560457461760
+    m_Localized: Arrow Color Multiplier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078585577148416
+    m_Localized: Brightens or darkens the color of the note arrow.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078609908305920
+    m_Localized: Arrow White Blend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078641902456832
+    m_Localized: Blends the color of the arrow, from the assigned note color to a
+      pure white.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078668309794816
+    m_Localized: Obstacle Opacity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078693966352384
+    m_Localized: Changes the opacity of the obstacle's inner body.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078715722207232
+    m_Localized: Alternate Lighting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322078739269029888
+    m_Localized: Tweaks ChroMapper's lighting to give an appearance more similar
+      to MMA2.
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00
+        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04

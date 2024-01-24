@@ -69,6 +69,7 @@ namespace Beatmap.Base
         {
             this.jsonTime = jsonTime;
             this.songBpmTime = songBpmTime;
+            RecomputeSongBpmTime();
         }
 
         public virtual Color? CustomColor { get; set; }

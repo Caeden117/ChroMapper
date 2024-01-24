@@ -44,6 +44,8 @@ namespace Beatmap.Converters
                 note.CustomData["_cutDirection"] = customCutDirection;
             }
 
+            if (other.CustomFake) note.GetOrCreateCustom()["_fake"] = true;
+
             note.RefreshCustom();
             return note;
         }
@@ -95,6 +97,7 @@ namespace Beatmap.Converters
                 V3Obstacle o => new V2Obstacle(o) { CustomData = CustomDataObject(o.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v3 obstacle to v2 obstacle")
             };
+            if (other.CustomFake) obstacle.GetOrCreateCustom()["_fake"] = true;
             obstacle.RefreshCustom();
             return obstacle;
         }
@@ -298,7 +301,6 @@ namespace Beatmap.Converters
             if (n.HasKey("direction")) n["_direction"] = n.HasKey("_direction") ? n["_direction"] : n["direction"];
             if (n.HasKey("lockRotation"))
                 n["_lockPosition"] = n.HasKey("_lockPosition") ? n["_lockPosition"] : n["lockRotation"];
-            if (n.HasKey("speed")) n["_preciseSpeed"] = n.HasKey("_preciseSpeed") ? n["_preciseSpeed"] : n["speed"];
 
             if (n.HasKey("color")) n.Remove("color");
             if (n.HasKey("lightID")) n.Remove("lightID");
@@ -335,7 +337,7 @@ namespace Beatmap.Converters
 
             if (d.Materials.Any())
             {
-                var newMat = d.Materials.ToDictionary(m => m.Key, m => Material(m.Value));
+                var newMat = d.Materials.ToDictionary(m => m.Key, m => (BaseMaterial)new V2Material(m.Value));
                 d.Materials = newMat;
             }
 

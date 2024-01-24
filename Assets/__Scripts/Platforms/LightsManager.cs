@@ -24,6 +24,7 @@ public class LightsManager : MonoBehaviour
 
     public Dictionary<int, int> LightIDPlacementMap;
     public Dictionary<int, int> LightIDPlacementMapReverse;
+    public Dictionary<int, LightingEvent> LightIDMap;
     private int previousValue;
 
     private IEnumerator Start()
@@ -53,6 +54,7 @@ public class LightsManager : MonoBehaviour
                 .ToList();
             LightIDPlacementMap = lightIdOrder.ToDictionary(x => lightIdOrder.IndexOf(x), x => x.LightID);
             LightIDPlacementMapReverse = lightIdOrder.ToDictionary(x => x.LightID, x => lightIdOrder.IndexOf(x));
+            LightIDMap = lightIdOrder.ToDictionary(x => x.LightID, x => x);
 
             LightsGroupedByZ = GroupLightsBasedOnZ();
             RotatingLights = RotatingLights.OrderBy(x => x.transform.localPosition.z).ToList();
@@ -115,18 +117,36 @@ public class LightsManager : MonoBehaviour
         if (value < 0xff) previousValue = value;
     }
 
-    public void Boost(bool boost, Color a, Color b)
+    public void Boost(bool boost, Color redColor, Color blueColor, Color whiteColor)
     {
         // Off
         if (previousValue == 0) return;
 
-        if (previousValue <= 3) a = b;
+        var color = previousValue switch
+        {
+            (int)LightValue.BlueOn => blueColor,
+            (int)LightValue.BlueFlash => blueColor,
+            (int)LightValue.BlueFade => blueColor,
+            (int)LightValue.BlueTransition => blueColor,
+            
+            (int)LightValue.RedOn => redColor,
+            (int)LightValue.RedFlash => redColor,
+            (int)LightValue.RedFade => redColor,
+            (int)LightValue.RedTransition => redColor,
+            
+            (int)LightValue.WhiteOn => whiteColor,
+            (int)LightValue.WhiteFlash => whiteColor,
+            (int)LightValue.WhiteFade => whiteColor,
+            (int)LightValue.WhiteTransition => whiteColor,
+            
+            _ => Color.white
+        };
 
         foreach (var light in ControllingLights)
         {
             light.UpdateBoostState(boost);
             if (!light.UseInvertedPlatformColors)
-                SetTargets(light, a);
+                SetTargets(light, color);
         }
     }
 

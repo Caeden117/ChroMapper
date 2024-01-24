@@ -30,7 +30,9 @@ public class UIScaleSlider : BetterSlider
 
         if (DecimalsMustMatchForDefault)
         {
-            ValueText.color = DefaultSliderValue == Value ? new Color(1f, 0.75f, 0.23f) : Color.white;
+            ValueText.color = DefaultSliderValue.ToString($"F{DecimalPlaces}") == Value.ToString($"F{DecimalPlaces}")
+                ? new Color(1f, 0.75f, 0.23f)
+                : Color.white;
         }
         else
         {

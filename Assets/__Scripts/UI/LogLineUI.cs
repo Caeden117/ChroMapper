@@ -55,6 +55,19 @@ public class LogLineUI : MonoBehaviour
                "OS: " + SystemInfo.operatingSystem;
     }
 
+    // This could be made more useful with a proper manifest file
+    private static string GeneratePluginList()
+    {
+        var stringBuilder = new StringBuilder();
+
+        foreach (var plugin in PluginLoader.LoadedPlugins)
+        {
+            stringBuilder.AppendLine($"{plugin.Name} - {plugin.Version}");
+        }
+        
+        return stringBuilder.ToString();
+    }
+
     private string Heading(string text, bool first = false) => (first ? "" : "\n\n\n") + $"{seperator}\n{text}\n{seperator}\n";
 
     public IEnumerator GenerateBugReport()
@@ -63,6 +76,9 @@ public class LogLineUI : MonoBehaviour
             Heading("System information:", true) +
             GenerateSystemInfo() +
 
+            Heading("Installed plugins:") +
+            GeneratePluginList() +
+            
             Heading("Exception:") +
             logline.Message + "\n" + logline.StackTrace +
 

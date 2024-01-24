@@ -400,6 +400,13 @@ MonoBehaviour:
       No zip created.'
     m_Metadata:
       m_Items: []
+  - m_Id: 272807305041276928
+    m_Localized: 'Error while creating the packaged zip:
+
+      Cannot use absolute
+      paths for files.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

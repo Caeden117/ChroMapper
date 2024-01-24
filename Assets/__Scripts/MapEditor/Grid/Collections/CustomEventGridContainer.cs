@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Beatmap.Animations;
+using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using SimpleJSON;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,14 +15,21 @@ using UnityEngine.InputSystem;
 public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInput.ICustomEventsContainerActions
 {
     [SerializeField] private GameObject customEventPrefab;
+    [SerializeField] private GameObject geometryPrefab;
+    [SerializeField] private GeometryAppearanceSO geometryAppearanceSo;
     [SerializeField] private TextMeshProUGUI customEventLabelPrefab;
     [SerializeField] private Transform customEventLabelTransform;
     [SerializeField] private Transform[] customEventScalingOffsets;
+    [SerializeField] private TracksManager tracksManager;
+    [SerializeField] private CameraController playerCamera;
     private List<string> customEventTypes = new List<string>();
+    private List<GeometryContainer> geometries = new List<GeometryContainer>();
 
     public override ObjectType ContainerType => ObjectType.CustomEvent;
 
     public ReadOnlyCollection<string> CustomEventTypes => customEventTypes.AsReadOnly();
+
+    public Dictionary<string, List<BaseCustomEvent>> EventsByTrack;
 
     private void Start()
     {
@@ -30,6 +40,69 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             foreach (var t in customEventScalingOffsets)
                 t.gameObject.SetActive(false);
         }
+    }
+
+    // During refresh? How to update when events are added
+    public void LoadAnimationTracks()
+    {
+        playerCamera.ClearPlayerTracks();
+        var events = LoadedObjects.Select(ev => ev as BaseCustomEvent);
+        foreach (var ev in events)
+        {
+            var tracks = ev.CustomTrack switch {
+                JSONArray arr => arr,
+                JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+                _ => null,
+            };
+            switch (ev.Type)
+            {
+            case "AssignTrackParent":
+                if (ev.DataParentTrack == null) continue;
+                var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
+                tracks = ev.DataChildrenTracks switch {
+                    JSONArray arr => arr,
+                    JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+                };
+                foreach (var tr in tracks)
+                {
+                    var at = tracksManager.CreateAnimationTrack(tr.Value);
+                    at.Track.transform.parent = parent.Track.ObjectParentTransform;
+                    if (at.Animator == null)
+                    {
+                        at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
+                        at.Animator.Atsc = AudioTimeSyncController;
+                        at.Animator.SetTrack(at.Track, tr.Value);
+                    }
+
+                    if (!parent.Children.Contains(at.Animator))
+                    {
+                        parent.Children.Add(at.Animator);
+                        at.Parents.Add(parent);
+                        at.OnChildrenChanged();
+                    }
+                }
+                break;
+            case "AssignPlayerToTrack":
+                if (ev.CustomTrack == null) continue;
+                playerCamera.gameObject.SetActive(true);
+                var track = tracksManager.CreateAnimationTrack(ev.CustomTrack);
+                playerCamera.AddPlayerTrack(ev.JsonTime, track);
+                break;
+            }
+        }
+
+        geometries.ForEach((gc) => GameObject.Destroy(gc.gameObject));
+        geometries.Clear();
+
+        BeatSaberSongContainer.Instance.Map.EnvironmentEnhancements.ForEach((eh) => {
+            if (eh.Geometry is JSONNode)
+            {
+                var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
+                container.Setup();
+                geometries.Add(container);
+                geometryAppearanceSo.SetGeometryAppearance(container);
+            }
+        });
     }
 
     public void OnAssignObjectstoTrack(InputAction.CallbackContext context)
@@ -56,6 +129,35 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     public override IEnumerable<BaseObject> GrabSortedObjects() =>
         UnsortedObjects.OrderBy(x => x.JsonTime).ThenBy(x => (x as BaseCustomEvent).Type);
 
+    public void RefreshEventsByTrack()
+    {
+        EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
+
+        foreach (var loadedObject in UnsortedObjects)
+        {
+            var customEvent = loadedObject as BaseCustomEvent;
+            List<string> tracks = customEvent.CustomTrack switch {
+                JSONString s => new List<string> { s },
+                JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
+                _ => new List<string>()
+            };
+            foreach (var track in tracks)
+            {
+                if (!EventsByTrack.ContainsKey(track))
+                {
+                    EventsByTrack[track] = new List<BaseCustomEvent>();
+                }
+                EventsByTrack[track].Add(customEvent);
+            }
+        }
+
+        foreach (var track in EventsByTrack)
+        {
+            var at = tracksManager.CreateAnimationTrack(track.Key);
+            at.SetEvents(track.Value.Where(ev => ev.Type == "AnimateTrack").ToList());
+        }
+    }
+
     protected override void OnObjectSpawned(BaseObject obj, bool inCollection = false)
     {
         var customEvent = obj as BaseCustomEvent;
@@ -63,6 +165,34 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         {
             customEventTypes.Add(customEvent.Type);
             RefreshTrack();
+        }
+
+        tracksManager.ResetAnimationTracks();
+        RefreshEventsByTrack();
+        LoadAnimationTracks();
+    }
+
+    private void OnUIModeSwitch(UIModeType newMode)
+    {
+        // When changing in/out of preview mode
+        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
+        {
+            RefreshPool(true);
+        }
+    }
+
+    public override void RefreshPool(bool force)
+    {
+        if (UIMode.AnimationMode)
+        {
+            foreach (var obj in LoadedContainers.Values.ToList())
+            {
+                RecycleContainer(obj.ObjectData);
+            }
+        }
+        else
+        {
+            base.RefreshPool(force);
         }
     }
 
@@ -95,7 +225,11 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         foreach (var obj in LoadedContainers.Values) obj.UpdateGridPosition();
     }
 
-    internal override void SubscribeToCallbacks() => LoadInitialMap.LevelLoadedEvent += SetInitialTracks;
+    internal override void SubscribeToCallbacks()
+    {
+        LoadInitialMap.LevelLoadedEvent += SetInitialTracks;
+        UIMode.UIModeSwitched += OnUIModeSwitch;
+    }
 
     private void SetInitialTracks()
     {
@@ -110,7 +244,11 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         }
     }
 
-    internal override void UnsubscribeToCallbacks() => LoadInitialMap.LevelLoadedEvent -= SetInitialTracks;
+    internal override void UnsubscribeToCallbacks()
+    {
+        LoadInitialMap.LevelLoadedEvent -= SetInitialTracks;
+        UIMode.UIModeSwitched -= OnUIModeSwitch;
+    }
 
     private void CreateNewType()
     {
@@ -143,7 +281,11 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
         }
 
         // TODO: deal with track
-        foreach (var obj in SelectionController.SelectedObjects) obj.CustomTrack = res;
+        foreach (var obj in SelectionController.SelectedObjects)
+        {
+            obj.CustomTrack = res;
+            obj.WriteCustom();
+        }
     }
 
     public override ObjectContainer CreateContainer() =>

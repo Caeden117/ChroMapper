@@ -26,6 +26,12 @@ namespace Beatmap.V3
             ParseCustom();
         }
 
+        public V3Obstacle(JSONNode node, bool fake = false)
+            : this(node)
+        {
+            CustomFake = fake;
+        }
+
         public V3Obstacle(float time, int posX, int posY, float duration, int width, int height,
             JSONNode customData = null) : base(time, posX, posY, duration, width, height, customData) =>
             ParseCustom();
@@ -41,6 +47,8 @@ namespace Beatmap.V3
             set => base.Type = value > 1 ? 0 : value;
         }
 
+        public override string CustomKeyAnimation { get; } = "animation";
+
         public override string CustomKeyTrack { get; } = "track";
 
         public override string CustomKeyColor { get; } = "color";
@@ -51,6 +59,12 @@ namespace Beatmap.V3
 
         public override string CustomKeyLocalRotation { get; } = "localRotation";
 
+        public override string CustomKeySpawnEffect { get; } = "spawnEffect";
+
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";
+
         public override string CustomKeySize { get; } = "size";
 
         protected sealed override void ParseCustom() => base.ParseCustom();
@@ -60,8 +74,7 @@ namespace Beatmap.V3
 
         public override bool IsNoodleExtensions() =>
             CustomData != null &&
-            ((CustomData.HasKey("animation") && CustomData["animation"].IsArray) ||
-             (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
+            ((CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
              (CustomData.HasKey("localRotation") && CustomData["localRotation"].IsArray) ||
              (CustomData.HasKey("noteJumpMovementSpeed") && CustomData["noteJumpMovementSpeed"].IsNumber) ||
              (CustomData.HasKey("noteJumpStartBeatOffset") &&
@@ -69,8 +82,7 @@ namespace Beatmap.V3
              (CustomData.HasKey("coordinates") && CustomData["coordinates"].IsArray) ||
              (CustomData.HasKey("worldRotation") &&
               (CustomData["worldRotation"].IsArray || CustomData["worldRotation"].IsNumber)) ||
-             (CustomData.HasKey("size") && CustomData["size"].IsArray) ||
-             (CustomData.HasKey("track") && CustomData["track"].IsString));
+             (CustomData.HasKey("size") && CustomData["size"].IsArray));
 
         public override bool IsMappingExtensions() =>
             (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 || Width <= -1000 || Width >= 1000 ||

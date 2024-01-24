@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Animations;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
@@ -41,10 +42,11 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     protected TBo draggedObjectData;
     internal TBoc instantiatedContainer;
 
+    [SerializeField] protected CameraManager CameraManager;
+    
     protected bool IsDraggingObject;
     protected bool IsDraggingObjectAtTime;
     protected bool IsOnPlacement;
-    protected Camera MainCamera;
     protected Vector2 MousePosition;
     private TBo originalDraggedObjectData;
     private TBo originalQueued;
@@ -63,6 +65,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     internal TBo queuedData; //Data that is not yet applied to the ObjectContainer.
     protected bool UsePrecisionPlacement;
+
+    protected virtual Vector2 precisionOffset { get; } = new Vector2(-0.5f, -1.1f);
+    protected virtual Vector2 vanillaOffset { get; } = new Vector2(1.5f, -1.1f);
 
     [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
 
@@ -92,7 +97,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         queuedData = GenerateOriginalData();
         IsActive = startingActiveState;
-        MainCamera = Camera.main;
     }
 
     protected virtual void Update()
@@ -113,7 +117,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
         if (applicationFocusChanged) applicationFocusChanged = false;
 
-        var ray = MainCamera.ScreenPointToRay(MousePosition);
+        var ray = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
         var gridsHit = Intersections.RaycastAll(ray, 11);
         IsOnPlacement = false;
 
@@ -159,14 +163,12 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 queuedData.CustomTrack = null;
 
             CalculateTimes(hit, out var roundedHit, out var roundedJsonTime);
+            roundedHit += (Vector3)vanillaOffset;
             RoundedJsonTime = roundedJsonTime;
             var placementZ = SongBpmTime * EditorScaleController.EditorScale;
             Update360Tracks();
 
-            //this mess of localposition and position assignments are to align the shits up with the grid
-            //and to hopefully not cause IndexOutOfRangeExceptions
-            instantiatedContainer.transform.localPosition =
-                ParentTrack.InverseTransformPoint(hit.Point); //fuck transformedpoint we're doing it ourselves
+            roundedHit = new Vector3(Mathf.Round(roundedHit.x), Mathf.Round(roundedHit.y), placementZ);
 
             var localMax = ParentTrack.InverseTransformPoint(hit.Bounds.max);
             var localMin = ParentTrack.InverseTransformPoint(hit.Bounds.min);
@@ -175,17 +177,15 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             var farTopPoint = localMax.y;
             var farBottomPoint = localMin.y;
 
-            roundedHit = new Vector3(Mathf.Ceil(roundedHit.x), Mathf.Ceil(roundedHit.y), placementZ);
-            instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1f, 0);
-            var x = instantiatedContainer.transform.localPosition.x; //Clamp values to prevent exceptions
-            var y = instantiatedContainer.transform.localPosition.y;
+            var x = roundedHit.x; //Clamp values to prevent exceptions
+            var y = roundedHit.y;
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
-                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)) + 0.5f,
-                instantiatedContainer.transform.localPosition.z);
+                Mathf.Clamp(x, farLeftPoint, farRightPoint),
+                Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)),
+                roundedHit.z);
 
-            OnPhysicsRaycast(hit, roundedHit);
             queuedData.SetTimes(roundedJsonTime, SongBpmTime);
+            OnPhysicsRaycast(hit, roundedHit);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
                 TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));
@@ -226,7 +226,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         if (context.performed && CanClickAndDrag)
         {
-            var dragRay = MainCamera.ScreenPointToRay(MousePosition);
+            var dragRay = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
 
             if (instantiatedContainer != null)
             {
@@ -254,7 +254,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         if (context.performed && CanClickAndDrag)
         {
-            var dragRay = MainCamera.ScreenPointToRay(MousePosition);
+            var dragRay = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
             if (Intersections.Raycast(dragRay, 9, out var dragHit))
             {
                 var con = dragHit.GameObject.GetComponentInParent<ObjectContainer>();
@@ -368,6 +368,8 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
         foreach (var collider in instantiatedContainer.GetComponentsInChildren<IntersectionCollider>(true))
             Destroy(collider);
+        if (instantiatedContainer.GetComponent<ObjectAnimator>() is ObjectAnimator animator)
+            animator.enabled = false;
 
         instantiatedContainer.name = $"Hover {objectDataType}";
     }
@@ -494,7 +496,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return null;
 
-        var ray = MainCamera.ScreenPointToRay(MousePosition);
+        var ray = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
         return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<TBoc>();
     }
 

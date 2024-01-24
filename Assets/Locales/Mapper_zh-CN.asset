@@ -742,18 +742,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 220101281077985280
-    m_Localized: Change Beatmap Version
+    m_Localized: "\u66F4\u6539\u8C31\u9762\u7248\u672C\uFF08v2\u6216v3\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 220102296279908352
-    m_Localized: Changes map version to v2 or v3
+    m_Localized: "\u5C06\u5730\u56FE\u7248\u672C\u4ECEv2\u66F4\u6539\u4E3Av3"
     m_Metadata:
       m_Items: []
   - m_Id: 232868047877242880
-    m_Localized: 'CM has detected Custom BPM changes and
-
-      converted these into
-      Official BPM events'
+    m_Localized: "CM \u5DF2\u68C0\u6D4B\u5230\u81EA\u5B9A\u4E49 BPM \u66F4\u6539\u4E8B\u4EF6\uFF0C\u5E76\u4E14\n\u5C06\u8FD9\u4E9B\u4E8B\u4EF6\u8F6C\u6362\u4E3A\u5B98\u65B9
+      BPM \u66F4\u6539\u4E8B\u4EF6"
     m_Metadata:
       m_Items: []
   - m_Id: 240390057914204160
@@ -780,7 +778,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 294393312377503744
-    m_Localized: "\u6BCF\u5206\u949F\u8282\u62CD\u6570\uFF08BPM\uFF09\r"
+    m_Localized: "\u6BCF\u5206\u949F\u8282\u62CD\u6570\uFF08BPM\uFF09"
     m_Metadata:
       m_Items: []
   references:

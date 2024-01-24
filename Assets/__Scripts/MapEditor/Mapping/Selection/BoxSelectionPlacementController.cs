@@ -42,6 +42,7 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
         if (!Application.isPlaying || instantiatedContainer is null) return;
         Gizmos.color = Color.red;
         var boxyBoy = instantiatedContainer.GetComponent<BoxCollider>();
+        if (boxyBoy == null) return;
         var bounds = new Bounds
         {
             center = boxyBoy.bounds.center,

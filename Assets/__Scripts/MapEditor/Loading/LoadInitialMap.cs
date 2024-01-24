@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 public class LoadInitialMap : MonoBehaviour
 {
     public static Action<PlatformDescriptor> PlatformLoadedEvent;
+    public static PlatformDescriptor Platform;
     public static Action LevelLoadedEvent;
     public static readonly Vector3 PlatformOffset = new Vector3(0, -0.5f, -1.5f);
 
@@ -103,6 +104,7 @@ public class LoadInitialMap : MonoBehaviour
         if (diff.EnvColorWhite != null) descriptor.Colors.WhiteColor = diff.EnvColorWhite.Value;
 
         PlatformLoadedEvent.Invoke(descriptor); //Trigger event for classes that use the platform
+        Platform = descriptor;
 
         loader.UpdateMapData(BeatSaberSongContainer.Instance.Map);
         yield return StartCoroutine(loader.HardRefresh());

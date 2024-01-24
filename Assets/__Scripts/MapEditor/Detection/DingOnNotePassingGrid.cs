@@ -145,6 +145,9 @@ public class DingOnNotePassingGrid : MonoBehaviour
             return; // Chains don't have a hitsound. May want to impplement hitsounds for links later.
         }
 
+        // Skip fake notes
+        if ((objectData as BaseNote).CustomFake) return;
+
         //actual ding stuff
         if (objectData.SongBpmTime == lastCheckedTime || !NoteTypeToDing[((BaseNote)objectData).Type]) return;
         /*

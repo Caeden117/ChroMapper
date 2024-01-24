@@ -10,6 +10,8 @@ namespace Beatmap.Containers
 {
     public class ChainContainer : ObjectContainer
     {
+        private static readonly int colorMultiplier = Shader.PropertyToID("_ColorMult");
+        
         [SerializeField] private GameObject tailNode;
         public NoteContainer AttachedHead;
         private readonly List<GameObject> nodes = new List<GameObject>();
@@ -20,6 +22,7 @@ namespace Beatmap.Containers
         private Vector3 headDirection;
         private bool headPointsToTail;
         private Vector3 interPoint;
+        private MaterialPropertyBlock arrowMaterialPropertyBlock;
 
         public const float
             posOffsetFactor = 0.17333f; // Hardcoded because haven't found exact relationship between ChainScale yet
@@ -40,17 +43,36 @@ namespace Beatmap.Containers
         public override void Setup()
         {
             base.Setup();
+            
             MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
             MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
+
+            arrowMaterialPropertyBlock ??= new MaterialPropertyBlock();
+            
             foreach (var gameObj in indicators) gameObj.GetComponent<ChainIndicatorContainer>().Setup();
+            
             UpdateMaterials();
         }
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = new Vector3(-1.5f, 0.5f, ChainData.SongBpmTime * EditorScaleController.EditorScale);
+            if (!(Animator != null && Animator.AnimatedTrack))
+            {
+                transform.localPosition =
+                    new Vector3(-1.5f, offsetY, ChainData.SongBpmTime * EditorScaleController.EditorScale);
+            }
+
             GenerateChain();
             UpdateCollisionGroups();
+            if (AttachedHead != null && AttachedHead.NoteData != null)
+            {
+                if (!AttachedHead.Animator.AnimatedTrack)
+                {
+                    AttachedHead.UpdateGridPosition();
+                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
+                }
+                AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
+            }
         }
 
         /// <summary>
@@ -89,7 +111,7 @@ namespace Beatmap.Containers
             for (; i < nodes.Count; ++i) nodes[i].SetActive(false);
             for (; i < ChainData.SliceCount - 2; ++i)
             {
-                var newNode = Instantiate(tailNode, transform);
+                var newNode = Instantiate(tailNode, Animator.AnimationThis.transform);
                 newNode.SetActive(true);
                 newNode.GetComponent<MeshRenderer>().sharedMaterial = tailNode.GetComponent<MeshRenderer>().sharedMaterial;
                 Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, tailNode, newNode);
@@ -173,6 +195,13 @@ namespace Beatmap.Containers
         public void SetColor(Color c)
         {
             MaterialPropertyBlock.SetColor(color, c);
+            
+            var arrowColor = Color.Lerp(c, Color.white, Settings.Instance.ArrowColorWhiteBlend);
+            arrowMaterialPropertyBlock.SetColor(color, arrowColor);
+
+            MaterialPropertyBlock.SetFloat(colorMultiplier, Settings.Instance.NoteColorMultiplier);
+            arrowMaterialPropertyBlock.SetFloat(colorMultiplier, Settings.Instance.ArrowColorMultiplier);
+            
             UpdateMaterials();
         }
 
@@ -181,13 +210,24 @@ namespace Beatmap.Containers
             foreach (var c in Colliders)
             {
                 var r = c.GetComponent<MeshRenderer>();
-                MaterialPropertyBlock.SetFloat("_ObjectTime", ChainData.SongBpmTime + c.transform.localPosition.z / EditorScaleController.EditorScale);
+                
+                // i dont like this code smell but whatever
+                var dot = c.transform.GetChild(0).GetComponent<MeshRenderer>();
+
+                var objectTime = ChainData.SongBpmTime + c.transform.localPosition.z / EditorScaleController.EditorScale;
+                MaterialPropertyBlock.SetFloat("_ObjectTime", objectTime);
+                arrowMaterialPropertyBlock.SetFloat("_ObjectTime", objectTime);
+                
                 // This alpha set is a workaround as callbackController can only despawn the entire chain
-                if (UIMode.SelectedMode == UIModeType.Preview || UIMode.SelectedMode == UIModeType.Playing)
-                    MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 0f);
-                else
-                    MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
+                var translucentAlpha = UIMode.SelectedMode == UIModeType.Preview || UIMode.SelectedMode == UIModeType.Playing
+                        ? 0
+                        : Settings.Instance.PastNoteModelAlpha;
+                
+                MaterialPropertyBlock.SetFloat("_TranslucentAlpha", translucentAlpha);
+                arrowMaterialPropertyBlock.SetFloat("_TranslucentAlpha", translucentAlpha);
+                
                 r.SetPropertyBlock(MaterialPropertyBlock);
+                dot.SetPropertyBlock(arrowMaterialPropertyBlock);
             }
 
             foreach (var r in SelectionRenderers) r.SetPropertyBlock(MaterialPropertyBlock);
@@ -213,7 +253,7 @@ namespace Beatmap.Containers
                     if (!IsHeadNote((BaseNote)note)) continue;
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
-                    AttachedHead.transform.localScale = BaseChain.ChainScale;
+                    AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
                     AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                     break;
                 }
@@ -228,7 +268,7 @@ namespace Beatmap.Containers
                 }
                 else
                 {
-                    AttachedHead.transform.localScale = BaseChain.ChainScale;
+                    AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
                     AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
                 }
             }

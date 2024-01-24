@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab5e76f0d02f24262a1e27bd5a4e9da2, type: 3}
+  m_Name: GeometryAppearanceSO
+  m_EditorClassIdentifier: 
+  lightMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  shinyMaterial: {fileID: 2100000, guid: b6ca8728b3ab4ec4cbd9c6b89b7e7efb, type: 2}
+  obstacleMaterial: {fileID: 2100000, guid: ed10b4bf10ee79d49a2f63af13875bac, type: 2}
+  regularMaterial: {fileID: 2100000, guid: 15d58b8add157544c857cc66ccc5e461, type: 2}

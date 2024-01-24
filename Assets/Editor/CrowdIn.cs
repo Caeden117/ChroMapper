@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using SimpleJSON;
 using UnityEditor;
 using UnityEditor.Localization;
@@ -14,7 +16,7 @@ using UnityEngine.Localization.Tables;
 
 public class LocalizationWindow : EditorWindow
 {
-    private static readonly string projectIdentifier = "chromapper";
+    private const int projectId = 414106;
 
     private string apiKey = "";
 
@@ -40,6 +42,18 @@ public class LocalizationWindow : EditorWindow
         var cultures = new List<LocaleIdentifier>();
         foreach (var table in collection.StringTables) cultures.Add(table.LocaleIdentifier);
         return cultures;
+    }
+
+    private static Dictionary<string, int> GetTableNameIdMap(HttpClient client)
+    {
+        var filesUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/files";
+
+        var filesTask = client.GetStringAsync(filesUrl);
+        filesTask.Wait();
+        var filesInfo = JSON.Parse(filesTask.Result);
+
+        var fileData = filesInfo["data"].AsArray.Children.Select(x => x["data"]);
+        return fileData.ToDictionary<JSONNode, string, int>(data => data["name"], data => data["id"]);
     }
 
     public static void ToJson(string apiKey = "", bool upload = false)
@@ -88,68 +102,40 @@ public class LocalizationWindow : EditorWindow
 
             //}
         }
-
+        
         if (upload)
         {
-            var infoUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/info?key={apiKey}&json=true";
-            var actionUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/update-file?key={apiKey}";
-            var addUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/add-file?key={apiKey}";
+            // Get existing file names
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                
+            var filesUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/files";
+            var filesTask = client.GetStringAsync(filesUrl);
+            filesTask.Wait();
+            var filesInfo = JSON.Parse(filesTask.Result);
+            
+            var existingFileNames = filesInfo["data"].AsArray.Children.Select(x => x["data"]["name"].Value);
+            var files = fileData.ToLookup(it => existingFileNames.Contains(it.Key));
 
-            using (var formData = new MultipartFormDataContent())
-            using (var formData2 = new MultipartFormDataContent())
-            using (var client = new HttpClient())
+            // Add new files
+            foreach (var file in files[false])
             {
-                var infoTask = client.GetStringAsync(infoUrl);
-                infoTask.Wait();
-                var info = JSON.Parse(infoTask.Result);
-
-                var files = fileData.ToLookup(it => info["files"].AsArray.Children.Any(a => a["name"].Equals(it.Key)));
-
-                if (files[false].Any(_ => true))
+                if (TryAddStorage(client, file.Key, file.Value, out var storageId))
                 {
-                    foreach (var file in files[false])
-                    {
-                        Debug.Log($"Adding {file.Key}");
-                        formData2.Add(file.Value, $"files[{file.Key}]", $"files[{file.Key}]");
-                    }
-
-                    var addTask = client.PostAsync(addUrl, formData2);
-                    addTask.Wait();
-                    var add = addTask.Result;
-
-                    if (!add.IsSuccessStatusCode)
-                    {
-                        var why = add.Content.ReadAsStringAsync();
-                        why.Wait();
-
-                        Debug.Log("Failed to add files to crowdin");
-                        Debug.Log(why.Result);
-                        return;
-                    }
+                    var fileName = file.Key;
+                    AddFile(client, fileName, storageId);
                 }
+            }
 
-                foreach (var file in files[true])
+            // Update existing files
+            var tableNameIdMap = GetTableNameIdMap(client);
+            foreach (var file in files[true])
+            {
+                if (TryAddStorage(client, file.Key, file.Value, out var storageId))
                 {
-                    Debug.Log($"Updating {file.Key}");
-                    formData.Add(file.Value, $"files[{file.Key}]", $"files[{file.Key}]");
-                }
-
-                formData.Add(new StringContent("update_as_unapproved"), "update_option");
-                var responseTask = client.PostAsync(actionUrl, formData);
-                responseTask.Wait();
-                var response = responseTask.Result;
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var why = response.Content.ReadAsStringAsync();
-                    why.Wait();
-
-                    Debug.Log("Failed to update crowdin");
-                    Debug.Log(why.Result);
-                }
-                else
-                {
-                    Debug.Log("Uploaded files to crowdin");
+                    var fileId = tableNameIdMap[file.Key];
+                    var fileName = file.Key;
+                    UpdateFile(client, fileName, fileId, storageId);
                 }
             }
         }
@@ -181,7 +167,12 @@ public class LocalizationWindow : EditorWindow
 
     public static void FromJson(string apiKey = "", bool download = false)
     {
-        var downloadUrl = $"https://api.crowdin.com/api/project/{projectIdentifier}/export-file?key={apiKey}";
+        var translationsExportsUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/translations/exports";
+
+        using var unAuthedClient = new HttpClient();
+        using var tableInfoClient = new HttpClient();
+        tableInfoClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+        var tableNameIdMap = download ? GetTableNameIdMap(tableInfoClient): new Dictionary<string, int>();
 
         foreach (var collection in LocalizationEditorSettings.GetStringTableCollections())
         {
@@ -192,29 +183,57 @@ public class LocalizationWindow : EditorWindow
             {
                 if (culture.Code.Equals("en")) continue;
 
-                JSONNode json;
+                JSONNode json = new JSONObject();
                 if (download)
                 {
-                    using (var client = new HttpClient())
+                    
+                    // First we need to get export the translation and get the url to it
+                    var fileUrl = "";
+                    if (tableNameIdMap.TryGetValue($"{collectionName}.json", out var id))
                     {
-                        var downloadTask =
-                            client.GetAsync($"{downloadUrl}&file={collectionName}.json&language={culture.Code}");
+                        using var client = new HttpClient();
+                        var stringContent =
+                            new StringContent(
+                                new JSONObject
+                                {
+                                    ["targetLanguageId"] = culture.Code,
+                                    ["fileIds"] = new JSONArray { [0] = id }
+                                }.ToString(), Encoding.UTF8, "application/json");
+                        
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                        var translationExportTask = client.PostAsync(translationsExportsUrl, stringContent);
+
                         try
                         {
-                            downloadTask.Wait();
-                            var stringTask = downloadTask.Result.Content.ReadAsStringAsync();
+                            translationExportTask.Wait();
+                            var fileUrlTask = translationExportTask.Result.Content.ReadAsStringAsync();
+                            fileUrlTask.Wait();
+
+                            fileUrl = JSON.Parse(fileUrlTask.Result)["data"]["url"];
+                        }
+                        catch (Exception)
+                        {
+                            // 404 = Import empty, anything else = skip
+                            if (translationExportTask.Result.StatusCode != HttpStatusCode.NotFound) continue;
+                        }
+                    }
+
+                    // Now get retrieve the exported translation file from that url
+                    if (!string.IsNullOrEmpty(fileUrl))
+                    {
+                        // The url contains the auth
+                        var translationFileTask = unAuthedClient.GetAsync(fileUrl);
+                        try
+                        {
+                            translationFileTask.Wait();
+                            var stringTask = translationFileTask.Result.Content.ReadAsStringAsync();
                             stringTask.Wait();
-
-                            if (stringTask.Result.Contains("Language was not found"))
-                                Debug.LogError($"Language with code {culture.Code} was not found on CrowdIn");
-
                             json = JSON.Parse(stringTask.Result);
                         }
                         catch (Exception)
                         {
                             // 404 = Import empty, anything else = skip
-                            if (downloadTask.Result.StatusCode != HttpStatusCode.NotFound) continue;
-                            json = new JSONObject();
+                            if (translationFileTask.Result.StatusCode != HttpStatusCode.NotFound) continue;
                         }
                     }
                 }
@@ -258,6 +277,97 @@ public class LocalizationWindow : EditorWindow
         AssetDatabase.SaveAssets();
     }
 
+    private static bool TryAddStorage(HttpClient client, string fileName, HttpContent fileContent, out int id)
+    {
+        const string storagesUrl = "https://api.crowdin.com/api/v2/storages";
+        
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            Content = fileContent,
+            RequestUri = new Uri(storagesUrl),
+        };
+        request.Headers.Add("Crowdin-API-FileName", fileName);
+        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                    
+        var storageResponseTask = client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+        storageResponseTask.Wait();
+        
+        if (!storageResponseTask.Result.IsSuccessStatusCode)
+        {
+            Debug.LogWarning($"Failed to add {fileName} to storage");
+            id = 0;
+            return false;
+        }
+        
+        request.Headers.Remove("Crowdin-API-FileName");
+        
+        var stringTask = storageResponseTask.Result.Content.ReadAsStringAsync();
+        stringTask.Wait();
+
+        var json = JSON.Parse(stringTask.Result);
+
+        id = json["data"]["id"].AsInt;
+        return true;
+    }
+
+    private static void UpdateFile(HttpClient client, string fileName, int fileId, int storageId)
+    {
+        var filesUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/files/{fileId}";
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Put,
+            Content = new StringContent(
+                new JSONObject { ["storageId"] = storageId, ["updateOption"] = "keep_translations" }.ToString(),
+                Encoding.UTF8,
+                "application/json"),
+            RequestUri = new Uri(filesUrl),
+        };
+                    
+        var updateFileTask = client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+        updateFileTask.Wait();
+
+        if (updateFileTask.Result.IsSuccessStatusCode)
+        {
+            Debug.Log($"Updated file ({fileName})");
+        }
+        else
+        {
+            var errorTask = updateFileTask.Result.Content.ReadAsStringAsync();
+            errorTask.Wait();
+            Debug.LogWarning($"Failed to update file (${fileName}): {errorTask.Result}");
+        }
+    }
+    
+    private static void AddFile(HttpClient client, string fileName, int storageId)
+    {
+        var filesUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/files/";
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Put,
+            Content = new StringContent(
+                new JSONObject { ["storageId"] = storageId, ["name"] = fileName }.ToString(), Encoding.UTF8,
+                "application/json"),
+            RequestUri = new Uri(filesUrl),
+        };
+                    
+        var addFileTask = client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+        addFileTask.Wait();
+
+        if (addFileTask.Result.IsSuccessStatusCode)
+        {
+            Debug.Log($"Added file (${fileName})");
+        }
+        else
+        {
+            var errorTask = addFileTask.Result.Content.ReadAsStringAsync();
+            errorTask.Wait();
+            Debug.LogWarning($"Failed to add file (${fileName}): {errorTask.Result}");
+        }
+    }
+    
     private static JSONNode GetNodeFromFile(string file)
     {
         if (!File.Exists(file)) return new JSONObject();

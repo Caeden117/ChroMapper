@@ -79,6 +79,8 @@ namespace Beatmap.V2
             }
         }
 
+        public override string CustomKeyAnimation { get; } = "_animation";
+
         public override string CustomKeyTrack { get; } = "_track";
 
         public override string CustomKeyColor { get; } = "_color";
@@ -89,9 +91,27 @@ namespace Beatmap.V2
 
         public override string CustomKeyLocalRotation { get; } = "_localRotation";
 
+        public override string CustomKeySpawnEffect { get; } = "_disableSpawnEffect";
+
+        public override string CustomKeyNoteJumpMovementSpeed { get; } = "_noteJumpMovementSpeed";
+
+        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "_noteJumpStartBeatOffset";
+
         public override string CustomKeySize { get; } = "_scale";
 
-        protected override void ParseCustom() => base.ParseCustom();
+        protected sealed override void ParseCustom()
+        {
+            base.ParseCustom();
+
+            CustomFake = (CustomData?.HasKey("_fake") ?? false) ? CustomData["_fake"].AsBool : false;
+        }
+
+        protected internal override JSONNode SaveCustom()
+        {
+            CustomData = base.SaveCustom();
+            if (CustomFake) CustomData["_fake"] = true; else CustomData.Remove("_fake");
+            return CustomData;
+        }
 
         public override bool IsChroma() =>
             CustomData != null && CustomData.HasKey("_color") && CustomData["_color"].IsArray;
@@ -99,8 +119,7 @@ namespace Beatmap.V2
 
         public override bool IsNoodleExtensions() =>
             CustomData != null &&
-            ((CustomData.HasKey("_animation") && CustomData["_animation"].IsArray) ||
-             (CustomData.HasKey("_fake") && CustomData["_fake"].IsBoolean) ||
+            ((CustomData.HasKey("_fake") && CustomData["_fake"].IsBoolean) ||
              (CustomData.HasKey("_interactable") && CustomData["_interactable"].IsBoolean) ||
              (CustomData.HasKey("_localRotation") && CustomData["_localRotation"].IsArray) ||
              (CustomData.HasKey("_noteJumpMovementSpeed") && CustomData["_noteJumpMovementSpeed"].IsNumber) ||
@@ -109,8 +128,7 @@ namespace Beatmap.V2
              (CustomData.HasKey("_position") && CustomData["_position"].IsArray) ||
              (CustomData.HasKey("_rotation") &&
               (CustomData["_rotation"].IsArray || CustomData["_rotation"].IsNumber)) ||
-             (CustomData.HasKey("_scale") && CustomData["_scale"].IsArray) ||
-             (CustomData.HasKey("_track") && CustomData["_track"].IsString));
+             (CustomData.HasKey("_scale") && CustomData["_scale"].IsArray));
 
         public override bool IsMappingExtensions() =>
             (Width >= 1000 || Type >= 1000 || PosX < 0 || PosX > 3) &&
