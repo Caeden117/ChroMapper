@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Animations;
 using Beatmap.Appearances;
@@ -40,7 +40,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
     internal override void UnsubscribeToCallbacks()
     {
         SpawnCallbackController.NotePassedThreshold -= SpawnCallback;
-        SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
+        SpawnCallbackController.RecursiveNoteCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         UIMode.UIModeSwitched -= OnUIModeSwitch;

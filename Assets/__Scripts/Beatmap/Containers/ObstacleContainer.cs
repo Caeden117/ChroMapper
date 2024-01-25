@@ -75,9 +75,9 @@ namespace Beatmap.Containers
             return length;
         }
 
-        public (Vector3, Vector3) ReadSizePosition()
+        public (Vector3 size, Vector3 position) ReadSizePosition()
         {
-            var length = GetLength();
+            var length = Mathf.Abs(GetLength());
 
             var bounds = ObstacleData.GetShape();
 
@@ -99,7 +99,7 @@ namespace Beatmap.Containers
         {
             var localRotation = Vector3.zero;
             var length = GetLength();
-            (var size, var position) = ReadSizePosition();
+            var (size, position) = ReadSizePosition();
 
             if (ObstacleData.CustomLocalRotation != null)
                 localRotation = ObstacleData.CustomLocalRotation.ReadVector3();

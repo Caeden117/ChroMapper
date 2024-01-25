@@ -180,11 +180,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             var x = roundedHit.x; //Clamp values to prevent exceptions
             var y = roundedHit.y;
             instantiatedContainer.transform.localPosition = new Vector3(
-                Mathf.Clamp(x, farLeftPoint + 0.5f, farRightPoint - 0.5f),
+                Mathf.Clamp(x, farLeftPoint, farRightPoint),
                 Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)),
                 roundedHit.z);
-
-            instantiatedContainer.transform.localPosition = roundedHit;
 
             queuedData.SetTimes(roundedJsonTime, SongBpmTime);
             OnPhysicsRaycast(hit, roundedHit);

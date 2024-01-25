@@ -77,7 +77,6 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                 roundedHit.z = songBpmDuration * EditorScaleController.EditorScale;
 
                 var position = (Vector3)originPosition;
-                position.z = startSongBpmTime * EditorScaleController.EditorScale;
                 var newLocalScale = roundedHit - position + new Vector3(precision_r, precision_r, 0);
                 if (newLocalScale.x <= 0)
                 {

@@ -132,12 +132,9 @@ namespace Beatmap.Animations
             {
                 duration = obs.ObstacleData.DurationSongBpm;
                 (var wallSize, var wallPosition) = obs.ReadSizePosition();
+                wallPosition -= new Vector3(0, 0, 0.4f);
                 OffsetPosition.Preload(wallPosition);
                 Scale.Preload(new Vector3(WallClamp(wallSize.x), WallClamp(wallSize.y), WallClamp(wallSize.z)));
-            }
-            if (container is NoteContainer note)
-            {
-                note.DirectionTarget.localPosition = new Vector3(0, 0, 0.4f);
             }
 
             if (obj.CustomLocalRotation is JSONNode rot)
@@ -307,10 +304,13 @@ namespace Beatmap.Animations
             if (container?.ObjectData is BaseGrid obj)
             {
                 var NoodleAnimationLifetime = (time > time_end) ? -1 : 1;
-                container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
-                if (container is NoteContainer nc)
+                if (!(container is ChainContainer))
                 {
-                    nc.ArrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                    container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                    if (container is NoteContainer nc)
+                    {
+                        nc.ArrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                    }
                 }
                 AnimatedLife =
                        (_time != null && _time < obj.SongBpmTime)

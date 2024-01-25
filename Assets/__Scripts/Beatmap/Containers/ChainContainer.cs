@@ -56,7 +56,12 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
-            transform.localPosition = new Vector3(-1.5f, offsetY, ChainData.SongBpmTime * EditorScaleController.EditorScale);
+            if (!(Animator != null && Animator.AnimatedTrack))
+            {
+                transform.localPosition =
+                    new Vector3(-1.5f, offsetY, ChainData.SongBpmTime * EditorScaleController.EditorScale);
+            }
+
             GenerateChain();
             UpdateCollisionGroups();
             if (AttachedHead != null && AttachedHead.NoteData != null)
@@ -106,7 +111,7 @@ namespace Beatmap.Containers
             for (; i < nodes.Count; ++i) nodes[i].SetActive(false);
             for (; i < ChainData.SliceCount - 2; ++i)
             {
-                var newNode = Instantiate(tailNode, transform);
+                var newNode = Instantiate(tailNode, Animator.AnimationThis.transform);
                 newNode.SetActive(true);
                 newNode.GetComponent<MeshRenderer>().sharedMaterial = tailNode.GetComponent<MeshRenderer>().sharedMaterial;
                 Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, tailNode, newNode);

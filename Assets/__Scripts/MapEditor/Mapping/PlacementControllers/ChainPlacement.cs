@@ -57,7 +57,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
 
             foreach (BaseChain chainData in generatedObjects)
             {
-                objectContainerCollection.SpawnObject(chainData, false); ;
+                objectContainerCollection.SpawnObject(chainData, false);
             }
 
             SelectionController.SelectedObjects = new HashSet<BaseObject>(generatedObjects);

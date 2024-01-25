@@ -306,8 +306,10 @@ namespace Beatmap.Converters
             if (node == null) return null;
             if (!node.Children.Any()) return null;
             var n = node.Clone();
-
-            var speed = n["_preciseSpeed"] ?? n["_speed"];
+            
+            if (n.HasKey("_preciseSpeed")) n["speed"] = n["_preciseSpeed"];
+            else if (n.HasKey("_speed")) n["speed"] = n.HasKey("speed") ? n["speed"] : n["_speed"];
+            
             if (n.HasKey("_color")) n["color"] = n.HasKey("color") ? n["color"] : n["_color"];
             if (n.HasKey("_lightID")) n["lightID"] = n.HasKey("lightID") ? n["lightID"] : n["_lightID"];
             if (n.HasKey("_easing")) n["easing"] = n.HasKey("easing") ? n["easing"] : n["_easing"];
@@ -316,7 +318,6 @@ namespace Beatmap.Converters
             if (n.HasKey("_rotation")) n["rotation"] = n.HasKey("rotation") ? n["rotation"] : n["_rotation"];
             if (n.HasKey("_step")) n["step"] = n.HasKey("step") ? n["step"] : n["_step"];
             if (n.HasKey("_prop")) n["prop"] = n.HasKey("prop") ? n["prop"] : n["_prop"];
-            if (speed != null) n["speed"] = speed;
             if (n.HasKey("_direction")) n["direction"] = n.HasKey("direction") ? n["direction"] : n["_direction"];
             if (n.HasKey("_lockPosition"))
                 n["lockRotation"] = n.HasKey("lockRotation") ? n["lockRotation"] : n["_lockPosition"];
