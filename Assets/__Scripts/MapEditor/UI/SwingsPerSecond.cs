@@ -36,7 +36,7 @@ public class SwingsPerSecond
         {
             if (obstacle.Width >= 2 || obstacle.PosX == 1 || obstacle.PosX == 2)
             {
-                var obstacleEnd = (obstacle.SongBpmTime + obstacle.Duration) / songBpm * 60;
+                var obstacleEnd = (obstacle.SongBpmTime + obstacle.DurationSongBpm) / songBpm * 60;
                 lastInteractiveObstacleTime = Mathf.Max(lastInteractiveObstacleTime, obstacleEnd);
             }
         }
@@ -55,7 +55,7 @@ public class SwingsPerSecond
         {
             if (obstacle.Width >= 2 || obstacle.PosX == 1 || obstacle.PosX == 2)
             {
-                firstInteractiveObstacleTime = (obstacle.SongBpmTime + obstacle.Duration) / songBpm * 60;
+                firstInteractiveObstacleTime = (obstacle.SongBpmTime + obstacle.DurationSongBpm) / songBpm * 60;
                 break;
             }
         }
