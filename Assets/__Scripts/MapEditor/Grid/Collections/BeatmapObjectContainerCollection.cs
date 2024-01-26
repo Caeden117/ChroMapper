@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Beatmap.Base;
+using Beatmap.Base.Customs;
 using Beatmap.Comparers;
 using Beatmap.Containers;
 using Beatmap.Enums;
@@ -131,6 +132,32 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <returns>A casted <see cref="BeatmapObjectContainerCollection" />.</returns>
     public static T GetCollectionForType<T>(ObjectType type) where T : BeatmapObjectContainerCollection
     {
+        loadedCollections.TryGetValue(type, out var collection);
+        return collection as T;
+    }
+
+    /// <summary>
+    ///     Grab a <see cref="BeatmapObjectContainerCollection" /> whose <see cref="ContainerType" /> matches the given type.
+    /// </summary>
+    /// <typeparam name="T">A specific inheriting class to cast to.</typeparam>
+    /// <param name="type">The specific type of <see cref="BaseObject" /> that the collection must contain.</param>
+    /// <returns>A casted <see cref="BeatmapObjectContainerCollection" />.</returns>
+    public static T GetCollectionForType<T, TBaseObject>() where T : BeatmapObjectContainerCollection where TBaseObject : BaseObject
+    {
+        // god C# please let us switch directly by types instead of this garbage workaround
+        var type = typeof(TBaseObject) switch
+        {
+            Type t when t == typeof(BaseNote) => ObjectType.Note,
+            Type t when t == typeof(BaseObstacle) => ObjectType.Obstacle,
+            Type t when t == typeof(BaseEvent) => ObjectType.Event,
+            Type t when t == typeof(BaseArc) => ObjectType.Arc,
+            Type t when t == typeof(BaseChain) => ObjectType.Chain,
+            Type t when t == typeof(BaseBpmEvent) => ObjectType.BpmChange,
+            Type t when t == typeof(BaseCustomEvent) => ObjectType.CustomEvent,
+            Type t when t == typeof(BaseBookmark) => ObjectType.Bookmark,
+            _ => throw new ArgumentException(nameof(TBaseObject))
+        };
+
         loadedCollections.TryGetValue(type, out var collection);
         return collection as T;
     }

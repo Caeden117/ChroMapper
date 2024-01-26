@@ -42,9 +42,8 @@ public class MapLoader : MonoBehaviour
 
     public void LoadObjects<T>(List<T> objects) where T : BaseObject
     {
-        if (objects.Count == 0) return;
-        
-        var collection = BeatmapObjectContainerCollection.GetCollectionForType<BeatmapObjectContainerCollection<T>>(objects[0].ObjectType);
+        var collection = BeatmapObjectContainerCollection.GetCollectionForType<BeatmapObjectContainerCollection<T>, T>();
+
         if (collection == null) return;
         
         // We need to force sort our objects when loading externally for Binary Search operations and ordered algorithms to work.
