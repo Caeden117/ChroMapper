@@ -331,3 +331,6 @@ UserSettings/
 *.lighting
 
 ./quest-utils
+
+# NuGetForUnity packages folder (developers will automatically download NuGet packages when loading the project)
+/Assets/Packages

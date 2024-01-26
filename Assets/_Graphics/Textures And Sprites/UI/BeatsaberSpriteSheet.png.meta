@@ -204,7 +204,7 @@ TextureImporter:
       213: -5016360678734447577
     second: unused_1
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -224,6 +224,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -255,10 +257,14 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 1
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -284,6 +290,18 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -1964,6 +1982,74 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      360DegreesIcon: 21300000
+      90DegreesIcon: 21300008
+      AddIcon: 21300128
+      AllTimeIcon: 21300048
+      ArcadeIcon: 21300126
+      ArrowIcon: 21300038
+      AutoRestartIcon: 21300040
+      BatteryIcon: 21300020
+      BombCutInfoIcon: 21300070
+      BombIcon: 21300078
+      CampaignIcon: 21300114
+      Checkmark: 21300080
+      CheckmarkGlow: 21300044
+      ClockIcon: 21300082
+      CloseIcon: 21300074
+      CutAngleInfoIcon: 21300094
+      DebrisIcon: 21300100
+      DeleteIcon: 21300112
+      DetailedHUDIcon: 21300118
+      DisappearingArrows: 21300010
+      EditIcon: 21300046
+      EditorIcon: 21300064
+      EnergyIcon: 21300018
+      FailIcon: 21300032
+      FailIconGlow: 21300092
+      FastNotesIcon: 21300016
+      FasterSongIcon: 21300030
+      FavoritesIcon: 21300068
+      FavoritesIconStroke: 21300086
+      FinishedIcon: 21300124
+      FriendsIcon: 21300098
+      GameNoteIcon: 21300052
+      GhostNotes: 21300026
+      GlobalIcon: 21300076
+      HeightIcon: 21300106
+      InstaFailIcon: 21300028
+      LeftHandedIcon: 21300056
+      LevelClearedIcon: 21300054
+      LightIcon: 21300060
+      LockIcon: 21300066
+      MeasureIcon: 21300110
+      MetronomeIcon: 21300102
+      NPSIcon: 21300104
+      NoArrowsIcon: 21300004
+      NoBombsIcon: 21300024
+      NoFailIcon: 21300036
+      NoHUDIcon: 21300088
+      NoObstaclesIcon: 21300034
+      NoneIcon: 21300014
+      NotFailedYetIcon: 21300122
+      NotFinishedYetIcon: 21300120
+      NoteCutInfoIcon: 21300062
+      ObstacleIcon: 21300050
+      ObstaclesInfoIcon: 21300096
+      PartyIcon: 21300108
+      PlayerIcon: 21300072
+      PreciseAnglesIcon: 21300012
+      ReloadIcon: 21300084
+      SFXIcon: 21300116
+      SingleSaberIcon: 21300006
+      SlowerSongIcon: 21300022
+      StandardBeatmapCharacteristicIcon: 21300002
+      StaticLightsIcon: 21300042
+      TodayIcon: 21300090
+      TutorialIcon: 21300058
+      unused_1: -5016360678734447577
+      unused_Line: -4073845044900155985
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

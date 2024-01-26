@@ -12,7 +12,7 @@ using Beatmap.V3.Customs;
 using SimpleJSON;
 using UnityEngine;
 
-public class BPMChangeGridContainer : BeatmapObjectContainerCollection
+public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEvent>
 {
     // We cap the amount of BPM Changes in the shader to reduce memory and have it work on OpenGL/Vulkan/Metal.
     // Unless you have over 170 BPM Changes within a section of a song, this SHOULD be fine.
@@ -84,22 +84,20 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     {
         BaseBpmEvent lastChange = null;
 
-        foreach (var obj in LoadedObjects)
+        foreach (var obj in MapObjects)
         {
-            var bpmChange = obj as BaseBpmEvent;
-
             if (lastChange == null)
             {
-                bpmChange.Beat = Mathf.CeilToInt(bpmChange.JsonTime);
+                obj.Beat = Mathf.CeilToInt(obj.JsonTime);
             }
             else
             {
                 var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-                var passedBeats = (bpmChange.JsonTime - lastChange.JsonTime - 0.01f) / songBpm * lastChange.Bpm;
-                bpmChange.Beat = lastChange.Beat + Mathf.CeilToInt(passedBeats);
+                var passedBeats = (obj.JsonTime - lastChange.JsonTime - 0.01f) / songBpm * lastChange.Bpm;
+                obj.Beat = lastChange.Beat + Mathf.CeilToInt(passedBeats);
             }
 
-            lastChange = bpmChange;
+            lastChange = obj;
         }
 
         RefreshGridProperties();
@@ -196,9 +194,9 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     /// <returns>The last <see cref="BaseBpmEvent" /> before the given beat (or <see cref="null" /> if there is none).</returns>
     public BaseBpmEvent FindLastBpm(float beatTimeInSongBpm, bool inclusive = true)
     {
-        if (inclusive)
-            return LoadedObjects.LastOrDefault(x => x.SongBpmTime <= beatTimeInSongBpm + 0.01f) as BaseBpmEvent;
-        return LoadedObjects.LastOrDefault(x => x.SongBpmTime + 0.01f < beatTimeInSongBpm) as BaseBpmEvent;
+        return inclusive
+            ? MapObjects.FindLast(x => x.SongBpmTime <= beatTimeInSongBpm + 0.01f)
+            : MapObjects.FindLast(x => x.SongBpmTime + 0.01f < beatTimeInSongBpm);
     }
 
     /// <summary>
@@ -209,9 +207,9 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     /// <returns>The next <see cref="BaseBpmEvent" /> after the given beat (or <see cref="null" /> if there is none).</returns>
     public BaseBpmEvent FindNextBpm(float beatTimeInSongBpm, bool inclusive = false)
     {
-        if (inclusive)
-            return LoadedObjects.FirstOrDefault(x => x.SongBpmTime >= beatTimeInSongBpm - 0.01f) as BaseBpmEvent;
-        return LoadedObjects.FirstOrDefault(x => x.SongBpmTime - 0.01f > beatTimeInSongBpm) as BaseBpmEvent;
+        return inclusive
+            ? MapObjects.Find(x => x.SongBpmTime >= beatTimeInSongBpm - 0.01f)
+            : MapObjects.Find(x => x.SongBpmTime - 0.01f > beatTimeInSongBpm);
     }
 
     private BaseBpmEvent DefaultEvent()
@@ -224,11 +222,11 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     public float JsonTimeToSongBpmTime(float jsonTime)
     {
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-        var bpms = new List<BaseBpmEvent> { DefaultEvent() };
-        bpms.AddRange(LoadedObjects.Where(x => x.JsonTime <= jsonTime).Cast<BaseBpmEvent>());
+        var bpms = MapObjects.FindAll(x => x.JsonTime <= jsonTime);
+        bpms.Insert(0, DefaultEvent());
 
         var currentSongBeats = 0f;
-        for (int i = 0; i < bpms.Count() - 1; i++)
+        for (int i = 0; i < bpms.Count - 1; i++)
         {
             var bpmChange = bpms[i];
             var nextBpmChange = bpms[i + 1];
@@ -245,8 +243,8 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection
     public float SongBpmTimeToJsonTime(float songBpmTime)
     {
         var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-        var bpms = new List<BaseBpmEvent> { DefaultEvent() };
-        bpms.AddRange(LoadedObjects.Cast<BaseBpmEvent>());
+        var bpms = MapObjects.FindAll(x => x.SongBpmTime <= songBpmTime);
+        bpms.Insert(0, DefaultEvent());
 
         var seconds = songBpmTime * (60f / songBpm);
 

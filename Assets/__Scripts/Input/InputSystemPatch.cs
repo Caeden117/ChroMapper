@@ -71,7 +71,7 @@ public class InputSystemPatch : MonoBehaviour
         inputPatchHarmony.Patch(original, null, null, new HarmonyMethod(GetType(), nameof(Transpiler)));
     }
 
-    private void OnDestroy() => inputPatchHarmony?.UnpatchAll();
+    private void OnDestroy() => inputPatchHarmony?.UnpatchSelf();
 
     private static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator,
         IEnumerable<CodeInstruction> instructions)
@@ -82,7 +82,7 @@ public class InputSystemPatch : MonoBehaviour
             if (codes[i].opcode == OpCodes.Switch) // Catch our Switch statement in the original function
             {
                 var returnLabel = generator.DefineLabel();
-                codes[codes.Count - 1].labels.Add(returnLabel);
+                codes[^1] = codes[^1].WithLabels(returnLabel);
 
                 codes.InsertRange(i - 3, new List<CodeInstruction>() // Take a few steps back and inject our code
                 {

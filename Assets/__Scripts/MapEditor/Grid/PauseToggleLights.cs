@@ -32,6 +32,7 @@ public class PauseToggleLights : MonoBehaviour
 
     private void PlatformLoaded(PlatformDescriptor platform) => descriptor = platform;
 
+    // TODO(Caeden): oh go dwhat the fuck is this, optimize it???
     private void PlayToggle(bool isPlaying)
     {
         lastEvents.Clear();
@@ -42,7 +43,7 @@ public class PauseToggleLights : MonoBehaviour
 
         if (isPlaying)
         {
-            var allEvents = eventGrid.LoadedObjects.Cast<BaseEvent>().Reverse();
+            var allEvents = eventGrid.MapObjects.Reverse<BaseEvent>();
             foreach (var e in allEvents)
             {
                 if (e.JsonTime <= atsc.CurrentJsonTime && !e.IsLegacyChroma)

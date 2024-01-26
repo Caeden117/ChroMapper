@@ -16,7 +16,127 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 8c01df2a9e2e9254099a9aabd160e28d
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 1411c398524482f409501269230bab2b
+    m_Address: Contributors_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: a1b2a80d039a1294fb15e297b29b0654
+    m_Address: Contributors_en-PT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-PT
+  - m_GUID: 883e08d6981d70949aa461f5b0efc2b9
+    m_Address: Contributors_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
+  - m_GUID: 7d243bcc9348bd34ab47236f8648b568
+    m_Address: Mapper_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: 2421f46aee3c43d42bd48d9b835bc2c3
+    m_Address: Mapper_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
+  - m_GUID: 4932ab3a5fea4f142854aae14cdd935f
+    m_Address: Mapper_en-PT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-PT
+  - m_GUID: 470ffe3707b612a44b1b7340c0ce79e7
+    m_Address: SongEditMenu_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: f89ca4bb7a1abfb4b952f4eab9c9f1a3
+    m_Address: SongEditMenu_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
+  - m_GUID: 4ca08b2db52d42947aeb0c237cbbae0c
+    m_Address: SongEditMenu_en-PT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-PT
+  - m_GUID: 5b795ca38bfbbdd428d68e063bfd443e
+    m_Address: PersistentUI_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: e8388dd1f46063b49a999fde569a1808
+    m_Address: PersistentUI_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
+  - m_GUID: 3495623fced9ed142b10be736fc03e89
+    m_Address: PersistentUI_en-PT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-PT
+  - m_GUID: 53d557cb44b215146879d0ef52d6b1a4
+    m_Address: Options_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: 10cc68382267cc448bceff1743124f52
+    m_Address: Options_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
+  - m_GUID: 0a746275d9e43c0468fdb3a896f29937
+    m_Address: Options_en-PT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-PT
+  - m_GUID: effd72c2e9a3d284abeaf195f2793c10
+    m_Address: SongSelectMenu_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: af21f8ffe1f7a4f4cbd9977ffcb77f1b
+    m_Address: SongSelectMenu_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
+  - m_GUID: 9f8b7aa8fcfe1004a91f1f5dc2600a5b
+    m_Address: SongSelectMenu_en-PT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-PT
+  - m_GUID: 3ef08bb38c24ba24e8c4c1494c17d68a
+    m_Address: FirstBoot_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: 44a76d739f8b20042bd6d08c161a82b6
+    m_Address: FirstBoot_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
+  - m_GUID: 534769eb482402742a7398d1d886bbf0
+    m_Address: FirstBoot_en-PT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-PT
+  - m_GUID: 28909bd567038004d9e8797b6646a259
+    m_Address: MultiMapping_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: fcc74104f0c98014a9620db02ab8c217
+    m_Address: MultiMapping_en-PT
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-PT
+  - m_GUID: 6f66ca6c7e33cbb4abfcf0145e436701
+    m_Address: MultiMapping_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:

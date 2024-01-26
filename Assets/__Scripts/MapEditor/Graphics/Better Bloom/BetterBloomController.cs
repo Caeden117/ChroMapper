@@ -34,13 +34,13 @@ public class BetterBloomController : MonoBehaviour
             MethodBase setupBloom = ppPass.GetMethod("SetupBloom",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public,
                 Type.DefaultBinder,
-                new[] { typeof(CommandBuffer), typeof(int), typeof(Material) }, new ParameterModifier[] { });
+                new[] { typeof(CommandBuffer), typeof(RenderTargetIdentifier), typeof(Material) }, new ParameterModifier[] { });
             var transpiler = new HarmonyMethod(typeof(BetterBloomController), nameof(PatchSetupBloom));
             betterBloomHarmony.Patch(setupBloom, transpiler: transpiler);
         }
     }
 
-    private void OnDestroy() => betterBloomHarmony.UnpatchAll(betterBloomID);
+    private void OnDestroy() => betterBloomHarmony.UnpatchSelf();
 
     /*
      * Replace the native IL for the "SetupBloom" function to remove bit shifting to the right.

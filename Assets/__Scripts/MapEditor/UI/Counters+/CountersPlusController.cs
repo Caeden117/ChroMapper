@@ -42,8 +42,7 @@ public class CountersPlusController : MonoBehaviour
     [FormerlySerializedAs("seconds")][HideInInspector] public int seconds;
 
 
-    public int NotesCount =>
-       noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type != (int)NoteType.Bomb).Count();
+    public int NotesCount => noteGrid.MapObjects.CountNoAlloc(note => note.Type != (int)NoteType.Bomb);
 
 
     public float NPSCount => NotesCount / cameraAudioSource.clip.length;
@@ -65,13 +64,13 @@ public class CountersPlusController : MonoBehaviour
     }
 
     public int BombCount
-        => noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Bomb).Count();
+        => noteGrid.MapObjects.CountNoAlloc(note => note.Type == (int)NoteType.Bomb);
 
-    public int ObstacleCount => obstacleGrid.LoadedObjects.Count;
+    public int ObstacleCount => obstacleGrid.MapObjects.Count;
 
-    public int EventCount => eventGrid.LoadedObjects.Count;
+    public int EventCount => eventGrid.MapObjects.Count;
 
-    public int BPMCount => bpm.LoadedObjects.Count;
+    public int BPMCount => bpm.MapObjects.Count;
 
     public int SelectedCount => SelectionController.SelectedObjects.Count;
 
@@ -84,10 +83,8 @@ public class CountersPlusController : MonoBehaviour
     {
         get
         {
-            var redCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Red)
-                .Count();
-            var blueCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Blue)
-                .Count();
+            var redCount = noteGrid.MapObjects.CountNoAlloc(note => note.Type == (int)NoteType.Red);
+            var blueCount = noteGrid.MapObjects.CountNoAlloc(note => note.Type == (int)NoteType.Blue);
             return blueCount == 0 ? 0f : redCount / (float)blueCount;
         }
     }

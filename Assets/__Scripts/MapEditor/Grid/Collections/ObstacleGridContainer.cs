@@ -7,7 +7,7 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class ObstacleGridContainer : BeatmapObjectContainerCollection
+public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstacle>
 {
     [SerializeField] private GameObject obstaclePrefab;
     [FormerlySerializedAs("obstacleAppearanceSO")][SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
@@ -50,12 +50,10 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     {
         if (UIMode.AnimationMode)
         {
-            SpawnSortedObjects = UnsortedObjects
-                .Select(o => o as BaseObstacle)
+            SpawnSortedObjects = MapObjects
                 .OrderBy(o => o.SpawnSongBpmTime)
                 .ToArray();
-            DespawnSortedObjects = UnsortedObjects
-                .Select(o => o as BaseObstacle)
+            DespawnSortedObjects = MapObjects
                 .OrderBy(o => o.DespawnSongBpmTime)
                 .ToArray();
             RefreshWalls();
@@ -88,7 +86,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
     {
         if (!UIMode.AnimationMode) return;
 
-        var time = AudioTimeSyncController.CurrentSongBpmTime;
+        var time = AudioTimeSyncController.CurrentJsonTime;
         if (AudioTimeSyncController.IsPlaying)
         {
             while (spawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[spawnIndex].SpawnSongBpmTime)
@@ -118,7 +116,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
 
     private void RefreshWalls()
     {
-        var time = AudioTimeSyncController.CurrentSongBpmTime;
+        var time = AudioTimeSyncController.CurrentJsonTime;
         foreach (var obj in LoadedContainers.Values.ToList())
         {
             RecycleContainer(obj.ObjectData);

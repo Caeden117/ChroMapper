@@ -107,7 +107,7 @@ public class LoadInitialMap : MonoBehaviour
         Platform = descriptor;
 
         loader.UpdateMapData(BeatSaberSongContainer.Instance.Map);
-        yield return StartCoroutine(loader.HardRefresh());
+        loader.HardRefresh();
         LevelLoadedEvent?.Invoke();
     }
 }

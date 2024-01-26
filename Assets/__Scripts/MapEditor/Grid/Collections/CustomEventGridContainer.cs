@@ -12,7 +12,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInput.ICustomEventsContainerActions
+public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCustomEvent>, CMInput.ICustomEventsContainerActions
 {
     [SerializeField] private GameObject customEventPrefab;
     [SerializeField] private GameObject geometryPrefab;
@@ -46,8 +46,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     public void LoadAnimationTracks()
     {
         playerCamera.ClearPlayerTracks();
-        var events = LoadedObjects.Select(ev => ev as BaseCustomEvent);
-        foreach (var ev in events)
+        // TODO(Caeden): Convert to Span<> iteration
+        foreach (var ev in MapObjects)
         {
             var tracks = ev.CustomTrack switch {
                 JSONArray arr => arr,
@@ -126,21 +126,21 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             CreateNewType();
     }
 
-    public override IEnumerable<BaseObject> GrabSortedObjects() =>
-        UnsortedObjects.OrderBy(x => x.JsonTime).ThenBy(x => (x as BaseCustomEvent).Type);
-
     public void RefreshEventsByTrack()
     {
         EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
 
-        foreach (var loadedObject in UnsortedObjects)
+        //foreach (var loadedObject in UnsortedObjects)
+        for (var i = 0; i < MapObjects.Count; i++)
         {
-            var customEvent = loadedObject as BaseCustomEvent;
-            List<string> tracks = customEvent.CustomTrack switch {
+            var customEvent = MapObjects[i];
+
+            var tracks = customEvent.CustomTrack switch {
                 JSONString s => new List<string> { s },
                 JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
                 _ => new List<string>()
             };
+
             foreach (var track in tracks)
             {
                 if (!EventsByTrack.ContainsKey(track))
@@ -175,7 +175,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     private void OnUIModeSwitch(UIModeType newMode)
     {
         // When changing in/out of preview mode
-        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
+        if (newMode is UIModeType.Normal or UIModeType.Preview)
         {
             RefreshPool(true);
         }
@@ -233,9 +233,10 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
 
     private void SetInitialTracks()
     {
-        foreach (var loadedObject in UnsortedObjects)
+        for (var i = 0; i < MapObjects.Count; i++)
         {
-            var customEvent = loadedObject as BaseCustomEvent;
+            var customEvent = MapObjects[i];
+
             if (!customEventTypes.Contains(customEvent.Type))
             {
                 customEventTypes.Add(customEvent.Type);

@@ -48,44 +48,50 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         switch (res)
         {
             case 0:
-                StartCoroutine(RefreshMap(true, false, false, false, false));
+                RefreshMap(true, false, false, false, false);
                 break;
             case 1:
-                StartCoroutine(RefreshMap(false, true, false, false, false));
+                RefreshMap(false, true, false, false, false);
                 break;
             case 2:
-                StartCoroutine(RefreshMap(false, false, true, false, false));
+                RefreshMap(false, false, true, false, false);
                 break;
             case 3:
-                StartCoroutine(RefreshMap(false, false, false, true, false));
+                RefreshMap(false, false, false, true, false);
                 break;
             case 4:
-                StartCoroutine(RefreshMap(false, false, false, false, true));
+                RefreshMap(false, false, false, false, true);
                 break;
         }
     }
 
-    private IEnumerator RefreshMap(bool notes, bool obstacles, bool events, bool others, bool full)
+    private void RefreshMap(bool notes, bool obstacles, bool events, bool others, bool full)
     {
-        yield return PersistentUI.Instance.FadeInLoadingScreen();
         map = song.GetMapFromDifficultyBeatmap(diff);
         loader.UpdateMapData(map);
-        yield return StartCoroutine(loader.LoadObjects(map.BpmChanges));
+        
+        loader.LoadObjects(map.BpmChanges);
+        
         var currentSongBpmTime = atsc.CurrentSongBpmTime;
         atsc.MoveToSongBpmTime(0);
-        if (notes || full) yield return StartCoroutine(loader.LoadObjects(map.Notes));
-        if (obstacles || full) yield return StartCoroutine(loader.LoadObjects(map.Obstacles));
-        if (events || full) yield return StartCoroutine(loader.LoadObjects(map.Events));
-        if (others || full) yield return StartCoroutine(loader.LoadObjects(map.CustomEvents));
+
+        if (notes || full) loader.LoadObjects(map.Notes);
+        
+        if (obstacles || full) loader.LoadObjects(map.Obstacles);
+        
+        if (events || full) loader.LoadObjects(map.Events);
+        
+        if (others || full) loader.LoadObjects(map.CustomEvents);
+        
         if ((notes || full) && Settings.Instance.Load_MapV3)
         {
-            yield return StartCoroutine(loader.LoadObjects(map.Arcs));
-            yield return StartCoroutine(loader.LoadObjects(map.Chains));
+            loader.LoadObjects(map.Arcs);
+            loader.LoadObjects(map.Chains);
         }
+        
         if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;
+        
         tracksManager.RefreshTracks();
-        SelectionController.RefreshMap();
         atsc.MoveToSongBpmTime(currentSongBpmTime);
-        yield return PersistentUI.Instance.FadeOutLoadingScreen();
     }
 }

@@ -46,7 +46,8 @@ public class StrobeGenerator : MonoBehaviour
                         var end = ordered.First();
                         var start = ordered.Last();
 
-                        var containersBetween = eventGridContainer.LoadedObjects.GetViewBetween(start, end)
+                        // TODO(Caeden): Optimize by pointing directly at the backing List<BaseEvent>
+                        var containersBetween = eventGridContainer.GetBetween(start.JsonTime, end.JsonTime)
                             .Cast<BaseEvent>().Where(x =>
                                 x.Type == start.Type && //Grab all events between start and end point.
                                 ((start.CustomLightID is null && x.CustomLightID is null) || (start.CustomLightID != null &&

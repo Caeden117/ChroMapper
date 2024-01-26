@@ -90,5 +90,17 @@ namespace Beatmap.Base.Customs
             if (DataParentTrack != null) Data[DataKeyParentTrack] = DataParentTrack; else Data.Remove(DataKeyParentTrack);
             return Data;
         }
+
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            if (other is not BaseCustomEvent customEvent) return comparison; ;
+
+            // Order by custom event type if times match up
+            return comparison == 0
+                ? Type.CompareTo(customEvent.Type)
+                : comparison;
+        }
     }
 }

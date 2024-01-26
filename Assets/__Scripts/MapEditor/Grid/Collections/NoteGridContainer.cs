@@ -9,7 +9,7 @@ using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class NoteGridContainer : BeatmapObjectContainerCollection
+public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 {
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;
@@ -63,24 +63,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection
             RefreshPool(true);
         }
     }
-
+    
     private void AppearanceChanged(object _) => RefreshPool(true);
-
-    // This should hopefully return a sorted list of notes to prevent flipped stack notes when playing in game.
-    // (I'm done with note sorting; if you don't like it, go fix it yourself.)
-    public override IEnumerable<BaseObject> GrabSortedObjects()
-    {
-        var sorted = new List<BaseObject>();
-        var grouping = LoadedObjects.GroupBy(x => x.JsonTime);
-        foreach (var group in grouping)
-        {
-            sorted.AddRange(@group.OrderBy(x => ((BaseNote)x).PosX) //0 -> 3
-                .ThenBy(x => ((BaseNote)x).PosY) //0 -> 2
-                .ThenBy(x => ((BaseNote)x).Type));
-        }
-
-        return sorted;
-    }
 
     //We don't need to check index as that's already done further up the chain
     private void SpawnCallback(bool initial, int index, BaseObject objectData)
