@@ -137,7 +137,7 @@ public class ContributorListItem : MonoBehaviour
     private IEnumerator LoadImage()
     {
         var location = Path.Combine(BeatSaberSongContainer.Instance.Song.Directory, imagePath);
-        var request = UnityWebRequestTexture.GetTexture($"file:///{Uri.EscapeDataString(location)}");
+        var request = UnityWebRequestTexture.GetTexture($"file:///{Uri.EscapeUriString(location)}");
         yield return request.SendWebRequest();
         var tex = DownloadHandlerTexture.GetContent(request);
         contributorImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one / 2f);

@@ -156,7 +156,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         cover.sprite = defaultCover;
         if (!File.Exists(fullPath)) yield break;
 
-        var www = UnityWebRequestTexture.GetTexture($"file:///{Uri.EscapeDataString($"{fullPath}")}");
+        var www = UnityWebRequestTexture.GetTexture($"file:///{Uri.EscapeUriString($"{fullPath}")}");
         yield return www.SendWebRequest();
 
         // Copying the texture generates mipmaps for better scaling
