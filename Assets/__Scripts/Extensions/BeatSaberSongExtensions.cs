@@ -33,7 +33,10 @@ public static class BeatSaberSongExtensions
         //}
         var audioType = extensionToAudio[Path.GetExtension(fullPath)];
 
-        var www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeUriString($"{fullPath}")}", audioType);
+        var uriPath = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor
+            ? Uri.EscapeDataString(fullPath)
+            : Uri.EscapeUriString(fullPath);
+        var www = UnityWebRequestMultimedia.GetAudioClip($"file:///{uriPath}", audioType);
 
         // Escaping should fix the issue where half the people can't open ChroMapper's editor (I believe this is caused by spaces in the directory, hence escaping)
         yield return www.SendWebRequest();
