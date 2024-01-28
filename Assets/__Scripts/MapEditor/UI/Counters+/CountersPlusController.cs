@@ -108,10 +108,8 @@ public class CountersPlusController : MonoBehaviour
     {
         if (Application.isFocused)
         {
-            BeatSaberSongContainer.Instance.Map.Time += Time.deltaTime / 60; // only tick while application is focused
-
             var timeMapping = BeatSaberSongContainer.Instance.Map.Time;
-            var newSeconds = Mathf.Abs(Mathf.FloorToInt(timeMapping * 60 % 60));
+            var newSeconds = Mathf.FloorToInt(timeMapping * 60 % 60);
 
             if (newSeconds != seconds)
             {
