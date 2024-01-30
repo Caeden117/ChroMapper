@@ -359,5 +359,25 @@ namespace Beatmap.Base
             if (CustomLockRotation != null) CustomData[CustomKeyLockRotation] = CustomLockRotation; else CustomData.Remove(CustomKeyLockRotation);
             return CustomData;
         }
+        
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseEvent @event) return comparison;
+
+            // Compare by type if times match
+            if (comparison == 0) comparison = Type.CompareTo(@event.Type);
+
+            // Compare by value if type matches
+            if (comparison == 0) comparison = Value.CompareTo(@event.Value);
+            
+            // Compare by float value if value matches
+            if (comparison == 0) comparison = FloatValue.CompareTo(@event.FloatValue);
+            
+            // ...i give up.
+            return comparison;
+        }
     }
 }

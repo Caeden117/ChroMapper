@@ -265,5 +265,34 @@ namespace Beatmap.Base
             }
             return CustomData;
         }
+        
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseObstacle obstacle) return comparison;
+
+            // Compare by X pos if times match
+            if (comparison == 0) comparison = PosX.CompareTo(obstacle.PosX);
+
+            // Compare by Y pos if X pos match
+            if (comparison == 0) comparison = PosY.CompareTo(obstacle.PosY);
+            
+            // Compare by type if Y pos match
+            if (comparison == 0) comparison = Type.CompareTo(obstacle.Type);
+            
+            // Compare by duration if type match
+            if (comparison == 0) comparison = Duration.CompareTo(obstacle.Duration);
+            
+            // Compare by width if duration match
+            if (comparison == 0) comparison = Width.CompareTo(obstacle.Width);
+            
+            // Compare by height if duration match
+            if (comparison == 0) comparison = Height.CompareTo(obstacle.Height);
+
+            // ...i give up.
+            return comparison;
+        }
     }
 }

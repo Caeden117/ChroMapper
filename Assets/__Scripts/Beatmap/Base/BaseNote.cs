@@ -178,8 +178,14 @@ namespace Beatmap.Base
             // Compare by Y pos if X pos match
             if (comparison == 0) comparison = PosY.CompareTo(note.PosY);
             
-            // Compare by type if Y pos match
-            if (comparison == 0) comparison = Type.CompareTo(note.Type);
+            // Compare by color if Y pos match
+            if (comparison == 0) comparison = Color.CompareTo(note.Color);
+            
+            // Compare by cut direction if color matches
+            if (comparison == 0) comparison = CutDirection.CompareTo(note.CutDirection);
+            
+            // Compare by angle offset if cut direction
+            if (comparison == 0) comparison = AngleOffset.CompareTo(note.AngleOffset);
 
             // ...i give up.
             return comparison;

@@ -124,5 +124,25 @@ namespace Beatmap.Base
             (CutDirection, TailCutDirection) = (TailCutDirection, CutDirection);
             (HeadControlPointLengthMultiplier, TailControlPointLengthMultiplier) = (TailControlPointLengthMultiplier, HeadControlPointLengthMultiplier);
         }
+        
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseArc arc) return comparison;
+
+            // Compare by mu if previous slider comparisons match
+            if (comparison == 0) comparison = HeadControlPointLengthMultiplier.CompareTo(arc.HeadControlPointLengthMultiplier);
+
+            // Compare by tmu if mu matches
+            if (comparison == 0) comparison = TailControlPointLengthMultiplier.CompareTo(arc.TailControlPointLengthMultiplier);
+            
+            // Compare by tail cut direction if tmu matches
+            if (comparison == 0) comparison = TailCutDirection.CompareTo(arc.TailCutDirection);
+
+            // ...i give up.
+            return comparison;
+        }
     }
 }
