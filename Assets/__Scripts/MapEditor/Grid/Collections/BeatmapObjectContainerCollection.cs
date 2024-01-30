@@ -550,28 +550,38 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true)
     {
         var search = MapObjects.BinarySearch(obj);
-
-        RecycleContainer(obj);
-
-        if (search >= 0)
-        {
-            MapObjects.RemoveAt(search);
-
-            if (deselect) SelectionController.Deselect(obj, triggersAction);
-
-            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
-
-            if (refreshesPool) RefreshPool();
-
-            OnObjectDelete(obj, inCollectionOfDeletes);
-            ObjectDeletedEvent?.Invoke(obj);
-        }
-        else
+        
+        // Unhappy path: Binary Search returns negative number
+        if (search < 0)
         {
             // The objects are not in the collection, but are still being removed.
             // This could be because of ghost blocks, so let's try forcefully recycling that container.
-            Debug.LogError($"This object appears to be a ghost. Please report this.");
+            Debug.LogError($"This object is not in the collection and appears to be a ghost. Please report this.");
+            
+            return;
         }
+
+        // Unhappy path: Binary Search returns an object, but turns out to be the incorrect object.
+        if (MapObjects[search] != obj)
+        {
+            // Binary Search returned a value, but this value is not the object we're looking to delete.
+            Debug.LogError("Binary Search returned incorrect object. Please report this.");
+
+            return;
+        }
+        
+        RecycleContainer(obj);
+        
+        MapObjects.RemoveAt(search);
+
+        if (deselect) SelectionController.Deselect(obj, triggersAction);
+
+        if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
+
+        if (refreshesPool) RefreshPool();
+
+        OnObjectDelete(obj, inCollectionOfDeletes);
+        ObjectDeletedEvent?.Invoke(obj);
     }
 
     /// <inheritdoc/>
