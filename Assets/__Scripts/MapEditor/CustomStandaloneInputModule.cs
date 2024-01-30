@@ -1,4 +1,5 @@
-﻿using UnityEngine.EventSystems;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
 
 /*  /class CustomStandaloneInputModule
@@ -12,7 +13,13 @@ public class CustomStandaloneInputModule : InputSystemUIInputModule
     public bool IsPointerOverGameObject<T>(int pointerId, bool includeDerived = false)
         where T : BaseRaycaster
     {
+        // :)
+        var loggerState = Debug.unityLogger.logEnabled;
+        Debug.unityLogger.logEnabled = false;
+
         if (!IsPointerOverGameObject(pointerId)) return false;
+
+        Debug.unityLogger.logEnabled = loggerState;
 
         var raycastResult = GetLastRaycastResult(pointerId);
 
