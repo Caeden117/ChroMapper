@@ -14,12 +14,11 @@ public class CustomStandaloneInputModule : InputSystemUIInputModule
         where T : BaseRaycaster
     {
         // :)
-        var loggerState = Debug.unityLogger.logEnabled;
         Debug.unityLogger.logEnabled = false;
-
-        if (!IsPointerOverGameObject(pointerId)) return false;
-
-        Debug.unityLogger.logEnabled = loggerState;
+        var isPointerOverGameObject = IsPointerOverGameObject(pointerId);
+        Debug.unityLogger.logEnabled = true;
+        
+        if (!isPointerOverGameObject) return false;
 
         var raycastResult = GetLastRaycastResult(pointerId);
 
