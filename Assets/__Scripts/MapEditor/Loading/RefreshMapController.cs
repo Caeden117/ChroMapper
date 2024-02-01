@@ -70,26 +70,49 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         map = song.GetMapFromDifficultyBeatmap(diff);
         loader.UpdateMapData(map);
         
-        loader.LoadObjects(map.BpmEvents);
-        
         var currentSongBpmTime = atsc.CurrentSongBpmTime;
         atsc.MoveToSongBpmTime(0);
 
-        if (notes || full) loader.LoadObjects(map.Notes);
-        
-        if (obstacles || full) loader.LoadObjects(map.Obstacles);
-        
-        if (events || full) loader.LoadObjects(map.Events);
-        
-        if (others || full) loader.LoadObjects(map.CustomEvents);
-        
-        if ((notes || full) && Settings.Instance.Load_MapV3)
+        if (full)
         {
-            loader.LoadObjects(map.Arcs);
-            loader.LoadObjects(map.Chains);
+            BeatSaberSongContainer.Instance.Map = map;
+            loader.HardRefresh();
+            atsc.MoveToSongBpmTime(currentSongBpmTime);
+            return;
         }
-        
-        if (full) BeatSaberSongContainer.Instance.Map.MainNode = map.MainNode;
+
+        BeatSaberSongContainer.Instance.Map.BpmEvents = map.BpmEvents;
+        loader.LoadObjects(map.BpmEvents);
+
+        if (notes)
+        {
+            BeatSaberSongContainer.Instance.Map.Notes = map.Notes;
+            loader.LoadObjects(map.Notes);
+
+            if (Settings.Instance.Load_MapV3)
+            {
+                loader.LoadObjects(map.Arcs);
+                loader.LoadObjects(map.Chains);
+            }
+        }
+
+        if (obstacles)
+        {
+            BeatSaberSongContainer.Instance.Map.Obstacles = map.Obstacles;
+            loader.LoadObjects(map.Obstacles);
+        }
+
+        if (events)
+        {
+            BeatSaberSongContainer.Instance.Map.Events = map.Events;
+            loader.LoadObjects(map.Events);
+        }
+
+        if (others)
+        {
+            BeatSaberSongContainer.Instance.Map.CustomEvents = map.CustomEvents;
+            loader.LoadObjects(map.CustomEvents);
+        }
         
         tracksManager.RefreshTracks();
         atsc.MoveToSongBpmTime(currentSongBpmTime);
