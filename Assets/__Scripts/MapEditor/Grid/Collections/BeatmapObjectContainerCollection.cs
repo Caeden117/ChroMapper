@@ -52,8 +52,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <summary>
     ///     A dictionary of all active BeatmapObjectContainers by the data they are attached to.
     /// </summary>
+    // TODO(Caeden): Maybe rewrite this out? Have BaseObject -> ObjectContainer references in the BaseObject class.
+    //   Reasoning: Half of CM's use here is iteration, which is slow with Dictionaries.
+    //   The other half is to access containers by a BaseObject, which would be satisfied by storing that relation in the BaseObject class
     public Dictionary<BaseObject, ObjectContainer> LoadedContainers =
         new Dictionary<BaseObject, ObjectContainer>();
+
+    public List<BaseObject> ObjectsWithContainers = new List<BaseObject>();
 
     private float previousAtscBeat = -1;
     private int previousChunk = -1;
@@ -229,6 +234,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         dequeued.OutlineVisible = SelectionController.IsObjectSelected(obj);
         PluginLoader.BroadcastEvent<ObjectLoadedAttribute, ObjectContainer>(dequeued);
         LoadedContainers.Add(obj, dequeued);
+        ObjectsWithContainers.Add(obj);
         obj.HasAttachedContainer = true;
         OnContainerSpawn(dequeued, obj);
         ContainerSpawnedEvent?.Invoke(obj);
@@ -248,6 +254,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         container.SafeSetActive(false);
         //container.transform.SetParent(PoolTransform);
         LoadedContainers.Remove(obj);
+        ObjectsWithContainers.Remove(obj);
         pooledContainers.Enqueue(container);
         OnContainerDespawn(container, obj);
         obj.HasAttachedContainer = false;
@@ -502,12 +509,18 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     /// <inheritdoc/>
     public override void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
+        if (forceRefresh)
+        {
+            while (ObjectsWithContainers.Count > 0)
+            {
+                RecycleContainer(ObjectsWithContainers[0]);
+            }
+        }
+
         // TODO: Convert to Span<> iteration
         for (var i = 0; i < MapObjects.Count; i++)
         {
             var obj = MapObjects[i];
-
-            if (forceRefresh) RecycleContainer(obj);
 
             switch (obj)
             {
