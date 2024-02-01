@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -309,6 +309,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public abstract void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
         string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true);
 
+    public abstract void SilentRemoveObject(BaseObject obj);
+    
     protected void SetTrackFilter() =>
         PersistentUI.Instance.ShowInputBox("Filter notes and obstacles shown while editing to a certain track ID.\n\n" +
                                            "If you dont know what you're doing, turn back now.", HandleTrackFilter);
@@ -551,24 +553,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     {
         var search = MapObjects.BinarySearch(obj);
         
-        // Unhappy path: Binary Search returns negative number
-        if (search < 0)
-        {
-            // The objects are not in the collection, but are still being removed.
-            // This could be because of ghost blocks, so let's try forcefully recycling that container.
-            Debug.LogError($"This object is not in the collection and appears to be a ghost. Please report this.");
-            
-            return;
-        }
-
-        // Unhappy path: Binary Search returns an object, but turns out to be the incorrect object.
-        if (MapObjects[search] != obj)
-        {
-            // Binary Search returned a value, but this value is not the object we're looking to delete.
-            Debug.LogError("Binary Search returned incorrect object. Please report this.");
-
-            return;
-        }
+        if (!HasFoundCorrectObject(search, obj)) return;
         
         RecycleContainer(obj);
         
@@ -582,6 +567,42 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
         OnObjectDelete(obj, inCollectionOfDeletes);
         ObjectDeletedEvent?.Invoke(obj);
+    }
+    
+    // Removes object from MapObjects while retaining container and data in it
+    public override void SilentRemoveObject(BaseObject obj)
+    {
+        if (obj is not T tObj) return;
+        
+        var search = MapObjects.BinarySearch(tObj);
+
+        if (!HasFoundCorrectObject(search, tObj)) return;
+        
+        MapObjects.RemoveAt(search);
+    }
+
+    private bool HasFoundCorrectObject(int search, BaseObject obj)
+    {
+        // Unhappy path: Binary Search returns negative number
+        if (search < 0)
+        {
+            // The objects are not in the collection, but are still being removed.
+            // This could be because of ghost blocks, so let's try forcefully recycling that container.
+            Debug.LogError($"This object is not in the collection and appears to be a ghost. Please report this.");
+            
+            return false;
+        }
+
+        // Unhappy path: Binary Search returns an object, but turns out to be the incorrect object.
+        if (MapObjects[search] != obj)
+        {
+            // Binary Search returned a value, but this value is not the object we're looking to delete.
+            Debug.LogError("Binary Search returned incorrect object. Please report this.");
+
+            return false;
+        }
+
+        return true;
     }
 
     /// <inheritdoc/>

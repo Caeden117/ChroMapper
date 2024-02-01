@@ -186,10 +186,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             queuedData.SetTimes(roundedJsonTime, SongBpmTime);
             OnPhysicsRaycast(hit, roundedHit);
-            if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
+            if ((IsDraggingObject || IsDraggingObjectAtTime) && DraggedObjectContainer != null)
             {
-                TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));
-                if (DraggedObjectContainer != null) DraggedObjectContainer.UpdateGridPosition();
+                DraggedObjectContainer.UpdateGridPosition();
             }
         }
         else
@@ -401,7 +400,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal virtual void ApplyToMap()
     {
         objectData = queuedData;
-        //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BaseObject> conflicting);
         objectContainerCollection.SpawnObject(objectData, out var conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         queuedData = BeatmapFactory.Clone(queuedData);
@@ -416,16 +414,20 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public virtual void CancelPlacement() { }
 
+    // TODO: No longer being used. If no bugs with dragging comes up, this is safe to remove.
     public abstract void TransferQueuedToDraggedObject(ref TBo dragged, TBo queued);
 
     private bool StartDrag(ObjectContainer con)
     {
         if (con is null || !(con is TBoc) || con.ObjectData.ObjectType != objectDataType || !IsActive)
             return false; //Filter out null objects and objects that aren't what we're targetting.
+
+        objectContainerCollection.SilentRemoveObject(con.ObjectData);
+        
         draggedObjectData = con.ObjectData as TBo;
         originalQueued = BeatmapFactory.Clone(queuedData);
         originalDraggedObjectData = BeatmapFactory.Clone(con.ObjectData as TBo);
-        queuedData = BeatmapFactory.Clone(draggedObjectData);
+        queuedData = draggedObjectData;
         DraggedObjectContainer = con as TBoc;
         DraggedObjectContainer.Dragging = true;
 
@@ -442,13 +444,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         if (!(IsDraggingObject || IsDraggingObjectAtTime)) return;
         //First, find and delete anything that's overlapping our dragged object.
         var selected = SelectionController.IsObjectSelected(draggedObjectData);
-
-        // To delete properly we need to set the original time
-        var jsonTime = draggedObjectData.JsonTime;
-        var songBpmTime = draggedObjectData.SongBpmTime;
-        draggedObjectData.SetTimes(originalDraggedObjectData.JsonTime, originalDraggedObjectData.SongBpmTime);
-        objectContainerCollection.DeleteObject(draggedObjectData, false, false);
-        draggedObjectData.SetTimes(jsonTime, songBpmTime);
 
         objectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
         if (conflicting.Contains(draggedObjectData))
@@ -518,12 +513,14 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 originalDraggedAttachedSliderDatas[IndicatorType.Head].Add(BeatmapFactory.Clone(arcData));
                 DraggedAttachedSliderDatas[IndicatorType.Head].Add(arcData);
                 DraggedAttachedSliderContainers.Add(arcContainer.Value);
+                arcCollection.SilentRemoveObject(arcData);
             }
             else if (isConnectedToTail)
             {
                 originalDraggedAttachedSliderDatas[IndicatorType.Tail].Add(BeatmapFactory.Clone(arcData));
                 DraggedAttachedSliderDatas[IndicatorType.Tail].Add(arcData);
                 DraggedAttachedSliderContainers.Add(arcContainer.Value);
+                arcCollection.SilentRemoveObject(arcData);
             }
         }
 
@@ -538,12 +535,14 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 originalDraggedAttachedSliderDatas[IndicatorType.Head].Add(BeatmapFactory.Clone(chainData));
                 DraggedAttachedSliderDatas[IndicatorType.Head].Add(chainData);
                 DraggedAttachedSliderContainers.Add(chainContainer.Value);
+                chainCollection.SilentRemoveObject(chainData);
             }
             else if (isConnectedToTail)
             {
                 originalDraggedAttachedSliderDatas[IndicatorType.Tail].Add(BeatmapFactory.Clone(chainData));
                 DraggedAttachedSliderDatas[IndicatorType.Tail].Add(chainData);
                 DraggedAttachedSliderContainers.Add(chainContainer.Value);
+                chainCollection.SilentRemoveObject(chainData);
             }
         }
     }
@@ -560,11 +559,11 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             if (draggedSlider is BaseArc draggedArc)
             {
-                RespawnDraggedSlider(arcCollection, draggedArc, originalDraggedSlider, true, actions);
+                SpawnDraggedSlider(arcCollection, draggedArc, originalDraggedSlider, actions);
             }
             else if (draggedSlider is BaseChain draggedChain)
             {
-                RespawnDraggedSlider(chainCollection, draggedChain, originalDraggedSlider, true, actions);
+                SpawnDraggedSlider(chainCollection, draggedChain, originalDraggedSlider, actions);
             }
         }
 
@@ -575,30 +574,18 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             if (draggedSlider is BaseArc draggedArc)
             {
-                RespawnDraggedSlider(arcCollection, draggedArc, originalDraggedSlider, false, actions);
+                SpawnDraggedSlider(arcCollection, draggedArc, originalDraggedSlider, actions);
             }
             else if (draggedSlider is BaseChain draggedChain)
             {
-                RespawnDraggedSlider(chainCollection, draggedChain, originalDraggedSlider, false, actions);
+                SpawnDraggedSlider(chainCollection, draggedChain, originalDraggedSlider, actions);
             }
         }
     }
 
-    private void RespawnDraggedSlider(BeatmapObjectContainerCollection sliderCollection, BaseSlider draggedSlider,
-        BaseObject originalSlider, bool isConnectedToHead, List<BeatmapAction> actions)
+    private void SpawnDraggedSlider(BeatmapObjectContainerCollection sliderCollection, BaseSlider draggedSlider,
+        BaseObject originalSlider, List<BeatmapAction> actions)
     {
-        if (isConnectedToHead)
-        {
-            // SortedSet is fun.
-            draggedSlider.SetTimes(originalDraggedObjectData.JsonTime, originalDraggedObjectData.SongBpmTime);
-            sliderCollection.DeleteObject(draggedSlider, false, false);
-            draggedSlider.SetTimes(draggedObjectData.JsonTime, draggedObjectData.SongBpmTime);
-        }
-        else
-        {
-            sliderCollection.DeleteObject(draggedSlider, false, false);
-        }
-
         sliderCollection.SpawnObject(draggedSlider, out var conflictingArcs);
 
         // Don't queue an action if we didn't actually change anything
