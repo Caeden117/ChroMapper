@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
@@ -372,10 +373,13 @@ namespace Beatmap.Base
 
             // Compare by value if type matches
             if (comparison == 0) comparison = Value.CompareTo(@event.Value);
-            
+
             // Compare by float value if value matches
             if (comparison == 0) comparison = FloatValue.CompareTo(@event.FloatValue);
-            
+
+            // Compare by lightID if float value matches
+            if (comparison == 0) comparison = StructuralComparisons.StructuralComparer.Compare(CustomLightID, @event.CustomLightID);
+
             // ...i give up.
             return comparison;
         }
