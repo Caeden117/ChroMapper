@@ -70,7 +70,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         map = song.GetMapFromDifficultyBeatmap(diff);
         loader.UpdateMapData(map);
         
-        loader.LoadObjects(map.BpmChanges);
+        loader.LoadObjects(map.BpmEvents);
         
         var currentSongBpmTime = atsc.CurrentSongBpmTime;
         atsc.MoveToSongBpmTime(0);
