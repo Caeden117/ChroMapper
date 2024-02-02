@@ -1231,13 +1231,22 @@ MonoBehaviour:
     m_Key: appearance.altlighting.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 330014416099160064
+    m_Key: appearance.interfaceopacity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330014459573121024
+    m_Key: appearance.interfaceopacity.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    id: 0
+    rid: 0
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
         asm: Unity.Localization}
       data:
