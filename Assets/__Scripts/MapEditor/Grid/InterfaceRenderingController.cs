@@ -10,20 +10,20 @@ public class InterfaceRenderingController : MonoBehaviour
     {
         materialPropertyBlock = new MaterialPropertyBlock();
 
-        Settings.NotifyBySettingName(nameof(Settings.InterfaceTransparency), UpdateSettings);
+        Settings.NotifyBySettingName(nameof(Settings.InterfaceOpacity), UpdateSettings);
 
         UpdateSettings(null);
     }
 
     private void UpdateSettings(object _)
     {
-        materialPropertyBlock.SetColor("_Color", Color.white.WithAlpha(Settings.Instance.InterfaceTransparency));
+        materialPropertyBlock.SetColor("_Color", Color.white.WithAlpha(Settings.Instance.InterfaceOpacity));
 
         interfaceRenderer.SetPropertyBlock(materialPropertyBlock);
     }
 
     private void OnDestroy()
     {
-        Settings.ClearSettingNotifications(nameof(Settings.InterfaceTransparency));
+        Settings.ClearSettingNotifications(nameof(Settings.InterfaceOpacity));
     }
 }
