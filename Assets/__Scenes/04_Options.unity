@@ -47945,6 +47945,7 @@ MonoBehaviour:
   - {fileID: 1614305441}
   - {fileID: 246039436}
   - {fileID: 835319597}
+  - {fileID: 1968795239}
   - {fileID: 16950627}
   - {fileID: 1893352751}
 --- !u!224 &1609316839 stripped
@@ -59213,7 +59214,7 @@ PrefabInstance:
     - target: {fileID: 149366472385332407, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
       propertyPath: m_text
-      value: 40.00%
+      value: 40%
       objectReference: {fileID: 0}
     - target: {fileID: 149366472385332407, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
@@ -59443,7 +59444,7 @@ PrefabInstance:
     - target: {fileID: 3920115293826843065, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
       propertyPath: DecimalPlaces
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3920115293826843065, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
@@ -59488,7 +59489,7 @@ PrefabInstance:
     - target: {fileID: 3920115293826843065, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
       propertyPath: DecimalsMustMatchForDefault
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3920115293826843065, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
@@ -59683,6 +59684,8 @@ MonoBehaviour:
   - grid
   - transparency
   - alpha
+  - interface
+  - opacity
 --- !u!1001 &1974376221
 PrefabInstance:
   m_ObjectHideFlags: 0
