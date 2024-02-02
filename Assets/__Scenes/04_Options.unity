@@ -3900,7 +3900,7 @@ PrefabInstance:
     - target: {fileID: 149366472385332407, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
       propertyPath: m_text
-      value: 0%
+      value: 40%
       objectReference: {fileID: 0}
     - target: {fileID: 149366472385332407, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
@@ -4065,7 +4065,7 @@ PrefabInstance:
     - target: {fileID: 2540764464195409678, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 2540764464195409678, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
@@ -4140,7 +4140,7 @@ PrefabInstance:
     - target: {fileID: 3920115293826843065, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}
       propertyPath: DefaultSliderValue
-      value: 0
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 3920115293826843065, guid: fb10ad3ad7f83f14a9f0b5542dc859fb,
         type: 3}

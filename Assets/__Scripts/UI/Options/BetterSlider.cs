@@ -99,15 +99,19 @@ public class BetterSlider : MonoBehaviour
     {
         ValueString.StringReference.RefreshString();
 
+        var percentOffset = PercentMatchesValues ? MultipleOffset : 1;
+
         if (DecimalsMustMatchForDefault)
         {
-            ValueText.color = DefaultSliderValue.ToString($"F{DecimalPlaces}") == Value.ToString($"F{DecimalPlaces}")
+            ValueText.color = (DefaultSliderValue * percentOffset).ToString($"F{DecimalPlaces}") ==
+                              (Value * percentOffset).ToString($"F{DecimalPlaces}")
                 ? new Color(1f, 0.75f, 0.23f)
                 : Color.white;
         }
         else
         {
-            ValueText.color = DefaultSliderValue.ToString("F0") == Value.ToString("F0")
+            ValueText.color = (DefaultSliderValue * percentOffset).ToString("F0") ==
+                              (Value * percentOffset).ToString("F0")
                 ? new Color(1f, 0.75f, 0.23f)
                 : Color.white;
         }
