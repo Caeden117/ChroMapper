@@ -137,6 +137,7 @@ public class Settings
     public bool MeasureLinesShowOnTop = false;
     public bool HighContrastGrids = false;
     public float GridTransparency = 0f;
+    public float InterfaceTransparency = 0.1f;
     public int TrackLength = 8;
     public float OneBeatWidth = 0.1f;
 
