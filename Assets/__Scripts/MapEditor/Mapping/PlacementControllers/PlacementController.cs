@@ -186,9 +186,10 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             queuedData.SetTimes(roundedJsonTime, SongBpmTime);
             OnPhysicsRaycast(hit, roundedHit);
-            if ((IsDraggingObject || IsDraggingObjectAtTime) && DraggedObjectContainer != null)
+            if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
-                DraggedObjectContainer.UpdateGridPosition();
+                TransferQueuedToDraggedObject(ref draggedObjectData, queuedData);
+                if (DraggedObjectContainer != null) DraggedObjectContainer.UpdateGridPosition();
             }
         }
         else
@@ -414,7 +415,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public virtual void CancelPlacement() { }
 
-    // TODO: No longer being used. If no bugs with dragging comes up, this is safe to remove.
+    // TODO(Bullet): Clean up implementations.
     public abstract void TransferQueuedToDraggedObject(ref TBo dragged, TBo queued);
 
     private bool StartDrag(ObjectContainer con)
@@ -427,7 +428,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         draggedObjectData = con.ObjectData as TBo;
         originalQueued = BeatmapFactory.Clone(queuedData);
         originalDraggedObjectData = BeatmapFactory.Clone(con.ObjectData as TBo);
-        queuedData = draggedObjectData;
+        queuedData = BeatmapFactory.Clone(draggedObjectData);
         DraggedObjectContainer = con as TBoc;
         DraggedObjectContainer.Dragging = true;
 
