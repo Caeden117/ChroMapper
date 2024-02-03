@@ -338,6 +338,7 @@ namespace Beatmap.V3
                 var bomb = V2ToV3.BombNote(note);
                 Bombs.Add(bomb);
             }
+            Bombs.Sort();
 
             // Obstacle conversion
             for (var i = 0; i < Obstacles.Count; i++)
