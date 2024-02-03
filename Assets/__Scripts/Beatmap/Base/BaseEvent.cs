@@ -378,7 +378,27 @@ namespace Beatmap.Base
             if (comparison == 0) comparison = FloatValue.CompareTo(@event.FloatValue);
 
             // Compare by lightID if float value matches
-            if (comparison == 0) comparison = StructuralComparisons.StructuralComparer.Compare(CustomLightID, @event.CustomLightID);
+            // (we need to implement this ourselves because StructuralComparisons.StructuralComparer.Compare fails at differing length arrays
+            if (comparison == 0)
+            {
+                switch ((customLightID, @event.customLightID))
+                {
+                    case (null, not null): return -1;
+                    case (not null, null): return 1;
+                    case (not null, not null):
+                        var length = Mathf.Min(customLightID.Length, @event.customLightID.Length);
+
+                        for (var i = 0; i < length; i++)
+                        {
+                            comparison = customLightID[i].CompareTo(@event.customLightID[i]);
+                            
+                            if (comparison != 0) return comparison;
+                        }
+
+                        return customLightID.Length.CompareTo(@event.customLightID.Length);
+                }
+            }
+            //if (comparison == 0) comparison = StructuralComparisons.StructuralComparer.Compare(CustomLightID, @event.CustomLightID);
 
             // ...i give up.
             return comparison;
