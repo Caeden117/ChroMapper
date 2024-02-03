@@ -405,10 +405,15 @@ namespace Beatmap.V3
         {
             map.Notes.AddRange(map.Bombs);
             map.Notes.Sort();
+            
+            map.Bombs.Clear();
 
             map.Events.AddRange(map.ColorBoostEvents);
             map.Events.AddRange(map.RotationEvents);
             map.Events.Sort();
+            
+            map.ColorBoostEvents.Clear();
+            map.RotationEvents.Clear();
         }
 
         private static void LoadCustom(V3Difficulty map, JSONNode mainNode)
