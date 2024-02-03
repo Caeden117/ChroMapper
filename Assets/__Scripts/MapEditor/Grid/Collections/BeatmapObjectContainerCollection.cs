@@ -452,8 +452,6 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
     public List<T> GetBetween(float jsonTime, float jsonTime2)
     {
-        return MapObjects.FindAll(it => it.JsonTime >= jsonTime - Epsilon && it.JsonTime <= jsonTime2 + Epsilon);
-        /*
         // Considering we're only concerned with time, we'll use a time-based comparer here.
         var startIdx = MapObjects.BinarySearchBy(jsonTime, obj => obj.JsonTime);
         var endIdx = MapObjects.BinarySearchBy(jsonTime2, obj => obj.JsonTime);
@@ -461,8 +459,13 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         if (startIdx < 0) startIdx = ~startIdx;
         if (endIdx < 0) endIdx = ~endIdx;
 
-        return MapObjects.GetRange(startIdx, endIdx - startIdx);
-        */
+        while (endIdx < MapObjects.Count && MapObjects[endIdx].JsonTime <= jsonTime2) endIdx++;
+
+        var length = endIdx - startIdx;
+        
+        return length <= 0
+            ? new List<T>() // TODO(Caeden): remove allocation (perhaps switch to Span<> for this?)
+            : MapObjects.GetRange(startIdx, length);
     }
 
     /// <summary>
