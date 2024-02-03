@@ -195,13 +195,7 @@ namespace Beatmap.V2
             {
                 CustomEvents[i] = V3ToV2.CustomEvent(CustomEvents[i]);
             }
-            
-            // BPM change conversion (?)
-            for (var i = BpmChanges.Count - 1; i >= 0; i--)
-            {
-                BpmChanges[i] = V3ToV2.BpmChange(BpmChanges[i]);
-            }
-            
+
             // Environment Enhancement conversion
             for (var i = EnvironmentEnhancements.Count - 1; i >= 0; i--)
             {

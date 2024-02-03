@@ -382,12 +382,6 @@ namespace Beatmap.V3
                 Bookmarks[i] = V2ToV3.Bookmark(Bookmarks[i]);
             }
 
-            // BPM change conversion (?)
-            for (var i = 0; i < BpmChanges.Count; i++)
-            {
-                BpmChanges[i] = V2ToV3.BpmChange(BpmChanges[i]);
-            }
-
             // Custom event conversion
             for (var i = 0; i < CustomEvents.Count; i++)
             {
