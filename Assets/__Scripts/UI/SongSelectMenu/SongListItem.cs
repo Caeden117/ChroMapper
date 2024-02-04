@@ -167,6 +167,12 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         // Copying the texture generates mipmaps for better scaling
         var newTex = ((DownloadHandlerTexture)www.downloadHandler).texture;
 
+        if (newTex == null)
+        {
+            Debug.LogWarning("Cover image file exists but the texture failed to load.");
+            yield break;
+        }
+
         newTex.wrapMode = TextureWrapMode.Clamp;
 
         // Only allow one sprite to be created per frame to reduce stuttering
