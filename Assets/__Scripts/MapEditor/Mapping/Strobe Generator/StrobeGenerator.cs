@@ -48,34 +48,29 @@ public class StrobeGenerator : MonoBehaviour
                         var end = ordered.First();
                         var start = ordered.Last();
 
-                        var containersBetween = eventGridContainer.GetBetween(start.JsonTime, end.JsonTime);
+                        var windowSpan = eventGridContainer.GetBetween(start.JsonTime, end.JsonTime);
+                        var containersBetween = new List<BaseEvent>(windowSpan.Length);
 
-                        for (var i = 0; i < containersBetween.Length; i++)
+                        for (var i = 0; i < windowSpan.Length; i++)
                         {
-                            var oldEvent = containersBetween[i];
+                            var oldEvent = windowSpan[i];
 
-                            var willRemove = oldEvent.Type == start.Type &&
+                            var isValid = oldEvent.Type == start.Type &&
                                 ((start.CustomLightID is null && oldEvent.CustomLightID is null)
                                 || (start.CustomLightID != null && oldEvent.CustomLightID != null && oldEvent.CustomLightID.Contains(start.CustomLightID[0])));
 
-                            if (willRemove) oldEvents.Add(oldEvent);
+                            if (isValid)
+                            {
+                                containersBetween.Add(oldEvent);
+                                oldEvents.Add(oldEvent);
+                            }
                         }
+
+                        containersBetween.TrimExcess();
 
                         foreach (var pass in passes)
                         {
-                            //var validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
-                            var validEvents = new List<BaseEvent>(containersBetween.Length);
-
-                            for (var i = 0; i < containersBetween.Length; i++)
-                            {
-                                var oldEvent = containersBetween[i];
-
-                                var isValid = pass.IsEventValidForPass(oldEvent);
-
-                                if (isValid) validEvents.Add(oldEvent);
-                            }
-
-                            validEvents.TrimExcess();
+                            var validEvents = containersBetween.FindAll(it => pass.IsEventValidForPass(it));
 
                             if (validEvents.Count() >= 2)
                             {
