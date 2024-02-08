@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public static class IEnumerableExtensions
 {
@@ -30,9 +31,16 @@ public static class IEnumerableExtensions
         return allIndexOf;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int BinarySearchBy<TValue, TComparison>(this List<TValue> list, TComparison value, Func<TValue, TComparison> getter) where TComparison : IComparable<TComparison>
     {
         var span = list.AsSpan();
+
+        return BinarySearchBy(span, value, getter);
+    }
+
+    public static int BinarySearchBy<TValue, TComparison>(this Span<TValue> span, TComparison value, Func<TValue, TComparison> getter) where TComparison : IComparable<TComparison>
+    {
         var min = 0;
         var max = span.Length - 1;
         var mid = 0;
