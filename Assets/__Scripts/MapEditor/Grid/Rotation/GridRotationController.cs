@@ -5,16 +5,15 @@ using UnityEngine;
 public class GridRotationController : MonoBehaviour
 {
     private static readonly int rotation = Shader.PropertyToID("_Rotation");
-    public RotationCallbackController RotationCallback;
-    [SerializeField] private float rotationChangingTime = 1;
-    [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
-    [SerializeField] private bool rotateTransform = true;
-    private float cachedRotation;
-
-    private float currentRotation;
 
     public Action ObjectRotationChangedEvent;
+    public RotationCallbackController RotationCallback;
+
+    [SerializeField] private Vector3 rotationPoint = LoadInitialMap.PlatformOffset;
+    [SerializeField] private bool rotateTransform = true;
+
     private float targetRotation;
+    private float currentRotation;
 
     private void Start()
     {
@@ -22,15 +21,12 @@ public class GridRotationController : MonoBehaviour
         if (RotationCallback != null) Init();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if (RotationCallback is null || !RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
-        if (targetRotation != cachedRotation)
-        {
-            targetRotation = cachedRotation;
-            StopAllCoroutines();
-            if (gameObject.activeInHierarchy) StartCoroutine(ChangeRotationSmooth());
-        }
+        if (!Settings.Instance.RotateTrack) return;
+
+        // Changing rotation time to a constant
+        ChangeRotation(Mathf.LerpAngle(currentRotation, targetRotation, Time.deltaTime / 0.15f));
     }
 
     private void OnDestroy()
@@ -41,6 +37,11 @@ public class GridRotationController : MonoBehaviour
 
     public void Init()
     {
+        enabled = false;
+
+        if (!RotationCallback.IsActive) return;
+
+        enabled = true;
         RotationCallback.RotationChangedEvent += RotationChanged;
         Settings.NotifyBySettingName("RotateTrack", UpdateRotateTrack);
     }
@@ -50,12 +51,10 @@ public class GridRotationController : MonoBehaviour
         var rotating = (bool)obj;
         if (rotating)
         {
-            targetRotation = RotationCallback.Rotation;
             ChangeRotation(RotationCallback.Rotation);
         }
         else
         {
-            targetRotation = 0;
             ChangeRotation(0);
         }
     }
@@ -63,22 +62,10 @@ public class GridRotationController : MonoBehaviour
     private void RotationChanged(bool natural, float rotation)
     {
         if (!RotationCallback.IsActive || !Settings.Instance.RotateTrack) return;
-        cachedRotation = rotation;
+        targetRotation = rotation;
         if (!natural)
         {
-            targetRotation = rotation;
             ChangeRotation(rotation);
-        }
-    }
-
-    private IEnumerator ChangeRotationSmooth()
-    {
-        float t = 0;
-        while (t < 1)
-        {
-            t += Time.deltaTime / rotationChangingTime;
-            ChangeRotation(Mathf.Lerp(currentRotation, targetRotation, t));
-            yield return new WaitForEndOfFrame();
         }
     }
 

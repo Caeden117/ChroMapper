@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
@@ -62,13 +63,26 @@ public class RotationCallbackController : MonoBehaviour
     {
         if (!IsActive) return;
         var jsonTime = Atsc.CurrentJsonTime;
-        var rotations = eventGrid.AllRotationEvents.Where(x =>
-            x.JsonTime < jsonTime || (x.JsonTime == jsonTime && x.Type == (int)EventTypeValue.EarlyLaneRotation));
+
+        var span = eventGrid.AllRotationEvents.AsSpan();
+        var result = span.BinarySearchBy(jsonTime, e => e.JsonTime);
+        var idx = result >= 0 ? result : ~result;
+
+        // Continue marching forward until JsonTime extends beyond current time
+        while (idx < span.Length && span[idx].JsonTime <= jsonTime) idx++;
+
+        idx = Mathf.Min(idx, span.Length - 1);
+
         Rotation = 0;
-        if (rotations.Count() > 0)
+        
+        if (idx > 0)
         {
-            Rotation = rotations.Sum(x => x.GetRotationDegreeFromValue() ?? 0f);
-            LatestRotationEvent = rotations.LastOrDefault();
+            for (var i = 0; i < idx; i++)
+            {
+                Rotation += span[i].GetRotationDegreeFromValue() ?? 0f;
+            }
+
+            LatestRotationEvent = span[idx];
         }
         else
         {
@@ -80,12 +94,13 @@ public class RotationCallbackController : MonoBehaviour
 
     private void EventPassedThreshold(bool initial, int index, BaseObject obj)
     {
-        var e = obj as BaseEvent;
-        if (e is null || !IsActive || (e == LatestRotationEvent && e.Type == (int)EventTypeValue.EarlyLaneRotation) ||
-            !e.IsLaneRotationEvent())
-        {
-            return;
-        }
+        if (!IsActive) return;
+
+        if (obj is not BaseEvent e) return;
+
+        if (!e.IsLaneRotationEvent()) return;
+
+        if (e == LatestRotationEvent) return;
 
         var rotationValue = e.GetRotationDegreeFromValue() ?? 0;
         Rotation += rotationValue;
