@@ -46,9 +46,13 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     public void LoadAnimationTracks()
     {
         playerCamera.ClearPlayerTracks();
-        // TODO(Caeden): Convert to Span<> iteration
-        foreach (var ev in MapObjects)
+
+        var span = MapObjects.AsSpan();
+
+        for (var i = 0; i < span.Length; i++)
         {
+            var ev = span[i];
+
             var tracks = ev.CustomTrack switch {
                 JSONArray arr => arr,
                 JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
@@ -91,6 +95,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
             }
         }
 
+        // TODO: Geometry should probably be handled separately
         geometries.ForEach((gc) => GameObject.Destroy(gc.gameObject));
         geometries.Clear();
 
@@ -131,9 +136,11 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
 
         //foreach (var loadedObject in UnsortedObjects)
-        for (var i = 0; i < MapObjects.Count; i++)
+        var span = MapObjects.AsSpan();
+
+        for (var i = 0; i < span.Length; i++)
         {
-            var customEvent = MapObjects[i];
+            var customEvent = span[i];
 
             var tracks = customEvent.CustomTrack switch {
                 JSONString s => new List<string> { s },
@@ -185,9 +192,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     {
         if (UIMode.AnimationMode)
         {
-            foreach (var obj in LoadedContainers.Values.ToList())
+            while (ObjectsWithContainers.Count > 0)
             {
-                RecycleContainer(obj.ObjectData);
+                RecycleContainer(ObjectsWithContainers[0]);
             }
         }
         else
@@ -233,9 +240,11 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
     private void SetInitialTracks()
     {
-        for (var i = 0; i < MapObjects.Count; i++)
+        var span = MapObjects.AsSpan();
+
+        for (var i = 0; i < span.Length; i++)
         {
-            var customEvent = MapObjects[i];
+            var customEvent = span[i];
 
             if (!customEventTypes.Contains(customEvent.Type))
             {

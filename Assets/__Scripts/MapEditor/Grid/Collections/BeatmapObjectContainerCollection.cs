@@ -522,10 +522,11 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
             }
         }
 
-        // TODO: Convert to Span<> iteration
-        for (var i = 0; i < MapObjects.Count; i++)
+        var span = MapObjects.AsSpan();
+
+        for (var i = 0; i < span.Length; i++)
         {
-            var obj = MapObjects[i];
+            var obj = span[i];
 
             switch (obj)
             {

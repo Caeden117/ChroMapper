@@ -51,8 +51,12 @@ public class MapLoader : MonoBehaviour
         
         collection.MapObjects = objects;
 
-        // TODO: speed up with Span<> iteration
-        objects.ForEach(obj => obj.RecomputeSongBpmTime());
+        var span = objects.AsSpan();
+
+        for (var i = 0; i < span.Length; i++)
+        {
+            span[i].RecomputeSongBpmTime();
+        }
         
         if (objects is List<BaseEvent> eventsList)
         {
