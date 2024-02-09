@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public static class IEnumerableExtensions
 {
@@ -30,20 +31,25 @@ public static class IEnumerableExtensions
         return allIndexOf;
     }
 
-    // TODO(Caeden): Look into replacing with BinarySearch from System.MemoryExtensions https://learn.microsoft.com/en-us/dotnet/api/system.memoryextensions.binarysearch
-    // TODO(Caeden): Scratch that, its not available in .NET Standard 2.1.
-    //   Instead, consider https://github.com/atcarter714/UnityH4xx which uses manual IL to create a span off of a List's backing array (only safe for read operations)
-    public static int BinarySearchBy<TValue, TComparison>(this IList<TValue> list, TComparison value, Func<TValue, TComparison> getter) where TComparison : IComparable<TComparison>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int BinarySearchBy<TValue, TComparison>(this List<TValue> list, TComparison value, Func<TValue, TComparison> getter) where TComparison : IComparable<TComparison>
+    {
+        var span = list.AsSpan();
+
+        return BinarySearchBy(span, value, getter);
+    }
+
+    public static int BinarySearchBy<TValue, TComparison>(this Span<TValue> span, TComparison value, Func<TValue, TComparison> getter) where TComparison : IComparable<TComparison>
     {
         var min = 0;
-        var max = list.Count - 1;
+        var max = span.Length - 1;
         var mid = 0;
 
         while (min <= max)
         {
             mid = (min + max) / 2;
 
-            var otherValue = getter(list[mid]);
+            var otherValue = getter(span[mid]);
 
             switch (value.CompareTo(otherValue))
             {
@@ -61,14 +67,15 @@ public static class IEnumerableExtensions
         return ~mid;
     }
 
-    // TODO(Caeden): Optimize with Span<> iteration
-    public static int CountNoAlloc<T>(this IList<T> list, Func<T, bool> predicate)
+    public static int CountNoAlloc<T>(this List<T> list, Func<T, bool> predicate)
     {
+        var span = list.AsSpan();
         var count = 0;
+        var length = span.Length;
 
-        for (var i = 0; i < list.Count; i++)
+        for (var i = 0; i < length; i++)
         {
-            if (predicate(list[i])) count++;
+            if (predicate(span[i])) count++;
         }
 
         return count;

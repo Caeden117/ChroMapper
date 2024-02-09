@@ -450,22 +450,23 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
     public List<T> MapObjects = new();
 
-    public List<T> GetBetween(float jsonTime, float jsonTime2)
+    public Span<T> GetBetween(float jsonTime, float jsonTime2)
     {
         // Considering we're only concerned with time, we'll use a time-based comparer here.
-        var startIdx = MapObjects.BinarySearchBy(jsonTime, obj => obj.JsonTime);
-        var endIdx = MapObjects.BinarySearchBy(jsonTime2, obj => obj.JsonTime);
+        var span = MapObjects.AsSpan();
+        var startIdx = span.BinarySearchBy(jsonTime, obj => obj.JsonTime);
+        var endIdx = span.BinarySearchBy(jsonTime2, obj => obj.JsonTime);
 
         if (startIdx < 0) startIdx = ~startIdx;
         if (endIdx < 0) endIdx = ~endIdx;
 
-        while (endIdx < MapObjects.Count && MapObjects[endIdx].JsonTime <= jsonTime2) endIdx++;
+        while (endIdx < span.Length && span[endIdx].JsonTime <= jsonTime2) endIdx++;
 
         var length = endIdx - startIdx;
-        
-        return length <= 0
-            ? new List<T>() // TODO(Caeden): remove allocation (perhaps switch to Span<> for this?)
-            : MapObjects.GetRange(startIdx, length);
+
+        return length > 0
+            ? span.Slice(startIdx, length)
+            : Span<T>.Empty;
     }
 
     /// <summary>
@@ -498,7 +499,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
             var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
 
-            for (var i = 0; i < localWindow.Count; i++)
+            for (var i = 0; i < localWindow.Length; i++)
             {
                 var obj = localWindow[i];
 
@@ -514,6 +515,12 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     /// <inheritdoc/>
     public override void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
+        var span = MapObjects.AsSpan();
+
+        // lmao why do anything if we dont have objects to recycle or create containers for
+        if (span.Length == 0) return;
+
+        // Easier to process recyclings at the beginning, rather than try to deal with it later.
         if (forceRefresh)
         {
             while (ObjectsWithContainers.Count > 0)
@@ -521,34 +528,64 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
                 RecycleContainer(ObjectsWithContainers[0]);
             }
         }
-
-        // TODO: Convert to Span<> iteration
-        for (var i = 0; i < MapObjects.Count; i++)
+        else
         {
-            var obj = MapObjects[i];
+            var containersSpan = ObjectsWithContainers.AsSpan();
 
-            switch (obj)
+            // We need to go backwards since *technically* modifying spans in iteration is unsafe.
+            for (var i = containersSpan.Length - 1; i >= 0; i--)
             {
-                // Create container if obj is within bounds
-                case not null when obj.SongBpmTime >= lowerBound && obj.SongBpmTime <= upperBound:
-                    CreateContainerFromPool(obj);
-                    continue;
+                var obj = containersSpan[i];
 
-                // Handle special cases for certain objects exist over a period of time
-                case BaseObstacle obs when obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound:
-                    CreateContainerFromPool(obj);
-                    continue;
-                case BaseArc arc when arc.SongBpmTime < lowerBound && arc.TailSongBpmTime >= lowerBound:
-                    CreateContainerFromPool(obj);
-                    continue;
-                case BaseChain chain when chain.SongBpmTime < lowerBound && chain.TailSongBpmTime >= lowerBound:
-                    CreateContainerFromPool(obj);
-                    continue;
+                switch (obj)
+                {
+                    case BaseObstacle obs when obs.SongBpmTime > upperBound || obs.SongBpmTime + obs.Duration < lowerBound:
+                    case BaseSlider slider when slider.SongBpmTime > upperBound || slider.TailSongBpmTime < lowerBound:
+                    case not null when obj.SongBpmTime > upperBound || obj.SongBpmTime < lowerBound:
+                        RecycleContainer(obj);
+                        break;
+                    default: continue;
+                }
+            }
+        }
 
-                // Outside of bounds; recycle
-                default:
-                    RecycleContainer(obj);
-                    break;
+        // We need to copy GetBetween implementation:
+        //   - We are binary searching by SongBpmTime, not JsonTime (this should still be sorted since MapObjects is always sorted by JsonTime)
+        //   - We need access to startIdx later in this method
+        var startIdx = span.BinarySearchBy(lowerBound, obj => obj.SongBpmTime);
+        var endIdx = span.BinarySearchBy(upperBound, obj => obj.SongBpmTime);
+
+        if (startIdx < 0) startIdx = ~startIdx;
+        if (endIdx < 0) endIdx = ~endIdx;
+
+        while (endIdx < span.Length && span[endIdx].SongBpmTime <= upperBound) endIdx++;
+
+        var length = endIdx - startIdx;
+
+        // All objects in our window defaultly get a container
+        var windowSpan = span.Slice(startIdx, length);
+        for (var i = 0; i < windowSpan.Length; i++)
+        {
+            var obj = windowSpan[i];
+
+            CreateContainerFromPool(obj);
+        }
+
+        // this is a bit of a dirty check but i'd like this early return
+        if (span[0] is not (BaseObstacle or BaseSlider)) return;
+
+        // Handle special cases for certain objects that exist over a period of time (need startIdx here)
+        for (var i = 0; i < startIdx; i++)
+        {
+            var obj = span[i];
+
+            if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound)
+            {
+                CreateContainerFromPool(obj);
+            }
+            else if (obj is BaseSlider slider && slider.SongBpmTime < lowerBound && slider.TailSongBpmTime >= lowerBound)
+            {
+                CreateContainerFromPool(obj);
             }
         }
     }
