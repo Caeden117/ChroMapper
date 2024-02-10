@@ -21,7 +21,7 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     private bool zoomed;
     public TrackLaneRing[] Rings { get; private set; }
 
-    public void Start()
+    public void Awake()
     {
         Prefab.gameObject.SetActive(false);
         Rings = new TrackLaneRing[RingCount];
