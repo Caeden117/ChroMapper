@@ -76,6 +76,8 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Offset: 0
+    - _QueueControl: 1
+    - _QueueOffset: 0
     - _Radius: 3
     - _ReceiveShadows: 1
     - _Rotation: 0
