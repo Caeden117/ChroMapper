@@ -15,6 +15,7 @@ public class Settings
     public static bool TestMode = false;
     public static Settings TestRunnerSettings = new()
     {
+        InstantLoadingTransitions = true, // Run the tests faster
         Reminder_SettingsFailed = false,
         Reminder_Loading360Levels = false,
         BeatSaberInstallation = "/root/bs",
