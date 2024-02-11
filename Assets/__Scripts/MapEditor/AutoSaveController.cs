@@ -153,12 +153,13 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         pauseManager.SaveAndQuitCM();
     }
 
+    // The ToList is necessary because we can't delete from the same collection we're enumerating
     private void CleanObjectsOutsideMap()
     {
         if (Settings.Instance.RemoveNotesOutsideMap)
         {
             var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            foreach (var note in BeatSaberSongContainer.Instance.Map.Notes.Where(note => note.SongBpmTime >= maxSongBpmTime))
+            foreach (var note in BeatSaberSongContainer.Instance.Map.Notes.Where(note => note.SongBpmTime >= maxSongBpmTime).ToList())
             {
                 noteCollection.DeleteObject(note);
             }
@@ -167,7 +168,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         if (Settings.Instance.RemoveEventsOutsideMap)
         {
             var eventCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            foreach (var evt in BeatSaberSongContainer.Instance.Map.Events.Where(evt => evt.SongBpmTime >= maxSongBpmTime))
+            foreach (var evt in BeatSaberSongContainer.Instance.Map.Events.Where(evt => evt.SongBpmTime >= maxSongBpmTime).ToList())
             {
                 eventCollection.DeleteObject(evt);
             }
@@ -176,7 +177,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         if (Settings.Instance.RemoveObstaclesOutsideMap)
         {
             var obstacleCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
-            foreach (var obst in BeatSaberSongContainer.Instance.Map.Obstacles.Where(obst => obst.SongBpmTime >= maxSongBpmTime))
+            foreach (var obst in BeatSaberSongContainer.Instance.Map.Obstacles.Where(obst => obst.SongBpmTime >= maxSongBpmTime).ToList())
             {
                 obstacleCollection.DeleteObject(obst);
             }
@@ -187,7 +188,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             if (Settings.Instance.RemoveArcsOutsideMap)
             {
                 var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
-                foreach (var arc in BeatSaberSongContainer.Instance.Map.Arcs.Where(arc => arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime))
+                foreach (var arc in BeatSaberSongContainer.Instance.Map.Arcs.Where(arc =>
+                             arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime).ToList())
                 {
                     arcCollection.DeleteObject(arc);
                 }
@@ -196,7 +198,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             if (Settings.Instance.RemoveChainsOutsideMap)
             {
                 var chainCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
-                foreach (var chain in BeatSaberSongContainer.Instance.Map.Chains.Where(chain => chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime))
+                foreach (var chain in BeatSaberSongContainer.Instance.Map.Chains.Where(chain =>
+                             chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime).ToList())
                 {
                     chainCollection.DeleteObject(chain);
                 }
