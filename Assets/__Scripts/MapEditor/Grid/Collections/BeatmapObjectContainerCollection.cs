@@ -462,7 +462,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
         // March indexes in case of same time with different properties
         while (startIdx > 0 && span[startIdx].JsonTime >= jsonTime) startIdx--;
-        while (endIdx < span.Length && span[endIdx].JsonTime <= jsonTime2) endIdx++;
+        while (endIdx < span.Length - 1 && span[endIdx].JsonTime <= jsonTime2) endIdx++;
 
         var length = endIdx - startIdx;
 
