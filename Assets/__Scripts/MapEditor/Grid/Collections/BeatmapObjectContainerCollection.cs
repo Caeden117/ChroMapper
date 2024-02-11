@@ -452,6 +452,8 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
     public Span<T> GetBetween(float jsonTime, float jsonTime2)
     {
+        if (MapObjects.Count == 0) return Span<T>.Empty;
+        
         // Considering we're only concerned with time, we'll use a time-based comparer here.
         var span = MapObjects.AsSpan();
         var startIdx = span.BinarySearchBy(jsonTime, obj => obj.JsonTime);
@@ -462,7 +464,9 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
         // March indexes in case of same time with different properties
         while (startIdx > 0 && span[startIdx].JsonTime >= jsonTime) startIdx--;
-        while (endIdx < span.Length - 1 && span[endIdx].JsonTime <= jsonTime2) endIdx++;
+        if (span[startIdx].JsonTime < jsonTime) startIdx++;
+        
+        while (endIdx < span.Length && span[endIdx].JsonTime <= jsonTime2) endIdx++;
 
         var length = endIdx - startIdx;
 
@@ -497,15 +501,19 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
         foreach (var newObject in newObjects)
         {
-            Debug.Log($"Performing conflicting check at {newObject.JsonTime}");
+            Debug.Log($"Performing conflicting check at {newObject.JsonTime} for {newObject}");
 
             var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
 
+            Debug.Log($"LocalWindow {string.Join("\n", localWindow.ToArray().ToList())}");
+            
             for (var i = 0; i < localWindow.Length; i++)
             {
                 var obj = localWindow[i];
 
                 if (obj.IsConflictingWith(newObject) && newObject != obj) conflicting.Add(obj);
+                
+                Debug.Log($"Obj {obj} | newObj {newObject} | Res - {obj.IsConflictingWith(newObject)} | Equality - {newObject != obj}");
             }
         }
 
