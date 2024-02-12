@@ -614,9 +614,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     public void DeleteObject(T obj, bool triggersAction = true, bool refreshesPool = true,
         string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true)
     {
-        var search = MapObjects.BinarySearch(obj);
-        
-        if (!HasFoundCorrectObject(search, obj)) return;
+        if (!TryBinarySearch(obj, out var search)) return;
         
         RecycleContainer(obj);
         
@@ -637,31 +635,47 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     {
         if (obj is not T tObj) return;
         
-        var search = MapObjects.BinarySearch(tObj);
-
-        if (!HasFoundCorrectObject(search, tObj)) return;
+        if (!TryBinarySearch(tObj, out var search)) return;
         
         MapObjects.RemoveAt(search);
     }
 
-    private bool HasFoundCorrectObject(int search, BaseObject obj)
+    private bool TryBinarySearch(T tObj, out int index)
     {
+        index = MapObjects.BinarySearch(tObj);
+        
         // Unhappy path: Binary Search returns negative number
-        if (search < 0)
+        if (index < 0)
         {
             // The objects are not in the collection, but are still being removed.
             // This could be because of ghost blocks, so let's try forcefully recycling that container.
             Debug.LogError($"This object is not in the collection and appears to be a ghost. Please report this.");
-            
             return false;
         }
 
-        // Unhappy path: Binary Search returns an object, but turns out to be the incorrect object.
-        if (MapObjects[search] != obj)
+        // Potentially unhappy path: Binary Search returns an object, but turns out to be the incorrect object.
+        // We assume this is only going to happen for stacked objects so we march indexes to see if we can find it.
+        if (MapObjects[index] != tObj)
         {
-            // Binary Search returned a value, but this value is not the object we're looking to delete.
-            Debug.LogError("Binary Search returned incorrect object. Please report this.");
+            var forwardIndex = index + 1;
+            while (forwardIndex < MapObjects.Count - 1 && MapObjects[forwardIndex] != tObj &&
+                   MapObjects[forwardIndex].JsonTime <= tObj.JsonTime) forwardIndex++;
+            if (MapObjects[forwardIndex] == tObj)
+            {
+                index = forwardIndex;
+                return true;
+            }
 
+            var backwardIndex = index - 1;
+            while (backwardIndex > 0 && MapObjects[backwardIndex] != tObj &&
+                   MapObjects[backwardIndex].JsonTime >= tObj.JsonTime) backwardIndex--;
+            if (MapObjects[backwardIndex] == tObj)
+            {
+                index = backwardIndex;
+                return true;
+            }
+
+            Debug.LogError("Binary Search returned incorrect object. Please report this.");
             return false;
         }
 
