@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Beatmap.Base.Customs;
@@ -219,15 +220,25 @@ namespace Beatmap.Base
 
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var audioLength = BeatSaberSongContainer.Instance.LoadedSongLength;
-            var audioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples;
+            var audioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples - 1; // Match official editor
             var audioFrequency = BeatSaberSongContainer.Instance.LoadedSongFrequency;
 
+            // If for some reason we have bpm events outside the map and the mapper decided not to remove them,
+            // it'll cause weird behaviour in official editor so we'll exclude those
+            var maxSongBpmTime = audioLength * songBpm / 60f;
+            
+            var index = map.BpmEvents.Count - 1;
+            while (index >= 0 && map.BpmEvents[index].SongBpmTime > maxSongBpmTime) index--;
+            var bpmEvents = (index >= 0)
+                ? map.BpmEvents.AsSpan()[..(index + 1)]
+                : Span<BaseBpmEvent>.Empty;
+            
             bpmInfo["_version"] = "2.0.0";
             bpmInfo["_songSampleCount"] = audioSamples;
             bpmInfo["_songFrequency"] = audioFrequency;
 
             var regions = new JSONArray();
-            if (map.BpmEvents.Count == 0)
+            if (bpmEvents.Length == 0)
             {
                 regions.Add(new JSONObject
                 {
@@ -239,10 +250,10 @@ namespace Beatmap.Base
             }
             else
             {
-                for (var i = 0; i < map.BpmEvents.Count - 1; i++)
+                for (var i = 0; i < bpmEvents.Length - 1; i++)
                 {
-                    var currentBpmEvent = map.BpmEvents[i];
-                    var nextBpmEvent = map.BpmEvents[i + 1];
+                    var currentBpmEvent = bpmEvents[i];
+                    var nextBpmEvent = bpmEvents[i + 1];
 
                     regions.Add(new JSONObject
                     {
@@ -253,7 +264,7 @@ namespace Beatmap.Base
                     });
                 }
 
-                var lastBpmEvent = map.BpmEvents[map.BpmEvents.Count - 1];
+                var lastBpmEvent = bpmEvents[^1];
                 var lastStartSampleIndex = (lastBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency);
                 var secondsDiff = (audioSamples - lastStartSampleIndex) / audioFrequency;
                 var jsonBeatsDiff = secondsDiff * (lastBpmEvent.Bpm / 60f);
