@@ -215,7 +215,11 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
     }
 
-    public override void DoPostObjectsDeleteWorkflow() => LinkAllLightEvents();
+    public override void DoPostObjectsDeleteWorkflow()
+    {
+        LinkAllLightEvents();
+        RefreshPool();
+    }
 
     protected override void OnObjectSpawned(BaseObject obj, bool inCollection = false)
     {

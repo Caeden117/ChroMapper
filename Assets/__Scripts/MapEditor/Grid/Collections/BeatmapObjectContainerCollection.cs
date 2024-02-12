@@ -431,7 +431,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public virtual void DoPostObjectsSpawnedWorkflow() { }
 
-    public virtual void DoPostObjectsDeleteWorkflow() { }
+    public virtual void DoPostObjectsDeleteWorkflow() => RefreshPool();
 
     public abstract ObjectContainer CreateContainer();
 
