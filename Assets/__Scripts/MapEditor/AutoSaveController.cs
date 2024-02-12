@@ -172,6 +172,12 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             {
                 eventCollection.DeleteObject(evt);
             }
+            
+            var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
+            foreach (var bpmEvt in BeatSaberSongContainer.Instance.Map.BpmEvents.Where(bpmEvt => bpmEvt.SongBpmTime >= maxSongBpmTime).ToList())
+            {
+                bpmCollection.DeleteObject(bpmEvt);
+            }
         }
 
         if (Settings.Instance.RemoveObstaclesOutsideMap)
@@ -217,6 +223,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         if (Settings.Instance.RemoveEventsOutsideMap)
         {
             if (BeatSaberSongContainer.Instance.Map.Events.Any(evt => evt.SongBpmTime >= maxSongBpmTime))
+                return true;
+
+            if (BeatSaberSongContainer.Instance.Map.BpmEvents.Any(bpmEvt => bpmEvt.SongBpmTime >= maxSongBpmTime))
                 return true;
         }
         if (Settings.Instance.RemoveObstaclesOutsideMap)
