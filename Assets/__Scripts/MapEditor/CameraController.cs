@@ -231,7 +231,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         var mouseLocked = Cursor.lockState == CursorLockMode.Locked;
         if (lockMouse && !mouseLocked)
         {
-            savedMousePos = Mouse.current.position.ReadValue();
+            instance.savedMousePos = Mouse.current.position.ReadValue();
 
             // Locked state automatically hides the cursor, so no need to set visibility
             Cursor.lockState = CursorLockMode.Locked;
@@ -240,14 +240,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         {
             Cursor.lockState = CursorLockMode.None;
 
-            // Apparently these bugs are fixed in more recent Unity versions, so remove this when we upgrade
-#if UNITY_STANDALONE_WIN
-            Mouse.current.WarpCursorPosition(new Vector2(savedMousePos.x, Screen.height - savedMousePos.y));
-#elif UNITY_STANDALONE_OSX
-            // it's extra broken on macOS so just don't move the cursor I guess
-#else
-            Mouse.current.WarpCursorPosition(savedMousePos);
-#endif
+            Mouse.current.WarpCursorPosition(instance.savedMousePos);
         }
     }
 
