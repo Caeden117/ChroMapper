@@ -501,19 +501,15 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
         foreach (var newObject in newObjects)
         {
-            Debug.Log($"Performing conflicting check at {newObject.JsonTime} for {newObject}");
+            Debug.Log($"Performing conflicting check at {newObject.JsonTime}");
 
             var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
-
-            Debug.Log($"LocalWindow {string.Join("\n", localWindow.ToArray().ToList())}");
             
             for (var i = 0; i < localWindow.Length; i++)
             {
                 var obj = localWindow[i];
 
                 if (obj.IsConflictingWith(newObject) && newObject != obj) conflicting.Add(obj);
-                
-                Debug.Log($"Obj {obj} | newObj {newObject} | Res - {obj.IsConflictingWith(newObject)} | Equality - {newObject != obj}");
             }
         }
 
