@@ -32,6 +32,7 @@ namespace Beatmap.V3.Customs
         public override string DataKeyRepeat { get; } = "repeat";
         public override string DataKeyChildrenTracks { get; } = "childrenTracks";
         public override string DataKeyParentTrack { get; } = "parentTrack";
+        public override string DataKeyWorldPositionStays { get; } = "worldPositionStays";
 
         public override BaseItem Clone() => new V3CustomEvent(JsonTime, Type, Data.Clone());
     }

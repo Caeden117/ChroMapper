@@ -70,7 +70,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
                 foreach (var tr in tracks)
                 {
                     var at = tracksManager.CreateAnimationTrack(tr.Value);
-                    at.Track.transform.parent = parent.Track.ObjectParentTransform;
+                    at.Track.transform.SetParent(parent.Track.ObjectParentTransform, ev.DataWorldPositionStays ?? false);
                     if (at.Animator == null)
                     {
                         at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
