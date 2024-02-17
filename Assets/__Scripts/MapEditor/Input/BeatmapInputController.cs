@@ -24,7 +24,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
     // Update is called once per frame
     private void Update()
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         GlobalIntersectionCache.firstHit = null;
         if (ObstaclePlacement.IsPlacing)
         {
@@ -54,7 +54,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnQuickDelete(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true))
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
             return; //Returns if the mouse is on top of UI
 
         if (!Application.isFocused) return;
@@ -65,7 +65,7 @@ public class BeatmapInputController<T> : MonoBehaviour, CMInput.IBeatmapObjectsA
 
     public void OnSelectObjects(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true) ||
             ObstaclePlacement.IsPlacing)
         {
             return;

@@ -204,7 +204,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
     {
         if (!KeybindsController.IsMouseInWindow ||
-            customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true))
+            customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
         {
             return;
         }
@@ -246,7 +246,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void OnPreciselyChangeTimeandPrecision(InputAction.CallbackContext context)
     {
         if (!KeybindsController.IsMouseInWindow ||
-            customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true))
+            customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
         {
             return;
         }

@@ -156,7 +156,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 return;
             }
 
-            if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+            if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
                 queuedData.CustomTrack = BeatmapObjectContainerCollection.TrackFilterID;
             else
@@ -208,7 +208,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public virtual void OnPlaceObject(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true) ||
             !KeybindsController.IsMouseInWindow || !context.performed)
         {
             return;
@@ -490,7 +490,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     protected TBoc ObjectUnderCursor()
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return null;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return null;
 
         var ray = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
         return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<TBoc>();

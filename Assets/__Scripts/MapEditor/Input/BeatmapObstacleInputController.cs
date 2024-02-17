@@ -18,7 +18,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void OnChangeWallDuration(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var obs);
         if (obs != null && !obs.Dragging && context.performed)
         {
@@ -37,7 +37,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void OnChangeWallLowerBound(InputAction.CallbackContext context)
     {
-        if (!Settings.Instance.Load_MapV3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (!Settings.Instance.Load_MapV3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var obs);
         if (obs != null && !obs.Dragging && context.performed)
         {
@@ -55,7 +55,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
     }
     public void OnChangeWallUpperBound(InputAction.CallbackContext context)
     {
-        if (!Settings.Instance.Load_MapV3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (!Settings.Instance.Load_MapV3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var obs);
         if (obs != null && !obs.Dragging && context.performed)
         {
@@ -73,7 +73,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void OnToggleHyperWall(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var obs);
         if (obs != null && !obs.Dragging && context.performed) ToggleHyperWall(obs);
     }

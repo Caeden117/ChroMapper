@@ -271,7 +271,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public void OnHoldtoMoveCamera(CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         canMoveCamera = context.performed;
         if (canMoveCamera)
             CMInputCallbackInstaller.DisableActionMaps(typeof(CameraController), actionMapsDisabledWhileMoving);

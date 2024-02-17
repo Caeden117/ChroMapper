@@ -16,7 +16,7 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
     [FormerlySerializedAs("arcAppearanceSO")] [SerializeField] private ArcAppearanceSO arcAppearanceSo;
     public void OnChangingMu(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var e);
         if (e == null || e.Dragging || !context.performed) return;
 
@@ -37,7 +37,7 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
 
     public void OnInvertArcColor(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true) ||
             !KeybindsController.IsMouseInWindow || !context.performed)
         {
             return;
@@ -60,7 +60,7 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
 
     public void OnChangingTmu(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var e);
         if (e == null || e.Dragging || !context.performed) return;
 
