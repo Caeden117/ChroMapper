@@ -44,7 +44,7 @@ namespace Tests
         [Test]
         public void MirrorME()
         {
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
@@ -68,7 +68,7 @@ namespace Tests
         [Test]
         public void MirrorNoteNE()
         {
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
@@ -94,177 +94,165 @@ namespace Tests
         [Test]
         public void MirrorProp()
         {
-            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            if (container is EventGridContainer eventsContainer)
-            {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+            
+            var root = eventsContainer.transform.root;
+            var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                    JSON.Parse("{\"lightID\": 2}"));
+            BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
+                JSON.Parse("{\"lightID\": 2}"));
 
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
-                SelectionController.Select(baseEventA);
+            SelectionController.Select(baseEventA);
 
-                eventsContainer.EventTypeToPropagate = baseEventA.Type;
-                eventsContainer.PropagationEditing = EventGridContainer.PropMode.Light;
+            eventsContainer.EventTypeToPropagate = baseEventA.Type;
+            eventsContainer.PropagationEditing = EventGridContainer.PropMode.Light;
 
-                _mirror.Mirror();
-                // I'm sorry if you're here after changing the prop mapping for default env
-                CheckUtils.CheckEvent("Perform mirror prop event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f, JSON.Parse("{\"lightID\": [9]}"));
+            _mirror.Mirror();
+            // I'm sorry if you're here after changing the prop mapping for default env
+            CheckUtils.CheckEvent("Perform mirror prop event", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f, JSON.Parse("{\"lightID\": [9]}"));
 
-                // Undo mirror
-                _actionContainer.Undo();
-                CheckUtils.CheckEvent("Undo mirror prop event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers,
-                    (int)LightValue.RedFade, 1f, JSON.Parse("{\"lightID\": [2]}"));
+            // Undo mirror
+            _actionContainer.Undo();
+            CheckUtils.CheckEvent("Undo mirror prop event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers,
+                (int)LightValue.RedFade, 1f, JSON.Parse("{\"lightID\": [2]}"));
 
-                eventsContainer.PropagationEditing = EventGridContainer.PropMode.Off;
-            }
+            eventsContainer.PropagationEditing = EventGridContainer.PropMode.Off;
         }
 
         [Test]
         public void MirrorGradient()
         {
-            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            if (container is EventGridContainer eventsContainer)
-            {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+        
+            var root = eventsContainer.transform.root;
+            var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                    JSON.Parse(
-                        "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
+                JSON.Parse(
+                    "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
-                SelectionController.Select(baseEventA);
+            SelectionController.Select(baseEventA);
 
-                _mirror.Mirror();
-                CheckUtils.CheckEvent("Perform mirror gradient event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f,
-                    JSON.Parse(
-                        "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [0, 1, 0, 1], \"_endColor\": [1, 0, 0, 1], \"_easing\": \"easeLinear\"}}"));
+            _mirror.Mirror();
+            CheckUtils.CheckEvent("Perform mirror gradient event", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f,
+                JSON.Parse(
+                    "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [0, 1, 0, 1], \"_endColor\": [1, 0, 0, 1], \"_easing\": \"easeLinear\"}}"));
 
-                // Undo mirror
-                _actionContainer.Undo();
-                CheckUtils.CheckEvent("Undo mirror gradient event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                    JSON.Parse(
-                        "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
-            }
+            // Undo mirror
+            _actionContainer.Undo();
+            CheckUtils.CheckEvent("Undo mirror gradient event", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
+                JSON.Parse(
+                    "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
         }
 
         [Test]
         public void MirrorEventRedBlue()
         {
-            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            if (container is EventGridContainer eventsContainer)
-            {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+            var root = eventsContainer.transform.root;
+            var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
 
-                SelectionController.Select(baseEventA);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
-                _mirror.Mirror();
-                CheckUtils.CheckEvent("Perform mirror event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f);
+            SelectionController.Select(baseEventA);
 
-                _mirror.Mirror();
-                CheckUtils.CheckEvent("Perform mirror event again", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
-            }
+            _mirror.Mirror();
+            CheckUtils.CheckEvent("Perform mirror event", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f);
+
+            _mirror.Mirror();
+            CheckUtils.CheckEvent("Perform mirror event again", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
         }
 
         [Test]
         public void MirrorEventRedWhiteBlue()
         {
-            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            if (container is EventGridContainer eventsContainer)
-            {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+            
+            var root = eventsContainer.transform.root;
+            var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
 
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
-                SelectionController.Select(baseEventA);
+            SelectionController.Select(baseEventA);
 
-                _mirror.Mirror(false);
-                CheckUtils.CheckEvent("Perform mirror cycle event", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade, 1f);
+            _mirror.Mirror(false);
+            CheckUtils.CheckEvent("Perform mirror cycle event", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade, 1f);
 
-                _mirror.Mirror(false);
-                CheckUtils.CheckEvent("Perform mirror cycle event 2", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f);
+            _mirror.Mirror(false);
+            CheckUtils.CheckEvent("Perform mirror cycle event 2", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f);
 
-                _mirror.Mirror(false);
-                CheckUtils.CheckEvent("Perform mirror cycle event 3", eventsContainer, 0, 2,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
-            }
+            _mirror.Mirror(false);
+            CheckUtils.CheckEvent("Perform mirror cycle event 3", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
         }
 
         [Test]
         public void MirrorWallME()
         {
-            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
-            if (container is ObstacleGridContainer wallsContainer)
-            {
-                var root = wallsContainer.transform.root;
-                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
-                wallPlacement.RefreshVisuals();
+            var wallsContainer = BeatmapObjectContainerCollection.GetCollectionForType<ObstacleGridContainer>(ObjectType.Obstacle);
+        
+            var root = wallsContainer.transform.root;
+            var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
+            wallPlacement.RefreshVisuals();
 
-                // What the actual fuck - example from mirroring in MMA2
-                //{"_time":1.5,"_lineIndex":1446,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
-                //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
-                BaseObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
+            // What the actual fuck - example from mirroring in MMA2
+            //{"_time":1.5,"_lineIndex":1446,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
+            //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
+            BaseObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
 
-                PlaceUtils.PlaceWall(wallPlacement, wallA);
+            PlaceUtils.PlaceWall(wallPlacement, wallA);
 
-                SelectionController.Select(wallA);
+            SelectionController.Select(wallA);
 
-                _mirror.Mirror();
-                CheckUtils.CheckWall("Perform ME wall mirror", wallsContainer, 0, 2, 2958, 0, 595141, 1, 2596, 5);
+            _mirror.Mirror();
+            CheckUtils.CheckWall("Perform ME wall mirror", wallsContainer, 0, 2, 2958, 0, 595141, 1, 2596, 5);
 
-                // Undo mirror
-                _actionContainer.Undo();
-                CheckUtils.CheckWall("Undo ME wall mirror", wallsContainer, 0, 2, 1446, 0, 595141, 1, 2596, 5);
-            }
+            // Undo mirror
+            _actionContainer.Undo();
+            CheckUtils.CheckWall("Undo ME wall mirror", wallsContainer, 0, 2, 1446, 0, 595141, 1, 2596, 5);
         }
 
         [Test]
         public void MirrorWallNE()
         {
-            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
-            if (container is ObstacleGridContainer wallsContainer)
-            {
-                var root = wallsContainer.transform.root;
-                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
-                wallPlacement.RefreshVisuals();
+            var wallsContainer = BeatmapObjectContainerCollection.GetCollectionForType<ObstacleGridContainer>(ObjectType.Obstacle);
 
-                BaseObstacle wallA = new V3Obstacle(2, (int)GridX.Left, (int)GridY.Base, 1, 2, 5,
-                    JSON.Parse("{\"coordinates\": [-1.5, 0]}"));
+            var root = wallsContainer.transform.root;
+            var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
+            wallPlacement.RefreshVisuals();
 
-                PlaceUtils.PlaceWall(wallPlacement, wallA);
+            BaseObstacle wallA = new V3Obstacle(2, (int)GridX.Left, (int)GridY.Base, 1, 2, 5,
+                JSON.Parse("{\"coordinates\": [-1.5, 0]}"));
 
-                SelectionController.Select(wallA);
+            PlaceUtils.PlaceWall(wallPlacement, wallA);
 
-                _mirror.Mirror();
-                CheckUtils.CheckWall("Perform NE wall mirror", wallsContainer, 0, 2, (int)GridX.MiddleRight,
-                    (int)GridY.Base, (int)ObstacleType.Full, 1, 2, 5,
-                    JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-0.5, 0]}}"));
+            SelectionController.Select(wallA);
 
-                // Undo mirror
-                _actionContainer.Undo();
-                CheckUtils.CheckWall("Undo NE wall mirror", wallsContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
-                    (int)ObstacleType.Full, 1, 2, 5, JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-1.5, 0]}}"));
-            }
+            _mirror.Mirror();
+            CheckUtils.CheckWall("Perform NE wall mirror", wallsContainer, 0, 2, (int)GridX.MiddleRight,
+                (int)GridY.Base, (int)ObstacleType.Full, 1, 2, 5,
+                JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-0.5, 0]}}"));
+
+            // Undo mirror
+            _actionContainer.Undo();
+            CheckUtils.CheckWall("Undo NE wall mirror", wallsContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
+                (int)ObstacleType.Full, 1, 2, 5, JSON.Parse($"{{\"{wallA.CustomKeyCoordinate}\": [-1.5, 0]}}"));
         }
 
         // TODO: update rotation event test for more representative
@@ -274,25 +262,23 @@ namespace Tests
             var rotationCb = Object.FindObjectOfType<RotationCallbackController>();
             rotationCb.Start();
 
-            var container = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            if (container is EventGridContainer eventsContainer)
-            {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
 
-                BaseEvent baseEventA = new V3RotationEvent(2, 1, 33);
+            var root = eventsContainer.transform.root;
+            var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+            BaseEvent baseEventA = new V3RotationEvent(2, 1, 33);
 
-                SelectionController.Select(baseEventA);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
-                _mirror.Mirror();
-                CheckUtils.CheckRotationEvent("Perform mirror rotation event", eventsContainer, 0, 2, 1, -33);
+            SelectionController.Select(baseEventA);
 
-                // Undo mirror
-                _actionContainer.Undo();
-                CheckUtils.CheckRotationEvent("Undo mirror rotation event", eventsContainer, 0, 2, 1, 33);
-            }
+            _mirror.Mirror();
+            CheckUtils.CheckRotationEvent("Perform mirror rotation event", eventsContainer, 0, 2, 1, -33);
+
+            // Undo mirror
+            _actionContainer.Undo();
+            CheckUtils.CheckRotationEvent("Undo mirror rotation event", eventsContainer, 0, 2, 1, 33);
         }
     }
 }

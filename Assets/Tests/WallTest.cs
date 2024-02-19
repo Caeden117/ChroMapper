@@ -136,14 +136,14 @@ namespace Tests
                 if (obstaclesCollection.LoadedContainers[wallA] is ObstacleContainer container)
                     inputController.ToggleHyperWall(container);
 
-                var toDelete = obstaclesCollection.LoadedObjects.First();
+                var toDelete = obstaclesCollection.MapObjects.First();
                 obstaclesCollection.DeleteObject(toDelete);
 
-                Assert.AreEqual(0, obstaclesCollection.LoadedObjects.Count);
+                Assert.AreEqual(0, obstaclesCollection.MapObjects.Count);
 
                 actionContainer.Undo();
 
-                Assert.AreEqual(1, obstaclesCollection.LoadedObjects.Count);
+                Assert.AreEqual(1, obstaclesCollection.MapObjects.Count);
                 CheckUtils.CheckWall("Perform hyper wall", obstaclesCollection, 0, 4, (int)GridX.Left, 0,
                     (int)ObstacleType.Full, -2.0f, 1, 5);
 

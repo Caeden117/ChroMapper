@@ -220,45 +220,44 @@ namespace Tests
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             var selectionController = Object.FindObjectOfType<SelectionController>();
-            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            if (containerCollection is EventGridContainer eventsContainer)
-            {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-                var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
-                var atsc = root.GetComponentInChildren<AudioTimeSyncController>();
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+            
+            var root = eventsContainer.transform.root;
+            var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+            var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
+            var atsc = root.GetComponentInChildren<AudioTimeSyncController>();
 
-                BaseEvent baseEventA = new V3BasicEvent(1, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-                BaseEvent baseEventB = new V3BasicEvent(2, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
+            BaseEvent baseEventA = new V3BasicEvent(1, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
+            BaseEvent baseEventB = new V3BasicEvent(2, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
 
-                // Check state after placing
-                // A -> B
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventB);
+            // Check state after placing
+            // A -> B
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventB);
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB }, "Place");
+            AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB }, "Place");
 
-                // Check state after pasting
-                // A -> B -> A Copy -> B copy
-                SelectionController.Select(baseEventA);
-                SelectionController.Select(baseEventB, true);
-                atsc.MoveToJsonTime(3);
-                selectionController.Copy();
-                selectionController.Paste();
+            // Check state after pasting
+            // A -> B -> A Copy -> B copy
+            SelectionController.Select(baseEventA);
+            SelectionController.Select(baseEventB, true);
+            atsc.MoveToJsonTime(3);
+            selectionController.Copy();
+            selectionController.Paste();
 
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB,
-                    containerCollection.LoadedObjects.ElementAt(2) as BaseEvent,
-                    containerCollection.LoadedObjects.ElementAt(3) as BaseEvent }, "Paste");
+            AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB,
+                eventsContainer.MapObjects.ElementAt(2) as BaseEvent,
+                eventsContainer.MapObjects.ElementAt(3) as BaseEvent }, "Paste");
 
-                // Check state after undo and redo
-                actionContainer.Undo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB }, "Undo");
+            // Check state after undo and redo
+            actionContainer.Undo();
+            AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB }, "Undo");
 
-                actionContainer.Redo();
-                AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB,
-                    containerCollection.LoadedObjects.ElementAt(2) as BaseEvent,
-                    containerCollection.LoadedObjects.ElementAt(3) as BaseEvent }, "Redo");
-            }
+            actionContainer.Redo();
+            AssertEventLinkOrder(new List<BaseEvent> { baseEventA, baseEventB,
+                eventsContainer.MapObjects.ElementAt(2) as BaseEvent,
+                eventsContainer.MapObjects.ElementAt(3) as BaseEvent }, "Redo");
+            
         }
 
         private void AssertEventLinkOrder(IList<BaseEvent> events, string msg = "")

@@ -34,7 +34,7 @@ namespace Tests
         public void ModifiedAction()
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
 
             BaseNote baseNoteA = new V3ColorNote
@@ -52,20 +52,20 @@ namespace Tests
 
             actionContainer.Undo();
 
-            Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, notesContainer.MapObjects.Count);
+            Assert.AreEqual(2, notesContainer.MapObjects[0].JsonTime);
 
             actionContainer.Redo();
 
-            Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(1.9999999f, notesContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, notesContainer.MapObjects.Count);
+            Assert.AreEqual(1.9999999f, notesContainer.MapObjects[0].JsonTime);
         }
 
         [Test]
         public void CompositeTest()
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
             var selectionController = root.GetComponentInChildren<SelectionController>();
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
@@ -99,19 +99,19 @@ namespace Tests
             selectionController.Paste();
             selectionController.Delete();
 
-            void CheckState(int loadedObjects, int selectedObjects, int time, int type, int index, int layer)
+            void CheckState(int MapObjects, int selectedObjects, int time, int type, int index, int layer)
             {
-                Assert.AreEqual(loadedObjects, notesContainer.LoadedObjects.Count);
+                Assert.AreEqual(MapObjects, notesContainer.MapObjects.Count);
                 Assert.AreEqual(selectedObjects, SelectionController.SelectedObjects.Count);
-                Assert.AreEqual(time, notesContainer.LoadedObjects[0].JsonTime);
-                Assert.AreEqual(type, ((BaseNote)notesContainer.LoadedObjects[0]).Type);
-                Assert.AreEqual(index, ((BaseNote)notesContainer.LoadedObjects[0]).PosX);
-                Assert.AreEqual(layer, ((BaseNote)notesContainer.LoadedObjects[0]).PosY);
+                Assert.AreEqual(time, notesContainer.MapObjects[0].JsonTime);
+                Assert.AreEqual(type, ((BaseNote)notesContainer.MapObjects[0]).Type);
+                Assert.AreEqual(index, ((BaseNote)notesContainer.MapObjects[0]).PosX);
+                Assert.AreEqual(layer, ((BaseNote)notesContainer.MapObjects[0]).PosY);
             }
 
             // No notes loaded
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
 
             // Undo delete action
             actionContainer.Undo();
@@ -119,8 +119,8 @@ namespace Tests
 
             // Undo paste action
             actionContainer.Undo();
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
 
             // Undo cut action
             actionContainer.Undo();
@@ -141,7 +141,7 @@ namespace Tests
             // Undo placement
             actionContainer.Undo();
 
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
             Assert.AreEqual(0, SelectionController.SelectedObjects.Count);
 
             // Redo it all! - Selection is lost :(
@@ -160,8 +160,8 @@ namespace Tests
             CheckState(1, 1, 2, (int)NoteType.Blue, 2, 2);
 
             actionContainer.Redo();
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
 
             // Redo paste
             actionContainer.Redo();
@@ -172,8 +172,8 @@ namespace Tests
 
             // Redo delete
             actionContainer.Redo();
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(0, notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
+            Assert.AreEqual(0, notesContainer.MapObjects.Count);
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace Tests
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
 
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
@@ -196,18 +196,18 @@ namespace Tests
                 Type = (int)NoteType.Blue
             });
 
-            Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, notesContainer.MapObjects.Count);
+            Assert.AreEqual(2, notesContainer.MapObjects[0].JsonTime);
 
             actionContainer.Undo();
 
-            Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, notesContainer.MapObjects.Count);
+            Assert.AreEqual(2, notesContainer.MapObjects[0].JsonTime);
 
             actionContainer.Redo();
 
-            Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(2, notesContainer.LoadedObjects[0].JsonTime);
+            Assert.AreEqual(1, notesContainer.MapObjects.Count);
+            Assert.AreEqual(2, notesContainer.MapObjects[0].JsonTime);
         }
     }
 }

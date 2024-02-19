@@ -216,11 +216,11 @@ namespace Tests
             selectionController.Copy();
             selectionController.Paste();
 
-            var V1C = eventsContainer.LoadedObjects.ElementAt(5) as BaseEvent;
-            var A2C = eventsContainer.LoadedObjects.ElementAt(6) as BaseEvent;
-            var B3C = eventsContainer.LoadedObjects.ElementAt(7) as BaseEvent;
-            var A12C = eventsContainer.LoadedObjects.ElementAt(11) as BaseEvent;
-            var B13C = eventsContainer.LoadedObjects.ElementAt(12) as BaseEvent;
+            var V1C = eventsContainer.MapObjects.ElementAt(5) as BaseEvent;
+            var A2C = eventsContainer.MapObjects.ElementAt(6) as BaseEvent;
+            var B3C = eventsContainer.MapObjects.ElementAt(7) as BaseEvent;
+            var A12C = eventsContainer.MapObjects.ElementAt(11) as BaseEvent;
+            var B13C = eventsContainer.MapObjects.ElementAt(12) as BaseEvent;
 
             AssertEventLinkOrder(new List<BaseEvent> { V1, V1C, V10 }, "Paste LightID V");
             AssertEventLinkOrder(new List<BaseEvent> { A2, A4, A2C, A12, A12C }, "Paste LightID A");
