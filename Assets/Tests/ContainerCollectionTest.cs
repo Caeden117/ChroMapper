@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Beatmap.Base;
-using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.V3;
 using NUnit.Framework;
 using Tests.Util;
-using UnityEngine;
 using UnityEngine.TestTools;
+using Object = UnityEngine.Object;
 
 namespace Tests
 {
@@ -164,6 +163,86 @@ namespace Tests
             noteGridContainer.DeleteObject(notes[deleteIndex]);
             Assert.AreEqual(3, noteGridContainer.MapObjects.Count);
             Assert.IsFalse(noteGridContainer.MapObjects.Contains(notes[deleteIndex]));
+        }
+        
+        [TestCase(false, false, false)]
+        [TestCase(false, false, true)]
+        [TestCase(false, true, false)]
+        [TestCase(false, true, true)]
+        [TestCase(true, false, false)]
+        [TestCase(true, false, true)]
+        [TestCase(true, true, false)]
+        [TestCase(true, true, true)]
+        public void Mirror_MapObjectsAreSorted(bool mirrorA, bool mirrorB, bool mirrorC)
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var mirrorSelection = Object.FindObjectOfType<MirrorSelection>();
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            var noteA = new V3ColorNote { JsonTime = 0, PosX = 0, PosY = 0 };
+            var noteB = new V3ColorNote { JsonTime = 0, PosX = 1, PosY = 1 };
+            var noteC = new V3ColorNote { JsonTime = 0, PosX = 2, PosY = 2 };
+            
+            if (mirrorA) notesContainer.SpawnObject(noteA);
+            if (mirrorB) notesContainer.SpawnObject(noteB);
+            if (mirrorC) notesContainer.SpawnObject(noteC);
+            
+            SelectionController.DeselectAll();
+            if (mirrorA) SelectionController.Select(noteA);
+            if (mirrorB) SelectionController.Select(noteB, true);
+            if (mirrorC) SelectionController.Select(noteC, true);
+            mirrorSelection.Mirror();
+
+            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            
+            actionContainer.Undo();
+            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+        }
+        
+        [TestCase(false, false, false)]
+        [TestCase(false, false, true)]
+        [TestCase(false, true, false)]
+        [TestCase(false, true, true)]
+        [TestCase(true, false, false)]
+        [TestCase(true, false, true)]
+        [TestCase(true, true, false)]
+        [TestCase(true, true, true)]
+        public void MirrorInTime_MapObjectsAreSorted(bool mirrorA, bool mirrorB, bool mirrorC)
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var mirrorSelection = Object.FindObjectOfType<MirrorSelection>();
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            var noteA = new V3ColorNote { JsonTime = 0, PosX = (int)GridX.Left };
+            var noteB = new V3ColorNote { JsonTime = 1, PosX = (int)GridX.MiddleLeft };
+            var noteC = new V3ColorNote { JsonTime = 2, PosX = (int)GridX.MiddleRight };
+            
+            if (mirrorA) notesContainer.SpawnObject(noteA);
+            if (mirrorB) notesContainer.SpawnObject(noteB);
+            if (mirrorC) notesContainer.SpawnObject(noteC);
+            
+            SelectionController.DeselectAll();
+            if (mirrorA) SelectionController.Select(noteA);
+            if (mirrorB) SelectionController.Select(noteB, true);
+            if (mirrorC) SelectionController.Select(noteC, true);
+            mirrorSelection.MirrorTime();
+
+            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            
+            actionContainer.Undo();
+            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+        }
+        
+        private static bool NotesAreSorted(IReadOnlyList<BaseNote> noteMapObjects)
+        {
+            for (var i = 1; i < noteMapObjects.Count; i++)
+            {
+                if (noteMapObjects[i - 1].CompareTo(noteMapObjects[i]) == 1) return false;
+            }
+
+            return true;
         }
     }
 }
