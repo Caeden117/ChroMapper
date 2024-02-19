@@ -7,11 +7,11 @@ namespace Tests.Util
     public class PlaceUtils
     {
         public static void PlaceNote(
-            NotePlacement obstaclePlacement, BaseNote note)
+            NotePlacement notePlacement, BaseNote note)
         {
-            obstaclePlacement.queuedData = note;
-            obstaclePlacement.RoundedJsonTime = obstaclePlacement.queuedData.JsonTime;
-            obstaclePlacement.ApplyToMap();
+            notePlacement.queuedData = note;
+            notePlacement.RoundedJsonTime = notePlacement.queuedData.JsonTime;
+            notePlacement.ApplyToMap();
         }
 
         public static void PlaceWall(
