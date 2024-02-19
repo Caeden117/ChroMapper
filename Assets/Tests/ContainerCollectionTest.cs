@@ -137,11 +137,8 @@ namespace Tests
             Assert.AreSame(noteC, noteGridContainer.MapObjects[0]);
         }
         
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        public void DeleteObject_StackedNotes(int deleteIndex)
+        [Test]
+        public void DeleteObject_StackedNotes([Values(0, 1, 2, 3)] int deleteIndex)
         {            
             var noteGridContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
@@ -165,15 +162,8 @@ namespace Tests
             Assert.IsFalse(noteGridContainer.MapObjects.Contains(notes[deleteIndex]));
         }
         
-        [TestCase(false, false, false)]
-        [TestCase(false, false, true)]
-        [TestCase(false, true, false)]
-        [TestCase(false, true, true)]
-        [TestCase(true, false, false)]
-        [TestCase(true, false, true)]
-        [TestCase(true, true, false)]
-        [TestCase(true, true, true)]
-        public void Mirror_MapObjectsAreSorted(bool mirrorA, bool mirrorB, bool mirrorC)
+        [Test]
+        public void Mirror_MapObjectsAreSorted([Values]bool mirrorA, [Values]bool mirrorB, [Values]bool mirrorC)
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             var mirrorSelection = Object.FindObjectOfType<MirrorSelection>();
@@ -200,15 +190,8 @@ namespace Tests
             Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
         }
         
-        [TestCase(false, false, false)]
-        [TestCase(false, false, true)]
-        [TestCase(false, true, false)]
-        [TestCase(false, true, true)]
-        [TestCase(true, false, false)]
-        [TestCase(true, false, true)]
-        [TestCase(true, true, false)]
-        [TestCase(true, true, true)]
-        public void MirrorInTime_MapObjectsAreSorted(bool mirrorA, bool mirrorB, bool mirrorC)
+        [Test]
+        public void MirrorInTime_MapObjectsAreSorted([Values]bool mirrorA, [Values]bool mirrorB, [Values]bool mirrorC)
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             var mirrorSelection = Object.FindObjectOfType<MirrorSelection>();
