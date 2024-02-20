@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 4bc9586dd75931946bdf2f3334dc9397, type: 2}
   m_Metadata:
     m_Items:
-    - id: 0
+    - rid: 1240120937092218917
   m_TableData:
   - m_Id: 34914570240
     m_Localized: "\uC138\uC158 \uCC38\uC5EC"
@@ -87,19 +87,19 @@ MonoBehaviour:
       {0}. \uB178\uB798 \uBAA9\uB85D\uC73C\uB85C \uB3CC\uC544\uAC00\uB294 \uC911..."
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218917
   - m_Id: 5357561843712
     m_Localized: "\uB124\uD2B8\uC6CC\uD06C \uC624\uB958\uAC00 \uBC1C\uC0DD\uD588\uC2B5\uB2C8\uB2E4:
       {0}."
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218917
   - m_Id: 5800807501824
     m_Localized: "ChroMapTogether \uC11C\uBC84\uC640\uC758 \uC5F0\uACB0\uC774 \uB04A\uACBC\uC2B5\uB2C8\uB2E4:
       {0}."
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218917
   - m_Id: 6140520960000
     m_Localized: "\uD1B5\uD569 \uB9E4\uD551"
     m_Metadata:
@@ -129,26 +129,27 @@ MonoBehaviour:
       \uC0DD\uC131/\uC218\uC815\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218917
   - m_Id: 2018498240393216
     m_Localized: "\uC774 \uAC1C\uCCB4\uB294 {0} \uC5D0 \uC758\uD574 \uB9C8\uC9C0\uB9C9\uC73C\uB85C
       \uC218\uC815\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218917
   - m_Id: 2336103375384576
     m_Localized: "{0} \uC744 \uCC28\uB2E8\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218917
   - m_Id: 2336237542780928
     m_Localized: "{0} \uC744 \uCD94\uBC29\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218917
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 1240120937092218917
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010928e7104000000109267df0400000010129b46050000003059b4a92b07000030993ed02b07000030d973ac4c08000030d9b0cb4c0800

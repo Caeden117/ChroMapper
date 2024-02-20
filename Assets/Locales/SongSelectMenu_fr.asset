@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
   m_Metadata:
     m_Items:
-    - id: 0
+    - rid: 1240120937092218932
   m_TableData:
   - m_Id: 1
     m_Localized: Nouvelle map
@@ -40,7 +40,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: Maps WIP
+    m_Localized: Cartes WIP
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -67,7 +67,7 @@ MonoBehaviour:
     m_Localized: 'Page : {CurrentPage}/{MaxPage}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218932
   - m_Id: 13
     m_Localized: Rechercher...
     m_Metadata:
@@ -123,7 +123,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 27
-    m_Localized: Trier par nom de musique
+    m_Localized: Trier par nom
     m_Metadata:
       m_Items: []
   - m_Id: 28
@@ -135,16 +135,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 161103413248
-    m_Localized: 'Could not create a folder with that name.
-
-
-      Please enter
-      a different name for the new beatmap.'
+    m_Localized: "Impossible de cr\xE9er un dossier avec ce nom.\n\nMerci de rentrer
+      un autre nom pour cette carte."
     m_Metadata:
       m_Items: []
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 1240120937092218932
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0c00000000000000

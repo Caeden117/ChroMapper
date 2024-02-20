@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
     m_Items:
-    - id: 0
+    - rid: 1240120937092218902
   m_TableData:
   - m_Id: 1
     m_Localized: Song-Info
@@ -369,7 +369,7 @@ MonoBehaviour:
     m_Localized: '{0}% fertig.'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 1240120937092218902
   - m_Id: 44795657592176640
     m_Localized: Reaktionszeit
     m_Metadata:
@@ -421,25 +421,25 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 216566409055109120
-    m_Localized: Map packaged to zip successfully.
+    m_Localized: Map wurde erfolgreich in die Zip-Datei gepackt.
     m_Metadata:
       m_Items: []
   - m_Id: 216566610293620736
-    m_Localized: 'Error packaging map to zip.
+    m_Localized: 'Fehler beim erstellen der Karte zum Zip.
 
-      No zip created.'
+      Keine Zip-Datei
+      erstellt.'
     m_Metadata:
       m_Items: []
   - m_Id: 272807305041276928
-    m_Localized: 'Error while creating the packaged zip:
-
-      Cannot use absolute
-      paths for files.'
+    m_Localized: "Fehler beim Erstellen der Zip-Datei:\nabsolute Pfade f\xFCr Dateien
+      k\xF6nnen nicht verwendet werden."
     m_Metadata:
       m_Items: []
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 1240120937092218902
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010d21a57e67101
