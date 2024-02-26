@@ -231,7 +231,11 @@ namespace Beatmap.Animations
 
                 result = colorOp switch
                 {
+                    "opAdd" => result + subColor,
+                    "opSub" => result - subColor,
                     "opMul" => result * subColor,
+                    "opDiv" => new Color(result.r / subColor.r, result.g / subColor.g, result.b / subColor.b,
+                        result.a / subColor.a),
                     _ => result
                 };
             }
