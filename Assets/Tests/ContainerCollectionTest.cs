@@ -217,6 +217,62 @@ namespace Tests
             actionContainer.Undo();
             Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
         }
+
+        [Test]
+        public void ShiftSelection_MapObjectsAreSorted([Values]bool selectA, [Values]bool selectB, [Values]bool selectC)
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var selectionController = Object.FindObjectOfType<SelectionController>();
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            var noteA = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Base };
+            var noteB = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Upper };
+            var noteC = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Top };
+            
+            notesContainer.SpawnObject(noteA);
+            notesContainer.SpawnObject(noteB);
+            notesContainer.SpawnObject(noteC);
+            
+            SelectionController.DeselectAll();
+            if (selectA) SelectionController.Select(noteA);
+            if (selectB) SelectionController.Select(noteB, true);
+            if (selectC) SelectionController.Select(noteC, true);
+            selectionController.ShiftSelection(1, 0);
+
+            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            
+            actionContainer.Undo();
+            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+        }
+        
+        [Test]
+        public void MoveSelection_MapObjectsAreSorted([Values]bool selectA, [Values]bool selectB, [Values]bool selectC)
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var selectionController = Object.FindObjectOfType<SelectionController>();
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            var noteA = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Base };
+            var noteB = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Upper };
+            var noteC = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Top };
+            
+            notesContainer.SpawnObject(noteA);
+            notesContainer.SpawnObject(noteB);
+            notesContainer.SpawnObject(noteC);
+            
+            SelectionController.DeselectAll();
+            if (selectA) SelectionController.Select(noteA);
+            if (selectB) SelectionController.Select(noteB, true);
+            if (selectC) SelectionController.Select(noteC, true);
+            selectionController.MoveSelection(1, true);
+
+            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            
+            actionContainer.Undo();
+            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+        }
         
         private static bool NotesAreSorted(IReadOnlyList<BaseNote> noteMapObjects)
         {
