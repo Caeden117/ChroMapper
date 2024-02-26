@@ -222,6 +222,8 @@ namespace Beatmap.Animations
 
             if (data[i] is JSONArray array)
             {
+                i += 1;
+                
                 var innerIdx = 0;
                 var subColor = ParseColor(array, ref innerIdx);
 
