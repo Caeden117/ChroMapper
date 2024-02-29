@@ -249,7 +249,8 @@ namespace Beatmap.Animations
             ResetData();
 
             LocalTarget = AnimationThis.transform;
-            WorldTarget = container.transform;
+            //WorldTarget = container.transform;
+            WorldTarget = AnimationThis.transform;
 
             WorldRotation = LocalRotation;
 
@@ -359,7 +360,7 @@ namespace Beatmap.Animations
 
             if (WorldTarget is Transform && WorldRotation.Count > 0)
             {
-                if (!(container is GeometryContainer))
+                if (container is not GeometryContainer)
                 {
                     WorldTarget.localRotation = WorldRotation.Get();
                 }
@@ -369,7 +370,7 @@ namespace Beatmap.Animations
             {
                 if (time_begin < time && time < time_end)
                     AnimationTrack.UpdatePosition(0);
-                if (!(container is null))
+                if (container is not null and not GeometryContainer)
                     container.transform.localPosition = WorldPosition.Get();
                 else
                     WorldTarget.localPosition = WorldPosition.Get();

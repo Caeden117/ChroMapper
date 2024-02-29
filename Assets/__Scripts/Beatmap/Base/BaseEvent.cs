@@ -252,22 +252,27 @@ namespace Beatmap.Base
         public virtual bool IsBpmEvent() => Type is (int)EventTypeValue.BpmChange;
 
         public Vector2? GetPosition(CreateEventTypeLabels labels, EventGridContainer.PropMode mode, int prop)
-        {
-            if (CustomLightID != null) CustomPropID = labels.LightIdsToPropId(Type, CustomLightID) ?? -1;
-
+        {   
             if (mode == EventGridContainer.PropMode.Off)
+            {
                 return new Vector2(
                     labels.EventTypeToLaneId(Type) + 0.5f,
                     0.5f
                 );
+            }
 
             if (Type != prop) return null;
 
             if (CustomLightID is null)
+            {
                 return new Vector2(
                     0.5f,
                     0.5f
                 );
+            }
+
+            CustomPropID = labels.LightIdsToPropId(Type, CustomLightID) ?? -1;
+
             var x = mode == EventGridContainer.PropMode.Prop ? CustomPropID : -1;
 
             if (x < 0) x = CustomLightID.Length > 0 ? labels.LightIDToEditor(Type, CustomLightID[0]) : -1;
