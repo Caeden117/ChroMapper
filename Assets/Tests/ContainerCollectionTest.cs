@@ -184,10 +184,10 @@ namespace Tests
             if (mirrorC) SelectionController.Select(noteC, true);
             mirrorSelection.Mirror();
 
-            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
             
             actionContainer.Undo();
-            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
         }
         
         [Test]
@@ -212,10 +212,10 @@ namespace Tests
             if (mirrorC) SelectionController.Select(noteC, true);
             mirrorSelection.MirrorTime();
 
-            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
             
             actionContainer.Undo();
-            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
         }
 
         [Test]
@@ -240,10 +240,10 @@ namespace Tests
             if (selectC) SelectionController.Select(noteC, true);
             selectionController.ShiftSelection(1, 0);
 
-            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
             
             actionContainer.Undo();
-            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
         }
         
         [Test]
@@ -268,20 +268,10 @@ namespace Tests
             if (selectC) SelectionController.Select(noteC, true);
             selectionController.MoveSelection(1, true);
 
-            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
             
             actionContainer.Undo();
-            Assert.IsTrue(NotesAreSorted(notesContainer.MapObjects));
-        }
-        
-        private static bool NotesAreSorted(IReadOnlyList<BaseNote> noteMapObjects)
-        {
-            for (var i = 1; i < noteMapObjects.Count; i++)
-            {
-                if (noteMapObjects[i - 1].CompareTo(noteMapObjects[i]) == 1) return false;
-            }
-
-            return true;
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
         }
     }
 }

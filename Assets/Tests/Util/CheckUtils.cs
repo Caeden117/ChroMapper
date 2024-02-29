@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.V2;
@@ -181,6 +182,55 @@ namespace Tests.Util
             var obj = container.LoadedObjects.Skip(idx).First();
 
             if (!(obj is V2Object)) Assert.Fail($"{msg}: Object is not beatmap v2 object");
+        }
+        
+        public static void CheckNotesAreSorted(IReadOnlyList<BaseNote> noteMapObjects)
+        {
+            for (var i = 1; i < noteMapObjects.Count; i++)
+            {
+                if (noteMapObjects[i - 1].CompareTo(noteMapObjects[i]) == 1)
+                {
+                    Assert.Fail($"Notes {noteMapObjects[i - 1]} and {noteMapObjects[i]} are out of order | i = {i}");
+                }
+            }
+        }
+
+        public static void CheckEventsAreSorted(IReadOnlyList<BaseEvent> eventMapObjects)
+        {
+            for (var i = 1; i < eventMapObjects.Count; i++)
+            {
+                if (eventMapObjects[i - 1].CompareTo(eventMapObjects[i]) == 1)
+                {
+                    Assert.Fail($"Events {eventMapObjects[i - 1]} and {eventMapObjects[i]} are out of order | i = {i}");
+                }
+            }
+        }
+
+        public static void CheckEventsLinksAreCorrectAndSorted(IReadOnlyList<BaseEvent> eventMapObjects)
+        {
+            if (eventMapObjects.Count == 1)
+            {
+                CheckEventPrevAndNext($"0", eventMapObjects[0], null, null);
+                return;
+            }
+
+            for (var i = 0; i < eventMapObjects.Count; i++)
+            {
+                if (i == 0)
+                    CheckEventPrevAndNext($"{i}", eventMapObjects[i], null, eventMapObjects[i + 1]);
+                else if (i == eventMapObjects.Count - 1)
+                    CheckEventPrevAndNext($"{i}", eventMapObjects[i], eventMapObjects[i - 1], null);
+                else
+                    CheckEventPrevAndNext($"{i}", eventMapObjects[i], eventMapObjects[i - 1], eventMapObjects[i + 1]);
+            }
+            
+            for (var i = 1; i < eventMapObjects.Count; i++)
+            {
+                if (eventMapObjects[i - 1].CompareTo(eventMapObjects[i]) == 1)
+                {
+                    Assert.Fail($"Events {eventMapObjects[i - 1]} and {eventMapObjects[i]} are out of order | i = {i}");
+                }
+            }
         }
     }
 }
