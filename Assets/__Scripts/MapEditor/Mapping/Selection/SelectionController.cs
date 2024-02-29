@@ -505,10 +505,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void ShiftSelection(int leftRight, int upDown)
     {
-        var allActions = SelectedObjects.AsParallel().Select(data =>
+        var allActions = SelectedObjects.AsParallel().Select(original =>
         {
-            var original = BeatmapFactory.Clone(data);
-            if (data is BaseNote note)
+            var edited = BeatmapFactory.Clone(original);
+            if (edited is BaseNote note)
             {
                 if (note.CustomCoordinate != null && note.CustomCoordinate.IsArray)
                 {
@@ -547,7 +547,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
 
             }
-            else if (data is BaseObstacle obstacle)
+            else if (edited is BaseObstacle obstacle)
             {
                 if (obstacle.CustomCoordinate != null && obstacle.CustomCoordinate.IsArray)
                 {
@@ -571,7 +571,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
-            else if (data is BaseEvent e)
+            else if (edited is BaseEvent e)
             {
                 var events = eventPlacement.objectContainerCollection;
                 if (eventPlacement.objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Light)
@@ -632,9 +632,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
 
-                if (data.CustomData?.Count <= 0) data.CustomData = null;
+                if (original.CustomData?.Count <= 0) original.CustomData = null;
             }
-            else if (data is BaseSlider slider)
+            else if (edited is BaseSlider slider)
             {
                 var headOutsideVanillaBounds = false;
                 if (slider.CustomCoordinate != null && slider.CustomCoordinate.IsArray)
@@ -705,7 +705,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
-            return new BeatmapObjectModifiedAction(data, data, original, "", true);
+            return new BeatmapObjectModifiedAction(edited, original, original, "", true);
         }).ToList();
 
         RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());

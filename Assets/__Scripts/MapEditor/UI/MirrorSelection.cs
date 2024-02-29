@@ -71,10 +71,10 @@ public class MirrorSelection : MonoBehaviour
 
         var events = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         var allActions = new List<BeatmapAction>();
-        foreach (var con in SelectionController.SelectedObjects)
+        foreach (var original in SelectionController.SelectedObjects)
         {
-            var original = BeatmapFactory.Clone(con);
-            if (con is BaseObstacle obstacle && moveNotes)
+            var edited = BeatmapFactory.Clone(original);
+            if (edited is BaseObstacle obstacle && moveNotes)
             {
                 var precisionWidth = obstacle.Width >= 1000;
                 var state = obstacle.PosX;
@@ -167,7 +167,7 @@ public class MirrorSelection : MonoBehaviour
                     obstacle.PosX = mirrorLane - obstacle.Width; //adjust for wall width
                 }
             }
-            else if (con is BaseNote note)
+            else if (edited is BaseNote note)
             {
                 if (moveNotes)
                 {
@@ -262,7 +262,7 @@ public class MirrorSelection : MonoBehaviour
                         note.CutDirection = cutDirectionToMirrored[note.CutDirection];
                 }
             }
-            else if (con is BaseEvent e)
+            else if (edited is BaseEvent e)
             {
                 if (e.IsLaneRotationEvent())
                 {
@@ -325,7 +325,7 @@ public class MirrorSelection : MonoBehaviour
                     }
                 }
             }
-            else if (con is BaseArc arc)
+            else if (edited is BaseArc arc)
             {
                 if (moveNotes)
                 {
@@ -361,7 +361,7 @@ public class MirrorSelection : MonoBehaviour
                     : (int)NoteType.Red;
 
             }
-            else if (con is BaseChain chain)
+            else if (edited is BaseChain chain)
             {
                 if (moveNotes)
                 {
@@ -391,12 +391,12 @@ public class MirrorSelection : MonoBehaviour
                     : (int)NoteType.Red;
             }
 
-            allActions.Add(new BeatmapObjectModifiedAction(con, con, original, "e", true));
+            allActions.Add(new BeatmapObjectModifiedAction(edited, original, original, "e", true));
         }
 
         foreach (var unique in SelectionController.SelectedObjects.DistinctBy(x => x.ObjectType))
             BeatmapObjectContainerCollection.GetCollectionForType(unique.ObjectType).RefreshPool(true);
         BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true,
-            "Mirrored a selection of objects."));
+            "Mirrored a selection of objects."), true);
     }
 }

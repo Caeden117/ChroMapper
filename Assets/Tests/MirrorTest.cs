@@ -16,8 +16,8 @@ namespace Tests
         private MirrorSelection _mirror;
         private NotePlacement _notePlacement;
         private ArcPlacement _arcPlacement;
-        private BeatmapObjectContainerCollection _notesContainer;
-        private BeatmapObjectContainerCollection _arcsContainer;
+        private NoteGridContainer _notesContainer;
+        private ArcGridContainer _arcsContainer;
         private Transform _root;
 
         [UnityOneTimeSetUp]
@@ -27,8 +27,8 @@ namespace Tests
 
             _actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             _mirror = Object.FindObjectOfType<MirrorSelection>();
-            _notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            _arcsContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
+            _notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            _arcsContainer = BeatmapObjectContainerCollection.GetCollectionForType<ArcGridContainer>(ObjectType.Arc);
             _root = _notesContainer.transform.root;
             _notePlacement = _root.GetComponentInChildren<NotePlacement>();
             _arcPlacement = _root.GetComponentInChildren<ArcPlacement>();
@@ -100,14 +100,14 @@ namespace Tests
             _mirror.MirrorTime();
 
             // Check we can still delete our objects
-            var toDelete = _notesContainer.LoadedObjects.FirstOrDefault();
+            var toDelete = _notesContainer.MapObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
-            Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(1, _notesContainer.MapObjects.Count);
 
             _actionContainer.Undo();
 
-            Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(1, _arcsContainer.LoadedObjects.Count);
+            Assert.AreEqual(2, _notesContainer.MapObjects.Count);
+            Assert.AreEqual(1, _arcsContainer.MapObjects.Count);
 
             CheckUtils.CheckNote("Check first mirrored time", _notesContainer, 0, 2, (int)GridX.Right, (int)GridY.Top,
                 (int)NoteType.Blue, (int)NoteCutDirection.UpRight, 0);
@@ -133,14 +133,14 @@ namespace Tests
             _mirror.Mirror();
 
             // Check we can still delete our objects
-            var toDelete = _notesContainer.LoadedObjects.FirstOrDefault();
+            var toDelete = _notesContainer.MapObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
-            Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(1, _notesContainer.MapObjects.Count);
 
             _actionContainer.Undo();
 
-            Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(1, _arcsContainer.LoadedObjects.Count);
+            Assert.AreEqual(2, _notesContainer.MapObjects.Count);
+            Assert.AreEqual(1, _arcsContainer.MapObjects.Count);
 
             CheckUtils.CheckNote("Check first mirrored note", _notesContainer, 0, 2, (int)GridX.Right, (int)GridY.Base,
                 (int)NoteType.Blue, (int)NoteCutDirection.Right, 0);
@@ -166,14 +166,14 @@ namespace Tests
             _mirror.Mirror(false);
 
             // Check we can still delete our objects
-            var toDelete = _notesContainer.LoadedObjects.FirstOrDefault();
+            var toDelete = _notesContainer.MapObjects.FirstOrDefault();
             _notesContainer.DeleteObject(toDelete);
-            Assert.AreEqual(1, _notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(1, _notesContainer.MapObjects.Count);
 
             _actionContainer.Undo();
 
-            Assert.AreEqual(2, _notesContainer.LoadedObjects.Count);
-            Assert.AreEqual(1, _arcsContainer.LoadedObjects.Count);
+            Assert.AreEqual(2, _notesContainer.MapObjects.Count);
+            Assert.AreEqual(1, _arcsContainer.MapObjects.Count);
 
             CheckUtils.CheckNote("Check first mirrored color swap", _notesContainer, 0, 2, (int)GridX.Left,
                 (int)GridY.Base, (int)NoteType.Blue, (int)NoteCutDirection.Left, 0);

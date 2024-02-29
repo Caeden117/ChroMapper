@@ -33,7 +33,7 @@ namespace Tests
         public void RefreshSpecialAngles()
         {
             var noteGridContainer =
-                BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer;
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
             BaseNote baseNoteA = new V3ColorNote
             {
@@ -152,7 +152,7 @@ namespace Tests
         [Test]
         public void ShiftInTime()
         {
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
 
             BaseNote baseNoteA = new V3ColorNote
@@ -177,7 +177,7 @@ namespace Tests
             notesContainer.DeleteObject(baseNoteB);
 
             Assert.AreEqual(1, notesContainer.LoadedContainers.Count);
-            Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(1, notesContainer.MapObjects.Count);
         }
     }
 }

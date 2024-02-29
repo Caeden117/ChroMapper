@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Beatmap.Base;
-using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.V3;
 using NUnit.Framework;
 using Tests.Util;
-using UnityEngine;
 using UnityEngine.TestTools;
+using Object = UnityEngine.Object;
 
 namespace Tests
 {
@@ -138,11 +137,8 @@ namespace Tests
             Assert.AreSame(noteC, noteGridContainer.MapObjects[0]);
         }
         
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        public void DeleteObject_StackedNotes(int deleteIndex)
+        [Test]
+        public void DeleteObject_StackedNotes([Values(0, 1, 2, 3)] int deleteIndex)
         {            
             var noteGridContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
@@ -164,6 +160,118 @@ namespace Tests
             noteGridContainer.DeleteObject(notes[deleteIndex]);
             Assert.AreEqual(3, noteGridContainer.MapObjects.Count);
             Assert.IsFalse(noteGridContainer.MapObjects.Contains(notes[deleteIndex]));
+        }
+        
+        [Test]
+        public void Mirror_MapObjectsAreSorted([Values]bool mirrorA, [Values]bool mirrorB, [Values]bool mirrorC)
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var mirrorSelection = Object.FindObjectOfType<MirrorSelection>();
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            var noteA = new V3ColorNote { JsonTime = 0, PosX = 0, PosY = 0 };
+            var noteB = new V3ColorNote { JsonTime = 0, PosX = 1, PosY = 1 };
+            var noteC = new V3ColorNote { JsonTime = 0, PosX = 2, PosY = 2 };
+            
+            if (mirrorA) notesContainer.SpawnObject(noteA);
+            if (mirrorB) notesContainer.SpawnObject(noteB);
+            if (mirrorC) notesContainer.SpawnObject(noteC);
+            
+            SelectionController.DeselectAll();
+            if (mirrorA) SelectionController.Select(noteA);
+            if (mirrorB) SelectionController.Select(noteB, true);
+            if (mirrorC) SelectionController.Select(noteC, true);
+            mirrorSelection.Mirror();
+
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
+            
+            actionContainer.Undo();
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
+        }
+        
+        [Test]
+        public void MirrorInTime_MapObjectsAreSorted([Values]bool mirrorA, [Values]bool mirrorB, [Values]bool mirrorC)
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var mirrorSelection = Object.FindObjectOfType<MirrorSelection>();
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            var noteA = new V3ColorNote { JsonTime = 0, PosX = (int)GridX.Left };
+            var noteB = new V3ColorNote { JsonTime = 1, PosX = (int)GridX.MiddleLeft };
+            var noteC = new V3ColorNote { JsonTime = 2, PosX = (int)GridX.MiddleRight };
+            
+            if (mirrorA) notesContainer.SpawnObject(noteA);
+            if (mirrorB) notesContainer.SpawnObject(noteB);
+            if (mirrorC) notesContainer.SpawnObject(noteC);
+            
+            SelectionController.DeselectAll();
+            if (mirrorA) SelectionController.Select(noteA);
+            if (mirrorB) SelectionController.Select(noteB, true);
+            if (mirrorC) SelectionController.Select(noteC, true);
+            mirrorSelection.MirrorTime();
+
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
+            
+            actionContainer.Undo();
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
+        }
+
+        [Test]
+        public void ShiftSelection_MapObjectsAreSorted([Values]bool selectA, [Values]bool selectB, [Values]bool selectC)
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var selectionController = Object.FindObjectOfType<SelectionController>();
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            var noteA = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Base };
+            var noteB = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Upper };
+            var noteC = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Top };
+            
+            notesContainer.SpawnObject(noteA);
+            notesContainer.SpawnObject(noteB);
+            notesContainer.SpawnObject(noteC);
+            
+            SelectionController.DeselectAll();
+            if (selectA) SelectionController.Select(noteA);
+            if (selectB) SelectionController.Select(noteB, true);
+            if (selectC) SelectionController.Select(noteC, true);
+            selectionController.ShiftSelection(1, 0);
+
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
+            
+            actionContainer.Undo();
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
+        }
+        
+        [Test]
+        public void MoveSelection_MapObjectsAreSorted([Values]bool selectA, [Values]bool selectB, [Values]bool selectC)
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var selectionController = Object.FindObjectOfType<SelectionController>();
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            var noteA = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Base };
+            var noteB = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Upper };
+            var noteC = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Top };
+            
+            notesContainer.SpawnObject(noteA);
+            notesContainer.SpawnObject(noteB);
+            notesContainer.SpawnObject(noteC);
+            
+            SelectionController.DeselectAll();
+            if (selectA) SelectionController.Select(noteA);
+            if (selectB) SelectionController.Select(noteB, true);
+            if (selectC) SelectionController.Select(noteC, true);
+            selectionController.MoveSelection(1, true);
+
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
+            
+            actionContainer.Undo();
+            CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
         }
     }
 }

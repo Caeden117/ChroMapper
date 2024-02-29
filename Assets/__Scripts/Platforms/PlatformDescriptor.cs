@@ -346,10 +346,15 @@ public class PlatformDescriptor : MonoBehaviour
             var deezLights = new List<LightingEvent>(lightIDArr.Length);
             foreach (var lightID in lightIDArr)
             {
-                group.LightIDMap.TryGetValue(lightID, out var light);
-                if (light is LightingEvent)
+                if (group.LightIDMap != null)
                 {
-                    deezLights.Add(light);
+                    if (group.LightIDMap.TryGetValue(lightID, out var lightingEvent)) ;
+                    {
+                        if (lightingEvent is LightingEvent)
+                        {
+                            deezLights.Add(lightingEvent);
+                        }
+                    }
                 }
             }
             allLights = deezLights;
