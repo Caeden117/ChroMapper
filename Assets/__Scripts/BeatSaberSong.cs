@@ -313,7 +313,7 @@ public class BeatSaberSong
         {
             Debug.LogException(e);
             Debug.LogError(
-                "This is bad. You are recommendend to restart ChroMapper; progress made after this point is not garaunteed to be saved.");
+                "This is bad. You are recommended to restart ChroMapper; progress made after this point is not guaranteed to be saved.");
         }
     }
 
