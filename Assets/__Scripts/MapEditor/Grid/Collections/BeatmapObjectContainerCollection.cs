@@ -17,7 +17,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public static readonly int ChunkSize = 5;
 
     public static float Epsilon = 0.001f;
-    public static float TranslucentCull = -0.001f;
 
     private static BookmarkManager bookmarkManager;
     private static BookmarkManager bookmarkManagerInstance
@@ -70,10 +69,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void Awake()
     {
         ObjectContainer.FlaggedForDeletionEvent += DeleteObject;
-        if (loadedCollections.ContainsKey(ContainerType))
-            loadedCollections[ContainerType] = this;
-        else
-            loadedCollections.Add(ContainerType, this);
+        loadedCollections[ContainerType] = this;
         SubscribeToCallbacks();
     }
 
@@ -81,7 +77,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         UpdateEpsilon(Settings.Instance.TimeValueDecimalPrecision);
         Settings.NotifyBySettingName("TimeValueDecimalPrecision", UpdateEpsilon);
-        EditorScaleController.EditorScaleChangedEvent += UpdateTranslucentCull;
     }
 
     internal virtual void LateUpdate()
@@ -108,14 +103,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         UnsubscribeToCallbacks();
     }
 
-    private void UpdateEpsilon(object precision)
-    {
-        Epsilon = 1 / Mathf.Pow(10, (int)precision);
-        UpdateTranslucentCull(EditorScaleController.EditorScale);
-    }
-
-    // TODO(Caeden): Remove (unneeded)
-    private void UpdateTranslucentCull(float editorScale) => TranslucentCull = -editorScale * Epsilon;
+    private void UpdateEpsilon(object precision) => Epsilon = 1 / Mathf.Pow(10, (int)precision);
 
     /// <summary>
     ///     Grab a <see cref="BeatmapObjectContainerCollection" /> whose <see cref="ContainerType" /> matches the given type.

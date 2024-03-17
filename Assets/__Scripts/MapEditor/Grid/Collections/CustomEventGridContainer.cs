@@ -55,7 +55,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
             var tracks = ev.CustomTrack switch {
                 JSONArray arr => arr,
-                JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+                JSONString s => JSONObject.Parse($"[{s}]").AsArray,
                 _ => null,
             };
             switch (ev.Type)
@@ -65,7 +65,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
                 var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
                 tracks = ev.DataChildrenTracks switch {
                     JSONArray arr => arr,
-                    JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+                    JSONString s => JSONObject.Parse($"[{s}]").AsArray,
                 };
                 foreach (var tr in tracks)
                 {

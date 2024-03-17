@@ -16,7 +16,7 @@ public class
 
     public override int PlacementXMax => objectContainerCollection.CustomEventTypes.Count;
 
-    [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
+    protected override bool CanClickAndDrag { get; set; } = false;
 
     protected override Vector2 vanillaOffset { get; } = new Vector2(0, -1.1f);
 

@@ -14,8 +14,6 @@ using UnityEngine.InputSystem;
 public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndicatorContainer, ChainGridContainer>,
     CMInput.INotePlacementActions
 {
-    private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
-
     [SerializeField] private DeleteToolController deleteToolController;
     [SerializeField] private PrecisionPlacementGridController precisionPlacement;
     [SerializeField] private LaserSpeedController laserSpeedController;
@@ -74,14 +72,14 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
                 if (DraggedObjectContainer.IndicatorType == IndicatorType.Head)
                 {
                     queuedData.CustomCoordinate = !vanillaBounds
-                        ? (JSONNode)((Vector2)roundedHit - vanillaOffset + precisionOffset)
+                        ? (Vector2)roundedHit - vanillaOffset + precisionOffset
                         : null;
                 }
 
                 if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
                 {
                     queuedData.CustomTailCoordinate = !vanillaBounds
-                        ? (JSONNode)((Vector2)roundedHit - vanillaOffset + precisionOffset)
+                        ? (Vector2)roundedHit - vanillaOffset + precisionOffset
                         : null;
                 }
             }

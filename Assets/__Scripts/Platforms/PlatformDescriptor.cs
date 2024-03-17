@@ -348,7 +348,7 @@ public class PlatformDescriptor : MonoBehaviour
             {
                 if (group.LightIDMap != null)
                 {
-                    if (group.LightIDMap.TryGetValue(lightID, out var lightingEvent)) ;
+                    if (group.LightIDMap.TryGetValue(lightID, out var lightingEvent))
                     {
                         if (lightingEvent is LightingEvent)
                         {

@@ -64,11 +64,6 @@ public class MeasureLinesController : MonoBehaviour
         modifiedBeatsInSong = Mathf.Min(rawBeatsInSong * 10, modifiedBeatsInSong);
 
         var jsonBeat = 0;
-        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-
-        var allBpmChanges = new List<BaseBpmEvent> { BeatmapFactory.BpmEvent(0, songBpm) };
-        allBpmChanges.AddRange(bpmChangeGridContainer.MapObjects);
-
         while (jsonBeat <= modifiedBeatsInSong)
         {
             var text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);

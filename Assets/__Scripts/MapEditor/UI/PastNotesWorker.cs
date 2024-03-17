@@ -157,9 +157,6 @@ public class PastNotesWorker : MonoBehaviour
         else g.transform.GetChild(1).gameObject.SetActive(false);
         img.enabled = true;
 
-        if (!lastByType.ContainsKey(note.Type))
-            lastByType.Add(note.Type, note);
-        else
-            lastByType[note.Type] = note;
+        lastByType[note.Type] = note;
     }
 }

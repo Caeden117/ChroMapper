@@ -14,10 +14,7 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
     private void Start()
     {
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
-        if (Settings.NonPersistentSettings.ContainsKey("SongSpeed"))
-            Settings.NonPersistentSettings["SongSpeed"] = 10;
-        else
-            Settings.NonPersistentSettings.Add("SongSpeed", 10);
+        Settings.NonPersistentSettings["SongSpeed"] = 10;
     }
 
     private void Update()

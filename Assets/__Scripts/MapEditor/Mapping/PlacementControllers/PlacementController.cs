@@ -69,7 +69,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     protected virtual Vector2 precisionOffset { get; } = new Vector2(-0.5f, -1.1f);
     protected virtual Vector2 vanillaOffset { get; } = new Vector2(1.5f, -1.1f);
 
-    [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
+    protected virtual bool CanClickAndDrag { get; set; } = true;
 
     private float roundedJsonTime;
     internal float RoundedJsonTime
