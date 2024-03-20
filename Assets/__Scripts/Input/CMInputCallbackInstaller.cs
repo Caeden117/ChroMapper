@@ -22,25 +22,23 @@ public class CMInputCallbackInstaller : MonoBehaviour
     public static CMInput InputInstance;
     private static CMInputCallbackInstaller instance;
 
-    private static readonly List<EventHandler> allEventHandlers = new List<EventHandler>();
+    private static readonly List<EventHandler> allEventHandlers = new();
 
     private static readonly BindingFlags
         bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
-    private static readonly List<EventHandler> disabledEventHandlers = new List<EventHandler>();
+    private static readonly List<EventHandler> disabledEventHandlers = new();
 
-    private static readonly Dictionary<string, object>
-        interfaceNameToReference = new Dictionary<string, object>(); //Interface names to action map references
+    private static readonly Dictionary<string, object> interfaceNameToReference = new(); //Interface names to action map references
 
-    private static readonly Dictionary<string, Type>
-        interfaceNameToType = new Dictionary<string, Type>(); //Interface names to action map types
+    private static readonly Dictionary<string, Type> interfaceNameToType = new(); //Interface names to action map types
 
-    private static readonly List<Transform> persistentObjects = new List<Transform>();
+    private static readonly List<Transform> persistentObjects = new();
 
     //Because I would like all actions to fully complete before being disabled,
     //we will use a queue that will then be cleared and processed on the next frame.
-    private static readonly List<QueueInfo> queuedToDisable = new List<QueueInfo>();
-    private static readonly List<QueueInfo> queuedToEnable = new List<QueueInfo>();
+    private static readonly List<QueueInfo> queuedToDisable = new();
+    private static readonly List<QueueInfo> queuedToEnable = new();
 
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
 
@@ -51,6 +49,10 @@ public class CMInputCallbackInstaller : MonoBehaviour
      */
     private void Start()
     {
+#if UNITY_STANDALONE_OSX // Harmony patch doesn't work on Apple Silicon so use Unity's shortcut consuming
+        InputSystem.settings.shortcutKeysConsumeInput = true;
+#endif
+        
         SendMessage("InputObjectCreated", input);
         foreach (var childClass in typeof(CMInput).GetNestedTypes())
         {
@@ -144,7 +146,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
         Application.wantsToQuit += WantsToQuit;
     }
 
-    //Unsubscrbe from events here.
+    // Unsubscribe from events here.
     private void OnDisable()
     {
         instance = null;
