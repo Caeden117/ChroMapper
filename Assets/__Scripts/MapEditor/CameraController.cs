@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         typeof(CMInput.IBeatmapObjectsActions), typeof(CMInput.INoteObjectsActions),
         typeof(CMInput.IEventObjectsActions), typeof(CMInput.IObstacleObjectsActions),
         typeof(CMInput.ICustomEventsContainerActions), typeof(CMInput.IBPMTapperActions),
-        typeof(CMInput.IEventUIActions), typeof(CMInput.IUIModeActions)
+        typeof(CMInput.IEventUIActions), typeof(CMInput.IUIModeActions), typeof(CMInput.IBoxSelectActions)
     };
 
     private Vector2 savedMousePos = Vector2.zero;
@@ -60,9 +60,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     private bool secondSetOfLocations;
     private bool setLocation;
 
-    private List<float> playerTrackTimes = new List<float>();
-    private List<TrackAnimator> playerTracks = new List<TrackAnimator>();
-    private TrackAnimator currentTrack = null;
+    private List<float> playerTrackTimes = new();
+    private List<TrackAnimator> playerTracks = new();
+    private TrackAnimator currentTrack;
 
     public bool LockedOntoNoteGrid
     {
@@ -157,6 +157,8 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
                 x = y = z = mouseY = mouseX = 0;
                 return;
             }
+            
+            HandleCameraHeldMovementKeys();
 
             SetLockState(true);
 
@@ -244,6 +246,28 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         }
     }
 
+    private bool forwardHeld;
+    private bool backwardHeld;
+    private bool leftHeld;
+    private bool rightHeld;
+    private bool elevateHeld;
+    private bool lowerHeld;
+
+    private void HandleCameraHeldMovementKeys()
+    {
+        x = 0f;
+        if (leftHeld) x -= 1f;
+        if (rightHeld) x += 1f;
+        
+        y = 0f;
+        if (elevateHeld) y += 1f;
+        if (lowerHeld) y -= 1f;
+        
+        z = 0f;
+        if (forwardHeld) z += 1f;
+        if (backwardHeld) z -= 1f;
+    }
+    
     //Oh boy new Unity Input System POGCHAMP
     public void OnMoveCamera(CallbackContext context)
     {
@@ -255,12 +279,13 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         z = movement.y;
     }
 
-    public void OnElevateCamera(CallbackContext context)
-    {
-        //Elevation change is controlled by Space and Ctrl.
-        var elevationChange = context.ReadValue<float>();
-        y = elevationChange;
-    }
+    // God I hate this
+    public void OnElevateCamera(CallbackContext context) => elevateHeld = context.performed;
+    public void OnLowerCamera(CallbackContext context) => lowerHeld = context.performed;
+    public void OnMoveCameraLeft(CallbackContext context) => leftHeld = context.performed;
+    public void OnMoveCameraRight(CallbackContext context) => rightHeld = context.performed;
+    public void OnMoveCameraForward(CallbackContext context) => forwardHeld = context.performed;
+    public void OnMoveCameraBackward(CallbackContext context) => backwardHeld = context.performed;
 
     public void OnRotateCamera(CallbackContext context)
     {
