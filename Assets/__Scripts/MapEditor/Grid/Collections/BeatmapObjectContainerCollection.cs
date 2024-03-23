@@ -310,8 +310,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         PersistentUI.Instance.ShowInputBox("Filter notes and obstacles shown while editing to a certain track ID.\n\n" +
                                            "If you dont know what you're doing, turn back now.", HandleTrackFilter);
 
-    private void HandleTrackFilter(string res) =>
+    private void HandleTrackFilter(string res)
+    {
         TrackFilterID = string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res) ? null : res;
+        RefreshAllPools(true);
+    }
 
     /// <summary>
     ///     Spawns an object into the collection.
@@ -536,6 +539,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
                     case BaseObstacle obs when obs.SongBpmTime > upperBound || obs.SongBpmTime + obs.Duration < lowerBound:
                     case BaseSlider slider when slider.SongBpmTime > upperBound || slider.TailSongBpmTime < lowerBound:
                     case not null when obj.SongBpmTime > upperBound || obj.SongBpmTime < lowerBound:
+                    case not null when TrackFilterID != null && TrackFilterID != ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""):
                         RecycleContainer(obj);
                         break;
                     default: continue;
@@ -562,7 +566,10 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         {
             var obj = windowSpan[i];
 
-            CreateContainerFromPool(obj);
+            if (TrackFilterID == null || TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+            {
+                CreateContainerFromPool(obj);
+            }
         }
 
         // this is a bit of a dirty check but i'd like this early return
@@ -572,6 +579,9 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         for (var i = 0; i < startIdx; i++)
         {
             var obj = span[i];
+            
+            if (TrackFilterID != null && TrackFilterID != ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+                continue;
 
             if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound)
             {

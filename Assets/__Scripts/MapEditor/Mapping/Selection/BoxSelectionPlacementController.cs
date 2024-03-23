@@ -138,6 +138,12 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
             SelectionController.ForEachObjectBetweenSongBpmTimeByGroup(startSongBpmBeat, endSongBpmBeat, true, true, true, (bocc, bo) =>
             {
                 if (!selectedTypes.Contains(bo.ObjectType)) return; // Must be a type we can select
+                
+                if (   BeatmapObjectContainerCollection.TrackFilterID != null 
+                    && BeatmapObjectContainerCollection.TrackFilterID != ((bo.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+                {
+                    return;
+                }
 
                 var left = instantiatedContainer.transform.localPosition.x +
                            instantiatedContainer.transform.localScale.x;
