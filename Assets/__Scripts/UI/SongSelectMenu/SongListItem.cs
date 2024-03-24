@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -250,11 +250,6 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             SetDuration(cacheKey, oggLength);
             yield break;
         }
-
-        // Fallback just loads the song via unity
-        var extension = song.SongFilename.Contains(".")
-            ? Path.GetExtension(song.SongFilename.ToLower()).Replace(".", "")
-            : "";
 
         yield return song.LoadAudio((clip) => SetDuration(cacheKey, clip.length), 0, null);
     }

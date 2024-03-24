@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -266,10 +266,6 @@ public class SongList : MonoBehaviour
     {
         Songs.Add(song);
         UpdateSongList();
-        /*if (song.IsFavourite)
-        {
-            newList.ScrollToRow(filteredSongs.IndexOf(song));
-        }*/
     }
 
     private class FuncComparer<T> : IComparer<T>
