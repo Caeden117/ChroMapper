@@ -18,6 +18,11 @@ using UnityEngine.InputSystem.Controls;
  * Say you have two keybinds, bound to "S", and "Shift + S". If you were to press Shift and S on your keyboard, you'd expect only the latter keybind to trigger, right?
  * 
  * WRONG! Unity's new Input System triggers both, because you're still technically pressing S! This is outrageous, and must be swiftly resolved with a Harmony patch!
+ *
+ * Update: As of InputSystem 1.7.0, keybinds bound to multiple buttons can now consume inputs and fixes this.
+ *         BUT this means we can't have overlapping keybinds that use multiple buttons. If you bind "Shift + S"
+ *         to perform multiple actions, only one of the actions will trigger... so we still need this patch.
+ *         TODO: Investigate if CMInputCallbackInstaller is the reason for this issue
  */
 public class InputSystemPatch : MonoBehaviour
 {
@@ -29,14 +34,12 @@ public class InputSystemPatch : MonoBehaviour
 
     private static IEnumerable<InputAction> allInputActions;
 
-    private static Dictionary<InputAction, IEnumerable<string>> allInputBindingNames =
-        new Dictionary<InputAction, IEnumerable<string>>();
+    private static Dictionary<InputAction, IEnumerable<string>> allInputBindingNames = new();
 
     private static IEnumerable<InputControl> allControls;
 
     // Key 1: Interrogated InputAction | Value: InputActions that have the possibility of blocking the interrogated action
-    private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap =
-        new ConcurrentDictionary<InputAction, List<InputAction>>();
+    private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap = new();
 
     private Harmony inputPatchHarmony;
 

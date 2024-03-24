@@ -37,10 +37,37 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Move Camera"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""b690809d-6128-4967-aa54-ad3b44b03278"",
-                    ""expectedControlType"": """",
+                    ""name"": ""Move Camera Forward"",
+                    ""type"": ""Button"",
+                    ""id"": ""97b41e7e-e237-4805-9dcb-ac7f2846eb8e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Move Camera Backward"",
+                    ""type"": ""Button"",
+                    ""id"": ""7aa05ca8-69e7-44cf-a793-7b8a8aaa99ec"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Move Camera Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""37be1d88-7982-4572-b583-6e167cc8580d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Move Camera Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c8e63d6-2c19-42af-9c7d-d9193b87aa2d"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -58,6 +85,15 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""name"": ""Elevate Camera"",
                     ""type"": ""Button"",
                     ""id"": ""3fbaee37-d68e-4db9-8b0a-93d06160b118"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lower Camera"",
+                    ""type"": ""Button"",
+                    ""id"": ""98be8bab-9d57-4d21-8957-c787922f3446"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -138,61 +174,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""Movement"",
-                    ""id"": ""1f652d44-378c-4d9e-8c08-62c19d5c94f1"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move Camera"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""d2d63e78-e4cd-4476-9bb7-95f6a64724ec"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Move Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""b8fce530-a706-4d90-ac3c-ef71b30fbd25"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Move Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""67d23d5e-4301-4614-9bdb-a74d720b28ca"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Move Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""91ac3309-f9db-4830-82c5-449f7edaf79f"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Move Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""7da07213-d4f5-4c66-9fd0-b6b34595b8fa"",
                     ""path"": ""<Mouse>/delta"",
@@ -202,39 +183,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""action"": ""+Rotate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""17ca5bb4-7047-4825-82c9-07dae2c23736"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Elevate Camera"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""066474db-11dd-4e08-9aa5-234b05ba63e7"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Elevate Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""5b427547-d298-4bdc-9aad-aa05d2e3fbf5"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Elevate Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""Ctrl+R"",
@@ -354,6 +302,72 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Overwrite Location Modifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6fd815c3-2522-42fc-8a7c-20f2102bc96c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move Camera Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""894e8700-490f-4f9c-919d-ca2accb5571b"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move Camera Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4c7f31a-9e65-4dd8-9f94-84820ae77edd"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move Camera Forward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2be376e-4d0c-4d19-bf6a-1c48a071d468"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move Camera Backward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0fc460a-9ac5-411e-86db-4eb2044971ec"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lower Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c63758d5-657a-48c1-ad72-1b930e8f71d7"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Elevate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2949,9 +2963,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""f6def448-a684-444f-a5c0-f94272a62c7c"",
-                    ""path"": ""OneModifier"",
+                    ""name"": ""Two Modifiers"",
+                    ""id"": ""b288f699-9859-40fb-a55a-a406df6ab0e8"",
+                    ""path"": ""TwoModifiers"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -2960,8 +2974,8 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Modifier"",
-                    ""id"": ""526cf1ec-bbc2-4012-b7bd-3f0e88ad9c99"",
+                    ""name"": ""modifier1"",
+                    ""id"": ""6495a4e5-4015-4270-ad7c-50615075efaf"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -2971,9 +2985,20 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Binding"",
-                    ""id"": ""bbbaec30-1693-470a-9e0a-cd32f6162128"",
+                    ""name"": ""modifier2"",
+                    ""id"": ""e785491b-6a7e-4f70-8e6e-317bea8f109c"",
                     ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak Event Alternative"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""e473f833-cd23-4804-88f1-979d9b03d54e"",
+                    ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -4789,9 +4814,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_HoldtoMoveCamera = m_Camera.FindAction("Hold to Move Camera", throwIfNotFound: true);
-        m_Camera_MoveCamera = m_Camera.FindAction("Move Camera", throwIfNotFound: true);
+        m_Camera_MoveCameraForward = m_Camera.FindAction("Move Camera Forward", throwIfNotFound: true);
+        m_Camera_MoveCameraBackward = m_Camera.FindAction("Move Camera Backward", throwIfNotFound: true);
+        m_Camera_MoveCameraLeft = m_Camera.FindAction("Move Camera Left", throwIfNotFound: true);
+        m_Camera_MoveCameraRight = m_Camera.FindAction("Move Camera Right", throwIfNotFound: true);
         m_Camera_RotateCamera = m_Camera.FindAction("+Rotate Camera", throwIfNotFound: true);
         m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", throwIfNotFound: true);
+        m_Camera_LowerCamera = m_Camera.FindAction("Lower Camera", throwIfNotFound: true);
         m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", throwIfNotFound: true);
         m_Camera_ToggleFullscreen = m_Camera.FindAction("Toggle Fullscreen", throwIfNotFound: true);
         m_Camera_Location1 = m_Camera.FindAction("Location 1", throwIfNotFound: true);
@@ -5090,9 +5119,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Camera;
     private List<ICameraActions> m_CameraActionsCallbackInterfaces = new List<ICameraActions>();
     private readonly InputAction m_Camera_HoldtoMoveCamera;
-    private readonly InputAction m_Camera_MoveCamera;
+    private readonly InputAction m_Camera_MoveCameraForward;
+    private readonly InputAction m_Camera_MoveCameraBackward;
+    private readonly InputAction m_Camera_MoveCameraLeft;
+    private readonly InputAction m_Camera_MoveCameraRight;
     private readonly InputAction m_Camera_RotateCamera;
     private readonly InputAction m_Camera_ElevateCamera;
+    private readonly InputAction m_Camera_LowerCamera;
     private readonly InputAction m_Camera_AttachtoNoteGrid;
     private readonly InputAction m_Camera_ToggleFullscreen;
     private readonly InputAction m_Camera_Location1;
@@ -5106,9 +5139,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         private @CMInput m_Wrapper;
         public CameraActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @HoldtoMoveCamera => m_Wrapper.m_Camera_HoldtoMoveCamera;
-        public InputAction @MoveCamera => m_Wrapper.m_Camera_MoveCamera;
+        public InputAction @MoveCameraForward => m_Wrapper.m_Camera_MoveCameraForward;
+        public InputAction @MoveCameraBackward => m_Wrapper.m_Camera_MoveCameraBackward;
+        public InputAction @MoveCameraLeft => m_Wrapper.m_Camera_MoveCameraLeft;
+        public InputAction @MoveCameraRight => m_Wrapper.m_Camera_MoveCameraRight;
         public InputAction @RotateCamera => m_Wrapper.m_Camera_RotateCamera;
         public InputAction @ElevateCamera => m_Wrapper.m_Camera_ElevateCamera;
+        public InputAction @LowerCamera => m_Wrapper.m_Camera_LowerCamera;
         public InputAction @AttachtoNoteGrid => m_Wrapper.m_Camera_AttachtoNoteGrid;
         public InputAction @ToggleFullscreen => m_Wrapper.m_Camera_ToggleFullscreen;
         public InputAction @Location1 => m_Wrapper.m_Camera_Location1;
@@ -5129,15 +5166,27 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @HoldtoMoveCamera.started += instance.OnHoldtoMoveCamera;
             @HoldtoMoveCamera.performed += instance.OnHoldtoMoveCamera;
             @HoldtoMoveCamera.canceled += instance.OnHoldtoMoveCamera;
-            @MoveCamera.started += instance.OnMoveCamera;
-            @MoveCamera.performed += instance.OnMoveCamera;
-            @MoveCamera.canceled += instance.OnMoveCamera;
+            @MoveCameraForward.started += instance.OnMoveCameraForward;
+            @MoveCameraForward.performed += instance.OnMoveCameraForward;
+            @MoveCameraForward.canceled += instance.OnMoveCameraForward;
+            @MoveCameraBackward.started += instance.OnMoveCameraBackward;
+            @MoveCameraBackward.performed += instance.OnMoveCameraBackward;
+            @MoveCameraBackward.canceled += instance.OnMoveCameraBackward;
+            @MoveCameraLeft.started += instance.OnMoveCameraLeft;
+            @MoveCameraLeft.performed += instance.OnMoveCameraLeft;
+            @MoveCameraLeft.canceled += instance.OnMoveCameraLeft;
+            @MoveCameraRight.started += instance.OnMoveCameraRight;
+            @MoveCameraRight.performed += instance.OnMoveCameraRight;
+            @MoveCameraRight.canceled += instance.OnMoveCameraRight;
             @RotateCamera.started += instance.OnRotateCamera;
             @RotateCamera.performed += instance.OnRotateCamera;
             @RotateCamera.canceled += instance.OnRotateCamera;
             @ElevateCamera.started += instance.OnElevateCamera;
             @ElevateCamera.performed += instance.OnElevateCamera;
             @ElevateCamera.canceled += instance.OnElevateCamera;
+            @LowerCamera.started += instance.OnLowerCamera;
+            @LowerCamera.performed += instance.OnLowerCamera;
+            @LowerCamera.canceled += instance.OnLowerCamera;
             @AttachtoNoteGrid.started += instance.OnAttachtoNoteGrid;
             @AttachtoNoteGrid.performed += instance.OnAttachtoNoteGrid;
             @AttachtoNoteGrid.canceled += instance.OnAttachtoNoteGrid;
@@ -5169,15 +5218,27 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @HoldtoMoveCamera.started -= instance.OnHoldtoMoveCamera;
             @HoldtoMoveCamera.performed -= instance.OnHoldtoMoveCamera;
             @HoldtoMoveCamera.canceled -= instance.OnHoldtoMoveCamera;
-            @MoveCamera.started -= instance.OnMoveCamera;
-            @MoveCamera.performed -= instance.OnMoveCamera;
-            @MoveCamera.canceled -= instance.OnMoveCamera;
+            @MoveCameraForward.started -= instance.OnMoveCameraForward;
+            @MoveCameraForward.performed -= instance.OnMoveCameraForward;
+            @MoveCameraForward.canceled -= instance.OnMoveCameraForward;
+            @MoveCameraBackward.started -= instance.OnMoveCameraBackward;
+            @MoveCameraBackward.performed -= instance.OnMoveCameraBackward;
+            @MoveCameraBackward.canceled -= instance.OnMoveCameraBackward;
+            @MoveCameraLeft.started -= instance.OnMoveCameraLeft;
+            @MoveCameraLeft.performed -= instance.OnMoveCameraLeft;
+            @MoveCameraLeft.canceled -= instance.OnMoveCameraLeft;
+            @MoveCameraRight.started -= instance.OnMoveCameraRight;
+            @MoveCameraRight.performed -= instance.OnMoveCameraRight;
+            @MoveCameraRight.canceled -= instance.OnMoveCameraRight;
             @RotateCamera.started -= instance.OnRotateCamera;
             @RotateCamera.performed -= instance.OnRotateCamera;
             @RotateCamera.canceled -= instance.OnRotateCamera;
             @ElevateCamera.started -= instance.OnElevateCamera;
             @ElevateCamera.performed -= instance.OnElevateCamera;
             @ElevateCamera.canceled -= instance.OnElevateCamera;
+            @LowerCamera.started -= instance.OnLowerCamera;
+            @LowerCamera.performed -= instance.OnLowerCamera;
+            @LowerCamera.canceled -= instance.OnLowerCamera;
             @AttachtoNoteGrid.started -= instance.OnAttachtoNoteGrid;
             @AttachtoNoteGrid.performed -= instance.OnAttachtoNoteGrid;
             @AttachtoNoteGrid.canceled -= instance.OnAttachtoNoteGrid;
@@ -8045,9 +8106,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     public interface ICameraActions
     {
         void OnHoldtoMoveCamera(InputAction.CallbackContext context);
-        void OnMoveCamera(InputAction.CallbackContext context);
+        void OnMoveCameraForward(InputAction.CallbackContext context);
+        void OnMoveCameraBackward(InputAction.CallbackContext context);
+        void OnMoveCameraLeft(InputAction.CallbackContext context);
+        void OnMoveCameraRight(InputAction.CallbackContext context);
         void OnRotateCamera(InputAction.CallbackContext context);
         void OnElevateCamera(InputAction.CallbackContext context);
+        void OnLowerCamera(InputAction.CallbackContext context);
         void OnAttachtoNoteGrid(InputAction.CallbackContext context);
         void OnToggleFullscreen(InputAction.CallbackContext context);
         void OnLocation1(InputAction.CallbackContext context);
