@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -13,10 +13,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    private static readonly Dictionary<string, WeakReference<Sprite>> cache =
-        new Dictionary<string, WeakReference<Sprite>>();
+    private static readonly Dictionary<string, WeakReference<Sprite>> cache = new();
 
-    private static readonly Dictionary<string, float> durationCache = new Dictionary<string, float>();
+    private static readonly Dictionary<string, float> durationCache = new();
     private static bool hasAppliedThisFrame;
 
     private static string durationCachePath;

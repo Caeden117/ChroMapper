@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class SongList : MonoBehaviour
@@ -25,10 +27,7 @@ public class SongList : MonoBehaviour
         new WithFavouriteComparer((a, b) =>
             string.Compare(a.SongAuthorName, b.SongAuthorName, StringComparison.InvariantCultureIgnoreCase));
 
-    private static bool lastVisitedWasWip = true;
-
-    public SortedSet<BeatSaberSong> Songs = new SortedSet<BeatSaberSong>(sortName);
-    public bool WipLevels = true;
+    public SortedSet<BeatSaberSong> Songs = new(sortName);
     public bool FilteredBySearch;
 
     [SerializeField] private TMP_InputField searchField;
@@ -39,13 +38,18 @@ public class SongList : MonoBehaviour
 
     [SerializeField] private Color normalTabColor;
     [SerializeField] private Color selectedTabColor;
-    [SerializeField] private Image wipTab;
-    [SerializeField] private Image customTab;
 
     [SerializeField] private RecyclingListView newList;
     private SongSortType currentSort = SongSortType.Name;
 
-    private List<BeatSaberSong> filteredSongs = new List<BeatSaberSong>();
+    private List<BeatSaberSong> filteredSongs = new();
+
+    public string SelectedFolderPath => songFolderPaths[selectedFolder];
+    private static int selectedFolder;
+
+    [SerializeField] private GameObject songFolderPrefab;
+    private readonly List<GameObject> songFolderObjects = new();
+    private readonly List<string> songFolderPaths = new();
 
     private void Start()
     {
@@ -54,11 +58,77 @@ public class SongList : MonoBehaviour
             if (item is SongListItem child) child.AssignSong(filteredSongs[index], searchField.text);
         };
 
+        AddDefaultFolders();
+        AddSongCoreFolders();
+
         currentSort = (SongSortType)Settings.Instance.LastSongSortType;
         ApplySort(currentSort);
 
         SortTypeChanged?.Invoke(currentSort);
-        SetSongLocation(lastVisitedWasWip);
+        SetSongLocation(selectedFolder);
+    }
+
+    private void AddDefaultFolders()
+    {
+        InitFolderObject("WIP Levels", Settings.Instance.CustomWIPSongsFolder);
+        InitFolderObject("Custom Levels", Settings.Instance.CustomSongsFolder);
+    }
+
+    /*
+     * SongCore folder structure is:
+     * <folders>
+     *   <folder>
+     *     <Name></Name>
+     *     <Path></Path>
+     *   <folder>
+     * </folders>
+     */
+    private void AddSongCoreFolders()
+    {
+        var songCoreFolder = Path.Combine(Settings.Instance.BeatSaberInstallation, "UserData", "SongCore");
+        var foldersXml = Path.Combine(songCoreFolder, "folders.xml");
+
+        if (!File.Exists(foldersXml)) return;
+
+        var xml = XDocument.Load(foldersXml);
+
+        foreach (var folder in xml.Descendants("folder"))
+        {
+            var tabName = folder.Element("Name")?.Value;
+            var path = folder.Element("Path")?.Value;
+
+            if (tabName == null || path == null || !Directory.Exists(path)) continue;
+
+            InitFolderObject(tabName, path);
+        }
+    }
+
+    private void InitFolderObject(string tabName, string folderPath)
+    {
+        var prefab = Instantiate(songFolderPrefab, songFolderPrefab.transform.parent, true);
+        var button = prefab.GetComponent<Button>();
+        var count = songFolderObjects.Count;
+        button.onClick.AddListener(() => SetSongLocation(count));
+
+        var childObject = prefab.transform.GetChild(0).gameObject;
+        var text = childObject.GetComponent<TextMeshProUGUI>();
+        text.text = tabName;
+
+        songFolderObjects.Add(prefab);
+        songFolderPaths.Add(folderPath);
+
+        prefab.SetActive(true);
+
+        // Use localised strings for default folders
+        if (folderPath == Settings.Instance.CustomWIPSongsFolder || folderPath == Settings.Instance.CustomSongsFolder)
+        {
+            var localizeStringComponent = childObject.GetComponent<LocalizeStringEvent>();
+            localizeStringComponent.StringReference.TableEntryReference =
+                folderPath == Settings.Instance.CustomWIPSongsFolder
+                    ? "wip"
+                    : "custom";
+            localizeStringComponent.enabled = true;
+        }
     }
 
     public event Action<SongSortType> SortTypeChanged;
@@ -101,13 +171,16 @@ public class SongList : MonoBehaviour
         }
     }
 
-    public void ToggleSongLocation() => SetSongLocation(!WipLevels);
-
-    public void SetSongLocation(bool wip)
+    public void SetSongLocation(int index)
     {
-        lastVisitedWasWip = WipLevels = wip;
-        wipTab.color = wip ? selectedTabColor : normalTabColor;
-        customTab.color = !wip ? selectedTabColor : normalTabColor;
+        selectedFolder = index;
+        
+        for (var i = 0; i < songFolderObjects.Count; i++)
+        {
+            var image = songFolderObjects[i].gameObject.GetComponent<Image>();
+            image.color = i == selectedFolder ? selectedTabColor : normalTabColor;
+        }
+        
         TriggerRefresh();
     }
 
@@ -119,9 +192,7 @@ public class SongList : MonoBehaviour
 
     public IEnumerator RefreshSongList()
     {
-        var directories = new DirectoryInfo(WipLevels
-            ? Settings.Instance.CustomWIPSongsFolder
-            : Settings.Instance.CustomSongsFolder)
+        var directories = new DirectoryInfo(songFolderPaths[selectedFolder])
             .GetDirectories()
             .Where(dir => !dir.Attributes.HasFlag(FileAttributes.Hidden));
         Songs.Clear();
