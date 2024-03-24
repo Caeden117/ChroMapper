@@ -24,6 +24,7 @@ public class PersistentUI : MonoBehaviour
 
     [SerializeField] private Localization localization;
     [Header("Loading")] [SerializeField] private CanvasGroup loadingCanvasGroup;
+    [SerializeField] private Canvas persistentCanvas;
     [SerializeField] private TMP_Text loadingTip;
     [SerializeField] private Image editorLoadingBackground;
     [SerializeField] private Image editorWaifu;
@@ -356,8 +357,8 @@ public class PersistentUI : MonoBehaviour
         float screenHeight = Screen.height;
 #endif
 
-        var rectWidth = tooltipPanelRect.rect.width;
-        var rectHeight = tooltipPanelRect.rect.height;
+        var rectWidth = tooltipPanelRect.rect.width * persistentCanvas.scaleFactor * 0.5f;
+        var rectHeight = tooltipPanelRect.rect.height * persistentCanvas.scaleFactor * 0.5f;
 
         var clamped = new Vector2(
             Mathf.Clamp(Input.mousePosition.x, rectWidth, screenWidth - rectWidth),
