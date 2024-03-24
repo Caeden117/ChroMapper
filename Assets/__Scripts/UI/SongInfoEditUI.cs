@@ -1,18 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using QuestDumper;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Localization.Settings;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
@@ -20,7 +15,7 @@ using Debug = UnityEngine.Debug;
 
 public class SongInfoEditUI : MenuBase
 {
-    public static List<Environment> VanillaEnvironments = new List<Environment>
+    public static List<Environment> VanillaEnvironments = new()
     {
         new Environment("Default", "DefaultEnvironment"),
         new Environment("Big Mirror", "BigMirrorEnvironment"),
@@ -47,9 +42,9 @@ public class SongInfoEditUI : MenuBase
         new Environment("Spooky", "HalloweenEnvironment")
     };
 
-    private static readonly List<string> vanillaDirectionalEnvironments = new List<string> { "GlassDesertEnvironment" };
+    private static readonly List<string> vanillaDirectionalEnvironments = new() { "GlassDesertEnvironment" };
 
-    public static List<string> CharacteristicDropdownToBeatmapName = new List<string>
+    public static List<string> CharacteristicDropdownToBeatmapName = new()
     {
         "Standard",
         "NoArrows",
@@ -91,7 +86,7 @@ public class SongInfoEditUI : MenuBase
     private GameObject ContributorWrapper => contributorController.transform.parent.gameObject;
 
     [SerializeField] private GameObject questExportButton;
-    private MapExporter exporter => new MapExporter(Song);
+    private MapExporter exporter => new(Song);
 
     private void Start()
     {
@@ -196,7 +191,7 @@ public class SongInfoEditUI : MenuBase
 
         Song.SaveSong();
 
-        // Update duration cache (This needs to be beneath SaveSong so that the directory is garaunteed to be created)
+        // Update duration cache (This needs to be beneath SaveSong so that the directory is guaranteed to be created)
         // also dont forget to null check please thanks
         if (previewAudio.clip != null)
             SongListItem.SetDuration(this, Path.GetFullPath(Song.Directory), previewAudio.clip.length);
@@ -295,7 +290,7 @@ public class SongInfoEditUI : MenuBase
     /// <returns>Coroutine IEnumerator</returns>
     private IEnumerator LoadAudio(bool useTemp = true, bool applySongTimeOffset = false)
     {
-        if (Song.Directory == null) yield break;
+        if (!Directory.Exists(Song.Directory)) yield break;
 
         var fullPath = Path.Combine(Song.Directory, useTemp ? audioPath.text : Song.SongFilename);
 

@@ -22,7 +22,7 @@ public static class BeatSaberSongExtensions
     /// <returns>Coroutine IEnumerator</returns>
     public static IEnumerator LoadAudio(this BeatSaberSong song, Action<AudioClip> onClipLoaded, float songTimeOffset = 0, string overrideLocalPath = null)
     {
-        if (song.Directory == null) yield break;
+        if (!Directory.Exists(song.Directory)) yield break;
 
         var fullPath = Path.Combine(song.Directory, overrideLocalPath ?? song.SongFilename);
 
@@ -104,7 +104,7 @@ public static class BeatSaberSongExtensions
         var exportedFiles = new Dictionary<string, string>();
 
         var infoFileLocation = "";
-        if (song.Directory != null)
+        if (Directory.Exists(song.Directory))
         {
             infoFileLocation = Path.Combine(song.Directory, "Info.dat");
         }

@@ -173,7 +173,7 @@ public class DifficultySelect : MonoBehaviour
     private void SaveDiff(DifficultyRow row)
     {
         var localSong = BeatSaberSongContainer.Instance.Song;
-        if (localSong.Directory == null)
+        if (!Directory.Exists(localSong.Directory))
             localSong.SaveSong();
 
         var localDiff = diffs[row.Name];

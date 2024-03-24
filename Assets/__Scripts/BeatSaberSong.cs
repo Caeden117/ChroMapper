@@ -494,7 +494,7 @@ public class BeatSaberSong
 
     public BaseDifficulty GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
-        if (Directory == null)
+        if (!System.IO.Directory.Exists(Directory))
         {
             Debug.LogWarning("Failed to get difficulty json file.");
             return null;
