@@ -62,7 +62,7 @@ namespace Tests.Util
             if (!mapperInit) yield return InitMapper();
 
             BeatSaberSongContainer.Instance.Song =
-                new BeatSaberSong("testmap", new JSONObject { ["_songName"] = "Test" });
+                new BeatSaberSong("testmap", (JSONNode)new JSONObject { ["_songName"] = "Test" });
             var parentSet = new BeatSaberSong.DifficultyBeatmapSet("Lawless");
             var diff = new BeatSaberSong.DifficultyBeatmap(parentSet)
             {

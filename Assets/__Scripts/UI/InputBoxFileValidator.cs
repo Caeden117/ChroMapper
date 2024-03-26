@@ -33,7 +33,7 @@ public class InputBoxFileValidator : MonoBehaviour
         // Shouldn't really be in awake but it needs to run before SongInfoEditUI sets the text value
         var song = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
-        if (forceStartupValidationAlign || (enableValidation && song?.Directory != null))
+        if (forceStartupValidationAlign || (enableValidation && Directory.Exists(song?.Directory)))
             transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
     }
 
@@ -44,7 +44,7 @@ public class InputBoxFileValidator : MonoBehaviour
         var song = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
         var filename = input.text;
-        if (!enableValidation || filename.Length == 0 || song?.Directory == null)
+        if (!enableValidation || filename.Length == 0 || Directory.Exists(song?.Directory))
         {
             if (!forceStartupValidationAlign) SetValidationState(false);
 

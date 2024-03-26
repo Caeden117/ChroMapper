@@ -14,7 +14,7 @@ public class CreateNewSong : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(res)) return;
 
-        var song = new BeatSaberSong(list.WipLevels, res);
+        var song = new BeatSaberSong(list.SelectedFolderPath, res);
         
         if (string.IsNullOrWhiteSpace(song.CleanSongName))
         {
@@ -25,7 +25,7 @@ public class CreateNewSong : MonoBehaviour
         
         if (list.Songs.Any(x => Path.GetFullPath(x.Directory).Equals(
             Path.GetFullPath(Path.Combine(
-                list.WipLevels ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder,
+                list.SelectedFolderPath,
                 song.CleanSongName)),
             StringComparison.CurrentCultureIgnoreCase
         )))

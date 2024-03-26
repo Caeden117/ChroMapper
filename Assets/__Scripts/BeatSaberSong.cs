@@ -16,10 +16,10 @@ using UnityEngine.Serialization;
 public class BeatSaberSong
 {
     public static readonly Color DefaultLeftColor = Color.red;
-    public static readonly Color DefaultRightColor = new Color(0, 0.282353f, 1);
-    public static readonly Color DefaultWhiteColor = new Color(0.7264151f, 0.7264151f, 0.7264151f);
-    public static readonly Color DefaultLeftNote = new Color(0.7352942f, 0, 0);
-    public static readonly Color DefaultRightNote = new Color(0, 0.3701827f, 0.7352942f);
+    public static readonly Color DefaultRightColor = new(0, 0.282353f, 1);
+    public static readonly Color DefaultWhiteColor = new(0.7264151f, 0.7264151f, 0.7264151f);
+    public static readonly Color DefaultLeftNote = new(0.7352942f, 0, 0);
+    public static readonly Color DefaultRightNote = new(0, 0.3701827f, 0.7352942f);
 
     // These values piggy back off of Application.productName and Application.version here.
     // It's so that anyone maintaining a ChroMapper fork, but wants its identity to be separate, can easily just change
@@ -50,20 +50,17 @@ public class BeatSaberSong
     [FormerlySerializedAs("coverImageFilename")] public string CoverImageFilename = "cover.png";
     [FormerlySerializedAs("environmentName")] public string EnvironmentName = "DefaultEnvironment";
     [FormerlySerializedAs("allDirectionsEnvironmentName")] public string AllDirectionsEnvironmentName = "GlassDesertEnvironment";
-    public List<string> EnvironmentNames = new List<string>(); // TODO: Support editing
+    public List<string> EnvironmentNames = new(); // TODO: Support editing
     public JSONNode ColorSchemes = new JSONArray(); // TODO: Support editing
-    [FormerlySerializedAs("editors")] public EditorsObject Editors = new EditorsObject(null);
+    [FormerlySerializedAs("editors")] public EditorsObject Editors = new(null);
 
-    [FormerlySerializedAs("difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new List<DifficultyBeatmapSet>();
+    [FormerlySerializedAs("difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new();
 
-    [FormerlySerializedAs("warnings")] public List<string> Warnings = new List<string>();
-    [FormerlySerializedAs("suggestions")] public List<string> Suggestions = new List<string>();
-    [FormerlySerializedAs("requirements")] public List<string> Requirements = new List<string>();
-    [FormerlySerializedAs("contributors")] public List<BaseContributor> Contributors = new List<BaseContributor>();
+    [FormerlySerializedAs("warnings")] public List<string> Warnings = new();
+    [FormerlySerializedAs("suggestions")] public List<string> Suggestions = new();
+    [FormerlySerializedAs("requirements")] public List<string> Requirements = new();
+    [FormerlySerializedAs("contributors")] public List<BaseContributor> Contributors = new();
 
-    private readonly bool isWipMap;
-
-    private readonly string stagedDirectory;
     private bool isFavourite;
     public JSONNode CustomData;
     public JSONNode Json;
@@ -77,13 +74,11 @@ public class BeatSaberSong
         TouchEditorValues();
     }
 
-    public BeatSaberSong(bool wipmap, string name = "")
+    public BeatSaberSong(string directory, string songName)
     {
-        Directory = null;
+        if (!(string.IsNullOrEmpty(songName) || string.IsNullOrWhiteSpace(songName))) SongName = songName;
+        Directory = Path.Combine(directory, CleanSongName);
         Json = null;
-        if (!(string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))) SongName = name;
-        stagedDirectory = CleanSongName;
-        isWipMap = wipmap;
         TouchEditorValues();
         Editors = new EditorsObject(null);
     }
@@ -126,14 +121,9 @@ public class BeatSaberSong
     {
         try
         {
-            if (string.IsNullOrEmpty(Directory))
-            {
-                Directory = Path.Combine(
-                    isWipMap ? Settings.Instance.CustomWIPSongsFolder : Settings.Instance.CustomSongsFolder,
-                    stagedDirectory ?? CleanSongName);
-            }
-
+            // Create map folder
             if (!System.IO.Directory.Exists(Directory)) System.IO.Directory.CreateDirectory(Directory);
+
             if (Json == null) Json = new JSONObject();
             if (CustomData == null) CustomData = new JSONObject();
 
@@ -175,9 +165,9 @@ public class BeatSaberSong
 
             if (Contributors.Any())
             {
-                var contributorArrayFuckyougit = new JSONArray();
-                Contributors.ForEach(x => contributorArrayFuckyougit.Add(x.ToJson()));
-                if (Contributors.Any()) Json["_customData"]["_contributors"] = contributorArrayFuckyougit;
+                var contributorArray = new JSONArray();
+                Contributors.ForEach(x => contributorArray.Add(x.ToJson()));
+                if (Contributors.Any()) Json["_customData"]["_contributors"] = contributorArray;
             }
 
             //BeatSaver schema changes, CleanObject function
@@ -504,7 +494,7 @@ public class BeatSaberSong
 
     public BaseDifficulty GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
-        if (Directory == null)
+        if (!System.IO.Directory.Exists(Directory))
         {
             Debug.LogWarning("Failed to get difficulty json file.");
             return null;
@@ -633,7 +623,7 @@ public class BeatSaberSong
     public class DifficultyBeatmapSet
     {
         [FormerlySerializedAs("beatmapCharacteristicName")] public string BeatmapCharacteristicName = "Standard";
-        [FormerlySerializedAs("difficultyBeatmaps")] public List<DifficultyBeatmap> DifficultyBeatmaps = new List<DifficultyBeatmap>();
+        [FormerlySerializedAs("difficultyBeatmaps")] public List<DifficultyBeatmap> DifficultyBeatmaps = new();
         public JSONNode CustomData = new JSONObject();
 
         public DifficultyBeatmapSet() => BeatmapCharacteristicName = "Standard";
@@ -655,7 +645,7 @@ public class BeatSaberSong
 
         public EditorsObject(JSONNode obj)
         {
-            if (obj is null || obj.Children.Count() <= 0)
+            if (obj is null || !obj.Children.Any())
             {
                 editorsObject = new JSONObject();
             }

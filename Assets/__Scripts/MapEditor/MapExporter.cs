@@ -112,7 +112,7 @@ public struct MapExporter
     {
         var infoFileLocation = "";
         var zipPath = "";
-        if (song.Directory != null)
+        if (Directory.Exists(song.Directory))
         {
             zipPath = Path.Combine(song.Directory, song.CleanSongName + ".zip");
             // Mac doesn't seem to like overwriting existing zips, so delete the old one first
@@ -151,7 +151,7 @@ public struct MapExporter
     /// </summary>
     public void OpenSelectedMapInFileBrowser()
     {
-        if (song.Directory == null)
+        if (!Directory.Exists(song.Directory))
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);

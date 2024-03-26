@@ -13,10 +13,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    private static readonly Dictionary<string, WeakReference<Sprite>> cache =
-        new Dictionary<string, WeakReference<Sprite>>();
+    private static readonly Dictionary<string, WeakReference<Sprite>> cache = new();
 
-    private static readonly Dictionary<string, float> durationCache = new Dictionary<string, float>();
+    private static readonly Dictionary<string, float> durationCache = new();
     private static bool hasAppliedThisFrame;
 
     private static string durationCachePath;
@@ -251,11 +250,6 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             SetDuration(cacheKey, oggLength);
             yield break;
         }
-
-        // Fallback just loads the song via unity
-        var extension = song.SongFilename.Contains(".")
-            ? Path.GetExtension(song.SongFilename.ToLower()).Replace(".", "")
-            : "";
 
         yield return song.LoadAudio((clip) => SetDuration(cacheKey, clip.length), 0, null);
     }
