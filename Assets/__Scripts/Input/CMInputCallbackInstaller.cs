@@ -49,8 +49,12 @@ public class CMInputCallbackInstaller : MonoBehaviour
      */
     private void Start()
     {
-#if UNITY_STANDALONE_OSX // Harmony patch doesn't work on Apple Silicon so use Unity's shortcut consuming
-        InputSystem.settings.shortcutKeysConsumeInput = true;
+#if !UNITY_STANDALONE_OSX 
+        // Harmony patch doesn't work on Apple Silicon so use Unity's shortcut consuming
+        // Edit: Apparently turning it on didn't work??? Let's turning it off for not Mac instead
+        //       If it still doesn't work then revert the input changes
+        Debug.Log("Harmony Patch already applied - Turning off Unity Input Consumption");
+        InputSystem.settings.shortcutKeysConsumeInput = false;
 #endif
         
         SendMessage("InputObjectCreated", input);
