@@ -94,6 +94,7 @@ namespace Beatmap.V3
 
         public override bool IsMappingExtensions() =>
             (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 ||
+             TailPosX <= -1000 || TailPosX >= 1000 || TailPosY < 0 || TailPosY > 2 ||
              (CutDirection >= 1000 && CutDirection <= 1360) ||
              (CutDirection >= 2000 && CutDirection <= 2360) ||
              (TailCutDirection >= 1000 && TailCutDirection <= 1360)) &&
