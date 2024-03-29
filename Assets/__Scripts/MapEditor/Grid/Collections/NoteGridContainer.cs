@@ -141,19 +141,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         if (note.Type == (int)NoteType.Bomb || note.CustomFake) return;
 
         // Grab all objects with the same type, and time (within epsilon)
-
-        objectsAtSameTime.Clear();
-        foreach (var x in LoadedContainers)
-        {
-            if (note.CustomFake
-                || !(x.Key.JsonTime - Epsilon <= obj.JsonTime && x.Key.JsonTime + Epsilon >= obj.JsonTime
-                     && (x.Key as BaseNote).Type == note.Type))
-            {
-                continue;
-            }
-
-            objectsAtSameTime.Add(x.Value);
-        }
+        PopulateObjectsAtSameTime(note);
 
         // Only execute if we have exactly 2 notes with the same type
         if (objectsAtSameTime.Count == 2)
@@ -209,11 +197,41 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         }
         else
         {
-            foreach (var toReset in objectsAtSameTime)
+            ClearSpecialAnglesFromObjectsAtSameTime();
+        }
+    }
+    
+    public void ClearSpecialAngles(BaseObject obj)
+    {
+        var note = obj as BaseNote;
+        
+        PopulateObjectsAtSameTime(note);
+        ClearSpecialAnglesFromObjectsAtSameTime();
+    }
+    
+    // Grab all objects with the same type, and time (within epsilon)
+    private void PopulateObjectsAtSameTime(BaseNote note)
+    {
+        objectsAtSameTime.Clear();
+        foreach (var x in LoadedContainers)
+        {
+            if (note.CustomFake
+                || !(x.Key.JsonTime - Epsilon <= note.JsonTime && x.Key.JsonTime + Epsilon >= note.JsonTime
+                                                               && (x.Key as BaseNote).Type == note.Type))
             {
-                var direction = NoteContainer.Directionalize(toReset.ObjectData as BaseNote);
-                (toReset as NoteContainer).DirectionTarget.localEulerAngles = direction;
+                continue;
             }
+
+            objectsAtSameTime.Add(x.Value);
+        }
+    }
+
+    private void ClearSpecialAnglesFromObjectsAtSameTime()
+    {
+        foreach (var toReset in objectsAtSameTime)
+        {
+            var direction = NoteContainer.Directionalize(toReset.ObjectData as BaseNote);
+            (toReset as NoteContainer).DirectionTarget.localEulerAngles = direction;
         }
     }
 

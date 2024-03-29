@@ -421,7 +421,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private bool StartDrag(ObjectContainer con)
     {
         if (con is null || !(con is TBoc) || con.ObjectData.ObjectType != objectDataType || !IsActive)
-            return false; //Filter out null objects and objects that aren't what we're targetting.
+            return false; //Filter out null objects and objects that aren't what we're targeting.
 
         objectContainerCollection.SilentRemoveObject(con.ObjectData);
         
@@ -432,9 +432,15 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         DraggedObjectContainer = con as TBoc;
         DraggedObjectContainer.Dragging = true;
 
-        if (con is NoteContainer noteContainer && Settings.Instance.Load_MapV3)
+        if (con is NoteContainer noteContainer)
         {
-            StartDragSliders(noteContainer);
+            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            noteCollection.ClearSpecialAngles(con.ObjectData);
+            
+            if (Settings.Instance.Load_MapV3)
+            {
+                StartDragSliders(noteContainer);
+            }
         }
 
         return true;
@@ -471,10 +477,16 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             }
         }
 
-        if (DraggedObjectContainer is NoteContainer && Settings.Instance.Load_MapV3)
+        if (DraggedObjectContainer is NoteContainer)
         {
-            FinishSliderDrag(actions);
-            ClearDraggedAttachedSliders();
+            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            noteCollection.RefreshSpecialAngles(draggedObjectData, false, false);
+            
+            if (Settings.Instance.Load_MapV3)
+            {
+                FinishSliderDrag(actions);
+                ClearDraggedAttachedSliders();
+            }
         }
 
         if (actions.Count == 1)
