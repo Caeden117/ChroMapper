@@ -18,7 +18,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
 
     public bool QuickModificationActive;
 
-    private readonly Dictionary<int, int> cutDirectionMovedBackward = new Dictionary<int, int>
+    private readonly Dictionary<int, int> cutDirectionMovedBackward = new()
     {
         {(int)NoteCutDirection.Any, (int)NoteCutDirection.Any},
         {(int)NoteCutDirection.DownLeft, (int)NoteCutDirection.Down},
@@ -32,7 +32,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
         {(int)NoteCutDirection.None, (int)NoteCutDirection.None}
     };
 
-    private readonly Dictionary<int, int> cutDirectionMovedForward = new Dictionary<int, int>
+    private readonly Dictionary<int, int> cutDirectionMovedForward = new()
     {
         {(int)NoteCutDirection.Any, (int)NoteCutDirection.Any},
         {(int)NoteCutDirection.Down, (int)NoteCutDirection.DownLeft},

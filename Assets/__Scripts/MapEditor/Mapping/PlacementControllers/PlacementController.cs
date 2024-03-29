@@ -51,13 +51,13 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private TBo originalDraggedObjectData;
     private TBo originalQueued;
 
-    protected List<ObjectContainer> DraggedAttachedSliderContainers = new List<ObjectContainer>();
-    protected Dictionary<IndicatorType, List<BaseSlider>> DraggedAttachedSliderDatas = new Dictionary<IndicatorType, List<BaseSlider>>
+    protected List<ObjectContainer> DraggedAttachedSliderContainers = new();
+    protected Dictionary<IndicatorType, List<BaseSlider>> DraggedAttachedSliderDatas = new()
     {
         {IndicatorType.Head, new List<BaseSlider>()},
         {IndicatorType.Tail, new List<BaseSlider>()}
     };
-    private Dictionary<IndicatorType, List<BaseSlider>> originalDraggedAttachedSliderDatas = new Dictionary<IndicatorType, List<BaseSlider>>
+    private Dictionary<IndicatorType, List<BaseSlider>> originalDraggedAttachedSliderDatas = new()
     {
         {IndicatorType.Head, new List<BaseSlider>()},
         {IndicatorType.Tail, new List<BaseSlider>()}
@@ -66,8 +66,8 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal TBo queuedData; //Data that is not yet applied to the ObjectContainer.
     protected bool UsePrecisionPlacement;
 
-    protected virtual Vector2 precisionOffset { get; } = new Vector2(-0.5f, -1.1f);
-    protected virtual Vector2 vanillaOffset { get; } = new Vector2(1.5f, -1.1f);
+    protected virtual Vector2 precisionOffset { get; } = new(-0.5f, -1.1f);
+    protected virtual Vector2 vanillaOffset { get; } = new(1.5f, -1.1f);
 
     protected virtual bool CanClickAndDrag { get; set; } = true;
 

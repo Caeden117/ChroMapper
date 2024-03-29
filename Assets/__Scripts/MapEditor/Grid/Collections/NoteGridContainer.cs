@@ -18,7 +18,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 
     [SerializeField] private CountersPlusController countersPlus;
 
-    private readonly List<ObjectContainer> objectsAtSameTime = new List<ObjectContainer>();
+    private readonly List<ObjectContainer> objectsAtSameTime = new();
 
     public static bool ShowArcVisualizer { get; private set; }
 
