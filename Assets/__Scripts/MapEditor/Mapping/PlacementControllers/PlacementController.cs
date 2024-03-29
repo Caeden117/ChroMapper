@@ -51,13 +51,13 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private TBo originalDraggedObjectData;
     private TBo originalQueued;
 
-    protected List<ObjectContainer> DraggedAttachedSliderContainers = new List<ObjectContainer>();
-    protected Dictionary<IndicatorType, List<BaseSlider>> DraggedAttachedSliderDatas = new Dictionary<IndicatorType, List<BaseSlider>>
+    protected List<ObjectContainer> DraggedAttachedSliderContainers = new();
+    protected Dictionary<IndicatorType, List<BaseSlider>> DraggedAttachedSliderDatas = new()
     {
         {IndicatorType.Head, new List<BaseSlider>()},
         {IndicatorType.Tail, new List<BaseSlider>()}
     };
-    private Dictionary<IndicatorType, List<BaseSlider>> originalDraggedAttachedSliderDatas = new Dictionary<IndicatorType, List<BaseSlider>>
+    private Dictionary<IndicatorType, List<BaseSlider>> originalDraggedAttachedSliderDatas = new()
     {
         {IndicatorType.Head, new List<BaseSlider>()},
         {IndicatorType.Tail, new List<BaseSlider>()}
@@ -66,8 +66,8 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal TBo queuedData; //Data that is not yet applied to the ObjectContainer.
     protected bool UsePrecisionPlacement;
 
-    protected virtual Vector2 precisionOffset { get; } = new Vector2(-0.5f, -1.1f);
-    protected virtual Vector2 vanillaOffset { get; } = new Vector2(1.5f, -1.1f);
+    protected virtual Vector2 precisionOffset { get; } = new(-0.5f, -1.1f);
+    protected virtual Vector2 vanillaOffset { get; } = new(1.5f, -1.1f);
 
     protected virtual bool CanClickAndDrag { get; set; } = true;
 
@@ -421,7 +421,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private bool StartDrag(ObjectContainer con)
     {
         if (con is null || !(con is TBoc) || con.ObjectData.ObjectType != objectDataType || !IsActive)
-            return false; //Filter out null objects and objects that aren't what we're targetting.
+            return false; //Filter out null objects and objects that aren't what we're targeting.
 
         objectContainerCollection.SilentRemoveObject(con.ObjectData);
         
@@ -432,9 +432,15 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         DraggedObjectContainer = con as TBoc;
         DraggedObjectContainer.Dragging = true;
 
-        if (con is NoteContainer noteContainer && Settings.Instance.Load_MapV3)
+        if (con is NoteContainer noteContainer)
         {
-            StartDragSliders(noteContainer);
+            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            noteCollection.ClearSpecialAngles(con.ObjectData);
+            
+            if (Settings.Instance.Load_MapV3)
+            {
+                StartDragSliders(noteContainer);
+            }
         }
 
         return true;
@@ -471,10 +477,16 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             }
         }
 
-        if (DraggedObjectContainer is NoteContainer && Settings.Instance.Load_MapV3)
+        if (DraggedObjectContainer is NoteContainer)
         {
-            FinishSliderDrag(actions);
-            ClearDraggedAttachedSliders();
+            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            noteCollection.RefreshSpecialAngles(draggedObjectData, false, false);
+            
+            if (Settings.Instance.Load_MapV3)
+            {
+                FinishSliderDrag(actions);
+                ClearDraggedAttachedSliders();
+            }
         }
 
         if (actions.Count == 1)
