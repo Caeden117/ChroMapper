@@ -4,6 +4,7 @@ using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.V3;
 using NUnit.Framework;
+using SimpleJSON;
 using Tests.Util;
 using UnityEngine.TestTools;
 
@@ -228,6 +229,40 @@ namespace Tests
             inputController.UpdateNoteDirection(containerB, true);
             Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
             Assert.AreEqual(45, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+        }
+
+        [Test]
+        public void RefreshSpecialAnglesIgnoresPrecisionPlacement()
+        {
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteA);
+            var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
+
+            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
+            var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
+            
+            // ME precision placed
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌↓◌◌
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, 1000);
+            UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, 1000);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(0, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+            
+            // NE precision placed
+            (containerA.ObjectData as BaseNote).CustomCoordinate = new JSONArray { [0] = 0, [1] = 2 };
+            (containerB.ObjectData as BaseNote).CustomCoordinate = new JSONArray { [0] = -1, [1] = 0 };
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, (int)NoteCutDirection.Down);
+            UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, (int)NoteCutDirection.Down);
+            
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(0, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+            
         }
 
         private void UpdateNote(NoteContainer container, int PosX, int PosY, int cutDirection)

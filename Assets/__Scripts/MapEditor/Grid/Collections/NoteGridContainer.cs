@@ -154,9 +154,12 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
             var containerA = objectsAtSameTime.First() as NoteContainer;
             var containerB = objectsAtSameTime.Last() as NoteContainer;
 
-            // Clear angles if directions are not the same (and both are not dot notes)
+            // Clear angles if directions are not the same (and both are not dot notes) or is precision placed
+            var hasNEcoordinates = a.CustomCoordinate != null || b.CustomCoordinate != null;
+            var hasMEprecision = a.CutDirection >= 1000 || a.CutDirection <= -1000 || 
+                                 b.CutDirection >= 1000 || b.CutDirection <= -1000;
             if (a.CutDirection != b.CutDirection && a.CutDirection != (int)NoteCutDirection.Any &&
-                b.CutDirection != (int)NoteCutDirection.Any)
+                b.CutDirection != (int)NoteCutDirection.Any && !hasMEprecision && !hasNEcoordinates)
             {
                 var directionA = NoteContainer.Directionalize(containerA.ObjectData as BaseNote);
                 var directionB = NoteContainer.Directionalize(containerB.ObjectData as BaseNote);
