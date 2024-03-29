@@ -38,6 +38,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     private MapEditorUI mapEditorUi;
     private Coroutine showUI;
     private Coroutine slideSelectionCoroutine;
+    
+    private static readonly int enableNoteSurfaceGridLine = Shader.PropertyToID("_EnableNoteSurfaceGridLine");
 
     private void Awake()
     {
@@ -60,7 +62,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         }
 
         atsc.PlayToggle += OnPlayToggle;
-        Shader.SetGlobalFloat("_EnableNoteSurfaceGridLine", 1f);
+        Shader.SetGlobalFloat(enableNoteSurfaceGridLine, 1f);
     }
 
     public void OnToggleUIMode(InputAction.CallbackContext context)
@@ -159,7 +161,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
         if (showPlacement)
         {
-            Shader.SetGlobalFloat("_EnableNoteSurfaceGridLine", 1f);
+            Shader.SetGlobalFloat(enableNoteSurfaceGridLine, 1f);
             foreach (var s in thingsThatRequireAMoveForPreview)
             {
                 var t = s.transform;
@@ -175,7 +177,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         }
         else
         {
-            Shader.SetGlobalFloat("_EnableNoteSurfaceGridLine", 0f);
+            Shader.SetGlobalFloat(enableNoteSurfaceGridLine, 0f);
             foreach (var s in thingsThatRequireAMoveForPreview)
             {
                 var t = s.transform;

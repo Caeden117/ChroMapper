@@ -21,10 +21,13 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
 
     public BaseObstacle[] DespawnSortedObjects;
     private int despawnIndex;
+    
+    private static readonly int outsideAlpha = Shader.PropertyToID("_OutsideAlpha");
+    private static readonly int mainAlpha = Shader.PropertyToID("_MainAlpha");
 
     internal override void SubscribeToCallbacks()
     {
-        Shader.SetGlobalFloat("_OutsideAlpha", 0.25f);
+        Shader.SetGlobalFloat(outsideAlpha, 0.25f);
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         AudioTimeSyncController.TimeChanged += OnTimeChanged;
         UIMode.UIModeSwitched += OnUIModeSwitch;
@@ -42,9 +45,9 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         Settings.ClearSettingNotifications(nameof(Settings.ObstacleOpacity));
     }
 
-    private void ObstacleOpacityChanged(object obj) => Shader.SetGlobalFloat("_MainAlpha", (float)obj);
+    private void ObstacleOpacityChanged(object obj) => Shader.SetGlobalFloat(mainAlpha, (float)obj);
 
-    private void OnPlayToggle(bool playing) => Shader.SetGlobalFloat("_OutsideAlpha", playing ? 0 : 0.25f);
+    private void OnPlayToggle(bool playing) => Shader.SetGlobalFloat(outsideAlpha, playing ? 0 : 0.25f);
 
     public override void RefreshPool(bool force)
     {

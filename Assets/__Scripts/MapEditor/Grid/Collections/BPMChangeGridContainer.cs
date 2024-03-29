@@ -23,6 +23,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
     private static readonly int bpMs = Shader.PropertyToID("_BPMChange_BPMs");
     private static readonly int bpmCount = Shader.PropertyToID("_BPMChange_Count");
     private static readonly int songBpm = Shader.PropertyToID("_SongBPM");
+    private static readonly int editorScale = Shader.PropertyToID("_EditorScale");
 
     private static readonly float firstVisibleBeatTime = 2;
 
@@ -50,7 +51,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
     }
 
     private void EditorScaleChanged(float obj) =>
-        Shader.SetGlobalFloat("_EditorScale", EditorScaleController.EditorScale);
+        Shader.SetGlobalFloat(editorScale, EditorScaleController.EditorScale);
 
     private void OnTimeChanged()
     {
