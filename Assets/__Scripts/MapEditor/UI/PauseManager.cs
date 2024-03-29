@@ -61,8 +61,6 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
             CMInputCallbackInstaller.DisableActionMaps(typeof(PauseManager), disabledActionMaps);
             previousUIModeType = UIMode.SelectedMode;
             uiMode.SetUIMode(UIModeType.Normal, false);
-            foreach (var e in platform.gameObject.GetComponentsInChildren<LightsManager>())
-                e.ChangeAlpha(0, 1, e.ControllingLights);
         }
         else
         {
