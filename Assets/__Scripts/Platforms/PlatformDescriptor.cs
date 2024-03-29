@@ -46,6 +46,8 @@ public class PlatformDescriptor : MonoBehaviour
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
 
+    private static readonly int baseMap = Shader.PropertyToID("_BaseMap");
+
     public bool SoloAnEventType { get; private set; }
     public int SoloEventType { get; private set; }
 
@@ -92,8 +94,8 @@ public class PlatformDescriptor : MonoBehaviour
             {
                 var scale = renderer.gameObject.transform.lossyScale;
                 var normalScale = new Vector2(scale.x, scale.z) / NormalMapScale;
-                renderer.material.SetTextureScale(Shader.PropertyToID("_BaseMap"), normalScale);
-                renderer.material.SetTextureOffset(Shader.PropertyToID("_BaseMap"), Vector2.zero);
+                renderer.material.SetTextureScale(baseMap, normalScale);
+                renderer.material.SetTextureOffset(baseMap, Vector2.zero);
             }
         }
     }

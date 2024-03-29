@@ -11,6 +11,9 @@ namespace Beatmap.Containers
     public class ChainContainer : ObjectContainer
     {
         private static readonly int colorMultiplier = Shader.PropertyToID("_ColorMult");
+        private static readonly int objectTime = Shader.PropertyToID("_ObjectTime");
+        private static readonly int lit = Shader.PropertyToID("_Lit");
+        private static readonly int translucentAlpha = Shader.PropertyToID("_TranslucentAlpha");
         
         [SerializeField] private GameObject tailNode;
         public NoteContainer AttachedHead;
@@ -44,8 +47,8 @@ namespace Beatmap.Containers
         {
             base.Setup();
             
-            MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
-            MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
+            MaterialPropertyBlock.SetFloat(lit, Settings.Instance.SimpleBlocks ? 0 : 1);
+            MaterialPropertyBlock.SetFloat(translucentAlpha, Settings.Instance.PastNoteModelAlpha);
 
             arrowMaterialPropertyBlock ??= new MaterialPropertyBlock();
             
@@ -214,17 +217,17 @@ namespace Beatmap.Containers
                 // i dont like this code smell but whatever
                 var dot = c.transform.GetChild(0).GetComponent<MeshRenderer>();
 
-                var objectTime = ChainData.SongBpmTime + c.transform.localPosition.z / EditorScaleController.EditorScale;
-                MaterialPropertyBlock.SetFloat("_ObjectTime", objectTime);
-                arrowMaterialPropertyBlock.SetFloat("_ObjectTime", objectTime);
+                var time = ChainData.SongBpmTime + c.transform.localPosition.z / EditorScaleController.EditorScale;
+                MaterialPropertyBlock.SetFloat(objectTime, time);
+                arrowMaterialPropertyBlock.SetFloat(objectTime, time);
                 
                 // This alpha set is a workaround as callbackController can only despawn the entire chain
-                var translucentAlpha = UIMode.SelectedMode == UIModeType.Preview || UIMode.SelectedMode == UIModeType.Playing
+                var alpha = UIMode.SelectedMode == UIModeType.Preview || UIMode.SelectedMode == UIModeType.Playing
                         ? 0
                         : Settings.Instance.PastNoteModelAlpha;
                 
-                MaterialPropertyBlock.SetFloat("_TranslucentAlpha", translucentAlpha);
-                arrowMaterialPropertyBlock.SetFloat("_TranslucentAlpha", translucentAlpha);
+                MaterialPropertyBlock.SetFloat(translucentAlpha, alpha);
+                arrowMaterialPropertyBlock.SetFloat(translucentAlpha, alpha);
                 
                 r.SetPropertyBlock(MaterialPropertyBlock);
                 dot.SetPropertyBlock(arrowMaterialPropertyBlock);

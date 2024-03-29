@@ -26,6 +26,10 @@ public class CustomPlatformsLoader : MonoBehaviour
 
     private PlatformDescriptor platformDescriptor;
     private Material useThisBlack;
+
+    private static readonly int baseColor = Shader.PropertyToID("_BaseColor");
+    private static readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
+
     public static CustomPlatformsLoader Instance => instance != null ? instance : (instance = Load());
 
     private void Awake()
@@ -364,18 +368,18 @@ public class CustomPlatformsLoader : MonoBehaviour
                 if (tempMaterial.name.ToUpper().Contains("GLOW_BLUE"))
                 {
                     tempMaterial = new Material(lightMaterial);
-                    tempMaterial.SetColor("_BaseColor", Color.white);
+                    tempMaterial.SetColor(baseColor, Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
-                    tempMaterial.SetColor("_EmissionColor",
+                    tempMaterial.SetColor(emissionColor,
                         BeatSaberSong.DefaultRightColor * LightsManager.HDRIntensity);
                 }
 
                 if (tempMaterial.name.ToUpper().Contains("GLOW_RED"))
                 {
                     tempMaterial = new Material(lightMaterial);
-                    tempMaterial.SetColor("_BaseColor", Color.white);
+                    tempMaterial.SetColor(baseColor, Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
-                    tempMaterial.SetColor("_EmissionColor",
+                    tempMaterial.SetColor(emissionColor,
                         BeatSaberSong.DefaultLeftColor * LightsManager.HDRIntensity);
                 }
 

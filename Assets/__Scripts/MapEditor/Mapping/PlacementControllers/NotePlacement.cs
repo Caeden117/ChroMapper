@@ -43,6 +43,8 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     private bool diagonal;
     private bool flagDirectionsUpdate;
 
+    private static readonly int alwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
+
     // Chroma Color Check
     public static bool CanPlaceChromaObjects
     {
@@ -247,7 +249,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         if (instantiatedContainer is null) return;
         instantiatedContainer.NoteData = queuedData;
         noteAppearanceSo.SetNoteAppearance(instantiatedContainer);
-        instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
+        instantiatedContainer.MaterialPropertyBlock.SetFloat(alwaysTranslucent, 1);
         instantiatedContainer.UpdateMaterials();
         instantiatedContainer.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(queuedData);
     }

@@ -14,6 +14,7 @@ public class PrecisionPlacementGridController : MonoBehaviour
 
     private bool isEnabled = true;
     private Vector3 mousePosition;
+    private static readonly int position = Shader.PropertyToID("_MousePosition");
 
     private void Start()
     {
@@ -25,7 +26,7 @@ public class PrecisionPlacementGridController : MonoBehaviour
     private void LateUpdate()
     {
         if (!isEnabled) return;
-        foreach (var material in allMaterialsInExpandedGrid) material.SetVector("_MousePosition", mousePosition);
+        foreach (var material in allMaterialsInExpandedGrid) material.SetVector(position, mousePosition);
     }
 
     public void TogglePrecisionPlacement(bool isVisible)

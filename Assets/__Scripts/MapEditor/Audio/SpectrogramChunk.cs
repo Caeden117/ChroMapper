@@ -19,6 +19,9 @@ public class SpectrogramChunk : MonoBehaviour
 
     private WaveformGenerator waveform;
 
+    private static readonly int rotation = Shader.PropertyToID("_Rotation");
+    private static readonly int mainTex = Shader.PropertyToID("_MainTex");
+
     private void Start()
     {
         gameObject.layer = 12;
@@ -49,7 +52,7 @@ public class SpectrogramChunk : MonoBehaviour
                 BeatmapObjectContainerCollection.ChunkSize * EditorScaleController.EditorScale);
         }
 
-        meshRenderer.material.SetFloat("_Rotation", transform.rotation.eulerAngles.y);
+        meshRenderer.material.SetFloat(rotation, transform.rotation.eulerAngles.y);
     }
 
     public void UpdateMesh(float[][] data, Texture2D colors, int chunkID, WaveformGenerator gen)
@@ -194,8 +197,8 @@ public class SpectrogramChunk : MonoBehaviour
                 // wait why am i not setting this to the same render queue as lights, pepega
                 renderQueue = 2925
             };
-            customMaterial.SetFloat("_Rotation", transform.rotation.eulerAngles.y);
-            customMaterial.SetTexture("_MainTex", texture);
+            customMaterial.SetFloat(rotation, transform.rotation.eulerAngles.y);
+            customMaterial.SetTexture(mainTex, texture);
             GetComponent<MeshRenderer>().material = customMaterial;
         }
 

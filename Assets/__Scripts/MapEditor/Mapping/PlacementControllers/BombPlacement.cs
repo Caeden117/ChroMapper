@@ -18,6 +18,8 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     [SerializeField] private ToggleColourDropdown dropdown;
 
+    private static readonly int alwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
+
     // Chroma Color Check
     public static bool CanPlaceChromaObjects
     {
@@ -77,7 +79,7 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
                 : null;
         }
 
-        instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
+        instantiatedContainer.MaterialPropertyBlock.SetFloat(alwaysTranslucent, 1);
         instantiatedContainer.UpdateMaterials();
 
         instantiatedContainer.NoteData = queuedData;

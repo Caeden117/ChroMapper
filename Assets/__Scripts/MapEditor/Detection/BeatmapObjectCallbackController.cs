@@ -43,6 +43,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     /// v3 version fields
     [FormerlySerializedAs("chainsContainer")][SerializeField] private ChainGridContainer chainGridContainer;
 
+    private static readonly int obstacleFadeRadius = Shader.PropertyToID("_ObstacleFadeRadius");
+
     private void Start()
     {
         noteGridContainer.ObjectSpawnedEvent += NoteGridContainerObjectSpawnedEvent;
@@ -81,7 +83,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
                     : Settings.Instance.Offset_Spawning;
             }
 
-            if (!useDespawnOffset) Shader.SetGlobalFloat("_ObstacleFadeRadius", Offset * EditorScaleController.EditorScale);
+            if (!useDespawnOffset) Shader.SetGlobalFloat(obstacleFadeRadius, Offset * EditorScaleController.EditorScale);
         }
 
         if (timeSyncController.IsPlaying)
