@@ -154,10 +154,14 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
             var containerA = objectsAtSameTime.First() as NoteContainer;
             var containerB = objectsAtSameTime.Last() as NoteContainer;
 
-            // Do not execute if cut directions are not the same (and both are not dot notes)
+            // Clear angles if directions are not the same (and both are not dot notes)
             if (a.CutDirection != b.CutDirection && a.CutDirection != (int)NoteCutDirection.Any &&
                 b.CutDirection != (int)NoteCutDirection.Any)
             {
+                var directionA = NoteContainer.Directionalize(containerA.ObjectData as BaseNote);
+                var directionB = NoteContainer.Directionalize(containerB.ObjectData as BaseNote);
+                containerA.DirectionTarget.localEulerAngles = directionA;
+                containerB.DirectionTarget.localEulerAngles = directionB;
                 return;
             }
 
@@ -180,19 +184,23 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
                 containerA.DirectionTarget.localEulerAngles = Vector3.forward * angle;
                 containerB.DirectionTarget.localEulerAngles = Vector3.forward * angle;
             }
+            // We restrict angles below 40 otherwise display their normal direction
+            else if (Mathf.Abs(angle) <= 40)
+            {
+                var originalA = NoteContainer.Directionalize(a) + new Vector3(0, 0, -a.AngleOffset);
+                var originalB = NoteContainer.Directionalize(b) + new Vector3(0, 0, -b.AngleOffset);
+                containerA.DirectionTarget.localEulerAngles = originalA + (Vector3.forward * angle);
+                if (b.CutDirection == (int)NoteCutDirection.Any && !a.IsMainDirection)
+                    containerB.DirectionTarget.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
+                else
+                    containerB.DirectionTarget.localEulerAngles = originalB + (Vector3.forward * angle);
+            }
             else
             {
-                var originalA = (a is V3ColorNote newA) ? NoteContainer.Directionalize(a) + new Vector3(0, 0, -newA.AngleOffset) : NoteContainer.Directionalize(a);
-                var originalB = (b is V3ColorNote newB) ? NoteContainer.Directionalize(b) + new Vector3(0, 0, -newB.AngleOffset) : NoteContainer.Directionalize(b);
-                // We restrict angles below 40 (For 45 just use diagonal notes KEKW)
-                if (Mathf.Abs(angle) <= 40)
-                {
-                    containerA.DirectionTarget.localEulerAngles = originalA + (Vector3.forward * angle);
-                    if (b.CutDirection == (int)NoteCutDirection.Any && !a.IsMainDirection)
-                        containerB.DirectionTarget.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
-                    else
-                        containerB.DirectionTarget.localEulerAngles = originalB + (Vector3.forward * angle);
-                }
+                var directionA = NoteContainer.Directionalize(containerA.ObjectData as BaseNote);
+                var directionB = NoteContainer.Directionalize(containerB.ObjectData as BaseNote);
+                containerA.DirectionTarget.localEulerAngles = directionA;
+                containerB.DirectionTarget.localEulerAngles = directionB;
             }
         }
         else

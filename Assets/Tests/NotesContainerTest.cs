@@ -139,6 +139,97 @@ namespace Tests
             baseNoteA.JsonTime = 14;
         }
 
+        [Test]
+        public void RefreshSpecialAnglesOnDirectionChange()
+        {
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var inputController = noteGridContainer.transform.root.GetComponentInChildren<BeatmapNoteInputController>();
+
+            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteA);
+            var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
+
+            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
+            var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
+            
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌←◌◌
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, (int)NoteCutDirection.Down);
+            UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, (int)NoteCutDirection.Left);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(270, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌↙◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌↓◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(333.43, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(333.43, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+            
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌↘◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(45, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+        }
+        
+        [Test]
+        public void RefreshSpecialAnglesOnDirectionChange2()
+        {
+            // Test that angles are not changed when they shouldn't be
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var inputController = noteGridContainer.transform.root.GetComponentInChildren<BeatmapNoteInputController>();
+
+            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteA);
+            var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
+
+            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
+            var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
+            
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ←◌◌◌
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, (int)NoteCutDirection.Down);
+            UpdateNote(containerB, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(270, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ↙◌◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ↓◌◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(0, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+            
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ↘◌◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(45, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+        }
+
         private void UpdateNote(NoteContainer container, int PosX, int PosY, int cutDirection)
         {
             var baseNote = (BaseNote)container.ObjectData;
