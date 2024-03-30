@@ -127,6 +127,30 @@ namespace TestsEditMode
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
+        
+        [Test]
+        public void AssignTrackParentAlwaysRequiresNoodle()
+        {
+            _difficulty.CustomEvents = new List<BaseCustomEvent>
+            {
+                new V3CustomEvent
+                {
+                    Type = "AssignTrackParent",
+                    Data = new JSONObject
+                    {
+                        ["parentTrack"] = "parent",
+                        ["childrenTracks"] = new JSONArray
+                        {
+                            [0] = "child"
+                        }
+                    }
+                }
+            };
+
+            RefreshCustomData();
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+        }
 
         [TestCase("position", 0)]
         [TestCase("dissolve", 1)]
