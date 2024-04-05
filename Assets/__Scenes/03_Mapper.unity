@@ -51039,6 +51039,7 @@ MonoBehaviour:
   - {fileID: 1385287881}
   - {fileID: 2507495661086552029}
   - {fileID: 2028058992}
+  - {fileID: 1671296884}
   extraSizeChanges:
   - {fileID: 2507495661086552027}
 --- !u!1 &1536091984
@@ -56831,6 +56832,7 @@ GameObject:
   - component: {fileID: 1671296883}
   - component: {fileID: 1671296882}
   - component: {fileID: 1671296881}
+  - component: {fileID: 1671296884}
   m_Layer: 5
   m_Name: Strobe Generator Canvas
   m_TagString: Untagged
@@ -56920,6 +56922,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: -1
   m_TargetDisplay: 0
+--- !u!225 &1671296884
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671296879}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1673580565
 GameObject:
   m_ObjectHideFlags: 0
