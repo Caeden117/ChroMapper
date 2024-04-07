@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Globalization;
 using System.IO;
 using SFB;
@@ -44,7 +44,7 @@ public class InputBoxFileValidator : MonoBehaviour
         var song = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
         var filename = input.text;
-        if (!enableValidation || filename.Length == 0 || Directory.Exists(song?.Directory))
+        if (!enableValidation || filename.Length == 0 || !Directory.Exists(song?.Directory))
         {
             if (!forceStartupValidationAlign) SetValidationState(false);
 
