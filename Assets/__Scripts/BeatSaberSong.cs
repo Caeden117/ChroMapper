@@ -8,6 +8,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Helper;
 using Beatmap.Info;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using SimpleJSON;
 using UnityEngine;
@@ -53,19 +54,21 @@ public class BeatSaberSong
     [JsonProperty("_allDirectionsEnvironmentName")] public string AllDirectionsEnvironmentName = "GlassDesertEnvironment";
     [JsonProperty("_environmentNames")] public List<string> EnvironmentNames = new(); // TODO: Support editing
     [JsonProperty("_colorSchemes")] public JSONNode ColorSchemes = new JSONArray(); // TODO: Support editing
-    [FormerlySerializedAs("editors")] public EditorsObject Editors = new(null);
 
-    [FormerlySerializedAs("difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new();
-
-    [FormerlySerializedAs("warnings")] public List<string> Warnings = new();
-    [FormerlySerializedAs("suggestions")] public List<string> Suggestions = new();
-    [FormerlySerializedAs("requirements")] public List<string> Requirements = new();
-    [FormerlySerializedAs("contributors")] public List<BaseContributor> Contributors = new();
-
-    private bool isFavourite;
-    public JSONNode CustomData;
+    [JsonProperty("_customData._editors")] public EditorsObject Editors = new(null);
+    [JsonProperty("_customData._contributors")] public List<BaseContributor> Contributors = new();
+    [JsonProperty("_customData")] public JSONNode CustomData;
+    
+    [JsonProperty("_difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new();
+    
     public JSONNode Json;
+    
+    private bool isFavourite;
 
+    public BeatSaberSong()
+    {
+    }
+    
     public BeatSaberSong(string directory, JSONNode json)
     {
         Directory = directory;
@@ -120,6 +123,8 @@ public class BeatSaberSong
 
     public void SaveSong()
     {
+        TouchEditorValues();
+        
         try
         {
             // Create map folder
@@ -493,6 +498,44 @@ public class BeatSaberSong
         }
     }
 
+    public static async UniTask<BeatSaberSong> LoadSongFromFolderAsync(string directory)
+    {
+        try
+        {
+            var infoFile = new FileInfo(Path.Combine(directory, "Info.dat"));
+
+            if (!infoFile.Exists)
+            {
+                var lowercaseInfoFile = new FileInfo(Path.Combine(directory, "info.dat"));
+
+                if (lowercaseInfoFile.Exists)
+                {
+                    File.Move(lowercaseInfoFile.FullName, infoFile.FullName);
+                    infoFile.Refresh();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            var rawText = await File.ReadAllTextAsync(infoFile.FullName);
+
+            var song = JsonConvert.DeserializeObject<BeatSaberSong>(rawText, new ColorObjectCoverter(), new SimpleJSONConverter());
+            
+            song.Directory = directory;
+            song.LastWriteTime = System.IO.Directory.GetLastWriteTime(directory);
+            song.isFavourite = File.Exists(Path.Combine(directory, ".favourite"));
+            
+            return song;
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+            return null;
+        }
+    }
+
     public BaseDifficulty GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
     {
         if (!System.IO.Directory.Exists(Directory))
@@ -539,8 +582,8 @@ public class BeatSaberSong
         [JsonProperty("_beatmapFilename")] public string BeatmapFilename = "Easy.dat";
         [JsonProperty("_noteJumpMovementSpeed")] public float NoteJumpMovementSpeed = 16;
         [JsonProperty("_noteJumpStartBeatOffset")] public float NoteJumpStartBeatOffset;
-        public int BeatmapColorSchemeIndex; // TODO: V4...
-        public int EnvironmentNameIndex; // TODO: V4...
+        [JsonProperty("_beatmapColorSchemeIdx")] public int BeatmapColorSchemeIndex; // TODO: V4...
+        [JsonProperty("_environmentNameIdx")] public int EnvironmentNameIndex; // TODO: V4...
         [JsonProperty("_customData._colorLeft"), JsonConverter(typeof(ColorObjectCoverter))] public Color? ColorLeft;
         [JsonProperty("_customData._colorRight"), JsonConverter(typeof(ColorObjectCoverter))] public Color? ColorRight;
         [JsonProperty("_customData._envColorLeft"), JsonConverter(typeof(ColorObjectCoverter))] public Color? EnvColorLeft;
@@ -550,7 +593,7 @@ public class BeatSaberSong
         [JsonProperty("_customData._boostColorRight"), JsonConverter(typeof(ColorObjectCoverter))] public Color? BoostColorRight;
         [JsonProperty("_customData._boostColorWhite"), JsonConverter(typeof(ColorObjectCoverter))] public Color? BoostColorWhite;
         [JsonProperty("_customData._obstacleColor"), JsonConverter(typeof(ColorObjectCoverter))] public Color? ObstacleColor;
-        [JsonProperty("_customData")] public JSONNode CustomData;
+        [JsonProperty("_customData"), JsonConverter(typeof(SimpleJSONConverter))] public JSONNode CustomData;
         
         [NonSerialized] public DifficultyBeatmapSet ParentBeatmapSet;
 
@@ -562,7 +605,7 @@ public class BeatSaberSong
 
         public void UpdateParent(DifficultyBeatmapSet newParentSet) => ParentBeatmapSet = newParentSet;
 
-        public void UpdateName(string fileName = null) => BeatmapFilename = fileName ?? $"{ParentBeatmapSet.BeatmapCharacteristicName}{Difficulty}.dat";
+        public void UpdateName(string fileName = null) => BeatmapFilename ??= fileName ?? $"{ParentBeatmapSet.BeatmapCharacteristicName}{Difficulty}.dat";
 
         public void RefreshRequirementsAndWarnings(BaseDifficulty map)
         {
@@ -622,7 +665,7 @@ public class BeatSaberSong
     {
         [JsonProperty("_beatmapCharacteristicName")] public string BeatmapCharacteristicName = "Standard";
         [JsonProperty("_difficultyBeatmaps")] public List<DifficultyBeatmap> DifficultyBeatmaps = new();
-        [JsonProperty("_customData")] public JSONNode CustomData = new JSONObject();
+        [JsonProperty("_customData"), JsonConverter(typeof(SimpleJSONConverter))] public JSONNode CustomData = new JSONObject();
 
         public DifficultyBeatmapSet() => BeatmapCharacteristicName = "Standard";
         public DifficultyBeatmapSet(string characteristicName) => BeatmapCharacteristicName = characteristicName;
