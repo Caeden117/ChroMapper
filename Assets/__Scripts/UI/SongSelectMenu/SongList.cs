@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
@@ -187,47 +189,57 @@ public class SongList : MonoBehaviour
     public void TriggerRefresh()
     {
         StopAllCoroutines();
-        StartCoroutine(RefreshSongList());
+        RefreshSongList().Forget();
     }
 
-    public IEnumerator RefreshSongList()
+    public async UniTask RefreshSongList()
     {
-        var directories = new DirectoryInfo(songFolderPaths[selectedFolder])
-            .GetDirectories()
-            .Where(dir => !dir.Attributes.HasFlag(FileAttributes.Hidden));
         Songs.Clear();
         newList.Clear();
-        var iterBeginTime = Time.realtimeSinceStartup;
+        
+        await UniTask.SwitchToThreadPool();
+        
+        var directories = new DirectoryInfo(songFolderPaths[selectedFolder]).GetDirectories();
+        var songQueue = new List<UniTask>(directories.Length);
+        var loadedSongs = new ConcurrentQueue<BeatSaberSong>();
+        
         foreach (var dir in directories)
         {
-            if (Time.realtimeSinceStartup - iterBeginTime > 0.02f)
-            {
-                UpdateSongList();
-                yield return null;
-                iterBeginTime = Time.realtimeSinceStartup;
-            }
+            if (dir.Attributes.HasFlag(FileAttributes.Hidden)) continue;
 
-            var song = BeatSaberSong.GetSongFromFolder(dir.FullName);
-            if (song == null)
-                Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
-            /*
-                 * Subfolder loading support has been removed for the following:
-                 * A) SongCore does not natively support loading from subfolders, only through editing a config file
-                 * B) OneClick no longer saves to a subfolder
-                 */
-            /*if (dir.ToUpper() == "CACHE") continue; //Ignore the cache folder
-                //Get songs from subdirectories
-                string[] subDirectories = Directory.GetDirectories(dir);
-                foreach (var subDir in subDirectories)
-                {
-                    song = BeatSaberSong.GetSongFromFolder(subDir);
-                    if (song != null) songs.Add(song);
-                }*/
-            else
-                Songs.Add(song);
+            songQueue.Add(LoadSongInternal(dir, loadedSongs));
         }
 
-        UpdateSongList();
+        var task = UniTask.WhenAll(songQueue);
+        task.Forget();
+
+        await UniTask.SwitchToMainThread();
+
+        // While all song loading will be done off thread, we want to only update our song list once per frame on the main thread.
+        while (task.Status is UniTaskStatus.Pending || !loadedSongs.IsEmpty)
+        {
+            if (loadedSongs.TryDequeue(out var queuedSong))
+            {
+                Songs.Add(queuedSong);
+
+                UpdateSongList();
+            }
+
+            await UniTask.Yield();
+        }
+    }
+
+    private async UniTask LoadSongInternal(DirectoryInfo dir, ConcurrentQueue<BeatSaberSong> songs)
+    {
+        var song = await BeatSaberSong.LoadSongFromFolderAsync(dir.FullName);
+
+        if (song == null)
+        {
+            Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
+            return;
+        }
+
+        songs.Enqueue(song);
     }
 
     public void UpdateSongList()
