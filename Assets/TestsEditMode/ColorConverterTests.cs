@@ -1,11 +1,12 @@
 using System;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using SimpleJSON;
 using UnityEngine;
 
 namespace TestsEditMode
 {
-    public class JsonConverterTests
+    public class ColorConverterTests
     {
         private static readonly Color testColorDefaultAlpha = new Color(0.1f, 0.2f, 0.3f, 1.0f);
         private const string testColorExpectedObjectJson = "{\"r\":0.1,\"g\":0.2,\"b\":0.3}";
