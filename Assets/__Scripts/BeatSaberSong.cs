@@ -8,6 +8,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Helper;
 using Beatmap.Info;
+using Newtonsoft.Json;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -29,29 +30,29 @@ public class BeatSaberSong
     private static string editorVersion;
 
     public DateTime LastWriteTime;
-    [FormerlySerializedAs("songName")] public string SongName = "New Song";
+    
+    [JsonProperty("_songName")] public string SongName = "New Song";
     [FormerlySerializedAs("directory")] public string Directory;
 
-    [FormerlySerializedAs("version")] public string Version = "2.1.0";
-    [FormerlySerializedAs("songSubName")] public string SongSubName = "";
-    [FormerlySerializedAs("songAuthorName")] public string SongAuthorName = "";
-    [FormerlySerializedAs("levelAuthorName")] public string LevelAuthorName = "";
-    [FormerlySerializedAs("beatsPerMinute")] public float BeatsPerMinute = 100;
-    [FormerlySerializedAs("songTimeOffset")] public float SongTimeOffset;
-    [FormerlySerializedAs("previewStartTime")] public float PreviewStartTime = 12;
-    [FormerlySerializedAs("previewDuration")] public float PreviewDuration = 10;
-    [FormerlySerializedAs("shuffle")] public float Shuffle;
-    [FormerlySerializedAs("shufflePeriod")] public float ShufflePeriod = 0.5f;
+    [JsonProperty("_version")] public string Version = "2.1.0";
+    [JsonProperty("_songSubName")] public string SongSubName = "";
+    [JsonProperty("_songAuthorName")] public string SongAuthorName = "";
+    [JsonProperty("_levelAuthorName")] public string LevelAuthorName = "";
+    [JsonProperty("_beatsPerMinute")] public float BeatsPerMinute = 100;
+    [JsonProperty("_songTimeOffset")] public float SongTimeOffset;
+    [JsonProperty("_previewStartTime")] public float PreviewStartTime = 12;
+    [JsonProperty("_previewDuration")] public float PreviewDuration = 10;
+    [JsonProperty("_shuffle")] public float Shuffle;
+    [JsonProperty("_shufflePeriod")] public float ShufflePeriod = 0.5f;
 
-    [FormerlySerializedAs("songFilename")]
-    public string SongFilename =
-            "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
+    // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
+    [JsonProperty("_songFilename")] public string SongFilename = "song.ogg";
 
-    [FormerlySerializedAs("coverImageFilename")] public string CoverImageFilename = "cover.png";
-    [FormerlySerializedAs("environmentName")] public string EnvironmentName = "DefaultEnvironment";
-    [FormerlySerializedAs("allDirectionsEnvironmentName")] public string AllDirectionsEnvironmentName = "GlassDesertEnvironment";
-    public List<string> EnvironmentNames = new(); // TODO: Support editing
-    public JSONNode ColorSchemes = new JSONArray(); // TODO: Support editing
+    [JsonProperty("_coverImageFilename")] public string CoverImageFilename = "cover.png";
+    [JsonProperty("_environmentName")] public string EnvironmentName = "DefaultEnvironment";
+    [JsonProperty("_allDirectionsEnvironmentName")] public string AllDirectionsEnvironmentName = "GlassDesertEnvironment";
+    [JsonProperty("_environmentNames")] public List<string> EnvironmentNames = new(); // TODO: Support editing
+    [JsonProperty("_colorSchemes")] public JSONNode ColorSchemes = new JSONArray(); // TODO: Support editing
     [FormerlySerializedAs("editors")] public EditorsObject Editors = new(null);
 
     [FormerlySerializedAs("difficultyBeatmapSets")] public List<DifficultyBeatmapSet> DifficultyBeatmapSets = new();
