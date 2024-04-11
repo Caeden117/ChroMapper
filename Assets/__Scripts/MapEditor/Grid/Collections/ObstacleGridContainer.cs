@@ -89,12 +89,12 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
     {
         if (!UIMode.AnimationMode) return;
 
-        var time = AudioTimeSyncController.CurrentJsonTime;
+        var time = AudioTimeSyncController.CurrentSongBpmTime;
         if (AudioTimeSyncController.IsPlaying)
         {
             while (spawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[spawnIndex].SpawnSongBpmTime)
             {
-                if (BeatmapObjectContainerCollection.TrackFilterID == null || BeatmapObjectContainerCollection.TrackFilterID == ((SpawnSortedObjects[spawnIndex].CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+                if (TrackFilterID == null || TrackFilterID == ((SpawnSortedObjects[spawnIndex].CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
                     CreateContainerFromPool(SpawnSortedObjects[spawnIndex]);
                 ++spawnIndex;
             }
@@ -130,19 +130,19 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
             (i) => SpawnSortedObjects[i].SpawnSongBpmTime,
             SpawnSortedObjects.Length,
             out spawnIndex,
-            out var _
+            out _
         );
         GetIndexes(
             time,
             (i) => DespawnSortedObjects[i].DespawnSongBpmTime,
             DespawnSortedObjects.Length,
             out despawnIndex,
-            out var _
+            out _
         );
         var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnSongBpmTime <= time && time < o.DespawnSongBpmTime));
         foreach (var obj in toSpawn)
         {
-            if (BeatmapObjectContainerCollection.TrackFilterID == null || BeatmapObjectContainerCollection.TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+            if (TrackFilterID == null || TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
                 CreateContainerFromPool(obj);
         }
     }
