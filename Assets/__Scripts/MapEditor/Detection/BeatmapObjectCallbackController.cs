@@ -135,7 +135,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllChains(bool natural)
     {
-        nextChainIndex = eventGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.JsonTime);
+        nextChainIndex = chainGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.JsonTime);
         if (nextChainIndex < 0) nextChainIndex = ~nextChainIndex;
 
         RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
