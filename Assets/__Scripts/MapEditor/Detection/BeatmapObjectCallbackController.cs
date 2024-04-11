@@ -135,7 +135,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllChains(bool natural)
     {
-        nextChainIndex = chainGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.JsonTime);
+        nextChainIndex = chainGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.TailJsonTime);
         if (nextChainIndex < 0) nextChainIndex = ~nextChainIndex;
 
         RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
@@ -182,7 +182,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
             var obj = objects[nextChainIndex];
             var offset = useAnimationsOffset ? obj.Hjd + Track.JUMP_TIME : Offset;
 
-            if (obj.SongBpmTime > curTime + offset) return;
+            if (obj.TailSongBpmTime > curTime + offset) return;
 
             ChainPassedThreshold?.Invoke(natural, nextChainIndex, obj);
             nextChainIndex++;
