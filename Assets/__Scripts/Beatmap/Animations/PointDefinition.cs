@@ -205,12 +205,35 @@ namespace Beatmap.Animations
 
                 result = data[0].Value switch
                 {
+                    // Intentionally not supporting baseSaber_Color since those don't mirror with left handed 
+                    // mode while baseNote_Color does. Should almost always use baseNote over baseSaber.
                     "baseNote0Color" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.RedNoteColor
+                        : BeatSaberSong.DefaultLeftNote,
+                    "baseNote1Color" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.BlueNoteColor
+                        : BeatSaberSong.DefaultRightNote,
+                    "baseEnvironmentColor0" => LoadInitialMap.Platform != null
                         ? LoadInitialMap.Platform.Colors.RedColor
                         : BeatSaberSong.DefaultLeftColor,
-                    "baseNote1Color" => LoadInitialMap.Platform != null
+                    "baseEnvironmentColor1" => LoadInitialMap.Platform != null
                         ? LoadInitialMap.Platform.Colors.BlueColor
                         : BeatSaberSong.DefaultRightColor,
+                    "baseEnvironmentColorW" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.WhiteColor
+                        : BeatSaberSong.DefaultWhiteColor,
+                    "baseEnvironmentColor0Boost" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.RedBoostColor
+                        : BeatSaberSong.DefaultLeftColor,
+                    "baseEnvironmentColor1Boost" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.BlueBoostColor
+                        : BeatSaberSong.DefaultRightColor,
+                    "baseEnvironmentColorWBoost" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.WhiteBoostColor
+                        : BeatSaberSong.DefaultWhiteColor,
+                    "baseObstaclesColor" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.ObstacleColor
+                        : BeatSaberSong.DefaultWhiteColor,
                     _ => BeatSaberSong.DefaultWhiteColor
                 };
             }
