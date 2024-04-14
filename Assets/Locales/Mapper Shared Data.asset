@@ -727,13 +727,22 @@ MonoBehaviour:
     m_Key: bpm.dialogue.invalidnumber
     m_Metadata:
       m_Items: []
+  - m_Id: 357744672130330624
+    m_Key: countersplus.arcs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357744742603026432
+    m_Key: countersplus.chains
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    id: 0
+    rid: 0
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
         asm: Unity.Localization}
       data:

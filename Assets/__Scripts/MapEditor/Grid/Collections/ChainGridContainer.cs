@@ -15,6 +15,9 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
     [SerializeField] private GameObject chainPrefab;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private ChainAppearanceSO chainAppearanceSO;
+    
+    [SerializeField] private CountersPlusController countersPlus;
+    
     public const float ViewEpsilon = 0.1f; // original view is too small ?? sometimes cause error.
     public override ObjectType ContainerType => ObjectType.Chain;
 
@@ -51,6 +54,12 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
             track.AttachContainer(con);
         }
     }
+
+    protected override void OnObjectSpawned(BaseObject _, bool __ = false) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Chains);
+
+    protected override void OnObjectDelete(BaseObject _, bool __ = false) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Chains);
 
     internal override void SubscribeToCallbacks()
     {

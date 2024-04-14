@@ -1357,6 +1357,22 @@ MonoBehaviour:
     m_Localized: Tweaks the opacity of the interface grid.
     m_Metadata:
       m_Items: []
+  - m_Id: 356103871700791296
+    m_Localized: Show Arc count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103879246344192
+    m_Localized: Show Arc Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103881049894912
+    m_Localized: Show Chain count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103882744393728
+    m_Localized: Show Chain Count
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

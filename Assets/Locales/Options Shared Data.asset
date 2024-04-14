@@ -1239,6 +1239,22 @@ MonoBehaviour:
     m_Key: appearance.interfaceopacity.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 356103871700791296
+    m_Key: countersplus.showarccount.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103879246344192
+    m_Key: countersplus.showarcs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103881049894912
+    m_Key: countersplus.showchaincount.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103882744393728
+    m_Key: countersplus.showchains
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

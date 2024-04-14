@@ -27,6 +27,13 @@ public class ArcGridContainer : BeatmapObjectContainerCollection<BaseArc>
     {
         return ArcContainer.SpawnArc(null, ref arcPrefab);
     }
+
+    protected override void OnObjectSpawned(BaseObject _, bool __ = false) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Arcs);
+
+    protected override void OnObjectDelete(BaseObject _, bool __ = false) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Arcs);
+    
     internal override void SubscribeToCallbacks()
     {
         if (!Settings.Instance.Load_MapV3) return;
