@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +42,16 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     private CMInput input; //Singular CMInput object that will be shared to every class that requires it.
 
+#if !UNITY_STANDALONE_OSX
+    private void Awake()
+    {
+        // For some reason this doesn't work in InputSystemPatch so it's in this class
+        // Harmony patch doesn't work on Apple Silicon so use Unity's shortcut consuming
+        Debug.Log("Using Harmony Patch - Disable Unity Input Consumption");
+        InputSystem.settings.shortcutKeysConsumeInput = false;
+    }
+#endif
+    
     /*
      * This Start method looks a little messy.
      * Essentially, we create our dictionaries for Interface names to Action Map types and object references.
@@ -49,14 +59,6 @@ public class CMInputCallbackInstaller : MonoBehaviour
      */
     private void Start()
     {
-#if !UNITY_STANDALONE_OSX 
-        // Harmony patch doesn't work on Apple Silicon so use Unity's shortcut consuming
-        // Edit: Apparently turning it on didn't work??? Let's turning it off for not Mac instead
-        //       If it still doesn't work then revert the input changes
-        Debug.Log("Harmony Patch already applied - Turning off Unity Input Consumption");
-        InputSystem.settings.shortcutKeysConsumeInput = false;
-#endif
-        
         SendMessage("InputObjectCreated", input);
         foreach (var childClass in typeof(CMInput).GetNestedTypes())
         {
