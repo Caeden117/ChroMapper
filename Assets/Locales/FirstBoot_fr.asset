@@ -73,11 +73,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 300762992517451776
-    m_Localized: Lighting Preset
+    m_Localized: "Pr\xE9r\xE9glage d'\xE9clairage"
     m_Metadata:
       m_Items: []
   - m_Id: 300762994845290496
-    m_Localized: Tweak ChroMapper's lighting to match other map editors.
+    m_Localized: "Ajuste l'\xE9clairage de ChroMapper pour ressembler aux autres
+      \xE9diteurs."
     m_Metadata:
       m_Items: []
   references:

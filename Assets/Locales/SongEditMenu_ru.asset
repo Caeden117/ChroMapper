@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1240120937092218883
+    - rid: 5886062096295657485
   m_TableData:
   - m_Id: 1
     m_Localized: "\u041C\u0435\u0442\u0430\u0434\u0430\u043D\u043D\u044B\u0435"
@@ -399,7 +399,7 @@ MonoBehaviour:
     m_Localized: '{0}% complete.'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218883
+      - rid: 5886062096295657485
   - m_Id: 44795657592176640
     m_Localized: Reaction Time
     m_Metadata:
@@ -472,7 +472,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1240120937092218883
+    - rid: 5886062096295657485
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010d21a57e67101

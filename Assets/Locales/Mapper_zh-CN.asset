@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1240120937092218948
+    - rid: 5886062096295657550
   m_TableData:
   - m_Id: 105
     m_Localized: "\u5728360\u5EA6\u300190\u5EA6\u548C\u65E0\u89C4\u5F8B\u7684\u7279\u5F81\u4E4B\u5916\uFF0C\u65CB\u8F6C\u4E8B\u4EF6\u88AB\u7981\u7528\u3002\n\n\u5982\u679C\u4F60\u60F3\u653E\u7F6E\u8FD9\u4E9B\u4E8B\u4EF6\uFF0C\u8BF7\u4E3A\u4E0A\u8FF0\u7279\u5F81\u521B\u9020\u56F0\u96BE\u3002"
@@ -111,7 +111,7 @@ MonoBehaviour:
     m_Localized: "\u66F4\u6539\u5DE5\u4F5C\u6D41\u7A0B\u3002"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 154
     m_Localized: "\u5207\u6362\u5149\u8C31\u5230\u53E6\u4E00\u4FA7\u3002"
     m_Metadata:
@@ -233,62 +233,62 @@ MonoBehaviour:
     m_Localized: "\u70B8\u5F39\uFF1A {BombCount}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 7
     m_Localized: "BPM \u53D8\u5316\uFF1A {BPMCount}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 234935484416
     m_Localized: "\u5F53\u524D BPM\uFF1A {CurrentBPM:0.###}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 6
     m_Localized: "\u4E8B\u4EF6\uFF1A {EventCount}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 1
     m_Localized: "\u97F3\u7B26\uFF1A {NotesCount}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 3
     m_Localized: "\u6240\u9009\u97F3\u7B26: {NotesSelected}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 2
     m_Localized: "\u6BCF\u79D2\u97F3\u7B26\u6570\uFF1A {NPSCount:F2}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 4
     m_Localized: "\u9009\u4E2D\u7684NPS: {NPSselected:F2}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 5
     m_Localized: "\u969C\u788D: {ObstacleCount}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 1123800776704
     m_Localized: "\u7EA2/\u84DD \u6BD4\u4F8B: {RedBlueRatio:F2}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 141
     m_Localized: "\u6BCF\u79D2\u6325\u51FB\u6570\uFF1A {OverallSPS:F2}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 8
     m_Localized: "\u7ED8\u8C31\u65F6\u95F4: {hours:0}:{minutes:00}:{seconds:00}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 86
     m_Localized: "\u7FFB\u8F6C\u989C\u8272"
     m_Metadata:
@@ -552,7 +552,7 @@ MonoBehaviour:
     m_Localized: "\u63D0\u524D\u4FDD\u5B58\uFF0C\u7ECF\u5E38\u4FDD\u5B58\uFF01"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 12
     m_Localized: "\u4FDD\u5B58\u5E76\u9000\u51FA"
     m_Metadata:
@@ -651,12 +651,12 @@ MonoBehaviour:
     m_Localized: "\u9009\u4E2D: {SelectedCount}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 64
     m_Localized: "{Keybind} \u5207\u6362"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 58
     m_Localized: "UI\u6A21\u5F0F"
     m_Metadata:
@@ -758,7 +758,7 @@ MonoBehaviour:
     m_Localized: 'BPM Events: {BPMCount}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218948
+      - rid: 5886062096295657550
   - m_Id: 256289992891105280
     m_Localized: Enter the beat you want to go to
     m_Metadata:
@@ -781,10 +781,20 @@ MonoBehaviour:
     m_Localized: "\u6BCF\u5206\u949F\u8282\u62CD\u6570\uFF08BPM\uFF09"
     m_Metadata:
       m_Items: []
+  - m_Id: 357744672130330624
+    m_Localized: 'Arcs: {ArcCount}'
+    m_Metadata:
+      m_Items:
+      - rid: 5886062096295657550
+  - m_Id: 357744742603026432
+    m_Localized: 'Chains: {ChainCount}'
+    m_Metadata:
+      m_Items:
+      - rid: 5886062096295657550
   references:
     version: 2
     RefIds:
-    - rid: 1240120937092218948
+    - rid: 5886062096295657550
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000000083e97b095603
+        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000000083e97b09560300f09d46e2f6f60400f01daff2f6f604

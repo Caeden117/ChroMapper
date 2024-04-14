@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 4bc9586dd75931946bdf2f3334dc9397, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1240120937092218894
+    - rid: 5886062096295657496
   m_TableData:
   - m_Id: 34914570240
     m_Localized: Sitzung beitreten
@@ -85,17 +85,17 @@ MonoBehaviour:
       zur\xFCck..."
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218894
+      - rid: 5886062096295657496
   - m_Id: 5357561843712
     m_Localized: 'Ein Netzwerkfehler ist aufgetreten: {0}.'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218894
+      - rid: 5886062096295657496
   - m_Id: 5800807501824
     m_Localized: 'Verbindung mit dem ChroMapTogether Server wurde verloren: {0}.'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218894
+      - rid: 5886062096295657496
   - m_Id: 6140520960000
     m_Localized: United Mapping
     m_Metadata:
@@ -123,26 +123,26 @@ MonoBehaviour:
     m_Localized: "Dieses Objekt wurde zuerst von {0} erstellt/ge\xE4ndert."
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218894
+      - rid: 5886062096295657496
   - m_Id: 2018498240393216
     m_Localized: "Dieses Objekt wurde zuletzt von {0} ge\xE4ndert."
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218894
+      - rid: 5886062096295657496
   - m_Id: 2336103375384576
     m_Localized: "Sicher, dass du {0} aus der Sitzung bannen m\xF6chtest?"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218894
+      - rid: 5886062096295657496
   - m_Id: 2336237542780928
     m_Localized: "Sicher, dass du {0} aus der Sitzung herauswerfen m\xF6chtest?"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218894
+      - rid: 5886062096295657496
   references:
     version: 2
     RefIds:
-    - rid: 1240120937092218894
+    - rid: 5886062096295657496
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010928e7104000000109267df0400000010129b46050000003059b4a92b07000030993ed02b07000030d973ac4c08000030d9b0cb4c0800

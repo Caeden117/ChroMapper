@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1240120937092218923
+    - rid: 5886062096295657525
   m_TableData:
   - m_Id: 1
     m_Localized: "Param\xE8tres - {TabName}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 2
     m_Localized: Options diverses
     m_Metadata:
@@ -282,7 +282,7 @@ MonoBehaviour:
     m_Localized: "Plugins charg\xE9s: {Count}"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 67
     m_Localized: Infos des plugins
     m_Metadata:
@@ -321,7 +321,7 @@ MonoBehaviour:
     m_Localized: "{TextValue} d\xE9cimale(s)"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 74
     m_Localized: "\xC0 combien de d\xE9cimales arrondir les valeurs \"_time\" pour
       chaque objet de la map au moment d'\xE9crire sur le disque. Une pr\xE9cision
@@ -566,7 +566,7 @@ MonoBehaviour:
     m_Localized: Plugins
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 132
     m_Localized: "Exp\xE9rimental"
     m_Metadata:
@@ -579,47 +579,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 139
     m_Localized: '{TextValue} temps'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 140
     m_Localized: '{TextValue} temps'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 143
     m_Localized: Limiter l'affichage de la rotation
     m_Metadata:
@@ -667,7 +667,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 154
     m_Localized: "\xC9chelle de l'interface"
     m_Metadata:
@@ -680,7 +680,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 157
     m_Localized: "Mod\xE8les d'\xE9v\xE9nements"
     m_Metadata:
@@ -751,7 +751,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 174
     m_Localized: Musique
     m_Metadata:
@@ -874,7 +874,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 3301721636864
     m_Localized: "Modifie la transparence de l'arri\xE8re-plan de la grille"
     m_Metadata:
@@ -883,7 +883,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 23812497342464
     m_Localized: Transparence de la grille
     m_Metadata:
@@ -935,7 +935,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 67492742661058560
     m_Localized: "Changer l'\xE9chelle (totale) de la r\xE9solution du rendu pour
       les performances ou des am\xE9liorations visuelles."
@@ -1158,7 +1158,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211668371329187840
-    m_Localized: Precision Placement Grid Precision
+    m_Localized: "Pr\xE9cision de la grille de placement pr\xE9cis"
     m_Metadata:
       m_Items: []
   - m_Id: 211668392346845184
@@ -1224,82 +1224,85 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 247458017744977920
-    m_Localized: Precision Placement Mode
+    m_Localized: "Mode de placement pr\xE9cis"
     m_Metadata:
       m_Items: []
   - m_Id: 247458202206273536
-    m_Localized: 'If enabled, an extended grid will appear when using the precision
-      placement keybind while placing walls or notes. '
+    m_Localized: "Si cette option est activ\xE9e, une grille \xE9tendue va apparaitre
+      lors de l'utilisation du raccourci de placement pr\xE9cis lors du placement
+      de murs ou notes. "
     m_Metadata:
       m_Items: []
   - m_Id: 249214922956247040
-    m_Localized: Enables Noodle Extensions animations while in preview mode.
+    m_Localized: "Active les animations de Noodle Extensions en mode aper\xE7u."
     m_Metadata:
       m_Items: []
   - m_Id: 249224607608377344
-    m_Localized: Preview Animations
+    m_Localized: "Pr\xE9visualiser les animations"
     m_Metadata:
       m_Items: []
   - m_Id: 262680152746688512
-    m_Localized: Open File Explorer After Create Zip
+    m_Localized: "Ouvrir l'explorateur de fichiers apr\xE8s avoir cr\xE9\xE9 un zip"
     m_Metadata:
       m_Items: []
   - m_Id: 262680318467833856
-    m_Localized: Whether the file explorer opens automically after creating zip
+    m_Localized: "Indique si l'explorateur de fichiers s'ouvre automatiquement apr\xE8s
+      la cr\xE9ation du fichier zip"
     m_Metadata:
       m_Items: []
   - m_Id: 288364334621589504
-    m_Localized: Save Without Default Values
+    m_Localized: "Enregistrer sans valeurs par d\xE9faut"
     m_Metadata:
       m_Items: []
   - m_Id: 288364497993924608
-    m_Localized: Saves the difficulty file without properties that have a default
-      value.
+    m_Localized: "Enregistre le fichier de difficult\xE9 sans les propri\xE9t\xE9s
+      ayant une valeur par d\xE9faut."
     m_Metadata:
       m_Items: []
   - m_Id: 252032304653307904
-    m_Localized: Change Field of View of the preview camera
+    m_Localized: "Change le champ de vision de la cam\xE9ra de pr\xE9visualisation"
     m_Metadata:
       m_Items: []
   - m_Id: 252047222777614336
-    m_Localized: Preview Camera FOV
+    m_Localized: "FOV de la cam\xE9ra de pr\xE9visualisation"
     m_Metadata:
       m_Items: []
   - m_Id: 298177154557083648
-    m_Localized: Open Plugins Folder
+    m_Localized: Ouvrir le dossier des plugins
     m_Metadata:
       m_Items: []
   - m_Id: 300616661902491648
-    m_Localized: Preview Camera Z Offset
+    m_Localized: "D\xE9calage en Z de la cam\xE9ra de pr\xE9visualisation"
     m_Metadata:
       m_Items: []
   - m_Id: 300616655971745792
-    m_Localized: Offsets the preview camera backwards (in metres)
+    m_Localized: "D\xE9cale la cam\xE9ra de pr\xE9visualisation en arri\xE8re (en
+      m\xE8tres)"
     m_Metadata:
       m_Items: []
   - m_Id: 300618005946236928
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - rid: 1240120937092218923
+      - rid: 5886062096295657525
   - m_Id: 322078335378526208
-    m_Localized: Objects and Lighting
+    m_Localized: "Objets et \xE9clairage"
     m_Metadata:
       m_Items: []
   - m_Id: 322078433017729024
-    m_Localized: Note Color Multiplier
+    m_Localized: Multiplicateur de couleur de note
     m_Metadata:
       m_Items: []
   - m_Id: 322078544036761600
-    m_Localized: Brightens or darkens the color of the note block.
+    m_Localized: "\xC9claircit ou assombrit la couleur de la note."
     m_Metadata:
       m_Items: []
   - m_Id: 322078560457461760
-    m_Localized: Arrow Color Multiplier
+    m_Localized: "Multiplicateur de couleur de la fl\xE8che"
     m_Metadata:
       m_Items: []
   - m_Id: 322078585577148416
-    m_Localized: Brightens or darkens the color of the note arrow.
+    m_Localized: "\xC9claircit ou assombrit la couleur de la fl\xE8che de la note."
     m_Metadata:
       m_Items: []
   - m_Id: 322078609908305920
@@ -1307,16 +1310,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 322078641902456832
-    m_Localized: Blends the color of the arrow, from the assigned note color to a
-      pure white.
+    m_Localized: "M\xE9lange la couleur de la fl\xE8che, de la couleur de note attribu\xE9e
+      \xE0 un blanc pur."
     m_Metadata:
       m_Items: []
   - m_Id: 322078668309794816
-    m_Localized: Obstacle Opacity
+    m_Localized: "Opacit\xE9 des obstacles"
     m_Metadata:
       m_Items: []
   - m_Id: 322078693966352384
-    m_Localized: Changes the opacity of the obstacle's inner body.
+    m_Localized: "Change l'opacit\xE9 de l'int\xE9rieur des obstacles."
     m_Metadata:
       m_Items: []
   - m_Id: 322078715722207232
@@ -1324,22 +1327,38 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 322078739269029888
-    m_Localized: Tweaks ChroMapper's lighting to give an appearance more similar
-      to MMA2.
+    m_Localized: "Ajuste l'\xE9clairage de ChroMapper pour lui donner une apparence
+      similaire \xE0 MMA2."
     m_Metadata:
       m_Items: []
   - m_Id: 330014416099160064
-    m_Localized: Interface Opacity
+    m_Localized: "Opacit\xE9 de l'interface"
     m_Metadata:
       m_Items: []
   - m_Id: 330014459573121024
-    m_Localized: Tweaks the opacity of the interface grid.
+    m_Localized: "Ajuste l'opacit\xE9 de la grille d'interface."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103871700791296
+    m_Localized: Show Arc count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103879246344192
+    m_Localized: Show Arc Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103881049894912
+    m_Localized: Show Chain count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103882744393728
+    m_Localized: Show Chain Count
     m_Metadata:
       m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1240120937092218923
+    - rid: 5886062096295657525
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04
