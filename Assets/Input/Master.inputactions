@@ -15,7 +15,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Move Camera Forward",
+                    "name": "=Move Camera Forward",
                     "type": "Button",
                     "id": "97b41e7e-e237-4805-9dcb-ac7f2846eb8e",
                     "expectedControlType": "Button",
@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Move Camera Backward",
+                    "name": "=Move Camera Backward",
                     "type": "Button",
                     "id": "7aa05ca8-69e7-44cf-a793-7b8a8aaa99ec",
                     "expectedControlType": "Button",
@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Move Camera Left",
+                    "name": "=Move Camera Left",
                     "type": "Button",
                     "id": "37be1d88-7982-4572-b583-6e167cc8580d",
                     "expectedControlType": "Button",
@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Move Camera Right",
+                    "name": "=Move Camera Right",
                     "type": "Button",
                     "id": "9c8e63d6-2c19-42af-9c7d-d9193b87aa2d",
                     "expectedControlType": "Button",
@@ -60,7 +60,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Elevate Camera",
+                    "name": "=Elevate Camera",
                     "type": "Button",
                     "id": "3fbaee37-d68e-4db9-8b0a-93d06160b118",
                     "expectedControlType": "",
@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Lower Camera",
+                    "name": "=Lower Camera",
                     "type": "Button",
                     "id": "98be8bab-9d57-4d21-8957-c787922f3446",
                     "expectedControlType": "",
@@ -290,7 +290,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Camera Left",
+                    "action": "=Move Camera Left",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -301,7 +301,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Camera Right",
+                    "action": "=Move Camera Right",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -312,7 +312,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Camera Forward",
+                    "action": "=Move Camera Forward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -323,7 +323,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Camera Backward",
+                    "action": "=Move Camera Backward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -334,7 +334,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Lower Camera",
+                    "action": "=Lower Camera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -345,7 +345,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Elevate Camera",
+                    "action": "=Elevate Camera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

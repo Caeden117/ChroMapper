@@ -37,7 +37,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Move Camera Forward"",
+                    ""name"": ""=Move Camera Forward"",
                     ""type"": ""Button"",
                     ""id"": ""97b41e7e-e237-4805-9dcb-ac7f2846eb8e"",
                     ""expectedControlType"": ""Button"",
@@ -46,7 +46,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Move Camera Backward"",
+                    ""name"": ""=Move Camera Backward"",
                     ""type"": ""Button"",
                     ""id"": ""7aa05ca8-69e7-44cf-a793-7b8a8aaa99ec"",
                     ""expectedControlType"": ""Button"",
@@ -55,7 +55,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Move Camera Left"",
+                    ""name"": ""=Move Camera Left"",
                     ""type"": ""Button"",
                     ""id"": ""37be1d88-7982-4572-b583-6e167cc8580d"",
                     ""expectedControlType"": ""Button"",
@@ -64,7 +64,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Move Camera Right"",
+                    ""name"": ""=Move Camera Right"",
                     ""type"": ""Button"",
                     ""id"": ""9c8e63d6-2c19-42af-9c7d-d9193b87aa2d"",
                     ""expectedControlType"": ""Button"",
@@ -82,7 +82,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Elevate Camera"",
+                    ""name"": ""=Elevate Camera"",
                     ""type"": ""Button"",
                     ""id"": ""3fbaee37-d68e-4db9-8b0a-93d06160b118"",
                     ""expectedControlType"": """",
@@ -91,7 +91,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Lower Camera"",
+                    ""name"": ""=Lower Camera"",
                     ""type"": ""Button"",
                     ""id"": ""98be8bab-9d57-4d21-8957-c787922f3446"",
                     ""expectedControlType"": """",
@@ -312,7 +312,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move Camera Left"",
+                    ""action"": ""=Move Camera Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -323,7 +323,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move Camera Right"",
+                    ""action"": ""=Move Camera Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -334,7 +334,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move Camera Forward"",
+                    ""action"": ""=Move Camera Forward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -345,7 +345,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move Camera Backward"",
+                    ""action"": ""=Move Camera Backward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -356,7 +356,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Lower Camera"",
+                    ""action"": ""=Lower Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -367,7 +367,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Elevate Camera"",
+                    ""action"": ""=Elevate Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -4814,13 +4814,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_HoldtoMoveCamera = m_Camera.FindAction("Hold to Move Camera", throwIfNotFound: true);
-        m_Camera_MoveCameraForward = m_Camera.FindAction("Move Camera Forward", throwIfNotFound: true);
-        m_Camera_MoveCameraBackward = m_Camera.FindAction("Move Camera Backward", throwIfNotFound: true);
-        m_Camera_MoveCameraLeft = m_Camera.FindAction("Move Camera Left", throwIfNotFound: true);
-        m_Camera_MoveCameraRight = m_Camera.FindAction("Move Camera Right", throwIfNotFound: true);
+        m_Camera_MoveCameraForward = m_Camera.FindAction("=Move Camera Forward", throwIfNotFound: true);
+        m_Camera_MoveCameraBackward = m_Camera.FindAction("=Move Camera Backward", throwIfNotFound: true);
+        m_Camera_MoveCameraLeft = m_Camera.FindAction("=Move Camera Left", throwIfNotFound: true);
+        m_Camera_MoveCameraRight = m_Camera.FindAction("=Move Camera Right", throwIfNotFound: true);
         m_Camera_RotateCamera = m_Camera.FindAction("+Rotate Camera", throwIfNotFound: true);
-        m_Camera_ElevateCamera = m_Camera.FindAction("Elevate Camera", throwIfNotFound: true);
-        m_Camera_LowerCamera = m_Camera.FindAction("Lower Camera", throwIfNotFound: true);
+        m_Camera_ElevateCamera = m_Camera.FindAction("=Elevate Camera", throwIfNotFound: true);
+        m_Camera_LowerCamera = m_Camera.FindAction("=Lower Camera", throwIfNotFound: true);
         m_Camera_AttachtoNoteGrid = m_Camera.FindAction("Attach to Note Grid", throwIfNotFound: true);
         m_Camera_ToggleFullscreen = m_Camera.FindAction("Toggle Fullscreen", throwIfNotFound: true);
         m_Camera_Location1 = m_Camera.FindAction("Location 1", throwIfNotFound: true);

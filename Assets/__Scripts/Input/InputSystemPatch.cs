@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -45,11 +45,16 @@ public class InputSystemPatch : MonoBehaviour
 
     private void Start()
     {
-        allInputActions = CMInputCallbackInstaller.InputInstance.asset.actionMaps.SelectMany(x => x.actions);
-        allInputBindingNames =
-            allInputActions.ToDictionary(x => x, x => x.bindings.Where(y => !y.isComposite).Select(y => y.path));
-        allControls =
-            InputSystem.devices.SelectMany(d => d.allControls.Where(c => c is KeyControl || c is ButtonControl));
+        allInputActions = CMInputCallbackInstaller.InputInstance.asset.actionMaps
+            .SelectMany(x => x.actions)
+            .ToList();
+        allInputBindingNames = allInputActions
+            .ToDictionary(x => x, x => x.bindings
+                .Where(y => !y.isComposite)
+                .Select(y => y.path));
+        allControls = InputSystem.devices
+            .SelectMany(d => d.allControls
+                .Where(c => c is KeyControl or ButtonControl));
 
         // I cant believe this actually worked first try
         // I'm pretty much caching a map of actions that can block each other, doing the heavy lifting on separate threads.
@@ -132,7 +137,15 @@ public class InputSystemPatch : MonoBehaviour
 
     private static bool WillBeBlockedByAction(InputAction action, InputAction otherAction)
     {
-        if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper"))) return false;
+        if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper")))
+        {
+            return false;
+        }
+        
+        if (action.bindings.Any(b => b.action.StartsWith(KeybindsController.PersistentKeybindIdentifier)))
+        {
+            return false;
+        }
 
         // Just a whole bunch of conditions to short circuit this particular check
         if (action.id == otherAction.id

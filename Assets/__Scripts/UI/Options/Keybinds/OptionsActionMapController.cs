@@ -22,7 +22,7 @@ public class OptionsActionMapController : MonoBehaviour
         actionMap = map;
         foreach (var action in actionMap.actions)
         {
-            if (action.name.StartsWith("+"))
+            if (action.name.StartsWith(KeybindsController.InternalKeybindIdentifier))
                 continue; //Filter keybinds that should not be modified (Designated with + prefix)
             if (action.bindings.Any(x => x.isComposite))
             {

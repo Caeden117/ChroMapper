@@ -42,7 +42,12 @@ public class OptionsInputActionController : MonoBehaviour
         sectionName = sName;
         action = inputAction;
         this.compositeName = compositeName;
-        keybindName.text = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
+        
+        var keybindNameText = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
+        keybindName.text = keybindNameText.StartsWith(KeybindsController.PersistentKeybindIdentifier)
+            ? keybindNameText[1..] // Remove non-blocking prefix identifier
+            : keybindNameText;
+        
         UnselectKeybindUIs();
         searchableOption.Keywords = (keybindName.text + " " + sectionName).Split(' ');
 
