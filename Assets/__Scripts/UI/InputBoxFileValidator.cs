@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
@@ -94,9 +95,21 @@ public class InputBoxFileValidator : MonoBehaviour
         var songDir = BeatSaberSongContainer.Instance.Song.Directory;
         CMInputCallbackInstaller.DisableActionMaps(typeof(InputBoxFileValidator),
             new[] { typeof(CMInput.IMenusExtendedActions) });
-        var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, exts, false);
+        string[] paths;
+        try
+        {
+            paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, exts, false);
+        }
+        catch (DllNotFoundException)
+        {
+            // This seems to be an apple silicon exclusive issue
+            // Try updating package later
+            PersistentUI.Instance.DisplayMessage("File browser not supported on this OS",
+                PersistentUI.DisplayMessageType.Bottom);
+            return;
+        }
         StartCoroutine(ClearDisabledActionMaps());
-        if (paths.Length > 0)
+        if (paths is { Length: > 0 })
         {
             var directory = new DirectoryInfo(songDir);
             var file = new FileInfo(paths[0]);
