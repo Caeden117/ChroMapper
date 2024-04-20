@@ -141,7 +141,9 @@ namespace Beatmap.Base
             // Compare by tail cut direction if tmu matches
             if (comparison == 0) comparison = TailCutDirection.CompareTo(arc.TailCutDirection);
 
-            // ...i give up.
+            // Compare by mid anchor if tail cut match
+            if (comparison == 0) comparison = MidAnchorMode.CompareTo(arc.MidAnchorMode);
+
             return comparison;
         }
     }
