@@ -647,33 +647,44 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
             return false;
         }
 
+        // Happy path
+        if (MapObjects[index] == tObj)
+        {
+            return true;
+        }
+        
+        // United Mapper packets obviously cannot send the object reference so check comparison equality. 
+        if (MapObjects[index].CompareTo(tObj) == 0)
+        {
+            return true;
+        }
+        
         // Potentially unhappy path: Binary Search returns an object, but turns out to be the incorrect object.
         // We assume this is only going to happen for stacked objects so we march indexes to see if we can find it.
-        if (MapObjects[index] != tObj)
+        var forwardIndex = index + 1;
+        while (forwardIndex < MapObjects.Count - 1 &&  MapObjects[forwardIndex].JsonTime <= tObj.JsonTime)
         {
-            var forwardIndex = index + 1;
-            while (forwardIndex < MapObjects.Count - 1 && MapObjects[forwardIndex] != tObj &&
-                   MapObjects[forwardIndex].JsonTime <= tObj.JsonTime) forwardIndex++;
-            if (MapObjects[forwardIndex] == tObj)
+            if (MapObjects[forwardIndex].CompareTo(tObj) == 0)
             {
                 index = forwardIndex;
                 return true;
             }
-
-            var backwardIndex = index - 1;
-            while (backwardIndex > 0 && MapObjects[backwardIndex] != tObj &&
-                   MapObjects[backwardIndex].JsonTime >= tObj.JsonTime) backwardIndex--;
-            if (MapObjects[backwardIndex] == tObj)
+            forwardIndex++;
+        }
+        
+        var backwardIndex = index - 1;
+        while (backwardIndex > 0 && MapObjects[backwardIndex].JsonTime >= tObj.JsonTime)
+        {
+            if (MapObjects[backwardIndex].CompareTo(tObj) == 0)
             {
                 index = backwardIndex;
                 return true;
             }
-
-            Debug.LogError("Binary Search returned incorrect object. Please report this.");
-            return false;
+            backwardIndex--;
         }
 
-        return true;
+        Debug.LogError("Binary Search returned no matching object. Please report this.");
+        return false;
     }
 
     /// <inheritdoc/>
