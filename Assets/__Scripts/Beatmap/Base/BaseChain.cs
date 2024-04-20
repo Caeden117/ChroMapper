@@ -1,3 +1,4 @@
+using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using LiteNetLib.Utils;
@@ -114,7 +115,9 @@ namespace Beatmap.Base
             // Compare by squish if slice counts match
             if (comparison == 0) comparison = Squish.CompareTo(chain.Squish);
             
-            // ...i give up.
+            // All matching vanilla properties so compare custom data as a final check
+            if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), chain.CustomData?.ToString(), StringComparison.Ordinal);
+
             return comparison;
         }
     }

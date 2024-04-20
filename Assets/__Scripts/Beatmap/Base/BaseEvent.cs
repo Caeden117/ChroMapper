@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using Beatmap.Base.Customs;
@@ -405,7 +406,9 @@ namespace Beatmap.Base
             }
             //if (comparison == 0) comparison = StructuralComparisons.StructuralComparer.Compare(CustomLightID, @event.CustomLightID);
 
-            // ...i give up.
+            // All matching vanilla properties so compare custom data as a final check
+            if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), @event.CustomData?.ToString(), StringComparison.Ordinal);
+            
             return comparison;
         }
     }

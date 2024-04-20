@@ -1,3 +1,4 @@
+using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using LiteNetLib.Utils;
@@ -143,6 +144,9 @@ namespace Beatmap.Base
 
             // Compare by mid anchor if tail cut match
             if (comparison == 0) comparison = MidAnchorMode.CompareTo(arc.MidAnchorMode);
+
+            // All matching vanilla properties so compare custom data as a final check
+            if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), arc.CustomData?.ToString(), StringComparison.Ordinal);
 
             return comparison;
         }

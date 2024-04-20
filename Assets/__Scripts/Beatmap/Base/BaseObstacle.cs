@@ -1,3 +1,4 @@
+using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.Shared;
@@ -291,7 +292,9 @@ namespace Beatmap.Base
             // Compare by height if duration match
             if (comparison == 0) comparison = Height.CompareTo(obstacle.Height);
 
-            // ...i give up.
+            // All matching vanilla properties so compare custom data as a final check
+            if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), obstacle.CustomData?.ToString(), StringComparison.Ordinal);
+
             return comparison;
         }
     }
