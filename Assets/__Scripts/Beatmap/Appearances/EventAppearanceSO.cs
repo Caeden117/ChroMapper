@@ -136,16 +136,10 @@ namespace Beatmap.Appearances
             {
                 if (Settings.Instance.DisplayFloatValueText)
                 {
-                    if (e.EventData.IsTransition) // Transition Event in event v3
-                        e.UpdateTextDisplay(true,
-                            "T" + (Mathf.Approximately(e.EventData.FloatValue, 1)
-                                ? "1"
-                                : e.EventData.FloatValue.ToString("n2").Substring(1)));
-                    else
-                        e.UpdateTextDisplay(true,
-                            Mathf.Approximately(e.EventData.FloatValue, 1)
-                                ? "1"
-                                : e.EventData.FloatValue.ToString("n2").Substring(1));
+                    var text = e.EventData.IsTransition
+                        ? $"T{Mathf.RoundToInt(e.EventData.FloatValue * 100)}"
+                        : $"{Mathf.RoundToInt(e.EventData.FloatValue * 100)}";
+                    e.UpdateTextDisplay(true, text); 
                 }
 
                 // for clarity sake, we don't want this to be the same as off color
