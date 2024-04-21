@@ -609,6 +609,8 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true)
     {
         if (!TryBinarySearch(obj, out var search)) return;
+
+        obj = MapObjects[search];
         
         RecycleContainer(obj);
         
