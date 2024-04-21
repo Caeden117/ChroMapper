@@ -610,20 +610,20 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     {
         if (!TryBinarySearch(obj, out var search)) return;
 
-        obj = MapObjects[search];
+        var deletedObj = MapObjects[search];
         
-        RecycleContainer(obj);
+        RecycleContainer(deletedObj);
         
         MapObjects.RemoveAt(search);
 
-        if (deselect) SelectionController.Deselect(obj, triggersAction);
+        if (deselect) SelectionController.Deselect(deletedObj, triggersAction);
 
-        if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
+        if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(deletedObj, comment));
 
         if (refreshesPool) RefreshPool();
 
-        OnObjectDelete(obj, inCollectionOfDeletes);
-        ObjectDeletedEvent?.Invoke(obj);
+        OnObjectDelete(deletedObj, inCollectionOfDeletes);
+        ObjectDeletedEvent?.Invoke(deletedObj);
     }
     
     // Removes object from MapObjects while retaining container and data in it
