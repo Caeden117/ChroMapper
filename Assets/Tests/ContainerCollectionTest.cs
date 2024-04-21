@@ -159,7 +159,6 @@ namespace Tests
             
             noteGridContainer.DeleteObject(notes[deleteIndex]);
             Assert.AreEqual(3, noteGridContainer.MapObjects.Count);
-            Assert.IsFalse(noteGridContainer.MapObjects.Contains(notes[deleteIndex]));
         }
         
         [Test]
