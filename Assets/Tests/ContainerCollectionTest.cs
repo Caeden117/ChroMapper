@@ -156,9 +156,23 @@ namespace Tests
             }
 
             Assert.AreEqual(4, noteGridContainer.MapObjects.Count);
-            
-            noteGridContainer.DeleteObject(notes[deleteIndex]);
+            Assert.AreEqual(4, noteGridContainer.LoadedContainers.Count);
+
+            noteGridContainer.DeleteObject(notes[deleteIndex % 4]);
             Assert.AreEqual(3, noteGridContainer.MapObjects.Count);
+            Assert.AreEqual(3, noteGridContainer.LoadedContainers.Count);
+            
+            noteGridContainer.DeleteObject(notes[(deleteIndex + 1) % 4]);
+            Assert.AreEqual(2, noteGridContainer.MapObjects.Count);
+            Assert.AreEqual(2, noteGridContainer.LoadedContainers.Count);
+            
+            noteGridContainer.DeleteObject(notes[(deleteIndex + 2) % 4]);
+            Assert.AreEqual(1, noteGridContainer.MapObjects.Count);
+            Assert.AreEqual(1, noteGridContainer.LoadedContainers.Count);
+            
+            noteGridContainer.DeleteObject(notes[(deleteIndex + 3) % 4]);
+            Assert.AreEqual(0, noteGridContainer.MapObjects.Count);
+            Assert.AreEqual(0, noteGridContainer.LoadedContainers.Count);
         }
         
         [Test]
