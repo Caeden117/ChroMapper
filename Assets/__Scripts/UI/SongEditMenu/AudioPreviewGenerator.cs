@@ -11,6 +11,7 @@ public class AudioPreviewGenerator : MonoBehaviour
     [SerializeField] private AudioManager audioManager;
     [GradientUsage(true), SerializeField] private Gradient spectrogramGradient2d;
     [SerializeField] private SongInfoEditUI songInfoEditUI;
+    [SerializeField] private GameObject previewGameObject;
     [SerializeField] private RectTransform previewSelection;
     
     private float previewDuration;
@@ -24,7 +25,7 @@ public class AudioPreviewGenerator : MonoBehaviour
     {
         if (BeatSaberSongContainer.Instance.LoadedSong == null)
         {
-            previewSelection.gameObject.SetActive(false);
+            previewGameObject.SetActive(false);
             return;
         }
         
@@ -35,8 +36,9 @@ public class AudioPreviewGenerator : MonoBehaviour
         ColorBufferManager.GenerateBuffersForGradient(spectrogramGradient2d);
         SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
         audioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong, 1024, 1);
-        
-        previewSelection.gameObject.SetActive(true);
+
+        UpdatePreviewSelection();
+        previewGameObject.SetActive(true);
     }
 
     public void UpdatePreviewStart(string start)
@@ -49,19 +51,18 @@ public class AudioPreviewGenerator : MonoBehaviour
         if (float.TryParse(duration, out previewDuration)) UpdatePreviewSelection();
     }
 
-    // TODO: THIS SOMEHOW BROKE PLEASE FIX THIS.
     private void UpdatePreviewSelection()
     {
         if (BeatSaberSongContainer.Instance.LoadedSong == null) return;
         var length = BeatSaberSongContainer.Instance.LoadedSong.length;
 
         // oh god look at all this jank
-        var size = (transform.parent as RectTransform).sizeDelta.x;
+        var size = (transform.parent as RectTransform).sizeDelta.x +
+                   (transform as RectTransform).sizeDelta.x;
 
         var ratio = size / length;
 
         previewSelection.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, previewTime * ratio,
             previewDuration * ratio);
-        previewSelection.transform.SetAsLastSibling();
     }
 }
