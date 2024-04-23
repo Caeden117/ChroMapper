@@ -11,6 +11,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public static readonly string PrecisionSnapName = "PrecisionSnap";
 
     private static readonly int songTime = Shader.PropertyToID("_SongTime");
+    private static readonly int songTimeSeconds = Shader.PropertyToID("_SongTimeSeconds");
     private static readonly int viewStart = Shader.PropertyToID("_ViewStart");
     private static readonly int viewEnd = Shader.PropertyToID("_ViewEnd");
     
@@ -319,6 +320,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private void UpdateMovables()
     {
         Shader.SetGlobalFloat(songTime, currentSongBpmTime);
+        Shader.SetGlobalFloat(songTimeSeconds, currentSeconds);
         
         // CM's grid extends from [songTime - 2 beats, songTime + 8 beats]
         Shader.SetGlobalFloat(viewStart, GetSecondsFromBeat(currentSongBpmTime - 2));

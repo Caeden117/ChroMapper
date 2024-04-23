@@ -4,6 +4,7 @@ Shader "Unlit/Spectrogram"
     {
         _Spectrogram_Shift ("Spectrogram Shift", Float) = 0.0
         _Spectrogram_BilinearFiltering ("Bilinear Filtering", Float) = 0.0
+        _OutlineWidth ("Outline Width", Float) = 0.1
     }
     SubShader
     {
@@ -32,8 +33,10 @@ Shader "Unlit/Spectrogram"
 
             float _Spectrogram_Shift = 1;
             float _Spectrogram_BilinearFiltering = 0;
+            float _OutlineWidth = 0;
 
             // Global variables
+            uniform float _SongTimeSeconds = 0;
             uniform float _ViewStart = 0;
             uniform float _ViewEnd = 1;
 
@@ -161,10 +164,23 @@ Shader "Unlit/Spectrogram"
                 upperGradientIdx = clamp(upperGradientIdx, 0, GradientLength - 1);
                 uint lowerGradientIdx = clamp(upperGradientIdx - 1, 0, GradientLength - 1);
 
-                // Return gradient interpolation
-                return pow(lerp(GradientColors[lowerGradientIdx],
+                // Gradient interpolation
+                float4 color = lerp(GradientColors[lowerGradientIdx],
                     GradientColors[upperGradientIdx],
-                    Remap(value, GradientKeys[lowerGradientIdx], GradientKeys[upperGradientIdx], 0, 1)), 2.2);
+                    Remap(value, GradientKeys[lowerGradientIdx], GradientKeys[upperGradientIdx], 0, 1));
+
+                // Add 0.2 to each component if we are within outline
+                // TODO: Because units are in seconds, this outline scales with the length of grid
+                //   Need to make the outline time/scale independent
+                if (abs(currentSeconds - _SongTimeSeconds) < _OutlineWidth)
+                {
+                    color += float4(0.2, 0.2, 0.2, 0.2);
+                }
+                
+                // Convert linear to gamma space
+                color = pow(color, 2.2);
+                
+                return color;
             }
             ENDCG
         }

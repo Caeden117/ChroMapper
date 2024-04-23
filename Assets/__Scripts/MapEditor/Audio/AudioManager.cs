@@ -54,9 +54,7 @@ public class AudioManager : MonoBehaviour
 
         // Step 1: Prepare real components of our FFT by multiply song samples by window coefficients for FFT
         using ComputeBuffer windowedSamples = new(fftCount, sizeof(float));
-
-        //using(ComputeBuffer expandedSamples = new(fftCount, sizeof(float)))
-        using(ComputeBuffer windowCoeffBuffer = new(sampleSize, sizeof(float)))
+        using (ComputeBuffer windowCoeffBuffer = new(sampleSize, sizeof(float)))
         {
             for(var i = 0; i < sampleCount; i += sampleSize / quality)
             {
@@ -68,7 +66,6 @@ public class AudioManager : MonoBehaviour
 
             multiplyShader.SetBuffer(0, MULTIPLY_A, windowedSamples);
             multiplyShader.SetBuffer(0, MULTIPLY_B, windowCoeffBuffer);
-            //multiplyShader.SetBuffer(0, MULTIPLY_RESULTS, windowedSamples);
 
             ExecuteOverLargeArray(multiplyShader, fftCount);
         }
@@ -96,7 +93,7 @@ public class AudioManager : MonoBehaviour
         var kernelGroupArea = (int)(x * y * z);
 
         int elementStep;
-        for(var i = 0; i < length; i += elementStep)
+        for (var i = 0; i < length; i += elementStep)
         {
             elementStep = Mathf.Clamp(length - i, 0, maxThreadCount);
 
