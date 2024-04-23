@@ -1,0 +1,121 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel FFT
+
+#define PI 3.14159265358979323846
+#define ROOT_2 1.414213562367
+#define FFT_SCALE_FACTOR 25.0
+
+RWStructuredBuffer<float> Real;
+RWStructuredBuffer<float> Imaginary;
+RWStructuredBuffer<float> FFTResults;
+
+uint SampleCount;
+uint SampleSize;
+
+// (SampleSize / 2) + 1
+uint FFTSize;
+
+// If total shader threads > 65535, we perform the maximum amount of shader threads then add to ProcessingOffset
+uint ProcessingOffset;
+
+// legitimately couldnt tell you where this comes from, this was from the C# FFT implementation
+float FFTScaleFactor;
+
+// Reverse the specified number of bits within a given number
+// We use this to unscramble the resulting FFT
+uint BitReverse(uint num, uint bits)
+{
+    uint result = 0;
+    for (uint i = 0; i < bits; i++)
+    {
+        result <<= 1;
+        result |= num & 0x0001;
+        num >>= 1;
+    }
+    return result;
+}
+
+
+// Execute with groups (X = Song sample count / SampleSize, Y and Z = 1)
+// im well aware this is not the most efficent usage but my brain was melting trying to get this all to work
+[numthreads(1, 1, 1)]
+void FFT (uint3 groupID : SV_GroupID)
+{
+    uint fftLog2 = log2(SampleSize);
+    float fftScale = ROOT_2 / (float)SampleSize;
+    
+    uint butterflyCount = SampleSize >> 1;
+    uint spacing = SampleSize;
+    uint sampleOffset = (ProcessingOffset + groupID.x) * SampleSize;
+    
+    // Perform stages of FFT
+    for (uint stage = 0; stage < fftLog2; stage++)
+    {
+        // REVIEW(Caeden): See if a LUT is still beneficial for a GPU-driven FFT and spectrogram design
+        float angleInc = pow(2, stage) * -2 * PI / SampleSize;
+        
+        float multReal = cos(angleInc);
+        float multImaginary = sin(angleInc);
+        
+        // Believe it or not, DSPLib (the C# FFT lib i'm reimplementing) still does not state what this for-loop is for.
+        for (uint start = 0; start < SampleSize; start += spacing)
+        {
+            float real = 1;
+            float imaginary = 0;
+            
+            // Butterfly!
+            for (uint butterfly = 0; butterfly < butterflyCount; butterfly++)
+            {
+                int topIdx = sampleOffset + start + butterfly;
+                int bottomIdx = sampleOffset + start + butterfly + butterflyCount;
+                
+                float topReal = Real[topIdx];
+                float topImaginary = Imaginary[topIdx];
+                float bottomReal = Real[bottomIdx];
+                float bottomImaginary = Imaginary[bottomIdx];
+
+                // Top butterfly branch is addition
+                Real[topIdx] = topReal + bottomReal;
+                Imaginary[topIdx] = topImaginary + bottomImaginary;
+
+                // Bottom branch is subtraction, then multiplication by twiddle
+                bottomReal = topReal - bottomReal;
+                bottomImaginary = topImaginary - bottomImaginary;
+                Real[bottomIdx] = bottomReal * real - bottomImaginary * imaginary;
+                Imaginary[bottomIdx] = bottomReal * imaginary + bottomImaginary * real;
+
+                // Update twiddle with complex multiplication
+                float tempReal = real;
+                real = real * multReal - imaginary * multImaginary;
+                imaginary = tempReal * multImaginary + imaginary * multReal;
+            }
+        }
+        
+        butterflyCount >>= 1;
+        spacing >>= 1;
+    }
+    
+    // We are left with a scrambled order.
+    for (uint j = 0; j < SampleSize; j++)
+    {
+        uint target = BitReverse(j, fftLog2);
+        
+		// Lets include the imaginary half as well
+		// Every other column of texture would be empty, which is solved by including the imaginary half
+		// We flip the imaginary half so it lines up with the real half
+        if (target >= FFTSize)
+            target = FFTSize - target;
+        
+        // we convert to magnitude here because our shader will render magnitude results
+        float real = Real[sampleOffset + j] * fftScale;
+        float imaginary = Imaginary[sampleOffset + j] * fftScale;
+        
+        float value = sqrt(real * real + imaginary * imaginary) * FFTScaleFactor;
+		
+		// pardon the janky math, im just throwing it here instead of the spectrogram shader
+		// basically does some more post-processing so our magnitude results better fit [0-1]
+        value = ((log(value) + 255.0 / FFT_SCALE_FACTOR) * FFT_SCALE_FACTOR) / 255.0;
+        
+        FFTResults[sampleOffset + target] = value;
+    }
+}

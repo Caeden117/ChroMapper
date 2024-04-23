@@ -5,21 +5,16 @@ using UnityEngine.UI;
 
 public class AudioPreviewGenerator : MonoBehaviour
 {
+    private static readonly int viewStart = Shader.PropertyToID("_ViewStart");
+    private static readonly int viewEnd = Shader.PropertyToID("_ViewEnd");
+    
     [SerializeField] private AudioManager audioManager;
-
-    [GradientUsage(true)] [SerializeField] private Gradient spectrogramGradient2d;
-
-    [SerializeField] private RawImage spectrogramTileGameObject;
+    [GradientUsage(true), SerializeField] private Gradient spectrogramGradient2d;
     [SerializeField] private SongInfoEditUI songInfoEditUI;
     [SerializeField] private RectTransform previewSelection;
-    [SerializeField] private Slider previewGenerationSlider;
-    private readonly List<RawImage> activeTiles = new List<RawImage>();
-
-    private Queue<RawImage> cachedTiles = new Queue<RawImage>();
+    
     private float previewDuration;
-
     private float previewTime;
-    public WaveformData WaveformData { get; private set; } = new WaveformData();
 
     private void Start() => songInfoEditUI.TempSongLoadedEvent += TempSongLoaded;
 
@@ -27,56 +22,21 @@ public class AudioPreviewGenerator : MonoBehaviour
 
     private void TempSongLoaded()
     {
-        StopAllCoroutines();
-        StartCoroutine(RefreshVisuals());
-    }
-
-    private IEnumerator RefreshVisuals()
-    {
-        if (BeatSaberSongContainer.Instance.LoadedSong == null) yield break;
-
-        // Wait for previous run to end
-        audioManager.OnDestroy();
-        while (audioManager.IsAlive()) yield return new WaitForEndOfFrame();
-
-        foreach (var image in activeTiles) image.gameObject.SetActive(false);
-        cachedTiles = new Queue<RawImage>(activeTiles);
-        activeTiles.Clear();
-        previewSelection.gameObject.SetActive(false);
-
-        WaveformData = new WaveformData();
-
-        audioManager.SetSecondPerChunk(5);
-        audioManager.Begin(false, spectrogramGradient2d, BeatSaberSongContainer.Instance.LoadedSong, WaveformData, null,
-            5);
-
-        while (audioManager.IsAlive())
+        if (BeatSaberSongContainer.Instance.LoadedSong == null)
         {
-            previewGenerationSlider.value = (float)WaveformData.ProcessedChunks / WaveformData.Chunks;
-            yield return new WaitForEndOfFrame();
+            previewSelection.gameObject.SetActive(false);
+            return;
         }
-
-        for (var i = 0; i < WaveformData.Chunks; i++)
-        {
-            var toRender = new float[audioManager.ColumnsPerChunk][];
-            WaveformData.GetChunk(i, audioManager.ColumnsPerChunk, ref toRender);
-
-            var image = RetrieveOrCreateRawImage();
-            image.texture = WaveformData.BandColors[i];
-            image.gameObject.SetActive(true);
-            activeTiles.Add(image);
-        }
-
-        UpdatePreviewSelection();
+        
+        // Reinitialize view bounds to encompass the entire thing
+        Shader.SetGlobalFloat(viewStart, 0);
+        Shader.SetGlobalFloat(viewEnd, BeatSaberSongContainer.Instance.LoadedSongLength);
+        
+        ColorBufferManager.GenerateBuffersForGradient(spectrogramGradient2d);
+        SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
+        audioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong, 1024, 1);
+        
         previewSelection.gameObject.SetActive(true);
-    }
-
-    private RawImage RetrieveOrCreateRawImage()
-    {
-        if (cachedTiles.Count > 0) return cachedTiles.Dequeue();
-        var newImage = Instantiate(spectrogramTileGameObject.gameObject, transform).GetComponent<RawImage>();
-        newImage.gameObject.SetActive(false);
-        return newImage;
     }
 
     public void UpdatePreviewStart(string start)
@@ -89,14 +49,14 @@ public class AudioPreviewGenerator : MonoBehaviour
         if (float.TryParse(duration, out previewDuration)) UpdatePreviewSelection();
     }
 
+    // TODO: THIS SOMEHOW BROKE PLEASE FIX THIS.
     private void UpdatePreviewSelection()
     {
         if (BeatSaberSongContainer.Instance.LoadedSong == null) return;
         var length = BeatSaberSongContainer.Instance.LoadedSong.length;
 
         // oh god look at all this jank
-        var size = (transform.parent.parent as RectTransform).sizeDelta.x +
-                   (transform.parent as RectTransform).sizeDelta.x;
+        var size = (transform.parent as RectTransform).sizeDelta.x;
 
         var ratio = size / length;
 
