@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
@@ -91,6 +90,17 @@ public class DingOnNotePassingGrid : MonoBehaviour
     {
         lastCheckedTime = -1;
         audioUtil.StopOneShot();
+        
+        if (!playing) return;
+        
+        // Since we schedule hit sounds ahead of time using the note callback, there will be a small period ahead of the
+        // playback cursor when start play is toggled where hit sounds are not scheduled play on play so we do that here 
+        var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+        var currentJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats);
+        var endJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats + beatSaberCutCallbackController.Offset);
+        var notes = container.GetBetween(currentJsonTime, endJsonTime);
+        
+        foreach (var n in notes) PlaySound(false, 0, n);
     }
 
     private void UpdateRedNoteDing(object obj) => NoteTypeToDing[(int)NoteType.Red] = (bool)obj;

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Beatmap.Base;
-using Beatmap.V2;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -119,7 +117,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllNotes(bool natural)
     {
-        nextNoteIndex = noteGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.JsonTime);
+        var songTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
+        nextNoteIndex = noteGridContainer.MapObjects.BinarySearchBy(songTime + Offset, obj => obj.SongBpmTime);
         if (nextNoteIndex < 0) nextNoteIndex = ~nextNoteIndex;
 
         RecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
@@ -127,7 +126,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllEvents(bool natural)
     {
-        nextEventIndex = eventGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.JsonTime);
+        var songTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
+        nextEventIndex = eventGridContainer.MapObjects.BinarySearchBy(songTime + Offset, obj => obj.SongBpmTime);
         if (nextEventIndex < 0) nextEventIndex = ~nextEventIndex;
 
         RecursiveEventCheckFinished?.Invoke(natural, nextEventIndex - 1);
@@ -135,7 +135,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private void CheckAllChains(bool natural)
     {
-        nextChainIndex = chainGridContainer.MapObjects.BinarySearchBy(timeSyncController.CurrentJsonTime, obj => obj.TailJsonTime);
+        var songTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
+        nextChainIndex = chainGridContainer.MapObjects.BinarySearchBy(songTime + Offset, obj => obj.SongBpmTime);
         if (nextChainIndex < 0) nextChainIndex = ~nextChainIndex;
 
         RecursiveChainCheckFinished?.Invoke(natural, nextChainIndex - 1);
