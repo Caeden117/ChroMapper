@@ -126,7 +126,7 @@ public class Settings
     public int SpectrogramShift = 1;
     public bool SpectrogramBilinearFiltering = true;
     public int SpectrogramSlices = 0;
-    public float SpectrogramHeight = 0.1f;
+    public float SpectrogramHeight = 0.15f;
 
     public bool Reflections = true;
     public bool HighQualityBloom = true;
