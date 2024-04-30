@@ -1299,6 +1299,56 @@ MonoBehaviour:
     m_Localized: Show Chain Count
     m_Metadata:
       m_Items: []
+  - m_Id: 362172452363964416
+    m_Localized: Sample Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172654227427328
+    m_Localized: Frequency resolution of the spectrogram. Higher numbers reduce timeline
+      accuracy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172845764513792
+    m_Localized: Bilinear Filtering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172895014031360
+    m_Localized: Basic interpolation between spectrogram values.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173257435451392
+    m_Localized: Logarithmic Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173301957988352
+    m_Localized: Dedicates more of the spectrogram to lower frequencies.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173439820566528
+    m_Localized: Sample Quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173496468836352
+    m_Localized: Increases timeline detail by multiplying the number of spectrogram
+      samples.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174267792953344
+    m_Localized: Slice Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174367466393600
+    m_Localized: Simulate height by overlaying multiple images of the spectrogram.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174490212700160
+    m_Localized: Slice Height
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174510987087872
+    m_Localized: Increases the height of spectrogram slices.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -1255,6 +1255,54 @@ MonoBehaviour:
     m_Key: countersplus.showchains
     m_Metadata:
       m_Items: []
+  - m_Id: 362172452363964416
+    m_Key: graphics.spectrogram.samplesize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172654227427328
+    m_Key: graphics.spectrogram.samplesize.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172845764513792
+    m_Key: graphics.spectrogram.bilinear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172895014031360
+    m_Key: graphics.spectrogram.bilinear.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173257435451392
+    m_Key: graphics.spectrogram.shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173301957988352
+    m_Key: graphics.spectrogram.shift.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173439820566528
+    m_Key: graphics.spectrogram.quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173496468836352
+    m_Key: graphics.spectrogram.quality.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174267792953344
+    m_Key: graphics.spectrogram.slice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174367466393600
+    m_Key: graphics.spectrogram.slice.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174490212700160
+    m_Key: graphics.spectrogram.height
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174510987087872
+    m_Key: graphics.spectrogram.height.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
