@@ -17,54 +17,54 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 5886062096295657548
+    - rid: 939478408207532131
   m_TableData:
   - m_Id: 1
     m_Localized: "\u30CE\u30FC\u30C4\uFF1A{NotesCount}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 2
     m_Localized: "\u30CE\u30FC\u30C4\u6BCE\u79D2\uFF1A{NPSCount:F2}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 3
     m_Localized: "\u9078\u629E\u4E2D\u30CE\u30FC\u30C4\uFF1A{NotesSelected}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 4
     m_Localized: "\u9078\u629E\u6E08\u307F\u30CE\u30FC\u30C4\u6BCE\u79D2\uFF1A{NPSselected:F2}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 5
     m_Localized: "\u969C\u5BB3\u7269: {ObstacleCount}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 6
     m_Localized: "\u30A4\u30D9\u30F3\u30C8: {EventCount}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 7
     m_Localized: "BPM\u5909\u66F4: {BPMCount}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 8
     m_Localized: "\u30DE\u30C3\u30D4\u30F3\u30B0\u306B\u8CBB\u3084\u3057\u305F\u6642\u9593:
       {hours:0}:{minutes:00}:{seconds:00}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 9
     m_Localized: "\u9078\u629E\u6E08\u307F\uFF1A{SelectedCount}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 10
     m_Localized: "\u7D42\u4E86"
     m_Metadata:
@@ -137,7 +137,7 @@ MonoBehaviour:
     m_Localized: "\u983B\u7E41\u306B\u4FDD\u5B58\u3059\u308B"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 30
     m_Localized: "ChroMapper\u3092\u7D42\u4E86"
     m_Metadata:
@@ -183,7 +183,7 @@ MonoBehaviour:
     m_Localized: "\u5909\u66F4\u30EF\u30FC\u30AF\u30D5\u30ED\u30FC"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 42
     m_Localized: "\u524A\u9664"
     m_Metadata:
@@ -268,7 +268,7 @@ MonoBehaviour:
     m_Localized: "{Keybind} \u5909\u66F4\u3059\u308B\u306B\u306F"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 65
     m_Localized: "\u3010Chroma RGB\u3011 \u30A4\u30D9\u30F3\u30C8\u3092\u914D\u7F6E\u3059\u308B"
     m_Metadata:
@@ -290,11 +290,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: "\u8D64\u3044\u5149\u30D6\u30ED\u30C3\u30AF\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: "\u8D64\u3044\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u30A4\u30D9\u30F3\u30C8\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 71
-    m_Localized: "\u9752\u3044\u5149\u30D6\u30ED\u30C3\u30AF\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: "\u9752\u3044\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u30A4\u30D9\u30F3\u30C8\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 72
@@ -335,8 +335,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: "Dynamically changes Strobe Type A when an event is hit while generating\r
-      a strobe."
+    m_Localized: "\u30B9\u30C8\u30ED\u30DC\u306E\u751F\u6210\u4E2D\u306B\u30A4\u30D9\u30F3\u30C8\u304C\u30D2\u30C3\u30C8\u3059\u308B\u3068\u30B9\u30C8\u30ED\u30DCA\u30BF\u30A4\u30D7\u304C\u52D5\u7684\u306B\u5909\u66F4\u3055\u308C\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 82
@@ -484,19 +483,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 117
-    m_Localized: "\u9752\u306E\u7167\u660E\u30A4\u30D9\u30F3\u30C8\u306E\u30D6\u30FC\u30B9\u30C8\u30AB\u30E9\u30FC\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: "\u9752\u3044\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u30A4\u30D9\u30F3\u30C8\u306E\u30D6\u30FC\u30B9\u30C8\u30AB\u30E9\u30FC\u3092\u8A2D\u5B9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: "\u8D64\u306E\u7167\u660E\u30A4\u30D9\u30F3\u30C8\u306E\u30D6\u30FC\u30B9\u30C8\u30AB\u30E9\u30FC\u3092\u8A2D\u5B9A\u3059\u308B"
+    m_Localized: "\u8D64\u3044\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u30A4\u30D9\u30F3\u30C8\u306E\u30D6\u30FC\u30B9\u30C8\u30AB\u30E9\u30FC\u3092\u8A2D\u5B9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Chroma Easing
+    m_Localized: "Chroma\u306E\u30A4\u30FC\u30B8\u30F3\u30B0"
     m_Metadata:
       m_Items: []
   - m_Id: 120
-    m_Localized: Changes easing for Chroma gradients.
+    m_Localized: "Chroma\u30B0\u30E9\u30C7\u30FC\u30B7\u30E7\u30F3\u306E\u30A4\u30FC\u30B8\u30F3\u30B0\u3092\u5909\u66F4\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 121
@@ -508,7 +507,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 123
-    m_Localized: Basic Event Strobe
+    m_Localized: "\u57FA\u672C\u7684\u306A\u30A4\u30D9\u30F3\u30C8\u306E\u30B9\u30C8\u30ED\u30DC"
     m_Metadata:
       m_Items: []
   - m_Id: 124
@@ -516,7 +515,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 125
-    m_Localized: Precise Laser Speed Interpolation
+    m_Localized: "\u6B63\u78BA\u306A\u30EC\u30FC\u30B6\u30FC\u901F\u5EA6\u306E\u88DC\u9593"
     m_Metadata:
       m_Items: []
   - m_Id: 126
@@ -528,7 +527,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 128
-    m_Localized: Laser Speed Easing
+    m_Localized: "\u30EC\u30FC\u30B6\u30FC\u901F\u5EA6\u306E\u7DE9\u6025"
     m_Metadata:
       m_Items: []
   - m_Id: 129
@@ -584,9 +583,9 @@ MonoBehaviour:
     m_Localized: "\u30B9\u30A4\u30F3\u30B0/\u79D2: {OverallSPS:F2}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 143
-    m_Localized: Chroma Step Gradient
+    m_Localized: "Chroma\u306E\u30B0\u30E9\u30C7\u30FC\u30B7\u30E7\u30F3\u30B9\u30C6\u30C3\u30D7"
     m_Metadata:
       m_Items: []
   - m_Id: 32
@@ -636,7 +635,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 153
-    m_Localized: Precision Rotation
+    m_Localized: "\u56DE\u8EE2\u7CBE\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 152
@@ -671,17 +670,17 @@ MonoBehaviour:
     m_Localized: "\u73FE\u5728\u306EBPM: {CurrentBPM:0.###}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 1123800776704
     m_Localized: "\u8D64/\u9752\u306E\u6BD4\u7387: {RedBlueRatio:F2}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 3209883108945920
     m_Localized: "\u30DC\u30E0: {BombCount}\u3000\u3000"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 12803634470490112
     m_Localized: "\u3053\u306E\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u65B0\u3057\u3044\u8272\u3092\u9078\u629E\u3057\u307E\u3059"
     m_Metadata:
@@ -691,97 +690,92 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 68889908591489024
-    m_Localized: Bookmark Name
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 68889912282476544
-    m_Localized: Bookmark Color
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u8272"
     m_Metadata:
       m_Items: []
   - m_Id: 118373130107551744
-    m_Localized: Objects found outside map. Do you want to remove them?
+    m_Localized: "\u30DE\u30C3\u30D7\u5916\u3067\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304C\u898B\u3064\u304B\u308A\u307E\u3057\u305F\u3002\u524A\u9664\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 160655767994621952
-    m_Localized: FloatValue
+    m_Localized: "floatValue\uFF08\u6D6E\u52D5\u5C0F\u6570\u70B9\u5024\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 43247628972130304
-    m_Localized: Easing applies to floatValue.
+    m_Localized: "\u30A4\u30FC\u30B8\u30F3\u30B0\u304CfloatValue\u306B\u9069\u7528\u3055\u308C\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 43247577315082240
-    m_Localized: Ease FloatValue
+    m_Localized: "floatValue\u306E\u30A4\u30FC\u30B8\u30F3\u30B0"
     m_Metadata:
       m_Items: []
   - m_Id: 42988345160302592
-    m_Localized: Easing applies to time.
+    m_Localized: "\u30A4\u30FC\u30B8\u30F3\u30B0\u304C\u6642\u9593\u306B\u9069\u7528\u3055\u308C\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 42988137944907776
-    m_Localized: Easing Time
+    m_Localized: "\u6642\u9593\u306E\u30A4\u30FC\u30B8\u30F3\u30B0"
     m_Metadata:
       m_Items: []
   - m_Id: 42585459012075520
-    m_Localized: Transition
+    m_Localized: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
     m_Metadata:
       m_Items: []
   - m_Id: 207122293661564928
-    m_Localized: Set color for White Lighting Events
+    m_Localized: "\u767D\u3044\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u30A4\u30D9\u30F3\u30C8\u306E\u8272\u3092\u8A2D\u5B9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 207122782700634112
-    m_Localized: Set boost color for White Lighting Events
+    m_Localized: "\u767D\u3044\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u30A4\u30D9\u30F3\u30C8\u306E\u30D6\u30FC\u30B9\u30C8\u30AB\u30E9\u30FC\u3092\u8A2D\u5B9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 207749379233349632
-    m_Localized: Color Gradients
+    m_Localized: "\u30AB\u30E9\u30FC\u30B0\u30E9\u30C7\u30FC\u30B7\u30E7\u30F3"
     m_Metadata:
       m_Items: []
   - m_Id: 207750905897091072
-    m_Localized: Lerp Type
+    m_Localized: "\u7DDA\u5F62\u88DC\u9593\u306E\u30BF\u30A4\u30D7"
     m_Metadata:
       m_Items: []
   - m_Id: 207751068199878656
-    m_Localized: Changes interpolation for the transition.
+    m_Localized: "\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3\u306E\u88DC\u9593\u3092\u5909\u66F4\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 220101281077985280
-    m_Localized: Change Beatmap Version
+    m_Localized: "\u30D3\u30FC\u30C8\u30DE\u30C3\u30D7\u306E\u30D0\u30FC\u30B8\u30E7\u30F3\u3092\u5909\u66F4"
     m_Metadata:
       m_Items: []
   - m_Id: 220102296279908352
-    m_Localized: Changes map version to v2 or v3
+    m_Localized: "\u30DE\u30C3\u30D7\u30D0\u30FC\u30B8\u30E7\u30F3\u3092v2\u307E\u305F\u306Fv3\u306B\u5909\u66F4\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 232868047877242880
-    m_Localized: 'CM has detected Custom BPM changes and
-
-      converted these into
-      Official BPM events'
+    m_Localized: "CM\u304C\u30AB\u30B9\u30BF\u30E0BPM\u306E\u5909\u66F4\u3092\u691C\u51FA\u3057\u3001\n\u516C\u5F0F\u306EBPM\u30A4\u30D9\u30F3\u30C8\u306B\u5909\u63DB\u3057\u307E\u3057\u305F"
     m_Metadata:
       m_Items: []
   - m_Id: 240390057914204160
-    m_Localized: 'BPM Events: {BPMCount}'
+    m_Localized: "BPM\u30A4\u30D9\u30F3\u30C8: {BPMCount}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 256289992891105280
-    m_Localized: Enter the beat you want to go to
+    m_Localized: "\u30B8\u30E3\u30F3\u30D7\u3057\u305F\u3044\u30D3\u30FC\u30C8\u306E\u4F4D\u7F6E\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 256290009261473792
-    m_Localized: 'Invalid number
-
-      Enter the beat you want to go to'
+    m_Localized: "\u7121\u52B9\u306A\u6570\u5B57\u3067\u3059\n\u30B8\u30E3\u30F3\u30D7\u3057\u305F\u3044\u30D3\u30FC\u30C8\u306E\u4F4D\u7F6E\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044"
     m_Metadata:
       m_Items: []
   - m_Id: 294393564396453888
-    m_Localized: Invalid number.
+    m_Localized: "\u7121\u52B9\u306A\u6570\u5024"
     m_Metadata:
       m_Items: []
   - m_Id: 294393379213737984
-    m_Localized: Reset Beat
+    m_Localized: "\u30D3\u30FC\u30C8\u3092\u30EA\u30BB\u30C3\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 294393312377503744
@@ -789,19 +783,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 357744672130330624
-    m_Localized: 'Arcs: {ArcCount}'
+    m_Localized: "\u30A2\u30FC\u30AF: {ArcCount}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   - m_Id: 357744742603026432
-    m_Localized: 'Chains: {ChainCount}'
+    m_Localized: "\u30C1\u30A7\u30FC\u30F3: {ChainCount}"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657548
+      - rid: 939478408207532131
   references:
     version: 2
     RefIds:
-    - rid: 5886062096295657548
+    - rid: 939478408207532131
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000000083e97b09560300f09d46e2f6f60400f01daff2f6f604
