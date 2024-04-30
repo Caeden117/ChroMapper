@@ -2,8 +2,8 @@ Shader "Unlit/Spectrogram"
 {
     Properties
     {
-        _Spectrogram_Shift ("Spectrogram Shift", Float) = 0.0
-        _Spectrogram_BilinearFiltering ("Bilinear Filtering", Float) = 0.0
+        [Toggle] _FlipX ("Flip X", Float) = 0.0
+        [Toggle] _FlipY ("Flip Y", Float) = 0.0
         _OutlineWidth ("Outline Width", Float) = 0.1
     }
     SubShader
@@ -31,11 +31,14 @@ Shader "Unlit/Spectrogram"
                 float4 vertex : SV_POSITION;
             };
 
-            float _Spectrogram_Shift = 1;
-            float _Spectrogram_BilinearFiltering = 0;
+            float _FlipX = 0;
+            float _FlipY = 0;
             float _OutlineWidth = 0;
 
             // Global variables
+            uniform float _Spectrogram_Shift = 1;
+            uniform float _Spectrogram_BilinearFiltering = 0;
+            
             uniform float _SongTimeSeconds = 0;
             uniform float _ViewStart = 0;
             uniform float _ViewEnd = 1;
@@ -138,13 +141,15 @@ Shader "Unlit/Spectrogram"
 
             float4 frag (v2f i) : SV_Target
             {
+                float2 uv = float2(_FlipX > 0.5 ? 1 - i.uv.x : i.uv.x, _FlipY > 0.5 ? 1 - i.uv.y : i.uv.y);
+                
                 // Calculate our X position within the view in seconds
-                float currentSeconds = lerp(_ViewStart, _ViewEnd, i.uv.x);
+                float currentSeconds = lerp(_ViewStart, _ViewEnd, uv.x);
 
                 // fix shimmering pixels by saturating our spectrogram value between [0,1]
                 //   I guess when interpolating between pixels, the above math can produce values slightly out of intended range.
                 float value = currentSeconds > 0
-                    ? saturate(calculateSpectrogramValue(currentSeconds, i.uv))
+                    ? saturate(calculateSpectrogramValue(currentSeconds, uv))
                     : 0.0;
                 
                 // Calculate gradient max

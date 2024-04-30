@@ -10,7 +10,8 @@ Material:
   m_Name: Spectrogram
   m_Shader: {fileID: 4800000, guid: ced70b7158127544fbe74aa9688f38b1, type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _FLIPY_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -64,6 +65,8 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
+    - _FlipX: 0
+    - _FlipY: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
