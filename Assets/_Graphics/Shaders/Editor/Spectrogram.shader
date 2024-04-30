@@ -129,6 +129,13 @@ Shader "Unlit/Spectrogram"
                 }
             }
 
+            float inverseLerp(float a, float b, float value)
+            {
+                return a != b
+                    ? saturate((value - a) / (b - a))
+                    : 0.0f;
+            }
+
             float4 frag (v2f i) : SV_Target
             {
                 // Calculate our X position within the view in seconds

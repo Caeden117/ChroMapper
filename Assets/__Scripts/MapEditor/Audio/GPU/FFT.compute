@@ -35,7 +35,6 @@ uint BitReverse(uint num, uint bits)
     return result;
 }
 
-
 // Execute with groups (X = Song sample count / SampleSize, Y and Z = 1)
 // im well aware this is not the most efficent usage but my brain was melting trying to get this all to work
 [numthreads(1, 1, 1)]
@@ -105,12 +104,15 @@ void FFT (uint3 groupID : SV_GroupID)
 		// We flip the imaginary half so it lines up with the real half
         if (target >= FFTSize)
             target = FFTSize - target;
-        
+                
         // we convert to magnitude here because our shader will render magnitude results
         float real = Real[sampleOffset + j] * fftScale;
         float imaginary = Imaginary[sampleOffset + j] * fftScale;
         
         float value = sqrt(real * real + imaginary * imaginary) * FFTScaleFactor;
+
+        // Frequency bin compensation
+        value *= sqrt(((target % FFTSize) + 0.25) * (8.0 / SampleSize));
 		
 		// pardon the janky math, im just throwing it here instead of the spectrogram shader
 		// basically does some more post-processing so our magnitude results better fit [0-1]
