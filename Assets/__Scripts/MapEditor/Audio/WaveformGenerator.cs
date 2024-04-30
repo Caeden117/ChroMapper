@@ -13,6 +13,9 @@ public class WaveformGenerator : MonoBehaviour
         
         ColorBufferManager.GenerateBuffersForGradient(SpectrogramGradient2d);
         SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
-        AudioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong, 1024, 8);
+        
+        AudioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong,
+            Settings.Instance.SpectrogramSampleSize,
+            Settings.Instance.SpectrogramEditorQuality);
     }
 }

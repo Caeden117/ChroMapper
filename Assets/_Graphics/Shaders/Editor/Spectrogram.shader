@@ -5,6 +5,7 @@ Shader "Unlit/Spectrogram"
         [Toggle] _FlipX ("Flip X", Float) = 0.0
         [Toggle] _FlipY ("Flip Y", Float) = 0.0
         _OutlineWidth ("Outline Width", Float) = 0.1
+        _ValueCutoff ("Value Cutoff", Float) = 0
     }
     SubShader
     {
@@ -31,9 +32,11 @@ Shader "Unlit/Spectrogram"
                 float4 vertex : SV_POSITION;
             };
 
+            // Local variables
             float _FlipX = 0;
             float _FlipY = 0;
             float _OutlineWidth = 0;
+            float _ValueCutoff = 0;
 
             // Global variables
             uniform float _Spectrogram_Shift = 1;
@@ -151,6 +154,9 @@ Shader "Unlit/Spectrogram"
                 float value = currentSeconds > 0
                     ? saturate(calculateSpectrogramValue(currentSeconds, uv))
                     : 0.0;
+
+                // Value clipping
+                clip(value - _ValueCutoff);
                 
                 // Calculate gradient max
                 uint upperGradientIdx = 0;

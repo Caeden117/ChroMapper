@@ -35,7 +35,11 @@ public class AudioPreviewGenerator : MonoBehaviour
         
         ColorBufferManager.GenerateBuffersForGradient(spectrogramGradient2d);
         SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
-        audioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong, 1024, 1);
+        
+        // This is just a preview. Quality setting won't apply here.
+        audioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong,
+            Settings.Instance.SpectrogramSampleSize, 
+            1);
 
         UpdatePreviewSelection();
         previewGameObject.SetActive(true);
