@@ -2,21 +2,20 @@
 using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
-    private static readonly int SAMPLE_SIZE = Shader.PropertyToID("SampleSize");
-    private static readonly int PROCESSING_OFFSET = Shader.PropertyToID("ProcessingOffset");
+    private static readonly int sampleSize = Shader.PropertyToID("SampleSize");
+    private static readonly int processingOffset = Shader.PropertyToID("ProcessingOffset");
 
-    private static readonly int FFT_SIZE = Shader.PropertyToID("FFTSize");
-    private static readonly int FFT_COUNT = Shader.PropertyToID("FFTCount");
-    private static readonly int FFT_FREQUENCY = Shader.PropertyToID("FFTFrequency");
-    private static readonly int FFT_SCALE_FACTOR = Shader.PropertyToID("FFTScaleFactor");
+    private static readonly int fftSize = Shader.PropertyToID("FFTSize");
+    private static readonly int fftCount = Shader.PropertyToID("FFTCount");
+    private static readonly int fftFrequency = Shader.PropertyToID("FFTFrequency");
+    private static readonly int fftScaleFactor = Shader.PropertyToID("FFTScaleFactor");
 
-    private static readonly int MULTIPLY_A = Shader.PropertyToID("A");
-    private static readonly int MULTIPLY_B = Shader.PropertyToID("B");
-    private static readonly int MULTIPLY_RESULTS = Shader.PropertyToID("Results");
+    private static readonly int multiplyA = Shader.PropertyToID("A");
+    private static readonly int multiplyB = Shader.PropertyToID("B");
 
-    private static readonly int FFT_REAL = Shader.PropertyToID("Real");
-    private static readonly int FFT_IMAGINARY = Shader.PropertyToID("Imaginary");
-    private static readonly int FFT_RESULTS = Shader.PropertyToID("FFTResults");
+    private static readonly int fftReal = Shader.PropertyToID("Real");
+    private static readonly int fftImaginary = Shader.PropertyToID("Imaginary");
+    private static readonly int fftResults = Shader.PropertyToID("FFTResults");
     
     [SerializeField] private ComputeShader multiplyShader;
     [SerializeField] private ComputeShader fftShader;
@@ -43,14 +42,14 @@ public class AudioManager : MonoBehaviour
         var signal = WindowCoefficients.Signal(window);
         
         // Set global sahder variables
-        Shader.SetGlobalInt(AudioManager.SAMPLE_SIZE, sampleSize);
-        Shader.SetGlobalInt(AudioManager.FFT_SIZE, fftSize);
-        Shader.SetGlobalInt(AudioManager.FFT_COUNT, fftCount);
-        Shader.SetGlobalFloat(FFT_SCALE_FACTOR, (float)signal);
-        Shader.SetGlobalFloat(FFT_FREQUENCY, clip.frequency * quality);
+        Shader.SetGlobalInt(AudioManager.sampleSize, sampleSize);
+        Shader.SetGlobalInt(AudioManager.fftSize, fftSize);
+        Shader.SetGlobalInt(AudioManager.fftCount, fftCount);
+        Shader.SetGlobalFloat(fftScaleFactor, (float)signal);
+        Shader.SetGlobalFloat(fftFrequency, clip.frequency * quality);
 
         cachedFFTBuffer = new ComputeBuffer(fftCount, sizeof(float));
-        Shader.SetGlobalBuffer(FFT_RESULTS, cachedFFTBuffer);
+        Shader.SetGlobalBuffer(fftResults, cachedFFTBuffer);
 
         // Step 1: Prepare real components of our FFT by multiply song samples by window coefficients for FFT
         using ComputeBuffer windowedSamples = new(fftCount, sizeof(float));
@@ -64,8 +63,8 @@ public class AudioManager : MonoBehaviour
 
             windowCoeffBuffer.SetData(window);
 
-            multiplyShader.SetBuffer(0, MULTIPLY_A, windowedSamples);
-            multiplyShader.SetBuffer(0, MULTIPLY_B, windowCoeffBuffer);
+            multiplyShader.SetBuffer(0, multiplyA, windowedSamples);
+            multiplyShader.SetBuffer(0, multiplyB, windowCoeffBuffer);
 
             ExecuteOverLargeArray(multiplyShader, fftCount);
         }
@@ -78,15 +77,15 @@ public class AudioManager : MonoBehaviour
             var zeroArray = new float[sampleSize];
             zeroBuffer.SetData(zeroArray);
 
-            multiplyShader.SetBuffer(0, MULTIPLY_A, imaginaryBuffer);
-            multiplyShader.SetBuffer(0, MULTIPLY_B, zeroBuffer);
+            multiplyShader.SetBuffer(0, multiplyA, imaginaryBuffer);
+            multiplyShader.SetBuffer(0, multiplyB, zeroBuffer);
 
             ExecuteOverLargeArray(multiplyShader, fftCount);
         }
 
         // Step 3: Execute FFT
-        fftShader.SetBuffer(0, FFT_REAL, windowedSamples);
-        fftShader.SetBuffer(0, FFT_IMAGINARY, imaginaryBuffer);
+        fftShader.SetBuffer(0, fftReal, windowedSamples);
+        fftShader.SetBuffer(0, fftImaginary, imaginaryBuffer);
         
         ExecuteOverLargeArray(fftShader, fftCount / sampleSize);
     }
@@ -109,7 +108,7 @@ public class AudioManager : MonoBehaviour
         {
             elementStep = Mathf.Clamp(length - i, 0, maxThreadCount);
 
-            shader.SetInt(PROCESSING_OFFSET, i);
+            shader.SetInt(processingOffset, i);
             shader.Dispatch(0, elementStep / kernelGroupArea, 1, 1);
         }
     }
