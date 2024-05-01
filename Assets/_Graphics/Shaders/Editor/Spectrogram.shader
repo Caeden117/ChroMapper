@@ -14,6 +14,12 @@ Shader "Unlit/Spectrogram"
 
         Pass
         {
+            Stencil
+            {
+                Ref 1
+                Comp Equal
+            }
+            
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
