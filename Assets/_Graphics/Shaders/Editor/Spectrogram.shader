@@ -2,6 +2,8 @@ Shader "Unlit/Spectrogram"
 {
     Properties
     {
+        _Stencil ("Stencil ID", Integer) = 0
+
         [Toggle] _FlipX ("Flip X", Float) = 0.0
         [Toggle] _FlipY ("Flip Y", Float) = 0.0
         _OutlineWidth ("Outline Width", Float) = 0.1
@@ -16,7 +18,7 @@ Shader "Unlit/Spectrogram"
         {
             Stencil
             {
-                Ref 1
+                Ref [_Stencil]
                 Comp Equal
             }
             
