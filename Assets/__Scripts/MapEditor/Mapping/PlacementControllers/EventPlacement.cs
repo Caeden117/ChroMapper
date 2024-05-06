@@ -30,8 +30,8 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
     private bool earlyRotationPlaceNow;
     private bool negativeRotations;
-    private bool halfFloatValue;
-    private bool zeroFloatValue;
+    private bool isHalfFloatValuePressed;
+    private bool isZeroFloatValuePressed;
 
     protected override Vector2 vanillaOffset { get; } = new Vector2(-0.5f, -1.1f);
 
@@ -62,17 +62,11 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
     public void OnNegativeRotationModifier(InputAction.CallbackContext context) =>
         negativeRotations = context.performed;
 
-    public void OnHalfFloatValueModifier(InputAction.CallbackContext context)
-    {
-        halfFloatValue = context.performed;
-        UpdateFloatValue(halfFloatValue ? 0.5f : 1.0f);
-    }
+    public void OnHalfFloatValueModifier(InputAction.CallbackContext context) =>
+        isHalfFloatValuePressed = context.performed;
 
-    public void OnZeroFloatValueModifier(InputAction.CallbackContext context)
-    {
-        zeroFloatValue = context.performed;
-        UpdateFloatValue(zeroFloatValue ? 0 : 1);
-    }
+    public void OnZeroFloatValueModifier(InputAction.CallbackContext context) => 
+        isZeroFloatValuePressed = context.performed;
 
     public void OnRotateInPlaceLeft(InputAction.CallbackContext context)
     {
@@ -149,6 +143,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             queuedData.CustomColor = null;
 
         UpdateQueuedValue(queuedValue);
+        UpdateQueuedFloatValue(queuedFloatValue);
         UpdateAppearance();
     }
 
@@ -175,7 +170,24 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
     public void UpdateQueuedFloatValue(float value)
     {
-        queuedData.FloatValue = value;
+        if (!queuedData.IsLightEvent())
+        {
+            queuedData.FloatValue = 1f;
+            return;
+        }
+
+        if (isZeroFloatValuePressed)
+        {
+            queuedData.FloatValue = 0f;
+        }
+        else if (isHalfFloatValuePressed)
+        {
+            queuedData.FloatValue = value * 0.5f;
+        }
+        else
+        {
+            queuedData.FloatValue = value;
+        }
     }
 
     public void UpdateFloatValue(float value)
@@ -245,11 +257,6 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         else if (evt.IsLaneRotationEvent()) evt.Value = 1360 + PrecisionRotationValue;
 
         if (evt.CustomData?.Count <= 0) evt.CustomData = null;
-
-        if (!evt.IsLightEvent()) // in case we are placing rotation/boost when pressing half/zero modifier
-        {
-            evt.FloatValue = 1;
-        }
 
         // convert event to their respective event type
         // TODO: cleaner factory would be better, also this is ugly as hell
