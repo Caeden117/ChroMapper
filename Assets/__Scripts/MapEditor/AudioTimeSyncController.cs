@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using NAudio.Wave;
+using NAudio.Vorbis;
+using System.IO;
 
 public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, CMInput.ITimelineActions, CMInput.ITimelineNavigationActions
 {
@@ -12,7 +15,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private static readonly int songTime = Shader.PropertyToID("_SongTime");
     private const float cancelPlayInputDuration = 0.3f;
 
-    [FormerlySerializedAs("songAudioSource")] public AudioSource SongAudioSource;
+    //ELECAST TEST [FormerlySerializedAs("songAudioSource")] public AudioSource SongAudioSource;
     [SerializeField] private AudioSource waveformSource;
 
     [SerializeField] private GameObject moveables;
@@ -98,11 +101,18 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         }
     }
 
-    public float CurrentAudioSeconds => SongAudioSource.clip is null ? 0f : SongAudioSource.timeSamples / (float)SongAudioSource.clip.frequency;
+    //ELECAST TEST public float CurrentAudioSeconds => SongAudioSource.clip is null ? 0f : SongAudioSource.timeSamples / (float)SongAudioSource.clip.frequency;
+
+    public float CurrentAudioSeconds => Vorbis is null ? 0f : IsPlaying ? CurrentSeconds : Vorbis.SamplePosition/sampleRate;//ELECAST TEST
 
     public float CurrentAudioBeats => GetBeatFromSeconds(CurrentAudioSeconds);
 
     public bool IsPlaying { get; private set; }
+
+    private int bytesPerSecond;//ELECAST TEST
+    private WaveOutEvent waveOut; //ELECAST TEST
+    public VorbisSampleProvider Vorbis; //ELECAST TEST
+    private int sampleRate; //ELECAST TEST
 
     // Use this for initialization
     private void Start()
@@ -112,10 +122,18 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             //Init dat stuff
             clip = BeatSaberSongContainer.Instance.LoadedSong;
             Song = BeatSaberSongContainer.Instance.Song;
+
             ResetTime();
             IsPlaying = false;
-            SongAudioSource.clip = clip;
-            SongAudioSource.volume = Settings.Instance.SongVolume;
+            //ELECAST TEST SongAudioSource.clip = clip;
+            //ELECAST TEST SongAudioSource.volume = Settings.Instance.SongVolume;
+
+            Vorbis = new VorbisSampleProvider(File.OpenRead(Song.Directory + "\\" + Song.SongFilename), true);//ELECAST TEST
+            bytesPerSecond = Vorbis.WaveFormat.AverageBytesPerSecond;//ELECAST TEST
+            sampleRate = Vorbis.WaveFormat.SampleRate;//ELECAST TEST
+            waveOut = new WaveOutEvent();//ELECAST TEST
+            waveOut.Init(Vorbis);//ELECAST TEST
+
             waveformSource.clip = clip;
             UpdateMovables();
             if (Settings.NonPersistentSettings.ContainsKey(PrecisionSnapName))
@@ -148,7 +166,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 // Sync correction
                 var correction = time > 1 ? trackTime / time : 1f;
 
-                if (SongAudioSource.isPlaying)
+                if (waveOut.PlaybackState == PlaybackState.Playing) //ELECAST TEST
+                //if (SongAudioSource.isPlaying)
                 {
                     // Snap forward if we are more than a 2 frames out of sync as we're trying to make it one frame out?
                     var frameTime = Mathf.Max(0.04f, Time.smoothDeltaTime * 2);
@@ -306,9 +325,19 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         CurrentJsonTime -= (1f / gridMeasureSnapping);
     }
 
-    private void UpdateSongVolume(object obj) => SongAudioSource.volume = (float)obj;
+    //ELECAST TEST private void UpdateSongVolume(object obj) => SongAudioSource.volume = (float)obj;
+    private void UpdateSongVolume(object obj) => waveOut.Volume = (float)obj;//ELECAST TEST
 
-    private void UpdateSongSpeed(object obj) => songSpeed = (float)obj;
+    //ELECAST TEST private void UpdateSongSpeed(object obj) => songSpeed = (float)obj;
+    private void UpdateSongSpeed(object obj) //ELECAST TEST
+    {
+        songSpeed = (float)obj;
+
+        
+        //TODO Add NAudio Support!!
+
+    }
+        
 
     private void OnLevelLoaded() => levelLoaded = true;
 
@@ -347,25 +376,34 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         IsPlaying = !IsPlaying;
         if (IsPlaying)
         {
-            if (CurrentSeconds >= SongAudioSource.clip.length - 0.1f)
+            //ELECAST TEST if (CurrentSeconds >= SongAudioSource.clip.length - 0.1f)
+            if (CurrentSeconds >= GetTotalSeconds() - 0.1f)//ELECAST TEST
             {
                 ResetTime();
             }
 
             playStartTime = CurrentSeconds;
-            SongAudioSource.time = CurrentSeconds;
-            SongAudioSource.Play();
+            //ELECAST TEST SongAudioSource.time = CurrentSeconds;
+            //ELECAST TEST SongAudioSource.Play();
+            SetVorbisPosition((long)(CurrentSeconds * bytesPerSecond));//ELECAST TEST
+            waveOut.Play();//ELECAST TEST
 
             audioLatencyCompensationSeconds = Settings.Instance.AudioLatencyCompensation / 1000f;
             CurrentSeconds -= audioLatencyCompensationSeconds * (songSpeed / 10f);
         }
         else
         {
-            SongAudioSource.Stop();
+            //ELECAST TEST SongAudioSource.Stop();
+            waveOut.Stop();//ELECAST TEST
             SnapToGrid();
         }
 
         PlayToggle?.Invoke(IsPlaying);
+    }
+
+    public float GetTotalSeconds()
+    {
+        return (float)Vorbis.Length / sampleRate;
     }
 
     public void CancelPlaying()
@@ -381,7 +419,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         if (IsPlaying) return;
         var songBpmTime = GetBeatFromSeconds(seconds);
         UpdateCurrentTimes(songBpmTime);
-        SongAudioSource.time = CurrentSeconds;
+        //ELECAST TEST SongAudioSource.time = CurrentSeconds;
+        SetVorbisPosition((long)(CurrentSeconds * bytesPerSecond));//ELECAST TEST
         ValidatePosition();
         UpdateMovables();
     }
@@ -406,7 +445,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         if (IsPlaying) return;
         CurrentSeconds = seconds;
-        SongAudioSource.time = CurrentSeconds;
+        //ELECAST TEST SongAudioSource.time = CurrentSeconds;
+        SetVorbisPosition((long)(CurrentSeconds * bytesPerSecond));//ELECAST TEST
     }
 
     [Obsolete("This is for existing dev plugin compatibility. Use MoveToSongBpmTime or MoveToJsonTime.", true)]
@@ -415,14 +455,25 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         if (IsPlaying) return;
         CurrentSongBpmTime = songBpmTime;
-        SongAudioSource.time = CurrentSeconds;
+        //ELECAST TEST SongAudioSource.time = CurrentSeconds;
+        SetVorbisPosition((long)(CurrentSeconds * bytesPerSecond));//ELECAST TEST
     }
 
     public void MoveToJsonTime(float jsonTime)
     {
         if (IsPlaying) return;
         CurrentJsonTime = jsonTime;
-        SongAudioSource.time = CurrentSeconds;
+        //ELECAST TEST SongAudioSource.time = CurrentSeconds;
+        SetVorbisPosition((long)(CurrentSeconds * bytesPerSecond));//ELECAST TEST
+    }
+
+    //ELECAST TEST
+    private void SetVorbisPosition(long value)
+    {
+        if (!Vorbis.CanSeek) throw new InvalidOperationException("Cannot seek!");
+        if (value < 0 || value > Vorbis.Length * Vorbis.WaveFormat.BlockAlign) throw new ArgumentOutOfRangeException(nameof(value));
+
+        Vorbis.Seek(value / Vorbis.WaveFormat.BlockAlign);
     }
 
     public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangeGridContainer.FindRoundedBpmTime(beat, snap);
