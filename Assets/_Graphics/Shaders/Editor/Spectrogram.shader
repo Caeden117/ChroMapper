@@ -205,7 +205,7 @@ Shader "Unlit/Spectrogram"
                 //   Need to make the outline time/scale independent
                 if (abs(currentSeconds - _SongTimeSeconds) < _OutlineWidth)
                 {
-                    color += float4(0.2, 0.2, 0.2, 0.2);
+                    color += float4(0.5, 0.5, 0.5, 0.5);
                 }
                 
                 // Convert linear to gamma space
