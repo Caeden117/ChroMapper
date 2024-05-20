@@ -95,7 +95,9 @@ Shader "Unlit/Spectrogram"
                     // Calculate our Y position within the view
                     uint fftSampleOffset = (uint)(lerp(0, FFTSize, uv.y * pow(_Spectrogram_Shift, uv.y - 1)));
 
-                    // Calculate final FFT sample position
+                    // Map Y position to ignore lowest and highest band
+                    fftSampleOffset = round(1.0 + fftSampleOffset * ((FFTSize - 2.0) / FFTSize));
+
                     uint resultIdx = fftSampleLocation + fftSampleOffset;
 
                     // Return single sample
@@ -109,6 +111,9 @@ Shader "Unlit/Spectrogram"
 
                     // Grab our offset location as a float
                     float y = lerp(0, FFTSize, uv.y * pow(_Spectrogram_Shift, uv.y - 1));
+
+                    // Map Y position to ignore lowest and highest band
+                    y = 1.0 + y * ((FFTSize - 2.0) / FFTSize); 
 
                     // Calculate bilinear sampling X/Y points
                     float x1 = floor(x);
