@@ -54,6 +54,8 @@ Shader "Unlit/Spectrogram"
             uniform float _ViewStart = 0;
             uniform float _ViewEnd = 1;
 
+            uniform float _EditorScale;
+
             uniform uint FFTFrequency = 1024;
             uniform uint FFTSize = 1024;
             uniform uint FFTCount = 1024;
@@ -203,7 +205,7 @@ Shader "Unlit/Spectrogram"
                 // Add 0.2 to each component if we are within outline
                 // TODO: Because units are in seconds, this outline scales with the length of grid
                 //   Need to make the outline time/scale independent
-                if (abs(currentSeconds - _SongTimeSeconds) < _OutlineWidth)
+                if (abs(currentSeconds - _SongTimeSeconds) < _OutlineWidth / _EditorScale)
                 {
                     color += float4(0.5, 0.5, 0.5, 0.5);
                 }
