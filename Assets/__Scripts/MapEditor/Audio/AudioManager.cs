@@ -71,16 +71,10 @@ public class AudioManager : MonoBehaviour
 
         // Step 2: Prepare imaginary components of our FFT by initializing the entire buffer to 0
         using ComputeBuffer imaginaryBuffer = new(fftCount, sizeof(float));
-        using (ComputeBuffer zeroBuffer = new(sampleSize, sizeof(float)))
         {
             // should defaultly initialize to all 0s
-            var zeroArray = new float[sampleSize];
-            zeroBuffer.SetData(zeroArray);
-
-            multiplyShader.SetBuffer(0, multiplyA, imaginaryBuffer);
-            multiplyShader.SetBuffer(0, multiplyB, zeroBuffer);
-
-            ExecuteOverLargeArray(multiplyShader, fftCount);
+            var bigZero = new float[fftCount];
+            imaginaryBuffer.SetData(bigZero);
         }
 
         // Step 3: Execute FFT
