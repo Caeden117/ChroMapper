@@ -7,6 +7,7 @@ public class AudioPreviewGenerator : MonoBehaviour
 {
     private static readonly int viewStart = Shader.PropertyToID("_ViewStart");
     private static readonly int viewEnd = Shader.PropertyToID("_ViewEnd");
+    private static readonly int editorScale = Shader.PropertyToID("_EditorScale");
     
     [SerializeField] private AudioManager audioManager;
     [GradientUsage(true), SerializeField] private Gradient spectrogramGradient2d;
@@ -32,6 +33,8 @@ public class AudioPreviewGenerator : MonoBehaviour
         // Reinitialize view bounds to encompass the entire thing
         Shader.SetGlobalFloat(viewStart, 0);
         Shader.SetGlobalFloat(viewEnd, BeatSaberSongContainer.Instance.LoadedSongLength);
+        
+        Shader.SetGlobalFloat(editorScale, 1f);
         
         ColorBufferManager.GenerateBuffersForGradient(spectrogramGradient2d);
         SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
