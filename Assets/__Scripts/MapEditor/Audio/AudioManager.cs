@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+
 public class AudioManager : MonoBehaviour
 {
     private static readonly int sampleSize = Shader.PropertyToID("SampleSize");
@@ -13,12 +14,15 @@ public class AudioManager : MonoBehaviour
     private static readonly int multiplyA = Shader.PropertyToID("A");
     private static readonly int multiplyB = Shader.PropertyToID("B");
 
+    private static readonly int initializeBuffer = Shader.PropertyToID("BufferToInitialize");
+
     private static readonly int fftReal = Shader.PropertyToID("Real");
     private static readonly int fftImaginary = Shader.PropertyToID("Imaginary");
     private static readonly int fftResults = Shader.PropertyToID("FFTResults");
     
     [SerializeField] private ComputeShader multiplyShader;
     [SerializeField] private ComputeShader fftShader;
+    [SerializeField] private ComputeShader initializeShader;
 
     private ComputeBuffer cachedFFTBuffer;
     
@@ -71,11 +75,8 @@ public class AudioManager : MonoBehaviour
 
         // Step 2: Prepare imaginary components of our FFT by initializing the entire buffer to 0
         using ComputeBuffer imaginaryBuffer = new(fftCount, sizeof(float));
-        {
-            // should defaultly initialize to all 0s
-            var bigZero = new float[fftCount];
-            imaginaryBuffer.SetData(bigZero);
-        }
+        initializeShader.SetBuffer(0, initializeBuffer, imaginaryBuffer);
+        ExecuteOverLargeArray(initializeShader, fftCount);
 
         // Step 3: Execute FFT
         fftShader.SetBuffer(0, fftReal, windowedSamples);

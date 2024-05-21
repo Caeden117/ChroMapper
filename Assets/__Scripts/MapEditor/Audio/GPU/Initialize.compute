@@ -1,0 +1,11 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Initialize
+
+RWStructuredBuffer<float> BufferToInitialize;
+uint ProcessingOffset;
+
+[numthreads(1, 1, 1)]
+void Initialize(uint3 groupID : SV_GroupID)
+{
+    BufferToInitialize[ProcessingOffset + groupID.x] = 0;
+}
