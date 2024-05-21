@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 5886062096295657495
+    - rid: 939478408207532078
   m_TableData:
   - m_Id: 1
     m_Localized: 'Einstellungen - {TabName} '
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 2
     m_Localized: Sonstige Einstellungen
     m_Metadata:
@@ -283,7 +283,7 @@ MonoBehaviour:
     m_Localized: 'Geladene Erweiterungen: {Count}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 67
     m_Localized: Erweiterungs Information
     m_Metadata:
@@ -323,7 +323,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} Dezimalstelle/n'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 74
     m_Localized: "Wie viele Dezimalstellen, um \"_time\" -Werte f\xFCr jedes Kartenobjekt
       beim Speichern auf der Festplatte zu runden.\nGeringere Genauigkeit bedeutet
@@ -560,7 +560,7 @@ MonoBehaviour:
     m_Localized: Erweiterungen
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 132
     m_Localized: Experimentel
     m_Metadata:
@@ -573,47 +573,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 139
     m_Localized: "{TextValue} Schl\xE4ge"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 140
     m_Localized: "{TextValue} Schl\xE4ge"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 143
     m_Localized: Rotationsanzeige halten
     m_Metadata:
@@ -659,7 +659,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 154
     m_Localized: UI Skalierung
     m_Metadata:
@@ -672,7 +672,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 157
     m_Localized: Beleuchtungsereignis Modelle
     m_Metadata:
@@ -744,7 +744,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 174
     m_Localized: Song
     m_Metadata:
@@ -865,7 +865,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 3301721636864
     m_Localized: "Ver\xE4ndert die Transparenz des Karrieten Hintergrund"
     m_Metadata:
@@ -874,7 +874,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 23812497342464
     m_Localized: Transparenz des Rasters
     m_Metadata:
@@ -925,7 +925,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 67492742661058560
     m_Localized: "Skaliert die (gesamte) Renderaufl\xF6sung f\xFCr bessere Leistung
       oder visuelle Verbesserungen."
@@ -1268,7 +1268,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657495
+      - rid: 939478408207532078
   - m_Id: 322078335378526208
     m_Localized: Objects and Lighting
     m_Metadata:
@@ -1339,10 +1339,60 @@ MonoBehaviour:
     m_Localized: Show Chain Count
     m_Metadata:
       m_Items: []
+  - m_Id: 362172452363964416
+    m_Localized: Sample Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172654227427328
+    m_Localized: Frequency resolution of the spectrogram. Higher numbers reduce timeline
+      accuracy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172845764513792
+    m_Localized: Bilinear Filtering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172895014031360
+    m_Localized: Basic interpolation between spectrogram values.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173257435451392
+    m_Localized: Logarithmic Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173301957988352
+    m_Localized: Dedicates more of the spectrogram to lower frequencies.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173439820566528
+    m_Localized: Sample Quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173496468836352
+    m_Localized: Increases timeline detail by multiplying the number of spectrogram
+      samples.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174267792953344
+    m_Localized: Slice Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174367466393600
+    m_Localized: Simulate height by overlaying multiple images of the spectrogram.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174490212700160
+    m_Localized: Slice Height
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174510987087872
+    m_Localized: Increases the height of spectrogram slices.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 5886062096295657495
+    - rid: 939478408207532078
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04

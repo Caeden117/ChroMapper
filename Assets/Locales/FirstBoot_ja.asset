@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2
-    m_Localized: Let's Go!
+    m_Localized: "\u306F\u3058\u3081\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 3
@@ -69,11 +69,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 300762992517451776
-    m_Localized: Lighting Preset
+    m_Localized: "\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u306E\u30D7\u30EA\u30BB\u30C3\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 300762994845290496
-    m_Localized: Tweak ChroMapper's lighting to match other map editors.
+    m_Localized: "ChroMapper\u306E\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u3092\u4ED6\u306E\u30DE\u30C3\u30D7\u30A8\u30C7\u30A3\u30BF\u30FC\u306B\u5408\u308F\u305B\u3066\u8ABF\u6574\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   references:

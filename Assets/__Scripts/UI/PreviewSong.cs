@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class PreviewSong : MonoBehaviour
 {
+    private static readonly int songTimeSeconds = Shader.PropertyToID("_SongTimeSeconds");
+    
     [SerializeField] private Image progressBar;
     [SerializeField] private AudioSource audioSource;
 
@@ -25,7 +27,10 @@ public class PreviewSong : MonoBehaviour
     public void Update()
     {
         if (!playing)
+        {
+            Shader.SetGlobalFloat(songTimeSeconds, -100f);
             return;
+        }
 
         var time = (float)(AudioSettings.dspTime - startTime);
         var timeRemaining = length - time;
@@ -39,6 +44,8 @@ public class PreviewSong : MonoBehaviour
         else
             audioSource.volume = Settings.Instance.SongVolume;
 
+        Shader.SetGlobalFloat(songTimeSeconds, audioSource.time);
+        
         var position = time > length ? 0 : time / length;
         progressBar.fillAmount = position;
     }
@@ -51,6 +58,7 @@ public class PreviewSong : MonoBehaviour
             image.sprite = startSprite;
             audioSource.Stop();
             playing = false;
+            Shader.SetGlobalFloat(songTimeSeconds, -100f);
             return;
         }
 

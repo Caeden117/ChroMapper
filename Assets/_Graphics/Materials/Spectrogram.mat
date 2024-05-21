@@ -8,9 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Spectrogram
-  m_Shader: {fileID: 4800000, guid: b714037d8ccfe9342b0540594ef47a49, type: 3}
+  m_Shader: {fileID: 4800000, guid: ced70b7158127544fbe74aa9688f38b1, type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _FLIPY_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -44,7 +45,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Ints: []
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints:
+    - _Stencil: 0
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
@@ -52,16 +66,25 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
+    - _FlipX: 0
+    - _FlipY: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _OutlineWidth: 0.0015
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _Rotation: 0
     - _SmoothnessTextureChannel: 0
+    - _Spectrogram_BilinearFiltering: 1
+    - _Spectrogram_Shift: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _ValueCutoff: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

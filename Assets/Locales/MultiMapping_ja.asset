@@ -17,34 +17,34 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 4bc9586dd75931946bdf2f3334dc9397, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 5886062096295657517
+    - rid: 939478408207532100
   m_TableData:
   - m_Id: 34914570240
-    m_Localized: Join Session
+    m_Localized: "\u30BB\u30C3\u30B7\u30E7\u30F3\u306B\u53C2\u52A0"
     m_Metadata:
       m_Items: []
   - m_Id: 104179306496
-    m_Localized: Host Session
+    m_Localized: "\u30BB\u30C3\u30B7\u30E7\u30F3\u3092\u30DB\u30B9\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 757656064000
-    m_Localized: Downloading song... this can take several moments.
+    m_Localized: "\u66F2\u3092\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\u4E2D... \u3053\u308C\u306B\u306F\u5C11\u3057\u6642\u9593\u304C\u304B\u304B\u308B\u3053\u3068\u304C\u3042\u308A\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 1057586548736
-    m_Localized: Loading song...
+    m_Localized: "\u66F2\u3092\u30ED\u30FC\u30C9\u4E2D..."
     m_Metadata:
       m_Items: []
   - m_Id: 1753480302592
-    m_Localized: Use Direct Connection
+    m_Localized: "\u76F4\u63A5\u63A5\u7D9A\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 1870388137984
-    m_Localized: Room Code
+    m_Localized: "\u30EB\u30FC\u30E0\u30B3\u30FC\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 2715376816128
-    m_Localized: Use Room Code
+    m_Localized: "\u30EB\u30FC\u30E0\u30B3\u30FC\u30C9\u3092\u4F7F\u7528\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 3327472570368
@@ -52,99 +52,97 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3409345384448
-    m_Localized: Port
+    m_Localized: "\u30DD\u30FC\u30C8"
     m_Metadata:
       m_Items: []
   - m_Id: 3460121628672
-    m_Localized: Mapper Customization
+    m_Localized: "\u30DE\u30C3\u30D1\u30FC\u30AB\u30B9\u30BF\u30DE\u30A4\u30BA"
     m_Metadata:
       m_Items: []
   - m_Id: 4051690459136
-    m_Localized: Display Name
+    m_Localized: "\u8868\u793A\u540D"
     m_Metadata:
       m_Items: []
   - m_Id: 4114886037504
-    m_Localized: Grid Color
+    m_Localized: "\u30B0\u30EA\u30C3\u30C9\u30AB\u30E9\u30FC"
     m_Metadata:
       m_Items: []
   - m_Id: 4175602782208
-    m_Localized: ChroMapTogether Server URL
+    m_Localized: "ChroMapTogether\u306E\u30B5\u30FC\u30D0\u30FC URL"
     m_Metadata:
       m_Items: []
   - m_Id: 4250194284544
-    m_Localized: Apply Changes
+    m_Localized: "\u5909\u66F4\u3092\u9069\u7528"
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: 'Connection rejected.
-
-      This could be because the room code
-      is invalid
-
-      or your CM version is not the same as the host.'
+    m_Localized: "\u63A5\u7D9A\u304C\u62D2\u5426\u3055\u308C\u307E\u3057\u305F\u3002\n\u30EB\u30FC\u30E0\u30B3\u30FC\u30C9\u304C\u7121\u52B9\u3067\u3042\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\n\u307E\u305F\u306FCM\u30D0\u30FC\u30B8\u30E7\u30F3\u304C\u30DB\u30B9\u30C8\u3068\u540C\u3058\u3067\u306F\u306A\u3044\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
-    m_Localized: 'Connection with the host lost: {0}. Returning to song list...'
+    m_Localized: "\u30DB\u30B9\u30C8\u3068\u306E\u63A5\u7D9A\u304C\u5931\u308F\u308C\u307E\u3057\u305F:
+      {0}\u3002\u66F2\u30EA\u30B9\u30C8\u306B\u623B\u308A\u307E\u3059..."
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657517
+      - rid: 939478408207532100
   - m_Id: 5357561843712
-    m_Localized: 'A networking error occured: {0}.'
+    m_Localized: "\u30CD\u30C3\u30C8\u30EF\u30FC\u30AF\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F:
+      {0}\u3002"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657517
+      - rid: 939478408207532100
   - m_Id: 5800807501824
-    m_Localized: 'Connection with the ChroMapTogether server lost: {0}.'
+    m_Localized: "ChroMapTogether\u30B5\u30FC\u30D0\u30FC\u3068\u306E\u63A5\u7D9A\u304C\u5931\u308F\u308C\u307E\u3057\u305F:
+      {0}\u3002"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657517
+      - rid: 939478408207532100
   - m_Id: 6140520960000
-    m_Localized: United Mapping
+    m_Localized: "\u7D71\u5408\u30DE\u30C3\u30D4\u30F3\u30B0"
     m_Metadata:
       m_Items: []
   - m_Id: 6238239854592
-    m_Localized: Map with friends!
+    m_Localized: "\u53CB\u9054\u3068\u4E00\u7DD2\u306B\u30DE\u30C3\u30D7\u3092\u4F5C\u6210\u3057\u3088\u3046\uFF01"
     m_Metadata:
       m_Items: []
   - m_Id: 1970900842393600
-    m_Localized: Friends will need to connect using your Public IP and Port. Port
-      forwarding is required for clients to connect.
+    m_Localized: "\u53CB\u9054\u306F\u3042\u306A\u305F\u306E\u30D1\u30D6\u30EA\u30C3\u30AFIP\u3068\u30DD\u30FC\u30C8\u3092\u4F7F\u7528\u3057\u3066\u63A5\u7D9A\u3059\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\u3002\u30AF\u30E9\u30A4\u30A2\u30F3\u30C8\u304C\u63A5\u7D9A\u3059\u308B\u306B\u306F\u30DD\u30FC\u30C8\u8EE2\u9001\u304C\u5FC5\u8981\u3067\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 1970841337802752
-    m_Localized: The ChroMapTogether server will be used to host this session. You
-      will be given a short room code to pass to friends.
+    m_Localized: "\u3053\u306E\u30BB\u30C3\u30B7\u30E7\u30F3\u3092\u30DB\u30B9\u30C8\u3059\u308B\u305F\u3081\u306BChroMapTogether\u30B5\u30FC\u30D0\u30FC\u304C\u4F7F\u7528\u3055\u308C\u307E\u3059\u3002\u53CB\u9054\u306B\u6E21\u3059\u305F\u3081\u306E\u77ED\u3044\u30EB\u30FC\u30E0\u30B3\u30FC\u30C9\u304C\u6E21\u3055\u308C\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 2018274558160896
-    m_Localized: User Trace
+    m_Localized: "\u30E6\u30FC\u30B6\u30FC\u30C8\u30EC\u30FC\u30B9"
     m_Metadata:
       m_Items: []
   - m_Id: 2018332712185856
-    m_Localized: This object was first created/modified by {0}.
+    m_Localized: "\u3053\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306F\u6700\u521D\u306B
+      {0} \u306B\u3088\u3063\u3066\u4F5C\u6210/\u5909\u66F4\u3055\u308C\u307E\u3057\u305F\u3002"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657517
+      - rid: 939478408207532100
   - m_Id: 2018498240393216
-    m_Localized: This object was last modified by {0}.
+    m_Localized: "\u3053\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306F\u6700\u5F8C\u306B
+      {0} \u306B\u3088\u3063\u3066\u5909\u66F4\u3055\u308C\u307E\u3057\u305F\u3002"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657517
+      - rid: 939478408207532100
   - m_Id: 2336103375384576
-    m_Localized: Are you sure you want to ban {0}?
+    m_Localized: "{0} \u3092BAN\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657517
+      - rid: 939478408207532100
   - m_Id: 2336237542780928
-    m_Localized: Are you sure you want to kick {0}?
+    m_Localized: "{0} \u3092\u8FFD\u653E\u3057\u3066\u3082\u3088\u308D\u3057\u3044\u3067\u3059\u304B\uFF1F"
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657517
+      - rid: 939478408207532100
   references:
     version: 2
     RefIds:
-    - rid: 5886062096295657517
+    - rid: 939478408207532100
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010928e7104000000109267df0400000010129b46050000003059b4a92b07000030993ed02b07000030d973ac4c08000030d9b0cb4c0800

@@ -105,7 +105,6 @@ public class Settings
     #endregion
 
     #region Graphics
-    public int Waveform = 1;
     public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
     public bool EmulateChromaLite = true; //To get Chroma RGB lights
     public bool ColorFakeWalls = true;
@@ -120,6 +119,14 @@ public class Settings
     public int Offset_Despawning = 1;
     public bool DisplayFloatValueText = false;
 
+    // TODO: Consider whether a spectrogram toggle is necessary (it has a very minimal cost now)
+    public bool Spectrogram = true;
+    public int SpectrogramSampleSize = 512;
+    public int SpectrogramEditorQuality = 8;
+    public int SpectrogramShift = 1;
+    public bool SpectrogramBilinearFiltering = true;
+    public int SpectrogramSlices = 0;
+    public float SpectrogramHeight = 0.15f;
 
     public bool Reflections = true;
     public bool HighQualityBloom = true;
@@ -206,6 +213,7 @@ public class Settings
     // These settings are not exposed in the settings menu. Mostly used to store session data
     #region Non-Bindable
 
+    public int Waveform = 1;
     public bool PickColorFromChromaEvents = false;
     public bool PlaceChromaColor = false;
     public bool BongoBoye = false; // Old setting, migrated to below
@@ -358,6 +366,12 @@ public class Settings
 
     private void UpdateOldSettings()  //Put code in here to transfer any settings that are fundamentally changed and require conversion from an old setting to a new setting
     {
+        if (Waveform != -1)
+        {
+            Spectrogram = Waveform > 0;
+            Waveform = -1;
+        }
+        
         if (PrecisionPlacementGrid)
         {
             PrecisionPlacementMode = PrecisionPlacementMode.Hold;

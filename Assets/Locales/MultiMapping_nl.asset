@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 4bc9586dd75931946bdf2f3334dc9397, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 5886062096295657518
+    - rid: 939478408207532101
   m_TableData:
   - m_Id: 34914570240
     m_Localized: Deelnemen aan sessie
@@ -88,17 +88,17 @@ MonoBehaviour:
     m_Localized: 'Connection with the host lost: {0}. Returning to song list...'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657518
+      - rid: 939478408207532101
   - m_Id: 5357561843712
     m_Localized: 'Er is een netwerkfout opgetreden: {0}.'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657518
+      - rid: 939478408207532101
   - m_Id: 5800807501824
     m_Localized: 'Verbinding met de ChroMapTogether-server is verbroken: {0}.'
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657518
+      - rid: 939478408207532101
   - m_Id: 6140520960000
     m_Localized: United Mapping
     m_Metadata:
@@ -125,26 +125,26 @@ MonoBehaviour:
     m_Localized: "Dit object is gecre\xEBerd/voor het eerst aangepast door {0}."
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657518
+      - rid: 939478408207532101
   - m_Id: 2018498240393216
     m_Localized: Dit object is voor het laatst aangepast door {0}.
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657518
+      - rid: 939478408207532101
   - m_Id: 2336103375384576
     m_Localized: Weet je zeker dat je {0} wil verbannen?
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657518
+      - rid: 939478408207532101
   - m_Id: 2336237542780928
     m_Localized: Are you sure you want to kick {0}?
     m_Metadata:
       m_Items:
-      - rid: 5886062096295657518
+      - rid: 939478408207532101
   references:
     version: 2
     RefIds:
-    - rid: 5886062096295657518
+    - rid: 939478408207532101
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010928e7104000000109267df0400000010129b46050000003059b4a92b07000030993ed02b07000030d973ac4c08000030d9b0cb4c0800
