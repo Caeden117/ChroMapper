@@ -110,7 +110,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         noteAppearanceSo.SetNoteAppearance(note);
         note.Setup();
         note.SetBomb(noteData.Type == (int)NoteType.Bomb);
-        note.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(noteData);
+        note.DirectionTargetEuler = NoteContainer.Directionalize(noteData);
 
         if (!note.Animator.AnimatedTrack)
         {
@@ -136,6 +136,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
     {
         // Do not bother refreshing if objects are despawning naturally (while playing back the song)
         if (!objectWasSpawned && isNatural) return;
+
         // Do not do special angles for bombs and fakes
         var note = obj as BaseNote;
         if (note.Type == (int)NoteType.Bomb || note.CustomFake) return;
@@ -143,73 +144,84 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         // Grab all objects with the same type, and time (within epsilon)
         PopulateObjectsAtSameTime(note);
 
-        // Only execute if we have exactly 2 notes with the same type
-        if (objectsAtSameTime.Count == 2)
-        {
-            // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
-            var a = objectsAtSameTime.First().ObjectData as BaseNote;
-            var b = objectsAtSameTime.Last().ObjectData as BaseNote;
-
-            // Grab the containers we will be flipping
-            var containerA = objectsAtSameTime.First() as NoteContainer;
-            var containerB = objectsAtSameTime.Last() as NoteContainer;
-
-            // Clear angles if directions are not the same (and both are not dot notes) or is precision placed
-            var hasNEcoordinates = a.CustomCoordinate != null || b.CustomCoordinate != null;
-            var hasMEprecision = a.CutDirection >= 1000 || a.CutDirection <= -1000 || 
-                                 b.CutDirection >= 1000 || b.CutDirection <= -1000;
-            if (a.CutDirection != b.CutDirection && a.CutDirection != (int)NoteCutDirection.Any &&
-                b.CutDirection != (int)NoteCutDirection.Any && !hasMEprecision && !hasNEcoordinates)
-            {
-                var directionA = NoteContainer.Directionalize(containerA.ObjectData as BaseNote);
-                var directionB = NoteContainer.Directionalize(containerB.ObjectData as BaseNote);
-                containerA.DirectionTarget.localEulerAngles = directionA;
-                containerB.DirectionTarget.localEulerAngles = directionB;
-                return;
-            }
-
-            if (a.CutDirection == (int)NoteCutDirection.Any)
-            {
-                (a, b) = (b, a); // You can flip variables like this in C#. Who knew?
-                (containerA, containerB) = (containerB, containerA);
-            }
-
-            Vector2 posA = containerA.GridPosition;
-            Vector2 posB = containerB.GridPosition;
-            var cutVector = a.CutDirection == (int)NoteCutDirection.Any ? Vector2.up : Direction(a);
-            var line = posA - posB;
-            var angle = SignedAngleToLine(cutVector, line);
-
-            // if both notes are dots, line them up with each other by adding the signed angle.
-            if (a.CutDirection == (int)NoteCutDirection.Any &&
-                b.CutDirection == (int)NoteCutDirection.Any)
-            {
-                containerA.DirectionTarget.localEulerAngles = Vector3.forward * angle;
-                containerB.DirectionTarget.localEulerAngles = Vector3.forward * angle;
-            }
-            // We restrict angles below 40 otherwise display their normal direction
-            else if (Mathf.Abs(angle) <= 40)
-            {
-                var originalA = NoteContainer.Directionalize(a) + new Vector3(0, 0, -a.AngleOffset);
-                var originalB = NoteContainer.Directionalize(b) + new Vector3(0, 0, -b.AngleOffset);
-                containerA.DirectionTarget.localEulerAngles = originalA + (Vector3.forward * angle);
-                if (b.CutDirection == (int)NoteCutDirection.Any && !a.IsMainDirection)
-                    containerB.DirectionTarget.localEulerAngles = originalB + (Vector3.forward * (angle + 45));
-                else
-                    containerB.DirectionTarget.localEulerAngles = originalB + (Vector3.forward * angle);
-            }
-            else
-            {
-                var directionA = NoteContainer.Directionalize(containerA.ObjectData as BaseNote);
-                var directionB = NoteContainer.Directionalize(containerB.ObjectData as BaseNote);
-                containerA.DirectionTarget.localEulerAngles = directionA;
-                containerB.DirectionTarget.localEulerAngles = directionB;
-            }
-        }
-        else
+        // Early return if we don't have exactly 2 notes to snap
+        if (objectsAtSameTime.Count != 2)
         {
             ClearSpecialAnglesFromObjectsAtSameTime();
+            return;
         }
+
+        // Due to the potential for "obj" not having a container, we cannot reuse it as "a".
+        var a = objectsAtSameTime[0].ObjectData as BaseNote;
+        var b = objectsAtSameTime[^1].ObjectData as BaseNote;
+
+        // Grab the containers we will be flipping
+        var containerA = objectsAtSameTime[0] as NoteContainer;
+        var containerB = objectsAtSameTime[^1] as NoteContainer;
+
+        // Clear angles if directions are not the same (and both are not dot notes) or is precision placed
+        var hasNEcoordinates = a.CustomCoordinate != null || b.CustomCoordinate != null;
+        var hasMEprecision = a.CutDirection >= 1000 || a.CutDirection <= -1000 ||
+                             b.CutDirection >= 1000 || b.CutDirection <= -1000;
+
+        if (a.CutDirection != b.CutDirection && a.CutDirection != (int)NoteCutDirection.Any &&
+            b.CutDirection != (int)NoteCutDirection.Any && !hasMEprecision && !hasNEcoordinates)
+        {
+            var directionA = NoteContainer.Directionalize(a);
+            var directionB = NoteContainer.Directionalize(b);
+            
+            containerA.DirectionTarget.localEulerAngles = containerA.DirectionTargetEuler = directionA;
+            containerB.DirectionTarget.localEulerAngles = containerB.DirectionTargetEuler = directionB;
+            return;
+        }
+
+        // Swap references if our first note is a dot note
+        if (a.CutDirection == (int)NoteCutDirection.Any)
+        {
+            (a, b) = (b, a);
+            (containerA, containerB) = (containerB, containerA);
+        }
+
+        // Note jump animation broke when we used container local position. Use position from note data instead
+        var posA = a.GetPosition();
+        var posB = b.GetPosition();
+
+        var cutVector = a.CutDirection == (int)NoteCutDirection.Any ? Vector2.up : Direction(a);
+        var line = posA - posB;
+        var angle = SignedAngleToLine(cutVector, line);
+
+        // if both notes are dots, line them up with each other by adding the signed angle.
+        if (a.CutDirection == (int)NoteCutDirection.Any &&
+            b.CutDirection == (int)NoteCutDirection.Any)
+        {
+            containerA.DirectionTargetEuler = Vector3.forward * angle;
+            containerB.DirectionTargetEuler = Vector3.forward * angle;
+        }
+        // We restrict angles below 40 otherwise display their normal direction
+        else if (Mathf.Abs(angle) <= 40)
+        {
+            var originalA = NoteContainer.Directionalize(a) + new Vector3(0, 0, -a.AngleOffset);
+            var originalB = NoteContainer.Directionalize(b) + new Vector3(0, 0, -b.AngleOffset);
+
+            containerA.DirectionTargetEuler = originalA + (Vector3.forward * angle);
+            if (b.CutDirection == (int)NoteCutDirection.Any && !a.IsMainDirection)
+                containerB.DirectionTargetEuler = originalB + (Vector3.forward * (angle + 45));
+            else
+                containerB.DirectionTargetEuler = originalB + (Vector3.forward * angle);
+        }
+        // These notes do not snap so lets reset their angle
+        else
+        {
+            var directionA = NoteContainer.Directionalize(a);
+            var directionB = NoteContainer.Directionalize(b);
+
+            containerA.DirectionTargetEuler = directionA;
+            containerB.DirectionTargetEuler = directionB;
+        }
+
+        // Immediately update direction target
+        containerA.DirectionTarget.localEulerAngles = containerA.DirectionTargetEuler;
+        containerB.DirectionTarget.localEulerAngles = containerB.DirectionTargetEuler;
     }
     
     public void ClearSpecialAngles(BaseObject obj)
@@ -243,6 +255,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         {
             var direction = NoteContainer.Directionalize(toReset.ObjectData as BaseNote);
             (toReset as NoteContainer).DirectionTarget.localEulerAngles = direction;
+            (toReset as NoteContainer).DirectionTargetEuler = direction;
         }
     }
 

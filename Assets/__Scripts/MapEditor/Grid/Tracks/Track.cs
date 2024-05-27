@@ -91,10 +91,7 @@ public class Track : MonoBehaviour
                 
                 if (containerCollection.LoadedContainers.TryGetValue(Object, out var container) && container is NoteContainer noteContainer)
                 {
-                    // TODO: Pre-compute final rotation so note snapping is retained
-                    //   (Notes need to be aware of other notes)
-                    var euler = NoteContainer.Directionalize(note);
-                    var quaternion = Quaternion.Euler(euler);
+                    var quaternion = Quaternion.Euler(noteContainer.DirectionTargetEuler);
 
                     noteContainer.DirectionTarget.localRotation = Quaternion.Lerp(Quaternion.identity, quaternion, rotationT);
                 }
