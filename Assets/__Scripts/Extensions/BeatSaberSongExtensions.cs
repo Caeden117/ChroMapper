@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 
 public static class BeatSaberSongExtensions
 {
-    private static readonly Dictionary<string, AudioType> extensionToAudio = new Dictionary<string, AudioType>
+    private static readonly Dictionary<string, AudioType> extensionToAudio = new()
     {
         {".ogg", AudioType.OGGVORBIS}, {".egg", AudioType.OGGVORBIS}, {".wav", AudioType.WAV}
     };
@@ -117,10 +117,10 @@ public static class BeatSaberSongExtensions
         }
 
         exportedFiles.Add(infoFileLocation, "Info.dat");
-        AddToFileDictionary(exportedFiles, song.Directory, song.CoverImageFilename);
-        AddToFileDictionary(exportedFiles, song.Directory, song.SongFilename);
-        AddToFileDictionary(exportedFiles, song.Directory, "cinema-video.json");
-        AddToFileDictionary(exportedFiles, song.Directory, "BPMInfo.dat");
+        TryAddToFileDictionary(exportedFiles, song.Directory, song.CoverImageFilename);
+        TryAddToFileDictionary(exportedFiles, song.Directory, song.SongFilename);
+        TryAddToFileDictionary(exportedFiles, song.Directory, "cinema-video.json");
+        TryAddToFileDictionary(exportedFiles, song.Directory, "BPMInfo.dat");
 
         foreach (var contributor in song.Contributors.DistinctBy(it => it.LocalImageLocation))
         {
@@ -134,7 +134,7 @@ public static class BeatSaberSongExtensions
 
         foreach (var map in song.DifficultyBeatmapSets.SelectMany(set => set.DifficultyBeatmaps))
         {
-            AddToFileDictionary(exportedFiles, song.Directory, map.BeatmapFilename);
+            TryAddToFileDictionary(exportedFiles, song.Directory, map.BeatmapFilename);
         }
 
         // Don't package to zip if any paths are absolute or rooted
@@ -147,13 +147,10 @@ public static class BeatSaberSongExtensions
         return exportedFiles;
     }
 
-    private static void AddToFileDictionary(IDictionary<string, string> fileMap, string directory, string fileLocation)
+    private static bool TryAddToFileDictionary(IDictionary<string, string> fileMap, string directory, string fileLocation)
     {
         var fullPath = Path.Combine(directory, fileLocation);
 
-        if (File.Exists(fullPath))
-        {
-            fileMap.Add(fullPath, fileLocation);
-        }
+        return File.Exists(fullPath) && fileMap.TryAdd(fullPath, fileLocation);
     }
 }
