@@ -102,6 +102,7 @@ public class FirstBootMenu : MonoBehaviour
                 Settings.Instance.SimpleBlocks = true;
                 Settings.Instance.Reflections = false;
                 Settings.Instance.HighQualityBloom = false;
+                Settings.Instance.DisplayFloatValueText = false;
                 Settings.Instance.SpectrogramEditorQuality = 1;
                 Settings.Instance.SpectrogramSlices = 0;
                 break;

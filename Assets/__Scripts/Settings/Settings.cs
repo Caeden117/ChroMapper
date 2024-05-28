@@ -117,7 +117,7 @@ public class Settings
     public int ChunkDistance = 5;
     public int Offset_Spawning = 4;
     public int Offset_Despawning = 1;
-    public bool DisplayFloatValueText = false;
+    public bool DisplayFloatValueText = true;
 
     // TODO: Consider whether a spectrogram toggle is necessary (it has a very minimal cost now)
     public bool Spectrogram = true;
