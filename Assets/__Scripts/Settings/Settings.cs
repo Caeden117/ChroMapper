@@ -60,7 +60,6 @@ public class Settings
     public bool RotateTrack = true; // 360/90 mode
     public bool Reset360DisplayOnCompleteTurn = true;
     public bool DontPlacePerfectZeroDurationWalls = true;
-    public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
     public bool PrecisionPlacementGrid = false; // Old setting, migrated to below
     public PrecisionPlacementMode PrecisionPlacementMode = PrecisionPlacementMode.Off;
     public int PrecisionPlacementGridPrecision = 4;
@@ -75,7 +74,6 @@ public class Settings
     public CountersPlusSettings CountersPlus = new CountersPlusSettings();
 
     public bool BoxSelect = true;
-    public bool HighlightLastPlacedNotes = false; // Hidden setting, does nothing
 
     public bool Load_Notes = true;
     public bool Load_Events = true;
@@ -213,7 +211,7 @@ public class Settings
     // These settings are not exposed in the settings menu. Mostly used to store session data
     #region Non-Bindable
 
-    public int Waveform = 1;
+    public int Waveform = 1; // Old setting, migrated to Spectrogram
     public bool PickColorFromChromaEvents = false;
     public bool PlaceChromaColor = false;
     public bool BongoBoye = false; // Old setting, migrated to below
