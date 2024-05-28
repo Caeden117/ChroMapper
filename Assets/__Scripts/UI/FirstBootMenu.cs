@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -111,6 +111,7 @@ public class FirstBootMenu : MonoBehaviour
                 Settings.Instance.SimpleBlocks = true;
                 Settings.Instance.Reflections = false;
                 Settings.Instance.SpectrogramSlices = 0;
+                Settings.Instance.CameraAA = 2;
                 break;
             // Quality
             case 0:
@@ -118,6 +119,7 @@ public class FirstBootMenu : MonoBehaviour
                 Settings.Instance.Offset_Despawning = 2;
                 Settings.Instance.ChunkDistance = 10;
                 Settings.Instance.SpectrogramSlices = 5;
+                Settings.Instance.CameraAA = 4;
                 break;
         }
 
