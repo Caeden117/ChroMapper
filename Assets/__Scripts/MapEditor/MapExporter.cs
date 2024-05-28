@@ -60,7 +60,7 @@ public struct MapExporter
         progressBar.WithCustomLabelFormatter(f =>
             LocalizationSettings.StringDatabase
                 .GetLocalizedString("SongEditMenu", "quest.exporting_progress",
-                    new object[] { f }));
+                    new object[] { f * 100 }));
 
         dialog.Open();
 
