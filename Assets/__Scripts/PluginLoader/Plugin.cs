@@ -39,21 +39,45 @@ public class Plugin
     public string Name { get; }
     public Version Version { get; }
 
-    public void CallMethod<T>()
+    public bool CallMethod<T>()
     {
         methods.TryGetValue(typeof(T), out var methodInfo);
-        methodInfo?.Invoke(pluginInstance, new object[0]);
+        try
+        {
+            methodInfo?.Invoke(pluginInstance, new object[0]);
+            return true;
+        }
+        catch (TargetInvocationException e)
+        {
+            Debug.LogException(e.InnerException);
+        }
+        return false;
     }
 
-    public void CallMethod<T, TS>(TS obj)
+    public bool CallMethod<T, TS>(TS obj)
     {
         methods.TryGetValue(typeof(T), out var methodInfo);
-        methodInfo?.Invoke(pluginInstance, new object[1] { obj });
+        try
+        {
+            methodInfo?.Invoke(pluginInstance, new object[1] { obj });
+            return true;
+        }
+        catch (TargetInvocationException e)
+        {
+            Debug.LogException(e.InnerException);
+        }
+        return false;
     }
 
     public void Init()
     {
-        CallMethod<InitAttribute>();
-        Debug.Log($"Loaded Plugin: {Name} - v{Version}");
+        if (CallMethod<InitAttribute>())
+        {
+            Debug.Log($"Loaded Plugin: {Name} - v{Version}");
+        }
+        else
+        {
+            Debug.LogError($"Error Loading Plugin: {Name} - v{Version}");
+        }
     }
 }

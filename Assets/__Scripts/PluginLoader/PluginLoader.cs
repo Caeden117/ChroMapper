@@ -50,8 +50,9 @@ internal class PluginLoader : MonoBehaviour
                     var plugin = new Plugin(pluginAttribute.Name, assembly.GetName().Version, Activator.CreateInstance(type));
                     plugins.Add(plugin);
                 }
-                catch (Exception) {
+                catch (Exception e) {
                     Debug.LogError($"Incompatible plugin {pluginAttribute.Name}, please check for an update or remove it!");
+                    Debug.LogException(e);
                 }
             }
         }
