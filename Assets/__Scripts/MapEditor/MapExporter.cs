@@ -15,12 +15,12 @@ public struct MapExporter
 {
     // TODO: Move constants
     public const string QUEST_CUSTOM_SONGS_LOCATION =
-        "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
+        "sdcard/ModData/com.beatgames.beatsaber/Mods/SongCore/CustomLevels";
 
     // I added this so the non-quest maintainers can use it as a reference for adding WIP uploads
     // this does indeed exist and work, please don't refrain from asking me. 
     public const string QUEST_CUSTOM_SONGS_WIP_LOCATION =
-        "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels";
+        "sdcard/ModData/com.beatgames.beatsaber/Mods/SongCore/CustomWIPLevels";
 
 
     private readonly BeatSaberSong song;
