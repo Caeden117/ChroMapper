@@ -88,13 +88,6 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 
     public void UpdateColor(Color red, Color blue) => noteAppearanceSo.UpdateColor(red, blue);
 
-    public void UpdateSwingArcVisualizer()
-    {
-        ShowArcVisualizer = !ShowArcVisualizer;
-        foreach (var note in LoadedContainers.Values.Cast<NoteContainer>())
-            note.SetArcVisible(ShowArcVisualizer);
-    }
-
     public override ObjectContainer CreateContainer()
     {
         ObjectContainer con = NoteContainer.SpawnBeatmapNote(null, ref notePrefab);
