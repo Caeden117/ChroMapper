@@ -37,7 +37,20 @@ public class AudioManager : MonoBehaviour
 
         ClearFFTCache();
 
+        // Reduce spectrogram quality if it would exceed max buffer size 
         var sampleCount = SampleBufferManager.MonoSampleCount;
+        while ((long)sampleCount * quality * sizeof(float) > SystemInfo.maxGraphicsBufferSize)
+        {
+            if (quality < 1)
+            {
+                Debug.LogWarning("Audio file is too large to display spectrogram.");
+                return;
+            }
+            
+            quality /= 2;
+            Debug.Log($"FFT buffer exceeded. Reduced spectrogram quality to: {quality}");
+        }
+        
         var fftSize = sampleSize / 2;
         var fftCount = sampleCount * quality;
 
@@ -45,11 +58,11 @@ public class AudioManager : MonoBehaviour
         var window = WindowCoefficients.GetWindowForSize(sampleSize);
         var signal = WindowCoefficients.Signal(window);
         
-        // Set global sahder variables
+        // Set global shader variables
         Shader.SetGlobalInt(AudioManager.sampleSize, sampleSize);
         Shader.SetGlobalInt(AudioManager.fftSize, fftSize);
         Shader.SetGlobalInt(AudioManager.fftCount, fftCount);
-        Shader.SetGlobalFloat(fftScaleFactor, (float)signal);
+        Shader.SetGlobalFloat(fftScaleFactor, signal);
         Shader.SetGlobalFloat(fftFrequency, clip.frequency * quality);
 
         cachedFFTBuffer = new ComputeBuffer(fftCount, sizeof(float));
