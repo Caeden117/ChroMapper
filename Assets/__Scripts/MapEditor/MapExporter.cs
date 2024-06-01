@@ -13,14 +13,17 @@ using Task = System.Threading.Tasks.Task;
 // Should this just be a static singleton since `song` is always passed from BeatSaberSongContainer?
 public struct MapExporter
 {
+    // While Quest BS 1.35 in songs can also be in SongCore instead of SongLoader, we will keep using SongLoader as it
+    // is still supported and also works for previous versions 
+    
     // TODO: Move constants
     public const string QUEST_CUSTOM_SONGS_LOCATION =
-        "sdcard/ModData/com.beatgames.beatsaber/Mods/SongCore/CustomLevels";
+        "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
 
     // I added this so the non-quest maintainers can use it as a reference for adding WIP uploads
     // this does indeed exist and work, please don't refrain from asking me. 
     public const string QUEST_CUSTOM_SONGS_WIP_LOCATION =
-        "sdcard/ModData/com.beatgames.beatsaber/Mods/SongCore/CustomWIPLevels";
+        "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels";
 
 
     private readonly BeatSaberSong song;
