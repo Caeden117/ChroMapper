@@ -37,8 +37,11 @@ public class AudioManager : MonoBehaviour
 
         ClearFFTCache();
 
-        // Reduce spectrogram quality if it would exceed max buffer size 
         var sampleCount = SampleBufferManager.MonoSampleCount;
+        
+        // TODO: Should we consider a CPU spectrogram fallback in cases where the GPU spectrogram would fail?
+        
+        // Reduce spectrogram quality if it would exceed max buffer size 
         while ((long)sampleCount * quality * sizeof(float) > SystemInfo.maxGraphicsBufferSize)
         {
             if (quality < 1)
@@ -49,6 +52,21 @@ public class AudioManager : MonoBehaviour
             
             quality /= 2;
             Debug.Log($"FFT buffer exceeded. Reduced spectrogram quality to: {quality}");
+        }
+        
+        // Reduce spectrogram quality if it would exceed half of total VRAM capacity
+        //   (Some video memory should still be available for ChroMapper and other programs to still function)
+        var videoMemoryBytes = SystemInfo.graphicsMemorySize * 1024L * 1024L;
+        while ((long)sampleCount * quality * sizeof(float) > videoMemoryBytes)
+        {
+            if (quality < 1)
+            {
+                Debug.LogWarning("Audio file is too large to display spectrogram.");
+                return;
+            }
+            
+            quality /= 2;
+            Debug.Log($"Video Memory exceeded. Reduced spectrogram quality to: {quality}");
         }
         
         var fftSize = sampleSize / 2;
