@@ -56,12 +56,13 @@ Shader "Unlit/Spectrogram"
 
             uniform float _EditorScale;
 
+            uniform uint FFTInitialized = 0;
             uniform uint FFTFrequency = 1024;
             uniform uint FFTSize = 1024;
-            uniform uint FFTCount = 1024;
-            uniform StructuredBuffer<float> FFTResults;
-            
+            uniform uint FFTCount = 0;
             uniform uint GradientLength = 4;
+            
+            uniform StructuredBuffer<float> FFTResults;
             uniform StructuredBuffer<float> GradientKeys;
             uniform StructuredBuffer<float4> GradientColors;
 
@@ -159,6 +160,13 @@ Shader "Unlit/Spectrogram"
 
             float4 frag (v2f i) : SV_Target
             {
+                // Short circuit shader if spectrogram isnt initialized
+                //   *SHOULD* fix Apple Silicon issues?
+                if (FFTInitialized == 0)
+                {
+                    return float4(0, 0, 0, 0);
+                }
+                
                 float2 uv = float2(_FlipX > 0.5 ? 1 - i.uv.x : i.uv.x, _FlipY > 0.5 ? 1 - i.uv.y : i.uv.y);
                 
                 // Calculate our X position within the view in seconds

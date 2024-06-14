@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     private static readonly int fftCount = Shader.PropertyToID("FFTCount");
     private static readonly int fftFrequency = Shader.PropertyToID("FFTFrequency");
     private static readonly int fftScaleFactor = Shader.PropertyToID("FFTScaleFactor");
+    private static readonly int fftInitialized = Shader.PropertyToID("FFTInitialized");
 
     private static readonly int multiplyA = Shader.PropertyToID("A");
     private static readonly int multiplyB = Shader.PropertyToID("B");
@@ -114,6 +115,8 @@ public class AudioManager : MonoBehaviour
         fftShader.SetBuffer(0, fftImaginary, imaginaryBuffer);
         
         ExecuteOverLargeArray(fftShader, fftCount / sampleSize);
+        
+        Shader.SetGlobalInt(fftInitialized, 1);
     }
     // ReSharper restore ParameterHidesMember
     // ReSharper restore LocalVariableHidesMember
@@ -145,6 +148,9 @@ public class AudioManager : MonoBehaviour
         
         cachedFFTBuffer.Dispose();
         cachedFFTBuffer = null;
+        
+        Shader.SetGlobalInt(fftCount, 0);
+        Shader.SetGlobalInt(fftInitialized, 0);
     }
 
     private void OnDestroy() => ClearFFTCache();
