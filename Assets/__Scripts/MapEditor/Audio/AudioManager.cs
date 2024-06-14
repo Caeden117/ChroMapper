@@ -20,13 +20,14 @@ public class AudioManager : MonoBehaviour
     private static readonly int fftReal = Shader.PropertyToID("Real");
     private static readonly int fftImaginary = Shader.PropertyToID("Imaginary");
     private static readonly int fftResults = Shader.PropertyToID("FFTResults");
-    
+
     [SerializeField] private ComputeShader multiplyShader;
     [SerializeField] private ComputeShader fftShader;
     [SerializeField] private ComputeShader initializeShader;
 
     private ComputeBuffer cachedFFTBuffer;
-    
+    private ComputeBuffer dummyBuffer;
+
     // ReSharper disable ParameterHidesMember
     // ReSharper disable LocalVariableHidesMember
     public void GenerateFFT(AudioClip clip, int sampleSize, int quality)
@@ -39,9 +40,9 @@ public class AudioManager : MonoBehaviour
         ClearFFTCache();
 
         var sampleCount = SampleBufferManager.MonoSampleCount;
-        
+
         // TODO: Should we consider a CPU spectrogram fallback in cases where the GPU spectrogram would fail?
-        
+
         // Reduce spectrogram quality if it would exceed max buffer size 
         while ((long)sampleCount * quality * sizeof(float) > SystemInfo.maxGraphicsBufferSize)
         {
@@ -50,11 +51,11 @@ public class AudioManager : MonoBehaviour
                 Debug.LogWarning("Audio file is too large to display spectrogram.");
                 return;
             }
-            
+
             quality /= 2;
             Debug.Log($"FFT buffer exceeded. Reduced spectrogram quality to: {quality}");
         }
-        
+
         // Reduce spectrogram quality if it would exceed half of total VRAM capacity
         //   (Some video memory should still be available for ChroMapper and other programs to still function)
         var videoMemoryBytes = SystemInfo.graphicsMemorySize * 1024L * 1024L;
@@ -65,18 +66,18 @@ public class AudioManager : MonoBehaviour
                 Debug.LogWarning("Audio file is too large to display spectrogram.");
                 return;
             }
-            
+
             quality /= 2;
             Debug.Log($"Video Memory exceeded. Reduced spectrogram quality to: {quality}");
         }
-        
+
         var fftSize = sampleSize / 2;
         var fftCount = sampleCount * quality;
 
         // Generate window coefficients and signal scale factor
         var window = WindowCoefficients.GetWindowForSize(sampleSize);
         var signal = WindowCoefficients.Signal(window);
-        
+
         // Set global shader variables
         Shader.SetGlobalInt(AudioManager.sampleSize, sampleSize);
         Shader.SetGlobalInt(AudioManager.fftSize, fftSize);
@@ -91,7 +92,7 @@ public class AudioManager : MonoBehaviour
         using ComputeBuffer windowedSamples = new(fftCount, sizeof(float));
         using (ComputeBuffer windowCoeffBuffer = new(sampleSize, sizeof(float)))
         {
-            for(var i = 0; i < sampleCount; i += sampleSize / quality)
+            for (var i = 0; i < sampleCount; i += sampleSize / quality)
             {
                 var length = Mathf.Clamp(sampleCount - i, 0, sampleSize);
                 windowedSamples.SetData(SampleBufferManager.MonoSamples, i, i * quality, length);
@@ -113,9 +114,9 @@ public class AudioManager : MonoBehaviour
         // Step 3: Execute FFT
         fftShader.SetBuffer(0, fftReal, windowedSamples);
         fftShader.SetBuffer(0, fftImaginary, imaginaryBuffer);
-        
+
         ExecuteOverLargeArray(fftShader, fftCount / sampleSize);
-        
+
         Shader.SetGlobalInt(fftInitialized, 1);
     }
     // ReSharper restore ParameterHidesMember
@@ -145,13 +146,30 @@ public class AudioManager : MonoBehaviour
     private void ClearFFTCache()
     {
         if (cachedFFTBuffer == null) return;
-        
+
         cachedFFTBuffer.Dispose();
         cachedFFTBuffer = null;
-        
+
         Shader.SetGlobalInt(fftCount, 0);
         Shader.SetGlobalInt(fftInitialized, 0);
+        Shader.SetGlobalBuffer(fftReal, dummyBuffer);
+        Shader.SetGlobalBuffer(fftImaginary, dummyBuffer);
+        Shader.SetGlobalBuffer(fftResults, dummyBuffer);
     }
 
-    private void OnDestroy() => ClearFFTCache();
+    private void Awake()
+    {
+        dummyBuffer = new ComputeBuffer(0, sizeof(float));
+        Shader.SetGlobalBuffer(fftReal, dummyBuffer);
+        Shader.SetGlobalBuffer(fftImaginary, dummyBuffer);
+        Shader.SetGlobalBuffer(fftResults, dummyBuffer);
+    }
+
+    private void OnDestroy()
+    {
+        ClearFFTCache();
+        
+        dummyBuffer.Dispose();
+        dummyBuffer = null;
+    }
 }
