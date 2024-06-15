@@ -159,7 +159,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        dummyBuffer = new ComputeBuffer(0, sizeof(float));
+        dummyBuffer = new ComputeBuffer(1, sizeof(float));
         Shader.SetGlobalBuffer(fftReal, dummyBuffer);
         Shader.SetGlobalBuffer(fftImaginary, dummyBuffer);
         Shader.SetGlobalBuffer(fftResults, dummyBuffer);
