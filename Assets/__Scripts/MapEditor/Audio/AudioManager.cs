@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.Collections;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -89,15 +90,18 @@ public class AudioManager : MonoBehaviour
         Shader.SetGlobalBuffer(fftResults, cachedFFTBuffer);
 
         // Step 1: Prepare real components of our FFT by multiply song samples by window coefficients for FFT
-        using ComputeBuffer windowedSamples = new(fftCount, sizeof(float));
-        using (ComputeBuffer windowCoeffBuffer = new(sampleSize, sizeof(float)))
-        {
+        //   We allocate a temporary CPU buffer that will hold our real component data before copying to the GPU in one block.
+        using var windowedSamples = new ComputeBuffer(fftCount, sizeof(float));
+        using (var windowWrite = new NativeArray<float>(fftCount, Allocator.Temp, NativeArrayOptions.UninitializedMemory))
+        using (var windowCoeffBuffer = new ComputeBuffer(sampleSize, sizeof(float)))
+        {   
             for (var i = 0; i < sampleCount; i += sampleSize / quality)
             {
                 var length = Mathf.Clamp(sampleCount - i, 0, sampleSize);
-                windowedSamples.SetData(SampleBufferManager.MonoSamples, i, i * quality, length);
+                NativeArray<float>.Copy(SampleBufferManager.MonoSamples, i, windowWrite, i * quality, length);
             }
 
+            windowedSamples.SetData(windowWrite);
             windowCoeffBuffer.SetData(window);
 
             multiplyShader.SetBuffer(0, multiplyA, windowedSamples);
