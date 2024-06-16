@@ -47,14 +47,13 @@ public class AudioManager : MonoBehaviour
         // Reduce spectrogram quality if it would exceed max buffer size 
         while ((long)sampleCount * quality * sizeof(float) > SystemInfo.maxGraphicsBufferSize)
         {
-            if (quality < 1)
-            {
-                Debug.LogWarning("Audio file is too large to display spectrogram.");
-                return;
-            }
-
             quality /= 2;
             Debug.Log($"FFT buffer exceeded. Reduced spectrogram quality to: {quality}");
+        }
+        if (quality < 1)
+        {
+            Debug.LogWarning("Audio file is too large to display spectrogram.");
+            return;
         }
 
         // Reduce spectrogram quality if it would exceed half of total VRAM capacity
@@ -62,14 +61,13 @@ public class AudioManager : MonoBehaviour
         var videoMemoryBytes = SystemInfo.graphicsMemorySize * 1024L * 1024L;
         while ((long)sampleCount * quality * sizeof(float) > videoMemoryBytes)
         {
-            if (quality < 1)
-            {
-                Debug.LogWarning("Audio file is too large to display spectrogram.");
-                return;
-            }
-
             quality /= 2;
             Debug.Log($"Video Memory exceeded. Reduced spectrogram quality to: {quality}");
+        }
+        if (quality < 1)
+        {
+            Debug.LogWarning("Audio file is too large to display spectrogram.");
+            return;
         }
 
         var fftSize = sampleSize / 2;
