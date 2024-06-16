@@ -17,53 +17,53 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 939478408207532085
+    - rid: 2609315181482475544
   m_TableData:
   - m_Id: 1
     m_Localized: 'Block: {NotesCount}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 2
     m_Localized: 'Block Per Sekund: {NPSCount:F2}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 3
     m_Localized: 'Valda Block: {NotesSelected}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 4
     m_Localized: 'Valda BPS: {NPSselected:F2}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 5
     m_Localized: 'Hinder: {ObstacleCount}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 6
     m_Localized: 'Events: {EventCount}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 7
     m_Localized: "TPM-\xE4ndringar: {BPMCount}"
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 8
     m_Localized: 'Tid spenderat: {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 9
     m_Localized: 'Markerade: {SelectedCount}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 10
     m_Localized: Avsluta
     m_Metadata:
@@ -142,7 +142,7 @@ MonoBehaviour:
       spara ofta!'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 30
     m_Localized: Avsluta ChroMapper
     m_Metadata:
@@ -218,7 +218,7 @@ MonoBehaviour:
     m_Localized: "\xC4ndra arbetsfl\xF6det."
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 42
     m_Localized: Radera saker.
     m_Metadata:
@@ -303,7 +303,7 @@ MonoBehaviour:
     m_Localized: "{Keybind} F\xF6r att \xE4ndra"
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 65
     m_Localized: "Placera Chroma RGB-h\xE4ndelser."
     m_Metadata:
@@ -626,7 +626,7 @@ MonoBehaviour:
     m_Localized: 'Slag Per Sekund: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 143
     m_Localized: Chroma Step Gradient
     m_Metadata:
@@ -683,17 +683,17 @@ MonoBehaviour:
     m_Localized: 'Nuvarande BPM: {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 1123800776704
     m_Localized: "R\xF6tt/Bl\xE5tt F\xF6rh\xE5llande: {RedBlueRatio:F2}"
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 3209883108945920
     m_Localized: 'Bomber: {BombCount}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 12803634470490112
     m_Localized: "V\xE4lj den nya f\xE4rgen f\xF6r detta bokm\xE4rke."
     m_Metadata:
@@ -777,7 +777,7 @@ MonoBehaviour:
     m_Localized: 'BPM Events: {BPMCount}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 256289992891105280
     m_Localized: Enter the beat you want to go to
     m_Metadata:
@@ -804,16 +804,16 @@ MonoBehaviour:
     m_Localized: 'Arcs: {ArcCount}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   - m_Id: 357744742603026432
     m_Localized: 'Chains: {ChainCount}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532085
+      - rid: 2609315181482475544
   references:
     version: 2
     RefIds:
-    - rid: 939478408207532085
+    - rid: 2609315181482475544
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000000083e97b09560300f09d46e2f6f60400f01daff2f6f604

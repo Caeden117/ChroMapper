@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 939478408207532125
+    - rid: 2609315181482475584
   m_TableData:
   - m_Id: 1
     m_Localized: Neue Map
@@ -69,7 +69,7 @@ MonoBehaviour:
     m_Localized: 'Seite: {CurrentPage}/{MaxPage}'
     m_Metadata:
       m_Items:
-      - rid: 939478408207532125
+      - rid: 2609315181482475584
   - m_Id: 13
     m_Localized: Suchen...
     m_Metadata:
@@ -144,7 +144,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 939478408207532125
+    - rid: 2609315181482475584
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0c00000000000000

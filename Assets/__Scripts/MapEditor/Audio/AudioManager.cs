@@ -53,6 +53,7 @@ public class AudioManager : MonoBehaviour
         if (quality < 1)
         {
             Debug.LogWarning("Refusing to render spectrogram: Exceeds maximum Compute Buffer size.");
+            PersistentUI.Instance.ShowDialogBox("PersistentUI", "spectrofailed.computebuffer", null, PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
 
@@ -67,6 +68,7 @@ public class AudioManager : MonoBehaviour
         if (quality < 1)
         {
             Debug.LogWarning("Refusing to render spectrogram: Exceeds half of available video memory.");
+            PersistentUI.Instance.ShowDialogBox("PersistentUI", "spectrofailed.vram", null, PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
 

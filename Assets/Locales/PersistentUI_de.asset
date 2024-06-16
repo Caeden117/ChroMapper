@@ -76,6 +76,14 @@ MonoBehaviour:
     m_Localized: Fehlerbericht erzeugen
     m_Metadata:
       m_Items: []
+  - m_Id: 365546173453295616
+    m_Localized: This audio file is too long to have a rendered spectrogram.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365546339392544768
+    m_Localized: Your system does not have enough video memory for a rendered spectrogram.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

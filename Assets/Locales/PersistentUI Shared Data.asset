@@ -63,13 +63,22 @@ MonoBehaviour:
     m_Key: uploadreport
     m_Metadata:
       m_Items: []
+  - m_Id: 365546173453295616
+    m_Key: spectrofailed.computebuffer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365546339392544768
+    m_Key: spectrofailed.vram
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    id: 0
+    rid: 0
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
         asm: Unity.Localization}
       data:
