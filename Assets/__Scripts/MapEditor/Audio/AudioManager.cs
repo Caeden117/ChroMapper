@@ -52,12 +52,12 @@ public class AudioManager : MonoBehaviour
         }
         if (quality < 1)
         {
-            Debug.LogWarning("Audio file is too large to display spectrogram.");
+            Debug.LogWarning("Refusing to render spectrogram: Exceeds maximum Compute Buffer size.");
             return;
         }
 
         // Reduce spectrogram quality if it would exceed half of total VRAM capacity
-        //   (Some video memory should still be available for ChroMapper and other programs to still function)
+        //   (Video memory should still be available for ChroMapper and other programs)
         var videoMemoryBytes = SystemInfo.graphicsMemorySize * 1024L * 1024L;
         while ((long)sampleCount * quality * sizeof(float) > videoMemoryBytes)
         {
@@ -66,7 +66,7 @@ public class AudioManager : MonoBehaviour
         }
         if (quality < 1)
         {
-            Debug.LogWarning("Audio file is too large to display spectrogram.");
+            Debug.LogWarning("Refusing to render spectrogram: Exceeds half of available video memory.");
             return;
         }
 
