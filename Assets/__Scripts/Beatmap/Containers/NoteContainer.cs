@@ -4,6 +4,7 @@ using Beatmap.Enums;
 using UnityEngine;
 
 using Beatmap.Animations;
+using System;
 
 namespace Beatmap.Containers
 {
@@ -29,15 +30,12 @@ namespace Beatmap.Containers
         [SerializeField] public BaseNote NoteData;
         public MaterialPropertyBlock ArrowMaterialPropertyBlock;
 
+        [NonSerialized] public Vector3 DirectionTargetEuler = Vector3.zero;
+
         public override BaseObject ObjectData
         {
             get => NoteData;
             set => NoteData = (BaseNote)value;
-        }
-
-        public Vector2 GridPosition
-        {
-            get => Animator.AnimationTrack?.ObjectParentTransform.localPosition ?? transform.localPosition;
         }
 
         public override void Setup()
@@ -157,6 +155,7 @@ namespace Beatmap.Containers
             }
             transform.localScale = NoteData.GetScale();
             DirectionTarget.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            DirectionTarget.localEulerAngles = DirectionTargetEuler;
 
             UpdateCollisionGroups();
 
