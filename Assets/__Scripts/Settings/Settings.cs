@@ -49,6 +49,7 @@ public class Settings
     public bool VSync = true;
     public int MaximumFPS = 9999;
     public bool IncludePathForADB = true;
+    public bool ShowNonImportantErrors = true;
 
     #endregion
 

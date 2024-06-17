@@ -1400,6 +1400,15 @@ MonoBehaviour:
     m_Localized: Increases the height of spectrogram slices.
     m_Metadata:
       m_Items: []
+  - m_Id: 379261491249930240
+    m_Localized: Show Console for Non Important Errors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 379261544442093568
+    m_Localized: Forcefully opens the development console on lesser important (red)
+      error messages.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
