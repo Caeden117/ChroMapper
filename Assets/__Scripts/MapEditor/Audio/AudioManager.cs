@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
     private static readonly int fftFrequency = Shader.PropertyToID("FFTFrequency");
     private static readonly int fftScaleFactor = Shader.PropertyToID("FFTScaleFactor");
     private static readonly int fftInitialized = Shader.PropertyToID("FFTInitialized");
+    private static readonly int fftQuality = Shader.PropertyToID("FFTQuality");
 
     private static readonly int multiplyA = Shader.PropertyToID("A");
     private static readonly int multiplyB = Shader.PropertyToID("B");
@@ -85,6 +86,7 @@ public class AudioManager : MonoBehaviour
         Shader.SetGlobalInt(AudioManager.fftCount, fftCount);
         Shader.SetGlobalFloat(fftScaleFactor, signal);
         Shader.SetGlobalFloat(fftFrequency, clip.frequency * quality);
+        Shader.SetGlobalFloat(fftQuality, quality);
 
         cachedFFTBuffer = new ComputeBuffer(fftCount, sizeof(float));
         Shader.SetGlobalBuffer(fftResults, cachedFFTBuffer);

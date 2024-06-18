@@ -60,6 +60,7 @@ Shader "Unlit/Spectrogram"
             uniform uint FFTFrequency = 1024;
             uniform uint FFTSize = 1024;
             uniform uint FFTCount = 0;
+            uniform uint FFTQuality = 1;
             uniform uint GradientLength = 4;
             
             uniform StructuredBuffer<float> FFTResults;
@@ -81,9 +82,12 @@ Shader "Unlit/Spectrogram"
 
             float sampleSpectrogram(uint resultIdx)
             {
+                // Fix spectrogram offset by subtracting by our FFT Size multiplied by quality setting
+                uint idx = resultIdx - (FFTSize * FFTQuality);
+                
                 // Grab our FFT sample if its within bounds
-                return resultIdx < FFTCount
-                    ? FFTResults[resultIdx]
+                return idx < FFTCount
+                    ? FFTResults[idx]
                     : 0;
             }
 
