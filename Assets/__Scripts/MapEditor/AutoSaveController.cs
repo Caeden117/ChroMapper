@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Beatmap.Base;
 using Beatmap.Enums;
 using QuestDumper;
 using SimpleJSON;
@@ -122,7 +123,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             return;
         }
 
-        SelectionController.RefreshMap();
         objectCheckingThread = Task.Run(() =>
         {
             if (ObjectIsOutsideMap())
@@ -154,33 +154,57 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         pauseManager.SaveAndQuitCM();
     }
 
+    // The ToList is necessary because we can't delete from the same collection we're enumerating
     private void CleanObjectsOutsideMap()
     {
+        var removedObjects = new List<BaseObject>();
         if (Settings.Instance.RemoveNotesOutsideMap)
         {
             var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            foreach (var note in BeatSaberSongContainer.Instance.Map.Notes.Where(note => note.SongBpmTime >= maxSongBpmTime))
+            var notesToRemove = BeatSaberSongContainer.Instance.Map.Notes
+                .Where(note => note.SongBpmTime >= maxSongBpmTime).ToList();
+            foreach (var note in notesToRemove)
             {
-                noteCollection.DeleteObject(note);
+                noteCollection.DeleteObject(note, false, false, inCollectionOfDeletes: true);
             }
+            noteCollection.DoPostObjectsDeleteWorkflow();
+            removedObjects.AddRange(notesToRemove);
         }
 
         if (Settings.Instance.RemoveEventsOutsideMap)
         {
             var eventCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            foreach (var evt in BeatSaberSongContainer.Instance.Map.Events.Where(evt => evt.SongBpmTime >= maxSongBpmTime))
+            var eventsToRemove = BeatSaberSongContainer.Instance.Map.Events
+                .Where(evt => evt.SongBpmTime >= maxSongBpmTime).ToList();
+            foreach (var evt in eventsToRemove)
             {
-                eventCollection.DeleteObject(evt);
+                eventCollection.DeleteObject(evt, false, false, inCollectionOfDeletes: true);
             }
+            eventCollection.DoPostObjectsDeleteWorkflow();
+            removedObjects.AddRange(eventsToRemove);
+            
+            var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.BpmChange);
+            var bpmEventsToRemove = BeatSaberSongContainer.Instance.Map.BpmEvents
+                .Where(bpmEvt => bpmEvt.SongBpmTime >= maxSongBpmTime).ToList();
+            foreach (var bpmEvt in bpmEventsToRemove)
+            {
+                bpmCollection.DeleteObject(bpmEvt, false, false, inCollectionOfDeletes: true);
+            }
+            bpmCollection.DoPostObjectsDeleteWorkflow();
+            removedObjects.AddRange(bpmEventsToRemove);
         }
 
         if (Settings.Instance.RemoveObstaclesOutsideMap)
         {
             var obstacleCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
-            foreach (var obst in BeatSaberSongContainer.Instance.Map.Obstacles.Where(obst => obst.SongBpmTime >= maxSongBpmTime))
+            var obstaclesToRemove = BeatSaberSongContainer.Instance.Map.Obstacles
+                .Where(obst => obst.SongBpmTime >= maxSongBpmTime).ToList();
+            foreach (var obst in obstaclesToRemove)
             {
-                obstacleCollection.DeleteObject(obst);
+                obstacleCollection.DeleteObject(obst, false, false, inCollectionOfDeletes: true);
             }
+            obstacleCollection.DoPostObjectsDeleteWorkflow();
+            removedObjects.AddRange(obstaclesToRemove);
         }
 
         if (Settings.Instance.Load_MapV3)
@@ -188,21 +212,31 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             if (Settings.Instance.RemoveArcsOutsideMap)
             {
                 var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
-                foreach (var arc in BeatSaberSongContainer.Instance.Map.Arcs.Where(arc => arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime))
+                var arcsToRemove = BeatSaberSongContainer.Instance.Map.Arcs.Where(arc =>
+                    arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime).ToList();
+                foreach (var arc in arcsToRemove)
                 {
-                    arcCollection.DeleteObject(arc);
+                    arcCollection.DeleteObject(arc, false, false, inCollectionOfDeletes: true);
                 }
+                arcCollection.DoPostObjectsDeleteWorkflow();
+                removedObjects.AddRange(arcsToRemove);
             }
 
             if (Settings.Instance.RemoveChainsOutsideMap)
             {
                 var chainCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
-                foreach (var chain in BeatSaberSongContainer.Instance.Map.Chains.Where(chain => chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime))
+                var chainsToRemove = BeatSaberSongContainer.Instance.Map.Chains.Where(chain =>
+                    chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime).ToList();
+                foreach (var chain in chainsToRemove)
                 {
-                    chainCollection.DeleteObject(chain);
+                    chainCollection.DeleteObject(chain, false, false, inCollectionOfDeletes: true);
                 }
+                chainCollection.DoPostObjectsDeleteWorkflow();
+                removedObjects.AddRange(chainsToRemove);
             }
         }
+        
+        if (removedObjects.Count > 0) BeatmapActionContainer.AddAction(new SelectionDeletedAction(removedObjects));
     }
 
     private bool ObjectIsOutsideMap()
@@ -215,6 +249,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         if (Settings.Instance.RemoveEventsOutsideMap)
         {
             if (BeatSaberSongContainer.Instance.Map.Events.Any(evt => evt.SongBpmTime >= maxSongBpmTime))
+                return true;
+
+            if (BeatSaberSongContainer.Instance.Map.BpmEvents.Any(bpmEvt => bpmEvt.SongBpmTime >= maxSongBpmTime))
                 return true;
         }
         if (Settings.Instance.RemoveObstaclesOutsideMap)
@@ -249,7 +286,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             PersistentUI.DisplayMessageType.Bottom);
         notification.SkipFade = true;
         notification.WaitTime = 5.0f;
-        SelectionController.RefreshMap(); //Make sure our map is up to date.
+
         savingThread = Task.Run(
             () => //I could very well move this to its own function but I need access to the "auto" variable.
             {

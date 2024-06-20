@@ -46,10 +46,18 @@ public class PlatformDescriptor : MonoBehaviour
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
 
+    private static readonly int baseMap = Shader.PropertyToID("_BaseMap");
+
     public bool SoloAnEventType { get; private set; }
     public int SoloEventType { get; private set; }
 
     public bool ColorBoost { get; private set; }
+
+    // loading happens too fast now
+    private void Awake()
+    {
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
+    }
 
     private void Start()
     {
@@ -69,7 +77,6 @@ public class PlatformDescriptor : MonoBehaviour
             }
         }
 
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
         UpdateShinyMaterialSettings();
     }
 
@@ -87,8 +94,8 @@ public class PlatformDescriptor : MonoBehaviour
             {
                 var scale = renderer.gameObject.transform.lossyScale;
                 var normalScale = new Vector2(scale.x, scale.z) / NormalMapScale;
-                renderer.material.SetTextureScale(Shader.PropertyToID("_BaseMap"), normalScale);
-                renderer.material.SetTextureOffset(Shader.PropertyToID("_BaseMap"), Vector2.zero);
+                renderer.material.SetTextureScale(baseMap, normalScale);
+                renderer.material.SetTextureOffset(baseMap, Vector2.zero);
             }
         }
     }
@@ -341,10 +348,15 @@ public class PlatformDescriptor : MonoBehaviour
             var deezLights = new List<LightingEvent>(lightIDArr.Length);
             foreach (var lightID in lightIDArr)
             {
-                group.LightIDMap.TryGetValue(lightID, out var light);
-                if (light is LightingEvent)
+                if (group.LightIDMap != null)
                 {
-                    deezLights.Add(light);
+                    if (group.LightIDMap.TryGetValue(lightID, out var lightingEvent))
+                    {
+                        if (lightingEvent is LightingEvent)
+                        {
+                            deezLights.Add(lightingEvent);
+                        }
+                    }
                 }
             }
             allLights = deezLights;

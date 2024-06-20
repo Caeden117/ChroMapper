@@ -17,94 +17,94 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
   m_Metadata:
     m_Items:
-    - id: 0
-    - id: 1
-    - id: 2
-    - id: 3
-    - id: 4
-    - id: 5
-    - id: 6
-    - id: 7
-    - id: 8
-    - id: 9
-    - id: 10
-    - id: 11
-    - id: 12
-    - id: 13
-    - id: 14
-    - id: 15
-    - id: 16
-    - id: 17
-    - id: 18
-    - id: 19
-    - id: 20
-    - id: 21
-    - id: 22
-    - id: 23
-    - id: 24
-    - id: 25
-    - id: 26
-    - id: 27
-    - id: 28
-    - id: 29
+    - rid: 0
+    - rid: 1
+    - rid: 2
+    - rid: 3
+    - rid: 4
+    - rid: 5
+    - rid: 6
+    - rid: 7
+    - rid: 8
+    - rid: 9
+    - rid: 10
+    - rid: 11
+    - rid: 12
+    - rid: 13
+    - rid: 14
+    - rid: 15
+    - rid: 16
+    - rid: 17
+    - rid: 18
+    - rid: 19
+    - rid: 20
+    - rid: 21
+    - rid: 22
+    - rid: 23
+    - rid: 24
+    - rid: 25
+    - rid: 26
+    - rid: 27
+    - rid: 28
+    - rid: 29
   m_TableData:
   - m_Id: 1
     m_Localized: 'Notes: {NotesCount}'
     m_Metadata:
       m_Items:
-      - id: 0
-      - id: 16
+      - rid: 0
+      - rid: 16
   - m_Id: 2
     m_Localized: 'Notes Per Second: {NPSCount:F2}'
     m_Metadata:
       m_Items:
-      - id: 1
-      - id: 17
+      - rid: 1
+      - rid: 17
   - m_Id: 3
     m_Localized: 'Selected Notes: {NotesSelected}'
     m_Metadata:
       m_Items:
-      - id: 8
-      - id: 18
+      - rid: 8
+      - rid: 18
   - m_Id: 4
     m_Localized: 'Selected NPS: {NPSselected:F2}'
     m_Metadata:
       m_Items:
-      - id: 7
-      - id: 19
+      - rid: 7
+      - rid: 19
   - m_Id: 5
     m_Localized: 'Obstacles: {ObstacleCount}'
     m_Metadata:
       m_Items:
-      - id: 6
-      - id: 20
+      - rid: 6
+      - rid: 20
   - m_Id: 6
     m_Localized: 'Events: {EventCount}'
     m_Metadata:
       m_Items:
-      - id: 5
-      - id: 21
+      - rid: 5
+      - rid: 21
   - m_Id: 7
     m_Localized: 'BPM Changes: {BPMCount}'
     m_Metadata:
       m_Items:
-      - id: 4
-      - id: 9
-      - id: 22
+      - rid: 4
+      - rid: 9
+      - rid: 22
   - m_Id: 8
     m_Localized: 'Time Mapping: {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
-      - id: 3
-      - id: 23
+      - rid: 3
+      - rid: 23
   - m_Id: 9
     m_Localized: 'Selected: {SelectedCount}'
     m_Metadata:
       m_Items:
-      - id: 2
-      - id: 10
-      - id: 11
-      - id: 24
+      - rid: 2
+      - rid: 10
+      - rid: 11
+      - rid: 24
   - m_Id: 10
     m_Localized: Exit
     m_Metadata:
@@ -179,8 +179,8 @@ MonoBehaviour:
     m_Localized: Save early; save often!
     m_Metadata:
       m_Items:
-      - id: 13
-      - id: 25
+      - rid: 13
+      - rid: 25
   - m_Id: 30
     m_Localized: Quit ChroMapper
     m_Metadata:
@@ -256,8 +256,8 @@ MonoBehaviour:
     m_Localized: Change Workflows.
     m_Metadata:
       m_Items:
-      - id: 14
-      - id: 26
+      - rid: 14
+      - rid: 26
   - m_Id: 42
     m_Localized: Delete stuff.
     m_Metadata:
@@ -342,8 +342,8 @@ MonoBehaviour:
     m_Localized: '{Keybind} To Change'
     m_Metadata:
       m_Items:
-      - id: 15
-      - id: 27
+      - rid: 15
+      - rid: 27
   - m_Id: 67
     m_Localized: Paint Selected Objects
     m_Metadata:
@@ -669,8 +669,8 @@ MonoBehaviour:
     m_Localized: 'Swings Per Second: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
-      - id: 28
-      - id: 29
+      - rid: 28
+      - rid: 29
   - m_Id: 143
     m_Localized: Chroma Step Gradient
     m_Metadata:
@@ -727,17 +727,17 @@ MonoBehaviour:
     m_Localized: 'Current BPM: {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 0
   - m_Id: 1123800776704
     m_Localized: 'Red/Blue Ratio: {RedBlueRatio:F2}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 0
   - m_Id: 3209883108945920
     m_Localized: 'Bombs: {BombCount}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 0
   - m_Id: 12803634470490112
     m_Localized: Select the new color for this bookmark.
     m_Metadata:
@@ -821,7 +821,7 @@ MonoBehaviour:
     m_Localized: 'BPM Events: {BPMCount}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 0
   - m_Id: 256289992891105280
     m_Localized: Enter the beat you want to go to
     m_Metadata:
@@ -844,125 +844,136 @@ MonoBehaviour:
     m_Localized: Invalid number.
     m_Metadata:
       m_Items: []
+  - m_Id: 357744672130330624
+    m_Localized: 'Arcs: {ArcCount}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 357744742603026432
+    m_Localized: 'Chains: {ChainCount}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b095603
-    00000001:
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    00000002:
+        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f604
+    - rid: 1
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000003:
+    - rid: 2
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000004:
+    - rid: 3
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000005:
+    - rid: 4
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000006:
+    - rid: 5
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000007:
+    - rid: 6
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000008:
+    - rid: 7
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000009:
+    - rid: 8
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000000A:
+    - rid: 9
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000000B:
+    - rid: 10
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000000C:
+    - rid: 11
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000000D:
+    - rid: 12
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000000E:
+    - rid: 13
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000000F:
+    - rid: 14
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000010:
+    - rid: 15
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000011:
+    - rid: 16
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000012:
+    - rid: 17
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000013:
+    - rid: 18
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000014:
+    - rid: 19
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000015:
+    - rid: 20
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000016:
+    - rid: 21
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000017:
+    - rid: 22
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000018:
+    - rid: 23
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    00000019:
+    - rid: 24
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000001A:
+    - rid: 25
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000001B:
+    - rid: 26
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000001C:
+    - rid: 27
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 
-    0000001D:
+    - rid: 28
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+    - rid: 29
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 

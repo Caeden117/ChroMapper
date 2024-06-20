@@ -1,9 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Beatmap.Base;
+using Beatmap.Base.Customs;
+using Beatmap.Comparers;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.Helper;
 using Beatmap.Shared;
 using Beatmap.V2;
 using UnityEngine;
@@ -13,7 +17,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public static readonly int ChunkSize = 5;
 
     public static float Epsilon = 0.001f;
-    public static float TranslucentCull = -0.001f;
 
     private static BookmarkManager bookmarkManager;
     private static BookmarkManager bookmarkManagerInstance
@@ -24,21 +27,15 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private static readonly Dictionary<ObjectType, BeatmapObjectContainerCollection> loadedCollections =
         new Dictionary<ObjectType, BeatmapObjectContainerCollection>();
 
-    public event Action<BaseObject> ObjectSpawnedEvent;
-    public event Action<BaseObject> ObjectDeletedEvent;
     public event Action<BaseObject> ContainerSpawnedEvent;
     public event Action<BaseObject> ContainerDespawnedEvent;
     public AudioTimeSyncController AudioTimeSyncController;
 
     /// <summary>
-    ///     A sorted set of loaded BeatmapObjects that is garaunteed to be sorted by time.
+    ///     Loaded objects in this collection.
     /// </summary>
-    public SortedSet<BaseObject> LoadedObjects = new SortedSet<BaseObject>(new ObjectComparer());
-
-    /// <summary>
-    ///     A list of unsorted BeatmapObjects. Recommended only for fast iteration.
-    /// </summary>
-    public List<BaseObject> UnsortedObjects = new List<BaseObject>();
+    [Obsolete("LoadedObjects allocates a copy of the backing list of objects. Please avoid this unless you absolutely cannot grab a more precise type.")]
+    public abstract List<BaseObject> LoadedObjects { get; }
 
     public BeatmapObjectCallbackController SpawnCallbackController;
     public BeatmapObjectCallbackController DespawnCallbackController;
@@ -54,8 +51,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <summary>
     ///     A dictionary of all active BeatmapObjectContainers by the data they are attached to.
     /// </summary>
+    // TODO(Caeden): Maybe rewrite this out? Have BaseObject -> ObjectContainer references in the BaseObject class.
+    //   Reasoning: Half of CM's use here is iteration, which is slow with Dictionaries.
+    //   The other half is to access containers by a BaseObject, which would be satisfied by storing that relation in the BaseObject class
     public Dictionary<BaseObject, ObjectContainer> LoadedContainers =
         new Dictionary<BaseObject, ObjectContainer>();
+
+    public List<BaseObject> ObjectsWithContainers = new List<BaseObject>();
 
     private float previousAtscBeat = -1;
     private int previousChunk = -1;
@@ -67,10 +69,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     private void Awake()
     {
         ObjectContainer.FlaggedForDeletionEvent += DeleteObject;
-        if (loadedCollections.ContainsKey(ContainerType))
-            loadedCollections[ContainerType] = this;
-        else
-            loadedCollections.Add(ContainerType, this);
+        loadedCollections[ContainerType] = this;
         SubscribeToCallbacks();
     }
 
@@ -78,7 +77,6 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         UpdateEpsilon(Settings.Instance.TimeValueDecimalPrecision);
         Settings.NotifyBySettingName("TimeValueDecimalPrecision", UpdateEpsilon);
-        EditorScaleController.EditorScaleChangedEvent += UpdateTranslucentCull;
     }
 
     internal virtual void LateUpdate()
@@ -105,13 +103,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         UnsubscribeToCallbacks();
     }
 
-    private void UpdateEpsilon(object precision)
-    {
-        Epsilon = 1 / Mathf.Pow(10, (int)precision);
-        UpdateTranslucentCull(EditorScaleController.EditorScale);
-    }
-
-    private void UpdateTranslucentCull(float editorScale) => TranslucentCull = -editorScale * Epsilon;
+    private void UpdateEpsilon(object precision) => Epsilon = 1 / Mathf.Pow(10, (int)precision);
 
     /// <summary>
     ///     Grab a <see cref="BeatmapObjectContainerCollection" /> whose <see cref="ContainerType" /> matches the given type.
@@ -133,6 +125,32 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// <returns>A casted <see cref="BeatmapObjectContainerCollection" />.</returns>
     public static T GetCollectionForType<T>(ObjectType type) where T : BeatmapObjectContainerCollection
     {
+        loadedCollections.TryGetValue(type, out var collection);
+        return collection as T;
+    }
+
+    /// <summary>
+    ///     Grab a <see cref="BeatmapObjectContainerCollection" /> whose <see cref="ContainerType" /> matches the given type.
+    /// </summary>
+    /// <typeparam name="T">A specific inheriting class to cast to.</typeparam>
+    /// <param name="type">The specific type of <see cref="BaseObject" /> that the collection must contain.</param>
+    /// <returns>A casted <see cref="BeatmapObjectContainerCollection" />.</returns>
+    public static T GetCollectionForType<T, TBaseObject>() where T : BeatmapObjectContainerCollection where TBaseObject : BaseObject
+    {
+        // god C# please let us switch directly by types instead of this garbage workaround
+        var type = typeof(TBaseObject) switch
+        {
+            Type t when t == typeof(BaseNote) => ObjectType.Note,
+            Type t when t == typeof(BaseObstacle) => ObjectType.Obstacle,
+            Type t when t == typeof(BaseEvent) => ObjectType.Event,
+            Type t when t == typeof(BaseArc) => ObjectType.Arc,
+            Type t when t == typeof(BaseChain) => ObjectType.Chain,
+            Type t when t == typeof(BaseBpmEvent) => ObjectType.BpmChange,
+            Type t when t == typeof(BaseCustomEvent) => ObjectType.CustomEvent,
+            Type t when t == typeof(BaseBookmark) => ObjectType.Bookmark,
+            _ => throw new ArgumentException(nameof(TBaseObject))
+        };
+
         loadedCollections.TryGetValue(type, out var collection);
         return collection as T;
     }
@@ -178,57 +196,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         }
     }
 
-    public SortedSet<BaseObject> GetBetween(float jsonTime, float jsonTime2)
-    {
-        // Events etc. can still have a sort order between notes
-        var now = new V2Note(jsonTime - 0.0000001f, 0f, 0, 0, 0, 0);
-        var window = new V2Note(jsonTime2 + 0.0000001f, 0f, 0, 0, 0, 0);
-        return LoadedObjects.GetViewBetween(now, window);
-    }
-
     /// <summary>
     ///     Refreshes the pool with a defined lower and upper bound.
     /// </summary>
     /// <param name="lowerBound">Objects below this point in time will not be given a container.</param>
     /// <param name="upperBound">Objects above this point in time will not be given a container.</param>
     /// <param name="forceRefresh">All currently active containers will be recycled, even if they shouldn't be.</param>
-    public void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
-    {
-        foreach (var obj in UnsortedObjects)
-        {
-            if (forceRefresh) RecycleContainer(obj);
-            if (lowerBound <= obj.SongBpmTime && obj.SongBpmTime <= upperBound)
-            {
-                if (!obj.HasAttachedContainer) CreateContainerFromPool(obj);
-            }
-            else if (obj.HasAttachedContainer)
-            {
-                if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound && lowerBound <= obs.SongBpmTime + obs.Duration)
-                {
-                    continue;
-                }
-                if (Settings.Instance.Load_MapV3)
-                {
-                    if (obj is BaseArc arc && arc.SongBpmTime < lowerBound && lowerBound <= arc.TailSongBpmTime)
-                        continue;
-                    if (obj is BaseChain chain && chain.SongBpmTime < lowerBound && lowerBound <= chain.TailSongBpmTime)
-                        continue;
-                }
-
-                RecycleContainer(obj);
-            }
-
-            if (obj is BaseObstacle obst && obst.SongBpmTime < lowerBound && lowerBound <= obst.SongBpmTime + obst.Duration)
-                CreateContainerFromPool(obj);
-            if (Settings.Instance.Load_MapV3)
-            {
-                if (obj is BaseArc arc && arc.SongBpmTime < lowerBound && lowerBound <= arc.TailSongBpmTime)
-                    CreateContainerFromPool(arc);
-                if (obj is BaseChain chain && chain.SongBpmTime < lowerBound && lowerBound <= chain.TailSongBpmTime)
-                    CreateContainerFromPool(chain);
-            }
-        }
-    }
+    public abstract void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false);
 
     /// <summary>
     ///     Dequeues a container from the pool and attaches it to a provided <see cref="BaseObject" />
@@ -248,6 +222,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         dequeued.OutlineVisible = SelectionController.IsObjectSelected(obj);
         PluginLoader.BroadcastEvent<ObjectLoadedAttribute, ObjectContainer>(dequeued);
         LoadedContainers.Add(obj, dequeued);
+        ObjectsWithContainers.Add(obj);
         obj.HasAttachedContainer = true;
         OnContainerSpawn(dequeued, obj);
         ContainerSpawnedEvent?.Invoke(obj);
@@ -267,6 +242,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         container.SafeSetActive(false);
         //container.transform.SetParent(PoolTransform);
         LoadedContainers.Remove(obj);
+        ObjectsWithContainers.Remove(obj);
         pooledContainers.Enqueue(container);
         OnContainerDespawn(container, obj);
         obj.HasAttachedContainer = false;
@@ -287,33 +263,14 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     Given a list of objects, remove all existing ones that conflict.
     /// </summary>
     /// <param name="newObjects">Enumerable of new objects</param>
-    public void RemoveConflictingObjects(IEnumerable<BaseObject> newObjects) =>
-        RemoveConflictingObjects(newObjects, out _);
+    public void RemoveConflictingObjects(IEnumerable<BaseObject> newObjects) => RemoveConflictingObjects(newObjects, out _);
 
     /// <summary>
     ///     Given a list of objects, remove all existing ones that conflict.
     /// </summary>
     /// <param name="newObjects">Enumerable of new objects</param>
     /// <param name="conflicting">Enumerable of all existing objects that were deleted as a conflict.</param>
-    public void RemoveConflictingObjects(IEnumerable<BaseObject> newObjects, out List<BaseObject> conflicting)
-    {
-        conflicting = new List<BaseObject>();
-        var conflictingInternal = new HashSet<BaseObject>();
-        var newSet = new HashSet<BaseObject>(newObjects);
-        foreach (var newObject in newObjects)
-        {
-            Debug.Log($"Performing conflicting check at {newObject.JsonTime}");
-
-            var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
-            var conflicts = localWindow.Where(x => x.IsConflictingWith(newObject) && !newSet.Contains(x)).ToList();
-            foreach (var beatmapObject in conflicts) conflictingInternal.Add(beatmapObject);
-        }
-
-        foreach (var conflict in conflictingInternal) //Haha InvalidOperationException go brrrrrrrrr
-            DeleteObject(conflict, false, false);
-        Debug.Log($"Removed {conflictingInternal.Count} conflicting {ContainerType}s.");
-        conflicting.AddRange(conflictingInternal);
-    }
+    public abstract void RemoveConflictingObjects(IEnumerable<BaseObject> newObjects, out List<BaseObject> conflicting);
 
     /// <summary>
     ///     Given a <see cref="ObjectContainer" />, delete its attached object.
@@ -343,36 +300,21 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     Whether or not spawning is part of a collection of spawns
     ///     Set to true and call <see cref="DoPostObjectsDeleteWorkflow()" /> after to optimise spawning many objects
     ///</param>
-    public void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
-        string comment = "No comment.", bool inCollectionOfDeletes = false)
-    {
-        var removed = UnsortedObjects.Remove(obj);
-        var removed2 = LoadedObjects.Remove(obj);
+    ///<param name="deselect">Whether or not this object is immediately deselected upon deletion.</param>
+    public abstract void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
+        string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true);
 
-        if (removed && removed2)
-        {
-            //Debug.Log($"Deleting container with hash code {toDelete.GetHashCode()}");
-            SelectionController.Deselect(obj, triggersAction);
-            if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(obj, comment));
-            RecycleContainer(obj);
-            if (refreshesPool) RefreshPool();
-            OnObjectDelete(obj, inCollectionOfDeletes);
-            ObjectDeletedEvent?.Invoke(obj);
-        }
-        else
-        {
-            // The objects are not in the collection, but are still being removed.
-            // This could be because of ghost blocks, so let's try forcefully recycling that container.
-            Debug.LogError($"Object could not be deleted, please report this ({removed}, {removed2})");
-        }
-    }
-
+    public abstract void SilentRemoveObject(BaseObject obj);
+    
     protected void SetTrackFilter() =>
         PersistentUI.Instance.ShowInputBox("Filter notes and obstacles shown while editing to a certain track ID.\n\n" +
                                            "If you dont know what you're doing, turn back now.", HandleTrackFilter);
 
-    private void HandleTrackFilter(string res) =>
+    private void HandleTrackFilter(string res)
+    {
         TrackFilterID = string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res) ? null : res;
+        RefreshAllPools(true);
+    }
 
     /// <summary>
     ///     Spawns an object into the collection.
@@ -405,29 +347,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     ///     Whether or not spawning is part of a collection of spawns.
     ///     Set to true and call <see cref="DoPostObjectsSpawnedWorkflow()" /> after to optimise spawning many objects
     ///</param>
-    public void SpawnObject(BaseObject obj, out List<BaseObject> conflicting, bool removeConflicting = true,
-        bool refreshesPool = true, bool inCollectionOfSpawns = false)
-    {
-        //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
-        if (removeConflicting)
-            RemoveConflictingObjects(new[] { obj }, out conflicting);
-        else
-            conflicting = new List<BaseObject>();
-        LoadedObjects.Add(obj);
-        UnsortedObjects.Add(obj);
-        OnObjectSpawned(obj, inCollectionOfSpawns);
-        ObjectSpawnedEvent?.Invoke(obj);
-
-        //Debug.Log($"Total object count: {LoadedObjects.Count}");
-        if (refreshesPool) RefreshPool();
-    }
+    public abstract void SpawnObject(BaseObject obj, out List<BaseObject> conflicting, bool removeConflicting = true,
+        bool refreshesPool = true, bool inCollectionOfSpawns = false);
 
     /// <summary>
-    ///     Grabs <see cref="LoadedObjects" /> with other potential orderings added in.
-    ///     This should not be used unless saving into a map file. Use <see cref="LoadedObjects" /> instead.
+    /// Returns <c>true</c> if the given object exists within this collection, and <c>false</c> otherwise.
     /// </summary>
-    /// <returns>A list of sorted objects</returns>
-    public virtual IEnumerable<BaseObject> GrabSortedObjects() => LoadedObjects;
+    public abstract bool ContainsObject(BaseObject obj);
 
     public static void RefreshFutureObjectsPosition(float jsonTime)
     {
@@ -435,6 +361,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
             if (collection == null) continue;
+            // REVIEW: not sure if allocation is avoidable
             foreach (var obj in collection.LoadedObjects)
             {
                 if (obj.JsonTime > jsonTime)
@@ -495,11 +422,322 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public virtual void DoPostObjectsSpawnedWorkflow() { }
 
-    public virtual void DoPostObjectsDeleteWorkflow() { }
+    public virtual void DoPostObjectsDeleteWorkflow() => RefreshPool();
 
     public abstract ObjectContainer CreateContainer();
 
     internal abstract void SubscribeToCallbacks();
 
     internal abstract void UnsubscribeToCallbacks();
+}
+
+public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContainerCollection where T : BaseObject
+{
+    public event Action<T> ObjectSpawnedEvent;
+    public event Action<T> ObjectDeletedEvent;
+
+    [Obsolete("LoadedObjects allocates a copy of the backing list of objects. Please avoid this unless you absolutely cannot grab a more precise type.")]
+    public override List<BaseObject> LoadedObjects => MapObjects.ConvertAll(it => it as BaseObject);
+
+    public List<T> MapObjects = new();
+
+    public Span<T> GetBetween(float jsonTime, float jsonTime2)
+    {
+        if (MapObjects.Count == 0) return Span<T>.Empty;
+        
+        // Considering we're only concerned with time, we'll use a time-based comparer here.
+        var span = MapObjects.AsSpan();
+        var startIdx = span.BinarySearchBy(jsonTime, obj => obj.JsonTime);
+        var endIdx = span.BinarySearchBy(jsonTime2, obj => obj.JsonTime);
+
+        if (startIdx < 0) startIdx = ~startIdx;
+        if (endIdx < 0) endIdx = ~endIdx;
+
+        // March indexes in case of same time with different properties
+        while (startIdx > 0 && span[startIdx].JsonTime >= jsonTime) startIdx--;
+        if (span[startIdx].JsonTime < jsonTime) startIdx++;
+        
+        while (endIdx < span.Length && span[endIdx].JsonTime <= jsonTime2) endIdx++;
+
+        var length = endIdx - startIdx;
+
+        return length > 0
+            ? span.Slice(startIdx, length)
+            : Span<T>.Empty;
+    }
+
+    /// <summary>
+    ///     Given a list of objects, remove all existing ones that conflict.
+    /// </summary>
+    /// <param name="newObjects">Enumerable of new objects</param>
+    public void RemoveConflictingObjects(IEnumerable<T> newObjects) =>
+        RemoveConflictingObjects(newObjects, out _);
+
+    /// <inheritdoc/>
+    public override void RemoveConflictingObjects(IEnumerable<BaseObject> newObjects, out List<BaseObject> conflicting)
+    {
+        RemoveConflictingObjects(newObjects.OfType<T>(), out var localConflicting);
+
+        conflicting = localConflicting.ConvertAll(it => it as BaseObject);
+    }
+
+    /// <summary>
+    ///     Given a list of objects, remove all existing ones that conflict.
+    /// </summary>
+    /// <param name="newObjects">Enumerable of new objects</param>
+    /// <param name="conflicting">Enumerable of all existing objects that were deleted as a conflict.</param>
+    public void RemoveConflictingObjects(IEnumerable<T> newObjects, out List<T> conflicting)
+    {
+        conflicting = new List<T>();
+
+        foreach (var newObject in newObjects)
+        {
+            Debug.Log($"Performing conflicting check at {newObject.JsonTime}");
+
+            var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
+            
+            for (var i = 0; i < localWindow.Length; i++)
+            {
+                var obj = localWindow[i];
+
+                if (obj.IsConflictingWith(newObject) && newObject != obj) conflicting.Add(obj);
+            }
+        }
+
+        conflicting.ForEach(conflict => DeleteObject(conflict, false, false));
+
+        Debug.Log($"Removed {conflicting.Count} conflicting {ContainerType}s.");
+    }
+
+    /// <inheritdoc/>
+    public override void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
+    {
+        var span = MapObjects.AsSpan();
+
+        // lmao why do anything if we dont have objects to recycle or create containers for
+        if (span.Length == 0) return;
+
+        // Easier to process recyclings at the beginning, rather than try to deal with it later.
+        if (forceRefresh)
+        {
+            while (ObjectsWithContainers.Count > 0)
+            {
+                RecycleContainer(ObjectsWithContainers[0]);
+            }
+        }
+        else
+        {
+            var containersSpan = ObjectsWithContainers.AsSpan();
+
+            // We need to go backwards since *technically* modifying spans in iteration is unsafe.
+            for (var i = containersSpan.Length - 1; i >= 0; i--)
+            {
+                var obj = containersSpan[i];
+
+                switch (obj)
+                {
+                    case BaseObstacle obs when obs.SongBpmTime > upperBound || obs.SongBpmTime + obs.Duration < lowerBound:
+                    case BaseSlider slider when slider.SongBpmTime > upperBound || slider.TailSongBpmTime < lowerBound:
+                    case not null when obj.SongBpmTime > upperBound || obj.SongBpmTime < lowerBound:
+                    case not null when TrackFilterID != null && TrackFilterID != ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""):
+                        RecycleContainer(obj);
+                        break;
+                    default: continue;
+                }
+            }
+        }
+
+        // We need to copy GetBetween implementation:
+        //   - We are binary searching by SongBpmTime, not JsonTime (this should still be sorted since MapObjects is always sorted by JsonTime)
+        //   - We need access to startIdx later in this method
+        var startIdx = span.BinarySearchBy(lowerBound, obj => obj.SongBpmTime);
+        var endIdx = span.BinarySearchBy(upperBound, obj => obj.SongBpmTime);
+
+        if (startIdx < 0) startIdx = ~startIdx;
+        if (endIdx < 0) endIdx = ~endIdx;
+
+        while (endIdx < span.Length && span[endIdx].SongBpmTime <= upperBound) endIdx++;
+
+        var length = endIdx - startIdx;
+
+        // All objects in our window defaultly get a container
+        var windowSpan = span.Slice(startIdx, length);
+        for (var i = 0; i < windowSpan.Length; i++)
+        {
+            var obj = windowSpan[i];
+
+            if (TrackFilterID == null || TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+            {
+                CreateContainerFromPool(obj);
+            }
+        }
+
+        // this is a bit of a dirty check but i'd like this early return
+        if (span[0] is not (BaseObstacle or BaseSlider)) return;
+
+        // Handle special cases for certain objects that exist over a period of time (need startIdx here)
+        for (var i = 0; i < startIdx; i++)
+        {
+            var obj = span[i];
+            
+            if (TrackFilterID != null && TrackFilterID != ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+                continue;
+
+            if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound)
+            {
+                CreateContainerFromPool(obj);
+            }
+            else if (obj is BaseSlider slider && slider.SongBpmTime < lowerBound && slider.TailSongBpmTime >= lowerBound)
+            {
+                CreateContainerFromPool(obj);
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public override void DeleteObject(BaseObject obj, bool triggersAction = true, bool refreshesPool = true,
+        string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true)
+    {
+        if (obj is not T localObj) return;
+
+        DeleteObject(localObj, triggersAction, refreshesPool, comment, inCollectionOfDeletes, deselect);
+    }
+
+    /// <inheritdoc/>
+    // TODO(Caeden): Overload to delete/spawn without recycling or creating a container
+    public void DeleteObject(T obj, bool triggersAction = true, bool refreshesPool = true,
+        string comment = "No comment.", bool inCollectionOfDeletes = false, bool deselect = true)
+    {
+        if (!TryBinarySearch(obj, out var search)) return;
+
+        var deletedObj = MapObjects[search];
+        
+        RecycleContainer(deletedObj);
+        
+        MapObjects.RemoveAt(search);
+
+        if (deselect) SelectionController.Deselect(deletedObj, triggersAction);
+
+        if (triggersAction) BeatmapActionContainer.AddAction(new BeatmapObjectDeletionAction(deletedObj, comment));
+
+        if (refreshesPool) RefreshPool();
+
+        OnObjectDelete(deletedObj, inCollectionOfDeletes);
+        ObjectDeletedEvent?.Invoke(deletedObj);
+    }
+    
+    // Removes object from MapObjects while retaining container and data in it
+    public override void SilentRemoveObject(BaseObject obj)
+    {
+        if (obj is not T tObj) return;
+        
+        if (!TryBinarySearch(tObj, out var search)) return;
+        
+        MapObjects.RemoveAt(search);
+    }
+
+    private bool TryBinarySearch(T tObj, out int index)
+    {
+        index = MapObjects.BinarySearch(tObj);
+        
+        // Unhappy path: Binary Search returns negative number
+        if (index < 0)
+        {
+            // The objects are not in the collection, but are still being removed.
+            // This could be because of ghost blocks, so let's try forcefully recycling that container.
+            Debug.LogError($"This object is not in the collection and appears to be a ghost. Please report this.");
+            return false;
+        }
+
+        // Happy path
+        if (MapObjects[index] == tObj)
+        {
+            return true;
+        }
+        
+        // United Mapper packets obviously cannot send the object reference so check comparison equality. 
+        if (MapObjects[index].CompareTo(tObj) == 0)
+        {
+            return true;
+        }
+        
+        // Potentially unhappy path: Binary Search returns an object, but turns out to be the incorrect object.
+        // We assume this is only going to happen for stacked objects so we march indexes to see if we can find it.
+        var forwardIndex = index + 1;
+        while (forwardIndex < MapObjects.Count - 1 &&  MapObjects[forwardIndex].JsonTime <= tObj.JsonTime)
+        {
+            if (MapObjects[forwardIndex].CompareTo(tObj) == 0)
+            {
+                index = forwardIndex;
+                return true;
+            }
+            forwardIndex++;
+        }
+        
+        var backwardIndex = index - 1;
+        while (backwardIndex > 0 && MapObjects[backwardIndex].JsonTime >= tObj.JsonTime)
+        {
+            if (MapObjects[backwardIndex].CompareTo(tObj) == 0)
+            {
+                index = backwardIndex;
+                return true;
+            }
+            backwardIndex--;
+        }
+
+        Debug.LogError("Binary Search returned no matching object. Please report this.");
+        return false;
+    }
+
+    /// <inheritdoc/>
+    public override void SpawnObject(BaseObject obj, out List<BaseObject> conflicting, bool removeConflicting = true,
+        bool refreshesPool = true, bool inCollectionOfSpawns = false)
+    {
+        conflicting = new List<BaseObject>();
+
+        if (obj is not T localObj) return;
+
+        SpawnObject(localObj, out var localConflicting, removeConflicting, refreshesPool, inCollectionOfSpawns);
+
+        for (var i = 0; i < localConflicting.Count; i++)
+        {
+            conflicting.Add(localConflicting[i]);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void SpawnObject(T obj, bool removeConflicting = true, bool refreshesPool = true, bool inCollectionOfSpawns = false) =>
+        SpawnObject(obj, out _, removeConflicting, refreshesPool, inCollectionOfSpawns);
+
+    /// <inheritdoc/>
+    // TODO(Caeden): Overload to delete/spawn without recycling or creating a container
+    public void SpawnObject(T obj, out List<T> conflicting, bool removeConflicting = true,
+        bool refreshesPool = true, bool inCollectionOfSpawns = false)
+    {
+        //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
+        if (removeConflicting)
+        {
+            RemoveConflictingObjects(new T[] { obj }, out conflicting);
+        }
+        else
+        {
+            conflicting = new List<T>();
+        }
+
+        var search = MapObjects.BinarySearch(obj);
+        var insertIdx = search >= 0 ? search : ~search;
+        MapObjects.Insert(insertIdx, obj);
+
+        OnObjectSpawned(obj, inCollectionOfSpawns);
+        ObjectSpawnedEvent?.Invoke(obj);
+
+        //Debug.Log($"Total object count: {LoadedObjects.Count}");
+        if (refreshesPool) RefreshPool();
+    }
+
+    /// <inheritdoc/>
+    public override bool ContainsObject(BaseObject obj) => obj is T localObj && ContainsObject(localObj);
+
+    /// <inheritdoc/>
+    public bool ContainsObject(T obj) => MapObjects.BinarySearch(obj) >= 0;
 }

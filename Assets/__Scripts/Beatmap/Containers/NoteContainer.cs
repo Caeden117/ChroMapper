@@ -4,12 +4,16 @@ using Beatmap.Enums;
 using UnityEngine;
 
 using Beatmap.Animations;
+using System;
 
 namespace Beatmap.Containers
 {
     public class NoteContainer : ObjectContainer
     {
         private static readonly int colorMultiplier = Shader.PropertyToID("_ColorMult");
+        private static readonly int objectTime = Shader.PropertyToID("_ObjectTime");
+        private static readonly int lit = Shader.PropertyToID("_Lit");
+        private static readonly int translucentAlpha = Shader.PropertyToID("_TranslucentAlpha");
 
         private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 
@@ -26,15 +30,12 @@ namespace Beatmap.Containers
         [SerializeField] public BaseNote NoteData;
         public MaterialPropertyBlock ArrowMaterialPropertyBlock;
 
+        [NonSerialized] public Vector3 DirectionTargetEuler = Vector3.zero;
+
         public override BaseObject ObjectData
         {
             get => NoteData;
             set => NoteData = (BaseNote)value;
-        }
-
-        public Vector2 GridPosition
-        {
-            get => Animator.AnimationTrack?.ObjectParentTransform.localPosition ?? transform.localPosition;
         }
 
         public override void Setup()
@@ -46,8 +47,8 @@ namespace Beatmap.Containers
                 simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
                 complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
 
-                MaterialPropertyBlock.SetFloat("_Lit", Settings.Instance.SimpleBlocks ? 0 : 1);
-                MaterialPropertyBlock.SetFloat("_TranslucentAlpha", Settings.Instance.PastNoteModelAlpha);
+                MaterialPropertyBlock.SetFloat(lit, Settings.Instance.SimpleBlocks ? 0 : 1);
+                MaterialPropertyBlock.SetFloat(translucentAlpha, Settings.Instance.PastNoteModelAlpha);
 
                 UpdateMaterials();
             }
@@ -154,11 +155,12 @@ namespace Beatmap.Containers
             }
             transform.localScale = NoteData.GetScale();
             DirectionTarget.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            DirectionTarget.localEulerAngles = DirectionTargetEuler;
 
             UpdateCollisionGroups();
 
-            MaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
-            ArrowMaterialPropertyBlock.SetFloat("_ObjectTime", NoteData.SongBpmTime);
+            MaterialPropertyBlock.SetFloat(objectTime, NoteData.SongBpmTime);
+            ArrowMaterialPropertyBlock.SetFloat(objectTime, NoteData.SongBpmTime);
             SetRotation(AssignedTrack != null ? AssignedTrack.RotationValue.y : 0);
             UpdateMaterials();
         }

@@ -13,6 +13,9 @@ using Task = System.Threading.Tasks.Task;
 // Should this just be a static singleton since `song` is always passed from BeatSaberSongContainer?
 public struct MapExporter
 {
+    // While Quest BS 1.35 in songs can also be in SongCore instead of SongLoader, we will keep using SongLoader as it
+    // is still supported and also works for previous versions 
+    
     // TODO: Move constants
     public const string QUEST_CUSTOM_SONGS_LOCATION =
         "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomLevels";
@@ -60,7 +63,7 @@ public struct MapExporter
         progressBar.WithCustomLabelFormatter(f =>
             LocalizationSettings.StringDatabase
                 .GetLocalizedString("SongEditMenu", "quest.exporting_progress",
-                    new object[] { f }));
+                    new object[] { f * 100 }));
 
         dialog.Open();
 
@@ -112,7 +115,7 @@ public struct MapExporter
     {
         var infoFileLocation = "";
         var zipPath = "";
-        if (song.Directory != null)
+        if (Directory.Exists(song.Directory))
         {
             zipPath = Path.Combine(song.Directory, song.CleanSongName + ".zip");
             // Mac doesn't seem to like overwriting existing zips, so delete the old one first
@@ -151,7 +154,7 @@ public struct MapExporter
     /// </summary>
     public void OpenSelectedMapInFileBrowser()
     {
-        if (song.Directory == null)
+        if (!Directory.Exists(song.Directory))
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);

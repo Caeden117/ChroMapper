@@ -10,6 +10,18 @@ using UnityEngine;
 
 public class Settings
 {
+#if UNITY_EDITOR
+    // Local settings object used when running tests
+    public static bool TestMode = false;
+    public static Settings TestRunnerSettings = new()
+    {
+        InstantLoadingTransitions = true, // Run the tests faster
+        Reminder_SettingsFailed = false,
+        Reminder_Loading360Levels = false,
+        BeatSaberInstallation = "/root/bs",
+    };
+#endif
+
     private static Settings instance;
     public static Settings Instance => instance ??= Load();
 
@@ -37,6 +49,7 @@ public class Settings
     public bool VSync = true;
     public int MaximumFPS = 9999;
     public bool IncludePathForADB = true;
+    public bool ShowNonImportantErrors = true;
 
     #endregion
 
@@ -48,7 +61,6 @@ public class Settings
     public bool RotateTrack = true; // 360/90 mode
     public bool Reset360DisplayOnCompleteTurn = true;
     public bool DontPlacePerfectZeroDurationWalls = true;
-    public bool PlaceOnlyChromaEvents = false; // Hidden setting, does nothing
     public bool PrecisionPlacementGrid = false; // Old setting, migrated to below
     public PrecisionPlacementMode PrecisionPlacementMode = PrecisionPlacementMode.Off;
     public int PrecisionPlacementGridPrecision = 4;
@@ -63,7 +75,6 @@ public class Settings
     public CountersPlusSettings CountersPlus = new CountersPlusSettings();
 
     public bool BoxSelect = true;
-    public bool HighlightLastPlacedNotes = false; // Hidden setting, does nothing
 
     public bool Load_Notes = true;
     public bool Load_Events = true;
@@ -93,7 +104,6 @@ public class Settings
     #endregion
 
     #region Graphics
-    public int Waveform = 1;
     public bool EmulateChromaAdvanced = true; //Ring propagation and other advanced chroma features
     public bool EmulateChromaLite = true; //To get Chroma RGB lights
     public bool ColorFakeWalls = true;
@@ -106,8 +116,16 @@ public class Settings
     public int ChunkDistance = 5;
     public int Offset_Spawning = 4;
     public int Offset_Despawning = 1;
-    public bool DisplayFloatValueText = false;
+    public bool DisplayFloatValueText = true;
 
+    // TODO: Consider whether a spectrogram toggle is necessary (it has a very minimal cost now)
+    public bool Spectrogram = true;
+    public int SpectrogramSampleSize = 512;
+    public int SpectrogramEditorQuality = 8;
+    public int SpectrogramShift = 1;
+    public bool SpectrogramBilinearFiltering = true;
+    public int SpectrogramSlices = 0;
+    public float SpectrogramHeight = 0.15f;
 
     public bool Reflections = true;
     public bool HighQualityBloom = true;
@@ -126,6 +144,7 @@ public class Settings
     public bool MeasureLinesShowOnTop = false;
     public bool HighContrastGrids = false;
     public float GridTransparency = 0f;
+    public float InterfaceOpacity = 0.1f;
     public int TrackLength = 8;
     public float OneBeatWidth = 0.1f;
 
@@ -170,7 +189,7 @@ public class Settings
 
     public int TimeValueDecimalPrecision = 3;
     public int BpmTimeValueDecimalPrecision = 6; // Hidden setting
-    public bool AdvancedShit = false; // Custom Events
+    public bool AdvancedShit = true; // Custom Events
     public bool LightIDTransitionSupport = false; // Temporary option until lighting transitions are reworked
     public int ReleaseChannel = 0;
     public string ReleaseServer = "https://cm.topc.at";
@@ -193,6 +212,7 @@ public class Settings
     // These settings are not exposed in the settings menu. Mostly used to store session data
     #region Non-Bindable
 
+    public int Waveform = 1; // Old setting, migrated to Spectrogram
     public bool PickColorFromChromaEvents = false;
     public bool PlaceChromaColor = false;
     public bool BongoBoye = false; // Old setting, migrated to below
@@ -230,6 +250,10 @@ public class Settings
 
     private static Settings Load()
     {
+#if UNITY_EDITOR
+        if (TestMode) return TestRunnerSettings;
+#endif
+
         //Fixes weird shit regarding how people write numbers (20,35 VS 20.35), causing issues in JSON
         //This should be thread-wide, but I have this set throughout just in case it isnt.
         System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -341,6 +365,12 @@ public class Settings
 
     private void UpdateOldSettings()  //Put code in here to transfer any settings that are fundamentally changed and require conversion from an old setting to a new setting
     {
+        if (Waveform != -1)
+        {
+            Spectrogram = Waveform > 0;
+            Waveform = -1;
+        }
+        
         if (PrecisionPlacementGrid)
         {
             PrecisionPlacementMode = PrecisionPlacementMode.Hold;
@@ -362,6 +392,10 @@ public class Settings
 
     public void Save()
     {
+#if UNITY_EDITOR
+        if (TestMode || this == TestRunnerSettings) return;
+#endif
+
         var mainNode = new JSONObject();
         var type = GetType();
         var infos = type.GetMembers(BindingFlags.Public | BindingFlags.Instance)

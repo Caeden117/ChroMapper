@@ -91,7 +91,7 @@ public class NotePlacementUI : MonoBehaviour
     public void UpdateValue(int v)
     {
         //if (notePlacement.atsc.IsPlaying) return;
-        //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return; // not sure what these do?
+        //if (!customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return; // not sure what these do?
         notePlacement.IsActive = true;
         bombPlacement.IsActive = false;
         obstaclePlacement.IsActive = false;

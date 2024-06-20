@@ -51,13 +51,13 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private TBo originalDraggedObjectData;
     private TBo originalQueued;
 
-    protected List<ObjectContainer> DraggedAttachedSliderContainers = new List<ObjectContainer>();
-    protected Dictionary<IndicatorType, List<BaseSlider>> DraggedAttachedSliderDatas = new Dictionary<IndicatorType, List<BaseSlider>>
+    protected List<ObjectContainer> DraggedAttachedSliderContainers = new();
+    protected Dictionary<IndicatorType, List<BaseSlider>> DraggedAttachedSliderDatas = new()
     {
         {IndicatorType.Head, new List<BaseSlider>()},
         {IndicatorType.Tail, new List<BaseSlider>()}
     };
-    private Dictionary<IndicatorType, List<BaseSlider>> originalDraggedAttachedSliderDatas = new Dictionary<IndicatorType, List<BaseSlider>>
+    private Dictionary<IndicatorType, List<BaseSlider>> originalDraggedAttachedSliderDatas = new()
     {
         {IndicatorType.Head, new List<BaseSlider>()},
         {IndicatorType.Tail, new List<BaseSlider>()}
@@ -66,10 +66,10 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal TBo queuedData; //Data that is not yet applied to the ObjectContainer.
     protected bool UsePrecisionPlacement;
 
-    protected virtual Vector2 precisionOffset { get; } = new Vector2(-0.5f, -1.1f);
-    protected virtual Vector2 vanillaOffset { get; } = new Vector2(1.5f, -1.1f);
+    protected virtual Vector2 precisionOffset { get; } = new(-0.5f, -1.1f);
+    protected virtual Vector2 vanillaOffset { get; } = new(1.5f, -1.1f);
 
-    [HideInInspector] protected virtual bool CanClickAndDrag { get; set; } = true;
+    protected virtual bool CanClickAndDrag { get; set; } = true;
 
     private float roundedJsonTime;
     internal float RoundedJsonTime
@@ -156,7 +156,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 return;
             }
 
-            if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+            if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
             if (BeatmapObjectContainerCollection.TrackFilterID != null && !objectContainerCollection.IgnoreTrackFilter)
                 queuedData.CustomTrack = BeatmapObjectContainerCollection.TrackFilterID;
             else
@@ -188,7 +188,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             OnPhysicsRaycast(hit, roundedHit);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
-                TransferQueuedToDraggedObject(ref draggedObjectData, BeatmapFactory.Clone(queuedData));
+                TransferQueuedToDraggedObject(ref draggedObjectData, queuedData);
                 if (DraggedObjectContainer != null) DraggedObjectContainer.UpdateGridPosition();
             }
         }
@@ -208,7 +208,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public virtual void OnPlaceObject(InputAction.CallbackContext context)
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true) ||
             !KeybindsController.IsMouseInWindow || !context.performed)
         {
             return;
@@ -401,7 +401,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     internal virtual void ApplyToMap()
     {
         objectData = queuedData;
-        //objectContainerCollection.RemoveConflictingObjects(new[] { objectData }, out List<BaseObject> conflicting);
         objectContainerCollection.SpawnObject(objectData, out var conflicting);
         BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));
         queuedData = BeatmapFactory.Clone(queuedData);
@@ -416,12 +415,16 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     public virtual void CancelPlacement() { }
 
+    // TODO(Bullet): Clean up implementations.
     public abstract void TransferQueuedToDraggedObject(ref TBo dragged, TBo queued);
 
     private bool StartDrag(ObjectContainer con)
     {
         if (con is null || !(con is TBoc) || con.ObjectData.ObjectType != objectDataType || !IsActive)
-            return false; //Filter out null objects and objects that aren't what we're targetting.
+            return false; //Filter out null objects and objects that aren't what we're targeting.
+
+        objectContainerCollection.SilentRemoveObject(con.ObjectData);
+        
         draggedObjectData = con.ObjectData as TBo;
         originalQueued = BeatmapFactory.Clone(queuedData);
         originalDraggedObjectData = BeatmapFactory.Clone(con.ObjectData as TBo);
@@ -429,9 +432,15 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         DraggedObjectContainer = con as TBoc;
         DraggedObjectContainer.Dragging = true;
 
-        if (con is NoteContainer noteContainer && Settings.Instance.Load_MapV3)
+        if (con is NoteContainer noteContainer)
         {
-            StartDragSliders(noteContainer);
+            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            noteCollection.ClearSpecialAngles(con.ObjectData);
+            
+            if (Settings.Instance.Load_MapV3)
+            {
+                StartDragSliders(noteContainer);
+            }
         }
 
         return true;
@@ -442,13 +451,6 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         if (!(IsDraggingObject || IsDraggingObjectAtTime)) return;
         //First, find and delete anything that's overlapping our dragged object.
         var selected = SelectionController.IsObjectSelected(draggedObjectData);
-
-        // To delete properly we need to set the original time
-        var jsonTime = draggedObjectData.JsonTime;
-        var songBpmTime = draggedObjectData.SongBpmTime;
-        draggedObjectData.SetTimes(originalDraggedObjectData.JsonTime, originalDraggedObjectData.SongBpmTime);
-        objectContainerCollection.DeleteObject(draggedObjectData, false, false);
-        draggedObjectData.SetTimes(jsonTime, songBpmTime);
 
         objectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
         if (conflicting.Contains(draggedObjectData))
@@ -475,10 +477,16 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             }
         }
 
-        if (DraggedObjectContainer is NoteContainer && Settings.Instance.Load_MapV3)
+        if (DraggedObjectContainer is NoteContainer)
         {
-            FinishSliderDrag(actions);
-            ClearDraggedAttachedSliders();
+            var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            noteCollection.RefreshSpecialAngles(draggedObjectData, false, false);
+            
+            if (Settings.Instance.Load_MapV3)
+            {
+                FinishSliderDrag(actions);
+                ClearDraggedAttachedSliders();
+            }
         }
 
         if (actions.Count == 1)
@@ -494,7 +502,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
     protected TBoc ObjectUnderCursor()
     {
-        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return null;
+        if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return null;
 
         var ray = CameraManager.SelectedCameraController.Camera.ScreenPointToRay(MousePosition);
         return !Intersections.Raycast(ray, 9, out var hit) ? null : hit.GameObject.GetComponentInParent<TBoc>();
@@ -518,12 +526,14 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 originalDraggedAttachedSliderDatas[IndicatorType.Head].Add(BeatmapFactory.Clone(arcData));
                 DraggedAttachedSliderDatas[IndicatorType.Head].Add(arcData);
                 DraggedAttachedSliderContainers.Add(arcContainer.Value);
+                arcCollection.SilentRemoveObject(arcData);
             }
             else if (isConnectedToTail)
             {
                 originalDraggedAttachedSliderDatas[IndicatorType.Tail].Add(BeatmapFactory.Clone(arcData));
                 DraggedAttachedSliderDatas[IndicatorType.Tail].Add(arcData);
                 DraggedAttachedSliderContainers.Add(arcContainer.Value);
+                arcCollection.SilentRemoveObject(arcData);
             }
         }
 
@@ -538,12 +548,14 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 originalDraggedAttachedSliderDatas[IndicatorType.Head].Add(BeatmapFactory.Clone(chainData));
                 DraggedAttachedSliderDatas[IndicatorType.Head].Add(chainData);
                 DraggedAttachedSliderContainers.Add(chainContainer.Value);
+                chainCollection.SilentRemoveObject(chainData);
             }
             else if (isConnectedToTail)
             {
                 originalDraggedAttachedSliderDatas[IndicatorType.Tail].Add(BeatmapFactory.Clone(chainData));
                 DraggedAttachedSliderDatas[IndicatorType.Tail].Add(chainData);
                 DraggedAttachedSliderContainers.Add(chainContainer.Value);
+                chainCollection.SilentRemoveObject(chainData);
             }
         }
     }
@@ -560,11 +572,11 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             if (draggedSlider is BaseArc draggedArc)
             {
-                RespawnDraggedSlider(arcCollection, draggedArc, originalDraggedSlider, true, actions);
+                SpawnDraggedSlider(arcCollection, draggedArc, originalDraggedSlider, actions);
             }
             else if (draggedSlider is BaseChain draggedChain)
             {
-                RespawnDraggedSlider(chainCollection, draggedChain, originalDraggedSlider, true, actions);
+                SpawnDraggedSlider(chainCollection, draggedChain, originalDraggedSlider, actions);
             }
         }
 
@@ -575,30 +587,18 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
 
             if (draggedSlider is BaseArc draggedArc)
             {
-                RespawnDraggedSlider(arcCollection, draggedArc, originalDraggedSlider, false, actions);
+                SpawnDraggedSlider(arcCollection, draggedArc, originalDraggedSlider, actions);
             }
             else if (draggedSlider is BaseChain draggedChain)
             {
-                RespawnDraggedSlider(chainCollection, draggedChain, originalDraggedSlider, false, actions);
+                SpawnDraggedSlider(chainCollection, draggedChain, originalDraggedSlider, actions);
             }
         }
     }
 
-    private void RespawnDraggedSlider(BeatmapObjectContainerCollection sliderCollection, BaseSlider draggedSlider,
-        BaseObject originalSlider, bool isConnectedToHead, List<BeatmapAction> actions)
+    private void SpawnDraggedSlider(BeatmapObjectContainerCollection sliderCollection, BaseSlider draggedSlider,
+        BaseObject originalSlider, List<BeatmapAction> actions)
     {
-        if (isConnectedToHead)
-        {
-            // SortedSet is fun.
-            draggedSlider.SetTimes(originalDraggedObjectData.JsonTime, originalDraggedObjectData.SongBpmTime);
-            sliderCollection.DeleteObject(draggedSlider, false, false);
-            draggedSlider.SetTimes(draggedObjectData.JsonTime, draggedObjectData.SongBpmTime);
-        }
-        else
-        {
-            sliderCollection.DeleteObject(draggedSlider, false, false);
-        }
-
         sliderCollection.SpawnObject(draggedSlider, out var conflictingArcs);
 
         // Don't queue an action if we didn't actually change anything

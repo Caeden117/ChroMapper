@@ -47,6 +47,7 @@ namespace Beatmap.Base.Customs
         public int? DataRepeat { get; set; }
         public JSONNode DataChildrenTracks { get; set; }
         public JSONNode DataParentTrack { get; set; }
+        public bool? DataWorldPositionStays { get; set; }
 
         public abstract string KeyTime { get; }
         public abstract string KeyType { get; }
@@ -56,6 +57,7 @@ namespace Beatmap.Base.Customs
         public abstract string DataKeyRepeat { get; }
         public abstract string DataKeyChildrenTracks { get; }
         public abstract string DataKeyParentTrack { get; }
+        public abstract string DataKeyWorldPositionStays { get; }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
@@ -78,6 +80,7 @@ namespace Beatmap.Base.Customs
             DataRepeat = Data.HasKey(DataKeyRepeat) ? Data[DataKeyRepeat] : null;
             DataChildrenTracks = Data.HasKey(DataKeyChildrenTracks) ? Data[DataKeyChildrenTracks] : null;
             DataParentTrack = Data.HasKey(DataKeyParentTrack) ? Data[DataKeyParentTrack] : null;
+            DataWorldPositionStays = Data.HasKey(DataKeyWorldPositionStays) ? Data[DataKeyWorldPositionStays] : null;
         }
 
         protected internal override JSONNode SaveCustom()
@@ -88,7 +91,20 @@ namespace Beatmap.Base.Customs
             if (DataRepeat != null) Data[DataKeyRepeat] = DataRepeat; else Data.Remove(DataKeyRepeat);
             if (DataChildrenTracks != null) Data[DataKeyChildrenTracks] = DataChildrenTracks; else Data.Remove(DataKeyChildrenTracks);
             if (DataParentTrack != null) Data[DataKeyParentTrack] = DataParentTrack; else Data.Remove(DataKeyParentTrack);
+            if (DataWorldPositionStays != null) Data[DataKeyWorldPositionStays] = DataWorldPositionStays; else Data.Remove(DataWorldPositionStays);
             return Data;
+        }
+
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            if (other is not BaseCustomEvent customEvent) return comparison; ;
+
+            // Order by custom event type if times match up
+            return comparison == 0
+                ? Type.CompareTo(customEvent.Type)
+                : comparison;
         }
     }
 }

@@ -7,6 +7,7 @@ public class GridRenderingController : MonoBehaviour
     private static readonly int offset = Shader.PropertyToID("_Offset");
     private static readonly int gridSpacing = Shader.PropertyToID("_GridSpacing");
     private static readonly int mainColor = Shader.PropertyToID("_Color");
+    private static readonly int gridThickness = Shader.PropertyToID("_GridThickness");
     private static readonly Color mainColorDefault = new Color(0.33f, 0.33f, 0.33f, 1f);
     private static readonly Color mainColorHighContrast = new Color(0f, 0f, 0f, 1f);
 
@@ -124,7 +125,7 @@ public class GridRenderingController : MonoBehaviour
     private void UpdateOneBeat(object value)
     {
         foreach (var renderer in oneBeat)
-            foreach (var mat in renderer.materials) mat.SetFloat("_GridThickness", (float)value);
+            foreach (var mat in renderer.materials) mat.SetFloat(gridThickness, (float)value);
     }
 
     private int GetLowestDenominator(int a)

@@ -1231,13 +1231,94 @@ MonoBehaviour:
     m_Key: appearance.altlighting.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 330014416099160064
+    m_Key: appearance.interfaceopacity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330014459573121024
+    m_Key: appearance.interfaceopacity.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103871700791296
+    m_Key: countersplus.showarccount.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103879246344192
+    m_Key: countersplus.showarcs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103881049894912
+    m_Key: countersplus.showchaincount.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103882744393728
+    m_Key: countersplus.showchains
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172452363964416
+    m_Key: graphics.spectrogram.samplesize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172654227427328
+    m_Key: graphics.spectrogram.samplesize.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172845764513792
+    m_Key: graphics.spectrogram.bilinear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172895014031360
+    m_Key: graphics.spectrogram.bilinear.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173257435451392
+    m_Key: graphics.spectrogram.shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173301957988352
+    m_Key: graphics.spectrogram.shift.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173439820566528
+    m_Key: graphics.spectrogram.quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173496468836352
+    m_Key: graphics.spectrogram.quality.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174267792953344
+    m_Key: graphics.spectrogram.slice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174367466393600
+    m_Key: graphics.spectrogram.slice.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174490212700160
+    m_Key: graphics.spectrogram.height
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174510987087872
+    m_Key: graphics.spectrogram.height.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 379261491249930240
+    m_Key: misc.nonimportant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 379261544442093568
+    m_Key: misc.nonimportant.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    id: 0
+    rid: 0
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
         asm: Unity.Localization}
       data:

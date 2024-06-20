@@ -10,11 +10,14 @@ using UnityEngine;
 /// <see cref="ChainGridContainer"/> doesn't contain note(even the head note on the chain).
 /// It only detects whether there is a note happening to be a head note
 /// </summary>
-public class ChainGridContainer : BeatmapObjectContainerCollection
+public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
 {
     [SerializeField] private GameObject chainPrefab;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private ChainAppearanceSO chainAppearanceSO;
+    
+    [SerializeField] private CountersPlusController countersPlus;
+    
     public const float ViewEpsilon = 0.1f; // original view is too small ?? sometimes cause error.
     public override ObjectType ContainerType => ObjectType.Chain;
 
@@ -51,6 +54,12 @@ public class ChainGridContainer : BeatmapObjectContainerCollection
             track.AttachContainer(con);
         }
     }
+
+    protected override void OnObjectSpawned(BaseObject _, bool __ = false) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Chains);
+
+    protected override void OnObjectDelete(BaseObject _, bool __ = false) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Chains);
 
     internal override void SubscribeToCallbacks()
     {

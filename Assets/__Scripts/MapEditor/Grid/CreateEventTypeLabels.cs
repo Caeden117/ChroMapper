@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Containers;
 using Beatmap.Enums;
@@ -188,7 +189,7 @@ public class CreateEventTypeLabels : MonoBehaviour
     {
         if (type >= lightingManagers.Length) return null;
 
-        var light = lightingManagers[type].ControllingLights.Find(x => lightID.Contains(x.LightID));
+        var light = lightingManagers[type].ControllingLights.Find(x => Array.IndexOf(lightID, x.LightID) > -1);
 
         return light != null ? light.PropGroup : (int?)null;
     }

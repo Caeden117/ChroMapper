@@ -90,7 +90,10 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 
     private void ShowLogline(Logline logline)
     {
-        if (logline.Type == LogType.Error || logline.Type == LogType.Exception)
+        // Force enable the console on two conditions
+        //   - Errors with Non-Important Errors flag enabled
+        //   - Exceptions (no toggle for this, please report your issues to us thanks)
+        if ((Settings.Instance.ShowNonImportantErrors && logline.Type == LogType.Error) || logline.Type == LogType.Exception)
         {
             scrollRect.gameObject.SetActive(true);
         }

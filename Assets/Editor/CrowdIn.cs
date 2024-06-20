@@ -277,7 +277,7 @@ public class LocalizationWindow : EditorWindow
         AssetDatabase.SaveAssets();
     }
 
-    private static bool TryAddStorage(HttpClient client, string fileName, HttpContent fileContent, out int id)
+    private static bool TryAddStorage(HttpClient client, string fileName, HttpContent fileContent, out long id)
     {
         const string storagesUrl = "https://api.crowdin.com/api/v2/storages";
         
@@ -307,11 +307,11 @@ public class LocalizationWindow : EditorWindow
 
         var json = JSON.Parse(stringTask.Result);
 
-        id = json["data"]["id"].AsInt;
+        id = json["data"]["id"].AsLong;
         return true;
     }
 
-    private static void UpdateFile(HttpClient client, string fileName, int fileId, int storageId)
+    private static void UpdateFile(HttpClient client, string fileName, long fileId, long storageId)
     {
         var filesUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/files/{fileId}";
 
@@ -340,7 +340,7 @@ public class LocalizationWindow : EditorWindow
         }
     }
     
-    private static void AddFile(HttpClient client, string fileName, int storageId)
+    private static void AddFile(HttpClient client, string fileName, long storageId)
     {
         var filesUrl = $"https://api.crowdin.com/api/v2/projects/{projectId}/files/";
 

@@ -68,5 +68,14 @@ MonoBehaviour:
     m_Localized: "\u751F\u6210\u9519\u8BEF\u62A5\u544A"
     m_Metadata:
       m_Items: []
+  - m_Id: 365546173453295616
+    m_Localized: This audio file is too long to have a rendered spectrogram.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365546339392544768
+    m_Localized: Your system does not have enough video memory for a rendered spectrogram.
+    m_Metadata:
+      m_Items: []
   references:
-    version: 1
+    version: 2
+    RefIds: []

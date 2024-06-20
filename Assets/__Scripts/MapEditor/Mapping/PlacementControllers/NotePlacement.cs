@@ -43,6 +43,8 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     private bool diagonal;
     private bool flagDirectionsUpdate;
 
+    private static readonly int alwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
+
     // Chroma Color Check
     public static bool CanPlaceChromaObjects
     {
@@ -106,13 +108,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     }
 
     // Toggle Chroma Color Function
-    public void PlaceChromaObjects(bool v)
-    {
-        if (Settings.NonPersistentSettings.ContainsKey(ChromaColorKey))
-            Settings.NonPersistentSettings[ChromaColorKey] = v;
-        else
-            Settings.NonPersistentSettings.Add(ChromaColorKey, v);
-    }
+    public void PlaceChromaObjects(bool v) => Settings.NonPersistentSettings[ChromaColorKey] = v;
 
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
@@ -123,7 +119,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     {
         // Check if Chroma Color notes button is active and apply _color
         queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
-            ? (Color?)colorPicker.CurrentColor
+            ? colorPicker.CurrentColor
             : null;
 
         var posX = (int)roundedHit.x;
@@ -156,7 +152,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             precisionPlacement.TogglePrecisionPlacement(false);
 
             queuedData.CustomCoordinate = !vanillaBounds
-                ? (JSONNode)((Vector2)roundedHit - vanillaOffset + precisionOffset)
+                ? (Vector2)roundedHit - vanillaOffset + precisionOffset
                 : null;
         }
 
@@ -253,7 +249,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         if (instantiatedContainer is null) return;
         instantiatedContainer.NoteData = queuedData;
         noteAppearanceSo.SetNoteAppearance(instantiatedContainer);
-        instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
+        instantiatedContainer.MaterialPropertyBlock.SetFloat(alwaysTranslucent, 1);
         instantiatedContainer.UpdateMaterials();
         instantiatedContainer.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(queuedData);
     }

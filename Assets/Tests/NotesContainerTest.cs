@@ -4,6 +4,7 @@ using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.V3;
 using NUnit.Framework;
+using SimpleJSON;
 using Tests.Util;
 using UnityEngine.TestTools;
 
@@ -33,7 +34,7 @@ namespace Tests
         public void RefreshSpecialAngles()
         {
             var noteGridContainer =
-                BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer;
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
             BaseNote baseNoteA = new V3ColorNote
             {
@@ -139,6 +140,131 @@ namespace Tests
             baseNoteA.JsonTime = 14;
         }
 
+        [Test]
+        public void RefreshSpecialAnglesOnDirectionChange()
+        {
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var inputController = noteGridContainer.transform.root.GetComponentInChildren<BeatmapNoteInputController>();
+
+            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteA);
+            var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
+
+            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
+            var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
+            
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌←◌◌
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, (int)NoteCutDirection.Down);
+            UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, (int)NoteCutDirection.Left);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(270, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌↙◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌↓◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(333.43, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(333.43, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+            
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌↘◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(45, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+        }
+        
+        [Test]
+        public void RefreshSpecialAnglesOnDirectionChange2()
+        {
+            // Test that angles are not changed when they shouldn't be
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var inputController = noteGridContainer.transform.root.GetComponentInChildren<BeatmapNoteInputController>();
+
+            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteA);
+            var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
+
+            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
+            var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
+            
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ←◌◌◌
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, (int)NoteCutDirection.Down);
+            UpdateNote(containerB, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(270, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ↙◌◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(315, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ↓◌◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(0, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+            
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ↘◌◌◌
+            inputController.UpdateNoteDirection(containerB, true);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(45, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+        }
+
+        [Test]
+        public void RefreshSpecialAnglesIgnoresPrecisionPlacement()
+        {
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+
+            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteA);
+            var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
+
+            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
+            var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
+            
+            // ME precision placed
+            // ◌◌↓◌
+            // ◌◌◌◌
+            // ◌↓◌◌
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, 1000);
+            UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, 1000);
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(0, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+            
+            // NE precision placed
+            (containerA.ObjectData as BaseNote).CustomCoordinate = new JSONArray { [0] = 0, [1] = 2 };
+            (containerB.ObjectData as BaseNote).CustomCoordinate = new JSONArray { [0] = -1, [1] = 0 };
+            UpdateNote(containerA, (int)GridX.MiddleRight, (int)GridY.Top, (int)NoteCutDirection.Down);
+            UpdateNote(containerB, (int)GridX.MiddleLeft, (int)GridY.Base, (int)NoteCutDirection.Down);
+            
+            Assert.AreEqual(0, containerA.DirectionTarget.localEulerAngles.z, 0.01);
+            Assert.AreEqual(0, containerB.DirectionTarget.localEulerAngles.z, 0.01);
+            
+        }
+
         private void UpdateNote(NoteContainer container, int PosX, int PosY, int cutDirection)
         {
             var baseNote = (BaseNote)container.ObjectData;
@@ -152,7 +278,7 @@ namespace Tests
         [Test]
         public void ShiftInTime()
         {
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
 
             BaseNote baseNoteA = new V3ColorNote
@@ -177,7 +303,7 @@ namespace Tests
             notesContainer.DeleteObject(baseNoteB);
 
             Assert.AreEqual(1, notesContainer.LoadedContainers.Count);
-            Assert.AreEqual(1, notesContainer.LoadedObjects.Count);
+            Assert.AreEqual(1, notesContainer.MapObjects.Count);
         }
     }
 }

@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - id: 0
+    - rid: 2609315181482475552
   m_TableData:
   - m_Id: 1
     m_Localized: "\u8A2D\u5B9A\u30FB{tabName}"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 2
     m_Localized: "\u305D\u306E\u4ED6\u306E\u30AA\u30D7\u30B7\u30E7\u30F3"
     m_Metadata:
@@ -165,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Spectrogram
+    m_Localized: "\u6CE2\u5F62"
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -173,7 +173,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 40
-    m_Localized: "RGB\u5149"
+    m_Localized: "RGB\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0"
     m_Metadata:
       m_Items: []
   - m_Id: 41
@@ -185,7 +185,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43
-    m_Localized: Measure Lines Render Over Everything
+    m_Localized: "\u5168\u3066\u306E\u30E9\u30A4\u30F3\u30EC\u30F3\u30C0\u30EA\u30F3\u30B0\u3092\u6E2C\u5B9A\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 44
@@ -221,7 +221,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 53
-    m_Localized: Waveform follows Workflow
+    m_Localized: "\u97F3\u58F0\u6CE2\u5F62\u3092\u30EF\u30FC\u30AF\u30D5\u30ED\u30FC\u306B\u8FFD\u5F93"
     m_Metadata:
       m_Items: []
   - m_Id: 54
@@ -257,21 +257,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 62
-    m_Localized: 'To rebind keys, click on any textbox relating to the keybind you
-      want to rebind. Then, press each key in order of modifiers (Ctrl, Shift, Alt),
-      then the base key as the last one.
-
-
-      Most keybinds restrict you to a
-      3-key composite: One base, and two modifiers. You can press the Enter key at
-      any time to complete rebinding with two keys, or just one.
-
-
-      Pay attention
-      to how each keybind is setup. Some keybinds, like "Move Camera", require all
-      composites to be filled out in order for rebinding to be complete. These keybinds
-      would usually look like they were made for movement, or with one distinct "positive"
-      and "negative" button.'
+    m_Localized: "\u30AD\u30FC\u3092\u30EA\u30D0\u30A4\u30F3\u30C9\u3059\u308B\u306B\u306F\u3001\u8A2D\u5B9A\u3057\u305F\u3044\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u306E\u30C6\u30AD\u30B9\u30C8\u30DC\u30C3\u30AF\u30B9\u3092\u30AF\u30EA\u30C3\u30AF\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u6B21\u306B\u4FEE\u98FE\u30AD\u30FC\uFF08Ctrl\u3001Shift\u3001Alt\uFF09\u306E\u9806\u306B\u5404\u30AD\u30FC\u3092\u62BC\u3057\u3001\u6700\u5F8C\u306B\u30D9\u30FC\u30B9\u30AD\u30FC\u3092\u62BC\u3057\u307E\u3059\u3002\n\n\u307B\u3068\u3093\u3069\u306E\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u3067\u306F3\u30AD\u30FC\u307E\u3067\u306E\u7D44\u307F\u5408\u308F\u305B\u306B\u5236\u9650\u3055\u308C\u3066\u3044\u307E\u3059\uFF1A
+      \u30D9\u30FC\u30B9\u30AD\u30FC\u304C1\u3064\u3068\u4FEE\u98FE\u30AD\u30FC\u304C2\u3064\u3002Enter\u30AD\u30FC\u3092\u62BC\u3057\u3066\u30011\u3064\u304B2\u3064\u306E\u30AD\u30FC\u3067\u30EA\u30D0\u30A4\u30F3\u30C9\u3092\u5B8C\u4E86\u3067\u304D\u307E\u3059\u3002\n\n\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u8A2D\u5B9A\u306B\u6CE8\u610F\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u300C\u30AB\u30E1\u30E9\u79FB\u52D5\u300D\u306E\u3088\u3046\u306A\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u8A2D\u5B9A\u3067\u306F\u3059\u3079\u3066\u306E\u30B3\u30F3\u30DD\u30B8\u30C3\u30C8\u3092\u5165\u529B\u3059\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\u3002\u3053\u3046\u3057\u305F\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u306F\u79FB\u52D5\u306E\u305F\u3081\u306E\u3082\u306E\u304B\u3001\"+\"
+      \u307E\u305F\u306F \"-\" \u306E\u3088\u3046\u306A\u30DC\u30BF\u30F3\u304C\u898B\u3048\u308B\u3068\u601D\u3044\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 63
@@ -287,7 +275,7 @@ MonoBehaviour:
       {Count}"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 67
     m_Localized: "\u30D7\u30E9\u30B0\u30A4\u30F3"
     m_Metadata:
@@ -304,13 +292,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70
-    m_Localized: 'The following settings are not 100% complete. They can change,
-      or be removed completely. If you are looking for a bug-free ChroMapper experience,
-      this is not the place for you.
-
-
-      Or these are new options and I just
-      haven''t given them a proper place to stay. One of the two.'
+    m_Localized: "\u4EE5\u4E0B\u306E\u8A2D\u5B9A\u306F\u307E\u3060\u5B8C\u5168\u306A\u3082\u306E\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002\u3053\u3053\u3067\u306F\u3001\u5909\u66F4\u3059\u308B\u304B\u5B8C\u5168\u306B\u524A\u9664\u3059\u308B\u3053\u3068\u304C\u3067\u304D\u307E\u3059\u3002
+      \u30D0\u30B0\u306E\u306A\u3044ChroMapper\u304C\u5FC5\u8981\u3067\u3042\u308C\u3070\u3001\u5909\u66F4\u3057\u306A\u3044\u307B\u3046\u304C\u3044\u3044\u3067\u3057\u3087\u3046\u3002\n\n\u3053\u308C\u306F\u65B0\u3057\u3044\u30AA\u30D7\u30B7\u30E7\u30F3\u3067\u3042\u308A\u3001\u5E38\u306B\u5B89\u5B9A\u3059\u308B\u3053\u3068\u304C\u3042\u308A\u307E\u305B\u3093\u3002\u5909\u66F4\u306F\u3042\u306A\u305F\u6B21\u7B2C\u3067\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71
@@ -318,20 +301,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 72
-    m_Localized: Time Value Decimal Precision
+    m_Localized: "\u6642\u9593\u5024\u306E\u6709\u52B9\u5C0F\u6570\u70B9\u6841\u6570"
     m_Metadata:
       m_Items: []
   - m_Id: 73
     m_Localized: "{TextValue} \u5C0F\u6570\u70B9\u4EE5\u4E0B\u306E\u6841\u6570"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 74
-    m_Localized: 'How many decimal places to round "_time" values for every map object
-      when saving to disk.
-
-      Lower precision means more room for timing errors,
-      however can save space on larger complexity maps.'
+    m_Localized: "\u4FDD\u5B58\u3059\u308B\u3068\u304D\u306B\u3001\u5404\u30DE\u30C3\u30D7\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E
+      \"_time\" \u5024\u3092\u4F55\u6841\u306B\u4E38\u3081\u308B\u304B\u3092\u6307\u5B9A\u3057\u307E\u3059\u3002\n\u7CBE\u5EA6\u304C\u4F4E\u3044\u307B\u3069\u30BF\u30A4\u30DF\u30F3\u30B0\u30A8\u30E9\u30FC\u306E\u4F59\u5730\u304C\u5927\u304D\u304F\u306A\u308A\u307E\u3059\u304C\u3001\u3088\u308A\u8907\u96D1\u306A\u30DE\u30C3\u30D7\u3067\u306F\u7A7A\u304D\u5BB9\u91CF\u3092\u7BC0\u7D04\u3067\u304D\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 75
@@ -343,7 +323,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81
-    m_Localized: Change the scale for how big you want the Past Notes Grid to be.
+    m_Localized: "\u524D\u306E\u30CE\u30FC\u30C4\u30B0\u30EA\u30C3\u30C9\u306E\u5927\u304D\u3055\u3092\u5909\u66F4\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 82
@@ -355,19 +335,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 84
-    m_Localized: Highlight the most recently placed notes magenta.
+    m_Localized: "\u6700\u5F8C\u306B\u914D\u7F6E\u3057\u305F\u30CE\u30FC\u30C4\u3092\u30DE\u30BC\u30F3\u30BF\u8272\u3067\u5F37\u8ABF\u8868\u793A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 85
-    m_Localized: 'Editor Scale will instead be determined by various stats about
-      the map, including its Note Jump Speed and its BPM.
-
-      Recommended only
-      for previewing your map. This will override the Editor Scale option.'
+    m_Localized: "\u30A8\u30C7\u30A3\u30BF\u30FC\u30B9\u30B1\u30FC\u30EB\u306FNJS\u3084BPM\u306A\u3069\u3001\u30DE\u30C3\u30D7\u306B\u95A2\u3059\u308B\u3055\u307E\u3056\u307E\u306A\u6570\u91CF\u30C7\u30FC\u30BF\u306B\u3088\u3063\u3066\u6C7A\u5B9A\u3055\u308C\u307E\u3059\u3002\n\u30DE\u30C3\u30D7\u306E\u30D7\u30EC\u30D3\u30E5\u30FC\u306B\u306E\u307F\u63A8\u5968\u3055\u308C\u307E\u3059\u3002\u3053\u308C\u306B\u3088\u308A\u3001\u30A8\u30C7\u30A3\u30BF\u30FC\u30B9\u30B1\u30FC\u30EB\u306E\u30AA\u30D7\u30B7\u30E7\u30F3\u304C\u4E0A\u66F8\u304D\u3055\u308C\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Invert mouse scroll direction on changing precision step.
+    m_Localized: "\u7CBE\u5BC6\u30B9\u30C6\u30C3\u30D7\u3092\u5909\u66F4\u3059\u308B\u3068\u3001\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u304C\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 87
@@ -379,7 +355,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 89
-    m_Localized: Amount of 5 beat intervals to show when editing.
+    m_Localized: "\u7DE8\u96C6\u6642\u306B\u8868\u793A\u3055\u308C\u308B5\u30D3\u30FC\u30C8\u30A4\u30F3\u30BF\u30FC\u30D0\u30EB\u306E\u91CF\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 90
@@ -391,7 +367,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 92
-    m_Localized: Invert mouse scroll direction on changing time.
+    m_Localized: "\u6642\u9593\u5909\u66F4\u6642\u306B\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 93
@@ -407,12 +383,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96
-    m_Localized: Toggles Discord RPC for ChroMapper.
+    m_Localized: "ChroMapper\u306EDiscord RPC\u306B\u5207\u308A\u66FF\u3048\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Take half jump into account when loading hyper (negative duration)
-      walls. Will require a restart of the editor.
+    m_Localized: "\u30CF\u30A4\u30D1\u30FC\u30A6\u30A9\u30FC\u30EB\uFF08\u30DE\u30A4\u30CA\u30B9\u65B9\u5411\u306E\u58C1\uFF09\u3092\u30ED\u30FC\u30C9\u3059\u308B\u3068\u304D\u306B\u3001Half
+      Jump\u3092\u8003\u616E\u3057\u307E\u3059\u3002\u30A8\u30C7\u30A3\u30BF\u30FC\u306E\u518D\u8D77\u52D5\u304C\u5FC5\u8981\u306B\u306A\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -420,7 +396,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 99
-    m_Localized: How much space in between measures?
+    m_Localized: "\u5C0F\u7BC0\u9593\u306E\u30B9\u30DA\u30FC\u30B9"
     m_Metadata:
       m_Items: []
   - m_Id: 100
@@ -428,7 +404,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101
-    m_Localized: How fast should the song play?
+    m_Localized: "\u66F2\u518D\u751F\u306E\u901F\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 102
@@ -436,8 +412,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 103
-    m_Localized: When holding the precision placement keybind while placing walls
-      or notes, an extended grid will appear with snapping disabled.
+    m_Localized: "\u58C1\u3084\u30CE\u30FC\u30C4\u3092\u914D\u7F6E\u3059\u308B\u3068\u304D\u306B\u7CBE\u5BC6\u914D\u7F6E\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u3092\u62BC\u3059\u3068\u3001\u30B9\u30CA\u30C3\u30D7\u304C\u7121\u52B9\u306B\u306A\u3063\u305F\u62E1\u5F35\u30B0\u30EA\u30C3\u30C9\u304C\u8868\u793A\u3055\u308C\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 104
@@ -445,17 +420,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 105
-    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
-      cause some jankiness when looking through a note.
+    m_Localized: "\u5C0F\u7BC0\u7DDA\u3092 <i>\u3059\u3079\u3066\u306E</i>\u4E0A\u306B\u8868\u793A\u3055\u308C\u308B\u3088\u3046\u306B\u3057\u307E\u3059\u3002\u30CE\u30FC\u30C4\u3092\u898B\u308B\u3068\u304D\u306B\u3001\u591A\u5C11\u306E\u9055\u548C\u611F\u304C\u751F\u3058\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 106
-    m_Localized: Each event with a Chroma 2.0 gradient attached will generate a preview
-      on the 3D grid.
+    m_Localized: "Chroma 2.0\u30B0\u30E9\u30C7\u30FC\u30B7\u30E7\u30F3\u306E\u4ED8\u3044\u305F\u5404\u30A4\u30D9\u30F3\u30C8\u304C3D\u30B0\u30EA\u30C3\u30C9\u4E0A\u306B\u30D7\u30EC\u30D3\u30E5\u30FC\u3092\u751F\u6210\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song spectrogram
+    m_Localized: "\u66F2\u306E\u6CE2\u5F62\u3092\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -471,12 +444,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
-      keeping it at full resolution.
+    m_Localized: "\u30D6\u30EB\u30FC\u30E0\u52B9\u679C\u3092\u30D5\u30EB\u89E3\u50CF\u5EA6\u307E\u305F\u30CF\u30FC\u30D5\u30B5\u30A4\u30BA\u3067\u30EC\u30F3\u30C0\u30EA\u30F3\u30B0\u3057\u307E\u3059\u3002\u30D5\u30EB\u89E3\u50CF\u5EA6\u306E\u307E\u307E\u306B\u3057\u3066\u304A\u304F\u3053\u3068\u3092\u304A\u52E7\u3081\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 112
-    m_Localized: Enables or disables Chroma features, such as Ring Propagation
+    m_Localized: "Ring Propagation\u306E\u3088\u3046\u306AChroma\u6A5F\u80FD\u306E\u6709\u52B9/\u7121\u52B9\u5316"
     m_Metadata:
       m_Items: []
   - m_Id: 113
@@ -492,7 +464,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 116
-    m_Localized: Enables or disables Chroma RGB lighting
+    m_Localized: "Chroma RGB\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u306E\u6709\u52B9/\u7121\u52B9\u5316"
     m_Metadata:
       m_Items: []
   - m_Id: 117
@@ -500,12 +472,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 118
-    m_Localized: Color negative width and negative duration walls differently than
-      standard walls.
+    m_Localized: "\u30DE\u30A4\u30CA\u30B9\u306E\u5E45\u3084\u65B9\u5411\u306E\u58C1\u3092\u3001\u6A19\u6E96\u306E\u58C1\u3068\u306F\u7570\u306A\u308B\u8272\u3067\u8868\u793A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 119
-    m_Localized: Allow the Waveform to switch sides when toggling workspaces.
+    m_Localized: "\u30EF\u30FC\u30AF\u30B9\u30DA\u30FC\u30B9\u5207\u308A\u66FF\u3048\u6642\u306B\u97F3\u58F0\u6CE2\u5F62\u306E\u8868\u793A\u5834\u6240\u3092\u5207\u308A\u66FF\u3048\u308B\u3053\u3068\u304C\u3067\u304D\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 120
@@ -556,7 +527,7 @@ MonoBehaviour:
     m_Localized: "\u30D7\u30E9\u30B0\u30A4\u30F3"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 132
     m_Localized: "\u5B9F\u9A13\u7684\u6A5F\u80FD"
     m_Metadata:
@@ -569,47 +540,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 139
-    m_Localized: "{TextValue} \u30D3\u30FC\u30C8\u6570"
+    m_Localized: "{TextValue} \u62CD\u6570"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 140
-    m_Localized: "{TextValue} \u30D3\u30FC\u30C8\u6570"
+    m_Localized: "{TextValue} \u62CD\u6570"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 143
     m_Localized: "\u56DE\u8EE2\u89D2\u5EA6\u306E\u8868\u793A\u306E\u5236\u9650"
     m_Metadata:
@@ -635,26 +606,26 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 149
-    m_Localized: High Contrast Grids
+    m_Localized: "\u30CF\u30A4\u30B3\u30F3\u30C8\u30E9\u30B9\u30C8\u30B0\u30EA\u30C3\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 150
-    m_Localized: Increase contrast between measure lines and their background.
+    m_Localized: "\u5C0F\u7BC0\u7DDA\u3068\u80CC\u666F\u306E\u9593\u306E\u30B3\u30F3\u30C8\u30E9\u30B9\u30C8\u3092\u5927\u304D\u304F\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 151
-    m_Localized: Enable Custom Events
+    m_Localized: "\u30AB\u30B9\u30BF\u30E0\u30A4\u30D9\u30F3\u30C8\u3092\u6709\u52B9\u306B\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 152
-    m_Localized: Enables use of Custom Events in your maps
+    m_Localized: "\u30DE\u30C3\u30D7\u306E\u30AB\u30B9\u30BF\u30E0\u30A4\u30D9\u30F3\u30C8\u306E\u4F7F\u7528\u3092\u6709\u52B9\u306B\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 153
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 154
     m_Localized: "UI\u306E\u5927\u304D\u3055"
     m_Metadata:
@@ -667,7 +638,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 157
     m_Localized: "\u30A4\u30D9\u30F3\u30C8\u30E2\u30C7\u30EB"
     m_Metadata:
@@ -736,7 +707,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 174
     m_Localized: "\u66F2"
     m_Metadata:
@@ -846,7 +817,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3517145853952
-    m_Localized: Compensates for audio latency by offsetting visuals during playback
+    m_Localized: "\u518D\u751F\u4E2D\u306B\u6620\u50CF\u3092\u57CB\u3081\u5408\u308F\u305B\u308B\u3053\u3068\u3067\u30AA\u30FC\u30C7\u30A3\u30AA\u306E\u9045\u5EF6\u3092\u88DC\u6B63\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 4573925912576
@@ -857,7 +828,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 3301721636864
     m_Localized: "\u30B0\u30EA\u30C3\u30C9\u306E\u80CC\u666F\u306E\u900F\u660E\u5EA6\u3092\u5909\u66F4\u3057\u307E\u3059"
     m_Metadata:
@@ -866,7 +837,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 23812497342464
     m_Localized: "\u30B0\u30EA\u30C3\u30C9\u306E\u900F\u660E\u5EA6"
     m_Metadata:
@@ -888,19 +859,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4089437985878016
-    m_Localized: Makes Editor Scale independent of map BPM
+    m_Localized: "\u30A8\u30C7\u30A3\u30BF\u30B9\u30B1\u30FC\u30EB\u3068\u30DE\u30C3\u30D7\u306EBPM\u3068\u3092\u5207\u308A\u96E2\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 4090246341505024
-    m_Localized: BPM Independent Editor Scale
+    m_Localized: "BPM\u304B\u3089\u72EC\u7ACB\u3057\u305F\u30A8\u30C7\u30A3\u30BF\u30B9\u30B1\u30FC\u30EB"
     m_Metadata:
       m_Items: []
   - m_Id: 9689541752557568
-    m_Localized: Visualize event alpha using the height of the event
+    m_Localized: "\u30A4\u30D9\u30F3\u30C8\u306E\u9AD8\u3055\u3092\u4F7F\u7528\u3057\u3066\u30A4\u30D9\u30F3\u30C8\u306E\u30A2\u30EB\u30D5\u30A1\u5024\u3092\u8996\u899A\u5316\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 9689824679333888
-    m_Localized: Visualize Event Alpha
+    m_Localized: "\u30A4\u30D9\u30F3\u30C8\u306E\u30A2\u30EB\u30D5\u30A1\u5024\u3092\u8996\u899A\u5316"
     m_Metadata:
       m_Items: []
   - m_Id: 16675690602758144
@@ -915,14 +886,13 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 67492742661058560
-    m_Localized: Scales the (total) rendering resolution for performance or visual
-      improvements.
+    m_Localized: "\u30D1\u30D5\u30A9\u30FC\u30DE\u30F3\u30B9\u307E\u305F\u306F\u8996\u899A\u7684\u306A\u6539\u5584\u306E\u305F\u3081\u306B\u3001\u30EC\u30F3\u30C0\u30EA\u30F3\u30B0\u89E3\u50CF\u5EA6\uFF08\u5408\u8A08\u5024\uFF09\u3092\u30B9\u30B1\u30FC\u30EA\u30F3\u30B0\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 67493661524013056
-    m_Localized: Render Scale
+    m_Localized: "\u30EC\u30F3\u30C0\u30EA\u30F3\u30B0\u30B9\u30B1\u30FC\u30EB"
     m_Metadata:
       m_Items: []
   - m_Id: 1698793607168
@@ -930,11 +900,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1897456816128
-    m_Localized: Adds special Quest functionality if ADB is installed
+    m_Localized: "ADB\u304C\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3055\u308C\u3066\u3044\u308B\u5834\u5408\u3001\u7279\u5225\u306AQuest\u306E\u6A5F\u80FD\u3092\u8FFD\u52A0\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 3768991576559616
-    m_Localized: Successfully exported files to Quest
+    m_Localized: "Quest\u306B\u30D5\u30A1\u30A4\u30EB\u3092\u30A8\u30AF\u30B9\u30DD\u30FC\u30C8\u3057\u307E\u3057\u305F"
     m_Metadata:
       m_Items: []
   - m_Id: 3769025302958080
@@ -942,32 +912,34 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3769067959029760
-    m_Localized: Failed to download ADB. Error {0}
+    m_Localized: "ADB\u306E\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\u30A8\u30E9\u30FC
+      {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3769095658213376
-    m_Localized: "ADB does not seem to be installed or could not be found. Would
-      you\n      like to download it? This will allow Quest functionality."
+    m_Localized: "ADB\u304C\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3055\u308C\u3066\u3044\u306A\u3044\u304B\u898B\u3064\u304B\u308A\u307E\u305B\u3093\u3002\nADB\u3092\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\u3057\u307E\u3059\u304B\uFF1F
+      \u3053\u308C\u306B\u3088\u308AQuest\u306E\u6A5F\u80FD\u304C\u8A31\u53EF\u3055\u308C\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635263
-    m_Localized: Downloading ADB
+    m_Localized: "ADB\u306E\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635264
-    m_Localized: Finished downloading ADB
+    m_Localized: "ADB\u306E\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\u304C\u5B8C\u4E86\u3057\u307E\u3057\u305F"
     m_Metadata:
       m_Items: []
   - m_Id: 3779515244679168
-    m_Localized: Extracting ADB from zip. This may take a while.
+    m_Localized: "zip\u30D5\u30A1\u30A4\u30EB\u304B\u3089ADB\u3092\u5C55\u958B\u4E2D\u3067\u3059\u3002\u3053\u308C\u306B\u306F\u6642\u9593\u304C\u304B\u304B\u308B\u5834\u5408\u304C\u3042\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 21544433260560384
-    m_Localized: Install ADB for Quest functionality
+    m_Localized: "Quest\u6A5F\u80FD\u306E\u305F\u3081\u306BADB\u3092\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 71906481403138048
-    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Localized: "ADB\u306E\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9\u9032\u884C\u72B6\u6CC1:
+      {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 91579491578740736
@@ -979,334 +951,412 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101773637585141760
-    m_Localized: Makes the transitions between scenes instant.
+    m_Localized: "\u30B7\u30FC\u30F3\u9593\u306E\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3\u3092\u4F5C\u6210\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 101773995594153984
-    m_Localized: Instant Loading Transitions
+    m_Localized: "\u30ED\u30FC\u30C9\u4E2D\u306E\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3"
     m_Metadata:
       m_Items: []
   - m_Id: 101788523392335872
-    m_Localized: Length of the track in beats
+    m_Localized: "\u30C8\u30E9\u30C3\u30AF\u306E\u9577\u3055\uFF08\u62CD\u6570\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 101788529759289344
-    m_Localized: Track Length
+    m_Localized: "\u30C8\u30E9\u30C3\u30AF\u306E\u9577\u3055"
     m_Metadata:
       m_Items: []
   - m_Id: 101795760294789120
-    m_Localized: Hides disableable platform objects on load
+    m_Localized: "\u30ED\u30FC\u30C9\u6642\u306B\u7121\u52B9\u5316\u3055\u308C\u305F\u30D7\u30E9\u30C3\u30C8\u30D5\u30A9\u30FC\u30E0\u3092\u975E\u8868\u793A\u306B\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 101795765399257088
-    m_Localized: Hide Disableable Objects On Load
+    m_Localized: "\u30ED\u30FC\u30C9\u6642\u306B\u7121\u52B9\u5316\u3055\u308C\u305F\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u975E\u8868\u793A\u306B\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 101802838346366976
-    m_Localized: Changes the transparency of passed notes
+    m_Localized: "\u901A\u904E\u30CE\u30FC\u30C4\u306E\u900F\u660E\u5EA6\u3092\u5909\u66F4\u3057\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 101802902695378944
-    m_Localized: Passed Note Transparency
+    m_Localized: "\u901A\u904E\u30CE\u30FC\u30C4\u306E\u900F\u660E\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 101855016515731456
-    m_Localized: Editor Map Info Display
+    m_Localized: "\u30DE\u30C3\u30D7\u30A8\u30C7\u30A3\u30BF\u30FC\u306E\u60C5\u5831\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 101855364424859648
-    m_Localized: Display artist and song name in top right corner.
+    m_Localized: "\u53F3\u4E0A\u306B\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8\u3068\u66F2\u540D\u3092\u8868\u793A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 101855374591852544
-    m_Localized: Display Song Info
+    m_Localized: "\u66F2\u60C5\u5831\u3092\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 101855382842048512
-    m_Localized: Display difficulty name and value in top right corner.
+    m_Localized: "\u53F3\u4E0A\u306B\u96E3\u6613\u5EA6\u540D\u3068\u5024\u3092\u8868\u793A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 101855392124043264
-    m_Localized: Display Difficulty Info
+    m_Localized: "\u96E3\u6613\u5EA6\u60C5\u5831\u3092\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 102096011425677312
-    m_Localized: Displays bookmarks line on the editor grid track.
+    m_Localized: "\u30A8\u30C7\u30A3\u30BF\u30FC\u306E\u30B0\u30EA\u30C3\u30C9\u30C8\u30E9\u30C3\u30AF\u306B\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u30E9\u30A4\u30F3\u3092\u8868\u793A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 102096015523512320
-    m_Localized: Display Bookmarks On Track
+    m_Localized: "\u30C8\u30E9\u30C3\u30AF\u306B\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u3092\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 102186250655694848
-    m_Localized: Displays an additional grid line on the bookmark.
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306B\u8FFD\u52A0\u306E\u30B0\u30EA\u30C3\u30C9\u7DDA\u3092\u8868\u793A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 102186255848243200
-    m_Localized: Display Bookmark Grid Line
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u30B0\u30EA\u30C3\u30C9\u30E9\u30A4\u30F3\u3092\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 102193073215438848
-    m_Localized: How thick the beat line is
+    m_Localized: "\u30E9\u30A4\u30F3\u306E\u6FC3\u3055"
     m_Metadata:
       m_Items: []
   - m_Id: 102193078810640384
-    m_Localized: Main Beat Line Width
+    m_Localized: "\u30E9\u30A4\u30F3\u306E\u5E45"
     m_Metadata:
       m_Items: []
   - m_Id: 102206124970934272
-    m_Localized: Display the beat and song time on the bookmark tooltip.
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306B\u66F2\u306E\u6642\u9593\u3068\u30D3\u30FC\u30C8\u6570\u3092\u8868\u793A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 102206129182015488
-    m_Localized: Bookmark Tooltip Time Info
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u6642\u9593\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 102206134429089792
-    m_Localized: How thick the bookmarks on the timeline are.
+    m_Localized: "\u30BF\u30A4\u30E0\u30E9\u30A4\u30F3\u4E0A\u306E\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF\u306E\u6FC3\u3055\u3092\u5909\u66F4\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 102206140842180608
-    m_Localized: Bookmark UI Width
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AFUI\u306E\u5E45"
     m_Metadata:
       m_Items: []
   - m_Id: 102395595171495936
-    m_Localized: Bookmarks
+    m_Localized: "\u30D6\u30C3\u30AF\u30DE\u30FC\u30AF"
     m_Metadata:
       m_Items: []
   - m_Id: 102396931141206016
-    m_Localized: Camera
+    m_Localized: "\u30AB\u30E1\u30E9"
     m_Metadata:
       m_Items: []
   - m_Id: 102447908275814400
-    m_Localized: Saves the difficulty file as more than a single line.
+    m_Localized: "\u96E3\u6613\u5EA6\u306E\u30D5\u30A1\u30A4\u30EB\u3092\u8907\u6570\u884C\u3068\u3057\u3066\u4FDD\u5B58\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 102447938869067776
-    m_Localized: Save As Formatted Json
+    m_Localized: "\u30D5\u30A9\u30FC\u30DE\u30C3\u30C8\u6E08\u307FJSON\u3068\u3057\u3066\u4FDD\u5B58"
     m_Metadata:
       m_Items: []
   - m_Id: 94731652719513600
-    m_Localized: Use ADB in path if found
+    m_Localized: "\u30D1\u30B9\u5185\u306BADB\u304C\u898B\u3064\u304B\u3063\u305F\u5834\u5408\u306F\u305D\u308C\u3092\u4F7F\u7528\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 94731842968948736
-    m_Localized: If ADB is in the system environment path, it will use it if enabled.
+    m_Localized: "\u30B7\u30B9\u30C6\u30E0\u74B0\u5883\u30D1\u30B9\u306BADB\u304C\u3042\u308A\u6709\u52B9\u306A\u5834\u5408\u306F\u3001\u305D\u308C\u3092\u4F7F\u7528\u3059\u308B\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 105008036237737984
-    m_Localized: Whether objects can be shifted outside the normal 3x4 grid.
+    m_Localized: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u901A\u5E38\u306E 3x4
+      \u30B0\u30EA\u30C3\u30C9\u306E\u5916\u5074\u306B\u79FB\u52D5\u3067\u304D\u308B\u304B\u3069\u3046\u304B\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 105008044110446592
-    m_Localized: Vanilla Only Shift
+    m_Localized: "\u30D0\u30CB\u30E9\u306E\u307F\u79FB\u52D5"
     m_Metadata:
       m_Items: []
   - m_Id: 150232748497440768
-    m_Localized: Uninstalling ADB...
+    m_Localized: "ADB\u3092\u30A2\u30F3\u30A4\u30F3\u30B9\u30C8\u30FC\u30EB\u3057\u3066\u3044\u307E\u3059..."
     m_Metadata:
       m_Items: []
   - m_Id: 90253772483395584
-    m_Localized: Displays non-default floatValue on top of events
+    m_Localized: "\u30A4\u30D9\u30F3\u30C8\u306E\u4E0A\u306B\u30C7\u30D5\u30A9\u30EB\u30C8\u4EE5\u5916\u306EfloatValue\u3092\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 90254225048797184
-    m_Localized: Display FloatValue Text
+    m_Localized: "floatValue\u30C6\u30AD\u30B9\u30C8\u3092\u8868\u793A"
     m_Metadata:
       m_Items: []
   - m_Id: 206088741188730880
-    m_Localized: Visualize LightID Transition Events
+    m_Localized: "\u30E9\u30A4\u30C8ID\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3\u30A4\u30D9\u30F3\u30C8\u3092\u8996\u899A\u5316\u3059\u308B"
     m_Metadata:
       m_Items: []
   - m_Id: 206088950463528960
-    m_Localized: 'Previews and displays LightID transition events more accurately
-
-      This
-      is very heavy on performance'
+    m_Localized: "LightID\u30C8\u30E9\u30F3\u30B8\u30B7\u30E7\u30F3\u30A4\u30D9\u30F3\u30C8\u3092\u3088\u308A\u6B63\u78BA\u306B\u30D7\u30EC\u30D3\u30E5\u30FC\u3057\u3066\u8868\u793A\u3057\u307E\u3059\n\u3053\u308C\u306B\u3088\u308A\u975E\u5E38\u306B\u5927\u304D\u306A\u8CA0\u8377\u304C\u304B\u304B\u308A\u307E\u3059"
     m_Metadata:
       m_Items: []
   - m_Id: 208947639714189312
-    m_Localized: CM Chan
+    m_Localized: "CM\u30C1\u30A7\u30FC\u30F3"
     m_Metadata:
       m_Items: []
   - m_Id: 208947667555979264
-    m_Localized: Adds CM Chan art to loading screens.
+    m_Localized: "\u30ED\u30FC\u30C9\u753B\u9762\u306BCM\u30C1\u30A7\u30FC\u30F3\u30A2\u30FC\u30C8\u3092\u8FFD\u52A0\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 211668371329187840
-    m_Localized: Precision Placement Grid Precision
+    m_Localized: "\u7CBE\u5BC6\u914D\u7F6E\u30B0\u30EA\u30C3\u30C9\u7CBE\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 211668392346845184
-    m_Localized: The snapping interval of precision placement grid
+    m_Localized: "\u7CBE\u5BC6\u914D\u7F6E\u30B0\u30EA\u30C3\u30C9\u306E\u30B9\u30CA\u30C3\u30D7\u9593\u9694"
     m_Metadata:
       m_Items: []
   - m_Id: 235582333795893248
-    m_Localized: Invert Event Value Scroll
+    m_Localized: "\u30A4\u30D9\u30F3\u30C8\u5024\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u3092\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 235582635601231872
-    m_Localized: Invert mouse scroll direction on changing event value.
+    m_Localized: "\u30A4\u30D9\u30F3\u30C8\u5024\u5909\u66F4\u6642\u306B\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 235582671521251328
-    m_Localized: Invert Note Angle Scroll
+    m_Localized: "\u30CE\u30FC\u30C4\u30A2\u30F3\u30B0\u30EB\u30B9\u30AF\u30ED\u30FC\u30EB\u306E\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 235582692199170048
-    m_Localized: Invert mouse scroll direction on changing note angle.
+    m_Localized: "\u30CE\u30FC\u30C4\u30A2\u30F3\u30B0\u30EB\u5909\u66F4\u6642\u306B\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 235582713359433728
-    m_Localized: Invert Arc Multiplier Scroll
+    m_Localized: "\u30A2\u30FC\u30AF\u306EMultiplier\u30B9\u30AF\u30ED\u30FC\u30EB\u3092\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 235582733693419520
-    m_Localized: Invert mouse scroll direction on changing arc head and tail multipliers.
+    m_Localized: "\u30A2\u30FC\u30AF\u306E\u5148\u982D\u3068\u672B\u5C3E\u306EMultiuplier\u3092\u5909\u66F4\u6642\u306B\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 235582754643968000
-    m_Localized: Invert Chain Squish Scroll
+    m_Localized: "\u30C1\u30A7\u30FC\u30F3\u306Esquish\u30B9\u30AF\u30ED\u30FC\u30EB\u3092\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 235582774030041088
-    m_Localized: Invert mouse scroll direction on changing chain squish.
+    m_Localized: "\u30C1\u30A7\u30FC\u30F3\u306Esquish\u3092\u5909\u66F4\u6642\u306B\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 235582798323449856
-    m_Localized: Invert Chain Segment Count Scroll
+    m_Localized: "\u30C1\u30A7\u30FC\u30F3\u306E\u30BB\u30B0\u30E1\u30F3\u30C8\u6570\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u3092\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 235582820507123712
-    m_Localized: Invert mouse scroll direction on changing the number of segments
-      in a chain.
+    m_Localized: "\u30C1\u30A7\u30FC\u30F3\u306E\u30BB\u30B0\u30E1\u30F3\u30C8\u6570\u3092\u5909\u66F4\u6642\u306B\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 236258093237993472
-    m_Localized: Invert Wall Duration Scroll
+    m_Localized: "\u58C1\u65B9\u5411\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u3092\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 236258097742675968
-    m_Localized: Invert mouse scroll direction on changing the duration of walls.
+    m_Localized: "\u58C1\u306E\u65B9\u5411\u3092\u5909\u66F4\u6642\u306B\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 236258102280912896
-    m_Localized: Invert Wall Bounds Scroll
+    m_Localized: "\u58C1\u5883\u754C\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u3092\u53CD\u8EE2"
     m_Metadata:
       m_Items: []
   - m_Id: 236258109335732224
-    m_Localized: Invert mouse scroll direction on changing the upper and lower bounds
-      of v3 walls.
+    m_Localized: "V3\u58C1\u306E\u4E0A\u4E0B\u65B9\u5411\u3092\u5909\u66F4\u6642\u306B\u30DE\u30A6\u30B9\u306E\u30B9\u30AF\u30ED\u30FC\u30EB\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 247458017744977920
-    m_Localized: Precision Placement Mode
+    m_Localized: "\u7CBE\u5BC6\u914D\u7F6E\u30E2\u30FC\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 247458202206273536
-    m_Localized: 'If enabled, an extended grid will appear when using the precision
-      placement keybind while placing walls or notes. '
+    m_Localized: "\u6709\u52B9\u306B\u3057\u305F\u5834\u5408\u3001\u58C1\u3084\u30CE\u30FC\u30C4\u3092\u914D\u7F6E\u3059\u308B\u3068\u304D\u306B\u7CBE\u5BC6\u914D\u7F6E\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u3092\u4F7F\u7528\u3059\u308B\u3068\u3001\u62E1\u5F35\u30B0\u30EA\u30C3\u30C9\u304C\u8868\u793A\u3055\u308C\u307E\u3059\u3002 "
     m_Metadata:
       m_Items: []
   - m_Id: 249214922956247040
-    m_Localized: Enables Noodle Extensions animations while in preview mode.
+    m_Localized: "\u30D7\u30EC\u30D3\u30E5\u30FC\u30E2\u30FC\u30C9\u4E2D\u306BNoodle
+      Extension\u306E\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3\u3092\u6709\u52B9\u306B\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 249224607608377344
-    m_Localized: Preview Animations
+    m_Localized: "\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3\u30D7\u30EC\u30D3\u30E5\u30FC"
     m_Metadata:
       m_Items: []
   - m_Id: 262680152746688512
-    m_Localized: Open File Explorer After Create Zip
+    m_Localized: "zip\u30D5\u30A1\u30A4\u30EB\u3092\u4F5C\u6210\u5F8C\u306B\u30D5\u30A1\u30A4\u30EB\u30A8\u30AF\u30B9\u30D7\u30ED\u30FC\u30E9\u3092\u958B\u304F"
     m_Metadata:
       m_Items: []
   - m_Id: 262680318467833856
-    m_Localized: Whether the file explorer opens automically after creating zip
+    m_Localized: "zip\u30D5\u30A1\u30A4\u30EB\u4F5C\u6210\u5F8C\u306B\u81EA\u52D5\u3067\u30D5\u30A1\u30A4\u30EB\u30A8\u30AF\u30B9\u30D7\u30ED\u30FC\u30E9\u30FC\u3092\u958B\u304F\u304B\u3069\u3046\u304B"
     m_Metadata:
       m_Items: []
   - m_Id: 288364334621589504
-    m_Localized: Save Without Default Values
+    m_Localized: "\u30C7\u30D5\u30A9\u30EB\u30C8\u5024\u306A\u3057\u3067\u4FDD\u5B58"
     m_Metadata:
       m_Items: []
   - m_Id: 288364497993924608
-    m_Localized: Saves the difficulty file without properties that have a default
-      value.
+    m_Localized: "\u30C7\u30D5\u30A9\u30EB\u30C8\u5024\u306E\u3042\u308B\u30D7\u30ED\u30D1\u30C6\u30A3\u3092\u9664\u3044\u305F\u96E3\u6613\u5EA6\u30D5\u30A1\u30A4\u30EB\u3092\u4FDD\u5B58\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 252032304653307904
-    m_Localized: Change Field of View of the preview camera
+    m_Localized: "\u30D7\u30EC\u30D3\u30E5\u30FC\u30AB\u30E1\u30E9\u306EFOV\u3092\u5909\u66F4"
     m_Metadata:
       m_Items: []
   - m_Id: 252047222777614336
-    m_Localized: Preview Camera FOV
+    m_Localized: "FOV\u3092\u30D7\u30EC\u30D3\u30E5\u30FC"
     m_Metadata:
       m_Items: []
   - m_Id: 298177154557083648
-    m_Localized: Open Plugins Folder
+    m_Localized: "\u30D7\u30E9\u30B0\u30A4\u30F3\u30D5\u30A9\u30EB\u30C0\u3092\u958B\u304F"
     m_Metadata:
       m_Items: []
   - m_Id: 300616661902491648
-    m_Localized: Preview Camera Z Offset
+    m_Localized: "\u30AB\u30E1\u30E9\u306EZ\u30AA\u30D5\u30BB\u30C3\u30C8\u3092\u30D7\u30EC\u30D3\u30E5\u30FC"
     m_Metadata:
       m_Items: []
   - m_Id: 300616655971745792
-    m_Localized: Offsets the preview camera backwards (in metres)
+    m_Localized: "\u30D7\u30EC\u30D3\u30E5\u30FC\u30AB\u30E1\u30E9\u3092\u5F8C\u65B9\u306B\u57CB\u3081\u8FBC\u307F\u307E\u3059\uFF08\u30E1\u30FC\u30C8\u30EB\u5358\u4F4D\uFF09"
     m_Metadata:
       m_Items: []
   - m_Id: 300618005946236928
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475552
   - m_Id: 322078335378526208
-    m_Localized: Objects and Lighting
+    m_Localized: "\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0"
     m_Metadata:
       m_Items: []
   - m_Id: 322078433017729024
-    m_Localized: Note Color Multiplier
+    m_Localized: "\u30CE\u30FC\u30C4\u306EColor Multiplier"
     m_Metadata:
       m_Items: []
   - m_Id: 322078544036761600
-    m_Localized: Brightens or darkens the color of the note block.
+    m_Localized: "\u30D6\u30ED\u30C3\u30AF\u30CE\u30FC\u30C4\u306E\u8272\u3092\u660E\u308B\u304F\u3057\u305F\u308A\u6697\u304F\u3057\u305F\u308A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 322078560457461760
-    m_Localized: Arrow Color Multiplier
+    m_Localized: "\u77E2\u5370\u30CE\u30FC\u30C4\u306EColor Multiplier"
     m_Metadata:
       m_Items: []
   - m_Id: 322078585577148416
-    m_Localized: Brightens or darkens the color of the note arrow.
+    m_Localized: "\u77E2\u5370\u30CE\u30FC\u30C4\u306E\u8272\u3092\u660E\u308B\u304F\u3057\u305F\u308A\u6697\u304F\u3057\u305F\u308A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 322078609908305920
-    m_Localized: Arrow White Blend
+    m_Localized: "\u77E2\u5370\u3092\u767D\u304F\u30D6\u30EC\u30F3\u30C9"
     m_Metadata:
       m_Items: []
   - m_Id: 322078641902456832
-    m_Localized: Blends the color of the arrow, from the assigned note color to a
-      pure white.
+    m_Localized: "\u77E2\u5370\u306E\u8272\u3092\u3001\u6307\u5B9A\u3055\u308C\u305F\u30CE\u30FC\u30C4\u306E\u8272\u304B\u3089\u767D\u306B\u30D6\u30EC\u30F3\u30C9\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 322078668309794816
-    m_Localized: Obstacle Opacity
+    m_Localized: "\u969C\u5BB3\u7269\u306E\u4E0D\u900F\u660E\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 322078693966352384
-    m_Localized: Changes the opacity of the obstacle's inner body.
+    m_Localized: "\u969C\u5BB3\u7269\u5185\u90E8\u306E\u4E0D\u900F\u660E\u5EA6\u3092\u5909\u66F4\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 322078715722207232
-    m_Localized: Alternate Lighting
+    m_Localized: "\u4EE3\u66FF\u306E\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0"
     m_Metadata:
       m_Items: []
   - m_Id: 322078739269029888
-    m_Localized: Tweaks ChroMapper's lighting to give an appearance more similar
-      to MMA2.
+    m_Localized: "ChroMapper\u306E\u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u3092\u8ABF\u6574\u3057\u3066\u3001MMA2
+      \u306B\u4F3C\u305F\u5916\u89B3\u306B\u3057\u307E\u3059\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330014416099160064
+    m_Localized: "\u30A4\u30F3\u30BF\u30FC\u30D5\u30A7\u30FC\u30B9\u306E\u4E0D\u900F\u660E\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330014459573121024
+    m_Localized: "\u30B0\u30EA\u30C3\u30C9\u30A4\u30F3\u30BF\u30FC\u30D5\u30A7\u30FC\u30B9\u306E\u4E0D\u900F\u660E\u5EA6\u3092\u8ABF\u6574\u3057\u307E\u3059\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103871700791296
+    m_Localized: "Counters+\u3067\u30A2\u30FC\u30AF\u6570\u3092\u8868\u793A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103879246344192
+    m_Localized: "\u30A2\u30FC\u30AF\u6570"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103881049894912
+    m_Localized: "Counters+\u3067\u30C1\u30A7\u30FC\u30F3\u6570\u3092\u8868\u793A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356103882744393728
+    m_Localized: "\u30C1\u30A7\u30FC\u30F3\u6570"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172452363964416
+    m_Localized: Sample Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172654227427328
+    m_Localized: Frequency resolution of the spectrogram. Higher numbers reduce timeline
+      accuracy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172845764513792
+    m_Localized: Bilinear Filtering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362172895014031360
+    m_Localized: Basic interpolation between spectrogram values.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173257435451392
+    m_Localized: Logarithmic Shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173301957988352
+    m_Localized: Dedicates more of the spectrogram to lower frequencies.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173439820566528
+    m_Localized: Sample Quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362173496468836352
+    m_Localized: Increases timeline detail by multiplying the number of spectrogram
+      samples.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174267792953344
+    m_Localized: Slice Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174367466393600
+    m_Localized: Simulate height by overlaying multiple images of the spectrogram.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174490212700160
+    m_Localized: Slice Height
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362174510987087872
+    m_Localized: Increases the height of spectrogram slices.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 379261491249930240
+    m_Localized: Show Console for Non Important Errors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 379261544442093568
+    m_Localized: Forcefully opens the development console on lesser important (red)
+      error messages.
     m_Metadata:
       m_Items: []
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 2609315181482475552
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04

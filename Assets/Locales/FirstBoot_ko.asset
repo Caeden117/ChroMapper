@@ -75,7 +75,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 300762992517451776
-    m_Localized: Lighting Preset
+    m_Localized: "\uB77C\uC774\uD305 \uD504\uB9AC\uC14B"
     m_Metadata:
       m_Items: []
   - m_Id: 300762994845290496
@@ -83,4 +83,5 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   references:
-    version: 1
+    version: 2
+    RefIds: []

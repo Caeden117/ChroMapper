@@ -11,6 +11,8 @@ public class CountersPlusController : MonoBehaviour
     [FormerlySerializedAs("notes")][SerializeField] private NoteGridContainer noteGrid;
     [FormerlySerializedAs("obstacles")][SerializeField] private ObstacleGridContainer obstacleGrid;
     [FormerlySerializedAs("events")][SerializeField] private EventGridContainer eventGrid;
+    [SerializeField] private ArcGridContainer arcGrid;
+    [SerializeField] private ChainGridContainer chainGrid;
     [SerializeField] private BPMChangeGridContainer bpm;
     [SerializeField] private AudioSource cameraAudioSource;
     [SerializeField] private AudioTimeSyncController atsc;
@@ -23,6 +25,8 @@ public class CountersPlusController : MonoBehaviour
     [SerializeField] private LocalizeStringEvent[] extraNoteStrings;
     [SerializeField] private LocalizeStringEvent obstacleString;
     [SerializeField] private LocalizeStringEvent eventString;
+    [SerializeField] private LocalizeStringEvent arcString;
+    [SerializeField] private LocalizeStringEvent chainString;
     [SerializeField] private LocalizeStringEvent bpmString;
     [FormerlySerializedAs("currentBPMString")][SerializeField] private LocalizeStringEvent currentBpmString;
     [SerializeField] private LocalizeStringEvent selectionString;
@@ -42,15 +46,13 @@ public class CountersPlusController : MonoBehaviour
     [FormerlySerializedAs("seconds")][HideInInspector] public int seconds;
 
 
-    public int NotesCount =>
-       noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type != (int)NoteType.Bomb).Count();
+    public int NotesCount => noteGrid.MapObjects.CountNoAlloc(note => note.Type != (int)NoteType.Bomb);
 
 
     public float NPSCount => NotesCount / cameraAudioSource.clip.length;
 
     public int NotesSelected
-        => SelectionController.SelectedObjects
-            .Where(x => (x is BaseNote note && note.Type != (int)NoteType.Bomb) || x is BaseChain).Count();
+        => SelectionController.SelectedObjects.Count(x => x is BaseNote note && note.Type != (int)NoteType.Bomb);
 
     public float NPSselected
     {
@@ -65,13 +67,17 @@ public class CountersPlusController : MonoBehaviour
     }
 
     public int BombCount
-        => noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Bomb).Count();
+        => noteGrid.MapObjects.CountNoAlloc(note => note.Type == (int)NoteType.Bomb);
 
-    public int ObstacleCount => obstacleGrid.LoadedObjects.Count;
+    public int ArcCount => arcGrid.MapObjects.Count;
+    
+    public int ChainCount => chainGrid.MapObjects.Count;
 
-    public int EventCount => eventGrid.LoadedObjects.Count;
+    public int ObstacleCount => obstacleGrid.MapObjects.Count;
 
-    public int BPMCount => bpm.LoadedObjects.Count;
+    public int EventCount => eventGrid.MapObjects.Count;
+
+    public int BPMCount => bpm.MapObjects.Count;
 
     public int SelectedCount => SelectionController.SelectedObjects.Count;
 
@@ -84,10 +90,8 @@ public class CountersPlusController : MonoBehaviour
     {
         get
         {
-            var redCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Red)
-                .Count();
-            var blueCount = noteGrid.LoadedObjects.Where(note => ((BaseNote)note).Type == (int)NoteType.Blue)
-                .Count();
+            var redCount = noteGrid.MapObjects.CountNoAlloc(note => note.Type == (int)NoteType.Red);
+            var blueCount = noteGrid.MapObjects.CountNoAlloc(note => note.Type == (int)NoteType.Blue);
             return blueCount == 0 ? 0f : redCount / (float)blueCount;
         }
     }
@@ -111,10 +115,8 @@ public class CountersPlusController : MonoBehaviour
     {
         if (Application.isFocused)
         {
-            BeatSaberSongContainer.Instance.Map.Time += Time.deltaTime / 60; // only tick while application is focused
-
             var timeMapping = BeatSaberSongContainer.Instance.Map.Time;
-            var newSeconds = Mathf.Abs(Mathf.FloorToInt(timeMapping * 60 % 60));
+            var newSeconds = Mathf.FloorToInt(timeMapping * 60 % 60);
 
             if (newSeconds != seconds)
             {
@@ -152,6 +154,12 @@ public class CountersPlusController : MonoBehaviour
 
             if ((stringRefreshQueue & CountersPlusStatistic.Selection) != 0)
                 UpdateSelectionStats();
+
+            if ((stringRefreshQueue & CountersPlusStatistic.Arcs) != 0)
+                arcString.StringReference.RefreshString();
+
+            if ((stringRefreshQueue & CountersPlusStatistic.Chains) != 0)
+                chainString.StringReference.RefreshString();
 
             stringRefreshQueue = 0;
         }

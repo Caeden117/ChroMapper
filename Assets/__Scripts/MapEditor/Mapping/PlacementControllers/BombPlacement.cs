@@ -18,6 +18,8 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     [SerializeField] private ToggleColourDropdown dropdown;
 
+    private static readonly int alwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
+
     // Chroma Color Check
     public static bool CanPlaceChromaObjects
     {
@@ -40,7 +42,7 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     {
         // Check if Chroma Color notes button is active and apply _color
         queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
-            ? (Color?)colorPicker.CurrentColor
+            ? colorPicker.CurrentColor
             : null;
 
         var posX = (int)roundedHit.x;
@@ -73,11 +75,11 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             precisionPlacement.TogglePrecisionPlacement(false);
 
             queuedData.CustomCoordinate = !vanillaBounds
-                ? (JSONNode)((Vector2)roundedHit - vanillaOffset + precisionOffset)
+                ? (Vector2)roundedHit - vanillaOffset + precisionOffset
                 : null;
         }
 
-        instantiatedContainer.MaterialPropertyBlock.SetFloat("_AlwaysTranslucent", 1);
+        instantiatedContainer.MaterialPropertyBlock.SetFloat(alwaysTranslucent, 1);
         instantiatedContainer.UpdateMaterials();
 
         instantiatedContainer.NoteData = queuedData;

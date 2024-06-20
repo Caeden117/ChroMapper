@@ -158,55 +158,50 @@ namespace Beatmap.V2
 
         private void ParseV3ToV2()
         {
-            var newNotes = new List<BaseNote>();
-            foreach (var n in Notes)
-                switch (n.Type)
-                {
-                    case (int)NoteType.Bomb:
-                        newNotes.Add(V3ToV2.Note(n));
-                        break;
-                    case (int)NoteType.Red:
-                    case (int)NoteType.Blue:
-                        newNotes.Add(V3ToV2.Note(n));
-                        break;
-                    default:
-                        Debug.LogError("Unsupported note type for Beatmap version 2.0.0");
-                        break;
-                }
+            // Note conversion
+            for (var i = Notes.Count - 1; i >= 0; i--)
+            {
+                Notes[i] = V3ToV2.Note(Notes[i]);
+            }
+            
+            // Obstacle conversion
+            for (var i = Obstacles.Count - 1; i >= 0; i--)
+            {
+                Obstacles[i] = V3ToV2.Obstacle(Obstacles[i]);
+            }
+            
+            Arcs.Clear(); // we purge them anyway
 
-            Notes = newNotes;
+            // Event conversion
+            for (var i = Events.Count - 1; i >= 0; i--)
+            {
+                Events[i] = V3ToV2.Event(Events[i]);
+            }
 
-            Obstacles = Obstacles.Select(V3ToV2.Obstacle).Cast<BaseObstacle>().ToList();
+            // Bpm event conversion
+            for (var i = BpmEvents.Count - 1; i >= 0; i--)
+            {
+                BpmEvents[i] = V3ToV2.BpmEvent(BpmEvents[i]);
+            }
+            
+            // Bookmark conversion
+            for (var i = Bookmarks.Count - 1; i >= 0; i--)
+            {
+                Bookmarks[i] = V3ToV2.Bookmark(Bookmarks[i]);
+            }
 
-            Arcs = new List<BaseArc>(); // we purge them anyway
+            // Custom event conversion
+            for (var i = CustomEvents.Count - 1; i >= 0; i--)
+            {
+                CustomEvents[i] = V3ToV2.CustomEvent(CustomEvents[i]);
+            }
 
-            var newEvents = new List<BaseEvent>();
-            foreach (var e in Events)
-                switch (e.Type)
-                {
-                    case (int)EventTypeValue.ColorBoost:
-                        newEvents.Add(V3ToV2.Event(e));
-                        break;
-                    case (int)EventTypeValue.EarlyLaneRotation:
-                    case (int)EventTypeValue.LateLaneRotation:
-                        newEvents.Add(V3ToV2.Event(e));
-                        break;
-                    case (int)EventTypeValue.BpmChange:
-                        newEvents.Add(V3ToV2.Event(e));
-                        break;
-                    default:
-                        newEvents.Add(V3ToV2.Event(e));
-                        break;
-                }
+            // Environment Enhancement conversion
+            for (var i = EnvironmentEnhancements.Count - 1; i >= 0; i--)
+            {
+                EnvironmentEnhancements[i] = V3ToV2.EnvironmentEnhancement(EnvironmentEnhancements[i]);
+            }
 
-            Events = newEvents;
-            BpmEvents = BpmEvents.Select(V3ToV2.BpmEvent).Cast<BaseBpmEvent>().ToList();
-
-            Bookmarks = Bookmarks.Select(V3ToV2.Bookmark).Cast<BaseBookmark>().ToList();
-            BpmChanges = BpmChanges.Select(V3ToV2.BpmChange).Cast<BaseBpmChange>().ToList();
-            CustomEvents = CustomEvents.Select(V3ToV2.CustomEvent).Cast<BaseCustomEvent>().ToList();
-            EnvironmentEnhancements = EnvironmentEnhancements.Select(V3ToV2.EnvironmentEnhancement)
-                .Cast<BaseEnvironmentEnhancement>().ToList();
             if (CustomData?.HasKey("fakeColorNotes") ?? false) CustomData.Remove("fakeColorNotes");
             if (CustomData?.HasKey("fakeBombNotes") ?? false) CustomData.Remove("fakeBombNotes");
             if (CustomData?.HasKey("fakeObstacles") ?? false) CustomData.Remove("fakeObstacles");

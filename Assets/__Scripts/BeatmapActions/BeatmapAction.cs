@@ -77,7 +77,7 @@ public abstract class BeatmapAction : INetSerializable
 
         // If this Action was received over the network, we abuse the conflict check system
         //   to delete anything that was previously there.
-        if (Networked && !collection.UnsortedObjects.Contains(obj))
+        if (Networked && !collection.ContainsObject(obj))
         {
             collection.RemoveConflictingObjects(new[] { obj });
             return;

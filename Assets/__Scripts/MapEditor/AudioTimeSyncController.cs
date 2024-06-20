@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -10,6 +11,10 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public static readonly string PrecisionSnapName = "PrecisionSnap";
 
     private static readonly int songTime = Shader.PropertyToID("_SongTime");
+    private static readonly int songTimeSeconds = Shader.PropertyToID("_SongTimeSeconds");
+    private static readonly int viewStart = Shader.PropertyToID("_ViewStart");
+    private static readonly int viewEnd = Shader.PropertyToID("_ViewEnd");
+    
     private const float cancelPlayInputDuration = 0.3f;
 
     [FormerlySerializedAs("songAudioSource")] public AudioSource SongAudioSource;
@@ -204,7 +209,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
     {
         if (!KeybindsController.IsMouseInWindow ||
-            customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true))
+            customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
         {
             return;
         }
@@ -246,7 +251,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public void OnPreciselyChangeTimeandPrecision(InputAction.CallbackContext context)
     {
         if (!KeybindsController.IsMouseInWindow ||
-            customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true))
+            customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
         {
             return;
         }
@@ -315,7 +320,12 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     private void UpdateMovables()
     {
         Shader.SetGlobalFloat(songTime, currentSongBpmTime);
-
+        Shader.SetGlobalFloat(songTimeSeconds, currentSeconds);
+        
+        // CM's grid extends from [songTime - 2 beats, songTime + 8 beats]
+        Shader.SetGlobalFloat(viewStart, GetSecondsFromBeat(currentSongBpmTime - 2));
+        Shader.SetGlobalFloat(viewEnd, GetSecondsFromBeat(currentSongBpmTime + 8));
+        
         var position = currentSongBpmTime * EditorScaleController.EditorScale;
 
         gridRenderingController.UpdateOffset(position);
@@ -427,8 +437,10 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangeGridContainer.FindRoundedBpmTime(beat, snap);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float GetBeatFromSeconds(float seconds) => Song.BeatsPerMinute / 60 * seconds;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float GetSecondsFromBeat(float beat) => 60 / Song.BeatsPerMinute * beat;
 
     private void ValidatePosition()

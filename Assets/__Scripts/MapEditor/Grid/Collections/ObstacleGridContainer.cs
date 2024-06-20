@@ -7,7 +7,7 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class ObstacleGridContainer : BeatmapObjectContainerCollection
+public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstacle>
 {
     [SerializeField] private GameObject obstaclePrefab;
     [FormerlySerializedAs("obstacleAppearanceSO")][SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
@@ -21,10 +21,13 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
 
     public BaseObstacle[] DespawnSortedObjects;
     private int despawnIndex;
+    
+    private static readonly int outsideAlpha = Shader.PropertyToID("_OutsideAlpha");
+    private static readonly int mainAlpha = Shader.PropertyToID("_MainAlpha");
 
     internal override void SubscribeToCallbacks()
     {
-        Shader.SetGlobalFloat("_OutsideAlpha", 0.25f);
+        Shader.SetGlobalFloat(outsideAlpha, 0.25f);
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         AudioTimeSyncController.TimeChanged += OnTimeChanged;
         UIMode.UIModeSwitched += OnUIModeSwitch;
@@ -42,20 +45,18 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         Settings.ClearSettingNotifications(nameof(Settings.ObstacleOpacity));
     }
 
-    private void ObstacleOpacityChanged(object obj) => Shader.SetGlobalFloat("_MainAlpha", (float)obj);
+    private void ObstacleOpacityChanged(object obj) => Shader.SetGlobalFloat(mainAlpha, (float)obj);
 
-    private void OnPlayToggle(bool playing) => Shader.SetGlobalFloat("_OutsideAlpha", playing ? 0 : 0.25f);
+    private void OnPlayToggle(bool playing) => Shader.SetGlobalFloat(outsideAlpha, playing ? 0 : 0.25f);
 
     public override void RefreshPool(bool force)
     {
         if (UIMode.AnimationMode)
         {
-            SpawnSortedObjects = UnsortedObjects
-                .Select(o => o as BaseObstacle)
+            SpawnSortedObjects = MapObjects
                 .OrderBy(o => o.SpawnSongBpmTime)
                 .ToArray();
-            DespawnSortedObjects = UnsortedObjects
-                .Select(o => o as BaseObstacle)
+            DespawnSortedObjects = MapObjects
                 .OrderBy(o => o.DespawnSongBpmTime)
                 .ToArray();
             RefreshWalls();
@@ -93,7 +94,8 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
         {
             while (spawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[spawnIndex].SpawnSongBpmTime)
             {
-                CreateContainerFromPool(SpawnSortedObjects[spawnIndex]);
+                if (TrackFilterID == null || TrackFilterID == ((SpawnSortedObjects[spawnIndex].CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+                    CreateContainerFromPool(SpawnSortedObjects[spawnIndex]);
                 ++spawnIndex;
             }
 
@@ -118,7 +120,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
 
     private void RefreshWalls()
     {
-        var time = AudioTimeSyncController.CurrentSongBpmTime;
+        var time = AudioTimeSyncController.CurrentJsonTime;
         foreach (var obj in LoadedContainers.Values.ToList())
         {
             RecycleContainer(obj.ObjectData);
@@ -128,19 +130,20 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection
             (i) => SpawnSortedObjects[i].SpawnSongBpmTime,
             SpawnSortedObjects.Length,
             out spawnIndex,
-            out var _
+            out _
         );
         GetIndexes(
             time,
             (i) => DespawnSortedObjects[i].DespawnSongBpmTime,
             DespawnSortedObjects.Length,
             out despawnIndex,
-            out var _
+            out _
         );
         var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnSongBpmTime <= time && time < o.DespawnSongBpmTime));
         foreach (var obj in toSpawn)
         {
-            CreateContainerFromPool(obj);
+            if (TrackFilterID == null || TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+                CreateContainerFromPool(obj);
         }
     }
 

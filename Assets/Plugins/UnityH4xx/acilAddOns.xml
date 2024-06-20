@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>acilAddOns</name>
+    </assembly>
+    <members>
+        <member name="T:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute">
+            <summary>
+            Attribute which tells the runtime not to worry about accessibility modifiers
+            and visibility of type members in the target assembly.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute.#ctor(System.String)">
+            <summary>
+            Creates the IgnoreAccessChecksToAttribute with the specified target assembly name
+            </summary>
+            <param name="assemblyName">Name of the target assembly</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute.AssemblyName">
+            <summary>
+            The name of the target assembly for which access checks are not performed at runtime.
+            </summary>
+        </member>
+        <member name="T:System.Runtime.InteropServices.CollectionMarshal">
+            <summary>
+            An unsafe class that provides a set of methods to access 
+            the underlying data representations of collections.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.InteropServices.CollectionMarshal.AsSpan``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Gets a Span&lt;<typeparamref name="T"/>&gt; view over the data in <paramref name="list"/>. 
+            </summary>
+            <remarks>
+            <para><h3><b>Warning:</b> Read-only operation!</h3></para>
+            Items should not be added or removed from the List&lt;<typeparamref name="T"/>&gt; while the Span&lt;<typeparamref name="T"/>&gt; is in use.
+            </remarks>
+            <typeparam name="T">The type of items in <paramref name="list"/>.</typeparam>
+            <param name="list">List from which to create the Span&lt;<typeparamref name="T"/>&gt;.</param>
+            <returns>A Span&lt;<typeparamref name="T"/>&gt; instance over the List&lt;<typeparamref name="T"/>&gt;.</returns>
+        </member>
+        <member name="T:System.Collections.Generic.__ListXTension">
+            <summary>
+            Defines extensions for System.Collections.Generic's List&lt;T&gt; collection
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.__ListXTension.AsSpan``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Gets a Span&lt;<typeparamref name="T"/>&gt; view over the data in this List&lt;<typeparamref name="T"/>&gt; instance
+            </summary>
+            <remarks>
+            <para><h3><b>Warning:</b> Read-only operation!</h3></para>
+            Items should not be added or removed from the List&lt;<typeparamref name="T"/>&gt; while the Span&lt;<typeparamref name="T"/>&gt; is in use.
+            </remarks>
+            <typeparam name="T">The type of items in <paramref name="list"/></typeparam>
+            <param name="list">This List&lt;<typeparamref name="T"/>&gt; instance</param>
+            <returns>A Span&lt;<typeparamref name="T"/>&gt; instance over the List&lt;<typeparamref name="T"/>&gt;.</returns>
+        </member>
+    </members>
+</doc>

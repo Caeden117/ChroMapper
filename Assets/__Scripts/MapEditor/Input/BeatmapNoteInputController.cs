@@ -18,7 +18,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
 
     public bool QuickModificationActive;
 
-    private readonly Dictionary<int, int> cutDirectionMovedBackward = new Dictionary<int, int>
+    private readonly Dictionary<int, int> cutDirectionMovedBackward = new()
     {
         {(int)NoteCutDirection.Any, (int)NoteCutDirection.Any},
         {(int)NoteCutDirection.DownLeft, (int)NoteCutDirection.Down},
@@ -32,7 +32,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
         {(int)NoteCutDirection.None, (int)NoteCutDirection.None}
     };
 
-    private readonly Dictionary<int, int> cutDirectionMovedForward = new Dictionary<int, int>
+    private readonly Dictionary<int, int> cutDirectionMovedForward = new()
     {
         {(int)NoteCutDirection.Any, (int)NoteCutDirection.Any},
         {(int)NoteCutDirection.Down, (int)NoteCutDirection.DownLeft},
@@ -49,7 +49,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
     //Do some shit later lmao
     public void OnInvertNoteColors(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true) ||
             !KeybindsController.IsMouseInWindow || !context.performed)
         {
             return;
@@ -64,7 +64,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
 
     public void OnUpdateNoteDirection(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         if (!context.performed) return;
 
         var shiftForward = context.ReadValue<float>() > 0;
@@ -74,7 +74,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
 
     public void OnUpdateNotePreciseDirection(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         if (!context.performed) return;
 
         var shiftForward = context.ReadValue<float>() > 0;

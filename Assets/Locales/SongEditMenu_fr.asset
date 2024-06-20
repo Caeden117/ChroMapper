@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
     m_Items:
-    - id: 0
+    - rid: 2609315181482475545
   m_TableData:
   - m_Id: 1
     m_Localized: Infos du morceau
@@ -169,7 +169,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: "S\xE9lectionnez depui une liste de plateformes customes install\xE9es."
+    m_Localized: "S\xE9lectionnez depuis une liste de plateformes personnalis\xE9es
+      install\xE9es."
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -331,12 +332,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, do you want to save them?
+    m_Localized: "Vous avez des modifications non sauvegard\xE9es, voulez-vous les
+      sauvegardez ?"
     m_Metadata:
       m_Items: []
   - m_Id: 76
     m_Localized: "Les fichiers r\xE9f\xE9renc\xE9s doivent se trouver dans le dossier
-      du morceau. Voulez-vous copier ce fichier dans le dossier du morceau?"
+      de la musique. Voulez-vous copier ce fichier dans le dossier de la musique?"
     m_Metadata:
       m_Items: []
   - m_Id: 77
@@ -348,13 +350,13 @@ MonoBehaviour:
     m_Localized: "{0}% compl\xE9t\xE9."
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475545
   - m_Id: 44795657592176640
     m_Localized: "Temps de r\xE9action"
     m_Metadata:
       m_Items: []
   - m_Id: 44793699250667520
-    m_Localized: "La quantit\xE9 de temps le joueur a pour r\xE9agir (en millisecondes)"
+    m_Localized: "Le temps que le joueur a pour r\xE9agir\n(en millisecondes)"
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
@@ -373,11 +375,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104118050203242496
-    m_Localized: "Impossible de trouver d'appareils connect\xE9s."
+    m_Localized: "Impossible de trouver des appareils connect\xE9s."
     m_Metadata:
       m_Items: []
   - m_Id: 104118270903324672
-    m_Localized: "Impossible de trouver une Quest connect\xE9e."
+    m_Localized: "Impossible de trouver un Quest connect\xE9."
     m_Metadata:
       m_Items: []
   - m_Id: 115483511321985024
@@ -400,25 +402,22 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 216566409055109120
-    m_Localized: Map packaged to zip successfully.
+    m_Localized: "La carte a \xE9t\xE9 compress\xE9e en zip avec succ\xE8s."
     m_Metadata:
       m_Items: []
   - m_Id: 216566610293620736
-    m_Localized: 'Error packaging map to zip.
-
-      No zip created.'
+    m_Localized: Erreur lors de la compression de la carte en zip.
     m_Metadata:
       m_Items: []
   - m_Id: 272807305041276928
-    m_Localized: 'Error while creating the packaged zip:
-
-      Cannot use absolute
-      paths for files.'
+    m_Localized: "Erreur lors de la cr\xE9ation du fichier zip\_:\nimpossible d'utiliser
+      des chemins absolus."
     m_Metadata:
       m_Items: []
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 2609315181482475545
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010d21a57e67101

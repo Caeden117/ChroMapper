@@ -8,6 +8,8 @@
         Add("Swings Per Second", true);
         Add("Red/Blue Ratio", true);
         Add("Bombs", true);
+        Add("Arcs", true);
+        Add("Chains", true);
         Add("Obstacles", true);
         Add("Events", true);
         Add("BPM Changes", true); // Bpm Events. Name not changed to preserve settings.

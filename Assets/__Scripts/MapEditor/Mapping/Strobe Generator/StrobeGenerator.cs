@@ -12,6 +12,8 @@ public class StrobeGenerator : MonoBehaviour
 
     public void ToggleUI() => ui.ToggleDropdown(!StrobeGeneratorUIDropdown.IsActive);
 
+    // TODO(Caeden): holy ***SHIT*** what was my ass COOKING!?!?!?!?
+    //   this is NOT very cash money.
     public void GenerateStrobe(IEnumerable<StrobeGeneratorPass> passes)
     {
         var generatedObjects = new List<BaseObject>();
@@ -46,17 +48,30 @@ public class StrobeGenerator : MonoBehaviour
                         var end = ordered.First();
                         var start = ordered.Last();
 
-                        var containersBetween = eventGridContainer.LoadedObjects.GetViewBetween(start, end)
-                            .Cast<BaseEvent>().Where(x =>
-                                x.Type == start.Type && //Grab all events between start and end point.
-                                ((start.CustomLightID is null && x.CustomLightID is null) || (start.CustomLightID != null &&
-                                                                        x.CustomLightID != null && x.CustomLightID.Contains(start.CustomLightID[0])))
-                            );
-                        oldEvents.AddRange(containersBetween);
+                        var windowSpan = eventGridContainer.GetBetween(start.JsonTime, end.JsonTime);
+                        var containersBetween = new List<BaseEvent>(windowSpan.Length);
+
+                        for (var i = 0; i < windowSpan.Length; i++)
+                        {
+                            var oldEvent = windowSpan[i];
+
+                            var isValid = oldEvent.Type == start.Type &&
+                                ((start.CustomLightID is null && oldEvent.CustomLightID is null)
+                                || (start.CustomLightID != null && oldEvent.CustomLightID != null && oldEvent.CustomLightID.Contains(start.CustomLightID[0])));
+
+                            if (isValid)
+                            {
+                                containersBetween.Add(oldEvent);
+                                oldEvents.Add(oldEvent);
+                            }
+                        }
+
+                        containersBetween.TrimExcess();
 
                         foreach (var pass in passes)
                         {
-                            var validEvents = containersBetween.Where(x => pass.IsEventValidForPass(x));
+                            var validEvents = containersBetween.FindAll(it => pass.IsEventValidForPass(it));
+
                             if (validEvents.Count() >= 2)
                             {
                                 var strobePassGenerated = pass.StrobePassForLane(validEvents.OrderBy(x => x.JsonTime),

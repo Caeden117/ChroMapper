@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 /// <summary>
 /// Note that <see cref="ArcGridContainer"></see> uses `UseChunkLoadingWhenPlaying`. Therefore arc doesn't fade after passing through.
 /// </summary>
-public class ArcGridContainer : BeatmapObjectContainerCollection
+public class ArcGridContainer : BeatmapObjectContainerCollection<BaseArc>
 {
     [SerializeField] private GameObject arcPrefab;
     [FormerlySerializedAs("arcAppearanceSO")][SerializeField] private ArcAppearanceSO arcAppearanceSO;
@@ -27,6 +27,13 @@ public class ArcGridContainer : BeatmapObjectContainerCollection
     {
         return ArcContainer.SpawnArc(null, ref arcPrefab);
     }
+
+    protected override void OnObjectSpawned(BaseObject _, bool __ = false) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Arcs);
+
+    protected override void OnObjectDelete(BaseObject _, bool __ = false) =>
+        countersPlus.UpdateStatistic(CountersPlusStatistic.Arcs);
+    
     internal override void SubscribeToCallbacks()
     {
         if (!Settings.Instance.Load_MapV3) return;

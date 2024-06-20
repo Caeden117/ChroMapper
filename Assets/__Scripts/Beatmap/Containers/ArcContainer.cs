@@ -11,7 +11,9 @@ namespace Beatmap.Containers
         internal const float arcEmissionIntensity = 6;
         private const int numSamples = 30;
 
-        internal static readonly int emissionColor = Shader.PropertyToID("_ColorTint");
+        private static readonly int emissionColor = Shader.PropertyToID("_ColorTint");
+        private static readonly int lit = Shader.PropertyToID("_Lit");
+        private static readonly int translucentAlpha = Shader.PropertyToID("_TranslucentAlpha");
 
         [SerializeField] private TracksManager manager;
         [SerializeField] private GameObject indicatorMu;
@@ -85,8 +87,8 @@ namespace Beatmap.Containers
         public override void Setup()
         {
             base.Setup();
-            MaterialPropertyBlock.SetFloat("_Lit", 1);
-            MaterialPropertyBlock.SetFloat("_TranslucentAlpha", 1f);
+            MaterialPropertyBlock.SetFloat(lit, 1);
+            MaterialPropertyBlock.SetFloat(translucentAlpha, 1f);
             foreach (var gameObj in indicators) gameObj.GetComponent<ArcIndicatorContainer>().Setup();
 
             UpdateMaterials();

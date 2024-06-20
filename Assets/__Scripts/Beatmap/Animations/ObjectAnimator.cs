@@ -42,6 +42,10 @@ namespace Beatmap.Animations
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         private IAnimateProperty[] properties = new IAnimateProperty[0];
+        
+        private static readonly int opaqueAlpha = Shader.PropertyToID("_OpaqueAlpha");
+        private static readonly int animationSpawned = Shader.PropertyToID("_AnimationSpawned");
+        private static readonly int alwaysOpaque = Shader.PropertyToID("_AlwaysOpaque");
 
         public void ResetData()
         {
@@ -87,12 +91,12 @@ namespace Beatmap.Animations
             if (container?.ObjectData != null)
             {
                 container.UpdateGridPosition();
-                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
-                container.MaterialPropertyBlock.SetFloat("_AnimationSpawned", 0);
-                container.MaterialPropertyBlock.SetFloat("_AlwaysOpaque", 0);
+                container.MaterialPropertyBlock.SetFloat(opaqueAlpha, 1);
+                container.MaterialPropertyBlock.SetFloat(animationSpawned, 0);
+                container.MaterialPropertyBlock.SetFloat(alwaysOpaque, 0);
                 if (container is NoteContainer nc)
                 {
-                    nc.ArrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", 1);
+                    nc.ArrowMaterialPropertyBlock.SetFloat(opaqueAlpha, 1);
                     nc.DirectionTarget.localPosition = Vector3.zero;
                 }
                 container.UpdateMaterials();
@@ -249,7 +253,8 @@ namespace Beatmap.Animations
             ResetData();
 
             LocalTarget = AnimationThis.transform;
-            WorldTarget = container.transform;
+            //WorldTarget = container.transform;
+            WorldTarget = AnimationThis.transform;
 
             WorldRotation = LocalRotation;
 
@@ -306,10 +311,10 @@ namespace Beatmap.Animations
                 var NoodleAnimationLifetime = (time > time_end) ? -1 : 1;
                 if (!(container is ChainContainer))
                 {
-                    container?.MaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                    container?.MaterialPropertyBlock.SetFloat(animationSpawned, NoodleAnimationLifetime);
                     if (container is NoteContainer nc)
                     {
-                        nc.ArrowMaterialPropertyBlock.SetFloat("_AnimationSpawned", NoodleAnimationLifetime);
+                        nc.ArrowMaterialPropertyBlock.SetFloat(animationSpawned, NoodleAnimationLifetime);
                     }
                 }
                 AnimatedLife =
@@ -359,7 +364,7 @@ namespace Beatmap.Animations
 
             if (WorldTarget is Transform && WorldRotation.Count > 0)
             {
-                if (!(container is GeometryContainer))
+                if (container is not GeometryContainer)
                 {
                     WorldTarget.localRotation = WorldRotation.Get();
                 }
@@ -369,7 +374,7 @@ namespace Beatmap.Animations
             {
                 if (time_begin < time && time < time_end)
                     AnimationTrack.UpdatePosition(0);
-                if (!(container is null))
+                if (container is not null and not GeometryContainer)
                     container.transform.localPosition = WorldPosition.Get();
                 else
                     WorldTarget.localPosition = WorldPosition.Get();
@@ -385,10 +390,10 @@ namespace Beatmap.Animations
 
                 if (container is NoteContainer nc)
                 {
-                    nc.ArrowMaterialPropertyBlock.SetFloat("_OpaqueAlpha", OpacityArrow.Get());
+                    nc.ArrowMaterialPropertyBlock.SetFloat(opaqueAlpha, OpacityArrow.Get());
                 }
 
-                container.MaterialPropertyBlock.SetFloat("_OpaqueAlpha", Opacity.Get());
+                container.MaterialPropertyBlock.SetFloat(opaqueAlpha, Opacity.Get());
                 container.UpdateMaterials();
             }
         }

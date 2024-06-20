@@ -37,6 +37,10 @@ namespace Beatmap.Containers
             }
             container.EnvironmentEnhancement = eh;
             container.Shape = GameObject.CreatePrimitive(type);
+            
+            var collider = container.Shape.GetComponentInChildren<Collider>();
+            if (collider != null) DestroyImmediate(collider);
+
             if (eh.Geometry[eh.GeometryKeyType] == "Triangle")
             {
                 if (triangleMesh == null)

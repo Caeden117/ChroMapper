@@ -4,7 +4,7 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
 
-//TODO rename to LegacyEventsConverter
+// TODO(Caeden): Remove if unused (optimize if used)
 public class LegacyNotesConverter : MonoBehaviour
 {
     public void ConvertFrom() => StartCoroutine(ConvertFromLegacy());
@@ -17,7 +17,9 @@ public class LegacyNotesConverter : MonoBehaviour
 
         var events = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         var chromaColorsByEventType = new Dictionary<int, Color?>();
-        foreach (var obj in events.UnsortedObjects.ToArray())
+        // LoadedObjects allocation is intentional; using the faster MapObjects would result in an InvalidOperationException
+#pragma warning disable CS0618 // Type or member is obsolete
+        foreach (var obj in events.LoadedObjects)
         {
             var e = obj as BaseEvent;
             if (chromaColorsByEventType.TryGetValue(e.Type, out var chroma))
@@ -44,6 +46,7 @@ public class LegacyNotesConverter : MonoBehaviour
                 chromaColorsByEventType.Add(e.Type, null);
             }
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         events.RefreshPool(true);
 

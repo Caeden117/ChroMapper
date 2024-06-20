@@ -27,11 +27,7 @@ public class LightsManager : MonoBehaviour
     public Dictionary<int, LightingEvent> LightIDMap;
     private int previousValue;
 
-    private IEnumerator Start()
-    {
-        yield return null;
-        LoadOldLightOrder();
-    }
+    private void Start() => LoadOldLightOrder();
 
     public void LoadOldLightOrder()
     {

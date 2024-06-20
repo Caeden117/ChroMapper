@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Linq;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
@@ -251,22 +253,27 @@ namespace Beatmap.Base
         public virtual bool IsBpmEvent() => Type is (int)EventTypeValue.BpmChange;
 
         public Vector2? GetPosition(CreateEventTypeLabels labels, EventGridContainer.PropMode mode, int prop)
-        {
-            if (CustomLightID != null) CustomPropID = labels.LightIdsToPropId(Type, CustomLightID) ?? -1;
-
+        {   
             if (mode == EventGridContainer.PropMode.Off)
+            {
                 return new Vector2(
                     labels.EventTypeToLaneId(Type) + 0.5f,
                     0.5f
                 );
+            }
 
             if (Type != prop) return null;
 
             if (CustomLightID is null)
+            {
                 return new Vector2(
                     0.5f,
                     0.5f
                 );
+            }
+
+            CustomPropID = labels.LightIdsToPropId(Type, CustomLightID) ?? -1;
+
             var x = mode == EventGridContainer.PropMode.Prop ? CustomPropID : -1;
 
             if (x < 0) x = CustomLightID.Length > 0 ? labels.LightIDToEditor(Type, CustomLightID[0]) : -1;
@@ -358,6 +365,51 @@ namespace Beatmap.Base
             if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection; else CustomData.Remove(CustomKeyDirection);
             if (CustomLockRotation != null) CustomData[CustomKeyLockRotation] = CustomLockRotation; else CustomData.Remove(CustomKeyLockRotation);
             return CustomData;
+        }
+        
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseEvent @event) return comparison;
+
+            // Compare by type if times match
+            if (comparison == 0) comparison = Type.CompareTo(@event.Type);
+
+            // Compare by value if type matches
+            if (comparison == 0) comparison = Value.CompareTo(@event.Value);
+
+            // Compare by float value if value matches
+            if (comparison == 0) comparison = FloatValue.CompareTo(@event.FloatValue);
+
+            // Compare by lightID if float value matches
+            // (we need to implement this ourselves because StructuralComparisons.StructuralComparer.Compare fails at differing length arrays
+            if (comparison == 0)
+            {
+                switch ((customLightID, @event.customLightID))
+                {
+                    case (null, not null): return -1;
+                    case (not null, null): return 1;
+                    case (not null, not null):
+                        var length = Mathf.Min(customLightID.Length, @event.customLightID.Length);
+
+                        for (var i = 0; i < length; i++)
+                        {
+                            comparison = customLightID[i].CompareTo(@event.customLightID[i]);
+                            
+                            if (comparison != 0) return comparison;
+                        }
+
+                        return customLightID.Length.CompareTo(@event.customLightID.Length);
+                }
+            }
+            //if (comparison == 0) comparison = StructuralComparisons.StructuralComparer.Compare(CustomLightID, @event.CustomLightID);
+
+            // All matching vanilla properties so compare custom data as a final check
+            if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), @event.CustomData?.ToString(), StringComparison.Ordinal);
+            
+            return comparison;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
@@ -91,16 +90,17 @@ public class DingOnNotePassingGrid : MonoBehaviour
     {
         lastCheckedTime = -1;
         audioUtil.StopOneShot();
-        if (playing)
-        {
-            var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-            var currentJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats);
-            var endJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats + beatSaberCutCallbackController.Offset);
-            var notes = container.GetBetween(currentJsonTime, endJsonTime);
-
-            // Schedule notes between now and threshold
-            foreach (var n in notes) PlaySound(false, 0, n);
-        }
+        
+        if (!playing) return;
+        
+        // Since we schedule hit sounds ahead of time using the note callback, there will be a small period ahead of the
+        // playback cursor when start play is toggled where hit sounds are not scheduled play on play so we do that here 
+        var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+        var currentJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats);
+        var endJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats + beatSaberCutCallbackController.Offset);
+        var notes = container.GetBetween(currentJsonTime, endJsonTime);
+        
+        foreach (var n in notes) PlaySound(false, 0, n);
     }
 
     private void UpdateRedNoteDing(object obj) => NoteTypeToDing[(int)NoteType.Red] = (bool)obj;
@@ -139,7 +139,6 @@ public class DingOnNotePassingGrid : MonoBehaviour
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
         if (objectData.SongBpmTime - container.AudioTimeSyncController.CurrentSongBpmTime <= -0.5f) return;
 
-        bool shortCut;
         if (Settings.Instance.Load_MapV3 && objectData is BaseChain)
         {
             return; // Chains don't have a hitsound. May want to impplement hitsounds for links later.
@@ -150,12 +149,12 @@ public class DingOnNotePassingGrid : MonoBehaviour
 
         //actual ding stuff
         if (objectData.SongBpmTime == lastCheckedTime || !NoteTypeToDing[((BaseNote)objectData).Type]) return;
+
         /*
          * As for why we are not using "initial", it is so notes that are not supposed to ding do not prevent notes at
          * the same time that are supposed to ding from triggering the sound effects.
          */
-
-        shortCut = objectData.SongBpmTime - lastCheckedTime < thresholdInNoteTime;
+        var shortCut = objectData.SongBpmTime - lastCheckedTime < thresholdInNoteTime;
 
         lastCheckedTime = objectData.SongBpmTime;
 

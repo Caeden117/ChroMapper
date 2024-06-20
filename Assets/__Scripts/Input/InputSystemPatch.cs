@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -18,6 +18,11 @@ using UnityEngine.InputSystem.Controls;
  * Say you have two keybinds, bound to "S", and "Shift + S". If you were to press Shift and S on your keyboard, you'd expect only the latter keybind to trigger, right?
  * 
  * WRONG! Unity's new Input System triggers both, because you're still technically pressing S! This is outrageous, and must be swiftly resolved with a Harmony patch!
+ *
+ * Update: As of InputSystem 1.7.0, keybinds bound to multiple buttons can now consume inputs and fixes this.
+ *         BUT this means we can't have overlapping keybinds that use multiple buttons. If you bind "Shift + S"
+ *         to perform multiple actions, only one of the actions will trigger... so we still need this patch.
+ *         TODO: Investigate if CMInputCallbackInstaller is the reason for this issue
  */
 public class InputSystemPatch : MonoBehaviour
 {
@@ -29,24 +34,27 @@ public class InputSystemPatch : MonoBehaviour
 
     private static IEnumerable<InputAction> allInputActions;
 
-    private static Dictionary<InputAction, IEnumerable<string>> allInputBindingNames =
-        new Dictionary<InputAction, IEnumerable<string>>();
+    private static Dictionary<InputAction, IEnumerable<string>> allInputBindingNames = new();
 
     private static IEnumerable<InputControl> allControls;
 
     // Key 1: Interrogated InputAction | Value: InputActions that have the possibility of blocking the interrogated action
-    private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap =
-        new ConcurrentDictionary<InputAction, List<InputAction>>();
+    private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap = new();
 
     private Harmony inputPatchHarmony;
 
     private void Start()
     {
-        allInputActions = CMInputCallbackInstaller.InputInstance.asset.actionMaps.SelectMany(x => x.actions);
-        allInputBindingNames =
-            allInputActions.ToDictionary(x => x, x => x.bindings.Where(y => !y.isComposite).Select(y => y.path));
-        allControls =
-            InputSystem.devices.SelectMany(d => d.allControls.Where(c => c is KeyControl || c is ButtonControl));
+        allInputActions = CMInputCallbackInstaller.InputInstance.asset.actionMaps
+            .SelectMany(x => x.actions)
+            .ToList();
+        allInputBindingNames = allInputActions
+            .ToDictionary(x => x, x => x.bindings
+                .Where(y => !y.isComposite)
+                .Select(y => y.path));
+        allControls = InputSystem.devices
+            .SelectMany(d => d.allControls
+                .Where(c => c is KeyControl or ButtonControl));
 
         // I cant believe this actually worked first try
         // I'm pretty much caching a map of actions that can block each other, doing the heavy lifting on separate threads.
@@ -71,7 +79,7 @@ public class InputSystemPatch : MonoBehaviour
         inputPatchHarmony.Patch(original, null, null, new HarmonyMethod(GetType(), nameof(Transpiler)));
     }
 
-    private void OnDestroy() => inputPatchHarmony?.UnpatchAll();
+    private void OnDestroy() => inputPatchHarmony?.UnpatchSelf();
 
     private static IEnumerable<CodeInstruction> Transpiler(ILGenerator generator,
         IEnumerable<CodeInstruction> instructions)
@@ -82,7 +90,7 @@ public class InputSystemPatch : MonoBehaviour
             if (codes[i].opcode == OpCodes.Switch) // Catch our Switch statement in the original function
             {
                 var returnLabel = generator.DefineLabel();
-                codes[codes.Count - 1].labels.Add(returnLabel);
+                codes[^1] = codes[^1].WithLabels(returnLabel);
 
                 codes.InsertRange(i - 3, new List<CodeInstruction>() // Take a few steps back and inject our code
                 {
@@ -129,7 +137,15 @@ public class InputSystemPatch : MonoBehaviour
 
     private static bool WillBeBlockedByAction(InputAction action, InputAction otherAction)
     {
-        if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper"))) return false;
+        if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper")))
+        {
+            return false;
+        }
+        
+        if (action.bindings.Any(b => b.action.StartsWith(KeybindsController.PersistentKeybindIdentifier)))
+        {
+            return false;
+        }
 
         // Just a whole bunch of conditions to short circuit this particular check
         if (action.id == otherAction.id

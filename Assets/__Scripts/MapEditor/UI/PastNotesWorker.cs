@@ -64,16 +64,16 @@ public class PastNotesWorker : MonoBehaviour
         var time = 0f;
         lastGroup.Clear();
 
-        foreach (var note in noteGridContainer.LoadedObjects)
+        foreach (var note in noteGridContainer.MapObjects)
         {
             if (time < note.SongBpmTime && note.SongBpmTime < atsc.CurrentSongBpmTime)
             {
                 time = note.SongBpmTime;
                 lastGroup.Clear();
-                if (((BaseNote)note).Type != (int)NoteType.Bomb)
+                if (note.Type != (int)NoteType.Bomb)
                     lastGroup.Add(note);
             }
-            else if (time == note.SongBpmTime && (note as BaseNote).Type != (int)NoteType.Bomb)
+            else if (time == note.SongBpmTime && note.Type != (int)NoteType.Bomb)
             {
                 lastGroup.Add(note);
             }
@@ -157,9 +157,6 @@ public class PastNotesWorker : MonoBehaviour
         else g.transform.GetChild(1).gameObject.SetActive(false);
         img.enabled = true;
 
-        if (!lastByType.ContainsKey(note.Type))
-            lastByType.Add(note.Type, note);
-        else
-            lastByType[note.Type] = note;
+        lastByType[note.Type] = note;
     }
 }

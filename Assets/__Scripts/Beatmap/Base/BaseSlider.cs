@@ -199,5 +199,37 @@ namespace Beatmap.Base
             if (CustomTailCoordinate != null) CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate; else CustomData.Remove(CustomKeyTailCoordinate);
             return CustomData;
         }
+        
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseSlider slider) return comparison;
+
+            // Compare by X pos if times match
+            if (comparison == 0) comparison = PosX.CompareTo(slider.PosX);
+
+            // Compare by Y pos if X pos match
+            if (comparison == 0) comparison = PosY.CompareTo(slider.PosY);
+            
+            // Compare by cut direction if Y pos match
+            if (comparison == 0) comparison = CutDirection.CompareTo(slider.CutDirection);
+            
+            // Compare by cut direction if Y pos match
+            if (comparison == 0) comparison = AngleOffset.CompareTo(slider.AngleOffset);
+            
+            // Start comparing tails of head is identical
+            if (comparison == 0) comparison = TailJsonTime.CompareTo(slider.TailJsonTime);
+            
+            // Compare by X pos if times match
+            if (comparison == 0) comparison = TailPosX.CompareTo(slider.TailPosX);
+
+            // Compare by Y pos if X pos match
+            if (comparison == 0) comparison = TailPosY.CompareTo(slider.TailPosY);
+
+            // ...i give up.
+            return comparison;
+        }
     }
 }

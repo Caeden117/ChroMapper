@@ -66,7 +66,8 @@ public abstract class HeckRequirementCheck : RequirementCheck
 
     private static IEnumerable<BaseCustomEvent> GetHeckCustomEventsFromMap(BaseDifficulty map) =>
         map.CustomEvents.Where(customEvent => heckCustomEventTypes.Contains(customEvent.Type) &&
-                                              customEvent.CustomTrack != null);
+                                              (customEvent.CustomTrack != null || customEvent.DataParentTrack != null ||
+                                               customEvent.DataChildrenTracks != null));
 
     private static (IEnumerable<string> tracks, IEnumerable<string> animationKeys) GetHeckDataFromMap(BaseDifficulty map)
     {

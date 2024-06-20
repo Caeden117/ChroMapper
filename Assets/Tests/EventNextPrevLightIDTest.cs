@@ -15,32 +15,24 @@ namespace Tests
 {
     public class EventNextPrevLightIDTest
     {
-        private bool originalChromaAdvancedSetting;
-        private bool originalLightIDSetting;
-
         [UnityOneTimeSetUp]
         public IEnumerator LoadMap()
         {
             return TestUtils.LoadMap(3);
         }
 
-        [OneTimeSetUp]
-        public void SetOnLightIDSettings()
-        {
-            originalChromaAdvancedSetting = Settings.Instance.EmulateChromaAdvanced;
-            originalLightIDSetting = Settings.Instance.LightIDTransitionSupport;
-
-            Settings.Instance.EmulateChromaAdvanced = true;
-            Settings.Instance.LightIDTransitionSupport = true;
-        }
-
         [OneTimeTearDown]
         public void FinalTearDown()
         {
-            Settings.Instance.EmulateChromaAdvanced = originalChromaAdvancedSetting;
-            Settings.Instance.LightIDTransitionSupport = originalLightIDSetting;
-
+            Settings.Instance.LightIDTransitionSupport = false;
             TestUtils.ReturnSettings();
+        }
+        
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            // This is an opt-in setting
+            Settings.Instance.LightIDTransitionSupport = true;
         }
 
         [TearDown]
@@ -75,7 +67,6 @@ namespace Tests
 
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-            var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
             // These are the events
             // V1             V10
@@ -94,38 +85,28 @@ namespace Tests
 
             // Check state after placing
             PlaceUtils.PlaceEvents(eventPlacement, new List<BaseEvent> { V1, A2, B3, A4, B5, V10, A12, B13 });
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V10 }, "Place LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A4, A12 }, "Place LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Place LightID B");
-
+            AssertMapObjectsLinksState(eventsContainer);
+            
             // Check state after deleting
             // V1             V10
             //    A2              A12
             //       B3    B5          B13
             eventsContainer.DeleteObject(A4);
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V10 }, "Delete LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A12 }, "Delete LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Delete LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             // Check state after deleting
             // V1                
             //    A2              A12
             //       B3    B5          B13
             eventsContainer.DeleteObject(V10);
-            AssertEventLinkOrder(new List<BaseEvent> { V1 }, "Delete 2 LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A12 }, "Delete 2 LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Delete 2 LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             // Check state after undo and redo
             actionsContainer.Undo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V10 }, "Undo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A12 }, "Undo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Undo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             actionsContainer.Redo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1 }, "Redo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A12 }, "Redo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Redo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
         }
 
         [Test]
@@ -137,7 +118,6 @@ namespace Tests
 
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-            var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
             // These are the events
             // V1             V10
@@ -163,20 +143,14 @@ namespace Tests
             SelectionController.Select(A4);
             SelectionController.Select(V10, true);
             selectionController.Delete();
-            AssertEventLinkOrder(new List<BaseEvent> { V1 }, "Delete LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A12 }, "Delete LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Delete LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             // Check state after undo and redo
             actionsContainer.Undo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V10 }, "Undo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A4, A12 }, "Undo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Undo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             actionsContainer.Redo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1 }, "Redo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A12 }, "Redo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Redo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
         }
 
         [Test]
@@ -189,7 +163,6 @@ namespace Tests
 
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-            var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
             // These are the events
             // V1             V10
@@ -221,27 +194,21 @@ namespace Tests
             selectionController.Copy();
             selectionController.Paste();
 
-            var V1C = eventsContainer.LoadedObjects.ElementAt(5) as BaseEvent;
-            var A2C = eventsContainer.LoadedObjects.ElementAt(6) as BaseEvent;
-            var B3C = eventsContainer.LoadedObjects.ElementAt(7) as BaseEvent;
-            var A12C = eventsContainer.LoadedObjects.ElementAt(11) as BaseEvent;
-            var B13C = eventsContainer.LoadedObjects.ElementAt(12) as BaseEvent;
+            var V1C = eventsContainer.MapObjects.ElementAt(5) as BaseEvent;
+            var A2C = eventsContainer.MapObjects.ElementAt(6) as BaseEvent;
+            var B3C = eventsContainer.MapObjects.ElementAt(7) as BaseEvent;
+            var A12C = eventsContainer.MapObjects.ElementAt(11) as BaseEvent;
+            var B13C = eventsContainer.MapObjects.ElementAt(12) as BaseEvent;
 
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V1C, V10 }, "Paste LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A4, A2C, A12, A12C }, "Paste LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B3C, B13, B13C }, "Paste LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             // Check state after undo and redo
             actionsContainer.Undo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V10 }, "Undo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A4, A12 }, "Undo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Undo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
 
             actionsContainer.Redo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V1C, V10 }, "Redo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A4, A2C, A12, A12C }, "Redo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B3C, B13, B13C }, "Redo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
         }
 
         [Test]
@@ -253,7 +220,6 @@ namespace Tests
 
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-            var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
             eventsContainer.PropagationEditing = EventGridContainer.PropMode.Light;
 
@@ -279,10 +245,7 @@ namespace Tests
             //    A2    A4    V10 A12
             //       B3    B5          B13
             SelectionController.Select(V10);
-            selectionController.ShiftSelection(1, 0);
-            AssertEventLinkOrder(new List<BaseEvent> { V1 }, "Shift LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A4, V10, A12 }, "Shift LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Shift LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             // Check state after shifting
             // V1                
@@ -290,21 +253,14 @@ namespace Tests
             //       B3 A4 B5 V10      B13
             SelectionController.Select(A4);
             SelectionController.Select(V10, true);
-            selectionController.ShiftSelection(1, 0);
-            AssertEventLinkOrder(new List<BaseEvent> { V1 }, "Shift 2 LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A12 }, "Shift 2 LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, A4, B5, V10, B13 }, "Shift 2 LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             // Check state after undo and redo
             actionsContainer.Undo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1 }, "Undo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A4, V10, A12 }, "Undo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Undo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             actionsContainer.Redo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1 }, "Redo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A12 }, "Redo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, A4, B5, V10, B13 }, "Redo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
         }
 
         [Test]
@@ -316,7 +272,6 @@ namespace Tests
 
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-            var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
             // These are the events
             // V1             V10
@@ -342,39 +297,31 @@ namespace Tests
             SelectionController.Select(A2);
             SelectionController.Select(B3, true);
             selectionController.MoveSelection(12);
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V10 }, "Move LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A4, A12, A2 }, "Move LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B5, B13, B3 }, "Move LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             // Check state after undo and redo
             actionsContainer.Undo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V10 }, "Undo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A2, A4, A12 }, "Undo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B3, B5, B13 }, "Undo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
 
             actionsContainer.Redo();
-            AssertEventLinkOrder(new List<BaseEvent> { V1, V10 }, "Redo LightID V");
-            AssertEventLinkOrder(new List<BaseEvent> { A4, A12, A2 }, "Redo LightID A");
-            AssertEventLinkOrder(new List<BaseEvent> { B5, B13, B3 }, "Redo LightID B");
+            AssertMapObjectsLinksState(eventsContainer);
         }
 
-        private void AssertEventLinkOrder(IList<BaseEvent> events, string msg = "")
+        private void AssertMapObjectsLinksState(EventGridContainer eventsContainer)
         {
-            if (events.Count == 1)
-            {
-                CheckUtils.CheckEventPrevAndNext($"{msg} - 0", events[0], null, null);
-                return;
-            }
+            CheckUtils.CheckEventsAreSorted(eventsContainer.MapObjects);
+            AssertMapObjectsAreLinkedAndSorted(eventsContainer, (int)EventTypeValue.CenterLights, null);
+            AssertMapObjectsAreLinkedAndSorted(eventsContainer, (int)EventTypeValue.CenterLights, 1);
+            AssertMapObjectsAreLinkedAndSorted(eventsContainer, (int)EventTypeValue.CenterLights, 2);
+        }
+        
+        private void AssertMapObjectsAreLinkedAndSorted(EventGridContainer eventsContainer, int eventType, int? lightID)
+        {
+            var laneEvents = lightID == null
+                ? eventsContainer.MapObjects.Where(x => x.Type == eventType && x.CustomLightID == null).ToList()
+                : eventsContainer.MapObjects.Where(x => x.Type == eventType && x.CustomLightID != null && x.CustomLightID[0] == lightID).ToList();
 
-            for (var i = 0; i < events.Count; i++)
-            {
-                if (i == 0)
-                    CheckUtils.CheckEventPrevAndNext($"{msg} - {i}", events[i], null, events[i + 1]);
-                else if (i == events.Count - 1)
-                    CheckUtils.CheckEventPrevAndNext($"{msg} - {i}", events[i], events[i - 1], null);
-                else
-                    CheckUtils.CheckEventPrevAndNext($"{msg} - {i}", events[i], events[i - 1], events[i + 1]);
-            }
+            CheckUtils.CheckEventsLinksAreCorrectAndSorted(laneEvents);
         }
     }
 }

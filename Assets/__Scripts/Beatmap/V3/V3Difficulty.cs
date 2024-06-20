@@ -321,65 +321,93 @@ namespace Beatmap.V3
 
         private void ParseV2ToV3()
         {
-            var newNotes = new List<BaseNote>();
-            var newBombs = new List<BaseBombNote>();
-            foreach (var n in Notes)
-                switch (n.Type)
+            // Note conversion
+            for (var i = Notes.Count - 1; i >= 0; i--)
+            {
+                var note = Notes[i];
+
+                // simple color note conversion
+                if (note.Type != (int)NoteType.Bomb)
                 {
-                    case (int)NoteType.Bomb:
-                        newBombs.Add(V2ToV3.BombNote(n));
-                        break;
-                    case (int)NoteType.Red:
-                    case (int)NoteType.Blue:
-                        newNotes.Add(V2ToV3.ColorNote(n));
-                        break;
-                    default:
-                        Debug.LogError("Unsupported note type for Beatmap version 3.0.0");
-                        break;
+                    Notes[i] = V2ToV3.ColorNote(note);
+                    continue;
                 }
 
-            Notes = newNotes;
-            Bombs = newBombs;
+                // Special bombs case
+                Notes.RemoveAt(i);
+                var bomb = V2ToV3.BombNote(note);
+                Bombs.Add(bomb);
+            }
+            Bombs.Sort();
 
-            Obstacles = Obstacles.Select(V2ToV3.Obstacle).Cast<BaseObstacle>().ToList();
+            // Obstacle conversion
+            for (var i = 0; i < Obstacles.Count; i++)
+            {
+                Obstacles[i] = V2ToV3.Obstacle(Obstacles[i]);
+            }
 
-            var newColorBoostEvents = new List<BaseColorBoostEvent>();
-            var newRotationEvents = new List<BaseRotationEvent>();
-            var newBpmEvents = new List<BaseBpmEvent>();
-            var newEvents = new List<BaseEvent>();
-            foreach (var e in Events)
-                switch (e.Type)
+            // Event conversion
+            for (var i = Events.Count - 1; i >= 0; i--)
+            {
+                var @event = Events[i];
+
+                switch (@event.Type)
                 {
                     case (int)EventTypeValue.ColorBoost:
-                        newColorBoostEvents.Add(V2ToV3.ColorBoostEvent(e));
+                        Events.RemoveAt(i);
+                        ColorBoostEvents.Add(V2ToV3.ColorBoostEvent(@event));
                         break;
                     case (int)EventTypeValue.EarlyLaneRotation:
                     case (int)EventTypeValue.LateLaneRotation:
-                        newRotationEvents.Add(V2ToV3.RotationEvent(e));
+                        Events.RemoveAt(i);
+                        RotationEvents.Add(V2ToV3.RotationEvent(@event));
                         break;
                     default:
-                        newEvents.Add(V2ToV3.BasicEvent(e));
+                        Events[i] = V2ToV3.BasicEvent(@event);
                         break;
                 }
+            }
+            ColorBoostEvents.Sort();
+            RotationEvents.Sort();
 
-            ColorBoostEvents = newColorBoostEvents;
-            RotationEvents = newRotationEvents;
-            BpmEvents = BpmEvents.Select(V2ToV3.BpmEvent).Cast<BaseBpmEvent>().ToList();
-            Events = newEvents;
+            // Bpm event conversion
+            for (var i = 0; i < BpmEvents.Count; i++)
+            {
+                BpmEvents[i] = V2ToV3.BpmEvent(BpmEvents[i]);
+            }
 
-            Bookmarks = Bookmarks.Select(V2ToV3.Bookmark).Cast<BaseBookmark>().ToList();
-            BpmChanges = BpmChanges.Select(V2ToV3.BpmChange).Cast<BaseBpmChange>().ToList();
-            CustomEvents = CustomEvents.Select(V2ToV3.CustomEvent).Cast<BaseCustomEvent>().ToList();
-            EnvironmentEnhancements = EnvironmentEnhancements.Select(V2ToV3.EnvironmentEnhancement)
-                .Cast<BaseEnvironmentEnhancement>().ToList();
+            // Bookmark conversion
+            for (var i = 0; i < Bookmarks.Count; i++)
+            {
+                Bookmarks[i] = V2ToV3.Bookmark(Bookmarks[i]);
+            }
+
+            // Custom event conversion
+            for (var i = 0; i < CustomEvents.Count; i++)
+            {
+                CustomEvents[i] = V2ToV3.CustomEvent(CustomEvents[i]);
+            }
+
+            // Environment Enhancement conversion
+            for (var i = 0; i < EnvironmentEnhancements.Count; i++)
+            {
+                EnvironmentEnhancements[i] = V2ToV3.EnvironmentEnhancement(EnvironmentEnhancements[i]);
+            }
         }
 
         private static void ParseV3ToV2(V3Difficulty map)
         {
             map.Notes.AddRange(map.Bombs);
+            map.Notes.Sort();
+            
+            map.Bombs.Clear();
+
             map.Events.AddRange(map.ColorBoostEvents);
             map.Events.AddRange(map.RotationEvents);
-            map.Events.Sort((lhs, rhs) => lhs.JsonTime.CompareTo(rhs.JsonTime));
+            map.Events.Sort();
+            
+            map.ColorBoostEvents.Clear();
+            map.RotationEvents.Clear();
         }
 
         private static void LoadCustom(V3Difficulty map, JSONNode mainNode)

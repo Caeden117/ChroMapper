@@ -19,7 +19,11 @@ public class DiscordController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        if (Settings.Instance.DiscordRPCEnabled == false) return;
+        if (Settings.Instance.DiscordRPCEnabled == false)
+        {
+            IsActive = false;
+            return;
+        }
 
         try
         {

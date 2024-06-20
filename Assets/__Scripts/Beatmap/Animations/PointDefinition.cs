@@ -35,7 +35,7 @@ namespace Beatmap.Animations
         public float Transition = 0;
         public Func<float, float> Easing;
 
-        public delegate T Parser(JSONArray data, out int i);
+        public delegate T Parser(JSONArray data, ref int i);
         public delegate T InterpolationHandler(PointData[] points, int prev, int next, float time);
 
         // Used for searching ONLY
@@ -135,7 +135,9 @@ namespace Beatmap.Animations
         {
             public PointData(Parser parser, JSONArray data, float tbegin = 0, float tend = 0)
             {
-                Value = parser(data, out int i);
+                var i = 0;
+                Value = parser(data, ref i);
+                
                 var len = data.Count;
                 if (len > i)
                 {
@@ -155,14 +157,17 @@ namespace Beatmap.Animations
                 for (; i < len; ++i)
                 {
                     string str = data[i];
+                    
                     if (str[0] == 'e')
                     {
                         Easing = global::Easing.Named(str);
                     }
+
                     if (str == "splineCatmullRom")
                     {
                         Lerp = PointDataInterpolators.CatmullRomLerp<T>();
                     }
+
                     if (str == "lerpHSV")
                     {
                         Lerp = PointDataInterpolators.HSVLerp<T>();
@@ -184,27 +189,92 @@ namespace Beatmap.Animations
 
     public class PointDataParsers
     {
-        public static float ParseFloat(JSONArray data, out int i)
+        public static float ParseFloat(JSONArray data, ref int i)
         {
-            i = 1;
+            i += 1;
             return data[0];
         }
 
-        public static Color ParseColor(JSONArray data, out int i)
+        public static Color ParseColor(JSONArray data, ref int i)
         {
-            i = 4;
-            return new Color(data[0], data[1], data[2], data[3]);
+            Color result;
+
+            if (data[i].IsString)
+            {
+                i += 1;
+
+                result = data[0].Value switch
+                {
+                    // Intentionally not supporting baseSaber_Color since those don't mirror with left handed 
+                    // mode while baseNote_Color does. Should almost always use baseNote over baseSaber.
+                    "baseNote0Color" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.RedNoteColor
+                        : BeatSaberSong.DefaultLeftNote,
+                    "baseNote1Color" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.BlueNoteColor
+                        : BeatSaberSong.DefaultRightNote,
+                    "baseEnvironmentColor0" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.RedColor
+                        : BeatSaberSong.DefaultLeftColor,
+                    "baseEnvironmentColor1" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.BlueColor
+                        : BeatSaberSong.DefaultRightColor,
+                    "baseEnvironmentColorW" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.WhiteColor
+                        : BeatSaberSong.DefaultWhiteColor,
+                    "baseEnvironmentColor0Boost" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.RedBoostColor
+                        : BeatSaberSong.DefaultLeftColor,
+                    "baseEnvironmentColor1Boost" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.BlueBoostColor
+                        : BeatSaberSong.DefaultRightColor,
+                    "baseEnvironmentColorWBoost" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.WhiteBoostColor
+                        : BeatSaberSong.DefaultWhiteColor,
+                    "baseObstaclesColor" => LoadInitialMap.Platform != null
+                        ? LoadInitialMap.Platform.Colors.ObstacleColor
+                        : BeatSaberSong.DefaultWhiteColor,
+                    _ => BeatSaberSong.DefaultWhiteColor
+                };
+            }
+            else
+            {
+                i += 4;
+                result = new Color(data[0], data[1], data[2], data[3]);
+            }
+
+            if (data[i] is JSONArray array)
+            {
+                i += 1;
+                
+                var innerIdx = 0;
+                var subColor = ParseColor(array, ref innerIdx);
+
+                var colorOp = array[innerIdx].Value;
+
+                result = colorOp switch
+                {
+                    "opAdd" => result + subColor,
+                    "opSub" => result - subColor,
+                    "opMul" => result * subColor,
+                    "opDiv" => new Color(result.r / subColor.r, result.g / subColor.g, result.b / subColor.b,
+                        result.a / subColor.a),
+                    _ => result
+                };
+            }
+
+            return result;
         }
 
-        public static Vector3 ParseVector3(JSONArray data, out int i)
+        public static Vector3 ParseVector3(JSONArray data, ref int i)
         {
-            i = 3;
+            i += 3;
             return new Vector3(data[0], data[1], data[2]);
         }
 
-        public static Quaternion ParseQuaternion(JSONArray data, out int i)
+        public static Quaternion ParseQuaternion(JSONArray data, ref int i)
         {
-            i = 3;
+            i += 3;
             return Quaternion.Euler(data[0], data[1], data[2]);
         }
     }

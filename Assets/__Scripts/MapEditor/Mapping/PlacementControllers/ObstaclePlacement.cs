@@ -61,7 +61,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
         // Check if Chroma Color notes button is active and apply _color
         queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
-            ? (Color?)colorPicker.CurrentColor
+            ? colorPicker.CurrentColor
             : null;
 
         var wallTransform = instantiatedContainer.Animator.LocalTarget;

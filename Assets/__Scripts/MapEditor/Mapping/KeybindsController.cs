@@ -15,7 +15,7 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
     /// <summary>
     ///     The prefix to an action/action map name to signify that it should not be blocked by more complex keybinds.
     /// </summary>
-    public static char PersistentKeybindIdentifier = '_';
+    public static char PersistentKeybindIdentifier = '=';
 
     public static Vector2 MousePosition = Vector2.zero;
 

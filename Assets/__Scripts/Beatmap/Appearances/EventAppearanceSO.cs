@@ -67,6 +67,26 @@ namespace Beatmap.Appearances
             {
                 e.EventModel = EventModelType.Block;
 
+                switch (envName)
+                {
+                    case "InterscopeEnvironment":
+                        if (e.EventData.Type is (int)EventTypeValue.RingRotation
+                            or (int)EventTypeValue.UtilityEvent1
+                            or (int)EventTypeValue.UtilityEvent2)
+                        {
+                            e.UpdateTextDisplay(true, e.EventData.Value.ToString());
+                        }
+
+                        break;
+                    case "BillieEnvironment":
+                        if (e.EventData.Type == (int)EventTypeValue.RingRotation)
+                        {
+                            e.UpdateTextDisplay(true, e.EventData.Value.ToString());
+                        }
+
+                        break;
+                }
+
                 if (e.EventData.IsRingEvent(envName))
                 {
                     e.ChangeColor(ringEventsColor, false);
@@ -136,16 +156,10 @@ namespace Beatmap.Appearances
             {
                 if (Settings.Instance.DisplayFloatValueText)
                 {
-                    if (e.EventData.IsTransition) // Transition Event in event v3
-                        e.UpdateTextDisplay(true,
-                            "T" + (Mathf.Approximately(e.EventData.FloatValue, 1)
-                                ? "1"
-                                : e.EventData.FloatValue.ToString("n2").Substring(1)));
-                    else
-                        e.UpdateTextDisplay(true,
-                            Mathf.Approximately(e.EventData.FloatValue, 1)
-                                ? "1"
-                                : e.EventData.FloatValue.ToString("n2").Substring(1));
+                    var text = e.EventData.IsTransition
+                        ? $"T{Mathf.RoundToInt(e.EventData.FloatValue * 100)}"
+                        : $"{Mathf.RoundToInt(e.EventData.FloatValue * 100)}";
+                    e.UpdateTextDisplay(true, text); 
                 }
 
                 // for clarity sake, we don't want this to be the same as off color
@@ -226,5 +240,127 @@ namespace Beatmap.Appearances
 
             e.UpdateMaterials();
         }
+
+        // private SetLightEventAppearance(EventContainer e)
+        // {
+        //     var color = Color.white;
+        //     
+        //     if (e.EventData.Value >= ColourManager.RgbintOffset)
+        //     {
+        //         color = ColourManager.ColourFromInt(e.EventData.Value);
+        //         e.UpdateAlpha(final ? 0.9f : 0.6f, false);
+        //     }
+        //     else if (e.EventData.IsOff)
+        //     {
+        //         color = offColor;
+        //     }
+        //     else if (e.EventData.IsBlue)
+        //     {
+        //         color = boost ? BlueBoostColor : BlueColor;
+        //     }
+        //     else if (e.EventData.IsRed)
+        //     {
+        //         color = boost ? RedBoostColor : RedColor;
+        //     }
+        //     else if (e.EventData.IsWhite)
+        //     {
+        //         color = boost ? WhiteBoostColor : WhiteColor;
+        //     }
+        //
+        //     if (Settings.Instance.EmulateChromaLite && e.EventData.CustomColor != null && !e.EventData.IsOff
+        //             && !e.EventData.IsWhite) // White overrides Chroma
+        //     {
+        //         color = e.EventData.CustomColor.Value;
+        //     }
+        //
+        //     // Display floatValue only where used
+        //     if (e.EventData.IsLightEvent(envName) && e.EventData.Value != 0)
+        //     {
+        //         if (Settings.Instance.DisplayFloatValueText)
+        //         {
+        //             var text = e.EventData.IsTransition
+        //                 ? $"T{Mathf.RoundToInt(e.EventData.FloatValue * 100)}"
+        //                 : $"{Mathf.RoundToInt(e.EventData.FloatValue * 100)}";
+        //             e.UpdateTextDisplay(true, text); 
+        //         }
+        //
+        //         // for clarity sake, we don't want this to be the same as off color
+        //         var clampedOffColor = Color.Lerp(offColor, color, 0.25f);
+        //         color = Color.Lerp(clampedOffColor, color, e.EventData.FloatValue);
+        //         e.UpdateTextColor(color == Color.white
+        //             ? Color.black
+        //             : Color.white); // TODO: this messes with text color in unintended part, need to fix
+        //     }
+        //
+        //     e.EventModel = Settings.Instance.EventModel;
+        //     e.ChangeColor(color, false);
+        //     e.ChangeBaseColor(Color.black, false);
+        //     switch (e.EventData.Value)
+        //     {
+        //         case (int)LightValue.Off:
+        //             e.ChangeColor(offColor, false);
+        //             e.ChangeBaseColor(offColor, false);
+        //             e.UpdateOffset(Vector3.zero, false);
+        //             break;
+        //         case (int)LightValue.BlueOn:
+        //         case (int)LightValue.RedOn:
+        //         case (int)LightValue.WhiteOn:
+        //             e.UpdateOffset(Vector3.zero, false);
+        //             e.ChangeBaseColor(color, false);
+        //             break;
+        //         case (int)LightValue.BlueFlash:
+        //         case (int)LightValue.RedFlash:
+        //         case (int)LightValue.WhiteFlash:
+        //             e.UpdateOffset(e.FlashShaderOffset, false);
+        //             break;
+        //         case (int)LightValue.BlueFade:
+        //         case (int)LightValue.RedFade:
+        //         case (int)LightValue.WhiteFade:
+        //             e.UpdateOffset(e.FadeShaderOffset, false);
+        //             break;
+        //         case (int)LightValue.BlueTransition:
+        //         case (int)LightValue.RedTransition:
+        //         case (int)LightValue.WhiteTransition:
+        //             e.ChangeBaseColor(color, false);
+        //             break;
+        //     }
+        //
+        //     e.ChangeFadeSize(e.DefaultFadeSize, false);
+        //
+        //     // At this point, next Event must be a light event.
+        //     Color? nextColor = null;
+        //     var nextEvent = e.EventData.Next;
+        //     if (!e.EventData.IsFade && !e.EventData.IsFlash && nextEvent != null && nextEvent.IsTransition)
+        //     {
+        //         if (nextEvent.IsBlue)
+        //         {
+        //             nextColor = boost ? BlueBoostColor : BlueColor;
+        //         }
+        //         else if (nextEvent.IsRed)
+        //         {
+        //             nextColor = boost ? RedBoostColor : RedColor;
+        //         }
+        //         else if (nextEvent.IsWhite)
+        //         {
+        //             nextColor = boost ? WhiteBoostColor : WhiteColor;
+        //         }
+        //
+        //         if (Settings.Instance.EmulateChromaLite && nextEvent.CustomColor != null && !nextEvent.IsWhite) // White overrides Chroma
+        //         {
+        //             nextColor = nextEvent.CustomColor.Value;
+        //         }
+        //
+        //         // for clarity sake, we don't want this to be the same as off color
+        //         var clampedOffColor = Color.Lerp(offColor, nextColor.Value, 0.25f);
+        //         nextColor = Color.Lerp(clampedOffColor, nextColor.Value, nextEvent.FloatValue);
+        //     }
+        //
+        //     if (Settings.Instance.VisualizeChromaGradients)
+        //     {
+        //         e.UpdateGradientRendering(color, nextColor, nextEvent?.CustomEasing ?? "easeLinear");
+        //     }
+        //
+        //     e.UpdateMaterials();
+        // }
     }
 }

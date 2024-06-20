@@ -16,7 +16,42 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 7913ec13eb217cb4fa9867515853bf00
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 9f793d99c69041d4a8090d2c7e89789e
+    m_Address: Contributors_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
+  - m_GUID: bde88879d26980941988724ceef45a79
+    m_Address: Mapper_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
+  - m_GUID: 447d8f6f82f34be4989b3ece3230f60b
+    m_Address: SongEditMenu_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
+  - m_GUID: 03d6071df5a3b7d43b5c8ab6bd49737c
+    m_Address: Options_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
+  - m_GUID: b0ea15ffc7269744683f8943b1f845bc
+    m_Address: SongSelectMenu_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
+  - m_GUID: 0b4d190590b867246bfe3a2a9ddf0adf
+    m_Address: FirstBoot_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
+  - m_GUID: 257515d5c69571f40bf899c20aaa7e60
+    m_Address: MultiMapping_sv-SE
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-sv-SE
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:

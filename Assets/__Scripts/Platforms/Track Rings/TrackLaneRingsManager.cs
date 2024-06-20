@@ -21,7 +21,7 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     private bool zoomed;
     public TrackLaneRing[] Rings { get; private set; }
 
-    public void Start()
+    public void Awake()
     {
         Prefab.gameObject.SetActive(false);
         Rings = new TrackLaneRing[RingCount];
@@ -77,12 +77,13 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     {
         var step = zoomed ? MAXPositionStep : MINPositionStep;
 
-        if (this.IsAffectedByZoom() && (evt.CustomStep != null))
+        if (IsAffectedByZoom() && (evt.CustomStep != null))
         {
             step = evt.CustomStep.Value;
         }
 
-        var speed = evt.CustomSpeed ?? MoveSpeed;
+        // Multiplying MoveSpeed by 5 since I don't want to edit 20+ environment prefabs
+        var speed = evt.CustomSpeed ?? (MoveSpeed * 5); 
 
         zoomed = !zoomed;
         for (var i = 0; i < Rings.Length; i++)

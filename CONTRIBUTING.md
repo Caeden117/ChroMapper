@@ -36,6 +36,24 @@ You can also report issues on the GitHub. Ensure that you selected the `ChroMapp
 
 Contributions to ChroMapper is always welcome, but to keep the project codebase consistent, we'd ask that you follow some guidelines when making pull requests.
 
+## Repository Layout
+
+ChroMapper's repository has two main branches, followed by additional bugfix/feature branches.
+
+### `dev`
+
+The `dev` branch is ChroMapper's up-to-date codebase, with feature additions that are considered unstable and more bug prone. All active development is done on this branch.
+
+When `dev` reaches a point of stability, it is periodically merged into `master` and turned into a Stable version update.
+
+### `master`
+
+The `master` branch is always the latest Stable version of ChroMapper. With rare exceptions, `master` is only updated with work from `dev` when that branch is considered stable.
+
+### Misc. branches
+
+The ChroMapper repository will also have miscellaneous branches for separate bug patching or feature development. These branches are almost always based off `dev`, and are usually removed after being merged into `dev`.
+
 ## Coding Convention / Styling Guidelines
 
 ChroMapper comes with a `.editorconfig` file which outlines most of the convention and styling guidelines used by the project.
@@ -60,3 +78,9 @@ We ask that any and all changes to ChroMapper remain platform-agnostic to mainta
 If your pull request does contain platform-dependent code, we request that the code does not hinder ChroMapper's ability to run on other platforms.
 
 Any pull requests that do not follow these cross-platform guidelines will not be merged.
+
+## Making Pull Requests
+
+While not required, we recommend doing work in new branches. New work should always branch off of `dev` - this branch has the most up-to-date code.
+
+Almost all Pull Requests should target the `dev` branch. Pull requests to `master` are reserved only for stable version updates. Any Pull Requests targeting `master` that are not stable version updates will be asked to re-target `dev` instead.

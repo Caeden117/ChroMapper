@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 
 public static class BeatSaberSongExtensions
 {
-    private static readonly Dictionary<string, AudioType> extensionToAudio = new Dictionary<string, AudioType>
+    private static readonly Dictionary<string, AudioType> extensionToAudio = new()
     {
         {".ogg", AudioType.OGGVORBIS}, {".egg", AudioType.OGGVORBIS}, {".wav", AudioType.WAV}
     };
@@ -22,7 +22,7 @@ public static class BeatSaberSongExtensions
     /// <returns>Coroutine IEnumerator</returns>
     public static IEnumerator LoadAudio(this BeatSaberSong song, Action<AudioClip> onClipLoaded, float songTimeOffset = 0, string overrideLocalPath = null)
     {
-        if (song.Directory == null) yield break;
+        if (!Directory.Exists(song.Directory)) yield break;
 
         var fullPath = Path.Combine(song.Directory, overrideLocalPath ?? song.SongFilename);
 
@@ -33,7 +33,10 @@ public static class BeatSaberSongExtensions
         //}
         var audioType = extensionToAudio[Path.GetExtension(fullPath)];
 
-        var www = UnityWebRequestMultimedia.GetAudioClip($"file:///{Uri.EscapeDataString($"{fullPath}")}", audioType);
+        var uriPath = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor
+            ? Uri.EscapeDataString(fullPath)
+            : Uri.EscapeUriString(fullPath);
+        var www = UnityWebRequestMultimedia.GetAudioClip($"file:///{uriPath}", audioType);
 
         // Escaping should fix the issue where half the people can't open ChroMapper's editor (I believe this is caused by spaces in the directory, hence escaping)
         yield return www.SendWebRequest();
@@ -101,7 +104,7 @@ public static class BeatSaberSongExtensions
         var exportedFiles = new Dictionary<string, string>();
 
         var infoFileLocation = "";
-        if (song.Directory != null)
+        if (Directory.Exists(song.Directory))
         {
             infoFileLocation = Path.Combine(song.Directory, "Info.dat");
         }
@@ -114,10 +117,10 @@ public static class BeatSaberSongExtensions
         }
 
         exportedFiles.Add(infoFileLocation, "Info.dat");
-        AddToFileDictionary(exportedFiles, song.Directory, song.CoverImageFilename);
-        AddToFileDictionary(exportedFiles, song.Directory, song.SongFilename);
-        AddToFileDictionary(exportedFiles, song.Directory, "cinema-video.json");
-        AddToFileDictionary(exportedFiles, song.Directory, "BPMInfo.dat");
+        TryAddToFileDictionary(exportedFiles, song.Directory, song.CoverImageFilename);
+        TryAddToFileDictionary(exportedFiles, song.Directory, song.SongFilename);
+        TryAddToFileDictionary(exportedFiles, song.Directory, "cinema-video.json");
+        TryAddToFileDictionary(exportedFiles, song.Directory, "BPMInfo.dat");
 
         foreach (var contributor in song.Contributors.DistinctBy(it => it.LocalImageLocation))
         {
@@ -131,7 +134,7 @@ public static class BeatSaberSongExtensions
 
         foreach (var map in song.DifficultyBeatmapSets.SelectMany(set => set.DifficultyBeatmaps))
         {
-            AddToFileDictionary(exportedFiles, song.Directory, map.BeatmapFilename);
+            TryAddToFileDictionary(exportedFiles, song.Directory, map.BeatmapFilename);
         }
 
         // Don't package to zip if any paths are absolute or rooted
@@ -144,13 +147,10 @@ public static class BeatSaberSongExtensions
         return exportedFiles;
     }
 
-    private static void AddToFileDictionary(IDictionary<string, string> fileMap, string directory, string fileLocation)
+    private static bool TryAddToFileDictionary(IDictionary<string, string> fileMap, string directory, string fileLocation)
     {
         var fullPath = Path.Combine(directory, fileLocation);
 
-        if (File.Exists(fullPath))
-        {
-            fileMap.Add(fullPath, fileLocation);
-        }
+        return File.Exists(fullPath) && fileMap.TryAdd(fullPath, fileLocation);
     }
 }

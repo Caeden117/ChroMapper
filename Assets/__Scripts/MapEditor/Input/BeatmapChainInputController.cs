@@ -21,7 +21,7 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
     [FormerlySerializedAs("chainAppearanceSO")][SerializeField] private ChainAppearanceSO chainAppearanceSo;
     public void OnTweakChainCount(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var c);
         if (c == null || c.Dragging || !context.performed) return;
 
@@ -42,7 +42,7 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
 
     public void OnInvertChainColor(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true) ||
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true) ||
             !KeybindsController.IsMouseInWindow || !context.performed)
         {
             return;
@@ -65,7 +65,7 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
 
     public void OnTweakChainSquish(InputAction.CallbackContext context)
     {
-        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(-1, true)) return;
+        if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var c);
         if (c == null || c.Dragging || !context.performed) return;
 

@@ -1,314 +1,181 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using DSPLib;
+using Unity.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class AudioManager : MonoBehaviour
 {
-    public static int MAXThreads = 4;
-    public int ColumnsPerChunk = 300;
-    public bool FillEmptySpaceWithTransparency = true;
-    [FormerlySerializedAs("chunksComplete")] public ConcurrentQueue<int> ChunksComplete = new ConcurrentQueue<int>();
+    private static readonly int sampleSize = Shader.PropertyToID("SampleSize");
+    private static readonly int processingOffset = Shader.PropertyToID("ProcessingOffset");
 
-    private readonly List<Thread> backgroundThreads = new List<Thread>();
-    private readonly List<int> chunkQueue = new List<int>();
-    private readonly float[] emptyArr = new float[Bands.Length - 1];
+    private static readonly int fftSize = Shader.PropertyToID("FFTSize");
+    private static readonly int fftCount = Shader.PropertyToID("FFTCount");
+    private static readonly int fftFrequency = Shader.PropertyToID("FFTFrequency");
+    private static readonly int fftScaleFactor = Shader.PropertyToID("FFTScaleFactor");
+    private static readonly int fftInitialized = Shader.PropertyToID("FFTInitialized");
+    private static readonly int fftQuality = Shader.PropertyToID("FFTQuality");
 
-    private AudioTimeSyncController atsc;
-    private int chunkSize;
-    private float clipLength;
-    private float hzStep;
-    private bool is3d;
+    private static readonly int multiplyA = Shader.PropertyToID("A");
+    private static readonly int multiplyB = Shader.PropertyToID("B");
 
-    // Information about the audio track to be used in threads
-    private float[] multiChannelSamples;
-    private int numChannels;
-    private int numTotalSamples;
+    private static readonly int initializeBuffer = Shader.PropertyToID("BufferToInitialize");
 
-    // Cached FFT data
-    private double[] preProcessedSamples;
-    private float sampleOffset;
-    private int sampleRate;
-    private double scaleFactor;
+    private static readonly int fftReal = Shader.PropertyToID("Real");
+    private static readonly int fftImaginary = Shader.PropertyToID("Imaginary");
+    private static readonly int fftResults = Shader.PropertyToID("FFTResults");
 
-    private float secondPerChunk = float.NaN;
-    private Gradient spectrogramHeightGradient;
+    [SerializeField] private ComputeShader multiplyShader;
+    [SerializeField] private ComputeShader fftShader;
+    [SerializeField] private ComputeShader initializeShader;
 
-    private WaveformData waveformData;
+    private ComputeBuffer cachedFFTBuffer;
+    private ComputeBuffer dummyBuffer;
 
-    private double[] windowCoefs;
-
-    // first value is a "sample colums" and each of column have sample data
-    // it's used for making nice geometric stuff
-    public static float[] Bands { get; } =
+    // ReSharper disable ParameterHidesMember
+    // ReSharper disable LocalVariableHidesMember
+    public void GenerateFFT(AudioClip clip, int sampleSize, int quality)
     {
-        0, 100, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000,
-        7500, 8000, 8500, 9000, 9500, 10000, 10500, 11000, 11500, 12000, 12500, 13000, 13500, 14000, 14500, 15000,
-        15500, 16000, 16500, 17000, 17500, 18000, 18500, 19000, 19500, 20000
-    };
-
-    // This will be triggered if the game wants to close or we're exiting to the main menu
-    // Remove all chunks from the queue so the background threads quit
-    internal void OnDestroy()
-    {
-        lock (chunkQueue)
+        if (SampleBufferManager.MonoSamples == null)
         {
-            chunkQueue.Clear();
-        }
-    }
-
-    public uint GetSampleCount() => is3d ? 4096u : 512u;
-
-    public void SetSecondPerChunk(float secondPerChunk) => this.secondPerChunk = secondPerChunk;
-
-    public bool IsAlive()
-    {
-        // return backgroundThreads.Any(it => it.IsAlive); // Silly TopCat, this can be modified from other threads while running.
-        for (var i = 0; i < backgroundThreads.Count; i++)
-        {
-            if (backgroundThreads[i].IsAlive)
-                return true;
+            throw new InvalidOperationException("remember to call SampleBufferManager first, thanks.");
         }
 
-        return false;
-    }
+        ClearFFTCache();
 
-    // We use the unity api on the main thread to pull data to be processed in the background
-    public void Begin(bool is3d, Gradient spectrogramHeightGradient, AudioClip audioClip, WaveformData waveformData,
-        AudioTimeSyncController atsc, int chunkSize)
-    {
-        this.spectrogramHeightGradient = spectrogramHeightGradient;
-        this.is3d = is3d;
-        this.waveformData = waveformData;
-        this.atsc = atsc;
-        this.chunkSize = chunkSize;
+        var sampleCount = SampleBufferManager.MonoSampleCount;
 
-        numChannels = audioClip.channels;
-        numTotalSamples = audioClip.samples;
-        clipLength = audioClip.length;
-        sampleRate = audioClip.frequency;
+        // TODO: Should we consider a CPU spectrogram fallback in cases where the GPU spectrogram would fail?
 
-        multiChannelSamples = new float[numTotalSamples * numChannels];
-        audioClip.GetData(multiChannelSamples, 0);
-
-        waveformData.Chunks = (int)Math.Ceiling(clipLength / secondPerChunk);
-
-        // How many audio samples wide a column is, we will likely use more samples
-        // than the width to perform the FFT which has a smoothing effect
-        if (is3d)
+        // Reduce spectrogram quality if it would exceed max buffer size 
+        while ((long)sampleCount * quality * sizeof(float) > SystemInfo.maxGraphicsBufferSize)
         {
-            sampleOffset = secondPerChunk / ColumnsPerChunk * sampleRate;
-            waveformData.InitBandVolumes(ColumnsPerChunk, Bands.Length - 1);
+            quality /= 2;
+            Debug.Log($"FFT buffer exceeded. Reduced spectrogram quality to: {quality}");
         }
-        else
+        if (quality < 1)
         {
-            var samples = (int)GetSampleCount() / 2;
-            var samplesPerChunk = sampleRate * secondPerChunk;
-            ColumnsPerChunk = (int)samplesPerChunk / samples;
-            sampleOffset = samplesPerChunk / ColumnsPerChunk;
-            waveformData.InitBandVolumes(ColumnsPerChunk, samples + 1);
+            Debug.LogWarning("Refusing to render spectrogram: Exceeds maximum Compute Buffer size.");
+            PersistentUI.Instance.ShowDialogBox("PersistentUI", "spectrofailed.computebuffer", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
         }
 
-        Debug.Log("WaveformGenerator: Starting Background Thread");
-
-        var bgThread = new Thread(PreProcessData);
-        backgroundThreads.Add(bgThread);
-        bgThread.Start();
-    }
-
-    // Render 4 times more chunks in the future than the past
-    private int GetPriority(int val)
-    {
-        if (val == int.MaxValue) return int.MaxValue;
-
-        if (atsc != null) val -= (int)atsc.CurrentSongBpmTime / chunkSize;
-
-        if (val < 0) return -val * 4;
-        return val;
-    }
-
-    private bool GetNextChunkToRender(out int result)
-    {
-        lock (chunkQueue)
+        // Reduce spectrogram quality if it would exceed half of total VRAM capacity
+        //   (Video memory should still be available for ChroMapper and other programs)
+        var videoMemoryBytes = SystemInfo.graphicsMemorySize * 1024L * 1024L;
+        while ((long)sampleCount * quality * sizeof(float) > videoMemoryBytes)
         {
-            if (chunkQueue.Count == 0)
+            quality /= 2;
+            Debug.Log($"Video Memory exceeded. Reduced spectrogram quality to: {quality}");
+        }
+        if (quality < 1)
+        {
+            Debug.LogWarning("Refusing to render spectrogram: Exceeds half of available video memory.");
+            PersistentUI.Instance.ShowDialogBox("PersistentUI", "spectrofailed.vram", null, PersistentUI.DialogBoxPresetType.Ok);
+            return;
+        }
+
+        var fftSize = sampleSize / 2;
+        var fftCount = sampleCount * quality;
+
+        // Generate window coefficients and signal scale factor
+        var window = WindowCoefficients.GetWindowForSize(sampleSize);
+        var signal = WindowCoefficients.Signal(window);
+
+        // Set global shader variables
+        Shader.SetGlobalInt(AudioManager.sampleSize, sampleSize);
+        Shader.SetGlobalInt(AudioManager.fftSize, fftSize);
+        Shader.SetGlobalInt(AudioManager.fftCount, fftCount);
+        Shader.SetGlobalFloat(fftScaleFactor, signal);
+        Shader.SetGlobalFloat(fftFrequency, clip.frequency * quality);
+        Shader.SetGlobalFloat(fftQuality, quality);
+
+        cachedFFTBuffer = new ComputeBuffer(fftCount, sizeof(float));
+        Shader.SetGlobalBuffer(fftResults, cachedFFTBuffer);
+
+        // Step 1: Prepare real components of our FFT by multiply song samples by window coefficients for FFT
+        //   We allocate a temporary CPU buffer that will hold our real component data before copying to the GPU in one block.
+        using var windowedSamples = new ComputeBuffer(fftCount, sizeof(float));
+        using (var windowWrite = new NativeArray<float>(fftCount, Allocator.Temp, NativeArrayOptions.UninitializedMemory))
+        using (var windowCoeffBuffer = new ComputeBuffer(sampleSize, sizeof(float)))
+        {   
+            for (var i = 0; i < sampleCount; i += sampleSize / quality)
             {
-                result = 0;
-                return false;
+                var length = Mathf.Clamp(sampleCount - i, 0, sampleSize);
+                NativeArray<float>.Copy(SampleBufferManager.MonoSamples, i, windowWrite, i * quality, length);
             }
 
-            result = chunkQueue.Aggregate(int.MaxValue,
-                (curMin, x) => GetPriority(x) < GetPriority(curMin) ? x : curMin);
-            chunkQueue.Remove(result);
-            return true;
+            windowedSamples.SetData(windowWrite);
+            windowCoeffBuffer.SetData(window);
+
+            multiplyShader.SetBuffer(0, multiplyA, windowedSamples);
+            multiplyShader.SetBuffer(0, multiplyB, windowCoeffBuffer);
+
+            ExecuteOverLargeArray(multiplyShader, fftCount);
+        }
+
+        // Step 2: Prepare imaginary components of our FFT by initializing the entire buffer to 0
+        using ComputeBuffer imaginaryBuffer = new(fftCount, sizeof(float));
+        initializeShader.SetBuffer(0, initializeBuffer, imaginaryBuffer);
+        ExecuteOverLargeArray(initializeShader, fftCount);
+
+        // Step 3: Execute FFT
+        fftShader.SetBuffer(0, fftReal, windowedSamples);
+        fftShader.SetBuffer(0, fftImaginary, imaginaryBuffer);
+
+        ExecuteOverLargeArray(fftShader, fftCount / sampleSize);
+
+        Shader.SetGlobalInt(fftInitialized, 1);
+    }
+    // ReSharper restore ParameterHidesMember
+    // ReSharper restore LocalVariableHidesMember
+
+    // if GPU threads >= 65535, exception is thrown.
+    // this usually happens when our buffers get too big (quality go brrrr)
+    // fix this by executing the shader in steps, adding the processed offset as a shader variable so we can
+    //   correct for the offset.
+    private static void ExecuteOverLargeArray(ComputeShader shader, int length)
+    {
+        const int maxThreadCount = 65535;
+
+        shader.GetKernelThreadGroupSizes(0, out var x, out var y, out var z);
+        var kernelGroupArea = (int)(x * y * z);
+
+        int elementStep;
+        for (var i = 0; i < length; i += elementStep)
+        {
+            elementStep = Mathf.Clamp(length - i, 0, maxThreadCount);
+
+            shader.SetInt(processingOffset, i);
+            shader.Dispatch(0, elementStep / kernelGroupArea, 1, 1);
         }
     }
 
-    public void PreProcessData()
+    private void ClearFFTCache()
     {
-        preProcessedSamples = new double[numTotalSamples];
+        if (cachedFFTBuffer == null) return;
 
-        // Average all audio channels together
-        // divide by 1.5 to roughly match amplitude to previous broken behavior (not just 2 because of some destructive interference)
-        for (var i = 0; i < multiChannelSamples.Length; i++)
-            preProcessedSamples[i / numChannels] += multiChannelSamples[i] / numChannels / 1.5;
+        cachedFFTBuffer.Dispose();
+        cachedFFTBuffer = null;
 
-        Debug.Log("WaveformGenerator: Combine Channels done " + preProcessedSamples.Length);
-
-        for (var i = 0; i < waveformData.Chunks; i++) chunkQueue.Add(i);
-
-        // Precalculate the window function for our sample size
-        windowCoefs = DSP.Window.Coefficients(DSP.Window.Type.BH92, GetSampleCount());
-        scaleFactor = DSP.Window.ScaleFactor.Signal(windowCoefs);
-
-        hzStep = sampleRate / (float)GetSampleCount();
-
-        // Try and leave at least one cpu core for the main thread, limited by MAX_THREADS
-        var threadCount = Math.Max(1, Math.Min(Environment.ProcessorCount - 1, MAXThreads));
-        for (var i = 0; i < threadCount; i++)
-        {
-            var fftThread = new Thread(PerformFFTThreaded);
-            // Calling this outside of the main Unity thread can cause a InvalidOperationException in IsAlive().
-            backgroundThreads.Add(fftThread);
-            fftThread.Start();
-        }
-
-        Debug.Log("Background Thread Completed");
+        Shader.SetGlobalInt(fftCount, 0);
+        Shader.SetGlobalInt(fftInitialized, 0);
+        Shader.SetGlobalBuffer(fftReal, dummyBuffer);
+        Shader.SetGlobalBuffer(fftImaginary, dummyBuffer);
+        Shader.SetGlobalBuffer(fftResults, dummyBuffer);
     }
 
-    public void PerformFFTThreaded()
+    private void Awake()
     {
-        var fftSize = GetSampleCount();
-        var fft = new FFT();
-        fft.Initialize(fftSize);
-        var sampleChunk = new double[fftSize];
-
-        var bins = fftSize / 2;
-        var compFactors = new double[bins];
-
-        if (!is3d)
-        {
-            // Precompute factors for spectrogram frequency compensation
-            var scalingConstant = 8d / fftSize;
-            for (var y = 0; y < bins; y++) compFactors[y] = Math.Sqrt((y + 0.25) * scalingConstant);
-        }
-
-        while (GetNextChunkToRender(out var chunkId))
-        {
-            var bandColors = new Color[ColumnsPerChunk][];
-            for (var k = 0; k < ColumnsPerChunk; k++)
-            {
-                var i = (chunkId * ColumnsPerChunk) + k;
-                // Grab the current chunk of audio sample data
-                var curSampleSize = (int)fftSize;
-                if ((i * sampleOffset) + fftSize > preProcessedSamples.Length)
-                {
-                    // We've reached the end of the track, pad with empty data
-                    if (is3d)
-                    {
-                        waveformData.BandVolumes[i] = emptyArr;
-                    }
-                    else
-                    {
-                        waveformData.BandVolumes[i] = new float[bins + 1];
-                        if (FillEmptySpaceWithTransparency)
-                        {
-                            bandColors[k] = new Color[bins + 1];
-                        }
-                        else
-                        {
-                            bandColors[k] = Enumerable.Repeat(spectrogramHeightGradient.Evaluate(0f), (int)bins + 1)
-                                .ToArray();
-                        }
-                    }
-
-                    continue;
-                }
-
-                Buffer.BlockCopy(preProcessedSamples, (int)(i * sampleOffset) * sizeof(double), sampleChunk, 0,
-                    curSampleSize * sizeof(double));
-
-                // Apply our chosen FFT Window
-                var scaledSpectrumChunk = DSP.Math.Multiply(sampleChunk, windowCoefs);
-
-                // Perform the FFT and convert output (complex numbers) to Magnitude
-                var fftSpectrum = fft.Execute(scaledSpectrumChunk);
-                var scaledFFTSpectrum = DSP.ConvertComplex.ToMagnitude(fftSpectrum);
-                scaledFFTSpectrum = DSP.Math.Multiply(scaledFFTSpectrum, scaleFactor);
-
-                if (is3d)
-                {
-                    var bandVolumes = new float[Bands.Length - 1];
-                    for (var j = 1; j < Bands.Length; j++)
-                        bandVolumes[j - 1] = BandVol(Bands[j - 1], Bands[j], scaledFFTSpectrum, hzStep);
-                    waveformData.BandVolumes[i] = bandVolumes;
-                }
-                else
-                {
-                    // Compensate for frequency bin
-                    for (var y = 0; y < bins; y++) scaledFFTSpectrum[y] *= compFactors[y];
-
-                    var gradientFactor = 25;
-                    waveformData.BandVolumes[i] = scaledFFTSpectrum.Select(it =>
-                    {
-                        if (it >= Math.Pow(Math.E, -255d / gradientFactor))
-                            return (float)((Math.Log(it) + (255d / gradientFactor)) * gradientFactor) / 128f;
-                        return 0f;
-                    }).ToArray();
-                    bandColors[k] = waveformData.BandVolumes[i].Select(it =>
-                    {
-                        var lerp = Mathf.InverseLerp(0, 2, it);
-                        return spectrogramHeightGradient.Evaluate(lerp);
-                    }).ToArray();
-                }
-            }
-
-            if (!is3d)
-            {
-                // Render 2d texture with spectogram for entire chunk
-                var data = waveformData.BandCData[chunkId];
-
-                try
-                {
-                    var index = 0;
-                    if (bandColors == null) return;
-                    for (var y = 0; y < bandColors[0].Length; y++)
-                    {
-                        for (var x = 0; x < bandColors.Length; x++)
-                            data[index++] = bandColors[x][y];
-                    }
-                }
-                catch (NullReferenceException)
-                {
-                    // Cancelled some other way
-                }
-                catch (InvalidOperationException)
-                {
-                    // NativeArray has been deallocated :(
-                }
-            }
-
-            ChunksComplete.Enqueue(chunkId);
-            waveformData.ProcessedChunks++;
-        }
-
-        Debug.Log("FFT Thread Completed");
+        dummyBuffer = new ComputeBuffer(1, sizeof(float));
+        Shader.SetGlobalBuffer(fftReal, dummyBuffer);
+        Shader.SetGlobalBuffer(fftImaginary, dummyBuffer);
+        Shader.SetGlobalBuffer(fftResults, dummyBuffer);
     }
 
-    // Groups FFT samples to form the spectogram rendering, output values from 0-220ish
-    public static float BandVol(float fLow, float fHigh, double[] samples, float hzStep)
+    private void OnDestroy()
     {
-        var samplesCount = Mathf.RoundToInt((fHigh - fLow) / hzStep);
-        var firtSample = Mathf.RoundToInt(fLow / hzStep);
-        var lastSample = Mathf.Min(firtSample + samplesCount, (samples.Length * 2) - 3);
-
-        double sum = 0;
-        // This isn't an average but it appears to work fairly well
-        for (var i = firtSample; i <= lastSample; i++) sum += samples[i];
-        return Math.Max(0, (float)sum * Mathf.Sqrt(fLow + fHigh) * 2);
+        ClearFFTCache();
+        
+        dummyBuffer.Dispose();
+        dummyBuffer = null;
     }
 }

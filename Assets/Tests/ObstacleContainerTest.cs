@@ -21,16 +21,9 @@ namespace Tests
             return TestUtils.LoadMap(3);
         }
 
-        [OneTimeSetUp]
-        public void SaveEditorScale()
-        {
-            originalEditorScale = Settings.Instance.EditorScale;
-        }
-
         [OneTimeTearDown]
         public void FinalTearDown()
         {
-            Settings.Instance.EditorScale = originalEditorScale;
             TestUtils.ReturnSettings();
         }
 

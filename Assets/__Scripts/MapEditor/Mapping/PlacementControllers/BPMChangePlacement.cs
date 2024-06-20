@@ -41,7 +41,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
                 var prevBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
                           BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
                 var oldTime = queuedData.JsonTime;
-                var jsonTimeOffset = 1 - oldTime % 1;
+                var jsonTimeOffset = 1 - (oldTime % 1);
 
                 // Place a very fast bpm event slighty behind the original event to account for drift
                 var aVeryLargeBpm = 100000f;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Beatmap.Base.Customs;
@@ -9,53 +10,47 @@ namespace Beatmap.Base
 {
     public abstract class BaseDifficulty : BaseItem, ICustomDataDifficulty
     {
-        public Dictionary<string, BaseMaterial> Materials = new Dictionary<string, BaseMaterial>();
+        public Dictionary<string, BaseMaterial> Materials = new();
 
-        public Dictionary<string, JSONArray> PointDefinitions = new Dictionary<string, JSONArray>();
+        public Dictionary<string, JSONArray> PointDefinitions = new();
         public JSONNode MainNode { get; set; }
         public string DirectoryAndFile { get; set; }
         public abstract string Version { get; }
-        public List<BaseBpmEvent> BpmEvents { get; set; } = new List<BaseBpmEvent>();
-        public List<BaseRotationEvent> RotationEvents { get; set; } = new List<BaseRotationEvent>();
-        public List<BaseNote> Notes { get; set; } = new List<BaseNote>();
-        public List<BaseBombNote> Bombs { get; set; } = new List<BaseBombNote>();
-        public List<BaseObstacle> Obstacles { get; set; } = new List<BaseObstacle>();
-        public List<BaseArc> Arcs { get; set; } = new List<BaseArc>();
-        public List<BaseChain> Chains { get; set; } = new List<BaseChain>();
-        public List<BaseWaypoint> Waypoints { get; set; } = new List<BaseWaypoint>();
-        public List<BaseEvent> Events { get; set; } = new List<BaseEvent>();
-        public List<BaseColorBoostEvent> ColorBoostEvents { get; set; } = new List<BaseColorBoostEvent>();
+        public List<BaseBpmEvent> BpmEvents { get; set; } = new();
+        public List<BaseRotationEvent> RotationEvents { get; set; } = new();
+        public List<BaseNote> Notes { get; set; } = new();
+        public List<BaseBombNote> Bombs { get; set; } = new();
+        public List<BaseObstacle> Obstacles { get; set; } = new();
+        public List<BaseArc> Arcs { get; set; } = new();
+        public List<BaseChain> Chains { get; set; } = new();
+        public List<BaseWaypoint> Waypoints { get; set; } = new();
+        public List<BaseEvent> Events { get; set; } = new();
+        public List<BaseColorBoostEvent> ColorBoostEvents { get; set; } = new();
 
-        public List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>> LightColorEventBoxGroups { get; set; } =
-            new List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>>();
+        public List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>> LightColorEventBoxGroups { get; set; } = new();
 
         public List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>
-            LightRotationEventBoxGroups
-        { get; set; } =
-            new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>();
+            LightRotationEventBoxGroups { get; set; } = new();
 
         public List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>
-            LightTranslationEventBoxGroups
-        { get; set; } =
-            new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>();
+            LightTranslationEventBoxGroups { get; set; } = new();
 
-        public List<BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>> VfxEventBoxGroups { get; set; } = new List<BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>>();
+        public List<BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>> VfxEventBoxGroups { get; set; } = new();
         public BaseFxEventsCollection FxEventsCollection { get; set; }
 
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
         public bool UseNormalEventsAsCompatibleEvents { get; set; } = true;
-        public float Time { get; set; } = 0f;
-        public List<BaseBpmChange> BpmChanges { get; set; } = new List<BaseBpmChange>();
-        public List<BaseBookmark> Bookmarks { get; set; } = new List<BaseBookmark>();
+        public float Time { get; set; }
+        public List<BaseBpmChange> BpmChanges { get; set; } = new();
+        public List<BaseBookmark> Bookmarks { get; set; } = new();
         public abstract string BookmarksUseOfficialBpmEventsKey { get; }
-        public List<BaseCustomEvent> CustomEvents { get; set; } = new List<BaseCustomEvent>();
+        public List<BaseCustomEvent> CustomEvents { get; set; } = new();
 
-        public List<BaseEnvironmentEnhancement> EnvironmentEnhancements { get; set; } =
-            new List<BaseEnvironmentEnhancement>();
+        public List<BaseEnvironmentEnhancement> EnvironmentEnhancements { get; set; } = new();
 
         public JSONNode CustomData { get; set; } = new JSONObject();
 
-        private List<List<BaseObject>> AllBaseObjectProperties() => new List<List<BaseObject>>
+        private List<List<BaseObject>> AllBaseObjectProperties() => new()
         {
             new List<BaseObject>(RotationEvents),
             new List<BaseObject>(Notes),
@@ -225,15 +220,25 @@ namespace Beatmap.Base
 
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var audioLength = BeatSaberSongContainer.Instance.LoadedSongLength;
-            var audioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples;
+            var audioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples - 1; // Match official editor
             var audioFrequency = BeatSaberSongContainer.Instance.LoadedSongFrequency;
 
+            // If for some reason we have bpm events outside the map and the mapper decided not to remove them,
+            // it'll cause weird behaviour in official editor so we'll exclude those
+            var maxSongBpmTime = audioLength * songBpm / 60f;
+            
+            var index = map.BpmEvents.Count - 1;
+            while (index >= 0 && map.BpmEvents[index].SongBpmTime > maxSongBpmTime) index--;
+            var bpmEvents = (index >= 0)
+                ? map.BpmEvents.AsSpan()[..(index + 1)]
+                : Span<BaseBpmEvent>.Empty;
+            
             bpmInfo["_version"] = "2.0.0";
             bpmInfo["_songSampleCount"] = audioSamples;
             bpmInfo["_songFrequency"] = audioFrequency;
 
             var regions = new JSONArray();
-            if (map.BpmEvents.Count == 0)
+            if (bpmEvents.Length == 0)
             {
                 regions.Add(new JSONObject
                 {
@@ -245,10 +250,10 @@ namespace Beatmap.Base
             }
             else
             {
-                for (var i = 0; i < map.BpmEvents.Count - 1; i++)
+                for (var i = 0; i < bpmEvents.Length - 1; i++)
                 {
-                    var currentBpmEvent = map.BpmEvents[i];
-                    var nextBpmEvent = map.BpmEvents[i + 1];
+                    var currentBpmEvent = bpmEvents[i];
+                    var nextBpmEvent = bpmEvents[i + 1];
 
                     regions.Add(new JSONObject
                     {
@@ -259,7 +264,7 @@ namespace Beatmap.Base
                     });
                 }
 
-                var lastBpmEvent = map.BpmEvents[map.BpmEvents.Count - 1];
+                var lastBpmEvent = bpmEvents[^1];
                 var lastStartSampleIndex = (lastBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency);
                 var secondsDiff = (audioSamples - lastStartSampleIndex) / audioFrequency;
                 var jsonBeatsDiff = secondsDiff * (lastBpmEvent.Bpm / 60f);

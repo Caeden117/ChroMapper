@@ -34,6 +34,10 @@ public class LightingEvent : MonoBehaviour
 
     private Func<float, float> easing = Easing.ByName["easeLinear"];
 
+    private static readonly int mainTex = Shader.PropertyToID("_MainTex");
+    private static readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
+    private static readonly int baseColor = Shader.PropertyToID("_BaseColor");
+
     private void Start()
     {
         lightPropertyBlock = new MaterialPropertyBlock();
@@ -46,7 +50,7 @@ public class LightingEvent : MonoBehaviour
             if (boostSprite != null)
                 boostSprite.Setup(spriteRenderer.sprite);
 
-            lightPropertyBlock.SetTexture("_MainTex", spriteRenderer.sprite.texture);
+            lightPropertyBlock.SetTexture(mainTex, spriteRenderer.sprite.texture);
         }
 
         if (OverrideLightGroup)
@@ -69,7 +73,7 @@ public class LightingEvent : MonoBehaviour
 
     private void Update()
     {
-        if (multiplyAlpha == float.NaN) multiplyAlpha = 0;
+        if (float.IsNaN(multiplyAlpha)) multiplyAlpha = 0;
 
         colorTime += Time.deltaTime;
         var color = Color.Lerp(currentColor, targetColor, easing(colorTime / timeToTransitionColor));
@@ -81,8 +85,8 @@ public class LightingEvent : MonoBehaviour
 
         if (isLightEnabled)
         {
-            lightPropertyBlock.SetColor("_EmissionColor", color);
-            lightPropertyBlock.SetColor("_BaseColor", Color.white * alpha);
+            lightPropertyBlock.SetColor(emissionColor, color);
+            lightPropertyBlock.SetColor(baseColor, Color.white * alpha);
             lightRenderer.SetPropertyBlock(lightPropertyBlock);
         }
     }
@@ -117,7 +121,7 @@ public class LightingEvent : MonoBehaviour
     public void UpdateBoostState(bool boost)
     {
         if (boostSprite != null)
-            lightPropertyBlock.SetTexture("_MainTex", boostSprite.GetSprite(boost).texture);
+            lightPropertyBlock.SetTexture(mainTex, boostSprite.GetSprite(boost).texture);
     }
 
     public void UpdateCurrentColor(Color color) => currentColor = color;

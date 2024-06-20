@@ -19,7 +19,7 @@ public class SwingsPerSecond
         this.obstacleGrid = obstacleGrid;
     }
 
-    private int NotesCount => noteGrid.LoadedObjects.Count;
+    private int NotesCount => noteGrid.MapObjects.Count;
 
     public Stats Blue { get; private set; }
     public Stats Red { get; private set; }
@@ -28,15 +28,15 @@ public class SwingsPerSecond
     private float LastInteractiveObjectTime(float songBpm)
     {
         var lastNoteTime = 0f;
-        if (NotesCount > 0 && noteGrid.LoadedObjects.Count != 0)
-            lastNoteTime = noteGrid.LoadedObjects.Last().SongBpmTime / songBpm * 60;
+        if (NotesCount > 0 && noteGrid.MapObjects.Count != 0)
+            lastNoteTime = noteGrid.MapObjects[^1].SongBpmTime / songBpm * 60;
 
         var lastInteractiveObstacleTime = 0f;
-        foreach (BaseObstacle obstacle in obstacleGrid.LoadedObjects)
+        foreach (var obstacle in obstacleGrid.MapObjects)
         {
             if (obstacle.Width >= 2 || obstacle.PosX == 1 || obstacle.PosX == 2)
             {
-                var obstacleEnd = (obstacle.SongBpmTime + obstacle.Duration) / songBpm * 60;
+                var obstacleEnd = (obstacle.SongBpmTime + obstacle.DurationSongBpm) / songBpm * 60;
                 lastInteractiveObstacleTime = Mathf.Max(lastInteractiveObstacleTime, obstacleEnd);
             }
         }
@@ -47,15 +47,15 @@ public class SwingsPerSecond
     private float FirstInteractiveObjectTime(float songBpm)
     {
         var firstNoteTime = float.MaxValue;
-        if (NotesCount > 0 && noteGrid.LoadedObjects.Count != 0)
-            firstNoteTime = noteGrid.LoadedObjects.First().SongBpmTime / songBpm * 60;
+        if (NotesCount > 0 && noteGrid.MapObjects.Count != 0)
+            firstNoteTime = noteGrid.MapObjects[0].SongBpmTime / songBpm * 60;
 
         var firstInteractiveObstacleTime = float.MaxValue;
-        foreach (BaseObstacle obstacle in obstacleGrid.LoadedObjects)
+        foreach (var obstacle in obstacleGrid.MapObjects)
         {
             if (obstacle.Width >= 2 || obstacle.PosX == 1 || obstacle.PosX == 2)
             {
-                firstInteractiveObstacleTime = (obstacle.SongBpmTime + obstacle.Duration) / songBpm * 60;
+                firstInteractiveObstacleTime = (obstacle.SongBpmTime + obstacle.DurationSongBpm) / songBpm * 60;
                 break;
             }
         }
@@ -100,9 +100,9 @@ public class SwingsPerSecond
         var swingCountBlue = new int[Mathf.FloorToInt(lastInteraction) + 1];
 
         BaseNote lastRed = null, lastBlue = null;
-        var notesSet = noteGrid.LoadedObjects;
+        var notesSet = noteGrid.MapObjects;
 
-        foreach (BaseNote note in notesSet)
+        foreach (var note in notesSet)
         {
             // The buckets above do not account for negative time notes. The user would also probably 
             // want to remove negative time notes on save so I will just ignore these

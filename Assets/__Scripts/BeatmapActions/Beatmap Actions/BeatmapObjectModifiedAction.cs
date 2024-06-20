@@ -6,7 +6,6 @@ public class BeatmapObjectModifiedAction : BeatmapAction
 {
     private bool addToSelection;
 
-    private BeatmapObjectContainerCollection collection;
     private BaseObject editedData;
 
     private BaseObject editedObject;
@@ -18,7 +17,6 @@ public class BeatmapObjectModifiedAction : BeatmapAction
     public BeatmapObjectModifiedAction(BaseObject edited, BaseObject originalObject, BaseObject originalData,
         string comment = "No comment.", bool keepSelection = false) : base(new[] { edited, originalObject }, comment)
     {
-        collection = BeatmapObjectContainerCollection.GetCollectionForType(originalObject.ObjectType);
         editedObject = edited;
         editedData = BeatmapFactory.Clone(edited);
 
@@ -31,18 +29,18 @@ public class BeatmapObjectModifiedAction : BeatmapAction
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        if (originalObject != editedObject || editedData.JsonTime.CompareTo(originalData.JsonTime) != 0)
+        if (originalObject != editedObject || editedData.CompareTo(originalData) != 0)
         {
             DeleteObject(editedObject, false);
             SelectionController.Deselect(editedObject, false);
 
-            originalObject.Apply(originalData);
+            if (originalData != originalObject) originalObject.Apply(originalData);
             SpawnObject(originalObject, false, !inCollection);
         }
         else
         {
-            // This is an optimisation only possible if the object has not changed position in the SortedSet
-            originalObject.Apply(originalData);
+            // This is an optimisation only possible if the object has not changed position in the MapObjects
+            if (originalData != originalObject) originalObject.Apply(originalData);
             if (!inCollection) RefreshPools(Data);
         }
 
@@ -59,7 +57,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        if (originalObject != editedObject || editedData.JsonTime.CompareTo(originalData.JsonTime) != 0)
+        if (originalObject != editedObject || editedData.CompareTo(originalData) != 0)
         {
             DeleteObject(originalObject, false);
             SelectionController.Deselect(originalObject, false);
@@ -69,7 +67,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         }
         else
         {
-            // This is an optimisation only possible if the object has not changed position in the SortedSet 
+            // This is an optimisation only possible if the object has not changed position in the MapObjects 
             editedObject.Apply(editedData);
             if (!inCollection) RefreshPools(Data);
         }

@@ -17,43 +17,8 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 5815b0c1f116cc643bc116d05b571edd
   m_SerializeEntries:
-  - m_GUID: 96078c8bb99077345be93ea4b614d283
-    m_Address: SongEditMenu_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
-  - m_GUID: eb2b22059adf2a747a7d29855caee4e9
-    m_Address: Options_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
   - m_GUID: 5282ae513b6e95c439517a14b44cb1f2
     m_Address: PersistentUI_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
-  - m_GUID: b285253f8003b1640b8be8066d53f0a5
-    m_Address: FirstBoot_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
-  - m_GUID: 629d8a24657e936408405d0528afe267
-    m_Address: Contributors_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
-  - m_GUID: 8e6ea24a64bc81c44ac824f403c850d0
-    m_Address: SongSelectMenu_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
-  - m_GUID: 93e4496d786ba6b48b7d4549a1d292e6
-    m_Address: Mapper_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
-  - m_GUID: c744f3c9fb2f76949be858d15be2cf75
-    m_Address: MultiMapping_nl
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-nl

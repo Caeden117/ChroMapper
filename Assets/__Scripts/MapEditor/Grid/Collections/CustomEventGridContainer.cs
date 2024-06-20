@@ -12,7 +12,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInput.ICustomEventsContainerActions
+public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCustomEvent>, CMInput.ICustomEventsContainerActions
 {
     [SerializeField] private GameObject customEventPrefab;
     [SerializeField] private GameObject geometryPrefab;
@@ -46,12 +46,16 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     public void LoadAnimationTracks()
     {
         playerCamera.ClearPlayerTracks();
-        var events = LoadedObjects.Select(ev => ev as BaseCustomEvent);
-        foreach (var ev in events)
+
+        var span = MapObjects.AsSpan();
+
+        for (var i = 0; i < span.Length; i++)
         {
+            var ev = span[i];
+
             var tracks = ev.CustomTrack switch {
                 JSONArray arr => arr,
-                JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+                JSONString s => JSONObject.Parse($"[{s}]").AsArray,
                 _ => null,
             };
             switch (ev.Type)
@@ -61,12 +65,12 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
                 var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
                 tracks = ev.DataChildrenTracks switch {
                     JSONArray arr => arr,
-                    JSONString s => JSONObject.Parse($"[{s.ToString()}]").AsArray,
+                    JSONString s => JSONObject.Parse($"[{s}]").AsArray,
                 };
                 foreach (var tr in tracks)
                 {
                     var at = tracksManager.CreateAnimationTrack(tr.Value);
-                    at.Track.transform.parent = parent.Track.ObjectParentTransform;
+                    at.Track.transform.SetParent(parent.Track.ObjectParentTransform, ev.DataWorldPositionStays ?? false);
                     if (at.Animator == null)
                     {
                         at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
@@ -91,6 +95,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             }
         }
 
+        // TODO: Geometry should probably be handled separately
         geometries.ForEach((gc) => GameObject.Destroy(gc.gameObject));
         geometries.Clear();
 
@@ -126,21 +131,23 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
             CreateNewType();
     }
 
-    public override IEnumerable<BaseObject> GrabSortedObjects() =>
-        UnsortedObjects.OrderBy(x => x.JsonTime).ThenBy(x => (x as BaseCustomEvent).Type);
-
     public void RefreshEventsByTrack()
     {
         EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
 
-        foreach (var loadedObject in UnsortedObjects)
+        //foreach (var loadedObject in UnsortedObjects)
+        var span = MapObjects.AsSpan();
+
+        for (var i = 0; i < span.Length; i++)
         {
-            var customEvent = loadedObject as BaseCustomEvent;
-            List<string> tracks = customEvent.CustomTrack switch {
+            var customEvent = span[i];
+
+            var tracks = customEvent.CustomTrack switch {
                 JSONString s => new List<string> { s },
                 JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
                 _ => new List<string>()
             };
+
             foreach (var track in tracks)
             {
                 if (!EventsByTrack.ContainsKey(track))
@@ -175,7 +182,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     private void OnUIModeSwitch(UIModeType newMode)
     {
         // When changing in/out of preview mode
-        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
+        if (newMode is UIModeType.Normal or UIModeType.Preview)
         {
             RefreshPool(true);
         }
@@ -185,9 +192,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
     {
         if (UIMode.AnimationMode)
         {
-            foreach (var obj in LoadedContainers.Values.ToList())
+            while (ObjectsWithContainers.Count > 0)
             {
-                RecycleContainer(obj.ObjectData);
+                RecycleContainer(ObjectsWithContainers[0]);
             }
         }
         else
@@ -233,9 +240,12 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection, CMInpu
 
     private void SetInitialTracks()
     {
-        foreach (var loadedObject in UnsortedObjects)
+        var span = MapObjects.AsSpan();
+
+        for (var i = 0; i < span.Length; i++)
         {
-            var customEvent = loadedObject as BaseCustomEvent;
+            var customEvent = span[i];
+
             if (!customEventTypes.Contains(customEvent.Type))
             {
                 customEventTypes.Add(customEvent.Type);

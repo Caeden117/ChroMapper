@@ -29,7 +29,7 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
     private Vector3 transformed;
     public static bool IsSelecting { get; private set; }
 
-    [HideInInspector] protected override bool CanClickAndDrag { get; set; } = false;
+    protected override bool CanClickAndDrag { get; set; } = false;
 
     public override bool IsValid => Settings.Instance.BoxSelect && (keybindPressed || IsSelecting);
 
@@ -99,7 +99,6 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
             var localScale = instantiatedContainer.transform.localScale;
-            var localpos = instantiatedContainer.transform.localPosition;
             instantiatedContainer.transform.localPosition -= new Vector3(localScale.x / 2, 0, 0);
         }
         else
@@ -139,6 +138,12 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
             SelectionController.ForEachObjectBetweenSongBpmTimeByGroup(startSongBpmBeat, endSongBpmBeat, true, true, true, (bocc, bo) =>
             {
                 if (!selectedTypes.Contains(bo.ObjectType)) return; // Must be a type we can select
+                
+                if (   BeatmapObjectContainerCollection.TrackFilterID != null 
+                    && BeatmapObjectContainerCollection.TrackFilterID != ((bo.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+                {
+                    return;
+                }
 
                 var left = instantiatedContainer.transform.localPosition.x +
                            instantiatedContainer.transform.localScale.x;

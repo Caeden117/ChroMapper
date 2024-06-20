@@ -1,3 +1,4 @@
+using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using LiteNetLib.Utils;
@@ -99,6 +100,25 @@ namespace Beatmap.Base
                 SliceCount = chain.SliceCount;
                 Squish = chain.Squish;
             }
+        }
+        
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseChain chain) return comparison;
+
+            // Compare by slice count if previous slider comparisons match
+            if (comparison == 0) comparison = SliceCount.CompareTo(chain.SliceCount);
+
+            // Compare by squish if slice counts match
+            if (comparison == 0) comparison = Squish.CompareTo(chain.Squish);
+            
+            // All matching vanilla properties so compare custom data as a final check
+            if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), chain.CustomData?.ToString(), StringComparison.Ordinal);
+
+            return comparison;
         }
     }
 }

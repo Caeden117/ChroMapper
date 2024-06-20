@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
   m_Metadata:
     m_Items:
-    - id: 0
+    - rid: 2609315181482475540
   m_TableData:
   - m_Id: 1
     m_Localized: "\u65B0\u898F\u8B5C\u9762"
@@ -36,11 +36,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5
-    m_Localized: "\u7279\u6CE8\n\u8B5C\u9762"
+    m_Localized: "\u30AB\u30B9\u30BF\u30E0"
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: "\u7279\u6CE8\n\u4ED5\u639B\u54C1\n\u8B5C\u9762"
+    m_Localized: "\u5236\u4F5C\u4E2D"
     m_Metadata:
       m_Items: []
   - m_Id: 7
@@ -67,7 +67,7 @@ MonoBehaviour:
     m_Localized: "\u30DA\u30FC\u30B8\uFF1A{CurrentPage}/{MaxPage}"
     m_Metadata:
       m_Items:
-      - id: 0
+      - rid: 2609315181482475540
   - m_Id: 13
     m_Localized: "\u691C\u7D22..."
     m_Metadata:
@@ -134,16 +134,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 161103413248
-    m_Localized: 'Could not create a folder with that name.
-
-
-      Please enter
-      a different name for the new beatmap.'
+    m_Localized: "\u8A2D\u5B9A\u3057\u305F\u540D\u524D\u3067\u30D5\u30A9\u30EB\u30C0\u3092\u4F5C\u6210\u3067\u304D\u307E\u305B\u3093\u3067\u3057\u305F\u3002\n\n\u65B0\u3057\u3044\u30DE\u30C3\u30D7\u306B\u5225\u306E\u540D\u524D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
     m_Metadata:
       m_Items: []
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 2609315181482475540
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0c00000000000000

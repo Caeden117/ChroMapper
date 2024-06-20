@@ -42,8 +42,10 @@ public class Track : MonoBehaviour
 
     public void UpdateTime(float time)
     {
-        float z = 0;
-        bool v2 = Object is V2Object;
+        var z = 0f;
+        var v2 = Object is V2Object;
+        var position = ObjectParentTransform.localPosition;
+
         // Jump in
         if (time < Object.SpawnSongBpmTime)
         {
@@ -58,7 +60,46 @@ public class Track : MonoBehaviour
         {
             z = Mathf.Lerp(despawnPosition, -JUMP_FAR, (time - despawnTime) / JUMP_TIME);
         }
-        ObjectParentTransform.localPosition = new Vector3(ObjectParentTransform.localPosition.x, ObjectParentTransform.localPosition.y, z);
+
+        position.z = z;
+
+        // oh yeah you know its good when things start with a check like this
+        if (Object is BaseNote note)
+        {
+            // Normalized [0-1] between despawn time and spawn time
+            var normalizedLifetime = Mathf.Clamp01(Mathf.InverseLerp(Object.DespawnSongBpmTime, Object.SpawnSongBpmTime, time));
+            
+            // [0-1] between spawn time and note time
+            // 0.3 magic number taken from ArcViewer (thanks polandball)
+            var spawnLifetime = Mathf.Clamp01(1 - ((normalizedLifetime - 0.5f) * 2));
+            var rotationLifetime = Mathf.Clamp01(spawnLifetime / 0.3f);
+
+            // Beat Saber uses a parabolic arc so we use Quadratic Out easing because im lazy
+            var jumpT = Easing.Quadratic.Out(spawnLifetime);
+            var rotationT = Easing.Quadratic.Out(rotationLifetime);
+
+            // Magic 1.1 number comes from ObjectContainer.offsetY which is currently protected
+            // TODO: Pre-compute starting position so notes can stack and flip can be supported
+            //   (Notes need to be aware of other notes)
+            position.y = Mathf.Lerp(1.1f, note.GetPosition().y + 1.1f, jumpT);
+
+            // Multiply euler rotation by spawn lifetime if we are in the first half (spawning) portion of our object lifetime
+            if (normalizedLifetime >= 0.5f)
+            {
+                // OK this is hacky i sincerely apologize
+                var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(note.ObjectType);
+                
+                if (containerCollection.LoadedContainers.TryGetValue(Object, out var container) && container is NoteContainer noteContainer)
+                {
+                    var quaternion = Quaternion.Euler(noteContainer.DirectionTargetEuler);
+
+                    noteContainer.DirectionTarget.localRotation = Quaternion.Lerp(Quaternion.identity, quaternion, rotationT);
+                }
+            }
+
+        }
+
+        ObjectParentTransform.localPosition = position;
     }
 
     public void AttachContainer(ObjectContainer obj)

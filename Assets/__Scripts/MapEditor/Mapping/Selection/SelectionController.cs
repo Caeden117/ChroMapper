@@ -195,7 +195,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (collection == null) continue;
 
             IEnumerable<BaseObject> objectsToCheck;
-            if (collection is ArcGridContainer || collection is ChainGridContainer)
+
+            // REVIEW: Considering a downcast appears to be necessary, I am not sure if
+            //   a LoadedObjects (or similar) allocation is avoidable without a complete
+            //   rewrite to this function.
+            if (collection is ArcGridContainer or ChainGridContainer)
             {
                 objectsToCheck = collection.LoadedObjects.Where(x =>
                     (start - epsilon < x.SongBpmTime && x.SongBpmTime < end + epsilon)
@@ -238,7 +242,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
         var collection = BeatmapObjectContainerCollection.GetCollectionForType(obj.ObjectType);
 
-        if (!collection.LoadedObjects.Contains(obj))
+        if (!collection.ContainsObject(obj))
             return;
 
         SelectedObjects.Add(obj);
@@ -476,7 +480,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType);
             var original = BeatmapFactory.Clone(data);
 
-            collection.LoadedObjects.Remove(data);
+            collection.DeleteObject(data, false, false, default, true, false);
+
             data.JsonTime += beats;
             if (snapObjects)
                 data.JsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
@@ -487,32 +492,23 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 if (snapObjects)
                     slider.TailJsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
             }
-            collection.LoadedObjects.Add(data);
 
-            if (collection.LoadedContainers.TryGetValue(data, out var con)) con.UpdateGridPosition();
-
-            if (collection is NoteGridContainer notesContainer)
-            {
-                notesContainer.RefreshSpecialAngles(original, false, false);
-                notesContainer.RefreshSpecialAngles(data, false, false);
-            }
+            collection.SpawnObject(data, false, true);
 
             allActions.Add(new BeatmapObjectModifiedAction(data, data, original, "", true));
         }
 
         RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
-
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true,
-            "Shifted a selection of objects."));
+        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."));
         BeatmapObjectContainerCollection.RefreshAllPools();
     }
 
     public void ShiftSelection(int leftRight, int upDown)
     {
-        var allActions = SelectedObjects.AsParallel().Select(data =>
+        var allActions = SelectedObjects.AsParallel().Select(original =>
         {
-            var original = BeatmapFactory.Clone(data);
-            if (data is BaseNote note)
+            var edited = BeatmapFactory.Clone(original);
+            if (edited is BaseNote note)
             {
                 if (note.CustomCoordinate != null && note.CustomCoordinate.IsArray)
                 {
@@ -551,7 +547,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
 
             }
-            else if (data is BaseObstacle obstacle)
+            else if (edited is BaseObstacle obstacle)
             {
                 if (obstacle.CustomCoordinate != null && obstacle.CustomCoordinate.IsArray)
                 {
@@ -575,7 +571,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
-            else if (data is BaseEvent e)
+            else if (edited is BaseEvent e)
             {
                 var events = eventPlacement.objectContainerCollection;
                 if (eventPlacement.objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Light)
@@ -636,9 +632,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
 
-                if (data.CustomData?.Count <= 0) data.CustomData = null;
+                if (original.CustomData?.Count <= 0) original.CustomData = null;
             }
-            else if (data is BaseSlider slider)
+            else if (edited is BaseSlider slider)
             {
                 var headOutsideVanillaBounds = false;
                 if (slider.CustomCoordinate != null && slider.CustomCoordinate.IsArray)
@@ -709,7 +705,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
-            return new BeatmapObjectModifiedAction(data, data, original, "", true);
+            return new BeatmapObjectModifiedAction(edited, original, original, "", true);
         }).ToList();
 
         RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
@@ -739,59 +735,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         slider.CustomTailCoordinate = new Vector2(
             tailPosition.x + 1f / atsc.GridMeasureSnapping * leftRight,
             tailPosition.y + 1f / atsc.GridMeasureSnapping * upDown);
-    }
-
-    /// <summary>
-    ///     Applies objects to the loaded <see cref="BeatSaberMap" />. Should be done before saving the map.
-    /// </summary>
-    public static void RefreshMap()
-    {
-        if (BeatSaberSongContainer.Instance.Map != null)
-        {
-            var newObjects = new Dictionary<ObjectType, IEnumerable<BaseObject>>();
-            foreach (int num in Enum.GetValues(typeof(ObjectType)))
-            {
-                var type = (ObjectType)num;
-                var collection = BeatmapObjectContainerCollection.GetCollectionForType(type);
-                if (collection is null) continue;
-                newObjects.Add(type, collection.GrabSortedObjects());
-            }
-
-            BeatSaberSongContainer.Instance.Map.BpmEvents =
-                newObjects[ObjectType.BpmChange].Cast<BaseBpmEvent>().ToList();
-
-            if (Settings.Instance.Load_Notes)
-            {
-                BeatSaberSongContainer.Instance.Map.Notes =
-                    newObjects[ObjectType.Note].Cast<BaseNote>().ToList();
-            }
-
-            if (Settings.Instance.Load_Obstacles)
-            {
-                BeatSaberSongContainer.Instance.Map.Obstacles =
-                    newObjects[ObjectType.Obstacle].Cast<BaseObstacle>().ToList();
-            }
-
-            if (Settings.Instance.Load_Events)
-            {
-                BeatSaberSongContainer.Instance.Map.Events =
-                    newObjects[ObjectType.Event].Cast<BaseEvent>().ToList();
-            }
-
-            if (Settings.Instance.Load_Others)
-            {
-                BeatSaberSongContainer.Instance.Map.CustomEvents = newObjects[ObjectType.CustomEvent]
-                    .Cast<BaseCustomEvent>().ToList();
-            }
-
-            if (Settings.Instance.Load_MapV3)
-            {
-                BeatSaberSongContainer.Instance.Map.Arcs =
-                    newObjects[ObjectType.Arc].Cast<BaseArc>().ToList();
-                BeatSaberSongContainer.Instance.Map.Chains =
-                    newObjects[ObjectType.Chain].Cast<BaseChain>().ToList();
-            }
-        }
     }
 
     #endregion

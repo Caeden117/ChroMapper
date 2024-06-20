@@ -133,12 +133,8 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
         mirror.Mirror(false);
     }
 
-    public void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        (BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note) as NoteGridContainer)
-            .UpdateSwingArcVisualizer();
-    }
+    // TODO: Remove from Input Actions
+    public void OnUpdateSwingArcVisualizer(InputAction.CallbackContext context) { }
 
     public void UpdatePrecisionRotation(string res)
     {
