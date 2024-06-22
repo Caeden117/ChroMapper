@@ -11864,7 +11864,12 @@ PrefabInstance:
     - target: {fileID: 1718806963576593950, guid: b9c90f90d2774a745b8640678e8f78df,
         type: 3}
       propertyPath: BindedSetting
-      value: Waifu
+      value: ShowNonImportantErrors
+      objectReference: {fileID: 0}
+    - target: {fileID: 1718806963576593950, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: BindedSettingSearchType
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2031430479489877711, guid: b9c90f90d2774a745b8640678e8f78df,
         type: 3}
