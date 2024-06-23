@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Unity.Collections;
 using UnityEngine;
 
@@ -61,7 +61,7 @@ public class AudioManager : MonoBehaviour
         // Reduce spectrogram quality if it would exceed half of total VRAM capacity
         //   (Video memory should still be available for ChroMapper and other programs)
         var videoMemoryBytes = SystemInfo.graphicsMemorySize * 1024L * 1024L;
-        while ((long)sampleCount * quality * sizeof(float) > videoMemoryBytes)
+        while ((long)sampleCount * quality * sizeof(float) > videoMemoryBytes / 2L)
         {
             quality /= 2;
             Debug.Log($"Video Memory exceeded. Reduced spectrogram quality to: {quality}");
