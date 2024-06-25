@@ -38,7 +38,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     private MapEditorUI mapEditorUi;
     private Coroutine showUI;
     private Coroutine slideSelectionCoroutine;
-    
+
     private static readonly int enableNoteSurfaceGridLine = Shader.PropertyToID("_EnableNoteSurfaceGridLine");
 
     private void Awake()
@@ -69,33 +69,94 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     {
         if (context.performed && !BPMTapperController.IsActive)
         {
-            var currentOption = selected.parent.GetSiblingIndex();
-            var nextOption = currentOption + 1;
+            ToggleUIMode(true);
+        }
+    }
 
-            if (nextOption < 0)
-            {
-                nextOption = modes.Count - 1;
-            }
+    public void OnToggleUIModeReverse(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ToggleUIMode(false);
+        }
+    }
 
-            if (nextOption >= modes.Count) nextOption = 0;
+    void CMInput.IUIModeActions.OnToggleUIModeNormal(InputAction.CallbackContext context)
+    {
+        if (context.performed && SelectedMode != UIModeType.Normal)
+        {
+            UpdateCameraOnUIModeToggle(UIModeType.Normal);
+            SetUIMode(UIModeType.Normal, true);
+        }
+    }
+    void CMInput.IUIModeActions.OnToggleUIModeHideUI(InputAction.CallbackContext context)
+    {
+        if (context.performed && SelectedMode != UIModeType.HideUI)
+        {
+            UpdateCameraOnUIModeToggle(UIModeType.HideUI);
+            SetUIMode(UIModeType.HideUI, true);
+        }
+    }
+    void CMInput.IUIModeActions.OnToggleUIModeHideGrids(InputAction.CallbackContext context)
+    {
+        if (context.performed && SelectedMode != UIModeType.HideGrids)
+        {
+            UpdateCameraOnUIModeToggle(UIModeType.HideGrids);
+            SetUIMode(UIModeType.HideGrids, true);
+        }
+    }
+    void CMInput.IUIModeActions.OnToggleUIModePreview(InputAction.CallbackContext context)
+    {
+        if (context.performed && SelectedMode != UIModeType.Preview)
+        {
+            UpdateCameraOnUIModeToggle(UIModeType.Preview);
+            SetUIMode(UIModeType.Preview, true);
+        }
+    }
+    void CMInput.IUIModeActions.OnToggleUIModePlaying(InputAction.CallbackContext context)
+    {
+        if (context.performed && SelectedMode != UIModeType.Playing)
+        {
+            UpdateCameraOnUIModeToggle(UIModeType.Playing);
+            SetUIMode(UIModeType.Playing, true);
+        }
+    }
 
-            if (currentOption == (int)UIModeType.Playing && nextOption != currentOption)
-            {
-                // restore cam position/rotation
-                cameraManager.SelectCamera(CameraType.Editing);
-                cameraManager.SelectedCameraController.transform.SetPositionAndRotation(savedCamPosition,
-                    savedCamRotation);
-            }
-            else if (nextOption == (int)UIModeType.Playing)
-            {
-                // save cam position/rotation
-                var cameraTransform = cameraManager.SelectedCameraController.transform;
-                savedCamPosition = cameraTransform.position;
-                savedCamRotation = cameraTransform.rotation;
-                cameraManager.SelectCamera(CameraType.Playing);
-            }
+    private void ToggleUIMode(bool forward)
+    {
+        var currentOption = selected.parent.GetSiblingIndex();
+        var nextOption = currentOption + (forward ? 1 : -1);
 
-            SetUIMode(nextOption);
+        if (nextOption < 0)
+        {
+            nextOption = modes.Count - 1;
+        }
+
+        if (nextOption >= modes.Count) nextOption = 0;
+
+        UpdateCameraOnUIModeToggle((UIModeType)nextOption);
+
+        SetUIMode(nextOption);
+    }
+
+    private void UpdateCameraOnUIModeToggle(UIModeType mode)
+    {
+        var currentOption = selected.parent.GetSiblingIndex();
+
+        if (currentOption == (int)UIModeType.Playing && ((int)mode) != currentOption)
+        {
+            // restore cam position/rotation
+            cameraManager.SelectCamera(CameraType.Editing);
+            cameraManager.SelectedCameraController.transform.SetPositionAndRotation(savedCamPosition,
+                savedCamRotation);
+        }
+        else if (mode == UIModeType.Playing)
+        {
+            // save cam position/rotation
+            var cameraTransform = cameraManager.SelectedCameraController.transform;
+            savedCamPosition = cameraTransform.position;
+            savedCamRotation = cameraTransform.rotation;
+            cameraManager.SelectCamera(CameraType.Playing);
         }
     }
 
@@ -156,7 +217,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         foreach (var c in canvases) c.enabled = showCanvases;
 
         // If this is not used, then there is a chance the moved items may break.
-        var fixTheCam = cameraManager.SelectedCameraController.LockedOntoNoteGrid; 
+        var fixTheCam = cameraManager.SelectedCameraController.LockedOntoNoteGrid;
         if (fixTheCam) cameraManager.SelectedCameraController.LockedOntoNoteGrid = false;
 
         if (showPlacement)
@@ -262,6 +323,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     /// Clear all <see cref="Action"/>s associated with a UI mode change
     /// </summary>
     public static void ClearUIModeNotifications() => actions.Clear();
+
 }
 
 

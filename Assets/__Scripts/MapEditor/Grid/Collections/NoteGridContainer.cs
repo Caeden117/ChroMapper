@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
-using Beatmap.Animations;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,7 +10,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 {
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private GameObject bombPrefab;
-    [FormerlySerializedAs("noteAppearanceSO")][SerializeField] private NoteAppearanceSO noteAppearanceSo;
+    [FormerlySerializedAs("noteAppearanceSO")] [SerializeField] private NoteAppearanceSO noteAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
 
     [SerializeField] private CountersPlusController countersPlus;
@@ -57,13 +54,9 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 
     private void OnUIModeSwitch(UIModeType newMode)
     {
-        // If preview mode changed
-        if (newMode == UIModeType.Normal || newMode == UIModeType.Preview)
-        {
-            RefreshPool(true);
-        }
+        RefreshPool(true);
     }
-    
+
     private void AppearanceChanged(object _) => RefreshPool(true);
 
     //We don't need to check index as that's already done further up the chain
@@ -162,7 +155,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         {
             var directionA = NoteContainer.Directionalize(a);
             var directionB = NoteContainer.Directionalize(b);
-            
+
             containerA.DirectionTarget.localEulerAngles = containerA.DirectionTargetEuler = directionA;
             containerB.DirectionTarget.localEulerAngles = containerB.DirectionTargetEuler = directionB;
             return;
@@ -216,15 +209,15 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         containerA.DirectionTarget.localEulerAngles = containerA.DirectionTargetEuler;
         containerB.DirectionTarget.localEulerAngles = containerB.DirectionTargetEuler;
     }
-    
+
     public void ClearSpecialAngles(BaseObject obj)
     {
         var note = obj as BaseNote;
-        
+
         PopulateObjectsAtSameTime(note);
         ClearSpecialAnglesFromObjectsAtSameTime();
     }
-    
+
     // Grab all objects with the same type, and time (within epsilon)
     private void PopulateObjectsAtSameTime(BaseNote note)
     {

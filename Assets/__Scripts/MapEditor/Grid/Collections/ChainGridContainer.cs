@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -15,9 +13,9 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
     [SerializeField] private GameObject chainPrefab;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private ChainAppearanceSO chainAppearanceSO;
-    
+
     [SerializeField] private CountersPlusController countersPlus;
-    
+
     public const float ViewEpsilon = 0.1f; // original view is too small ?? sometimes cause error.
     public override ObjectType ContainerType => ObjectType.Chain;
 
@@ -70,7 +68,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         DespawnCallbackController.ChainPassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         UIMode.UIModeSwitched += OnUIModeSwitch;
-        
+
         Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
@@ -86,7 +84,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         UIMode.UIModeSwitched -= OnUIModeSwitch;
-        
+
         Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
@@ -105,15 +103,11 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
 
     private void OnUIModeSwitch(UIModeType newMode)
     {
-        // If preview mode changed
-        if (newMode == UIModeType.Normal || newMode == UIModeType.Preview)
-        {
-            RefreshPool(true);
-        }
+        RefreshPool(true);
     }
 
     private void RecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
-    
+
     private void AppearanceChanged(object _) => RefreshPool(true);
 
     protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj)
