@@ -53,45 +53,47 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         {
             var ev = span[i];
 
-            var tracks = ev.CustomTrack switch {
+            var tracks = ev.CustomTrack switch
+            {
                 JSONArray arr => arr,
                 JSONString s => JSONObject.Parse($"[{s}]").AsArray,
                 _ => null,
             };
             switch (ev.Type)
             {
-            case "AssignTrackParent":
-                if (ev.DataParentTrack == null) continue;
-                var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
-                tracks = ev.DataChildrenTracks switch {
-                    JSONArray arr => arr,
-                    JSONString s => JSONObject.Parse($"[{s}]").AsArray,
-                };
-                foreach (var tr in tracks)
-                {
-                    var at = tracksManager.CreateAnimationTrack(tr.Value);
-                    at.Track.transform.SetParent(parent.Track.ObjectParentTransform, ev.DataWorldPositionStays ?? false);
-                    if (at.Animator == null)
+                case "AssignTrackParent":
+                    if (ev.DataParentTrack == null) continue;
+                    var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
+                    tracks = ev.DataChildrenTracks switch
                     {
-                        at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
-                        at.Animator.Atsc = AudioTimeSyncController;
-                        at.Animator.SetTrack(at.Track, tr.Value);
-                    }
+                        JSONArray arr => arr,
+                        JSONString s => JSONObject.Parse($"[{s}]").AsArray,
+                    };
+                    foreach (var tr in tracks)
+                    {
+                        var at = tracksManager.CreateAnimationTrack(tr.Value);
+                        at.Track.transform.SetParent(parent.Track.ObjectParentTransform, ev.DataWorldPositionStays ?? false);
+                        if (at.Animator == null)
+                        {
+                            at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
+                            at.Animator.Atsc = AudioTimeSyncController;
+                            at.Animator.SetTrack(at.Track, tr.Value);
+                        }
 
-                    if (!parent.Children.Contains(at.Animator))
-                    {
-                        parent.Children.Add(at.Animator);
-                        at.Parents.Add(parent);
-                        at.OnChildrenChanged();
+                        if (!parent.Children.Contains(at.Animator))
+                        {
+                            parent.Children.Add(at.Animator);
+                            at.Parents.Add(parent);
+                            at.OnChildrenChanged();
+                        }
                     }
-                }
-                break;
-            case "AssignPlayerToTrack":
-                if (ev.CustomTrack == null) continue;
-                playerCamera.gameObject.SetActive(true);
-                var track = tracksManager.CreateAnimationTrack(ev.CustomTrack);
-                playerCamera.AddPlayerTrack(ev.JsonTime, track);
-                break;
+                    break;
+                case "AssignPlayerToTrack":
+                    if (ev.CustomTrack == null) continue;
+                    playerCamera.gameObject.SetActive(true);
+                    var track = tracksManager.CreateAnimationTrack(ev.CustomTrack);
+                    playerCamera.AddPlayerTrack(ev.JsonTime, track);
+                    break;
             }
         }
 
@@ -99,7 +101,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         geometries.ForEach((gc) => GameObject.Destroy(gc.gameObject));
         geometries.Clear();
 
-        BeatSaberSongContainer.Instance.Map.EnvironmentEnhancements.ForEach((eh) => {
+        BeatSaberSongContainer.Instance.Map.EnvironmentEnhancements.ForEach((eh) =>
+        {
             if (eh.Geometry is JSONNode)
             {
                 var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
@@ -142,7 +145,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         {
             var customEvent = span[i];
 
-            var tracks = customEvent.CustomTrack switch {
+            var tracks = customEvent.CustomTrack switch
+            {
                 JSONString s => new List<string> { s },
                 JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
                 _ => new List<string>()
@@ -181,11 +185,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
     private void OnUIModeSwitch(UIModeType newMode)
     {
-        // When changing in/out of preview mode
-        if (newMode is UIModeType.Normal or UIModeType.Preview)
-        {
-            RefreshPool(true);
-        }
+        RefreshPool(true);
     }
 
     public override void RefreshPool(bool force)
