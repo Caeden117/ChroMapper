@@ -93,7 +93,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerUp
 
         Action handleEdit = () =>
         {
-            if (string.IsNullOrEmpty(textBox.Value) || string.IsNullOrWhiteSpace(textBox.Value))
+            if (!string.IsNullOrWhiteSpace(textBox.Value))
             {
                 Data.Name = textBox.Value;
             }
