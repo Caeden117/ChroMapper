@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
@@ -132,7 +132,9 @@ namespace Tests
         }
 
         [Test]
-        public void MirrorEventProp()
+        [TestCase("[2]", "[9]")]
+        [TestCase("[1,2]","[9,10]")]
+        public void MirrorEventLightID(string original, string mirror)
         {
             var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
             
@@ -140,7 +142,7 @@ namespace Tests
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
             BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                JSON.Parse("{\"lightID\": 2}"));
+                JSON.Parse($"{{\"lightID\": {original}}}"));
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -150,14 +152,14 @@ namespace Tests
             eventsContainer.PropagationEditing = EventGridContainer.PropMode.Light;
 
             _mirror.Mirror();
-            // I'm sorry if you're here after changing the prop mapping for default env
-            CheckUtils.CheckEvent("Perform mirror prop event", eventsContainer, 0, 2,
-                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f, JSON.Parse("{\"lightID\": [9]}"));
+            // I'm sorry if you're here after changing the lightID mapping for default env
+            CheckUtils.CheckEvent("Perform mirror lightID event", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f, JSON.Parse($"{{\"lightID\": {mirror}}}"));
 
             // Undo mirror
             _actionContainer.Undo();
-            CheckUtils.CheckEvent("Undo mirror prop event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers,
-                (int)LightValue.RedFade, 1f, JSON.Parse("{\"lightID\": [2]}"));
+            CheckUtils.CheckEvent("Undo mirror lightID event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers,
+                (int)LightValue.RedFade, 1f, JSON.Parse($"{{\"lightID\": {original}}}"));
 
             eventsContainer.PropagationEditing = EventGridContainer.PropMode.Off;
         }
