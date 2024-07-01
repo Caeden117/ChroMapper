@@ -132,9 +132,9 @@ namespace Tests
         }
 
         [Test]
-        [TestCase("[2]", "[9]")]
-        [TestCase("[1,2]","[9,10]")]
-        public void MirrorEventLightID(string original, string mirror)
+        [TestCase("[2]", "[9]", EventGridContainer.PropMode.Light)]
+        [TestCase("[1,2]","[9,10]", EventGridContainer.PropMode.Prop)]
+        public void MirrorEventLightID(string original, string mirror, EventGridContainer.PropMode propMode)
         {
             var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
             
@@ -149,7 +149,7 @@ namespace Tests
             SelectionController.Select(baseEventA);
 
             eventsContainer.EventTypeToPropagate = baseEventA.Type;
-            eventsContainer.PropagationEditing = EventGridContainer.PropMode.Light;
+            eventsContainer.PropagationEditing = propMode;
 
             _mirror.Mirror();
             // I'm sorry if you're here after changing the lightID mapping for default env
