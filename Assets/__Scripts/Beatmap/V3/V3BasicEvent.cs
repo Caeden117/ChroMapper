@@ -120,6 +120,12 @@ namespace Beatmap.V3
             return node;
         }
 
-        public override BaseItem Clone() => new V3BasicEvent(JsonTime, SongBpmTime, Type, Value, FloatValue, SaveCustom().Clone());
+        public override BaseItem Clone() =>
+            new V3BasicEvent(JsonTime, SongBpmTime, Type, Value, FloatValue, SaveCustom().Clone())
+            {
+                // This depends on environment and is calculated by grid position after creation
+                // so we need to set this here to clone correctly  
+                CustomPropID = CustomPropID
+            };
     }
 }
