@@ -92,7 +92,23 @@ namespace Tests
         }
 
         [Test]
+        [TestCase(null, null, EventGridContainer.PropMode.Off)]
+        [TestCase(null, null, EventGridContainer.PropMode.Light)]
+        [TestCase(null, null, EventGridContainer.PropMode.Prop)]
+        
+        // Should not affect lightID if off
+        [TestCase("[1]", "[1]", EventGridContainer.PropMode.Off)]
+        [TestCase("[2]", "[2]", EventGridContainer.PropMode.Off)]
+        [TestCase("[1,2]", "[1,2]", EventGridContainer.PropMode.Off)]
+        
+        // Should mirror to first relevant lightID
+        [TestCase("[1]", "[10]", EventGridContainer.PropMode.Light)]
         [TestCase("[2]", "[9]", EventGridContainer.PropMode.Light)]
+        [TestCase("[1,2]", "[10]", EventGridContainer.PropMode.Light)]
+        
+        // Should mirror to first relevant lightID group
+        [TestCase("[1]", "[9,10]", EventGridContainer.PropMode.Prop)]
+        [TestCase("[2]", "[9,10]", EventGridContainer.PropMode.Prop)]
         [TestCase("[1,2]","[9,10]", EventGridContainer.PropMode.Prop)]
         public void MirrorEventLightID(string original, string mirror, EventGridContainer.PropMode propMode)
         {
