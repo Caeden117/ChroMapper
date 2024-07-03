@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
@@ -92,7 +92,25 @@ namespace Tests
         }
 
         [Test]
-        public void MirrorProp()
+        [TestCase(null, null, EventGridContainer.PropMode.Off)]
+        [TestCase(null, null, EventGridContainer.PropMode.Light)]
+        [TestCase(null, null, EventGridContainer.PropMode.Prop)]
+        
+        // Should not affect lightID if off
+        [TestCase("[1]", "[1]", EventGridContainer.PropMode.Off)]
+        [TestCase("[2]", "[2]", EventGridContainer.PropMode.Off)]
+        [TestCase("[1,2]", "[1,2]", EventGridContainer.PropMode.Off)]
+        
+        // Should mirror to first relevant lightID
+        [TestCase("[1]", "[10]", EventGridContainer.PropMode.Light)]
+        [TestCase("[2]", "[9]", EventGridContainer.PropMode.Light)]
+        [TestCase("[1,2]", "[10]", EventGridContainer.PropMode.Light)]
+        
+        // Should mirror to first relevant lightID group
+        [TestCase("[1]", "[9,10]", EventGridContainer.PropMode.Prop)]
+        [TestCase("[2]", "[9,10]", EventGridContainer.PropMode.Prop)]
+        [TestCase("[1,2]","[9,10]", EventGridContainer.PropMode.Prop)]
+        public void MirrorEventLightID(string original, string mirror, EventGridContainer.PropMode propMode)
         {
             var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
             
@@ -100,30 +118,30 @@ namespace Tests
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
             BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                JSON.Parse("{\"lightID\": 2}"));
+                JSON.Parse($"{{\"lightID\": {original}}}"));
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
             SelectionController.Select(baseEventA);
 
             eventsContainer.EventTypeToPropagate = baseEventA.Type;
-            eventsContainer.PropagationEditing = EventGridContainer.PropMode.Light;
+            eventsContainer.PropagationEditing = propMode;
 
             _mirror.Mirror();
-            // I'm sorry if you're here after changing the prop mapping for default env
-            CheckUtils.CheckEvent("Perform mirror prop event", eventsContainer, 0, 2,
-                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f, JSON.Parse("{\"lightID\": [9]}"));
+            // I'm sorry if you're here after changing the lightID mapping for default env
+            CheckUtils.CheckEvent("Perform mirror lightID event", eventsContainer, 0, 2,
+                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade, 1f, JSON.Parse($"{{\"lightID\": {mirror}}}"));
 
             // Undo mirror
             _actionContainer.Undo();
-            CheckUtils.CheckEvent("Undo mirror prop event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers,
-                (int)LightValue.RedFade, 1f, JSON.Parse("{\"lightID\": [2]}"));
+            CheckUtils.CheckEvent("Undo mirror lightID event", eventsContainer, 0, 2, (int)EventTypeValue.BackLasers,
+                (int)LightValue.RedFade, 1f, JSON.Parse($"{{\"lightID\": {original}}}"));
 
             eventsContainer.PropagationEditing = EventGridContainer.PropMode.Off;
         }
 
         [Test]
-        public void MirrorGradient()
+        public void MirrorEventGradient()
         {
             var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         
