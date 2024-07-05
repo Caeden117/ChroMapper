@@ -69,7 +69,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
     public void OnToggleUIMode(InputAction.CallbackContext context)
     {
-        if (context.performed && !BPMTapperController.IsActive)
+        if (context.performed)
         {
             ToggleUIMode(true);
         }
