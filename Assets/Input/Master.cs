@@ -3601,7 +3601,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Toggle UI Mode (Reverse)"",
+                    ""name"": ""Toggle UI Mode Reverse"",
                     ""type"": ""Button"",
                     ""id"": ""20bb8021-4bb8-4be2-94c1-9600fd1a8208"",
                     ""expectedControlType"": ""Button"",
@@ -3696,7 +3696,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Toggle UI Mode (Reverse)"",
+                    ""action"": ""Toggle UI Mode Reverse"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -3707,7 +3707,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Toggle UI Mode (Reverse)"",
+                    ""action"": ""Toggle UI Mode Reverse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -3718,7 +3718,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
-                    ""action"": ""Toggle UI Mode (Reverse)"",
+                    ""action"": ""Toggle UI Mode Reverse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -5239,7 +5239,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         // UI Mode
         m_UIMode = asset.FindActionMap("UI Mode", throwIfNotFound: true);
         m_UIMode_ToggleUIMode = m_UIMode.FindAction("Toggle UI Mode", throwIfNotFound: true);
-        m_UIMode_ToggleUIModeReverse = m_UIMode.FindAction("Toggle UI Mode (Reverse)", throwIfNotFound: true);
+        m_UIMode_ToggleUIModeReverse = m_UIMode.FindAction("Toggle UI Mode Reverse", throwIfNotFound: true);
         m_UIMode_ToggleUIModeNormal = m_UIMode.FindAction("Toggle UI Mode (Normal)", throwIfNotFound: true);
         m_UIMode_ToggleUIModeHideUI = m_UIMode.FindAction("Toggle UI Mode (Hide UI)", throwIfNotFound: true);
         m_UIMode_ToggleUIModeHideGrids = m_UIMode.FindAction("Toggle UI Mode (Hide Grids)", throwIfNotFound: true);
