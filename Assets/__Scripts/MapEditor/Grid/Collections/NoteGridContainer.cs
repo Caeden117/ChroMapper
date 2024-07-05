@@ -27,7 +27,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         SpawnCallbackController.RecursiveNoteCheckFinished += RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold += DespawnCallback;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
-        UIMode.UIModeSwitched += OnUIModeSwitch;
+        UIMode.PreviewModeSwitched += OnUIPreviewModeSwitch;
 
         Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
@@ -40,7 +40,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         SpawnCallbackController.RecursiveNoteCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.NotePassedThreshold -= DespawnCallback;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
-        UIMode.UIModeSwitched -= OnUIModeSwitch;
+        UIMode.PreviewModeSwitched -= OnUIPreviewModeSwitch;
 
         Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
@@ -52,10 +52,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         if (!isPlaying) RefreshPool();
     }
 
-    private void OnUIModeSwitch(UIModeType newMode)
-    {
-        RefreshPool(true);
-    }
+    private void OnUIPreviewModeSwitch() => RefreshPool(true);
 
     private void AppearanceChanged(object _) => RefreshPool(true);
 

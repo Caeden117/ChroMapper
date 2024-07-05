@@ -183,10 +183,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         LoadAnimationTracks();
     }
 
-    private void OnUIModeSwitch(UIModeType newMode)
-    {
-        RefreshPool(true);
-    }
+    private void OnUIPreviewModeSwitch() => RefreshPool(true);
 
     public override void RefreshPool(bool force)
     {
@@ -235,7 +232,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     internal override void SubscribeToCallbacks()
     {
         LoadInitialMap.LevelLoadedEvent += SetInitialTracks;
-        UIMode.UIModeSwitched += OnUIModeSwitch;
+        UIMode.PreviewModeSwitched += OnUIPreviewModeSwitch;
     }
 
     private void SetInitialTracks()
@@ -257,7 +254,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     internal override void UnsubscribeToCallbacks()
     {
         LoadInitialMap.LevelLoadedEvent -= SetInitialTracks;
-        UIMode.UIModeSwitched -= OnUIModeSwitch;
+        UIMode.PreviewModeSwitched -= OnUIPreviewModeSwitch;
     }
 
     private void CreateNewType()

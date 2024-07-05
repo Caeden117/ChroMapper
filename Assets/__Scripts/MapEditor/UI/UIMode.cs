@@ -16,6 +16,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     private Quaternion savedCamRotation = Quaternion.identity;
 
     public static Action<UIModeType> UIModeSwitched;
+    public static Action PreviewModeSwitched;
 
     [SerializeField] private GameObject modesGameObject;
     [SerializeField] private RectTransform selected;
@@ -47,6 +48,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         modes.AddRange(modesGameObject.transform.GetComponentsInChildren<TextMeshProUGUI>());
         canvasGroup = GetComponent<CanvasGroup>();
         UIModeSwitched = null;
+        PreviewModeSwitched = null;
         SelectedMode = UIModeType.Normal;
         savedCamPosition = Settings.Instance.SavedPositions[0]?.Position ?? savedCamPosition;
         savedCamRotation = Settings.Instance.SavedPositions[0]?.Rotation ?? savedCamRotation;
@@ -180,10 +182,18 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
     public void SetUIMode(int modeID, bool showUIChange = true)
     {
+        var previousPreviewMode = PreviewMode;
+        
         SelectedMode = (UIModeType)modeID;
-        PreviewMode = (SelectedMode == UIModeType.Playing || SelectedMode == UIModeType.Preview);
+        PreviewMode = SelectedMode is UIModeType.Playing or UIModeType.Preview;
         AnimationMode = PreviewMode && Settings.Instance.Animations;
+
+        if (previousPreviewMode != PreviewMode)
+        {
+            PreviewModeSwitched?.Invoke();
+        }
         UIModeSwitched?.Invoke(SelectedMode);
+        
         selected.SetParent(modes[modeID].transform, true);
         slideSelectionCoroutine = StartCoroutine(SlideSelection());
         if (showUIChange) showUI = StartCoroutine(ShowUI());

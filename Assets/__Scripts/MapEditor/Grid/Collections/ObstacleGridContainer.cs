@@ -30,7 +30,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         Shader.SetGlobalFloat(outsideAlpha, 0.25f);
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         AudioTimeSyncController.TimeChanged += OnTimeChanged;
-        UIMode.UIModeSwitched += OnUIModeSwitch;
+        UIMode.PreviewModeSwitched += OnUIPreviewModeSwitch;
 
         Settings.NotifyBySettingName(nameof(Settings.ObstacleOpacity), ObstacleOpacityChanged);
         ObstacleOpacityChanged(Settings.Instance.ObstacleOpacity);
@@ -40,7 +40,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
     {
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         AudioTimeSyncController.TimeChanged -= OnTimeChanged;
-        UIMode.UIModeSwitched -= OnUIModeSwitch;
+        UIMode.PreviewModeSwitched -= OnUIPreviewModeSwitch;
 
         Settings.ClearSettingNotifications(nameof(Settings.ObstacleOpacity));
     }
@@ -67,10 +67,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         }
     }
 
-    private void OnUIModeSwitch(UIModeType newMode)
-    {
-        RefreshPool(true);
-    }
+    private void OnUIPreviewModeSwitch() => RefreshPool(true);
 
     public void UpdateColor(Color obstacle) => obstacleAppearanceSo.DefaultObstacleColor = obstacle;
 
