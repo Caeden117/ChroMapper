@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstacle>
 {
     [SerializeField] private GameObject obstaclePrefab;
-    [FormerlySerializedAs("obstacleAppearanceSO")][SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
+    [FormerlySerializedAs("obstacleAppearanceSO")] [SerializeField] private ObstacleAppearanceSO obstacleAppearanceSo;
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CountersPlusController countersPlus;
 
@@ -21,7 +21,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
 
     public BaseObstacle[] DespawnSortedObjects;
     private int despawnIndex;
-    
+
     private static readonly int outsideAlpha = Shader.PropertyToID("_OutsideAlpha");
     private static readonly int mainAlpha = Shader.PropertyToID("_MainAlpha");
 
@@ -30,7 +30,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         Shader.SetGlobalFloat(outsideAlpha, 0.25f);
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         AudioTimeSyncController.TimeChanged += OnTimeChanged;
-        UIMode.UIModeSwitched += OnUIModeSwitch;
+        UIMode.PreviewModeSwitched += OnUIPreviewModeSwitch;
 
         Settings.NotifyBySettingName(nameof(Settings.ObstacleOpacity), ObstacleOpacityChanged);
         ObstacleOpacityChanged(Settings.Instance.ObstacleOpacity);
@@ -40,7 +40,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
     {
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         AudioTimeSyncController.TimeChanged -= OnTimeChanged;
-        UIMode.UIModeSwitched -= OnUIModeSwitch;
+        UIMode.PreviewModeSwitched -= OnUIPreviewModeSwitch;
 
         Settings.ClearSettingNotifications(nameof(Settings.ObstacleOpacity));
     }
@@ -67,14 +67,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         }
     }
 
-    private void OnUIModeSwitch(UIModeType newMode)
-    {
-        // When changing in/out of preview mode
-        if (newMode == UIModeType.Normal ||　newMode == UIModeType.Preview)
-        {
-            RefreshPool(true);
-        }
-    }
+    private void OnUIPreviewModeSwitch() => RefreshPool(true);
 
     public void UpdateColor(Color obstacle) => obstacleAppearanceSo.DefaultObstacleColor = obstacle;
 
