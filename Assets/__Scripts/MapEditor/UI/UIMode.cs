@@ -26,8 +26,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     [FormerlySerializedAs("_rotationCallbackController")] [SerializeField] private RotationCallbackController rotationCallbackController;
     [SerializeField] private AudioTimeSyncController atsc;
 
-    public string Keybind = "CTRL+H";
-
     private readonly List<TextMeshProUGUI> modes = new List<TextMeshProUGUI>();
     private readonly List<Renderer> renderers = new List<Renderer>();
     private readonly List<Canvas> canvases = new List<Canvas>();
