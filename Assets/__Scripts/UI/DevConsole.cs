@@ -155,7 +155,7 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 #elif UNITY_STANDALONE_OSX
             System.Diagnostics.Process.Start("open", path);
 #elif UNITY_STANDALONE_LINUX
-            System.Diagnostics.Process.Start("open", path);
+            System.Diagnostics.Process.Start("xdg-open", path);
 #endif
         }
         catch
