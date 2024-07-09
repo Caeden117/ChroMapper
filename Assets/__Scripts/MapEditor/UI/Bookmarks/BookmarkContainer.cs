@@ -88,7 +88,7 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerUp
 
         var colorPicker = dialogBox
             .AddComponent<NestedColorPickerComponent>()
-            .WithInitialValue(GetComponent<Image>().color)
+            .WithInitialValue(Data.Color)
             .WithLabel("Mapper", "bookmark.dialog.color");
 
         Action handleEdit = () =>
