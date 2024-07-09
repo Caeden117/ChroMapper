@@ -7,6 +7,7 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>, INaviga
     // Cached dialog box
     private static DialogBox nestedDialogBox;
     private static ColorPickerComponent nestedColorPicker;
+    private static ButtonComponent submitButton;
 
     [SerializeField] private Button editButton;
     [SerializeField] private TextMeshProUGUI hexColorText;
@@ -68,12 +69,20 @@ public class NestedColorPickerComponent : CMUIComponentWithLabel<Color>, INaviga
 
             var cancel = nestedDialogBox.AddFooterButton(null, "PersistentUI", "cancel");
 
-            var submit = nestedDialogBox.AddFooterButton(() => Value = nestedColorPicker.Value, "PersistentUI", "ok");
+            submitButton = nestedDialogBox.AddFooterButton(() => Value = nestedColorPicker.Value, "PersistentUI", "ok");
 
             nestedDialogBox.OnQuickSubmit(() => OnValueUpdated(nestedColorPicker.Value));
         }
         else
         {
+            // We need to refresh the submit and quick submit callbacks here otherwise the cached instance will be
+            // editing the previewImage and hexColorText from the first dialog this was created from
+            submitButton.OnClick(() => {
+                Value = nestedColorPicker.Value;
+                nestedDialogBox.Close();
+            });
+            nestedDialogBox.OnQuickSubmit(() => OnValueUpdated(nestedColorPicker.Value));
+            
             nestedColorPicker.Value = Value;
         }
 
