@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerUpHandler
+public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     private BookmarkManager manager;
     public BaseBookmark Data { get; private set; }
@@ -62,8 +62,6 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerUp
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
-                manager.Tipc.PointerDown();
-                manager.Atsc.MoveToJsonTime(Data.JsonTime);
                 break;
             case PointerEventData.InputButton.Middle:
                 PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark,
@@ -117,10 +115,24 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerUp
         dialogBox.Open();
     }
 
+    #region Timeline Playback
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            manager.Tipc.PointerDown();
+            manager.Atsc.MoveToJsonTime(Data.JsonTime);
+        }
+    }
+
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left) manager.Tipc.PointerUp();
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            manager.Tipc.PointerUp();
+        }
     }
+    #endregion
 
     internal void HandleDeleteBookmark(int res)
     {
