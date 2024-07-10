@@ -162,28 +162,6 @@ public struct MapExporter
         }
 
         var path = song.Directory;
-#if UNITY_STANDALONE_WIN
-        path = path.Replace("/", "\\").Replace("\\\\", "\\");
-#else
-        path = path.Replace("\\", "/").Replace("//", "/");
-#endif
-        if (!path.StartsWith("\"")) path = "\"" + path;
-        if (!path.EndsWith("\"")) path += "\"";
-
-#if UNITY_STANDALONE_WIN
-        Debug.Log($"Opening song directory ({path}) with Windows...");
-        Process.Start("explorer.exe", path);
-#elif UNITY_STANDALONE_OSX
-        Debug.Log($"Opening song directory ({path}) with Mac...");
-        Process.Start("open", path);
-#elif UNITY_STANDALONE_LINUX
-        Debug.Log($"Opening song directory ({path}) with Linux...");
-        Process.Start("xdg-open", path);
-#else
-        Debug.Log("What is this, some UNIX bullshit?");
-        PersistentUI.Instance.ShowDialogBox(
-            "Unrecognized OS!\n\nIf you happen to know this OS and would like to contribute," +
-            " please contact me on Discord: Caeden117#0117", null, PersistentUI.DialogBoxPresetType.Ok);
-#endif
+        OSTools.OpenFileBrowser(path);
     }
 }
