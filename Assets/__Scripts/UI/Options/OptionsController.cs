@@ -48,21 +48,7 @@ public class OptionsController : MenuBase
         if (!Directory.Exists(pluginsDir))
             Directory.CreateDirectory(pluginsDir);
 
-#if UNITY_STANDALONE_WIN
-        Debug.Log($"Opening plugins directory ({pluginsDir}) with Windows...");
-        Process.Start("explorer.exe", pluginsDir);
-#elif UNITY_STANDALONE_OSX
-        Debug.Log($"Opening plugins directory ({pluginsDir}) with Mac...");
-        Process.Start("open", pluginsDir);
-#elif UNITY_STANDALONE_LINUX
-        Debug.Log($"Opening plugins directory ({pluginsDir}) with Linux...");
-        Process.Start("xdg-open", pluginsDir);
-#else
-        Debug.Log("What is this, some UNIX bullshit?");
-        PersistentUI.Instance.ShowDialogBox(
-            "Unrecognized OS!\n\nIf you happen to know this OS and would like to contribute," +
-            " please contact me on Discord: Caeden117#0117", null, PersistentUI.DialogBoxPresetType.Ok);
-#endif
+        OSTools.OpenFileBrowser(pluginsDir);
     }
 
     private IEnumerator CloseOptions()
