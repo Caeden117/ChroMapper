@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
@@ -488,7 +488,7 @@ public class PlatformDescriptor : MonoBehaviour
 
             light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
             light.UpdateTargetAlpha(targetAlpha, transitionTime);
-            light.UpdateEasing(transition.CustomEasing ?? "easeLinear");
+            light.UpdateEasing(e.CustomEasing ?? "easeLinear");
         }
     }
 

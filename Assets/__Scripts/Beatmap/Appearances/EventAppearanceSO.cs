@@ -235,7 +235,7 @@ namespace Beatmap.Appearances
 
             if (Settings.Instance.VisualizeChromaGradients)
             {
-                e.UpdateGradientRendering(color, nextColor, nextEvent?.CustomEasing ?? "easeLinear");
+                e.UpdateGradientRendering(color, nextColor, e.EventData?.CustomEasing ?? "easeLinear");
             }
 
             e.UpdateMaterials();
