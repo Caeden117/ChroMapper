@@ -23,30 +23,27 @@ public class StrobeTransitionPass : StrobeGeneratorPass
     public override IEnumerable<BaseEvent> StrobePassForLane(IEnumerable<BaseEvent> original, int type,
         EventGridContainer.PropMode propMode, int[] propID)
     {
-        var generatedObjects = new List<BaseEvent>();
+        var generatedObjects = original.Select(BeatmapFactory.Clone).ToList();
 
-        generatedObjects.Add(BeatmapFactory.Clone(original.First()));
-
-        var nonGradients = original.Where(x => x.CustomLightGradient == null);
-        for (var i = 1; i < nonGradients.Count(); i++)
+        for (var i = 1; i < generatedObjects.Count; i++)
         {
-            var generated = BeatmapFactory.Clone(nonGradients.ElementAt(i));
-            if (generated.IsBlue)
+            var previousEvent = generatedObjects[i - 1];
+            previousEvent.CustomEasing = easing;
+            previousEvent.CustomLerpType = lerpType;
+            
+            var currentEvent = generatedObjects[i];
+            if (currentEvent.IsBlue)
             {
-                generated.Value = (int)LightValue.BlueTransition;
+                currentEvent.Value = (int)LightValue.BlueTransition;
             }
-            else if (generated.IsRed)
+            else if (currentEvent.IsRed)
             {
-                generated.Value = (int)LightValue.RedTransition;
+                currentEvent.Value = (int)LightValue.RedTransition;
             }
-            else if (generated.IsWhite)
+            else if (currentEvent.IsWhite)
             {
-                generated.Value = (int)LightValue.WhiteTransition;
+                currentEvent.Value = (int)LightValue.WhiteTransition;
             }
-            generated.CustomEasing = easing;
-            generated.CustomLerpType = lerpType;
-
-            generatedObjects.Add(generated);
         }
 
         return generatedObjects;
