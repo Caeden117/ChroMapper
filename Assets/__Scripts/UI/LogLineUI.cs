@@ -15,8 +15,7 @@ using Debug = UnityEngine.Debug;
 
 public class LogLineUI : MonoBehaviour
 {
-    private const string devKey = "zx634zuwuNuzKCocnPpTY99c2uhDJxr3";
-    private const string pasteeeKey = "uYsOA14Wo2JBxzQBgMHNfWOi6Mlbghchc8B86IwG6";
+    private const string bugReportsSubfolder = "Bug Reports";
     private const int lastLinesCount = 20;
 
     public TextMeshProUGUI TextMesh;
@@ -44,6 +43,8 @@ public class LogLineUI : MonoBehaviour
             sentReport = true;
             StartCoroutine(GenerateBugReport());
         }
+
+        DevConsole.OpenFolder(bugReportsSubfolder);
     }
 
     private static string GenerateSystemInfo()
@@ -89,81 +90,19 @@ public class LogLineUI : MonoBehaviour
         reportButton.image.color = Color.green;
     }
 
-    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members",
-        Justification = "Maybe soon™")]
-    private static IEnumerator WriteErrorToFile(string text)
+    private IEnumerator WriteErrorToFile(string text)
     {
-        File.WriteAllText("error.txt", text);
-        yield break;
+        var path = Path.Combine(Application.persistentDataPath, bugReportsSubfolder);
+        
+        Directory.CreateDirectory(path);
+
+        var fileName = Path.Combine(path, $"{DateTime.Now:yyyy_MM_dd-HH_mm_ss}.txt");
+
+        yield return File.WriteAllTextAsync(fileName, text);
     }
 
-    private static IEnumerator UploadToPasteee(string text, string title = "Untitled")
+    private IEnumerator CreateAsync(string text, string title = "Untitled", string language = "csharp", int visibility = 1, string expiration = "N")
     {
-        var requestBody = new JSONObject();
-        requestBody["key"] = pasteeeKey;
-        requestBody["description"] = title;
-
-        var sections = new JSONArray();
-        var section = new JSONObject();
-        section["name"] = "Main";
-        section["contents"] = text;
-
-        sections.Add(section);
-        requestBody["sections"] = sections;
-
-        using (var www = UnityWebRequest.Post("https://api.paste.ee/v1/pastes", ""))
-        {
-            www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(requestBody.ToString()))
-            {
-                contentType = "application/json"
-            };
-            yield return www.SendWebRequest();
-            var result = JSON.Parse(www.downloadHandler.text);
-
-            if (result.HasKey("link"))
-            {
-                Application.OpenURL(result["link"]);
-            }
-            else
-            {
-                Debug.LogError("Failed to upload bug report!");
-            }
-        }
-    }
-
-    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members",
-        Justification = "Maybe soon™")]
-    private static IEnumerator UploadToPastebin(string text, string title = "Untitled")
-    {
-        var form = new WWWForm();
-        form.AddField("api_dev_key", devKey);
-        form.AddField("api_option", "paste");
-        form.AddField("api_paste_code", text);
-        form.AddField("api_paste_name", title);
-        form.AddField("api_paste_format", "csharp");
-        form.AddField("api_paste_private", 1); // Unlisted
-        form.AddField("api_paste_expire_date", "N"); // Never
-
-        using (var www = UnityWebRequest.Post("https://pastebin.com/api/api_post.php", form))
-        {
-            yield return www.SendWebRequest();
-            var result = www.downloadHandler.text;
-
-            if (result.Contains("Bad API request"))
-            {
-                Debug.LogError("Failed to upload bug report! " + result);
-            }
-            else
-            {
-                Application.OpenURL(result);
-            }
-        }
-    }
-
-    private static IEnumerator CreateAsync(string text, string title = "Untitled", string language = "csharp", int visibility = 1, string expiration = "N")
-    {
-        //yield return WriteErrorToFile(text);
-        yield return UploadToPasteee(text, title);
-        //yield return UploadToPastebin(text, title);
+        yield return WriteErrorToFile(text);
     }
 }
