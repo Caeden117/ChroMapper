@@ -68,8 +68,9 @@ public class RotationCallbackController : MonoBehaviour
         var result = span.BinarySearchBy(jsonTime, e => e.JsonTime);
         var idx = result >= 0 ? result : ~result;
 
-        // Continue marching forward until JsonTime extends beyond current time
-        while (idx < span.Length && span[idx].JsonTime <= jsonTime) idx++;
+        // Continue marching forward until JsonTime reaches current time or beyond
+        var epsilon = BeatmapObjectContainerCollection.Epsilon;
+        while (idx < span.Length && span[idx].JsonTime <= jsonTime - epsilon) idx++;
 
         Rotation = 0;
 

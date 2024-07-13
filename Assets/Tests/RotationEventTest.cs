@@ -69,5 +69,31 @@ namespace Tests
             Assert.AreSame(rotationEventC, rotationController.LatestRotationEvent);
             Assert.AreEqual(rotations[0] + rotations[1] + rotations[2], rotationController.Rotation);
         }
+
+        [Test]
+        public void RotationCallbackPropertiesOnTimeMatch()
+        {
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+
+            const int rotation = 15;
+            const float timeA = 1f;
+            const float timeB = 2f;
+            var rotationEventA = new V3RotationEvent(timeA, (int)ExecutionTime.Late, rotation);
+            var rotationEventB = new V3RotationEvent(timeB, (int)ExecutionTime.Late, rotation);
+            eventsContainer.SpawnObject(rotationEventA);
+            eventsContainer.SpawnObject(rotationEventB);
+
+            var rotationController = Object.FindObjectOfType<RotationCallbackController>();
+            var atsc = Object.FindObjectOfType<AudioTimeSyncController>();
+
+            // Should ignore events on same time
+            atsc.MoveToJsonTime(timeA);
+            Assert.AreSame(null, rotationController.LatestRotationEvent);
+            Assert.AreEqual(0, rotationController.Rotation);
+
+            atsc.MoveToJsonTime(timeB);
+            Assert.AreSame(rotationEventA, rotationController.LatestRotationEvent);
+            Assert.AreEqual(rotation, rotationController.Rotation);
+        }
     }
 }
