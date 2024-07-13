@@ -71,10 +71,8 @@ public class RotationCallbackController : MonoBehaviour
         // Continue marching forward until JsonTime extends beyond current time
         while (idx < span.Length && span[idx].JsonTime <= jsonTime) idx++;
 
-        idx = Mathf.Min(idx, span.Length - 1);
-
         Rotation = 0;
-        
+
         if (idx > 0)
         {
             for (var i = 0; i < idx; i++)
@@ -82,7 +80,7 @@ public class RotationCallbackController : MonoBehaviour
                 Rotation += span[i].GetRotationDegreeFromValue() ?? 0f;
             }
 
-            LatestRotationEvent = span[idx];
+            LatestRotationEvent = span[idx - 1];
         }
         else
         {
