@@ -81,7 +81,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
         Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineWidth), UpdateBookmarkWidth);
         Settings.NotifyBySettingName(nameof(Settings.BookmarkTooltipTimeInfo), UpdateBookmarkTooltip);
-        UpdateBookmarkWidth(true);
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineBrightness), UpdateBookmarkBrightness);
 
         BookmarksUpdated.Invoke();
     }
@@ -118,7 +118,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     {
         foreach (BookmarkContainer bookContainer in bookmarkContainers)
         {
-            bookContainer.UpdateUI();
+            bookContainer.UpdateUIText();
         }
     }
 
@@ -127,6 +127,14 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         foreach (BookmarkContainer bookContainer in bookmarkContainers)
         {
             bookContainer.UpdateUIWidth();
+        }
+    }
+
+    private void UpdateBookmarkBrightness(object _)
+    {
+        foreach (var bookmarkContainer in bookmarkContainers)
+        {
+            bookmarkContainer.UpdateUIColor();
         }
     }
 
@@ -238,6 +246,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     {
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTimelineWidth));
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTooltipTimeInfo));
+        Settings.ClearSettingNotifications(nameof(Settings.BookmarkTimelineBrightness));
     }
 
     public void OnColorBookmarkModifier(InputAction.CallbackContext context) => ShiftContext = context;
