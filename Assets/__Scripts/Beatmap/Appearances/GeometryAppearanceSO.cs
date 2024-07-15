@@ -90,6 +90,7 @@ namespace Beatmap.Appearances
                 light.OverrideLightGroup = true;
                 light.OverrideLightGroupID = eh.LightType ?? 0;
                 light.LightID = eh.LightID ?? 0;
+                light.PropGroup = -1;
             }
         }
 
