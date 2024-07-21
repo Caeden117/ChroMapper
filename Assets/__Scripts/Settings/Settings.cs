@@ -158,6 +158,7 @@ public class Settings
     public bool GridBookmarksHasLine = true;
     public bool BookmarkTooltipTimeInfo = false;
     public int BookmarkTimelineWidth = 10;
+    public float BookmarkTimelineBrightness = 0.66f;
 
     #endregion
 

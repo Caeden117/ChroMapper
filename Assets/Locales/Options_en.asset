@@ -1432,6 +1432,14 @@ MonoBehaviour:
       error messages.
     m_Metadata:
       m_Items: []
+  - m_Id: 388776190596214784
+    m_Localized: Bookmark UI Brightness
+    m_Metadata:
+      m_Items: []
+  - m_Id: 388776364043268096
+    m_Localized: How bright the bookmarks on the timeline are.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

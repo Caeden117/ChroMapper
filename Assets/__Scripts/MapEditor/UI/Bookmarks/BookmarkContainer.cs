@@ -10,37 +10,47 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
     private BookmarkManager manager;
     public BaseBookmark Data { get; private set; }
 
-
     public void Init(BookmarkManager manager, BaseBookmark data)
     {
         if (Data != null) return;
         Data = data;
 
         this.manager = manager;
-        GetComponent<Image>().color = data.Color;
 
         UpdateUI();
-        UpdateUIWidth();
     }
 
     public void UpdateUI()
     {
-        var name = Data.Name.StripTMPTags();
+        UpdateUIText();
+        UpdateUIColor();
+        UpdateUIWidth();
+    }
 
-        if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+    public void UpdateUIText()
+    {
+        var text = Data.Name.StripTMPTags();
+
+        if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
         {
-            name = $"<i>(This Bookmark has no name)</i>";
+            text = $"<i>(This Bookmark has no name)</i>";
         }
 
         if (Settings.Instance.BookmarkTooltipTimeInfo)
         {
             var beat = Data.JsonTime;
             var span = TimeSpan.FromSeconds(manager.Atsc.GetSecondsFromBeat(beat));
-            name += $" [{Math.Round(beat, 2)} | {span:mm':'ss}]";
+            text += $" [{Math.Round(beat, 2)} | {span:mm':'ss}]";
         }
 
-        GetComponent<Tooltip>().TooltipOverride = name;
-        GetComponent<Image>().color = Data.Color;
+        GetComponent<Tooltip>().TooltipOverride = text;
+    }
+
+    public void UpdateUIColor() {
+        var brightenedColor = Data.Color
+            .Multiply(Settings.Instance.BookmarkTimelineBrightness)
+            .WithAlpha(Data.Color.a);
+        GetComponent<Image>().color = brightenedColor;
     }
 
     public void UpdateUIWidth()
@@ -100,7 +110,8 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
                 Data.Color = colorPicker.Value;
             }
             manager.BookmarksUpdated.Invoke();
-            UpdateUI();
+            UpdateUIText();
+            UpdateUIColor();
         };
 
         var cancelButton = dialogBox
