@@ -84,11 +84,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 365546173453295616
-    m_Localized: This audio file is too long to have a rendered spectrogram.
+    m_Localized: "\uC774 \uC624\uB514\uC624 \uD30C\uC77C\uC740 \uB108\uBB34 \uAE38\uC5B4\uC11C
+      \uC2A4\uD399\uD2B8\uB85C\uADF8\uB7A8\uC744 \uB80C\uB354\uB9C1 \uD560 \uC218
+      \uC5C6\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 365546339392544768
-    m_Localized: Your system does not have enough video memory for a rendered spectrogram.
+    m_Localized: "\uC2DC\uC2A4\uD15C\uC5D0 \uB80C\uB354\uB9C1\uB41C \uC2A4\uD399\uD2B8\uB85C\uADF8\uB7A8\uC744
+      \uC704\uD55C \uBE44\uB514\uC624 \uBA54\uBAA8\uB9AC\uAC00 \uCDA9\uBD84\uD558\uC9C0
+      \uC54A\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   references:
