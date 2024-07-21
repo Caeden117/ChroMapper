@@ -53,7 +53,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         bookmarkColor = createBookmarkDialogBox
             .AddComponent<NestedColorPickerComponent>()
             .WithLabel("Mapper", "bookmark.dialog.color")
-            .WithConstantAlpha(1f);
+            .WithAlpha();
 
         // Enable quick submit
         createBookmarkDialogBox.OnQuickSubmit(() => CreateNewBookmark(bookmarkName.Value, bookmarkColor.Value));
