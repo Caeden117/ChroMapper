@@ -59,6 +59,7 @@ public class LightsManager : MonoBehaviour
 
     public LightGroup[] GroupLightsBasedOnZ() => ControllingLights
         .Where(x => x.gameObject.activeInHierarchy)
+        .Where(x => x.PropGroup >= 0)
         .GroupBy(x => Mathf.RoundToInt(x.PropGroup))
         .OrderBy(x => x.Key)
         .Select(x => new LightGroup { Lights = x.ToList() })

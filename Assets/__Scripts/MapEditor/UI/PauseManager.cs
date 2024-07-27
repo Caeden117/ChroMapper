@@ -91,12 +91,17 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         {
             // We want to transition to Song List if we're a multi mapping client;
             //    sending to Song Edit screen would allow people full access to the multi mapped song (not supported)
-            SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
+            SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu", WaitForSaveToFinish());
         }
         else
         {
-            SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
+            SceneTransitionManager.Instance.LoadScene("02_SongEditMenu", WaitForSaveToFinish());
         }
+    }
+
+    private IEnumerator WaitForSaveToFinish()
+    {
+        yield return new WaitUntil(() => !saveController.IsSaving);
     }
 
     public void SaveAndQuitCM()
@@ -128,11 +133,11 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
             {
                 // We want to transition to Song List if we're a multi mapping client;
                 //    sending to Song Edit screen would allow people full access to the multi mapped song (not supported)
-                SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu");
+                SceneTransitionManager.Instance.LoadScene("01_SongSelectMenu", WaitForSaveToFinish());
             }
             else
             {
-                SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
+                SceneTransitionManager.Instance.LoadScene("02_SongEditMenu", WaitForSaveToFinish());
             }
         }
         //Right button (ID 2) would be clicked; the user does not want to exit the editor after all, so we aint doing shit.

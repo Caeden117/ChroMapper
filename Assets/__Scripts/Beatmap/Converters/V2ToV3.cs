@@ -352,6 +352,7 @@ namespace Beatmap.Converters
                 DirectoryAndFile = other.DirectoryAndFile,
                 Obstacles = other.Obstacles.Select(Obstacle).Cast<BaseObstacle>().ToList(),
                 Arcs = other.Arcs.Select(Arc).Cast<BaseArc>().ToList(),
+                BpmEvents = other.BpmEvents.Select(BpmEvent).Cast<BaseBpmEvent>().ToList(),
                 Waypoints = other.Waypoints.Select(Waypoint).Cast<BaseWaypoint>().ToList(),
                 EventTypesWithKeywords = other.EventTypesWithKeywords != null
                     ? new V3BasicEventTypesWithKeywords(other.EventTypesWithKeywords)

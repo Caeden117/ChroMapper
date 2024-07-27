@@ -327,6 +327,7 @@ namespace Beatmap.Converters
                 Obstacles = other.Obstacles,
                 Waypoints = other.Waypoints,
                 Arcs = other.Arcs,
+                BpmEvents = other.BpmEvents,
                 BpmChanges = other.BpmChanges,
                 Bookmarks = other.Bookmarks,
                 CustomEvents = other.CustomEvents,

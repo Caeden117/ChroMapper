@@ -1311,6 +1311,14 @@ MonoBehaviour:
     m_Key: misc.nonimportant.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 388776190596214784
+    m_Key: graphics.bookmarkuibrightness
+    m_Metadata:
+      m_Items: []
+  - m_Id: 388776364043268096
+    m_Key: graphics.bookmarkuibrightness.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

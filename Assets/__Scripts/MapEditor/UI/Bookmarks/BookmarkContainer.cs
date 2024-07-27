@@ -2,6 +2,7 @@ using System;
 using Beatmap.Base.Customs;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
@@ -9,37 +10,47 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
     private BookmarkManager manager;
     public BaseBookmark Data { get; private set; }
 
-
     public void Init(BookmarkManager manager, BaseBookmark data)
     {
         if (Data != null) return;
         Data = data;
 
         this.manager = manager;
-        GetComponent<Image>().color = data.Color;
 
         UpdateUI();
-        UpdateUIWidth();
     }
 
     public void UpdateUI()
     {
-        var name = Data.Name.StripTMPTags();
+        UpdateUIText();
+        UpdateUIColor();
+        UpdateUIWidth();
+    }
 
-        if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name))
+    public void UpdateUIText()
+    {
+        var text = Data.Name.StripTMPTags();
+
+        if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
         {
-            name = $"<i>(This Bookmark has no name)</i>";
+            text = $"<i>(This Bookmark has no name)</i>";
         }
 
         if (Settings.Instance.BookmarkTooltipTimeInfo)
         {
             var beat = Data.JsonTime;
             var span = TimeSpan.FromSeconds(manager.Atsc.GetSecondsFromBeat(beat));
-            name += $" [{Math.Round(beat, 2)} | {span:mm':'ss}]";
+            text += $" [{Math.Round(beat, 2)} | {span:mm':'ss}]";
         }
 
-        GetComponent<Tooltip>().TooltipOverride = name;
-        GetComponent<Image>().color = Data.Color;
+        GetComponent<Tooltip>().TooltipOverride = text;
+    }
+
+    public void UpdateUIColor() {
+        var brightenedColor = Data.Color
+            .Multiply(Settings.Instance.BookmarkTimelineBrightness)
+            .WithAlpha(Data.Color.a);
+        GetComponent<Image>().color = brightenedColor;
     }
 
     public void UpdateUIWidth()
@@ -60,24 +71,62 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
     {
         switch (eventData.button)
         {
+            case PointerEventData.InputButton.Left:
+                break;
             case PointerEventData.InputButton.Middle:
                 PersistentUI.Instance.ShowDialogBox("Mapper", "bookmark.delete", HandleDeleteBookmark,
                     PersistentUI.DialogBoxPresetType.YesNo);
                 break;
             case PointerEventData.InputButton.Right:
-                if (manager.ShiftContext.started)
-                {
-                    PersistentUI.Instance.ShowColorInputBox("Mapper", "bookmark.update.color", HandleNewBookmarkColor, GetComponent<Image>().color);
-                }
-                else
-                {
-                    PersistentUI.Instance.ShowInputBox("Mapper", "bookmark.update.dialog", HandleNewBookmarkName, null, Data.Name);
-                }
-
+                DisplayBookmarkEditUI();
                 break;
+            default:
+                return;
         }
     }
 
+    private void DisplayBookmarkEditUI()
+    {
+        var title = LocalizationSettings.StringDatabase.GetLocalizedString("Mapper", "bookmark.update.dialog");
+        var dialogBox = PersistentUI.Instance.CreateNewDialogBox().WithTitle(title);
+
+        var textBox = dialogBox.AddComponent<TextBoxComponent>()
+            .WithInitialValue(Data.Name)
+            .WithLabel("Mapper", "bookmark.dialog.name");
+
+        var colorPicker = dialogBox
+            .AddComponent<NestedColorPickerComponent>()
+            .WithInitialValue(Data.Color)
+            .WithLabel("Mapper", "bookmark.dialog.color");
+
+        Action handleEdit = () =>
+        {
+            if (!string.IsNullOrWhiteSpace(textBox.Value))
+            {
+                Data.Name = textBox.Value;
+            }
+            if (colorPicker.Value != null)
+            {
+                Data.Color = colorPicker.Value;
+            }
+            manager.BookmarksUpdated.Invoke();
+            UpdateUIText();
+            UpdateUIColor();
+        };
+
+        var cancelButton = dialogBox
+            .AddFooterButton(() => { },
+                LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "cancel"));
+
+        var submitButton = dialogBox
+            .AddFooterButton(handleEdit,
+                LocalizationSettings.StringDatabase.GetLocalizedString(nameof(PersistentUI), "submit"));
+
+        dialogBox.OnQuickSubmit(handleEdit);
+        dialogBox.Open();
+    }
+
+    #region Timeline Playback
     public void OnPointerDown(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -89,25 +138,12 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left) manager.Tipc.PointerUp();
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            manager.Tipc.PointerUp();
+        }
     }
-
-    private void HandleNewBookmarkName(string res)
-    {
-        if (string.IsNullOrEmpty(res) || string.IsNullOrWhiteSpace(res)) return;
-
-        Data.Name = res;
-        manager.BookmarksUpdated.Invoke();
-        UpdateUI();
-    }
-
-    private void HandleNewBookmarkColor(Color? res)
-    {
-        if (res == null) return;
-        Data.Color = (Color)res;
-        manager.BookmarksUpdated.Invoke();
-        UpdateUI();
-    }
+    #endregion
 
     internal void HandleDeleteBookmark(int res)
     {

@@ -1846,15 +1846,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Color Bookmark Modifier"",
-                    ""type"": ""Button"",
-                    ""id"": ""4439bbde-d3c0-49f8-9005-d710ca8202b0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1888,17 +1879,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Previous Bookmark"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""eaa182da-bc19-4c48-b13e-af966ffe9485"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Color Bookmark Modifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3599,6 +3579,60 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle UI Mode Reverse"",
+                    ""type"": ""Button"",
+                    ""id"": ""20bb8021-4bb8-4be2-94c1-9600fd1a8208"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle UI Mode (Normal)"",
+                    ""type"": ""Button"",
+                    ""id"": ""841b053b-6c5e-43d5-8fbd-844a62f7efa5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle UI Mode (Hide UI)"",
+                    ""type"": ""Button"",
+                    ""id"": ""e528aa35-53e4-40b4-b036-215fe4563f87"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle UI Mode (Hide Grids)"",
+                    ""type"": ""Button"",
+                    ""id"": ""215e2238-53f3-47d8-8e76-41526ab518cd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle UI Mode (Preview)"",
+                    ""type"": ""Button"",
+                    ""id"": ""26ce21ba-1236-4447-ac87-1c720bb83468"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle UI Mode (Playing)"",
+                    ""type"": ""Button"",
+                    ""id"": ""7f2f742b-9cdb-43fc-9283-5750cbbb117b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -3627,11 +3661,209 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""button"",
                     ""id"": ""aa694fd9-9a8b-47b8-a9ac-682e08347b75"",
-                    ""path"": ""<Keyboard>/h"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Toggle UI Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""c3c30551-3541-4ac6-8ea3-08d7d68eb4d3"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI Mode Reverse"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""26fcd8d4-b726-4baf-9a17-e7e252f55b78"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode Reverse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""ecf14d89-2c4a-4cd9-b155-8a320aa874d2"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode Reverse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""fd46ba2c-b4fc-4d0a-85a2-f52e94f1056a"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI Mode (Normal)"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""6eafc3d8-5fd7-4d10-9af1-c866d9e8720f"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Normal)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""0e4da0ef-b8ff-4490-b12d-744fc9acf8bd"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Normal)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""52e63839-c79f-44a5-8d43-bb17531baa6d"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI Mode (Hide UI)"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""62ef11c8-b1fc-4dcf-aa1d-86dc76d1a99a"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Hide UI)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""f6fcc22e-aa0e-4dd2-ac19-e0b2355f4440"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Hide UI)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""4db8ca57-cf15-4f6a-9dca-549213894727"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI Mode (Hide Grids)"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""ac76acc1-8c16-4c50-9076-91fc00a23a60"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Hide Grids)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""9e0ee0f1-9f8a-409c-863b-b9e3b963a85f"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Hide Grids)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""f9536119-57b0-4edd-97ca-7a35cfc63f89"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI Mode (Preview)"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""09a48e38-63db-4009-a79c-4d1694c487f8"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Preview)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""9c319980-2c8a-4fb5-9f85-f13ef906bde8"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Preview)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""135d8a00-5a10-4669-9110-d451639d5fcb"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle UI Mode (Playing)"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""6b748aa3-67ab-4f21-9465-69ac4b166280"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Playing)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""fd4396f5-7bfb-4a18-846c-3b0813ab0e25"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Toggle UI Mode (Playing)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -4903,7 +5135,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         m_Bookmarks_CreateNewBookmark = m_Bookmarks.FindAction("Create New Bookmark", throwIfNotFound: true);
         m_Bookmarks_NextBookmark = m_Bookmarks.FindAction("Next Bookmark", throwIfNotFound: true);
         m_Bookmarks_PreviousBookmark = m_Bookmarks.FindAction("Previous Bookmark", throwIfNotFound: true);
-        m_Bookmarks_ColorBookmarkModifier = m_Bookmarks.FindAction("Color Bookmark Modifier", throwIfNotFound: true);
         // Refresh Map
         m_RefreshMap = asset.FindActionMap("Refresh Map", throwIfNotFound: true);
         m_RefreshMap_RefreshMap = m_RefreshMap.FindAction("Refresh Map", throwIfNotFound: true);
@@ -4987,6 +5218,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         // UI Mode
         m_UIMode = asset.FindActionMap("UI Mode", throwIfNotFound: true);
         m_UIMode_ToggleUIMode = m_UIMode.FindAction("Toggle UI Mode", throwIfNotFound: true);
+        m_UIMode_ToggleUIModeReverse = m_UIMode.FindAction("Toggle UI Mode Reverse", throwIfNotFound: true);
+        m_UIMode_ToggleUIModeNormal = m_UIMode.FindAction("Toggle UI Mode (Normal)", throwIfNotFound: true);
+        m_UIMode_ToggleUIModeHideUI = m_UIMode.FindAction("Toggle UI Mode (Hide UI)", throwIfNotFound: true);
+        m_UIMode_ToggleUIModeHideGrids = m_UIMode.FindAction("Toggle UI Mode (Hide Grids)", throwIfNotFound: true);
+        m_UIMode_ToggleUIModePreview = m_UIMode.FindAction("Toggle UI Mode (Preview)", throwIfNotFound: true);
+        m_UIMode_ToggleUIModePlaying = m_UIMode.FindAction("Toggle UI Mode (Playing)", throwIfNotFound: true);
         // Song Speed
         m_SongSpeed = asset.FindActionMap("Song Speed", throwIfNotFound: true);
         m_SongSpeed_DecreaseSongSpeed = m_SongSpeed.FindAction("Decrease Song Speed", throwIfNotFound: true);
@@ -6015,7 +6252,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Bookmarks_CreateNewBookmark;
     private readonly InputAction m_Bookmarks_NextBookmark;
     private readonly InputAction m_Bookmarks_PreviousBookmark;
-    private readonly InputAction m_Bookmarks_ColorBookmarkModifier;
     public struct BookmarksActions
     {
         private @CMInput m_Wrapper;
@@ -6023,7 +6259,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         public InputAction @CreateNewBookmark => m_Wrapper.m_Bookmarks_CreateNewBookmark;
         public InputAction @NextBookmark => m_Wrapper.m_Bookmarks_NextBookmark;
         public InputAction @PreviousBookmark => m_Wrapper.m_Bookmarks_PreviousBookmark;
-        public InputAction @ColorBookmarkModifier => m_Wrapper.m_Bookmarks_ColorBookmarkModifier;
         public InputActionMap Get() { return m_Wrapper.m_Bookmarks; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -6042,9 +6277,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @PreviousBookmark.started += instance.OnPreviousBookmark;
             @PreviousBookmark.performed += instance.OnPreviousBookmark;
             @PreviousBookmark.canceled += instance.OnPreviousBookmark;
-            @ColorBookmarkModifier.started += instance.OnColorBookmarkModifier;
-            @ColorBookmarkModifier.performed += instance.OnColorBookmarkModifier;
-            @ColorBookmarkModifier.canceled += instance.OnColorBookmarkModifier;
         }
 
         private void UnregisterCallbacks(IBookmarksActions instance)
@@ -6058,9 +6290,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @PreviousBookmark.started -= instance.OnPreviousBookmark;
             @PreviousBookmark.performed -= instance.OnPreviousBookmark;
             @PreviousBookmark.canceled -= instance.OnPreviousBookmark;
-            @ColorBookmarkModifier.started -= instance.OnColorBookmarkModifier;
-            @ColorBookmarkModifier.performed -= instance.OnColorBookmarkModifier;
-            @ColorBookmarkModifier.canceled -= instance.OnColorBookmarkModifier;
         }
 
         public void RemoveCallbacks(IBookmarksActions instance)
@@ -7097,11 +7326,23 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UIMode;
     private List<IUIModeActions> m_UIModeActionsCallbackInterfaces = new List<IUIModeActions>();
     private readonly InputAction m_UIMode_ToggleUIMode;
+    private readonly InputAction m_UIMode_ToggleUIModeReverse;
+    private readonly InputAction m_UIMode_ToggleUIModeNormal;
+    private readonly InputAction m_UIMode_ToggleUIModeHideUI;
+    private readonly InputAction m_UIMode_ToggleUIModeHideGrids;
+    private readonly InputAction m_UIMode_ToggleUIModePreview;
+    private readonly InputAction m_UIMode_ToggleUIModePlaying;
     public struct UIModeActions
     {
         private @CMInput m_Wrapper;
         public UIModeActions(@CMInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ToggleUIMode => m_Wrapper.m_UIMode_ToggleUIMode;
+        public InputAction @ToggleUIModeReverse => m_Wrapper.m_UIMode_ToggleUIModeReverse;
+        public InputAction @ToggleUIModeNormal => m_Wrapper.m_UIMode_ToggleUIModeNormal;
+        public InputAction @ToggleUIModeHideUI => m_Wrapper.m_UIMode_ToggleUIModeHideUI;
+        public InputAction @ToggleUIModeHideGrids => m_Wrapper.m_UIMode_ToggleUIModeHideGrids;
+        public InputAction @ToggleUIModePreview => m_Wrapper.m_UIMode_ToggleUIModePreview;
+        public InputAction @ToggleUIModePlaying => m_Wrapper.m_UIMode_ToggleUIModePlaying;
         public InputActionMap Get() { return m_Wrapper.m_UIMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -7114,6 +7355,24 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @ToggleUIMode.started += instance.OnToggleUIMode;
             @ToggleUIMode.performed += instance.OnToggleUIMode;
             @ToggleUIMode.canceled += instance.OnToggleUIMode;
+            @ToggleUIModeReverse.started += instance.OnToggleUIModeReverse;
+            @ToggleUIModeReverse.performed += instance.OnToggleUIModeReverse;
+            @ToggleUIModeReverse.canceled += instance.OnToggleUIModeReverse;
+            @ToggleUIModeNormal.started += instance.OnToggleUIModeNormal;
+            @ToggleUIModeNormal.performed += instance.OnToggleUIModeNormal;
+            @ToggleUIModeNormal.canceled += instance.OnToggleUIModeNormal;
+            @ToggleUIModeHideUI.started += instance.OnToggleUIModeHideUI;
+            @ToggleUIModeHideUI.performed += instance.OnToggleUIModeHideUI;
+            @ToggleUIModeHideUI.canceled += instance.OnToggleUIModeHideUI;
+            @ToggleUIModeHideGrids.started += instance.OnToggleUIModeHideGrids;
+            @ToggleUIModeHideGrids.performed += instance.OnToggleUIModeHideGrids;
+            @ToggleUIModeHideGrids.canceled += instance.OnToggleUIModeHideGrids;
+            @ToggleUIModePreview.started += instance.OnToggleUIModePreview;
+            @ToggleUIModePreview.performed += instance.OnToggleUIModePreview;
+            @ToggleUIModePreview.canceled += instance.OnToggleUIModePreview;
+            @ToggleUIModePlaying.started += instance.OnToggleUIModePlaying;
+            @ToggleUIModePlaying.performed += instance.OnToggleUIModePlaying;
+            @ToggleUIModePlaying.canceled += instance.OnToggleUIModePlaying;
         }
 
         private void UnregisterCallbacks(IUIModeActions instance)
@@ -7121,6 +7380,24 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @ToggleUIMode.started -= instance.OnToggleUIMode;
             @ToggleUIMode.performed -= instance.OnToggleUIMode;
             @ToggleUIMode.canceled -= instance.OnToggleUIMode;
+            @ToggleUIModeReverse.started -= instance.OnToggleUIModeReverse;
+            @ToggleUIModeReverse.performed -= instance.OnToggleUIModeReverse;
+            @ToggleUIModeReverse.canceled -= instance.OnToggleUIModeReverse;
+            @ToggleUIModeNormal.started -= instance.OnToggleUIModeNormal;
+            @ToggleUIModeNormal.performed -= instance.OnToggleUIModeNormal;
+            @ToggleUIModeNormal.canceled -= instance.OnToggleUIModeNormal;
+            @ToggleUIModeHideUI.started -= instance.OnToggleUIModeHideUI;
+            @ToggleUIModeHideUI.performed -= instance.OnToggleUIModeHideUI;
+            @ToggleUIModeHideUI.canceled -= instance.OnToggleUIModeHideUI;
+            @ToggleUIModeHideGrids.started -= instance.OnToggleUIModeHideGrids;
+            @ToggleUIModeHideGrids.performed -= instance.OnToggleUIModeHideGrids;
+            @ToggleUIModeHideGrids.canceled -= instance.OnToggleUIModeHideGrids;
+            @ToggleUIModePreview.started -= instance.OnToggleUIModePreview;
+            @ToggleUIModePreview.performed -= instance.OnToggleUIModePreview;
+            @ToggleUIModePreview.canceled -= instance.OnToggleUIModePreview;
+            @ToggleUIModePlaying.started -= instance.OnToggleUIModePlaying;
+            @ToggleUIModePlaying.performed -= instance.OnToggleUIModePlaying;
+            @ToggleUIModePlaying.canceled -= instance.OnToggleUIModePlaying;
         }
 
         public void RemoveCallbacks(IUIModeActions instance)
@@ -8204,7 +8481,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         void OnCreateNewBookmark(InputAction.CallbackContext context);
         void OnNextBookmark(InputAction.CallbackContext context);
         void OnPreviousBookmark(InputAction.CallbackContext context);
-        void OnColorBookmarkModifier(InputAction.CallbackContext context);
     }
     public interface IRefreshMapActions
     {
@@ -8306,6 +8582,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     public interface IUIModeActions
     {
         void OnToggleUIMode(InputAction.CallbackContext context);
+        void OnToggleUIModeReverse(InputAction.CallbackContext context);
+        void OnToggleUIModeNormal(InputAction.CallbackContext context);
+        void OnToggleUIModeHideUI(InputAction.CallbackContext context);
+        void OnToggleUIModeHideGrids(InputAction.CallbackContext context);
+        void OnToggleUIModePreview(InputAction.CallbackContext context);
+        void OnToggleUIModePlaying(InputAction.CallbackContext context);
     }
     public interface ISongSpeedActions
     {

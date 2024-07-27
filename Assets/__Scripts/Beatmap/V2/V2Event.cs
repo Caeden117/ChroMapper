@@ -38,7 +38,8 @@ namespace Beatmap.V2
             type, value, floatValue, customData) =>
             ParseCustom();
 
-        public V2Event(float jsonTime, float songBpmTime, int type, int value, float floatValue = 1f, JSONNode customData = null) :
+        public V2Event(float jsonTime, float songBpmTime, int type, int value, float floatValue = 1f,
+            JSONNode customData = null) :
             base(jsonTime, songBpmTime, type, value, floatValue, customData) =>
             ParseCustom();
 
@@ -152,7 +153,13 @@ namespace Beatmap.V2
             return node;
         }
 
-        public override BaseItem Clone() => new V2Event(JsonTime, SongBpmTime, Type, Value, FloatValue, SaveCustom().Clone());
+        public override BaseItem Clone() =>
+            new V2Event(JsonTime, SongBpmTime, Type, Value, FloatValue, SaveCustom().Clone())
+            {
+                // This depends on environment and is calculated by grid position after creation
+                // so we need to set this here to clone correctly  
+                CustomPropID = CustomPropID
+            };
 
         public override void Apply(BaseObject originalData)
         {

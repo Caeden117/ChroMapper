@@ -149,14 +149,7 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         try
         {
             var path = Application.persistentDataPath;
-#if UNITY_STANDALONE_WIN
-            path = path.Replace("/", "\\").Replace("\\\\", "\\");
-            System.Diagnostics.Process.Start("explorer.exe", $"\"{path}\"");
-#elif UNITY_STANDALONE_OSX
-            System.Diagnostics.Process.Start("open", path);
-#elif UNITY_STANDALONE_LINUX
-            System.Diagnostics.Process.Start("open", path);
-#endif
+            OSTools.OpenFileBrowser(path);
         }
         catch
         {

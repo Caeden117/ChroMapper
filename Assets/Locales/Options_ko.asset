@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 2609315181482475585
+    - rid: 1057323853537345630
   m_TableData:
   - m_Id: 1
     m_Localized: "\uC124\uC815 - {TabName}"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 2
     m_Localized: "\uAE30\uD0C0 \uC124\uC815"
     m_Metadata:
@@ -292,7 +292,7 @@ MonoBehaviour:
     m_Localized: "\uB85C\uB529\uB41C \uD50C\uB7EC\uADF8\uC778 \uAC1C\uC218: {Count}"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 67
     m_Localized: "\uD50C\uB7EC\uADF8\uC778 \uC815\uBCF4"
     m_Metadata:
@@ -337,7 +337,7 @@ MonoBehaviour:
     m_Localized: "{TextValue} \uC790\uB9AC"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 74
     m_Localized: "\uB514\uC2A4\uD06C\uC5D0 \uC800\uC7A5\uD560 \uB54C \"_time\"\uAC12\uC5D0
       \uC5BC\uB9C8\uB098 \uB9CE\uC740 \uC18C\uC218\uC810 \uC790\uB9AC\uC218\uAC00
@@ -605,7 +605,7 @@ MonoBehaviour:
     m_Localized: "\uD50C\uB7EC\uADF8\uC778"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 132
     m_Localized: "\uC2E4\uD5D8\uC801\uC778 \uAE30\uB2A5"
     m_Metadata:
@@ -618,47 +618,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 139
     m_Localized: "{TextValue} \uBE44\uD2B8"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 140
     m_Localized: "{TextValue} \uBE44\uD2B8"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 143
     m_Localized: "\uD68C\uC804 \uD45C\uC2DC \uACE0\uC815"
     m_Metadata:
@@ -708,7 +708,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 154
     m_Localized: "UI \uD06C\uAE30"
     m_Metadata:
@@ -721,7 +721,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 157
     m_Localized: "\uC774\uBCA4\uD2B8 \uBAA8\uB378"
     m_Metadata:
@@ -798,7 +798,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 174
     m_Localized: "\uACE1"
     m_Metadata:
@@ -923,7 +923,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 3301721636864
     m_Localized: "\uADF8\uB9AC\uB4DC \uBC30\uACBD \uD22C\uBA85\uB3C4 \uBCC0\uACBD"
     m_Metadata:
@@ -932,7 +932,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 23812497342464
     m_Localized: "\uADF8\uB9AC\uB4DC \uD22C\uBA85\uB3C4"
     m_Metadata:
@@ -986,7 +986,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 67492742661058560
     m_Localized: "\uC131\uB2A5 \uB610\uB294 \uC2DC\uAC01\uC801 \uD5A5\uC0C1\uC744
       \uC704\uD574 (\uCD1D) \uB80C\uB354\uB9C1 \uD574\uC0C1\uB3C4\uB97C \uC870\uC815\uD569\uB2C8\uB2E4."
@@ -1319,95 +1319,101 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 288364334621589504
-    m_Localized: Save Without Default Values
+    m_Localized: "\uAE30\uBCF8\uAC12 \uC5C6\uC774 \uC800\uC7A5"
     m_Metadata:
       m_Items: []
   - m_Id: 288364497993924608
-    m_Localized: Saves the difficulty file without properties that have a default
-      value.
+    m_Localized: "\uAE30\uBCF8\uAC12\uC774 \uC788\uB294 \uC18D\uC131 \uC5C6\uC774
+      \uB09C\uC774\uB3C4 \uD30C\uC77C\uC744 \uC800\uC7A5\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 249214922956247040
-    m_Localized: Enables Noodle Extensions animations while in preview mode.
+    m_Localized: "\uBBF8\uB9AC\uBCF4\uAE30 \uBAA8\uB4DC\uC5D0\uC11C Noodle Extensions
+      \uC560\uB2C8\uBA54\uC774\uC158\uC744 \uD65C\uC131\uD654\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 249224607608377344
-    m_Localized: Preview Animations
+    m_Localized: "\uC560\uB2C8\uBA54\uC774\uC158 \uBBF8\uB9AC\uBCF4\uAE30"
     m_Metadata:
       m_Items: []
   - m_Id: 252032304653307904
-    m_Localized: Change Field of View of the preview camera
+    m_Localized: "\uBBF8\uB9AC\uBCF4\uAE30 \uCE74\uBA54\uB77C\uC758 \uD654\uAC01
+      \uBCC0\uACBD"
     m_Metadata:
       m_Items: []
   - m_Id: 252047222777614336
-    m_Localized: Preview Camera FOV
+    m_Localized: "\uCE74\uBA54\uB77C FOV \uBBF8\uB9AC\uBCF4\uAE30"
     m_Metadata:
       m_Items: []
   - m_Id: 298177154557083648
-    m_Localized: Open Plugins Folder
+    m_Localized: "\uD50C\uB7EC\uADF8\uC778 \uD3F4\uB354 \uC5F4\uAE30"
     m_Metadata:
       m_Items: []
   - m_Id: 300616661902491648
-    m_Localized: Preview Camera Z Offset
+    m_Localized: "\uBBF8\uB9AC\uBCF4\uAE30 \uCE74\uBA54\uB77C Z \uC624\uD504\uC14B"
     m_Metadata:
       m_Items: []
   - m_Id: 300616655971745792
-    m_Localized: Offsets the preview camera backwards (in metres)
+    m_Localized: "\uBBF8\uB9AC\uBCF4\uAE30 \uCE74\uBA54\uB77C\uB97C \uB4A4\uB85C
+      \uC624\uD504\uC14B(\uBBF8\uD130 \uB2E8\uC704\uB85C) \uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 300618005946236928
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475585
+      - rid: 1057323853537345630
   - m_Id: 322078335378526208
-    m_Localized: Objects and Lighting
+    m_Localized: "\uC624\uBE0C\uC81D\uD2B8\uC640 \uC870\uBA85"
     m_Metadata:
       m_Items: []
   - m_Id: 322078433017729024
-    m_Localized: Note Color Multiplier
+    m_Localized: "\uB178\uD2B8 \uC0C9\uC0C1 \uBC30\uC728"
     m_Metadata:
       m_Items: []
   - m_Id: 322078544036761600
-    m_Localized: Brightens or darkens the color of the note block.
+    m_Localized: "\uB178\uD2B8 \uBE14\uB85D\uC758 \uC0C9\uC0C1\uC744 \uBC1D\uAC8C
+      \uB610\uB294 \uC5B4\uB461\uAC8C \uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 322078560457461760
-    m_Localized: Arrow Color Multiplier
+    m_Localized: "\uD654\uC0B4\uD45C \uC0C9\uC0C1 \uBC30\uC728"
     m_Metadata:
       m_Items: []
   - m_Id: 322078585577148416
-    m_Localized: Brightens or darkens the color of the note arrow.
+    m_Localized: "\uB178\uD2B8 \uD654\uC0B4\uD45C\uC758 \uC0C9\uC0C1\uC744 \uBC1D\uAC8C
+      \uB610\uB294 \uC5B4\uB461\uAC8C \uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 322078609908305920
-    m_Localized: Arrow White Blend
+    m_Localized: "\uD654\uC0B4\uD45C \uD770\uC0C9 \uD63C\uD569"
     m_Metadata:
       m_Items: []
   - m_Id: 322078641902456832
-    m_Localized: Blends the color of the arrow, from the assigned note color to a
-      pure white.
+    m_Localized: "\uD654\uC0B4\uD45C\uC758 \uC0C9\uC744 \uC9C0\uC815\uB41C \uB178\uD2B8
+      \uC0C9\uC0C1\uC5D0\uC11C \uC21C\uC218\uD55C \uD770\uC0C9\uC73C\uB85C \uD63C\uD569\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 322078668309794816
-    m_Localized: Obstacle Opacity
+    m_Localized: "\uC7A5\uC560\uBB3C \uBD88\uD22C\uBA85\uB3C4"
     m_Metadata:
       m_Items: []
   - m_Id: 322078693966352384
-    m_Localized: Changes the opacity of the obstacle's inner body.
+    m_Localized: "\uC7A5\uC560\uBB3C \uB0B4\uBD80\uC758 \uBD88\uD22C\uBA85\uB3C4\uB97C
+      \uBCC0\uACBD\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 322078715722207232
-    m_Localized: Alternate Lighting
+    m_Localized: "\uB300\uCCB4 \uC870\uBA85"
     m_Metadata:
       m_Items: []
   - m_Id: 322078739269029888
-    m_Localized: Tweaks ChroMapper's lighting to give an appearance more similar
-      to MMA2.
+    m_Localized: "ChroMapper\uC758 \uB77C\uC774\uD305\uC744 \uC870\uC815\uD558\uC5EC
+      MMA2\uC640 \uB354 \uC720\uC0AC\uD55C \uC870\uBA85\uC744 \uC81C\uACF5\uD569\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 330014416099160064
-    m_Localized: Interface Opacity
+    m_Localized: "\uC778\uD130\uD398\uC774\uC2A4 \uBD88\uD22C\uBA85\uB3C4"
     m_Metadata:
       m_Items: []
   - m_Id: 330014459573121024
@@ -1489,10 +1495,18 @@ MonoBehaviour:
       error messages.
     m_Metadata:
       m_Items: []
+  - m_Id: 388776190596214784
+    m_Localized: Bookmark UI Brightness
+    m_Metadata:
+      m_Items: []
+  - m_Id: 388776364043268096
+    m_Localized: How bright the bookmarks on the timeline are.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 2609315181482475585
+    - rid: 1057323853537345630
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04

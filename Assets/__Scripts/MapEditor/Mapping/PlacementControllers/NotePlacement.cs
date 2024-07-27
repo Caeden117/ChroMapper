@@ -262,7 +262,10 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         dragged.CutDirection = queued.CutDirection;
         dragged.CustomCoordinate = queued.CustomCoordinate;
         if (DraggedObjectContainer != null)
+        {
             DraggedObjectContainer.DirectionTarget.localEulerAngles = NoteContainer.Directionalize(dragged);
+            DraggedObjectContainer.DirectionTargetEuler = NoteContainer.Directionalize(dragged);
+        }
         noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
 
         TransferQueuedToAttachedDraggedSliders(queued);

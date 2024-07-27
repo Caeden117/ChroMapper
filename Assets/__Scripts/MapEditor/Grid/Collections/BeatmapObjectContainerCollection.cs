@@ -714,6 +714,9 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     public void SpawnObject(T obj, out List<T> conflicting, bool removeConflicting = true,
         bool refreshesPool = true, bool inCollectionOfSpawns = false)
     {
+        // Ensure customData is up to date before spawning
+        obj.WriteCustom(); 
+
         //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
         if (removeConflicting)
         {

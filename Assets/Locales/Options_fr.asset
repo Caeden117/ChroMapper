@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 2609315181482475567
+    - rid: 1057323853537345612
   m_TableData:
   - m_Id: 1
     m_Localized: "Param\xE8tres - {TabName}"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 2
     m_Localized: Options diverses
     m_Metadata:
@@ -282,7 +282,7 @@ MonoBehaviour:
     m_Localized: "Plugins charg\xE9s: {Count}"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 67
     m_Localized: Infos des plugins
     m_Metadata:
@@ -321,7 +321,7 @@ MonoBehaviour:
     m_Localized: "{TextValue} d\xE9cimale(s)"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 74
     m_Localized: "\xC0 combien de d\xE9cimales arrondir les valeurs \"_time\" pour
       chaque objet de la map au moment d'\xE9crire sur le disque. Une pr\xE9cision
@@ -566,7 +566,7 @@ MonoBehaviour:
     m_Localized: Plugins
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 132
     m_Localized: "Exp\xE9rimental"
     m_Metadata:
@@ -579,47 +579,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 139
     m_Localized: '{TextValue} temps'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 140
     m_Localized: '{TextValue} temps'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 143
     m_Localized: Limiter l'affichage de la rotation
     m_Metadata:
@@ -667,7 +667,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 154
     m_Localized: "\xC9chelle de l'interface"
     m_Metadata:
@@ -680,7 +680,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 157
     m_Localized: "Mod\xE8les d'\xE9v\xE9nements"
     m_Metadata:
@@ -751,7 +751,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 174
     m_Localized: Musique
     m_Metadata:
@@ -874,7 +874,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 3301721636864
     m_Localized: "Modifie la transparence de l'arri\xE8re-plan de la grille"
     m_Metadata:
@@ -883,7 +883,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 23812497342464
     m_Localized: Transparence de la grille
     m_Metadata:
@@ -935,7 +935,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 67492742661058560
     m_Localized: "Changer l'\xE9chelle (totale) de la r\xE9solution du rendu pour
       les performances ou des am\xE9liorations visuelles."
@@ -1284,7 +1284,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - rid: 2609315181482475567
+      - rid: 1057323853537345612
   - m_Id: 322078335378526208
     m_Localized: "Objets et \xE9clairage"
     m_Metadata:
@@ -1414,10 +1414,18 @@ MonoBehaviour:
       error messages.
     m_Metadata:
       m_Items: []
+  - m_Id: 388776190596214784
+    m_Localized: Bookmark UI Brightness
+    m_Metadata:
+      m_Items: []
+  - m_Id: 388776364043268096
+    m_Localized: How bright the bookmarks on the timeline are.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 2609315181482475567
+    - rid: 1057323853537345612
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04

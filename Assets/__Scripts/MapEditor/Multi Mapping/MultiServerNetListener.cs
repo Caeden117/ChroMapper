@@ -184,7 +184,7 @@ public class MultiServerNetListener : MultiNetListener, INetAdmin
         autoSave.Save(false);
 
         // Wait until saving operation is completed
-        yield return new WaitWhile(() => autoSave.IsSaving);
+        yield return new WaitWhile(() => !autoSave.IsSaving);
 
         // Zip the song in its current state, then send to the player.
         // I'm aware that there's a little bit of time in between saving and zipping where changes made *arent* sent to the client,
