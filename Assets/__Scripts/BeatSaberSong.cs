@@ -527,6 +527,14 @@ public class BeatSaberSong
             song.LastWriteTime = System.IO.Directory.GetLastWriteTime(directory);
             song.isFavourite = File.Exists(Path.Combine(directory, ".favourite"));
             
+            foreach (var beatmapSet in song.DifficultyBeatmapSets)
+            {
+                foreach (var beatmap in beatmapSet.DifficultyBeatmaps)
+                {
+                    beatmap.ParentBeatmapSet = beatmapSet;
+                }
+            }
+            
             return song;
         }
         catch (Exception e)
