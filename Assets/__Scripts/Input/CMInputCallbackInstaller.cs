@@ -149,6 +149,7 @@ public class CMInputCallbackInstaller : MonoBehaviour
         input = new CMInput();
         input.Enable();
         InputInstance = input;
+        DisableEnableLoop().Forget();
         SceneManager.sceneLoaded += SceneLoaded;
         Application.wantsToQuit += WantsToQuit;
     }
@@ -182,23 +183,23 @@ public class CMInputCallbackInstaller : MonoBehaviour
         if (sceneMode == LoadSceneMode.Single) ClearAllEvents();
         foreach (var obj in scene.GetRootGameObjects()) FindAndInstallCallbacksRecursive(obj.transform);
         foreach (var transform in persistentObjects) FindAndInstallCallbacksRecursive(transform);
-        WaitThenReenableInputs().Forget();
     }
 
-    // Wait for the Scene Transition Manager to fade out, then enable our input.
-    private async UniTask WaitThenReenableInputs()
+    private async UniTask DisableEnableLoop()
     {
-        await UniTask.WaitWhile(() => SceneTransitionManager.IsLoading);
-        input.Enable();
-        SceneTransitionManager.Instance.AddLoadRoutine(DisableInputs());
-    }
+        while (true)
+        {
+            await UniTask.WaitUntil(() => SceneTransitionManager.IsLoading);
 
-    // Automatically disables our Input Map when we change scenes. This is to prevent MissingReferenceExceptions.
-    private async UniTask DisableInputs()
-    {
-        await UniTask.WaitWhile(() => TestMode);
+            if (!TestMode)
+            {
+                input.Disable();
+            }
 
-        input.Disable();
+            await UniTask.WaitWhile(() => SceneTransitionManager.IsLoading);
+
+            input.Enable();
+        }
     }
 
     // Set all callbacks to null, then disable our input when we try to exit the application. Prevents more MissingReferenceExceptions.

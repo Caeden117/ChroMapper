@@ -110,5 +110,12 @@ public class DifficultySettings
         envEnhancements = null;
     }
 
-    public async UniTask LoadMapAsync() => Map ??= (await BeatSaberSongContainer.Instance.Song.GetMapFromDifficultyBeatmapAsync(DifficultyBeatmap));
+    public async UniTask LoadMapAsync()
+    {
+        if (Map != null) return;
+
+        await UniTask.SwitchToThreadPool();
+        Map = await BeatSaberSongContainer.Instance.Song.GetMapFromDifficultyBeatmapAsync(DifficultyBeatmap);
+        await UniTask.SwitchToMainThread();
+    }
 }

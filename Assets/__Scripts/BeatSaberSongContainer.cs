@@ -58,6 +58,8 @@ public class BeatSaberSongContainer : MonoBehaviour
 
         await UniTask.WaitUntil(() => MultiMapperConnection?.MapData != null);
 
+        await UniTask.SwitchToThreadPool();
+
         // Create the directory for our song to go to.
         // Path.GetTempPath() should be compatible with Windows and UNIX.
         // See Microsoft docs on it.
@@ -87,6 +89,7 @@ public class BeatSaberSongContainer : MonoBehaviour
             Map = await song.GetMapFromDifficultyBeatmapAsync(DifficultyData);
             Settings.Instance.Load_MapV3 = Map.Version[0] == '3';
 
+            await UniTask.SwitchToMainThread();
             await Song.LoadAudio((clip) =>
             {
                 LoadedSong = clip;

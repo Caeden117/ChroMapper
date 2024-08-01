@@ -119,6 +119,8 @@ public class TempLoaderController : MonoBehaviour
 
         try
         {
+            await UniTask.SwitchToThreadPool();
+
             // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
             var stream = new MemoryStream(downloaded);
             var archive = new ZipArchive(stream, ZipArchiveMode.Read);
@@ -137,17 +139,20 @@ public class TempLoaderController : MonoBehaviour
 
             // Try and get a BeatSaberSong out of what we've downloaded.
             var song = await BeatSaberSong.GetSongFromFolderAsync(directory);
+            await UniTask.SwitchToMainThread();
             if (song == null)
             {
                 CancelTempLoader("Could not obtain a valid Beatmap from the downloaded content.");
                 return;
             }
 
-            PersistentUI.Instance.LevelLoadSliderLabel.text = "Loading song...";
             BeatSaberSongContainer.Instance.Song = song;
+            PersistentUI.Instance.LevelLoadSliderLabel.text = "Loading song...";
         }
         catch (Exception e)
         {
+            await UniTask.SwitchToMainThread();
+
             // Uh oh, an error occurred.
             // Let's see if it is due to user error, or a genuine error on ChroMapper's part.
             switch (e.GetType().Name)

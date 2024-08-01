@@ -296,6 +296,7 @@ public class SongInfoEditUI : MenuBase
         var fullPath = Path.Combine(Song.Directory, useTemp ? audioPath.text : Song.SongFilename);
 
         Debug.Log("Loading audio");
+
         if (File.Exists(fullPath))
         {
             await Song.LoadAudio((clip) =>
