@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -53,7 +54,7 @@ public class TempLoaderController : MonoBehaviour
         }
     }
 
-    private IEnumerator GetBeatmapFromLocation(Uri uri)
+    private async UniTask GetBeatmapFromLocation(Uri uri)
     {
         // We will extract the contents of the zip to the temp directory, so we will save the zip in memory.
         var downloadHandler = new DownloadHandlerBuffer();
@@ -90,81 +91,77 @@ public class TempLoaderController : MonoBehaviour
             if (request.result > UnityWebRequest.Result.Success)
             {
                 CancelTempLoader(request.error);
-                yield break;
+                return;
             }
 
-            yield return new WaitForEndOfFrame();
+            await UniTask.Yield();
         }
 
         // Check one more time to be safe.
         if (request.result > UnityWebRequest.Result.Success)
         {
             CancelTempLoader(request.error);
-            yield break;
+            return;
         }
 
         // Wahoo! We are done. Let's grab our downloaded data.
         var downloaded = downloadHandler.data;
 
         // If the request failed, our downloaded bytes will be null. Let's check that.
-        if (downloaded != null)
-        {
-            PersistentUI.Instance.LevelLoadSlider.value = 1;
-            PersistentUI.Instance.LevelLoadSliderLabel.text = "Extracting contents...";
-
-            yield return new WaitForEndOfFrame();
-
-            try
-            {
-                // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
-                var stream = new MemoryStream(downloaded);
-                var archive = new ZipArchive(stream, ZipArchiveMode.Read);
-
-                // Create the directory for our song to go to.
-                // Path.GetTempPath() should be compatible with Windows and UNIX.
-                // See Microsoft docs on it.
-                var directory = Path.Combine(Path.GetTempPath(), "ChroMapper Temp Loader", request.GetHashCode().ToString());
-                if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-
-                // Extract our zipped file into this directory.
-                archive.ExtractToDirectory(directory);
-
-                // Dispose our downloaded bytes, we don't need them.
-                downloadHandler.Dispose();
-
-                // Try and get a BeatSaberSong out of what we've downloaded.
-                var song = BeatSaberSong.GetSongFromFolder(directory);
-                if (song != null)
-                {
-                    PersistentUI.Instance.LevelLoadSliderLabel.text = "Loading song...";
-                    BeatSaberSongContainer.Instance.Song = song;
-                }
-                else
-                {
-                    CancelTempLoader("Could not obtain a valid Beatmap from the downloaded content.");
-                }
-            }
-            catch (Exception e)
-            {
-                // Uh oh, an error occurred.
-                // Let's see if it is due to user error, or a genuine error on ChroMapper's part.
-                switch (e.GetType().Name)
-                {
-                    // InvalidDataException means that the ZipArchive cannot be created.
-                    // ChroMapper tried to download something that is not a zip.
-                    case nameof(InvalidDataException):
-                        CancelTempLoader("Downloaded content was not a valid zip.");
-                        break;
-                    // Default case is a genuine error, let's print what it has to say.
-                    default:
-                        CancelTempLoader($"An unknown error ({e.GetType().Name}) has occurred:\n\n{e.Message}");
-                        break;
-                }
-            }
-        }
-        else
+        if (downloaded == null)
         {
             CancelTempLoader("Downloaded bytes is somehow null, yet the request was successfully completed. WTF!?");
+            return;
+        }
+
+        PersistentUI.Instance.LevelLoadSlider.value = 1;
+        PersistentUI.Instance.LevelLoadSliderLabel.text = "Extracting contents...";
+
+        try
+        {
+            // Slap our downloaded bytes into a memory stream and slap that into a ZipArchive.
+            var stream = new MemoryStream(downloaded);
+            var archive = new ZipArchive(stream, ZipArchiveMode.Read);
+
+            // Create the directory for our song to go to.
+            // Path.GetTempPath() should be compatible with Windows and UNIX.
+            // See Microsoft docs on it.
+            var directory = Path.Combine(Path.GetTempPath(), "ChroMapper Temp Loader", request.GetHashCode().ToString());
+            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
+            // Extract our zipped file into this directory.
+            archive.ExtractToDirectory(directory);
+
+            // Dispose our downloaded bytes, we don't need them.
+            downloadHandler.Dispose();
+
+            // Try and get a BeatSaberSong out of what we've downloaded.
+            var song = await BeatSaberSong.GetSongFromFolderAsync(directory);
+            if (song == null)
+            {
+                CancelTempLoader("Could not obtain a valid Beatmap from the downloaded content.");
+                return;
+            }
+
+            PersistentUI.Instance.LevelLoadSliderLabel.text = "Loading song...";
+            BeatSaberSongContainer.Instance.Song = song;
+        }
+        catch (Exception e)
+        {
+            // Uh oh, an error occurred.
+            // Let's see if it is due to user error, or a genuine error on ChroMapper's part.
+            switch (e.GetType().Name)
+            {
+                // InvalidDataException means that the ZipArchive cannot be created.
+                // ChroMapper tried to download something that is not a zip.
+                case nameof(InvalidDataException):
+                    CancelTempLoader("Downloaded content was not a valid zip.");
+                    break;
+                // Default case is a genuine error, let's print what it has to say.
+                default:
+                    CancelTempLoader($"An unknown error ({e.GetType().Name}) has occurred:\n\n{e.Message}");
+                    break;
+            }
         }
     }
 

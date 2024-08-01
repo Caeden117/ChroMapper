@@ -4,6 +4,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
+using Cysharp.Threading.Tasks;
 using static BeatSaberSong;
 
 /// <summary>
@@ -12,7 +13,6 @@ using static BeatSaberSong;
 public class DifficultySettings
 {
     private List<BaseEnvironmentEnhancement> envEnhancements;
-    private BaseDifficulty map;
     public string CustomName = "";
     public bool ForceDirty;
     public float NoteJumpMovementSpeed = 16;
@@ -29,14 +29,7 @@ public class DifficultySettings
     public DifficultySettings(DifficultyBeatmap difficultyBeatmap, bool forceDirty) : this(difficultyBeatmap) =>
         ForceDirty = forceDirty;
 
-    public BaseDifficulty Map
-    {
-        get
-        {
-            map ??= BeatSaberSongContainer.Instance.Song.GetMapFromDifficultyBeatmap(DifficultyBeatmap);
-            return map;
-        }
-    }
+    public BaseDifficulty Map { get; private set; }
 
     public List<BaseEnvironmentEnhancement> EnvEnhancements
     {
@@ -116,4 +109,6 @@ public class DifficultySettings
 
         envEnhancements = null;
     }
+
+    public async UniTask LoadMapAsync() => Map ??= (await BeatSaberSongContainer.Instance.Song.GetMapFromDifficultyBeatmapAsync(DifficultyBeatmap));
 }

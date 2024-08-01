@@ -45,6 +45,9 @@ public class FirstBootMenu : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = Settings.Instance.MaximumFPS;
 
+        // *sigh*
+        BeatSaberSong.TouchEditorValues();
+
         //Debug.Log(Environment.CurrentDirectory);
 
         if (Settings.ValidateDirectory())

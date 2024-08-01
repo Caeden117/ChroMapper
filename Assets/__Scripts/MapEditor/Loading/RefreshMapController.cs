@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Beatmap.Base;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -48,26 +49,26 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         switch (res)
         {
             case 0:
-                RefreshMap(true, false, false, false, false);
+                RefreshMap(true, false, false, false, false).Forget();
                 break;
             case 1:
-                RefreshMap(false, true, false, false, false);
+                RefreshMap(false, true, false, false, false).Forget();
                 break;
             case 2:
-                RefreshMap(false, false, true, false, false);
+                RefreshMap(false, false, true, false, false).Forget();
                 break;
             case 3:
-                RefreshMap(false, false, false, true, false);
+                RefreshMap(false, false, false, true, false).Forget();
                 break;
             case 4:
-                RefreshMap(false, false, false, false, true);
+                RefreshMap(false, false, false, false, true).Forget();
                 break;
         }
     }
 
-    private void RefreshMap(bool notes, bool obstacles, bool events, bool others, bool full)
+    private async UniTask RefreshMap(bool notes, bool obstacles, bool events, bool others, bool full)
     {
-        map = song.GetMapFromDifficultyBeatmap(diff);
+        map = await song.GetMapFromDifficultyBeatmapAsync(diff);
         loader.UpdateMapData(map);
         
         var currentSongBpmTime = atsc.CurrentSongBpmTime;

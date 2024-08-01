@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -20,17 +21,13 @@ public static class BeatSaberSongExtensions
     /// </summary>
     /// <param name="useTemp">Should we load the song the user has updated in the UI or from the saved song data</param>
     /// <returns>Coroutine IEnumerator</returns>
-    public static IEnumerator LoadAudio(this BeatSaberSong song, Action<AudioClip> onClipLoaded, float songTimeOffset = 0, string overrideLocalPath = null)
+    public static async UniTask LoadAudio(this BeatSaberSong song, Action<AudioClip> onClipLoaded, float songTimeOffset = 0, string overrideLocalPath = null)
     {
-        if (!Directory.Exists(song.Directory)) yield break;
+        if (!Directory.Exists(song.Directory)) return;
 
         var fullPath = Path.Combine(song.Directory, overrideLocalPath ?? song.SongFilename);
 
         // Commented out since Song Time Offset changes need to reload the song, even if its the same file
-        //if (fullPath == loadedSong)
-        //{
-        //    yield break;
-        //}
         var audioType = extensionToAudio[Path.GetExtension(fullPath)];
 
         var uriPath = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor
@@ -39,7 +36,7 @@ public static class BeatSaberSongExtensions
         var www = UnityWebRequestMultimedia.GetAudioClip($"file:///{uriPath}", audioType);
 
         // Escaping should fix the issue where half the people can't open ChroMapper's editor (I believe this is caused by spaces in the directory, hence escaping)
-        yield return www.SendWebRequest();
+        await www.SendWebRequest();
 
         Debug.Log("Song loaded!");
         var clip = DownloadHandlerAudioClip.GetContent(www);

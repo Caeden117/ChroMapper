@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using QuestDumper;
 using UnityEditor;
 using UnityEngine;
@@ -61,14 +62,14 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
             CMInputCallbackInstaller.DisableActionMaps(typeof(PauseManager), disabledActionMaps);
             previousUIModeType = UIMode.SelectedMode;
             uiMode.SetUIMode(UIModeType.Normal, false);
+            FadeInLoadingScreen(loadingCanvasGroup).Forget();
         }
         else
         {
             CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(PauseManager), disabledActionMaps);
             uiMode.SetUIMode(previousUIModeType, false);
+            FadeOutLoadingScreen(loadingCanvasGroup).Forget();
         }
-
-        StartCoroutine(TransitionMenu());
     }
 
     public void Quit(bool save) 
@@ -99,9 +100,9 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         }
     }
 
-    private IEnumerator WaitForSaveToFinish()
+    private async UniTask WaitForSaveToFinish()
     {
-        yield return new WaitUntil(() => !saveController.IsSaving);
+        await UniTask.WaitUntil(() => !saveController.IsSaving);
     }
 
     public void SaveAndQuitCM()
@@ -162,16 +163,10 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
 
     #region Transitions (Totally not ripped from PersistentUI)
 
-    private IEnumerator TransitionMenu()
-    {
-        if (IsPaused) yield return FadeInLoadingScreen(loadingCanvasGroup);
-        else yield return FadeOutLoadingScreen(loadingCanvasGroup);
-    }
+    public UniTask FadeInLoadingScreen(CanvasGroup group)
+        => FadeInLoadingScreen(Settings.Instance.InstantEscapeMenuTransitions ? 999f : 2f, loadingCanvasGroup);
 
-    public Coroutine FadeInLoadingScreen(CanvasGroup group) => StartCoroutine(
-        FadeInLoadingScreen(Settings.Instance.InstantEscapeMenuTransitions ? 999f : 2f, loadingCanvasGroup));
-
-    private IEnumerator FadeInLoadingScreen(float rate, CanvasGroup group)
+    private async UniTask FadeInLoadingScreen(float rate, CanvasGroup group)
     {
         group.blocksRaycasts = true;
         group.interactable = true;
@@ -180,23 +175,23 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         {
             group.alpha = fadeInCurve.Evaluate(t);
             t += Time.deltaTime * rate;
-            yield return null;
+            await UniTask.Yield();
         }
 
         group.alpha = 1;
     }
 
-    public Coroutine FadeOutLoadingScreen(CanvasGroup group) =>
-        StartCoroutine(FadeOutLoadingScreen(Settings.Instance.InstantEscapeMenuTransitions ? 999f : 2f, group));
+    public UniTask FadeOutLoadingScreen(CanvasGroup group)
+        => FadeOutLoadingScreen(Settings.Instance.InstantEscapeMenuTransitions ? 999f : 2f, group);
 
-    private IEnumerator FadeOutLoadingScreen(float rate, CanvasGroup group)
+    private async UniTask FadeOutLoadingScreen(float rate, CanvasGroup group)
     {
         float t = 1;
         while (t > 0)
         {
             group.alpha = fadeOutCurve.Evaluate(t);
             t -= Time.deltaTime * rate;
-            yield return null;
+            await UniTask.Yield();
         }
 
         group.alpha = 0;

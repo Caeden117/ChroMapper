@@ -1,9 +1,26 @@
 {
-  "name": "TestsEditMode",
-  "references": [
-    "Main",
-    "Plugins"
-  ],
-  "optionalUnityReferences": ["TestAssemblies"],
-  "includePlatforms": ["Editor"]
+    "name": "TestsEditMode",
+    "rootNamespace": "",
+    "references": [
+        "Main",
+        "Plugins",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "UniTask"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

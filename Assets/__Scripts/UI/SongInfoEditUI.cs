@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using QuestDumper;
 using SimpleJSON;
 using TMPro;
@@ -280,7 +281,7 @@ public class SongInfoEditUI : MenuBase
     /// <summary>
     ///     Start the LoadAudio Coroutine
     /// </summary>
-    public void ReloadAudio() => StartCoroutine(LoadAudio());
+    public void ReloadAudio() => LoadAudio().Forget();
 
     /// <summary>
     ///     Try and load the song, this is used for the song preview as well as later
@@ -288,16 +289,16 @@ public class SongInfoEditUI : MenuBase
     /// </summary>
     /// <param name="useTemp">Should we load the song the user has updated in the UI or from the saved song data</param>
     /// <returns>Coroutine IEnumerator</returns>
-    private IEnumerator LoadAudio(bool useTemp = true, bool applySongTimeOffset = false)
+    private async UniTask LoadAudio(bool useTemp = true, bool applySongTimeOffset = false)
     {
-        if (!Directory.Exists(Song.Directory)) yield break;
+        if (!Directory.Exists(Song.Directory)) return;
 
         var fullPath = Path.Combine(Song.Directory, useTemp ? audioPath.text : Song.SongFilename);
 
         Debug.Log("Loading audio");
         if (File.Exists(fullPath))
         {
-            yield return Song.LoadAudio((clip) =>
+            await Song.LoadAudio((clip) =>
             {
                 previewAudio.clip = clip;
                 BeatSaberSongContainer.Instance.LoadedSong = clip;

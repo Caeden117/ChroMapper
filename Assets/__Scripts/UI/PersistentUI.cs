@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -276,7 +277,7 @@ public class PersistentUI : MonoBehaviour
         Instance.editorLoadingBackground.sprite = Instance.editorImageList.GetBgSprite(song);
     }
 
-    public Coroutine FadeInLoadingScreen()
+    public async UniTask FadeInLoadingScreen(float duration = 2)
     {
         loadingTip.text = localization.GetRandomLoadingMessage();
 
@@ -284,34 +285,27 @@ public class PersistentUI : MonoBehaviour
         editorWaifu.sprite = localization.GetRandomWaifuSprite();
         editorWaifuCredits.text = editorWaifu.sprite.name;
 
-        return StartCoroutine(FadeInLoadingScreen(2f));
-    }
-
-    private IEnumerator FadeInLoadingScreen(float rate)
-    {
         loadingCanvasGroup.blocksRaycasts = true;
         loadingCanvasGroup.interactable = true;
         float t = 0;
         while (t < 1 && EnableTransitions)
         {
             loadingCanvasGroup.alpha = fadeInCurve.Evaluate(t);
-            t += Time.deltaTime * rate;
-            yield return null;
+            t += Time.deltaTime * duration;
+            await UniTask.Yield();
         }
 
         loadingCanvasGroup.alpha = 1;
     }
 
-    public Coroutine FadeOutLoadingScreen() => StartCoroutine(FadeOutLoadingScreen(2f));
-
-    private IEnumerator FadeOutLoadingScreen(float rate)
+    public async UniTask FadeOutLoadingScreen(float duration = 2)
     {
         float t = 1;
         while (t > 0 && EnableTransitions)
         {
             loadingCanvasGroup.alpha = fadeOutCurve.Evaluate(t);
-            t -= Time.deltaTime * rate;
-            yield return null;
+            t -= Time.deltaTime * duration;
+            await UniTask.Yield();
         }
 
         loadingCanvasGroup.alpha = 0;

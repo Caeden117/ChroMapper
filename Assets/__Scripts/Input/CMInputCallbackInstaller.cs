@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -181,22 +182,21 @@ public class CMInputCallbackInstaller : MonoBehaviour
         if (sceneMode == LoadSceneMode.Single) ClearAllEvents();
         foreach (var obj in scene.GetRootGameObjects()) FindAndInstallCallbacksRecursive(obj.transform);
         foreach (var transform in persistentObjects) FindAndInstallCallbacksRecursive(transform);
-        StartCoroutine(WaitThenReenableInputs());
+        WaitThenReenableInputs().Forget();
     }
 
     // Wait for the Scene Transition Manager to fade out, then enable our input.
-    private IEnumerator WaitThenReenableInputs()
+    private async UniTask WaitThenReenableInputs()
     {
-        yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
+        await UniTask.WaitWhile(() => SceneTransitionManager.IsLoading);
         input.Enable();
         SceneTransitionManager.Instance.AddLoadRoutine(DisableInputs());
     }
 
     // Automatically disables our Input Map when we change scenes. This is to prevent MissingReferenceExceptions.
-    private IEnumerator DisableInputs()
+    private async UniTask DisableInputs()
     {
-        if (!TestMode)
-            yield return new WaitForEndOfFrame();
+        await UniTask.WaitWhile(() => TestMode);
 
         input.Disable();
     }

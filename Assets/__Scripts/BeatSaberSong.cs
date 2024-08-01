@@ -8,6 +8,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Helper;
 using Beatmap.Info;
+using Cysharp.Threading.Tasks;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -27,6 +28,12 @@ public class BeatSaberSong
     // But it's in their own fields because Unity cries like a little blyat when you access them directly from another thread.
     private static string editorName;
     private static string editorVersion;
+
+    public static void TouchEditorValues()
+    {
+        if (string.IsNullOrEmpty(editorName)) editorName = Application.productName;
+        if (string.IsNullOrEmpty(editorVersion)) editorVersion = Application.version;
+    }
 
     public DateTime LastWriteTime;
     [FormerlySerializedAs("songName")] public string SongName = "New Song";
@@ -71,7 +78,6 @@ public class BeatSaberSong
         Json = json;
         LastWriteTime = System.IO.Directory.GetLastWriteTime(Directory);
         isFavourite = File.Exists(Path.Combine(directory, ".favourite"));
-        TouchEditorValues();
     }
 
     public BeatSaberSong(string directory, string songName)
@@ -79,7 +85,6 @@ public class BeatSaberSong
         if (!(string.IsNullOrEmpty(songName) || string.IsNullOrWhiteSpace(songName))) SongName = songName;
         Directory = Path.Combine(directory, CleanSongName);
         Json = null;
-        TouchEditorValues();
         Editors = new EditorsObject(null);
     }
 
@@ -109,15 +114,7 @@ public class BeatSaberSong
     public string CleanSongName => Path.GetInvalidFileNameChars()
         .Aggregate(SongName, (res, el) => res.Replace(el.ToString(), string.Empty));
 
-    // As crazy as this may seem, we do actually need to define them separately so that Unity doesn't
-    // whine like a baby when we access Application.productName or Application.version on another thread.
-    private void TouchEditorValues()
-    {
-        if (string.IsNullOrEmpty(editorName)) editorName = Application.productName;
-        if (string.IsNullOrEmpty(editorVersion)) editorVersion = Application.version;
-    }
-
-    public void SaveSong()
+    public async UniTask SaveSong()
     {
         try
         {
@@ -189,7 +186,7 @@ public class BeatSaberSong
                 IEnumerable<DifficultyBeatmap> sortedBeatmaps = set.DifficultyBeatmaps.OrderBy(x => x.DifficultyRank);
                 foreach (var diff in sortedBeatmaps)
                 {
-                    var map = GetMapFromDifficultyBeatmap(diff);
+                    var map = await GetMapFromDifficultyBeatmapAsync(diff);
                     if (map != null)
                         diff.RefreshRequirementsAndWarnings(map);
 
@@ -285,10 +282,8 @@ public class BeatSaberSong
             //No, patrick, not existing does not mean it is read only.
             if (!info.IsReadOnly || !info.Exists)
             {
-                using (var writer = new StreamWriter(Directory + "/Info.dat", false))
-                {
-                    writer.Write(Json.ToString(2));
-                }
+                using var writer = new StreamWriter(Directory + "/Info.dat", false);
+                await writer.WriteAsync(Json.ToString(2));
             }
             else
             {
@@ -328,17 +323,17 @@ public class BeatSaberSong
         return obj;
     }
 
-    public static BeatSaberSong GetSongFromFolder(string directory)
+    public static async UniTask<BeatSaberSong> GetSongFromFolderAsync(string directory)
     {
         try
         {
             //"excuse me this is not a schema change" ~lolPants
             //...after saying that beatsaver will stop accepting "info.dat" for uploading in the near future monkaHMMMMMMM
-            var mainNode = GetNodeFromFile(directory + "/Info.dat");
+            var mainNode = await GetNodeFromFileAsync(directory + "/Info.dat");
             if (mainNode == null)
             {
                 //Virgin "info.dat" VS chad "Info.dat"
-                mainNode = GetNodeFromFile(directory + "/info.dat");
+                mainNode = await GetNodeFromFileAsync(directory + "/info.dat");
                 if (mainNode == null) return null;
                 File.Move(directory + "/info.dat", directory + "/Info.dat");
             }
@@ -492,7 +487,7 @@ public class BeatSaberSong
         }
     }
 
-    public BaseDifficulty GetMapFromDifficultyBeatmap(DifficultyBeatmap data)
+    public async UniTask<BaseDifficulty> GetMapFromDifficultyBeatmapAsync(DifficultyBeatmap data)
     {
         if (!System.IO.Directory.Exists(Directory))
         {
@@ -501,7 +496,7 @@ public class BeatSaberSong
         }
         var fullPath = Path.Combine(Directory, data.BeatmapFilename);
 
-        var mainNode = GetNodeFromFile(fullPath);
+        var mainNode = await GetNodeFromFileAsync(fullPath);
         if (mainNode == null)
         {
             Debug.LogWarning("Failed to get difficulty json file " + fullPath);
@@ -511,16 +506,15 @@ public class BeatSaberSong
         return BeatmapFactory.GetDifficultyFromJson(mainNode, fullPath);
     }
 
-    private static JSONNode GetNodeFromFile(string file)
+    private static async UniTask<JSONNode> GetNodeFromFileAsync(string file)
     {
         if (!File.Exists(file)) return null;
         try
         {
-            using (var reader = new StreamReader(file))
-            {
-                var node = JSON.Parse(reader.ReadToEnd());
-                return node;
-            }
+            using var reader = new StreamReader(file);
+            var str = await reader.ReadToEndAsync();
+            var node = JSON.Parse(str);
+            return node;
         }
         catch (Exception e)
         {

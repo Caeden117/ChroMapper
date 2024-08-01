@@ -5,6 +5,7 @@ using System.Linq;
 using Beatmap.Base;
 using Beatmap.V2;
 using Beatmap.V3;
+using Cysharp.Threading.Tasks;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -269,7 +270,7 @@ public class DifficultySelect : MonoBehaviour
     ///     Handle selecting the row when clicked
     /// </summary>
     /// <param name="row">UI row that was clicked on</param>
-    private void OnClick(DifficultyRow row)
+    private async UniTask OnClick(DifficultyRow row)
     {
         if (!diffs.ContainsKey(row.Name)) return;
 
@@ -277,13 +278,16 @@ public class DifficultySelect : MonoBehaviour
 
         // Select a difficulty
         selected = row;
-        openEditorButton.interactable = true;
         if (!loading) selectedMemory[currentCharacteristic.BeatmapCharacteristicName] = selected.Name;
         var selImage = selected.Background;
         selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 1.0f);
 
         var diff = diffs[row.Name];
         BeatSaberSongContainer.Instance.DifficultyData = diff.DifficultyBeatmap;
+
+        await diff.LoadMapAsync();
+
+        openEditorButton.interactable = true;
 
         njsField.text = diff.NoteJumpMovementSpeed.ToString();
         songBeatOffsetField.text = diff.NoteJumpStartBeatOffset.ToString();
@@ -324,7 +328,7 @@ public class DifficultySelect : MonoBehaviour
 
             // This diff has previously been saved, confirm deletion
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "deletediff.dialog",
-                r => HandleDeleteDifficulty(row, r), PersistentUI.DialogBoxPresetType.YesNo,
+                r => HandleDeleteDifficulty(row, r).Forget(), PersistentUI.DialogBoxPresetType.YesNo,
                 new object[] { diffs[row.Name].DifficultyBeatmap.Difficulty });
         }
         else if (val && !diffs.ContainsKey(row.Name)) // Create if does not exist
@@ -389,7 +393,7 @@ public class DifficultySelect : MonoBehaviour
     /// </summary>
     /// <param name="row">UI row that was clicked on</param>
     /// <param name="r">Confirmation from the user</param>
-    private void HandleDeleteDifficulty(DifficultyRow row, int r)
+    private async UniTask HandleDeleteDifficulty(DifficultyRow row, int r)
     {
         if (r == 1) // User canceled out
         {
@@ -399,7 +403,7 @@ public class DifficultySelect : MonoBehaviour
 
         var diff = diffs[row.Name].DifficultyBeatmap;
 
-        var fileToDelete = Song.GetMapFromDifficultyBeatmap(diff)?.DirectoryAndFile;
+        var fileToDelete = (await Song.GetMapFromDifficultyBeatmapAsync(diff))?.DirectoryAndFile;
         if (File.Exists(fileToDelete)) FileOperationAPIWrapper.MoveToRecycleBin(fileToDelete);
 
         // Remove status effects if present

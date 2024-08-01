@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Beatmap.Containers;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -28,13 +29,10 @@ public class LoadInitialMap : MonoBehaviour
     private BeatSaberSong.DifficultyBeatmap diff;
     private BeatSaberSong song;
 
-    private void Awake() => SceneTransitionManager.Instance.AddLoadRoutine(LoadMap());
-
-    public IEnumerator LoadMap()
+    private async UniTask Start()
     {
-        if (BeatSaberSongContainer.Instance == null) yield break;
+        if (BeatSaberSongContainer.Instance == null) return;
         PersistentUI.Instance.LevelLoadSliderLabel.text = "";
-        yield return new WaitUntil(() => atsc.Initialized); //Wait until Start has been called
 
         song = BeatSaberSongContainer.Instance.Song; //Grab songe data
         diff = BeatSaberSongContainer.Instance.DifficultyData;

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Serialization;
 using Beatmap.Base;
+using Cysharp.Threading.Tasks;
 
 public class BeatSaberSongContainer : MonoBehaviour
 {
@@ -48,14 +49,14 @@ public class BeatSaberSongContainer : MonoBehaviour
         SceneTransitionManager.Instance.LoadScene("03_Mapper", DownloadAndLaunchMap());
     }
 
-    private IEnumerator DownloadAndLaunchMap()
+    private async UniTask DownloadAndLaunchMap()
     {
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(true);
         PersistentUI.Instance.LevelLoadSlider.value = 0;
         PersistentUI.Instance.LevelLoadSliderLabel.text =
             LocalizationSettings.StringDatabase.GetLocalizedString("MultiMapping", "multi.session.downloading");
 
-        yield return new WaitUntil(() => MultiMapperConnection?.MapData != null);
+        await UniTask.WaitUntil(() => MultiMapperConnection?.MapData != null);
 
         // Create the directory for our song to go to.
         // Path.GetTempPath() should be compatible with Windows and UNIX.
@@ -69,12 +70,13 @@ public class BeatSaberSongContainer : MonoBehaviour
         // Extract our zipped file into this directory.
         archive.ExtractToDirectory(directory);
 
+        PersistentUI.Instance.LevelLoadSliderLabel.text =
+            LocalizationSettings.StringDatabase.GetLocalizedString("MultiMapping", "multi.session.loading");
+
         // Try and get a BeatSaberSong out of what we've downloaded.
-        var song = BeatSaberSong.GetSongFromFolder(directory);
+        var song = await BeatSaberSong.GetSongFromFolderAsync(directory);
         if (song != null)
         {
-            PersistentUI.Instance.LevelLoadSliderLabel.text =
-                LocalizationSettings.StringDatabase.GetLocalizedString("MultiMapping", "multi.session.loading");
             Song = song;
 
             // Find characteristic and difficulty
@@ -82,10 +84,10 @@ public class BeatSaberSongContainer : MonoBehaviour
                 .Find(set => set.BeatmapCharacteristicName == MultiMapperConnection.MapData.Characteristic)
                 .DifficultyBeatmaps.Find(diff => diff.Difficulty == MultiMapperConnection.MapData.Diff);
 
-            Map = song.GetMapFromDifficultyBeatmap(DifficultyData);
+            Map = await song.GetMapFromDifficultyBeatmapAsync(DifficultyData);
             Settings.Instance.Load_MapV3 = Map.Version[0] == '3';
 
-            yield return Song.LoadAudio((clip) =>
+            await Song.LoadAudio((clip) =>
             {
                 LoadedSong = clip;
                 LoadedSongSamples = clip.samples;
