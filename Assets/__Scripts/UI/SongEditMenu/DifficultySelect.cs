@@ -145,25 +145,12 @@ public class DifficultySelect : MonoBehaviour
         row.ShowDirtyObjects(localDiff);
     }
 
-    private BaseDifficulty TryGetExistingMapFromDiff(DifficultySettings diff)
-    {
-        try
-        {
-            return diff.Map;
-        }
-        catch (Exception) { }
-
-        ;
-
-        return null;
-    }
-
     public void SaveAllDiffs()
     {
         foreach (var row in rows)
         {
             if (diffs.ContainsKey(row.Name))
-                SaveDiff(row);
+                SaveDiff(row, false).Forget();
         }
     }
 
@@ -171,16 +158,22 @@ public class DifficultySelect : MonoBehaviour
     ///     Save the diff
     /// </summary>
     /// <param name="row">UI row that was clicked on</param>
-    private void SaveDiff(DifficultyRow row)
+    private async UniTask SaveDiff(DifficultyRow row, bool saveSong = true)
     {
         var localSong = BeatSaberSongContainer.Instance.Song;
         if (!Directory.Exists(localSong.Directory))
-            localSong.SaveSong();
+        {
+            await UniTask.SwitchToThreadPool();
+            await localSong.SaveSong();
+            await UniTask.SwitchToMainThread();
+        }
 
         var localDiff = diffs[row.Name];
         var firstSave = localDiff.ForceDirty;
         localDiff.Commit();
         row.ShowDirtyObjects(false, true);
+
+        await UniTask.SwitchToThreadPool();
 
         var diff = localDiff.DifficultyBeatmap;
 
@@ -189,7 +182,9 @@ public class DifficultySelect : MonoBehaviour
         if (!currentCharacteristic.DifficultyBeatmaps.Contains(diff))
             currentCharacteristic.DifficultyBeatmaps.Add(diff);
 
-        var map = TryGetExistingMapFromDiff(localDiff) ?? new V3Difficulty() { MainNode = new JSONObject() };
+        var map = localDiff.Map;
+        map ??= await localSong.GetMapFromDifficultyBeatmapAsync(localDiff.DifficultyBeatmap);
+        map ??= new V3Difficulty() { MainNode = new JSONObject() };
         var oldPath = map.DirectoryAndFile;
 
         diff.UpdateName();
@@ -208,9 +203,11 @@ public class DifficultySelect : MonoBehaviour
 
         diff.RefreshRequirementsAndWarnings(map);
 
-        localSong.SaveSong();
-        characteristicSelect.Recalculate();
+        if (saveSong) await localSong.SaveSong();
 
+        await UniTask.SwitchToMainThread();
+
+        characteristicSelect.Recalculate();
         Debug.Log("Saved " + row.Name);
     }
 

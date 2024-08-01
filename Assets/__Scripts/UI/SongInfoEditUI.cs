@@ -190,7 +190,7 @@ public class SongInfoEditUI : MenuBase
         contributorController.Commit();
         Song.Contributors = contributorController.Contributors;
 
-        Song.SaveSong();
+        UniTask.RunOnThreadPool(Song.SaveSong).Forget();
 
         // Update duration cache (This needs to be beneath SaveSong so that the directory is guaranteed to be created)
         // also dont forget to null check please thanks
@@ -367,11 +367,11 @@ public class SongInfoEditUI : MenuBase
 
     private void SaveAllFields()
     {
-        if (IsDirty())
-            SaveToSong();
-
         if (difficultySelect.IsDirty())
             difficultySelect.SaveAllDiffs();
+
+        if (IsDirty())
+            SaveToSong();
     }
 
     /// <summary>
