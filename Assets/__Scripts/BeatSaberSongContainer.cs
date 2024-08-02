@@ -83,7 +83,7 @@ public class BeatSaberSongContainer : MonoBehaviour
                 .DifficultyBeatmaps.Find(diff => diff.Difficulty == MultiMapperConnection.MapData.Diff);
 
             Map = song.GetMapFromDifficultyBeatmap(DifficultyData);
-            Settings.Instance.Load_MapV3 = Map.Version[0] == '3';
+            Settings.Instance.MapVersion = Map.Version[0] == '3' ? 3 : 2;
 
             yield return Song.LoadAudio((clip) =>
             {

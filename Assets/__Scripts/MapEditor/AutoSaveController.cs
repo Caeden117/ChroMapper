@@ -207,33 +207,30 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             removedObjects.AddRange(obstaclesToRemove);
         }
 
-        if (Settings.Instance.Load_MapV3)
+        if (Settings.Instance.RemoveArcsOutsideMap)
         {
-            if (Settings.Instance.RemoveArcsOutsideMap)
+            var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
+            var arcsToRemove = BeatSaberSongContainer.Instance.Map.Arcs.Where(arc =>
+                arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime).ToList();
+            foreach (var arc in arcsToRemove)
             {
-                var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
-                var arcsToRemove = BeatSaberSongContainer.Instance.Map.Arcs.Where(arc =>
-                    arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime).ToList();
-                foreach (var arc in arcsToRemove)
-                {
-                    arcCollection.DeleteObject(arc, false, false, inCollectionOfDeletes: true);
-                }
-                arcCollection.DoPostObjectsDeleteWorkflow();
-                removedObjects.AddRange(arcsToRemove);
+                arcCollection.DeleteObject(arc, false, false, inCollectionOfDeletes: true);
             }
+            arcCollection.DoPostObjectsDeleteWorkflow();
+            removedObjects.AddRange(arcsToRemove);
+        }
 
-            if (Settings.Instance.RemoveChainsOutsideMap)
+        if (Settings.Instance.RemoveChainsOutsideMap)
+        {
+            var chainCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
+            var chainsToRemove = BeatSaberSongContainer.Instance.Map.Chains.Where(chain =>
+                chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime).ToList();
+            foreach (var chain in chainsToRemove)
             {
-                var chainCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
-                var chainsToRemove = BeatSaberSongContainer.Instance.Map.Chains.Where(chain =>
-                    chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime).ToList();
-                foreach (var chain in chainsToRemove)
-                {
-                    chainCollection.DeleteObject(chain, false, false, inCollectionOfDeletes: true);
-                }
-                chainCollection.DoPostObjectsDeleteWorkflow();
-                removedObjects.AddRange(chainsToRemove);
+                chainCollection.DeleteObject(chain, false, false, inCollectionOfDeletes: true);
             }
+            chainCollection.DoPostObjectsDeleteWorkflow();
+            removedObjects.AddRange(chainsToRemove);
         }
         
         if (removedObjects.Count > 0) BeatmapActionContainer.AddAction(new SelectionDeletedAction(removedObjects));
@@ -259,16 +256,19 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             if (BeatSaberSongContainer.Instance.Map.Obstacles.Any(obst => obst.SongBpmTime >= maxSongBpmTime))
                 return true;
         }
-        if (Settings.Instance.Load_MapV3)
+        if (Settings.Instance.RemoveArcsOutsideMap)
         {
-            if (Settings.Instance.RemoveArcsOutsideMap)
-                if (BeatSaberSongContainer.Instance.Map.Arcs.Any(arc => arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime))
-                    return true;
-
-            if (Settings.Instance.RemoveChainsOutsideMap)
-                if (BeatSaberSongContainer.Instance.Map.Chains.Any(chain => chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime))
-                    return true;
+            if (BeatSaberSongContainer.Instance.Map.Arcs.Any(arc =>
+                    arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime))
+                return true;
         }
+        if (Settings.Instance.RemoveChainsOutsideMap)
+        {
+            if (BeatSaberSongContainer.Instance.Map.Chains.Any(chain =>
+                    chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime))
+                return true;
+        }
+        
         return false;
     }
 

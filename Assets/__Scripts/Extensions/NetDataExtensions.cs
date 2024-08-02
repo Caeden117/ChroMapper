@@ -16,7 +16,7 @@ public static class NetDataExtensions
     {
         var beatmapObjectType = (ObjectType)reader.GetByte();
 
-        if (Settings.Instance.Load_MapV3)
+        if (Settings.Instance.MapVersion == 3)
         {
             BaseObject obj = beatmapObjectType switch
             {

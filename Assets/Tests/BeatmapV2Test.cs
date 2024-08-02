@@ -41,7 +41,7 @@ namespace Tests
         {
             Assert.IsInstanceOf<V2Difficulty>(BeatSaberSongContainer.Instance.Map,
                 "Beatmap instance version should be v2");
-            Assert.IsFalse(Settings.Instance.Load_MapV3,
+            Assert.IsFalse(Settings.Instance.MapVersion == 3,
                 "Settings Load Beatmap V3 should be false, otherwise may cause unnecessary issue");
         }
 

@@ -260,7 +260,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
         // convert event to their respective event type
         // TODO: cleaner factory would be better, also this is ugly as hell
-        if (Settings.Instance.Load_MapV3)
+        if (Settings.Instance.MapVersion == 3)
         {
             if (evt.IsLaneRotationEvent())
             {

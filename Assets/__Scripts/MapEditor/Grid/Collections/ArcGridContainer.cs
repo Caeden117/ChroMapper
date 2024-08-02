@@ -36,23 +36,18 @@ public class ArcGridContainer : BeatmapObjectContainerCollection<BaseArc>
     
     internal override void SubscribeToCallbacks()
     {
-        if (!Settings.Instance.Load_MapV3) return;
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
     }
 
     internal override void UnsubscribeToCallbacks()
     {
-        if (!Settings.Instance.Load_MapV3) return;
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
     }
 
     internal override void LateUpdate()
     {
-        if (Settings.Instance.Load_MapV3)
-        {
-            base.LateUpdate();
-            ScheduleRecomputePosition();
-        }
+        base.LateUpdate();
+        ScheduleRecomputePosition();
     }
 
     private void SpawnCallback(bool initial, int index, BaseObject objectData)

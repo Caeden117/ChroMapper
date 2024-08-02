@@ -35,11 +35,9 @@ public class TracksManager : MonoBehaviour
         objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note));
         objectContainerCollections.Add(
             BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle));
-        if (Settings.Instance.Load_MapV3)
-        {
-            objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc));
-            objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain));
-        }
+        objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc));
+        objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain));
+
         ObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
     }
 

@@ -31,7 +31,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         var notes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
         notes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
-        if (!Settings.Instance.Load_MapV3 && notes.Count > 1)
+        if (Settings.Instance.MapVersion == 2 && notes.Count > 1)
         {
             PersistentUI.Instance.ShowDialogBox("Chain placement is not supported in v2 format.\nConvert map to v3 to place chains.",
                 null, PersistentUI.DialogBoxPresetType.Ok);

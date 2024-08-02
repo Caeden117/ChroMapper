@@ -163,7 +163,7 @@ namespace Tests
 
         private void AssertSelectedObjects(ICollection<BaseObject> objects)
         {
-            Assert.True(Settings.Instance.Load_MapV3);
+            Assert.True(Settings.Instance.MapVersion == 3);
             foreach (var baseObject in objects)
             {
                 Assert.True(SelectionController.SelectedObjects.Contains(baseObject), $"{baseObject} should be selected");

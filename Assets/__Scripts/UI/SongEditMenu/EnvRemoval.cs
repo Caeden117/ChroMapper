@@ -34,7 +34,7 @@ public class EnvRemoval : MonoBehaviour
 
     public void AddItem()
     {
-        var newItem = Settings.Instance.Load_MapV3
+        var newItem = Settings.Instance.MapVersion == 3
             ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement("")
             : new V2EnvironmentEnhancement("");
         newItem.Active = false;

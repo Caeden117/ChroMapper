@@ -178,7 +178,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             return;
         }
 
-        var newBookmark = Settings.Instance.Load_MapV3
+        var newBookmark = Settings.Instance.MapVersion == 3
             ? (BaseBookmark)new V3Bookmark(Atsc.CurrentJsonTime, name)
             : new V2Bookmark(Atsc.CurrentJsonTime, name);
 

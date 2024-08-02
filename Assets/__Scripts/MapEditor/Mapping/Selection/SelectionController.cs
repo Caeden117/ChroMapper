@@ -162,12 +162,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             clearTypes.AddRange(new[]
             {
-                ObjectType.Note, ObjectType.Obstacle, ObjectType.CustomNote
+                ObjectType.Note, ObjectType.Obstacle, ObjectType.CustomNote, ObjectType.Arc, ObjectType.Chain
             });
-            if (Settings.Instance.Load_MapV3)
-            {
-                clearTypes.AddRange(new[] { ObjectType.Arc, ObjectType.Chain });
-            }
         }
 
         if (hasNoteOrObstacle && !hasEvent)
