@@ -1,31 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Beatmap.Base.Customs;
 using Beatmap.Helper;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseDifficulty : BaseItem, ICustomDataDifficulty
+    /// <summary>
+    /// ChroMapper's internal format.
+    /// - Notes contains both color notes and bombs
+    /// - Events contains basic events, rotation events, and boost events
+    /// </summary>
+    public class BaseDifficulty : BaseItem//, ICustomDataDifficulty
     {
-        public Dictionary<string, BaseMaterial> Materials = new();
-
-        public Dictionary<string, JSONArray> PointDefinitions = new();
-        public JSONNode MainNode { get; set; }
         public string DirectoryAndFile { get; set; }
-        public abstract string Version { get; }
+
+        public string Version => Settings.Instance.MapVersion switch
+        {
+            2 => "2.6.0",
+            3 => "3.3.0",
+            _ => throw new NotImplementedException("Unknown version")
+        };
         public List<BaseBpmEvent> BpmEvents { get; set; } = new();
-        public List<BaseRotationEvent> RotationEvents { get; set; } = new();
         public List<BaseNote> Notes { get; set; } = new();
-        public List<BaseBombNote> Bombs { get; set; } = new();
         public List<BaseObstacle> Obstacles { get; set; } = new();
         public List<BaseArc> Arcs { get; set; } = new();
         public List<BaseChain> Chains { get; set; } = new();
         public List<BaseWaypoint> Waypoints { get; set; } = new();
         public List<BaseEvent> Events { get; set; } = new();
-        public List<BaseColorBoostEvent> ColorBoostEvents { get; set; } = new();
 
         public List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>> LightColorEventBoxGroups { get; set; } = new();
 
@@ -40,11 +47,21 @@ namespace Beatmap.Base
 
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
         public bool UseNormalEventsAsCompatibleEvents { get; set; } = true;
+
         public float Time { get; set; }
         public List<BaseBpmChange> BpmChanges { get; set; } = new();
         public List<BaseBookmark> Bookmarks { get; set; } = new();
-        public abstract string BookmarksUseOfficialBpmEventsKey { get; }
+        public string BookmarksUseOfficialBpmEventsKey => Settings.Instance.MapVersion switch
+        {
+            2 => "_bookmarksUseOfficialBpmEvents",
+            3 => "bookmarksUseOfficialBpmEvents",
+            _ => null
+        };
         public List<BaseCustomEvent> CustomEvents { get; set; } = new();
+
+        public Dictionary<string, BaseMaterial> Materials = new();
+
+        public Dictionary<string, JSONArray> PointDefinitions = new();
 
         public List<BaseEnvironmentEnhancement> EnvironmentEnhancements { get; set; } = new();
 
@@ -52,15 +69,12 @@ namespace Beatmap.Base
 
         private List<List<BaseObject>> AllBaseObjectProperties() => new()
         {
-            new List<BaseObject>(RotationEvents),
             new List<BaseObject>(Notes),
-            new List<BaseObject>(Bombs),
             new List<BaseObject>(Obstacles),
             new List<BaseObject>(Arcs),
             new List<BaseObject>(Chains),
             new List<BaseObject>(Waypoints),
             new List<BaseObject>(Events),
-            new List<BaseObject>(ColorBoostEvents),
             new List<BaseObject>(Bookmarks),
             new List<BaseObject>(CustomEvents),
         };
@@ -69,6 +83,8 @@ namespace Beatmap.Base
         {
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
             var customData = BeatSaberSongContainer.Instance.DifficultyData.CustomData;
+            
+            // Replace editor offset with equivalent bpm change if it exists
             if ((customData?.HasKey("_editorOffset") ?? false) && customData["_editorOffset"] > 0f)
             {
                 float offset = customData["_editorOffset"];
@@ -78,12 +94,14 @@ namespace Beatmap.Base
                 Debug.Log($"Editor offset detected: {songBpm / 60 * (offset / 1000f)}s");
             }
 
-            if (BpmChanges.Count != 0)
+            if (BpmChanges.Count == 0)
             {
-                PersistentUI.Instance.ShowDialogBox("Mapper", "custom.bpm.convert",
-                    null, PersistentUI.DialogBoxPresetType.Ok);
-                BpmEvents.Clear();
+                return;
             }
+            
+            PersistentUI.Instance.ShowDialogBox("Mapper", "custom.bpm.convert",
+                null, PersistentUI.DialogBoxPresetType.Ok);
+            BpmEvents.Clear(); // If for some reason we have both official and old custom bpm changes, we'll overwrite official bpm events
 
             BaseBpmEvent nextBpmChange;
             for (var i = 0; i < BpmChanges.Count; i++)
@@ -184,13 +202,7 @@ namespace Beatmap.Base
             BpmChanges.Clear();
         }
 
-        public abstract bool IsChroma();
-        public abstract bool IsNoodleExtensions();
-        public abstract bool IsMappingExtensions();
-
-        public abstract bool Save();
-        public abstract bool SaveCustom();
-
+        // TODO: Bullet - I don't think this is needed anymore. Can remove code completely if no issues come up.
         // Cleans an array by filtering out null elements, or objects with invalid time.
         // Could definitely be optimized a little bit, but since saving is done on a separate thread, I'm not too worried about it.
         protected static JSONArray CleanupArray(JSONArray original, string timeKey = "_time")
@@ -203,16 +215,30 @@ namespace Beatmap.Base
             return array;
         }
 
-        // fuick
-        // public static abstract IDifficulty GetFromJson(JSONNode node, string path);
+        public bool Save()
+        {
+            var outputJson = Settings.Instance.MapVersion switch
+            {
+                2 => V2Difficulty.GetOutputJson(this),
+                3 => V3Difficulty.GetOutputJson(this),
+            };
 
-        protected void WriteDifficultyFile(BaseDifficulty map) =>
-            // I *believe* this automatically creates the file if it doesn't exist. Needs more experimentation
-            File.WriteAllText(map.DirectoryAndFile,
-                Settings.Instance.FormatJson ? map.MainNode.ToString(2) : map.MainNode.ToString());
+            if (outputJson == null)
+                return false;
+            
+            // Write difficulty file
+            File.WriteAllText(DirectoryAndFile, Settings.Instance.FormatJson 
+                ? outputJson.ToString(2)
+                : outputJson.ToString());
+            
+            // Write Bpm file
+            WriteBPMInfoFile(this);
+
+            return true;
+        }
 
         // Write BPMInfo file for official editor compatibility
-        protected void WriteBPMInfoFile(BaseDifficulty map)
+        private void WriteBPMInfoFile(BaseDifficulty map)
         {
             JSONNode bpmInfo = new JSONObject();
 
@@ -283,5 +309,24 @@ namespace Beatmap.Base
             File.WriteAllText(Path.Combine(BeatSaberSongContainer.Instance.Song.Directory, "BPMInfo.dat"),
                 bpmInfo.ToString(2));
         }
+        
+        public bool IsChroma() =>
+            Notes.Any(x => x.IsChroma())  || Arcs.Any(x => x.IsChroma()) ||
+            Chains.Any(x => x.IsChroma()) || Obstacles.Any(x => x.IsChroma()) ||
+            Events.Any(x => x.IsChroma()) || EnvironmentEnhancements.Any();
+
+        public bool IsNoodleExtensions() =>
+            Notes.Any(x => x.IsNoodleExtensions()) ||
+            Arcs.Any(x => x.IsNoodleExtensions()) || Chains.Any(x => x.IsNoodleExtensions()) ||
+            Obstacles.Any(x => x.IsNoodleExtensions());
+        
+        public bool IsMappingExtensions() =>
+            Notes.Any(x => x.IsMappingExtensions()) ||
+            Arcs.Any(x => x.IsMappingExtensions()) || Chains.Any(x => x.IsMappingExtensions()) ||
+            Obstacles.Any(x => x.IsMappingExtensions());
+        
+        public override JSONNode ToJson() => throw new NotImplementedException();
+
+        public override BaseItem Clone() => throw new NotImplementedException();
     }
 }
