@@ -316,45 +316,5 @@ namespace Beatmap.Converters
 
             return n;
         }
-
-        public static V2Difficulty Difficulty(V3Difficulty other)
-        {
-            var d = new V2Difficulty
-            {
-                DirectoryAndFile = other.DirectoryAndFile,
-                Events = other.Events,
-                Notes = other.Notes,
-                Obstacles = other.Obstacles,
-                Waypoints = other.Waypoints,
-                Arcs = other.Arcs,
-                BpmEvents = other.BpmEvents,
-                BpmChanges = other.BpmChanges,
-                Bookmarks = other.Bookmarks,
-                CustomEvents = other.CustomEvents,
-                EnvironmentEnhancements = other.EnvironmentEnhancements,
-                Time = other.Time,
-                CustomData = other.CustomData?.Clone() ?? new JSONObject()
-            };
-
-            if (d.Materials.Any())
-            {
-                var newMat = d.Materials.ToDictionary(m => m.Key, m => (BaseMaterial)new V2Material(m.Value));
-                d.Materials = newMat;
-            }
-
-            if (d.CustomData != null)
-            {
-                if (d.CustomData.HasKey("time")) d.CustomData.Remove("time");
-                if (d.CustomData.HasKey("BPMChanges")) d.CustomData.Remove("BPMChanges");
-                if (d.CustomData.HasKey("bookmarks")) d.CustomData.Remove("bookmarks");
-                if (d.CustomData.HasKey("customEvents")) d.CustomData.Remove("customEvents");
-                if (d.CustomData.HasKey("pointDefinitions")) d.CustomData.Remove("pointDefinitions");
-                if (d.CustomData.HasKey("environment")) d.CustomData.Remove("environment");
-                if (d.CustomData.HasKey("materials")) d.CustomData.Remove("materials");
-                if (d.CustomData.HasKey(other.BookmarksUseOfficialBpmEventsKey)) d.CustomData.Remove(other.BookmarksUseOfficialBpmEventsKey);
-            }
-
-            return d;
-        }
     }
 }

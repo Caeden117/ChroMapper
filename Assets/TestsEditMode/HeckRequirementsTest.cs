@@ -15,7 +15,7 @@ namespace TestsEditMode
         {
         }
 
-        private V3Difficulty _difficulty;
+        private BaseDifficulty _difficulty;
         private BeatSaberSong.DifficultyBeatmap _info;
 
         private HeckRequirementCheck _chromaReq, _noodleReq;
@@ -30,7 +30,7 @@ namespace TestsEditMode
         [SetUp]
         public void SetupMop()
         {
-            _difficulty = new V3Difficulty { MainNode = new JSONObject() };
+            _difficulty = new BaseDifficulty();
             _info = new BeatSaberSong.DifficultyBeatmap(new BeatSaberSong.DifficultyBeatmapSet());
         }
 

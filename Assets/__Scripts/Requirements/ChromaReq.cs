@@ -25,9 +25,9 @@ public class ChromaReq : HeckRequirementCheck
     private bool HasEnvironmentRemoval(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map) =>
         (mapInfo.CustomData != null && mapInfo.CustomData.HasKey("_environmentRemoval") &&
          mapInfo.CustomData["_environmentRemoval"].AsArray.Count > 0) ||
-        (map.MainNode.HasKey("_customData") && map.MainNode["_customData"] != null &&
-         map.MainNode["_customData"].HasKey("_environment") &&
-         map.MainNode["_customData"]["_environment"].AsArray.Count > 0);
+        (map.CustomData != null &&
+         map.CustomData.HasKey("_environment") &&
+         map.CustomData["_environment"].AsArray.Count > 0);
     
     private static readonly List<string> chromaSpecificTrackTypes = new List<string> { "AnimateComponent" };
 

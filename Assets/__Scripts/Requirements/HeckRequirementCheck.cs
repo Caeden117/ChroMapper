@@ -76,7 +76,6 @@ public abstract class HeckRequirementCheck : RequirementCheck
 
         AddAnimationDataFromHeckGameplayObjects(animationKeys, tracks, map.Notes);
         AddAnimationDataFromHeckGameplayObjects(animationKeys, tracks, map.Obstacles);
-        AddAnimationDataFromHeckGameplayObjects(animationKeys, tracks, map.Bombs);
         AddAnimationDataFromHeckGameplayObjects(animationKeys, tracks, map.Arcs);
         AddAnimationDataFromHeckGameplayObjects(animationKeys, tracks, map.Chains);
         // map.Events is handled by ChromaReq
