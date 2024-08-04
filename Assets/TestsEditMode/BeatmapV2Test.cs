@@ -10,7 +10,6 @@ namespace TestsEditMode
 {
     public class BeatmapV2Test
     {
-        private const float epsilon = 0.001f;
         private const string fileJson = @"
 {
     ""_version"": ""2.6.0"",
@@ -131,60 +130,22 @@ namespace TestsEditMode
             Assert.AreEqual("2.6.0",difficulty.Version);
             
             Assert.AreEqual(2, difficulty.Notes.Count);
-            AssertNoteProperties(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
-            AssertNoteProperties(difficulty.Notes[1], 10, 1, 0, 3, 0, 0);
+            BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
+            BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[1], 10, 1, 0, 3, 0, 0);
             
             Assert.AreEqual(1, difficulty.Obstacles.Count);
-            AssertObstacleProperties(difficulty.Obstacles[0], 10, 1, 0, 2, 1, 5, 5);
+            BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[0], 10, 1, 0, 2, 1, 5, 5);
             
             Assert.AreEqual(0, difficulty.Arcs.Count); // We do not load arcs from v2
             
             Assert.AreEqual(1, difficulty.BpmEvents.Count);
-            AssertBpmEventProperties(difficulty.BpmEvents[0], 10, 128);
+            BeatmapAssert.BpmEventPropertiesAreEqual(difficulty.BpmEvents[0], 10, 128);
             
             Assert.AreEqual(4, difficulty.Events.Count);
-            AssertEventProperties(difficulty.Events[0], 10, 1, 3, 1);
-            AssertEventProperties(difficulty.Events[1], 10, 5, 1, 0);
-            AssertEventProperties(difficulty.Events[2], 10, 14, 4, 0);
-            AssertEventProperties(difficulty.Events[3], 15, 15, 4, 0);
-        }
-
-        private static void AssertNoteProperties(BaseNote note, float jsonTime, int x, int y, int type, int cutDirection, int angleOffset)
-        {
-            Assert.AreEqual(jsonTime, note.JsonTime, epsilon);
-            Assert.AreEqual(x, note.PosX);
-            Assert.AreEqual(y, note.PosY);
-            Assert.AreEqual(type, note.Type);
-            Assert.AreEqual(cutDirection, note.CutDirection);
-            Assert.AreEqual(angleOffset, note.AngleOffset);
-        }
-
-        private static void AssertObstacleProperties(BaseObstacle obstacle, float jsonTime, int x, int y, int type, int width,
-            int height, float duration)
-        {
-            Assert.AreEqual(jsonTime, obstacle.JsonTime, epsilon);
-            Assert.AreEqual(x, obstacle.PosX);
-            Assert.AreEqual(y, obstacle.PosY);
-            Assert.AreEqual(type, obstacle.Type);
-            Assert.AreEqual(width, obstacle.Width);
-            Assert.AreEqual(height, obstacle.Height);
-            Assert.AreEqual(duration, obstacle.Duration, epsilon);
-            
-        }
-
-        private static void AssertBpmEventProperties(BaseBpmEvent bpmEvent, float jsonTime, float floatValue)
-        {
-            Assert.AreEqual(jsonTime, bpmEvent.JsonTime, epsilon);
-            Assert.AreEqual((int)EventTypeValue.BpmChange, bpmEvent.Type);
-            Assert.AreEqual(floatValue, bpmEvent.FloatValue, epsilon);
-        }
-        
-        private static void AssertEventProperties(BaseEvent evt, float jsonTime, int type, int value, float floatValue)
-        {
-            Assert.AreEqual(jsonTime, evt.JsonTime, epsilon);
-            Assert.AreEqual(type, evt.Type);
-            Assert.AreEqual(value, evt.Value);
-            Assert.AreEqual(floatValue, evt.FloatValue);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 1, 3, 1);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 10, 5, 1, 0);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, 0);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, 0);
         }
     }
 }

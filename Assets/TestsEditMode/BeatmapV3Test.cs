@@ -10,7 +10,6 @@ namespace TestsEditMode
 {
     public class BeatmapV3Test
     {
-        private const float epsilon = 0.001f;
         private const string fileJson = @"
 {
     ""version"": ""3.3.0"",
@@ -302,26 +301,26 @@ namespace TestsEditMode
             Assert.AreEqual("3.3.0",difficulty.Version);
             
             Assert.AreEqual(2, difficulty.Notes.Count);
-            AssertNoteProperties(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
-            AssertNoteProperties(difficulty.Notes[1], 10, 1, 0, 3, 0, 0);
+            BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
+            BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[1], 10, 1, 0, 3, 0, 0);
             
             Assert.AreEqual(1, difficulty.Obstacles.Count);
-            AssertObstacleProperties(difficulty.Obstacles[0], 10, 1, 0, 0, 1, 5, 5);
+            BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[0], 10, 1, 0, 0, 1, 5, 5);
             
             Assert.AreEqual(1, difficulty.Arcs.Count);
-            AssertArcProperties(difficulty.Arcs[0], 10, 1, 0, 0, 1, 1, 15, 2, 2, 0, 1, 0);
+            BeatmapAssert.ArcPropertiesAreEqual(difficulty.Arcs[0], 10, 1, 0, 0, 1, 1, 15, 2, 2, 0, 1, 0);
             
             Assert.AreEqual(1, difficulty.Chains.Count);
-            AssertChainProperties(difficulty.Chains[0], 10, 1, 0, 0, 1, 15, 2, 2, 3, 0.5f);
+            BeatmapAssert.ChainPropertiesAreEqual(difficulty.Chains[0], 10, 1, 0, 0, 1, 15, 2, 2, 3, 0.5f);
             
             Assert.AreEqual(1, difficulty.BpmEvents.Count);
-            AssertBpmEventProperties(difficulty.BpmEvents[0], 10, 128);
+            BeatmapAssert.BpmEventPropertiesAreEqual(difficulty.BpmEvents[0], 10, 128);
             
             Assert.AreEqual(4, difficulty.Events.Count);
-            AssertEventProperties(difficulty.Events[0], 10, 1, 3, 1);
-            AssertEventProperties(difficulty.Events[1], 10, 5, 1, 0);
-            AssertEventProperties(difficulty.Events[2], 10, 14, 4, 0, 15);
-            AssertEventProperties(difficulty.Events[3], 15, 15, 4, 0, 15);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 1, 3, 1);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 10, 5, 1, 0);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, 0, 15);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, 0, 15);
         }
 
         private static void AssertNoteProperties(BaseNote note, float jsonTime, int x, int y, int type, int cutDirection, int angleOffset)
@@ -364,39 +363,6 @@ namespace TestsEditMode
             {
                 Assert.AreEqual(floatValue, ((BaseRotationEvent)evt).Rotation);
             }
-        }
-
-        private static void AssertArcProperties(BaseArc arc, float jsonTime, int x, int y, int color, int cutDirection,
-            float headMult, float tailJsonTime, int tailX, int tailY, int tailCutDirection, float tailMult,
-            int midPointAnchor)
-        {
-            Assert.AreEqual(jsonTime, arc.JsonTime, epsilon);
-            Assert.AreEqual(x, arc.PosX);
-            Assert.AreEqual(y, arc.PosY);
-            Assert.AreEqual(color, arc.Color);
-            Assert.AreEqual(cutDirection, arc.CutDirection);
-            Assert.AreEqual(headMult, arc.HeadControlPointLengthMultiplier, epsilon);
-            Assert.AreEqual(tailJsonTime, arc.TailJsonTime, epsilon);
-            Assert.AreEqual(tailX, arc.TailPosX);
-            Assert.AreEqual(tailY, arc.TailPosY);
-            Assert.AreEqual(tailCutDirection, arc.TailCutDirection);
-            Assert.AreEqual(tailMult, arc.TailControlPointLengthMultiplier, epsilon);
-            Assert.AreEqual(midPointAnchor, arc.MidAnchorMode);
-        }
-        
-        private static void AssertChainProperties(BaseChain chain, float jsonTime, int x, int y, int color, int cutDirection,
-            float tailJsonTime, int tailX, int tailY, int sliceCount, float squish)
-        {
-            Assert.AreEqual(jsonTime, chain.JsonTime, epsilon);
-            Assert.AreEqual(x, chain.PosX);
-            Assert.AreEqual(y, chain.PosY);
-            Assert.AreEqual(color, chain.Color);
-            Assert.AreEqual(cutDirection, chain.CutDirection);
-            Assert.AreEqual(tailJsonTime, chain.TailJsonTime, epsilon);
-            Assert.AreEqual(tailX, chain.TailPosX);
-            Assert.AreEqual(tailY, chain.TailPosY);
-            Assert.AreEqual(sliceCount, chain.SliceCount, epsilon);
-            Assert.AreEqual(squish, chain.Squish);
         }
     }
 }
