@@ -65,7 +65,29 @@ namespace Beatmap.Base
             }
         }
 
-        public float Rotation { get; set; }
+        private float rotation;
+
+        public float Rotation
+        {
+            get => rotation;
+            set
+            {
+                Value = value switch
+                {
+                    // LightValueToRotationDegrees = { -60, -45, -30, -15, 15, 30, 45, 60 };
+                    <= (-60 + -45) / 2f => 0,
+                    <= (-45 + -30) / 2f => 1,
+                    <= (-30 + -15) / 2f => 2,
+                    <= (-15 + 15) / 2f => 3,
+                    <= (15 + 30) / 2f => 4,
+                    <= (30 + 45) / 2f => 5,
+                    <= (45 + 60) / 2f => 6,
+                    _ => 7
+                };
+
+                rotation = value;
+            }
+        }
 
         public override float? GetRotationDegreeFromValue() => Rotation;
 

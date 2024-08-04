@@ -26,11 +26,14 @@ namespace Beatmap.V3
                 
                 var bpmEvents = new JSONArray();
                 if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
-                {
+                {                    
+                    var insertedBpm = (BeatSaberSongContainer.Instance != null)
+                        ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        : 100; // This path only appears in tests
                     difficulty.BpmEvents.Insert(0, new V3BpmEvent()
                     {
                         JsonTime = 0,
-                        Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        Bpm = insertedBpm
                     });
                 }
                 foreach (var b in difficulty.BpmEvents) bpmEvents.Add(b.ToJson());
@@ -300,6 +303,13 @@ namespace Beatmap.V3
                 // Important!
                 map.Notes.Sort();
                 map.Events.Sort();
+                
+                // Do not assume map is sorted for other things anyway
+                map.BpmEvents.Sort();
+                map.Obstacles.Sort();
+                map.Waypoints.Sort();
+                map.Chains.Sort();
+                map.Arcs.Sort();
 
                 return map;
             }

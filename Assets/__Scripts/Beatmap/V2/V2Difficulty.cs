@@ -30,10 +30,13 @@ namespace Beatmap.V2
                 allEvents.AddRange(difficulty.BpmEvents);
                 if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
                 {
+                    var insertedBpm = (BeatSaberSongContainer.Instance != null)
+                        ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        : 100; // This path only appears in tests
                     allEvents.Add(new V2BpmEvent()
                     {
                         JsonTime = 0,
-                        Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        Bpm = insertedBpm
                     });
                 }
                 allEvents.Sort((lhs, rhs) => lhs.JsonTime.CompareTo(rhs.JsonTime));
@@ -168,6 +171,13 @@ namespace Beatmap.V2
                     }
                 }
 
+                // Do not assume map is sorted
+                map.BpmEvents.Sort();
+                map.Events.Sort();
+                map.Notes.Sort();
+                map.Obstacles.Sort();
+                map.Waypoints.Sort();
+                
                 LoadCustom(map, mainNode);
 
                 return map;
