@@ -82,7 +82,7 @@ namespace Tests
             BaseNote baseNote2 = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
             BaseNote baseNote3 = new V3ColorNote(3, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
 
-            BaseArc baseArc12 = new V3Arc { JsonTime = 1, TailJsonTime = 2, Color = (int)NoteColor.Red };
+            BaseArc baseArc12 = new BaseArc { JsonTime = 1, TailJsonTime = 2, Color = (int)NoteColor.Red };
             BaseChain baseChain23 = new BaseChain { JsonTime = 2, TailJsonTime = 3, Color = (int)NoteColor.Red };
 
             PlaceUtils.PlaceNote(notePlacement, baseNote1);
@@ -170,7 +170,7 @@ namespace Tests
             BaseNote baseNote2 = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Up);
             BaseNote baseNote3 = new V3ColorNote(3, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Right);
 
-            BaseArc baseArc12 = new V3Arc { JsonTime = 1, TailJsonTime = 2, CutDirection = (int)NoteCutDirection.Left, TailCutDirection = (int)NoteCutDirection.Up };
+            BaseArc baseArc12 = new BaseArc { JsonTime = 1, TailJsonTime = 2, CutDirection = (int)NoteCutDirection.Left, TailCutDirection = (int)NoteCutDirection.Up };
             BaseChain baseChain23 = new BaseChain { JsonTime = 2, TailJsonTime = 3, CutDirection = (int)NoteCutDirection.Up };
 
             PlaceUtils.PlaceNote(notePlacement, baseNote1);

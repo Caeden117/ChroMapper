@@ -176,7 +176,7 @@ namespace Beatmap.Base
             CustomTailCoordinate = (CustomData?.HasKey(CustomKeyTailCoordinate) ?? false) ? CustomData?[CustomKeyTailCoordinate] : null;
         }
 
-        protected virtual JSONNode SaveCustomFromNotes(BaseNote head, BaseNote tail)
+        protected JSONNode SaveCustomFromNotes(BaseNote head, BaseNote tail)
         {
             CustomData = head.SaveCustom().Clone();
             tail.SaveCustom();

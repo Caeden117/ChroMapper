@@ -5,91 +5,69 @@ using SimpleJSON;
 
 namespace Beatmap.V2
 {
-    public class V2Arc : BaseArc, V2Object
+    public class V2Arc
     {
-        public V2Arc()
+        public const string CustomKeyAnimation = "_animation";
+
+        public const string CustomKeyTrack = "_track";
+
+        public const string CustomKeyColor = "_color";
+
+        public const string CustomKeyCoordinate = "_position";
+
+        public const string CustomKeyWorldRotation = "_rotation";
+
+        public const string CustomKeyLocalRotation = "_localRotation";
+
+        public const string CustomKeySpawnEffect = "_disableSpawnEffect";
+
+        public const string CustomKeyNoteJumpMovementSpeed = "_noteJumpMovementSpeed";
+
+        public const string CustomKeyNoteJumpStartBeatOffset = "_noteJumpStartBeatOffset";
+
+        public const string CustomKeyTailCoordinate = "_tailPosition";
+
+        public static BaseArc GetFromJson(JSONNode node)
         {
+            var arc = new BaseArc();
+            
+            arc.Color = BaseItem.GetRequiredNode(node, "_colorType").AsInt;
+            arc.JsonTime = BaseItem.GetRequiredNode(node, "_headTime").AsFloat;
+            arc.PosX = BaseItem.GetRequiredNode(node, "_headLineIndex").AsInt;
+            arc.PosY = BaseItem.GetRequiredNode(node, "_headLineLayer").AsInt;
+            arc.CutDirection = BaseItem.GetRequiredNode(node, "_headCutDirection").AsInt;
+            arc.HeadControlPointLengthMultiplier = BaseItem.GetRequiredNode(node, "_headControlPointLengthMultiplier").AsFloat;
+            arc.TailJsonTime = BaseItem.GetRequiredNode(node, "_tailTime").AsFloat;
+            arc.TailPosX = BaseItem.GetRequiredNode(node, "_tailLineIndex").AsInt;
+            arc.TailPosY = BaseItem.GetRequiredNode(node, "_tailLineLayer").AsInt;
+            arc.TailCutDirection = BaseItem.GetRequiredNode(node, "_tailCutDirection").AsInt;
+            arc.TailControlPointLengthMultiplier = BaseItem.GetRequiredNode(node, "_tailControlPointLengthMultiplier").AsFloat;
+            arc.MidAnchorMode = BaseItem.GetRequiredNode(node, "_sliderMidAnchorMode").AsInt;
+            arc.CustomData = node["_customData"];
+            arc.RefreshCustom();
+
+            return arc;
         }
-
-        public V2Arc(BaseArc other) : base(other) => ParseCustom();
-
-        public V2Arc(JSONNode node)
-        {
-            Color = RetrieveRequiredNode(node, "_colorType").AsInt;
-            JsonTime = RetrieveRequiredNode(node, "_headTime").AsFloat;
-            PosX = RetrieveRequiredNode(node, "_headLineIndex").AsInt;
-            PosY = RetrieveRequiredNode(node, "_headLineLayer").AsInt;
-            CutDirection = RetrieveRequiredNode(node, "_headCutDirection").AsInt;
-            HeadControlPointLengthMultiplier = RetrieveRequiredNode(node, "_headControlPointLengthMultiplier").AsFloat;
-            TailJsonTime = RetrieveRequiredNode(node, "_tailTime").AsFloat;
-            TailPosX = RetrieveRequiredNode(node, "_tailLineIndex").AsInt;
-            TailPosY = RetrieveRequiredNode(node, "_tailLineLayer").AsInt;
-            TailCutDirection = RetrieveRequiredNode(node, "_tailCutDirection").AsInt;
-            TailControlPointLengthMultiplier = RetrieveRequiredNode(node, "_tailControlPointLengthMultiplier").AsFloat;
-            MidAnchorMode = RetrieveRequiredNode(node, "_sliderMidAnchorMode").AsInt;
-            CustomData = node["_customData"];
-            ParseCustom();
-        }
-
-        public V2Arc(float time, int posX, int posY, int color, int cutDirection, int angleOffset, float mult,
-            float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
-            JSONNode customData = null) : base(time, posX, posY, color, cutDirection, angleOffset, mult,
-            tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
-            ParseCustom();
-
-        public V2Arc(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset, float mult,
-            float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
-            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, color, cutDirection, angleOffset, mult,
-            tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
-            ParseCustom();
-
-        public override string CustomKeyAnimation { get; } = "_animation";
-
-        public override string CustomKeyTrack { get; } = "_track";
-
-        public override string CustomKeyColor { get; } = "_color";
-
-        public override string CustomKeyCoordinate { get; } = "_position";
-
-        public override string CustomKeyWorldRotation { get; } = "_rotation";
-
-        public override string CustomKeyLocalRotation { get; } = "_localRotation";
-
-        public override string CustomKeySpawnEffect { get; } = "_disableSpawnEffect";
-
-        public override string CustomKeyNoteJumpMovementSpeed { get; } = "_noteJumpMovementSpeed";
-
-        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "_noteJumpStartBeatOffset";
-
-        public override string CustomKeyTailCoordinate { get; } = "_tailPosition";
-
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
-        public override JSONNode ToJson()
+        
+        public static JSONNode ToJson(BaseArc arc)
         {
             JSONNode node = new JSONObject();
-            node["_colorType"] = Color;
-            node["_headTime"] = JsonTime;
-            node["_headLineIndex"] = PosX;
-            node["_headLineLayer"] = PosY;
-            node["_headCutDirection"] = CutDirection;
-            node["_headControlPointLengthMultiplier"] = HeadControlPointLengthMultiplier;
-            node["_tailTime"] = TailJsonTime;
-            node["_tailLineIndex"] = TailPosX;
-            node["_tailLineLayer"] = TailPosY;
-            node["_tailCutDirection"] = TailCutDirection;
-            node["_tailControlPointLengthMultiplier"] = TailControlPointLengthMultiplier;
-            node["_sliderMidAnchorMode"] = MidAnchorMode;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["_customData"] = CustomData;
+            node["_colorType"] = arc.Color;
+            node["_headTime"] = arc.JsonTime;
+            node["_headLineIndex"] = arc.PosX;
+            node["_headLineLayer"] = arc.PosY;
+            node["_headCutDirection"] = arc.CutDirection;
+            node["_headControlPointLengthMultiplier"] = arc.HeadControlPointLengthMultiplier;
+            node["_tailTime"] = arc.TailJsonTime;
+            node["_tailLineIndex"] = arc.TailPosX;
+            node["_tailLineLayer"] = arc.TailPosY;
+            node["_tailCutDirection"] = arc.TailCutDirection;
+            node["_tailControlPointLengthMultiplier"] = arc.TailControlPointLengthMultiplier;
+            node["_sliderMidAnchorMode"] = arc.MidAnchorMode;
+            arc.CustomData = arc.SaveCustom();
+            if (!arc.CustomData.Children.Any()) return node;
+            node["_customData"] = arc.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() =>
-            new V2Arc(JsonTime, SongBpmTime, PosX, PosY, Color, CutDirection, AngleOffset,
-                HeadControlPointLengthMultiplier, TailJsonTime, TailSongBpmTime, TailPosX, TailPosY,
-                TailCutDirection, TailControlPointLengthMultiplier,
-                MidAnchorMode, SaveCustom().Clone());
     }
 }

@@ -93,18 +93,6 @@ namespace Beatmap.Converters
             return obstacle;
         }
 
-        public static V2Arc Arc(BaseArc other)
-        {
-            var arc = other switch
-            {
-                V2Arc o => o,
-                V3Arc o => new V2Arc(o) { CustomData = CustomDataObject(o.CustomData) },
-                _ => throw new ArgumentException("Unexpected object to convert v3 arc to v2 arc")
-            };
-            arc.RefreshCustom();
-            return arc;
-        }
-
         public static V2Waypoint Waypoint(BaseWaypoint other)
         {
             var waypoint = other switch

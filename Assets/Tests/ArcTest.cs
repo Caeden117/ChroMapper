@@ -147,9 +147,21 @@ namespace Tests
                 var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapArcInputController>();
 
-                BaseArc baseArc = new V3Arc(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red,
-                    (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left,
-                    1f, 0);
+                BaseArc baseArc = new BaseArc
+                {
+                    JsonTime = 2f,
+                    PosX = (int)GridX.Left,
+                    PosY = (int)GridY.Base,
+                    Color = (int)NoteColor.Red,
+                    CutDirection = (int)NoteCutDirection.Left,
+                    HeadControlPointLengthMultiplier = 1f,
+                    TailJsonTime = 3f,
+                    TailPosX = (int)GridX.Left,
+                    TailPosY = (int)GridY.Base,
+                    TailCutDirection = (int)NoteCutDirection.Left,
+                    TailControlPointLengthMultiplier = 1f,
+                    MidAnchorMode = 0
+                };
                 PlaceUtils.PlaceArc(arcPlacement, baseArc);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA)
@@ -179,9 +191,21 @@ namespace Tests
                 var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapArcInputController>();
 
-                BaseArc baseArc = new V3Arc(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red,
-                    (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left,
-                    1f, 0);
+                BaseArc baseArc = new BaseArc
+                {
+                    JsonTime = 2f,
+                    PosX = (int)GridX.Left,
+                    PosY = (int)GridY.Base,
+                    Color = (int)NoteColor.Red,
+                    CutDirection = (int)NoteCutDirection.Left,
+                    HeadControlPointLengthMultiplier = 1f,
+                    TailJsonTime = 3f,
+                    TailPosX = (int)GridX.Left,
+                    TailPosY = (int)GridY.Base,
+                    TailCutDirection = (int)NoteCutDirection.Left,
+                    TailControlPointLengthMultiplier = 1f,
+                    MidAnchorMode = 0
+                };
                 PlaceUtils.PlaceArc(arcPlacement, baseArc);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA)

@@ -107,18 +107,6 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 rotation event")
             };
 
-        public static V3Arc Arc(BaseArc other)
-        {
-            var arc = other switch
-            {
-                V3Arc o => o,
-                V2Arc o => new V3Arc(o) { CustomData = CustomDataObject(o.CustomData) },
-                _ => throw new ArgumentException("Unexpected object to convert v2 arc to v3 arc")
-            };
-            arc.RefreshCustom();
-            return arc;
-        }
-
         public static V3Waypoint Waypoint(BaseWaypoint other)
         {
             var waypoint = other switch

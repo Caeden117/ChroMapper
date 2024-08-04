@@ -60,7 +60,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         return o is BaseNote && !(o is BaseBombNote);
     }
 
-    public override BaseArc GenerateOriginalData() => new V3Arc();
+    public override BaseArc GenerateOriginalData() => new BaseArc();
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
@@ -71,7 +71,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
             (head, tail) = (tail, head);
         }
 
-        return new V3Arc(head, tail);
+        return new BaseArc(head, tail);
     }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)

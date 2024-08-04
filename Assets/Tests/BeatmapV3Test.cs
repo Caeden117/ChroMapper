@@ -109,45 +109,6 @@ namespace Tests
         }
 
         [Test]
-        public void PlaceArc()
-        {
-            Assert.IsInstanceOf<V3Arc>(BeatmapFactory.Arc(),
-                "Factory default does not instantiate v3 arc in beatmap v3");
-            Assert.IsInstanceOf<V3Arc>(BeatmapFactory.Arc(0f, 1, 2, 0, 1, 0, 1, 1f, 2, 1, 0, 1, 0),
-                "Factory does not instantiate v3 arc in beatmap v3");
-            Assert.DoesNotThrow(() => BeatmapFactory.Arc(new JSONObject
-            {
-                ["b"] = 0f,
-                ["x"] = 1,
-                ["y"] = 2,
-                ["c"] = 0,
-                ["d"] = 1,
-                ["mu"] = 1f,
-                ["tb"] = 1f,
-                ["tx"] = 2,
-                ["ty"] = 1,
-                ["tc"] = 0,
-                ["tmu"] = 1f,
-                ["m"] = 0,
-                ["customData"] = new JSONObject()
-            }), "Factory could not instantiate arc with compatible JSON schema in beatmap v3");
-
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
-            if (collection is ArcGridContainer arcsContainer)
-            {
-                var root = arcsContainer.transform.root;
-                var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
-                arcPlacement.RefreshVisuals();
-
-                var arcA = BeatmapFactory.Arc(0f, 1, 2, 0, 1, 0, 1, 1f, 2, 1, 0, 1f, 0);
-                PlaceUtils.PlaceArc(arcPlacement, arcA);
-
-                CheckUtils.CheckV3Object("Check arc object version", arcsContainer, 0);
-                CheckUtils.CheckArc("Check arc attributes", arcsContainer, 0, 0f, 1, 2, 0, 1, 0, 1, 1f, 2, 1, 0, 1f, 0);
-            }
-        }
-
-        [Test]
         public void PlaceWall()
         {
             Assert.IsInstanceOf<V3Obstacle>(BeatmapFactory.Obstacle(),

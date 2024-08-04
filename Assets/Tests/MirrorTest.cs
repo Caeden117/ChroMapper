@@ -53,7 +53,7 @@ namespace Tests
                 PosY = (int)GridY.Top,
                 CutDirection = (int)NoteCutDirection.UpRight
             };
-            BaseArc baseArc = new V3Arc
+            BaseArc baseArc = new BaseArc
             {
                 JsonTime = 2,
                 Color = (int)NoteType.Blue,

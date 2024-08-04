@@ -26,7 +26,7 @@ public static class NetDataExtensions
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
                 ObjectType.CustomEvent => reader.Get<V3CustomEvent>(),
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
-                ObjectType.Arc => reader.Get<V3Arc>(),
+                ObjectType.Arc => reader.Get<BaseArc>(),
                 ObjectType.Chain => reader.Get<BaseChain>(),
                 ObjectType.Bookmark => reader.Get<V3Bookmark>(),
                 _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
@@ -65,7 +65,7 @@ public static class NetDataExtensions
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
                 ObjectType.CustomEvent => reader.Get<V2CustomEvent>(),
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
-                ObjectType.Arc => reader.Get<V2Arc>(),
+                ObjectType.Arc => reader.Get<BaseArc>(),
                 ObjectType.Chain => throw new InvalidPacketException("Attempting to parse chains in v2"),
                 ObjectType.Bookmark => reader.Get<V2Bookmark>(),
                 _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),

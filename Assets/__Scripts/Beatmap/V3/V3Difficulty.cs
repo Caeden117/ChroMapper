@@ -262,7 +262,7 @@ namespace Beatmap.V3
                             foreach (JSONNode n in node) map.Obstacles.Add(new V3Obstacle(n));
                             break;
                         case "sliders":
-                            foreach (JSONNode n in node) map.Arcs.Add(new V3Arc(n));
+                            foreach (JSONNode n in node) map.Arcs.Add(V3Arc.GetFromJson(n));
                             break;
                         case "burstSliders":
                             foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n));

@@ -1,12 +1,15 @@
 using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.V2;
+using Beatmap.V3;
 using LiteNetLib.Utils;
 using SimpleJSON;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseArc : BaseSlider, ICustomDataArc
+    public class BaseArc : BaseSlider, ICustomDataArc
     {
         public override void Serialize(NetDataWriter writer)
         {
@@ -26,11 +29,11 @@ namespace Beatmap.Base
             base.Deserialize(reader);
         }
 
-        protected BaseArc()
+        public BaseArc()
         {
         }
 
-        protected BaseArc(BaseArc other)
+        public BaseArc(BaseArc other)
         {
             SetTimes(other.JsonTime, other.SongBpmTime);
             Color = other.Color;
@@ -44,10 +47,10 @@ namespace Beatmap.Base
             TailCutDirection = other.TailCutDirection;
             TailControlPointLengthMultiplier = other.TailControlPointLengthMultiplier;
             MidAnchorMode = other.MidAnchorMode;
-            CustomData = other.SaveCustom().Clone();
+            CustomData = other.CustomData.Clone();
         }
 
-        protected BaseArc(BaseNote start, BaseNote end)
+        public BaseArc(BaseNote start, BaseNote end)
         {
             SetTimes(start.JsonTime, start.SongBpmTime);
             Color = start.Color;
@@ -64,33 +67,104 @@ namespace Beatmap.Base
             CustomData = SaveCustomFromNotes(start, end);
         }
 
-        protected BaseArc(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
-            float mult, float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult,
-            int midAnchorMode, JSONNode customData = null) : base(time, posX, posY, color, cutDirection,
-            angleOffset, tailTime, tailPosX, tailPosY, customData)
-        {
-            HeadControlPointLengthMultiplier = mult;
-            TailCutDirection = tailCutDirection;
-            TailControlPointLengthMultiplier = tailMult;
-            MidAnchorMode = midAnchorMode;
-        }
-
-        protected BaseArc(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
-            float mult, float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult,
-            int midAnchorMode, JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, color, cutDirection,
-            angleOffset, tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, customData)
-        {
-            HeadControlPointLengthMultiplier = mult;
-            TailCutDirection = tailCutDirection;
-            TailControlPointLengthMultiplier = tailMult;
-            MidAnchorMode = midAnchorMode;
-        }
+        // Used for Node Editor
+        public BaseArc(JSONNode node) : this(BeatmapFactory.Arc(node)) {}
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Arc;
         public float HeadControlPointLengthMultiplier { get; set; }
         public int TailCutDirection { get; set; }
         public float TailControlPointLengthMultiplier { get; set; }
         public int MidAnchorMode { get; set; }
+
+        public override string CustomKeyColor => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyColor,
+            3 => V3Arc.CustomKeyColor
+        };
+
+        public override string CustomKeyTrack => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyTrack,
+            3 => V3Arc.CustomKeyTrack
+        };
+        
+
+        public override string CustomKeyTailCoordinate => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyTailCoordinate,
+            3 => V3Arc.CustomKeyTailCoordinate
+        };
+        
+
+        public override string CustomKeyAnimation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyAnimation,
+            3 => V3Arc.CustomKeyAnimation
+        };
+        
+        public override string CustomKeyCoordinate => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyCoordinate,
+            3 => V3Arc.CustomKeyCoordinate
+        };
+        
+        public override string CustomKeyWorldRotation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyWorldRotation,
+            3 => V3Arc.CustomKeyWorldRotation
+        };
+        
+        public override string CustomKeyLocalRotation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyLocalRotation,
+            3 => V3Arc.CustomKeyLocalRotation
+        };
+        
+        public override string CustomKeySpawnEffect => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeySpawnEffect,
+            3 => V3Arc.CustomKeySpawnEffect
+        };
+        
+        public override string CustomKeyNoteJumpMovementSpeed => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyNoteJumpMovementSpeed,
+            3 => V3Arc.CustomKeyNoteJumpMovementSpeed
+        };
+        
+        public override string CustomKeyNoteJumpStartBeatOffset => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.CustomKeyNoteJumpStartBeatOffset,
+            3 => V3Arc.CustomKeyNoteJumpStartBeatOffset
+        };
+        
+        public override bool IsChroma() =>
+            CustomData != null &&
+            ((CustomData.HasKey(CustomKeyColor) && CustomData[CustomKeyColor].IsArray) ||
+             (CustomData.HasKey(CustomKeySpawnEffect) && CustomData[CustomKeySpawnEffect].IsBoolean) ||
+             (CustomData.HasKey("disableDebris") && CustomData["disableDebris"].IsBoolean));
+
+        public override bool IsNoodleExtensions() =>
+            CustomData != null &&
+            ((CustomData.HasKey("disableNoteGravity") && CustomData["disableNoteGravity"].IsBoolean) ||
+             (CustomData.HasKey("disableNoteLook") && CustomData["disableNoteLook"].IsBoolean) ||
+             (CustomData.HasKey("flip") && CustomData["flip"].IsArray) ||
+             (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
+             (CustomData.HasKey(CustomKeyLocalRotation) && CustomData[CustomKeyLocalRotation].IsArray) ||
+             (CustomData.HasKey(CustomKeyNoteJumpMovementSpeed) && CustomData[CustomKeyNoteJumpMovementSpeed].IsNumber) ||
+             (CustomData.HasKey(CustomKeyNoteJumpStartBeatOffset) && CustomData[CustomKeyNoteJumpStartBeatOffset].IsNumber) ||
+             (CustomData.HasKey(CustomKeyCoordinate) && CustomData[CustomKeyCoordinate].IsArray) ||
+             (CustomData.HasKey(CustomKeyTailCoordinate) && CustomData[CustomKeyTailCoordinate].IsArray) ||
+             (CustomData.HasKey(CustomKeyWorldRotation) &&
+              (CustomData[CustomKeyWorldRotation].IsArray || CustomData[CustomKeyWorldRotation].IsNumber)));
+
+        public override bool IsMappingExtensions() =>
+            (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 ||
+             TailPosX <= -1000 || TailPosX >= 1000 || TailPosY < 0 || TailPosY > 2 ||
+             (CutDirection >= 1000 && CutDirection <= 1360) ||
+             (CutDirection >= 2000 && CutDirection <= 2360) ||
+             (TailCutDirection >= 1000 && TailCutDirection <= 1360)) &&
+            !IsNoodleExtensions();
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
@@ -149,6 +223,19 @@ namespace Beatmap.Base
             if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), arc.CustomData?.ToString(), StringComparison.Ordinal);
 
             return comparison;
+        }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            2 => V2Arc.ToJson(this),
+            3 => V3Arc.ToJson(this)
+        };
+
+        public override BaseItem Clone()
+        {
+            var arc = new BaseArc(this);
+            arc.ParseCustom();
+            return arc;
         }
     }
 }

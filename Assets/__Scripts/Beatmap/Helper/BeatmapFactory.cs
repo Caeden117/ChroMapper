@@ -58,8 +58,9 @@ namespace Beatmap.Helper
             ? new V3Obstacle(node)
             : new V2Obstacle(node);
 
-        public static BaseArc Arc(JSONNode node) =>
-            Settings.Instance.MapVersion == 3 ? new V3Arc(node) : new V2Arc(node);
+        public static BaseArc Arc(JSONNode node) => Settings.Instance.MapVersion == 3 
+            ? V3Arc.GetFromJson(node) 
+            : V2Arc.GetFromJson(node);
 
         public static BaseChain Chain(JSONNode node) => V3Chain.GetFromJson(node);
 
@@ -130,14 +131,6 @@ namespace Beatmap.Helper
             ? new V3Obstacle(jsonTime, posX, posY, duration, width, height, customData)
             : new V2Obstacle(jsonTime, posX, type, duration, width, customData);
 
-        public static BaseArc Arc(float jsonTime, int posX, int posY, int color, int cutDirection, int angleOffset,
-            float mult, float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult,
-            int midAnchorMode, JSONNode customData = null) => Settings.Instance.MapVersion == 3
-            ? new V3Arc(jsonTime, posX, posY, color, cutDirection, angleOffset, mult,
-                tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData)
-            : new V2Arc(jsonTime, posX, posY, color, cutDirection, angleOffset, mult,
-                tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData);
-
         public static BaseWaypoint Waypoint(float jsonTime, int posX, int posY, int offsetDirection,
             JSONNode customData = null) => Settings.Instance.MapVersion == 3
             ? new V3Waypoint(jsonTime,
@@ -187,8 +180,6 @@ namespace Beatmap.Helper
 
         public static BaseObstacle Obstacle() =>
             Settings.Instance.MapVersion == 3 ? new V3Obstacle() : new V2Obstacle();
-
-        public static BaseArc Arc() => Settings.Instance.MapVersion == 3 ? new V3Arc() : new V2Arc();
 
         public static BaseWaypoint Waypoint() =>
             Settings.Instance.MapVersion == 3 ? new V3Waypoint() : new V2Waypoint();

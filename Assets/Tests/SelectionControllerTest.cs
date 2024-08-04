@@ -65,10 +65,10 @@ namespace Tests
             baseRotationEvent2 = new V3RotationEvent { JsonTime = 2 };
             PlaceUtils.PlaceEvent(eventPlacement, baseRotationEvent2);
 
-            baseArc02 = new V3Arc { JsonTime = 0, TailJsonTime = 2 };
-            baseArc04 = new V3Arc { JsonTime = 0, TailJsonTime = 4 };
-            baseArc24 = new V3Arc { JsonTime = 2, TailJsonTime = 4 };
-            baseArc44 = new V3Arc { JsonTime = 4, TailJsonTime = 4 };
+            baseArc02 = new BaseArc { JsonTime = 0, TailJsonTime = 2 };
+            baseArc04 = new BaseArc { JsonTime = 0, TailJsonTime = 4 };
+            baseArc24 = new BaseArc { JsonTime = 2, TailJsonTime = 4 };
+            baseArc44 = new BaseArc { JsonTime = 4, TailJsonTime = 4 };
             PlaceUtils.PlaceArc(arcPlacement, baseArc02);
             PlaceUtils.PlaceArc(arcPlacement, baseArc04);
             PlaceUtils.PlaceArc(arcPlacement, baseArc24);

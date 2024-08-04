@@ -16,7 +16,7 @@ namespace TestsEditMode
             V3ColorNote();
             V3BombNote();
             V3Obstacle();
-            V3Arc();
+            V3ArcTest();
             V3ChainTest();
             V3BasicEvent();
             V3ColorBoostEvent();
@@ -101,10 +101,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3Arc()
+        public void V3ArcTest()
         {
             var json = new JSONObject();
-            var arc = new V3Arc(json);
+            var arc = V3Arc.GetFromJson(json);
 
             Assert.AreEqual(0, arc.JsonTime);
             Assert.AreEqual(0, arc.PosX);
