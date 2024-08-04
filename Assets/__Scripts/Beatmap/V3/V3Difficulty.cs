@@ -87,7 +87,7 @@ namespace Beatmap.V3
                 
                 var obstacles = new JSONArray();
                 foreach (var o in difficulty.Obstacles.Where(o => !o.CustomFake)) obstacles.Add(o.ToJson());
-                json["_obstacles"] = obstacles;
+                json["obstacles"] = obstacles;
                 
                 var arcs = new JSONArray();
                 foreach (var a in difficulty.Arcs) arcs.Add(a.ToJson());
@@ -99,7 +99,7 @@ namespace Beatmap.V3
 
                 var waypoints = new JSONArray();
                 foreach (var w in difficulty.Waypoints) waypoints.Add(w.ToJson());
-                json["_waypoints"] = waypoints;
+                json["waypoints"] = waypoints;
                 
                 var lightColorEventBoxGroups = new JSONArray();
                 foreach (var e in difficulty.LightColorEventBoxGroups) lightColorEventBoxGroups.Add(e.ToJson());
