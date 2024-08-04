@@ -37,9 +37,9 @@ namespace Tests
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
             var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
 
-            baseBpmEvent1 = new V3BpmEvent { JsonTime = 1, Bpm = 100 };
-            baseBpmEvent2 = new V3BpmEvent { JsonTime = 2, Bpm = 100 };
-            baseBpmEvent3 = new V3BpmEvent { JsonTime = 3, Bpm = 100 };
+            baseBpmEvent1 = new BaseBpmEvent { JsonTime = 1, Bpm = 100 };
+            baseBpmEvent2 = new BaseBpmEvent { JsonTime = 2, Bpm = 100 };
+            baseBpmEvent3 = new BaseBpmEvent { JsonTime = 3, Bpm = 100 };
             bpmEventsContainer.SpawnObject(baseBpmEvent1);
             bpmEventsContainer.SpawnObject(baseBpmEvent2);
             bpmEventsContainer.SpawnObject(baseBpmEvent3);

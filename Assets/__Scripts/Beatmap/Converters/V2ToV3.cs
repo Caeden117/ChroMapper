@@ -28,16 +28,6 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert v2 note to v3 color note")
             };
 
-        public static V3BpmEvent BpmEvent(BaseEvent other) =>
-            other switch
-            {
-                V3BpmEvent o => o,
-                V3BasicEvent o => new V3BpmEvent(o),
-                V2BpmEvent o => new V3BpmEvent(o),
-                V2Event o => new V3BpmEvent(o),
-                _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 BPM event")
-            };
-
         public static V3ColorBoostEvent ColorBoostEvent(BaseEvent other) =>
             other switch
             {

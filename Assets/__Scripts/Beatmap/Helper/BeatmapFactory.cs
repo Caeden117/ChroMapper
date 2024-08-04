@@ -43,7 +43,9 @@ namespace Beatmap.Helper
         }
 
         // instantiate from JSON
-        public static BaseBpmEvent BpmEvent(JSONNode node) => new V3BpmEvent(node);
+        public static BaseBpmEvent BpmEvent(JSONNode node) => Settings.Instance.MapVersion == 3
+            ? V3BpmEvent.GetFromJson(node)
+            : V2BpmEvent.GetFromJson(node);
         public static BaseRotationEvent RotationEvent(JSONNode node) => new V3RotationEvent(node);
 
         public static BaseNote Note(JSONNode node) =>
@@ -100,10 +102,6 @@ namespace Beatmap.Helper
             : new V2EnvironmentEnhancement(node);
 
         // instantiate from good ol parameter
-        public static BaseBpmEvent BpmEvent(float jsonTime, float bpm, JSONNode customData = null) => Settings.Instance.MapVersion == 3
-            ? new V3BpmEvent(jsonTime, bpm, customData)
-            : new V2BpmEvent(jsonTime, bpm, customData);
-
         public static BaseRotationEvent RotationEvent(float jsonTime, int executionTime, float rotation,
             JSONNode customData = null) => new V3RotationEvent(jsonTime, executionTime, rotation, customData);
 
@@ -188,7 +186,6 @@ namespace Beatmap.Helper
             : new V2CustomEvent(jsonTime, type, data);
 
         // instantiate from empty
-        public static BaseBpmEvent BpmEvent() => new V3BpmEvent();
         public static BaseRotationEvent RotationEvent() => new V3RotationEvent();
         public static BaseNote Note() => Settings.Instance.MapVersion == 3 ? new V3ColorNote() : new V2Note();
         public static BaseNote Bomb() => Settings.Instance.MapVersion == 3 ? new V3BombNote() : new V2Note();

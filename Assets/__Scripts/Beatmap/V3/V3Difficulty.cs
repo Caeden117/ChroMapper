@@ -30,7 +30,7 @@ namespace Beatmap.V3
                     var insertedBpm = (BeatSaberSongContainer.Instance != null)
                         ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
                         : 100; // This path only appears in tests
-                    difficulty.BpmEvents.Insert(0, new V3BpmEvent()
+                    difficulty.BpmEvents.Insert(0, new BaseBpmEvent
                     {
                         JsonTime = 0,
                         Bpm = insertedBpm
@@ -256,7 +256,7 @@ namespace Beatmap.V3
                             break;
                         
                         case "bpmEvents":
-                            foreach (JSONNode n in node) map.BpmEvents.Add(new V3BpmEvent(n));
+                            foreach (JSONNode n in node) map.BpmEvents.Add(V3BpmEvent.GetFromJson(n));
                             break;
                         case "obstacles":
                             foreach (JSONNode n in node) map.Obstacles.Add(new V3Obstacle(n));

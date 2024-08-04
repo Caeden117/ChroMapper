@@ -90,12 +90,12 @@ namespace Tests
             }
 
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-            bpmCollection.SpawnObject(new V3BpmEvent { JsonTime = 0, Bpm = 100 });
+            bpmCollection.SpawnObject(new BaseBpmEvent { JsonTime = 0, Bpm = 100 });
             var obstacleRenderer = obstacleContainer.GetComponentInChildren<MeshRenderer>();
             var originalObstacleScale = obstacleRenderer.bounds.size;
 
             // Obstacle should now be 3/4 of its original length
-            bpmCollection.SpawnObject(new V3BpmEvent { JsonTime = 1, Bpm = 200 });
+            bpmCollection.SpawnObject(new BaseBpmEvent { JsonTime = 1, Bpm = 200 });
             var modifiedObstacleScale = obstacleRenderer.bounds.size;
 
             Assert.AreEqual(originalObstacleScale.x, modifiedObstacleScale.x, 0.001);

@@ -33,7 +33,7 @@ namespace Beatmap.V2
                     var insertedBpm = (BeatSaberSongContainer.Instance != null)
                         ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
                         : 100; // This path only appears in tests
-                    allEvents.Add(new V2BpmEvent()
+                    allEvents.Add(new BaseBpmEvent
                     {
                         JsonTime = 0,
                         Bpm = insertedBpm
@@ -151,7 +151,7 @@ namespace Beatmap.V2
                             foreach (JSONNode n in node)
                             {
                                 if (n["_type"] != null && n["_type"] == 100)
-                                    map.BpmEvents.Add(new V2BpmEvent(n));
+                                    map.BpmEvents.Add(V2BpmEvent.GetFromJson(n));
                                 else
                                     map.Events.Add(new V2Event(n));
                             }

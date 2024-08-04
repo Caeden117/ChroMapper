@@ -11,7 +11,7 @@ namespace TestsEditMode
         // For use in PlayMode
         public void TestEverything()
         {
-            V3BpmEvent();
+            V3BpmEventTest();
             V3RotationEvent();
             V3ColorNote();
             V3BombNote();
@@ -32,12 +32,12 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3BpmEvent()
+        public void V3BpmEventTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3BpmEvent(new JSONObject()));
+            Assert.Throws<ArgumentException>(() => V3BpmEvent.GetFromJson(new JSONObject()));
 
             var json = new JSONObject { ["m"] = 120 };
-            var bpmEvent = new V3BpmEvent(json);
+            var bpmEvent = V3BpmEvent.GetFromJson(json);
 
             Assert.AreEqual(0, bpmEvent.JsonTime);
             Assert.AreEqual(120, bpmEvent.Bpm);

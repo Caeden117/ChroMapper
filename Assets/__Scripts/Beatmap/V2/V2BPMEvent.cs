@@ -1,65 +1,43 @@
 using System;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.Enums;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.V2
 {
-    public class V2BpmEvent : BaseBpmEvent, V2Object
+    public static class V2BpmEvent
     {
-        public V2BpmEvent()
+        public const string CustomKeyTrack = "_track";
+        public const string CustomKeyColor = "_color";
+
+        public static BaseBpmEvent GetFromJson(JSONNode node)
         {
+            var bpmEvent = new BaseBpmEvent();
+
+            var bpm =  BaseItem.GetRequiredNode(node, "_floatValue").AsFloat;
+            
+            bpmEvent.JsonTime = BaseItem.GetRequiredNode(node, "_time").AsFloat;
+            bpmEvent.Bpm = bpm;
+            bpmEvent.Type = 100;
+            bpmEvent.FloatValue = bpm;
+            bpmEvent.CustomData = node["_customData"];
+
+            return bpmEvent;
         }
 
-        public V2BpmEvent(BaseBpmEvent other) : base(other)
-        {
-        }
-
-        public V2BpmEvent(BaseEvent evt) : base(evt)
-        {
-        }
-
-        public V2BpmEvent(JSONNode node)
-        {
-            JsonTime = RetrieveRequiredNode(node, "_time").AsFloat;
-            Bpm = RetrieveRequiredNode(node, "_floatValue").AsFloat;
-            Type = 100;
-            FloatValue = Bpm;
-            CustomData = node["_customData"];
-        }
-
-        public V2BpmEvent(float time, float bpm, JSONNode customData = null) : base(time, bpm, customData)
-        {
-        }
-
-        public V2BpmEvent(float jsonTime, float songBpmTime, float bpm, JSONNode customData = null) :
-            base(jsonTime, songBpmTime, bpm, customData)
-        {
-        }
-
-        public override Color? CustomColor
-        {
-            get => null;
-            set { }
-        }
-
-        public override string CustomKeyTrack { get; } = "_track";
-        public override string CustomKeyColor { get; } = "_color";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseBpmEvent bpmEvent)
         {
             JSONNode node = new JSONObject();
-            node["_time"] = new JSONNumberWithOverridenRounding(JsonTime, Settings.Instance.BpmTimeValueDecimalPrecision);
-            node["_type"] = Type;
+            node["_time"] = new JSONNumberWithOverridenRounding(bpmEvent.JsonTime, Settings.Instance.BpmTimeValueDecimalPrecision);
+            node["_type"] = bpmEvent.Type;
             node["_value"] = 0;
-            node["_floatValue"] = Bpm;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["_customData"] = CustomData;
+            node["_floatValue"] = bpmEvent.Bpm;
+            bpmEvent.CustomData = bpmEvent.SaveCustom();
+            if (bpmEvent.CustomData.Children.Any()) return node;
+            node["_customData"] = bpmEvent.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() => new V2BpmEvent(JsonTime, SongBpmTime, Bpm, SaveCustom().Clone());
     }
 }

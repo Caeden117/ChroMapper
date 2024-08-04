@@ -25,7 +25,7 @@ public static class NetDataExtensions
                 ObjectType.Obstacle => reader.Get<V3Obstacle>(),
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
                 ObjectType.CustomEvent => reader.Get<V3CustomEvent>(),
-                ObjectType.BpmChange => reader.Get<V3BpmEvent>(),
+                ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
                 ObjectType.Arc => reader.Get<V3Arc>(),
                 ObjectType.Chain => reader.Get<V3Chain>(),
                 ObjectType.Bookmark => reader.Get<V3Bookmark>(),
@@ -47,7 +47,7 @@ public static class NetDataExtensions
             {
                 return evt.Type switch
                 {
-                    (int)EventTypeValue.BpmChange => new V3BpmEvent(evt),
+                    // (int)EventTypeValue.BpmChange => new V3BpmEvent(evt),
                     (int)EventTypeValue.ColorBoost => new V3ColorBoostEvent(evt),
                     _ => new V3BasicEvent(evt),
                 };
@@ -64,7 +64,7 @@ public static class NetDataExtensions
                 ObjectType.Obstacle => reader.Get<V2Obstacle>(),
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
                 ObjectType.CustomEvent => reader.Get<V2CustomEvent>(),
-                ObjectType.BpmChange => reader.Get<V2BpmEvent>(),
+                ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
                 ObjectType.Arc => reader.Get<V2Arc>(),
                 ObjectType.Chain => throw new InvalidPacketException("Attempting to parse chains in v2"),
                 ObjectType.Bookmark => reader.Get<V2Bookmark>(),

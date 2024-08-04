@@ -58,20 +58,11 @@ namespace Beatmap.Converters
                 V3BasicEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
                 V3ColorBoostEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
                 V3RotationEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
-                V3BpmEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
                 _ => throw new ArgumentException("Unexpected object to convert v3 basic event to v2 event")
             };
             evt.RefreshCustom();
             return evt;
         }
-
-        public static V2BpmEvent BpmEvent(BaseBpmEvent other) =>
-            other switch
-            {
-                V2BpmEvent o => o,
-                V3BpmEvent o => new V2BpmEvent(o),
-                _ => throw new ArgumentException("Unexpected object to convert v3 bpm event to v2 bpm event")
-            };
 
         public static V2SpecialEventsKeywordFilters EventTypesWithKeywords(BaseEventTypesWithKeywords other) =>
             other switch

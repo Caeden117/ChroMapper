@@ -145,10 +145,10 @@ namespace Beatmap.Base
                     // Place a very fast bpm event slighty behind the original event to account for drift
                     var aVeryLargeBpm = 100000f;
                     var offsetRequiredInBeats = jsonTimeOffset * prevBpmChange.Bpm / (aVeryLargeBpm - prevBpmChange.Bpm);
-                    BpmEvents.Add(BeatmapFactory.BpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm));
+                    BpmEvents.Add(new BaseBpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm));
                 }
 
-                BpmEvents.Add(BeatmapFactory.BpmEvent(bpmChange.JsonTime, bpmChange.Bpm));
+                BpmEvents.Add(new BaseBpmEvent(bpmChange.JsonTime, bpmChange.Bpm));
 
                 // Adjust all the objects after the bpm change accordingly
                 if (i + 1 < BpmChanges.Count)
