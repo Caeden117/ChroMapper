@@ -61,7 +61,7 @@ namespace Beatmap.Helper
         public static BaseArc Arc(JSONNode node) =>
             Settings.Instance.MapVersion == 3 ? new V3Arc(node) : new V2Arc(node);
 
-        public static BaseChain Chain(JSONNode node) => new V3Chain(node);
+        public static BaseChain Chain(JSONNode node) => V3Chain.GetFromJson(node);
 
         public static BaseWaypoint Waypoint(JSONNode node) => Settings.Instance.MapVersion == 3
             ? new V3Waypoint(node)
@@ -138,11 +138,6 @@ namespace Beatmap.Helper
             : new V2Arc(jsonTime, posX, posY, color, cutDirection, angleOffset, mult,
                 tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData);
 
-        public static BaseChain Chain(float jsonTime, int posX, int posY, int color, int cutDirection, int angleOffset,
-            float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null) =>
-            new V3Chain(jsonTime, posX, posY, color, cutDirection, angleOffset,
-                tailTime, tailPosX, tailPosY, sliceCount, squish, customData);
-
         public static BaseWaypoint Waypoint(float jsonTime, int posX, int posY, int offsetDirection,
             JSONNode customData = null) => Settings.Instance.MapVersion == 3
             ? new V3Waypoint(jsonTime,
@@ -194,7 +189,6 @@ namespace Beatmap.Helper
             Settings.Instance.MapVersion == 3 ? new V3Obstacle() : new V2Obstacle();
 
         public static BaseArc Arc() => Settings.Instance.MapVersion == 3 ? new V3Arc() : new V2Arc();
-        public static BaseChain Chain() => new V3Chain();
 
         public static BaseWaypoint Waypoint() =>
             Settings.Instance.MapVersion == 3 ? new V3Waypoint() : new V2Waypoint();

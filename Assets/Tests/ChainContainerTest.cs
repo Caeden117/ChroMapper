@@ -39,7 +39,7 @@ namespace Tests
             var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
             var inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
-            placedChain = new V3Chain
+            placedChain = new BaseChain
             {
                 JsonTime = 0,
                 TailJsonTime = 2,

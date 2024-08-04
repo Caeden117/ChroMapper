@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Beatmap.Base;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.V3;
@@ -143,44 +144,6 @@ namespace Tests
 
                 CheckUtils.CheckV3Object("Check arc object version", arcsContainer, 0);
                 CheckUtils.CheckArc("Check arc attributes", arcsContainer, 0, 0f, 1, 2, 0, 1, 0, 1, 1f, 2, 1, 0, 1f, 0);
-            }
-        }
-
-        [Test]
-        public void PlaceChain()
-        {
-            Assert.IsInstanceOf<V3Chain>(BeatmapFactory.Chain(),
-                "Factory default does not instantiate v3 chain in beatmap v3");
-            Assert.IsInstanceOf<V3Chain>(BeatmapFactory.Chain(0f, 1, 2, 0, 1, 0, 1f, 1, 2, 5, 1),
-                "Factory does not instantiate v3 chain in beatmap v3");
-            Assert.DoesNotThrow(() => BeatmapFactory.Chain(new JSONObject
-            {
-                ["b"] = 0f,
-                ["x"] = 1,
-                ["y"] = 2,
-                ["c"] = 0,
-                ["d"] = 1,
-                ["tb"] = 1f,
-                ["tx"] = 2,
-                ["ty"] = 1,
-                ["tc"] = 0,
-                ["sc"] = 5,
-                ["s"] = 1,
-                ["customData"] = new JSONObject()
-            }), "Factory could not instantiate chain with compatible JSON schema in beatmap v3");
-
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
-            if (collection is ChainGridContainer chainsContainer)
-            {
-                var root = chainsContainer.transform.root;
-                var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
-                chainPlacement.RefreshVisuals();
-
-                var chainA = BeatmapFactory.Chain(0f, 1, 2, 0, 1, 0, 1f, 1, 2, 5, 1);
-                PlaceUtils.PlaceChain(chainPlacement, chainA);
-
-                CheckUtils.CheckV3Object("Check chain object version", chainsContainer, 0);
-                CheckUtils.CheckChain("Check chain attributes", chainsContainer, 0, 0f, 1, 2, 0, 1, 0, 1f, 1, 2, 5, 1);
             }
         }
 

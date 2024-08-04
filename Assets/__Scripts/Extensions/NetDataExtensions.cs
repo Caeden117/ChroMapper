@@ -27,7 +27,7 @@ public static class NetDataExtensions
                 ObjectType.CustomEvent => reader.Get<V3CustomEvent>(),
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
                 ObjectType.Arc => reader.Get<V3Arc>(),
-                ObjectType.Chain => reader.Get<V3Chain>(),
+                ObjectType.Chain => reader.Get<BaseChain>(),
                 ObjectType.Bookmark => reader.Get<V3Bookmark>(),
                 _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
             };

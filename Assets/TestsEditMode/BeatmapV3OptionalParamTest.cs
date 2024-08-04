@@ -17,7 +17,7 @@ namespace TestsEditMode
             V3BombNote();
             V3Obstacle();
             V3Arc();
-            V3Chain();
+            V3ChainTest();
             V3BasicEvent();
             V3ColorBoostEvent();
             V3LightColorEventBoxGroup();
@@ -121,10 +121,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3Chain()
+        public void V3ChainTest()
         {
             var json = new JSONObject();
-            var chain = new V3Chain(json);
+            var chain = V3Chain.GetFromJson(json);
 
             Assert.AreEqual(0, chain.JsonTime);
             Assert.AreEqual(0, chain.PosX);

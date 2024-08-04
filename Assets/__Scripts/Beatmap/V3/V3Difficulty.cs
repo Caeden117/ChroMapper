@@ -265,7 +265,7 @@ namespace Beatmap.V3
                             foreach (JSONNode n in node) map.Arcs.Add(new V3Arc(n));
                             break;
                         case "burstSliders":
-                            foreach (JSONNode n in node) map.Chains.Add(new V3Chain(n));
+                            foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n));
                             break;
                         case "waypoints":
                             foreach (JSONNode n in node) map.Waypoints.Add(new V3Waypoint(n));
@@ -359,7 +359,7 @@ namespace Beatmap.V3
                         foreach (JSONNode n in node) map.Obstacles.Add(new V3Obstacle(n, true));
                         break;
                     case "fakeBurstSliders":
-                        foreach (JSONNode n in node) map.Chains.Add(new V3Chain(n, true));
+                        foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n, true));
                         break;
                     case "pointDefinitions":
                         // TODO: array is incorrect, but some old v3 NE/Chroma map uses them, temporarily this needs to be here

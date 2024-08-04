@@ -17,7 +17,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
 
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a chain.");
-    public override BaseChain GenerateOriginalData() => new V3Chain();
+    public override BaseChain GenerateOriginalData() => new BaseChain();
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint) => throw new System.NotImplementedException();
 
     /// <summary>
@@ -86,7 +86,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         }
         else
         {
-            chain = new V3Chain(head, tail);
+            chain = new BaseChain(head, tail);
             return true;
         }
     }

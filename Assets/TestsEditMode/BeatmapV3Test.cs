@@ -299,7 +299,7 @@ namespace TestsEditMode
             var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
             
             Assert.AreEqual("3.3.0",difficulty.Version);
-            AssertDifficulty(difficulty);
+            AssertDifficulty(difficulty, true);
         }
         
         [Test]
@@ -311,7 +311,7 @@ namespace TestsEditMode
             
             reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
             
-            AssertDifficulty(reparsed); // This should have the same stuff
+            AssertDifficulty(reparsed, true); // This should have the same stuff
         }
 
         [Test]
@@ -325,10 +325,11 @@ namespace TestsEditMode
             
             reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
 
-            AssertDifficulty(reparsed); // This should have the same stuff
+            AssertDifficulty(reparsed, false); // This should have the same stuff
         }
 
-        private static void AssertDifficulty(BaseDifficulty difficulty)
+        // Chains are tested outside of this method
+        private static void AssertDifficulty(BaseDifficulty difficulty, bool chainsExist)
         {
             Assert.AreEqual(2, difficulty.Notes.Count);
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
@@ -340,9 +341,16 @@ namespace TestsEditMode
             Assert.AreEqual(1, difficulty.Arcs.Count);
             BeatmapAssert.ArcPropertiesAreEqual(difficulty.Arcs[0], 10, 1, 0, 0, 1, 1, 15, 2, 2, 0, 1, 0);
             
-            Assert.AreEqual(1, difficulty.Chains.Count);
-            BeatmapAssert.ChainPropertiesAreEqual(difficulty.Chains[0], 10, 1, 0, 0, 1, 15, 2, 2, 3, 0.5f);
-            
+            if (chainsExist)
+            {
+                Assert.AreEqual(1, difficulty.Chains.Count);
+                BeatmapAssert.ChainPropertiesAreEqual(difficulty.Chains[0], 10, 1, 0, 0, 1, 15, 2, 2, 3, 0.5f);
+            }
+            else
+            {
+                Assert.AreEqual(0, difficulty.Chains.Count);
+            }
+
             Assert.AreEqual(1, difficulty.BpmEvents.Count);
             BeatmapAssert.BpmEventPropertiesAreEqual(difficulty.BpmEvents[0], 10, 128);
             
@@ -351,48 +359,6 @@ namespace TestsEditMode
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 10, 5, 1, 0);
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, 0, 15);
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, 0, 15);
-        }
-
-        private static void AssertNoteProperties(BaseNote note, float jsonTime, int x, int y, int type, int cutDirection, int angleOffset)
-        {
-            Assert.AreEqual(jsonTime, note.JsonTime, epsilon);
-            Assert.AreEqual(x, note.PosX);
-            Assert.AreEqual(y, note.PosY);
-            Assert.AreEqual(type, note.Type);
-            Assert.AreEqual(cutDirection, note.CutDirection);
-            Assert.AreEqual(angleOffset, note.AngleOffset);
-        }
-
-        private static void AssertObstacleProperties(BaseObstacle obstacle, float jsonTime, int x, int y, int type, int width,
-            int height, float duration)
-        {
-            Assert.AreEqual(jsonTime, obstacle.JsonTime, epsilon);
-            Assert.AreEqual(x, obstacle.PosX);
-            Assert.AreEqual(y, obstacle.PosY);
-            Assert.AreEqual(type, obstacle.Type);
-            Assert.AreEqual(width, obstacle.Width);
-            Assert.AreEqual(height, obstacle.Height);
-            Assert.AreEqual(duration, obstacle.Duration, epsilon);
-            
-        }
-
-        private static void AssertBpmEventProperties(BaseBpmEvent bpmEvent, float jsonTime, float floatValue)
-        {
-            Assert.AreEqual(jsonTime, bpmEvent.JsonTime, epsilon);
-            Assert.AreEqual((int)EventTypeValue.BpmChange, bpmEvent.Type);
-            Assert.AreEqual(floatValue, bpmEvent.FloatValue, epsilon);
-        }
-        
-        private static void AssertEventProperties(BaseEvent evt, float jsonTime, int type, int value, float floatValue, float? rotation = null)
-        {
-            Assert.AreEqual(jsonTime, evt.JsonTime, epsilon);
-            Assert.AreEqual(type, evt.Type);
-            Assert.AreEqual(value, evt.Value);
-            Assert.AreEqual(floatValue, evt.FloatValue);
-            if (rotation != null)
-            {
-                Assert.AreEqual(floatValue, ((BaseRotationEvent)evt).Rotation);
-            }
         }
     }
 }

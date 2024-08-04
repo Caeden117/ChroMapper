@@ -147,8 +147,19 @@ namespace Tests
                 var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
-                BaseChain baseChain = new V3Chain(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red,
-                    (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                BaseChain baseChain = new BaseChain
+                {
+                    JsonTime = 2f,
+                    PosX = (int)GridX.Left,
+                    PosY = (int)GridY.Base,
+                    Color = (int)NoteColor.Red,
+                    CutDirection = (int)NoteCutDirection.Left,
+                    TailJsonTime = 3f,
+                    TailPosX = (int)GridX.Left,
+                    TailPosY = (int)GridY.Base,
+                    SliceCount = 5,
+                    Squish = 1.5f
+                };
                 PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
                 if (chainsContainer.LoadedContainers[baseChain] is ChainContainer containerA)
@@ -177,8 +188,19 @@ namespace Tests
                 var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
-                BaseChain baseChain = new V3Chain(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red,
-                    (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                BaseChain baseChain = new BaseChain
+                {
+                    JsonTime = 2f,
+                    PosX = (int)GridX.Left,
+                    PosY = (int)GridY.Base,
+                    Color = (int)NoteColor.Red,
+                    CutDirection = (int)NoteCutDirection.Left,
+                    TailJsonTime = 3f,
+                    TailPosX = (int)GridX.Left,
+                    TailPosY = (int)GridY.Base,
+                    SliceCount = 5,
+                    Squish = 1.5f
+                };
                 PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
                 if (chainsContainer.LoadedContainers[baseChain] is ChainContainer containerA)
