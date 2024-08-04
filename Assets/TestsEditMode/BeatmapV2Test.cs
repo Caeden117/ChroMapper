@@ -142,6 +142,20 @@ namespace TestsEditMode
             
             AssertDifficulty(reparsed); // This should have the same stuff
         }
+        
+        [Test]
+        public void GetOutputJsonAfterSwitchingToV3()
+        {
+            var difficulty = V2Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
+
+            Settings.Instance.MapVersion = 3;
+            var outputJson = V3Difficulty.GetOutputJson(difficulty);
+            var reparsed = V3Difficulty.GetFromJson(outputJson, "");
+            
+            reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
+
+            AssertDifficulty(reparsed); // This should have the same stuff
+        }
 
         private static void AssertDifficulty(BaseDifficulty difficulty)
         {
