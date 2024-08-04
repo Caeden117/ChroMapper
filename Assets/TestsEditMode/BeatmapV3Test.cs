@@ -299,7 +299,23 @@ namespace TestsEditMode
             var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
             
             Assert.AreEqual("3.3.0",difficulty.Version);
+            AssertDifficulty(difficulty);
+        }
+        
+        [Test]
+        public void GetOutputJson()
+        {
+            var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
+            var outputJson = V3Difficulty.GetOutputJson(difficulty);
+            var reparsed = V3Difficulty.GetFromJson(outputJson, "");
             
+            reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
+            
+            AssertDifficulty(reparsed); // This should have the same stuff
+        }
+
+        private static void AssertDifficulty(BaseDifficulty difficulty)
+        {
             Assert.AreEqual(2, difficulty.Notes.Count);
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[1], 10, 1, 0, 3, 0, 0);
