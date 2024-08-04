@@ -1,13 +1,16 @@
 using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.V2;
+using Beatmap.V3;
 using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseNote : BaseGrid, ICustomDataNote
+    public class BaseNote : BaseGrid, ICustomDataNote
     {
         public override void Serialize(NetDataWriter writer)
         {
@@ -27,14 +30,11 @@ namespace Beatmap.Base
             base.Deserialize(reader);
         }
 
-        private int color;
-        private int type;
-
-        protected BaseNote()
+        public BaseNote()
         {
         }
 
-        protected BaseNote(BaseNote other)
+        public BaseNote(BaseNote other)
         {
             SetTimes(other.JsonTime, other.SongBpmTime);
             PosX = other.PosX;
@@ -43,75 +43,43 @@ namespace Beatmap.Base
             Type = other.Type;
             CutDirection = other.CutDirection;
             AngleOffset = other.AngleOffset;
-            CustomData = other.SaveCustom().Clone();
+            CustomData = other.CustomData.Clone();
             CustomFake = other.CustomFake;
         }
 
-        protected BaseNote(BaseBombNote baseBomb)
+        // Used for Node Editor
+        public BaseNote(JSONNode node) : this(BeatmapFactory.Note(node)) {}
+        
+        protected override void ParseCustom()
         {
-            SetTimes(baseBomb.JsonTime, baseBomb.SongBpmTime);
-            PosX = baseBomb.PosX;
-            PosY = baseBomb.PosY;
-            Color = (int)NoteType.Bomb;
-            Type = (int)NoteType.Bomb;
-            CutDirection = 0;
-            AngleOffset = 0;
-            CustomData = baseBomb.SaveCustom().Clone();
-            CustomFake = baseBomb.CustomFake;
+            base.ParseCustom();
+
+            if (Settings.Instance.MapVersion == 2)
+            {
+                CustomDirection = (CustomData?.HasKey(CustomKeyDirection) ?? false) ? CustomData?[CustomKeyDirection].AsInt : null;
+                CustomFake = (CustomData?.HasKey("_fake") ?? false) ? CustomData["_fake"].AsBool : false;
+            }
         }
 
-        protected BaseNote(BaseSlider slider)
+        protected internal override JSONNode SaveCustom()
         {
-            SetTimes(slider.JsonTime, slider.SongBpmTime);
-            PosX = slider.PosX;
-            PosY = slider.PosY;
-            Color = slider.Color;
-            Type = slider.Color;
-            CutDirection = slider.CutDirection;
-            AngleOffset = 0;
-            CustomData = slider.SaveCustom().Clone();
-            CustomFake = slider.CustomFake;
+            CustomData = base.SaveCustom();
+            
+            if (Settings.Instance.MapVersion == 2)
+            {
+                if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection;
+                else CustomData.Remove(CustomKeyDirection);
+                if (CustomFake) CustomData["_fake"] = true;
+                else CustomData.Remove("_fake");
+            }
+
+            return CustomData;
         }
 
-        protected BaseNote(float time, int posX, int posY, int type, int cutDirection,
-            JSONNode customData = null) : base(time, posX, posY, customData)
-        {
-            Type = type;
-            CutDirection = cutDirection;
-            AngleOffset = 0;
-            InferColor();
-        }
-
-        protected BaseNote(float jsonTime, float songBpmTime, int posX, int posY, int type, int cutDirection,
-            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, customData)
-        {
-            Type = type;
-            CutDirection = cutDirection;
-            AngleOffset = 0;
-            InferColor();
-        }
-
-        protected BaseNote(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
-            JSONNode customData = null) : base(time, posX, posY, customData)
-        {
-            Color = color;
-            CutDirection = cutDirection;
-            AngleOffset = angleOffset;
-            InferType();
-        }
-
-        protected BaseNote(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
-            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, customData)
-        {
-            Color = color;
-            CutDirection = cutDirection;
-            AngleOffset = angleOffset;
-            InferType();
-        }
-
-
+        
         public override ObjectType ObjectType { get; set; } = ObjectType.Note;
 
+        private int type;
         public int Type
         {
             get => type;
@@ -122,6 +90,7 @@ namespace Beatmap.Base
             }
         }
 
+        private int color;
         public int Color
         {
             get => color;
@@ -142,7 +111,86 @@ namespace Beatmap.Base
 
         public virtual float? CustomDirection { get; set; }
 
-        public abstract string CustomKeyDirection { get; }
+        public string CustomKeyDirection => V2Note.CustomKeyDirection;
+
+        public override string CustomKeyColor => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeyColor,
+            3 => V3ColorNote.CustomKeyColor
+        };
+
+        public override string CustomKeyTrack => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeyTrack,
+            3 => V3ColorNote.CustomKeyTrack
+        };
+
+        public override string CustomKeyAnimation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeyAnimation,
+            3 => V3ColorNote.CustomKeyAnimation
+        };
+
+        public override string CustomKeyCoordinate => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeyCoordinate,
+            3 => V3ColorNote.CustomKeyCoordinate
+        };
+
+        public override string CustomKeyWorldRotation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeyWorldRotation,
+            3 => V3ColorNote.CustomKeyWorldRotation
+        };
+
+        public override string CustomKeyLocalRotation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeyLocalRotation,
+            3 => V3ColorNote.CustomKeyLocalRotation
+        };
+
+        public override string CustomKeySpawnEffect => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeySpawnEffect,
+            3 => V3ColorNote.CustomKeySpawnEffect
+        };
+
+        public override string CustomKeyNoteJumpMovementSpeed => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeyNoteJumpMovementSpeed,
+            3 => V3ColorNote.CustomKeyNoteJumpMovementSpeed
+        };
+
+        public override string CustomKeyNoteJumpStartBeatOffset => Settings.Instance.MapVersion switch
+        {
+            2 => V2Note.CustomKeyNoteJumpStartBeatOffset,
+            3 => V3ColorNote.CustomKeyNoteJumpStartBeatOffset
+        };
+        
+        public override bool IsChroma() =>
+            CustomData != null &&
+            ((CustomData.HasKey(CustomKeyColor) && CustomData[CustomKeyColor].IsArray) ||
+             (CustomData.HasKey(CustomKeySpawnEffect) && CustomData[CustomKeySpawnEffect].IsBoolean) ||
+             (CustomData.HasKey("disableDebris") && CustomData["disableDebris"].IsBoolean));
+
+        public override bool IsNoodleExtensions() =>
+            CustomData != null &&
+            ((CustomData.HasKey("disableNoteGravity") && CustomData["disableNoteGravity"].IsBoolean) ||
+             (CustomData.HasKey("disableNoteLook") && CustomData["disableNoteLook"].IsBoolean) ||
+             (CustomData.HasKey("flip") && CustomData["flip"].IsArray) ||
+             (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
+             (CustomData.HasKey(CustomKeyLocalRotation) && CustomData[CustomKeyLocalRotation].IsArray) ||
+             (CustomData.HasKey(CustomKeyNoteJumpMovementSpeed) && CustomData[CustomKeyNoteJumpMovementSpeed].IsNumber) ||
+             (CustomData.HasKey(CustomKeyNoteJumpStartBeatOffset) &&
+              CustomData[CustomKeyNoteJumpStartBeatOffset].IsNumber) ||
+             (CustomData.HasKey(CustomKeyCoordinate) && CustomData[CustomKeyCoordinate].IsArray) ||
+             (CustomData.HasKey(CustomKeyWorldRotation) &&
+              (CustomData[CustomKeyWorldRotation].IsArray || CustomData[CustomKeyWorldRotation].IsNumber)));
+
+        public override bool IsMappingExtensions() =>
+            PosX < 0 || PosX > 3 || PosY < 0 || PosY > 2 || (CutDirection >= 1000 && CutDirection <= 1360) ||
+             (CutDirection >= 2000 && CutDirection <= 2360);
+        
 
         public override void Apply(BaseObject originalData)
         {
@@ -157,11 +205,7 @@ namespace Beatmap.Base
         }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
-           => other is BaseBombNote or BaseNote && Vector2.Distance(((BaseGrid)other).GetPosition(), GetPosition()) < 0.1;
-
-        protected void InferType() => Type = Color;
-
-        protected void InferColor() => Color = Type;
+           => other is BaseNote note && Vector2.Distance(note.GetPosition(), GetPosition()) < 0.1;
 
         // This should hopefully prevent flipped stack notes when playing in game.
         // (I'm done with note sorting; if you don't like it, go fix it yourself.)
@@ -192,6 +236,19 @@ namespace Beatmap.Base
             if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), note.CustomData?.ToString(), StringComparison.Ordinal);
 
             return comparison;
+        }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+            {
+                2 => V2Note.ToJson(this),
+                3 => Type == (int)NoteType.Bomb ? V3BombNote.ToJson(this) : V3ColorNote.ToJson(this)
+            };
+
+        public override BaseItem Clone()
+        {
+            var note = new BaseNote(this);
+            note.ParseCustom();
+            return note;
         }
     }
 }

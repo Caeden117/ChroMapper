@@ -13,8 +13,8 @@ namespace TestsEditMode
         {
             V3BpmEventTest();
             V3RotationEvent();
-            V3ColorNote();
-            V3BombNote();
+            V3ColorNoteTest();
+            V3BombNoteTest();
             V3Obstacle();
             V3ArcTest();
             V3ChainTest();
@@ -58,10 +58,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3ColorNote()
+        public void V3ColorNoteTest()
         {
             var json = new JSONObject();
-            var note = new V3ColorNote(json);
+            var note = V3ColorNote.GetFromJson(json);
 
             Assert.AreEqual(0, note.JsonTime);
             Assert.AreEqual(0, note.Color);
@@ -73,10 +73,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3BombNote()
+        public void V3BombNoteTest()
         {
             var json = new JSONObject();
-            var bomb = new V3BombNote(json);
+            var bomb = V3BombNote.GetFromJson(json);
 
             Assert.AreEqual(0, bomb.JsonTime);
             Assert.AreEqual(3, bomb.Color); // Is not 0

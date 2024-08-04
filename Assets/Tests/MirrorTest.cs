@@ -37,7 +37,7 @@ namespace Tests
         [SetUp]
         public void SpawnNotesAndArcs()
         {
-            BaseNote baseNoteA = new V3ColorNote
+            BaseNote baseNoteA = new BaseNote
             {
                 JsonTime = 2,
                 Type = (int)NoteType.Red,
@@ -45,7 +45,7 @@ namespace Tests
                 PosY = (int)GridY.Base,
                 CutDirection = (int)NoteCutDirection.Left
             };
-            BaseNote baseNoteB = new V3ColorNote
+            BaseNote baseNoteB = new BaseNote
             {
                 JsonTime = 3,
                 Type = (int)NoteType.Blue,

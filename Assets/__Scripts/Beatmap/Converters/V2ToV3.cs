@@ -16,18 +16,6 @@ namespace Beatmap.Converters
 {
     public static class V2ToV3
     {
-        public static V3BombNote BombNote(BaseNote other) =>
-            other switch
-            {
-                // Safety measure for converting V3ColorNote with bomb type to bomb.
-                // This can happen when node editing a V3ColorNote with "c": 3 
-                V3ColorNote o => new V3BombNote(o.JsonTime, o.PosX, o.PosX, o.CustomData),
-
-                V3BombNote o => o,
-                V2Note o => new V3BombNote(o) { CustomData = CustomDataObject(o.CustomData) },
-                _ => throw new ArgumentException("Unexpected object to convert v2 note to v3 color note")
-            };
-
         public static V3ColorBoostEvent ColorBoostEvent(BaseEvent other) =>
             other switch
             {
@@ -36,26 +24,6 @@ namespace Beatmap.Converters
                 V2Event o => new V3ColorBoostEvent(o),
                 _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 color boost event")
             };
-
-        public static V3ColorNote ColorNote(BaseNote other)
-        {
-            var angleOffset = (other is V2Note && other.CustomData.HasKey("_cutDirection") && other.CustomData["_cutDirection"].IsNumber)
-                ? other.CustomData["_cutDirection"].AsInt
-                : 0;
-            var note = other switch
-            {
-                V3ColorNote o => o,
-                V2Note o => new V3ColorNote(o)
-                {
-                    CustomData = CustomDataObject(o.CustomData),
-                    CutDirection = (angleOffset == 0) ? o.CutDirection : (int)NoteCutDirection.Down,
-                    AngleOffset = angleOffset,
-                },
-                _ => throw new ParsingErrors()
-            };
-            note.RefreshCustom();
-            return note;
-        }
 
         public static V3BasicEvent BasicEvent(BaseEvent other)
         {

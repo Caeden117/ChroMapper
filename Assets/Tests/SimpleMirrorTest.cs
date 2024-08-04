@@ -49,7 +49,11 @@ namespace Tests
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
             BaseNote baseNoteA =
-                new V3ColorNote(2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+                new BaseNote
+                {
+                    JsonTime = 2, PosX = -2345, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Left
+                };
 
             PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
@@ -68,12 +72,17 @@ namespace Tests
         [Test]
         public void MirrorNoteNE()
         {
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                (int)NoteCutDirection.Left, JSON.Parse("{\"coordinates\": [-1, 0]}"));
+            BaseNote baseNoteA = new BaseNote
+            {
+                JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left, CustomData = JSON.Parse("{\"coordinates\": [-1, 0]}")
+            };
+            baseNoteA.RefreshCustom();
 
             PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Containers;
+using Beatmap.Enums;
 using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -55,10 +56,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         }
     }
 
-    public static bool IsColorNote(BaseObject o)
-    {
-        return o is BaseNote && !(o is BaseBombNote);
-    }
+    public static bool IsColorNote(BaseObject o) => o is BaseNote note && note.Type != (int)NoteType.Bomb;
 
     public override BaseArc GenerateOriginalData() => new BaseArc();
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting)

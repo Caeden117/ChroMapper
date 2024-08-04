@@ -238,10 +238,10 @@ namespace Beatmap.V3
                     {
                         // Notes and bombs are in same array
                         case "colorNotes":
-                            foreach (JSONNode n in node) map.Notes.Add(new V3ColorNote(n));
+                            foreach (JSONNode n in node) map.Notes.Add(V3ColorNote.GetFromJson(n));
                             break;
                         case "bombNotes":
-                            foreach (JSONNode n in node) map.Notes.Add(new V3BombNote(n));
+                            foreach (JSONNode n in node) map.Notes.Add(V3BombNote.GetFromJson(n));
                             break;
                         
                         // Basic, boost, and rotation events are in same array
@@ -350,10 +350,10 @@ namespace Beatmap.V3
                         foreach (JSONNode n in node) customEventsList.Add(new V3CustomEvent(n));
                         break;
                     case "fakeColorNotes":
-                        foreach (JSONNode n in node) map.Notes.Add(new V3ColorNote(n, true));
+                        foreach (JSONNode n in node) map.Notes.Add(V3ColorNote.GetFromJson(n, true));
                         break;
                     case "fakeBombNotes":
-                        foreach (JSONNode n in node) map.Notes.Add(new V3BombNote(n, true));
+                        foreach (JSONNode n in node) map.Notes.Add(V3BombNote.GetFromJson(n, true));
                         break;
                     case "fakeObstacles":
                         foreach (JSONNode n in node) map.Obstacles.Add(new V3Obstacle(n, true));

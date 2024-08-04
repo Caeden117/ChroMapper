@@ -75,7 +75,17 @@ namespace Beatmap.Base
 
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
-        public JSONNode CustomData { get; set; } = new JSONObject();
+
+        private JSONNode customData = new JSONObject();
+
+        public JSONNode CustomData
+        {
+            get => customData;
+            set
+            {
+                customData = value ?? new JSONObject();
+            }
+        }
 
         public virtual bool IsChroma() => false;
 

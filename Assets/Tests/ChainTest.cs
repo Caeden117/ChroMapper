@@ -43,10 +43,16 @@ namespace Tests
                 var root = notesContainer.transform.root;
                 var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-                BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Down);
-                BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red,
-                    (int)NoteCutDirection.Up);
+                BaseNote baseNoteA = new BaseNote
+                {
+                    JsonTime = 2f, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Down
+                };
+                BaseNote baseNoteB = new BaseNote
+                {
+                    JsonTime =3f, PosX = (int)GridX.Left, PosY = (int)GridY.Upper, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Up
+                };
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
                 PlaceUtils.PlaceNote(notePlacement, baseNoteB);
 
@@ -99,11 +105,19 @@ namespace Tests
                 var root = notesContainer.transform.root;
                 var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-                BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Down, headCustomData);
+                BaseNote baseNoteA = new BaseNote
+                {
+                    JsonTime = 2f, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Down, CustomData = headCustomData
+                };
+                baseNoteA.RefreshCustom();
 
-                BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red,
-                    (int)NoteCutDirection.Up, tailCustomData);
+                BaseNote baseNoteB = new BaseNote
+                {
+                    JsonTime = 3f, PosX = (int)GridX.Left, PosY = (int)GridY.Upper, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Up, CustomData = tailCustomData
+                };
+                baseNoteB.RefreshCustom();
 
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
                 PlaceUtils.PlaceNote(notePlacement, baseNoteB);

@@ -1,9 +1,10 @@
-using Beatmap.Base;
+﻿using Beatmap.Base;
 using Beatmap.Enums;
 
+// ChromaToggle is dead. Probably should remove this.
 namespace Beatmap.V2
 {
-    public class V2ChromaNote : V2Note, V2Object
+    public class V2ChromaNote : BaseNote
     {
         public const int Monochrome = (int)NoteCutDirection.Up;
         public const int Bidirectional = (int)NoteCutDirection.Left;
@@ -34,9 +35,6 @@ namespace Beatmap.V2
             get => ObjectType.CustomNote;
             set => base.ObjectType = value;
         }
-
-        public V2Note ConvertToNote() =>
-            new V2Note(JsonTime, SongBpmTime, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
 
         /*public new JSONNode ConvertToJSON() //Uncomment this when Custom JSON Data is ready.
         {

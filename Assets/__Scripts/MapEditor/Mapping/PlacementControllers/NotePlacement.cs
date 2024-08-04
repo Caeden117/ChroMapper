@@ -113,7 +113,10 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a note.");
 
-    public override BaseNote GenerateOriginalData() => BeatmapFactory.Note(0, 0, 0, (int)NoteColor.Red, (int)NoteCutDirection.Down, 0);
+    public override BaseNote GenerateOriginalData() => new BaseNote
+    {
+        Color = (int)NoteColor.Red, CutDirection = (int)NoteCutDirection.Down
+    };
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 roundedHit)
     {
@@ -200,48 +203,22 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     private void ToggleDiagonalAngleOffset(BaseNote note, int newCutDirection)
     {
-        if (note is V3ColorNote colorNote)
+        if (note.CutDirection == (int)NoteCutDirection.Any && newCutDirection == (int)NoteCutDirection.Any
+            && note.AngleOffset != 45)
         {
-            if (colorNote.CutDirection == (int)NoteCutDirection.Any && newCutDirection == (int)NoteCutDirection.Any
-                && colorNote.AngleOffset != 45)
-            {
-                colorNote.AngleOffset = 45;
-            }
-            else
-            {
-                colorNote.AngleOffset = 0;
-            }
+            note.AngleOffset = 45;
         }
+        else
+        {
+            note.AngleOffset = 0;
+        }
+        
     }
 
     public void UpdateType(int type)
     {
         queuedData.Type = type;
         UpdateAppearance();
-    }
-
-    public void ChangeChromaToggle(bool isChromaToggleNote)
-    {
-        if (isChromaToggleNote)
-        {
-            var data = new V2ChromaNote(queuedData) { BombRotation = V2ChromaNote.Alternate };
-            queuedData = data;
-        }
-        else if (queuedData is V2ChromaNote data)
-        {
-            queuedData = data.ConvertToNote();
-        }
-
-        UpdateAppearance();
-    }
-
-    public void UpdateChromaValue(int chromaNoteValue)
-    {
-        if (queuedData is V2ChromaNote chroma)
-        {
-            chroma.BombRotation = chromaNoteValue;
-            UpdateAppearance();
-        }
     }
 
     private void UpdateAppearance()

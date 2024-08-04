@@ -14,41 +14,6 @@ namespace Beatmap.Converters
 {
     public static class V3ToV2
     {
-        public static V2Note Note(BaseNote other)
-        {
-            var note = other switch
-            {
-                V2Note o => o,
-                V3ColorNote o => new V2Note(o) { CustomData = CustomDataObject(o.CustomData) },
-                V3BombNote o => new V2Note(o) { CustomData = CustomDataObject(o.CustomData) },
-                _ => throw new ArgumentException("Unexpected object to convert v3 color note to v2 note")
-            };
-
-            if (other.AngleOffset % 45 != 0)
-            {
-                var customCutDirection = other.CutDirection switch
-                {
-                    (int)NoteCutDirection.Down => 0,
-                    (int)NoteCutDirection.DownRight => 45,
-                    (int)NoteCutDirection.Right => 90,
-                    (int)NoteCutDirection.UpRight => 135,
-                    (int)NoteCutDirection.Up => 180,
-                    (int)NoteCutDirection.UpLeft => 225,
-                    (int)NoteCutDirection.Left => 270,
-                    (int)NoteCutDirection.DownLeft => 315,
-                    (int)NoteCutDirection.Any => 0,
-                    _ => 0
-                };
-                customCutDirection += other.AngleOffset;
-                note.CustomData ??= new JSONObject();
-                note.CustomData["_cutDirection"] = customCutDirection;
-            }
-
-            if (other.CustomFake) note.GetOrCreateCustom()["_fake"] = true;
-
-            note.RefreshCustom();
-            return note;
-        }
 
         public static V2Event Event(BaseEvent other)
         {

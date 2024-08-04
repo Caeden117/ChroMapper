@@ -37,7 +37,7 @@ namespace Tests
             var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
 
-            BaseNote baseNoteA = new V3ColorNote
+            BaseNote baseNoteA = new BaseNote
             {
                 JsonTime = 2,
                 Type = (int)NoteType.Red
@@ -70,12 +70,12 @@ namespace Tests
             var selectionController = root.GetComponentInChildren<SelectionController>();
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            BaseNote baseNoteA = new V3ColorNote
+            BaseNote baseNoteA = new BaseNote
             {
                 JsonTime = 2,
                 Type = (int)NoteType.Red
             };
-            BaseNote baseNoteB = new V3ColorNote
+            BaseNote baseNoteB = new BaseNote
             {
                 JsonTime = 2,
                 Type = (int)NoteType.Blue,
@@ -185,12 +185,12 @@ namespace Tests
             var root = notesContainer.transform.root;
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
+            PlaceUtils.PlaceNote(notePlacement, new BaseNote
             {
                 JsonTime = 2,
                 Type = (int)NoteType.Red
             });
-            PlaceUtils.PlaceNote(notePlacement, new V3ColorNote
+            PlaceUtils.PlaceNote(notePlacement, new BaseNote
             {
                 JsonTime = 2,
                 Type = (int)NoteType.Blue

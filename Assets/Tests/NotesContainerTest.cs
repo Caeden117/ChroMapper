@@ -36,7 +36,7 @@ namespace Tests
             var noteGridContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            BaseNote baseNoteA = new V3ColorNote
+            BaseNote baseNoteA = new BaseNote
             {
                 JsonTime = 4,
                 Type = (int)NoteType.Red,
@@ -45,7 +45,7 @@ namespace Tests
             noteGridContainer.SpawnObject(baseNoteA);
             var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
 
-            BaseNote baseNoteB = new V3ColorNote
+            BaseNote baseNoteB = new BaseNote
             {
                 JsonTime = 4,
                 Type = (int)NoteType.Red,
@@ -147,11 +147,11 @@ namespace Tests
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var inputController = noteGridContainer.transform.root.GetComponentInChildren<BeatmapNoteInputController>();
 
-            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            BaseNote baseNoteA = new BaseNote { JsonTime = 4 };
             noteGridContainer.SpawnObject(baseNoteA);
             var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
 
-            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            BaseNote baseNoteB = new BaseNote { JsonTime = 4 };
             noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
             var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
             
@@ -193,11 +193,11 @@ namespace Tests
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var inputController = noteGridContainer.transform.root.GetComponentInChildren<BeatmapNoteInputController>();
 
-            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            BaseNote baseNoteA = new BaseNote { JsonTime = 4 };
             noteGridContainer.SpawnObject(baseNoteA);
             var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
 
-            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            BaseNote baseNoteB = new BaseNote { JsonTime = 4 };
             noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
             var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
             
@@ -237,11 +237,11 @@ namespace Tests
             var noteGridContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            BaseNote baseNoteA = new V3ColorNote { JsonTime = 4 };
+            BaseNote baseNoteA = new BaseNote { JsonTime = 4 };
             noteGridContainer.SpawnObject(baseNoteA);
             var containerA = noteGridContainer.LoadedContainers[baseNoteA] as NoteContainer;
 
-            BaseNote baseNoteB = new V3ColorNote { JsonTime = 4 };
+            BaseNote baseNoteB = new BaseNote { JsonTime = 4 };
             noteGridContainer.SpawnObject(baseNoteB, removeConflicting: false);
             var containerB = noteGridContainer.LoadedContainers[baseNoteB] as NoteContainer;
             
@@ -281,14 +281,14 @@ namespace Tests
             var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
 
-            BaseNote baseNoteA = new V3ColorNote
+            BaseNote baseNoteA = new BaseNote
             {
                 JsonTime = 2,
                 Type = (int)NoteType.Red
             };
             notesContainer.SpawnObject(baseNoteA);
 
-            BaseNote baseNoteB = new V3ColorNote
+            BaseNote baseNoteB = new BaseNote
             {
                 JsonTime = 3,
                 Type = (int)NoteType.Red

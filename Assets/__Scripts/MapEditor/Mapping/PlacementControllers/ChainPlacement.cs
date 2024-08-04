@@ -68,7 +68,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         }
     }
 
-    private bool IsColorNote(BaseObject o) => o is BaseNote && !(o is BaseBombNote);
+    private static bool IsColorNote(BaseObject o) => ArcPlacement.IsColorNote(o);
 
     public bool TryCreateChainData(BaseNote head, BaseNote tail, out BaseChain chain, out BaseNote tailNote)
     {

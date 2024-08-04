@@ -44,10 +44,10 @@ namespace Tests
             bpmEventsContainer.SpawnObject(baseBpmEvent2);
             bpmEventsContainer.SpawnObject(baseBpmEvent3);
 
-            baseNote1 = new V3ColorNote { JsonTime = 1 };
-            baseNote2 = new V3ColorNote { JsonTime = 2 };
-            baseNote3 = new V3ColorNote { JsonTime = 3 };
-            baseNote4 = new V3ColorNote { JsonTime = 4 };
+            baseNote1 = new BaseNote { JsonTime = 1 };
+            baseNote2 = new BaseNote { JsonTime = 2 };
+            baseNote3 = new BaseNote { JsonTime = 3 };
+            baseNote4 = new BaseNote { JsonTime = 4 };
             PlaceUtils.PlaceNote(notePlacement, baseNote1);
             PlaceUtils.PlaceNote(notePlacement, baseNote2);
             PlaceUtils.PlaceNote(notePlacement, baseNote3);

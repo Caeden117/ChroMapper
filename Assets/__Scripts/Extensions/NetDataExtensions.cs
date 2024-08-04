@@ -20,7 +20,7 @@ public static class NetDataExtensions
         {
             BaseObject obj = beatmapObjectType switch
             {
-                ObjectType.Note => reader.Get<V2Note>(),
+                ObjectType.Note => reader.Get<BaseNote>(),
                 ObjectType.Event => reader.Get<V2Event>(),
                 ObjectType.Obstacle => reader.Get<V3Obstacle>(),
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
@@ -31,17 +31,6 @@ public static class NetDataExtensions
                 ObjectType.Bookmark => reader.Get<V3Bookmark>(),
                 _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
             };
-
-            if (obj is V2Note note)
-            {
-                return note.Type switch
-                {
-                    (int)NoteType.Red => new V3ColorNote(note),
-                    (int)NoteType.Blue => new V3ColorNote(note),
-                    (int)NoteType.Bomb => new V3BombNote(note),
-                    _ => throw new InvalidPacketException("Attempting to parse an invalid note"),
-                };
-            }
 
             if (obj is V2Event evt)
             {
@@ -59,7 +48,7 @@ public static class NetDataExtensions
         {
             return beatmapObjectType switch
             {
-                ObjectType.Note => reader.Get<V2Note>(),
+                ObjectType.Note => reader.Get<BaseNote>(),
                 ObjectType.Event => reader.Get<V2Event>(),
                 ObjectType.Obstacle => reader.Get<V2Obstacle>(),
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported

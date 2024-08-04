@@ -157,7 +157,7 @@ namespace Beatmap.V2
                             }
                             break;
                         case "_notes":
-                            foreach (JSONNode n in node) map.Notes.Add(new V2Note(n));
+                            foreach (JSONNode n in node) map.Notes.Add(V2Note.GetFromJson(n));
                             break;
                         case "_obstacles":
                             foreach (JSONNode n in node) map.Obstacles.Add(new V2Obstacle(n));

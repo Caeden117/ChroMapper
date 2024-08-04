@@ -30,6 +30,7 @@ namespace TestsEditMode
         [SetUp]
         public void SetupMop()
         {
+            Settings.Instance.MapVersion = 3;
             _difficulty = new BaseDifficulty();
             _info = new BeatSaberSong.DifficultyBeatmap(new BeatSaberSong.DifficultyBeatmapSet());
         }
@@ -47,7 +48,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -159,7 +160,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -190,7 +191,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -221,7 +222,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -252,7 +253,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -284,7 +285,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -308,7 +309,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {

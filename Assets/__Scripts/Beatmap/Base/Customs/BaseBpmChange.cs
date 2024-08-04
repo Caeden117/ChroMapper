@@ -34,13 +34,6 @@ namespace Beatmap.Base.Customs
             MetronomeOffset = 4;
         }
 
-        protected BaseBpmChange(float jsonTime, float songBpmTime, float bpm) : base(jsonTime, songBpmTime, bpm)
-        {
-            Bpm = bpm;
-            BeatsPerBar = 4;
-            MetronomeOffset = 4;
-        }
-
         public float BeatsPerBar { get; set; }
         public float MetronomeOffset { get; set; }
 

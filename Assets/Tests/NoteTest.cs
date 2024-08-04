@@ -46,8 +46,11 @@ namespace Tests
                 var notePlacement = root.GetComponentInChildren<NotePlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Left);
+                BaseNote baseNoteA = new BaseNote
+                {
+                    JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Left
+                };
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
                 if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
@@ -78,9 +81,21 @@ namespace Tests
             var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
             var inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-            BaseNote baseNote1 = new V3ColorNote(1, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
-            BaseNote baseNote2 = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
-            BaseNote baseNote3 = new V3ColorNote(3, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+            BaseNote baseNote1 = new BaseNote
+            {
+                JsonTime = 1, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left
+            };
+            BaseNote baseNote2 = new BaseNote
+            {
+                JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left
+            };
+            BaseNote baseNote3 = new BaseNote
+            {
+                JsonTime = 3, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left
+            };
 
             BaseArc baseArc12 = new BaseArc { JsonTime = 1, TailJsonTime = 2, Color = (int)NoteColor.Red };
             BaseChain baseChain23 = new BaseChain { JsonTime = 2, TailJsonTime = 3, Color = (int)NoteColor.Red };
@@ -134,8 +149,11 @@ namespace Tests
                 var notePlacement = root.GetComponentInChildren<NotePlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-                BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Left);
+                BaseNote baseNoteA = new BaseNote
+                {
+                    JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                        CutDirection = (int)NoteCutDirection.Left
+                };
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
                 if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
@@ -166,9 +184,21 @@ namespace Tests
             var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
             var inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
 
-            BaseNote baseNote1 = new V3ColorNote(1, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
-            BaseNote baseNote2 = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Up);
-            BaseNote baseNote3 = new V3ColorNote(3, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Right);
+            BaseNote baseNote1 = new BaseNote
+            {
+                JsonTime = 1, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left
+            };
+            BaseNote baseNote2 = new BaseNote
+            {
+                JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Up
+            };
+            BaseNote baseNote3 = new BaseNote
+            {
+                JsonTime = 3, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Right
+            };
 
             BaseArc baseArc12 = new BaseArc { JsonTime = 1, TailJsonTime = 2, CutDirection = (int)NoteCutDirection.Left, TailCutDirection = (int)NoteCutDirection.Up };
             BaseChain baseChain23 = new BaseChain { JsonTime = 2, TailJsonTime = 3, CutDirection = (int)NoteCutDirection.Up };
@@ -224,8 +254,11 @@ namespace Tests
                 var customDirection = 69;
                 var localRotation = new JSONArray() { [0] = 0, [1] = 1, [2] = 2 };
 
-                BaseNote v3NoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Left);
+                BaseNote v3NoteA = new BaseNote
+                {
+                    JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Left
+                };
                 v3NoteA.CustomLocalRotation = localRotation;
                 v3NoteA.CustomDirection = customDirection;
 
@@ -235,8 +268,11 @@ namespace Tests
                     (int)NoteType.Red, (int)NoteCutDirection.Left, 0,
                     new JSONObject() { ["localRotation"] = localRotation });
 
-                BaseNote v2NoteB = new V2Note(4, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                (int)NoteCutDirection.Left);
+                BaseNote v2NoteB = new BaseNote
+                {
+                    JsonTime = 4, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Left
+                };
                 v2NoteB.CustomDirection = customDirection;
                 v2NoteB.CustomLocalRotation = localRotation;
 

@@ -48,11 +48,13 @@ namespace Beatmap.Helper
             : V2BpmEvent.GetFromJson(node);
         public static BaseRotationEvent RotationEvent(JSONNode node) => new V3RotationEvent(node);
 
-        public static BaseNote Note(JSONNode node) =>
-            Settings.Instance.MapVersion == 3 ? new V3ColorNote(node) : new V2Note(node);
+        public static BaseNote Note(JSONNode node) => Settings.Instance.MapVersion == 3
+            ? V3ColorNote.GetFromJson(node)
+            : V2Note.GetFromJson(node);
 
-        public static BaseNote Bomb(JSONNode node) =>
-            Settings.Instance.MapVersion == 3 ? new V3BombNote(node) : new V2Note(node);
+        public static BaseNote Bomb(JSONNode node) => Settings.Instance.MapVersion == 3
+            ? V3BombNote.GetFromJson(node)
+            : V2Note.GetFromJson(node);
 
         public static BaseObstacle Obstacle(JSONNode node) => Settings.Instance.MapVersion == 3
             ? new V3Obstacle(node)
@@ -105,16 +107,6 @@ namespace Beatmap.Helper
         // instantiate from good ol parameter
         public static BaseRotationEvent RotationEvent(float jsonTime, int executionTime, float rotation,
             JSONNode customData = null) => new V3RotationEvent(jsonTime, executionTime, rotation, customData);
-
-        public static BaseNote Note(float jsonTime, int posX, int posY, int color, int cutDirection, int angleOffset,
-            JSONNode customData = null) => Settings.Instance.MapVersion == 3
-            ? new V3ColorNote(jsonTime, posX, posY, color, cutDirection, angleOffset, customData)
-            : new V2Note(jsonTime, posX, posY, color, cutDirection, customData);
-
-        public static BaseNote Bomb(float jsonTime, int posX, int posY, JSONNode customData = null) =>
-            Settings.Instance.MapVersion == 3
-                ? new V3BombNote(jsonTime, posX, posY, customData)
-                : new V2Note(jsonTime, posX, posY, 3, 0, customData);
 
         public static BaseObstacle Obstacle(float jsonTime, int posX, int posY, float duration, int width, int height,
             JSONNode customData = null) => Settings.Instance.MapVersion == 3
@@ -175,9 +167,6 @@ namespace Beatmap.Helper
 
         // instantiate from empty
         public static BaseRotationEvent RotationEvent() => new V3RotationEvent();
-        public static BaseNote Note() => Settings.Instance.MapVersion == 3 ? new V3ColorNote() : new V2Note();
-        public static BaseNote Bomb() => Settings.Instance.MapVersion == 3 ? new V3BombNote() : new V2Note();
-
         public static BaseObstacle Obstacle() =>
             Settings.Instance.MapVersion == 3 ? new V3Obstacle() : new V2Obstacle();
 
