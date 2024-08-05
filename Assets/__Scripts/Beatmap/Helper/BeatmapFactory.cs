@@ -57,8 +57,8 @@ namespace Beatmap.Helper
             : V2Note.GetFromJson(node);
 
         public static BaseObstacle Obstacle(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? new V3Obstacle(node)
-            : new V2Obstacle(node);
+            ? V3Obstacle.GetFromJson(node)
+            : V2Obstacle.GetFromJson(node);
 
         public static BaseArc Arc(JSONNode node) => Settings.Instance.MapVersion == 3 
             ? V3Arc.GetFromJson(node) 
@@ -108,21 +108,6 @@ namespace Beatmap.Helper
         public static BaseRotationEvent RotationEvent(float jsonTime, int executionTime, float rotation,
             JSONNode customData = null) => new V3RotationEvent(jsonTime, executionTime, rotation, customData);
 
-        public static BaseObstacle Obstacle(float jsonTime, int posX, int posY, float duration, int width, int height,
-            JSONNode customData = null) => Settings.Instance.MapVersion == 3
-            ? new V3Obstacle(jsonTime, posX, posY, duration, width, height, customData)
-            : new V2Obstacle(jsonTime, posX, posY == (int)GridY.Top && height == (int)ObstacleHeight.Crouch ? 1 : 0, duration, width, customData);
-
-        public static BaseObstacle Obstacle(float jsonTime, int posX, int type, float duration, int width,
-            JSONNode customData = null) => Settings.Instance.MapVersion == 3
-            ? new V3Obstacle(jsonTime, posX, type == (int)ObstacleType.Crouch ? 2 : 0, duration, width, type == (int)ObstacleType.Crouch ? 3 : 5, customData)
-            : new V2Obstacle(jsonTime, posX, type, duration, width, customData);
-
-        public static BaseObstacle Obstacle(float jsonTime, int posX, int posY, int type, float duration, int width, int height,
-            JSONNode customData = null) => Settings.Instance.MapVersion == 3
-            ? new V3Obstacle(jsonTime, posX, posY, duration, width, height, customData)
-            : new V2Obstacle(jsonTime, posX, type, duration, width, customData);
-
         public static BaseWaypoint Waypoint(float jsonTime, int posX, int posY, int offsetDirection,
             JSONNode customData = null) => Settings.Instance.MapVersion == 3
             ? new V3Waypoint(jsonTime,
@@ -167,8 +152,6 @@ namespace Beatmap.Helper
 
         // instantiate from empty
         public static BaseRotationEvent RotationEvent() => new V3RotationEvent();
-        public static BaseObstacle Obstacle() =>
-            Settings.Instance.MapVersion == 3 ? new V3Obstacle() : new V2Obstacle();
 
         public static BaseWaypoint Waypoint() =>
             Settings.Instance.MapVersion == 3 ? new V3Waypoint() : new V2Waypoint();

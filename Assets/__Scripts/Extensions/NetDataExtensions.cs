@@ -22,7 +22,7 @@ public static class NetDataExtensions
             {
                 ObjectType.Note => reader.Get<BaseNote>(),
                 ObjectType.Event => reader.Get<V2Event>(),
-                ObjectType.Obstacle => reader.Get<V3Obstacle>(),
+                ObjectType.Obstacle => reader.Get<BaseObstacle>(),
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
                 ObjectType.CustomEvent => reader.Get<V3CustomEvent>(),
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
@@ -50,7 +50,7 @@ public static class NetDataExtensions
             {
                 ObjectType.Note => reader.Get<BaseNote>(),
                 ObjectType.Event => reader.Get<V2Event>(),
-                ObjectType.Obstacle => reader.Get<V2Obstacle>(),
+                ObjectType.Obstacle => reader.Get<BaseObstacle>(),
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
                 ObjectType.CustomEvent => reader.Get<V2CustomEvent>(),
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),

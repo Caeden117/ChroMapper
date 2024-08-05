@@ -1,14 +1,17 @@
 using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using Beatmap.Helper;
 using Beatmap.Shared;
+using Beatmap.V2;
+using Beatmap.V3;
 using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseObstacle : BaseGrid, ICustomDataObstacle
+    public class BaseObstacle : BaseGrid, ICustomDataObstacle
     {
         public override void Serialize(NetDataWriter writer)
         {
@@ -28,18 +31,14 @@ namespace Beatmap.Base
             base.Deserialize(reader);
         }
 
-        protected int InternalType;
-        protected int InternalHeight;
-        protected int InternalPosY;
-
         private const float mappingExtensionsStartHeightMultiplier = 1.35f;
         private const float mappingExtensionsUnitsToFullHeightWall = 1000 / 3.5f;
 
-        protected BaseObstacle()
+        public BaseObstacle()
         {
         }
 
-        protected BaseObstacle(BaseObstacle other)
+        private BaseObstacle(BaseObstacle other)
         {
             SetTimes(other.JsonTime, other.SongBpmTime);
             PosX = other.PosX;
@@ -47,81 +46,149 @@ namespace Beatmap.Base
             InternalType = other.Type;
             Duration = other.Duration;
             Width = other.Width;
-            InternalHeight = other.Height;
+            Height = other.Height;
             CustomData = other.SaveCustom().Clone();
             CustomFake = other.CustomFake;
         }
-
-        protected BaseObstacle(float time, int posX, int type, float duration, int width,
-            JSONNode customData = null) : base(time, posX, 0, customData)
-        {
-            InternalType = type;
-            Duration = duration;
-            Width = width;
-            InferPosYHeight();
-        }
-
-        protected BaseObstacle(float jsonTime, float songBpmTime, int posX, int type, float duration, int width,
-            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, 0, customData)
-        {
-            InternalType = type;
-            Duration = duration;
-            Width = width;
-            InferPosYHeight();
-        }
-
-        protected BaseObstacle(float time, int posX, int posY, float duration, int width, int height,
-            JSONNode customData = null) : base(time, posX, posY, customData)
-        {
-            Duration = duration;
-            Width = width;
-            InternalHeight = height;
-            InferType();
-        }
-
-        protected BaseObstacle(float jsonTime, float songBpmTime, int posX, int posY, float duration, int width, int height,
-            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, customData)
-        {
-            Duration = duration;
-            Width = width;
-            InternalHeight = height;
-            InferType();
-        }
+        
+        // Used for node editor
+        public BaseObstacle(JSONNode node): this(BeatmapFactory.Obstacle(node)) {}
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Obstacle;
+        
+        private int InternalType;
+        private int InternalHeight;
+        private int InternalPosY;
 
         public override int PosY
         {
             get => InternalPosY;
-            set => InternalPosY = value;
+            set 
+            {
+                InternalPosY = value;
+                
+                // set the v2 type to the closest matching base.
+                InternalType = value >= 2 ? (int)ObstacleType.Crouch : (int)ObstacleType.Full;
+            }
         }
 
-        // this is not making me happy since this is only v2 related stuff
-        public virtual int Type
+        // v2 property which sets the v3 properties to match
+        public int Type
         {
             get => InternalType;
             set
             {
                 InternalType = value;
-                InferPosYHeight();
+                switch (value)
+                {
+                    case (int)ObstacleType.Crouch:
+                        InternalPosY = (int)GridY.Top;
+                        InternalHeight = (int)ObstacleHeight.Crouch;
+                        break;
+                    default:
+                        InternalPosY = (int)GridY.Base;
+                        InternalHeight = (int)ObstacleHeight.Full;
+                        break;
+                }
             }
         }
 
-        public float Duration { get; set; }
-        public float DurationSongBpm { get; set; }
-        public int Width { get; set; }
-
-        public virtual int Height
+        public int Height
         {
             get => InternalHeight;
             set => InternalHeight = value;
         }
 
+        public float Duration { get; set; }
+        public float DurationSongBpm { get; set; }
+        public int Width { get; set; }
+        
         public override float DespawnSongBpmTime { get { return SongBpmTime + DurationSongBpm + Hjd; } }
 
         public virtual JSONNode CustomSize { get; set; }
 
-        public abstract string CustomKeySize { get; }
+        public string CustomKeySize => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeySize,
+            3 => V3Obstacle.CustomKeySize
+        };
+
+        public override string CustomKeyColor => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeyColor,
+            3 => V3Obstacle.CustomKeyColor
+        };
+
+        public override string CustomKeyTrack => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeyTrack,
+            3 => V3Obstacle.CustomKeyTrack
+        };
+
+        public override string CustomKeyAnimation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeyAnimation,
+            3 => V3Obstacle.CustomKeyAnimation
+        };
+
+        public override string CustomKeyCoordinate => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeyCoordinate,
+            3 => V3Obstacle.CustomKeyCoordinate
+        };
+
+        public override string CustomKeyWorldRotation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeyWorldRotation,
+            3 => V3Obstacle.CustomKeyWorldRotation
+        };
+
+        public override string CustomKeyLocalRotation => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeyLocalRotation,
+            3 => V3Obstacle.CustomKeyLocalRotation
+        };
+
+        public override string CustomKeySpawnEffect => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeySpawnEffect,
+            3 => V3Obstacle.CustomKeySpawnEffect
+        };
+
+        public override string CustomKeyNoteJumpMovementSpeed => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeyNoteJumpMovementSpeed,
+            3 => V3Obstacle.CustomKeyNoteJumpMovementSpeed
+        };
+
+        public override string CustomKeyNoteJumpStartBeatOffset => Settings.Instance.MapVersion switch
+        {
+            2 => V2Obstacle.CustomKeyNoteJumpStartBeatOffset,
+            3 => V3Obstacle.CustomKeyNoteJumpStartBeatOffset
+        };
+
+        
+        public override bool IsChroma() =>
+            CustomData != null && CustomData.HasKey(CustomKeyColor) && CustomData[CustomKeyColor].IsArray;
+
+        public override bool IsNoodleExtensions() =>
+            CustomData != null &&
+            ((CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
+             (CustomData.HasKey(CustomKeyLocalRotation) && CustomData[CustomKeyLocalRotation].IsArray) ||
+             (CustomData.HasKey(CustomKeyNoteJumpMovementSpeed) && CustomData[CustomKeyNoteJumpMovementSpeed].IsNumber) ||
+             (CustomData.HasKey(CustomKeyNoteJumpStartBeatOffset) &&
+              CustomData[CustomKeyNoteJumpStartBeatOffset].IsNumber) ||
+             (CustomData.HasKey(CustomKeyCoordinate) && CustomData[CustomKeyCoordinate].IsArray) ||
+             (CustomData.HasKey(CustomKeyWorldRotation) &&
+              (CustomData[CustomKeyWorldRotation].IsArray || CustomData[CustomKeyWorldRotation].IsNumber)) ||
+             (CustomData.HasKey(CustomKeySize) && CustomData[CustomKeySize].IsArray));
+
+        public override bool IsMappingExtensions() =>
+            PosX <= -1000 || PosX >= 1000 ||
+            PosY < 0 || PosY > 2 ||
+            Width <= -1000 || Width >= 1000 ||
+            Height <= -1000 || Height > 5 || 
+            (Settings.Instance.MapVersion == 2 && (PosX < 0 || PosX > 3));
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
@@ -222,22 +289,6 @@ namespace Beatmap.Base
                 _ => Type
             };
 
-        // type more than 1 will always default to full height wall
-        protected void InferPosYHeight()
-        {
-            switch (Type)
-            {
-                case (int)ObstacleType.Crouch:
-                    InternalPosY = (int)GridY.Top;
-                    InternalHeight = (int)ObstacleHeight.Crouch;
-                    break;
-                default:
-                    InternalPosY = (int)GridY.Base;
-                    InternalHeight = (int)ObstacleHeight.Full;
-                    break;
-            }
-        }
-
         protected override void ParseCustom()
         {
             base.ParseCustom();
@@ -296,6 +347,19 @@ namespace Beatmap.Base
             if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), obstacle.CustomData?.ToString(), StringComparison.Ordinal);
 
             return comparison;
+        }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3Obstacle.ToJson(this),
+            2 => V2Obstacle.ToJson(this)
+        };
+
+        public override BaseItem Clone()
+        {
+            var obstacle = new BaseObstacle(this);
+            obstacle.ParseCustom();
+            return obstacle;
         }
     }
 }

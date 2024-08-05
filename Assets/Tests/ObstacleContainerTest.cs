@@ -39,7 +39,7 @@ namespace Tests
             var inputController = root.GetComponentInChildren<BeatmapObstacleInputController>();
             obstaclePlacement.RefreshVisuals();
 
-            placedObstacle = new V3Obstacle
+            placedObstacle = new BaseObstacle
             {
                 JsonTime = 0,
                 Duration = 2,

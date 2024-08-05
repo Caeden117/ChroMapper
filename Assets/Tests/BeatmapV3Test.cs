@@ -46,39 +46,6 @@ namespace Tests
         }
 
         [Test]
-        public void PlaceWall()
-        {
-            Assert.IsInstanceOf<V3Obstacle>(BeatmapFactory.Obstacle(),
-                "Factory default does not instantiate v3 wall in beatmap v3");
-            Assert.IsInstanceOf<V3Obstacle>(BeatmapFactory.Obstacle(0f, 1, 0, 1f, 1, 5),
-                "Factory does not instantiate v3 wall in beatmap v3");
-            Assert.DoesNotThrow(() => BeatmapFactory.Obstacle(new JSONObject
-            {
-                ["b"] = 0f,
-                ["x"] = 1,
-                ["y"] = 0,
-                ["d"] = 1f,
-                ["w"] = 1,
-                ["h"] = 5,
-                ["customData"] = new JSONObject()
-            }), "Factory could not instantiate wall with compatible JSON schema in beatmap v3");
-
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
-            if (collection is ObstacleGridContainer obstaclesContainer)
-            {
-                var root = obstaclesContainer.transform.root;
-                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
-                wallPlacement.RefreshVisuals();
-
-                var wallA = BeatmapFactory.Obstacle(0f, 1, 0, 1f, 1, 5);
-                PlaceUtils.PlaceWall(wallPlacement, wallA);
-
-                CheckUtils.CheckV3Object("Check wall object version", obstaclesContainer, 0);
-                CheckUtils.CheckWall("Check wall attributes", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
-            }
-        }
-
-        [Test]
         public void PlaceEvent()
         {
             Assert.IsInstanceOf<V3BasicEvent>(BeatmapFactory.Event(),

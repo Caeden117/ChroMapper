@@ -15,7 +15,7 @@ namespace TestsEditMode
             V3RotationEvent();
             V3ColorNoteTest();
             V3BombNoteTest();
-            V3Obstacle();
+            V3ObstacleTest();
             V3ArcTest();
             V3ChainTest();
             V3BasicEvent();
@@ -88,10 +88,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3Obstacle()
+        public void V3ObstacleTest()
         {
             var json = new JSONObject();
-            var obstacle = new V3Obstacle(json);
+            var obstacle = new BaseObstacle(json);
 
             Assert.AreEqual(0, obstacle.JsonTime);
             Assert.AreEqual(0, obstacle.PosX);

@@ -160,7 +160,7 @@ namespace Beatmap.V2
                             foreach (JSONNode n in node) map.Notes.Add(V2Note.GetFromJson(n));
                             break;
                         case "_obstacles":
-                            foreach (JSONNode n in node) map.Obstacles.Add(new V2Obstacle(n));
+                            foreach (JSONNode n in node) map.Obstacles.Add(V2Obstacle.GetFromJson(n));
                             break;
                         case "_waypoints":
                             foreach (JSONNode n in node) map.Waypoints.Add(new V2Waypoint(n));

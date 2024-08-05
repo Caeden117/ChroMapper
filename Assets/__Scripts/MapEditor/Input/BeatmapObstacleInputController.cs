@@ -45,7 +45,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             var tweakValue = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollWallDuration)
                 ? 1
                 : -1;
-            var data = obs.ObjectData as V3Obstacle;
+            var data = obs.ObjectData as BaseObstacle;
             data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
             data.Height = Mathf.Min(data.Height, 5 - data.PosY);
             obs.UpdateGridPosition();
@@ -63,7 +63,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             var tweakValue = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollWallDuration)
                 ? 1
                 : -1;
-            var data = obs.ObjectData as V3Obstacle;
+            var data = obs.ObjectData as BaseObstacle;
             data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);

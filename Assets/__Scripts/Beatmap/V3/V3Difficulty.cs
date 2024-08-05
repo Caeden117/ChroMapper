@@ -259,7 +259,7 @@ namespace Beatmap.V3
                             foreach (JSONNode n in node) map.BpmEvents.Add(V3BpmEvent.GetFromJson(n));
                             break;
                         case "obstacles":
-                            foreach (JSONNode n in node) map.Obstacles.Add(new V3Obstacle(n));
+                            foreach (JSONNode n in node) map.Obstacles.Add(V3Obstacle.GetFromJson(n));
                             break;
                         case "sliders":
                             foreach (JSONNode n in node) map.Arcs.Add(V3Arc.GetFromJson(n));
@@ -356,7 +356,7 @@ namespace Beatmap.V3
                         foreach (JSONNode n in node) map.Notes.Add(V3BombNote.GetFromJson(n, true));
                         break;
                     case "fakeObstacles":
-                        foreach (JSONNode n in node) map.Obstacles.Add(new V3Obstacle(n, true));
+                        foreach (JSONNode n in node) map.Obstacles.Add(V3Obstacle.GetFromJson(n, true));
                         break;
                     case "fakeBurstSliders":
                         foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n, true));

@@ -241,7 +241,14 @@ namespace Tests
             // What the actual fuck - example from mirroring in MMA2
             //{"_time":1.5,"_lineIndex":1446,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
             //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
-            BaseObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
+            BaseObstacle wallA = new BaseObstacle
+            {
+                JsonTime = 2,
+                PosX = 1446,
+                Type = 595141,
+                Duration = 1,
+                Width = 2596
+            };
 
             PlaceUtils.PlaceWall(wallPlacement, wallA);
 
@@ -264,8 +271,17 @@ namespace Tests
             var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
             wallPlacement.RefreshVisuals();
 
-            BaseObstacle wallA = new V3Obstacle(2, (int)GridX.Left, (int)GridY.Base, 1, 2, 5,
-                JSON.Parse("{\"coordinates\": [-1.5, 0]}"));
+            BaseObstacle wallA = new BaseObstacle
+            {
+                JsonTime = 2,
+                PosX = (int)GridX.Left,
+                PosY = (int)GridY.Base,
+                Duration = 1,
+                Width = 2,
+                Height = 5,
+                CustomData = JSON.Parse("{\"coordinates\": [-1.5, 0]}"),
+            };
+            wallA.RefreshCustom();
 
             PlaceUtils.PlaceWall(wallPlacement, wallA);
 

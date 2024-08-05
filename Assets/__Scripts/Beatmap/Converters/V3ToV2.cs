@@ -45,19 +45,6 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert")
             };
 
-        public static V2Obstacle Obstacle(BaseObstacle other)
-        {
-            var obstacle = other switch
-            {
-                V2Obstacle o => o,
-                V3Obstacle o => new V2Obstacle(o) { CustomData = CustomDataObject(o.CustomData) },
-                _ => throw new ArgumentException("Unexpected object to convert v3 obstacle to v2 obstacle")
-            };
-            if (other.CustomFake) obstacle.GetOrCreateCustom()["_fake"] = true;
-            obstacle.RefreshCustom();
-            return obstacle;
-        }
-
         public static V2Waypoint Waypoint(BaseWaypoint other)
         {
             var waypoint = other switch

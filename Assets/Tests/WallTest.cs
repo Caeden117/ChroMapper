@@ -44,7 +44,14 @@ namespace Tests
                 var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
                 wallPlacement.RefreshVisuals();
 
-                var wallA = new V2Obstacle(0f, 1, 0, 1f, 1);
+                var wallA = new BaseObstacle
+                {
+                    JsonTime = 0f,
+                    PosX = 1,
+                    Type = 0,
+                    Duration = 1f,
+                    Width = 1
+                };
                 PlaceUtils.PlaceWall(wallPlacement, wallA);
 
                 CheckUtils.CheckWall("Check v2 wall attributes", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
@@ -81,7 +88,15 @@ namespace Tests
                 CheckUtils.CheckWall("Invalid pos Y should revert back to full height wall for v2 wall", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
 
                 // test v3 wall
-                var wallB = new V3Obstacle(1f, 1, 0, 1f, 1, 5);
+                var wallB = new BaseObstacle
+                {
+                    JsonTime = 1f,
+                    PosX = 1,
+                    PosY = 0,
+                    Duration = 1f,
+                    Width = 1,
+                    Height = 5
+                };
                 PlaceUtils.PlaceWall(wallPlacement, wallB);
 
                 CheckUtils.CheckWall("Check v3 wall attributes", obstaclesContainer, 1, 1f, 1, 0, 0, 1f, 1, 5);
@@ -130,7 +145,14 @@ namespace Tests
                 var inputController = root.GetComponentInChildren<BeatmapObstacleInputController>();
                 wallPlacement.RefreshVisuals();
 
-                BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
+                BaseObstacle wallA = new BaseObstacle
+                {
+                    JsonTime = 2,
+                    PosX = (int)GridX.Left,
+                    Type = (int)ObstacleType.Full,
+                    Duration = 2,
+                    Width = 1
+                };
                 PlaceUtils.PlaceWall(wallPlacement, wallA);
 
                 if (obstaclesCollection.LoadedContainers[wallA] is ObstacleContainer container)
@@ -167,7 +189,14 @@ namespace Tests
                 var customCoord = new JSONArray() { [0] = 0, [1] = 1 };
                 var customSize = new JSONArray() { [0] = 0, [1] = null, [2] = 420 };
 
-                BaseObstacle wallA = new V2Obstacle(2, (int)GridX.Left, (int)ObstacleType.Full, 2, 1);
+                BaseObstacle wallA = new BaseObstacle
+                {
+                    JsonTime = 2,
+                    PosX = (int)GridX.Left,
+                    Type = (int)ObstacleType.Full,
+                    Duration = 2,
+                    Width = 1
+                };
                 wallA.CustomCoordinate = customCoord;
                 wallA.CustomSize = customSize;
                 PlaceUtils.PlaceWall(wallPlacement, wallA);

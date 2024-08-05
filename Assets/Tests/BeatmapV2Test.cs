@@ -46,50 +46,6 @@ namespace Tests
         }
 
         [Test]
-        public void PlaceWall()
-        {
-            Assert.IsInstanceOf<V2Obstacle>(BeatmapFactory.Obstacle(),
-                "Factory default does not instantiate v2 wall in beatmap v2");
-            Assert.IsInstanceOf<V2Obstacle>(BeatmapFactory.Obstacle(0f, 1, 0, 1f, 1, 5),
-                "Factory does not instantiate v2 wall in beatmap v2");
-            Assert.DoesNotThrow(() => BeatmapFactory.Obstacle(new JSONObject
-            {
-                ["_time"] = 0f,
-                ["_lineIndex"] = 1,
-                ["_lineLayer"] = 0,
-                ["_type"] = 0,
-                ["_duration"] = 1f,
-                ["_width"] = 1,
-                ["_height"] = 5,
-                ["_customData"] = new JSONObject()
-            }), "Factory could not instantiate wall with compatible JSON schema in beatmap v2");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Obstacle(new JSONObject
-            {
-                ["b"] = 0f,
-                ["x"] = 1,
-                ["y"] = 0,
-                ["d"] = 1f,
-                ["w"] = 1,
-                ["h"] = 5,
-                ["customData"] = new JSONObject()
-            }), "Factory should throw error instantiating wall with incompatible JSON schema in beatmap v2");
-
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
-            if (collection is ObstacleGridContainer obstaclesContainer)
-            {
-                var root = obstaclesContainer.transform.root;
-                var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
-                wallPlacement.RefreshVisuals();
-
-                var wallA = BeatmapFactory.Obstacle(0f, 1, 0, 1f, 1, 5);
-                PlaceUtils.PlaceWall(wallPlacement, wallA);
-
-                CheckUtils.CheckV2Object("Check wall object version", obstaclesContainer, 0);
-                CheckUtils.CheckWall("Check wall attributes", obstaclesContainer, 0, 0f, 1, 0, 0, 1f, 1, 5);
-            }
-        }
-
-        [Test]
         public void PlaceEvent()
         {
             Assert.IsInstanceOf<V2Event>(BeatmapFactory.Event(),
