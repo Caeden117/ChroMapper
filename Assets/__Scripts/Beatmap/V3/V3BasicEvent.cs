@@ -6,126 +6,71 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3BasicEvent : BaseEvent, V3Object
+    public class V3BasicEvent
     {
-        public V3BasicEvent()
+        public const string CustomKeyTrack = "track";
+
+        public const string CustomKeyColor = "color";
+
+        public const string CustomKeyPropID = "propID";
+
+        public const string CustomKeyLightID = "lightID";
+
+        public const string CustomKeyLerpType = "lerpType";
+
+        public const string CustomKeyEasing = "easing";
+
+        public const string CustomKeyLightGradient = "lightGradient";
+
+        public const string CustomKeyStep = "step";
+
+        public const string CustomKeyProp = "prop";
+
+        public const string CustomKeySpeed = "speed";
+
+        public const string CustomKeyRingRotation = "rotation";
+
+        public const string CustomKeyStepMult = "stepMult";
+
+        public const string CustomKeyPropMult = "propMult";
+
+        public const string CustomKeySpeedMult = "speedMult";
+
+        public const string CustomKeyPreciseSpeed = "preciseSpeed";
+
+        public const string CustomKeyDirection = "direction";
+
+        public const string CustomKeyLockRotation = "lockRotation";
+
+        public const string CustomKeyLaneRotation = "rotation";
+
+        public const string CustomKeyNameFilter = "nameFilter";
+        
+        public static BaseEvent GetFromJson(JSONNode node)
         {
+            var evt = new BaseEvent();
+            
+            evt.JsonTime = node["b"].AsFloat;
+            evt.Type = node["et"].AsInt;
+            evt.Value = node["i"].AsInt;
+            evt.FloatValue = node["f"].AsFloat;
+            evt.CustomData = node["customData"];
+            evt.RefreshCustom();
+
+            return evt;
         }
 
-        public V3BasicEvent(BaseEvent other) : base(other) => ParseCustom();
-
-        public V3BasicEvent(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            Type = node["et"].AsInt;
-            Value = node["i"].AsInt;
-            FloatValue = node["f"].AsFloat;
-            CustomData = node["customData"];
-            ParseCustom();
-        }
-
-        public V3BasicEvent(float time, int type, int value, float floatValue = 1f, JSONNode customData = null) : base(
-            time, type, value, floatValue, customData) =>
-            ParseCustom();
-
-        public V3BasicEvent(float jsonTime, float songBpmTime, int type, int value, float floatValue = 1f,
-            JSONNode customData = null) : base(jsonTime, songBpmTime, type, value, floatValue, customData) =>
-            ParseCustom();
-
-        public override float? CustomPreciseSpeed
-        {
-            get => customSpeed;
-            set => customSpeed = value;
-        }
-
-        public override float? CustomStepMult { get; set; }
-        public override float? CustomPropMult { get; set; }
-        public override float? CustomSpeedMult { get; set; }
-
-        public override ChromaLightGradient CustomLightGradient
-        {
-            get => null;
-            set
-            {
-            }
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-
-        public override string CustomKeyColor { get; } = "color";
-
-        public override string CustomKeyPropID { get; } = "propID";
-
-        public override string CustomKeyLightID { get; } = "lightID";
-
-        public override string CustomKeyLerpType { get; } = "lerpType";
-
-        public override string CustomKeyEasing { get; } = "easing";
-
-        public override string CustomKeyLightGradient { get; } = "lightGradient";
-
-        public override string CustomKeyStep { get; } = "step";
-
-        public override string CustomKeyProp { get; } = "prop";
-
-        public override string CustomKeySpeed { get; } = "speed";
-
-        public override string CustomKeyRingRotation { get; } = "rotation";
-
-        public override string CustomKeyStepMult { get; } = "stepMult";
-
-        public override string CustomKeyPropMult { get; } = "propMult";
-
-        public override string CustomKeySpeedMult { get; } = "speedMult";
-
-        public override string CustomKeyPreciseSpeed { get; } = "preciseSpeed";
-
-        public override string CustomKeyDirection { get; } = "direction";
-
-        public override string CustomKeyLockRotation { get; } = "lockRotation";
-
-        public override string CustomKeyLaneRotation { get; } = "rotation";
-
-        public override string CustomKeyNameFilter { get; } = "nameFilter";
-
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
-        public override bool IsChroma() =>
-            CustomData != null &&
-            ((CustomData.HasKey("color") && CustomData["color"].IsArray) ||
-             (CustomData.HasKey("lightID") &&
-              (CustomData["lightID"].IsArray || CustomData["lightID"].IsNumber)) ||
-             (CustomData.HasKey("easing") && CustomData["easing"].IsString) ||
-             (CustomData.HasKey("lerpType") && CustomData["lerpType"].IsString) ||
-             (CustomData.HasKey("nameFilter") && CustomData["nameFilter"].IsString) ||
-             (CustomData.HasKey("reset") && CustomData["reset"].IsBoolean) ||
-             (CustomData.HasKey("rotation") && CustomData["rotation"].IsNumber) ||
-             (CustomData.HasKey("step") && CustomData["step"].IsNumber) ||
-             (CustomData.HasKey("prop") && CustomData["prop"].IsNumber) ||
-             (CustomData.HasKey("speed") && CustomData["speed"].IsNumber) ||
-             (CustomData.HasKey("direction") && CustomData["direction"].IsNumber) ||
-             (CustomData.HasKey("lockRotation") && CustomData["lockRotation"].IsBoolean) ||
-             (CustomData.HasKey("direction") && CustomData["direction"].IsNumber));
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseEvent evt)
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["et"] = Type;
-            node["i"] = Value;
-            node["f"] = FloatValue;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            node["b"] = evt.JsonTime;
+            node["et"] = evt.Type;
+            node["i"] = evt.Value;
+            node["f"] = evt.FloatValue;
+            evt.CustomData = evt.SaveCustom();
+            if (!evt.CustomData.Children.Any()) return node;
+            node["customData"] = evt.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() =>
-            new V3BasicEvent(JsonTime, SongBpmTime, Type, Value, FloatValue, SaveCustom().Clone())
-            {
-                // This depends on environment and is calculated by grid position after creation
-                // so we need to set this here to clone correctly  
-                CustomPropID = CustomPropID
-            };
     }
 }

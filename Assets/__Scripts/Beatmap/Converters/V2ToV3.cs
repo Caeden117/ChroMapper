@@ -16,27 +16,6 @@ namespace Beatmap.Converters
 {
     public static class V2ToV3
     {
-        public static V3ColorBoostEvent ColorBoostEvent(BaseEvent other) =>
-            other switch
-            {
-                V3ColorBoostEvent o => o,
-                V3BasicEvent o => new V3ColorBoostEvent(o),
-                V2Event o => new V3ColorBoostEvent(o),
-                _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 color boost event")
-            };
-
-        public static V3BasicEvent BasicEvent(BaseEvent other)
-        {
-            var evt = other switch
-            {
-                V3BasicEvent o => o,
-                V2Event o => new V3BasicEvent(o) { CustomData = CustomDataEvent(o.CustomData) },
-                _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 basic event")
-            };
-            evt.RefreshCustom();
-            return evt;
-        }
-
         public static V3BasicEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesWithKeywords other) =>
             other switch
             {
@@ -52,15 +31,6 @@ namespace Beatmap.Converters
                 V3BasicEventTypesForKeywords o => o,
                 V2SpecialEventsKeywordFiltersKeywords o => new V3BasicEventTypesForKeywords(o),
                 _ => throw new ArgumentException("Unexpected object to convert")
-            };
-
-        public static V3RotationEvent RotationEvent(BaseEvent other) =>
-            other switch
-            {
-                V3RotationEvent o => o,
-                V2Event o => new V3RotationEvent(o),
-                V3BasicEvent o => new V3RotationEvent(o),
-                _ => throw new ArgumentException("Unexpected object to convert v2 event to v3 rotation event")
             };
 
         public static V3Waypoint Waypoint(BaseWaypoint other)

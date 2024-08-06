@@ -254,6 +254,7 @@ namespace Tests
                 var customDirection = 69;
                 var localRotation = new JSONArray() { [0] = 0, [1] = 1, [2] = 2 };
 
+                Settings.Instance.MapVersion = 3;
                 BaseNote v3NoteA = new BaseNote
                 {
                     JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
@@ -268,6 +269,7 @@ namespace Tests
                     (int)NoteType.Red, (int)NoteCutDirection.Left, 0,
                     new JSONObject() { ["localRotation"] = localRotation });
 
+                Settings.Instance.MapVersion = 2;
                 BaseNote v2NoteB = new BaseNote
                 {
                     JsonTime = 4, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,

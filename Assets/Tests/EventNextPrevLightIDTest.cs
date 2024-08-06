@@ -46,6 +46,8 @@ namespace Tests
 
         private BaseEvent EventWithTimeAndLightID(float time, int? lightID)
         {
+            Settings.Instance.MapVersion = 3;
+            
             var customData = lightID.HasValue
             ? new JSONObject
             {
@@ -56,7 +58,10 @@ namespace Tests
             }
             : null;
 
-            return new V3BasicEvent(time, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn, customData: customData);
+            var evt = new BaseEvent
+                { JsonTime = time, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn, CustomData = customData };
+            evt.RefreshCustom();
+            return evt;
         }
 
         [Test]

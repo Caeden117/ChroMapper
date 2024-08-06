@@ -266,9 +266,9 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (e.IsLaneRotationEvent())
                 {
-                    if (e is BaseRotationEvent re)
+                    if (Settings.Instance.MapVersion >= 3)
                     {
-                        re.Rotation *= -1;
+                        e.FloatValue *= -1;
                     }
                     else
                     {

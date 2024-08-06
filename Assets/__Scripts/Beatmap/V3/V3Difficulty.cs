@@ -246,13 +246,13 @@ namespace Beatmap.V3
                         
                         // Basic, boost, and rotation events are in same array
                         case "basicBeatmapEvents":
-                            foreach (JSONNode n in node) map.Events.Add(new V3BasicEvent(n));
+                            foreach (JSONNode n in node) map.Events.Add(V3BasicEvent.GetFromJson(n));
                             break;
                         case "colorBoostBeatmapEvents":
-                            foreach (JSONNode n in node) map.Events.Add(new V3ColorBoostEvent(n));
+                            foreach (JSONNode n in node) map.Events.Add(V3ColorBoostEvent.GetFromJson(n));
                             break;
                         case "rotationEvents":
-                            foreach (JSONNode n in node) map.Events.Add(new V3RotationEvent(n));
+                            foreach (JSONNode n in node) map.Events.Add(V3RotationEvent.GetFromJson(n));
                             break;
                         
                         case "bpmEvents":

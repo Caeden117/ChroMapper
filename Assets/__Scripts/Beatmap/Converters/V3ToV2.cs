@@ -14,21 +14,6 @@ namespace Beatmap.Converters
 {
     public static class V3ToV2
     {
-
-        public static V2Event Event(BaseEvent other)
-        {
-            var evt = other switch
-            {
-                V2Event o => o,
-                V3BasicEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
-                V3ColorBoostEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
-                V3RotationEvent o => new V2Event(o) { CustomData = CustomDataEvent(other.CustomData) },
-                _ => throw new ArgumentException("Unexpected object to convert v3 basic event to v2 event")
-            };
-            evt.RefreshCustom();
-            return evt;
-        }
-
         public static V2SpecialEventsKeywordFilters EventTypesWithKeywords(BaseEventTypesWithKeywords other) =>
             other switch
             {

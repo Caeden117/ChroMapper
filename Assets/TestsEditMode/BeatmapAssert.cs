@@ -49,12 +49,6 @@ namespace TestsEditMode
             Assert.AreEqual(type, evt.Type);
             Assert.AreEqual(value, evt.Value);
             Assert.AreEqual(floatValue, evt.FloatValue);
-            
-            // TODO: Rotation needs to be part of BaseEvent
-            if (rotation != null)
-            {
-                Assert.AreEqual(rotation, ((BaseRotationEvent)evt).Rotation);
-            }
         }
 
         public static void ArcPropertiesAreEqual(BaseArc arc, float jsonTime, int x, int y, int color, int cutDirection,

@@ -178,6 +178,8 @@ namespace Tests
         [Test]
         public void PlacementPersistsCustomProperty()
         {
+            Settings.Instance.MapVersion = 2;
+            
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle);
             if (collection is ObstacleGridContainer obstaclesCollection)

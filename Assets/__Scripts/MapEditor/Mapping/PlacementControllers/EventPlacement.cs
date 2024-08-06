@@ -106,7 +106,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
 
-    public override BaseEvent GenerateOriginalData() => BeatmapFactory.Event(0, 0, (int)LightValue.RedOn);
+    public override BaseEvent GenerateOriginalData() => new BaseEvent();
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
@@ -258,29 +258,12 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
         if (evt.CustomData?.Count <= 0) evt.CustomData = null;
 
-        // convert event to their respective event type
-        // TODO: cleaner factory would be better, also this is ugly as hell
-        if (Settings.Instance.MapVersion == 3)
-        {
-            if (evt.IsLaneRotationEvent())
-            {
-                queuedData = evt is V3RotationEvent ? evt : new V3RotationEvent(evt);
-            }
-
-            if (evt.IsColorBoostEvent())
-            {
-                queuedData = evt is V3ColorBoostEvent ? evt : new V3ColorBoostEvent(evt);
-            }
-            base.ApplyToMap();
-            queuedData = new V3BasicEvent(evt); // need to convert back to regular event
-            queuedData.CustomData = null;
-        }
-        else
-        {
-            base.ApplyToMap();
-        }
-
+        base.ApplyToMap();
+        
         if (evt.IsLaneRotationEvent()) TracksManager.RefreshTracks();
+
+        queuedData = new BaseEvent(evt); // need to convert back to regular event
+        queuedData.CustomData = null;
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued)
@@ -322,7 +305,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         else if ((startingValue < 7 && right) || (startingValue > 0 && !right))
         {
             if (evt != null) startingValue += right ? 1 : -1;
-            var objectData = BeatmapFactory.Event(Atsc.CurrentJsonTime, rotationType, startingValue);
+            var objectData = new BaseEvent { JsonTime = Atsc.CurrentJsonTime, Type = rotationType, Value = startingValue };
 
             objectContainerCollection.SpawnObject(objectData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));

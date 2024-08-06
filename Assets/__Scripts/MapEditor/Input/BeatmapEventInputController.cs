@@ -57,16 +57,16 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
             var rotation = e.EventData.GetRotationDegreeFromValue();
             if (rotation != null)
             {
-                if (e.EventData is BaseRotationEvent re)
+                if (Settings.Instance.MapVersion >= 3)
                 {
-                    re.Rotation *= -1;
+                    e.EventData.FloatValue *= -1;
                 }
                 else
                 {
                     if (e.EventData.Value >= 0 && e.EventData.Value < BaseEvent.LightValueToRotationDegrees.Length)
                     {
                         e.EventData.Value =
-                            BaseEvent.LightValueToRotationDegrees.ToList().IndexOf((int)(rotation ?? 0) * -1);
+                            BaseEvent.LightValueToRotationDegrees.ToList().IndexOf((int)rotation * -1);
                     }
                     else if (e.EventData.Value >= 1000 && e.EventData.Value <= 1720) //Invert Mapping Extensions rotation
                     {
@@ -115,9 +115,9 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         }
         else if (e.EventData.IsLaneRotationEvent())
         {
-            if (e.EventData is BaseRotationEvent re)
+            if (Settings.Instance.MapVersion >= 3)
             {
-                re.Rotation += 15 * modifier;
+                e.EventData.FloatValue += 15 * modifier;
             }
             else
             {
@@ -166,9 +166,10 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
 
             RefreshPrevEventContainer(e);
         }
-        else if (e.EventData is BaseRotationEvent re)
+        else if (e.EventData.IsLaneRotationEvent())
         {
-            re.Rotation += modifier;
+            if (Settings.Instance.MapVersion >= 3)
+                e.EventData.FloatValue += modifier;
         }
 
         eventAppearanceSo.SetEventAppearance(e);

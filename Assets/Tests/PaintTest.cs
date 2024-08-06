@@ -47,8 +47,9 @@ namespace Tests
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
             var customData = new JSONObject();
-            customData["_lightGradient"] = new ChromaLightGradient(Color.blue, Color.cyan).ToJson();
-            BaseEvent baseEventA = new V2Event(2, 1, 1, 1, customData);
+            customData["lightGradient"] = new ChromaLightGradient(Color.blue, Color.cyan).ToJson();
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = 1, Value = 1, FloatValue = 1, CustomData = customData };
+            baseEventA.RefreshCustom();
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
             SelectionController.Select(baseEventA);
@@ -93,7 +94,7 @@ namespace Tests
             var selectionController = root.GetComponentInChildren<SelectionController>();
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3BasicEvent(2, 1, 1);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = 1, Value = 1 };
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
             SelectionController.Select(baseEventA);
@@ -139,7 +140,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3BasicEvent(2, 1, 0);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = 1, Value = 0 };
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
             SelectionController.Select(baseEventA);

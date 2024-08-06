@@ -42,9 +42,9 @@ namespace Tests
         {
             var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
 
-            var rotationEventA = new V3RotationEvent(1, (int)ExecutionTime.Late, rotations[0]);
-            var rotationEventB = new V3RotationEvent(2, (int)ExecutionTime.Late, rotations[1]);
-            var rotationEventC = new V3RotationEvent(3, (int)ExecutionTime.Late, rotations[2]);
+            var rotationEventA = new BaseEvent { JsonTime = 1, Type = (int)ExecutionTime.Late, FloatValue = rotations[0] };
+            var rotationEventB = new BaseEvent { JsonTime = 2, Type = (int)ExecutionTime.Late, FloatValue = rotations[1] };
+            var rotationEventC = new BaseEvent { JsonTime = 3, Type = (int)ExecutionTime.Late, FloatValue = rotations[2] };
             eventsContainer.SpawnObject(rotationEventA);
             eventsContainer.SpawnObject(rotationEventB);
             eventsContainer.SpawnObject(rotationEventC);
@@ -78,8 +78,8 @@ namespace Tests
             const int rotation = 15;
             const float timeA = 1f;
             const float timeB = 2f;
-            var rotationEventA = new V3RotationEvent(timeA, (int)ExecutionTime.Late, rotation);
-            var rotationEventB = new V3RotationEvent(timeB, (int)ExecutionTime.Late, rotation);
+            var rotationEventA = new BaseEvent { JsonTime = timeA, Type = (int)ExecutionTime.Late, FloatValue= rotation };
+            var rotationEventB = new BaseEvent { JsonTime = timeB, Type = (int)ExecutionTime.Late, FloatValue= rotation };
             eventsContainer.SpawnObject(rotationEventA);
             eventsContainer.SpawnObject(rotationEventB);
 

@@ -46,7 +46,6 @@ namespace Beatmap.Helper
         public static BaseBpmEvent BpmEvent(JSONNode node) => Settings.Instance.MapVersion == 3
             ? V3BpmEvent.GetFromJson(node)
             : V2BpmEvent.GetFromJson(node);
-        public static BaseRotationEvent RotationEvent(JSONNode node) => new V3RotationEvent(node);
 
         public static BaseNote Note(JSONNode node) => Settings.Instance.MapVersion == 3
             ? V3ColorNote.GetFromJson(node)
@@ -70,10 +69,9 @@ namespace Beatmap.Helper
             ? new V3Waypoint(node)
             : new V2Waypoint(node);
 
-        public static BaseEvent Event(JSONNode node) =>
-            Settings.Instance.MapVersion == 3 ? new V3BasicEvent(node) : new V2Event(node);
-
-        public static BaseColorBoostEvent ColorBoostEvent(JSONNode node) => new V3ColorBoostEvent(node);
+        public static BaseEvent Event(JSONNode node) => Settings.Instance.MapVersion == 3
+            ? V3BasicEvent.GetFromJson(node)
+            : V2Event.GetFromJson(node);
 
         public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups(JSONNode node) =>
             new V3LightColorEventBoxGroup(node);
@@ -105,8 +103,6 @@ namespace Beatmap.Helper
             : new V2EnvironmentEnhancement(node);
 
         // instantiate from good ol parameter
-        public static BaseRotationEvent RotationEvent(float jsonTime, int executionTime, float rotation,
-            JSONNode customData = null) => new V3RotationEvent(jsonTime, executionTime, rotation, customData);
 
         public static BaseWaypoint Waypoint(float jsonTime, int posX, int posY, int offsetDirection,
             JSONNode customData = null) => Settings.Instance.MapVersion == 3
@@ -114,15 +110,6 @@ namespace Beatmap.Helper
                 posX, posY, offsetDirection, customData)
             : new V2Waypoint(jsonTime,
                 posX, posY, offsetDirection, customData);
-
-        public static BaseEvent
-            Event(float jsonTime, int type, int value, float floatValue = 1f, JSONNode customData = null) =>
-            Settings.Instance.MapVersion == 3
-                ? new V3BasicEvent(jsonTime, type, value, floatValue, customData)
-                : new V2Event(jsonTime, type, value, floatValue, customData);
-
-        public static BaseColorBoostEvent ColorBoostEvent(float jsonTime, bool toggle, JSONNode customData = null) =>
-            new V3ColorBoostEvent(jsonTime, toggle, customData);
 
         public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups(float jsonTime, int id,
             List<BaseLightColorEventBox> events, JSONNode customData = null) =>
@@ -156,7 +143,6 @@ namespace Beatmap.Helper
         public static BaseWaypoint Waypoint() =>
             Settings.Instance.MapVersion == 3 ? new V3Waypoint() : new V2Waypoint();
 
-        public static BaseEvent Event() => Settings.Instance.MapVersion == 3 ? new V3BasicEvent() : new V2Event();
         public static BaseColorBoostEvent ColorBoostEvent() => new V3ColorBoostEvent();
 
         public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups() =>

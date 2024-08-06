@@ -92,7 +92,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
             var lerp = easing(Mathf.InverseLerp(lastPoint.Key, nextPoint.Key, newTime));
             var color = Color.Lerp(lastPoint.Value, nextPoint.Value, lerp);
 
-            var data = BeatmapFactory.Event(newTime, type, value);
+            var data = new BaseEvent { JsonTime = newTime, Type = type, Value = value };
             data.CustomColor = color;
 
             if (propMode != EventGridContainer.PropMode.Off)

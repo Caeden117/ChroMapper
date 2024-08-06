@@ -93,6 +93,7 @@ namespace Tests
             var headCustomData = new JSONObject { ["coordinates"] = headCoordinates };
             var tailCustomData = new JSONObject { ["coordinates"] = tailCoordinates };
 
+            Settings.Instance.MapVersion = 3;
             var chainCustomData = new JSONObject
             {
                 ["coordinates"] = headCoordinates,
@@ -172,7 +173,7 @@ namespace Tests
                     TailPosX = (int)GridX.Left,
                     TailPosY = (int)GridY.Base,
                     SliceCount = 5,
-                    Squish = 1.5f
+                    Squish = 1f
                 };
                 PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
@@ -213,7 +214,7 @@ namespace Tests
                     TailPosX = (int)GridX.Left,
                     TailPosY = (int)GridY.Base,
                     SliceCount = 5,
-                    Squish = 1.5f
+                    Squish = 1f
                 };
                 PlaceUtils.PlaceChain(chainPlacement, baseChain);
 

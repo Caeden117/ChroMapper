@@ -12,14 +12,14 @@ namespace TestsEditMode
         public void TestEverything()
         {
             V3BpmEventTest();
-            V3RotationEvent();
+            V3RotationEventTest();
             V3ColorNoteTest();
             V3BombNoteTest();
             V3ObstacleTest();
             V3ArcTest();
             V3ChainTest();
-            V3BasicEvent();
-            V3ColorBoostEvent();
+            V3BasicEventTest();
+            V3ColorBoostEventTest();
             V3LightColorEventBoxGroup();
             V3LightColorBase();
             V3LightRotationEventBoxGroup();
@@ -44,17 +44,15 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3RotationEvent()
+        public void V3RotationEventTest()
         {
             var json = new JSONObject();
-            var rotationEvent = new V3RotationEvent(json);
+            var rotationEvent = V3RotationEvent.GetFromJson(json);
 
             Assert.AreEqual(0, rotationEvent.JsonTime);
             Assert.AreEqual(14, rotationEvent.Type); // Is not 0
             Assert.AreEqual(0, rotationEvent.Value);
             Assert.AreEqual(0, rotationEvent.FloatValue);
-            Assert.AreEqual(0, rotationEvent.Rotation);
-            Assert.AreEqual(0, rotationEvent.ExecutionTime);
         }
 
         [Test]
@@ -139,10 +137,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3BasicEvent()
+        public void V3BasicEventTest()
         {
             var json = new JSONObject();
-            var basicEvent = new V3BasicEvent(json);
+            var basicEvent = V3BasicEvent.GetFromJson(json);
 
             Assert.AreEqual(0, basicEvent.JsonTime);
             Assert.AreEqual(0, basicEvent.Type);
@@ -151,16 +149,15 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3ColorBoostEvent()
+        public void V3ColorBoostEventTest()
         {
             var json = new JSONObject();
-            var boostEvent = new V3ColorBoostEvent(json);
+            var boostEvent = V3ColorBoostEvent.GetFromJson(json);
 
             Assert.AreEqual(0, boostEvent.JsonTime);
             Assert.AreEqual(5, boostEvent.Type); // Is not 0
             Assert.AreEqual(0, boostEvent.Value);
             Assert.AreEqual(0, boostEvent.FloatValue);
-            Assert.AreEqual(false, boostEvent.Toggle);
         }
 
         [Test]

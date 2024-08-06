@@ -32,6 +32,12 @@ namespace Tests
             TestUtils.ReturnSettings();
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            Settings.Instance.MapVersion = 3;
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
@@ -126,8 +132,9 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                JSON.Parse($"{{\"lightID\": {original}}}"));
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f,
+                CustomData = JSON.Parse($"{{\"lightID\": {original}}}")};
+            baseEventA.RefreshCustom();
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -157,9 +164,10 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                JSON.Parse(
-                    "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+            BaseEvent baseEventA = new BaseEvent{ JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f,
+                CustomData = JSON.Parse(
+                    "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}")};
+            baseEventA.RefreshCustom();
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -187,7 +195,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f };
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -210,7 +218,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f };
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -310,7 +318,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3RotationEvent(2, 1, 33);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LateLaneRotation, FloatValue = 33 };
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 

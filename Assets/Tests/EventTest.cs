@@ -38,53 +38,51 @@ namespace Tests
         public void Invert()
         {
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
-            var containerCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
-            if (containerCollection is EventGridContainer eventsContainer)
-            {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-                var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
+            var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+            
+            var root = eventsContainer.transform.root;
+            var eventPlacement = root.GetComponentInChildren<EventPlacement>();
+            var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                BaseEvent baseEventA = new V3RotationEvent(2, 1, 45);
-                BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
-                PlaceUtils.PlaceEvent(eventPlacement, baseEventB);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.EarlyLaneRotation, FloatValue = 45 };
+            BaseEvent baseEventB = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade };
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
+            PlaceUtils.PlaceEvent(eventPlacement, baseEventB);
 
-                // TODO: u know, i forgot this events get converted and now i have to suffer the wrath of test pain 
-                if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
-                    inputController.InvertEvent(containerA);
-                if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB)
-                    inputController.InvertEvent(containerB);
+            // TODO: u know, i forgot this events get converted and now i have to suffer the wrath of test pain 
+            if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
+                inputController.InvertEvent(containerA);
+            if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB)
+                inputController.InvertEvent(containerB);
 
-                CheckUtils.CheckRotationEvent("Perform first rotation inversion", eventsContainer, 0, 2, 1, -45);
-                CheckUtils.CheckEvent("Perform first light value inversion", eventsContainer, 1, 3,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
+            CheckUtils.CheckRotationEvent("Perform first rotation inversion", eventsContainer, 0, 2, 1, -45);
+            CheckUtils.CheckEvent("Perform first light value inversion", eventsContainer, 1, 3,
+                (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
 
-                if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB2)
-                    inputController.InvertEvent(containerB2);
+            if (eventsContainer.LoadedContainers[baseEventB] is EventContainer containerB2)
+                inputController.InvertEvent(containerB2);
 
-                CheckUtils.CheckEvent("Perform second light value inversion", eventsContainer, 1, 3,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
+            CheckUtils.CheckEvent("Perform second light value inversion", eventsContainer, 1, 3,
+                (int)EventTypeValue.BackLasers, (int)LightValue.BlueFade);
 
-                // Undo invert
-                actionContainer.Undo();
+            // Undo invert
+            actionContainer.Undo();
 
-                CheckUtils.CheckEvent("Undo second light value inversion", eventsContainer, 1, 3,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
-                CheckUtils.CheckRotationEvent("Check first rotation inversion", eventsContainer, 0, 2, 1, -45);
+            CheckUtils.CheckEvent("Undo second light value inversion", eventsContainer, 1, 3,
+                (int)EventTypeValue.BackLasers, (int)LightValue.WhiteFade);
+            CheckUtils.CheckRotationEvent("Check first rotation inversion", eventsContainer, 0, 2, 1, -45);
 
-                actionContainer.Undo();
+            actionContainer.Undo();
 
-                CheckUtils.CheckEvent("Undo first light value inversion", eventsContainer, 1, 3,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
-                CheckUtils.CheckRotationEvent("Check first rotation inversion", eventsContainer, 0, 2, 1, -45);
+            CheckUtils.CheckEvent("Undo first light value inversion", eventsContainer, 1, 3,
+                (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+            CheckUtils.CheckRotationEvent("Check first rotation inversion", eventsContainer, 0, 2, 1, -45);
 
-                actionContainer.Undo();
+            actionContainer.Undo();
 
-                CheckUtils.CheckRotationEvent("Undo first rotation inversion", eventsContainer, 0, 2, 1, 45);
-                CheckUtils.CheckEvent("Check initial light value", eventsContainer, 1, 3,
-                    (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
-            }
+            CheckUtils.CheckRotationEvent("Undo first rotation inversion", eventsContainer, 0, 2, 1, 45);
+            CheckUtils.CheckEvent("Check initial light value", eventsContainer, 1, 3,
+                (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
         }
 
         [Test]
@@ -98,7 +96,7 @@ namespace Tests
                 var eventPlacement = root.GetComponentInChildren<EventPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.LeftLaserRotation, 2);
+                BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LeftLaserRotation, Value = 2 };
                 PlaceUtils.PlaceEvent(eventPlacement, baseEventA, true);
 
                 if (eventsContainer.LoadedContainers[baseEventA] is EventContainer containerA)
@@ -126,7 +124,7 @@ namespace Tests
                 var eventPlacement = root.GetComponentInChildren<EventPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-                var baseBoostEvent = new V3ColorBoostEvent(3, false);
+                var baseBoostEvent = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.ColorBoost, Value = 0 };
                 PlaceUtils.PlaceEvent(eventPlacement, baseBoostEvent, true);
 
                 if (eventsContainer.LoadedContainers[baseBoostEvent] is EventContainer containerBoost)
@@ -166,7 +164,7 @@ namespace Tests
                 var color = new Color(0, 1, 2, 3);
                 var easing = "easeOutQuad";
 
-                BaseEvent baseEventA = new V3BasicEvent(3, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade);
+                BaseEvent baseEventA = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade };
                 baseEventA.CustomEasing = easing;
                 baseEventA.CustomColor = color;
 

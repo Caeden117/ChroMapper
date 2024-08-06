@@ -20,8 +20,7 @@ namespace Tests
 
         BaseNote baseNote1, baseNote2, baseNote3, baseNote4;
         BaseArc baseArc02, baseArc04, baseArc24, baseArc44;
-        BaseEvent baseEvent1, baseEvent2, baseEvent3, baseEvent4;
-        BaseRotationEvent baseRotationEvent2;
+        BaseEvent baseEvent1, baseEvent2, baseEvent3, baseEvent4, baseRotationEvent2;
         BaseBpmEvent baseBpmEvent1, baseBpmEvent2, baseBpmEvent3;
 
         [SetUp]
@@ -53,16 +52,16 @@ namespace Tests
             PlaceUtils.PlaceNote(notePlacement, baseNote3);
             PlaceUtils.PlaceNote(notePlacement, baseNote4);
 
-            baseEvent1 = new V3BasicEvent { JsonTime = 1 };
-            baseEvent2 = new V3BasicEvent { JsonTime = 2 };
-            baseEvent3 = new V3BasicEvent { JsonTime = 3 };
-            baseEvent4 = new V3BasicEvent { JsonTime = 4 };
+            baseEvent1 = new BaseEvent { JsonTime = 1 };
+            baseEvent2 = new BaseEvent { JsonTime = 2 };
+            baseEvent3 = new BaseEvent { JsonTime = 3 };
+            baseEvent4 = new BaseEvent { JsonTime = 4 };
             PlaceUtils.PlaceEvent(eventPlacement, baseEvent1);
             PlaceUtils.PlaceEvent(eventPlacement, baseEvent2);
             PlaceUtils.PlaceEvent(eventPlacement, baseEvent3);
             PlaceUtils.PlaceEvent(eventPlacement, baseEvent4);
 
-            baseRotationEvent2 = new V3RotationEvent { JsonTime = 2 };
+            baseRotationEvent2 = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.EarlyLaneRotation };
             PlaceUtils.PlaceEvent(eventPlacement, baseRotationEvent2);
 
             baseArc02 = new BaseArc { JsonTime = 0, TailJsonTime = 2 };
@@ -163,7 +162,6 @@ namespace Tests
 
         private void AssertSelectedObjects(ICollection<BaseObject> objects)
         {
-            Assert.True(Settings.Instance.MapVersion == 3);
             foreach (var baseObject in objects)
             {
                 Assert.True(SelectionController.SelectedObjects.Contains(baseObject), $"{baseObject} should be selected");

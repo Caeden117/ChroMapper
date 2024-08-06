@@ -153,7 +153,7 @@ namespace Beatmap.V2
                                 if (n["_type"] != null && n["_type"] == 100)
                                     map.BpmEvents.Add(V2BpmEvent.GetFromJson(n));
                                 else
-                                    map.Events.Add(new V2Event(n));
+                                    map.Events.Add(V2Event.GetFromJson(n));
                             }
                             break;
                         case "_notes":

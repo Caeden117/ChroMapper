@@ -57,7 +57,7 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) => null;
 
     // TODO: v3 check?
-    public override BaseEvent GenerateOriginalData() => new V2Event(float.MaxValue, 69, 420);
+    public override BaseEvent GenerateOriginalData() => new BaseEvent();
 
     protected override bool TestForType<T>(Intersections.IntersectionHit hit, ObjectType type)
     {

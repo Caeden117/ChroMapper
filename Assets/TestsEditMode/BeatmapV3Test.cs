@@ -329,7 +329,7 @@ namespace TestsEditMode
         }
 
         // Chains are tested outside of this method
-        private static void AssertDifficulty(BaseDifficulty difficulty, bool chainsExist)
+        private static void AssertDifficulty(BaseDifficulty difficulty, bool slidersExist)
         {
             Assert.AreEqual(2, difficulty.Notes.Count);
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
@@ -338,16 +338,17 @@ namespace TestsEditMode
             Assert.AreEqual(1, difficulty.Obstacles.Count);
             BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[0], 10, 1, 0, 0, 1, 5, 5);
             
-            Assert.AreEqual(1, difficulty.Arcs.Count);
-            BeatmapAssert.ArcPropertiesAreEqual(difficulty.Arcs[0], 10, 1, 0, 0, 1, 1, 15, 2, 2, 0, 1, 0);
-            
-            if (chainsExist)
+            if (slidersExist)
             {
+                Assert.AreEqual(1, difficulty.Arcs.Count);
+                BeatmapAssert.ArcPropertiesAreEqual(difficulty.Arcs[0], 10, 1, 0, 0, 1, 1, 15, 2, 2, 0, 1, 0);
+
                 Assert.AreEqual(1, difficulty.Chains.Count);
                 BeatmapAssert.ChainPropertiesAreEqual(difficulty.Chains[0], 10, 1, 0, 0, 1, 15, 2, 2, 3, 0.5f);
             }
             else
             {
+                Assert.AreEqual(0, difficulty.Arcs.Count);
                 Assert.AreEqual(0, difficulty.Chains.Count);
             }
 

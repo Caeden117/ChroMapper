@@ -44,44 +44,5 @@ namespace Tests
             Assert.IsFalse(Settings.Instance.MapVersion == 3,
                 "Settings Load Beatmap V3 should be false, otherwise may cause unnecessary issue");
         }
-
-        [Test]
-        public void PlaceEvent()
-        {
-            Assert.IsInstanceOf<V2Event>(BeatmapFactory.Event(),
-                "Factory default does not instantiate v2 event in beatmap v2");
-            Assert.IsInstanceOf<V2Event>(BeatmapFactory.Event(0f, 0, 1),
-                "Factory does not instantiate v2 event in beatmap v2");
-            Assert.DoesNotThrow(() => BeatmapFactory.Event(new JSONObject
-            {
-                ["_time"] = 0f,
-                ["_type"] = 0,
-                ["_value"] = 1,
-                ["_floatValue"] = 1f,
-                ["_customData"] = new JSONObject()
-            }), "Factory could not instantiate event with compatible JSON schema in beatmap v2");
-            Assert.Throws<ArgumentException>(() => BeatmapFactory.Event(new JSONObject
-            {
-                ["b"] = 0f,
-                ["et"] = 0,
-                ["i"] = 1,
-                ["f"] = 1f,
-                ["customData"] = new JSONObject()
-            }), "Factory should throw error instantiating event with incompatible JSON schema in beatmap v2");
-
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note);
-            if (collection is EventGridContainer eventsContainer)
-            {
-                var root = eventsContainer.transform.root;
-                var eventPlacement = root.GetComponentInChildren<EventPlacement>();
-                eventPlacement.RefreshVisuals();
-
-                var eventA = BeatmapFactory.Event(2.5f, 1, 2, 0);
-                PlaceUtils.PlaceEvent(eventPlacement, eventA);
-
-                CheckUtils.CheckV2Object("Check note object version", eventsContainer, 0);
-                CheckUtils.CheckEvent("Check note attributes", eventsContainer, 0, 2.5f, 0, 1);
-            }
-        }
     }
 }

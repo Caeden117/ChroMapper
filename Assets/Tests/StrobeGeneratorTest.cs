@@ -41,22 +41,27 @@ namespace Tests
                 var root = eventsContainer.transform.root;
                 var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["color"] = new Color(0, 1, 0)
-                    });
-                BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                    } };
+                baseEventA.RefreshCustom();
+
+                BaseEvent baseEventB = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["color"] = new Color(0, 0, 1)
-                    });
-                BaseEvent baseEventC = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                    } };
+                baseEventB.RefreshCustom();
+
+                BaseEvent baseEventC = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["lightID"] = 1,
                         ["color"] = new Color(1, 0, 0)
-                    });
+                    } };
+                baseEventC.RefreshCustom();
 
                 foreach (var evt in new[] { baseEventA, baseEventB, baseEventC })
                     PlaceUtils.PlaceEvent(eventPlacement, evt);
@@ -88,30 +93,38 @@ namespace Tests
                 var root = eventsContainer.transform.root;
                 var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-                BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["color"] = new Color(0, 1, 0)
-                    });
-                BaseEvent baseEventB = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                    } };
+                baseEventA.RefreshCustom();
+
+                BaseEvent baseEventB = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["color"] = new Color(0, 0, 1)
-                    });
-                BaseEvent baseEventC = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                    } };
+                baseEventB.RefreshCustom();
+
+                BaseEvent baseEventC = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["lightID"] = 1,
                         ["color"] = new Color(1, 0, 0)
-                    });
-                BaseEvent baseEventD = new V3BasicEvent(2, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                    } };
+                baseEventC.RefreshCustom();
+
+                BaseEvent baseEventD = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["lightID"] = 1,
                         ["color"] = new Color(1, 1, 0)
-                    });
-                BaseEvent baseEventE = new V3BasicEvent(4, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                    } };
+                baseEventD.RefreshCustom();
+
+                BaseEvent baseEventE = new BaseEvent { JsonTime = 4, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["lightID"] = new JSONArray
                         {
@@ -119,13 +132,16 @@ namespace Tests
                             [1] = 2
                         },
                         ["color"] = new Color(1, 0, 1)
-                    });
-                BaseEvent baseEventF = new V3BasicEvent(3, (int)EventTypeValue.RingLights, (int)LightValue.RedOn, 1f,
-                    new JSONObject
+                    } };
+                baseEventE.RefreshCustom();
+
+                BaseEvent baseEventF = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
+                    CustomData = new JSONObject
                     {
                         ["lightID"] = 3,
                         ["color"] = new Color(0, 1, 1)
-                    });
+                    } };
+                baseEventF.RefreshCustom();
 
                 foreach (var evt in new[] { baseEventA, baseEventB, baseEventC, baseEventD, baseEventE, baseEventF })
                     PlaceUtils.PlaceEvent(eventPlacement, evt);
