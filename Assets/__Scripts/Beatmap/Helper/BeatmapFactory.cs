@@ -68,8 +68,8 @@ namespace Beatmap.Helper
         public static BaseChain Chain(JSONNode node) => V3Chain.GetFromJson(node);
 
         public static BaseWaypoint Waypoint(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? new V3Waypoint(node)
-            : new V2Waypoint(node);
+            ? V3Waypoint.GetFromJson(node)
+            : V2Waypoint.GetFromJson(node);
 
         public static BaseEvent Event(JSONNode node)
         {
@@ -119,13 +119,6 @@ namespace Beatmap.Helper
 
         // instantiate from good ol parameter
 
-        public static BaseWaypoint Waypoint(float jsonTime, int posX, int posY, int offsetDirection,
-            JSONNode customData = null) => Settings.Instance.MapVersion == 3
-            ? new V3Waypoint(jsonTime,
-                posX, posY, offsetDirection, customData)
-            : new V2Waypoint(jsonTime,
-                posX, posY, offsetDirection, customData);
-
         public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups(float jsonTime, int id,
             List<BaseLightColorEventBox> events, JSONNode customData = null) =>
             new V3LightColorEventBoxGroup(jsonTime, id, events, customData);
@@ -153,9 +146,6 @@ namespace Beatmap.Helper
             : new V2CustomEvent(jsonTime, type, data);
 
         // instantiate from empty
-        public static BaseWaypoint Waypoint() =>
-            Settings.Instance.MapVersion == 3 ? new V3Waypoint() : new V2Waypoint();
-
         public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups() =>
             new V3LightColorEventBoxGroup();
 

@@ -268,7 +268,7 @@ namespace Beatmap.V3
                             foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n));
                             break;
                         case "waypoints":
-                            foreach (JSONNode n in node) map.Waypoints.Add(new V3Waypoint(n));
+                            foreach (JSONNode n in node) map.Waypoints.Add(V3Waypoint.GetFromJson(n));
                             break;
                         case "lightColorEventBoxGroups":
                             foreach (JSONNode n in node)

@@ -10,6 +10,7 @@ namespace Beatmap.Enums
         BpmChange,
         Arc,
         Chain,
-        Bookmark
+        Bookmark,
+        Waypoint
     }
 }

@@ -33,18 +33,6 @@ namespace Beatmap.Converters
                 _ => throw new ArgumentException("Unexpected object to convert")
             };
 
-        public static V3Waypoint Waypoint(BaseWaypoint other)
-        {
-            var waypoint = other switch
-            {
-                V3Waypoint o => o,
-                V2Waypoint o => new V3Waypoint(o) { CustomData = CustomDataObject(o.CustomData) },
-                _ => throw new ArgumentException("Unexpected object to convert v2 waypoint to v3 waypoint")
-            };
-            waypoint.RefreshCustom();
-            return waypoint;
-        }
-
         public static V3Bookmark Bookmark(BaseBookmark other) =>
             other switch
             {
