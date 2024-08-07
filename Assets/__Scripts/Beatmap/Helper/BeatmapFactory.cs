@@ -48,7 +48,9 @@ namespace Beatmap.Helper
             : V2BpmEvent.GetFromJson(node);
 
         public static BaseNote Note(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? V3ColorNote.GetFromJson(node)
+            ? node.HasKey("c")
+                ? V3ColorNote.GetFromJson(node)
+                : V3BombNote.GetFromJson(node)
             : V2Note.GetFromJson(node);
 
         public static BaseNote Bomb(JSONNode node) => Settings.Instance.MapVersion == 3
@@ -69,10 +71,23 @@ namespace Beatmap.Helper
             ? new V3Waypoint(node)
             : new V2Waypoint(node);
 
-        public static BaseEvent Event(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? V3BasicEvent.GetFromJson(node)
-            : V2Event.GetFromJson(node);
+        public static BaseEvent Event(JSONNode node)
+        {
+            if (Settings.Instance.MapVersion == 3)
+            {
+                if (node.HasKey("e") || node.HasKey("r"))
+                    return V3RotationEvent.GetFromJson(node);
+                if (node.HasKey("o"))
+                    return V3ColorBoostEvent.GetFromJson(node);
 
+                return V3BasicEvent.GetFromJson(node);
+            }
+            else
+            {
+                return V2Event.GetFromJson(node);
+            }
+        }
+        
         public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups(JSONNode node) =>
             new V3LightColorEventBoxGroup(node);
 
@@ -138,12 +153,8 @@ namespace Beatmap.Helper
             : new V2CustomEvent(jsonTime, type, data);
 
         // instantiate from empty
-        public static BaseRotationEvent RotationEvent() => new V3RotationEvent();
-
         public static BaseWaypoint Waypoint() =>
             Settings.Instance.MapVersion == 3 ? new V3Waypoint() : new V2Waypoint();
-
-        public static BaseColorBoostEvent ColorBoostEvent() => new V3ColorBoostEvent();
 
         public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> LightColorEventBoxGroups() =>
             new V3LightColorEventBoxGroup();
