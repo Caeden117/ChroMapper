@@ -28,7 +28,7 @@ namespace TestsEditMode
             V3LightTranslationBase();
             V3VfxEventEventBoxGroup();
             V3FxEventsCollection();
-            V3IndexFilter();
+            V3IndexFilterTest();
         }
 
         [Test]
@@ -363,10 +363,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3IndexFilter()
+        public void V3IndexFilterTest()
         {
             var json = new JSONObject();
-            var filter = new V3IndexFilter(json);
+            var filter = V3IndexFilter.GetFromJson(json);
 
             AssertIndexFilterDefaults(filter);
         }

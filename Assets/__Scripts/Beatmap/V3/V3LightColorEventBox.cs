@@ -12,7 +12,7 @@ namespace Beatmap.V3
 
         public V3LightColorEventBox(JSONNode node)
         {
-            IndexFilter = new V3IndexFilter(RetrieveRequiredNode(node, "f"));
+            IndexFilter = V3IndexFilter.GetFromJson(GetRequiredNode(node, "f"));
             BeatDistribution = node["w"].AsFloat;
             BeatDistributionType = node["d"].AsInt;
             BrightnessDistribution = node["r"].AsFloat;

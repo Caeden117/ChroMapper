@@ -13,7 +13,7 @@ namespace Beatmap.V3
 
         public V3VfxEventEventBox(JSONNode node)
         {
-            IndexFilter = new V3IndexFilter(RetrieveRequiredNode(node, "f"));
+            IndexFilter = V3IndexFilter.GetFromJson(RetrieveRequiredNode(node, "f"));
             BeatDistribution = node["w"].AsFloat;
             BeatDistributionType = node["d"].AsInt;
             VfxDistribution = node["s"].AsFloat;
@@ -59,7 +59,7 @@ namespace Beatmap.V3
 
         public override BaseItem Clone()
         {
-            return new V3VfxEventEventBox((V3IndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
+            return new V3VfxEventEventBox((BaseIndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
                 VfxDistribution, VfxDistributionType, VfxAffectFirst, VfxData.Clone() as int[]);
         }
 

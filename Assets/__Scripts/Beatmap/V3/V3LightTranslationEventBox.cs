@@ -12,7 +12,7 @@ namespace Beatmap.V3
 
         public V3LightTranslationEventBox(JSONNode node)
         {
-            IndexFilter = new V3IndexFilter(RetrieveRequiredNode(node, "f"));
+            IndexFilter = V3IndexFilter.GetFromJson(RetrieveRequiredNode(node, "f"));
             BeatDistribution = node["w"].AsFloat;
             BeatDistributionType = node["d"].AsInt;
             TranslationDistribution = node["s"].AsFloat;
