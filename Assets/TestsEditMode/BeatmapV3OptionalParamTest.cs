@@ -26,7 +26,7 @@ namespace TestsEditMode
             V3LightRotationBaseTest();
             V3LightTranslationEventBoxGroupTest();
             V3LightTranslationBaseTest();
-            V3VfxEventEventBoxGroup();
+            V3VfxEventEventBoxGroupTest();
             V3FxEventsCollection();
             V3IndexFilterTest();
         }
@@ -322,10 +322,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3VfxEventEventBoxGroup()
+        public void V3VfxEventEventBoxGroupTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3VfxEventEventBoxGroup(new JSONObject()));
-            Assert.DoesNotThrow(() => new V3VfxEventEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3VfxEventEventBoxGroup.GetFromJson(new JSONObject()));
+            Assert.DoesNotThrow(() => V3VfxEventEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -347,7 +347,7 @@ namespace TestsEditMode
                     }
                 }
             };
-            var group = new V3VfxEventEventBoxGroup(json);
+            var group = V3VfxEventEventBoxGroup.GetFromJson(json);
 
             AssertBaseEventBoxGroupDefaults(group);
         }
@@ -416,7 +416,7 @@ namespace TestsEditMode
                 Assert.AreEqual(0, lightTranslationEventBox.Easing);
                 Assert.AreEqual(0, lightTranslationEventBox.Events.Length);
             }
-            else if (box is V3VfxEventEventBox vfxEventEventBox)
+            else if (box is BaseVfxEventEventBox vfxEventEventBox)
             {
                 Assert.AreEqual(0, vfxEventEventBox.VfxDistribution);
                 Assert.AreEqual(0, vfxEventEventBox.VfxDistributionType);

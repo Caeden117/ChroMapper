@@ -284,7 +284,7 @@ namespace Beatmap.V3
                             break;
                         case "vfxEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.VfxEventBoxGroups.Add(new V3VfxEventEventBoxGroup(n));
+                                map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n));
                             break;
                         case "_fxEventsCollection":
                             map.FxEventsCollection = new V3FxEventsCollection(node);

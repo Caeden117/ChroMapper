@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using Beatmap.V3;
+using SimpleJSON;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseVfxEventEventBox : BaseEventBox
+    public class BaseVfxEventEventBox : BaseEventBox
     {
-        protected BaseVfxEventEventBox()
+        public BaseVfxEventEventBox()
         {
         }
 
@@ -34,5 +36,12 @@ namespace Beatmap.Base
         public int VfxDistributionType { get; set; }
         public int VfxAffectFirst { get; set; }
         public int[] VfxData { get; set; } = { };
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3VfxEventEventBox.ToJson(this)
+        };
+
+        public override BaseItem Clone() => throw new System.NotImplementedException();
     }
 }
