@@ -27,7 +27,7 @@ namespace TestsEditMode
             V3LightTranslationEventBoxGroupTest();
             V3LightTranslationBaseTest();
             V3VfxEventEventBoxGroupTest();
-            V3FxEventsCollection();
+            V3FxEventsCollectionTest();
             V3IndexFilterTest();
         }
 
@@ -353,10 +353,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3FxEventsCollection()
+        public void V3FxEventsCollectionTest()
         {
             var json = new JSONObject();
-            var evt = new V3FxEventsCollection(json);
+            var evt = V3FxEventsCollection.GetFromJson(json);
 
             Assert.AreEqual(0, evt.IntFxEvents.Length);
             Assert.AreEqual(0, evt.FloatFxEvents.Length);

@@ -120,7 +120,7 @@ namespace Beatmap.V3
                 foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(e.ToJson());
                 json["vfxEventBoxGroups"] = vfxEventBoxGroups;
                 
-                json["_fxEventsCollection"] = difficulty.FxEventsCollection?.ToJson() ?? new V3FxEventsCollection().ToJson();
+                json["_fxEventsCollection"] = difficulty.FxEventsCollection?.ToJson() ?? new BaseFxEventsCollection().ToJson();
                 json["basicEventTypesWithKeywords"] = difficulty.EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
                 json["useNormalEventsAsCompatibleEvents"] = difficulty.UseNormalEventsAsCompatibleEvents;
                 
@@ -287,7 +287,7 @@ namespace Beatmap.V3
                                 map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n));
                             break;
                         case "_fxEventsCollection":
-                            map.FxEventsCollection = new V3FxEventsCollection(node);
+                            map.FxEventsCollection = V3FxEventsCollection.GetFromJson(node);
                             break;
                         case "basicEventTypesWithKeywords":
                             map.EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(node);
