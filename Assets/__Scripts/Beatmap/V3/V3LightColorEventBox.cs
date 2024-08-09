@@ -4,57 +4,38 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3LightColorEventBox : BaseLightColorEventBox, V3Object
+    public static class V3LightColorEventBox
     {
-        public V3LightColorEventBox()
+        public static BaseLightColorEventBox GetFromJson(JSONNode node)
         {
+            var box = new BaseLightColorEventBox();
+            
+            box.IndexFilter = V3IndexFilter.GetFromJson(BaseItem.GetRequiredNode(node, "f"));
+            box.BeatDistribution = node["w"].AsFloat;
+            box.BeatDistributionType = node["d"].AsInt;
+            box.BrightnessDistribution = node["r"].AsFloat;
+            box.BrightnessDistributionType = node["t"].AsInt;
+            box.BrightnessAffectFirst = node["b"].AsInt;
+            box.Easing = node["i"].AsInt;
+            box.Events = BaseItem.GetRequiredNode(node, "e").AsArray.Linq.Select(x => V3LightColorBase.GetFromJson(x.Value)).ToArray();
+
+            return box;
         }
 
-        public V3LightColorEventBox(JSONNode node)
-        {
-            IndexFilter = V3IndexFilter.GetFromJson(GetRequiredNode(node, "f"));
-            BeatDistribution = node["w"].AsFloat;
-            BeatDistributionType = node["d"].AsInt;
-            BrightnessDistribution = node["r"].AsFloat;
-            BrightnessDistributionType = node["t"].AsInt;
-            BrightnessAffectFirst = node["b"].AsInt;
-            Easing = node["i"].AsInt;
-            Events = RetrieveRequiredNode(node, "e").AsArray.Linq.Select(x => new V3LightColorBase(x)).ToArray();
-        }
-
-        public V3LightColorEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
-            float brightnessDistribution, int brightnessDistributionType, int brightnessAffectFirst,
-            BaseLightColorBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
-            brightnessDistribution, brightnessDistributionType, brightnessAffectFirst, events)
-        {
-        }
-
-        public V3LightColorEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
-            float brightnessDistribution, int brightnessDistributionType, int brightnessAffectFirst, int easing,
-            BaseLightColorBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
-            brightnessDistribution, brightnessDistributionType, brightnessAffectFirst, easing, events)
-        {
-        }
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseLightColorEventBox box)
         {
             JSONNode node = new JSONObject();
-            node["f"] = IndexFilter.ToJson();
-            node["w"] = BeatDistribution;
-            node["d"] = BeatDistributionType;
-            node["r"] = BrightnessDistribution;
-            node["t"] = BrightnessDistributionType;
-            node["b"] = BrightnessAffectFirst;
-            node["i"] = Easing;
+            node["f"] = box.IndexFilter.ToJson();
+            node["w"] = box.BeatDistribution;
+            node["d"] = box.BeatDistributionType;
+            node["r"] = box.BrightnessDistribution;
+            node["t"] = box.BrightnessDistributionType;
+            node["b"] = box.BrightnessAffectFirst;
+            node["i"] = box.Easing;
             var ary = new JSONArray();
-            foreach (var k in Events) ary.Add(k.ToJson());
+            foreach (var k in box.Events) ary.Add(V3LightColorBase.ToJson(k));
             node["e"] = ary;
             return node;
         }
-
-        public override BaseItem Clone() =>
-            new V3LightColorEventBox((V3IndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
-                BrightnessDistribution, BrightnessDistributionType, BrightnessAffectFirst,
-                (V3LightColorBase[])Events.Clone());
     }
 }

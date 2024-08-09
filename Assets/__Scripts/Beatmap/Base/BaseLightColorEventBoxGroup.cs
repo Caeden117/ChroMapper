@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Beatmap.V3;
 using SimpleJSON;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseLightColorEventBoxGroup<T> : BaseEventBoxGroup<T> where T : BaseLightColorEventBox
+    public class BaseLightColorEventBoxGroup<T> : BaseEventBoxGroup<T> where T : BaseLightColorEventBox
     {
-        protected BaseLightColorEventBoxGroup()
+        public BaseLightColorEventBoxGroup()
         {
         }
 
@@ -13,5 +14,15 @@ namespace Beatmap.Base
             JSONNode customData = null) : base(time, id, events, customData)
         {
         }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3LightColorEventBoxGroup.ToJson(this),
+        };
+
+        public override BaseItem Clone() => throw new System.NotImplementedException();
+
+        public override string CustomKeyColor { get; }
+        public override string CustomKeyTrack { get; }
     }
 }

@@ -20,8 +20,8 @@ namespace TestsEditMode
             V3ChainTest();
             V3BasicEventTest();
             V3ColorBoostEventTest();
-            V3LightColorEventBoxGroup();
-            V3LightColorBase();
+            V3LightColorEventBoxGroupTest();
+            V3LightColorBaseTest();
             V3LightRotationEventBoxGroup();
             V3LightRotationBase();
             V3LightTranslationEventBoxGroup();
@@ -161,10 +161,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3LightColorEventBoxGroup()
+        public void V3LightColorEventBoxGroupTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3LightColorEventBoxGroup(new JSONObject()));
-            Assert.Throws<ArgumentException>(() => new V3LightColorEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightColorEventBoxGroup.GetFromJson(new JSONObject()));
+            Assert.Throws<ArgumentException>(() => V3LightColorEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -174,7 +174,7 @@ namespace TestsEditMode
                     }
                 }
             }));
-            Assert.Throws<ArgumentException>(() => new V3LightColorEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightColorEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -196,16 +196,16 @@ namespace TestsEditMode
                     }
                 }
             };
-            var group = new V3LightColorEventBoxGroup(json);
+            var group = V3LightColorEventBoxGroup.GetFromJson(json);
 
             AssertBaseEventBoxGroupDefaults(group);
         }
 
         [Test]
-        public void V3LightColorBase()
+        public void V3LightColorBaseTest()
         {
             var json = new JSONObject();
-            var evt = new V3LightColorBase(json);
+            var evt = V3LightColorBase.GetFromJson(json);
 
             Assert.AreEqual(0, evt.JsonTime);
             Assert.AreEqual(0, evt.Color);
@@ -389,7 +389,7 @@ namespace TestsEditMode
             Assert.AreEqual(0, box.BeatDistributionType);
             Assert.AreEqual(0, box.Easing);
 
-            if (box is V3LightColorEventBox lightColorEventBox)
+            if (box is BaseLightColorEventBox lightColorEventBox)
             {
                 Assert.AreEqual(0, lightColorEventBox.BrightnessDistribution);
                 Assert.AreEqual(0, lightColorEventBox.BrightnessDistributionType);
