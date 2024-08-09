@@ -121,7 +121,7 @@ namespace Beatmap.V3
                 json["vfxEventBoxGroups"] = vfxEventBoxGroups;
                 
                 json["_fxEventsCollection"] = difficulty.FxEventsCollection?.ToJson() ?? new BaseFxEventsCollection().ToJson();
-                json["basicEventTypesWithKeywords"] = difficulty.EventTypesWithKeywords?.ToJson() ?? new V3BasicEventTypesWithKeywords().ToJson();
+                json["basicEventTypesWithKeywords"] = difficulty.EventTypesWithKeywords?.ToJson() ?? new BaseEventTypesWithKeywords().ToJson();
                 json["useNormalEventsAsCompatibleEvents"] = difficulty.UseNormalEventsAsCompatibleEvents;
                 
                 // Do this before adding customData
@@ -290,7 +290,7 @@ namespace Beatmap.V3
                             map.FxEventsCollection = V3FxEventsCollection.GetFromJson(node);
                             break;
                         case "basicEventTypesWithKeywords":
-                            map.EventTypesWithKeywords = new V3BasicEventTypesWithKeywords(node);
+                            map.EventTypesWithKeywords = V3BasicEventTypesWithKeywords.GetFromJson(node);
                             break;
                         case "useNormalEventsAsCompatibleEvents":
                             map.UseNormalEventsAsCompatibleEvents = node.AsBool;

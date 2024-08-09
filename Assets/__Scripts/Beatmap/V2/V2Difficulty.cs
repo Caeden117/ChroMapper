@@ -166,7 +166,7 @@ namespace Beatmap.V2
                             foreach (JSONNode n in node) map.Waypoints.Add(V2Waypoint.GetFromJson(n));
                             break;
                         case "_specialEventsKeywordFilter":
-                            map.EventTypesWithKeywords = new V2SpecialEventsKeywordFilters(node);
+                            map.EventTypesWithKeywords = V2SpecialEventsKeywordFilters.GetFromJson(node);
                             break;
                     }
                 }

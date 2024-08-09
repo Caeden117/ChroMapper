@@ -14,22 +14,6 @@ namespace Beatmap.Converters
 {
     public static class V3ToV2
     {
-        public static V2SpecialEventsKeywordFilters EventTypesWithKeywords(BaseEventTypesWithKeywords other) =>
-            other switch
-            {
-                V2SpecialEventsKeywordFilters o => o,
-                V3BasicEventTypesWithKeywords o => new V2SpecialEventsKeywordFilters(o),
-                _ => throw new ArgumentException("Unexpected object to convert")
-            };
-
-        public static V2SpecialEventsKeywordFiltersKeywords EventTypesForKeywords(BaseEventTypesForKeywords other) =>
-            other switch
-            {
-                V2SpecialEventsKeywordFiltersKeywords o => o,
-                V3BasicEventTypesForKeywords o => new V2SpecialEventsKeywordFiltersKeywords(o),
-                _ => throw new ArgumentException("Unexpected object to convert")
-            };
-
         public static V2Bookmark Bookmark(BaseBookmark other) =>
             other switch
             {

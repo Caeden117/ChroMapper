@@ -98,8 +98,8 @@ namespace Beatmap.Helper
             LightTranslationEventBoxGroups(JSONNode node) => V3LightTranslationEventBoxGroup.GetFromJson(node);
 
         public static BaseEventTypesWithKeywords EventTypesWithKeywords(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? new V3BasicEventTypesWithKeywords(node)
-            : new V2SpecialEventsKeywordFilters(node);
+            ? V3BasicEventTypesWithKeywords.GetFromJson(node)
+            : V2SpecialEventsKeywordFilters.GetFromJson(node);
 
         public static BaseBpmChange BpmChange(JSONNode node) => Settings.Instance.MapVersion == 3
             ? new V3BpmChange(node)
@@ -135,7 +135,6 @@ namespace Beatmap.Helper
         // instantiate from empty
 
 
-        public static BaseEventTypesWithKeywords EventTypesWithKeywords() => new V3BasicEventTypesWithKeywords();
 
         public static BaseBpmChange BpmChange() =>
             Settings.Instance.MapVersion == 3 ? new V3BpmChange() : new V2BpmChange();
