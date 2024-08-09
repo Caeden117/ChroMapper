@@ -92,7 +92,7 @@ namespace Beatmap.Helper
             V3LightColorEventBoxGroup.GetFromJson(node);
 
         public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>
-            LightRotationEventBoxGroups(JSONNode node) => new V3LightRotationEventBoxGroup(node);
+            LightRotationEventBoxGroups(JSONNode node) => V3LightRotationEventBoxGroup.GetFromJson(node);
 
         public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
             LightTranslationEventBoxGroups(JSONNode node) => new V3LightTranslationEventBoxGroup(node);
@@ -119,10 +119,6 @@ namespace Beatmap.Helper
 
         // instantiate from good ol parameter
 
-        public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> LightRotationEventBoxGroups(float jsonTime,
-            int id, List<BaseLightRotationEventBox> events, JSONNode customData = null) =>
-            new V3LightRotationEventBoxGroup(jsonTime, id, events, customData);
-
         public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox> LightTranslationEventBoxGroups(
             float jsonTime,
             int id, List<BaseLightTranslationEventBox> events, JSONNode customData = null) =>
@@ -143,8 +139,6 @@ namespace Beatmap.Helper
 
         // instantiate from empty
 
-        public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> LightRotationEventBoxGroups() =>
-            new V3LightRotationEventBoxGroup();
 
         public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
             LightTranslationEventBoxGroups() => new V3LightTranslationEventBoxGroup();

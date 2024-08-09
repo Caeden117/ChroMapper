@@ -22,8 +22,8 @@ namespace TestsEditMode
             V3ColorBoostEventTest();
             V3LightColorEventBoxGroupTest();
             V3LightColorBaseTest();
-            V3LightRotationEventBoxGroup();
-            V3LightRotationBase();
+            V3LightRotationEventBoxGroupTest();
+            V3LightRotationBaseTest();
             V3LightTranslationEventBoxGroup();
             V3LightTranslationBase();
             V3VfxEventEventBoxGroup();
@@ -214,10 +214,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3LightRotationEventBoxGroup()
+        public void V3LightRotationEventBoxGroupTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3LightRotationEventBoxGroup(new JSONObject()));
-            Assert.Throws<ArgumentException>(() => new V3LightRotationEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightRotationEventBoxGroup.GetFromJson(new JSONObject()));
+            Assert.Throws<ArgumentException>(() => V3LightRotationEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -227,7 +227,7 @@ namespace TestsEditMode
                     }
                 }
             }));
-            Assert.Throws<ArgumentException>(() => new V3LightRotationEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightRotationEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -249,16 +249,16 @@ namespace TestsEditMode
                     }
                 }
             };
-            var group = new V3LightRotationEventBoxGroup(json);
+            var group = V3LightRotationEventBoxGroup.GetFromJson(json);
 
             AssertBaseEventBoxGroupDefaults(group);
         }
 
         [Test]
-        public void V3LightRotationBase()
+        public void V3LightRotationBaseTest()
         {
             var json = new JSONObject();
-            var evt = new V3LightRotationBase(json);
+            var evt = V3LightRotationBase.GetFromJson(json);
 
             Assert.AreEqual(0, evt.JsonTime);
             Assert.AreEqual(0, evt.Rotation);
@@ -396,7 +396,7 @@ namespace TestsEditMode
                 Assert.AreEqual(0, lightColorEventBox.BrightnessAffectFirst);
                 Assert.AreEqual(0, lightColorEventBox.Events.Length);
             }
-            else if (box is V3LightRotationEventBox lightRotationEventBox)
+            else if (box is BaseLightRotationEventBox lightRotationEventBox)
             {
                 Assert.AreEqual(0, lightRotationEventBox.RotationDistribution);
                 Assert.AreEqual(0, lightRotationEventBox.RotationDistributionType);

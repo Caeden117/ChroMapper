@@ -1,8 +1,11 @@
+using Beatmap.V3;
+using SimpleJSON;
+
 namespace Beatmap.Base
 {
-    public abstract class BaseLightRotationEventBox : BaseEventBox
+    public class BaseLightRotationEventBox : BaseEventBox
     {
-        protected BaseLightRotationEventBox()
+        public BaseLightRotationEventBox()
         {
         }
 
@@ -38,5 +41,12 @@ namespace Beatmap.Base
         public int Axis { get; set; }
         public int Flip { get; set; }
         public BaseLightRotationBase[] Events { get; set; }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3LightRotationEventBox.ToJson(this)
+        };
+
+        public override BaseItem Clone() => throw new System.NotImplementedException();
     }
 }

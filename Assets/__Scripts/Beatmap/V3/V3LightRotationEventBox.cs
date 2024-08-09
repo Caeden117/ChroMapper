@@ -4,62 +4,42 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3LightRotationEventBox : BaseLightRotationEventBox, V3Object
+    public static class V3LightRotationEventBox
     {
-        public V3LightRotationEventBox()
+        public static BaseLightRotationEventBox GetFromJson(JSONNode node)
         {
+            var box = new BaseLightRotationEventBox();
+            
+            box.IndexFilter = V3IndexFilter.GetFromJson(BaseItem.GetRequiredNode(node, "f"));
+            box.BeatDistribution = node["w"].AsFloat;
+            box.BeatDistributionType = node["d"].AsInt;
+            box.RotationDistribution = node["s"].AsFloat;
+            box.RotationDistributionType = node["t"].AsInt;
+            box.RotationAffectFirst = node["b"].AsInt;
+            box.Axis = node["a"].AsInt;
+            box.Flip = node["r"].AsInt;
+            box.Easing = node["i"].AsInt;
+            box.Events = BaseItem.GetRequiredNode(node, "l").AsArray.Linq.Select(x => V3LightRotationBase.GetFromJson(x.Value)).ToArray();
+
+            return box;
         }
 
-        public V3LightRotationEventBox(JSONNode node)
-        {
-            IndexFilter = new V3IndexFilter(RetrieveRequiredNode(node, "f"));
-            BeatDistribution = node["w"].AsFloat;
-            BeatDistributionType = node["d"].AsInt;
-            RotationDistribution = node["s"].AsFloat;
-            RotationDistributionType = node["t"].AsInt;
-            RotationAffectFirst = node["b"].AsInt;
-            Axis = node["a"].AsInt;
-            Flip = node["r"].AsInt;
-            Easing = node["i"].AsInt;
-            Events = RetrieveRequiredNode(node, "l").AsArray.Linq.Select(x => new V3LightRotationBase(x)).ToArray();
-        }
-
-        public V3LightRotationEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
-            float rotationDistribution, int rotationDistributionType, int rotationAffectFirst, int axis, int flip,
-            BaseLightRotationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
-            rotationDistribution, rotationDistributionType, rotationAffectFirst, axis, flip, events)
-        {
-        }
-
-        public V3LightRotationEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
-            float rotationDistribution, int rotationDistributionType, int rotationAffectFirst, int axis, int flip,
-            int easing,
-            BaseLightRotationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
-            rotationDistribution, rotationDistributionType, rotationAffectFirst, axis, flip, easing, events)
-        {
-        }
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseLightRotationEventBox box)
         {
             JSONNode node = new JSONObject();
-            node["f"] = IndexFilter.ToJson();
-            node["w"] = BeatDistribution;
-            node["d"] = BeatDistributionType;
-            node["s"] = RotationDistribution;
-            node["t"] = RotationDistributionType;
-            node["b"] = RotationAffectFirst;
-            node["a"] = Axis;
-            node["r"] = Flip;
-            node["i"] = Easing;
+            node["f"] = box.IndexFilter.ToJson();
+            node["w"] = box.BeatDistribution;
+            node["d"] = box.BeatDistributionType;
+            node["s"] = box.RotationDistribution;
+            node["t"] = box.RotationDistributionType;
+            node["b"] = box.RotationAffectFirst;
+            node["a"] = box.Axis;
+            node["r"] = box.Flip;
+            node["i"] = box.Easing;
             var ary = new JSONArray();
-            foreach (var k in Events) ary.Add(k.ToJson());
+            foreach (var k in box.Events) ary.Add(V3LightRotationBase.ToJson(k));
             node["l"] = ary;
             return node;
         }
-
-        public override BaseItem Clone() =>
-            new V3LightRotationEventBox((V3IndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
-                RotationDistribution, RotationDistributionType, RotationAffectFirst, Axis, Flip,
-                (V3LightRotationBase[])Events.Clone());
     }
 }
