@@ -280,7 +280,7 @@ namespace Beatmap.V3
                             break;
                         case "lightTranslationEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.LightTranslationEventBoxGroups.Add(new V3LightTranslationEventBoxGroup(n));
+                                map.LightTranslationEventBoxGroups.Add(V3LightTranslationEventBoxGroup.GetFromJson(n));
                             break;
                         case "vfxEventBoxGroups":
                             foreach (JSONNode n in node)

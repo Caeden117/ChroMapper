@@ -95,7 +95,7 @@ namespace Beatmap.Helper
             LightRotationEventBoxGroups(JSONNode node) => V3LightRotationEventBoxGroup.GetFromJson(node);
 
         public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
-            LightTranslationEventBoxGroups(JSONNode node) => new V3LightTranslationEventBoxGroup(node);
+            LightTranslationEventBoxGroups(JSONNode node) => V3LightTranslationEventBoxGroup.GetFromJson(node);
 
         public static BaseEventTypesWithKeywords EventTypesWithKeywords(JSONNode node) => Settings.Instance.MapVersion == 3
             ? new V3BasicEventTypesWithKeywords(node)
@@ -119,11 +119,6 @@ namespace Beatmap.Helper
 
         // instantiate from good ol parameter
 
-        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox> LightTranslationEventBoxGroups(
-            float jsonTime,
-            int id, List<BaseLightTranslationEventBox> events, JSONNode customData = null) =>
-            new V3LightTranslationEventBoxGroup(jsonTime, id, events, customData);
-
         // public static BaseEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Settings.Instance.MapVersion == 3 ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(keywords) : new V2SpecialEventsKeywordFilters(keywords);
         public static BaseBpmChange BpmChange(float jsonTime, float bpm) => Settings.Instance.MapVersion == 3
             ? new V3BpmChange(jsonTime, bpm)
@@ -139,9 +134,6 @@ namespace Beatmap.Helper
 
         // instantiate from empty
 
-
-        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
-            LightTranslationEventBoxGroups() => new V3LightTranslationEventBoxGroup();
 
         public static BaseEventTypesWithKeywords EventTypesWithKeywords() => new V3BasicEventTypesWithKeywords();
 
