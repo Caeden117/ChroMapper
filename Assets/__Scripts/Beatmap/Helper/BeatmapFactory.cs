@@ -102,8 +102,8 @@ namespace Beatmap.Helper
             : V2SpecialEventsKeywordFilters.GetFromJson(node);
 
         public static BaseBpmChange BpmChange(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? new V3BpmChange(node)
-            : new V2BpmChange(node);
+            ? V3BpmChange.GetFromJson(node)
+            : V2BpmChange.GetFromJson(node);
 
         public static BaseBookmark Bookmark(JSONNode node) => Settings.Instance.MapVersion == 3
             ? V3Bookmark.GetFromJson(node)
@@ -120,19 +120,13 @@ namespace Beatmap.Helper
         // instantiate from good ol parameter
 
         // public static BaseEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Settings.Instance.MapVersion == 3 ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(keywords) : new V2SpecialEventsKeywordFilters(keywords);
-        public static BaseBpmChange BpmChange(float jsonTime, float bpm) => Settings.Instance.MapVersion == 3
-            ? new V3BpmChange(jsonTime, bpm)
-            : new V2BpmChange(jsonTime, bpm);
         public static BaseCustomEvent CustomEvent(float jsonTime, string type, JSONNode data) => Settings.Instance.MapVersion == 3
             ? new V3CustomEvent(jsonTime, type, data)
             : new V2CustomEvent(jsonTime, type, data);
 
         // instantiate from empty
 
-
-
-        public static BaseBpmChange BpmChange() =>
-            Settings.Instance.MapVersion == 3 ? new V3BpmChange() : new V2BpmChange();
+        
 
         public static BaseCustomEvent CustomEvent() => Settings.Instance.MapVersion == 3
             ? new V3CustomEvent()

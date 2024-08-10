@@ -90,7 +90,7 @@ namespace Beatmap.Base
                 float offset = customData["_editorOffset"];
                 customData.Remove("_editorOffset");
                 customData.Remove("_editorOldOffset");
-                BpmChanges.Insert(0, BeatmapFactory.BpmChange(songBpm / 60 * (offset / 1000f), songBpm));
+                BpmChanges.Insert(0, new BaseBpmChange{ JsonTime = songBpm / 60 * (offset / 1000f), Bpm = songBpm });
                 Debug.Log($"Editor offset detected: {songBpm / 60 * (offset / 1000f)}s");
             }
 
@@ -109,7 +109,7 @@ namespace Beatmap.Base
                 var bpmChange = BpmChanges[i];
                 var prevBpmChange = (i > 0)
                     ? BpmChanges[i - 1]
-                    : BeatmapFactory.BpmChange(0, songBpm);
+                    : new BaseBpmChange{ JsonTime = 0, Bpm = songBpm };
 
                 // Account for custom bpm change original grid behaviour
                 var distanceToNearestInt = Mathf.Abs(bpmChange.JsonTime - Mathf.Round(bpmChange.JsonTime));

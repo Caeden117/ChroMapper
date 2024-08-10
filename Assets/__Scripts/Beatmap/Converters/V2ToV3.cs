@@ -16,14 +16,6 @@ namespace Beatmap.Converters
 {
     public static class V2ToV3
     {
-        public static V3BpmChange BpmChange(BaseBpmChange other) =>
-            other switch
-            {
-                V3BpmChange o => o,
-                V2BpmChange o => new V3BpmChange(o),
-                _ => throw new ArgumentException("Unexpected object to convert v2 BPM change to v3 BPM change")
-            };
-
         public static V3CustomEvent CustomEvent(BaseCustomEvent other) =>
             other switch
             {

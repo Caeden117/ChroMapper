@@ -341,7 +341,7 @@ namespace Beatmap.V3
                 switch (key)
                 {
                     case "BPMChanges":
-                        foreach (JSONNode n in node) bpmList.Add(new V3BpmChange(n));
+                        foreach (JSONNode n in node) bpmList.Add(V3BpmChange.GetFromJson(n));
                         break;
                     case "bookmarks":
                         foreach (JSONNode n in node) bookmarksList.Add(V3Bookmark.GetFromJson(n));

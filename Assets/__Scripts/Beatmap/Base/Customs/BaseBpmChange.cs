@@ -1,11 +1,13 @@
 ﻿using System;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using SimpleJSON;
 
 namespace Beatmap.Base.Customs
 {
-    public abstract class BaseBpmChange : BaseBpmEvent
+    public class BaseBpmChange : BaseBpmEvent
     {
-        protected BaseBpmChange()
+        public BaseBpmChange()
         {
         }
 
@@ -25,7 +27,13 @@ namespace Beatmap.Base.Customs
             MetronomeOffset = 4;
         }
 
-        protected BaseBpmChange(JSONNode node) => InstantiateHelper(ref node);
+        public BaseBpmChange(JSONNode node)
+        {
+            JsonTime = RetrieveRequiredNode(node, KeyTime).AsFloat;
+            Bpm = RetrieveRequiredNode(node, KeyBpm).AsFloat;
+            BeatsPerBar = node.HasKey(KeyBeatsPerBar) ? node[KeyBeatsPerBar].AsFloat : 4f;
+            MetronomeOffset = node.HasKey(KeyMetronomeOffset) ? node[KeyMetronomeOffset].AsFloat : 4f;
+        }
 
         protected BaseBpmChange(float time, float bpm) : base(time, bpm)
         {
@@ -37,10 +45,30 @@ namespace Beatmap.Base.Customs
         public float BeatsPerBar { get; set; }
         public float MetronomeOffset { get; set; }
 
-        public abstract string KeyTime { get; }
-        public abstract string KeyBeatsPerBar { get; }
-        public abstract string KeyBpm { get; }
-        public abstract string KeyMetronomeOffset { get; }
+        public string KeyTime => Settings.Instance.MapVersion switch
+        {
+            2 => V2BpmChange.KeyTime,
+            3 => V3BpmChange.KeyTime
+        };
+
+        public string KeyBeatsPerBar => Settings.Instance.MapVersion switch
+        {
+            2 => V2BpmChange.KeyBeatsPerBar,
+            3 => V3BpmChange.KeyBeatsPerBar
+        };
+
+        public string KeyBpm => Settings.Instance.MapVersion switch
+        {
+            2 => V2BpmChange.KeyBpm,
+            3 => V3BpmChange.KeyBpm
+        };
+
+        public string KeyMetronomeOffset => Settings.Instance.MapVersion switch
+        {
+            2 => V2BpmChange.KeyMetronomeOffset,
+            3 => V3BpmChange.KeyMetronomeOffset
+        };
+
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => true;
 
@@ -56,21 +84,10 @@ namespace Beatmap.Base.Customs
             }
         }
 
-        public override JSONNode ToJson() =>
-            new JSONObject
-            {
-                [KeyTime] = Math.Round(JsonTime, DecimalPrecision),
-                [KeyBpm] = Bpm,
-                [KeyBeatsPerBar] = BeatsPerBar,
-                [KeyMetronomeOffset] = MetronomeOffset
-            };
-
-        private void InstantiateHelper(ref JSONNode node)
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
-            JsonTime = RetrieveRequiredNode(node, KeyTime).AsFloat;
-            Bpm = RetrieveRequiredNode(node, KeyBpm).AsFloat;
-            BeatsPerBar = node.HasKey(KeyBeatsPerBar) ? node[KeyBeatsPerBar].AsFloat : 4f;
-            MetronomeOffset = node.HasKey(KeyMetronomeOffset) ? node[KeyMetronomeOffset].AsFloat : 4f;
-        }
+            2 => V2BpmChange.ToJson(this),
+            3 => V3BpmChange.ToJson(this)
+        };
     }
 }

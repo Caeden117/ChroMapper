@@ -217,10 +217,10 @@ namespace Beatmap.V2
                             switch (cKey)
                             {
                                 case "_BPMChanges":
-                                    foreach (JSONNode n in cNode) bpmList.Add(new V2BpmChange(n));
+                                    foreach (JSONNode n in cNode) bpmList.Add(V2BpmChange.GetFromJson(n));
                                     break;
                                 case "_bpmChanges":
-                                    foreach (JSONNode n in cNode) bpmList.Add(new V2BpmChange(n));
+                                    foreach (JSONNode n in cNode) bpmList.Add(V2BpmChange.GetFromJson(n));
                                     break;
                                 case "_bookmarks":
                                     foreach (JSONNode n in cNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
@@ -264,10 +264,10 @@ namespace Beatmap.V2
                     
                     // Keys can be present outside of root CustomData from legacy community editor
                     case "_BPMChanges":
-                        foreach (JSONNode n in mNode) bpmList.Add(new V2BpmChange(n));
+                        foreach (JSONNode n in mNode) bpmList.Add(V2BpmChange.GetFromJson(n));
                         break;
                     case "_bpmChanges":
-                        foreach (JSONNode n in mNode) bpmList.Add(new V2BpmChange(n));
+                        foreach (JSONNode n in mNode) bpmList.Add(V2BpmChange.GetFromJson(n));
                         break;
                     case "_bookmarks":
                         foreach (JSONNode n in mNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
