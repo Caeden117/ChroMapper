@@ -394,7 +394,7 @@ namespace Beatmap.V3
                         Debug.LogWarning("Could not read point definitions");
                         break;
                     case "environment":
-                        foreach (JSONNode n in node) envEnhancementsList.Add(new V3EnvironmentEnhancement(n));
+                        foreach (JSONNode n in node) envEnhancementsList.Add(V3EnvironmentEnhancement.GetFromJson(n));
                         break;
                     case "materials":
                         if (node is JSONObject matObj)

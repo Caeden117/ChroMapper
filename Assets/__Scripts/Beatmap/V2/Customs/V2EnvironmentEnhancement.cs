@@ -4,78 +4,66 @@ using SimpleJSON;
 
 namespace Beatmap.V2.Customs
 {
-    public class V2EnvironmentEnhancement : BaseEnvironmentEnhancement, V2Object
+    public static class V2EnvironmentEnhancement
     {
-        public V2EnvironmentEnhancement()
-        {
-        }
+        public static string KeyID = "_id";
 
-        public V2EnvironmentEnhancement(BaseEnvironmentEnhancement other) : base(other)
-        {
-        }
+        public static string KeyLookupMethod = "_lookupMethod";
 
-        public V2EnvironmentEnhancement(JSONNode node) : base(node)
-        {
-        }
+        public static string KeyGeometry = "_geometry";
 
-        public override string KeyID { get; } = "_id";
+        public static string KeyTrack = "_track";
 
-        public override string KeyLookupMethod { get; } = "_lookupMethod";
+        public static string KeyDuplicate = "_duplicate";
 
-        public override string KeyGeometry { get; } = "_geometry";
+        public static string KeyActive = "_active";
 
-        public override string KeyTrack { get; } = "_track";
+        public static string KeyScale = "_scale";
 
-        public override string KeyDuplicate { get; } = "_duplicate";
+        public static string KeyPosition = "_position";
 
-        public override string KeyActive { get; } = "_active";
+        public static string KeyRotation = "_rotation";
 
-        public override string KeyScale { get; } = "_scale";
+        public static string KeyLocalPosition = "_localPosition";
 
-        public override string KeyPosition { get; } = "_position";
+        public static string KeyLocalRotation = "_localRotation";
 
-        public override string KeyRotation { get; } = "_rotation";
+        public static string KeyComponents = "_components";
 
-        public override string KeyLocalPosition { get; } = "_localPosition";
+        public static string KeyLightID = "_lightID";
 
-        public override string KeyLocalRotation { get; } = "_localRotation";
+        public static string KeyLightType = "_type";
 
-        public override string KeyComponents { get; } = "_components";
+        public static string GeometryKeyType = "_type";
 
-        public override string KeyLightID { get; } = "_lightID";
+        public static string GeometryKeyMaterial = "_material";
 
-        public override string KeyLightType { get; } = "_type";
+        public static BaseEnvironmentEnhancement GetFromJson(JSONNode node) => new BaseEnvironmentEnhancement(node);
 
-        public override string GeometryKeyType { get; } = "_type";
-
-        public override string GeometryKeyMaterial { get; } = "_material";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseEnvironmentEnhancement environment)
         {
             var node = new JSONObject();
-            if (Geometry != null)
+            if (environment.Geometry != null)
             {
-                node[KeyGeometry] = Geometry;
+                node[KeyGeometry] = environment.Geometry;
             }
             else
             {
-                node[KeyID] = ID;
-                node[KeyLookupMethod] = LookupMethod.ToString();
+                node[KeyID] = environment.ID;
+                node[KeyLookupMethod] = environment.LookupMethod.ToString();
             }
 
-            if (!string.IsNullOrEmpty(Track)) node[KeyTrack] = Track;
-            if (Duplicate > 0) node[KeyDuplicate] = Duplicate;
-            if (Active != null) node[KeyActive] = Active;
-            if (Scale != null) WriteVector3(node, KeyScale, Scale);
-            if (Position != null) WriteVector3(node, KeyPosition, Position);
-            if (Rotation != null) WriteVector3(node, KeyRotation, Rotation);
-            if (LocalPosition != null) WriteVector3(node, KeyLocalPosition, LocalPosition);
-            if (LocalRotation != null) WriteVector3(node, KeyLocalRotation, LocalRotation);
-            if (LightID > 0) node[KeyLightID] = LightID;
+            if (!string.IsNullOrEmpty(environment.Track)) node[KeyTrack] = environment.Track;
+            if (environment.Duplicate > 0) node[KeyDuplicate] = environment.Duplicate;
+            if (environment.Active != null) node[KeyActive] = environment.Active;
+            if (environment.Scale != null) BaseEnvironmentEnhancement.WriteVector3(node, KeyScale, environment.Scale);
+            if (environment.Position != null) BaseEnvironmentEnhancement.WriteVector3(node, KeyPosition, environment.Position);
+            if (environment.Rotation != null) BaseEnvironmentEnhancement.WriteVector3(node, KeyRotation, environment.Rotation);
+            if (environment.LocalPosition != null) BaseEnvironmentEnhancement.WriteVector3(node, KeyLocalPosition, environment.LocalPosition);
+            if (environment.LocalRotation != null) BaseEnvironmentEnhancement.WriteVector3(node, KeyLocalRotation, environment.LocalRotation);
+            if (environment.LightID > 0) node[KeyLightID] = environment.LightID;
 
             return node;
         }
-
-        public override BaseItem Clone() => new V2EnvironmentEnhancement(this);
     }
 }

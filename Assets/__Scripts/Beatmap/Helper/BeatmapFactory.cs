@@ -114,8 +114,8 @@ namespace Beatmap.Helper
             : V2CustomEvent.GetFromJson(node);
 
         public static BaseEnvironmentEnhancement EnvironmentEnhancement(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? new V3EnvironmentEnhancement(node)
-            : new V2EnvironmentEnhancement(node);
+            ? V3EnvironmentEnhancement.GetFromJson(node)
+            : V2EnvironmentEnhancement.GetFromJson(node);
 
         // instantiate from good ol parameter
 
@@ -126,9 +126,6 @@ namespace Beatmap.Helper
         
 
 
-        public static BaseEnvironmentEnhancement EnvironmentEnhancement() => Settings.Instance.MapVersion == 3
-            ? new V3EnvironmentEnhancement()
-            : new V2EnvironmentEnhancement();
         // public static Materials = new Dictionary<string, JSONObject>();
         // public static PointDefinitions = new Dictionary<string, List<JSONArray>>();
     }

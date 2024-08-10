@@ -97,7 +97,7 @@ public class DifficultySettings
         if (DifficultyBeatmap.CustomData != null)
         {
             foreach (var ent in DifficultyBeatmap.CustomData["_environmentRemoval"])
-                enhancements.Add(Settings.Instance.MapVersion == 3 ? (BaseEnvironmentEnhancement)new V3EnvironmentEnhancement(ent.Value.Value) : new V2EnvironmentEnhancement(ent.Value.Value));
+                enhancements.Add(Settings.Instance.MapVersion == 3 ? V3EnvironmentEnhancement.GetFromJson(ent.Value.Value) : V2EnvironmentEnhancement.GetFromJson(ent.Value.Value));
         }
 
         if (Map != null) enhancements.AddRange(Map.EnvironmentEnhancements.Select(it => it.Clone() as BaseEnvironmentEnhancement));

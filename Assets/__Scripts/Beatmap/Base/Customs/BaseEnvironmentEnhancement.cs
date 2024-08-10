@@ -1,13 +1,15 @@
 ﻿using System;
 using Beatmap.Enums;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.Base.Customs
 {
-    public abstract class BaseEnvironmentEnhancement : BaseItem
+    public class BaseEnvironmentEnhancement : BaseItem
     {
-        protected BaseEnvironmentEnhancement()
+        public BaseEnvironmentEnhancement()
         {
         }
 
@@ -28,9 +30,9 @@ namespace Beatmap.Base.Customs
             LightID = other.LightID;
         }
 
-        protected BaseEnvironmentEnhancement(JSONNode node) => InstantiateHelper(ref node);
+        public BaseEnvironmentEnhancement(JSONNode node) => InstantiateHelper(ref node);
 
-        protected BaseEnvironmentEnhancement(string toRemove)
+        public BaseEnvironmentEnhancement(string toRemove)
         {
             ID = toRemove;
             Active = false;
@@ -49,31 +51,167 @@ namespace Beatmap.Base.Customs
         public Vector3? LocalPosition { get; set; }
         public Vector3? LocalRotation { get; set; }
         public JSONNode Components { get; set; }
-        public virtual int? LightID { get; set; }
-        public virtual int? LightType { get; set; }
 
-        public abstract string KeyID { get; }
-        public abstract string KeyLookupMethod { get; }
-        public abstract string KeyGeometry { get; }
-        public abstract string KeyTrack { get; }
-        public abstract string KeyDuplicate { get; }
-        public abstract string KeyActive { get; }
-        public abstract string KeyScale { get; }
-        public abstract string KeyPosition { get; }
-        public abstract string KeyRotation { get; }
-        public abstract string KeyLocalPosition { get; }
-        public abstract string KeyLocalRotation { get; }
-        public abstract string KeyComponents { get; }
-        public abstract string KeyLightID { get; }
-        public abstract string KeyLightType { get; }
+        public int? LightID
+        {
+            get
+            {
+                if (Components != null && Components["ILightWithId"] != null &&
+                    Components["ILightWithId"]["lightID"] != null)
+                    return Components["ILightWithId"]["lightID"].AsInt;
 
-        public abstract string GeometryKeyType { get; }
-        public abstract string GeometryKeyMaterial { get; }
+                return null;
+            }
+            set
+            {
+                if (Components != null)
+                {
+                    if (Components["ILightWithId"] != null)
+                        Components["ILightWithId"]["lightID"] = value;
+                    else
+                        Components["ILightWithId"] = new JSONObject { ["lightID"] = value };
+                }
+                else
+                {
+                    var iLightWithID = new JSONObject { ["lightID"] = value };
+                    Components = new JSONObject { ["ILightWithId"] = iLightWithID };
+                }
+            }
+        }
+
+        public int? LightType
+        {
+            get
+            {
+                if (Components != null && Components["ILightWithId"] != null &&
+                    Components["ILightWithId"]["type"] != null)
+                    return Components["ILightWithId"]["type"].AsInt;
+
+                return null;
+            }
+            set
+            {
+                if (Components != null)
+                {
+                    if (Components["ILightWithId"] != null)
+                        Components["ILightWithId"]["type"] = value;
+                    else
+                        Components["ILightWithId"] = new JSONObject { ["type"] = value };
+                }
+                else
+                {
+                    var iLightWithID = new JSONObject { ["type"] = value };
+                    Components = new JSONObject { ["ILightWithId"] = iLightWithID };
+                }
+            }
+        }
+
+        #region CustomData Keys
+
+        public string KeyID => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyID,
+            3 => V3EnvironmentEnhancement.KeyID
+        };
+
+        public string KeyLookupMethod => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyLookupMethod,
+            3 => V3EnvironmentEnhancement.KeyLookupMethod
+        };
+
+        public string KeyGeometry => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyGeometry,
+            3 => V3EnvironmentEnhancement.KeyGeometry
+        };
+
+        public string KeyTrack => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyTrack,
+            3 => V3EnvironmentEnhancement.KeyTrack
+        };
+
+        public string KeyDuplicate => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyDuplicate,
+            3 => V3EnvironmentEnhancement.KeyDuplicate
+        };
+
+        public string KeyActive => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyActive,
+            3 => V3EnvironmentEnhancement.KeyActive
+        };
+
+        public string KeyScale => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyScale,
+            3 => V3EnvironmentEnhancement.KeyScale
+        };
+
+        public string KeyPosition => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyPosition,
+            3 => V3EnvironmentEnhancement.KeyPosition
+        };
+
+        public string KeyRotation => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyRotation,
+            3 => V3EnvironmentEnhancement.KeyRotation
+        };
+
+        public string KeyLocalPosition => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyLocalPosition,
+            3 => V3EnvironmentEnhancement.KeyLocalPosition
+        };
+
+        public string KeyLocalRotation => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyLocalRotation,
+            3 => V3EnvironmentEnhancement.KeyLocalRotation
+        };
+
+        public string KeyComponents => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyComponents,
+            3 => V3EnvironmentEnhancement.KeyComponents
+        };
+
+        public string KeyLightID => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyLightID,
+            3 => V3EnvironmentEnhancement.KeyLightID
+        };
+
+        public string KeyLightType => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.KeyLightType,
+            3 => V3EnvironmentEnhancement.KeyLightType
+        };
+
+
+        public string GeometryKeyType => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.GeometryKeyType,
+            3 => V3EnvironmentEnhancement.GeometryKeyType
+        };
+
+        public string GeometryKeyMaterial => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.GeometryKeyMaterial,
+            3 => V3EnvironmentEnhancement.GeometryKeyMaterial
+        };
+        
+        #endregion
+
 
         private static Vector3? ReadVector3OrNull(JSONNode node, string key) =>
             !node.HasKey(key) || node[key].IsNull ? (Vector3?)null : node[key].ReadVector3();
 
-        protected static void WriteVector3(JSONNode node, string key, Vector3? v)
+        public static void WriteVector3(JSONNode node, string key, Vector3? v)
         {
             if (!v.HasValue) return;
 
@@ -142,5 +280,13 @@ namespace Beatmap.Base.Customs
             if (node[KeyLightID] != null) LightID = node[KeyLightID].AsInt;
             if (node[KeyLightType] != null) LightType = node[KeyLightType].AsInt;
         }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            2 => V2EnvironmentEnhancement.ToJson(this),
+            3 => V3EnvironmentEnhancement.ToJson(this)
+        };
+
+        public override BaseItem Clone() => new BaseEnvironmentEnhancement(this);
     }
 }

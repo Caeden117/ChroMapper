@@ -240,7 +240,7 @@ namespace Beatmap.V2
                                     break;
                                 case "_environment":
                                     foreach (JSONNode n in cNode)
-                                        envEnhancementsList.Add(new V2EnvironmentEnhancement(n));
+                                        envEnhancementsList.Add(V2EnvironmentEnhancement.GetFromJson(n));
                                     break;
                                 case "_materials":
                                     if (cNode is JSONObject matObj)

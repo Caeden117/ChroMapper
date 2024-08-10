@@ -16,18 +16,12 @@ namespace Beatmap.Converters
 {
     public static class V2ToV3
     {
-        public static V3EnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
-            other switch
+        public static BaseEnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
+            new BaseEnvironmentEnhancement(other)
             {
-                V3EnvironmentEnhancement o => o,
-                V2EnvironmentEnhancement o => new V3EnvironmentEnhancement(o)
-                {
-                    Position = RescaleVector3(o.Position),
-                    LocalPosition = RescaleVector3(o.LocalPosition),
-                    Geometry = Geometry(other.Geometry?.AsObject)
-                },
-                _ => throw new ArgumentException(
-                    "Unexpected object to convert v2 environment enhancement to v3 environment enhancement")
+                Position = RescaleVector3(other.Position),
+                LocalPosition = RescaleVector3(other.LocalPosition),
+                Geometry = Geometry(other.Geometry?.AsObject)
             };
 
         public static JSONObject Geometry(JSONObject other)
