@@ -401,7 +401,7 @@ namespace Beatmap.V3
                         {
                             foreach (var n in matObj)
                                 if (!materials.ContainsKey(n.Key))
-                                    materials.Add(n.Key, new V3Material(n.Value.AsObject));
+                                    materials.Add(n.Key, V3Material.GetFromJson(n.Value.AsObject));
                                 else
                                     Debug.LogWarning($"Duplicate key {n.Key} found in materials");
                             break;

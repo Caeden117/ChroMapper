@@ -247,7 +247,7 @@ namespace Beatmap.V2
                                     {
                                         foreach (var n in matObj)
                                             if (!materials.ContainsKey(n.Key))
-                                                materials.Add(n.Key, new V2Material(n.Value.AsObject));
+                                                materials.Add(n.Key, V2Material.GetFromJson(n.Value.AsObject));
                                             else
                                                 Debug.LogWarning($"Duplicate key \"{n.Key}\" found in materials");
                                         break;

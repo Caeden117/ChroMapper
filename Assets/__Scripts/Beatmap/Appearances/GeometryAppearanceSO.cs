@@ -18,7 +18,7 @@ namespace Beatmap.Appearances
         [SerializeField] private Material obstacleMaterial;
         [SerializeField] private Material regularMaterial;
 
-        private static V3Material standard = new V3Material(new JSONObject { ["shader"] = "Standard" });
+        private static BaseMaterial standard = new BaseMaterial(new JSONObject { ["shader"] = "Standard" });
 
         public void SetGeometryAppearance(GeometryContainer container)
         {
@@ -37,9 +37,7 @@ namespace Beatmap.Appearances
                     }
                     break;
                 case JSONObject obj:
-                    basemat = (eh is V2EnvironmentEnhancement)
-                        ? (BaseMaterial)new V2Material(obj)
-                        : (BaseMaterial)new V3Material(obj);
+                    basemat = new BaseMaterial(obj);
                     break;
                 default:
                     Debug.LogError("Geometry with invalid material!");

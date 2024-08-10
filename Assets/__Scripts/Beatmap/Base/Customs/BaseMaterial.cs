@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
 using Beatmap.Enums;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.Base.Customs
 {
-    public abstract class BaseMaterial : BaseItem
+    public class BaseMaterial : BaseItem
     {
         // TODO: Add C.U.M.?
 
-        protected BaseMaterial()
+        public BaseMaterial()
         {
         }
 
@@ -37,32 +39,41 @@ namespace Beatmap.Base.Customs
             }
         }
 
-        public override JSONNode ToJson()
-        {
-            var node = new JSONObject();
-            if (Color != null) node[KeyColor] = Color;
-            node[KeyShader] = Shader;
-            if (Track != null) node[KeyTrack] = Track;
-            if (ShaderKeywords.Count > 0)
-            {
-                var keywords = new JSONArray();
-                foreach (var keyword in ShaderKeywords)
-                {
-                    keywords.Add(keyword);
-                }
-                node[KeyShaderKeywords] = keywords;
-            }
-            return node;
-        }
-
         public Color? Color { get; set; }
         public string Shader { get; set; }
         public string? Track { get; set; }
         public List<string> ShaderKeywords { get; set; }
 
-        public abstract string KeyColor { get; }
-        public abstract string KeyShader { get; }
-        public abstract string KeyTrack { get; }
-        public abstract string KeyShaderKeywords { get; }
+        public string KeyColor => Settings.Instance.MapVersion switch
+        {
+            2 => V2Material.KeyColor,
+            3 => V3Material.KeyColor
+        };
+
+        public string KeyShader => Settings.Instance.MapVersion switch
+        {
+            2 => V2Material.KeyShader,
+            3 => V3Material.KeyShader
+        };
+
+        public string KeyTrack => Settings.Instance.MapVersion switch
+        {
+            2 => V2Material.KeyTrack,
+            3 => V3Material.KeyTrack
+        };
+
+        public string KeyShaderKeywords => Settings.Instance.MapVersion switch
+        {
+            2 => V2Material.KeyShaderKeywords,
+            3 => V3Material.KeyShaderKeywords
+        };
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            2 => V2Material.ToJson(this),
+            3 => V3Material.ToJson(this)
+        };
+
+        public override BaseItem Clone() => new BaseMaterial(this);
     }
 }
