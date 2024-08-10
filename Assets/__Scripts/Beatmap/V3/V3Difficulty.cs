@@ -344,7 +344,7 @@ namespace Beatmap.V3
                         foreach (JSONNode n in node) bpmList.Add(new V3BpmChange(n));
                         break;
                     case "bookmarks":
-                        foreach (JSONNode n in node) bookmarksList.Add(new V3Bookmark(n));
+                        foreach (JSONNode n in node) bookmarksList.Add(V3Bookmark.GetFromJson(n));
                         break;
                     case "customEvents":
                         foreach (JSONNode n in node) customEventsList.Add(new V3CustomEvent(n));

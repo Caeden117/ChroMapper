@@ -106,8 +106,8 @@ namespace Beatmap.Helper
             : new V2BpmChange(node);
 
         public static BaseBookmark Bookmark(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? new V3Bookmark(node)
-            : new V2Bookmark(node);
+            ? V3Bookmark.GetFromJson(node)
+            : V2Bookmark.GetFromJson(node);
 
         public static BaseCustomEvent CustomEvent(JSONNode node) => Settings.Instance.MapVersion == 3
             ? new V3CustomEvent(node)
@@ -123,11 +123,6 @@ namespace Beatmap.Helper
         public static BaseBpmChange BpmChange(float jsonTime, float bpm) => Settings.Instance.MapVersion == 3
             ? new V3BpmChange(jsonTime, bpm)
             : new V2BpmChange(jsonTime, bpm);
-
-        public static BaseBookmark Bookmark(float jsonTime, string name) => Settings.Instance.MapVersion == 3
-            ? new V3Bookmark(jsonTime, name)
-            : new V2Bookmark(jsonTime, name);
-
         public static BaseCustomEvent CustomEvent(float jsonTime, string type, JSONNode data) => Settings.Instance.MapVersion == 3
             ? new V3CustomEvent(jsonTime, type, data)
             : new V2CustomEvent(jsonTime, type, data);
@@ -138,9 +133,6 @@ namespace Beatmap.Helper
 
         public static BaseBpmChange BpmChange() =>
             Settings.Instance.MapVersion == 3 ? new V3BpmChange() : new V2BpmChange();
-
-        public static BaseBookmark Bookmark() =>
-            Settings.Instance.MapVersion == 3 ? new V3Bookmark() : new V2Bookmark();
 
         public static BaseCustomEvent CustomEvent() => Settings.Instance.MapVersion == 3
             ? new V3CustomEvent()

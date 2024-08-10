@@ -14,14 +14,6 @@ namespace Beatmap.Converters
 {
     public static class V3ToV2
     {
-        public static V2Bookmark Bookmark(BaseBookmark other) =>
-            other switch
-            {
-                V2Bookmark o => o,
-                V3Bookmark o => new V2Bookmark(o),
-                _ => throw new ArgumentException("Unexpected object to convert v3 bookmark to v2 bookmark")
-            };
-
         public static V2BpmChange BpmChange(BaseBpmChange other) =>
             other switch
             {

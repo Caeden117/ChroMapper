@@ -1,4 +1,6 @@
 using Beatmap.Enums;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
@@ -6,7 +8,7 @@ using Random = System.Random;
 
 namespace Beatmap.Base.Customs
 {
-    public abstract class BaseBookmark : BaseObject
+    public class BaseBookmark : BaseObject
     {
         public override void Serialize(NetDataWriter writer)
         {
@@ -30,8 +32,10 @@ namespace Beatmap.Base.Customs
         }
 
         private static readonly Random rand = new Random();
+        
+        private static Color NextRandomColor() => Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
 
-        protected BaseBookmark()
+        public BaseBookmark()
         {
         }
 
@@ -42,12 +46,19 @@ namespace Beatmap.Base.Customs
             Color = other.Color;
         }
 
-        protected BaseBookmark(JSONNode node) => InstantiateHelper(ref node);
+        public BaseBookmark(JSONNode node)
+        {
+            JsonTime = node.HasKey(KeyTime) ? node[KeyTime].AsFloat : 0f;
+            Name = node.HasKey(KeyName) ? node[KeyName].Value : "Missing Name";
+            Color = node.HasKey(KeyColor)
+                ? node[KeyColor].ReadColor()
+                : NextRandomColor();
+        }
 
-        protected BaseBookmark(float time, string name) : base(time)
+        public BaseBookmark(float time, string name) : base(time)
         {
             Name = name;
-            Color = Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
+            Color = NextRandomColor();
         }
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Bookmark;
@@ -55,22 +66,35 @@ namespace Beatmap.Base.Customs
         public string Name { get; set; } = "Invalid Bookmark";
         public Color Color { get; set; }
 
-        public abstract string KeyTime { get; }
-        public abstract string KeyName { get; }
-        public abstract string KeyColor { get; }
+        public string KeyTime => Settings.Instance.MapVersion switch
+        {
+            2 => V2Bookmark.KeyTime,
+            3 => V3Bookmark.KeyTime
+        };
+
+        public string KeyName => Settings.Instance.MapVersion switch
+        {
+            2 => V2Bookmark.KeyName,
+            3 => V3Bookmark.KeyName
+        };
+
+        public string KeyColor => Settings.Instance.MapVersion switch
+        {
+            2 => V2Bookmark.KeyColor,
+            3 => V3Bookmark.KeyColor
+        };
+
+        public override string CustomKeyTrack { get; } = "unusedTrack";
+        public override string CustomKeyColor { get; } = "unusedColor";
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => true;
 
-        public override JSONNode ToJson() =>
-            new JSONObject { [KeyTime] = JsonTime, [KeyName] = Name, [KeyColor] = Color };
-
-        private void InstantiateHelper(ref JSONNode node)
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
-            JsonTime = node.HasKey(KeyTime) ? node[KeyTime].AsFloat : 0f;
-            Name = node.HasKey(KeyName) ? node[KeyName].Value : "Missing Name";
-            Color = node.HasKey(KeyColor)
-                ? node[KeyColor].ReadColor()
-                : Color.HSVToRGB((float)rand.NextDouble(), 0.75f, 1);
-        }
+            2 => V2Bookmark.ToJson(this),
+            3 => V3Bookmark.ToJson(this)
+        };
+
+        public override BaseItem Clone() => new BaseBookmark(this);
     }
 }

@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Beatmap.Base;
+using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.V2;
 using Beatmap.V2.Customs;
@@ -28,7 +29,7 @@ public static class NetDataExtensions
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
                 ObjectType.Arc => reader.Get<BaseArc>(),
                 ObjectType.Chain => reader.Get<BaseChain>(),
-                ObjectType.Bookmark => reader.Get<V3Bookmark>(),
+                ObjectType.Bookmark => reader.Get<BaseBookmark>(),
                 _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
             };
 
@@ -46,7 +47,7 @@ public static class NetDataExtensions
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
                 ObjectType.Arc => reader.Get<BaseArc>(),
                 ObjectType.Chain => throw new InvalidPacketException("Attempting to parse chains in v2"),
-                ObjectType.Bookmark => reader.Get<V2Bookmark>(),
+                ObjectType.Bookmark => reader.Get<BaseBookmark>(),
                 _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
             };
         }

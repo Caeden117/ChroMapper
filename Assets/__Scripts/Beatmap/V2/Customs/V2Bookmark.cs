@@ -4,30 +4,16 @@ using SimpleJSON;
 
 namespace Beatmap.V2.Customs
 {
-    public class V2Bookmark : BaseBookmark, V2Object
+    public static class V2Bookmark
     {
-        public V2Bookmark()
+        public static string KeyTime = "_time";
+        public static string KeyName = "_name";
+        public static string KeyColor = "_color";
+
+        public static BaseBookmark GetFromJson(JSONNode node) => new BaseBookmark(node);
+        public static JSONNode ToJson(BaseBookmark bookmark) => new JSONObject
         {
-        }
-
-        public V2Bookmark(BaseBookmark other) : base(other)
-        {
-        }
-
-        public V2Bookmark(JSONNode node) : base(node)
-        {
-        }
-
-        public V2Bookmark(float time, string name) : base(time, name)
-        {
-        }
-
-        public override string CustomKeyTrack { get; } = "_track";
-        public override string CustomKeyColor { get; } = "_color";
-        public override string KeyTime { get; } = "_time";
-        public override string KeyName { get; } = "_name";
-        public override string KeyColor { get; } = "_color";
-
-        public override BaseItem Clone() => new V2Bookmark(ToJson());
+            [KeyTime] = bookmark.JsonTime, [KeyName] = bookmark.Name, [KeyColor] = bookmark.Color
+        };
     }
 }
