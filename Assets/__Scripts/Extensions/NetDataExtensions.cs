@@ -16,41 +16,23 @@ public static class NetDataExtensions
     public static BaseObject GetBeatmapObject(this NetDataReader reader)
     {
         var beatmapObjectType = (ObjectType)reader.GetByte();
-
-        if (Settings.Instance.MapVersion == 3)
+        
+        BaseObject obj = beatmapObjectType switch
         {
-            BaseObject obj = beatmapObjectType switch
-            {
-                ObjectType.Note => reader.Get<BaseNote>(),
-                ObjectType.Event => reader.Get<BaseEvent>(),
-                ObjectType.Obstacle => reader.Get<BaseObstacle>(),
-                ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
-                ObjectType.CustomEvent => reader.Get<BaseCustomEvent>(),
-                ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
-                ObjectType.Arc => reader.Get<BaseArc>(),
-                ObjectType.Chain => reader.Get<BaseChain>(),
-                ObjectType.Bookmark => reader.Get<BaseBookmark>(),
-                _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
-            };
+            ObjectType.Note => reader.Get<BaseNote>(),
+            ObjectType.Event => reader.Get<BaseEvent>(),
+            ObjectType.Obstacle => reader.Get<BaseObstacle>(),
+            ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
+            ObjectType.CustomEvent => reader.Get<BaseCustomEvent>(),
+            ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
+            ObjectType.Arc => reader.Get<BaseArc>(),
+            ObjectType.Chain => reader.Get<BaseChain>(),
+            ObjectType.Bookmark => reader.Get<BaseBookmark>(),
+            ObjectType.Waypoint => reader.Get<BaseWaypoint>(),
+            _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
+        };
 
-            return obj;
-        }
-        else
-        {
-            return beatmapObjectType switch
-            {
-                ObjectType.Note => reader.Get<BaseNote>(),
-                ObjectType.Event => reader.Get<BaseEvent>(),
-                ObjectType.Obstacle => reader.Get<BaseObstacle>(),
-                ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
-                ObjectType.CustomEvent => reader.Get<BaseCustomEvent>(),
-                ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
-                ObjectType.Arc => reader.Get<BaseArc>(),
-                ObjectType.Chain => throw new InvalidPacketException("Attempting to parse chains in v2"),
-                ObjectType.Bookmark => reader.Get<BaseBookmark>(),
-                _ => throw new InvalidPacketException("Attempting to parse an invalid object type"),
-            };
-        }
+        return obj;
     }
 
     public static void PutBeatmapObject(this NetDataWriter writer, BaseObject obj)
