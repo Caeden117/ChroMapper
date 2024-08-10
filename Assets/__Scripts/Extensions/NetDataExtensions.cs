@@ -25,7 +25,7 @@ public static class NetDataExtensions
                 ObjectType.Event => reader.Get<BaseEvent>(),
                 ObjectType.Obstacle => reader.Get<BaseObstacle>(),
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
-                ObjectType.CustomEvent => reader.Get<V3CustomEvent>(),
+                ObjectType.CustomEvent => reader.Get<BaseCustomEvent>(),
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
                 ObjectType.Arc => reader.Get<BaseArc>(),
                 ObjectType.Chain => reader.Get<BaseChain>(),
@@ -43,7 +43,7 @@ public static class NetDataExtensions
                 ObjectType.Event => reader.Get<BaseEvent>(),
                 ObjectType.Obstacle => reader.Get<BaseObstacle>(),
                 ObjectType.CustomNote => throw new System.NotImplementedException(), // Custom notes not supported
-                ObjectType.CustomEvent => reader.Get<V2CustomEvent>(),
+                ObjectType.CustomEvent => reader.Get<BaseCustomEvent>(),
                 ObjectType.BpmChange => reader.Get<BaseBpmEvent>(),
                 ObjectType.Arc => reader.Get<BaseArc>(),
                 ObjectType.Chain => throw new InvalidPacketException("Attempting to parse chains in v2"),

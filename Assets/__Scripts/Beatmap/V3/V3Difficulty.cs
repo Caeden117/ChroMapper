@@ -347,7 +347,7 @@ namespace Beatmap.V3
                         foreach (JSONNode n in node) bookmarksList.Add(V3Bookmark.GetFromJson(n));
                         break;
                     case "customEvents":
-                        foreach (JSONNode n in node) customEventsList.Add(new V3CustomEvent(n));
+                        foreach (JSONNode n in node) customEventsList.Add(V3CustomEvent.GetFromJson(n));
                         break;
                     case "fakeColorNotes":
                         foreach (JSONNode n in node) map.Notes.Add(V3ColorNote.GetFromJson(n, true));

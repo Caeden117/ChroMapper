@@ -58,7 +58,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -68,7 +68,7 @@ namespace TestsEditMode
                         ["dissolve"] = 0,
                     }
                 },
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AssignPathAnimation",
                     Data = new JSONObject
@@ -91,7 +91,7 @@ namespace TestsEditMode
         {
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = trackType,
                     Data = new JSONObject
@@ -113,7 +113,7 @@ namespace TestsEditMode
         {
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = trackType,
                     Data = new JSONObject
@@ -134,7 +134,7 @@ namespace TestsEditMode
         {
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AssignTrackParent",
                     Data = new JSONObject
@@ -170,7 +170,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -201,7 +201,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -232,7 +232,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -263,7 +263,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject

@@ -16,14 +16,6 @@ namespace Beatmap.Converters
 {
     public static class V2ToV3
     {
-        public static V3CustomEvent CustomEvent(BaseCustomEvent other) =>
-            other switch
-            {
-                V3CustomEvent o => o,
-                V2CustomEvent o => new V3CustomEvent(o),
-                _ => throw new ArgumentException("Unexpected object to convert v2 custom event to v3 custom event")
-            };
-
         public static V3EnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
             other switch
             {

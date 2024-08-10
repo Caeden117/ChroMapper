@@ -226,7 +226,7 @@ namespace Beatmap.V2
                                     foreach (JSONNode n in cNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
                                     break;
                                 case "_customEvents":
-                                    foreach (JSONNode n in cNode) customEventsList.Add(new V2CustomEvent(n));
+                                    foreach (JSONNode n in cNode) customEventsList.Add(V2CustomEvent.GetFromJson(n));
                                     break;
                                 case "_pointDefinitions":
                                     foreach (JSONNode n in cNode)
@@ -273,7 +273,7 @@ namespace Beatmap.V2
                         foreach (JSONNode n in mNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
                         break;
                     case "_customEvents":
-                        foreach (JSONNode n in mNode) customEventsList.Add(new V2CustomEvent(n));
+                        foreach (JSONNode n in mNode) customEventsList.Add(V2CustomEvent.GetFromJson(n));
                         break;
                 }
             }

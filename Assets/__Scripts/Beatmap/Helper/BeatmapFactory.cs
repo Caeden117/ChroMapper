@@ -110,8 +110,8 @@ namespace Beatmap.Helper
             : V2Bookmark.GetFromJson(node);
 
         public static BaseCustomEvent CustomEvent(JSONNode node) => Settings.Instance.MapVersion == 3
-            ? new V3CustomEvent(node)
-            : new V2CustomEvent(node);
+            ? V3CustomEvent.GetFromJson(node)
+            : V2CustomEvent.GetFromJson(node);
 
         public static BaseEnvironmentEnhancement EnvironmentEnhancement(JSONNode node) => Settings.Instance.MapVersion == 3
             ? new V3EnvironmentEnhancement(node)
@@ -120,17 +120,11 @@ namespace Beatmap.Helper
         // instantiate from good ol parameter
 
         // public static BaseEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Settings.Instance.MapVersion == 3 ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(keywords) : new V2SpecialEventsKeywordFilters(keywords);
-        public static BaseCustomEvent CustomEvent(float jsonTime, string type, JSONNode data) => Settings.Instance.MapVersion == 3
-            ? new V3CustomEvent(jsonTime, type, data)
-            : new V2CustomEvent(jsonTime, type, data);
 
         // instantiate from empty
 
         
 
-        public static BaseCustomEvent CustomEvent() => Settings.Instance.MapVersion == 3
-            ? new V3CustomEvent()
-            : new V2CustomEvent();
 
         public static BaseEnvironmentEnhancement EnvironmentEnhancement() => Settings.Instance.MapVersion == 3
             ? new V3EnvironmentEnhancement()
