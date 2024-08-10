@@ -6,10 +6,10 @@ namespace Beatmap.V3.Customs
 {
     public class V3Material
     {
-        public static string KeyColor = "color";
-        public static string KeyShader = "shader";
-        public static string KeyTrack = "track";
-        public static string KeyShaderKeywords = "shaderKeywords";
+        public const string KeyColor = "color";
+        public const string KeyShader = "shader";
+        public const string KeyTrack = "track";
+        public const string KeyShaderKeywords = "shaderKeywords";
         
         public static BaseMaterial GetFromJson(JSONNode node) => new BaseMaterial(node);
 

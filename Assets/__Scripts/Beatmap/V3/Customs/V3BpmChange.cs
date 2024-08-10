@@ -8,10 +8,10 @@ namespace Beatmap.V3.Customs
 {
     public class V3BpmChange
     {
-        public static string KeyTime = "b";
-        public static string KeyBeatsPerBar = "p";
-        public static string KeyBpm = "m";
-        public static string KeyMetronomeOffset = "o";
+        public const string KeyTime = "b";
+        public const string KeyBeatsPerBar = "p";
+        public const string KeyBpm = "m";
+        public const string KeyMetronomeOffset = "o";
 
         public static BaseBpmChange GetFromJson(JSONNode node) => new BaseBpmChange(node);
 

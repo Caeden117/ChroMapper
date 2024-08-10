@@ -6,37 +6,37 @@ namespace Beatmap.V3.Customs
 {
     public static class V3EnvironmentEnhancement
     {
-        public static string KeyID = "id";
+        public const string KeyID = "id";
 
-        public static string KeyLookupMethod = "lookupMethod";
+        public const string KeyLookupMethod = "lookupMethod";
 
-        public static string KeyGeometry = "geometry";
+        public const string KeyGeometry = "geometry";
 
-        public static string KeyTrack = "track";
+        public const string KeyTrack = "track";
 
-        public static string KeyDuplicate = "duplicate";
+        public const string KeyDuplicate = "duplicate";
 
-        public static string KeyActive = "active";
+        public const string KeyActive = "active";
 
-        public static string KeyScale = "scale";
+        public const string KeyScale = "scale";
 
-        public static string KeyPosition = "position";
+        public const string KeyPosition = "position";
 
-        public static string KeyRotation = "rotation";
+        public const string KeyRotation = "rotation";
 
-        public static string KeyLocalPosition = "localPosition";
+        public const string KeyLocalPosition = "localPosition";
 
-        public static string KeyLocalRotation = "localRotation";
+        public const string KeyLocalRotation = "localRotation";
 
-        public static string KeyComponents = "components";
+        public const string KeyComponents = "components";
 
-        public static string KeyLightID = "lightID";
+        public const string KeyLightID = "lightID";
 
-        public static string KeyLightType = "type";
+        public const string KeyLightType = "type";
 
-        public static string GeometryKeyType = "type";
+        public const string GeometryKeyType = "type";
 
-        public static string GeometryKeyMaterial = "material";
+        public const string GeometryKeyMaterial = "material";
 
         public static BaseEnvironmentEnhancement GetFromJson(JSONNode node) => new BaseEnvironmentEnhancement(node);
 

@@ -6,37 +6,37 @@ namespace Beatmap.V2.Customs
 {
     public static class V2EnvironmentEnhancement
     {
-        public static string KeyID = "_id";
+        public const string KeyID = "_id";
 
-        public static string KeyLookupMethod = "_lookupMethod";
+        public const string KeyLookupMethod = "_lookupMethod";
 
-        public static string KeyGeometry = "_geometry";
+        public const string KeyGeometry = "_geometry";
 
-        public static string KeyTrack = "_track";
+        public const string KeyTrack = "_track";
 
-        public static string KeyDuplicate = "_duplicate";
+        public const string KeyDuplicate = "_duplicate";
 
-        public static string KeyActive = "_active";
+        public const string KeyActive = "_active";
 
-        public static string KeyScale = "_scale";
+        public const string KeyScale = "_scale";
 
-        public static string KeyPosition = "_position";
+        public const string KeyPosition = "_position";
 
-        public static string KeyRotation = "_rotation";
+        public const string KeyRotation = "_rotation";
 
-        public static string KeyLocalPosition = "_localPosition";
+        public const string KeyLocalPosition = "_localPosition";
 
-        public static string KeyLocalRotation = "_localRotation";
+        public const string KeyLocalRotation = "_localRotation";
 
-        public static string KeyComponents = "_components";
+        public const string KeyComponents = "_components";
 
-        public static string KeyLightID = "_lightID";
+        public const string KeyLightID = "_lightID";
 
-        public static string KeyLightType = "_type";
+        public const string KeyLightType = "_type";
 
-        public static string GeometryKeyType = "_type";
+        public const string GeometryKeyType = "_type";
 
-        public static string GeometryKeyMaterial = "_material";
+        public const string GeometryKeyMaterial = "_material";
 
         public static BaseEnvironmentEnhancement GetFromJson(JSONNode node) => new BaseEnvironmentEnhancement(node);
 

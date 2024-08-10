@@ -8,10 +8,10 @@ namespace Beatmap.V2.Customs
 {
     public class V2BpmChange
     {
-        public static string KeyTime = "_time";
-        public static string KeyBeatsPerBar = "_beatsPerBar";
-        public static string KeyBpm = "_BPM";
-        public static string KeyMetronomeOffset = "_metronomeOffset";
+        public const string KeyTime = "_time";
+        public const string KeyBeatsPerBar = "_beatsPerBar";
+        public const string KeyBpm = "_BPM";
+        public const string KeyMetronomeOffset = "_metronomeOffset";
 
         public static BaseBpmChange GetFromJson(JSONNode node) => new BaseBpmChange(node);
 

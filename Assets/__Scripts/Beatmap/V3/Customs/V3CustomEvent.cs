@@ -6,17 +6,17 @@ namespace Beatmap.V3.Customs
 {
     public class V3CustomEvent
     {
-        public static string CustomKeyTrack = "track";
-        public static string CustomKeyColor = "color";
-        public static string KeyTime = "b";
-        public static string KeyType = "t";
-        public static string KeyData = "d";
-        public static string DataKeyDuration = "duration";
-        public static string DataKeyEasing = "easing";
-        public static string DataKeyRepeat = "repeat";
-        public static string DataKeyChildrenTracks = "childrenTracks";
-        public static string DataKeyParentTrack = "parentTrack";
-        public static string DataKeyWorldPositionStays = "worldPositionStays";
+        public const string CustomKeyTrack = "track";
+        public const string CustomKeyColor = "color";
+        public const string KeyTime = "b";
+        public const string KeyType = "t";
+        public const string KeyData = "d";
+        public const string DataKeyDuration = "duration";
+        public const string DataKeyEasing = "easing";
+        public const string DataKeyRepeat = "repeat";
+        public const string DataKeyChildrenTracks = "childrenTracks";
+        public const string DataKeyParentTrack = "parentTrack";
+        public const string DataKeyWorldPositionStays = "worldPositionStays";
         
         public static BaseCustomEvent GetFromJson(JSONNode node) => new BaseCustomEvent(node);
 
