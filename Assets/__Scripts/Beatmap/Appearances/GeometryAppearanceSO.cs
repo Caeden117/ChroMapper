@@ -18,7 +18,9 @@ namespace Beatmap.Appearances
         [SerializeField] private Material obstacleMaterial;
         [SerializeField] private Material regularMaterial;
 
-        private static BaseMaterial standard = new BaseMaterial(new JSONObject { ["shader"] = "Standard" });
+        private static BaseMaterial standard;
+
+        public void OnEnable() => standard = new BaseMaterial{ Shader = "Standard" };
 
         public void SetGeometryAppearance(GeometryContainer container)
         {
