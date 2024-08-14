@@ -391,6 +391,8 @@ public class MirrorSelection : MonoBehaviour
                     : (int)NoteType.Red;
             }
 
+            edited.SaveCustom();
+
             allActions.Add(new BeatmapObjectModifiedAction(edited, original, original, "e", true));
         }
 
