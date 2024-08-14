@@ -159,6 +159,8 @@ namespace Tests
         [Test]
         public void MirrorEventGradient()
         {
+            Settings.Instance.MapVersion = 2;
+            
             var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         
             var root = eventsContainer.transform.root;

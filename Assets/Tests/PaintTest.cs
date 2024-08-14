@@ -26,6 +26,12 @@ namespace Tests
             TestUtils.ReturnSettings();
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            Settings.Instance.MapVersion = 3;
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
@@ -36,6 +42,8 @@ namespace Tests
         [Test]
         public void PaintGradientUndo()
         {
+            Settings.Instance.MapVersion = 2;
+
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             var colorPicker = Object.FindObjectOfType<ColorPicker>();
             var painter = Object.FindObjectOfType<PaintSelectedObjects>();
@@ -47,7 +55,7 @@ namespace Tests
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
             var customData = new JSONObject();
-            customData["lightGradient"] = new ChromaLightGradient(Color.blue, Color.cyan).ToJson();
+            customData["_lightGradient"] = new ChromaLightGradient(Color.blue, Color.cyan).ToJson();
             BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = 1, Value = 1, FloatValue = 1, CustomData = customData };
             baseEventA.RefreshCustom();
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
