@@ -27,13 +27,14 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
         {
             if (res != 0) return;
 
-            // what the fuck how does this converter even work?
             if (Settings.Instance.MapVersion == 3)
             {
+                BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 3, toVersion: 2);
                 Settings.Instance.MapVersion = 2;
             }
             else
             {
+                BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 2, toVersion: 3);
                 Settings.Instance.MapVersion = 3;
             }
         }, PersistentUI.DialogBoxPresetType.YesNoCancel);

@@ -14,14 +14,6 @@ namespace Beatmap.Converters
 {
     public static class V3ToV2
     {
-        public static BaseEnvironmentEnhancement EnvironmentEnhancement(BaseEnvironmentEnhancement other) =>
-            new BaseEnvironmentEnhancement(other)
-            {
-                Position = RescaleVector3(other.Position),
-                LocalPosition = RescaleVector3(other.LocalPosition),
-                Geometry = Geometry(other.Geometry?.AsObject)
-            };
-
         public static JSONObject Geometry(JSONObject other)
         {
             if (other == null) return null;

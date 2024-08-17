@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Beatmap.Base.Customs;
+using Beatmap.Converters;
 using Beatmap.Helper;
 using Beatmap.V2;
 using Beatmap.V3;
@@ -202,6 +203,43 @@ namespace Beatmap.Base
             BpmChanges.Clear();
         }
 
+        public void ConvertCustomDataVersion(int fromVersion, int toVersion)
+        {
+            if (fromVersion == 2 && toVersion == 3)
+            {
+                foreach (var note in Notes) note.CustomData = V2ToV3.CustomDataObject(note.SaveCustom());
+                foreach (var obstacle in Obstacles) obstacle.CustomData = V2ToV3.CustomDataObject(obstacle.SaveCustom());
+                foreach (var arc in Arcs) arc.CustomData = V2ToV3.CustomDataObject(arc.SaveCustom());
+                foreach (var chain in Chains) chain.CustomData = V2ToV3.CustomDataObject(chain.SaveCustom());
+                
+                foreach (var evt in Events) evt.CustomData = V2ToV3.CustomDataEvent(evt.SaveCustom());
+
+                foreach (var env in EnvironmentEnhancements)
+                {
+                    env.Position = V2ToV3.RescaleVector3(env.Position);
+                    env.LocalPosition = V2ToV3.RescaleVector3(env.LocalPosition);
+                    env.Geometry = V2ToV3.Geometry(env.Geometry?.AsObject);
+                }
+            }
+
+            if (fromVersion == 3 && toVersion == 2)
+            {
+                foreach (var note in Notes) note.CustomData = V3ToV2.CustomDataObject(note.SaveCustom());
+                foreach (var obstacle in Obstacles) obstacle.CustomData = V3ToV2.CustomDataObject(obstacle.SaveCustom());
+                foreach (var arc in Arcs) arc.CustomData = V3ToV2.CustomDataObject(arc.SaveCustom());
+                foreach (var chain in Chains) chain.CustomData = V3ToV2.CustomDataObject(chain.SaveCustom());
+                
+                foreach (var evt in Events) evt.CustomData = V3ToV2.CustomDataEvent(evt.SaveCustom());
+
+                foreach (var env in EnvironmentEnhancements)
+                {
+                    env.Position = V3ToV2.RescaleVector3(env.Position);
+                    env.LocalPosition = V3ToV2.RescaleVector3(env.LocalPosition);
+                    env.Geometry = V3ToV2.Geometry(env.Geometry?.AsObject);
+                }
+            }
+        }
+        
         // TODO: Bullet - I don't think this is needed anymore. Can remove code completely if no issues come up.
         // Cleans an array by filtering out null elements, or objects with invalid time.
         // Could definitely be optimized a little bit, but since saving is done on a separate thread, I'm not too worried about it.
