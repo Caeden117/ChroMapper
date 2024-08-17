@@ -37,9 +37,12 @@ public class ChromaReq : HeckRequirementCheck
 
     private bool HasChromaTracks(BaseDifficulty map)
     {
-        var chromaAnimationKeys = map is V3Difficulty
-            ? v3ChromaAnimationKeys
-            : v2ChromaAnimationKeys;
+        var chromaAnimationKeys = Settings.Instance.MapVersion switch
+        {
+            3 => v3ChromaAnimationKeys,
+            2 => v2ChromaAnimationKeys,
+            _ => new List<string>(),
+        };
         return HasAnimationsFromMod(map, chromaSpecificTrackTypes, chromaAnimationKeys);
     }
 }
