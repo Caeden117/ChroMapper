@@ -15,8 +15,9 @@ namespace Beatmap.Base
         {
         }
 
-        public override string CustomKeyColor { get; }
-        public override string CustomKeyTrack { get; }
+        public override string CustomKeyColor { get; } = "unusedKeyColor";
+
+        public override string CustomKeyTrack { get; } = "unusedKeyTrack";
 
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {

@@ -51,7 +51,7 @@ namespace TestsEditMode
 
             Assert.AreEqual(0, rotationEvent.JsonTime);
             Assert.AreEqual(14, rotationEvent.Type); // Is not 0
-            Assert.AreEqual(0, rotationEvent.Value);
+            Assert.AreEqual(4, rotationEvent.Value);
             Assert.AreEqual(0, rotationEvent.FloatValue);
         }
 
@@ -89,7 +89,7 @@ namespace TestsEditMode
         public void V3ObstacleTest()
         {
             var json = new JSONObject();
-            var obstacle = new BaseObstacle(json);
+            var obstacle = V3Obstacle.GetFromJson(json);
 
             Assert.AreEqual(0, obstacle.JsonTime);
             Assert.AreEqual(0, obstacle.PosX);

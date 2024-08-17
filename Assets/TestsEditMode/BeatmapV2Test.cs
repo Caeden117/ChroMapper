@@ -31,11 +31,17 @@ namespace TestsEditMode
     ],
     ""_obstacles"": [
         {
-            ""_type"": 2,
+            ""_type"": 1,
             ""_time"": 10,
             ""_duration"": 5,
             ""_lineIndex"": 1,
-            ""_lineLayer"": 0,
+            ""_width"": 1
+        },
+        {
+            ""_type"": 0,
+            ""_time"": 10,
+            ""_duration"": 5,
+            ""_lineIndex"": 2,
             ""_width"": 1
         }
     ],
@@ -163,8 +169,9 @@ namespace TestsEditMode
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[1], 10, 1, 0, 3, 0, 0);
             
-            Assert.AreEqual(1, difficulty.Obstacles.Count);
-            BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[0], 10, 1, 0, 2, 1, 5, 5);
+            Assert.AreEqual(2, difficulty.Obstacles.Count);
+            BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[0], 10, 1, 2, 1, 1, 3, 5);
+            BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[1], 10, 2, 0, 0, 1, 5, 5);
             
             Assert.AreEqual(0, difficulty.Arcs.Count); // We do not load arcs from v2
             

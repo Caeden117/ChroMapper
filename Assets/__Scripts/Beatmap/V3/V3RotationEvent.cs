@@ -14,8 +14,8 @@ namespace Beatmap.V3
             var evt = new BaseEvent();
             
             evt.JsonTime = node["b"].AsFloat;
-            evt.FloatValue = node["r"].AsFloat;
             evt.Type = (int)(node["e"].AsInt == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
+            evt.FloatValue = node["r"].AsFloat;
             evt.CustomData = node["customData"];
             evt.RefreshCustom();
 

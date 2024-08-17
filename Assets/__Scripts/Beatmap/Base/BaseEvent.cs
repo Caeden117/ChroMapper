@@ -49,8 +49,57 @@ namespace Beatmap.Base
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
         public virtual int Type { get; set; }
-        public int Value { get; set; }
-        public float FloatValue { get; set; } = 1f;
+
+        private int value;
+        public int Value
+        {
+            get => value;
+            set
+            {
+                if (IsLaneRotationEvent())
+                {
+                    if (0 <= value && value < LightValueToRotationDegrees.Length)
+                    {
+                        floatValue = LightValueToRotationDegrees[value];
+                    }
+                    else
+                    {
+                        floatValue = value;
+                    }
+                }
+                this.value = value;
+            } 
+        }
+
+        private float floatValue = 1f;
+
+        public float FloatValue
+        {
+            get => floatValue;
+            set
+            {
+                if (IsLaneRotationEvent())
+                {
+                    if (value < (LightValueToRotationDegrees[0] + LightValueToRotationDegrees[1]) / 2f)
+                        this.value = 0;
+                    else if (value < (LightValueToRotationDegrees[1] + LightValueToRotationDegrees[2]) / 2f)
+                        this.value = 1;
+                    else if (value < (LightValueToRotationDegrees[2] + LightValueToRotationDegrees[3]) / 2f)
+                        this.value = 2;
+                    else if (value < (LightValueToRotationDegrees[3] + LightValueToRotationDegrees[4]) / 2f)
+                        this.value = 3;
+                    else if (value < (LightValueToRotationDegrees[4] + LightValueToRotationDegrees[5]) / 2f)
+                        this.value = 4;
+                    else if (value < (LightValueToRotationDegrees[5] + LightValueToRotationDegrees[6]) / 2f)
+                        this.value = 5;
+                    else if (value < (LightValueToRotationDegrees[6] + LightValueToRotationDegrees[7]) / 2f)
+                        this.value = 6;
+                    else 
+                        this.value = 7;
+                }
+                floatValue = value;
+            }
+        }
 
         public BaseEvent Prev { get; set; }
         public BaseEvent Next { get; set; }

@@ -28,9 +28,10 @@ namespace Beatmap.Base
         public int Loop { get; set; }
         public int UsePrevious { get; set; }
 
-        public override string CustomKeyColor { get; }
+        public override string CustomKeyColor { get; } = "unusedColor";
 
-        public override string CustomKeyTrack { get; }
+        public override string CustomKeyTrack { get; } = "unusedKeyTrack";
+
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {

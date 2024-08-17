@@ -30,9 +30,9 @@ namespace Beatmap.Base
         public float StrobeBrightness { get; set; }
         public int StrobeFade { get; set; }
 
-        public override string CustomKeyColor { get; }
+        public override string CustomKeyColor { get; } = "unusedColor";
 
-        public override string CustomKeyTrack { get; }
+        public override string CustomKeyTrack { get; } = "unusedKeyTrack";
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {

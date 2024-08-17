@@ -42,8 +42,7 @@ namespace TestsEditMode
             Assert.AreEqual(floatValue, bpmEvent.FloatValue, epsilon);
         }
         
-        public static void EventPropertiesAreEqual(BaseEvent evt, float jsonTime, int type, int value, float floatValue,
-            float? rotation = null)
+        public static void EventPropertiesAreEqual(BaseEvent evt, float jsonTime, int type, int value, float floatValue)
         {
             Assert.AreEqual(jsonTime, evt.JsonTime, epsilon);
             Assert.AreEqual(type, evt.Type);

@@ -53,6 +53,14 @@ namespace TestsEditMode
             ""b"": 10,
             ""d"": 5,
             ""x"": 1,
+            ""y"": 2,
+            ""w"": 1,
+            ""h"": 3
+        },
+        {
+            ""b"": 10,
+            ""d"": 5,
+            ""x"": 2,
             ""y"": 0,
             ""w"": 1,
             ""h"": 5
@@ -335,8 +343,9 @@ namespace TestsEditMode
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[1], 10, 1, 0, 3, 0, 0);
             
-            Assert.AreEqual(1, difficulty.Obstacles.Count);
-            BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[0], 10, 1, 0, 0, 1, 5, 5);
+            Assert.AreEqual(2, difficulty.Obstacles.Count);
+            BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[0], 10, 1, 2, 1, 1, 3, 5);
+            BeatmapAssert.ObstaclePropertiesAreEqual(difficulty.Obstacles[1], 10, 2, 0, 0, 1, 5, 5);
             
             if (slidersExist)
             {
@@ -358,8 +367,8 @@ namespace TestsEditMode
             Assert.AreEqual(4, difficulty.Events.Count);
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 1, 3, 1);
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 10, 5, 1, 0);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, 0, 15);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, 0, 15);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, 15);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, 15);
         }
     }
 }
