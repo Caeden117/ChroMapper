@@ -46,14 +46,12 @@ namespace Tests
                     {
                         ["color"] = new Color(0, 1, 0)
                     } };
-                baseEventA.RefreshCustom();
 
                 BaseEvent baseEventB = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
                     CustomData = new JSONObject
                     {
                         ["color"] = new Color(0, 0, 1)
                     } };
-                baseEventB.RefreshCustom();
 
                 BaseEvent baseEventC = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
                     CustomData = new JSONObject
@@ -61,7 +59,6 @@ namespace Tests
                         ["lightID"] = 1,
                         ["color"] = new Color(1, 0, 0)
                     } };
-                baseEventC.RefreshCustom();
 
                 foreach (var evt in new[] { baseEventA, baseEventB, baseEventC })
                     PlaceUtils.PlaceEvent(eventPlacement, evt);
@@ -98,14 +95,12 @@ namespace Tests
                     {
                         ["color"] = new Color(0, 1, 0)
                     } };
-                baseEventA.RefreshCustom();
 
                 BaseEvent baseEventB = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
                     CustomData = new JSONObject
                     {
                         ["color"] = new Color(0, 0, 1)
                     } };
-                baseEventB.RefreshCustom();
 
                 BaseEvent baseEventC = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
                     CustomData = new JSONObject
@@ -113,7 +108,6 @@ namespace Tests
                         ["lightID"] = 1,
                         ["color"] = new Color(1, 0, 0)
                     } };
-                baseEventC.RefreshCustom();
 
                 BaseEvent baseEventD = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
                     CustomData = new JSONObject
@@ -121,7 +115,6 @@ namespace Tests
                         ["lightID"] = 1,
                         ["color"] = new Color(1, 1, 0)
                     } };
-                baseEventD.RefreshCustom();
 
                 BaseEvent baseEventE = new BaseEvent { JsonTime = 4, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
                     CustomData = new JSONObject
@@ -133,7 +126,6 @@ namespace Tests
                         },
                         ["color"] = new Color(1, 0, 1)
                     } };
-                baseEventE.RefreshCustom();
 
                 BaseEvent baseEventF = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.RingLights, Value = (int)LightValue.RedOn, FloatValue = 1f,
                     CustomData = new JSONObject
@@ -141,7 +133,6 @@ namespace Tests
                         ["lightID"] = 3,
                         ["color"] = new Color(0, 1, 1)
                     } };
-                baseEventF.RefreshCustom();
 
                 foreach (var evt in new[] { baseEventA, baseEventB, baseEventC, baseEventD, baseEventE, baseEventF })
                     PlaceUtils.PlaceEvent(eventPlacement, evt);

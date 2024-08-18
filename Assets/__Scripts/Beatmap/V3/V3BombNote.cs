@@ -17,7 +17,6 @@ namespace Beatmap.V3
             note.PosY = node["y"].AsInt;
             note.Type = (int)NoteType.Bomb;
             note.CustomData = node["customData"];
-            note.RefreshCustom();
 
             note.CustomFake = customFake;
             return note;

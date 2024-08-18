@@ -55,7 +55,6 @@ namespace Beatmap.V2
             evt.Value = BaseItem.GetRequiredNode(node, "_value").AsInt;
             evt.FloatValue = node.HasKey("_floatValue") ? node["_floatValue"].AsFloat : 1f;
             evt.CustomData = node["_customData"];
-            evt.RefreshCustom();
 
             return evt;
         }

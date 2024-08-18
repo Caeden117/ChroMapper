@@ -39,7 +39,6 @@ namespace Beatmap.V3
             obstacle.Height = node["h"].AsInt;
 
             obstacle.CustomData = node["customData"];
-            obstacle.RefreshCustom();
             
             obstacle.CustomFake = customFake;
 

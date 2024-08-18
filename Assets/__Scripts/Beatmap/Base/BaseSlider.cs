@@ -178,26 +178,24 @@ namespace Beatmap.Base
 
         protected JSONNode SaveCustomFromNotes(BaseNote head, BaseNote tail)
         {
-            CustomData = head.SaveCustom().Clone();
+            var customData = head.SaveCustom();
             tail.SaveCustom();
             if (tail.CustomData?.HasKey(CustomKeyCoordinate) ?? false)
             {
                 CustomTailCoordinate = tail.CustomData[CustomKeyCoordinate];
-                CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate;
-            }
-            else
-            {
-                CustomData.Remove(CustomKeyTailCoordinate);
+                customData[CustomKeyTailCoordinate] = CustomTailCoordinate;
             }
 
-            return CustomData;
+            return customData;
         }
 
         protected internal override JSONNode SaveCustom()
         {
-            CustomData = base.SaveCustom();
-            if (CustomTailCoordinate != null) CustomData[CustomKeyTailCoordinate] = CustomTailCoordinate; else CustomData.Remove(CustomKeyTailCoordinate);
-            return CustomData;
+            var node = base.SaveCustom();
+            if (CustomTailCoordinate != null) node[CustomKeyTailCoordinate] = CustomTailCoordinate; else node.Remove(CustomKeyTailCoordinate);
+            
+            SetCustomData(node);
+            return node;
         }
         
         public override int CompareTo(BaseObject other)

@@ -38,7 +38,6 @@ namespace Beatmap.Base.Customs
             JsonTime = RetrieveRequiredNode(node, KeyTime).AsFloat;
             Type = RetrieveRequiredNode(node, KeyType).Value;
             Data = RetrieveRequiredNode(node, KeyData);
-            ParseCustom();
         }
 
         protected BaseCustomEvent(float time, string type, JSONNode node = null) : base(time)
@@ -50,7 +49,19 @@ namespace Beatmap.Base.Customs
         public override ObjectType ObjectType { get; set; } = ObjectType.CustomEvent;
 
         public string Type { get; set; }
-        public JSONNode Data { get; set; }
+
+        private JSONNode data;
+
+        public JSONNode Data
+        {
+            get => data;
+            set
+            {
+                data = value;
+                ParseCustom();
+            }
+        }
+
         public float? DataDuration { get; set; }
         public string? DataEasing { get; set; }
         public int? DataRepeat { get; set; }

@@ -256,8 +256,6 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             UpdateQueuedValue(queuedValue);
         else if (evt.IsLaneRotationEvent()) evt.Value = 1360 + PrecisionRotationValue;
 
-        if (evt.CustomData?.Count <= 0) evt.CustomData = null;
-
         base.ApplyToMap();
         
         if (evt.IsLaneRotationEvent()) TracksManager.RefreshTracks();

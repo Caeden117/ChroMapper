@@ -111,14 +111,12 @@ namespace Tests
                     JsonTime = 2f, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
                     CutDirection = (int)NoteCutDirection.Down, CustomData = headCustomData
                 };
-                baseNoteA.RefreshCustom();
 
                 BaseNote baseNoteB = new BaseNote
                 {
                     JsonTime = 3f, PosX = (int)GridX.Left, PosY = (int)GridY.Upper, Type = (int)NoteType.Red,
                     CutDirection = (int)NoteCutDirection.Up, CustomData = tailCustomData
                 };
-                baseNoteB.RefreshCustom();
 
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
                 PlaceUtils.PlaceNote(notePlacement, baseNoteB);

@@ -306,16 +306,18 @@ namespace Beatmap.Base
 
         protected internal override JSONNode SaveCustom()
         {
-            CustomData = base.SaveCustom();
+            var node = base.SaveCustom();
             if (CustomSize != null)
             {
-                CustomData[CustomKeySize] = CustomSize;
+                node[CustomKeySize] = CustomSize;
             }
             else
             {
-                CustomData.Remove(CustomKeySize);
+                node.Remove(CustomKeySize);
             }
-            return CustomData;
+            
+            SetCustomData(node);
+            return node;
         }
         
         public override int CompareTo(BaseObject other)

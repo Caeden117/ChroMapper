@@ -481,35 +481,37 @@ namespace Beatmap.Base
 
         protected internal override JSONNode SaveCustom()
         {
-            CustomData = base.SaveCustom();
+            var node = base.SaveCustom();
             if (CustomLightID != null)
             {
-                CustomData[CustomKeyLightID] = new JSONArray();
-                foreach (var i in CustomLightID) CustomData[CustomKeyLightID].Add(i);
+                node[CustomKeyLightID] = new JSONArray();
+                foreach (var i in CustomLightID) node[CustomKeyLightID].Add(i);
             }
             else
             {
-                CustomData.Remove(CustomKeyLightID);
+                node.Remove(CustomKeyLightID);
             }
 
             if (CustomLightGradient != null)
             {
-                CustomData[CustomKeyLightGradient] = CustomLightGradient.ToJson();
+                node[CustomKeyLightGradient] = CustomLightGradient.ToJson();
             }
             else
             {
-                CustomData.Remove(CustomKeyLightGradient);
+                node.Remove(CustomKeyLightGradient);
             }
 
-            if (CustomLerpType != null) CustomData[CustomKeyLerpType] = CustomLerpType; else CustomData.Remove(CustomKeyLerpType);
-            if (CustomEasing != null) CustomData[CustomKeyEasing] = CustomEasing; else CustomData.Remove(CustomKeyEasing);
-            if (CustomStep != null) CustomData[CustomKeyStep] = CustomStep; else CustomData.Remove(CustomKeyStep);
-            if (CustomProp != null) CustomData[CustomKeyProp] = CustomProp; else CustomData.Remove(CustomKeyProp);
-            if (CustomSpeed != null) CustomData[CustomKeySpeed] = CustomSpeed; else CustomData.Remove(CustomKeySpeed);
-            if (CustomRingRotation != null) CustomData[CustomKeyRingRotation] = CustomRingRotation; else CustomData.Remove(CustomKeyRingRotation);
-            if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection; else CustomData.Remove(CustomKeyDirection);
-            if (CustomLockRotation != null) CustomData[CustomKeyLockRotation] = CustomLockRotation; else CustomData.Remove(CustomKeyLockRotation);
-            return CustomData;
+            if (CustomLerpType != null) node[CustomKeyLerpType] = CustomLerpType; else node.Remove(CustomKeyLerpType);
+            if (CustomEasing != null) node[CustomKeyEasing] = CustomEasing; else node.Remove(CustomKeyEasing);
+            if (CustomStep != null) node[CustomKeyStep] = CustomStep; else node.Remove(CustomKeyStep);
+            if (CustomProp != null) node[CustomKeyProp] = CustomProp; else node.Remove(CustomKeyProp);
+            if (CustomSpeed != null) node[CustomKeySpeed] = CustomSpeed; else node.Remove(CustomKeySpeed);
+            if (CustomRingRotation != null) node[CustomKeyRingRotation] = CustomRingRotation; else node.Remove(CustomKeyRingRotation);
+            if (CustomDirection != null) node[CustomKeyDirection] = CustomDirection; else node.Remove(CustomKeyDirection);
+            if (CustomLockRotation != null) node[CustomKeyLockRotation] = CustomLockRotation; else node.Remove(CustomKeyLockRotation);
+            
+            SetCustomData(node);
+            return node;
         }
         
         public override int CompareTo(BaseObject other)

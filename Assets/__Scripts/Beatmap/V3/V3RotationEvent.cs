@@ -17,7 +17,6 @@ namespace Beatmap.V3
             evt.Type = (int)(node["e"].AsInt == 0 ? EventTypeValue.EarlyLaneRotation : EventTypeValue.LateLaneRotation);
             evt.FloatValue = node["r"].AsFloat;
             evt.CustomData = node["customData"];
-            evt.RefreshCustom();
 
             return evt;
         }

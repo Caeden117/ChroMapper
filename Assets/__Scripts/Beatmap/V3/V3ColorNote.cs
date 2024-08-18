@@ -38,7 +38,6 @@ namespace Beatmap.V3
             note.Color = node["c"].AsInt;
             note.CutDirection = node["d"].AsInt;
             note.CustomData = node["customData"];
-            note.RefreshCustom();
 
             if (customFake != null) note.CustomFake = customFake.Value;
 

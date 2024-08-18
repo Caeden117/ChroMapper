@@ -6,6 +6,7 @@ using Beatmap.V2;
 using Beatmap.V3;
 using NUnit.Framework;
 using SimpleJSON;
+using UnityEngine;
 
 namespace TestsEditMode
 {
@@ -27,7 +28,8 @@ namespace TestsEditMode
                 ""somePropertyThatCMShouldNotTouch"" : ""HelloWorld!""
             }
         }
-    ]
+    ],
+    ""customData"": {}
 }";
 
 
@@ -40,6 +42,23 @@ namespace TestsEditMode
         public void Setup()
         {
         }
+
+        [Test]
+        public void RemoveEmptyCustomDataFromOutputTest()
+        {
+            Settings.Instance.MapVersion = 3;
+            var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
+
+            difficulty.Notes[0].CustomData.Remove("coordinates");
+            difficulty.Notes[0].CustomData.Remove("somePropertyThatCMShouldNotTouch");
+
+            Assert.AreEqual(0, difficulty.Notes[0].CustomData.Children.Count());
+
+            var outputJson = V3Difficulty.GetOutputJson(difficulty);
+            Assert.IsFalse(outputJson["colorNotes"].HasKey("customData"));
+            Assert.IsFalse(outputJson.HasKey("customData"));
+        }
+        
 
         [Test]
         public void NoteV3ToV2ToV3CustomDataTest()

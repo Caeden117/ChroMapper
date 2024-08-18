@@ -60,7 +60,6 @@ namespace Tests
 
             var evt = new BaseEvent
                 { JsonTime = time, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn, CustomData = customData };
-            evt.RefreshCustom();
             return evt;
         }
 

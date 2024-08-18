@@ -57,7 +57,6 @@ namespace Tests
             var customData = new JSONObject();
             customData["_lightGradient"] = new ChromaLightGradient(Color.blue, Color.cyan).ToJson();
             BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = 1, Value = 1, FloatValue = 1, CustomData = customData };
-            baseEventA.RefreshCustom();
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
             SelectionController.Select(baseEventA);

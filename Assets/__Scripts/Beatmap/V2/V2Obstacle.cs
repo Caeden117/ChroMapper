@@ -38,7 +38,6 @@ namespace Beatmap.V2
             obstacle.Duration = BaseItem.GetRequiredNode(node, "_duration").AsFloat;
             obstacle.Width = BaseItem.GetRequiredNode(node, "_width").AsInt;
             obstacle.CustomData = node["_customData"];
-            obstacle.RefreshCustom();
 
             return obstacle;
         }

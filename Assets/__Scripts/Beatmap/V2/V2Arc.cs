@@ -44,7 +44,6 @@ namespace Beatmap.V2
             arc.TailControlPointLengthMultiplier = BaseItem.GetRequiredNode(node, "_tailControlPointLengthMultiplier").AsFloat;
             arc.MidAnchorMode = BaseItem.GetRequiredNode(node, "_sliderMidAnchorMode").AsInt;
             arc.CustomData = node["_customData"];
-            arc.RefreshCustom();
 
             return arc;
         }

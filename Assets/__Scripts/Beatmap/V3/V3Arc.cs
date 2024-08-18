@@ -44,7 +44,6 @@ namespace Beatmap.V3
             arc.TailControlPointLengthMultiplier = node["tmu"].AsFloat;
             arc.MidAnchorMode = node["m"].AsInt;
             arc.CustomData = node["customData"];
-            arc.RefreshCustom();
 
             return arc;
         }

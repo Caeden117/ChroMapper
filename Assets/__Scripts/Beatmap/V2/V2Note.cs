@@ -37,7 +37,6 @@ namespace Beatmap.V2
             note.Type = BaseItem.GetRequiredNode(node, "_type").AsInt;
             note.CutDirection = BaseItem.GetRequiredNode(node, "_cutDirection").AsInt;
             note.CustomData = node["_customData"];
-            note.RefreshCustom();
 
             return note;
         }

@@ -207,12 +207,12 @@ namespace Beatmap.Base
         {
             if (fromVersion == 2 && toVersion == 3)
             {
-                foreach (var note in Notes) note.CustomData = V2ToV3.CustomDataObject(note.SaveCustom());
-                foreach (var obstacle in Obstacles) obstacle.CustomData = V2ToV3.CustomDataObject(obstacle.SaveCustom());
-                foreach (var arc in Arcs) arc.CustomData = V2ToV3.CustomDataObject(arc.SaveCustom());
-                foreach (var chain in Chains) chain.CustomData = V2ToV3.CustomDataObject(chain.SaveCustom());
+                foreach (var note in Notes) note.SetCustomData(V2ToV3.CustomDataObject(note.SaveCustom()));
+                foreach (var obstacle in Obstacles) obstacle.SetCustomData(V2ToV3.CustomDataObject(obstacle.SaveCustom()));
+                foreach (var arc in Arcs) arc.SetCustomData(V2ToV3.CustomDataObject(arc.SaveCustom()));
+                foreach (var chain in Chains) chain.SetCustomData(V2ToV3.CustomDataObject(chain.SaveCustom()));
                 
-                foreach (var evt in Events) evt.CustomData = V2ToV3.CustomDataEvent(evt.SaveCustom());
+                foreach (var evt in Events) evt.SetCustomData(V2ToV3.CustomDataEvent(evt.SaveCustom()));
 
                 foreach (var env in EnvironmentEnhancements)
                 {
@@ -224,12 +224,12 @@ namespace Beatmap.Base
 
             if (fromVersion == 3 && toVersion == 2)
             {
-                foreach (var note in Notes) note.CustomData = V3ToV2.CustomDataObject(note.SaveCustom());
-                foreach (var obstacle in Obstacles) obstacle.CustomData = V3ToV2.CustomDataObject(obstacle.SaveCustom());
-                foreach (var arc in Arcs) arc.CustomData = V3ToV2.CustomDataObject(arc.SaveCustom());
-                foreach (var chain in Chains) chain.CustomData = V3ToV2.CustomDataObject(chain.SaveCustom());
+                foreach (var note in Notes) note.SetCustomData(V3ToV2.CustomDataObject(note.SaveCustom()));
+                foreach (var obstacle in Obstacles) obstacle.SetCustomData(V3ToV2.CustomDataObject(obstacle.SaveCustom()));
+                foreach (var arc in Arcs) arc.SetCustomData(V3ToV2.CustomDataObject(arc.SaveCustom()));
+                foreach (var chain in Chains) chain.SetCustomData(V3ToV2.CustomDataObject(chain.SaveCustom()));
                 
-                foreach (var evt in Events) evt.CustomData = V3ToV2.CustomDataEvent(evt.SaveCustom());
+                foreach (var evt in Events) evt.SetCustomData(V3ToV2.CustomDataEvent(evt.SaveCustom()));
 
                 foreach (var env in EnvironmentEnhancements)
                 {

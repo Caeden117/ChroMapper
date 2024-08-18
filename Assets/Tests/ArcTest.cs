@@ -93,7 +93,7 @@ namespace Tests
             var headCustomData = new JSONObject { ["coordinates"] = headCoordinates };
             var tailCustomData = new JSONObject { ["coordinates"] = tailCoordinates };
 
-            var arcCustomData = new JSONObject
+            var expectedArcCustomData = new JSONObject
             {
                 ["coordinates"] = headCoordinates,
                 ["tailCoordinates"] = tailCoordinates
@@ -110,14 +110,12 @@ namespace Tests
                     JsonTime = 2f, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
                     CutDirection = (int)NoteCutDirection.Down, CustomData = headCustomData
                 };
-                baseNoteA.RefreshCustom();
 
                 BaseNote baseNoteB = new BaseNote
                 {
                     JsonTime = 3f, PosX = (int)GridX.Left, PosY = (int)GridY.Upper, Type = (int)NoteType.Red,
                     CutDirection = (int)NoteCutDirection.Up, CustomData = tailCustomData
                 };
-                baseNoteB.RefreshCustom();
 
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
                 PlaceUtils.PlaceNote(notePlacement, baseNoteB);
@@ -146,7 +144,7 @@ namespace Tests
 
                 CheckUtils.CheckArc("Check generated arc", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base,
                     (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 1, 3f, (int)GridX.Left, (int)GridY.Upper,
-                    (int)NoteCutDirection.Up, 1, 0, arcCustomData);
+                    (int)NoteCutDirection.Up, 1, 0, expectedArcCustomData);
             }
         }
 

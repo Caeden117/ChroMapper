@@ -63,17 +63,18 @@ namespace Beatmap.Base
 
         protected internal override JSONNode SaveCustom()
         {
-            CustomData = base.SaveCustom();
+            var node = base.SaveCustom();
             
             if (Settings.Instance.MapVersion == 2)
             {
-                if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection;
-                else CustomData.Remove(CustomKeyDirection);
-                if (CustomFake) CustomData["_fake"] = true;
-                else CustomData.Remove("_fake");
+                if (CustomDirection != null) node[CustomKeyDirection] = CustomDirection;
+                else node.Remove(CustomKeyDirection);
+                if (CustomFake) node["_fake"] = true;
+                else node.Remove("_fake");
             }
 
-            return CustomData;
+            SetCustomData(node);
+            return node;
         }
 
         

@@ -35,14 +35,6 @@ namespace TestsEditMode
             _info = new BeatSaberSong.DifficultyBeatmap(new BeatSaberSong.DifficultyBeatmapSet());
         }
 
-        // Ensures the custom properties are filled with things from the custom data.
-        // This is normally done in editor saving workflow but these tests aren't called from editor saving.
-        private void RefreshCustomData()
-        {
-            _difficulty.Notes.ForEach(x => x.RefreshCustom());
-            _difficulty.CustomEvents.ForEach(x => x.RefreshCustom());
-        }
-
         [Test]
         public void UnusedTracksDoNotRequireMods()
         {
@@ -80,7 +72,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -102,7 +93,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreNotEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -124,7 +114,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -148,7 +137,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -181,7 +169,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -212,7 +199,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -243,7 +229,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -275,7 +260,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -297,7 +281,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -321,7 +304,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }

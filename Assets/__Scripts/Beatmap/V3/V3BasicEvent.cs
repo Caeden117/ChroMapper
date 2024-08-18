@@ -55,7 +55,6 @@ namespace Beatmap.V3
             evt.Value = node["i"].AsInt;
             evt.FloatValue = node["f"].AsFloat;
             evt.CustomData = node["customData"];
-            evt.RefreshCustom();
 
             return evt;
         }

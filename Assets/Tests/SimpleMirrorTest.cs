@@ -88,7 +88,6 @@ namespace Tests
                 JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
                 CutDirection = (int)NoteCutDirection.Left, CustomData = JSON.Parse("{\"coordinates\": [-1, 0]}")
             };
-            baseNoteA.RefreshCustom();
 
             PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
@@ -134,7 +133,6 @@ namespace Tests
 
             BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f,
                 CustomData = JSON.Parse($"{{\"lightID\": {original}}}")};
-            baseEventA.RefreshCustom();
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -169,7 +167,6 @@ namespace Tests
             BaseEvent baseEventA = new BaseEvent{ JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f,
                 CustomData = JSON.Parse(
                     "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}")};
-            baseEventA.RefreshCustom();
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -291,7 +288,6 @@ namespace Tests
                 Height = 5,
                 CustomData = JSON.Parse("{\"coordinates\": [-1.5, 0]}"),
             };
-            wallA.RefreshCustom();
 
             PlaceUtils.PlaceWall(wallPlacement, wallA);
 

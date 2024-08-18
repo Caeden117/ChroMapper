@@ -44,7 +44,6 @@ namespace Beatmap.V3
 
             baseChain.CustomFake = customFake;
             baseChain.CustomData = node["customData"];
-            baseChain.RefreshCustom();
 
             return baseChain;
         }
