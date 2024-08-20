@@ -92,7 +92,7 @@ namespace Tests.Util
             Assert.AreEqual(time, evt.JsonTime, 0.001f, $"{msg}: Mismatched time");
             Assert.AreEqual(executionTime == 0 ? 14 : 15, evt.Type, $"{msg}: Mismatched type");
             Assert.AreEqual(executionTime, evt.Type == 14 ? 0 : 1, $"{msg}: Mismatched execution time");
-            Assert.AreEqual(rotation, evt.FloatValue, 0.001f, $"{msg}: Mismatched rotation");
+            Assert.AreEqual(rotation, evt.Rotation, 0.001f, $"{msg}: Mismatched rotation");
         
             // ConvertToJSON causes gradient to get updated
             if (customData != null)

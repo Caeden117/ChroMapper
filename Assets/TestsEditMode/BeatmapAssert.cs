@@ -42,12 +42,13 @@ namespace TestsEditMode
             Assert.AreEqual(floatValue, bpmEvent.FloatValue, epsilon);
         }
         
-        public static void EventPropertiesAreEqual(BaseEvent evt, float jsonTime, int type, int value, float floatValue)
+        public static void EventPropertiesAreEqual(BaseEvent evt, float jsonTime, int type, int value, float? floatValue, float? rotation)
         {
             Assert.AreEqual(jsonTime, evt.JsonTime, epsilon);
             Assert.AreEqual(type, evt.Type);
             Assert.AreEqual(value, evt.Value);
-            Assert.AreEqual(floatValue, evt.FloatValue);
+            if (floatValue.HasValue) Assert.AreEqual(floatValue.Value, evt.FloatValue);
+            if (rotation.HasValue) Assert.AreEqual(rotation.Value, evt.Rotation);
         }
 
         public static void ArcPropertiesAreEqual(BaseArc arc, float jsonTime, int x, int y, int color, int cutDirection,

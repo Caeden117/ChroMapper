@@ -152,7 +152,7 @@ public class TracksManager : MonoBehaviour
                 continue;
             }
 
-            rotation += rotationEvent.GetRotationDegreeFromValue() ?? 0;
+            rotation += rotationEvent.Rotation;
             if (rotation < LowestRotation) LowestRotation = rotation;
             if (rotation > HighestRotation) HighestRotation = rotation;
         }

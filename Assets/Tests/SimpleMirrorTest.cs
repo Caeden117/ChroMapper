@@ -316,7 +316,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LateLaneRotation, FloatValue = 33 };
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LateLaneRotation, Rotation = 33 };
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 

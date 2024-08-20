@@ -60,44 +60,37 @@ namespace Beatmap.Base
                 {
                     if (0 <= value && value < LightValueToRotationDegrees.Length)
                     {
-                        floatValue = LightValueToRotationDegrees[value];
+                        rotation = LightValueToRotationDegrees[value];
                     }
-                    else
+                    else if (value is >= 1000 and <= 1720) // Mapping Extensions
                     {
-                        floatValue = value;
+                        rotation = value - 1360;
                     }
                 }
+
                 this.value = value;
-            } 
+            }
         }
 
-        private float floatValue = 1f;
-
-        public float FloatValue
+        public float FloatValue { get; set; } = 1f;
+        
+        private float rotation;
+        public float Rotation
         {
-            get => floatValue;
+            get => rotation;
             set
             {
-                if (IsLaneRotationEvent())
+                var lightValue = Array.IndexOf(LightValueToRotationDegrees, Mathf.RoundToInt(value));
+                if (lightValue >= 0)
                 {
-                    if (value < (LightValueToRotationDegrees[0] + LightValueToRotationDegrees[1]) / 2f)
-                        this.value = 0;
-                    else if (value < (LightValueToRotationDegrees[1] + LightValueToRotationDegrees[2]) / 2f)
-                        this.value = 1;
-                    else if (value < (LightValueToRotationDegrees[2] + LightValueToRotationDegrees[3]) / 2f)
-                        this.value = 2;
-                    else if (value < (LightValueToRotationDegrees[3] + LightValueToRotationDegrees[4]) / 2f)
-                        this.value = 3;
-                    else if (value < (LightValueToRotationDegrees[4] + LightValueToRotationDegrees[5]) / 2f)
-                        this.value = 4;
-                    else if (value < (LightValueToRotationDegrees[5] + LightValueToRotationDegrees[6]) / 2f)
-                        this.value = 5;
-                    else if (value < (LightValueToRotationDegrees[6] + LightValueToRotationDegrees[7]) / 2f)
-                        this.value = 6;
-                    else 
-                        this.value = 7;
+                    this.value = lightValue;
                 }
-                floatValue = value;
+                else
+                {
+                    this.value = Mathf.RoundToInt(value) + 1360; // Mapping extension
+                }
+
+                rotation = value;
             }
         }
 
@@ -404,17 +397,6 @@ namespace Beatmap.Base
                 0.5f);
         }
 
-        public virtual float? GetRotationDegreeFromValue()
-        {
-            var queued = (CustomData?.HasKey("_queuedRotation") ?? false) ? CustomData["_queuedRotation"].AsInt : Value;
-            if (queued >= 0 && queued < LightValueToRotationDegrees.Length)
-                return LightValueToRotationDegrees[queued];
-            //Mapping Extensions precision rotation from 1000 to 1720: 1000 = -360 degrees, 1360 = 0 degrees, 1720 = 360 degrees
-            if (queued >= 1000 && queued <= 1720)
-                return queued - 1360;
-            return null;
-        }
-
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
             if (other is BaseEvent @event)
@@ -574,7 +556,7 @@ namespace Beatmap.Base
         public override BaseItem Clone()
         {
             var evt = new BaseEvent(this);
-            evt.RefreshCustom();
+            evt.ParseCustom();
             
             // This depends on environment and is calculated by grid position after creation
             // so we need to set this here to clone correctly  

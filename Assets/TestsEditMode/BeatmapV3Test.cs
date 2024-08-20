@@ -365,10 +365,10 @@ namespace TestsEditMode
             BeatmapAssert.BpmEventPropertiesAreEqual(difficulty.BpmEvents[0], 10, 128);
             
             Assert.AreEqual(4, difficulty.Events.Count);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 1, 3, 1);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 10, 5, 1, 0);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, 15);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, 15);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 1, 3, 1, null);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 10, 5, 1, 0, null);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, null, 15f);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, null, 15f);
         }
     }
 }

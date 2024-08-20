@@ -51,8 +51,8 @@ namespace TestsEditMode
 
             Assert.AreEqual(0, rotationEvent.JsonTime);
             Assert.AreEqual(14, rotationEvent.Type); // Is not 0
-            Assert.AreEqual(4, rotationEvent.Value);
-            Assert.AreEqual(0, rotationEvent.FloatValue);
+            Assert.AreEqual(1360, rotationEvent.Value);
+            Assert.AreEqual(0, rotationEvent.Rotation);
         }
 
         [Test]

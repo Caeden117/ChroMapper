@@ -44,7 +44,7 @@ namespace Tests
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
             var inputController = root.GetComponentInChildren<BeatmapEventInputController>();
 
-            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LateLaneRotation, FloatValue = 45 };
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LateLaneRotation, Rotation = 45 };
             BaseEvent baseEventB = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade };
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
             PlaceUtils.PlaceEvent(eventPlacement, baseEventB);

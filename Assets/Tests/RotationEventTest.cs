@@ -42,9 +42,9 @@ namespace Tests
         {
             var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
 
-            var rotationEventA = new BaseEvent { JsonTime = 1, Type = (int)EventTypeValue.LateLaneRotation, FloatValue = rotations[0] };
-            var rotationEventB = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LateLaneRotation, FloatValue = rotations[1] };
-            var rotationEventC = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.LateLaneRotation, FloatValue = rotations[2] };
+            var rotationEventA = new BaseEvent { JsonTime = 1, Type = (int)EventTypeValue.LateLaneRotation, Rotation = rotations[0] };
+            var rotationEventB = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LateLaneRotation, Rotation = rotations[1] };
+            var rotationEventC = new BaseEvent { JsonTime = 3, Type = (int)EventTypeValue.LateLaneRotation, Rotation = rotations[2] };
             eventsContainer.SpawnObject(rotationEventA);
             eventsContainer.SpawnObject(rotationEventB);
             eventsContainer.SpawnObject(rotationEventC);
@@ -78,8 +78,8 @@ namespace Tests
             const int rotation = 15;
             const float timeA = 1f;
             const float timeB = 2f;
-            var rotationEventA = new BaseEvent { JsonTime = timeA, Type = (int)EventTypeValue.LateLaneRotation, FloatValue = rotation };
-            var rotationEventB = new BaseEvent { JsonTime = timeB, Type = (int)EventTypeValue.LateLaneRotation, FloatValue = rotation };
+            var rotationEventA = new BaseEvent { JsonTime = timeA, Type = (int)EventTypeValue.LateLaneRotation, Rotation = rotation };
+            var rotationEventB = new BaseEvent { JsonTime = timeB, Type = (int)EventTypeValue.LateLaneRotation, Rotation = rotation };
             eventsContainer.SpawnObject(rotationEventA);
             eventsContainer.SpawnObject(rotationEventB);
 
