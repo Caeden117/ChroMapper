@@ -138,14 +138,6 @@ namespace Beatmap.Base.Customs
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
-        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
-        {
-            2 => V2CustomEvent.ToJson(this),
-            3 => V3CustomEvent.ToJson(this)
-        };
-
-        public override BaseItem Clone() => throw new NotImplementedException();
-
         protected override void ParseCustom()
         {
             CustomTrack = Data.HasKey(CustomKeyTrack) ? Data[CustomKeyTrack] : null;
@@ -179,6 +171,19 @@ namespace Beatmap.Base.Customs
             return comparison == 0
                 ? string.Compare(Type, customEvent.Type, StringComparison.Ordinal)
                 : comparison;
+        }
+        
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.ToJson(this),
+            3 => V3CustomEvent.ToJson(this)
+        };
+        
+        public override BaseItem Clone()
+        {
+            var customEvent = new BaseCustomEvent(this);
+            customEvent.ParseCustom();
+            return customEvent;
         }
     }
 }
