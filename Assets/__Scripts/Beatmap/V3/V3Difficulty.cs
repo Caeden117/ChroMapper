@@ -219,7 +219,7 @@ namespace Beatmap.V3
             
             BeatSaberSong.CleanObject(customData);
 
-            return true;
+            return customData;
         }
 
         public static BaseDifficulty GetFromJson(JSONNode mainNode, string path)
