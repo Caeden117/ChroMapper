@@ -154,6 +154,8 @@ namespace Beatmap.Base
 
         public virtual string CustomEasing { get; set; }
 
+        public virtual string CustomNameFilter { get; set; }
+
         public virtual ChromaLightGradient CustomLightGradient { get; set; }
 
         public virtual float? CustomStep { get; set; }
@@ -179,8 +181,6 @@ namespace Beatmap.Base
         public virtual int? CustomDirection { get; set; }
 
         public virtual bool? CustomLockRotation { get; set; }
-
-        public virtual string CustomNameFilter { get; set; }
 
         public virtual float? CustomLaneRotation { get; set; }
 
@@ -452,6 +452,7 @@ namespace Beatmap.Base
             }
 
             CustomLerpType = (CustomData?.HasKey(CustomKeyLerpType) ?? false) ? CustomData?[CustomKeyLerpType].Value : null;
+            CustomNameFilter = (CustomData?.HasKey(CustomKeyNameFilter) ?? false) ? CustomData?[CustomKeyNameFilter].Value : null;
             CustomEasing = (CustomData?.HasKey(CustomKeyEasing) ?? false) ? CustomData?[CustomKeyEasing].Value : null;
             CustomStep = (CustomData?.HasKey(CustomKeyStep) ?? false) ? CustomData?[CustomKeyStep].AsFloat : null;
             CustomProp = (CustomData?.HasKey(CustomKeyProp) ?? false) ? CustomData?[CustomKeyProp].AsFloat : null;
@@ -484,6 +485,7 @@ namespace Beatmap.Base
             }
 
             if (CustomLerpType != null) node[CustomKeyLerpType] = CustomLerpType; else node.Remove(CustomKeyLerpType);
+            if (CustomNameFilter != null) node[CustomKeyNameFilter] = CustomNameFilter; else node.Remove(CustomKeyNameFilter);
             if (CustomEasing != null) node[CustomKeyEasing] = CustomEasing; else node.Remove(CustomKeyEasing);
             if (CustomStep != null) node[CustomKeyStep] = CustomStep; else node.Remove(CustomKeyStep);
             if (CustomProp != null) node[CustomKeyProp] = CustomProp; else node.Remove(CustomKeyProp);
