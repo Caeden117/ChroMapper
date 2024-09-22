@@ -6,61 +6,32 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3Waypoint : BaseWaypoint, V3Object
+    public static class V3Waypoint
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        public V3Waypoint()
+        public static BaseWaypoint GetFromJson(JSONNode node)
         {
+            var waypoint = new BaseWaypoint();
+            
+            waypoint.JsonTime = node["b"].AsFloat;
+            waypoint.PosX = node["x"].AsInt;
+            waypoint.PosY = node["y"].AsInt;
+            waypoint.OffsetDirection = node["d"].AsInt;
+            waypoint.CustomData = node["customData"];
+
+            return waypoint;
         }
 
-        public V3Waypoint(BaseWaypoint other) : base(other)
-        {
-        }
-
-        public V3Waypoint(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            PosX = node["x"].AsInt;
-            PosY = node["y"].AsInt;
-            OffsetDirection = node["d"].AsInt;
-            CustomData = node["customData"];
-        }
-
-        public V3Waypoint(float time, int posX, int posY, int offsetDirection, JSONNode customData = null) : base(time,
-            posX, posY, offsetDirection, customData)
-        {
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-
-        public override string CustomKeyColor { get; } = "color";
-
-        public override string CustomKeyCoordinate { get; } = "coordinates";
-
-        public override string CustomKeyWorldRotation { get; } = "worldRotation";
-
-        public override string CustomKeyLocalRotation { get; } = "localRotation";
-
-        public override string CustomKeySpawnEffect { get; } = "spawnEffect";
-
-        public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
-
-        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";
-
-        public override JSONNode ToJson()
+        public static  JSONNode ToJson(BaseWaypoint waypoint)
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["x"] = PosX;
-            node["y"] = PosY;
-            node["d"] = OffsetDirection;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            node["b"] = waypoint.JsonTime;
+            node["x"] = waypoint.PosX;
+            node["y"] = waypoint.PosY;
+            node["d"] = waypoint.OffsetDirection;
+            waypoint.CustomData = waypoint.SaveCustom();
+            if (!waypoint.CustomData.Children.Any()) return node;
+            node["customData"] = waypoint.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() => new V3Waypoint(JsonTime, PosX, PosY, OffsetDirection, SaveCustom().Clone());
     }
 }

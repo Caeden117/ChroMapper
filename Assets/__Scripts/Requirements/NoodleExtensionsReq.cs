@@ -53,9 +53,12 @@ public class NoodleExtensionsReq : HeckRequirementCheck
 
     private bool HasNoodleTracks(BaseDifficulty map)
     {
-        var noodleAnimationKeys = map is V3Difficulty
-            ? v3NoodleAnimationKeys
-            : v2NoodleAnimationKeys;
+        var noodleAnimationKeys = Settings.Instance.MapVersion switch
+        {
+            3 => v3NoodleAnimationKeys,
+            2 => v2NoodleAnimationKeys,
+            _ => new List<string>(),
+        };
         return HasAnimationsFromMod(map, noodleSpecificTrackTypes, noodleAnimationKeys);
     }
 }

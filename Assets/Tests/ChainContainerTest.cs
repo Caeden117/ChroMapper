@@ -39,7 +39,7 @@ namespace Tests
             var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
             var inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
-            placedChain = new V3Chain
+            placedChain = new BaseChain
             {
                 JsonTime = 0,
                 TailJsonTime = 2,
@@ -75,7 +75,7 @@ namespace Tests
             var linkTransforms = links.Select(x => x.GetComponent<Transform>()).OrderBy(t => t.transform.position.z).ToList();
 
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-            bpmCollection.SpawnObject(new V3BpmEvent { JsonTime = 0, Bpm = 100 });
+            bpmCollection.SpawnObject(new BaseBpmEvent { JsonTime = 0, Bpm = 100 });
 
             var firstZ = chainContainer.transform.position.z;
             var lastZ = linkTransforms.Last().position.z;
@@ -88,7 +88,7 @@ namespace Tests
             }
 
             // Chain should now be 3/4 of its original length and each link should remain equidistant in space
-            bpmCollection.SpawnObject(new V3BpmEvent { JsonTime = 1, Bpm = 200 });
+            bpmCollection.SpawnObject(new BaseBpmEvent { JsonTime = 1, Bpm = 200 });
             for (var i = 0; i < linkTransforms.Count; i++)
             {
                 Assert.AreEqual(firstZ + ((3f / 4f) * (i + 1.0) / linkTransforms.Count * originalZDistance), linkTransforms[i].transform.position.z, 0.001f);

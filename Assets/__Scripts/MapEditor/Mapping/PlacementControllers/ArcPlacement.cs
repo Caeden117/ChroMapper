@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Containers;
+using Beatmap.Enums;
 using Beatmap.V3;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,7 +19,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         var notes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
         notes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
-        if (!Settings.Instance.Load_MapV3 && notes.Count > 1)
+        if (Settings.Instance.MapVersion == 2 && notes.Count > 1)
         {
             PersistentUI.Instance.ShowDialogBox("Arc placement is not supported in v2 format.\nConvert map to v3 to place arcs.",
                 null, PersistentUI.DialogBoxPresetType.Ok);
@@ -55,12 +56,9 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         }
     }
 
-    public static bool IsColorNote(BaseObject o)
-    {
-        return o is BaseNote && !(o is BaseBombNote);
-    }
+    public static bool IsColorNote(BaseObject o) => o is BaseNote note && note.Type != (int)NoteType.Bomb;
 
-    public override BaseArc GenerateOriginalData() => new V3Arc();
+    public override BaseArc GenerateOriginalData() => new BaseArc();
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting)
         => new BeatmapObjectPlacementAction(spawned, conflicting, "Placed an arc.");
 
@@ -71,7 +69,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
             (head, tail) = (tail, head);
         }
 
-        return new V3Arc(head, tail);
+        return new BaseArc(head, tail);
     }
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint)

@@ -1,10 +1,13 @@
+using System;
 using Beatmap.Enums;
+using Beatmap.V2.Customs;
+using Beatmap.V3.Customs;
 using LiteNetLib.Utils;
 using SimpleJSON;
 
 namespace Beatmap.Base.Customs
 {
-    public abstract class BaseCustomEvent : BaseObject
+    public class BaseCustomEvent : BaseObject
     {
         public override void Serialize(NetDataWriter writer)
         {
@@ -19,7 +22,7 @@ namespace Beatmap.Base.Customs
             base.Deserialize(reader);
         }
 
-        protected BaseCustomEvent()
+        public BaseCustomEvent()
         {
         }
 
@@ -30,7 +33,12 @@ namespace Beatmap.Base.Customs
             Data = other.SaveCustom().Clone();
         }
 
-        protected BaseCustomEvent(JSONNode node) => InstantiateHelper(ref node);
+        public BaseCustomEvent(JSONNode node)
+        {
+            JsonTime = RetrieveRequiredNode(node, KeyTime).AsFloat;
+            Type = RetrieveRequiredNode(node, KeyType).Value;
+            Data = RetrieveRequiredNode(node, KeyData);
+        }
 
         protected BaseCustomEvent(float time, string type, JSONNode node = null) : base(time)
         {
@@ -41,7 +49,19 @@ namespace Beatmap.Base.Customs
         public override ObjectType ObjectType { get; set; } = ObjectType.CustomEvent;
 
         public string Type { get; set; }
-        public JSONNode Data { get; set; }
+
+        private JSONNode data;
+
+        public JSONNode Data
+        {
+            get => data;
+            set
+            {
+                data = value;
+                ParseCustom();
+            }
+        }
+
         public float? DataDuration { get; set; }
         public string? DataEasing { get; set; }
         public int? DataRepeat { get; set; }
@@ -49,38 +69,85 @@ namespace Beatmap.Base.Customs
         public JSONNode DataParentTrack { get; set; }
         public bool? DataWorldPositionStays { get; set; }
 
-        public abstract string KeyTime { get; }
-        public abstract string KeyType { get; }
-        public abstract string KeyData { get; }
-        public abstract string DataKeyDuration { get; }
-        public abstract string DataKeyEasing { get; }
-        public abstract string DataKeyRepeat { get; }
-        public abstract string DataKeyChildrenTracks { get; }
-        public abstract string DataKeyParentTrack { get; }
-        public abstract string DataKeyWorldPositionStays { get; }
+        public string KeyTime => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.KeyTime,
+            3 => V3CustomEvent.KeyTime
+        };
+
+        public string KeyType => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.KeyType,
+            3 => V3CustomEvent.KeyType
+        };
+
+        public string KeyData => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.KeyData,
+            3 => V3CustomEvent.KeyData
+        };
+
+        public string DataKeyDuration => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.DataKeyDuration,
+            3 => V3CustomEvent.DataKeyDuration
+        };
+
+        public string DataKeyEasing => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.DataKeyEasing,
+            3 => V3CustomEvent.DataKeyEasing
+        };
+
+        public string DataKeyRepeat => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.DataKeyRepeat,
+            3 => V3CustomEvent.DataKeyRepeat
+        };
+
+        public string DataKeyChildrenTracks  => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.DataKeyChildrenTracks,
+            3 => V3CustomEvent.DataKeyChildrenTracks
+        };
+
+        public string DataKeyParentTrack  => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.DataKeyParentTrack,
+            3 => V3CustomEvent.DataKeyParentTrack
+        };
+
+        public string DataKeyWorldPositionStays  => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.DataKeyWorldPositionStays,
+            3 => V3CustomEvent.DataKeyWorldPositionStays
+        };
+
+
+        public override string CustomKeyColor => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.CustomKeyColor,
+            3 => V3CustomEvent.CustomKeyColor
+        };
+
+        public override string CustomKeyTrack => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.CustomKeyTrack,
+            3 => V3CustomEvent.CustomKeyTrack
+        };
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
-        public override JSONNode ToJson() =>
-            new JSONObject { [KeyTime] = JsonTime, [KeyType] = Type, [KeyData] = Data };
-
-        private void InstantiateHelper(ref JSONNode node)
-        {
-            JsonTime = RetrieveRequiredNode(node, KeyTime).AsFloat;
-            Type = RetrieveRequiredNode(node, KeyType).Value;
-            Data = RetrieveRequiredNode(node, KeyData);
-            ParseCustom();
-        }
-
         protected override void ParseCustom()
         {
+            // The Data[___].AsType is needed or they'll be non-null default for some reason
             CustomTrack = Data.HasKey(CustomKeyTrack) ? Data[CustomKeyTrack] : null;
-            DataDuration = Data.HasKey(DataKeyDuration) ? Data[DataKeyDuration] : null;
+            DataDuration = Data.HasKey(DataKeyDuration) ? Data[DataKeyDuration].AsFloat : null;
             DataEasing = Data.HasKey(DataKeyEasing) ? Data[DataKeyEasing] : null;
-            DataRepeat = Data.HasKey(DataKeyRepeat) ? Data[DataKeyRepeat] : null;
+            DataRepeat = Data.HasKey(DataKeyRepeat) ? Data[DataKeyRepeat].AsInt : null;
             DataChildrenTracks = Data.HasKey(DataKeyChildrenTracks) ? Data[DataKeyChildrenTracks] : null;
             DataParentTrack = Data.HasKey(DataKeyParentTrack) ? Data[DataKeyParentTrack] : null;
-            DataWorldPositionStays = Data.HasKey(DataKeyWorldPositionStays) ? Data[DataKeyWorldPositionStays] : null;
+            DataWorldPositionStays = Data.HasKey(DataKeyWorldPositionStays) ? Data[DataKeyWorldPositionStays].AsBool : null;
         }
 
         protected internal override JSONNode SaveCustom()
@@ -103,8 +170,21 @@ namespace Beatmap.Base.Customs
 
             // Order by custom event type if times match up
             return comparison == 0
-                ? Type.CompareTo(customEvent.Type)
+                ? string.Compare(Type, customEvent.Type, StringComparison.Ordinal)
                 : comparison;
+        }
+        
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            2 => V2CustomEvent.ToJson(this),
+            3 => V3CustomEvent.ToJson(this)
+        };
+        
+        public override BaseItem Clone()
+        {
+            var customEvent = new BaseCustomEvent(this);
+            customEvent.ParseCustom();
+            return customEvent;
         }
     }
 }

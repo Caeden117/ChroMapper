@@ -43,10 +43,16 @@ namespace Tests
                 var root = notesContainer.transform.root;
                 var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-                BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Down);
-                BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red,
-                    (int)NoteCutDirection.Up);
+                BaseNote baseNoteA = new BaseNote
+                {
+                    JsonTime = 2f, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Down
+                };
+                BaseNote baseNoteB = new BaseNote
+                {
+                    JsonTime = 3f, PosX = (int)GridX.Left, PosY = (int)GridY.Upper, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Up
+                };
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
                 PlaceUtils.PlaceNote(notePlacement, baseNoteB);
 
@@ -87,7 +93,7 @@ namespace Tests
             var headCustomData = new JSONObject { ["coordinates"] = headCoordinates };
             var tailCustomData = new JSONObject { ["coordinates"] = tailCoordinates };
 
-            var arcCustomData = new JSONObject
+            var expectedArcCustomData = new JSONObject
             {
                 ["coordinates"] = headCoordinates,
                 ["tailCoordinates"] = tailCoordinates
@@ -99,11 +105,17 @@ namespace Tests
                 var root = notesContainer.transform.root;
                 var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-                BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Down, headCustomData);
+                BaseNote baseNoteA = new BaseNote
+                {
+                    JsonTime = 2f, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Down, CustomData = headCustomData
+                };
 
-                BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red,
-                    (int)NoteCutDirection.Up, tailCustomData);
+                BaseNote baseNoteB = new BaseNote
+                {
+                    JsonTime = 3f, PosX = (int)GridX.Left, PosY = (int)GridY.Upper, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Up, CustomData = tailCustomData
+                };
 
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
                 PlaceUtils.PlaceNote(notePlacement, baseNoteB);
@@ -132,7 +144,7 @@ namespace Tests
 
                 CheckUtils.CheckArc("Check generated arc", arcsContainer, 0, 2f, (int)GridX.Left, (int)GridY.Base,
                     (int)NoteColor.Red, (int)NoteCutDirection.Down, 0, 1, 3f, (int)GridX.Left, (int)GridY.Upper,
-                    (int)NoteCutDirection.Up, 1, 0, arcCustomData);
+                    (int)NoteCutDirection.Up, 1, 0, expectedArcCustomData);
             }
         }
 
@@ -147,9 +159,21 @@ namespace Tests
                 var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapArcInputController>();
 
-                BaseArc baseArc = new V3Arc(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red,
-                    (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left,
-                    1f, 0);
+                BaseArc baseArc = new BaseArc
+                {
+                    JsonTime = 2f,
+                    PosX = (int)GridX.Left,
+                    PosY = (int)GridY.Base,
+                    Color = (int)NoteColor.Red,
+                    CutDirection = (int)NoteCutDirection.Left,
+                    HeadControlPointLengthMultiplier = 1f,
+                    TailJsonTime = 3f,
+                    TailPosX = (int)GridX.Left,
+                    TailPosY = (int)GridY.Base,
+                    TailCutDirection = (int)NoteCutDirection.Left,
+                    TailControlPointLengthMultiplier = 1f,
+                    MidAnchorMode = 0
+                };
                 PlaceUtils.PlaceArc(arcPlacement, baseArc);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA)
@@ -179,9 +203,21 @@ namespace Tests
                 var arcPlacement = root.GetComponentInChildren<ArcPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapArcInputController>();
 
-                BaseArc baseArc = new V3Arc(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red,
-                    (int)NoteCutDirection.Left, 0, 1f, 3f, (int)GridX.Left, (int)GridY.Base, (int)NoteCutDirection.Left,
-                    1f, 0);
+                BaseArc baseArc = new BaseArc
+                {
+                    JsonTime = 2f,
+                    PosX = (int)GridX.Left,
+                    PosY = (int)GridY.Base,
+                    Color = (int)NoteColor.Red,
+                    CutDirection = (int)NoteCutDirection.Left,
+                    HeadControlPointLengthMultiplier = 1f,
+                    TailJsonTime = 3f,
+                    TailPosX = (int)GridX.Left,
+                    TailPosY = (int)GridY.Base,
+                    TailCutDirection = (int)NoteCutDirection.Left,
+                    TailControlPointLengthMultiplier = 1f,
+                    MidAnchorMode = 0
+                };
                 PlaceUtils.PlaceArc(arcPlacement, baseArc);
 
                 if (arcsContainer.LoadedContainers[baseArc] is ArcContainer containerA)

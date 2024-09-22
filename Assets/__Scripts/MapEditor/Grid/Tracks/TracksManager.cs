@@ -35,11 +35,9 @@ public class TracksManager : MonoBehaviour
         objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Note));
         objectContainerCollections.Add(
             BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Obstacle));
-        if (Settings.Instance.Load_MapV3)
-        {
-            objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc));
-            objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain));
-        }
+        objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc));
+        objectContainerCollections.Add(BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain));
+
         ObjectContainer.FlaggedForDeletionEvent += FlaggedForDeletion;
     }
 
@@ -154,7 +152,7 @@ public class TracksManager : MonoBehaviour
                 continue;
             }
 
-            rotation += rotationEvent.GetRotationDegreeFromValue() ?? 0;
+            rotation += rotationEvent.Rotation;
             if (rotation < LowestRotation) LowestRotation = rotation;
             if (rotation > HighestRotation) HighestRotation = rotation;
         }

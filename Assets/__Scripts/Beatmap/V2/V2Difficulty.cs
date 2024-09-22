@@ -5,218 +5,139 @@ using System.Linq;
 using System.Threading;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
-using Beatmap.Converters;
-using Beatmap.Enums;
 using Beatmap.V2.Customs;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.V2
 {
-    public class V2Difficulty : BaseDifficulty
+    public class V2Difficulty
     {
-        public override string Version => "2.6.0";
-
-        public override string BookmarksUseOfficialBpmEventsKey => "_bookmarksUseOfficialBpmEvents";
-
-        public override bool IsChroma() =>
-            Notes.Any(x => x.IsChroma()) || Obstacles.Any(x => x.IsChroma()) || Events.Any(x => x.IsChroma()) ||
-            EnvironmentEnhancements.Any();
-
-        public override bool IsNoodleExtensions() =>
-            Notes.Any(x => x.IsNoodleExtensions()) || Obstacles.Any(x => x.IsNoodleExtensions()) ||
-            Events.Any(x => x.IsNoodleExtensions());
-
-        public override bool IsMappingExtensions() =>
-            Notes.Any(x => x.IsMappingExtensions()) || Obstacles.Any(x => x.IsMappingExtensions()) ||
-            Events.Any(x => x.IsMappingExtensions());
-
-        public override bool Save()
+        public static JSONNode GetOutputJson(BaseDifficulty difficulty)
         {
             try
             {
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-                MainNode ??= new JSONObject();
-                MainNode["_version"] = Version;
-                ParseV3ToV2();
+                var json = new JSONObject();
+                json["_version"] = difficulty.Version;
 
                 var events = new JSONArray();
 
                 var allEvents = new List<BaseObject>();
-                allEvents.AddRange(Events);
-                allEvents.AddRange(BpmEvents);
-                if (BpmEvents.Count > 0 && BpmEvents.First().JsonTime != 0)
+                allEvents.AddRange(difficulty.Events);
+                allEvents.AddRange(difficulty.BpmEvents);
+                if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
                 {
-                    allEvents.Add(new V2BpmEvent()
+                    var insertedBpm = (BeatSaberSongContainer.Instance != null)
+                        ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        : 100; // This path only appears in tests
+                    allEvents.Add(new BaseBpmEvent
                     {
                         JsonTime = 0,
-                        Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        Bpm = insertedBpm
                     });
                 }
                 allEvents.Sort((lhs, rhs) => lhs.JsonTime.CompareTo(rhs.JsonTime));
                 foreach (var e in allEvents) events.Add(e.ToJson());
+                json["_events"] = events;
 
                 var notes = new JSONArray();
-                foreach (var n in Notes) notes.Add(n.ToJson());
+                foreach (var n in difficulty.Notes) notes.Add(n.ToJson());
+                json["_notes"] = notes;
 
                 var obstacles = new JSONArray();
-                foreach (var o in Obstacles) obstacles.Add(o.ToJson());
+                foreach (var o in difficulty.Obstacles) obstacles.Add(o.ToJson());
+                json["_obstacles"] = obstacles;
 
                 var waypoints = new JSONArray();
-                foreach (var w in Waypoints) waypoints.Add(w.ToJson());
+                foreach (var w in difficulty.Waypoints) waypoints.Add(w.ToJson());
+                json["_waypoints"] = waypoints;
 
-                MainNode["_notes"] = CleanupArray(notes);
-                MainNode["_obstacles"] = CleanupArray(obstacles);
-                MainNode["_events"] = CleanupArray(events);
-                MainNode["_waypoints"] = CleanupArray(waypoints);
-                MainNode["_sliders"] = new JSONArray();
-                if (EventTypesWithKeywords?.Keywords.Length > 0)
-                    MainNode["_specialEventsKeywordFilters"] = EventTypesWithKeywords.ToJson();
+                json["_sliders"] = new JSONArray();
 
-                SaveCustom();
+                json["_specialEventsKeywordFilters"] = difficulty.EventTypesWithKeywords?.Keywords.Length > 0
+                    ? difficulty.EventTypesWithKeywords.ToJson()
+                    : new JSONObject();
 
-                WriteDifficultyFile(this);
-                WriteBPMInfoFile(this);
+                var customDataJson = GetOutputCustomJsonData(difficulty);
+                if (customDataJson.Children.Any())
+                    json["_customData"] = customDataJson;
 
-                return true;
+                return json;
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
                 Debug.LogError(
                     "This is bad. You are recommended to restart ChroMapper; progress made after this point is not guaranteed to be saved.");
-                return false;
+                return null;
             }
         }
 
-        public override bool SaveCustom()
+        private static JSONNode GetOutputCustomJsonData(BaseDifficulty difficulty)
         {
-            var bookmarks = new JSONArray();
-            foreach (var b in Bookmarks) bookmarks.Add(b.ToJson());
+            var customData = new JSONObject();
 
-            var customEvents = new JSONArray();
-            foreach (var c in CustomEvents) customEvents.Add(c.ToJson());
+            if (difficulty.Bookmarks.Any())
+            {
+                var bookmarks = new JSONArray();
+                foreach (var b in difficulty.Bookmarks) bookmarks.Add(b.ToJson());
+                customData["_bookmarks"] = bookmarks;
+                customData[difficulty.BookmarksUseOfficialBpmEventsKey] = true;
+            }
+            
+            if (difficulty.CustomEvents.Any())
+            {
+                var customEvents = new JSONArray();
+                foreach (var c in difficulty.CustomEvents) customEvents.Add(c.ToJson());
+                customData["_customEvents"] = customEvents;
+            }
 
-            var envEnhancements = new JSONArray();
-            foreach (var e in EnvironmentEnhancements) envEnhancements.Add(e.ToJson());
+            if (difficulty.EnvironmentEnhancements.Any())
+            {
+                var envEnhancements = new JSONArray();
+                foreach (var e in difficulty.EnvironmentEnhancements) envEnhancements.Add(e.ToJson());
+                customData["_environment"] = envEnhancements;
+            }
 
-            MainNode["_customData"] = CustomData ?? new JSONObject();
-            MainNode["_customData"].Remove("_BPMChanges");
-
-            if (Bookmarks.Any())
-                MainNode["_customData"]["_bookmarks"] = CleanupArray(bookmarks);
-            else
-                MainNode["_customData"].Remove("_bookmarks");
-
-            if (CustomEvents.Any())
-                MainNode["_customData"]["_customEvents"] = CleanupArray(customEvents);
-            else
-                MainNode["_customData"].Remove("_customEvents");
-
-            if (PointDefinitions.Any())
+            if (difficulty.PointDefinitions.Any())
             {
                 var pAry = new JSONArray();
-                foreach (var p in PointDefinitions)
+                foreach (var p in difficulty.PointDefinitions)
                 {
-                    var obj = new JSONObject { ["_name"] = p.Key };
-                    obj["_points"] = p.Value;
+                    var obj = new JSONObject
+                    {
+                        ["_name"] = p.Key,
+                        ["_points"] = p.Value
+                    };
                     pAry.Add(obj);
                 }
 
-                MainNode["_customData"]["_pointDefinitions"] = pAry;
+                customData["_pointDefinitions"] = pAry;
             }
-            else
+
+            if (difficulty.Materials.Any())
             {
-                MainNode["_customData"].Remove("_pointDefinitions");
+                customData["_materials"] = new JSONObject();
+                foreach (var m in difficulty.Materials) 
+                    customData["_materials"][m.Key] = m.Value.ToJson();
             }
+            
 
-            if (EnvironmentEnhancements.Any())
-                MainNode["_customData"]["_environment"] = envEnhancements;
-            else
-                MainNode["_customData"].Remove("_environment");
+            if (difficulty.Time > 0) customData["_time"] = Math.Round(difficulty.Time, 3);
 
-            if (Materials.Any())
-            {
-                MainNode["_customData"]["_materials"] = new JSONObject();
-                foreach (var m in Materials) MainNode["_customData"]["_materials"][m.Key] = m.Value.ToJson();
-            }
-            else
-            {
-                MainNode["_customData"].Remove("_materials");
-            }
+            BeatSaberSong.CleanObject(customData);
 
-            if (Time > 0) MainNode["_customData"]["_time"] = Math.Round(Time, 3);
-            if (Bookmarks.Count > 0) MainNode["_customData"][BookmarksUseOfficialBpmEventsKey] = true;
-
-            BeatSaberSong.CleanObject(MainNode["_customData"]);
-            if (!MainNode["_customData"].Children.Any()) MainNode.Remove("_customData");
-
-            return true;
+            return customData;
         }
 
-        private void ParseV3ToV2()
-        {
-            // Note conversion
-            for (var i = Notes.Count - 1; i >= 0; i--)
-            {
-                Notes[i] = V3ToV2.Note(Notes[i]);
-            }
-            
-            // Obstacle conversion
-            for (var i = Obstacles.Count - 1; i >= 0; i--)
-            {
-                Obstacles[i] = V3ToV2.Obstacle(Obstacles[i]);
-            }
-            
-            Arcs.Clear(); // we purge them anyway
-
-            // Event conversion
-            for (var i = Events.Count - 1; i >= 0; i--)
-            {
-                Events[i] = V3ToV2.Event(Events[i]);
-            }
-
-            // Bpm event conversion
-            for (var i = BpmEvents.Count - 1; i >= 0; i--)
-            {
-                BpmEvents[i] = V3ToV2.BpmEvent(BpmEvents[i]);
-            }
-            
-            // Bookmark conversion
-            for (var i = Bookmarks.Count - 1; i >= 0; i--)
-            {
-                Bookmarks[i] = V3ToV2.Bookmark(Bookmarks[i]);
-            }
-
-            // Custom event conversion
-            for (var i = CustomEvents.Count - 1; i >= 0; i--)
-            {
-                CustomEvents[i] = V3ToV2.CustomEvent(CustomEvents[i]);
-            }
-
-            // Environment Enhancement conversion
-            for (var i = EnvironmentEnhancements.Count - 1; i >= 0; i--)
-            {
-                EnvironmentEnhancements[i] = V3ToV2.EnvironmentEnhancement(EnvironmentEnhancements[i]);
-            }
-
-            if (CustomData?.HasKey("fakeColorNotes") ?? false) CustomData.Remove("fakeColorNotes");
-            if (CustomData?.HasKey("fakeBombNotes") ?? false) CustomData.Remove("fakeBombNotes");
-            if (CustomData?.HasKey("fakeObstacles") ?? false) CustomData.Remove("fakeObstacles");
-            if (CustomData?.HasKey("fakeBurstSliders") ?? false) CustomData.Remove("fakeBurstSliders");
-        }
-
-        public override JSONNode ToJson() => throw new NotImplementedException();
-
-        public override BaseItem Clone() => throw new NotSupportedException();
-
-        public static V2Difficulty GetFromJson(JSONNode mainNode, string path)
+        public static BaseDifficulty GetFromJson(JSONNode mainNode, string path)
         {
             try
             {
-                var map = new V2Difficulty { MainNode = mainNode, DirectoryAndFile = path };
+                var map = new BaseDifficulty { DirectoryAndFile = path };
 
                 var nodeEnum = mainNode.GetEnumerator();
                 while (nodeEnum.MoveNext())
@@ -230,26 +151,33 @@ namespace Beatmap.V2
                             foreach (JSONNode n in node)
                             {
                                 if (n["_type"] != null && n["_type"] == 100)
-                                    map.BpmEvents.Add(new V2BpmEvent(n));
+                                    map.BpmEvents.Add(V2BpmEvent.GetFromJson(n));
                                 else
-                                    map.Events.Add(new V2Event(n));
+                                    map.Events.Add(V2Event.GetFromJson(n));
                             }
                             break;
                         case "_notes":
-                            foreach (JSONNode n in node) map.Notes.Add(new V2Note(n));
+                            foreach (JSONNode n in node) map.Notes.Add(V2Note.GetFromJson(n));
                             break;
                         case "_obstacles":
-                            foreach (JSONNode n in node) map.Obstacles.Add(new V2Obstacle(n));
+                            foreach (JSONNode n in node) map.Obstacles.Add(V2Obstacle.GetFromJson(n));
                             break;
                         case "_waypoints":
-                            foreach (JSONNode n in node) map.Waypoints.Add(new V2Waypoint(n));
+                            foreach (JSONNode n in node) map.Waypoints.Add(V2Waypoint.GetFromJson(n));
                             break;
                         case "_specialEventsKeywordFilter":
-                            map.EventTypesWithKeywords = new V2SpecialEventsKeywordFilters(node);
+                            map.EventTypesWithKeywords = V2SpecialEventsKeywordFilters.GetFromJson(node);
                             break;
                     }
                 }
 
+                // Do not assume map is sorted
+                map.BpmEvents.Sort();
+                map.Events.Sort();
+                map.Notes.Sort();
+                map.Obstacles.Sort();
+                map.Waypoints.Sort();
+                
                 LoadCustom(map, mainNode);
 
                 return map;
@@ -261,7 +189,7 @@ namespace Beatmap.V2
             }
         }
 
-        private static void LoadCustom(V2Difficulty map, JSONNode mainNode)
+        private static void LoadCustom(BaseDifficulty map, JSONNode mainNode)
         {
             var bpmList = new List<BaseBpmChange>();
             var bookmarksList = new List<BaseBookmark>();
@@ -289,16 +217,16 @@ namespace Beatmap.V2
                             switch (cKey)
                             {
                                 case "_BPMChanges":
-                                    foreach (JSONNode n in cNode) bpmList.Add(new V2BpmChange(n));
+                                    foreach (JSONNode n in cNode) bpmList.Add(V2BpmChange.GetFromJson(n));
                                     break;
                                 case "_bpmChanges":
-                                    foreach (JSONNode n in cNode) bpmList.Add(new V2BpmChange(n));
+                                    foreach (JSONNode n in cNode) bpmList.Add(V2BpmChange.GetFromJson(n));
                                     break;
                                 case "_bookmarks":
-                                    foreach (JSONNode n in cNode) bookmarksList.Add(new V2Bookmark(n));
+                                    foreach (JSONNode n in cNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
                                     break;
                                 case "_customEvents":
-                                    foreach (JSONNode n in cNode) customEventsList.Add(new V2CustomEvent(n));
+                                    foreach (JSONNode n in cNode) customEventsList.Add(V2CustomEvent.GetFromJson(n));
                                     break;
                                 case "_pointDefinitions":
                                     foreach (JSONNode n in cNode)
@@ -312,14 +240,14 @@ namespace Beatmap.V2
                                     break;
                                 case "_environment":
                                     foreach (JSONNode n in cNode)
-                                        envEnhancementsList.Add(new V2EnvironmentEnhancement(n));
+                                        envEnhancementsList.Add(V2EnvironmentEnhancement.GetFromJson(n));
                                     break;
                                 case "_materials":
                                     if (cNode is JSONObject matObj)
                                     {
                                         foreach (var n in matObj)
                                             if (!materials.ContainsKey(n.Key))
-                                                materials.Add(n.Key, new V2Material(n.Value.AsObject));
+                                                materials.Add(n.Key, V2Material.GetFromJson(n.Value.AsObject));
                                             else
                                                 Debug.LogWarning($"Duplicate key \"{n.Key}\" found in materials");
                                         break;
@@ -333,26 +261,30 @@ namespace Beatmap.V2
                         }
 
                         break;
+                    
+                    // Keys can be present outside of root CustomData from legacy community editor
                     case "_BPMChanges":
-                        foreach (JSONNode n in mNode) bpmList.Add(new V2BpmChange(n));
+                        foreach (JSONNode n in mNode) bpmList.Add(V2BpmChange.GetFromJson(n));
                         break;
                     case "_bpmChanges":
-                        foreach (JSONNode n in mNode) bpmList.Add(new V2BpmChange(n));
+                        foreach (JSONNode n in mNode) bpmList.Add(V2BpmChange.GetFromJson(n));
                         break;
                     case "_bookmarks":
-                        foreach (JSONNode n in mNode) bookmarksList.Add(new V2Bookmark(n));
+                        foreach (JSONNode n in mNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
                         break;
                     case "_customEvents":
-                        foreach (JSONNode n in mNode) customEventsList.Add(new V2CustomEvent(n));
+                        foreach (JSONNode n in mNode) customEventsList.Add(V2CustomEvent.GetFromJson(n));
                         break;
                 }
             }
 
+            // Removing customData keys outside of root customData
             if (mainNode.HasKey("_BPMChanges")) mainNode.Remove("_BPMChanges");
             if (mainNode.HasKey("_bpmChanges")) mainNode.Remove("_bpmChanges");
             if (mainNode.HasKey("_bookmarks")) mainNode.Remove("_bookmarks");
             if (mainNode.HasKey("_customEvents")) mainNode.Remove("_customEvents");
 
+            // Sort and assign
             map.BpmChanges = bpmList.DistinctBy(x => x.JsonTime).ToList();
             map.Bookmarks = bookmarksList;
             map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();

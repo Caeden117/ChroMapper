@@ -1,12 +1,15 @@
+using Beatmap.V3;
+using SimpleJSON;
+
 namespace Beatmap.Base
 {
-    public abstract class BaseIndexFilter : BaseItem
+    public class BaseIndexFilter : BaseItem
     {
-        protected BaseIndexFilter()
+        public BaseIndexFilter()
         {
         }
 
-        protected BaseIndexFilter(int type, int param0, int param1, int reverse, int chunks = 0, float limit = 0,
+        public BaseIndexFilter(int type, int param0, int param1, int reverse, int chunks = 0, float limit = 0,
             int limitAffectsType = 0, int random = 0, int seed = 0)
         {
             Type = type;
@@ -20,6 +23,20 @@ namespace Beatmap.Base
             LimitAffectsType = limitAffectsType;
         }
 
+        public BaseIndexFilter(BaseIndexFilter other)
+        {
+            Type = other.Type;
+            Param0 = other.Param0;
+            Param1 = other.Param1;
+            Reverse = other.Reverse;
+            Chunks = other.Chunks;
+            Random = other.Random;
+            Seed = other.Seed;
+            Limit = other.Limit;
+            LimitAffectsType = other.LimitAffectsType;
+        }
+        
+
         public int Type { get; set; }
         public int Param0 { get; set; }
         public int Param1 { get; set; }
@@ -29,5 +46,12 @@ namespace Beatmap.Base
         public int Seed { get; set; }
         public float Limit { get; set; }
         public int LimitAffectsType { get; set; }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3IndexFilter.ToJson(this)
+        };
+
+        public override BaseItem Clone() => new BaseIndexFilter(this);
     }
 }

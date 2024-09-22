@@ -221,7 +221,7 @@ public class Settings
     public bool Reminder_Loading360Levels = true;
     public bool Reminder_SettingsFailed = true;
     public bool WaveformWorkflow = true;
-    public bool Load_MapV3 = false;
+    public int MapVersion = 3;
     public CameraPosition[] SavedPositions = new CameraPosition[8];
 
     public int CursorPrecisionA = 1;

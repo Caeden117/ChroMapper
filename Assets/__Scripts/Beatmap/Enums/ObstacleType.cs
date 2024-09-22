@@ -4,6 +4,6 @@ namespace Beatmap.Enums
     {
         Full,
         Crouch,
-        Freeform
+        //Freeform <- While this exists in game - it doesn't actually work 
     }
 }

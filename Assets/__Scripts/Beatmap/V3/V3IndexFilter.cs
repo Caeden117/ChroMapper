@@ -3,50 +3,37 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3IndexFilter : BaseIndexFilter, V3Object
+    public static class V3IndexFilter
     {
-        public V3IndexFilter()
+        public static BaseIndexFilter GetFromJson(JSONNode node)
         {
+            var filter = new BaseIndexFilter();
+            
+            filter.Type = node["f"].AsInt;
+            filter.Param0 = node["p"].AsInt;
+            filter.Param1 = node["t"].AsInt;
+            filter.Reverse = node["r"].AsInt;
+            filter.Chunks = node["c"].AsInt;
+            filter.Random = node["n"].AsInt;
+            filter.Seed = node["s"].AsInt;
+            filter.Limit = node["l"].AsFloat;
+            filter.LimitAffectsType = node["d"].AsInt;
+
+            return filter;
         }
 
-        public V3IndexFilter(JSONNode node)
-        {
-            Type = node["f"].AsInt;
-            Param0 = node["p"].AsInt;
-            Param1 = node["t"].AsInt;
-            Reverse = node["r"].AsInt;
-            Chunks = node["c"].AsInt;
-            Random = node["n"].AsInt;
-            Seed = node["s"].AsInt;
-            Limit = node["l"].AsFloat;
-            LimitAffectsType = node["d"].AsInt;
-        }
-
-        public V3IndexFilter(int type, int param0, int param1, int reverse) : base(type, param0, param1, reverse)
-        {
-        }
-
-        public V3IndexFilter(int type, int param0, int param1, int reverse, int chunks = 0, float limit = 0,
-            int limitAffectsType = 0, int random = 0, int seed = 0) : base(type, param0, param1, reverse, chunks, limit,
-            limitAffectsType, random, seed)
-        {
-        }
-
-        public override JSONNode ToJson() =>
+        public static JSONNode ToJson(BaseIndexFilter filter) =>
             new JSONObject
             {
-                ["f"] = Type,
-                ["p"] = Param0,
-                ["t"] = Param1,
-                ["r"] = Reverse,
-                ["c"] = Chunks,
-                ["n"] = Random,
-                ["s"] = Seed,
-                ["l"] = Limit,
-                ["d"] = LimitAffectsType
+                ["f"] = filter.Type,
+                ["p"] = filter.Param0,
+                ["t"] = filter.Param1,
+                ["r"] = filter.Reverse,
+                ["c"] = filter.Chunks,
+                ["n"] = filter.Random,
+                ["s"] = filter.Seed,
+                ["l"] = filter.Limit,
+                ["d"] = filter.LimitAffectsType
             };
-
-        public override BaseItem Clone() =>
-            new V3IndexFilter(Type, Param0, Param1, Reverse, Chunks, Limit, LimitAffectsType, Random, Seed);
     }
 }

@@ -5,126 +5,68 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3Arc : BaseArc, V3Object
+    public class V3Arc
     {
-        public V3Arc()
+        public const string CustomKeyAnimation = "animation";
+
+        public const string CustomKeyTrack = "track";
+
+        public const string CustomKeyColor = "color";
+
+        public const string CustomKeyCoordinate = "coordinates";
+
+        public const string CustomKeyWorldRotation = "worldRotation";
+
+        public const string CustomKeyLocalRotation = "localRotation";
+
+        public const string CustomKeySpawnEffect = "spawnEffect";
+
+        public const string CustomKeyNoteJumpMovementSpeed = "noteJumpMovementSpeed";
+
+        public const string CustomKeyNoteJumpStartBeatOffset = "noteJumpStartBeatOffset";
+
+        public const string CustomKeyTailCoordinate = "tailCoordinates";
+
+        public static BaseArc GetFromJson(JSONNode node)
         {
+            var arc = new BaseArc();
+            
+            arc.JsonTime = node["b"].AsFloat;
+            arc.Color = node["c"].AsInt;
+            arc.PosX = node["x"].AsInt;
+            arc.PosY = node["y"].AsInt;
+            arc.CutDirection = node["d"].AsInt;
+            arc.HeadControlPointLengthMultiplier = node["mu"].AsFloat;
+            arc.TailJsonTime = node["tb"].AsFloat;
+            arc.TailPosX = node["tx"].AsInt;
+            arc.TailPosY = node["ty"].AsInt;
+            arc.TailCutDirection = node["tc"].AsInt;
+            arc.TailControlPointLengthMultiplier = node["tmu"].AsFloat;
+            arc.MidAnchorMode = node["m"].AsInt;
+            arc.CustomData = node["customData"];
+
+            return arc;
         }
-
-        public V3Arc(BaseArc other) : base(other) => ParseCustom();
-
-        public V3Arc(BaseNote start, BaseNote end) : base(start, end) => ParseCustom();
-
-        public V3Arc(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            Color = node["c"].AsInt;
-            PosX = node["x"].AsInt;
-            PosY = node["y"].AsInt;
-            CutDirection = node["d"].AsInt;
-            HeadControlPointLengthMultiplier = node["mu"].AsFloat;
-            TailJsonTime = node["tb"].AsFloat;
-            TailPosX = node["tx"].AsInt;
-            TailPosY = node["ty"].AsInt;
-            TailCutDirection = node["tc"].AsInt;
-            TailControlPointLengthMultiplier = node["tmu"].AsFloat;
-            MidAnchorMode = node["m"].AsInt;
-            CustomData = node["customData"];
-            ParseCustom();
-        }
-
-        public V3Arc(float time, int posX, int posY, int color, int cutDirection, float mult,
-            float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
-            JSONNode customData = null) : base(time, posX, posY, color, cutDirection, 0, mult,
-            tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
-            ParseCustom();
-
-        public V3Arc(float time, int posX, int posY, int color, int cutDirection, int angleOffset, float mult,
-            float tailTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
-            JSONNode customData = null) : base(time, posX, posY, color, cutDirection, angleOffset, mult,
-            tailTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
-            ParseCustom();
-
-        public V3Arc(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset, float mult,
-            float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, int tailCutDirection, float tailMult, int midAnchorMode,
-            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, color, cutDirection, angleOffset, mult,
-            tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, tailCutDirection, tailMult, midAnchorMode, customData) =>
-            ParseCustom();
-
-        public override string CustomKeyAnimation { get; } = "animation";
-
-        public override string CustomKeyTrack { get; } = "track";
-
-        public override string CustomKeyColor { get; } = "color";
-
-        public override string CustomKeyCoordinate { get; } = "coordinates";
-
-        public override string CustomKeyWorldRotation { get; } = "worldRotation";
-
-        public override string CustomKeyLocalRotation { get; } = "localRotation";
-
-        public override string CustomKeySpawnEffect { get; } = "spawnEffect";
-
-        public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
-
-        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";
-
-        public override string CustomKeyTailCoordinate { get; } = "tailCoordinates";
-
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
-        public override bool IsChroma() =>
-            CustomData != null &&
-            ((CustomData.HasKey("color") && CustomData["color"].IsArray) ||
-             (CustomData.HasKey("spawnEffect") && CustomData["spawnEffect"].IsBoolean) ||
-             (CustomData.HasKey("disableDebris") && CustomData["disableDebris"].IsBoolean));
-
-        public override bool IsNoodleExtensions() =>
-            CustomData != null &&
-            ((CustomData.HasKey("disableNoteGravity") && CustomData["disableNoteGravity"].IsBoolean) ||
-             (CustomData.HasKey("disableNoteLook") && CustomData["disableNoteLook"].IsBoolean) ||
-             (CustomData.HasKey("flip") && CustomData["flip"].IsArray) ||
-             (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
-             (CustomData.HasKey("localRotation") && CustomData["localRotation"].IsArray) ||
-             (CustomData.HasKey("noteJumpMovementSpeed") && CustomData["noteJumpMovementSpeed"].IsNumber) ||
-             (CustomData.HasKey("noteJumpStartBeatOffset") && CustomData["noteJumpStartBeatOffset"].IsNumber) ||
-             (CustomData.HasKey("coordinates") && CustomData["coordinates"].IsArray) ||
-             (CustomData.HasKey("worldRotation") &&
-              (CustomData["worldRotation"].IsArray || CustomData["worldRotation"].IsNumber)));
-
-        public override bool IsMappingExtensions() =>
-            (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 ||
-             TailPosX <= -1000 || TailPosX >= 1000 || TailPosY < 0 || TailPosY > 2 ||
-             (CutDirection >= 1000 && CutDirection <= 1360) ||
-             (CutDirection >= 2000 && CutDirection <= 2360) ||
-             (TailCutDirection >= 1000 && TailCutDirection <= 1360)) &&
-            !IsNoodleExtensions();
-
-        public override JSONNode ToJson()
+        
+        public static JSONNode ToJson(BaseArc arc)
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["c"] = Color;
-            node["x"] = PosX;
-            node["y"] = PosY;
-            node["d"] = CutDirection;
-            node["mu"] = HeadControlPointLengthMultiplier;
-            node["tb"] = TailJsonTime;
-            node["tx"] = TailPosX;
-            node["ty"] = TailPosY;
-            node["tc"] = TailCutDirection;
-            node["tmu"] = TailControlPointLengthMultiplier;
-            node["m"] = MidAnchorMode;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            node["b"] = arc.JsonTime;
+            node["c"] = arc.Color;
+            node["x"] = arc.PosX;
+            node["y"] = arc.PosY;
+            node["d"] = arc.CutDirection;
+            node["mu"] = arc.HeadControlPointLengthMultiplier;
+            node["tb"] = arc.TailJsonTime;
+            node["tx"] = arc.TailPosX;
+            node["ty"] = arc.TailPosY;
+            node["tc"] = arc.TailCutDirection;
+            node["tmu"] = arc.TailControlPointLengthMultiplier;
+            node["m"] = arc.MidAnchorMode;
+            arc.CustomData = arc.SaveCustom();
+            if (!arc.CustomData.Children.Any()) return node;
+            node["customData"] = arc.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() =>
-            new V3Arc(JsonTime, SongBpmTime, PosX, PosY, Color, CutDirection, AngleOffset,
-                HeadControlPointLengthMultiplier, TailJsonTime, TailSongBpmTime, TailPosX, TailPosY,
-                TailCutDirection, TailControlPointLengthMultiplier,
-                MidAnchorMode, SaveCustom().Clone());
     }
 }

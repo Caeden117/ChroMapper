@@ -1,12 +1,13 @@
 using System;
 using Beatmap.Enums;
+using Beatmap.V3;
 using SimpleJSON;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseLightColorBase : BaseObject
+    public class BaseLightColorBase : BaseObject
     {
-        protected BaseLightColorBase()
+        public BaseLightColorBase()
         {
         }
 
@@ -29,6 +30,10 @@ namespace Beatmap.Base
         public float StrobeBrightness { get; set; }
         public int StrobeFade { get; set; }
 
+        public override string CustomKeyColor { get; } = "unusedColor";
+
+        public override string CustomKeyTrack { get; } = "unusedKeyTrack";
+
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
             if (other is BaseLightColorBase lcb)
@@ -36,5 +41,12 @@ namespace Beatmap.Base
                        TransitionType == lcb.TransitionType || Frequency == lcb.Frequency;
             return false;
         }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3LightColorBase.ToJson(this),
+        };
+
+        public override BaseItem Clone() => throw new NotImplementedException();
     }
 }

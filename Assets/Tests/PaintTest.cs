@@ -26,6 +26,12 @@ namespace Tests
             TestUtils.ReturnSettings();
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            Settings.Instance.MapVersion = 3;
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
@@ -36,6 +42,8 @@ namespace Tests
         [Test]
         public void PaintGradientUndo()
         {
+            Settings.Instance.MapVersion = 2;
+
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             var colorPicker = Object.FindObjectOfType<ColorPicker>();
             var painter = Object.FindObjectOfType<PaintSelectedObjects>();
@@ -48,7 +56,7 @@ namespace Tests
 
             var customData = new JSONObject();
             customData["_lightGradient"] = new ChromaLightGradient(Color.blue, Color.cyan).ToJson();
-            BaseEvent baseEventA = new V2Event(2, 1, 1, 1, customData);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = 1, Value = 1, FloatValue = 1, CustomData = customData };
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
             SelectionController.Select(baseEventA);
@@ -93,7 +101,7 @@ namespace Tests
             var selectionController = root.GetComponentInChildren<SelectionController>();
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3BasicEvent(2, 1, 1);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = 1, Value = 1 };
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
             SelectionController.Select(baseEventA);
@@ -139,7 +147,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3BasicEvent(2, 1, 0);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = 1, Value = 0 };
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
             SelectionController.Select(baseEventA);

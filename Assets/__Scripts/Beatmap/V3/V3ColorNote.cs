@@ -5,120 +5,58 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3ColorNote : BaseNote, V3Object
+    public class V3ColorNote
     {
-        public V3ColorNote()
+        public const string CustomKeyAnimation = "animation";
+
+        public const string CustomKeyTrack = "track";
+
+        public const string CustomKeyColor = "color";
+
+        public const string CustomKeyCoordinate = "coordinates";
+
+        public const string CustomKeyWorldRotation = "worldRotation";
+
+        public const string CustomKeyLocalRotation = "localRotation";
+
+        public const string CustomKeySpawnEffect = "spawnEffect";
+
+        public const string CustomKeyNoteJumpMovementSpeed = "noteJumpMovementSpeed";
+
+        public const string CustomKeyNoteJumpStartBeatOffset = "noteJumpStartBeatOffset";
+
+        public const string CustomKeyDirection = "cutDirection";
+
+        public static BaseNote GetFromJson(JSONNode node, bool? customFake = false)
         {
+            var note = new BaseNote();
+            
+            note.JsonTime = node["b"].AsFloat;
+            note.PosX = node["x"].AsInt;
+            note.PosY = node["y"].AsInt;
+            note.AngleOffset = node["a"].AsInt;
+            note.Color = node["c"].AsInt;
+            note.CutDirection = node["d"].AsInt;
+            note.CustomData = node["customData"];
+
+            if (customFake != null) note.CustomFake = customFake.Value;
+
+            return note;
         }
 
-        public V3ColorNote(BaseNote other) : base(other) => ParseCustom();
-
-        public V3ColorNote(BaseSlider slider) : base(slider) => ParseCustom();
-
-        public V3ColorNote(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            PosX = node["x"].AsInt;
-            PosY = node["y"].AsInt;
-            AngleOffset = node["a"].AsInt;
-            Color = node["c"].AsInt;
-            CutDirection = node["d"].AsInt;
-            CustomData = node["customData"];
-            InferType();
-            ParseCustom();
-        }
-
-        public V3ColorNote(JSONNode node, bool fake = false)
-            : this(node)
-        {
-            CustomFake = fake;
-        }
-
-        public V3ColorNote(float time, int posX, int posY, int type, int cutDirection,
-            JSONNode customData = null) : base(
-            time, posX, posY, type, cutDirection, customData) =>
-            ParseCustom();
-
-        public V3ColorNote(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
-            JSONNode customData = null) : base(
-            time, posX, posY, color, cutDirection, angleOffset, customData) =>
-            ParseCustom();
-
-        public V3ColorNote(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
-            JSONNode customData = null) : base(
-            jsonTime, songBpmTime, posX, posY, color, cutDirection, angleOffset, customData) =>
-            ParseCustom();
-
-        // TODO: deal with custom direction to angle offset
-        public override float? CustomDirection
-        {
-            get => null;
-            set { }
-        }
-
-        public override string CustomKeyAnimation { get; } = "animation";
-
-        public override string CustomKeyTrack { get; } = "track";
-
-        public override string CustomKeyColor { get; } = "color";
-
-        public override string CustomKeyCoordinate { get; } = "coordinates";
-
-        public override string CustomKeyWorldRotation { get; } = "worldRotation";
-
-        public override string CustomKeyLocalRotation { get; } = "localRotation";
-
-        public override string CustomKeySpawnEffect { get; } = "spawnEffect";
-
-        public override string CustomKeyNoteJumpMovementSpeed { get; } = "noteJumpMovementSpeed";
-
-        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "noteJumpStartBeatOffset";
-
-        public override string CustomKeyDirection { get; } = "cutDirection";
-
-        protected sealed override void ParseCustom() => base.ParseCustom();
-
-        public override bool IsChroma() =>
-            CustomData != null &&
-            ((CustomData.HasKey("color") && CustomData["color"].IsArray) ||
-             (CustomData.HasKey("spawnEffect") && CustomData["spawnEffect"].IsBoolean) ||
-             (CustomData.HasKey("disableDebris") && CustomData["disableDebris"].IsBoolean));
-
-        public override bool IsNoodleExtensions() =>
-            CustomData != null &&
-            ((CustomData.HasKey("disableNoteGravity") && CustomData["disableNoteGravity"].IsBoolean) ||
-             (CustomData.HasKey("disableNoteLook") && CustomData["disableNoteLook"].IsBoolean) ||
-             (CustomData.HasKey("flip") && CustomData["flip"].IsArray) ||
-             (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
-             (CustomData.HasKey("localRotation") && CustomData["localRotation"].IsArray) ||
-             (CustomData.HasKey("noteJumpMovementSpeed") && CustomData["noteJumpMovementSpeed"].IsNumber) ||
-             (CustomData.HasKey("noteJumpStartBeatOffset") &&
-              CustomData["noteJumpStartBeatOffset"].IsNumber) ||
-             (CustomData.HasKey("coordinates") && CustomData["coordinates"].IsArray) ||
-             (CustomData.HasKey("worldRotation") &&
-              (CustomData["worldRotation"].IsArray || CustomData["worldRotation"].IsNumber)));
-
-        public override bool IsMappingExtensions() =>
-            (PosX < 0 || PosX > 3 || PosY < 0 || PosY > 2 || (CutDirection >= 1000 && CutDirection <= 1360) ||
-             (CutDirection >= 2000 && CutDirection <= 2360)) &&
-            !IsNoodleExtensions();
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseNote note)
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["x"] = PosX;
-            node["y"] = PosY;
-            node["a"] = AngleOffset;
-            node["c"] = Color;
-            node["d"] = CutDirection;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            node["b"] = note.JsonTime;
+            node["x"] = note.PosX;
+            node["y"] = note.PosY;
+            node["a"] = note.AngleOffset;
+            node["c"] = note.Color;
+            node["d"] = note.CutDirection;
+            note.CustomData = note.SaveCustom();
+            if (!note.CustomData.Children.Any()) return node;
+            node["customData"] = note.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() =>
-            new V3ColorNote(JsonTime, SongBpmTime, PosX, PosY, Color, CutDirection, AngleOffset, SaveCustom().Clone());
     }
 }

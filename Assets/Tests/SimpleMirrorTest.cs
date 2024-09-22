@@ -32,6 +32,12 @@ namespace Tests
             TestUtils.ReturnSettings();
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            Settings.Instance.MapVersion = 3;
+        }
+
         [TearDown]
         public void ContainerCleanup()
         {
@@ -49,7 +55,11 @@ namespace Tests
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
             BaseNote baseNoteA =
-                new V3ColorNote(2, -2345, (int)GridY.Base, (int)NoteType.Red, (int)NoteCutDirection.Left);
+                new BaseNote
+                {
+                    JsonTime = 2, PosX = -2345, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Left
+                };
 
             PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
@@ -68,12 +78,16 @@ namespace Tests
         [Test]
         public void MirrorNoteNE()
         {
-            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
             var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-            BaseNote baseNoteA = new V3ColorNote(2, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                (int)NoteCutDirection.Left, JSON.Parse("{\"coordinates\": [-1, 0]}"));
+            BaseNote baseNoteA = new BaseNote
+            {
+                JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left, CustomData = JSON.Parse("{\"coordinates\": [-1, 0]}")
+            };
 
             PlaceUtils.PlaceNote(notePlacement, baseNoteA);
 
@@ -117,8 +131,8 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3BasicEvent(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                JSON.Parse($"{{\"lightID\": {original}}}"));
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f,
+                CustomData = JSON.Parse($"{{\"lightID\": {original}}}")};
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -143,14 +157,16 @@ namespace Tests
         [Test]
         public void MirrorEventGradient()
         {
+            Settings.Instance.MapVersion = 2;
+            
             var eventsContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f,
-                JSON.Parse(
-                    "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}"));
+            BaseEvent baseEventA = new BaseEvent{ JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f,
+                CustomData = JSON.Parse(
+                    "{\"_lightGradient\": {\"_duration\": 1, \"_startColor\": [1, 0, 0, 1], \"_endColor\": [0, 1, 0, 1], \"_easing\": \"easeLinear\"}}")};
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -178,7 +194,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f };
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -201,7 +217,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V2Event(2, (int)EventTypeValue.BackLasers, (int)LightValue.RedFade, 1f);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.BackLasers, Value = (int)LightValue.RedFade, FloatValue = 1f };
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 
@@ -232,7 +248,14 @@ namespace Tests
             // What the actual fuck - example from mirroring in MMA2
             //{"_time":1.5,"_lineIndex":1446,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
             //{"_time":1.5,"_lineIndex":2958,"_type":595141,"_duration":0.051851850003004074,"_width":2596}
-            BaseObstacle wallA = new V2Obstacle(2, 1446, 595141, 1, 2596);
+            BaseObstacle wallA = new BaseObstacle
+            {
+                JsonTime = 2,
+                PosX = 1446,
+                Type = 595141,
+                Duration = 1,
+                Width = 2596
+            };
 
             PlaceUtils.PlaceWall(wallPlacement, wallA);
 
@@ -255,8 +278,16 @@ namespace Tests
             var wallPlacement = root.GetComponentInChildren<ObstaclePlacement>();
             wallPlacement.RefreshVisuals();
 
-            BaseObstacle wallA = new V3Obstacle(2, (int)GridX.Left, (int)GridY.Base, 1, 2, 5,
-                JSON.Parse("{\"coordinates\": [-1.5, 0]}"));
+            BaseObstacle wallA = new BaseObstacle
+            {
+                JsonTime = 2,
+                PosX = (int)GridX.Left,
+                PosY = (int)GridY.Base,
+                Duration = 1,
+                Width = 2,
+                Height = 5,
+                CustomData = JSON.Parse("{\"coordinates\": [-1.5, 0]}"),
+            };
 
             PlaceUtils.PlaceWall(wallPlacement, wallA);
 
@@ -285,7 +316,7 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3RotationEvent(2, 1, 33);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LateLaneRotation, Rotation = 33 };
 
             PlaceUtils.PlaceEvent(eventPlacement, baseEventA);
 

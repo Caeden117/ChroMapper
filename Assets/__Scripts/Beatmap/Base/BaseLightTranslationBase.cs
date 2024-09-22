@@ -1,12 +1,13 @@
 using System;
 using Beatmap.Enums;
+using Beatmap.V3;
 using SimpleJSON;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseLightTranslationBase : BaseObject
+    public class BaseLightTranslationBase : BaseObject
     {
-        protected BaseLightTranslationBase()
+        public BaseLightTranslationBase()
         {
         }
 
@@ -23,6 +24,10 @@ namespace Beatmap.Base
         public int EaseType { get; set; }
         public int UsePrevious { get; set; }
 
+        public override string CustomKeyColor { get; } = "unusedColor";
+
+        public override string CustomKeyTrack { get; } = "unusedKeyTrack";
+
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
             if (other is BaseLightTranslationBase lrb)
@@ -30,5 +35,12 @@ namespace Beatmap.Base
                        EaseType == lrb.EaseType || UsePrevious == lrb.UsePrevious;
             return false;
         }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3LightTranslationBase.ToJson(this),
+        };
+
+        public override BaseItem Clone() => throw new NotImplementedException();
     }
 }

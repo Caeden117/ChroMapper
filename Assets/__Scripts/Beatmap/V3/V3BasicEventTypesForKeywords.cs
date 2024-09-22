@@ -4,32 +4,26 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3BasicEventTypesForKeywords : BaseEventTypesForKeywords, V3Object
+    public class V3BasicEventTypesForKeywords
     {
-        public V3BasicEventTypesForKeywords()
+        public static BaseEventTypesForKeywords GetFromJson(JSONNode node)
         {
-        }
-
-        public V3BasicEventTypesForKeywords(BaseEventTypesForKeywords other) : base(other)
-        {
-        }
-
-        public V3BasicEventTypesForKeywords(JSONNode node)
-        {
-            Keyword = RetrieveRequiredNode(node, "k");
-            Events = RetrieveRequiredNode(node, "e").AsArray.Linq
+            var forKeywords = new BaseEventTypesForKeywords();
+            
+            forKeywords.Keyword = BaseItem.GetRequiredNode(node, "k");
+            forKeywords.Events = BaseItem.GetRequiredNode(node, "e").AsArray.Linq
                 .Select(x => x.Value.AsInt).ToArray();
+
+            return forKeywords;
         }
 
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseEventTypesForKeywords forKeywords)
         {
             JSONNode node = new JSONObject();
-            node["k"] = Keyword;
+            node["k"] = forKeywords.Keyword;
             node["e"] = new JSONArray();
-            foreach (var i in Events) node["e"].Add(i);
+            foreach (var i in forKeywords.Events) node["e"].Add(i);
             return node;
         }
-
-        public override BaseItem Clone() => new V3BasicEventTypesForKeywords(ToJson().Clone());
     }
 }

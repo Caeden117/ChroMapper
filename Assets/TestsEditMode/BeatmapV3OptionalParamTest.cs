@@ -11,57 +11,55 @@ namespace TestsEditMode
         // For use in PlayMode
         public void TestEverything()
         {
-            V3BpmEvent();
-            V3RotationEvent();
-            V3ColorNote();
-            V3BombNote();
-            V3Obstacle();
-            V3Arc();
-            V3Chain();
-            V3BasicEvent();
-            V3ColorBoostEvent();
-            V3LightColorEventBoxGroup();
-            V3LightColorBase();
-            V3LightRotationEventBoxGroup();
-            V3LightRotationBase();
-            V3LightTranslationEventBoxGroup();
-            V3LightTranslationBase();
-            V3VfxEventEventBoxGroup();
-            V3FxEventsCollection();
-            V3IndexFilter();
+            V3BpmEventTest();
+            V3RotationEventTest();
+            V3ColorNoteTest();
+            V3BombNoteTest();
+            V3ObstacleTest();
+            V3ArcTest();
+            V3ChainTest();
+            V3BasicEventTest();
+            V3ColorBoostEventTest();
+            V3LightColorEventBoxGroupTest();
+            V3LightColorBaseTest();
+            V3LightRotationEventBoxGroupTest();
+            V3LightRotationBaseTest();
+            V3LightTranslationEventBoxGroupTest();
+            V3LightTranslationBaseTest();
+            V3VfxEventEventBoxGroupTest();
+            V3FxEventsCollectionTest();
+            V3IndexFilterTest();
         }
 
         [Test]
-        public void V3BpmEvent()
+        public void V3BpmEventTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3BpmEvent(new JSONObject()));
+            Assert.Throws<ArgumentException>(() => V3BpmEvent.GetFromJson(new JSONObject()));
 
             var json = new JSONObject { ["m"] = 120 };
-            var bpmEvent = new V3BpmEvent(json);
+            var bpmEvent = V3BpmEvent.GetFromJson(json);
 
             Assert.AreEqual(0, bpmEvent.JsonTime);
             Assert.AreEqual(120, bpmEvent.Bpm);
         }
 
         [Test]
-        public void V3RotationEvent()
+        public void V3RotationEventTest()
         {
             var json = new JSONObject();
-            var rotationEvent = new V3RotationEvent(json);
+            var rotationEvent = V3RotationEvent.GetFromJson(json);
 
             Assert.AreEqual(0, rotationEvent.JsonTime);
             Assert.AreEqual(14, rotationEvent.Type); // Is not 0
-            Assert.AreEqual(0, rotationEvent.Value);
-            Assert.AreEqual(0, rotationEvent.FloatValue);
+            Assert.AreEqual(1360, rotationEvent.Value);
             Assert.AreEqual(0, rotationEvent.Rotation);
-            Assert.AreEqual(0, rotationEvent.ExecutionTime);
         }
 
         [Test]
-        public void V3ColorNote()
+        public void V3ColorNoteTest()
         {
             var json = new JSONObject();
-            var note = new V3ColorNote(json);
+            var note = V3ColorNote.GetFromJson(json);
 
             Assert.AreEqual(0, note.JsonTime);
             Assert.AreEqual(0, note.Color);
@@ -73,10 +71,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3BombNote()
+        public void V3BombNoteTest()
         {
             var json = new JSONObject();
-            var bomb = new V3BombNote(json);
+            var bomb = V3BombNote.GetFromJson(json);
 
             Assert.AreEqual(0, bomb.JsonTime);
             Assert.AreEqual(3, bomb.Color); // Is not 0
@@ -88,10 +86,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3Obstacle()
+        public void V3ObstacleTest()
         {
             var json = new JSONObject();
-            var obstacle = new V3Obstacle(json);
+            var obstacle = V3Obstacle.GetFromJson(json);
 
             Assert.AreEqual(0, obstacle.JsonTime);
             Assert.AreEqual(0, obstacle.PosX);
@@ -101,10 +99,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3Arc()
+        public void V3ArcTest()
         {
             var json = new JSONObject();
-            var arc = new V3Arc(json);
+            var arc = V3Arc.GetFromJson(json);
 
             Assert.AreEqual(0, arc.JsonTime);
             Assert.AreEqual(0, arc.PosX);
@@ -121,10 +119,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3Chain()
+        public void V3ChainTest()
         {
             var json = new JSONObject();
-            var chain = new V3Chain(json);
+            var chain = V3Chain.GetFromJson(json);
 
             Assert.AreEqual(0, chain.JsonTime);
             Assert.AreEqual(0, chain.PosX);
@@ -139,10 +137,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3BasicEvent()
+        public void V3BasicEventTest()
         {
             var json = new JSONObject();
-            var basicEvent = new V3BasicEvent(json);
+            var basicEvent = V3BasicEvent.GetFromJson(json);
 
             Assert.AreEqual(0, basicEvent.JsonTime);
             Assert.AreEqual(0, basicEvent.Type);
@@ -151,23 +149,22 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3ColorBoostEvent()
+        public void V3ColorBoostEventTest()
         {
             var json = new JSONObject();
-            var boostEvent = new V3ColorBoostEvent(json);
+            var boostEvent = V3ColorBoostEvent.GetFromJson(json);
 
             Assert.AreEqual(0, boostEvent.JsonTime);
             Assert.AreEqual(5, boostEvent.Type); // Is not 0
             Assert.AreEqual(0, boostEvent.Value);
             Assert.AreEqual(0, boostEvent.FloatValue);
-            Assert.AreEqual(false, boostEvent.Toggle);
         }
 
         [Test]
-        public void V3LightColorEventBoxGroup()
+        public void V3LightColorEventBoxGroupTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3LightColorEventBoxGroup(new JSONObject()));
-            Assert.Throws<ArgumentException>(() => new V3LightColorEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightColorEventBoxGroup.GetFromJson(new JSONObject()));
+            Assert.Throws<ArgumentException>(() => V3LightColorEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -177,7 +174,7 @@ namespace TestsEditMode
                     }
                 }
             }));
-            Assert.Throws<ArgumentException>(() => new V3LightColorEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightColorEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -199,16 +196,16 @@ namespace TestsEditMode
                     }
                 }
             };
-            var group = new V3LightColorEventBoxGroup(json);
+            var group = V3LightColorEventBoxGroup.GetFromJson(json);
 
             AssertBaseEventBoxGroupDefaults(group);
         }
 
         [Test]
-        public void V3LightColorBase()
+        public void V3LightColorBaseTest()
         {
             var json = new JSONObject();
-            var evt = new V3LightColorBase(json);
+            var evt = V3LightColorBase.GetFromJson(json);
 
             Assert.AreEqual(0, evt.JsonTime);
             Assert.AreEqual(0, evt.Color);
@@ -217,10 +214,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3LightRotationEventBoxGroup()
+        public void V3LightRotationEventBoxGroupTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3LightRotationEventBoxGroup(new JSONObject()));
-            Assert.Throws<ArgumentException>(() => new V3LightRotationEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightRotationEventBoxGroup.GetFromJson(new JSONObject()));
+            Assert.Throws<ArgumentException>(() => V3LightRotationEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -230,7 +227,7 @@ namespace TestsEditMode
                     }
                 }
             }));
-            Assert.Throws<ArgumentException>(() => new V3LightRotationEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightRotationEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -252,16 +249,16 @@ namespace TestsEditMode
                     }
                 }
             };
-            var group = new V3LightRotationEventBoxGroup(json);
+            var group = V3LightRotationEventBoxGroup.GetFromJson(json);
 
             AssertBaseEventBoxGroupDefaults(group);
         }
 
         [Test]
-        public void V3LightRotationBase()
+        public void V3LightRotationBaseTest()
         {
             var json = new JSONObject();
-            var evt = new V3LightRotationBase(json);
+            var evt = V3LightRotationBase.GetFromJson(json);
 
             Assert.AreEqual(0, evt.JsonTime);
             Assert.AreEqual(0, evt.Rotation);
@@ -272,10 +269,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3LightTranslationEventBoxGroup()
+        public void V3LightTranslationEventBoxGroupTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3LightTranslationEventBoxGroup(new JSONObject()));
-            Assert.Throws<ArgumentException>(() => new V3LightTranslationEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightTranslationEventBoxGroup.GetFromJson(new JSONObject()));
+            Assert.Throws<ArgumentException>(() => V3LightTranslationEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -285,7 +282,7 @@ namespace TestsEditMode
                     }
                 }
             }));
-            Assert.Throws<ArgumentException>(() => new V3LightTranslationEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3LightTranslationEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -307,16 +304,16 @@ namespace TestsEditMode
                     }
                 }
             };
-            var group = new V3LightTranslationEventBoxGroup(json);
+            var group = V3LightTranslationEventBoxGroup.GetFromJson(json);
 
             AssertBaseEventBoxGroupDefaults(group);
         }
 
         [Test]
-        public void V3LightTranslationBase()
+        public void V3LightTranslationBaseTest()
         {
             var json = new JSONObject();
-            var evt = new V3LightTranslationBase(json);
+            var evt = V3LightTranslationBase.GetFromJson(json);
 
             Assert.AreEqual(0, evt.JsonTime);
             Assert.AreEqual(0, evt.UsePrevious);
@@ -325,10 +322,10 @@ namespace TestsEditMode
         }
 
         [Test]
-        public void V3VfxEventEventBoxGroup()
+        public void V3VfxEventEventBoxGroupTest()
         {
-            Assert.Throws<ArgumentException>(() => new V3VfxEventEventBoxGroup(new JSONObject()));
-            Assert.DoesNotThrow(() => new V3VfxEventEventBoxGroup(new JSONObject
+            Assert.Throws<ArgumentException>(() => V3VfxEventEventBoxGroup.GetFromJson(new JSONObject()));
+            Assert.DoesNotThrow(() => V3VfxEventEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
                 {
@@ -350,26 +347,26 @@ namespace TestsEditMode
                     }
                 }
             };
-            var group = new V3VfxEventEventBoxGroup(json);
+            var group = V3VfxEventEventBoxGroup.GetFromJson(json);
 
             AssertBaseEventBoxGroupDefaults(group);
         }
 
         [Test]
-        public void V3FxEventsCollection()
+        public void V3FxEventsCollectionTest()
         {
             var json = new JSONObject();
-            var evt = new V3FxEventsCollection(json);
+            var evt = V3FxEventsCollection.GetFromJson(json);
 
             Assert.AreEqual(0, evt.IntFxEvents.Length);
             Assert.AreEqual(0, evt.FloatFxEvents.Length);
         }
 
         [Test]
-        public void V3IndexFilter()
+        public void V3IndexFilterTest()
         {
             var json = new JSONObject();
-            var filter = new V3IndexFilter(json);
+            var filter = V3IndexFilter.GetFromJson(json);
 
             AssertIndexFilterDefaults(filter);
         }
@@ -392,14 +389,14 @@ namespace TestsEditMode
             Assert.AreEqual(0, box.BeatDistributionType);
             Assert.AreEqual(0, box.Easing);
 
-            if (box is V3LightColorEventBox lightColorEventBox)
+            if (box is BaseLightColorEventBox lightColorEventBox)
             {
                 Assert.AreEqual(0, lightColorEventBox.BrightnessDistribution);
                 Assert.AreEqual(0, lightColorEventBox.BrightnessDistributionType);
                 Assert.AreEqual(0, lightColorEventBox.BrightnessAffectFirst);
                 Assert.AreEqual(0, lightColorEventBox.Events.Length);
             }
-            else if (box is V3LightRotationEventBox lightRotationEventBox)
+            else if (box is BaseLightRotationEventBox lightRotationEventBox)
             {
                 Assert.AreEqual(0, lightRotationEventBox.RotationDistribution);
                 Assert.AreEqual(0, lightRotationEventBox.RotationDistributionType);
@@ -409,7 +406,7 @@ namespace TestsEditMode
                 Assert.AreEqual(0, lightRotationEventBox.Easing);
                 Assert.AreEqual(0, lightRotationEventBox.Events.Length);
             }
-            else if (box is V3LightTranslationEventBox lightTranslationEventBox)
+            else if (box is BaseLightTranslationEventBox lightTranslationEventBox)
             {
                 Assert.AreEqual(0, lightTranslationEventBox.TranslationDistribution);
                 Assert.AreEqual(0, lightTranslationEventBox.TranslationDistributionType);
@@ -419,7 +416,7 @@ namespace TestsEditMode
                 Assert.AreEqual(0, lightTranslationEventBox.Easing);
                 Assert.AreEqual(0, lightTranslationEventBox.Events.Length);
             }
-            else if (box is V3VfxEventEventBox vfxEventEventBox)
+            else if (box is BaseVfxEventEventBox vfxEventEventBox)
             {
                 Assert.AreEqual(0, vfxEventEventBox.VfxDistribution);
                 Assert.AreEqual(0, vfxEventEventBox.VfxDistributionType);

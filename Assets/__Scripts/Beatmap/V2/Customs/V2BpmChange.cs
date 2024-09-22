@@ -6,37 +6,21 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V2.Customs
 {
-    public class V2BpmChange : BaseBpmChange, V2Object
+    public class V2BpmChange
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        public V2BpmChange()
+        public const string KeyTime = "_time";
+        public const string KeyBeatsPerBar = "_beatsPerBar";
+        public const string KeyBpm = "_BPM";
+        public const string KeyMetronomeOffset = "_metronomeOffset";
+
+        public static BaseBpmChange GetFromJson(JSONNode node) => new BaseBpmChange(node);
+
+        public static JSONNode ToJson(BaseBpmChange bpmChange) => new JSONObject
         {
-        }
-
-        public V2BpmChange(BaseBpmChange other) : base(other)
-        {
-        }
-
-        public V2BpmChange(BaseBpmEvent other) : base(other)
-        {
-        }
-
-        public V2BpmChange(JSONNode node) : base(node)
-        {
-        }
-
-        public V2BpmChange(float time, float bpm) : base(time, bpm)
-        {
-        }
-
-        public override string CustomKeyTrack { get; } = "_track";
-        public override string CustomKeyColor { get; } = "_color";
-        public override string KeyTime { get; } = "_time";
-        public override string KeyBeatsPerBar { get; } = "_beatsPerBar";
-        public override string KeyBpm { get; } = "_BPM";
-        public override string KeyMetronomeOffset { get; } = "_metronomeOffset";
-
-        public override BaseItem Clone() => new V2BpmChange(ToJson());
+            [KeyTime] = bpmChange.JsonTime,
+            [KeyBpm] = bpmChange.Bpm,
+            [KeyBeatsPerBar] = bpmChange.BeatsPerBar,
+            [KeyMetronomeOffset] = bpmChange.MetronomeOffset
+        };
     }
 }

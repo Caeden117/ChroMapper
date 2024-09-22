@@ -36,7 +36,7 @@ public class BombPlacement : PlacementController<BaseNote, NoteContainer, NoteGr
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed a Bomb.");
 
-    public override BaseNote GenerateOriginalData() => BeatmapFactory.Bomb(0, 0, 0);
+    public override BaseNote GenerateOriginalData() => new BaseNote { Type = (int)NoteType.Bomb };
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 roundedHit)
     {

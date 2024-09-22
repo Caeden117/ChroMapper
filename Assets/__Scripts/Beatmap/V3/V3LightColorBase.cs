@@ -6,55 +6,38 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3LightColorBase : BaseLightColorBase, V3Object
+    public static class V3LightColorBase
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        private BaseLightColorBase lightColorBaseImplementation;
-
-        public V3LightColorBase()
+        public static BaseLightColorBase GetFromJson(JSONNode node)
         {
+            var lightColorBase = new BaseLightColorBase();
+            
+            lightColorBase.JsonTime = node["b"].AsFloat;
+            lightColorBase.Color = node["c"].AsInt;
+            lightColorBase.Brightness = node["s"].AsFloat;
+            lightColorBase.TransitionType = node["i"].AsInt;
+            lightColorBase.Frequency = node["f"].AsInt;
+            lightColorBase.StrobeBrightness = node["sb"].AsFloat;
+            lightColorBase.StrobeFade = node["sf"].AsInt;
+            lightColorBase.CustomData = node["customData"];
+
+            return lightColorBase;
         }
 
-        public V3LightColorBase(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            Color = node["c"].AsInt;
-            Brightness = node["s"].AsFloat;
-            TransitionType = node["i"].AsInt;
-            Frequency = node["f"].AsInt;
-            StrobeBrightness = node["sb"].AsFloat;
-            StrobeFade = node["sf"].AsInt;
-            CustomData = node["customData"];
-        }
-
-        public V3LightColorBase(float time, int color, float brightness, int transitionType, int frequency,
-            float strobeBrightness, int strobeFade, JSONNode customData = null) : base(time, color, brightness,
-            transitionType, frequency, strobeBrightness, strobeFade, customData)
-        {
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-        public override string CustomKeyColor { get; } = "color";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseLightColorBase lightColorBase)
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["c"] = Color;
-            node["s"] = Brightness;
-            node["i"] = TransitionType;
-            node["f"] = Frequency;
-            node["sb"] = StrobeBrightness;
-            node["sf"] = StrobeFade;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            node["b"] = lightColorBase.JsonTime;
+            node["c"] = lightColorBase.Color;
+            node["s"] = lightColorBase.Brightness;
+            node["i"] = lightColorBase.TransitionType;
+            node["f"] = lightColorBase.Frequency;
+            node["sb"] = lightColorBase.StrobeBrightness;
+            node["sf"] = lightColorBase.StrobeFade;
+            lightColorBase.CustomData = lightColorBase.SaveCustom();
+            if (!lightColorBase.CustomData.Children.Any()) return node;
+            node["customData"] = lightColorBase.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() =>
-            new V3LightColorBase(JsonTime, Color, Brightness, TransitionType, Frequency, StrobeBrightness, StrobeFade,
-                SaveCustom().Clone());
     }
 }

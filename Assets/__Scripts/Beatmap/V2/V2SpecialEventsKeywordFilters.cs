@@ -4,28 +4,24 @@ using SimpleJSON;
 
 namespace Beatmap.V2
 {
-    public class V2SpecialEventsKeywordFilters : BaseEventTypesWithKeywords, V2Object
+    public static class V2SpecialEventsKeywordFilters
     {
-        public V2SpecialEventsKeywordFilters()
+        public static BaseEventTypesWithKeywords GetFromJson(JSONNode node)
         {
+            var withKeywords = new BaseEventTypesWithKeywords();
+            
+            withKeywords.Keywords = BaseItem.GetRequiredNode(node, "_keywords").AsArray.Linq
+                .Select(x => V2SpecialEventsKeywordFiltersKeywords.GetFromJson(x.Value)).ToArray();
+
+            return withKeywords;
         }
 
-        public V2SpecialEventsKeywordFilters(BaseEventTypesWithKeywords other) : base(other)
-        {
-        }
-
-        public V2SpecialEventsKeywordFilters(JSONNode node) =>
-            Keywords = RetrieveRequiredNode(node, "_keywords").AsArray.Linq
-                .Select(x => new V2SpecialEventsKeywordFiltersKeywords(x)).ToArray();
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseEventTypesWithKeywords withKeywords)
         {
             JSONNode node = new JSONObject();
             node["_keywords"] = new JSONArray();
-            foreach (var k in Keywords) node["_keywords"].Add(k.ToJson());
+            foreach (var k in withKeywords.Keywords) node["_keywords"].Add(V2SpecialEventsKeywordFiltersKeywords.ToJson(k));
             return node;
         }
-
-        public override BaseItem Clone() => new V2SpecialEventsKeywordFilters(ToJson().Clone());
     }
 }

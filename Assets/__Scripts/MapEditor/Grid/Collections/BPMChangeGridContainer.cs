@@ -215,8 +215,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
 
     private BaseBpmEvent DefaultEvent()
     {
-        var defaultEvent = BeatmapFactory.BpmEvent();
-        defaultEvent.Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        var defaultEvent = new BaseBpmEvent { Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute };
         return defaultEvent;
     }
 

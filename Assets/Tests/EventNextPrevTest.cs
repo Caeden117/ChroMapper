@@ -45,10 +45,10 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEvent1 = new V3BasicEvent(1, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn);
-            BaseEvent baseEvent2 = new V3BasicEvent(2, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn);
-            BaseEvent baseEvent3 = new V3BasicEvent(3, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn);
-            BaseEvent baseEvent4 = new V3BasicEvent(4, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn);
+            BaseEvent baseEvent1 = new BaseEvent{ JsonTime = 1, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEvent2 = new BaseEvent{ JsonTime = 2, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEvent3 = new BaseEvent{ JsonTime = 3, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEvent4 = new BaseEvent{ JsonTime = 4, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn };
 
             // Check state after placing
             // 1 -> 2 -> 3 -> 4
@@ -82,10 +82,10 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEvent1 = new V3BasicEvent(1, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn);
-            BaseEvent baseEvent2 = new V3BasicEvent(2, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn);
-            BaseEvent baseEvent3 = new V3BasicEvent(3, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn);
-            BaseEvent baseEvent4 = new V3BasicEvent(4, (int)EventTypeValue.CenterLights, (int)LightValue.BlueOn);
+            BaseEvent baseEvent1 = new BaseEvent{ JsonTime = 1, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEvent2 = new BaseEvent{ JsonTime = 2, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEvent3 = new BaseEvent{ JsonTime = 3, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEvent4 = new BaseEvent{ JsonTime = 4, Type = (int)EventTypeValue.CenterLights, Value = (int)LightValue.BlueOn };
 
             // Check state after placing
             // 1 -> 2 -> 3 -> 4
@@ -121,12 +121,12 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA1 = new V3BasicEvent(1, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventT2 = new V3BasicEvent(2, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventA3 = new V3BasicEvent(3, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventT4 = new V3BasicEvent(4, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventB1 = new V3BasicEvent(1, (int)EventTypeValue.RightLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventB3 = new V3BasicEvent(3, (int)EventTypeValue.RightLasers, (int)LightValue.BlueOn);
+            BaseEvent baseEventA1 = new BaseEvent{ JsonTime = 1, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventT2 = new BaseEvent{ JsonTime = 2, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventA3 = new BaseEvent{ JsonTime = 3, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventT4 = new BaseEvent{ JsonTime = 4, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventB1 = new BaseEvent{ JsonTime = 1, Type = (int)EventTypeValue.RightLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventB3 = new BaseEvent{ JsonTime = 3, Type = (int)EventTypeValue.RightLasers, Value = (int)LightValue.BlueOn };
 
             // Check state after placing
             // A1 -> T2 -> A3 -> T4
@@ -176,10 +176,10 @@ namespace Tests
             var root = eventsContainer.transform.root;
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
 
-            BaseEvent baseEventA = new V3BasicEvent(1, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventT1 = new V3BasicEvent(1.5f, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventB = new V3BasicEvent(2, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventT2 = new V3BasicEvent(2.5f, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 1, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventT1 = new BaseEvent { JsonTime = 1.5f, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventB = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventT2 = new BaseEvent { JsonTime = 2.5f, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
 
             // Check state after placing
             // A -> T1 -> B -> T2
@@ -216,8 +216,8 @@ namespace Tests
             var eventPlacement = root.GetComponentInChildren<EventPlacement>();
             var atsc = root.GetComponentInChildren<AudioTimeSyncController>();
 
-            BaseEvent baseEventA = new V3BasicEvent(1, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
-            BaseEvent baseEventB = new V3BasicEvent(2, (int)EventTypeValue.LeftLasers, (int)LightValue.BlueOn);
+            BaseEvent baseEventA = new BaseEvent { JsonTime = 1, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
+            BaseEvent baseEventB = new BaseEvent { JsonTime = 2, Type = (int)EventTypeValue.LeftLasers, Value = (int)LightValue.BlueOn };
 
             // Check state after placing
             // A -> B

@@ -41,7 +41,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
     }
 
     private void Start() => AddRingRotationEvent(StartupRotationAngle, StartupRotationStep,
-        StartupRotationPropagationSpeed, StartupRotationFlexySpeed, BeatmapFactory.Event());
+        StartupRotationPropagationSpeed, StartupRotationFlexySpeed, new BaseEvent());
 
     private void FixedUpdate()
     {

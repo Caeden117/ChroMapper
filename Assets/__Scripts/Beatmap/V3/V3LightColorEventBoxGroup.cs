@@ -8,53 +8,33 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3LightColorEventBoxGroup : BaseLightColorEventBoxGroup<BaseLightColorEventBox>, V3Object
+    public static class V3LightColorEventBoxGroup
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        public V3LightColorEventBoxGroup()
+        public static BaseLightColorEventBoxGroup<BaseLightColorEventBox> GetFromJson(JSONNode node)
         {
+            var group = new BaseLightColorEventBoxGroup<BaseLightColorEventBox>();
+            
+            group.JsonTime = node["b"].AsFloat;
+            group.ID = node["g"].AsInt;
+            group.Events = new List<BaseLightColorEventBox>(BaseItem.GetRequiredNode(node, "e").AsArray.Linq
+                .Select(x => V3LightColorEventBox.GetFromJson(x.Value)).ToList());
+            group.CustomData = node["customData"];
+
+            return group;
         }
 
-        public V3LightColorEventBoxGroup(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            ID = node["g"].AsInt;
-            Events = new List<BaseLightColorEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq
-                .Select(x => new V3LightColorEventBox(x)).ToList());
-            CustomData = node["customData"];
-        }
-
-        public V3LightColorEventBoxGroup(float time, int id, List<BaseLightColorEventBox> events,
-            JSONNode customData = null) :
-            base(time, id, events, customData)
-        {
-        }
-
-        public override Color? CustomColor
-        {
-            get => null;
-            set { }
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-        public override string CustomKeyColor { get; } = "color";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson<T>(BaseLightColorEventBoxGroup<T> group) where T : BaseLightColorEventBox
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["g"] = ID;
+            node["b"] = group.JsonTime;
+            node["g"] = group.ID;
             var ary = new JSONArray();
-            foreach (var k in Events) ary.Add(k.ToJson());
+            foreach (var k in group.Events) ary.Add(V3LightColorEventBox.ToJson(k));
             node["e"] = ary;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            group.CustomData = group.SaveCustom();
+            if (!group.CustomData.Children.Any()) return node;
+            node["customData"] = group.CustomData;
             return node;
         }
-
-        // TODO: proper event box group cloning
-        public override BaseItem Clone() => new V3LightColorEventBoxGroup(JsonTime, ID, Events);
     }
 }

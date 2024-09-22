@@ -8,52 +8,33 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3LightRotationEventBoxGroup : BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>, V3Object
+    public static class V3LightRotationEventBoxGroup
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        public V3LightRotationEventBoxGroup()
+        public static BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> GetFromJson(JSONNode node)
         {
+            var group = new BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>();
+            
+            group.JsonTime = node["b"].AsFloat;
+            group.ID = node["g"].AsInt;
+            group.Events = new List<BaseLightRotationEventBox>(BaseItem.GetRequiredNode(node, "e").AsArray.Linq
+                .Select(x => V3LightRotationEventBox.GetFromJson(x)).ToList());
+            group.CustomData = node["customData"];
+
+            return group;
         }
 
-        public V3LightRotationEventBoxGroup(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            ID = node["g"].AsInt;
-            Events = new List<BaseLightRotationEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq
-                .Select(x => new V3LightRotationEventBox(x)).ToList());
-            CustomData = node["customData"];
-        }
-
-        public V3LightRotationEventBoxGroup(float time, int id, List<BaseLightRotationEventBox> events,
-            JSONNode customData = null) : base(time, id, events, customData)
-        {
-        }
-
-        public override Color? CustomColor
-        {
-            get => null;
-            set { }
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-        public override string CustomKeyColor { get; } = "color";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson<T>(BaseLightRotationEventBoxGroup<T> group) where T : BaseLightRotationEventBox
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["g"] = ID;
+            node["b"] = group.JsonTime;
+            node["g"] = group.ID;
             var ary = new JSONArray();
-            foreach (var k in Events) ary.Add(k.ToJson());
+            foreach (var k in group.Events) ary.Add(V3LightRotationEventBox.ToJson(k));
             node["e"] = ary;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            group.CustomData = group.SaveCustom();
+            if (!group.CustomData.Children.Any()) return node;
+            node["customData"] = group.CustomData;
             return node;
         }
-
-        // TODO: proper event box group cloning
-        public override BaseItem Clone() => new V3LightRotationEventBoxGroup(JsonTime, ID, Events);
     }
 }

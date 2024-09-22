@@ -266,25 +266,11 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (e.IsLaneRotationEvent())
                 {
-                    if (e is BaseRotationEvent re)
-                    {
-                        re.Rotation *= -1;
-                    }
-                    else
-                    {
-                        if (e.CustomLaneRotation != null)
-                            e.CustomLaneRotation *= -1;
-
-                        var rotation = e.GetRotationDegreeFromValue();
-                        if (rotation != null)
-                        {
-                            if (e.Value >= 0 && e.Value < BaseEvent.LightValueToRotationDegrees.Length)
-                                e.Value = BaseEvent.LightValueToRotationDegrees.ToList()
-                                    .IndexOf((int)(rotation ?? 0) * -1);
-                            else if (e.Value >= 1000 && e.Value <= 1720) //Invert Mapping Extensions rotation
-                                e.Value = 1720 - (e.Value - 1000);
-                        }
-                    }
+                
+                    e.Rotation *= -1;
+                    
+                    if (e.CustomLaneRotation != null)
+                        e.CustomLaneRotation *= -1;
 
                     tracksManager.RefreshTracks();
                 }
@@ -390,6 +376,8 @@ public class MirrorSelection : MonoBehaviour
                     ? (int)NoteType.Blue
                     : (int)NoteType.Red;
             }
+
+            edited.SaveCustom();
 
             allActions.Add(new BeatmapObjectModifiedAction(edited, original, original, "e", true));
         }

@@ -4,36 +4,25 @@ using SimpleJSON;
 
 namespace Beatmap.V3.Customs
 {
-    public class V3CustomEvent : BaseCustomEvent, V3Object
+    public class V3CustomEvent
     {
-        public V3CustomEvent()
+        public const string CustomKeyTrack = "track";
+        public const string CustomKeyColor = "color";
+        public const string KeyTime = "b";
+        public const string KeyType = "t";
+        public const string KeyData = "d";
+        public const string DataKeyDuration = "duration";
+        public const string DataKeyEasing = "easing";
+        public const string DataKeyRepeat = "repeat";
+        public const string DataKeyChildrenTracks = "childrenTracks";
+        public const string DataKeyParentTrack = "parentTrack";
+        public const string DataKeyWorldPositionStays = "worldPositionStays";
+        
+        public static BaseCustomEvent GetFromJson(JSONNode node) => new BaseCustomEvent(node);
+
+        public static JSONNode ToJson(BaseCustomEvent customEvent) => new JSONObject
         {
-        }
-
-        public V3CustomEvent(BaseCustomEvent other) : base(other)
-        {
-        }
-
-        public V3CustomEvent(JSONNode node) : base(node)
-        {
-        }
-
-        public V3CustomEvent(float time, string type, JSONNode node = null) : base(time, type, node)
-        {
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-        public override string CustomKeyColor { get; } = "color";
-        public override string KeyTime { get; } = "b";
-        public override string KeyType { get; } = "t";
-        public override string KeyData { get; } = "d";
-        public override string DataKeyDuration { get; } = "duration";
-        public override string DataKeyEasing { get; } = "easing";
-        public override string DataKeyRepeat { get; } = "repeat";
-        public override string DataKeyChildrenTracks { get; } = "childrenTracks";
-        public override string DataKeyParentTrack { get; } = "parentTrack";
-        public override string DataKeyWorldPositionStays { get; } = "worldPositionStays";
-
-        public override BaseItem Clone() => new V3CustomEvent(JsonTime, Type, Data.Clone());
+            [KeyTime] = customEvent.JsonTime, [KeyType] = customEvent.Type, [KeyData] = customEvent.Data
+        };
     }
 }

@@ -1,8 +1,11 @@
+using Beatmap.V3;
+using SimpleJSON;
+
 namespace Beatmap.Base
 {
-    public abstract class BaseLightColorEventBox : BaseEventBox
+    public class BaseLightColorEventBox : BaseEventBox
     {
-        protected BaseLightColorEventBox()
+        public BaseLightColorEventBox()
         {
         }
 
@@ -30,5 +33,12 @@ namespace Beatmap.Base
         public int BrightnessDistributionType { get; set; }
         public int BrightnessAffectFirst { get; set; }
         public BaseLightColorBase[] Events { get; set; }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3LightColorEventBox.ToJson(this),
+        };
+
+        public override BaseItem Clone() => throw new System.NotImplementedException();
     }
 }

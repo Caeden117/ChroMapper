@@ -39,6 +39,7 @@ namespace Tests.Util
             eventPlacement.queuedData = evt;
             eventPlacement.queuedValue = eventPlacement.queuedData.Value;
             eventPlacement.queuedFloatValue = eventPlacement.queuedData.FloatValue;
+            eventPlacement.queuedRotation = eventPlacement.queuedData.Rotation;
             eventPlacement.RoundedJsonTime = eventPlacement.queuedData.JsonTime;
 
             if (precRotation)

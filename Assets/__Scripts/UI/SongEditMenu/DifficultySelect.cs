@@ -188,7 +188,7 @@ public class DifficultySelect : MonoBehaviour
         if (!currentCharacteristic.DifficultyBeatmaps.Contains(diff))
             currentCharacteristic.DifficultyBeatmaps.Add(diff);
 
-        var map = TryGetExistingMapFromDiff(localDiff) ?? new V3Difficulty() { MainNode = new JSONObject() };
+        var map = TryGetExistingMapFromDiff(localDiff) ?? new BaseDifficulty();
         var oldPath = map.DirectoryAndFile;
 
         diff.UpdateName();

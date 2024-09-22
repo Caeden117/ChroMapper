@@ -32,7 +32,7 @@ public class
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a Custom Event.");
 
-    public override BaseCustomEvent GenerateOriginalData() => BeatmapFactory.CustomEvent();
+    public override BaseCustomEvent GenerateOriginalData() => new BaseCustomEvent();
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {

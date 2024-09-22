@@ -8,52 +8,33 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3LightTranslationEventBoxGroup : BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>, V3Object
+    public static class V3LightTranslationEventBoxGroup
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        public V3LightTranslationEventBoxGroup()
+        public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox> GetFromJson(JSONNode node)
         {
+            var group = new BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>();
+            
+            group.JsonTime = node["b"].AsFloat;
+            group.ID = node["g"].AsInt;
+            group.Events = new List<BaseLightTranslationEventBox>(BaseItem.GetRequiredNode(node, "e").AsArray.Linq
+                .Select(x => V3LightTranslationEventBox.GetFromJson(x)).ToList());
+            group.CustomData = node["customData"];
+
+            return group;
         }
 
-        public V3LightTranslationEventBoxGroup(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            ID = node["g"].AsInt;
-            Events = new List<BaseLightTranslationEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq
-                .Select(x => new V3LightTranslationEventBox(x)).ToList());
-            CustomData = node["customData"];
-        }
-
-        public V3LightTranslationEventBoxGroup(float time, int id, List<BaseLightTranslationEventBox> events,
-            JSONNode customData = null) : base(time, id, events, customData)
-        {
-        }
-
-        public override Color? CustomColor
-        {
-            get => null;
-            set { }
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-        public override string CustomKeyColor { get; } = "color";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson<T>(BaseLightTranslationEventBoxGroup<T> box) where T : BaseLightTranslationEventBox
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["g"] = ID;
+            node["b"] = box.JsonTime;
+            node["g"] = box.ID;
             var ary = new JSONArray();
-            foreach (var k in Events) ary.Add(k.ToJson());
+            foreach (var k in box.Events) ary.Add(k.ToJson());
             node["e"] = ary;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            box.CustomData = box.SaveCustom();
+            if (!box.CustomData.Children.Any()) return node;
+            node["customData"] = box.CustomData;
             return node;
         }
-
-        // TODO: proper event box group cloning
-        public override BaseItem Clone() => new V3LightTranslationEventBoxGroup(JsonTime, ID, Events);
     }
 }

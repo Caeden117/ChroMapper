@@ -28,7 +28,7 @@ public class ColourPicker : MonoBehaviour
     {
         if (!Settings.Instance.PickColorFromChromaEvents || !dropdown.Visible) return;
         if (obj.CustomColor != null) picker.CurrentColor = (Color)obj.CustomColor;
-        if (!(obj is V2Event e)) return;
+        if (!(obj is BaseEvent e)) return;
         if (e.Value >= ColourManager.RgbintOffset)
             picker.CurrentColor = ColourManager.ColourFromInt(e.Value);
         else if (e.CustomLightGradient != null) picker.CurrentColor = e.CustomLightGradient.StartColor;

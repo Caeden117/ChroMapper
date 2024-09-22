@@ -29,13 +29,6 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         return con;
     }
 
-    internal override void LateUpdate()
-    {
-        if (Settings.Instance.Load_MapV3)
-        {
-            base.LateUpdate();
-        }
-    }
     public void UpdateColor(Color red, Color blue) => chainAppearanceSO.UpdateColor(red, blue);
 
     protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)

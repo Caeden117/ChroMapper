@@ -6,93 +6,30 @@ using UnityEngine;
 
 namespace Beatmap.V3
 {
-    public class V3ColorBoostEvent : BaseColorBoostEvent, V3Object
+    public class V3ColorBoostEvent
     {
-        public V3ColorBoostEvent()
+        public static BaseEvent GetFromJson(JSONNode node)
         {
+            var evt = new BaseEvent();
+            
+            evt.JsonTime = node["b"].AsFloat;
+            evt.Type = 5;
+            evt.Value = node["o"].AsBool ? 1 : 0;
+            evt.FloatValue = 0;
+            evt.CustomData = node["customData"];
+            
+            return evt;
         }
 
-        public V3ColorBoostEvent(BaseColorBoostEvent other) : base(other)
-        {
-        }
-
-        public V3ColorBoostEvent(BaseEvent evt) : base(evt)
-        {
-        }
-
-        public V3ColorBoostEvent(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            Type = 5;
-            Toggle = node["o"].AsBool;
-            Value = Toggle ? 1 : 0;
-            CustomData = node["customData"];
-        }
-
-        public V3ColorBoostEvent(float time, bool toggle, JSONNode customData = null) : base(time, toggle, customData)
-        {
-        }
-
-        public V3ColorBoostEvent(float jsonTime, float songBpmTime, bool toggle, JSONNode customData = null) :
-            base(jsonTime, songBpmTime, toggle, customData)
-        {
-        }
-
-        public override Color? CustomColor
-        {
-            get => null;
-            set { }
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-
-        public override string CustomKeyColor { get; } = "color";
-
-        public override string CustomKeyPropID { get; } = "propID";
-
-        public override string CustomKeyLightID { get; } = "lightID";
-
-        public override string CustomKeyLerpType { get; } = "lerpType";
-
-        public override string CustomKeyEasing { get; } = "easing";
-
-        public override string CustomKeyLightGradient { get; } = "lightGradient";
-
-        public override string CustomKeyStep { get; } = "step";
-
-        public override string CustomKeyProp { get; } = "prop";
-
-        public override string CustomKeySpeed { get; } = "speed";
-
-        public override string CustomKeyRingRotation { get; } = "rotation";
-
-        public override string CustomKeyStepMult { get; } = "stepMult";
-
-        public override string CustomKeyPropMult { get; } = "propMult";
-
-        public override string CustomKeySpeedMult { get; } = "speedMult";
-
-        public override string CustomKeyPreciseSpeed { get; } = "preciseSpeed";
-
-        public override string CustomKeyDirection { get; } = "direction";
-
-        public override string CustomKeyLockRotation { get; } = "lockRotation";
-
-        public override string CustomKeyLaneRotation { get; } = "rotation";
-
-        public override string CustomKeyNameFilter { get; } = "nameFilter";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseEvent evt)
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["o"] = Toggle;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            node["b"] = evt.JsonTime;
+            node["o"] = evt.Value == 1;
+            evt.CustomData = evt.SaveCustom();
+            if (!evt.CustomData.Children.Any()) return node;
+            node["customData"] = evt.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() => new V3ColorBoostEvent(JsonTime, SongBpmTime, Toggle, SaveCustom().Clone());
     }
 }

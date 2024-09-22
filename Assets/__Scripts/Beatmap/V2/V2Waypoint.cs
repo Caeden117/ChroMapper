@@ -6,63 +6,32 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V2
 {
-    public class V2Waypoint : BaseWaypoint, V2Object
+    public static class V2Waypoint
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        public V2Waypoint()
+        public static BaseWaypoint GetFromJson(JSONNode node)
         {
+            var waypoint = new BaseWaypoint();
+            
+            waypoint.JsonTime = BaseItem.GetRequiredNode(node, "_time").AsFloat;
+            waypoint.PosX = BaseItem.GetRequiredNode(node, "_lineIndex").AsInt;
+            waypoint.PosY = BaseItem.GetRequiredNode(node, "_lineLayer").AsInt;
+            waypoint.OffsetDirection = BaseItem.GetRequiredNode(node, "_offsetDirection").AsInt;
+            waypoint.CustomData = node["_customData"];
+
+            return waypoint;
         }
 
-        public V2Waypoint(BaseWaypoint other) : base(other)
-        {
-        }
-
-        public V2Waypoint(JSONNode node)
-        {
-            JsonTime = RetrieveRequiredNode(node, "_time").AsFloat;
-            PosX = RetrieveRequiredNode(node, "_lineIndex").AsInt;
-            PosY = RetrieveRequiredNode(node, "_lineLayer").AsInt;
-            OffsetDirection = RetrieveRequiredNode(node, "_offsetDirection").AsInt;
-            CustomData = node["_customData"];
-        }
-
-        public V2Waypoint(float time, int posX, int posY, int offsetDirection, JSONNode customData = null) : base(time,
-            posX, posY, offsetDirection, customData)
-        {
-        }
-
-        public override string CustomKeyAnimation { get; } = "_animation";
-
-        public override string CustomKeyTrack { get; } = "_track";
-
-        public override string CustomKeyColor { get; } = "_color";
-
-        public override string CustomKeyCoordinate { get; } = "_position";
-
-        public override string CustomKeyWorldRotation { get; } = "_rotation";
-
-        public override string CustomKeyLocalRotation { get; } = "_localRotation";
-
-        public override string CustomKeySpawnEffect { get; } = "_disableSpawnEffect";
-
-        public override string CustomKeyNoteJumpMovementSpeed { get; } = "_noteJumpMovementSpeed";
-
-        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "_noteJumpStartBeatOffset";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseWaypoint waypoint)
         {
             JSONNode node = new JSONObject();
-            node["_time"] = JsonTime;
-            node["_lineIndex"] = PosX;
-            node["_lineLayer"] = PosY;
-            node["_offsetDirection"] = OffsetDirection;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["_customData"] = CustomData;
+            node["_time"] = waypoint.JsonTime;
+            node["_lineIndex"] = waypoint.PosX;
+            node["_lineLayer"] = waypoint.PosY;
+            node["_offsetDirection"] = waypoint.OffsetDirection;
+            waypoint.CustomData = waypoint.SaveCustom();
+            if (!waypoint.CustomData.Children.Any()) return node;
+            node["_customData"] = waypoint.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() => new V2Waypoint(JsonTime, PosX, PosY, OffsetDirection, SaveCustom().Clone());
     }
 }

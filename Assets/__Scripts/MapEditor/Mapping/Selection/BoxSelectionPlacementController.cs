@@ -57,7 +57,7 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) => null;
 
     // TODO: v3 check?
-    public override BaseEvent GenerateOriginalData() => new V2Event(float.MaxValue, 69, 420);
+    public override BaseEvent GenerateOriginalData() => new BaseEvent();
 
     protected override bool TestForType<T>(Intersections.IntersectionHit hit, ObjectType type)
     {
@@ -91,11 +91,8 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
             TestForType<ObstaclePlacement>(hit, ObjectType.Obstacle);
             TestForType<CustomEventPlacement>(hit, ObjectType.CustomEvent);
             TestForType<BPMChangePlacement>(hit, ObjectType.BpmChange);
-            if (Settings.Instance.Load_MapV3)
-            {
-                TestForType<ArcPlacement>(hit, ObjectType.Arc);
-                TestForType<ChainPlacement>(hit, ObjectType.Chain);
-            }
+            TestForType<ArcPlacement>(hit, ObjectType.Arc);
+            TestForType<ChainPlacement>(hit, ObjectType.Chain);
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
             var localScale = instantiatedContainer.transform.localScale;
