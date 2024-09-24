@@ -21,12 +21,7 @@ namespace Beatmap.Base
     {
         public string DirectoryAndFile { get; set; }
 
-        public string Version => Settings.Instance.MapVersion switch
-        {
-            2 => "2.6.0",
-            3 => "3.3.0",
-            _ => throw new NotImplementedException("Unknown version")
-        };
+        public string Version { get; set; } = "3.3.0";
         public List<BaseBpmEvent> BpmEvents { get; set; } = new();
         public List<BaseNote> Notes { get; set; } = new();
         public List<BaseObstacle> Obstacles { get; set; } = new();

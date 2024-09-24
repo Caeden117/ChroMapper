@@ -17,9 +17,17 @@ namespace Beatmap.Helper
         public static BaseDifficulty GetDifficultyFromJson(JSONNode mainNode, string directoryAndFile)
         {
             var v = PeekMapVersionFromJson(mainNode);
-            return v[0] == '3'
-                ? V3Difficulty.GetFromJson(mainNode, directoryAndFile)
-                : V2Difficulty.GetFromJson(mainNode, directoryAndFile);
+
+            if (v[0] == '3')
+            {
+                Settings.Instance.MapVersion = 3;
+                return V3Difficulty.GetFromJson(mainNode, directoryAndFile);
+            }
+            else
+            {
+                Settings.Instance.MapVersion = 2;
+                return V2Difficulty.GetFromJson(mainNode, directoryAndFile);
+            }
         }
 
         private static string PeekMapVersionFromJson(JSONNode mainNode)
