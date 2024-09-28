@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Info;
 using NUnit.Framework;
@@ -32,6 +32,40 @@ namespace TestsEditMode
     ]
 }
 ";
+
+        // This is a 30 second file with:
+        //  - 60 bpm at beat 10
+        //  - 120 bpm at beat 20
+        // Lufs is a single region
+        private const string audioDataJson = @"
+{
+    ""version"": ""4.0.0"",
+    ""songChecksum"": """",
+    ""songSampleCount"": 882000,
+    ""songFrequency"": 44100,
+    ""bpmData"": [
+        {
+            ""si"": 0,
+            ""ei"": 441000,
+            ""sb"": 0,
+            ""eb"": 10
+        }
+        {
+            ""si"": 441000,
+            ""ei"": 882000,
+            ""sb"": 10,
+            ""eb"": 30
+        }
+    ],
+    ""lufsData"": [
+        {
+            ""si"": 0,
+            ""ei"": 882000,
+            ""l"": 3.1
+        }
+    ]
+}
+";
         
         [Test]
         public void GetFromJson_V2BpmInfo()
@@ -39,7 +73,29 @@ namespace TestsEditMode
             var bpmInfo = V2BpmInfo.GetFromJson(JSON.Parse(bpmInfoJson));
             
             Assert.AreEqual("2.0.0", bpmInfo.Version);
-            
+
+            AssertCommonGetFromJson(bpmInfo);
+
+            Assert.AreEqual(0, bpmInfo.LufsRegions.Count);
+        }
+        
+        [Test]
+        public void GetFromJson_V4AudioData()
+        {
+          var bpmInfo = V4AudioData.GetFromJson(JSON.Parse(audioDataJson));
+
+          AssertCommonGetFromJson(bpmInfo);
+          
+          Assert.AreEqual("4.0.0", bpmInfo.Version);
+
+          Assert.AreEqual(1, bpmInfo.LufsRegions.Count);
+          Assert.AreEqual(0, bpmInfo.LufsRegions[0].StartSampleIndex);
+          Assert.AreEqual(882000, bpmInfo.LufsRegions[0].EndSampleIndex);
+          Assert.AreEqual(3.1f, bpmInfo.LufsRegions[0].Loudness);
+        }
+
+        private void AssertCommonGetFromJson(BaseBpmInfo bpmInfo)
+        {
             Assert.AreEqual(882000, bpmInfo.AudioSamples);
             Assert.AreEqual(44100, bpmInfo.AudioFrequency);
 

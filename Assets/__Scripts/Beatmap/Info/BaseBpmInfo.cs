@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Beatmap.Base;
 
 namespace Beatmap.Info
@@ -9,17 +9,20 @@ namespace Beatmap.Info
         public int AudioSamples { get; set; }
         public int AudioFrequency { get; set; }
         public List<BpmInfoBpmRegion> BpmRegions = new();
+        public List<BpmInfoLufsRegion> LufsRegions = new();
         
         public BaseBpmInfo InitWithSongContainerInstance()
         {
-            Version = "2.0.0";
+            Version = BeatSaberSongContainer.Instance.Song.Version[0] == '4' ? "4.0.0" : "2.0.0";
             AudioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples;
             AudioFrequency = BeatSaberSongContainer.Instance.LoadedSongFrequency;
 
             return this;
         }
         
-        public static string GetOutputFileName(BeatSaberSong info) => V2BpmInfo.FileName;
+        public static string GetOutputFileName(BeatSaberSong info) => info.Version[0] == '4'
+            ? V4AudioData.FileName
+            : V2BpmInfo.FileName;
         
         public static List<BaseBpmEvent> GetBpmEvents(List<BpmInfoBpmRegion> bpmRegions, int audioFrequency)
         {
@@ -86,6 +89,13 @@ namespace Beatmap.Info
 
             return regions;
         }
+    }
+
+    public struct BpmInfoLufsRegion
+    {
+        public int StartSampleIndex { get; set; }
+        public int EndSampleIndex { get; set; }
+        public float Loudness { get; set; }
     }
 
     public struct BpmInfoBpmRegion
