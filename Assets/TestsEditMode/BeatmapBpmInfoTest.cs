@@ -57,6 +57,50 @@ namespace TestsEditMode
         }
 
         [Test]
+        public void GetBpmEvents()
+        {
+            var audioFrequency = 44100;
+            var bpmRegions = new List<BpmInfoBpmRegion>
+            {
+                new()
+                {
+                    StartBeat = 0f,
+                    EndBeat = 10f,
+                    StartSampleIndex = 0,
+                    EndSampleIndex = audioFrequency * 10
+                },
+                new()
+                {
+                    StartBeat = 10f,
+                    EndBeat = 30f,
+                    StartSampleIndex = audioFrequency * 10,
+                    EndSampleIndex = audioFrequency * 20
+                }
+            };
+
+            var bpmEvents = BaseBpmInfo.GetBpmEvents(bpmRegions, audioFrequency);
+
+            Assert.AreEqual(2, bpmEvents.Count);
+
+            Assert.AreEqual(0, bpmEvents[0].JsonTime);
+            Assert.AreEqual(60, bpmEvents[0].Bpm);
+
+            Assert.AreEqual(10, bpmEvents[1].JsonTime);
+            Assert.AreEqual(120, bpmEvents[1].Bpm);
+        }
+        
+        [Test]
+        public void GetBpmEvents_Empty()
+        {
+            var audioFrequency = 44100;
+            var bpmRegions = new List<BpmInfoBpmRegion>();
+
+            var bpmEvents = BaseBpmInfo.GetBpmEvents(bpmRegions, audioFrequency);
+
+            Assert.AreEqual(0, bpmEvents.Count); // lol
+        }
+
+        [Test]
         public void GetBpmInfoRegions()
         {
             var songBpm = 60f;

@@ -20,6 +20,25 @@ namespace Beatmap.Info
         }
         
         public static string GetOutputFileName(BeatSaberSong info) => V2BpmInfo.FileName;
+        
+        public static List<BaseBpmEvent> GetBpmEvents(List<BpmInfoBpmRegion> bpmRegions, int audioFrequency)
+        {
+            var bpmEvents = new List<BaseBpmEvent>();
+
+            foreach (var bpmRegion in bpmRegions)
+            {
+                var samples = bpmRegion.EndSampleIndex - bpmRegion.StartSampleIndex;
+                var beats = bpmRegion.EndBeat - bpmRegion.StartBeat;
+                
+                bpmEvents.Add(new BaseBpmEvent
+                {
+                    Bpm = beats / samples * audioFrequency * 60,
+                    JsonTime = bpmRegion.StartBeat
+                });
+            }
+            
+            return bpmEvents;
+        }
 
         public static List<BpmInfoBpmRegion> GetBpmInfoRegions(List<BaseBpmEvent> bpmEvents, float songBpm, int audioSamples, int audioFrequency)
         {
