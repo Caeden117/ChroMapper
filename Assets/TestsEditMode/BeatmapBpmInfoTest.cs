@@ -198,5 +198,55 @@ namespace TestsEditMode
             Assert.AreEqual(0, regions[0].StartSampleIndex);
             Assert.AreEqual(audiosamples, regions[0].EndSampleIndex);
         }
+
+        [Test]
+        public void ConversionDoesNotIntroduceDriftOverTime()
+        {
+            var songBpm = 60f;
+            var audioFrequency = 44100;
+            var audiosamples = 44100 * 20;
+            
+            var initialBpmEvents = new List<BaseBpmEvent>
+            {
+                new() { JsonTime = 0, Bpm = 60 },
+                new() { JsonTime = 10, Bpm = 120 }
+            };
+            var initialRegions = BaseBpmInfo.GetBpmInfoRegions(initialBpmEvents, songBpm, audiosamples, audioFrequency);
+            
+            // Loop conversion to and from a bunch of times
+            List<BaseBpmEvent> bpmEvents = new List<BaseBpmEvent>
+            {
+                new() { JsonTime = 0, Bpm = 60 },
+                new() { JsonTime = 10, Bpm = 120 }
+            };
+            List<BpmInfoBpmRegion> regions = new List<BpmInfoBpmRegion>();
+            for (var i = 0; i < 100; i++)
+            {
+                regions = BaseBpmInfo.GetBpmInfoRegions(bpmEvents, songBpm, audiosamples, audioFrequency);
+                bpmEvents = BaseBpmInfo.GetBpmEvents(regions, audioFrequency);
+            }
+            
+            // Compare bpm events
+            Assert.AreEqual(initialBpmEvents.Count, bpmEvents.Count);
+            
+            Assert.AreEqual(initialBpmEvents[0].JsonTime, bpmEvents[0].JsonTime);
+            Assert.AreEqual(initialBpmEvents[0].Bpm, bpmEvents[0].Bpm);
+            
+            Assert.AreEqual(initialBpmEvents[1].JsonTime, bpmEvents[1].JsonTime);
+            Assert.AreEqual(initialBpmEvents[1].Bpm, bpmEvents[1].Bpm);
+            
+            // Compare regions
+            Assert.AreEqual(initialRegions.Count, regions.Count);
+            
+            Assert.AreEqual(initialRegions[0].StartBeat, regions[0].StartBeat);
+            Assert.AreEqual(initialRegions[0].EndBeat, regions[0].EndBeat);
+            Assert.AreEqual(initialRegions[0].StartSampleIndex, regions[0].StartSampleIndex);
+            Assert.AreEqual(initialRegions[0].EndSampleIndex, regions[0].EndSampleIndex);
+            
+            Assert.AreEqual(initialRegions[1].StartBeat, regions[1].StartBeat);
+            Assert.AreEqual(initialRegions[1].EndBeat, regions[1].EndBeat);
+            Assert.AreEqual(initialRegions[1].StartSampleIndex, regions[1].StartSampleIndex);
+            Assert.AreEqual(initialRegions[1].EndSampleIndex, regions[1].EndSampleIndex);
+        }
     }
 }
