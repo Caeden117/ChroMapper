@@ -8,7 +8,7 @@ namespace Beatmap.Info
 {
     public static class V2BpmInfo
     {
-        public const string FileName = "BpmInfo.dat";
+        public const string FileName = "BPMInfo.dat";
         
         public static BaseBpmInfo GetFromJson(JSONNode node)
         {

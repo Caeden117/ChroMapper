@@ -8,7 +8,7 @@ namespace Beatmap.Info
 {
     public static class V4AudioData
     {
-        public const string FileName = "AudioData.json";
+        public const string FileName = "AudioData.dat";
 
         public static BaseBpmInfo GetFromJson(JSONNode node)
         {
