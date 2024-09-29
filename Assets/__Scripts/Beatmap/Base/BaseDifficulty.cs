@@ -5,6 +5,7 @@ using System.Linq;
 using Beatmap.Base.Customs;
 using Beatmap.Converters;
 using Beatmap.Helper;
+using Beatmap.Info;
 using Beatmap.V2;
 using Beatmap.V3;
 using SimpleJSON;
@@ -258,91 +259,27 @@ namespace Beatmap.Base
 
             if (outputJson == null)
                 return false;
-            
+
             // Write difficulty file
-            File.WriteAllText(DirectoryAndFile, Settings.Instance.FormatJson 
+            File.WriteAllText(DirectoryAndFile, Settings.Instance.FormatJson
                 ? outputJson.ToString(2)
                 : outputJson.ToString());
-            
+
             // Write Bpm file
-            WriteBPMInfoFile(this);
+            var songContainer = BeatSaberSongContainer.Instance;
+
+            var bpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Song.BeatsPerMinute,
+                songContainer.LoadedSongSamples, songContainer.LoadedSongFrequency);
+            var bpmInfo = new BaseBpmInfo { BpmRegions = bpmRegions }.InitWithSongContainerInstance();
+            var bpmOutputJson = V2BpmInfo.GetOutputJson(bpmInfo);
+            var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(songContainer.Song);
+
+            File.WriteAllText(Path.Combine(songContainer.Song.Directory, bpmOutputFileName),
+                bpmOutputJson.ToString(2));
 
             return true;
         }
 
-        // Write BPMInfo file for official editor compatibility
-        private void WriteBPMInfoFile(BaseDifficulty map)
-        {
-            JSONNode bpmInfo = new JSONObject();
-
-            var precision = Settings.Instance.BpmTimeValueDecimalPrecision;
-
-            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            var audioLength = BeatSaberSongContainer.Instance.LoadedSongLength;
-            var audioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples - 1; // Match official editor
-            var audioFrequency = BeatSaberSongContainer.Instance.LoadedSongFrequency;
-
-            // If for some reason we have bpm events outside the map and the mapper decided not to remove them,
-            // it'll cause weird behaviour in official editor so we'll exclude those
-            var maxSongBpmTime = audioLength * songBpm / 60f;
-            
-            var index = map.BpmEvents.Count - 1;
-            while (index >= 0 && map.BpmEvents[index].SongBpmTime > maxSongBpmTime) index--;
-            var bpmEvents = (index >= 0)
-                ? map.BpmEvents.AsSpan()[..(index + 1)]
-                : Span<BaseBpmEvent>.Empty;
-            
-            bpmInfo["_version"] = "2.0.0";
-            bpmInfo["_songSampleCount"] = audioSamples;
-            bpmInfo["_songFrequency"] = audioFrequency;
-
-            var regions = new JSONArray();
-            if (bpmEvents.Length == 0)
-            {
-                regions.Add(new JSONObject
-                {
-                    ["_startSampleIndex"] = 0,
-                    ["_endSampleIndex"] = audioSamples,
-                    ["_startBeat"] = 0f,
-                    ["_endBeat"] = new JSONNumberWithOverridenRounding((songBpm / 60f) * audioLength, precision),
-                });
-            }
-            else
-            {
-                for (var i = 0; i < bpmEvents.Length - 1; i++)
-                {
-                    var currentBpmEvent = bpmEvents[i];
-                    var nextBpmEvent = bpmEvents[i + 1];
-
-                    regions.Add(new JSONObject
-                    {
-                        ["_startSampleIndex"] = (int)(currentBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
-                        ["_endSampleIndex"] = (int)(nextBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
-                        ["_startBeat"] = new JSONNumberWithOverridenRounding(currentBpmEvent.JsonTime, precision),
-                        ["_endBeat"] = new JSONNumberWithOverridenRounding(nextBpmEvent.JsonTime, precision),
-                    });
-                }
-
-                var lastBpmEvent = bpmEvents[^1];
-                var lastStartSampleIndex = (lastBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency);
-                var secondsDiff = (audioSamples - lastStartSampleIndex) / audioFrequency;
-                var jsonBeatsDiff = secondsDiff * (lastBpmEvent.Bpm / 60f);
-
-                regions.Add(new JSONObject
-                {
-                    ["_startSampleIndex"] = (int)lastStartSampleIndex,
-                    ["_endSampleIndex"] = audioSamples,
-                    ["_startBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime, precision),
-                    ["_endBeat"] = new JSONNumberWithOverridenRounding(lastBpmEvent.JsonTime + jsonBeatsDiff, precision),
-                });
-            }
-
-            bpmInfo["_regions"] = regions;
-
-            File.WriteAllText(Path.Combine(BeatSaberSongContainer.Instance.Song.Directory, "BPMInfo.dat"),
-                bpmInfo.ToString(2));
-        }
-        
         public bool IsChroma() =>
             Notes.Any(x => x.IsChroma())  || Arcs.Any(x => x.IsChroma()) ||
             Chains.Any(x => x.IsChroma()) || Obstacles.Any(x => x.IsChroma()) ||
