@@ -701,6 +701,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
+
+            edited.SaveCustom();
+            
             return new BeatmapObjectModifiedAction(edited, original, original, "", true);
         }).ToList();
 

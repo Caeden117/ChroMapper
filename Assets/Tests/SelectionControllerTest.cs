@@ -169,5 +169,41 @@ namespace Tests
 
             Assert.AreEqual(objects.Count, SelectionController.SelectedObjects.Count, $"Selection should be the exact amount");
         }
+
+        [Test]
+        public void ShiftSelectionOutsideVanillaGrid([Values]bool isVanillaOnlyShiftSettingEnabled)
+        {
+            var selectionController = Object.FindObjectOfType<SelectionController>();
+            var noteGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var note = noteGridContainer.MapObjects[0];
+            
+            SelectionController.Select(note);
+            
+            Assert.AreEqual(1, SelectionController.SelectedObjects.Count, "Note should be selected");
+            Assert.AreEqual(0, note.PosX);
+            Assert.AreEqual(0, note.PosY);
+            
+            
+            Settings.Instance.VanillaOnlyShift = isVanillaOnlyShiftSettingEnabled;
+            
+            selectionController.ShiftSelection(5, 5);
+            note = noteGridContainer.MapObjects[0];
+            
+            if (isVanillaOnlyShiftSettingEnabled)
+            {
+                // Expect clamped values
+                Assert.AreEqual((int)GridX.Right, note.PosX);
+                Assert.AreEqual((int)GridY.Top, note.PosY);
+                Assert.IsNull(note.CustomCoordinate);
+            }
+            else
+            {
+                Assert.AreEqual(0, note.PosX);
+                Assert.AreEqual(0, note.PosY);
+                Assert.NotNull(note.CustomCoordinate);   
+                Assert.AreEqual(3, note.CustomCoordinate[0].AsInt);
+                Assert.AreEqual(5, note.CustomCoordinate[1].AsInt);
+            }
+        }
     }
 }
