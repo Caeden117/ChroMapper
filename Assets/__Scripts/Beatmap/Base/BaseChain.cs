@@ -39,8 +39,8 @@ namespace Beatmap.Base
             PosY = other.PosY;
             CutDirection = other.CutDirection;
             SetTailTimes(other.TailJsonTime, other.TailSongBpmTime);
-            TailPosX = other.PosX;
-            TailPosY = other.PosY;
+            TailPosX = other.TailPosX;
+            TailPosY = other.TailPosY;
             SliceCount = other.SliceCount;
             Squish = other.Squish;
             CustomData = other.CustomData.Clone();
