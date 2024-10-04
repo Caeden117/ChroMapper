@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Globalization;
 using System.IO;
-using Beatmap.Base.Customs;
+using Beatmap.Info;
 using SFB;
 using TMPro;
 using UnityEngine;

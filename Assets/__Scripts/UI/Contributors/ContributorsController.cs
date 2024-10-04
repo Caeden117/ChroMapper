@@ -61,7 +61,7 @@ public class ContributorsController : MonoBehaviour
 
     public void AddNewContributor()
     {
-        var contributor = new InfoContributor("", "", "");
+        var contributor = new BaseContributor("", "", "");
         var listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
         listItem.Setup(contributor, this, true);
         Contributors.Add(contributor);

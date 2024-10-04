@@ -166,7 +166,7 @@ public class BeatSaberSong
             if (Contributors.Any())
             {
                 var contributorArray = new JSONArray();
-                Contributors.ForEach(x => contributorArray.Add(x.ToJson()));
+                Contributors.ForEach(x => contributorArray.Add(V2Contributor.ToJson(x)));
                 if (Contributors.Any()) Json["_customData"]["_contributors"] = contributorArray;
             }
 
@@ -410,7 +410,7 @@ public class BeatSaberSong
                         if (node.HasKey("_contributors"))
                         {
                             foreach (JSONNode contributor in song.CustomData["_contributors"])
-                                song.Contributors.Add(new InfoContributor(contributor));
+                                song.Contributors.Add(V2Contributor.GetFromJson(contributor));
                         }
 
                         song.Editors = new EditorsObject(node["_editors"]);
