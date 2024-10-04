@@ -127,7 +127,16 @@ namespace TestsEditMode
                 }
             ]
         }
-    ]
+    ],
+    ""_customData"": {
+        ""_contributors"": [
+            {
+                ""_name"": ""Bullet"",
+                ""_role"": ""Everything"",
+                ""_iconPath"": ""Bullet.png""
+            }
+        ]
+    }
 }
 ";
         
@@ -236,7 +245,16 @@ namespace TestsEditMode
             ""beatmapDataFilename"": ""ExpertPlus.dat"",
             ""lightshowDataFilename"": ""LightshowPlus.dat""
         }
-    ]
+    ],
+    ""customData"": {
+        ""contributors"": [
+            {
+                ""name"": ""Bullet"",
+                ""role"": ""Everything"",
+                ""iconPath"": ""Bullet.png""
+            }
+        ]
+    }
 }
 ";
 
@@ -397,6 +415,14 @@ namespace TestsEditMode
             Assert.AreEqual(0.5f, expertPlusDifficulty.NoteStartBeatOffset);
             Assert.AreEqual(0, expertPlusDifficulty.ColorSchemeIndex);
             Assert.AreEqual(0, expertPlusDifficulty.EnvironmentNameIndex);
+            
+            // CustomData properties
+            Assert.AreEqual(1, info.CustomContributors.Count);
+
+            var contributor = info.CustomContributors[0];
+            Assert.AreEqual("Bullet", contributor.Name);
+            Assert.AreEqual("Everything", contributor.Role);
+            Assert.AreEqual("Bullet.png", contributor.LocalImageLocation);
         }
 
         private void AssertColorsAreEqual(Color expected, Color actual)

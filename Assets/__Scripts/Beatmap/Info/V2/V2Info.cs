@@ -83,8 +83,19 @@ namespace Beatmap.Info
                 beatmapSets.Add(beatmapSet);
             }
             info.DifficultySets = beatmapSets;
-            
-            info.CustomData = node["_customData"];
+
+            // CustomData Parsing
+            if (node["_customData"].IsObject)
+            {
+                var customData = node["_customData"];
+
+                if (customData["_contributors"].IsArray)
+                {
+                    info.CustomContributors = customData["_contributors"].AsArray.Children.Select(V2Contributor.GetFromJson).ToList();
+                }
+                
+                info.CustomData = customData;
+            }
             
             return info;
         }
@@ -163,6 +174,18 @@ namespace Beatmap.Info
 
             json["_difficultyBeatmapSets"] = beatmapSetArray;
 
+            // CustomData writing
+            if (info.CustomContributors.Any())
+            {
+                var customContributors = new JSONArray();
+                foreach (var customContributor in info.CustomContributors)
+                {
+                    customContributors.Add(V2Contributor.ToJson(customContributor));
+                }
+                
+                info.CustomData["_contributors"] = customContributors;
+            }
+            
             json["_customData"] = info.CustomData;
             
             return json;

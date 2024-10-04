@@ -53,6 +53,8 @@ namespace Beatmap.Info
         
         // CustomData Properties
         public JSONNode CustomData = new JSONObject();
+
+        public List<BaseContributor> CustomContributors = new();
     }
 
     public class InfoDifficultySet

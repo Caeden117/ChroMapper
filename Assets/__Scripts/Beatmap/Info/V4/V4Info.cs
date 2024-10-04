@@ -84,7 +84,18 @@ namespace Beatmap.Info
             
             info.DifficultySets = difficultySets;
 
-            info.CustomData = node["customData"];
+            // CustomData Parsing
+            if (node["customData"].IsObject)
+            {
+                var customData = node["customData"];
+
+                if (customData["contributors"].IsArray)
+                {
+                    info.CustomContributors = customData["contributors"].AsArray.Children.Select(V4Contributor.GetFromJson).ToList();
+                }
+                
+                info.CustomData = customData;
+            }
             
             return info;
         }
@@ -174,6 +185,17 @@ namespace Beatmap.Info
 
             json["difficultyBeatmaps"] = difficultyBeatmaps;
 
+            // CustomData writing
+            if (info.CustomContributors.Any())
+            {
+                var customContributors = new JSONArray();
+                foreach (var customContributor in info.CustomContributors)
+                {
+                    customContributors.Add(V4Contributor.ToJson(customContributor));
+                }
+                info.CustomData["contributors"] = customContributors;
+            }
+            
             json["customData"] = info.CustomData;
             
             return json;
