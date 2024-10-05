@@ -64,13 +64,13 @@ namespace Beatmap.Info
 
         public JSONObject CustomData { get; set; } = new(); // Pretty much just for v2 SongCore parsing
     }
-    
+
     public class InfoDifficulty
     {
         public InfoDifficulty(InfoDifficultySet parentSet) => ParentSet = parentSet;
         public InfoDifficultySet ParentSet { get; set; }
         public string Characteristic => ParentSet.Characteristic;
-        
+
         public string BeatmapFileName { get; set; }
         public string LightshowFileName { get; set; }
         public string Difficulty { get; set; }
@@ -85,20 +85,27 @@ namespace Beatmap.Info
             "Easy" => 1,
             _ => -1
         };
-        
+
         public int EnvironmentNameIndex { get; set; }
         public int ColorSchemeIndex { get; set; }
 
         public float NoteJumpSpeed { get; set; }
         public float NoteStartBeatOffset { get; set; }
 
-        
         public List<string> Mappers { get; set; }
         public List<string> Lighters { get; set; }
-        
-        
+
         // CustomData Properties
         public JSONObject CustomData { get; set; } = new();
+
+        public string CustomLabel { get; set; }
+        public bool? CustomOneSaberFlag { get; set; }
+        public bool? CustomShowRotationNoteSpawnLinesFlag { get; set; }
+        
+        public List<string> CustomInformation { get; set; } = new();
+        public List<string> CustomWarnings { get; set; } = new();
+        public List<string> CustomSuggestions { get; set; } = new();
+        public List<string> CustomRequirements { get; set; } = new();
     }
 
     public class InfoColorScheme

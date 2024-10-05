@@ -75,6 +75,12 @@ namespace Beatmap.Info
                     infoDifficulty.Mappers = authorsNode["mappers"].AsArray.Children.Select(x => x.Value).ToList();
                     infoDifficulty.Lighters = authorsNode["lighters"].AsArray.Children.Select(x => x.Value).ToList();
                     
+                    var customData = beatmap["customData"].AsObject;
+                    
+                    ParseDifficultyCustomData(customData, infoDifficulty);
+
+                    infoDifficulty.CustomData = customData;
+                    
                     infoDifficultys.Add(infoDifficulty);
                 }
 
@@ -177,6 +183,8 @@ namespace Beatmap.Info
                 node["noteJumpStartBeatOffset"] = difficulty.NoteStartBeatOffset;
                 node["beatmapDataFilename"] = difficulty.BeatmapFileName;
                 node["lightshowDataFilename"] = difficulty.LightshowFileName;
+                
+                PopulateDifficultyCustomData(difficulty);
 
                 node["customData"] = difficulty.CustomData;
                 
@@ -202,5 +210,89 @@ namespace Beatmap.Info
         }
 
         private static string ToHashPrefixedHtmlStringRGBA(Color color) => $"#{ColorUtility.ToHtmlStringRGBA(color)}";
+
+        private static void ParseDifficultyCustomData(JSONNode customData, InfoDifficulty difficulty)
+        {
+            if (customData["oneSaber"].IsBoolean)
+            {
+                difficulty.CustomOneSaberFlag = customData["oneSaber"].AsBool;
+            }
+
+            if (customData["showRotationNoteSpawnLines"].IsBoolean)
+            {
+                difficulty.CustomShowRotationNoteSpawnLinesFlag = customData["showRotationNoteSpawnLines"].AsBool;
+            }
+
+            if (customData["difficultyLabel"].IsString)
+            {
+                difficulty.CustomLabel = customData["difficultyLabel"].Value;
+            }
+
+            if (customData["information"].IsArray)
+            {
+                difficulty.CustomInformation =
+                    customData["information"].AsArray.Children.Select(x => x.Value).ToList();
+            }
+
+            if (customData["warnings"].IsArray)
+            {
+                difficulty.CustomWarnings =
+                    customData["warnings"].AsArray.Children.Select(x => x.Value).ToList();
+            }
+
+            if (customData["suggestions"].IsArray)
+            {
+                difficulty.CustomSuggestions =
+                    customData["suggestions"].AsArray.Children.Select(x => x.Value).ToList();
+            }
+
+            if (customData["requirements"].IsArray)
+            {
+                difficulty.CustomRequirements =
+                    customData["requirements"].AsArray.Children.Select(x => x.Value).ToList();
+            }
+        }
+
+        private static void PopulateDifficultyCustomData(InfoDifficulty difficulty)
+        {
+            if (difficulty.CustomOneSaberFlag != null)
+            {
+                difficulty.CustomData["oneSaber"] = difficulty.CustomOneSaberFlag.Value;
+            }
+
+            if (difficulty.CustomShowRotationNoteSpawnLinesFlag != null)
+            {
+                difficulty.CustomData["showRotationNoteSpawnLines"] = difficulty.CustomShowRotationNoteSpawnLinesFlag.Value;
+            }
+
+            if (!string.IsNullOrWhiteSpace(difficulty.CustomLabel))
+            {
+                difficulty.CustomData["difficultyLabel"] = difficulty.CustomLabel;
+            }
+
+            if (difficulty.CustomInformation.Any())
+            {
+                difficulty.CustomData["information"] =
+                    SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomInformation, s => s);
+            }
+            
+            if (difficulty.CustomWarnings.Any())
+            {
+                difficulty.CustomData["warnings"] =
+                    SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomWarnings, s => s);
+            }
+            
+            if (difficulty.CustomSuggestions.Any())
+            {
+                difficulty.CustomData["suggestions"] =
+                    SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomSuggestions, s => s);
+            }
+            
+            if (difficulty.CustomRequirements.Any())
+            {
+                difficulty.CustomData["requirements"] =
+                    SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomRequirements, s => s);
+            }
+        }
     }
 }

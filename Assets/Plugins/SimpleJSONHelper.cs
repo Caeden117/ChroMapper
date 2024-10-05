@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SimpleJSON
@@ -6,6 +7,19 @@ namespace SimpleJSON
     {
         private const string v2CustomData = "_customData";
         private const string v3CustomData = "customData";
+        
+        public static JSONArray MapSequenceToJSONArray<T>(IEnumerable<T> source, Func<T, JSONNode> func)
+        {
+            var array = new JSONArray();
+
+            foreach (var element in source)
+            {
+                array.Add(func(element));
+            }
+            
+            return array;
+        }
+        
 
         public static void RemovePropertiesWithDefaultValues(JSONNode node)
         {

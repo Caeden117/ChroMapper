@@ -87,7 +87,25 @@ namespace TestsEditMode
                     ""_noteJumpMovementSpeed"": 10,
                     ""_noteJumpStartBeatOffset"": 0,
                     ""_beatmapColorSchemeIdx"": 0,
-                    ""_environmentNameIdx"": 0
+                    ""_environmentNameIdx"": 0,
+                    ""_customData"": {
+                        ""_oneSaber"" : true,
+                        ""_showRotationNoteSpawnLines"" : true,
+						""_difficultyLabel"": ""ACustomLabel"",
+                        ""_warnings"": [
+                            ""Warning1"",
+                            ""Warning2""
+                        ],
+						""_information"": [
+                            ""Info""
+                        ],
+						""_suggestions"": [
+                            ""Chroma""
+                        ],
+						""_requirements"": [
+							""Noodle Extensions""
+						]
+                    }
                 },
                 {
                     ""_difficulty"": ""Normal"",
@@ -187,7 +205,25 @@ namespace TestsEditMode
             ""noteJumpMovementSpeed"": 10,
             ""noteJumpStartBeatOffset"": 0,
             ""beatmapDataFilename"": ""Easy.dat"",
-            ""lightshowDataFilename"": ""Lightshow.dat""
+            ""lightshowDataFilename"": ""Lightshow.dat"",
+            ""customData"": {
+                ""oneSaber"" : true,
+                ""showRotationNoteSpawnLines"" : true,
+				""difficultyLabel"": ""ACustomLabel"",
+                ""warnings"": [
+                    ""Warning1"",
+                    ""Warning2""
+                ],
+				""information"": [
+                    ""Info""
+                ],
+				""suggestions"": [
+                    ""Chroma""
+                ],
+				""requirements"": [
+					""Noodle Extensions""
+				]
+            }
         },
         {
             ""characteristic"": ""Standard"",
@@ -259,14 +295,14 @@ namespace TestsEditMode
 ";
 
         [Test]
-        public void V2_GetFromJson_VanillaProperties()
+        public void V2_GetFromJson()
         {
             var info = V2Info.GetFromJson(JSONNode.Parse(v2FileInfo));
             AssertV2Info(info);
         }
 
         [Test]
-        public void V2_GetOutputJson_VanillaProperties()
+        public void V2_GetOutputJson()
         {
             var info = V2Info.GetFromJson(JSONNode.Parse(v2FileInfo));
             var output = V2Info.GetOutputJson(info);
@@ -276,14 +312,14 @@ namespace TestsEditMode
         }
         
         [Test]
-        public void V4_GetFromJson_VanillaProperties()
+        public void V4_GetFromJson()
         {
             var info = V4Info.GetFromJson(JSONNode.Parse(v4FileInfo));
             AssertV4Info(info);
         }
 
         [Test]
-        public void V4_GetOutputJson_VanillaProperties()
+        public void V4_GetOutputJson()
         {
             var info = V4Info.GetFromJson(JSONNode.Parse(v4FileInfo));
             var output = V4Info.GetOutputJson(info);
@@ -380,6 +416,21 @@ namespace TestsEditMode
             Assert.AreEqual(0, easyDifficulty.ColorSchemeIndex);
             Assert.AreEqual(0, easyDifficulty.EnvironmentNameIndex);
             
+            // Custom properties for Easy
+            Assert.IsTrue(easyDifficulty.CustomOneSaberFlag);
+            Assert.IsTrue(easyDifficulty.CustomShowRotationNoteSpawnLinesFlag);
+            Assert.AreEqual("ACustomLabel", easyDifficulty.CustomLabel);
+            
+            Assert.AreEqual(1, easyDifficulty.CustomInformation.Count);
+            Assert.AreEqual("Info", easyDifficulty.CustomInformation[0]);
+            Assert.AreEqual(2, easyDifficulty.CustomWarnings.Count);
+            Assert.AreEqual("Warning1", easyDifficulty.CustomWarnings[0]);
+            Assert.AreEqual("Warning2", easyDifficulty.CustomWarnings[1]);
+            Assert.AreEqual(1, easyDifficulty.CustomSuggestions.Count);
+            Assert.AreEqual("Chroma", easyDifficulty.CustomSuggestions[0]);
+            Assert.AreEqual(1, easyDifficulty.CustomRequirements.Count);
+            Assert.AreEqual("Noodle Extensions", easyDifficulty.CustomRequirements[0]);
+            
             var normalDifficulty = difficultySet.Difficulties[1];
             Assert.AreEqual("Normal", normalDifficulty.Difficulty);
             Assert.AreEqual(3, normalDifficulty.DifficultyRank);
@@ -388,6 +439,16 @@ namespace TestsEditMode
             Assert.AreEqual(0, normalDifficulty.NoteStartBeatOffset);
             Assert.AreEqual(0, normalDifficulty.ColorSchemeIndex);
             Assert.AreEqual(0, normalDifficulty.EnvironmentNameIndex);
+            
+            // Non-existent custom properties for normal
+            Assert.IsNull(normalDifficulty.CustomOneSaberFlag);
+            Assert.IsNull(normalDifficulty.CustomShowRotationNoteSpawnLinesFlag);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(normalDifficulty.CustomLabel));
+            
+            Assert.AreEqual(0, normalDifficulty.CustomInformation.Count);
+            Assert.AreEqual(0, normalDifficulty.CustomWarnings.Count);
+            Assert.AreEqual(0, normalDifficulty.CustomSuggestions.Count);
+            Assert.AreEqual(0, normalDifficulty.CustomRequirements.Count);
 
             var hardDifficulty = difficultySet.Difficulties[2];
             Assert.AreEqual("Hard", hardDifficulty.Difficulty);

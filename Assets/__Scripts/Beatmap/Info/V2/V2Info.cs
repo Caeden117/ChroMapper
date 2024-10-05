@@ -72,7 +72,11 @@ namespace Beatmap.Info
                     infoDifficulty.NoteJumpSpeed = beatmapNode["_noteJumpMovementSpeed"].AsFloat;
                     infoDifficulty.NoteStartBeatOffset = beatmapNode["_noteJumpStartBeatOffset"].AsFloat;
 
-                    infoDifficulty.CustomData = beatmapNode["_customData"].AsObject;
+                    var customData = beatmapNode["_customData"].AsObject;
+                    
+                    ParseDifficultyCustomData(customData, infoDifficulty);
+
+                    infoDifficulty.CustomData = customData;
                     
                     difficulties.Add(infoDifficulty);
                 }
@@ -163,6 +167,9 @@ namespace Beatmap.Info
                     node["_noteJumpStartBeatOffset"] = difficulty.NoteStartBeatOffset;
                     node["_beatmapColorSchemeIdx"] = difficulty.ColorSchemeIndex;
                     node["_environmentNameIdx"] = difficulty.EnvironmentNameIndex;
+
+                    PopulateDifficultyCustomData(difficulty);
+                    
                     node["_customData"] = difficulty.CustomData;
                     difficultyBeatmapsArray.Add(node);
                 }
@@ -189,6 +196,91 @@ namespace Beatmap.Info
             json["_customData"] = info.CustomData;
             
             return json;
+        }
+
+        private static void ParseDifficultyCustomData(JSONNode customData, InfoDifficulty difficulty)
+        {
+            if (customData["_oneSaber"].IsBoolean)
+            {
+                difficulty.CustomOneSaberFlag = customData["_oneSaber"].AsBool;
+            }
+
+            if (customData["_showRotationNoteSpawnLines"].IsBoolean)
+            {
+                difficulty.CustomShowRotationNoteSpawnLinesFlag = customData["_showRotationNoteSpawnLines"].AsBool;
+            }
+
+            if (customData["_difficultyLabel"].IsString)
+            {
+                difficulty.CustomLabel = customData["_difficultyLabel"].Value;
+            }
+            
+            if (customData["_information"].IsArray)
+            {
+                difficulty.CustomInformation =
+                    customData["_information"].AsArray.Children.Select(x => x.Value).ToList();
+            }
+
+            if (customData["_warnings"].IsArray)
+            {
+                difficulty.CustomWarnings =
+                    customData["_warnings"].AsArray.Children.Select(x => x.Value).ToList();
+            }
+
+            if (customData["_suggestions"].IsArray)
+            {
+                difficulty.CustomSuggestions =
+                    customData["_suggestions"].AsArray.Children.Select(x => x.Value).ToList();
+            }
+
+            if (customData["_requirements"].IsArray)
+            {
+                difficulty.CustomRequirements =
+                    customData["_requirements"].AsArray.Children.Select(x => x.Value).ToList();
+            }
+        }
+
+
+        private static void PopulateDifficultyCustomData(InfoDifficulty difficulty)
+        {
+            if (difficulty.CustomOneSaberFlag != null)
+            {
+                difficulty.CustomData["_oneSaber"] = difficulty.CustomOneSaberFlag.Value;
+            }
+
+            if (difficulty.CustomShowRotationNoteSpawnLinesFlag != null)
+            {
+                difficulty.CustomData["_showRotationNoteSpawnLines"] = difficulty.CustomShowRotationNoteSpawnLinesFlag.Value;
+            }
+
+            if (!string.IsNullOrWhiteSpace(difficulty.CustomLabel))
+            {
+                difficulty.CustomData["_difficultyLabel"] = difficulty.CustomLabel;
+            }
+
+            if (difficulty.CustomInformation.Any())
+            {
+                difficulty.CustomData["_information"] =
+                    SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomInformation, s => s);
+            }
+            
+            if (difficulty.CustomWarnings.Any())
+            {
+                difficulty.CustomData["_warnings"] =
+                    SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomWarnings, s => s);
+            }
+            
+            if (difficulty.CustomSuggestions.Any())
+            {
+                difficulty.CustomData["_suggestions"] =
+                    SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomSuggestions, s => s);
+            }
+            
+            if (difficulty.CustomRequirements.Any())
+            {
+                difficulty.CustomData["_requirements"] =
+                    SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomRequirements, s => s);
+            }
         }
     }
 }
