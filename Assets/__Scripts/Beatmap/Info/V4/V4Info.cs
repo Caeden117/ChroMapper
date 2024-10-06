@@ -100,6 +100,20 @@ namespace Beatmap.Info
                     info.CustomContributors = customData["contributors"].AsArray.Children.Select(V4Contributor.GetFromJson).ToList();
                 }
                 
+                // v4 no longer has difficulty sets so the customData for custom characteristics is done here
+                if (customData["characteristicData"].IsArray)
+                {
+                    foreach (var characteristicNode in customData["characteristicData"].AsArray.Children)
+                    {
+                        var characteristic = characteristicNode["characteristic"].Value;
+                        var difficultySet = info.DifficultySets.FirstOrDefault(x => x.Characteristic == characteristic);
+                        if (difficultySet != null)
+                        {
+                            ParseDifficultySetCustomData(characteristicNode, difficultySet);
+                        }
+                    }
+                }
+                
                 info.CustomData = customData;
             }
             
@@ -202,8 +216,29 @@ namespace Beatmap.Info
                     customContributors.Add(V4Contributor.ToJson(customContributor));
                 }
                 info.CustomData["contributors"] = customContributors;
+
+                var customCharacteristics = new JSONArray();
+                foreach (var difficultySet in info.DifficultySets)
+                {
+                    var customCharacteristic = new JSONObject { ["characteristic"] = difficultySet.Characteristic };
+                    if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicLabel))
+                    {
+                        customCharacteristic["label"] = difficultySet.CustomCharacteristicLabel;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicIconImageFileName))
+                    {
+                        customCharacteristic["iconPath"] = difficultySet.CustomCharacteristicIconImageFileName;
+                    }
+
+                    if (customCharacteristic.Count > 1)
+                    {
+                        customCharacteristics.Add(customCharacteristic);
+                    }
+                }
+                info.CustomData["characteristicData"] = customCharacteristics;
             }
-            
+
             json["customData"] = info.CustomData;
             
             return json;
@@ -211,6 +246,19 @@ namespace Beatmap.Info
 
         private static string ToHashPrefixedHtmlStringRGBA(Color color) => $"#{ColorUtility.ToHtmlStringRGBA(color)}";
 
+        private static void ParseDifficultySetCustomData(JSONNode customData, InfoDifficultySet difficultySet)
+        {
+            if (customData["label"].IsString)
+            {
+                difficultySet.CustomCharacteristicLabel = customData["label"].Value;
+            }
+
+            if (customData["iconPath"].IsString)
+            {
+                difficultySet.CustomCharacteristicIconImageFileName = customData["iconPath"].Value;
+            }
+        }
+        
         private static void ParseDifficultyCustomData(JSONNode customData, InfoDifficulty difficulty)
         {
             if (customData["oneSaber"].IsBoolean)

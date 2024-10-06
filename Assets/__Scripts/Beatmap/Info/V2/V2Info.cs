@@ -82,7 +82,12 @@ namespace Beatmap.Info
                 }
 
                 beatmapSet.Difficulties = difficulties;
-                beatmapSet.CustomData = beatmapSetNode["_customData"].AsObject;
+
+                var setCustomData = beatmapSetNode["_customData"].AsObject;
+
+                ParseDifficultySetCustomData(setCustomData, beatmapSet);
+                
+                beatmapSet.CustomData = setCustomData;
 
                 beatmapSets.Add(beatmapSet);
             }
@@ -175,6 +180,9 @@ namespace Beatmap.Info
                 }
 
                 setNode["_difficultyBeatmaps"] = difficultyBeatmapsArray;
+
+                PopulateDifficultySetCustomData(beatmapSet);
+                
                 setNode["_customData"] = beatmapSet.CustomData;
                 beatmapSetArray.Add(setNode);
             }
@@ -196,6 +204,19 @@ namespace Beatmap.Info
             json["_customData"] = info.CustomData;
             
             return json;
+        }
+        
+        private static void ParseDifficultySetCustomData(JSONNode customData, InfoDifficultySet difficultySet)
+        {
+            if (customData["_characteristicLabel"].IsString)
+            {
+                difficultySet.CustomCharacteristicLabel = customData["_characteristicLabel"].Value;
+            }
+
+            if (customData["_characteristicIconImageFilename"].IsString)
+            {
+                difficultySet.CustomCharacteristicIconImageFileName = customData["_characteristicIconImageFilename"].Value;
+            }
         }
 
         private static void ParseDifficultyCustomData(JSONNode customData, InfoDifficulty difficulty)
@@ -285,6 +306,18 @@ namespace Beatmap.Info
             }
         }
 
+        private static void PopulateDifficultySetCustomData(InfoDifficultySet difficultySet)
+        {
+            if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicLabel))
+            {
+                difficultySet.CustomData["_characteristicLabel"] = difficultySet.CustomCharacteristicLabel;
+            }
+            
+            if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicIconImageFileName))
+            {
+                difficultySet.CustomData["_characteristicIconImageFilename"] = difficultySet.CustomCharacteristicIconImageFileName;
+            }
+        }
 
         private static void PopulateDifficultyCustomData(InfoDifficulty difficulty)
         {

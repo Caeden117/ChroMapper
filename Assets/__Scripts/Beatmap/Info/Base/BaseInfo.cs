@@ -63,13 +63,18 @@ namespace Beatmap.Info
         public List<InfoDifficulty> Difficulties { get; set; } = new();
 
         public JSONObject CustomData { get; set; } = new(); // Pretty much just for v2 SongCore parsing
+        
+        public string CustomCharacteristicLabel { get; set; }
+        public string CustomCharacteristicIconImageFileName { get; set; }
     }
 
     public class InfoDifficulty
     {
         public InfoDifficulty(InfoDifficultySet parentSet) => ParentSet = parentSet;
-        public InfoDifficultySet ParentSet { get; set; }
+        private InfoDifficultySet ParentSet { get; }
         public string Characteristic => ParentSet.Characteristic;
+        public string CustomCharacteristicLabel => ParentSet.CustomCharacteristicLabel;
+        public string CustomCharacteristicIconImageFileName => ParentSet.CustomCharacteristicIconImageFileName;
 
         public string BeatmapFileName { get; set; }
         public string LightshowFileName { get; set; }

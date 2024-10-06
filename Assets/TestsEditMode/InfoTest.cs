@@ -78,6 +78,10 @@ namespace TestsEditMode
     ],
     ""_difficultyBeatmapSets"": [
         {
+            ""_customData"": {
+                ""_characteristicLabel"" : ""A Custom Characteristic"",
+                ""_characteristicIconImageFilename"" : ""customCharacteristic.png""
+            }
             ""_beatmapCharacteristicName"": ""Standard"",
             ""_difficultyBeatmaps"": [
                 {
@@ -379,6 +383,13 @@ namespace TestsEditMode
                 ""role"": ""Everything"",
                 ""iconPath"": ""Bullet.png""
             }
+        ],
+        ""characteristicData"": [
+            {
+                ""characteristic"": ""Standard"",
+                ""label"" : ""A Custom Characteristic"",
+                ""iconPath"" : ""customCharacteristic.png""
+            }
         ]
     }
 }
@@ -496,6 +507,10 @@ namespace TestsEditMode
             var difficultySet = info.DifficultySets[0];
             Assert.AreEqual("Standard", difficultySet.Characteristic);
             Assert.AreEqual(5, difficultySet.Difficulties.Count);
+            
+            // Custom properties for Set
+            Assert.AreEqual("A Custom Characteristic", difficultySet.CustomCharacteristicLabel);
+            Assert.AreEqual("customCharacteristic.png", difficultySet.CustomCharacteristicIconImageFileName);
 
             var easyDifficulty = difficultySet.Difficulties[0];
             Assert.AreEqual("Easy", easyDifficulty.Difficulty);
