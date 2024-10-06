@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using SimpleJSON;
 
@@ -238,6 +238,51 @@ namespace Beatmap.Info
                 difficulty.CustomRequirements =
                     customData["_requirements"].AsArray.Children.Select(x => x.Value).ToList();
             }
+
+            if (customData["_colorLeft"].IsObject)
+            {
+                difficulty.CustomColorLeft = customData["_colorLeft"].ReadColor();
+            }
+            
+            if (customData["_colorRight"].IsObject)
+            {
+                difficulty.CustomColorRight = customData["_colorRight"].ReadColor();
+            }
+            
+            if (customData["_obstacleColor"].IsObject)
+            {
+                difficulty.CustomColorObstacle = customData["_obstacleColor"].ReadColor();
+            }
+
+            if (customData["_envColorLeft"].IsObject)
+            {
+                difficulty.CustomEnvColorLeft = customData["_envColorLeft"].ReadColor();
+            }
+            
+            if (customData["_envColorRight"].IsObject)
+            {
+                difficulty.CustomEnvColorRight = customData["_envColorRight"].ReadColor();
+            }
+            
+            if (customData["_envColorWhite"].IsObject)
+            {
+                difficulty.CustomEnvColorWhite = customData["_envColorWhite"].ReadColor();
+            }
+            
+            if (customData["_envColorLeftBoost"].IsObject)
+            {
+                difficulty.CustomEnvColorBoostLeft = customData["_envColorLeftBoost"].ReadColor();
+            }
+            
+            if (customData["_envColorRightBoost"].IsObject)
+            {
+                difficulty.CustomEnvColorBoostRight = customData["_envColorRightBoost"].ReadColor();
+            }
+            
+            if (customData["_envColorWhiteBoost"].IsObject)
+            {
+                difficulty.CustomEnvColorBoostWhite = customData["_envColorWhiteBoost"].ReadColor();
+            }
         }
 
 
@@ -281,6 +326,56 @@ namespace Beatmap.Info
                 difficulty.CustomData["_requirements"] =
                     SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomRequirements, s => s);
             }
+            
+            // SongCore saves colors in Object format so temporarily change container type
+            JSONNode.ColorContainerType = JSONContainerType.Object;
+
+            if (difficulty.CustomColorLeft != null)
+            {
+                difficulty.CustomData["_colorLeft"] = difficulty.CustomColorLeft.Value;
+            }
+
+            if (difficulty.CustomColorRight != null)
+            {
+                difficulty.CustomData["_colorRight"] = difficulty.CustomColorRight.Value;
+            }
+
+            if (difficulty.CustomColorObstacle != null)
+            {
+                difficulty.CustomData["_obstacleColor"] = difficulty.CustomColorObstacle.Value;
+            }
+
+            if (difficulty.CustomEnvColorLeft != null)
+            {
+                difficulty.CustomData["_envColorLeft"] = difficulty.CustomEnvColorLeft.Value;
+            }
+
+            if (difficulty.CustomEnvColorRight != null)
+            {
+                difficulty.CustomData["_envColorRight"] = difficulty.CustomEnvColorRight.Value;
+            }
+
+            if (difficulty.CustomEnvColorWhite != null)
+            {
+                difficulty.CustomData["_envColorWhite"] = difficulty.CustomEnvColorWhite.Value;
+            }
+
+            if (difficulty.CustomEnvColorBoostLeft != null)
+            {
+                difficulty.CustomData["_envColorLeftBoost"] = difficulty.CustomEnvColorBoostLeft.Value;
+            }
+
+            if (difficulty.CustomEnvColorBoostRight != null)
+            {
+                difficulty.CustomData["_envColorRightBoost"] = difficulty.CustomEnvColorBoostRight.Value;
+            }
+
+            if (difficulty.CustomEnvColorBoostWhite != null)
+            {
+                difficulty.CustomData["_envColorWhiteBoost"] = difficulty.CustomEnvColorBoostWhite.Value;
+            }
+            
+            JSONNode.ColorContainerType = JSONContainerType.Array;
         }
     }
 }

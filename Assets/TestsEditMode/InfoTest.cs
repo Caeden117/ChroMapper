@@ -104,7 +104,52 @@ namespace TestsEditMode
                         ],
 						""_requirements"": [
 							""Noodle Extensions""
-						]
+						],
+                        ""_colorLeft"": {
+                          ""r"": 0.111,
+                          ""g"": 0.111,
+                          ""b"": 0.111
+                        },
+                        ""_colorRight"": {
+                          ""r"": 0.222,
+                          ""g"": 0.222,
+                          ""b"": 0.222
+                        },
+                        ""_obstacleColor"": {
+                          ""r"": 0.333,
+                          ""g"": 0.333,
+                          ""b"": 0.333
+                        },
+                        ""_envColorLeft"": {
+                          ""r"": 0.444,
+                          ""g"": 0.444,
+                          ""b"": 0.444
+                        },
+                        ""_envColorRight"": {
+                          ""r"": 0.555,
+                          ""g"": 0.555,
+                          ""b"": 0.555
+                        },
+                        ""_envColorWhite"": {
+                          ""r"": 0.666,
+                          ""g"": 0.666,
+                          ""b"": 0.666
+                        },
+	                    ""_envColorLeftBoost"": {
+                          ""r"": 0.777,
+                          ""g"": 0.777,
+                          ""b"": 0.777
+                        },
+	                    ""_envColorRightBoost"": {
+                          ""r"": 0.888,
+                          ""g"": 0.888,
+                          ""b"": 0.888
+                        },
+	                    ""_envColorWhiteBoost"": {
+                          ""r"": 0.999,
+                          ""g"": 0.999,
+                          ""b"": 0.999
+                        }
                     }
                 },
                 {
@@ -222,7 +267,52 @@ namespace TestsEditMode
                 ],
 				""requirements"": [
 					""Noodle Extensions""
-				]
+				],
+                ""colorLeft"": {
+                  ""r"": 0.111,
+                  ""g"": 0.111,
+                  ""b"": 0.111
+                },
+                ""colorRight"": {
+                  ""r"": 0.222,
+                  ""g"": 0.222,
+                  ""b"": 0.222
+                },
+                ""obstacleColor"": {
+                  ""r"": 0.333,
+                  ""g"": 0.333,
+                  ""b"": 0.333
+                },
+                ""envColorLeft"": {
+                  ""r"": 0.444,
+                  ""g"": 0.444,
+                  ""b"": 0.444
+                },
+                ""envColorRight"": {
+                  ""r"": 0.555,
+                  ""g"": 0.555,
+                  ""b"": 0.555
+                },
+                ""envColorWhite"": {
+                  ""r"": 0.666,
+                  ""g"": 0.666,
+                  ""b"": 0.666
+                },
+	            ""envColorLeftBoost"": {
+                  ""r"": 0.777,
+                  ""g"": 0.777,
+                  ""b"": 0.777
+                },
+	            ""envColorRightBoost"": {
+                  ""r"": 0.888,
+                  ""g"": 0.888,
+                  ""b"": 0.888
+                },
+	            ""envColorWhiteBoost"": {
+                  ""r"": 0.999,
+                  ""g"": 0.999,
+                  ""b"": 0.999
+                }
             }
         },
         {
@@ -431,6 +521,16 @@ namespace TestsEditMode
             Assert.AreEqual(1, easyDifficulty.CustomRequirements.Count);
             Assert.AreEqual("Noodle Extensions", easyDifficulty.CustomRequirements[0]);
             
+            AssertColorsAreEqual(new Color(0.111f, 0.111f, 0.111f),easyDifficulty.CustomColorLeft!.Value);
+            AssertColorsAreEqual(new Color(0.222f, 0.222f, 0.222f),easyDifficulty.CustomColorRight!.Value);
+            AssertColorsAreEqual(new Color(0.333f, 0.333f, 0.333f),easyDifficulty.CustomColorObstacle!.Value);
+            AssertColorsAreEqual(new Color(0.444f, 0.444f, 0.444f),easyDifficulty.CustomEnvColorLeft!.Value);
+            AssertColorsAreEqual(new Color(0.555f, 0.555f, 0.555f),easyDifficulty.CustomEnvColorRight!.Value);
+            AssertColorsAreEqual(new Color(0.666f, 0.666f, 0.666f),easyDifficulty.CustomEnvColorWhite!.Value);
+            AssertColorsAreEqual(new Color(0.777f, 0.777f, 0.777f),easyDifficulty.CustomEnvColorBoostLeft!.Value);
+            AssertColorsAreEqual(new Color(0.888f, 0.888f, 0.888f),easyDifficulty.CustomEnvColorBoostRight!.Value);
+            AssertColorsAreEqual(new Color(0.999f, 0.999f, 0.999f),easyDifficulty.CustomEnvColorBoostWhite!.Value);
+            
             var normalDifficulty = difficultySet.Difficulties[1];
             Assert.AreEqual("Normal", normalDifficulty.Difficulty);
             Assert.AreEqual(3, normalDifficulty.DifficultyRank);
@@ -449,6 +549,16 @@ namespace TestsEditMode
             Assert.AreEqual(0, normalDifficulty.CustomWarnings.Count);
             Assert.AreEqual(0, normalDifficulty.CustomSuggestions.Count);
             Assert.AreEqual(0, normalDifficulty.CustomRequirements.Count);
+            
+            Assert.IsNull(normalDifficulty.CustomColorLeft);
+            Assert.IsNull(normalDifficulty.CustomColorRight);
+            Assert.IsNull(normalDifficulty.CustomColorObstacle);
+            Assert.IsNull(normalDifficulty.CustomEnvColorLeft);
+            Assert.IsNull(normalDifficulty.CustomEnvColorRight);
+            Assert.IsNull(normalDifficulty.CustomEnvColorWhite);
+            Assert.IsNull(normalDifficulty.CustomEnvColorBoostLeft);
+            Assert.IsNull(normalDifficulty.CustomEnvColorBoostRight);
+            Assert.IsNull(normalDifficulty.CustomEnvColorBoostWhite);
 
             var hardDifficulty = difficultySet.Difficulties[2];
             Assert.AreEqual("Hard", hardDifficulty.Difficulty);

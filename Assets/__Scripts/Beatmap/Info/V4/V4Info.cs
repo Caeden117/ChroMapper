@@ -251,6 +251,51 @@ namespace Beatmap.Info
                 difficulty.CustomRequirements =
                     customData["requirements"].AsArray.Children.Select(x => x.Value).ToList();
             }
+
+            if (customData["colorLeft"].IsObject)
+            {
+                difficulty.CustomColorLeft = customData["colorLeft"].ReadColor();
+            }
+            
+            if (customData["colorRight"].IsObject)
+            {
+                difficulty.CustomColorRight = customData["colorRight"].ReadColor();
+            }
+            
+            if (customData["obstacleColor"].IsObject)
+            {
+                difficulty.CustomColorObstacle = customData["obstacleColor"].ReadColor();
+            }
+
+            if (customData["envColorLeft"].IsObject)
+            {
+                difficulty.CustomEnvColorLeft = customData["envColorLeft"].ReadColor();
+            }
+            
+            if (customData["envColorRight"].IsObject)
+            {
+                difficulty.CustomEnvColorRight = customData["envColorRight"].ReadColor();
+            }
+            
+            if (customData["envColorWhite"].IsObject)
+            {
+                difficulty.CustomEnvColorWhite = customData["envColorWhite"].ReadColor();
+            }
+            
+            if (customData["envColorLeftBoost"].IsObject)
+            {
+                difficulty.CustomEnvColorBoostLeft = customData["envColorLeftBoost"].ReadColor();
+            }
+            
+            if (customData["envColorRightBoost"].IsObject)
+            {
+                difficulty.CustomEnvColorBoostRight = customData["envColorRightBoost"].ReadColor();
+            }
+            
+            if (customData["envColorWhiteBoost"].IsObject)
+            {
+                difficulty.CustomEnvColorBoostWhite = customData["envColorWhiteBoost"].ReadColor();
+            }
         }
 
         private static void PopulateDifficultyCustomData(InfoDifficulty difficulty)
@@ -293,6 +338,56 @@ namespace Beatmap.Info
                 difficulty.CustomData["requirements"] =
                     SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomRequirements, s => s);
             }
+            
+            // SongCore saves colors in Object format so temporarily change container type
+            JSONNode.ColorContainerType = JSONContainerType.Object;
+
+            if (difficulty.CustomColorLeft != null)
+            {
+                difficulty.CustomData["colorLeft"] = difficulty.CustomColorLeft.Value;
+            }
+
+            if (difficulty.CustomColorRight != null)
+            {
+                difficulty.CustomData["colorRight"] = difficulty.CustomColorRight.Value;
+            }
+
+            if (difficulty.CustomColorObstacle != null)
+            {
+                difficulty.CustomData["obstacleColor"] = difficulty.CustomColorObstacle.Value;
+            }
+
+            if (difficulty.CustomEnvColorLeft != null)
+            {
+                difficulty.CustomData["envColorLeft"] = difficulty.CustomEnvColorLeft.Value;
+            }
+
+            if (difficulty.CustomEnvColorRight != null)
+            {
+                difficulty.CustomData["envColorRight"] = difficulty.CustomEnvColorRight.Value;
+            }
+
+            if (difficulty.CustomEnvColorWhite != null)
+            {
+                difficulty.CustomData["envColorWhite"] = difficulty.CustomEnvColorWhite.Value;
+            }
+
+            if (difficulty.CustomEnvColorBoostLeft != null)
+            {
+                difficulty.CustomData["envColorLeftBoost"] = difficulty.CustomEnvColorBoostLeft.Value;
+            }
+
+            if (difficulty.CustomEnvColorBoostRight != null)
+            {
+                difficulty.CustomData["envColorRightBoost"] = difficulty.CustomEnvColorBoostRight.Value;
+            }
+
+            if (difficulty.CustomEnvColorBoostWhite != null)
+            {
+                difficulty.CustomData["envColorWhiteBoost"] = difficulty.CustomEnvColorBoostWhite.Value;
+            }
+
+            JSONNode.ColorContainerType = JSONContainerType.Array;
         }
     }
 }

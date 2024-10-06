@@ -106,6 +106,16 @@ namespace Beatmap.Info
         public List<string> CustomWarnings { get; set; } = new();
         public List<string> CustomSuggestions { get; set; } = new();
         public List<string> CustomRequirements { get; set; } = new();
+        
+        public Color? CustomColorLeft { get; set; }
+        public Color? CustomColorRight { get; set; }
+        public Color? CustomColorObstacle { get; set; }
+        public Color? CustomEnvColorLeft { get; set; }
+        public Color? CustomEnvColorRight { get; set; }
+        public Color? CustomEnvColorWhite { get; set; }
+        public Color? CustomEnvColorBoostLeft { get; set; }
+        public Color? CustomEnvColorBoostRight { get; set; }
+        public Color? CustomEnvColorBoostWhite { get; set; }
     }
 
     public class InfoColorScheme
