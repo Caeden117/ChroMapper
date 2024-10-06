@@ -38,7 +38,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     private string saveWarningMessage; 
 
-    private static MapExporter Exporter => new MapExporter(BeatSaberSongContainer.Instance.Song);
+    private static MapExporter Exporter => new(BeatSaberSongContainer.Instance.Info);
 
     public enum SaveType
     {

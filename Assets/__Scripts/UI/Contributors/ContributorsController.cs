@@ -39,7 +39,7 @@ public class ContributorsController : MonoBehaviour
     {
         HandleRemoveAllContributors(0);
 
-        foreach (var item in BeatSaberSongContainer.Instance.Song.Contributors)
+        foreach (var item in BeatSaberSongContainer.Instance.Info.CustomContributors)
         {
             var listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
             listItem.Setup(item, this);

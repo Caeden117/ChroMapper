@@ -110,6 +110,30 @@ namespace Beatmap.Info
         public JSONNode CustomData = new JSONObject();
 
         public List<BaseContributor> CustomContributors = new();
+        
+        
+        public bool Save()
+        {
+            // Create map folder
+            if (!System.IO.Directory.Exists(Directory)) System.IO.Directory.CreateDirectory(Directory);
+            
+            var outputJson = Version[0] switch
+            {
+                '2' => V2Info.GetOutputJson(this),
+                '4' => V4Info.GetOutputJson(this),
+                _ => null
+            };
+
+            if (outputJson == null)
+                return false;
+
+            // Write difficulty file
+            File.WriteAllText(Path.Combine(Directory, "Info.dat"), Settings.Instance.FormatJson
+                ? outputJson.ToString(2)
+                : outputJson.ToString());
+
+            return true;
+        }
     }
 
     public class InfoDifficultySet

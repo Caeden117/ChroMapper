@@ -99,15 +99,15 @@ public static class BeatSaberSongExtensions
     }
 
     [CanBeNull]
-    public static Dictionary<string, string> GetFilesForArchiving(this BeatSaberSong song)
+    public static Dictionary<string, string> GetFilesForArchiving(BaseInfo info)
     {
         // path:entry_name
         var exportedFiles = new Dictionary<string, string>();
 
         var infoFileLocation = "";
-        if (Directory.Exists(song.Directory))
+        if (Directory.Exists(info.Directory))
         {
-            infoFileLocation = Path.Combine(song.Directory, "Info.dat");
+            infoFileLocation = Path.Combine(info.Directory, "Info.dat");
         }
 
         if (!File.Exists(infoFileLocation))
@@ -118,24 +118,26 @@ public static class BeatSaberSongExtensions
         }
 
         exportedFiles.Add(infoFileLocation, "Info.dat");
-        TryAddToFileDictionary(exportedFiles, song.Directory, song.CoverImageFilename);
-        TryAddToFileDictionary(exportedFiles, song.Directory, song.SongFilename);
-        TryAddToFileDictionary(exportedFiles, song.Directory, "cinema-video.json");
-        TryAddToFileDictionary(exportedFiles, song.Directory, "BPMInfo.dat");
+        TryAddToFileDictionary(exportedFiles, info.Directory, info.CoverImageFilename);
+        TryAddToFileDictionary(exportedFiles, info.Directory, info.SongFilename);
+        TryAddToFileDictionary(exportedFiles, info.Directory, info.SongPreviewFilename);
+        TryAddToFileDictionary(exportedFiles, info.Directory, "cinema-video.json");
+        TryAddToFileDictionary(exportedFiles, info.Directory, info.Version[0] == '4' ? info.AudioDataFilename: "BPMInfo.dat");
 
-        foreach (var contributor in song.Contributors.DistinctBy(it => it.LocalImageLocation))
+        foreach (var contributor in info.CustomContributors.DistinctBy(it => it.LocalImageLocation))
         {
-            var imageLocation = Path.Combine(song.Directory!, contributor.LocalImageLocation);
-            if (contributor.LocalImageLocation != song.CoverImageFilename &&
+            var imageLocation = Path.Combine(info.Directory!, contributor.LocalImageLocation);
+            if (contributor.LocalImageLocation != info.CoverImageFilename &&
                 File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
             {
                 exportedFiles.Add(imageLocation, contributor.LocalImageLocation);
             }
         }
 
-        foreach (var map in song.DifficultyBeatmapSets.SelectMany(set => set.DifficultyBeatmaps))
+        foreach (var map in info.DifficultySets.SelectMany(set => set.Difficulties))
         {
-            TryAddToFileDictionary(exportedFiles, song.Directory, map.BeatmapFilename);
+            TryAddToFileDictionary(exportedFiles, info.Directory, map.BeatmapFileName);
+            TryAddToFileDictionary(exportedFiles, info.Directory, map.LightshowFileName);
         }
 
         // Don't package to zip if any paths are absolute or rooted

@@ -67,7 +67,7 @@ public class ContributorListItem : MonoBehaviour
             new ExtensionFilter("Image Files", "png", "jpg", "jpeg"), new ExtensionFilter("All Files", "*")
         };
 
-        var songDir = BeatSaberSongContainer.Instance.Song.Directory;
+        var songDir = BeatSaberSongContainer.Instance.Info.Directory;
         CMInputCallbackInstaller.DisableActionMaps(typeof(ContributorListItem),
             new[] { typeof(CMInput.IMenusExtendedActions) });
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, extensions, false);
@@ -136,7 +136,7 @@ public class ContributorListItem : MonoBehaviour
 
     private IEnumerator LoadImage()
     {
-        var location = Path.Combine(BeatSaberSongContainer.Instance.Song.Directory, imagePath);
+        var location = Path.Combine(BeatSaberSongContainer.Instance.Info.Directory, imagePath);
 
         var uriPath = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor
             ? Uri.EscapeDataString(location)

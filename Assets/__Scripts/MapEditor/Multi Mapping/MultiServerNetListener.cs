@@ -189,14 +189,14 @@ public class MultiServerNetListener : MultiNetListener, INetAdmin
         // Zip the song in its current state, then send to the player.
         // I'm aware that there's a little bit of time in between saving and zipping where changes made *arent* sent to the client,
         //   but I'm hoping its small enough to not be a big worry.
-        var song = BeatSaberSongContainer.Instance.Song;
+        var mapInfo = BeatSaberSongContainer.Instance.Info;
         var diff = BeatSaberSongContainer.Instance.DifficultyData;
         var characteristic = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet;
 
-        var zipPath = Path.Combine(song.Directory, song.CleanSongName + ".zip");
+        var zipPath = Path.Combine(mapInfo.Directory, mapInfo.CleanSongName + ".zip");
         File.Delete(zipPath);
 
-        var exportedFiles = song.GetFilesForArchiving();
+        var exportedFiles = BeatSaberSongExtensions.GetFilesForArchiving(mapInfo);
 
         using (var archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))
         {
