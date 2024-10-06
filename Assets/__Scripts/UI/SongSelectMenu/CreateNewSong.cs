@@ -23,7 +23,7 @@ public class CreateNewSong : MonoBehaviour
             return;
         }
         
-        if (list.Songs.Any(x => Path.GetFullPath(x.Directory).Equals(
+        if (list.SongInfos.Any(x => Path.GetFullPath(x.Directory).Equals(
             Path.GetFullPath(Path.Combine(
                 list.SelectedFolderPath,
                 song.CleanSongName)),

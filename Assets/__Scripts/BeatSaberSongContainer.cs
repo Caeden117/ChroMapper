@@ -6,12 +6,17 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Serialization;
 using Beatmap.Base;
+using Beatmap.Info;
 
 public class BeatSaberSongContainer : MonoBehaviour
 {
+    [Obsolete("",false)]
     [FormerlySerializedAs("song")] public BeatSaberSong Song;
     [FormerlySerializedAs("difficultyData")] public BeatSaberSong.DifficultyBeatmap DifficultyData;
     [FormerlySerializedAs("loadedSong")] public AudioClip LoadedSong;
+
+    public BaseInfo Info;
+    public InfoDifficulty MapDifficultyInfo;
     [FormerlySerializedAs("map")] public BaseDifficulty Map;
 
     [NonSerialized] public MultiClientNetListener? MultiMapperConnection;
@@ -28,6 +33,12 @@ public class BeatSaberSongContainer : MonoBehaviour
         if (Instance != null) Destroy(Instance.gameObject);
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    
+    public void SelectSongForEditing(BaseInfo info)
+    {
+        Info = info;
+        SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
     }
 
     public void SelectSongForEditing(BeatSaberSong song)
@@ -70,22 +81,22 @@ public class BeatSaberSongContainer : MonoBehaviour
         archive.ExtractToDirectory(directory);
 
         // Try and get a BeatSaberSong out of what we've downloaded.
-        var song = BeatSaberSong.GetSongFromFolder(directory);
-        if (song != null)
+        var mapInfo = BeatSaberSong.GetInfoFromFolder(directory);
+        if (mapInfo != null)
         {
             PersistentUI.Instance.LevelLoadSliderLabel.text =
                 LocalizationSettings.StringDatabase.GetLocalizedString("MultiMapping", "multi.session.loading");
-            Song = song;
+            Info = mapInfo;
 
             // Find characteristic and difficulty
-            DifficultyData = Song.DifficultyBeatmapSets
-                .Find(set => set.BeatmapCharacteristicName == MultiMapperConnection.MapData.Characteristic)
-                .DifficultyBeatmaps.Find(diff => diff.Difficulty == MultiMapperConnection.MapData.Diff);
-
-            Map = song.GetMapFromDifficultyBeatmap(DifficultyData);
+            MapDifficultyInfo = mapInfo.DifficultySets
+                .Find(set => set.Characteristic == MultiMapperConnection.MapData.Characteristic)
+                .Difficulties.Find(diff => diff.Difficulty == MultiMapperConnection.MapData.Diff);
+            
+            Map = BeatSaberSong.GetMapFromInfoFiles(mapInfo, MapDifficultyInfo);
             Settings.Instance.MapVersion = Map.Version[0] == '3' ? 3 : 2;
 
-            yield return Song.LoadAudio((clip) =>
+            yield return BeatSaberSongExtensions.LoadAudio(mapInfo, (clip) =>
             {
                 LoadedSong = clip;
                 LoadedSongSamples = clip.samples;

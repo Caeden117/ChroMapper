@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Beatmap.Info;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -20,11 +21,11 @@ public static class BeatSaberSongExtensions
     /// </summary>
     /// <param name="useTemp">Should we load the song the user has updated in the UI or from the saved song data</param>
     /// <returns>Coroutine IEnumerator</returns>
-    public static IEnumerator LoadAudio(this BeatSaberSong song, Action<AudioClip> onClipLoaded, float songTimeOffset = 0, string overrideLocalPath = null)
+    public static IEnumerator LoadAudio(BaseInfo mapInfo, Action<AudioClip> onClipLoaded, float songTimeOffset = 0, string overrideLocalPath = null)
     {
-        if (!Directory.Exists(song.Directory)) yield break;
+        if (!Directory.Exists(mapInfo.Directory)) yield break;
 
-        var fullPath = Path.Combine(song.Directory, overrideLocalPath ?? song.SongFilename);
+        var fullPath = Path.Combine(mapInfo.Directory, overrideLocalPath ?? mapInfo.SongFilename);
 
         // Commented out since Song Time Offset changes need to reload the song, even if its the same file
         //if (fullPath == loadedSong)

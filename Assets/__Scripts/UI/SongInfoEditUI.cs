@@ -297,7 +297,7 @@ public class SongInfoEditUI : MenuBase
         Debug.Log("Loading audio");
         if (File.Exists(fullPath))
         {
-            yield return Song.LoadAudio((clip) =>
+            yield return BeatSaberSongExtensions.LoadAudio(null,(clip) =>
             {
                 previewAudio.clip = clip;
                 BeatSaberSongContainer.Instance.LoadedSong = clip;

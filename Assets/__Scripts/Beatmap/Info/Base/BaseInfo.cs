@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Beatmap.Base.Customs;
 using SimpleJSON;
 using UnityEngine;
@@ -10,13 +13,65 @@ namespace Beatmap.Info
     public class BaseInfo
     {
         // Editor Properties
-        public string Directory { get; set; }
-        public bool IsFavourite; 
+        private string directory;
+
+        public string Directory
+        {
+            get => directory;
+            set
+            {
+                LastWriteTime = System.IO.Directory.GetLastWriteTime(value);
+                isFavourite = File.Exists(Path.Combine(value, ".favourite"));
+                directory = value;
+            }
+        }
+        
+        public DateTime LastWriteTime { get; private set; }
+        
+        // These values piggy back off of Application.productName and Application.version here.
+        // It's so that anyone maintaining a ChroMapper fork, but wants its identity to be separate, can easily just change
+        // product name and the version from Project Settings, and have it automatically apply to the metadata.
+        // But it's in their own fields because Unity cries like a little blyat when you access them directly from another thread.
+        private static string editorName;
+        private static string editorVersion;
+
+        private bool isFavourite;
+
+        public bool IsFavourite
+        {
+            get => isFavourite;
+            set
+            {
+                var path = Path.Combine(Directory, ".favourite");
+                lock (this)
+                {
+                    if (value)
+                    {
+                        File.Create(path).Dispose();
+                        File.SetAttributes(path, FileAttributes.Hidden);
+                    }
+                    else
+                    {
+                        File.Delete(path);
+                    }
+                }
+
+                isFavourite = value;
+            }
+        }
+
+        public BaseInfo()
+        {
+            if (string.IsNullOrEmpty(editorName)) editorName = Application.productName;
+            if (string.IsNullOrEmpty(editorVersion)) editorVersion = Application.version;
+        }
 
         // Vanilla Properties
         public string Version { get; set; } = "4.0.0";
 
         public string SongName { get; set; } = "New Song";
+        public string CleanSongName => Path.GetInvalidFileNameChars()
+            .Aggregate(SongName, (res, el) => res.Replace(el.ToString(), string.Empty));
         public string SongSubName { get; set; } = "";
         public string SongAuthorName { get; set; } = "";
 
