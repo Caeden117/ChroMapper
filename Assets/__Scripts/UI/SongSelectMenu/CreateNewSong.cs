@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Beatmap.Info;
 using UnityEngine;
 
 public class CreateNewSong : MonoBehaviour
@@ -14,7 +15,7 @@ public class CreateNewSong : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(res)) return;
 
-        var song = new BeatSaberSong(list.SelectedFolderPath, res);
+        var song = new BaseInfo { Directory = list.SelectedFolderPath };
         
         if (string.IsNullOrWhiteSpace(song.CleanSongName))
         {
@@ -35,8 +36,8 @@ public class CreateNewSong : MonoBehaviour
             return;
         }
 
-        var standardSet = new BeatSaberSong.DifficultyBeatmapSet();
-        song.DifficultyBeatmapSets.Add(standardSet);
+        var standardSet = new InfoDifficultySet { Characteristic = "Standard" };
+        song.DifficultySets.Add(standardSet);
         BeatSaberSongContainer.Instance.SelectSongForEditing(song);
         PersistentUI.Instance.ShowDialogBox("SongSelectMenu", "newmap.message", null,
             PersistentUI.DialogBoxPresetType.Ok);
