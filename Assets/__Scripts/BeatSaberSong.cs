@@ -165,7 +165,7 @@ public class BeatSaberSong
             }
 
             //BeatSaver schema changes, CleanObject function
-            Json["_customData"] = CleanObject(Json["_customData"]);
+            Json["_customData"] = SimpleJSONHelper.CleanObject(Json["_customData"]);
             if (Json["_customData"] is null || Json["_customData"].Count <= 0) Json.Remove("_customData");
 
             var sets = new JSONArray();
@@ -258,7 +258,7 @@ public class BeatSaberSong
                      */
                     if (subNode["_customData"] != null)
                     {
-                        subNode["_customData"] = CleanObject(subNode["_customData"]);
+                        subNode["_customData"] = SimpleJSONHelper.CleanObject(subNode["_customData"]);
                         if (subNode["_customData"].Count <= 0) subNode.Remove("_customData");
                     }
                     else
@@ -299,27 +299,6 @@ public class BeatSaberSong
             Debug.LogError(
                 "This is bad. You are recommended to restart ChroMapper; progress made after this point is not guaranteed to be saved.");
         }
-    }
-
-    /// <summary>
-    ///     Loops through all children of a JSON object, and remove any that are null or empty.
-    ///     This help makes _customData objects compliant with BeatSaver schema in a reusable and smart way.
-    /// </summary>
-    /// <param name="obj">Object of which to loop through and remove all empty children from.</param>
-    public static JSONNode CleanObject(JSONNode obj)
-    {
-        if (obj is null) return null;
-        var clone = obj.Clone();
-        foreach (var key in clone.Keys)
-        {
-            if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 ||
-                                    (!obj.IsArray && !obj.IsObject && string.IsNullOrEmpty(obj[key].Value))))
-            {
-                obj.Remove(key);
-            }
-        }
-
-        return obj;
     }
 
     public static BaseInfo GetInfoFromFolder(string directory)

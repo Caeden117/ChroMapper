@@ -218,7 +218,7 @@ namespace Beatmap.V3
             foreach (var c in difficulty.Chains.Where(c => c.CustomFake)) fakeChains.Add(c.ToJson());
             customData["fakeChains"] = fakeChains;
             
-            BeatSaberSong.CleanObject(customData);
+            SimpleJSONHelper.CleanObject(customData);
 
             return customData;
         }

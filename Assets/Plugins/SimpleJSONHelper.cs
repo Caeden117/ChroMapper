@@ -57,5 +57,26 @@ namespace SimpleJSON
                 keysToRemove.Clear();
             }
         }
+
+        /// <summary>
+        ///     Loops through all children of a JSON object, and remove any that are null or empty.
+        ///     This help makes _customData objects compliant with BeatSaver schema in a reusable and smart way.
+        /// </summary>
+        /// <param name="obj">Object of which to loop through and remove all empty children from.</param>
+        public static JSONNode CleanObject(JSONNode obj)
+        {
+            if (obj is null) return null;
+            var clone = obj.Clone();
+            foreach (var key in clone.Keys)
+            {
+                if (obj.HasKey(key) && (obj[key].IsNull || obj[key].AsArray?.Count <= 0 ||
+                                        (!obj.IsArray && !obj.IsObject && string.IsNullOrEmpty(obj[key].Value))))
+                {
+                    obj.Remove(key);
+                }
+            }
+
+            return obj;
+        }
     }
 }
