@@ -185,7 +185,7 @@ namespace Beatmap.Containers
 
         public void UpdateGradientRendering(Color? startColor = null, Color? endColor = null, string easing = "easeLinear")
         {
-            if (!EventData.IsLightEvent(BeatSaberSongContainer.Instance.Song.EnvironmentName))
+            if (!EventData.IsLightEvent(BeatSaberSongContainer.Instance.Info.EnvironmentName))
             {
                 lightGradientController.SetVisible(false);
                 return;

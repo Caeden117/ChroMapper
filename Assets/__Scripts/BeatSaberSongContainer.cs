@@ -10,8 +10,9 @@ using Beatmap.Info;
 
 public class BeatSaberSongContainer : MonoBehaviour
 {
-    [Obsolete("",false)]
+    [Obsolete("Use Info",false)]
     [FormerlySerializedAs("song")] public BeatSaberSong Song;
+    [Obsolete("Use MapDifficultyInfo")]
     [FormerlySerializedAs("difficultyData")] public BeatSaberSong.DifficultyBeatmap DifficultyData;
     [FormerlySerializedAs("loadedSong")] public AudioClip LoadedSong;
 

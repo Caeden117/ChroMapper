@@ -83,9 +83,6 @@ public class SongInfoEditUI : MenuBase
     private Coroutine reloadSongDataCoroutine;
     public Action TempSongLoadedEvent;
 
-    [Obsolete("pain",true)]
-    private BeatSaberSong Song => BeatSaberSongContainer.Instance.Song;
-
     private BaseInfo Info => BeatSaberSongContainer.Instance.Info;
     
     private GameObject ContributorWrapper => contributorController.transform.parent.gameObject;
@@ -406,7 +403,7 @@ public class SongInfoEditUI : MenuBase
     public void EditMapButtonPressed()
     {
         // If no difficulty is selected or there is a dialog open do nothing
-        if (BeatSaberSongContainer.Instance.DifficultyData == null || PersistentUI.Instance.DialogBoxIsEnabled) return;
+        if (BeatSaberSongContainer.Instance.MapDifficultyInfo == null || PersistentUI.Instance.DialogBoxIsEnabled) return;
 
         var a = Settings.Instance.Load_Notes;
         var b = Settings.Instance.Load_Obstacles;
@@ -454,9 +451,8 @@ public class SongInfoEditUI : MenuBase
             Debug.Log("Transitioning...");
 
             Settings.Instance.LastLoadedMap = Info.Directory;
-            Settings.Instance.LastLoadedChar = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet
-                .BeatmapCharacteristicName;
-            Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.DifficultyData.Difficulty;
+            Settings.Instance.LastLoadedChar = BeatSaberSongContainer.Instance.MapDifficultyInfo.Characteristic;
+            Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.MapDifficultyInfo.Difficulty;
             BeatSaberSongContainer.Instance.Map = map;
             Settings.Instance.MapVersion = map.Version[0] == '3' ? 3 : 2;
             SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));

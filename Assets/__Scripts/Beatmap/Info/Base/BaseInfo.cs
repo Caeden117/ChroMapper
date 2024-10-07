@@ -150,7 +150,7 @@ namespace Beatmap.Info
     public class InfoDifficulty
     {
         public InfoDifficulty(InfoDifficultySet parentSet) => ParentSet = parentSet;
-        private InfoDifficultySet ParentSet { get; }
+        public InfoDifficultySet ParentSet { get; }
         public string Characteristic => ParentSet.Characteristic;
         public string CustomCharacteristicLabel => ParentSet.CustomCharacteristicLabel;
         public string CustomCharacteristicIconImageFileName => ParentSet.CustomCharacteristicIconImageFileName;
@@ -200,6 +200,8 @@ namespace Beatmap.Info
         public Color? CustomEnvColorBoostLeft { get; set; }
         public Color? CustomEnvColorBoostRight { get; set; }
         public Color? CustomEnvColorBoostWhite { get; set; }
+
+        public void SetBeatmapFileNameToDefault() => BeatmapFileName = $"{Difficulty}{Characteristic}.dat";
     }
 
     public class InfoColorScheme

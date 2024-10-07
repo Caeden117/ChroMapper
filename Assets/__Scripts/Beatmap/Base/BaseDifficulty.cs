@@ -78,8 +78,8 @@ namespace Beatmap.Base
 
         public void ConvertCustomBpmToOfficial()
         {
-            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            var customData = BeatSaberSongContainer.Instance.DifficultyData.CustomData;
+            var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
+            var customData = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData;
             
             // Replace editor offset with equivalent bpm change if it exists
             if ((customData?.HasKey("_editorOffset") ?? false) && customData["_editorOffset"] > 0f)
@@ -268,13 +268,13 @@ namespace Beatmap.Base
             // Write Bpm file
             var songContainer = BeatSaberSongContainer.Instance;
 
-            var bpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Song.BeatsPerMinute,
+            var bpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Info.BeatsPerMinute,
                 songContainer.LoadedSongSamples, songContainer.LoadedSongFrequency);
             var bpmInfo = new BaseBpmInfo { BpmRegions = bpmRegions }.InitWithSongContainerInstance();
             var bpmOutputJson = V2BpmInfo.GetOutputJson(bpmInfo);
-            var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(songContainer.Song);
+            var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(songContainer.Info);
 
-            File.WriteAllText(Path.Combine(songContainer.Song.Directory, bpmOutputFileName),
+            File.WriteAllText(Path.Combine(songContainer.Info.Directory, bpmOutputFileName),
                 bpmOutputJson.ToString(2));
 
             return true;

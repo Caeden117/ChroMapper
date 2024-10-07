@@ -1,3 +1,4 @@
+using Beatmap.Info;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class CharacteristicSelect : MonoBehaviour
     [SerializeField] private DifficultySelect difficultySelect;
     private Transform selected;
 
-    private BeatSaberSong Song => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
+    private static BaseInfo MapInfo => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Info : null;
 
     public void Start()
     {
@@ -20,7 +21,7 @@ public class CharacteristicSelect : MonoBehaviour
             var button = child.GetComponent<Button>();
             button.onClick.AddListener(() => OnClick(child));
 
-            if (selected == null || (Settings.Instance.LastLoadedMap.Equals(Song.Directory) &&
+            if (selected == null || (Settings.Instance.LastLoadedMap.Equals(MapInfo.Directory) &&
                                      Settings.Instance.LastLoadedChar.Equals(child.name)))
             {
                 OnClick(child, true);

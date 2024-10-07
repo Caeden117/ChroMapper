@@ -600,7 +600,7 @@ public class BeatSaberSong
         return null;
     }
 
-    [Serializable][Obsolete]
+    [Serializable][Obsolete("Use InfoDifficulty")]
     public class DifficultyBeatmap
     {
         [FormerlySerializedAs("difficulty")] public string Difficulty = "Easy";
@@ -689,7 +689,7 @@ public class BeatSaberSong
         }
     }
 
-    [Serializable][Obsolete]
+    [Serializable][Obsolete("Use InfoDifficultySet")]
     public class DifficultyBeatmapSet
     {
         [FormerlySerializedAs("beatmapCharacteristicName")] public string BeatmapCharacteristicName = "Standard";

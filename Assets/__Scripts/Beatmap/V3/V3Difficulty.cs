@@ -29,7 +29,7 @@ namespace Beatmap.V3
                 if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
                 {                    
                     var insertedBpm = (BeatSaberSongContainer.Instance != null)
-                        ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        ? BeatSaberSongContainer.Instance.Info.BeatsPerMinute
                         : 100; // This path only appears in tests
                     difficulty.BpmEvents.Insert(0, new BaseBpmEvent
                     {

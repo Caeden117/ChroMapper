@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Info;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
 using static BeatSaberSong;
@@ -13,27 +15,30 @@ public class DifficultySettings
 {
     private List<BaseEnvironmentEnhancement> envEnhancements;
     private BaseDifficulty map;
+    
+    [Obsolete("Convert to InfoDifficulty", true)]
+    public DifficultyBeatmap DifficultyBeatmap { get; }
+    public InfoDifficulty InfoDifficulty { get; }
     public string CustomName = "";
     public bool ForceDirty;
     public float NoteJumpMovementSpeed = 16;
     public float NoteJumpStartBeatOffset;
 
-    public DifficultySettings(DifficultyBeatmap difficultyBeatmap)
+    public DifficultySettings(InfoDifficulty infoDifficulty)
     {
-        difficultyBeatmap.GetOrCreateCustomData();
-        DifficultyBeatmap = difficultyBeatmap;
+        InfoDifficulty = infoDifficulty;
 
         Revert();
     }
 
-    public DifficultySettings(DifficultyBeatmap difficultyBeatmap, bool forceDirty) : this(difficultyBeatmap) =>
+    public DifficultySettings(InfoDifficulty infoDifficulty, bool forceDirty) : this(infoDifficulty) =>
         ForceDirty = forceDirty;
 
     public BaseDifficulty Map
     {
         get
         {
-            map ??= BeatSaberSongContainer.Instance.Song.GetMapFromDifficultyBeatmap(DifficultyBeatmap);
+            map ??= BeatSaberSong.GetMapFromInfoFiles(BeatSaberSongContainer.Instance.Info, InfoDifficulty);
             return map;
         }
     }
@@ -48,18 +53,16 @@ public class DifficultySettings
         set => envEnhancements = value;
     }
 
-    public DifficultyBeatmap DifficultyBeatmap { get; }
-
     /// <summary>
     ///     Check if the user has made changes
     /// </summary>
     /// <returns>True if changes have been made, false otherwise</returns>
     public bool IsDirty() =>
-        ForceDirty || NoteJumpMovementSpeed != DifficultyBeatmap.NoteJumpMovementSpeed ||
-        NoteJumpStartBeatOffset != DifficultyBeatmap.NoteJumpStartBeatOffset ||
-        !(CustomName ?? "").Equals(DifficultyBeatmap.CustomData == null
+        ForceDirty || NoteJumpMovementSpeed != InfoDifficulty.NoteJumpSpeed ||
+        NoteJumpStartBeatOffset != InfoDifficulty.NoteStartBeatOffset ||
+        !(CustomName ?? "").Equals(InfoDifficulty.CustomData == null
             ? ""
-            : DifficultyBeatmap.CustomData["_difficultyLabel"].Value) ||
+            : InfoDifficulty.CustomData["_difficultyLabel"].Value) ||
         EnvRemovalChanged();
 
     private bool EnvRemovalChanged() =>
@@ -73,15 +76,19 @@ public class DifficultySettings
     {
         ForceDirty = false;
 
-        DifficultyBeatmap.NoteJumpMovementSpeed = NoteJumpMovementSpeed;
-        DifficultyBeatmap.NoteJumpStartBeatOffset = NoteJumpStartBeatOffset;
+        InfoDifficulty.NoteJumpSpeed = NoteJumpMovementSpeed;
+        InfoDifficulty.NoteStartBeatOffset = NoteJumpStartBeatOffset;
 
+        // TODO: Check if this needs adjustment for v4
         if (string.IsNullOrEmpty(CustomName))
-            DifficultyBeatmap.CustomData?.Remove("_difficultyLabel");
+        {
+            InfoDifficulty.CustomData?.Remove("_difficultyLabel");
+            InfoDifficulty.CustomData?.Remove("difficultyLabel");
+        }
         else
-            DifficultyBeatmap.GetOrCreateCustomData()["_difficultyLabel"] = CustomName;
+            InfoDifficulty.CustomLabel = CustomName;
 
-        DifficultyBeatmap.CustomData?.Remove("_environmentRemoval");
+        InfoDifficulty.CustomData?.Remove("_environmentRemoval");
 
         // Map save is sloooow so only do it if we need to
         if (EnvRemovalChanged())
@@ -94,9 +101,9 @@ public class DifficultySettings
     private List<BaseEnvironmentEnhancement> GetEnvEnhancementsFromMap()
     {
         var enhancements = new List<BaseEnvironmentEnhancement>();
-        if (DifficultyBeatmap.CustomData != null)
+        if (InfoDifficulty.CustomData != null)
         {
-            foreach (var ent in DifficultyBeatmap.CustomData["_environmentRemoval"])
+            foreach (var ent in InfoDifficulty.CustomData["_environmentRemoval"])
                 enhancements.Add(Settings.Instance.MapVersion == 3 ? V3EnvironmentEnhancement.GetFromJson(ent.Value.Value) : V2EnvironmentEnhancement.GetFromJson(ent.Value.Value));
         }
 
@@ -110,9 +117,9 @@ public class DifficultySettings
     /// </summary>
     public void Revert()
     {
-        NoteJumpMovementSpeed = DifficultyBeatmap.NoteJumpMovementSpeed;
-        NoteJumpStartBeatOffset = DifficultyBeatmap.NoteJumpStartBeatOffset;
-        CustomName = DifficultyBeatmap.CustomData?["_difficultyLabel"]?.Value ?? "";
+        NoteJumpMovementSpeed = InfoDifficulty.NoteJumpSpeed;
+        NoteJumpStartBeatOffset = InfoDifficulty.NoteStartBeatOffset;
+        CustomName = InfoDifficulty.CustomData?["_difficultyLabel"]?.Value ?? "";
 
         envEnhancements = null;
     }
