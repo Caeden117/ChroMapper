@@ -82,18 +82,18 @@ public class LoadInitialMap : MonoBehaviour
         descriptor.Colors = descriptor.DefaultColors.Clone();
 
         //Update Colors
-        var leftNote = BeatSaberSong.DefaultLeftNote; //Have default note as base
-        if (descriptor.Colors.RedNoteColor != BeatSaberSong.DefaultLeftColor)
+        var leftNote = DefaultColors.LeftNote; //Have default note as base
+        if (descriptor.Colors.RedNoteColor != DefaultColors.Left)
             leftNote = descriptor.Colors.RedNoteColor; //Prioritize platforms
         if (diff.ColorLeft != null) leftNote = diff.ColorLeft.Value; //Then prioritize custom colors
 
-        var rightNote = BeatSaberSong.DefaultRightNote;
-        if (descriptor.Colors.BlueNoteColor != BeatSaberSong.DefaultRightColor)
+        var rightNote = DefaultColors.RightNote;
+        if (descriptor.Colors.BlueNoteColor != DefaultColors.Right)
             rightNote = descriptor.Colors.BlueNoteColor;
         if (diff.ColorRight != null) rightNote = diff.ColorRight.Value;
 
         noteGridContainer.UpdateColor(leftNote, rightNote);
-        obstacleGridContainer.UpdateColor(diff.ObstacleColor ?? BeatSaberSong.DefaultLeftColor);
+        obstacleGridContainer.UpdateColor(diff.ObstacleColor ?? DefaultColors.Left);
         arcGridContainer.UpdateColor(leftNote, rightNote);
         chainGridContainer.UpdateColor(leftNote, rightNote);
         if (diff.ColorLeft != null) descriptor.Colors.RedNoteColor = diff.ColorLeft.Value;

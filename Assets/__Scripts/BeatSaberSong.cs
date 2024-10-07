@@ -15,12 +15,6 @@ using UnityEngine.Serialization;
 [Serializable][Obsolete]
 public class BeatSaberSong
 {
-    public static readonly Color DefaultLeftColor = Color.red;
-    public static readonly Color DefaultRightColor = new(0, 0.282353f, 1);
-    public static readonly Color DefaultWhiteColor = new(0.7264151f, 0.7264151f, 0.7264151f);
-    public static readonly Color DefaultLeftNote = new(0.7352942f, 0, 0);
-    public static readonly Color DefaultRightNote = new(0, 0.3701827f, 0.7352942f);
-
     // These values piggy back off of Application.productName and Application.version here.
     // It's so that anyone maintaining a ChroMapper fork, but wants its identity to be separate, can easily just change
     // product name and the version from Project Settings, and have it automatically apply to the metadata.

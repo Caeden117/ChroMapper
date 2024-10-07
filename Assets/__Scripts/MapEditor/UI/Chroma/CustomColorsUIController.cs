@@ -91,23 +91,23 @@ public class CustomColorsUIController : MonoBehaviour
     {
         platform = obj;
 
-        SetColorIfNotEqual(ref redNote, platform.Colors.RedNoteColor, BeatSaberSong.DefaultLeftNote,
+        SetColorIfNotEqual(ref redNote, platform.Colors.RedNoteColor, DefaultColors.LeftNote,
             BeatSaberSongContainer.Instance.DifficultyData.ColorLeft);
-        SetColorIfNotEqual(ref blueNote, platform.Colors.BlueNoteColor, BeatSaberSong.DefaultRightNote,
+        SetColorIfNotEqual(ref blueNote, platform.Colors.BlueNoteColor, DefaultColors.RightNote,
             BeatSaberSongContainer.Instance.DifficultyData.ColorRight);
-        SetColorIfNotEqual(ref redLight, platform.Colors.RedColor, BeatSaberSong.DefaultLeftColor,
+        SetColorIfNotEqual(ref redLight, platform.Colors.RedColor, DefaultColors.Left,
             BeatSaberSongContainer.Instance.DifficultyData.EnvColorLeft);
-        SetColorIfNotEqual(ref blueLight, platform.Colors.BlueColor, BeatSaberSong.DefaultRightColor,
+        SetColorIfNotEqual(ref blueLight, platform.Colors.BlueColor, DefaultColors.Right,
             BeatSaberSongContainer.Instance.DifficultyData.EnvColorRight);
-        SetColorIfNotEqual(ref whiteLight, platform.Colors.WhiteColor, BeatSaberSong.DefaultWhiteColor,
+        SetColorIfNotEqual(ref whiteLight, platform.Colors.WhiteColor, DefaultColors.White,
             BeatSaberSongContainer.Instance.DifficultyData.EnvColorWhite);
-        SetColorIfNotEqual(ref redBoost, platform.Colors.RedBoostColor, BeatSaberSong.DefaultLeftColor,
+        SetColorIfNotEqual(ref redBoost, platform.Colors.RedBoostColor, DefaultColors.Left,
             BeatSaberSongContainer.Instance.DifficultyData.BoostColorLeft);
-        SetColorIfNotEqual(ref blueBoost, platform.Colors.BlueBoostColor, BeatSaberSong.DefaultRightColor,
+        SetColorIfNotEqual(ref blueBoost, platform.Colors.BlueBoostColor, DefaultColors.Right,
             BeatSaberSongContainer.Instance.DifficultyData.BoostColorRight);
-        SetColorIfNotEqual(ref whiteBoost, platform.Colors.WhiteBoostColor, BeatSaberSong.DefaultWhiteColor,
+        SetColorIfNotEqual(ref whiteBoost, platform.Colors.WhiteBoostColor, DefaultColors.White,
             BeatSaberSongContainer.Instance.DifficultyData.BoostColorWhite);
-        SetColorIfNotEqual(ref obstacle, platform.Colors.ObstacleColor, BeatSaberSong.DefaultLeftColor,
+        SetColorIfNotEqual(ref obstacle, platform.Colors.ObstacleColor, DefaultColors.Left,
             BeatSaberSongContainer.Instance.DifficultyData.ObstacleColor);
 
         platform.Colors.RedColor = eventAppearance.RedColor = redLight.image.color;
