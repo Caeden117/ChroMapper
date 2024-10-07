@@ -12,7 +12,7 @@ public class BeatSaberSongContainer : MonoBehaviour
 {
     [Obsolete("Use Info",true)]
     [FormerlySerializedAs("song")] public BeatSaberSong Song;
-    [Obsolete("Use MapDifficultyInfo")]
+    [Obsolete("Use MapDifficultyInfo", true)]
     [FormerlySerializedAs("difficultyData")] public BeatSaberSong.DifficultyBeatmap DifficultyData;
     [FormerlySerializedAs("loadedSong")] public AudioClip LoadedSong;
 

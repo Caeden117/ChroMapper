@@ -573,7 +573,7 @@ public class BeatSaberSong
         return null;
     }
 
-    [Serializable][Obsolete("Use InfoDifficulty")]
+    [Serializable][Obsolete("Use InfoDifficulty", true)]
     public class DifficultyBeatmap
     {
         [FormerlySerializedAs("difficulty")] public string Difficulty = "Easy";
@@ -619,15 +619,15 @@ public class BeatSaberSong
 
             foreach (var req in RequirementCheck.requirementsAndSuggestions)
             {
-                switch (req.IsRequiredOrSuggested(this, map))
-                {
-                    case RequirementCheck.RequirementType.Requirement:
-                        requiredArray.Add(req.Name);
-                        break;
-                    case RequirementCheck.RequirementType.Suggestion:
-                        suggestedArray.Add(req.Name);
-                        break;
-                }
+                // switch (req.IsRequiredOrSuggested(this, map))
+                // {
+                //     case RequirementCheck.RequirementType.Requirement:
+                //         requiredArray.Add(req.Name);
+                //         break;
+                //     case RequirementCheck.RequirementType.Suggestion:
+                //         suggestedArray.Add(req.Name);
+                //         break;
+                // }
             }
 
             if (requiredArray.Count > 0)

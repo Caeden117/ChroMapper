@@ -190,8 +190,7 @@ public class MultiServerNetListener : MultiNetListener, INetAdmin
         // I'm aware that there's a little bit of time in between saving and zipping where changes made *arent* sent to the client,
         //   but I'm hoping its small enough to not be a big worry.
         var mapInfo = BeatSaberSongContainer.Instance.Info;
-        var diff = BeatSaberSongContainer.Instance.DifficultyData;
-        var characteristic = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet;
+        var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
 
         var zipPath = Path.Combine(mapInfo.Directory, mapInfo.CleanSongName + ".zip");
         File.Delete(zipPath);
@@ -208,6 +207,6 @@ public class MultiServerNetListener : MultiNetListener, INetAdmin
 
         var zipBytes = File.ReadAllBytes(zipPath);
 
-        listener.SendPacketTo(peer, PacketId.SendZip, new MapDataPacket(zipBytes, characteristic.BeatmapCharacteristicName, diff.Difficulty));
+        listener.SendPacketTo(peer, PacketId.SendZip, new MapDataPacket(zipBytes, infoDifficulty.Characteristic, infoDifficulty.Difficulty));
     }
 }
