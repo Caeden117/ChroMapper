@@ -39,7 +39,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
             if (willResetGrid && (Mathf.Abs(queuedData.JsonTime - Mathf.Round(queuedData.JsonTime)) > BeatmapObjectContainerCollection.Epsilon))
             {
                 var prevBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
-                          BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                          BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
                 var oldTime = queuedData.JsonTime;
                 var jsonTimeOffset = 1 - (oldTime % 1);
 
@@ -88,7 +88,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
         }
 
         var lastBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
-                      BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                      BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
         var bpmTextInput = createBpmEventDialogueBox
             .AddComponent<TextBoxComponent>()
             .WithLabel("Mapper", "bpm.dialogue.beatsperminute")

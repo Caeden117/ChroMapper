@@ -40,7 +40,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
 
     private void Start()
     {
-        Shader.SetGlobalFloat(songBpm, BeatSaberSongContainer.Instance.Song.BeatsPerMinute);
+        Shader.SetGlobalFloat(songBpm, BeatSaberSongContainer.Instance.Info.BeatsPerMinute);
     }
 
     internal override void SubscribeToCallbacks()
@@ -93,7 +93,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
             }
             else
             {
-                var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
                 var passedBeats = (obj.JsonTime - lastChange.JsonTime - 0.01f) / songBpm * lastChange.Bpm;
                 obj.Beat = lastChange.Beat + Mathf.CeilToInt(passedBeats);
             }
@@ -112,7 +112,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
         var bpmChangeCount = 1;
         bpmShaderTimes[0] = 0;
         bpmShaderJsonTimes[0] = 0;
-        bpmShaderBpMs[0] = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        bpmShaderBpMs[0] = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
 
         // Grab the last object before grid ends
         var lastBpmChange = FindLastBpm(AudioTimeSyncController.CurrentSongBpmTime - firstVisibleBeatTime, false);
@@ -215,13 +215,13 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
 
     private BaseBpmEvent DefaultEvent()
     {
-        var defaultEvent = new BaseBpmEvent { Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute };
+        var defaultEvent = new BaseBpmEvent { Bpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute };
         return defaultEvent;
     }
 
     public float JsonTimeToSongBpmTime(float jsonTime)
     {
-        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
         var bpms = MapObjects.FindAll(x => x.JsonTime <= jsonTime);
         bpms.Insert(0, DefaultEvent());
 
@@ -242,7 +242,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
 
     public float SongBpmTimeToJsonTime(float songBpmTime)
     {
-        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
         var bpms = MapObjects.FindAll(x => x.SongBpmTime <= songBpmTime);
         bpms.Insert(0, DefaultEvent());
 

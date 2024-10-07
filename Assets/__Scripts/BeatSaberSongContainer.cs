@@ -10,7 +10,7 @@ using Beatmap.Info;
 
 public class BeatSaberSongContainer : MonoBehaviour
 {
-    [Obsolete("Use Info",false)]
+    [Obsolete("Use Info",true)]
     [FormerlySerializedAs("song")] public BeatSaberSong Song;
     [Obsolete("Use MapDifficultyInfo")]
     [FormerlySerializedAs("difficultyData")] public BeatSaberSong.DifficultyBeatmap DifficultyData;
@@ -39,12 +39,6 @@ public class BeatSaberSongContainer : MonoBehaviour
     public void SelectSongForEditing(BaseInfo info)
     {
         Info = info;
-        SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
-    }
-
-    public void SelectSongForEditing(BeatSaberSong song)
-    {
-        Song = song;
         SceneTransitionManager.Instance.LoadScene("02_SongEditMenu");
     }
 
@@ -103,7 +97,7 @@ public class BeatSaberSongContainer : MonoBehaviour
                 LoadedSongSamples = clip.samples;
                 LoadedSongFrequency = clip.frequency;
                 LoadedSongLength = clip.length;
-            }, Song.SongTimeOffset, null);
+            }, mapInfo.SongTimeOffset, null);
         }
 
         PersistentUI.Instance.LevelLoadSlider.gameObject.SetActive(false);
