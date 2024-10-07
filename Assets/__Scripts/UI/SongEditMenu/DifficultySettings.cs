@@ -6,7 +6,6 @@ using Beatmap.Base.Customs;
 using Beatmap.Info;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
-using static BeatSaberSong;
 
 /// <summary>
 ///     Holds users changes to a difficulty until they ask to save them
@@ -15,9 +14,7 @@ public class DifficultySettings
 {
     private List<BaseEnvironmentEnhancement> envEnhancements;
     private BaseDifficulty map;
-    
-    [Obsolete("Convert to InfoDifficulty", true)]
-    public DifficultyBeatmap DifficultyBeatmap { get; }
+
     public InfoDifficulty InfoDifficulty { get; }
     public string CustomName = "";
     public bool ForceDirty;
@@ -38,7 +35,7 @@ public class DifficultySettings
     {
         get
         {
-            map ??= BeatSaberSong.GetMapFromInfoFiles(BeatSaberSongContainer.Instance.Info, InfoDifficulty);
+            map ??= BeatSaberSongUtils.GetMapFromInfoFiles(BeatSaberSongContainer.Instance.Info, InfoDifficulty);
             return map;
         }
     }

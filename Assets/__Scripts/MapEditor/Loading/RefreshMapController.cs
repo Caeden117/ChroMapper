@@ -68,7 +68,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
 
     private void RefreshMap(bool notes, bool obstacles, bool events, bool others, bool full)
     {
-        map = BeatSaberSong.GetMapFromInfoFiles(info, infoDifficulty);
+        map = BeatSaberSongUtils.GetMapFromInfoFiles(info, infoDifficulty);
         loader.UpdateMapData(map);
         
         var currentSongBpmTime = atsc.CurrentSongBpmTime;

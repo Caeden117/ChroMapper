@@ -27,9 +27,6 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     [FormerlySerializedAs("bpmChangesContainer")][SerializeField] private BPMChangeGridContainer bpmChangeGridContainer;
     [SerializeField] private GridRenderingController gridRenderingController;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
-    
-    [Obsolete("BaseInfo", true)]
-    [FormerlySerializedAs("song")][HideInInspector] public BeatSaberSong Song;
 
     public BaseInfo MapInfo;
 

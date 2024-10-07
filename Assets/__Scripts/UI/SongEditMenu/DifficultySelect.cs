@@ -10,7 +10,6 @@ using SimpleJSON;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static BeatSaberSong;
 
 public class DifficultySelect : MonoBehaviour
 {
@@ -34,8 +33,6 @@ public class DifficultySelect : MonoBehaviour
     private readonly Dictionary<string, string> selectedMemory = new Dictionary<string, string>();
     public Dictionary<string, Dictionary<string, DifficultySettings>> Characteristics;
     private CopySource copySource;
-    [Obsolete("Use InfoDifficultySet", true)]
-    private DifficultyBeatmapSet currentCharacteristic;
     private Dictionary<string, DifficultySettings> diffs;
 
     private InfoDifficultySet currentDifficultySet;
@@ -44,9 +41,6 @@ public class DifficultySelect : MonoBehaviour
     private DifficultyRow selected;
 
     public BaseDifficulty CurrentDiff => selected != null ? diffs[selected.Name].Map : null;
-
-    [Obsolete("Use MapInfo",true)]
-    private BeatSaberSong Song => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
 
     private BaseInfo MapInfo => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Info : null;
     

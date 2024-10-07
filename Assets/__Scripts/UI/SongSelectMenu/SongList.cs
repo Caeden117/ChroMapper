@@ -208,7 +208,7 @@ public class SongList : MonoBehaviour
                 iterBeginTime = Time.realtimeSinceStartup;
             }
 
-            var mapInfo = BeatSaberSong.GetInfoFromFolder(dir.FullName);
+            var mapInfo = BeatSaberSongUtils.GetInfoFromFolder(dir.FullName);
             if (mapInfo == null)
                 Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
             /*

@@ -10,10 +10,6 @@ using Beatmap.Info;
 
 public class BeatSaberSongContainer : MonoBehaviour
 {
-    [Obsolete("Use Info",true)]
-    [FormerlySerializedAs("song")] public BeatSaberSong Song;
-    [Obsolete("Use MapDifficultyInfo", true)]
-    [FormerlySerializedAs("difficultyData")] public BeatSaberSong.DifficultyBeatmap DifficultyData;
     [FormerlySerializedAs("loadedSong")] public AudioClip LoadedSong;
 
     public BaseInfo Info;
@@ -76,7 +72,7 @@ public class BeatSaberSongContainer : MonoBehaviour
         archive.ExtractToDirectory(directory);
 
         // Try and get a BeatSaberSong out of what we've downloaded.
-        var mapInfo = BeatSaberSong.GetInfoFromFolder(directory);
+        var mapInfo = BeatSaberSongUtils.GetInfoFromFolder(directory);
         if (mapInfo != null)
         {
             PersistentUI.Instance.LevelLoadSliderLabel.text =
@@ -88,7 +84,7 @@ public class BeatSaberSongContainer : MonoBehaviour
                 .Find(set => set.Characteristic == MultiMapperConnection.MapData.Characteristic)
                 .Difficulties.Find(diff => diff.Difficulty == MultiMapperConnection.MapData.Diff);
             
-            Map = BeatSaberSong.GetMapFromInfoFiles(mapInfo, MapDifficultyInfo);
+            Map = BeatSaberSongUtils.GetMapFromInfoFiles(mapInfo, MapDifficultyInfo);
             Settings.Instance.MapVersion = Map.Version[0] == '3' ? 3 : 2;
 
             yield return BeatSaberSongExtensions.LoadAudio(mapInfo, (clip) =>

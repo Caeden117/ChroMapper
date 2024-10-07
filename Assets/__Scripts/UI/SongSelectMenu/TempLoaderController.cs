@@ -133,7 +133,7 @@ public class TempLoaderController : MonoBehaviour
                 downloadHandler.Dispose();
 
                 // Try and get a BeatSaberSong out of what we've downloaded.
-                var mapInfo = BeatSaberSong.GetInfoFromFolder(directory);
+                var mapInfo = BeatSaberSongUtils.GetInfoFromFolder(directory);
                 if (mapInfo != null)
                 {
                     PersistentUI.Instance.LevelLoadSliderLabel.text = "Loading song...";
