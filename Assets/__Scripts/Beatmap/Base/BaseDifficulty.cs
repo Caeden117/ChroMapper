@@ -23,6 +23,20 @@ namespace Beatmap.Base
         public string DirectoryAndFile { get; set; }
 
         public string Version { get; set; } = "3.3.0";
+
+        public int MajorVersion
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Version))
+                {
+                    return -1;
+                }
+
+                return (int)char.GetNumericValue(Version[0]);
+            }
+        }
+
         public List<BaseBpmEvent> BpmEvents { get; set; } = new();
         public List<BaseNote> Notes { get; set; } = new();
         public List<BaseObstacle> Obstacles { get; set; } = new();
@@ -52,6 +66,7 @@ namespace Beatmap.Base
         {
             2 => "_bookmarksUseOfficialBpmEvents",
             3 => "bookmarksUseOfficialBpmEvents",
+            4 => "bookmarksUseOfficialBpmEvents",
             _ => null
         };
         public List<BaseCustomEvent> CustomEvents { get; set; } = new();

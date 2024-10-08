@@ -443,9 +443,20 @@ public class SongInfoEditUI : MenuBase
 
             if (map == null)
             {
-                PersistentUI.Instance.ShowDialogBox(
-                    "The selected difficulty doesn't exist! Have you saved after creating it?", null,
-                    PersistentUI.DialogBoxPresetType.Ok);
+                if (File.Exists(Path.Combine(BeatSaberSongContainer.Instance.Info.Directory,
+                        BeatSaberSongContainer.Instance.MapDifficultyInfo.BeatmapFileName)))
+                {
+                    PersistentUI.Instance.ShowDialogBox(
+                        "The selected difficulty could not be parsed.\nThis is either invalid json or an unsupported version.", null,
+                        PersistentUI.DialogBoxPresetType.Ok);
+                }
+                else
+                {
+                    PersistentUI.Instance.ShowDialogBox(
+                        "The selected difficulty doesn't exist! Have you saved after creating it?", null,
+                        PersistentUI.DialogBoxPresetType.Ok);
+                }
+                
                 return;
             }
             Debug.Log("Transitioning...");
@@ -454,7 +465,7 @@ public class SongInfoEditUI : MenuBase
             Settings.Instance.LastLoadedChar = BeatSaberSongContainer.Instance.MapDifficultyInfo.Characteristic;
             Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.MapDifficultyInfo.Difficulty;
             BeatSaberSongContainer.Instance.Map = map;
-            Settings.Instance.MapVersion = map.Version[0] == '3' ? 3 : 2;
+            Settings.Instance.MapVersion = map.MajorVersion;
             SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
         }
     }

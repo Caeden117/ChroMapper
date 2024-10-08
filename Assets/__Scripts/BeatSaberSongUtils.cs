@@ -79,7 +79,7 @@ public static class BeatSaberSongUtils
         
     }
 
-    private static JSONNode GetNodeFromFile(string file)
+    public static JSONNode GetNodeFromFile(string file)
     {
         if (!File.Exists(file)) return null;
         try

@@ -7,6 +7,7 @@ using Beatmap.V2;
 using Beatmap.V2.Customs;
 using Beatmap.V3;
 using Beatmap.V3.Customs;
+using Beatmap.V4;
 using SimpleJSON;
 using UnityEngine;
 
@@ -18,15 +19,21 @@ namespace Beatmap.Helper
         {
             var v = PeekMapVersionFromJson(mainNode);
 
-            if (v[0] == '3')
+            switch (v[0])
             {
-                Settings.Instance.MapVersion = 3;
-                return V3Difficulty.GetFromJson(mainNode, directoryAndFile);
-            }
-            else
-            {
-                Settings.Instance.MapVersion = 2;
-                return V2Difficulty.GetFromJson(mainNode, directoryAndFile);
+                case '4':
+                    Settings.Instance.MapVersion = 4;
+                    var difficulty = V4Difficulty.GetFromJson(mainNode, directoryAndFile);
+                    V4Difficulty.LoadBpmFromAudioData(difficulty);
+                    return difficulty;
+                case '3':
+                    Settings.Instance.MapVersion = 3;
+                    return V3Difficulty.GetFromJson(mainNode, directoryAndFile);
+                case '2':
+                    Settings.Instance.MapVersion = 2;
+                    return V2Difficulty.GetFromJson(mainNode, directoryAndFile);
+                default:
+                    return null;
             }
         }
 
