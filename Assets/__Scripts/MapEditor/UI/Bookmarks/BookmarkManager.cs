@@ -114,6 +114,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             bookmark.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
     }
 
+    public void RefreshBookTooltips() => UpdateBookmarkTooltip(null);
+    
     private void UpdateBookmarkTooltip(object _)
     {
         foreach (BookmarkContainer bookContainer in bookmarkContainers)

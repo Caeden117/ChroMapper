@@ -408,6 +408,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             }
         }
         bookmarkManagerInstance.RefreshBookmarkTimelinePositions();
+        bookmarkManagerInstance.RefreshBookTooltips();
     }
 
     protected virtual void UpdateContainerData(ObjectContainer con, BaseObject obj) { }

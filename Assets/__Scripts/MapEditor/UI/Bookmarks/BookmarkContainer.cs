@@ -38,9 +38,8 @@ public class BookmarkContainer : MonoBehaviour, IPointerClickHandler, IPointerDo
 
         if (Settings.Instance.BookmarkTooltipTimeInfo)
         {
-            var beat = Data.JsonTime;
-            var span = TimeSpan.FromSeconds(manager.Atsc.GetSecondsFromBeat(beat));
-            text += $" [{Math.Round(beat, 2)} | {span:mm':'ss}]";
+            var span = TimeSpan.FromSeconds(manager.Atsc.GetSecondsFromBeat(Data.SongBpmTime));
+            text += $" [{Math.Round(Data.JsonTime, 2)} | {span:mm':'ss}]";
         }
 
         GetComponent<Tooltip>().TooltipOverride = text;
