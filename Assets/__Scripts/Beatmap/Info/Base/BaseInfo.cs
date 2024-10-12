@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -163,10 +163,8 @@ namespace Beatmap.Info
             if (outputJson == null)
                 return false;
 
-            // Write difficulty file
-            File.WriteAllText(Path.Combine(Directory, "Info.dat"), Settings.Instance.FormatJson
-                ? outputJson.ToString(2)
-                : outputJson.ToString());
+            // Write info file - Previous behaviour always indented file
+            File.WriteAllText(Path.Combine(Directory, "Info.dat"), outputJson.ToString(2));
 
             return true;
         }
