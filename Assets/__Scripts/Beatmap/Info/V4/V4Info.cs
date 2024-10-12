@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SimpleJSON;
 using UnityEngine;
@@ -40,7 +40,7 @@ namespace Beatmap.Info
             {
                 var colorScheme = new InfoColorScheme();
                 colorScheme.UseOverride = colorSchemeNode["useOverride"].AsBool;
-                colorScheme.ColorSchemeName = colorSchemeNode["colorSchemeName"];
+                colorScheme.ColorSchemeName = colorSchemeNode["colorSchemeName"].Value;
                 colorScheme.SaberAColor = colorSchemeNode["saberAColor"].ReadHtmlStringColor();
                 colorScheme.SaberBColor = colorSchemeNode["saberBColor"].ReadHtmlStringColor();
                 colorScheme.ObstaclesColor = colorSchemeNode["obstaclesColor"].ReadHtmlStringColor();
@@ -164,13 +164,13 @@ namespace Beatmap.Info
                 
                 node["useOverride"] = colorScheme.UseOverride;
                 node["colorSchemeName"] = colorScheme.ColorSchemeName;
-                node["saberAColor"] = ToHashPrefixedHtmlStringRGBA(colorScheme.SaberAColor);
-                node["saberBColor"] = ToHashPrefixedHtmlStringRGBA(colorScheme.SaberBColor);
-                node["obstaclesColor"] = ToHashPrefixedHtmlStringRGBA(colorScheme.ObstaclesColor);
-                node["environmentColor0"] = ToHashPrefixedHtmlStringRGBA(colorScheme.EnvironmentColor0);
-                node["environmentColor1"] = ToHashPrefixedHtmlStringRGBA(colorScheme.EnvironmentColor1);
-                node["environmentColor0Boost"] = ToHashPrefixedHtmlStringRGBA(colorScheme.EnvironmentColor0Boost);
-                node["environmentColor1Boost"] = ToHashPrefixedHtmlStringRGBA(colorScheme.EnvironmentColor1Boost);
+                node["saberAColor"] = ColorUtility.ToHtmlStringRGBA(colorScheme.SaberAColor);
+                node["saberBColor"] = ColorUtility.ToHtmlStringRGBA(colorScheme.SaberBColor);
+                node["obstaclesColor"] = ColorUtility.ToHtmlStringRGBA(colorScheme.ObstaclesColor);
+                node["environmentColor0"] = ColorUtility.ToHtmlStringRGBA(colorScheme.EnvironmentColor0);
+                node["environmentColor1"] = ColorUtility.ToHtmlStringRGBA(colorScheme.EnvironmentColor1);
+                node["environmentColor0Boost"] = ColorUtility.ToHtmlStringRGBA(colorScheme.EnvironmentColor0Boost);
+                node["environmentColor1Boost"] = ColorUtility.ToHtmlStringRGBA(colorScheme.EnvironmentColor1Boost);
                 
                 colorSchemes.Add(node);
             }
@@ -250,8 +250,6 @@ namespace Beatmap.Info
             
             return json;
         }
-
-        private static string ToHashPrefixedHtmlStringRGBA(Color color) => $"#{ColorUtility.ToHtmlStringRGBA(color)}";
 
         private static void ParseDifficultySetCustomData(JSONNode customData, InfoDifficultySet difficultySet)
         {

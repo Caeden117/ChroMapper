@@ -40,7 +40,7 @@ namespace Beatmap.Info
             {
                 var colorScheme = new InfoColorScheme();
                 colorScheme.UseOverride = colorSchemeNode["useOverride"].AsBool;
-                colorScheme.ColorSchemeName = colorSchemeNode["colorScheme"]["colorSchemeId"];
+                colorScheme.ColorSchemeName = colorSchemeNode["colorScheme"]["colorSchemeId"].Value;
                 colorScheme.SaberAColor = colorSchemeNode["colorScheme"]["saberAColor"].ReadColor();
                 colorScheme.SaberBColor = colorSchemeNode["colorScheme"]["saberBColor"].ReadColor();
                 colorScheme.ObstaclesColor = colorSchemeNode["colorScheme"]["obstaclesColor"].ReadColor();

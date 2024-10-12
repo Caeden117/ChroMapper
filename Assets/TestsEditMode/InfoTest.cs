@@ -231,13 +231,13 @@ namespace TestsEditMode
         {
             ""useOverride"": true,
             ""colorSchemeName"": ""Weave"",
-            ""saberAColor"": ""#C81414FF"",
-            ""saberBColor"": ""#288ED2FF"",
-            ""obstaclesColor"": ""#FF3030FF"",
-            ""environmentColor0"": ""#D91616FF"",
-            ""environmentColor1"": ""#30ACFFFF"",
-            ""environmentColor0Boost"": ""#D216D9FF"",
-            ""environmentColor1Boost"": ""#888888FF""
+            ""saberAColor"": ""C81414FF"",
+            ""saberBColor"": ""288ED2FF"",
+            ""obstaclesColor"": ""FF3030FF"",
+            ""environmentColor0"": ""D91616FF"",
+            ""environmentColor1"": ""30ACFFFF"",
+            ""environmentColor0Boost"": ""D216D9FF"",
+            ""environmentColor1Boost"": ""888888FF""
             // ^ This is modified from the wiki as this was different from v2 example
         }
     ],

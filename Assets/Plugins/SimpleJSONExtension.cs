@@ -9,7 +9,7 @@ namespace SimpleJSON
     {
         public Color ReadHtmlStringColor()
         {
-            if (IsString && ColorUtility.TryParseHtmlString(Value, out var color))
+            if (IsString && ColorUtility.TryParseHtmlString($"#{Value}", out var color))
             {
                 return color;
             }
