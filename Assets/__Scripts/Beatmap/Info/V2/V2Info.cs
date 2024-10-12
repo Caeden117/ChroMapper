@@ -102,6 +102,11 @@ namespace Beatmap.Info
                 {
                     info.CustomContributors = customData["_contributors"].AsArray.Children.Select(V2Contributor.GetFromJson).ToList();
                 }
+
+                if (customData["_editors"].IsObject)
+                {
+                    info.CustomEditorsData = new BaseInfo.CustomEditorsMetadata(customData["_editors"]);
+                }
                 
                 info.CustomData = customData;
             }
@@ -200,6 +205,8 @@ namespace Beatmap.Info
                 
                 info.CustomData["_contributors"] = customContributors;
             }
+            
+            info.CustomData["_editors"] = info.CustomEditorsData.ToJson();
             
             json["_customData"] = info.CustomData;
             

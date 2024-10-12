@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using SimpleJSON;
 using UnityEngine;
@@ -112,6 +112,11 @@ namespace Beatmap.Info
                             ParseDifficultySetCustomData(characteristicNode, difficultySet);
                         }
                     }
+                }
+
+                if (customData["editors"].IsObject)
+                {
+                    info.CustomEditorsData = new BaseInfo.CustomEditorsMetadata(customData["editors"]);
                 }
                 
                 info.CustomData = customData;
@@ -238,6 +243,8 @@ namespace Beatmap.Info
                 }
                 info.CustomData["characteristicData"] = customCharacteristics;
             }
+            
+            info.CustomData["editors"] = info.CustomEditorsData.ToJson();
 
             json["customData"] = info.CustomData;
             

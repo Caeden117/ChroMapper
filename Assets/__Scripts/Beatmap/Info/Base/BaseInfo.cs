@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -110,6 +110,42 @@ namespace Beatmap.Info
         public JSONNode CustomData = new JSONObject();
 
         public List<BaseContributor> CustomContributors = new();
+
+        public CustomEditorsMetadata CustomEditorsData = new(null);
+        
+        public class CustomEditorsMetadata
+        {
+            // This is so we preserve existing data that might be located in this object
+            private readonly JSONNode editorsNode;
+
+            /// <summary>
+            ///     Editor Metadata for this editor.
+            /// </summary>
+            public JSONNode MetadataNode = new JSONObject();
+            
+            public CustomEditorsMetadata(JSONNode obj)
+            {
+                if (obj is null || !obj.Children.Any())
+                {
+                    editorsNode = new JSONObject();
+                }
+                else
+                {
+                    editorsNode = obj;
+                    if (editorsNode.HasKey(editorName)) MetadataNode = editorsNode[editorName];
+                }
+            }
+
+            public JSONNode ToJson()
+            {
+                MetadataNode["version"] = editorVersion;
+
+                editorsNode["_lastEditedBy"] = editorName;
+                editorsNode[editorName] = MetadataNode;
+
+                return editorsNode;
+            }
+        }
         
         
         public bool Save()
