@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using SimpleJSON;
 using UnityEngine;
@@ -227,28 +227,28 @@ namespace Beatmap.Info
                     customContributors.Add(V4Contributor.ToJson(customContributor));
                 }
                 info.CustomData["contributors"] = customContributors;
-
-                var customCharacteristics = new JSONArray();
-                foreach (var difficultySet in info.DifficultySets)
-                {
-                    var customCharacteristic = new JSONObject { ["characteristic"] = difficultySet.Characteristic };
-                    if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicLabel))
-                    {
-                        customCharacteristic["label"] = difficultySet.CustomCharacteristicLabel;
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicIconImageFileName))
-                    {
-                        customCharacteristic["iconPath"] = difficultySet.CustomCharacteristicIconImageFileName;
-                    }
-
-                    if (customCharacteristic.Count > 1)
-                    {
-                        customCharacteristics.Add(customCharacteristic);
-                    }
-                }
-                info.CustomData["characteristicData"] = customCharacteristics;
             }
+
+            var customCharacteristics = new JSONArray();
+            foreach (var difficultySet in info.DifficultySets)
+            {
+                var customCharacteristic = new JSONObject { ["characteristic"] = difficultySet.Characteristic };
+                if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicLabel))
+                {
+                    customCharacteristic["label"] = difficultySet.CustomCharacteristicLabel;
+                }
+
+                if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicIconImageFileName))
+                {
+                    customCharacteristic["iconPath"] = difficultySet.CustomCharacteristicIconImageFileName;
+                }
+
+                if (customCharacteristic.Count > 1)
+                {
+                    customCharacteristics.Add(customCharacteristic);
+                }
+            }
+            info.CustomData["characteristicData"] = customCharacteristics;
             
             // I'm not sure if custom platforms exists for v4 yet. This seems like a safe guess.
             if (!string.IsNullOrEmpty(info.CustomEnvironmentMetadata.Name))
