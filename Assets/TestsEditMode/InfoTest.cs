@@ -202,7 +202,8 @@ namespace TestsEditMode
                 ""_role"": ""Everything"",
                 ""_iconPath"": ""Bullet.png""
             }
-        ]
+        ],
+        ""_customEnvironment"": ""Big Mirror V2""
     }
 }
 ";
@@ -389,8 +390,9 @@ namespace TestsEditMode
                 ""characteristic"": ""Standard"",
                 ""label"" : ""A Custom Characteristic"",
                 ""iconPath"" : ""customCharacteristic.png""
-            }
-        ]
+            },
+        ],
+        ""customEnvironment"": ""Big Mirror V2""
     }
 }
 ";
@@ -609,6 +611,8 @@ namespace TestsEditMode
             Assert.AreEqual("Bullet", contributor.Name);
             Assert.AreEqual("Everything", contributor.Role);
             Assert.AreEqual("Bullet.png", contributor.LocalImageLocation);
+
+            Assert.AreEqual("Big Mirror V2", info.CustomEnvironmentMetadata.Name);
         }
 
         private void AssertColorsAreEqual(Color expected, Color actual)

@@ -118,6 +118,12 @@ namespace Beatmap.Info
                 {
                     info.CustomEditorsData = new BaseInfo.CustomEditorsMetadata(customData["editors"]);
                 }
+
+                if (customData["customEnvironment"].IsString)
+                {
+                    info.CustomEnvironmentMetadata.Name = customData["customEnvironment"].Value;
+                    // Don't need save retrieve since it's calculated on save
+                }
                 
                 info.CustomData = customData;
             }
@@ -242,6 +248,13 @@ namespace Beatmap.Info
                     }
                 }
                 info.CustomData["characteristicData"] = customCharacteristics;
+            }
+            
+            // I'm not sure if custom platforms exists for v4 yet. This seems like a safe guess.
+            if (!string.IsNullOrEmpty(info.CustomEnvironmentMetadata.Name))
+            {
+                info.CustomData["customEnvironment"] = info.CustomEnvironmentMetadata.Name;
+                info.CustomData["customEnvironmentHash"] = info.CustomEnvironmentMetadata.Hash;
             }
             
             info.CustomData["editors"] = info.CustomEditorsData.ToJson();

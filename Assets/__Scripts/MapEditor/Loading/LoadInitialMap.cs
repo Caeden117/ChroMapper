@@ -49,11 +49,10 @@ public class LoadInitialMap : MonoBehaviour
         environmentID =
             SongInfoEditUI.GetEnvironmentIDFromString(info
                 .EnvironmentName); //Grab platform by name (Official or Custom)
-        if (info.CustomData != null && info.CustomData["_customEnvironment"] != null &&
-            info.CustomData["_customEnvironment"].Value != "")
+        if (!string.IsNullOrEmpty(info.CustomEnvironmentMetadata.Name))
         {
             if (CustomPlatformsLoader.Instance.GetAllEnvironmentIds()
-                .IndexOf(info.CustomData["_customEnvironment"] ?? "") >= 0)
+                .IndexOf(info.CustomEnvironmentMetadata.Name) >= 0)
             {
                 customPlat = true;
             }
@@ -72,7 +71,7 @@ public class LoadInitialMap : MonoBehaviour
 
         if (customPlat)
         {
-            platform = CustomPlatformsLoader.Instance.LoadPlatform(info.CustomData["_customEnvironment"], platform);
+            platform = CustomPlatformsLoader.Instance.LoadPlatform(info.CustomEnvironmentMetadata.Name, platform);
         }
 
         if (directional && !customPlat) platform = directionalPlatformPrefabs[environmentID];

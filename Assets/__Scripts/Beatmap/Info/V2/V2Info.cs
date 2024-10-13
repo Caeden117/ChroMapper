@@ -107,6 +107,12 @@ namespace Beatmap.Info
                 {
                     info.CustomEditorsData = new BaseInfo.CustomEditorsMetadata(customData["_editors"]);
                 }
+
+                if (customData["_customEnvironment"].IsString)
+                {
+                    info.CustomEnvironmentMetadata.Name = customData["_customEnvironment"].Value;
+                    // Don't need save retrieve since it's calculated on save
+                }
                 
                 info.CustomData = customData;
             }
@@ -204,6 +210,12 @@ namespace Beatmap.Info
                 }
                 
                 info.CustomData["_contributors"] = customContributors;
+            }
+            
+            if (!string.IsNullOrEmpty(info.CustomEnvironmentMetadata.Name))
+            {
+                info.CustomData["_customEnvironment"] = info.CustomEnvironmentMetadata.Name;
+                info.CustomData["_customEnvironmentHash"] = info.CustomEnvironmentMetadata.Hash;
             }
             
             info.CustomData["_editors"] = info.CustomEditorsData.ToJson();

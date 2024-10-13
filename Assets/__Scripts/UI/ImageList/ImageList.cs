@@ -26,15 +26,12 @@ public class ImageList : ScriptableObject
     public Sprite GetBgSprite(BaseInfo mapInfo)
     {
         if (Settings.Instance.DarkTheme) return DarkSprite;
-        if (mapInfo.CustomData != null)
+        if (!string.IsNullOrEmpty(mapInfo.CustomEnvironmentMetadata.Name))
         {
-            if (mapInfo.CustomData && !string.IsNullOrEmpty(mapInfo.CustomData["_customEnvironment"]))
+            switch (mapInfo.CustomEnvironmentMetadata.Name)
             {
-                switch (mapInfo.CustomData["_customEnvironment"].Value)
-                {
-                    case "Vapor Frame": return VaporFramePlatform;
-                    case "Big Mirror V2": return BigMirrorV2Platform;
-                }
+                case "Vapor Frame": return VaporFramePlatform;
+                case "Big Mirror V2": return BigMirrorV2Platform;
             }
         }
 

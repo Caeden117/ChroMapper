@@ -175,17 +175,16 @@ public class SongInfoEditUI : MenuBase
 
         if (customPlatformsDropdown.value > 0)
         {
-            Info.CustomData["_customEnvironment"] = customPlatformsDropdown.captionText.text;
+            Info.CustomEnvironmentMetadata.Name = customPlatformsDropdown.captionText.text;
             if (CustomPlatformsLoader.Instance.GetAllEnvironments()
                 .TryGetValue(customPlatformsDropdown.captionText.text, out var info))
             {
-                Info.CustomData["_customEnvironmentHash"] = info.Md5Hash;
+                Info.CustomEnvironmentMetadata.Hash = info.Md5Hash;
             }
         }
         else
         {
-            Info.CustomData.Remove("_customEnvironment");
-            Info.CustomData.Remove("_customEnvironmentHash");
+            Info.CustomEnvironmentMetadata.Name = null;
         }
 
         contributorController.Commit();
@@ -265,15 +264,10 @@ public class SongInfoEditUI : MenuBase
     /// <returns>Custom platform index</returns>
     private int CustomPlatformFromSong()
     {
-        if (Info.CustomData != null)
+        if (!string.IsNullOrEmpty(Info.CustomEnvironmentMetadata.Name))
         {
-            if (Info.CustomData["_customEnvironment"] != null && Info.CustomData["_customEnvironment"] != "")
-            {
-                return CustomPlatformsLoader.Instance.GetAllEnvironmentIds()
-                    .IndexOf(Info.CustomData["_customEnvironment"]) + 1;
-            }
-
-            return 0;
+            return CustomPlatformsLoader.Instance.GetAllEnvironmentIds()
+                                .IndexOf(Info.CustomEnvironmentMetadata.Name) + 1;
         }
 
         return 0;

@@ -112,6 +112,7 @@ namespace Beatmap.Info
         public List<BaseContributor> CustomContributors = new();
 
         public CustomEditorsMetadata CustomEditorsData = new(null);
+        public CustomEnvironmentMetadata CustomEnvironmentMetadata = new();
         
         public class CustomEditorsMetadata
         {
@@ -168,6 +169,12 @@ namespace Beatmap.Info
 
             return true;
         }
+    }
+
+    public struct CustomEnvironmentMetadata
+    {
+        public string Name { get; set; }
+        public string Hash { get; set; }
     }
 
     public class InfoDifficultySet
