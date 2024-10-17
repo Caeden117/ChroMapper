@@ -15,26 +15,26 @@ public class CreateNewSong : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(res)) return;
 
-        var song = new BaseInfo { Directory = list.SelectedFolderPath };
-        
+        var song = new BaseInfo { SongName = res };
+
         if (string.IsNullOrWhiteSpace(song.CleanSongName))
         {
             PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.invalid", HandleNewSongName,
                 "newmap.dialog.default");
             return;
         }
-        
+
+        var songDirectory = Path.Combine(list.SelectedFolderPath, song.CleanSongName);
         if (list.SongInfos.Any(x => Path.GetFullPath(x.Directory).Equals(
-            Path.GetFullPath(Path.Combine(
-                list.SelectedFolderPath,
-                song.CleanSongName)),
-            StringComparison.CurrentCultureIgnoreCase
-        )))
+                Path.GetFullPath(Path.Combine(songDirectory)),
+                StringComparison.CurrentCultureIgnoreCase)))
         {
             PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.duplicate", HandleNewSongName,
                 "newmap.dialog.default");
             return;
         }
+
+        song.Directory = songDirectory;
 
         var standardSet = new InfoDifficultySet { Characteristic = "Standard" };
         song.DifficultySets.Add(standardSet);
