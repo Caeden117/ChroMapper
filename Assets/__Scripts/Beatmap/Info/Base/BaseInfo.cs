@@ -141,7 +141,14 @@ namespace Beatmap.Info
             {
                 MetadataNode["version"] = editorVersion;
 
-                editorsNode["_lastEditedBy"] = editorName;
+                var lastEditedByKey = BeatSaberSongContainer.Instance.Info.Version[0] switch
+                {
+                    '2' => "_lastEditedByKey",
+                    '4' => "lastEditedByKey",
+                    _ => "lastEditedByKey"
+                };
+                
+                editorsNode[lastEditedByKey] = editorName;
                 editorsNode[editorName] = MetadataNode;
 
                 return editorsNode;
