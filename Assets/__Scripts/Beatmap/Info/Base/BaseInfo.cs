@@ -204,7 +204,15 @@ namespace Beatmap.Info
         public string CustomCharacteristicIconImageFileName => ParentSet.CustomCharacteristicIconImageFileName;
 
         public string BeatmapFileName { get; set; }
-        public string LightshowFileName { get; set; }
+
+        private string lightshowFileName = "";
+
+        public string LightshowFileName
+        {
+            get => string.IsNullOrEmpty(lightshowFileName) ? BeatmapFileName : lightshowFileName;
+            set => lightshowFileName = value;
+        }
+
         public string Difficulty { get; set; }
 
         public int DifficultyRank => Difficulty switch
@@ -224,8 +232,8 @@ namespace Beatmap.Info
         public float NoteJumpSpeed { get; set; }
         public float NoteStartBeatOffset { get; set; }
 
-        public List<string> Mappers { get; set; }
-        public List<string> Lighters { get; set; }
+        public List<string> Mappers { get; set; } = new();
+        public List<string> Lighters { get; set; } = new();
 
         // CustomData Properties
         public JSONObject CustomData { get; set; } = new();

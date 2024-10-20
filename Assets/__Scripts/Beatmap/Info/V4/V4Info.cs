@@ -31,7 +31,7 @@ namespace Beatmap.Info
             info.CoverImageFilename = node["coverImageFilename"].Value;
 
             info.EnvironmentNames = node["environmentNames"].AsArray.Children.Select(x => x.Value).ToList();
-            info.EnvironmentName = info.EnvironmentNames.First();
+            info.EnvironmentName = info.EnvironmentNames.FirstOrDefault() ?? "DefaultEnvironment";
             info.AllDirectionsEnvironmentName = node["allDirectionsEnvironmentName"].Value;
             
             var colorSchemes = new List<InfoColorScheme>();
