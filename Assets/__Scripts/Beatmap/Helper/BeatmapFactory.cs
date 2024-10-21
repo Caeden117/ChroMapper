@@ -24,7 +24,10 @@ namespace Beatmap.Helper
                 case '4':
                     Settings.Instance.MapVersion = 4;
                     var difficulty = V4Difficulty.GetFromJson(mainNode, directoryAndFile);
-                    V4Difficulty.LoadBpmFromAudioData(difficulty);
+                    var info = BeatSaberSongContainer.Instance.Info;
+                    var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+                    V4Difficulty.LoadBpmFromAudioData(difficulty, info);
+                    V4Difficulty.LoadLightsFromLightshowFile(difficulty, info, infoDifficulty);
                     return difficulty;
                 case '3':
                     Settings.Instance.MapVersion = 3;

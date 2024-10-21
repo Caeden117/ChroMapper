@@ -338,6 +338,21 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             case 3:
                 // No vanilla v2 features are unsupported in v3
                 break;
+            
+            case 4:
+                // v4 doesn't support customData at all yet
+                // Also wow this is expensive
+                var map4 = BeatSaberSongContainer.Instance.Map; 
+                if (map4.Notes.Any(n => n.CustomData.Count > 0)
+                    || map4.Obstacles.Any(o => o.CustomData.Count > 0)
+                    || map4.Events.Any(e => e.CustomData.Count > 0)
+                    || map4.Arcs.Any(c => c.CustomData.Count > 0)
+                    || map4.Chains.Any(c => c.CustomData.Count > 0))
+                {
+                    saveWarningMessage = "Warning\nCustomData is not supported in v4 format.\n Save in v2 or v3 format to ensure data is not lost.";
+                }
+                
+                break;
         }
     }
 

@@ -8,6 +8,7 @@ using Beatmap.Helper;
 using Beatmap.Info;
 using Beatmap.V2;
 using Beatmap.V3;
+using Beatmap.V4;
 using SimpleJSON;
 using UnityEngine;
 
@@ -270,6 +271,7 @@ namespace Beatmap.Base
             {
                 2 => V2Difficulty.GetOutputJson(this),
                 3 => V3Difficulty.GetOutputJson(this),
+                4 => throw new NotImplementedException()//V4Difficulty.GetOutputJson(this)
             };
 
             if (outputJson == null)

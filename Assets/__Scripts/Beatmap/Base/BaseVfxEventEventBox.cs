@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Beatmap.V3;
 using SimpleJSON;
@@ -35,7 +36,12 @@ namespace Beatmap.Base
         public float VfxDistribution { get; set; }
         public int VfxDistributionType { get; set; }
         public int VfxAffectFirst { get; set; }
+
+        [Obsolete("Convert to FloatFxEvents")]
         public int[] VfxData { get; set; } = { };
+
+        public List<FloatFxEventBase> FloatFxEvents { get; set; }
+
 
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {

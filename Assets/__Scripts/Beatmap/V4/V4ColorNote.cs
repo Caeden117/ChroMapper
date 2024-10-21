@@ -32,7 +32,7 @@ namespace Beatmap.V4
             node["b"] = note.JsonTime;
             node["r"] = 0;
 
-            var data = V4CommonData.FromBaseNote(note);
+            var data = V4CommonData.Note.FromBaseNote(note);
             node["i"] = notesCommonData.IndexOf(data);
             
             return node;
