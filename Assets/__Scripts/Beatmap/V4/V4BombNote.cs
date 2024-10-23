@@ -19,6 +19,7 @@ namespace Beatmap.V4
 
             note.PosX = bombData.PosX;
             note.PosY = bombData.PosY;
+            note.Type = (int)NoteType.Bomb;
             
             return note;
         }

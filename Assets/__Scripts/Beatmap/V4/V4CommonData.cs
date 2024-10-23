@@ -1,4 +1,5 @@
 ﻿using Beatmap.Base;
+using Beatmap.Enums;
 using SimpleJSON;
 
 namespace Beatmap.V4
@@ -72,6 +73,16 @@ namespace Beatmap.V4
             };
 
             public static Bomb FromBaseNote(BaseNote baseNote) => new() { PosX = baseNote.PosX, PosY = baseNote.PosY };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["x"] = PosX;
+                node["y"] = PosY;
+                
+                return node;
+            }
         }
 
         public struct Obstacle
@@ -99,6 +110,19 @@ namespace Beatmap.V4
                 Width = baseObstacle.Width,
                 Height = baseObstacle.Height
             };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["x"] = PosX;
+                node["y"] = PosY;
+                node["d"] = Duration;
+                node["w"] = Width;
+                node["h"] = Height;
+                
+                return node;
+            }
         }
 
         public struct Arc
@@ -120,6 +144,17 @@ namespace Beatmap.V4
                 TailControlPointLengthMultiplier = baseArc.TailControlPointLengthMultiplier,
                 MidAnchorMode = baseArc.MidAnchorMode
             };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["m"] = HeadControlPointLengthMultiplier;
+                node["tm"] = TailControlPointLengthMultiplier;
+                node["a"] = MidAnchorMode;
+                
+                return node;
+            }
         }
 
         public struct Chain
@@ -144,6 +179,18 @@ namespace Beatmap.V4
                 SliceCount = baseChain.SliceCount,
                 Squish = baseChain.Squish
             };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["tx"] = TailPosX;
+                node["ty"] = TailPosY;
+                node["c"] = SliceCount;
+                node["s"] = Squish;
+                
+                return node;
+            }
         }
 
         public struct RotationEvent
@@ -159,9 +206,19 @@ namespace Beatmap.V4
 
             public static RotationEvent FromBaseEvent(BaseEvent baseEvent) => new()
             {
-                Type = baseEvent.Type,
+                Type = baseEvent.Type == (int)EventTypeValue.EarlyLaneRotation ? 0 : 1,
                 Rotation = baseEvent.Rotation
             };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["t"] = Type;
+                node["r"] = Rotation;
+                
+                return node;
+            }
         }
 
         public struct BasicEvent

@@ -47,8 +47,6 @@ namespace Beatmap.V4
                 })
                 .ToList();
 
-            vfxGroup.Events = new List<BaseVfxEventEventBox>(BaseItem.GetRequiredNode(node, "e").AsArray.Linq
-                .Select(x => V3VfxEventEventBox.GetFromJson(x.Value)).ToList());
             vfxGroup.CustomData = node["customData"];
 
             return vfxGroup;

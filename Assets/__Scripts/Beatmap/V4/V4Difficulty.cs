@@ -24,28 +24,27 @@ namespace Beatmap.V4
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
                 var json = new JSONObject { ["version"] = version };
+                
+                // LINQ abuse
 
-                // TODO: BpmEvents need to be saved into separate file
-                
-                // TODO: Non-interactable objects in separate file
-                
-                // TODO: WIP
-
-                
-                // Notes
+                // Color notes
                 var colorNotes = new JSONArray();
                 var colorNotesData = new JSONArray();
-
+                
                 var notes = difficulty.Notes.Where(x => x.Type != (int)NoteType.Bomb).ToList();
-
-                var notesCommonData = notes.Select(V4CommonData.Note.FromBaseNote).Distinct().ToList();
+                List<V4CommonData.Note> colorNotesCommonData = new(); 
+                colorNotesCommonData.AddRange(notes.Select(V4CommonData.Note.FromBaseNote));
+                colorNotesCommonData.AddRange(difficulty.Arcs.Select(V4CommonData.Note.FromBaseSliderHead));
+                colorNotesCommonData.AddRange(difficulty.Arcs.Select(V4CommonData.Note.FromBaseArcTail));
+                colorNotesCommonData.AddRange(difficulty.Chains.Select(V4CommonData.Note.FromBaseSliderHead));
+                colorNotesCommonData = colorNotesCommonData.Distinct().ToList();
                 
                 foreach (var note in notes)
                 {
-                    colorNotes.Add(V4ColorNote.ToJson(note, notesCommonData));
+                    colorNotes.Add(V4ColorNote.ToJson(note, colorNotesCommonData));
                 }
 
-                foreach (var noteData in notesCommonData)
+                foreach (var noteData in colorNotesCommonData)
                 {
                     colorNotesData.Add(noteData.ToJson());
                 }
@@ -53,11 +52,126 @@ namespace Beatmap.V4
                 json["colorNotes"] = colorNotes;
                 json["colorNotesData"] = colorNotesData;
                 
-                
+                // Bombs
                 var bombNotes = new JSONArray();
                 var bombNotesData = new JSONArray();
                 var bombs = difficulty.Notes.Where(x => x.Type == (int)NoteType.Bomb).ToList();
+                var bombNotesCommonData = bombs.Select(V4CommonData.Bomb.FromBaseNote).Distinct().ToList();
+                
+                foreach (var bomb in bombs)
+                {
+                    bombNotes.Add(V4BombNote.ToJson(bomb, bombNotesCommonData));
+                }
 
+                foreach (var bombData in bombNotesCommonData)
+                {
+                    bombNotesData.Add(bombData.ToJson());
+                }
+
+                json["bombNotes"] = bombNotes;
+                json["bombNotesData"] = bombNotesData;
+                
+                // Arcs
+                var arcs = new JSONArray();
+                var arcsData = new JSONArray();
+                var arcsCommonData = difficulty.Arcs.Select(V4CommonData.Arc.FromBaseArc).Distinct().ToList();
+                
+                foreach (var arc in difficulty.Arcs)
+                {
+                    arcs.Add(V4Arc.ToJson(arc, colorNotesCommonData, arcsCommonData));   
+                }
+
+                foreach (var arcData in arcsCommonData)
+                {
+                    arcsData.Add(arcData.ToJson());
+                }
+
+                json["arcs"] = arcs;
+                json["arcsData"] = arcsData;
+                
+                // Chains
+                var chains = new JSONArray();
+                var chainsData = new JSONArray();
+                var chainsCommonData = difficulty.Chains.Select(V4CommonData.Chain.FromBaseChain).Distinct().ToList();
+                
+                foreach (var chain in difficulty.Chains)
+                {
+                    chains.Add(V4Chain.ToJson(chain, colorNotesCommonData, chainsCommonData));   
+                }
+
+                foreach (var chainData in chainsCommonData)
+                {
+                    chainsData.Add(chainData.ToJson());
+                }
+
+                json["chains"] = chains;
+                json["chainsData"] = chainsData;
+                
+                // Obstacles
+                var obstacles = new JSONArray();
+                var obstaclesData = new JSONArray();
+                var obstaclesCommonData = difficulty.Obstacles.Select(V4CommonData.Obstacle.FromBaseObstacle).Distinct().ToList();
+                
+                foreach (var obstacle in difficulty.Obstacles)
+                {
+                    obstacles.Add(V4Obstacle.ToJson(obstacle, obstaclesCommonData));   
+                }
+
+                foreach (var obstacleData in obstaclesCommonData)
+                {
+                    obstaclesData.Add(obstacleData.ToJson());
+                }
+
+                json["obstacles"] = obstacles;
+                json["obstaclesData"] = obstaclesData;
+                
+                // Rotation Events
+                var spawnRotations = new JSONArray();
+                var spawnRotationsData = new JSONArray();
+                var rotationEvents = difficulty.Events.Where(evt => evt.IsLaneRotationEvent()).ToList();
+                
+                var rotationEventsCommonData = rotationEvents.Select(V4CommonData.RotationEvent.FromBaseEvent).Distinct().ToList();
+                
+                foreach (var rotationEvent in rotationEvents)
+                {
+                    spawnRotations.Add(V4RotationEvent.ToJson(rotationEvent, rotationEventsCommonData));   
+                }
+
+                foreach (var rotationEventData in rotationEventsCommonData)
+                {
+                    spawnRotationsData.Add(rotationEventData.ToJson());
+                }
+
+                json["spawnRotations"] = spawnRotations;
+                json["spawnRotationsData"] = obstaclesData;
+                
+                if (Settings.Instance.SaveWithoutDefaultValues)
+                {
+                    SimpleJSONHelper.RemovePropertiesWithDefaultValues(json);
+                }
+
+                return json;
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                Debug.LogError(
+                    "This is bad. You are recommended to restart ChroMapper; progress made after this point is not guaranteed to be saved.");
+                return null;
+            }
+        }
+        
+        // TODO: Holy hell this seems like a pain to do
+        public static JSONNode GetLightshowOutputJson(BaseDifficulty difficulty)
+        {
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+                var json = new JSONObject { ["version"] = version };
+
+                
                 if (Settings.Instance.SaveWithoutDefaultValues)
                 {
                     SimpleJSONHelper.RemovePropertiesWithDefaultValues(json);

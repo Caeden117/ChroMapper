@@ -205,7 +205,7 @@ namespace Beatmap.Info
 
         public string BeatmapFileName { get; set; }
 
-        private string lightshowFileName = "";
+        private string lightshowFileName = "Lightshow.dat";
 
         public string LightshowFileName
         {

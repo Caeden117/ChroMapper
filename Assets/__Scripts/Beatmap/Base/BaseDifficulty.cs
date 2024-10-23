@@ -271,9 +271,9 @@ namespace Beatmap.Base
             {
                 2 => V2Difficulty.GetOutputJson(this),
                 3 => V3Difficulty.GetOutputJson(this),
-                4 => throw new NotImplementedException()//V4Difficulty.GetOutputJson(this)
+                4 => V4Difficulty.GetOutputJson(this)
             };
-
+            
             if (outputJson == null)
                 return false;
 
@@ -282,9 +282,23 @@ namespace Beatmap.Base
                 ? outputJson.ToString(2)
                 : outputJson.ToString());
 
-            // Write Bpm file
+            // Write lightshow file if in v4
             var songContainer = BeatSaberSongContainer.Instance;
+            if (Settings.Instance.MapVersion == 4)
+            {
+                // User error. In this case, write to a different file
+                if (songContainer.MapDifficultyInfo.BeatmapFileName ==
+                    songContainer.MapDifficultyInfo.LightshowFileName)
+                {
+                    songContainer.MapDifficultyInfo.LightshowFileName = $"LightsFor-{songContainer.MapDifficultyInfo.LightshowFileName}";
+                }
 
+                var lightshowJson = V4Difficulty.GetLightshowOutputJson(this);
+                File.WriteAllText(Path.Combine(songContainer.Info.Directory, songContainer.MapDifficultyInfo.LightshowFileName),
+                    lightshowJson.ToString(2));
+            }
+
+            // Write Bpm file
             var bpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Info.BeatsPerMinute,
                 songContainer.LoadedSongSamples, songContainer.LoadedSongFrequency);
             var bpmInfo = new BaseBpmInfo { BpmRegions = bpmRegions }.InitWithSongContainerInstance();
@@ -294,6 +308,8 @@ namespace Beatmap.Base
             File.WriteAllText(Path.Combine(songContainer.Info.Directory, bpmOutputFileName),
                 bpmOutputJson.ToString(2));
 
+            if (Settings.Instance.MapVersion == 4) throw new NotImplementedException("Saving in v4 is still a WIP");
+            
             return true;
         }
 
