@@ -326,12 +326,17 @@ namespace Beatmap.V4
             var bpmEvents = BaseBpmInfo.GetBpmEvents(bpmInfo.BpmRegions, bpmInfo.AudioFrequency);
             map.BpmEvents = bpmEvents;
         }
-
+        
         public static void LoadLightsFromLightshowFile(BaseDifficulty map, BaseInfo info, InfoDifficulty infoDifficulty)
         {
             var path = Path.Combine(info.Directory, infoDifficulty.LightshowFileName);
             var mainNode = BeatSaberSongUtils.GetNodeFromFile(path);
 
+            LoadLightsFromJson(map, mainNode);
+        }
+
+        public static void LoadLightsFromJson(BaseDifficulty map, JSONNode mainNode)
+        {
             // Get common Data
             var basicEventsCommonData = new List<V4CommonData.BasicEvent>();
             var colorBoostEventsCommonData = new List<V4CommonData.ColorBoostEvent>();
@@ -366,7 +371,7 @@ namespace Beatmap.V4
                         }
 
                         break;
-                    case "RotationBoostEventsData":
+                    case "colorBoostEventsData":
                         foreach (JSONNode n in node)
                         {
                             colorBoostEventsCommonData.Add(V4CommonData.ColorBoostEvent.GetFromJson(n));
@@ -478,7 +483,7 @@ namespace Beatmap.V4
                     case "eventBoxGroups":
                         foreach (JSONNode n in node)
                         {
-                            var type = node["t"].AsInt;
+                            var type = n["t"].AsInt;
                             switch (type)
                             {
                                 case 1: // Light Color
