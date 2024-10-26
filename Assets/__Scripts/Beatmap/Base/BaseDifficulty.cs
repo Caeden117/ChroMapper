@@ -55,7 +55,7 @@ namespace Beatmap.Base
             LightTranslationEventBoxGroups { get; set; } = new();
 
         public List<BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>> VfxEventBoxGroups { get; set; } = new();
-        public BaseFxEventsCollection FxEventsCollection { get; set; }
+        public BaseFxEventsCollection FxEventsCollection { get; set; } = new();
 
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
         public bool UseNormalEventsAsCompatibleEvents { get; set; } = true;
@@ -302,14 +302,17 @@ namespace Beatmap.Base
             var bpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Info.BeatsPerMinute,
                 songContainer.LoadedSongSamples, songContainer.LoadedSongFrequency);
             var bpmInfo = new BaseBpmInfo { BpmRegions = bpmRegions }.InitWithSongContainerInstance();
-            var bpmOutputJson = V2BpmInfo.GetOutputJson(bpmInfo);
+            var bpmOutputJson = Settings.Instance.MapVersion switch
+            {
+                2 => V2BpmInfo.GetOutputJson(bpmInfo),
+                3 => V2BpmInfo.GetOutputJson(bpmInfo),
+                4 => V4AudioData.GetOutputJson(bpmInfo)
+            };
             var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(songContainer.Info);
 
             File.WriteAllText(Path.Combine(songContainer.Info.Directory, bpmOutputFileName),
                 bpmOutputJson.ToString(2));
 
-            if (Settings.Instance.MapVersion == 4) throw new NotImplementedException("Saving in v4 is still a WIP");
-            
             return true;
         }
 

@@ -37,8 +37,9 @@ namespace Beatmap.V4
                 box.RotationDistributionType = commonBoxData.RotationDistributionType;
                 box.RotationAffectFirst = commonBoxData.RotationAffectFirst;
                 box.Easing = commonBoxData.Easing;
+                box.Flip = commonBoxData.Flip;
 
-                box.Events = node["l"].AsArray.Linq.Select(
+                box.Events = boxNode["l"].AsArray.Linq.Select(
                     x =>
                     {
                         var eventNode = x.Value;
@@ -48,7 +49,7 @@ namespace Beatmap.V4
 
                         var eventIndex = eventNode["i"].AsInt;
                         var commonEventData = lightRotationEventsCommonData[eventIndex];
-
+                        
                         evt.Rotation = commonEventData.Rotation;
                         evt.UsePrevious = commonEventData.TransitionType;
                         evt.Direction = commonEventData.Direction;
@@ -64,17 +65,46 @@ namespace Beatmap.V4
             return group;
         }
 
-        public static JSONNode ToJson<T>(BaseLightRotationEventBoxGroup<T> group) where T : BaseLightRotationEventBox
+        public static JSONNode ToJson(BaseLightRotationEventBoxGroup<BaseLightRotationEventBox> group,
+            IList<V4CommonData.IndexFilter> indexFiltersCommonData,
+            IList<V4CommonData.LightRotationEventBox> lightRotationEventBoxesCommonData,
+            IList<V4CommonData.LightRotationEvent> lightRotationEventsCommonData)
         {
             JSONNode node = new JSONObject();
-            // node["b"] = group.JsonTime;
-            // node["g"] = group.ID;
-            // var ary = new JSONArray();
-            // foreach (var k in group.Events) ary.Add(V3LightRotationEventBox.ToJson(k));
-            // node["e"] = ary;
-            // group.CustomData = group.SaveCustom();
-            // if (!group.CustomData.Children.Any()) return node;
-            // node["customData"] = group.CustomData;
+            node["b"] = group.JsonTime;
+            node["g"] = group.ID;
+            node["t"] = 2;
+            
+            var boxArray = new JSONArray();
+
+            foreach (var boxEvent in group.Events)
+            {
+                var boxNode = new JSONObject();
+                boxNode["f"] =
+                    indexFiltersCommonData.IndexOf(V4CommonData.IndexFilter.FromBaseIndexFilter(boxEvent.IndexFilter));
+                boxNode["e"] =
+                    lightRotationEventBoxesCommonData.IndexOf(
+                        V4CommonData.LightRotationEventBox.FromBaseLightRotationEventBox(boxEvent));
+
+                var eventArray = new JSONArray();
+
+                foreach (var evt in boxEvent.Events)
+                {
+                    var eventNode = new JSONObject();
+                    eventNode["b"] = evt.JsonTime;
+                    eventNode["i"] =
+                        lightRotationEventsCommonData.IndexOf(V4CommonData.LightRotationEvent.FromBaseLightRotationEvent(evt));
+                    
+                    eventArray.Add(eventNode);
+                }
+
+                boxNode["l"] = eventArray;
+                
+                boxArray.Add(boxNode);
+            }
+
+            node["e"] = boxArray;
+
             return node;
         }
     }

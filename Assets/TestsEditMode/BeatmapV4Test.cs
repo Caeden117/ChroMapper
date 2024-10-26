@@ -109,7 +109,7 @@ namespace TestsEditMode
         {""w"": 1, ""d"": 1, ""s"": 1, ""t"": 1, ""b"": 1, ""e"": 0}
     ],
     ""lightColorEvents"": [
-        {""p"": 0, ""e"": -1, ""c"": 1, ""b"": 1, ""f"": 0, ""sb"": 0, ""sf"": 0}
+        {""p"": 0, ""e"": 1, ""c"": 1, ""b"": 1, ""f"": 0, ""sb"": 0, ""sf"": 0}
     ],
     ""lightRotationEventBoxes"": [
         {""w"": 1, ""d"": 1, ""s"": 1, ""t"": 1, ""b"": 1, ""e"": 0, ""a"": 0, ""f"": 1}
@@ -170,6 +170,7 @@ namespace TestsEditMode
         public void GetLightshowOutputJson()
         {
             var difficulty = new BaseDifficulty();
+            V4Difficulty.LoadLightsFromJson(difficulty, JSONNode.Parse(lightshowFileJson));
             var outputJson = V4Difficulty.GetLightshowOutputJson(difficulty);
 
             var reparsed = new BaseDifficulty();
@@ -205,12 +206,16 @@ namespace TestsEditMode
 
             Assert.AreEqual(1, difficulty.Chains.Count);
             BeatmapAssert.ChainPropertiesAreEqual(difficulty.Chains[0], 10, 1, 0, 0, 1, 15, 2, 2, 3, 0.5f);
+            
+            Assert.AreEqual(2, difficulty.Events.Count);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 14, 4, null, 15f);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 15, 15, 4, null, 15f);
         }
         
         private static void AssertLightshow(BaseDifficulty difficulty)
         {
             // Basic + Boost
-            Assert.AreEqual(4, difficulty.Events.Count);
+            Assert.AreEqual(2, difficulty.Events.Count);
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 1, 3, 1, null);
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 10, 5, 1, 0, null);
 
@@ -249,7 +254,9 @@ namespace TestsEditMode
             Assert.AreEqual(0, colorGroupEvent.TransitionType);
             Assert.AreEqual(1, colorGroupEvent.Color);
             Assert.AreEqual(1, colorGroupEvent.Brightness);
+            Assert.AreEqual(0, colorGroupEvent.Frequency);
             Assert.AreEqual(0, colorGroupEvent.StrobeBrightness);
+            Assert.AreEqual(0, colorGroupEvent.StrobeFade);
             
             // Rotation
             Assert.AreEqual(1, difficulty.LightRotationEventBoxGroups.Count);
@@ -357,13 +364,8 @@ namespace TestsEditMode
             Assert.AreEqual(0, vfxGroupBox.Easing);
             Assert.AreEqual(1, vfxGroupBox.VfxAffectFirst);
 
-            Assert.AreEqual(1, vfxGroupBox.VfxData.Length);
-            Assert.AreEqual(0, vfxGroupBox.VfxData[0]);
-            
-            Assert.AreEqual(0, difficulty.FxEventsCollection.IntFxEvents.Length);
-            Assert.AreEqual(1, difficulty.FxEventsCollection.FloatFxEvents.Length);
-            var fxFloatEvent = difficulty.FxEventsCollection.FloatFxEvents[0];
-            
+            Assert.AreEqual(1, vfxGroupBox.FloatFxEvents.Count);
+            var fxFloatEvent = vfxGroupBox.FloatFxEvents[0];
             Assert.AreEqual(0, fxFloatEvent.JsonTime);
             Assert.AreEqual(0, fxFloatEvent.UsePreviousEventValue);
             Assert.AreEqual(1, fxFloatEvent.Easing);

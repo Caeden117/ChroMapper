@@ -39,9 +39,25 @@ namespace Beatmap.V4
                     box.VfxDistributionType = boxCommonData.FxDistributionType;
                     box.VfxAffectFirst = boxCommonData.FxAffectFirst;
                     box.Easing = boxCommonData.Easing;
-                    
-                    // TODO: Well... Base model needs be redone
-                    //box.VfxData = 
+
+
+                    box.FloatFxEvents = boxNode["l"].AsArray.Linq.Select(
+                        y =>
+                        {
+                            var eventNode = y.Value;
+                        
+                            var evt = new FloatFxEventBase();
+                            evt.JsonTime = eventNode["b"].AsFloat;
+
+                            var eventIndex = eventNode["i"].AsInt;
+                            var commonEventData = floatFxEventsCommonData[eventIndex];
+                        
+                            evt.Value = commonEventData.Value;
+                            evt.UsePreviousEventValue = commonEventData.TransitionType;
+                            evt.Easing = commonEventData.Easing;
+                        
+                            return evt;
+                        }).ToList();
                     
                     return box;
                 })
@@ -51,18 +67,46 @@ namespace Beatmap.V4
 
             return vfxGroup;
         }
-        public static JSONNode ToJson<T>(BaseVfxEventEventBoxGroup<T> vfxGroup) where T : BaseVfxEventEventBox
+        public static JSONNode ToJson(BaseVfxEventEventBoxGroup<BaseVfxEventEventBox> group,
+            IList<V4CommonData.IndexFilter> indexFiltersCommonData,
+            IList<V4CommonData.FxEventBox > fxEventBoxesCommonData,
+            IList<V4CommonData.FloatFxEvent> floatFxEventsCommonData)
         {
             JSONNode node = new JSONObject();
-            // node["b"] = vfxGroup.JsonTime;
-            // node["g"] = vfxGroup.ID;
-            // node["t"] = vfxGroup.Type;
-            // var ary = new JSONArray();
-            // foreach (var k in vfxGroup.Events) ary.Add(V3VfxEventEventBox.ToJson(k));
-            // node["e"] = ary;
-            // vfxGroup.CustomData = vfxGroup.SaveCustom();
-            // if (!vfxGroup.CustomData.Children.Any()) return node;
-            // node["customData"] = vfxGroup.CustomData;
+            node["b"] = group.JsonTime;
+            node["g"] = group.ID;
+            node["t"] = 4;
+            
+            var boxArray = new JSONArray();
+
+            foreach (var boxEvent in group.Events)
+            {
+                var boxNode = new JSONObject();
+                boxNode["f"] =
+                    indexFiltersCommonData.IndexOf(V4CommonData.IndexFilter.FromBaseIndexFilter(boxEvent.IndexFilter));
+                boxNode["e"] =
+                    fxEventBoxesCommonData.IndexOf(
+                        V4CommonData.FxEventBox.FromBaseFxEventBox(boxEvent));
+
+                var eventArray = new JSONArray();
+
+                foreach (var floatEvent in boxEvent.FloatFxEvents)
+                {
+                    var eventNode = new JSONObject();
+                    eventNode["b"] = floatEvent.JsonTime;
+                    eventNode["i"] =
+                        floatFxEventsCommonData.IndexOf(V4CommonData.FloatFxEvent.FromFloatFxEventBase(floatEvent));
+                    
+                    eventArray.Add(eventNode);
+                }
+
+                boxNode["l"] = eventArray;
+                
+                boxArray.Add(boxNode);
+            }
+
+            node["e"] = boxArray;
+
             return node;
         }
     }

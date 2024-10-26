@@ -38,7 +38,7 @@ namespace Beatmap.V4
                 box.BrightnessAffectFirst = commonBoxData.BrightnessAffectFirst;
                 box.Easing = commonBoxData.Easing;
 
-                box.Events = node["l"].AsArray.Linq.Select(
+                box.Events = boxNode["l"].AsArray.Linq.Select(
                     x =>
                     {
                         var eventNode = x.Value;
@@ -49,6 +49,7 @@ namespace Beatmap.V4
                         var eventIndex = eventNode["i"].AsInt;
                         var commonEventData = lightColorEventsCommonData[eventIndex];
 
+                        evt.Color = commonEventData.Color;
                         evt.Brightness = commonEventData.Brightness;
                         evt.TransitionType = commonEventData.TransitionType;
                         evt.Frequency = commonEventData.Frequency;
@@ -65,17 +66,46 @@ namespace Beatmap.V4
             return group;
         }
 
-        public static JSONNode ToJson<T>(BaseLightColorEventBoxGroup<T> group) where T : BaseLightColorEventBox
+        public static JSONNode ToJson(BaseLightColorEventBoxGroup<BaseLightColorEventBox> group,
+            IList<V4CommonData.IndexFilter> indexFiltersCommonData,
+            IList<V4CommonData.LightColorEventBox> lightColorEventBoxesCommonData,
+            IList<V4CommonData.LightColorEvent> lightColorEventsCommonData)
         {
             JSONNode node = new JSONObject();
-            // node["b"] = group.JsonTime;
-            // node["g"] = group.ID;
-            // var ary = new JSONArray();
-            // foreach (var k in group.Events) ary.Add(V3LightColorEventBox.ToJson(k));
-            // node["e"] = ary;
-            // group.CustomData = group.SaveCustom();
-            // if (!group.CustomData.Children.Any()) return node;
-            // node["customData"] = group.CustomData;
+            node["b"] = group.JsonTime;
+            node["g"] = group.ID;
+            node["t"] = 1;
+            
+            var boxArray = new JSONArray();
+
+            foreach (var boxEvent in group.Events)
+            {
+                var boxNode = new JSONObject();
+                boxNode["f"] =
+                    indexFiltersCommonData.IndexOf(V4CommonData.IndexFilter.FromBaseIndexFilter(boxEvent.IndexFilter));
+                boxNode["e"] =
+                    lightColorEventBoxesCommonData.IndexOf(
+                        V4CommonData.LightColorEventBox.FromBaseLightColorEventBox(boxEvent));
+
+                var eventArray = new JSONArray();
+
+                foreach (var evt in boxEvent.Events)
+                {
+                    var eventNode = new JSONObject();
+                    eventNode["b"] = evt.JsonTime;
+                    eventNode["i"] =
+                        lightColorEventsCommonData.IndexOf(V4CommonData.LightColorEvent.FromBaseLightColorEvent(evt));
+                    
+                    eventArray.Add(eventNode);
+                }
+
+                boxNode["l"] = eventArray;
+                
+                boxArray.Add(boxNode);
+            }
+
+            node["e"] = boxArray;
+
             return node;
         }
     }

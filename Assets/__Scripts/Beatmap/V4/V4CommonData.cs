@@ -4,6 +4,14 @@ using SimpleJSON;
 
 namespace Beatmap.V4
 {
+    // TODO: Surely I can reduce repetition with interface
+    public interface ICommonData
+    {
+        ICommonData GetFromJson();
+        ICommonData GetFromBaseItem(BaseItem baseItem);
+        JSONNode ToJson();
+    }
+    
     public static class V4CommonData
     {
         public struct Note
@@ -236,6 +244,17 @@ namespace Beatmap.V4
             {
                 Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
             };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["t"] = Type;
+                node["i"] = Value;
+                node["f"] = FloatValue;
+                
+                return node;
+            }
         }
 
         public struct ColorBoostEvent
@@ -248,6 +267,15 @@ namespace Beatmap.V4
             {
                 Boost = baseEvent.Value == 1 ? 1 : 0
             };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["b"] = Boost;
+                
+                return node;
+            }
         }
 
         public struct Waypoint
@@ -267,8 +295,61 @@ namespace Beatmap.V4
             {
                 PosX = baseWayPoint.PosX, PosY = baseWayPoint.PosY, OffsetDirection = baseWayPoint.OffsetDirection
             };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["x"] = PosX;
+                node["y"] = PosY;
+                node["d"] = OffsetDirection;
+                
+                return node;
+            }
         }
-        
+
+        public struct IndexFilter
+        {
+            public int Type { get; set; }
+            public int Param0 { get; set; }
+            public int Param1 { get; set; }
+            public int Reverse { get; set; }
+            public int Chunks { get; set; }
+            public int Random { get; set; }
+            public int Seed { get; set; }
+            public float Limit { get; set; }
+            public int LimitAffectsType { get; set; }
+
+            public static IndexFilter FromBaseIndexFilter(BaseIndexFilter baseIndexFilter) => new()
+            {
+                Type = baseIndexFilter.Type,
+                Param0 = baseIndexFilter.Param0,
+                Param1 = baseIndexFilter.Param1,
+                Reverse = baseIndexFilter.Reverse,
+                Chunks = baseIndexFilter.Chunks,
+                Random = baseIndexFilter.Random,
+                Seed = baseIndexFilter.Seed,
+                Limit = baseIndexFilter.Limit,
+                LimitAffectsType = baseIndexFilter.LimitAffectsType
+            };
+            
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
+
+                node["f"] = Type;
+                node["p"] = Param0;
+                node["t"] = Param1;
+                node["r"] = Reverse;
+                node["c"] = Chunks;
+                node["n"] = Random;
+                node["s"] = Seed;
+                node["l"] = Limit;
+                node["d"] = LimitAffectsType;
+
+                return node;
+            }
+        }
         
         public struct LightColorEventBox
         {
@@ -289,10 +370,29 @@ namespace Beatmap.V4
                 Easing = node["e"].AsInt
             };
 
-            // public static BasicEvent FromBaseEvent(BaseEvent baseEvent) => new()
-            // {
-            //     Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
-            // };
+            public static LightColorEventBox FromBaseLightColorEventBox(BaseLightColorEventBox baseLightColorEventBox) => new()
+            {
+                BeatDistribution = baseLightColorEventBox.BeatDistribution,
+                BeatDistributionType = baseLightColorEventBox.BeatDistributionType,
+                Easing = baseLightColorEventBox.Easing,
+                BrightnessDistribution = baseLightColorEventBox.BrightnessDistribution,
+                BrightnessDistributionType = baseLightColorEventBox.BrightnessDistributionType,
+                BrightnessAffectFirst = baseLightColorEventBox.BrightnessAffectFirst,
+            };
+            
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
+
+                node["w"] = BeatDistribution;
+                node["d"] = BeatDistributionType;
+                node["s"] = BrightnessDistribution;
+                node["t"] = BrightnessDistributionType;
+                node["b"] = BrightnessAffectFirst;
+                node["e"] = Easing;
+
+                return node;
+            }
         }
         
         public struct LightColorEvent
@@ -312,14 +412,35 @@ namespace Beatmap.V4
                 Color = node["c"].AsInt, 
                 Brightness = node["b"].AsInt, 
                 Frequency = node["f"].AsInt, 
-                StrobeBrightness = node["b"].AsInt, 
+                StrobeBrightness = node["sb"].AsInt, 
                 StrobeFade = node["sf"].AsInt,
             };
 
-            // public static LightColorEvent FromBaseEvent(BaseEvent baseEvent) => new()
-            // {
-            //     Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
-            // };
+            public static LightColorEvent FromBaseLightColorEvent(BaseLightColorBase baseLightColorEvent) => new()
+            {
+                TransitionType = baseLightColorEvent.TransitionType,
+                Easing = baseLightColorEvent.Easing,
+                Color = baseLightColorEvent.Color,
+                Brightness = baseLightColorEvent.Brightness,
+                Frequency = baseLightColorEvent.Frequency,
+                StrobeBrightness = baseLightColorEvent.StrobeBrightness,
+                StrobeFade = baseLightColorEvent.StrobeFade
+            };
+
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
+
+                node["p"] = TransitionType;
+                node["e"] = Easing;
+                node["c"] = Color;
+                node["b"] = Brightness;
+                node["f"] = Frequency;
+                node["sb"] = StrobeBrightness;
+                node["sf"] = StrobeFade;
+
+                return node;
+            }
         }
         
         public struct LightRotationEventBox
@@ -344,17 +465,39 @@ namespace Beatmap.V4
                 Axis = node["a"].AsInt,
                 Flip = node["f"].AsInt
             };
+            
+            public static LightRotationEventBox FromBaseLightRotationEventBox(BaseLightRotationEventBox baseLightRotationEventBox) => new()
+            {
+                BeatDistribution = baseLightRotationEventBox.BeatDistribution,
+                BeatDistributionType = baseLightRotationEventBox.BeatDistributionType,
+                Easing = baseLightRotationEventBox.Easing,
+                RotationDistribution = baseLightRotationEventBox.RotationDistribution,
+                RotationDistributionType = baseLightRotationEventBox.RotationDistributionType,
+                RotationAffectFirst = baseLightRotationEventBox.RotationAffectFirst,
+                Axis = baseLightRotationEventBox.Axis,
+                Flip = baseLightRotationEventBox.Flip
+            };
+            
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
 
-            // public static BasicEvent FromBaseEvent(BaseEvent baseEvent) => new()
-            // {
-            //     Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
-            // };
+                node["w"] = BeatDistribution;
+                node["d"] = BeatDistributionType;
+                node["s"] = RotationDistribution;
+                node["t"] = RotationDistributionType;
+                node["b"] = RotationAffectFirst;
+                node["e"] = Easing;
+                node["a"] = Axis;
+                node["f"] = Flip;
+
+                return node;
+            }
         }
         
         public struct LightRotationEvent
         {
             public int Easing { get; set; }
-            public int Color { get; set; }
             public float Rotation { get; set; }
             public int TransitionType { get; set; }
             public int Direction { get; set; }
@@ -364,16 +507,32 @@ namespace Beatmap.V4
             {
                 TransitionType = node["p"].AsInt,
                 Easing = node["e"].AsInt, 
-                Color = node["c"].AsInt, 
                 Rotation = node["r"].AsInt, 
                 Direction = node["d"].AsInt, 
                 Loop = node["l"].AsInt,
             };
 
-            // public static LightColorEvent FromBaseEvent(BaseEvent baseEvent) => new()
-            // {
-            //     Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
-            // };
+            public static LightRotationEvent FromBaseLightRotationEvent(BaseLightRotationBase baseLightRotationEvent) => new()
+            {
+                TransitionType = baseLightRotationEvent.UsePrevious,
+                Easing = baseLightRotationEvent.EaseType,
+                Rotation = baseLightRotationEvent.Rotation,
+                Direction = baseLightRotationEvent.Direction,
+                Loop = baseLightRotationEvent.Loop
+            };
+
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
+
+                node["p"] = TransitionType;
+                node["e"] = Easing;
+                node["r"] = Rotation;
+                node["d"] = Direction;
+                node["l"] = Loop;
+
+                return node;
+            }
         }
         
         public struct LightTranslationEventBox
@@ -398,11 +557,34 @@ namespace Beatmap.V4
                 Axis = node["a"].AsInt,
                 Flip = node["f"].AsInt
             };
+            
+            public static LightTranslationEventBox FromBaseLightTranslationEventBox(BaseLightTranslationEventBox baseLightTranslationEventBox) => new()
+            {
+                BeatDistribution = baseLightTranslationEventBox.BeatDistribution,
+                BeatDistributionType = baseLightTranslationEventBox.BeatDistributionType,
+                Easing = baseLightTranslationEventBox.Easing,
+                TranslationDistribution = baseLightTranslationEventBox.TranslationDistribution,
+                TranslationDistributionType = baseLightTranslationEventBox.TranslationDistributionType,
+                TranslationAffectFirst = baseLightTranslationEventBox.TranslationAffectFirst,
+                Axis = baseLightTranslationEventBox.Axis,
+                Flip = baseLightTranslationEventBox.Flip
+            };
+            
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
 
-            // public static BasicEvent FromBaseEvent(BaseEvent baseEvent) => new()
-            // {
-            //     Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
-            // };
+                node["w"] = BeatDistribution;
+                node["d"] = BeatDistributionType;
+                node["s"] = TranslationDistribution;
+                node["t"] = TranslationDistributionType;
+                node["b"] = TranslationAffectFirst;
+                node["e"] = Easing;
+                node["a"] = Axis;
+                node["f"] = Flip;
+
+                return node;
+            }
         }
         
         public struct LightTranslationEvent
@@ -418,10 +600,23 @@ namespace Beatmap.V4
                 Translation = node["t"].AsInt, 
             };
 
-            // public static LightColorEvent FromBaseEvent(BaseEvent baseEvent) => new()
-            // {
-            //     Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
-            // };
+            public static LightTranslationEvent FromBaseLightTranslationEvent(BaseLightTranslationBase baseLightTranslationEvent) => new()
+            {
+                TransitionType = baseLightTranslationEvent.UsePrevious,
+                Easing = baseLightTranslationEvent.EaseType,
+                Translation = baseLightTranslationEvent.Translation,
+            };
+
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
+
+                node["p"] = TransitionType;
+                node["e"] = Easing;
+                node["t"] = Translation;
+
+                return node;
+            }
         }
         
         public struct FxEventBox
@@ -443,10 +638,29 @@ namespace Beatmap.V4
                 Easing = node["e"].AsInt,
             };
 
-            // public static LightColorEvent FromBaseEvent(BaseEvent baseEvent) => new()
-            // {
-            //     Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
-            // };
+            public static FxEventBox FromBaseFxEventBox(BaseVfxEventEventBox baseVfxEventEventBox) => new()
+            {
+                BeatDistribution = baseVfxEventEventBox.BeatDistribution,
+                BeatDistributionType = baseVfxEventEventBox.BeatDistributionType,
+                FxDistribution = baseVfxEventEventBox.VfxDistribution,
+                FxDistributionType = baseVfxEventEventBox.VfxDistributionType,
+                FxAffectFirst = baseVfxEventEventBox.VfxAffectFirst,
+                Easing = baseVfxEventEventBox.Easing,
+            };
+
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
+
+                node["w"] = BeatDistribution;
+                node["d"] = BeatDistributionType;
+                node["s"] = FxDistribution;
+                node["t"] = FxDistributionType;
+                node["b"] = FxAffectFirst;
+                node["e"] = Easing;
+
+                return node;
+            }
         }
 
         public struct FloatFxEvent
@@ -460,10 +674,23 @@ namespace Beatmap.V4
                 TransitionType = node["p"].AsInt, Easing = node["e"].AsInt, Value = node["v"].AsInt,
             };
 
-            // public static LightColorEvent FromBaseEvent(BaseEvent baseEvent) => new()
-            // {
-            //     Type = baseEvent.Type, Value = baseEvent.Value, FloatValue = baseEvent.FloatValue
-            // };
+            public static FloatFxEvent FromFloatFxEventBase(FloatFxEventBase floatFxEvent) => new()
+            {
+                TransitionType = floatFxEvent.UsePreviousEventValue,
+                Value = floatFxEvent.Value,
+                Easing = floatFxEvent.Easing
+            };
+
+            public JSONNode ToJson()
+            {
+                var node = new JSONObject();
+
+                node["p"]= TransitionType; 
+                node["e"]= Easing; 
+                node["v"]= Value; 
+
+                return node;
+            }
         }
     }
 }

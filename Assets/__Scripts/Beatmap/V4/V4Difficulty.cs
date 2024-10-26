@@ -143,7 +143,7 @@ namespace Beatmap.V4
                 }
 
                 json["spawnRotations"] = spawnRotations;
-                json["spawnRotationsData"] = obstaclesData;
+                json["spawnRotationsData"] = spawnRotationsData;
                 
                 if (Settings.Instance.SaveWithoutDefaultValues)
                 {
@@ -171,6 +171,243 @@ namespace Beatmap.V4
 
                 var json = new JSONObject { ["version"] = version };
 
+                // Basic events
+                var basicEvents = new JSONArray();
+                var basicEventsData = new JSONArray();
+                var mapBasicEvents = difficulty.Events.Where(x => !x.IsLaneRotationEvent() && !x.IsColorBoostEvent()).ToList();
+                var basicEventsCommonData = mapBasicEvents.Select(V4CommonData.BasicEvent.FromBaseEvent).Distinct().ToList();
+                
+                foreach (var basicEvent in mapBasicEvents)
+                {
+                    basicEvents.Add(V4BasicEvent.ToJson(basicEvent, basicEventsCommonData));
+                }
+
+                foreach (var basicEventData in basicEventsCommonData)
+                {
+                    basicEventsData.Add(basicEventData.ToJson());
+                }
+
+                json["basicEvents"] = basicEvents;
+                json["basicEventsData"] = basicEventsData;
+                
+                // Boost events
+                var colorBoostEvents = new JSONArray();
+                var colorBoostEventsData = new JSONArray();
+                var mapColorBoostEvents = difficulty.Events.Where(x => x.IsColorBoostEvent()).ToList();
+                var colorBoostEventsCommonData = mapColorBoostEvents.Select(V4CommonData.ColorBoostEvent.FromBaseEvent).Distinct().ToList();
+                
+                foreach (var colorBoostEvent in mapColorBoostEvents)
+                {
+                    colorBoostEvents.Add(V4ColorBoostEvent.ToJson(colorBoostEvent, colorBoostEventsCommonData));
+                }
+
+                foreach (var colorBoostEventData in colorBoostEventsCommonData)
+                {
+                    colorBoostEventsData.Add(colorBoostEventData.ToJson());
+                }
+
+                json["colorBoostEvents"] = colorBoostEvents;
+                json["colorBoostEventsData"] = colorBoostEventsData;
+                
+                // Waypoints
+                var waypoints = new JSONArray();
+                var waypointsData = new JSONArray();
+                var waypointsCommonData = difficulty.Waypoints.Select(V4CommonData.Waypoint.FromBaseWayPoint).Distinct().ToList();
+                
+                foreach (var waypoint in difficulty.Waypoints)
+                {
+                    waypoints.Add(V4Waypoint.ToJson(waypoint, waypointsCommonData));
+                }
+
+                foreach (var waypointData in waypointsCommonData)
+                {
+                    waypointsData.Add(waypointData.ToJson());
+                }
+
+                json["waypoints"] = waypoints;
+                json["waypointsData"] = waypointsData;
+                
+                // Group lighting
+                
+                
+                // Event groups
+                var eventBoxGroups = new JSONArray();
+                
+                // Get index filters from group events
+                var indexFiltersCommonData = new List<V4CommonData.IndexFilter>();
+                indexFiltersCommonData.AddRange(difficulty.LightColorEventBoxGroups.SelectMany(box => box.Events)
+                    .Select(evt => evt.IndexFilter).Select(V4CommonData.IndexFilter.FromBaseIndexFilter));
+                indexFiltersCommonData.AddRange(difficulty.LightRotationEventBoxGroups.SelectMany(box => box.Events)
+                    .Select(evt => evt.IndexFilter).Select(V4CommonData.IndexFilter.FromBaseIndexFilter));
+                indexFiltersCommonData.AddRange(difficulty.LightTranslationEventBoxGroups.SelectMany(box => box.Events)
+                    .Select(evt => evt.IndexFilter).Select(V4CommonData.IndexFilter.FromBaseIndexFilter));
+                indexFiltersCommonData.AddRange(difficulty.VfxEventBoxGroups.SelectMany(box => box.Events)
+                    .Select(evt => evt.IndexFilter).Select(V4CommonData.IndexFilter.FromBaseIndexFilter));
+                indexFiltersCommonData = indexFiltersCommonData.Distinct().ToList();
+
+                var indexFilters = new JSONArray();
+                foreach (var indexFilterData in indexFiltersCommonData)
+                {
+                    indexFilters.Add(indexFilterData.ToJson());
+                }
+
+                json["indexFilters"] = indexFilters;
+                
+                // Color Group events
+                var lightColorEventBoxes = new JSONArray();
+                var lightColorEvents = new JSONArray();
+
+                var lightColorEventBoxesCommonData = difficulty.LightColorEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .Select(V4CommonData.LightColorEventBox.FromBaseLightColorEventBox)
+                    .ToList();
+                
+                var lightColorEventsCommonData = difficulty.LightColorEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .SelectMany(box => box.Events)
+                    .Select(V4CommonData.LightColorEvent.FromBaseLightColorEvent)
+                    .ToList();
+
+                foreach (var lightColorBoxData in lightColorEventBoxesCommonData)
+                {
+                    lightColorEventBoxes.Add(lightColorBoxData.ToJson());
+                }
+
+                foreach (var lightColorEventData in lightColorEventsCommonData)
+                {
+                    lightColorEvents.Add(lightColorEventData.ToJson());
+                }
+
+                foreach (var groupEvent in difficulty.LightColorEventBoxGroups)
+                {
+                    eventBoxGroups.Add(V4LightColorEventBoxGroup.ToJson(groupEvent, indexFiltersCommonData,
+                        lightColorEventBoxesCommonData, lightColorEventsCommonData));
+                }
+                
+                // Rotation Group events
+                var lightRotationEventBoxes = new JSONArray();
+                var lightRotationEvents = new JSONArray();
+
+                var lightRotationEventBoxesCommonData = difficulty.LightRotationEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .Select(V4CommonData.LightRotationEventBox.FromBaseLightRotationEventBox)
+                    .ToList();
+                
+                var lightRotationEventsCommonData = difficulty.LightRotationEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .SelectMany(box => box.Events)
+                    .Select(V4CommonData.LightRotationEvent.FromBaseLightRotationEvent)
+                    .ToList();
+
+                foreach (var lightRotationBoxData in lightRotationEventBoxesCommonData)
+                {
+                    lightRotationEventBoxes.Add(lightRotationBoxData.ToJson());
+                }
+
+                foreach (var lightRotationEventData in lightRotationEventsCommonData)
+                {
+                    lightRotationEvents.Add(lightRotationEventData.ToJson());
+                }
+
+                foreach (var groupEvent in difficulty.LightRotationEventBoxGroups)
+                {
+                    eventBoxGroups.Add(V4LightRotationEventBoxGroup.ToJson(groupEvent, indexFiltersCommonData,
+                        lightRotationEventBoxesCommonData, lightRotationEventsCommonData));
+                }
+                
+                // Translation Group events
+                var lightTranslationEventBoxes = new JSONArray();
+                var lightTranslationEvents = new JSONArray();
+
+                var lightTranslationEventBoxesCommonData = difficulty.LightTranslationEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .Select(V4CommonData.LightTranslationEventBox.FromBaseLightTranslationEventBox)
+                    .ToList();
+                
+                var lightTranslationEventsCommonData = difficulty.LightTranslationEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .SelectMany(box => box.Events)
+                    .Select(V4CommonData.LightTranslationEvent.FromBaseLightTranslationEvent)
+                    .ToList();
+
+                foreach (var lightTranslationBoxData in lightTranslationEventBoxesCommonData)
+                {
+                    lightTranslationEventBoxes.Add(lightTranslationBoxData.ToJson());
+                }
+
+                foreach (var lightTranslationEventData in lightTranslationEventsCommonData)
+                {
+                    lightTranslationEvents.Add(lightTranslationEventData.ToJson());
+                }
+
+                foreach (var groupEvent in difficulty.LightTranslationEventBoxGroups)
+                {
+                    eventBoxGroups.Add(V4LightTranslationEventBoxGroup.ToJson(groupEvent, indexFiltersCommonData,
+                        lightTranslationEventBoxesCommonData, lightTranslationEventsCommonData));
+                }
+                
+                // Float FX effects
+                // Translation Group events
+                var fxEventBoxes = new JSONArray();
+                var floatFxEvents = new JSONArray();
+
+                var fxEventBoxesCommonData = difficulty.VfxEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .Select(V4CommonData.FxEventBox.FromBaseFxEventBox)
+                    .ToList();
+                
+                var floatFxEventsCommonData = difficulty.VfxEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .SelectMany(box => box.FloatFxEvents)
+                    .Select(V4CommonData.FloatFxEvent.FromFloatFxEventBase)
+                    .ToList();
+
+                foreach (var fxEventBoxData in fxEventBoxesCommonData)
+                {
+                    fxEventBoxes.Add(fxEventBoxData.ToJson());
+                }
+
+                foreach (var floatFxEvent in floatFxEventsCommonData)
+                {
+                    floatFxEvents.Add(floatFxEvent.ToJson());
+                }
+
+                foreach (var groupEvent in difficulty.VfxEventBoxGroups)
+                {
+                    eventBoxGroups.Add(V4VfxEventEventBoxGroup.ToJson(groupEvent, indexFiltersCommonData,
+                        fxEventBoxesCommonData, floatFxEventsCommonData));
+                }
+                
+                // Order the event box groups by time, group, and type
+                var orderedEventBoxGroups = eventBoxGroups.Linq
+                    .OrderBy(x => x.Value["b"].AsInt)
+                    .ThenBy(x => x.Value["g"].AsInt)
+                    .ThenBy(x => x.Value["t"].AsInt)
+                    .Select(x => x.Value);
+
+                eventBoxGroups = new JSONArray();
+                foreach (var eventBoxGroup in orderedEventBoxGroups)
+                {
+                    eventBoxGroups.Add(eventBoxGroup);
+                }
+
+                json["eventBoxGroups"] = eventBoxGroups;
+
+                json["lightColorEventBoxes"] = lightColorEventBoxes;
+                json["lightColorEvents"] = lightColorEvents;
+                
+                json["lightRotationEventBoxes"] = lightRotationEventBoxes;
+                json["lightRotationEvents"] = lightRotationEvents;
+                
+                json["lightTranslationEventBoxes"] = lightTranslationEventBoxes;
+                json["lightTranslationEvents"] = lightTranslationEvents;
+                
+                json["fxEventBoxes"] = fxEventBoxes;
+                json["floatFxEvents"] = floatFxEvents;
+                
+                // Simple properties
+                json["basicEventTypesWithKeywords"] = difficulty.EventTypesWithKeywords?.ToJson() ?? new BaseEventTypesWithKeywords().ToJson();
+                json["useNormalEventsAsCompatibleEvents"] = difficulty.UseNormalEventsAsCompatibleEvents;
                 
                 if (Settings.Instance.SaveWithoutDefaultValues)
                 {
@@ -397,42 +634,42 @@ namespace Beatmap.V4
                     case "lightColorEventBoxes":
                         foreach (JSONNode n in node)
                         {
-                            lightColorEventsCommonData.Add(V4CommonData.LightColorEvent.GetFromJson(n));
+                            lightColorEventBoxesCommonData.Add(V4CommonData.LightColorEventBox.GetFromJson(n));
                         }
 
                         break;
                     case "lightColorEvents":
                         foreach (JSONNode n in node)
                         {
-                            lightColorEventBoxesCommonData.Add(V4CommonData.LightColorEventBox.GetFromJson(n));
+                            lightColorEventsCommonData.Add(V4CommonData.LightColorEvent.GetFromJson(n));
                         }
 
                         break;
                     case "lightRotationEventBoxes":
                         foreach (JSONNode n in node)
                         {
-                            lightRotationEventsCommonData.Add(V4CommonData.LightRotationEvent.GetFromJson(n));
+                            lightRotationEventBoxesCommonData.Add(V4CommonData.LightRotationEventBox.GetFromJson(n));
                         }
 
                         break;
                     case "lightRotationEvents":
                         foreach (JSONNode n in node)
                         {
-                            lightRotationEventBoxesCommonData.Add(V4CommonData.LightRotationEventBox.GetFromJson(n));
+                            lightRotationEventsCommonData.Add(V4CommonData.LightRotationEvent.GetFromJson(n));
                         }
 
                         break;
                     case "lightTranslationEventBoxes":
                         foreach (JSONNode n in node)
                         {
-                            lightTranslationEventsCommonData.Add(V4CommonData.LightTranslationEvent.GetFromJson(n));
+                            lightTranslationEventBoxesCommonData.Add(V4CommonData.LightTranslationEventBox.GetFromJson(n));
                         }
 
                         break;
                     case "lightTranslationEvents":
                         foreach (JSONNode n in node)
                         {
-                            lightTranslationEventBoxesCommonData.Add(V4CommonData.LightTranslationEventBox.GetFromJson(n));
+                            lightTranslationEventsCommonData.Add(V4CommonData.LightTranslationEvent.GetFromJson(n));
                         }
                         break;
                     

@@ -37,11 +37,12 @@ namespace Beatmap.V4
                 box.TranslationDistributionType = commonBoxData.TranslationDistributionType;
                 box.TranslationAffectFirst = commonBoxData.TranslationAffectFirst;
                 box.Easing = commonBoxData.Easing;
+                box.Flip = commonBoxData.Flip;
 
-                box.Events = node["t"].AsArray.Linq.Select(
-                    x =>
+                box.Events = boxNode["l"].AsArray.Linq.Select(
+                    y =>
                     {
-                        var eventNode = x.Value;
+                        var eventNode = y.Value;
                         
                         var evt = new BaseLightTranslationBase();
                         evt.JsonTime = eventNode["b"].AsFloat;
@@ -62,17 +63,46 @@ namespace Beatmap.V4
             return group;
         }
 
-        public static JSONNode ToJson<T>(BaseLightTranslationEventBoxGroup<T> group) where T : BaseLightTranslationEventBox
+        public static JSONNode ToJson(BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox> group,
+            IList<V4CommonData.IndexFilter> indexFiltersCommonData,
+            IList<V4CommonData.LightTranslationEventBox> lightTranslationEventBoxesCommonData,
+            IList<V4CommonData.LightTranslationEvent> lightTranslationEventsCommonData)
         {
             JSONNode node = new JSONObject();
-            // node["b"] = group.JsonTime;
-            // node["g"] = group.ID;
-            // var ary = new JSONArray();
-            // foreach (var k in group.Events) ary.Add(V3LightTranslationEventBox.ToJson(k));
-            // node["e"] = ary;
-            // group.CustomData = group.SaveCustom();
-            // if (!group.CustomData.Children.Any()) return node;
-            // node["customData"] = group.CustomData;
+            node["b"] = group.JsonTime;
+            node["g"] = group.ID;
+            node["t"] = 3;
+            
+            var boxArray = new JSONArray();
+
+            foreach (var boxEvent in group.Events)
+            {
+                var boxNode = new JSONObject();
+                boxNode["f"] =
+                    indexFiltersCommonData.IndexOf(V4CommonData.IndexFilter.FromBaseIndexFilter(boxEvent.IndexFilter));
+                boxNode["e"] =
+                    lightTranslationEventBoxesCommonData.IndexOf(
+                        V4CommonData.LightTranslationEventBox.FromBaseLightTranslationEventBox(boxEvent));
+
+                var eventArray = new JSONArray();
+
+                foreach (var evt in boxEvent.Events)
+                {
+                    var eventNode = new JSONObject();
+                    eventNode["b"] = evt.JsonTime;
+                    eventNode["i"] =
+                        lightTranslationEventsCommonData.IndexOf(V4CommonData.LightTranslationEvent.FromBaseLightTranslationEvent(evt));
+                    
+                    eventArray.Add(eventNode);
+                }
+
+                boxNode["l"] = eventArray;
+                
+                boxArray.Add(boxNode);
+            }
+
+            node["e"] = boxArray;
+
             return node;
         }
     }

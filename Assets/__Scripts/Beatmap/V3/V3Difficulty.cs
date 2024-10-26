@@ -7,6 +7,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.V3.Customs;
+using Beatmap.V4;
 using SimpleJSON;
 using UnityEngine;
 
@@ -117,9 +118,19 @@ namespace Beatmap.V3
                 foreach (var e in difficulty.LightTranslationEventBoxGroups) lightTranslationEventBoxGroups.Add(e.ToJson());
                 json["lightTranslationEventBoxGroups"] = lightTranslationEventBoxGroups;
 
+                var floatFxEvents = difficulty.VfxEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .SelectMany(box => box.FloatFxEvents)
+                    .ToList();
+                var floatFxEventsCommonData = floatFxEvents
+                    .Select(V4CommonData.FloatFxEvent.FromFloatFxEventBase)
+                    .ToList();
+                
                 var vfxEventBoxGroups = new JSONArray();
-                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(e.ToJson());
+                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.ToJson(e, floatFxEventsCommonData));
                 json["vfxEventBoxGroups"] = vfxEventBoxGroups;
+                
+                difficulty.FxEventsCollection.FloatFxEvents = floatFxEvents.ToArray();
                 
                 json["_fxEventsCollection"] = difficulty.FxEventsCollection?.ToJson() ?? new BaseFxEventsCollection().ToJson();
                 json["basicEventTypesWithKeywords"] = difficulty.EventTypesWithKeywords?.ToJson() ?? new BaseEventTypesWithKeywords().ToJson();
@@ -235,6 +246,20 @@ namespace Beatmap.V3
                     var key = nodeEnum.Current.Key;
                     var node = nodeEnum.Current.Value;
 
+                    // Load this first so vfx can reference this
+                    if (key == "_fxEventsCollection")
+                    {
+                        map.FxEventsCollection = V3FxEventsCollection.GetFromJson(node);
+                        break;
+                    }
+                }
+
+                nodeEnum = mainNode.GetEnumerator();
+                while (nodeEnum.MoveNext())
+                {
+                    var key = nodeEnum.Current.Key;
+                    var node = nodeEnum.Current.Value;
+
                     switch (key)
                     {
                         // Notes and bombs are in same array
@@ -285,10 +310,7 @@ namespace Beatmap.V3
                             break;
                         case "vfxEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n));
-                            break;
-                        case "_fxEventsCollection":
-                            map.FxEventsCollection = V3FxEventsCollection.GetFromJson(node);
+                                map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n, map.FxEventsCollection.FloatFxEvents));
                             break;
                         case "basicEventTypesWithKeywords":
                             map.EventTypesWithKeywords = V3BasicEventTypesWithKeywords.GetFromJson(node);

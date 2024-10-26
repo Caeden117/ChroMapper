@@ -521,12 +521,16 @@ namespace TestsEditMode
             Assert.AreEqual(0, vfxGroupBox.Easing);
             Assert.AreEqual(1, vfxGroupBox.VfxAffectFirst);
 
-            Assert.AreEqual(1, vfxGroupBox.VfxData.Length);
-            Assert.AreEqual(0, vfxGroupBox.VfxData[0]);
+            Assert.AreEqual(1, vfxGroupBox.FloatFxEvents.Count);
+            var fxFloatEvent = vfxGroupBox.FloatFxEvents[0];
+            Assert.AreEqual(0, fxFloatEvent.JsonTime);
+            Assert.AreEqual(0, fxFloatEvent.UsePreviousEventValue);
+            Assert.AreEqual(1, fxFloatEvent.Easing);
+            Assert.AreEqual(100, fxFloatEvent.Value);
             
             Assert.AreEqual(0, difficulty.FxEventsCollection.IntFxEvents.Length);
             Assert.AreEqual(1, difficulty.FxEventsCollection.FloatFxEvents.Length);
-            var fxFloatEvent = difficulty.FxEventsCollection.FloatFxEvents[0];
+            fxFloatEvent = difficulty.FxEventsCollection.FloatFxEvents[0];
             
             Assert.AreEqual(0, fxFloatEvent.JsonTime);
             Assert.AreEqual(0, fxFloatEvent.UsePreviousEventValue);
