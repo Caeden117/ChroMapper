@@ -79,63 +79,73 @@ namespace Beatmap.Base
         public override string CustomKeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyColor,
-            3 => V3Arc.CustomKeyColor
+            3 => V3Arc.CustomKeyColor,
+            _ => UndefinedKey
         };
 
         public override string CustomKeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyTrack,
-            3 => V3Arc.CustomKeyTrack
+            3 => V3Arc.CustomKeyTrack,
+            _ => UndefinedKey
         };
         
 
         public override string CustomKeyTailCoordinate => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyTailCoordinate,
-            3 => V3Arc.CustomKeyTailCoordinate
+            3 => V3Arc.CustomKeyTailCoordinate,
+            _ => UndefinedKey
         };
         
 
         public override string CustomKeyAnimation => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyAnimation,
-            3 => V3Arc.CustomKeyAnimation
+            3 => V3Arc.CustomKeyAnimation,
+            _ => UndefinedKey
         };
         
         public override string CustomKeyCoordinate => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyCoordinate,
-            3 => V3Arc.CustomKeyCoordinate
+            3 => V3Arc.CustomKeyCoordinate,
+            _ => UndefinedKey
         };
         
         public override string CustomKeyWorldRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyWorldRotation,
-            3 => V3Arc.CustomKeyWorldRotation
+            3 => V3Arc.CustomKeyWorldRotation,
+            _ => UndefinedKey
         };
         
         public override string CustomKeyLocalRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyLocalRotation,
-            3 => V3Arc.CustomKeyLocalRotation
+            3 => V3Arc.CustomKeyLocalRotation,
+            _ => UndefinedKey
         };
         
         public override string CustomKeySpawnEffect => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeySpawnEffect,
-            3 => V3Arc.CustomKeySpawnEffect
+            3 => V3Arc.CustomKeySpawnEffect,
+            _ => UndefinedKey
         };
         
         public override string CustomKeyNoteJumpMovementSpeed => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyNoteJumpMovementSpeed,
-            3 => V3Arc.CustomKeyNoteJumpMovementSpeed
+            3 => V3Arc.CustomKeyNoteJumpMovementSpeed,
+            _ => UndefinedKey
         };
         
         public override string CustomKeyNoteJumpStartBeatOffset => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyNoteJumpStartBeatOffset,
-            3 => V3Arc.CustomKeyNoteJumpStartBeatOffset
+            3 => V3Arc.CustomKeyNoteJumpStartBeatOffset,
+            _ => UndefinedKey
         };
         
         public override bool IsChroma() =>

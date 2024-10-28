@@ -187,91 +187,106 @@ namespace Beatmap.Base
         public override string CustomKeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyColor,
-            3 => V3BasicEvent.CustomKeyColor
+            3 => V3BasicEvent.CustomKeyColor,
+            _ => UndefinedKey
         };
 
         public override string CustomKeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyTrack,
-            3 => V3BasicEvent.CustomKeyTrack
+            3 => V3BasicEvent.CustomKeyTrack,
+            _ => UndefinedKey
         };
 
         public string CustomKeyPropID => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyPropID,
-            3 => V3BasicEvent.CustomKeyPropID
+            3 => V3BasicEvent.CustomKeyPropID,
+            _ => UndefinedKey
         };
 
         public string CustomKeyLightID => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLightID,
-            3 => V3BasicEvent.CustomKeyLightID
+            3 => V3BasicEvent.CustomKeyLightID,
+            _ => UndefinedKey
         };
 
         public string CustomKeyLerpType => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLerpType,
-            3 => V3BasicEvent.CustomKeyLerpType
+            3 => V3BasicEvent.CustomKeyLerpType,
+            _ => UndefinedKey
         };
 
         public string CustomKeyEasing => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyEasing,
-            3 => V3BasicEvent.CustomKeyEasing
+            3 => V3BasicEvent.CustomKeyEasing,
+            _ => UndefinedKey
         };
 
         public string CustomKeyLightGradient => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLightGradient,
-            3 => V3BasicEvent.CustomKeyLightGradient
+            3 => V3BasicEvent.CustomKeyLightGradient,
+            _ => UndefinedKey
         };
 
         public string CustomKeyStep => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyStep,
-            3 => V3BasicEvent.CustomKeyStep
+            3 => V3BasicEvent.CustomKeyStep,
+            _ => UndefinedKey
         };
 
         public string CustomKeyProp => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyProp,
-            3 => V3BasicEvent.CustomKeyProp
+            3 => V3BasicEvent.CustomKeyProp,
+            _ => UndefinedKey
         };
 
         public string CustomKeySpeed => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeySpeed,
-            3 => V3BasicEvent.CustomKeySpeed
+            3 => V3BasicEvent.CustomKeySpeed,
+            _ => UndefinedKey
         };
 
         public string CustomKeyRingRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyRingRotation,
-            3 => V3BasicEvent.CustomKeyRingRotation
+            3 => V3BasicEvent.CustomKeyRingRotation,
+            _ => UndefinedKey
         };
 
         public string CustomKeyDirection => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyDirection,
-            3 => V3BasicEvent.CustomKeyDirection
+            3 => V3BasicEvent.CustomKeyDirection,
+            _ => UndefinedKey
         };
 
         public string CustomKeyLockRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLockRotation,
-            3 => V3BasicEvent.CustomKeyLockRotation
+            3 => V3BasicEvent.CustomKeyLockRotation,
+            _ => UndefinedKey
         };
 
         public string CustomKeyLaneRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLaneRotation,
-            3 => V3BasicEvent.CustomKeyLaneRotation
+            3 => V3BasicEvent.CustomKeyLaneRotation,
+            _ => UndefinedKey
         };
 
         public string CustomKeyNameFilter => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyNameFilter,
-            3 => V3BasicEvent.CustomKeyNameFilter
+            3 => V3BasicEvent.CustomKeyNameFilter,
+            _ => UndefinedKey
         };
 
         public string CustomKeyStepMult => V2Event.CustomKeyStepMult;

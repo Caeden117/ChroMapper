@@ -18,6 +18,8 @@ namespace Beatmap.Base
         public override string ToString() => ToJson().ToString();
 
         public abstract BaseItem Clone();
+        
+        protected const string UndefinedKey = "UndefinedCMKey"; 
 
         protected JSONNode RetrieveRequiredNode(JSONNode node, string key)
         {
