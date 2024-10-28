@@ -561,7 +561,7 @@ namespace Beatmap.Base
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2Event.ToJson(this),
-            3 => Type switch
+            3 or 4 => Type switch
             {
                 (int)EventTypeValue.EarlyLaneRotation => V3RotationEvent.ToJson(this),
                 (int)EventTypeValue.LateLaneRotation => V3RotationEvent.ToJson(this),

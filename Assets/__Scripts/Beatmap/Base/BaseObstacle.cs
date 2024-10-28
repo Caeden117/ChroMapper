@@ -363,7 +363,7 @@ namespace Beatmap.Base
 
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
-            3 => V3Obstacle.ToJson(this),
+            3 or 4 => V3Obstacle.ToJson(this),
             2 => V2Obstacle.ToJson(this)
         };
 

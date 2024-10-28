@@ -251,7 +251,7 @@ namespace Beatmap.Base
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
             {
                 2 => V2Note.ToJson(this),
-                3 => Type == (int)NoteType.Bomb ? V3BombNote.ToJson(this) : V3ColorNote.ToJson(this)
+                3 or 4 => Type == (int)NoteType.Bomb ? V3BombNote.ToJson(this) : V3ColorNote.ToJson(this)
             };
 
         public override BaseItem Clone()
