@@ -13,6 +13,7 @@ namespace Beatmap.V4
             var obstacle = new BaseObstacle();
             
             obstacle.JsonTime = node["b"].AsFloat;
+            obstacle.Rotation = node["r"].AsInt;
 
             var index = node["i"].AsInt;
             var obstacleData = obstaclesCommonData[index];
@@ -30,7 +31,7 @@ namespace Beatmap.V4
         {
             JSONNode node = new JSONObject();
             node["b"] = obstacle.JsonTime;
-            node["r"] = 0;
+            node["r"] = obstacle.Rotation;
 
             var data = V4CommonData.Obstacle.FromBaseObstacle(obstacle);
             node["i"] = obstaclesCommonData.IndexOf(data);

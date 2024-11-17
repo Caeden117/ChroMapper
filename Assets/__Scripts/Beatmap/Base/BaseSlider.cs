@@ -97,6 +97,8 @@ namespace Beatmap.Base
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
+        public int TailRotation { get; set; }
+
         public JSONNode CustomTailCoordinate { get; set; }
 
         public abstract string CustomKeyTailCoordinate { get; }

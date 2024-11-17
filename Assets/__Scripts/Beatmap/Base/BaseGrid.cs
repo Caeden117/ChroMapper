@@ -42,6 +42,8 @@ namespace Beatmap.Base
 
         public int PosX { get; set; }
         public virtual int PosY { get; set; }
+        
+        public int Rotation { get; set; }
 
         // Half Jump Duration (SongBpmTime)
         public float Hjd { get; private set; }

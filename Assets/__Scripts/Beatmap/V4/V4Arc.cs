@@ -15,6 +15,8 @@ namespace Beatmap.V4
 
             arc.JsonTime = node["hb"].AsFloat;
             arc.TailJsonTime = node["tb"].AsFloat;
+            arc.Rotation = node["hr"].AsInt;
+            arc.Rotation = node["tr"].AsInt;
 
             var headIndex = node["hi"].AsInt;
             var headNoteData = notesCommonData[headIndex];
@@ -48,8 +50,8 @@ namespace Beatmap.V4
             JSONNode node = new JSONObject();
             node["hb"] = arc.JsonTime;
             node["tb"] = arc.TailJsonTime;
-            node["hr"] = 0;
-            node["tr"] = 0;
+            node["hr"] = arc.Rotation;
+            node["tr"] = arc.TailRotation;
 
             var headNoteData = V4CommonData.Note.FromBaseSliderHead(arc);
             node["hi"] = notesCommonData.IndexOf(headNoteData);
