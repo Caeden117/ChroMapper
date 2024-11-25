@@ -377,6 +377,42 @@ MonoBehaviour:
     m_Key: zip.path.error
     m_Metadata:
       m_Items: []
+  - m_Id: 390235661746958336
+    m_Key: characteristic.standard.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235795247460352
+    m_Key: characteristic.onesaber.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235843557453824
+    m_Key: characteristic.noarrows.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235906199384064
+    m_Key: characteristic.360degrees.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235989112385536
+    m_Key: characteristic.90degrees.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236071702425600
+    m_Key: characteristic.legacy.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236133086064640
+    m_Key: characteristic.lightshow.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236188597678080
+    m_Key: characteristic.lawless.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390239759607132160
+    m_Key: customcharacteristics
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -9,6 +9,7 @@ using QuestDumper;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
@@ -58,6 +59,8 @@ public class SongInfoEditUI : MenuBase
     };
 
     [SerializeField] private AudioSource previewAudio;
+    
+    [SerializeField] private TextMeshProUGUI songInfoHeaderTitle;
 
     [SerializeField] private DifficultySelect difficultySelect;
     [SerializeField] private TMP_InputField nameField;
@@ -215,6 +218,14 @@ public class SongInfoEditUI : MenuBase
         songAuthorField.text = Info.SongAuthorName;
         authorField.text = Info.LevelAuthorName;
 
+        songInfoHeaderTitle.text = $"Song Info (v{Info.MajorVersion})";
+        
+        if (Info.MajorVersion == 4)
+        {
+            authorField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
+            authorField.interactable = false; // Does not exist in v2
+        }
+
         BroadcastMessage("OnValidate"); // god unity why are you so dumb
 
         coverImageField.text = Info.CoverImageFilename;
@@ -242,6 +253,15 @@ public class SongInfoEditUI : MenuBase
         if (!VanillaEnvironments.Any(env => env.JsonName == Info.EnvironmentName))
         {
             environmentDropdown.AddOptions(new List<string> { Info.EnvironmentName });
+        }
+        
+        // Add any unsupported environments present in environmentNames
+        foreach (var environmentName in Info.EnvironmentNames)
+        {
+            if (!VanillaEnvironments.Any(env => env.JsonName == environmentName))
+            {
+                environmentDropdown.AddOptions(new List<string> { environmentName });
+            }
         }
 
         environmentDropdown.value = GetEnvironmentIDFromString(Info.EnvironmentName);

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
   m_Name: Contributors Shared Data
   m_EditorClassIdentifier: 
-  m_NextAvailableId: 14
   m_TableCollectionName: Contributors
   m_TableCollectionNameGuidString: bf1f1381b5de9c449a6d9b276b62b271
   m_Entries:
@@ -68,7 +67,19 @@ MonoBehaviour:
     m_Key: removeall
     m_Metadata:
       m_Items: []
+  - m_Id: 2582460100608
+    m_Key: clearAll
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
+  m_KeyGenerator:
+    rid: 6011579213837762567
   references:
-    version: 1
+    version: 2
+    RefIds:
+    - rid: 6011579213837762567
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1732197976278

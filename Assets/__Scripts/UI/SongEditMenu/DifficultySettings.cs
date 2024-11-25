@@ -6,6 +6,7 @@ using Beatmap.Base.Customs;
 using Beatmap.Info;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
+using Beatmap.V4;
 
 /// <summary>
 ///     Holds users changes to a difficulty until they ask to save them
@@ -20,6 +21,13 @@ public class DifficultySettings
     public bool ForceDirty;
     public float NoteJumpMovementSpeed = 16;
     public float NoteJumpStartBeatOffset;
+    
+    public string EnvironmentName;
+    
+    // v4 fields
+    public string Mappers;
+    public string Lighters;
+    public string LightshowFilePath;
 
     public DifficultySettings(InfoDifficulty infoDifficulty)
     {
@@ -55,8 +63,11 @@ public class DifficultySettings
     /// </summary>
     /// <returns>True if changes have been made, false otherwise</returns>
     public bool IsDirty() =>
-        ForceDirty || NoteJumpMovementSpeed != InfoDifficulty.NoteJumpSpeed ||
+        ForceDirty ||
+        NoteJumpMovementSpeed != InfoDifficulty.NoteJumpSpeed ||
         NoteJumpStartBeatOffset != InfoDifficulty.NoteStartBeatOffset ||
+        Mappers != string.Join(',', InfoDifficulty.Mappers) ||
+        Lighters != string.Join(',', InfoDifficulty.Lighters) ||
         !(CustomName ?? "").Equals(InfoDifficulty.CustomData == null
             ? ""
             : InfoDifficulty.CustomData["_difficultyLabel"].Value) ||
@@ -75,6 +86,18 @@ public class DifficultySettings
 
         InfoDifficulty.NoteJumpSpeed = NoteJumpMovementSpeed;
         InfoDifficulty.NoteStartBeatOffset = NoteJumpStartBeatOffset;
+
+        InfoDifficulty.Mappers = Mappers.Split(',').Select(x => x.Trim()).ToList();
+        InfoDifficulty.Lighters = Lighters.Split(',').Select(x => x.Trim()).ToList();
+        
+        var previousLightshowFileName = InfoDifficulty.LightshowFileName;
+        InfoDifficulty.LightshowFileName = LightshowFilePath;
+
+        // Map lightshow diff has changed and requires reloading the lights for this difficulty
+        if (Map is { MajorVersion: 4 } && previousLightshowFileName != LightshowFilePath)
+        {
+            V4Difficulty.LoadLightsFromLightshowFile(Map, BeatSaberSongContainer.Instance.Info, InfoDifficulty);
+        }
 
         // TODO: Check if this needs adjustment for v4
         if (string.IsNullOrEmpty(CustomName))
@@ -116,6 +139,12 @@ public class DifficultySettings
     {
         NoteJumpMovementSpeed = InfoDifficulty.NoteJumpSpeed;
         NoteJumpStartBeatOffset = InfoDifficulty.NoteStartBeatOffset;
+        Mappers = string.Join(',', InfoDifficulty.Mappers);
+        Lighters = string.Join(',', InfoDifficulty.Lighters);
+        EnvironmentName = BeatSaberSongContainer.Instance.Info.EnvironmentNames
+                              .ElementAtOrDefault(InfoDifficulty.EnvironmentNameIndex) 
+                          ?? "DefaultEnvironment";
+        LightshowFilePath = InfoDifficulty.LightshowFileName;
         CustomName = InfoDifficulty.CustomData?["_difficultyLabel"]?.Value ?? "";
 
         envEnhancements = null;

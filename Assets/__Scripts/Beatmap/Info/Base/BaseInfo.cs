@@ -68,6 +68,18 @@ namespace Beatmap.Info
 
         // Vanilla Properties
         public string Version { get; set; } = "4.0.0";
+        public int MajorVersion
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Version))
+                {
+                    return -1;
+                }
+
+                return (int)char.GetNumericValue(Version[0]);
+            }
+        }
 
         public string SongName { get; set; } = "New Song";
         public string CleanSongName => Path.GetInvalidFileNameChars()

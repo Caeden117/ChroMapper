@@ -9,28 +9,33 @@ using Beatmap.V3;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
+// Big class which holds data for all characteristics, difficulties, and stuff
 public class DifficultySelect : MonoBehaviour
 {
     [SerializeField] private TMP_InputField njsField;
     [SerializeField] private TMP_InputField songBeatOffsetField;
+    
+    [SerializeField] private TMP_Dropdown environmentDropdown;
+    
+    // v4 fields
+    [SerializeField] private TMP_InputField mappersField;
+    [SerializeField] private TMP_InputField lightersField;
+    // TODO: Turn this into a dropdown to reduce possible user error
+    [SerializeField] private TMP_InputField lightshowFilePathField;
+    
     [SerializeField] private CharacteristicSelect characteristicSelect;
     [SerializeField] private Color copyColor;
     [SerializeField] private EnvRemoval envRemoval;
     [SerializeField] private Button openEditorButton;
 
-    private readonly Dictionary<string, int> diffRankLookup = new Dictionary<string, int>
-    {
-        {"Easy", 1},
-        {"Normal", 3},
-        {"Hard", 5},
-        {"Expert", 7},
-        {"ExpertPlus", 9}
-    };
-
-    private readonly HashSet<DifficultyRow> rows = new HashSet<DifficultyRow>();
-    private readonly Dictionary<string, string> selectedMemory = new Dictionary<string, string>();
+    private readonly HashSet<DifficultyRow> rows = new();
+    private readonly Dictionary<string, string> selectedMemory = new();
+    
+    
+    // Characteristics[CharacteristicName] -> diffs
     public Dictionary<string, Dictionary<string, DifficultySettings>> Characteristics;
     private CopySource copySource;
     private Dictionary<string, DifficultySettings> diffs;
@@ -45,11 +50,18 @@ public class DifficultySelect : MonoBehaviour
     private BaseInfo MapInfo => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Info : null;
     
 
+    // TODO: Clean this up
+    private List<string> environmentNames = new();
+    
     /// <summary>
     ///     Load song data and set up listeners on UI elements
     /// </summary>
     public void Start()
     {
+        environmentDropdown.ClearOptions();
+        environmentNames.Clear();
+        environmentNames.AddRange(SongInfoEditUI.VanillaEnvironments.Select(it => it.JsonName).ToList());
+
         if (MapInfo?.DifficultySets != null)
         {
             Characteristics = MapInfo.DifficultySets.GroupBy(it => it.Characteristic).ToDictionary(
@@ -61,11 +73,55 @@ public class DifficultySelect : MonoBehaviour
                     ),
                 StringComparer.OrdinalIgnoreCase
             );
+
+            foreach (var difficultySetting in Characteristics.Values.SelectMany(c => c.Values))
+            {
+                // This means use default
+                if (difficultySetting.InfoDifficulty.EnvironmentNameIndex == -1)
+                {
+                    difficultySetting.InfoDifficulty.EnvironmentNameIndex = 0;
+                }
+                
+                difficultySetting.EnvironmentName =
+                    MapInfo.EnvironmentNames.ElementAtOrDefault(difficultySetting.InfoDifficulty.EnvironmentNameIndex)
+                    ?? "DefaultEnvironment";
+            }
+            
+            // Handle unsupported environment for dropdown
+            if (!SongInfoEditUI.VanillaEnvironments.Any(env => env.JsonName == MapInfo.EnvironmentName))
+            {
+                environmentNames.Add(MapInfo.EnvironmentName);
+            }
+        
+            // Add any unsupported environments present in environmentNames
+            foreach (var environmentName in MapInfo.EnvironmentNames)
+            {
+                if (!environmentNames.Any(env => env == environmentName))
+                {
+                    environmentNames.Add(environmentName);
+                }
+            }
+
+            if (MapInfo.MajorVersion == 4)
+            {
+                mappersField.interactable = true;
+                lightersField.interactable = true;
+            }
+            else
+            {
+                mappersField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
+                mappersField.interactable = false;
+                lightersField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
+                lightersField.interactable = false;
+            }
         }
         else
         {
             Characteristics = new Dictionary<string, Dictionary<string, DifficultySettings>>();
         }
+
+        environmentDropdown.AddOptions(environmentNames);
+        environmentDropdown.value = 0;
 
         foreach (Transform child in transform)
         {
@@ -114,6 +170,50 @@ public class DifficultySelect : MonoBehaviour
         selected.ShowDirtyObjects(diff);
     }
 
+    public void UpdateEnvironment()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+        
+        var diff = diffs[selected.Name];
+        
+        diff.EnvironmentName = environmentDropdown.options[environmentDropdown.value].text;
+
+        selected.ShowDirtyObjects(diff);
+    }
+    
+    public void UpdateLightshowFilePath()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.LightshowFilePath = lightshowFilePathField.text;
+        
+        selected.ShowDirtyObjects(diff);
+    }
+
+    public void UpdateMappers()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.Mappers = mappersField.text;
+        
+        selected.ShowDirtyObjects(diff);
+    }
+
+    public void UpdateLighters()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.Lighters = lightersField.text;
+        
+        selected.ShowDirtyObjects(diff);
+    }
+
     public void UpdateEnvRemoval()
     {
         if (selected == null || !diffs.ContainsKey(selected.Name)) return;
@@ -134,12 +234,15 @@ public class DifficultySelect : MonoBehaviour
         var localDiff = diffs[row.Name];
         localDiff.Revert();
 
-        row.NameInput.text = localDiff.CustomName;
+        // row.NameInput.text = localDiff.CustomName;
 
         if (row == selected)
         {
             njsField.text = localDiff.NoteJumpMovementSpeed.ToString();
             songBeatOffsetField.text = localDiff.NoteJumpStartBeatOffset.ToString();
+            mappersField.text = localDiff.Mappers;
+            lightersField.text = localDiff.Lighters;
+            lightshowFilePathField.text = localDiff.LightshowFilePath;
             envRemoval.UpdateFromDiff(localDiff.EnvEnhancements);
         }
 
@@ -208,6 +311,25 @@ public class DifficultySelect : MonoBehaviour
         }
 
         // diff.RefreshRequirementsAndWarnings(map);
+        
+        // Handle environmentName indexes
+        var environmentNames = new List<string>();
+        foreach (var difficultySetting in Characteristics.Values.SelectMany(c => c.Values))
+        {
+            var environmentNameIndex = environmentNames.IndexOf(difficultySetting.EnvironmentName);
+
+            if (environmentNameIndex == -1)
+            {
+                environmentNames.Add(difficultySetting.EnvironmentName);
+                difficultySetting.InfoDifficulty.EnvironmentNameIndex = environmentNames.Count - 1;
+            }
+            else
+            {
+                difficultySetting.InfoDifficulty.EnvironmentNameIndex = environmentNameIndex;
+            }
+        }
+        
+        mapInfo.EnvironmentNames = environmentNames;
 
         mapInfo.Save();
         characteristicSelect.Recalculate();
@@ -250,6 +372,10 @@ public class DifficultySelect : MonoBehaviour
             BeatSaberSongContainer.Instance.MapDifficultyInfo = null;
             njsField.text = "";
             songBeatOffsetField.text = "";
+            mappersField.SetTextWithoutNotify("");
+            lightersField.SetTextWithoutNotify("");
+            lightshowFilePathField.SetTextWithoutNotify("");
+            environmentDropdown.SetValueWithoutNotify(0);
             envRemoval.ClearList();
         }
 
@@ -289,6 +415,23 @@ public class DifficultySelect : MonoBehaviour
 
         njsField.text = selectedDifficultySettings.NoteJumpMovementSpeed.ToString();
         songBeatOffsetField.text = selectedDifficultySettings.NoteJumpStartBeatOffset.ToString();
+        mappersField.text = selectedDifficultySettings.Mappers;
+        lightersField.text = selectedDifficultySettings.Lighters;
+
+        if (selectedDifficultySettings.Map is { MajorVersion: 4 })
+        {
+            lightshowFilePathField.interactable = true;
+            lightshowFilePathField.text = selectedDifficultySettings.LightshowFilePath;
+        }
+        else
+        {
+            lightshowFilePathField.SetTextWithoutNotify($"Not used in v{selectedDifficultySettings.Map?.MajorVersion ?? 3} map");
+            lightshowFilePathField.interactable = false;
+        }
+        
+
+        environmentDropdown.value = environmentNames.IndexOf(selectedDifficultySettings.EnvironmentName);
+        
         envRemoval.UpdateFromDiff(selectedDifficultySettings.EnvEnhancements);
     }
 
@@ -319,7 +462,7 @@ public class DifficultySelect : MonoBehaviour
 
                 diffs.Remove(row.Name);
                 row.SetInteractable(false);
-                row.NameInput.text = "";
+                // row.NameInput.text = "";
                 row.ShowDirtyObjects(false, false);
                 return;
             }
@@ -346,6 +489,14 @@ public class DifficultySelect : MonoBehaviour
                     map.NoteJumpSpeed = fromDiff.InfoDifficulty.NoteJumpSpeed;
                     map.NoteStartBeatOffset = fromDiff.InfoDifficulty.NoteStartBeatOffset;
 
+                    map.Mappers = fromDiff.InfoDifficulty.Mappers.ToList();
+                    map.Lighters = fromDiff.InfoDifficulty.Lighters.ToList();
+                    
+                    map.ColorSchemeIndex = fromDiff.InfoDifficulty.ColorSchemeIndex;
+                    map.EnvironmentNameIndex = fromDiff.InfoDifficulty.EnvironmentNameIndex;
+
+                    map.LightshowFileName = fromDiff.InfoDifficulty.LightshowFileName;
+
                     map.CustomData = fromDiff.InfoDifficulty.CustomData?.Clone().AsObject;
 
                     // Yes this copies custom data, but color overrides dont copy since they're ripped from these fields instead.
@@ -368,7 +519,7 @@ public class DifficultySelect : MonoBehaviour
 
             if (!string.IsNullOrEmpty(diffs[row.Name].CustomName)) diffs[row.Name].CustomName += " (Copy)";
 
-            row.NameInput.text = diffs[row.Name].CustomName;
+            // row.NameInput.text = diffs[row.Name].CustomName;
             row.ShowDirtyObjects(diffs[row.Name]);
             row.SetInteractable(true);
             OnClick(row);
@@ -417,7 +568,7 @@ public class DifficultySelect : MonoBehaviour
         MapInfo.Save();
 
         row.SetInteractable(false);
-        row.NameInput.text = "";
+        // row.NameInput.text = "";
         row.ShowDirtyObjects(false, false);
         characteristicSelect.Recalculate();
     }
@@ -429,8 +580,8 @@ public class DifficultySelect : MonoBehaviour
     private void SetCopySource(DifficultyRow row)
     {
         // If we copied from the current characteristic remove the highlight
-        if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
-            copySource.Obj.CopyImage.color = Color.white;
+        // if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
+        //     copySource.Obj.CopyImage.color = Color.white;
 
         // Clicking twice on the same source removes it
         if (copySource != null && copySource.Obj == row && currentDifficultySet == copySource.CharacteristicSet)
@@ -441,7 +592,7 @@ public class DifficultySelect : MonoBehaviour
 
         copySource = new CopySource(diffs[row.Name], currentDifficultySet, row);
         SetPasteMode(true);
-        row.CopyImage.color = copyColor;
+        // row.CopyImage.color = copyColor;
     }
 
     /// <summary>
@@ -449,8 +600,8 @@ public class DifficultySelect : MonoBehaviour
     /// </summary>
     public void CancelCopy()
     {
-        if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
-            copySource.Obj.CopyImage.color = Color.white;
+        // if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
+        //     copySource.Obj.CopyImage.color = Color.white;
         copySource = null;
         SetPasteMode(false);
     }
@@ -470,6 +621,8 @@ public class DifficultySelect : MonoBehaviour
             // will only be written back if a difficulty is created
             currentDifficultySet = new InfoDifficultySet { Characteristic = name };
 
+        //
+        
         if (!Characteristics.ContainsKey(name)) Characteristics.Add(name, new Dictionary<string, DifficultySettings>());
         diffs = Characteristics[name];
 
@@ -479,13 +632,13 @@ public class DifficultySelect : MonoBehaviour
         {
             var hasDiff = diffs.ContainsKey(row.Name);
             row.SetInteractable(diffs.ContainsKey(row.Name));
-            // Highlight the copy source if it's here
-            row.CopyImage.color =
-                copySource != null && currentDifficultySet == copySource.CharacteristicSet && copySource.Obj == row
-                    ? copyColor
-                    : Color.white;
-
-            row.NameInput.text = hasDiff ? diffs[row.Name].CustomName : "";
+            // // Highlight the copy source if it's here
+            // row.CopyImage.color =
+            //     copySource != null && currentDifficultySet == copySource.CharacteristicSet && copySource.Obj == row
+            //         ? copyColor
+            //         : Color.white;
+            //
+            // row.NameInput.text = hasDiff ? diffs[row.Name].CustomName : "";
 
             if (hasDiff)
             {
@@ -516,6 +669,9 @@ public class DifficultySelect : MonoBehaviour
         {
             njsField.text = "";
             songBeatOffsetField.text = "";
+            mappersField.text = "";
+            lightersField.text = "";
+            
             envRemoval.ClearList();
         }
     }
@@ -526,6 +682,7 @@ public class DifficultySelect : MonoBehaviour
     /// <param name="mode">True if we should show paste buttons</param>
     private void SetPasteMode(bool mode)
     {
+        return;
         foreach (Transform child in transform)
         {
             var localMode = mode && !diffs.ContainsKey(child.name);

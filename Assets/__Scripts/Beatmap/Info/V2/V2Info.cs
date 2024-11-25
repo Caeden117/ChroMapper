@@ -32,6 +32,13 @@ namespace Beatmap.Info
 
             info.EnvironmentName = node["_environmentName"].Value;
             info.EnvironmentNames = node["_environmentNames"].AsArray.Children.Select(x => x.Value).ToList();
+
+            // 2.0.0 format has no EnvironmentNames so let's populate it 
+            if (info.EnvironmentNames.Count == 0)
+            {
+                info.EnvironmentNames.Add(info.EnvironmentName);
+            }
+            
             info.AllDirectionsEnvironmentName = node["_allDirectionsEnvironmentName"].Value;
 
             var colorSchemes = new List<InfoColorScheme>();

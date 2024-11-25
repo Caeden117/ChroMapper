@@ -302,16 +302,21 @@ namespace Beatmap.Base
             var bpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Info.BeatsPerMinute,
                 songContainer.LoadedSongSamples, songContainer.LoadedSongFrequency);
             var bpmInfo = new BaseBpmInfo { BpmRegions = bpmRegions }.InitWithSongContainerInstance();
-            var bpmOutputJson = Settings.Instance.MapVersion switch
-            {
-                2 => V2BpmInfo.GetOutputJson(bpmInfo),
-                3 => V2BpmInfo.GetOutputJson(bpmInfo),
-                4 => V4AudioData.GetOutputJson(bpmInfo)
-            };
-            var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(songContainer.Info);
 
-            File.WriteAllText(Path.Combine(songContainer.Info.Directory, bpmOutputFileName),
-                bpmOutputJson.ToString(2));
+            // Don't write if created difficulty before supplying audio file
+            if (bpmInfo.AudioSamples != default)
+            {
+                var bpmOutputJson = Settings.Instance.MapVersion switch
+                {
+                    2 => V2BpmInfo.GetOutputJson(bpmInfo),
+                    3 => V2BpmInfo.GetOutputJson(bpmInfo),
+                    4 => V4AudioData.GetOutputJson(bpmInfo)
+                };
+                var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(songContainer.Info);
+                
+                File.WriteAllText(Path.Combine(songContainer.Info.Directory, bpmOutputFileName),
+                    bpmOutputJson.ToString(2));
+            }
 
             return true;
         }

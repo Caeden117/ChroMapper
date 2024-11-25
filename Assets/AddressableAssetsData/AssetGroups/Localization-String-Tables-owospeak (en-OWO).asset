@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en-OWO
+  - m_GUID: 883e08d6981d70949aa461f5b0efc2b9
+    m_Address: Contributors_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:
