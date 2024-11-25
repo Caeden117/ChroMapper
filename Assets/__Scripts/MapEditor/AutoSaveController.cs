@@ -285,75 +285,93 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     private void DisplayWarningIfIncompatibleDataIsPresent()
     {
+        // TODO: Localise warning strings. Probably need to retrieve strings on Start as we can
+        //       only access localisation string on main thread
+        
+        var map = BeatSaberSongContainer.Instance.Map; 
+        var stringBuilder = new StringBuilder();
         switch (Settings.Instance.MapVersion)
         {
             case 2:
-                var stringBuilder = new StringBuilder();
-                var map = BeatSaberSongContainer.Instance.Map; 
-
                 if (map.Notes.Any(note => note.AngleOffset != 0))
                 {
-                    stringBuilder.AppendLine("* Note Angle Offset");
+                    stringBuilder.AppendLine("* Note Angle Offset (v3/v4)");
                 }
 
                 if (map.Obstacles.Any(obs => obs.PosY != (int)GridY.Base && obs.PosY != (int)GridY.Top))
                 {
-                    stringBuilder.AppendLine("* Obstacle Y position");
+                    stringBuilder.AppendLine("* Obstacle Y position (v3/v4)");
                 }
                 
                 if (map.Obstacles.Any(obs =>
                         (obs.PosY == (int)GridY.Base && obs.Height < (int)ObstacleHeight.Full) ||
                         (obs.PosY == (int)GridY.Top && obs.Height < (int)ObstacleHeight.Crouch)))
                 {
-                    stringBuilder.AppendLine("* Obstacle Height");
+                    stringBuilder.AppendLine("* Obstacle Height (v3/v4)");
                 }
 
                 if (map.Chains.Any())
                 {
-                    stringBuilder.AppendLine("* Chains");
+                    stringBuilder.AppendLine("* Chains (v3/v4)");
                 }
                 
                 if (map.Arcs.Any())
                 {
-                    stringBuilder.AppendLine("* Arcs");
+                    stringBuilder.AppendLine("* Arcs (v3/v4)");
                 }
 
                 if (map.LightColorEventBoxGroups.Any() || map.LightRotationEventBoxGroups.Any() ||
                     map.LightTranslationEventBoxGroups.Any())
                 {
-                    stringBuilder.AppendLine("* Group Lighting");
+                    stringBuilder.AppendLine("* Group Lighting (v3/v4)");
                 }
 
-                if (stringBuilder.Length != 0)
+                if (map.Notes.Any(obj => obj.Rotation != 0)
+                    || map.Obstacles.Any(obj => obj.Rotation != 0)
+                    || map.Events.Any(obj => obj.Rotation != 0)
+                    || map.Arcs.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0)
+                    || map.Chains.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0))
                 {
-                    // TODO: Localise this string somehow? Can only access localisation string on main thread :(
-                    stringBuilder.Insert(0, "Warning\nThe following properties are not saved in v2 format:\n");
-                    stringBuilder.AppendLine("Save in v3 or v4 format to ensure data is not lost.");
+                    stringBuilder.AppendLine("* Rotation Properties (v4)");
                 }
-
-                saveWarningMessage = stringBuilder.ToString();
-
                 break;
             
             case 3:
-                // No vanilla v2 features are unsupported in v3
+                if (map.Notes.Any(obj => obj.Rotation != 0)
+                    || map.Obstacles.Any(obj => obj.Rotation != 0)
+                    || map.Events.Any(obj => obj.Rotation != 0)
+                    || map.Arcs.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0)
+                    || map.Chains.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0))
+                {
+                    stringBuilder.AppendLine("Rotation Properties (v4)");
+                }
                 break;
             
             case 4:
-                // v4 doesn't support customData at all yet
-                // Also wow this is expensive
-                var map4 = BeatSaberSongContainer.Instance.Map; 
-                if (map4.Notes.Any(n => n.CustomData.Count > 0)
-                    || map4.Obstacles.Any(o => o.CustomData.Count > 0)
-                    || map4.Events.Any(e => e.CustomData.Count > 0)
-                    || map4.Arcs.Any(c => c.CustomData.Count > 0)
-                    || map4.Chains.Any(c => c.CustomData.Count > 0))
+                if (map.Events.Any(e => e.IsLaneRotationEvent()))
                 {
-                    saveWarningMessage = "Warning\nCustomData is not supported in v4 format.\n Save in v2 or v3 format to ensure data is not lost.";
+                    stringBuilder.AppendLine("* Lane Rotation Event (v2/v3)");
                 }
                 
+                // v4 doesn't support customData at all yet
+                if (map.Notes.Any(n => n.CustomData.Count > 0)
+                    || map.Obstacles.Any(o => o.CustomData.Count > 0)
+                    || map.Events.Any(e => e.CustomData.Count > 0)
+                    || map.Arcs.Any(c => c.CustomData.Count > 0)
+                    || map.Chains.Any(c => c.CustomData.Count > 0))
+                {
+                    stringBuilder.AppendLine("* Object CustomData (v2/v3)");
+                }
                 break;
         }
+        
+        if (stringBuilder.Length != 0)
+        {
+            stringBuilder.Insert(0, $"Warning\nThe following properties are not saved in v{Settings.Instance.MapVersion} format:\n");
+            stringBuilder.AppendLine("Save in a different format to ensure data is not lost.");
+        }
+        
+        saveWarningMessage = stringBuilder.ToString();
     }
 
     public void Save(bool auto = false)
