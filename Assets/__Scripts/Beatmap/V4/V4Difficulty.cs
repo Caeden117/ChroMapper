@@ -125,26 +125,6 @@ namespace Beatmap.V4
                 json["obstacles"] = obstacles;
                 json["obstaclesData"] = obstaclesData;
                 
-                // Rotation Events
-                var spawnRotations = new JSONArray();
-                var spawnRotationsData = new JSONArray();
-                var rotationEvents = difficulty.Events.Where(evt => evt.IsLaneRotationEvent()).ToList();
-                
-                var rotationEventsCommonData = rotationEvents.Select(V4CommonData.RotationEvent.FromBaseEvent).Distinct().ToList();
-                
-                foreach (var rotationEvent in rotationEvents)
-                {
-                    spawnRotations.Add(V4RotationEvent.ToJson(rotationEvent, rotationEventsCommonData));   
-                }
-
-                foreach (var rotationEventData in rotationEventsCommonData)
-                {
-                    spawnRotationsData.Add(rotationEventData.ToJson());
-                }
-
-                json["spawnRotations"] = spawnRotations;
-                json["spawnRotationsData"] = spawnRotationsData;
-                
                 if (Settings.Instance.SaveWithoutDefaultValues)
                 {
                     SimpleJSONHelper.RemovePropertiesWithDefaultValues(json);
