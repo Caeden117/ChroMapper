@@ -214,9 +214,9 @@ namespace Beatmap.V3
             foreach (var o in difficulty.Obstacles.Where(o => o.CustomFake)) fakeObstacles.Add(o.ToJson());
                 customData["fakeObstacles"] = fakeObstacles;
 
-            var fakeChains = new JSONArray();
-            foreach (var c in difficulty.Chains.Where(c => c.CustomFake)) fakeChains.Add(c.ToJson());
-            customData["fakeChains"] = fakeChains;
+            var fakeBurstSliders = new JSONArray();
+            foreach (var c in difficulty.Chains.Where(c => c.CustomFake)) fakeBurstSliders.Add(c.ToJson());
+            customData["fakeBurstSliders"] = fakeBurstSliders;
             
             BeatSaberSong.CleanObject(customData);
 
