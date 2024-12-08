@@ -743,6 +743,14 @@ MonoBehaviour:
     m_Key: unsupported.properties.warning.subheader
     m_Metadata:
       m_Items: []
+  - m_Id: 444093981712576512
+    m_Key: change.beatmap.version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444094241088335872
+    m_Key: change.beatmap.version.warning
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -736,7 +736,8 @@ MonoBehaviour:
   - m_Id: 42988137944907776
     m_Localized: Easing Time
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 0
   - m_Id: 43247577315082240
     m_Localized: Ease FloatValue
     m_Metadata:
@@ -837,13 +838,26 @@ MonoBehaviour:
     m_Localized: Save in a different format to ensure data is not lost.
     m_Metadata:
       m_Items: []
+  - m_Id: 444093981712576512
+    m_Localized: Change Beatmap Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444094241088335872
+    m_Localized: 'WARNING: Map containing incompatible data (including custom data)
+      may result in data loss. Please manually backup your map before conversion.
+
+
+      Select
+      a map version to change to.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 0
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f604
+        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f6040000c3d37bb99800
     - rid: 1
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
