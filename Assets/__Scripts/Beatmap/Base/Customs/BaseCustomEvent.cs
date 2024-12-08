@@ -140,14 +140,28 @@ namespace Beatmap.Base.Customs
 
         protected override void ParseCustom()
         {
-            // The Data[___].AsType is needed or they'll be non-null default for some reason
             CustomTrack = Data.HasKey(CustomKeyTrack) ? Data[CustomKeyTrack] : null;
-            DataDuration = Data.HasKey(DataKeyDuration) ? Data[DataKeyDuration].AsFloat : null;
+            
+            // I don't know why but tenary operator causes these properties to be set to default on node editor or save
+            // when they shouldn't be. I guess some sort of implicit cast was happening but I couldn't see why?
+            if (Data.HasKey(DataKeyDuration))
+                DataDuration = Data[DataKeyDuration].AsFloat;
+            else
+                DataDuration = null;
+            
+            if (Data.HasKey(DataKeyRepeat))
+                DataRepeat = Data[DataKeyRepeat].AsInt;
+            else
+                DataRepeat = null;
+            
+            if (Data.HasKey(DataKeyWorldPositionStays))
+                DataWorldPositionStays = Data[DataKeyWorldPositionStays].AsBool;
+            else
+                DataWorldPositionStays = null;
+            
             DataEasing = Data.HasKey(DataKeyEasing) ? Data[DataKeyEasing] : null;
-            DataRepeat = Data.HasKey(DataKeyRepeat) ? Data[DataKeyRepeat].AsInt : null;
             DataChildrenTracks = Data.HasKey(DataKeyChildrenTracks) ? Data[DataKeyChildrenTracks] : null;
             DataParentTrack = Data.HasKey(DataKeyParentTrack) ? Data[DataKeyParentTrack] : null;
-            DataWorldPositionStays = Data.HasKey(DataKeyWorldPositionStays) ? Data[DataKeyWorldPositionStays].AsBool : null;
         }
 
         protected internal override JSONNode SaveCustom()
