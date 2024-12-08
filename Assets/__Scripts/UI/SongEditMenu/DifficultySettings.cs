@@ -22,6 +22,7 @@ public class DifficultySettings
     public float NoteJumpMovementSpeed = 16;
     public float NoteJumpStartBeatOffset;
     
+    public int EnvironmentNameIndex;
     public string EnvironmentName;
     
     // v4 fields
@@ -66,6 +67,7 @@ public class DifficultySettings
         ForceDirty ||
         NoteJumpMovementSpeed != InfoDifficulty.NoteJumpSpeed ||
         NoteJumpStartBeatOffset != InfoDifficulty.NoteStartBeatOffset ||
+        EnvironmentName != EnvironmentNameFromIndex ||
         Mappers != string.Join(',', InfoDifficulty.Mappers) ||
         Lighters != string.Join(',', InfoDifficulty.Lighters) ||
         !(CustomName ?? "").Equals(InfoDifficulty.CustomData == null
@@ -92,6 +94,18 @@ public class DifficultySettings
         
         var previousLightshowFileName = InfoDifficulty.LightshowFileName;
         InfoDifficulty.LightshowFileName = LightshowFilePath;
+        
+        var environmentNameIndex = BeatSaberSongContainer.Instance.Info.EnvironmentNames.IndexOf(EnvironmentName);
+        if (environmentNameIndex >= 0)
+        {
+            InfoDifficulty.EnvironmentNameIndex = EnvironmentNameIndex = environmentNameIndex;
+        }
+        else
+        {
+            BeatSaberSongContainer.Instance.Info.EnvironmentNames.Add(EnvironmentName);
+            InfoDifficulty.EnvironmentNameIndex = EnvironmentNameIndex = BeatSaberSongContainer.Instance.Info.EnvironmentNames.Count;
+        }
+        
 
         // Map lightshow diff has changed and requires reloading the lights for this difficulty
         if (Map is { MajorVersion: 4 } && previousLightshowFileName != LightshowFilePath)
@@ -132,6 +146,10 @@ public class DifficultySettings
         return enhancements;
     }
 
+    private string EnvironmentNameFromIndex => BeatSaberSongContainer.Instance.Info.EnvironmentNames
+                                                   .ElementAtOrDefault(InfoDifficulty.EnvironmentNameIndex)
+                                               ?? "DefaultEnvironment";
+    
     /// <summary>
     ///     Discard any changes from the user
     /// </summary>
@@ -141,9 +159,8 @@ public class DifficultySettings
         NoteJumpStartBeatOffset = InfoDifficulty.NoteStartBeatOffset;
         Mappers = string.Join(',', InfoDifficulty.Mappers);
         Lighters = string.Join(',', InfoDifficulty.Lighters);
-        EnvironmentName = BeatSaberSongContainer.Instance.Info.EnvironmentNames
-                              .ElementAtOrDefault(InfoDifficulty.EnvironmentNameIndex) 
-                          ?? "DefaultEnvironment";
+        EnvironmentNameIndex = InfoDifficulty.EnvironmentNameIndex;
+        EnvironmentName = EnvironmentNameFromIndex;
         LightshowFilePath = InfoDifficulty.LightshowFileName;
         CustomName = InfoDifficulty.CustomData?["_difficultyLabel"]?.Value ?? "";
 

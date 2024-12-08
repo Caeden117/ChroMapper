@@ -81,8 +81,9 @@ public class DifficultySelect : MonoBehaviour
                 {
                     difficultySetting.InfoDifficulty.EnvironmentNameIndex = 0;
                 }
-                
-                difficultySetting.EnvironmentName =
+
+                difficultySetting.EnvironmentNameIndex = difficultySetting.InfoDifficulty.EnvironmentNameIndex;
+                difficultySetting.EnvironmentName = 
                     MapInfo.EnvironmentNames.ElementAtOrDefault(difficultySetting.InfoDifficulty.EnvironmentNameIndex)
                     ?? "DefaultEnvironment";
             }
@@ -243,6 +244,7 @@ public class DifficultySelect : MonoBehaviour
             mappersField.text = localDiff.Mappers;
             lightersField.text = localDiff.Lighters;
             lightshowFilePathField.text = localDiff.LightshowFilePath;
+            environmentDropdown.value = localDiff.EnvironmentNameIndex;
             envRemoval.UpdateFromDiff(localDiff.EnvEnhancements);
         }
 
