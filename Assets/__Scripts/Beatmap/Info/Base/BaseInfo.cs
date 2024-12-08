@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Beatmap.Base.Customs;
+using Beatmap.Base;
 using SimpleJSON;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Beatmap.Info
 {
@@ -270,6 +269,50 @@ namespace Beatmap.Info
         public Color? CustomEnvColorBoostWhite { get; set; }
 
         public void SetBeatmapFileNameToDefault() => BeatmapFileName = $"{Difficulty}{Characteristic}.dat";
+        
+        public void RefreshRequirementsAndWarnings(BaseInfo info, BaseDifficulty map)
+        {
+            if (!Settings.Instance.AutomaticModRequirements) return;
+
+            //Saving Map Requirement Info
+            var requiredArray = new JSONArray(); //Generate suggestions and requirements array
+            var suggestedArray = new JSONArray();
+
+            foreach (var req in RequirementCheck.requirementsAndSuggestions)
+            {
+                switch (req.IsRequiredOrSuggested(this, map))
+                {
+                    case RequirementCheck.RequirementType.Requirement:
+                        requiredArray.Add(req.Name);
+                        break;
+                    case RequirementCheck.RequirementType.Suggestion:
+                        suggestedArray.Add(req.Name);
+                        break;
+                }
+            }
+
+            if (requiredArray.Count > 0)
+            {
+                CustomData ??= new JSONObject();
+                CustomData[info.MajorVersion == 4 ? "requirements" : "_requirements"] = requiredArray;
+            }
+            else if (CustomData != null)
+            {
+                CustomData.Remove("requirements");
+                CustomData.Remove("_requirements");
+            }
+
+            if (suggestedArray.Count > 0)
+            {
+                CustomData ??= new JSONObject();
+                CustomData[info.MajorVersion == 4 ? "suggestions" : "_suggestions"] = suggestedArray;
+            }
+            else if (CustomData != null)
+            {
+                CustomData.Remove("suggestions");
+                CustomData.Remove("_suggestions");
+            }
+        }
     }
 
     public class InfoColorScheme

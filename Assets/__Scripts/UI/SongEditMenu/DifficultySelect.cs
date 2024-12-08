@@ -4,9 +4,6 @@ using System.IO;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Info;
-using Beatmap.V2;
-using Beatmap.V3;
-using SimpleJSON;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
@@ -235,7 +232,7 @@ public class DifficultySelect : MonoBehaviour
         var localDiff = diffs[row.Name];
         localDiff.Revert();
 
-        // row.NameInput.text = localDiff.CustomName;
+        row.NameInput.text = localDiff.CustomName;
 
         if (row == selected)
         {
@@ -312,7 +309,7 @@ public class DifficultySelect : MonoBehaviour
             map.Save();
         }
 
-        // diff.RefreshRequirementsAndWarnings(map);
+        diff.RefreshRequirementsAndWarnings(mapInfo, map);
         
         // Handle environmentName indexes
         var environmentNames = new List<string>();
@@ -464,7 +461,7 @@ public class DifficultySelect : MonoBehaviour
 
                 diffs.Remove(row.Name);
                 row.SetInteractable(false);
-                // row.NameInput.text = "";
+                row.NameInput.text = "";
                 row.ShowDirtyObjects(false, false);
                 return;
             }
@@ -521,7 +518,7 @@ public class DifficultySelect : MonoBehaviour
 
             if (!string.IsNullOrEmpty(diffs[row.Name].CustomName)) diffs[row.Name].CustomName += " (Copy)";
 
-            // row.NameInput.text = diffs[row.Name].CustomName;
+            row.NameInput.text = diffs[row.Name].CustomName;
             row.ShowDirtyObjects(diffs[row.Name]);
             row.SetInteractable(true);
             OnClick(row);
@@ -570,7 +567,7 @@ public class DifficultySelect : MonoBehaviour
         MapInfo.Save();
 
         row.SetInteractable(false);
-        // row.NameInput.text = "";
+        row.NameInput.text = "";
         row.ShowDirtyObjects(false, false);
         characteristicSelect.Recalculate();
     }
@@ -582,8 +579,8 @@ public class DifficultySelect : MonoBehaviour
     private void SetCopySource(DifficultyRow row)
     {
         // If we copied from the current characteristic remove the highlight
-        // if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
-        //     copySource.Obj.CopyImage.color = Color.white;
+        if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
+            copySource.Obj.CopyImage.color = Color.white;
 
         // Clicking twice on the same source removes it
         if (copySource != null && copySource.Obj == row && currentDifficultySet == copySource.CharacteristicSet)
@@ -594,7 +591,7 @@ public class DifficultySelect : MonoBehaviour
 
         copySource = new CopySource(diffs[row.Name], currentDifficultySet, row);
         SetPasteMode(true);
-        // row.CopyImage.color = copyColor;
+        row.CopyImage.color = copyColor;
     }
 
     /// <summary>
@@ -602,8 +599,8 @@ public class DifficultySelect : MonoBehaviour
     /// </summary>
     public void CancelCopy()
     {
-        // if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
-        //     copySource.Obj.CopyImage.color = Color.white;
+        if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
+            copySource.Obj.CopyImage.color = Color.white;
         copySource = null;
         SetPasteMode(false);
     }
@@ -622,8 +619,6 @@ public class DifficultySelect : MonoBehaviour
             // Create a new set locally if the song doesn't have one,
             // will only be written back if a difficulty is created
             currentDifficultySet = new InfoDifficultySet { Characteristic = name };
-
-        //
         
         if (!Characteristics.ContainsKey(name)) Characteristics.Add(name, new Dictionary<string, DifficultySettings>());
         diffs = Characteristics[name];
@@ -634,13 +629,13 @@ public class DifficultySelect : MonoBehaviour
         {
             var hasDiff = diffs.ContainsKey(row.Name);
             row.SetInteractable(diffs.ContainsKey(row.Name));
-            // // Highlight the copy source if it's here
-            // row.CopyImage.color =
-            //     copySource != null && currentDifficultySet == copySource.CharacteristicSet && copySource.Obj == row
-            //         ? copyColor
-            //         : Color.white;
-            //
-            // row.NameInput.text = hasDiff ? diffs[row.Name].CustomName : "";
+            // Highlight the copy source if it's here
+            row.CopyImage.color =
+                copySource != null && currentDifficultySet == copySource.CharacteristicSet && copySource.Obj == row
+                    ? copyColor
+                    : Color.white;
+            
+            row.NameInput.text = hasDiff ? diffs[row.Name].CustomName : "";
 
             if (hasDiff)
             {
@@ -684,7 +679,6 @@ public class DifficultySelect : MonoBehaviour
     /// <param name="mode">True if we should show paste buttons</param>
     private void SetPasteMode(bool mode)
     {
-        return;
         foreach (Transform child in transform)
         {
             var localMode = mode && !diffs.ContainsKey(child.name);
