@@ -413,6 +413,50 @@ MonoBehaviour:
     m_Key: customcharacteristics
     m_Metadata:
       m_Items: []
+  - m_Id: 396267615118290944
+    m_Key: mappers.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396267995176759296
+    m_Key: mappers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268125703499776
+    m_Key: mappers.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268829063114752
+    m_Key: lighters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268841406951424
+    m_Key: lighters.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268859580870656
+    m_Key: lighters.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396269682226491392
+    m_Key: lightshow.file
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396269752590135296
+    m_Key: lightshow.file.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396270278006403072
+    m_Key: custom.properties
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396270297077903360
+    m_Key: custom.properties.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396272057888665600
+    m_Key: not.supported.in.version
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

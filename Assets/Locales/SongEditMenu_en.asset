@@ -472,6 +472,53 @@ MonoBehaviour:
     m_Localized: Custom Characteristics
     m_Metadata:
       m_Items: []
+  - m_Id: 396267615118290944
+    m_Localized: Mapper names
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396267995176759296
+    m_Localized: Mappers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268125703499776
+    m_Localized: Who created the mapping?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268829063114752
+    m_Localized: Lighters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268841406951424
+    m_Localized: Lighter names
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268859580870656
+    m_Localized: Who created the lightshow?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396269682226491392
+    m_Localized: Lightshow File
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396269752590135296
+    m_Localized: Name of shared lightshow file
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396270278006403072
+    m_Localized: Custom Properties
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396270297077903360
+    m_Localized: 'Additional properties provided by mods
+
+      (Such as SongCore
+      and Chroma)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396272057888665600
+    m_Localized: Not supported in current format
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -10,8 +10,10 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using QuestDumper;
 using SimpleJSON;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
@@ -36,7 +38,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     private int objectsCheckIsComplete = FALSE;
     private int saveFlag = (int)SaveType.None;
 
-    private string saveWarningMessage; 
+    private string saveWarningMessage;
+    private string localizedSaveWarningHeader;
+    private string localizedSaveWarningSubHeader;
 
     private static MapExporter Exporter => new(BeatSaberSongContainer.Instance.Info);
 
@@ -50,6 +54,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     // Use this for initialization
     private void Start()
     {
+        localizedSaveWarningHeader = LocalizationSettings.StringDatabase.GetLocalizedString("Mapper", "unsupported.properties.warning.header");
+        localizedSaveWarningSubHeader = LocalizationSettings.StringDatabase.GetLocalizedString("Mapper", "unsupported.properties.warning.subheader");
+        
         autoSaveToggle.isOn = Settings.Instance.AutoSave;
         t = 0;
 
@@ -285,9 +292,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     private void DisplayWarningIfIncompatibleDataIsPresent()
     {
-        // TODO: Localise warning strings. Probably need to retrieve strings on Start as we can
-        //       only access localisation string on main thread
-        
         var map = BeatSaberSongContainer.Instance.Map; 
         var stringBuilder = new StringBuilder();
         switch (Settings.Instance.MapVersion)
@@ -367,8 +371,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
         
         if (stringBuilder.Length != 0)
         {
-            stringBuilder.Insert(0, $"Warning\nThe following properties are not saved in v{Settings.Instance.MapVersion} format:\n");
-            stringBuilder.AppendLine("Save in a different format to ensure data is not lost.");
+            stringBuilder.Insert(0, string.Format(localizedSaveWarningHeader, Settings.Instance.MapVersion));
+            stringBuilder.AppendLine(localizedSaveWarningSubHeader);
         }
         
         saveWarningMessage = stringBuilder.ToString();
