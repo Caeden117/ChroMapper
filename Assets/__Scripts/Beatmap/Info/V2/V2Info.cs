@@ -192,16 +192,22 @@ namespace Beatmap.Info
                     node["_environmentNameIdx"] = difficulty.EnvironmentNameIndex;
 
                     PopulateDifficultyCustomData(difficulty);
+                    if (difficulty.CustomData.Count > 0)
+                    {
+                        node["_customData"] = difficulty.CustomData;
+                    }
                     
-                    node["_customData"] = difficulty.CustomData;
                     difficultyBeatmapsArray.Add(node);
                 }
 
                 setNode["_difficultyBeatmaps"] = difficultyBeatmapsArray;
 
                 PopulateDifficultySetCustomData(beatmapSet);
+                if (beatmapSet.CustomData.Count >= 0)
+                {
+                    setNode["_customData"] = beatmapSet.CustomData;
+                }
                 
-                setNode["_customData"] = beatmapSet.CustomData;
                 beatmapSetArray.Add(setNode);
             }
 

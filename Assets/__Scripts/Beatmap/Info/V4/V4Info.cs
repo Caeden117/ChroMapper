@@ -210,8 +210,10 @@ namespace Beatmap.Info
                 node["lightshowDataFilename"] = difficulty.LightshowFileName;
                 
                 PopulateDifficultyCustomData(difficulty);
-
-                node["customData"] = difficulty.CustomData;
+                if (difficulty.CustomData.Count > 0)
+                {
+                    node["customData"] = difficulty.CustomData;
+                }
                 
                 difficultyBeatmaps.Add(node);
             }
@@ -248,7 +250,11 @@ namespace Beatmap.Info
                     customCharacteristics.Add(customCharacteristic);
                 }
             }
-            info.CustomData["characteristicData"] = customCharacteristics;
+
+            if (customCharacteristics.Count > 0)
+            {
+                info.CustomData["characteristicData"] = customCharacteristics;
+            }
             
             // I'm not sure if custom platforms exists for v4 yet. This seems like a safe guess.
             if (!string.IsNullOrEmpty(info.CustomEnvironmentMetadata.Name))
