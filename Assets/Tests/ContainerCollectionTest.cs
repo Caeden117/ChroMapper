@@ -286,5 +286,46 @@ namespace Tests
             actionContainer.Undo();
             CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
         }
+        
+        [Test]
+        public void MoveSelection_NoteIntegrity()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var root = notesContainer.transform.root;
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var selectionController = root.GetComponentInChildren<SelectionController>();
+
+            var baseNoteA = new BaseNote{ JsonTime = 0 };
+            var baseNoteB = new BaseNote{ JsonTime = 1 };
+            PlaceUtils.PlaceNote(notePlacement, baseNoteA);
+            PlaceUtils.PlaceNote(notePlacement, baseNoteB);
+
+            SelectionController.Select(baseNoteA);
+            SelectionController.Select(baseNoteB, addsToSelection: true);
+            
+            selectionController.MoveSelection(1);
+            AssertNoteStateAfterMove(notesContainer, 1, 2);
+
+            selectionController.MoveSelection(-1);
+            AssertNoteStateAfterMove(notesContainer, 0, 1);
+            
+            actionContainer.Undo();
+            AssertNoteStateAfterMove(notesContainer, 1, 2);
+            
+            actionContainer.Undo();
+            AssertNoteStateAfterMove(notesContainer, 0, 1);
+        }
+
+        private static void AssertNoteStateAfterMove(NoteGridContainer notesContainer, int firstObjectTime, int secondObjectTime)
+        {
+            Assert.AreEqual(2, notesContainer.MapObjects.Count, "Notes should not be deleted");
+            Assert.AreEqual(2, SelectionController.SelectedObjects.Count, "Notes should be selected");
+            CheckUtils.CheckNote("First note after move", notesContainer, 0, firstObjectTime, (int)GridX.Left, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.Up, 0);
+            CheckUtils.CheckNote("Second note after move", notesContainer, 1, secondObjectTime, (int)GridX.Left, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.Up, 0);
+        }
     }
 }
