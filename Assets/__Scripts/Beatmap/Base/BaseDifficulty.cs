@@ -217,7 +217,7 @@ namespace Beatmap.Base
 
         public void ConvertCustomDataVersion(int fromVersion, int toVersion)
         {
-            if (fromVersion == 2 && toVersion == 3)
+            if (fromVersion == 2 && toVersion is 3 or 4)
             {
                 foreach (var note in Notes) note.SetCustomData(V2ToV3.CustomDataObject(note.SaveCustom()));
                 foreach (var obstacle in Obstacles) obstacle.SetCustomData(V2ToV3.CustomDataObject(obstacle.SaveCustom()));
@@ -234,7 +234,7 @@ namespace Beatmap.Base
                 }
             }
 
-            if (fromVersion == 3 && toVersion == 2)
+            if (fromVersion is 3 or 4 && toVersion == 2)
             {
                 foreach (var note in Notes) note.SetCustomData(V3ToV2.CustomDataObject(note.SaveCustom()));
                 foreach (var obstacle in Obstacles) obstacle.SetCustomData(V3ToV2.CustomDataObject(obstacle.SaveCustom()));

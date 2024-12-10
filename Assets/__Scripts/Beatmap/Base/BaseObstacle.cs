@@ -110,71 +110,61 @@ namespace Beatmap.Base
         public string CustomKeySize => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeySize,
-            3 => V3Obstacle.CustomKeySize,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeySize
         };
 
         public override string CustomKeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeyColor,
-            3 => V3Obstacle.CustomKeyColor,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeyColor
         };
 
         public override string CustomKeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeyTrack,
-            3 => V3Obstacle.CustomKeyTrack,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeyTrack
         };
 
         public override string CustomKeyAnimation => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeyAnimation,
-            3 => V3Obstacle.CustomKeyAnimation,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeyAnimation
         };
 
         public override string CustomKeyCoordinate => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeyCoordinate,
-            3 => V3Obstacle.CustomKeyCoordinate,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeyCoordinate
         };
 
         public override string CustomKeyWorldRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeyWorldRotation,
-            3 => V3Obstacle.CustomKeyWorldRotation,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeyWorldRotation
         };
 
         public override string CustomKeyLocalRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeyLocalRotation,
-            3 => V3Obstacle.CustomKeyLocalRotation,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeyLocalRotation
         };
 
         public override string CustomKeySpawnEffect => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeySpawnEffect,
-            3 => V3Obstacle.CustomKeySpawnEffect,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeySpawnEffect
         };
 
         public override string CustomKeyNoteJumpMovementSpeed => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeyNoteJumpMovementSpeed,
-            3 => V3Obstacle.CustomKeyNoteJumpMovementSpeed,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeyNoteJumpMovementSpeed
         };
 
         public override string CustomKeyNoteJumpStartBeatOffset => Settings.Instance.MapVersion switch
         {
             2 => V2Obstacle.CustomKeyNoteJumpStartBeatOffset,
-            3 => V3Obstacle.CustomKeyNoteJumpStartBeatOffset,
-            _ => UndefinedKey
+            3 or 4 => V3Obstacle.CustomKeyNoteJumpStartBeatOffset
         };
 
         

@@ -117,64 +117,55 @@ namespace Beatmap.Base
         public override string CustomKeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeyColor,
-            3 => V3ColorNote.CustomKeyColor,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeyColor
         };
 
         public override string CustomKeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeyTrack,
-            3 => V3ColorNote.CustomKeyTrack,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeyTrack
         };
 
         public override string CustomKeyAnimation => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeyAnimation,
-            3 => V3ColorNote.CustomKeyAnimation,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeyAnimation
         };
 
         public override string CustomKeyCoordinate => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeyCoordinate,
-            3 => V3ColorNote.CustomKeyCoordinate,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeyCoordinate
         };
 
         public override string CustomKeyWorldRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeyWorldRotation,
-            3 => V3ColorNote.CustomKeyWorldRotation,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeyWorldRotation
         };
 
         public override string CustomKeyLocalRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeyLocalRotation,
-            3 => V3ColorNote.CustomKeyLocalRotation,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeyLocalRotation
         };
 
         public override string CustomKeySpawnEffect => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeySpawnEffect,
-            3 => V3ColorNote.CustomKeySpawnEffect,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeySpawnEffect
         };
 
         public override string CustomKeyNoteJumpMovementSpeed => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeyNoteJumpMovementSpeed,
-            3 => V3ColorNote.CustomKeyNoteJumpMovementSpeed,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeyNoteJumpMovementSpeed
         };
 
         public override string CustomKeyNoteJumpStartBeatOffset => Settings.Instance.MapVersion switch
         {
             2 => V2Note.CustomKeyNoteJumpStartBeatOffset,
-            3 => V3ColorNote.CustomKeyNoteJumpStartBeatOffset,
-            _ => UndefinedKey
+            3 or 4 => V3ColorNote.CustomKeyNoteJumpStartBeatOffset
         };
         
         public override bool IsChroma() =>

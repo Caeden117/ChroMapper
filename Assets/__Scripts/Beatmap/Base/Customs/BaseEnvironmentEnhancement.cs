@@ -141,68 +141,68 @@ namespace Beatmap.Base.Customs
         public string KeyActive => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyActive,
-            3 => V3EnvironmentEnhancement.KeyActive
+            3 or 4 => V3EnvironmentEnhancement.KeyActive
         };
 
         public string KeyScale => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyScale,
-            3 => V3EnvironmentEnhancement.KeyScale
+            3 or 4 => V3EnvironmentEnhancement.KeyScale
         };
 
         public string KeyPosition => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyPosition,
-            3 => V3EnvironmentEnhancement.KeyPosition
+            3 or 4 => V3EnvironmentEnhancement.KeyPosition
         };
 
         public string KeyRotation => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyRotation,
-            3 => V3EnvironmentEnhancement.KeyRotation
+            3 or 4 => V3EnvironmentEnhancement.KeyRotation
         };
 
         public string KeyLocalPosition => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyLocalPosition,
-            3 => V3EnvironmentEnhancement.KeyLocalPosition
+            3 or 4 => V3EnvironmentEnhancement.KeyLocalPosition
         };
 
         public string KeyLocalRotation => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyLocalRotation,
-            3 => V3EnvironmentEnhancement.KeyLocalRotation
+            3 or 4 => V3EnvironmentEnhancement.KeyLocalRotation
         };
 
         public string KeyComponents => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyComponents,
-            3 => V3EnvironmentEnhancement.KeyComponents
+            3 or 4 => V3EnvironmentEnhancement.KeyComponents
         };
 
         public string KeyLightID => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyLightID,
-            3 => V3EnvironmentEnhancement.KeyLightID
+            3 or 4 => V3EnvironmentEnhancement.KeyLightID
         };
 
         public string KeyLightType => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.KeyLightType,
-            3 => V3EnvironmentEnhancement.KeyLightType
+            3 or 4 => V3EnvironmentEnhancement.KeyLightType
         };
 
 
         public string GeometryKeyType => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.GeometryKeyType,
-            3 => V3EnvironmentEnhancement.GeometryKeyType
+            3 or 4 => V3EnvironmentEnhancement.GeometryKeyType
         };
 
         public string GeometryKeyMaterial => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.GeometryKeyMaterial,
-            3 => V3EnvironmentEnhancement.GeometryKeyMaterial
+            3 or 4 => V3EnvironmentEnhancement.GeometryKeyMaterial
         };
         
         #endregion
@@ -284,7 +284,7 @@ namespace Beatmap.Base.Customs
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2EnvironmentEnhancement.ToJson(this),
-            3 => V3EnvironmentEnhancement.ToJson(this)
+            3 or 4 => V3EnvironmentEnhancement.ToJson(this)
         };
 
         public override BaseItem Clone() => new BaseEnvironmentEnhancement(this);

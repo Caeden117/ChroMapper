@@ -22,8 +22,8 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
         switch (version)
         {
             case 2:
-                if (Settings.Instance.MapVersion == 3)
-                    BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 3, toVersion: 2);
+                if (Settings.Instance.MapVersion is 3 or 4)
+                    BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: Settings.Instance.MapVersion, toVersion: 2);
                 Settings.Instance.MapVersion = 2;
                 break;
             case 3:
@@ -32,6 +32,8 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
                 Settings.Instance.MapVersion = 3;
                 break;
             case 4:
+                if (Settings.Instance.MapVersion == 2)
+                    BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 2, toVersion: 4);
                 Settings.Instance.MapVersion = 4;
                 break;
         }

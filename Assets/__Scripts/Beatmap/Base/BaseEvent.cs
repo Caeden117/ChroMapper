@@ -187,106 +187,91 @@ namespace Beatmap.Base
         public override string CustomKeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyColor,
-            3 => V3BasicEvent.CustomKeyColor,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyColor
         };
 
         public override string CustomKeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyTrack,
-            3 => V3BasicEvent.CustomKeyTrack,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyTrack
         };
 
         public string CustomKeyPropID => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyPropID,
-            3 => V3BasicEvent.CustomKeyPropID,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyPropID
         };
 
         public string CustomKeyLightID => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLightID,
-            3 => V3BasicEvent.CustomKeyLightID,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyLightID
         };
 
         public string CustomKeyLerpType => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLerpType,
-            3 => V3BasicEvent.CustomKeyLerpType,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyLerpType
         };
 
         public string CustomKeyEasing => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyEasing,
-            3 => V3BasicEvent.CustomKeyEasing,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyEasing
         };
 
         public string CustomKeyLightGradient => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLightGradient,
-            3 => V3BasicEvent.CustomKeyLightGradient,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyLightGradient
         };
 
         public string CustomKeyStep => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyStep,
-            3 => V3BasicEvent.CustomKeyStep,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyStep
         };
 
         public string CustomKeyProp => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyProp,
-            3 => V3BasicEvent.CustomKeyProp,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyProp
         };
 
         public string CustomKeySpeed => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeySpeed,
-            3 => V3BasicEvent.CustomKeySpeed,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeySpeed
         };
 
         public string CustomKeyRingRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyRingRotation,
-            3 => V3BasicEvent.CustomKeyRingRotation,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyRingRotation
         };
 
         public string CustomKeyDirection => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyDirection,
-            3 => V3BasicEvent.CustomKeyDirection,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyDirection
         };
 
         public string CustomKeyLockRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLockRotation,
-            3 => V3BasicEvent.CustomKeyLockRotation,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyLockRotation
         };
 
         public string CustomKeyLaneRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLaneRotation,
-            3 => V3BasicEvent.CustomKeyLaneRotation,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyLaneRotation
         };
 
         public string CustomKeyNameFilter => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyNameFilter,
-            3 => V3BasicEvent.CustomKeyNameFilter,
-            _ => UndefinedKey
+            3 or 4 => V3BasicEvent.CustomKeyNameFilter
         };
 
         public string CustomKeyStepMult => V2Event.CustomKeyStepMult;
