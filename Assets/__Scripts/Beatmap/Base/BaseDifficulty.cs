@@ -45,6 +45,7 @@ namespace Beatmap.Base
         public List<BaseChain> Chains { get; set; } = new();
         public List<BaseWaypoint> Waypoints { get; set; } = new();
         public List<BaseEvent> Events { get; set; } = new();
+        public List<BaseNJSEvent> NJSEvents { get; set; } = new();
 
         public List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>> LightColorEventBoxGroups { get; set; } = new();
 

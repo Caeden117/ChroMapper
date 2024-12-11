@@ -278,6 +278,36 @@ namespace Beatmap.V4
             }
         }
 
+        public struct NJSEvent
+        {
+            public int UsePrevious { get; set; }
+            public int Easing { get; set; }
+            public float RelativeNJS { get; set; }
+
+            public static NJSEvent GetFromJson(JSONNode node) => new()
+            {
+                UsePrevious = node["p"].AsInt,
+                Easing = node["e"].AsInt,
+                RelativeNJS = node["d"].AsFloat
+            };
+
+            public static NJSEvent FromBaseNJSEvent(BaseNJSEvent baseNJSEvent) => new()
+            {
+                UsePrevious = baseNJSEvent.UsePrevious, Easing = baseNJSEvent.Easing, RelativeNJS = baseNJSEvent.RelativeNJS
+            };
+
+            public JSONNode ToJson()
+            {
+                JSONNode node = new JSONObject();
+
+                node["p"] = UsePrevious;
+                node["e"] = Easing;
+                node["d"] = RelativeNJS;
+                
+                return node;
+            }
+        }
+        
         public struct Waypoint
         {
             public int PosX { get; set; }

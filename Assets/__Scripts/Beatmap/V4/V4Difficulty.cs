@@ -14,7 +14,7 @@ namespace Beatmap.V4
 {
     public class V4Difficulty
     {
-        private const string version = "4.0.0";
+        private const string version = "4.1.0";
 
         public static JSONNode GetOutputJson(BaseDifficulty difficulty)
         {
@@ -124,6 +124,24 @@ namespace Beatmap.V4
 
                 json["obstacles"] = obstacles;
                 json["obstaclesData"] = obstaclesData;
+                
+                // NJS events
+                var njsEvents = new JSONArray();
+                var njsEventsData = new JSONArray();
+                var njsEventsCommonData = difficulty.NJSEvents.Select(V4CommonData.NJSEvent.FromBaseNJSEvent).Distinct().ToList();
+
+                foreach (var njsEvent in difficulty.NJSEvents)
+                {
+                    njsEvents.Add(V4NJSEvent.ToJson(njsEvent, njsEventsCommonData));
+                }
+
+                foreach (var njsEventData in njsEventsCommonData)
+                {
+                    njsEventsData.Add(njsEventData.ToJson());
+                }
+                
+                json["njsEvents"] = njsEvents;
+                json["njsEventData"] = njsEventsData; // Yup there's no 's' on njs event
                 
                 if (Settings.Instance.SaveWithoutDefaultValues)
                 {
@@ -419,6 +437,7 @@ namespace Beatmap.V4
                 var arcsCommonData = new List<V4CommonData.Arc>();
                 var chainsCommonData = new List<V4CommonData.Chain>();
                 var rotationsCommonData = new List<V4CommonData.RotationEvent>();
+                var njsEventsCommonData = new List<V4CommonData.NJSEvent>();
                 
                 var nodeEnum = mainNode.GetEnumerator();
                 while (nodeEnum.MoveNext())
@@ -458,6 +477,14 @@ namespace Beatmap.V4
                                 chainsCommonData.Add(V4CommonData.Chain.GetFromJson(n));
                             }
                             break;
+                        case "njsEventData": // Yup there's no 's' on njs event
+                            foreach (JSONNode n in node)
+                            {
+                                njsEventsCommonData.Add(V4CommonData.NJSEvent.GetFromJson(n));
+                            }
+                            break;
+                        
+                        // Deprecated
                         case "spawnRotationsData":
                             foreach (JSONNode n in node)
                             {
@@ -510,6 +537,15 @@ namespace Beatmap.V4
                             }
 
                             break;
+                        case "njsEvents":
+                            foreach (JSONNode n in node)
+                            {
+                                map.NJSEvents.Add(V4NJSEvent.GetFromJson(n, njsEventsCommonData));
+                            }
+
+                            break;
+                        
+                        // Deprecated
                         case "spawnRotations":
                             foreach (JSONNode n in node)
                             {
@@ -526,6 +562,7 @@ namespace Beatmap.V4
                 map.Obstacles.Sort();
                 map.Chains.Sort();
                 map.Arcs.Sort();
+                map.NJSEvents.Sort();
 
                 return map;
             }
