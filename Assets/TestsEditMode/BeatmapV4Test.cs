@@ -12,7 +12,7 @@ namespace TestsEditMode
     {
         private const string beatmapFileJson = @"
 {
-    ""version"": ""4.0.0"",
+    ""version"": ""4.1.0"",
     ""colorNotes"": [ {""b"": 10, ""r"": 0, ""i"": 0} ],
     ""colorNotesData"": [
         {""x"": 1, ""y"": 0, ""c"": 0, ""d"": 1, ""a"": 0},
@@ -35,7 +35,9 @@ namespace TestsEditMode
     ""chains"": [ {""hb"": 10, ""tb"": 15, ""hr"": 0, ""tr"": 0, ""i"": 0, ""ci"": 0} ],
     ""chainsData"": [ {""tx"": 2, ""ty"": 2, ""c"": 3, ""s"": 0.5} ],
     ""spawnRotations"": [ {""b"": 10, ""i"": 0}, {""b"": 15, ""i"": 1} ],
-    ""spawnRotationsData"": [ {""t"": 0, ""r"": 15}, {""t"": 1, ""r"": 15} ]
+    ""spawnRotationsData"": [ {""t"": 0, ""r"": 15}, {""t"": 1, ""r"": 15} ],
+    ""njsEvents"": [ {""b"": 1 } ],
+    ""njsEventData"": [ {""p"": 1, ""e"": 2, ""d"": 3} ],
 }
 ";
         private const string lightshowFileJson = @"
@@ -143,8 +145,8 @@ namespace TestsEditMode
         {
             var difficulty = V4Difficulty.GetFromJson(JSONNode.Parse(beatmapFileJson), "");
             
-            Assert.AreEqual("4.0.0",difficulty.Version);
-            AssertBeatmap(difficulty);
+            Assert.AreEqual("4.1.0",difficulty.Version);
+            AssertBeatmap(difficulty, containsRotationEvent: true, containsNJSEvent: true);
         }
         
         [Test]
@@ -163,7 +165,7 @@ namespace TestsEditMode
             var outputJson = V4Difficulty.GetOutputJson(difficulty);
             var reparsed = V4Difficulty.GetFromJson(outputJson, "");
             
-            AssertBeatmap(reparsed); // This should have the same stuff
+            AssertBeatmap(reparsed, containsRotationEvent: false, containsNJSEvent: true); // This should compatible stuff
         }
 
         [Test]
@@ -188,10 +190,10 @@ namespace TestsEditMode
             var outputJson = V3Difficulty.GetOutputJson(difficulty);
             var reparsed = V3Difficulty.GetFromJson(outputJson, "");
             
-            AssertBeatmap(reparsed); // This should have the same stuff
+            AssertBeatmap(reparsed, containsRotationEvent: true, containsNJSEvent: false); // This should have compatible stuff
         }
 
-        private static void AssertBeatmap(BaseDifficulty difficulty)
+        private static void AssertBeatmap(BaseDifficulty difficulty, bool containsRotationEvent = false, bool containsNJSEvent = false)
         {
             Assert.AreEqual(2, difficulty.Notes.Count);
             BeatmapAssert.NotePropertiesAreEqual(difficulty.Notes[0], 10, 1, 0, 0, 1, 0);
@@ -207,9 +209,27 @@ namespace TestsEditMode
             Assert.AreEqual(1, difficulty.Chains.Count);
             BeatmapAssert.ChainPropertiesAreEqual(difficulty.Chains[0], 10, 1, 0, 0, 1, 15, 2, 2, 3, 0.5f);
             
-            Assert.AreEqual(2, difficulty.Events.Count);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 14, 4, null, 15f);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 15, 15, 4, null, 15f);
+            // Present on load but not after save
+            if (containsRotationEvent)
+            {
+                Assert.AreEqual(2, difficulty.Events.Count);
+                BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 14, 4, null, 15f);
+                BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 15, 15, 4, null, 15f);
+            }
+            else
+            {
+                Assert.AreEqual(0, difficulty.Events.Count);
+            }
+
+            if (containsNJSEvent)
+            {
+                Assert.AreEqual(1, difficulty.NJSEvents.Count);
+                BeatmapAssert.NJSEventPropertiesAreEqual(difficulty.NJSEvents[0], 1, 1, 2, 3f);
+            }
+            else
+            {
+                Assert.AreEqual(0, difficulty.NJSEvents.Count);
+            }
         }
         
         private static void AssertLightshow(BaseDifficulty difficulty)

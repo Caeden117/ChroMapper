@@ -210,7 +210,7 @@ namespace TestsEditMode
         
         private const string v4FileInfo = @"
 {
-    ""version"": ""4.0.0"",
+    ""version"": ""4.0.1"",
     ""song"": {
         ""title""   : ""Magic""            ,
         ""subTitle"": ""ft. Meredith Bull"",
@@ -230,11 +230,12 @@ namespace TestsEditMode
     ""environmentNames"": [""WeaveEnvironment"", ""GlassDesertEnvironment""],
     ""colorSchemes"": [
         {
-            ""useOverride"": true,
             ""colorSchemeName"": ""Weave"",
+            ""overrideNotes"": true,
             ""saberAColor"": ""C81414FF"",
             ""saberBColor"": ""288ED2FF"",
             ""obstaclesColor"": ""FF3030FF"",
+            ""overrideLights"": true,
             ""environmentColor0"": ""D91616FF"",
             ""environmentColor1"": ""30ACFFFF"",
             ""environmentColor0Boost"": ""D216D9FF"",
@@ -447,7 +448,7 @@ namespace TestsEditMode
 
         private void AssertV4Info(BaseInfo info)
         {
-            Assert.AreEqual("4.0.0", info.Version);
+            Assert.AreEqual("4.0.1", info.Version);
             
             AssertCommonInfo(info);
             
@@ -495,6 +496,8 @@ namespace TestsEditMode
 
             var colorScheme = info.ColorSchemes[0];
             Assert.AreEqual(true, colorScheme.UseOverride);
+            Assert.AreEqual(true, colorScheme.OverrideNotes);
+            Assert.AreEqual(true, colorScheme.OverrideLights);
             Assert.AreEqual("Weave", colorScheme.ColorSchemeName);
             AssertColorsAreEqual(new Color(0.7843137f, 0.07843138f, 0.07843138f), colorScheme.SaberAColor);
             AssertColorsAreEqual(new Color(0.1568627f, 0.55686270f, 0.82352940f), colorScheme.SaberBColor);

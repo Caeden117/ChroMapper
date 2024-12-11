@@ -44,14 +44,15 @@ namespace Beatmap.Info
 
                 if (colorSchemeNode.HasKey("useOverride")) // 4.0.0
                 {
-                    var useOverride = colorSchemeNode["useOverride"].AsBool;
-                    colorScheme.OverrideNotes = useOverride;
-                    colorScheme.OverrideLights = useOverride;
+                    colorScheme.UseOverride = colorSchemeNode["useOverride"].AsBool;
+                    colorScheme.OverrideNotes = colorScheme.UseOverride;
+                    colorScheme.OverrideLights = colorScheme.UseOverride;
                 }
                 else // 4.0.1
                 {
                     colorScheme.OverrideNotes = colorSchemeNode["overrideNotes"].AsBool;
                     colorScheme.OverrideLights = colorSchemeNode["overrideLights"].AsBool;
+                    colorScheme.UseOverride = colorScheme.OverrideNotes || colorScheme.OverrideLights;
                 }
 
                 colorScheme.SaberAColor = colorSchemeNode["saberAColor"].ReadHtmlStringColor();

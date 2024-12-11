@@ -83,5 +83,14 @@ namespace TestsEditMode
             Assert.AreEqual(sliceCount, chain.SliceCount, epsilon);
             Assert.AreEqual(squish, chain.Squish);
         }
+
+        public static void NJSEventPropertiesAreEqual(BaseNJSEvent njsEvent, float jsonTime, int usePrevious,
+            int easing, float relativeNJS)
+        {
+            Assert.AreEqual(jsonTime, njsEvent.JsonTime, epsilon);
+            Assert.AreEqual(usePrevious, njsEvent.UsePrevious);
+            Assert.AreEqual(easing, njsEvent.Easing);
+            Assert.AreEqual(relativeNJS, njsEvent.RelativeNJS, epsilon);
+        }
     }
 }
