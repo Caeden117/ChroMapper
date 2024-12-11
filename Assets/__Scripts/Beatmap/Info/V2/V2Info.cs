@@ -47,6 +47,9 @@ namespace Beatmap.Info
             {
                 var colorScheme = new InfoColorScheme();
                 colorScheme.UseOverride = colorSchemeNode["useOverride"].AsBool;
+                colorScheme.OverrideNotes = colorSchemeNode["useOverride"].AsBool;
+                colorScheme.OverrideLights = colorSchemeNode["useOverride"].AsBool;
+                
                 colorScheme.ColorSchemeName = colorSchemeNode["colorScheme"]["colorSchemeId"].Value;
                 colorScheme.SaberAColor = colorSchemeNode["colorScheme"]["saberAColor"].ReadColor();
                 colorScheme.SaberBColor = colorSchemeNode["colorScheme"]["saberBColor"].ReadColor();

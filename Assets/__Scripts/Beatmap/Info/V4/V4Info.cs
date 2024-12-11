@@ -39,11 +39,25 @@ namespace Beatmap.Info
             foreach (var colorSchemeNode in colorSchemeNodes)
             {
                 var colorScheme = new InfoColorScheme();
-                colorScheme.UseOverride = colorSchemeNode["useOverride"].AsBool;
+
                 colorScheme.ColorSchemeName = colorSchemeNode["colorSchemeName"].Value;
+
+                if (colorSchemeNode.HasKey("useOverride")) // 4.0.0
+                {
+                    var useOverride = colorSchemeNode["useOverride"].AsBool;
+                    colorScheme.OverrideNotes = useOverride;
+                    colorScheme.OverrideLights = useOverride;
+                }
+                else // 4.0.1
+                {
+                    colorScheme.OverrideNotes = colorSchemeNode["overrideNotes"].AsBool;
+                    colorScheme.OverrideLights = colorSchemeNode["overrideLights"].AsBool;
+                }
+
                 colorScheme.SaberAColor = colorSchemeNode["saberAColor"].ReadHtmlStringColor();
                 colorScheme.SaberBColor = colorSchemeNode["saberBColor"].ReadHtmlStringColor();
                 colorScheme.ObstaclesColor = colorSchemeNode["obstaclesColor"].ReadHtmlStringColor();
+                
                 colorScheme.EnvironmentColor0 = colorSchemeNode["environmentColor0"].ReadHtmlStringColor();
                 colorScheme.EnvironmentColor1 = colorSchemeNode["environmentColor1"].ReadHtmlStringColor();
                 colorScheme.EnvironmentColor0Boost = colorSchemeNode["environmentColor0Boost"].ReadHtmlStringColor();
@@ -135,7 +149,7 @@ namespace Beatmap.Info
         {
             var json = new JSONObject();
 
-            json["version"] = "4.0.0";
+            json["version"] = "4.0.1";
 
             var songNode = new JSONObject();
             songNode["title"] = info.SongName;
@@ -167,12 +181,14 @@ namespace Beatmap.Info
             foreach (var colorScheme in info.ColorSchemes)
             {
                 var node = new JSONObject();
-                
-                node["useOverride"] = colorScheme.UseOverride;
                 node["colorSchemeName"] = colorScheme.ColorSchemeName;
+
+                node["overrideNotes"] = colorScheme.OverrideNotes;
                 node["saberAColor"] = ColorUtility.ToHtmlStringRGBA(colorScheme.SaberAColor);
                 node["saberBColor"] = ColorUtility.ToHtmlStringRGBA(colorScheme.SaberBColor);
                 node["obstaclesColor"] = ColorUtility.ToHtmlStringRGBA(colorScheme.ObstaclesColor);
+                
+                node["overrideLights"] = colorScheme.OverrideLights;
                 node["environmentColor0"] = ColorUtility.ToHtmlStringRGBA(colorScheme.EnvironmentColor0);
                 node["environmentColor1"] = ColorUtility.ToHtmlStringRGBA(colorScheme.EnvironmentColor1);
                 node["environmentColor0Boost"] = ColorUtility.ToHtmlStringRGBA(colorScheme.EnvironmentColor0Boost);
