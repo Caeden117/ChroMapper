@@ -81,7 +81,14 @@ namespace Beatmap.Base
 
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
-            _ => new JSONObject()
+            _ => new JSONObject
+            {
+                ["beat"] = JsonTime,
+                ["usePrevious"] = UsePrevious,
+                ["easing"] = Easing,
+                ["relative-njs"] = RelativeNJS,
+                ["customData"] = CustomData,
+            }
         };
 
         public override BaseItem Clone()
