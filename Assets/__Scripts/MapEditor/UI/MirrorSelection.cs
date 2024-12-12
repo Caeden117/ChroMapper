@@ -70,7 +70,8 @@ public class MirrorSelection : MonoBehaviour
         }
 
         var events = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
-        var allActions = new List<BeatmapAction>();
+        var originalObjects = new List<BaseObject>();
+        var editedObjects = new List<BaseObject>();
         foreach (var original in SelectionController.SelectedObjects)
         {
             var edited = BeatmapFactory.Clone(original);
@@ -379,12 +380,10 @@ public class MirrorSelection : MonoBehaviour
 
             edited.SaveCustom();
 
-            allActions.Add(new BeatmapObjectModifiedAction(edited, original, original, "e", true));
+            editedObjects.Add(edited);
+            originalObjects.Add(original);
         }
 
-        foreach (var unique in SelectionController.SelectedObjects.DistinctBy(x => x.ObjectType))
-            BeatmapObjectContainerCollection.GetCollectionForType(unique.ObjectType).RefreshPool(true);
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true,
-            "Mirrored a selection of objects."), true);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedCollectionAction(editedObjects, originalObjects, "Mirrored a selection of objects."), true);
     }
 }
