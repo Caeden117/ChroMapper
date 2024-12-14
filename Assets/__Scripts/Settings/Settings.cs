@@ -60,7 +60,6 @@ public class Settings
     public bool NoteJumpSpeedForEditorScale = false;
     public bool RotateTrack = true; // 360/90 mode
     public bool Reset360DisplayOnCompleteTurn = true;
-    public bool DontPlacePerfectZeroDurationWalls = true;
     public bool PrecisionPlacementGrid = false; // Old setting, migrated to below
     public PrecisionPlacementMode PrecisionPlacementMode = PrecisionPlacementMode.Off;
     public int PrecisionPlacementGridPrecision = 4;

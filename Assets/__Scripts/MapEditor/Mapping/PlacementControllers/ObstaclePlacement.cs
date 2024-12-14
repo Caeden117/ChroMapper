@@ -124,11 +124,12 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
                     SongBpmTime * EditorScaleController.EditorScale
                 );
 
+                // Ensure wall has positive width no matter right to left or left to right placement
                 queuedData.Width = Mathf.CeilToInt(roundedHit.x + 2) - originIndex;
-                if (queuedData.Width < 1)
+                if (queuedData.Width <= 0)
                 {
-                    queuedData.PosX = originIndex + 1;
-                    queuedData.Width -= 2;
+                    queuedData.PosX = originIndex + queuedData.Width - 1;
+                    queuedData.Width = 2 - queuedData.Width;
                 }
                 else
                 {
@@ -218,8 +219,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
             var endSongBpmTime = startSongBpmTime + (instantiatedContainer.GetScale().z / EditorScaleController.EditorScale);
             var endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
 
-            if (endSongBpmTime - startSongBpmTime < SmallestRankableWallDuration &&
-                Settings.Instance.DontPlacePerfectZeroDurationWalls)
+            if (endSongBpmTime - startSongBpmTime < SmallestRankableWallDuration)
             {
                 endSongBpmTime = startSongBpmTime + SmallestRankableWallDuration;
                 endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
