@@ -300,7 +300,13 @@ namespace Tests
             var selectionController = root.GetComponentInChildren<SelectionController>();
             selectionController.MoveSelection(-2);
 
-            notesContainer.DeleteObject(baseNoteB);
+            var baseNoteBAfterMove = new BaseNote
+            {
+                JsonTime = 1,
+                Type = (int)NoteType.Red
+            };
+
+            notesContainer.DeleteObject(baseNoteBAfterMove);
 
             Assert.AreEqual(1, notesContainer.LoadedContainers.Count);
             Assert.AreEqual(1, notesContainer.MapObjects.Count);

@@ -10,14 +10,16 @@ using Beatmap.Containers;
  * 
  * In a nutshell, this is an Action that groups together multiple other Actions, which are mass undone/redone.
  * This is useful for storing many separate Actions that need to be grouped together, and not clog up the queue.
+ *
+ * Note that the undos and redos are performed in order. If these undos can result in overlapping objects such that the
+ * next undo will affect the wrong object this can cause seemingly random unselected, ghost, or stacked object.
+ * For this case, use BeatmapObjectModifiedCollectionAction
  */
 public class ActionCollectionAction : BeatmapAction
 {
     private IEnumerable<BeatmapAction> actions;
     private bool clearSelection;
     private bool forceRefreshesPool;
-
-    public ActionCollectionAction() : base() { }
 
     public ActionCollectionAction(IEnumerable<BeatmapAction> beatmapActions, bool forceRefreshPool = false,
         bool clearsSelection = true, string comment = "No comment.")
@@ -71,7 +73,7 @@ public class ActionCollectionAction : BeatmapAction
 
     protected override void RefreshEventAppearance()
     {
-        var events = actions.SelectMany(x => x.Data).OfType<BaseEvent>();
+        var events = actions.SelectMany(x => x.Data).OfType<BaseEvent>().ToList();
         if (!events.Any())
             return;
 

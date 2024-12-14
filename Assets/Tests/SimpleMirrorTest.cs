@@ -48,7 +48,47 @@ namespace Tests
         }
 
         [Test]
-        public void MirrorME()
+        public void MirrorNoteDouble()
+        {
+            
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var root = notesContainer.transform.root;
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
+
+            var baseNoteA = new BaseNote{ JsonTime = 2, PosX = (int)GridX.MiddleLeft, PosY = (int)GridY.Base, Type = (int)NoteType.Red, CutDirection = (int)NoteCutDirection.Down };
+            var baseNoteB = new BaseNote{ JsonTime = 2, PosX = (int)GridX.MiddleRight, PosY = (int)GridY.Base, Type = (int)NoteType.Blue, CutDirection = (int)NoteCutDirection.Down };
+            
+            PlaceUtils.PlaceNote(notePlacement, baseNoteA);
+            PlaceUtils.PlaceNote(notePlacement, baseNoteB);
+
+            SelectionController.Select(baseNoteA);
+            SelectionController.Select(baseNoteB, addsToSelection: true);
+
+            _mirror.Mirror();
+            AssertNoteDoubleState(notesContainer);
+            
+            _mirror.Mirror();
+            AssertNoteDoubleState(notesContainer);
+            
+            _actionContainer.Undo();
+            AssertNoteDoubleState(notesContainer);
+            
+            _actionContainer.Undo();
+            AssertNoteDoubleState(notesContainer);
+        }
+
+        private void AssertNoteDoubleState(NoteGridContainer notesContainer)
+        {
+            Assert.AreEqual(2, notesContainer.MapObjects.Count, "Notes should not be deleted");
+            Assert.AreEqual(2, SelectionController.SelectedObjects.Count, "Mirrored notes should be selected");
+            CheckUtils.CheckNote("Left note after mirror", notesContainer, 0, 2, (int)GridX.MiddleLeft, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.Down, 0);
+            CheckUtils.CheckNote("Right note after mirror", notesContainer, 1, 2, (int)GridX.MiddleRight, (int)GridY.Base,
+                (int)NoteType.Blue, (int)NoteCutDirection.Down, 0);
+        }
+
+        [Test]
+        public void MirrorNoteME()
         {
             var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             var root = notesContainer.transform.root;
@@ -306,7 +346,7 @@ namespace Tests
 
         // TODO: update rotation event test for more representative
         [Test]
-        public void MirrorRotation()
+        public void MirrorRotationEvent()
         {
             var rotationCb = Object.FindObjectOfType<RotationCallbackController>();
             rotationCb.Start();
