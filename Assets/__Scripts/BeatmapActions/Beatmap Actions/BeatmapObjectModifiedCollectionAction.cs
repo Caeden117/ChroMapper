@@ -15,6 +15,8 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
     
     private readonly float firstBpmEventJsonTime;
 
+    public BeatmapObjectModifiedCollectionAction() : base() { }
+
     public BeatmapObjectModifiedCollectionAction(List<BaseObject> editedObjects, List<BaseObject> originalObjects,
         string comment = "No comment.") : base(editedObjects.Concat(originalObjects), comment)
     {
@@ -96,5 +98,7 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
     {
         editedObjects = DeserializeBeatmapObjectList(reader).ToList();
         originalObjects = DeserializeBeatmapObjectList(reader).ToList();
+
+        Data = editedObjects.Concat(originalObjects);
     }
 }
