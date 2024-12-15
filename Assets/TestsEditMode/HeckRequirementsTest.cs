@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Info;
 using Beatmap.V3;
 using Beatmap.V3.Customs;
 using NUnit.Framework;
@@ -16,7 +17,7 @@ namespace TestsEditMode
         }
 
         private BaseDifficulty _difficulty;
-        private BeatSaberSong.DifficultyBeatmap _info;
+        private InfoDifficulty _infoDifficulty;
 
         private HeckRequirementCheck _chromaReq, _noodleReq;
 
@@ -32,7 +33,7 @@ namespace TestsEditMode
         {
             Settings.Instance.MapVersion = 3;
             _difficulty = new BaseDifficulty();
-            _info = new BeatSaberSong.DifficultyBeatmap(new BeatSaberSong.DifficultyBeatmapSet());
+            _infoDifficulty = new InfoDifficulty(new InfoDifficultySet());
         }
 
         [Test]
@@ -72,8 +73,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
 
@@ -93,8 +94,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreNotEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreNotEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
         [TestCase("AssignTrackParent")]
@@ -114,8 +115,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
         
         [Test]
@@ -137,8 +138,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
         [TestCase("position", 0)]
@@ -169,8 +170,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
         [TestCase("color", 0)]
@@ -199,8 +200,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
         [TestCase("hafsdhklsdf", 0)]
@@ -229,8 +230,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
         [Test]
@@ -260,8 +261,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
         [Test]
@@ -281,8 +282,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
         [TestCase("position", 0)]
@@ -304,8 +305,8 @@ namespace TestsEditMode
                 }
             };
 
-            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
-            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
     }
 }

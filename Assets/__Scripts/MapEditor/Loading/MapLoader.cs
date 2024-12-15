@@ -37,6 +37,11 @@ public class MapLoader : MonoBehaviour
             LoadObjects(map.Chains);
         }
 
+        if (Settings.Instance.Load_Notes || Settings.Instance.Load_Obstacles)
+        {
+            LoadObjects(map.NJSEvents);
+        }
+
         manager.RefreshTracks();
     }
 

@@ -50,7 +50,7 @@ namespace Tests
         {
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
 
-            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
             var baseBpmEvent = new BaseBpmEvent(0, 111);
             bpmCollection.SpawnObject(baseBpmEvent);
 
@@ -123,7 +123,7 @@ namespace Tests
         {
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
             
-            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
             BaseBpmEvent baseBpmEvent = new BaseBpmEvent(0, 111);
             bpmCollection.SpawnObject(baseBpmEvent);
 
@@ -161,7 +161,7 @@ namespace Tests
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
 
-            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
             var baseBpmEvent0 = new BaseBpmEvent(0, 111);
             bpmCollection.SpawnObject(baseBpmEvent0, out var conflicting0);
 

@@ -1,6 +1,7 @@
 using System.Linq;
 using Beatmap.V2;
 using Beatmap.V3;
+using Beatmap.V4;
 using SimpleJSON;
 
 namespace Beatmap.Base
@@ -29,7 +30,8 @@ namespace Beatmap.Base
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2SpecialEventsKeywordFiltersKeywords.ToJson(this),
-            3 => V3BasicEventTypesForKeywords.ToJson(this)
+            3 => V3BasicEventTypesForKeywords.ToJson(this),
+            4 => V4BasicEventTypesForKeywords.ToJson(this)
         };
 
         public override BaseItem Clone() => new BaseEventTypesForKeywords(this);

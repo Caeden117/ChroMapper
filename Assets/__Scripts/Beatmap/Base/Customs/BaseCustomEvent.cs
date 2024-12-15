@@ -191,7 +191,7 @@ namespace Beatmap.Base.Customs
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.ToJson(this),
-            3 => V3CustomEvent.ToJson(this)
+            3 or 4 => V3CustomEvent.ToJson(this)
         };
         
         public override BaseItem Clone()

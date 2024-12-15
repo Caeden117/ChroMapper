@@ -39,7 +39,7 @@ public class ContributorsController : MonoBehaviour
     {
         HandleRemoveAllContributors(0);
 
-        foreach (var item in BeatSaberSongContainer.Instance.Song.Contributors)
+        foreach (var item in BeatSaberSongContainer.Instance.Info.CustomContributors)
         {
             var listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
             listItem.Setup(item, this);
@@ -61,7 +61,7 @@ public class ContributorsController : MonoBehaviour
 
     public void AddNewContributor()
     {
-        var contributor = new InfoContributor("", "", "");
+        var contributor = new BaseContributor("", "", "");
         var listItem = Instantiate(listItemPrefab, listContainer.transform).GetComponent<ContributorListItem>();
         listItem.Setup(contributor, this, true);
         Contributors.Add(contributor);

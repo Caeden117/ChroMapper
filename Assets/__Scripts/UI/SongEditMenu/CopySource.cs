@@ -1,15 +1,15 @@
-﻿using static BeatSaberSong;
+﻿using Beatmap.Info;
 
 public class CopySource
 {
-    public CopySource(DifficultySettings difficultySettings, DifficultyBeatmapSet characteristic, DifficultyRow obj)
+    public CopySource(DifficultySettings difficultySettings, InfoDifficultySet characteristicSet, DifficultyRow obj)
     {
         DifficultySettings = difficultySettings;
-        Characteristic = characteristic;
+        CharacteristicSet = characteristicSet;
         Obj = obj;
     }
 
     public DifficultySettings DifficultySettings { get; }
-    public DifficultyBeatmapSet Characteristic { get; }
+    public InfoDifficultySet CharacteristicSet { get; }
     public DifficultyRow Obj { get; }
 }

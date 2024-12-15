@@ -42,6 +42,8 @@ namespace Beatmap.Base
 
         public int PosX { get; set; }
         public virtual int PosY { get; set; }
+        
+        public int Rotation { get; set; }
 
         // Half Jump Duration (SongBpmTime)
         public float Hjd { get; private set; }
@@ -99,10 +101,10 @@ namespace Beatmap.Base
         public override void RecomputeSongBpmTime()
         {
             var njs = CustomNoteJumpMovementSpeed?.AsFloat
-                ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
+                ?? BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
             var offset = CustomNoteJumpStartBeatOffset?.AsFloat
-                ?? BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
-            var bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                ?? BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteStartBeatOffset;
+            var bpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
             Hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
             // (5 / 3) * njs * (60 / bpm) = 100
             EditorScale = 100f * njs / bpm;

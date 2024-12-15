@@ -10,5 +10,6 @@ public enum CountersPlusStatistic
     BpmEvents = 8,
     Selection = 16,
     Arcs = 32,
-    Chains = 64
+    Chains = 64,
+    NJSEvents = 128
 }

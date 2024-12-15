@@ -9,16 +9,16 @@ public class CurrentDifficultyDisplay : MonoBehaviour
     private void Awake()
     {
         textMesh = GetComponent<TextMeshProUGUI>();
-        BeatSaberSong.DifficultyBeatmap data = BeatSaberSongContainer.Instance.DifficultyData;
-        BeatSaberSong song = BeatSaberSongContainer.Instance.Song;
+        var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+        var info = BeatSaberSongContainer.Instance.Info;
 
-        string songStr = (song.SongSubName != "")
-            ? $"{song.SongAuthorName} - {song.SongName} {song.SongSubName}\n"
-            : $"{song.SongAuthorName} - {song.SongName}\n";
+        string songStr = (info.SongSubName != "")
+            ? $"{info.SongAuthorName} - {info.SongName} {info.SongSubName}\n"
+            : $"{info.SongAuthorName} - {info.SongName}\n";
 
-        string diffStr = (data.CustomData != null && data.CustomData.HasKey("_difficultyLabel"))
-            ? $"{data.CustomData["_difficultyLabel"].Value} - [{data.Difficulty}]"
-            : $"[{data.Difficulty}]";
+        string diffStr = (!string.IsNullOrWhiteSpace(infoDifficulty.CustomLabel))
+            ? $"{infoDifficulty.CustomData["_difficultyLabel"].Value} - [{infoDifficulty.Difficulty}]"
+            : $"[{infoDifficulty.Difficulty}]";
 
         string display = "";
 

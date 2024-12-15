@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Info;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -269,11 +270,11 @@ public class PersistentUI : MonoBehaviour
 
     #region loading
 
-    public static void UpdateBackground(BeatSaberSong song)
+    public static void UpdateBackground(BaseInfo info)
     {
         if (Instance.editorLoadingBackground.gameObject.activeSelf == false)
             Instance.editorLoadingBackground.gameObject.SetActive(true);
-        Instance.editorLoadingBackground.sprite = Instance.editorImageList.GetBgSprite(song);
+        Instance.editorLoadingBackground.sprite = Instance.editorImageList.GetBgSprite(info);
     }
 
     public Coroutine FadeInLoadingScreen()

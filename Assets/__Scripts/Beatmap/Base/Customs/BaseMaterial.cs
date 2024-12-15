@@ -47,31 +47,31 @@ namespace Beatmap.Base.Customs
         public string KeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2Material.KeyColor,
-            3 => V3Material.KeyColor
+            3 or 4 => V3Material.KeyColor
         };
 
         public string KeyShader => Settings.Instance.MapVersion switch
         {
             2 => V2Material.KeyShader,
-            3 => V3Material.KeyShader
+            3 or 4 => V3Material.KeyShader
         };
 
         public string KeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2Material.KeyTrack,
-            3 => V3Material.KeyTrack
+            3 or 4 => V3Material.KeyTrack
         };
 
         public string KeyShaderKeywords => Settings.Instance.MapVersion switch
         {
             2 => V2Material.KeyShaderKeywords,
-            3 => V3Material.KeyShaderKeywords
+            3 or 4 => V3Material.KeyShaderKeywords
         };
 
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2Material.ToJson(this),
-            3 => V3Material.ToJson(this)
+            3 or 4 => V3Material.ToJson(this)
         };
 
         public override BaseItem Clone() => new BaseMaterial(this);

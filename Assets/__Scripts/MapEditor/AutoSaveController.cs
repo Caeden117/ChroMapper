@@ -10,8 +10,10 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using QuestDumper;
 using SimpleJSON;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
@@ -36,9 +38,11 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     private int objectsCheckIsComplete = FALSE;
     private int saveFlag = (int)SaveType.None;
 
-    private string saveWarningMessage; 
+    private string saveWarningMessage;
+    private string localizedSaveWarningHeader;
+    private string localizedSaveWarningSubHeader;
 
-    private static MapExporter Exporter => new MapExporter(BeatSaberSongContainer.Instance.Song);
+    private static MapExporter Exporter => new(BeatSaberSongContainer.Instance.Info);
 
     public enum SaveType
     {
@@ -50,17 +54,20 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     // Use this for initialization
     private void Start()
     {
+        localizedSaveWarningHeader = LocalizationSettings.StringDatabase.GetLocalizedString("Mapper", "unsupported.properties.warning.header");
+        localizedSaveWarningSubHeader = LocalizationSettings.StringDatabase.GetLocalizedString("Mapper", "unsupported.properties.warning.subheader");
+        
         autoSaveToggle.isOn = Settings.Instance.AutoSave;
         t = 0;
 
-        var autoSavesDir = Path.Combine(BeatSaberSongContainer.Instance.Song.Directory, "autosaves");
+        var autoSavesDir = Path.Combine(BeatSaberSongContainer.Instance.Info.Directory, "autosaves");
         if (Directory.Exists(autoSavesDir))
         {
             foreach (var dir in Directory.EnumerateDirectories(autoSavesDir))
                 currentAutoSaves.Add(new DirectoryInfo(dir));
         }
 
-        maxSongBpmTime = BeatSaberSongContainer.Instance.LoadedSong.length * BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 60;
+        maxSongBpmTime = BeatSaberSongContainer.Instance.LoadedSong.length * BeatSaberSongContainer.Instance.Info.BeatsPerMinute / 60;
 
         CleanAutosaves();
     }
@@ -285,60 +292,106 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     private void DisplayWarningIfIncompatibleDataIsPresent()
     {
+        var map = BeatSaberSongContainer.Instance.Map; 
+        var stringBuilder = new StringBuilder();
         switch (Settings.Instance.MapVersion)
         {
             case 2:
-                var stringBuilder = new StringBuilder();
-                var map = BeatSaberSongContainer.Instance.Map; 
-
                 if (map.Notes.Any(note => note.AngleOffset != 0))
                 {
-                    stringBuilder.AppendLine("* Note Angle Offset");
+                    stringBuilder.AppendLine("* Note Angle Offset (v3/v4)");
                 }
 
                 if (map.Obstacles.Any(obs => obs.PosY != (int)GridY.Base && obs.PosY != (int)GridY.Top))
                 {
-                    stringBuilder.AppendLine("* Obstacle Y position");
+                    stringBuilder.AppendLine("* Obstacle Y position (v3/v4)");
                 }
                 
                 if (map.Obstacles.Any(obs =>
                         (obs.PosY == (int)GridY.Base && obs.Height < (int)ObstacleHeight.Full) ||
                         (obs.PosY == (int)GridY.Top && obs.Height < (int)ObstacleHeight.Crouch)))
                 {
-                    stringBuilder.AppendLine("* Obstacle Height");
+                    stringBuilder.AppendLine("* Obstacle Height (v3/v4)");
                 }
 
                 if (map.Chains.Any())
                 {
-                    stringBuilder.AppendLine("* Chains");
+                    stringBuilder.AppendLine("* Chains (v3/v4)");
                 }
                 
                 if (map.Arcs.Any())
                 {
-                    stringBuilder.AppendLine("* Arcs");
+                    stringBuilder.AppendLine("* Arcs (v3/v4)");
                 }
 
                 if (map.LightColorEventBoxGroups.Any() || map.LightRotationEventBoxGroups.Any() ||
                     map.LightTranslationEventBoxGroups.Any())
                 {
-                    stringBuilder.AppendLine("* Group Lighting");
+                    stringBuilder.AppendLine("* Group Lighting (v3/v4)");
                 }
 
-                if (stringBuilder.Length != 0)
+                if (map.Notes.Any(obj => obj.Rotation != 0)
+                    || map.Obstacles.Any(obj => obj.Rotation != 0)
+                    || map.Events.Any(obj => obj.Rotation != 0)
+                    || map.Arcs.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0)
+                    || map.Chains.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0))
                 {
-                    // TODO: Localise this string somehow? Can only access localisation string on main thread :(
-                    stringBuilder.Insert(0, "Warning\nThe following properties are not saved in v2 format:\n");
-                    stringBuilder.AppendLine("Save in v3 or v4 format to ensure data is not lost.");
+                    stringBuilder.AppendLine("* Rotation Properties (v4)");
                 }
-
-                saveWarningMessage = stringBuilder.ToString();
-
                 break;
             
             case 3:
-                // No vanilla v2 features are unsupported in v3
+                if (map.Notes.Any(obj => obj.Rotation != 0)
+                    || map.Obstacles.Any(obj => obj.Rotation != 0)
+                    || map.Events.Any(obj => obj.Rotation != 0)
+                    || map.Arcs.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0)
+                    || map.Chains.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0))
+                {
+                    stringBuilder.AppendLine("Rotation Properties (v4)");
+                }
+                break;
+            
+            case 4:
+                if (map.Events.Any(e => e.IsLaneRotationEvent()))
+                {
+                    stringBuilder.AppendLine("* Lane Rotation Event (v2/v3)");
+                }
+                
+                // v4 doesn't support customData at all yet
+                if (map.Notes.Any(n => n.CustomData.Count > 0)
+                    || map.Obstacles.Any(o => o.CustomData.Count > 0)
+                    || map.Events.Any(e => e.CustomData.Count > 0)
+                    || map.Arcs.Any(c => c.CustomData.Count > 0)
+                    || map.Chains.Any(c => c.CustomData.Count > 0))
+                {
+                    stringBuilder.AppendLine("* Object CustomData (v2/v3)");
+                }
+
+                if (map.Bookmarks.Any())
+                {
+                    stringBuilder.AppendLine("* Custom Bookmarks (v2/v3)");
+                }
+
+                if (map.EnvironmentEnhancements.Any())
+                {
+                    stringBuilder.AppendLine("* Environment Enhancements (v2/v3)");
+                }
+
+                if (map.CustomEvents.Any())
+                {
+                    stringBuilder.AppendLine("* Custom Events (v2/v3)");
+                }
+                
                 break;
         }
+        
+        if (stringBuilder.Length != 0)
+        {
+            stringBuilder.Insert(0, string.Format(localizedSaveWarningHeader, Settings.Instance.MapVersion));
+            stringBuilder.AppendLine(localizedSaveWarningSubHeader);
+        }
+        
+        saveWarningMessage = stringBuilder.ToString();
     }
 
     public void Save(bool auto = false)
@@ -364,20 +417,20 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
                 //Saving Map Data
                 var originalMap = BeatSaberSongContainer.Instance.Map.DirectoryAndFile;
-                var originalSong = BeatSaberSongContainer.Instance.Song.Directory;
+                var originalInfo = BeatSaberSongContainer.Instance.Info.Directory;
 
                 try
                 {
                     if (auto)
                     {
-                        var autoSaveDir = Path.Combine(originalSong, "autosaves", $"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}");
+                        var autoSaveDir = Path.Combine(originalInfo, "autosaves", $"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}");
 
                         Debug.Log($"Auto saved to: {autoSaveDir}");
                         //We need to create the autosave directory before we can save the .dat difficulty into it.
                         Directory.CreateDirectory(autoSaveDir);
                         BeatSaberSongContainer.Instance.Map.DirectoryAndFile = Path.Combine(autoSaveDir,
-                            BeatSaberSongContainer.Instance.DifficultyData.BeatmapFilename);
-                        BeatSaberSongContainer.Instance.Song.Directory = autoSaveDir;
+                            BeatSaberSongContainer.Instance.MapDifficultyInfo.BeatmapFileName);
+                        BeatSaberSongContainer.Instance.Info.Directory = autoSaveDir;
 
                         var newDirectoryInfo = new DirectoryInfo(autoSaveDir);
                         currentAutoSaves.Add(newDirectoryInfo);
@@ -391,20 +444,21 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
                     BeatSaberSongContainer.Instance.Map.Save();
 
-                    var set = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet; //Grab our set
-                    BeatSaberSongContainer.Instance.Song.DifficultyBeatmapSets.Remove(set); //Yeet it out
-                    var data = BeatSaberSongContainer.Instance.DifficultyData; //Grab our diff data
-                    set.DifficultyBeatmaps.Remove(data); //Yeet out our difficulty data
-                    if (BeatSaberSongContainer.Instance.DifficultyData.CustomData ==
+                    var set = BeatSaberSongContainer.Instance.MapDifficultyInfo.ParentSet; //Grab our set
+                    BeatSaberSongContainer.Instance.Info.DifficultySets.Remove(set); //Yeet it out
+                    var data = BeatSaberSongContainer.Instance.MapDifficultyInfo; //Grab our diff data
+                    set.Difficulties.Remove(data); //Yeet out our difficulty data
+                    if (BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData ==
                         null) //if for some reason this be null, make new customdata
                     {
-                        BeatSaberSongContainer.Instance.DifficultyData.CustomData = new JSONObject();
+                        BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData = new JSONObject();
                     }
 
-                    set.DifficultyBeatmaps.Add(BeatSaberSongContainer.Instance
-                        .DifficultyData); //Add back our difficulty data
-                    BeatSaberSongContainer.Instance.Song.DifficultyBeatmapSets.Add(set); //Add back our difficulty set
-                    BeatSaberSongContainer.Instance.Song.SaveSong(); //Save
+                    set.Difficulties.Add(BeatSaberSongContainer.Instance
+                        .MapDifficultyInfo); //Add back our difficulty data
+                    BeatSaberSongContainer.Instance.Info.DifficultySets.Add(set); //Add back our difficulty set
+                    BeatSaberSongContainer.Instance.Info.Save(); //Save
+                    // TODO: Make sure this works for v4
 
                 }
                 catch (Exception ex)
@@ -414,7 +468,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 }
 
                 // Revert directory if it was changed by autosave
-                BeatSaberSongContainer.Instance.Song.Directory = originalSong;
+                BeatSaberSongContainer.Instance.Info.Directory = originalInfo;
                 BeatSaberSongContainer.Instance.Map.DirectoryAndFile = originalMap;
 
                 notification.SkipDisplay = true;

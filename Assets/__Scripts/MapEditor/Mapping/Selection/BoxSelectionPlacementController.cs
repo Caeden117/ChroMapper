@@ -93,6 +93,7 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
             TestForType<BPMChangePlacement>(hit, ObjectType.BpmChange);
             TestForType<ArcPlacement>(hit, ObjectType.Arc);
             TestForType<ChainPlacement>(hit, ObjectType.Chain);
+            TestForType<NJSEventPlacement>(hit, ObjectType.NJSEvent);
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
             var localScale = instantiatedContainer.transform.localScale;

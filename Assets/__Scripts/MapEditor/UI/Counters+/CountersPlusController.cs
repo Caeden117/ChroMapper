@@ -14,6 +14,7 @@ public class CountersPlusController : MonoBehaviour
     [SerializeField] private ArcGridContainer arcGrid;
     [SerializeField] private ChainGridContainer chainGrid;
     [SerializeField] private BPMChangeGridContainer bpm;
+    // [SerializeField] private NJSEventGridContainer njsEventGrid;
     [SerializeField] private AudioSource cameraAudioSource;
     [SerializeField] private AudioTimeSyncController atsc;
 
@@ -78,13 +79,15 @@ public class CountersPlusController : MonoBehaviour
     public int EventCount => eventGrid.MapObjects.Count;
 
     public int BPMCount => bpm.MapObjects.Count;
+    
+    // public int NJSEventCount => njsEventGrid.MapObjects.Count;
 
     public int SelectedCount => SelectionController.SelectedObjects.Count;
 
     public float OverallSPS => swingsPerSecond.Total.Overall;
 
     public float CurrentBPM
-        => bpm.FindLastBpm(atsc.CurrentSongBpmTime)?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        => bpm.FindLastBpm(atsc.CurrentSongBpmTime)?.Bpm ?? BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
 
     public float RedBlueRatio
     {
@@ -160,6 +163,10 @@ public class CountersPlusController : MonoBehaviour
 
             if ((stringRefreshQueue & CountersPlusStatistic.Chains) != 0)
                 chainString.StringReference.RefreshString();
+            
+            // TODO: Add NJSEvents here
+            // if ((stringRefreshQueue & CountersPlusStatistic.NJSEvents) != 0)
+            //     njsEventsString.StringReference.RefreshString();
 
             stringRefreshQueue = 0;
         }

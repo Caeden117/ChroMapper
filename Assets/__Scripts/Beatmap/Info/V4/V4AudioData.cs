@@ -59,7 +59,7 @@ namespace Beatmap.Info
             json["songSampleCount"] = bpmInfo.AudioSamples;
             json["songFrequency"] = bpmInfo.AudioFrequency;
             
-            var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+            var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
             var precision = Settings.Instance.BpmTimeValueDecimalPrecision;
             
             var bpmData = new JSONArray();

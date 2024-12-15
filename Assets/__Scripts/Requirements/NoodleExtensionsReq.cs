@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using Beatmap.Base;
+using Beatmap.Info;
 using Beatmap.V3;
 
 public class NoodleExtensionsReq : HeckRequirementCheck
 {
     public override string Name => "Noodle Extensions";
 
-    public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map)
+    public override RequirementType IsRequiredOrSuggested(InfoDifficulty infoDifficulty, BaseDifficulty map)
     {
-        if (mapInfo is null) return RequirementType.None;
+        if (infoDifficulty is null) return RequirementType.None;
         return (map.IsNoodleExtensions() || HasNoodleTracks(map))
             ? RequirementType.Requirement
             : RequirementType.None;

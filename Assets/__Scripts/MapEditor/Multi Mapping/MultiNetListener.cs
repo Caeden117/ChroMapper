@@ -268,7 +268,7 @@ public class MultiNetListener : INetEventListener, IDisposable
             //    be corrected when playback stops.
             if (pose.IsPlayingSong)
             {
-                pose.SongPosition += BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 60 * Time.deltaTime * pose.PlayingSongSpeed;
+                pose.SongPosition += BeatSaberSongContainer.Instance.Info.BeatsPerMinute / 60 * Time.deltaTime * pose.PlayingSongSpeed;
 
                 UpdateMapperPose(mapper, pose);
             }

@@ -7,8 +7,8 @@ namespace Beatmap.Appearances
     [CreateAssetMenu(menuName = "Beatmap/Appearance/Chain Appearance SO", fileName = "ChainAppearanceSO")]
     public class ChainAppearanceSO : ScriptableObject
     {
-        public Color RedColor { get; private set; } = BeatSaberSong.DefaultLeftNote;
-        public Color BlueColor { get; private set; } = BeatSaberSong.DefaultRightNote;
+        public Color RedColor { get; private set; } = DefaultColors.LeftNote;
+        public Color BlueColor { get; private set; } = DefaultColors.RightNote;
 
         public void UpdateColor(Color red, Color blue)
         {

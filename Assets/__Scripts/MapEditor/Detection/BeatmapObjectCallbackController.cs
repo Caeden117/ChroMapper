@@ -65,9 +65,9 @@ public class BeatmapObjectCallbackController : MonoBehaviour
                 }
                 else
                 {
-                    var songNoteJumpSpeed = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
-                    var songStartBeatOffset = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpStartBeatOffset;
-                    var bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                    var songNoteJumpSpeed = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
+                    var songStartBeatOffset = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteStartBeatOffset;
+                    var bpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
                     Offset = SpawnParameterHelper.CalculateHalfJumpDuration(songNoteJumpSpeed, songStartBeatOffset, bpm);
                 }
             }

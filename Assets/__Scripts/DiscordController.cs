@@ -84,7 +84,7 @@ public class DiscordController : MonoBehaviour
 
         activity.Assets.LargeImage = platformDiscordID;
 
-        var jsonEnvironmentName = BeatSaberSongContainer.Instance.Song.EnvironmentName;
+        var jsonEnvironmentName = BeatSaberSongContainer.Instance.Info.EnvironmentName;
 
         var platformName = SongInfoEditUI.VanillaEnvironments
             .Find(x => x.JsonName == jsonEnvironmentName)?.HumanName ?? jsonEnvironmentName;
@@ -109,18 +109,17 @@ public class DiscordController : MonoBehaviour
                 details = "Viewing song list.";
                 break;
             case "02_SongEditMenu":
-                details = BeatSaberSongContainer.Instance.Song.SongName;
+                details = BeatSaberSongContainer.Instance.Info.SongName;
                 state = "Viewing song info.";
                 break;
             case "03_Mapper":
                 var songContainer = BeatSaberSongContainer.Instance;
 
-                var song = songContainer.Song;
-                var diff = songContainer.DifficultyData;
-                var beatmapSet = diff.ParentBeatmapSet;
+                var info = songContainer.Info;
+                var diff = songContainer.MapDifficultyInfo;
 
-                details = $"Editing {song.SongName}";
-                state = $"{beatmapSet.BeatmapCharacteristicName} {diff.Difficulty}";
+                details = $"Editing {info.SongName}";
+                state = $"{diff.Characteristic} {diff.Difficulty}";
                 break;
             case "04_Options":
                 details = "Editing ChroMapper options";

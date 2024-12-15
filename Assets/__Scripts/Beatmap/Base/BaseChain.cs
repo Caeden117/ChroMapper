@@ -152,7 +152,7 @@ namespace Beatmap.Base
 
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
-            3 => V3Chain.ToJson(this)
+            3 or 4 => V3Chain.ToJson(this)
         };
 
         public override BaseItem Clone()

@@ -22,7 +22,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
     private void Start()
     {
         collections = moveableGridTransform.GetComponents<BeatmapObjectContainerCollection>();
-        currentBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        currentBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
         SetAccurateEditorScale(Settings.Instance.NoteJumpSpeedForEditorScale); // seems weird but it does what we need
         Settings.NotifyBySettingName("EditorScale", UpdateEditorScale);
         Settings.NotifyBySettingName("EditorScaleBPMIndependent", RecalcEditorScale);
@@ -73,7 +73,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
         if (enabled)
         {
             var bps = 60f / currentBpm;
-            var songNoteJumpSpeed = BeatSaberSongContainer.Instance.DifficultyData.NoteJumpMovementSpeed;
+            var songNoteJumpSpeed = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
 
             // When doing the math, it turns out that this all cancels out into what you see
             // We don't know where the hell 5/3 comes from, yay for magic numbers

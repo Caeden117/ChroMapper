@@ -32,7 +32,7 @@ namespace Beatmap.V2
                 if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
                 {
                     var insertedBpm = (BeatSaberSongContainer.Instance != null)
-                        ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        ? BeatSaberSongContainer.Instance.Info.BeatsPerMinute
                         : 100; // This path only appears in tests
                     allEvents.Add(new BaseBpmEvent
                     {
@@ -129,7 +129,7 @@ namespace Beatmap.V2
 
             if (difficulty.Time > 0) customData["_time"] = Math.Round(difficulty.Time, 3);
 
-            BeatSaberSong.CleanObject(customData);
+            SimpleJSONHelper.CleanObject(customData);
 
             return customData;
         }

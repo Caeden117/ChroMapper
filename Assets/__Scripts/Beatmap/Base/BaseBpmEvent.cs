@@ -70,7 +70,7 @@ namespace Beatmap.Base
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2BpmEvent.ToJson(this),
-            3 => V3BpmEvent.ToJson(this)
+            3 or 4 => V3BpmEvent.ToJson(this)
         };
 
         public override BaseItem Clone() {
