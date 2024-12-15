@@ -51,16 +51,16 @@ namespace Tests
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
 
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            BaseBpmEvent baseBpmEvent = new V3BpmEvent(0, 111);
+            var baseBpmEvent = new BaseBpmEvent(0, 111);
             bpmCollection.SpawnObject(baseBpmEvent);
 
-            baseBpmEvent = new V3BpmEvent(1, 222);
+            baseBpmEvent = new BaseBpmEvent(1, 222);
             bpmCollection.SpawnObject(baseBpmEvent);
 
-            baseBpmEvent = new V3BpmEvent(2, 333);
+            baseBpmEvent = new BaseBpmEvent(2, 333);
             bpmCollection.SpawnObject(baseBpmEvent);
 
-            baseBpmEvent = new V3BpmEvent(3, 444);
+            baseBpmEvent = new BaseBpmEvent(3, 444);
             bpmCollection.SpawnObject(baseBpmEvent);
 
             Assert.AreEqual(4, bpmCollection.MapObjects.Count);
@@ -69,7 +69,7 @@ namespace Tests
             CheckBPM("3rd BPM values", bpmCollection, 2, 2, 333, songBpm / 111 + songBpm / 222);
             CheckBPM("4th BPM values", bpmCollection, 3, 3, 444, songBpm / 111 + songBpm / 222 + songBpm / 333);
 
-            baseBpmEvent = new V3BpmEvent(0, 1);
+            baseBpmEvent = new BaseBpmEvent(0, 1);
             bpmCollection.SpawnObject(baseBpmEvent);
 
             Assert.AreEqual(4, bpmCollection.MapObjects.Count);
@@ -92,10 +92,10 @@ namespace Tests
             var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
             
-            BaseBpmEvent baseBpmEvent = new V3BpmEvent(20, 20);
+            BaseBpmEvent baseBpmEvent = new BaseBpmEvent(20, 20);
             bpmCollection.SpawnObject(baseBpmEvent);
 
-            baseBpmEvent = new V3BpmEvent(10, 10);
+            baseBpmEvent = new BaseBpmEvent(10, 10);
             bpmCollection.SpawnObject(baseBpmEvent);
 
             if (bpmCollection.LoadedContainers[baseBpmEvent] is BpmEventContainer container)
@@ -124,10 +124,10 @@ namespace Tests
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
             
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            BaseBpmEvent baseBpmEvent = new V3BpmEvent(0, 111);
+            BaseBpmEvent baseBpmEvent = new BaseBpmEvent(0, 111);
             bpmCollection.SpawnObject(baseBpmEvent);
 
-            baseBpmEvent = new V3BpmEvent(1, 222);
+            baseBpmEvent = new BaseBpmEvent(1, 222);
             bpmCollection.SpawnObject(baseBpmEvent);
 
             Assert.AreEqual(2, bpmCollection.MapObjects.Count);
@@ -162,13 +162,13 @@ namespace Tests
             var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
 
             var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-            var baseBpmEvent0 = new V3BpmEvent(0, 111);
+            var baseBpmEvent0 = new BaseBpmEvent(0, 111);
             bpmCollection.SpawnObject(baseBpmEvent0, out var conflicting0);
 
-            var baseBpmEvent1 = new V3BpmEvent(1, 222);
+            var baseBpmEvent1 = new BaseBpmEvent(1, 222);
             bpmCollection.SpawnObject(baseBpmEvent1, out var conflicting1);
 
-            var baseBpmEvent2 = new V3BpmEvent(2, 333);
+            var baseBpmEvent2 = new BaseBpmEvent(2, 333);
             bpmCollection.SpawnObject(baseBpmEvent2, out var conflicting2);
 
             BeatmapActionContainer.AddAction(new ActionCollectionAction(new List<BeatmapAction>{

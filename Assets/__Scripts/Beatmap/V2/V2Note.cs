@@ -5,109 +5,54 @@ using SimpleJSON;
 
 namespace Beatmap.V2
 {
-    public class V2Note : BaseNote, V2Object
+    public class V2Note
     {
-        public V2Note() => CustomData = new JSONObject();
+        public const string CustomKeyAnimation = "_animation";
 
-        public V2Note(BaseNote other) : base(other) => ParseCustom();
+        public const string CustomKeyTrack = "_track";
 
-        public V2Note(BaseBombNote baseBomb) : base(baseBomb) => ParseCustom();
+        public const string CustomKeyColor = "_color";
 
-        public V2Note(JSONNode node)
+        public const string CustomKeyCoordinate = "_position";
+
+        public const string CustomKeyWorldRotation = "_rotation";
+
+        public const string CustomKeyLocalRotation = "_localRotation";
+
+        public const string CustomKeySpawnEffect = "_disableSpawnEffect";
+
+        public const string CustomKeyNoteJumpMovementSpeed = "_noteJumpMovementSpeed";
+
+        public const string CustomKeyNoteJumpStartBeatOffset = "_noteJumpStartBeatOffset";
+
+        public const string CustomKeyDirection = "_cutDirection";
+
+        public static BaseNote GetFromJson(JSONNode node)
         {
-            JsonTime = RetrieveRequiredNode(node, "_time").AsFloat;
-            PosX = RetrieveRequiredNode(node, "_lineIndex").AsInt;
-            PosY = RetrieveRequiredNode(node, "_lineLayer").AsInt;
-            Type = RetrieveRequiredNode(node, "_type").AsInt;
-            CutDirection = RetrieveRequiredNode(node, "_cutDirection").AsInt;
-            CustomData = node["_customData"];
-            InferColor();
-            ParseCustom();
+            var note = new BaseNote();
+            
+            note.JsonTime = BaseItem.GetRequiredNode(node, "_time").AsFloat;
+            note.PosX = BaseItem.GetRequiredNode(node, "_lineIndex").AsInt;
+            note.PosY = BaseItem.GetRequiredNode(node, "_lineLayer").AsInt;
+            note.Type = BaseItem.GetRequiredNode(node, "_type").AsInt;
+            note.CutDirection = BaseItem.GetRequiredNode(node, "_cutDirection").AsInt;
+            note.CustomData = node["_customData"];
+
+            return note;
         }
 
-        public V2Note(float time, int posX, int posY, int type, int cutDirection, JSONNode customData = null) : base(
-            time, posX, posY, type, cutDirection, customData) =>
-            ParseCustom();
-
-        public V2Note(float jsonTime, float songBpmTime, int posX, int posY, int type, int cutDirection,
-            JSONNode customData = null) : base(jsonTime, songBpmTime, posX, posY, type, cutDirection, customData) =>
-            ParseCustom();
-
-        public override string CustomKeyAnimation { get; } = "_animation";
-
-        public override string CustomKeyTrack { get; } = "_track";
-
-        public override string CustomKeyColor { get; } = "_color";
-
-        public override string CustomKeyCoordinate { get; } = "_position";
-
-        public override string CustomKeyWorldRotation { get; } = "_rotation";
-
-        public override string CustomKeyLocalRotation { get; } = "_localRotation";
-
-        public override string CustomKeySpawnEffect { get; } = "_disableSpawnEffect";
-
-        public override string CustomKeyNoteJumpMovementSpeed { get; } = "_noteJumpMovementSpeed";
-
-        public override string CustomKeyNoteJumpStartBeatOffset { get; } = "_noteJumpStartBeatOffset";
-
-        public override string CustomKeyDirection { get; } = "_cutDirection";
-
-        protected sealed override void ParseCustom()
-        {
-            base.ParseCustom();
-
-            CustomDirection = (CustomData?.HasKey(CustomKeyDirection) ?? false) ? CustomData?[CustomKeyDirection].AsInt : null;
-            CustomFake = (CustomData?.HasKey("_fake") ?? false) ? CustomData["_fake"].AsBool : false;
-        }
-
-        protected internal sealed override JSONNode SaveCustom()
-        {
-            CustomData = base.SaveCustom();
-            if (CustomDirection != null) CustomData[CustomKeyDirection] = CustomDirection; else CustomData.Remove(CustomKeyDirection);
-            if (CustomFake) CustomData["_fake"] = true; else CustomData.Remove("_fake");
-            return CustomData;
-        }
-
-        public override bool IsChroma() =>
-            CustomData != null &&
-            ((CustomData.HasKey("_color") && CustomData["_color"].IsArray) ||
-             (CustomData.HasKey("_disableSpawnEffect") && CustomData["_disableSpawnEffect"].IsBoolean));
-
-        public override bool IsNoodleExtensions() =>
-            CustomData != null &&
-            ((CustomData.HasKey("_cutDirection") && CustomData["_cutDirection"].IsNumber) ||
-             (CustomData.HasKey("_disableNoteGravity") && CustomData["_disableNoteGravity"].IsBoolean) ||
-             (CustomData.HasKey("_disableNoteLook") && CustomData["_disableNoteLook"].IsBoolean) ||
-             (CustomData.HasKey("_flip") && CustomData["_flip"].IsArray) ||
-             (CustomData.HasKey("_fake") && CustomData["_fake"].IsBoolean) ||
-             (CustomData.HasKey("_interactable") && CustomData["_interactable"].IsBoolean) ||
-             (CustomData.HasKey("_localRotation") && CustomData["_localRotation"].IsArray) ||
-             (CustomData.HasKey("_noteJumpMovementSpeed") && CustomData["_noteJumpMovementSpeed"].IsNumber) ||
-             (CustomData.HasKey("_noteJumpStartBeatOffset") &&
-              CustomData["_noteJumpStartBeatOffset"].IsNumber) ||
-             (CustomData.HasKey("_position") && CustomData["_position"].IsArray) ||
-             (CustomData.HasKey("_rotation") &&
-              (CustomData["_rotation"].IsArray || CustomData["_rotation"].IsNumber)));
-
-        public override bool IsMappingExtensions() =>
-            (PosX < 0 || PosX > 3 || PosY < 0 || PosY > 2 || (CutDirection >= 1000 && CutDirection <= 1360)) &&
-            !IsNoodleExtensions();
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseNote note)
         {
             JSONNode node = new JSONObject();
-            node["_time"] = JsonTime;
-            node["_lineIndex"] = PosX;
-            node["_lineLayer"] = PosY;
-            node["_type"] = Type;
-            node["_cutDirection"] = CutDirection;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["_customData"] = CustomData;
+            node["_time"] = note.JsonTime;
+            node["_lineIndex"] = note.PosX;
+            node["_lineLayer"] = note.PosY;
+            node["_type"] = note.Type;
+            node["_cutDirection"] = note.CutDirection;
+            note.CustomData = note.SaveCustom();
+            if (!note.CustomData.Children.Any()) return node;
+            node["_customData"] = note.CustomData;
             return node;
         }
-
-        public override BaseItem Clone() => new V2Note(JsonTime, SongBpmTime, PosX, PosY, Type, CutDirection, SaveCustom().Clone());
     }
 }

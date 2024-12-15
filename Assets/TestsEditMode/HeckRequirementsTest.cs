@@ -15,7 +15,7 @@ namespace TestsEditMode
         {
         }
 
-        private V3Difficulty _difficulty;
+        private BaseDifficulty _difficulty;
         private BeatSaberSong.DifficultyBeatmap _info;
 
         private HeckRequirementCheck _chromaReq, _noodleReq;
@@ -30,16 +30,9 @@ namespace TestsEditMode
         [SetUp]
         public void SetupMop()
         {
-            _difficulty = new V3Difficulty { MainNode = new JSONObject() };
+            Settings.Instance.MapVersion = 3;
+            _difficulty = new BaseDifficulty();
             _info = new BeatSaberSong.DifficultyBeatmap(new BeatSaberSong.DifficultyBeatmapSet());
-        }
-
-        // Ensures the custom properties are filled with things from the custom data.
-        // This is normally done in editor saving workflow but these tests aren't called from editor saving.
-        private void RefreshCustomData()
-        {
-            _difficulty.Notes.ForEach(x => x.RefreshCustom());
-            _difficulty.CustomEvents.ForEach(x => x.RefreshCustom());
         }
 
         [Test]
@@ -47,7 +40,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -57,7 +50,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -67,7 +60,7 @@ namespace TestsEditMode
                         ["dissolve"] = 0,
                     }
                 },
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AssignPathAnimation",
                     Data = new JSONObject
@@ -79,7 +72,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -90,7 +82,7 @@ namespace TestsEditMode
         {
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = trackType,
                     Data = new JSONObject
@@ -101,7 +93,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreNotEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -112,7 +103,7 @@ namespace TestsEditMode
         {
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = trackType,
                     Data = new JSONObject
@@ -123,7 +114,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -133,7 +123,7 @@ namespace TestsEditMode
         {
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AssignTrackParent",
                     Data = new JSONObject
@@ -147,7 +137,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -159,7 +148,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -169,7 +158,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -180,7 +169,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -190,7 +178,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -200,7 +188,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -211,7 +199,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -221,7 +208,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -231,7 +218,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -242,7 +229,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -252,7 +238,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -262,7 +248,7 @@ namespace TestsEditMode
             };
             _difficulty.CustomEvents = new List<BaseCustomEvent>
             {
-                new V3CustomEvent
+                new BaseCustomEvent
                 {
                     Type = "AnimateTrack",
                     Data = new JSONObject
@@ -274,7 +260,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -284,7 +269,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -296,7 +281,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.Suggestion, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }
@@ -308,7 +292,7 @@ namespace TestsEditMode
         {
             _difficulty.Notes = new List<BaseNote>
             {
-                new V3ColorNote
+                new BaseNote
                 {
                     CustomData = new JSONObject
                     {
@@ -320,7 +304,6 @@ namespace TestsEditMode
                 }
             };
 
-            RefreshCustomData();
             Assert.AreEqual(RequirementCheck.RequirementType.None, _chromaReq.IsRequiredOrSuggested(_info, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.Requirement, _noodleReq.IsRequiredOrSuggested(_info, _difficulty));
         }

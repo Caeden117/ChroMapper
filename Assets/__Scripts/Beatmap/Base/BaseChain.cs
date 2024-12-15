@@ -1,13 +1,15 @@
 using System;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using Beatmap.Helper;
+using Beatmap.V3;
 using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseChain : BaseSlider, ICustomDataChain
+    public class BaseChain : BaseSlider, ICustomDataChain
     {
         public override void Serialize(NetDataWriter writer)
         {
@@ -25,11 +27,11 @@ namespace Beatmap.Base
 
         public static readonly Vector3 ChainScale = new Vector3(1.5f, 0.8f, 1.5f);
 
-        protected BaseChain()
+        public BaseChain()
         {
         }
 
-        protected BaseChain(BaseChain other)
+        public BaseChain(BaseChain other)
         {
             SetTimes(other.JsonTime, other.SongBpmTime);
             Color = other.Color;
@@ -41,10 +43,10 @@ namespace Beatmap.Base
             TailPosY = other.TailPosY;
             SliceCount = other.SliceCount;
             Squish = other.Squish;
-            CustomData = other.SaveCustom().Clone();
+            CustomData = other.CustomData.Clone();
         }
 
-        protected BaseChain(BaseNote start, BaseNote end)
+        public BaseChain(BaseNote start, BaseNote end)
         {
             SetTimes(start.JsonTime, start.SongBpmTime);
             Color = start.Color;
@@ -59,26 +61,13 @@ namespace Beatmap.Base
             CustomData = SaveCustomFromNotes(start, end);
         }
 
-        protected BaseChain(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
-            float tailTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null) :
-            base(time, posX, posY, color, cutDirection, angleOffset, tailTime, tailPosX, tailPosY, customData)
-        {
-            SliceCount = sliceCount;
-            Squish = squish;
-        }
-
-        protected BaseChain(float jsonTime, float songBpmTime, int posX, int posY, int color, int cutDirection, int angleOffset,
-            float tailJsonTime, float tailSongBpmTime, int tailPosX, int tailPosY, int sliceCount, float squish, JSONNode customData = null) :
-            base(jsonTime, songBpmTime, posX, posY, color, cutDirection, angleOffset, tailJsonTime, tailSongBpmTime, tailPosX, tailPosY, customData)
-        {
-            SliceCount = sliceCount;
-            Squish = squish;
-        }
+        // Used for Node Editor
+        public BaseChain(JSONNode node) : this(BeatmapFactory.Chain(node)) {}
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Chain;
         public int SliceCount { get; set; }
         public float Squish { get; set; }
-
+        
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
             if (other is BaseChain chain)
@@ -90,6 +79,46 @@ namespace Beatmap.Base
 
             return false;
         }
+
+        public override string CustomKeyColor => V3Chain.CustomKeyColor;
+        public override string CustomKeyTrack => V3Chain.CustomKeyTrack;
+        public override string CustomKeyTailCoordinate => V3Chain.CustomKeyTailCoordinate;
+        public override string CustomKeyAnimation => V3Chain.CustomKeyAnimation;
+        public override string CustomKeyCoordinate => V3Chain.CustomKeyCoordinate;
+        public override string CustomKeyWorldRotation => V3Chain.CustomKeyWorldRotation;
+        public override string CustomKeyLocalRotation => V3Chain.CustomKeyLocalRotation;
+        public override string CustomKeySpawnEffect => V3Chain.CustomKeySpawnEffect;
+        public override string CustomKeyNoteJumpMovementSpeed => V3Chain.CustomKeyNoteJumpMovementSpeed;
+        public override string CustomKeyNoteJumpStartBeatOffset => V3Chain.CustomKeyNoteJumpStartBeatOffset;
+        
+        public override bool IsChroma() =>
+            CustomData != null &&
+            ((CustomData.HasKey(CustomKeyColor) && CustomData[CustomKeyColor].IsArray) ||
+             (CustomData.HasKey(CustomKeySpawnEffect) && CustomData[CustomKeySpawnEffect].IsBoolean) ||
+             (CustomData.HasKey("disableDebris") && CustomData["disableDebris"].IsBoolean));
+
+        public override bool IsNoodleExtensions() =>
+            CustomData != null &&
+            ((CustomData.HasKey("disableNoteGravity") && CustomData["disableNoteGravity"].IsBoolean) ||
+             (CustomData.HasKey("disableNoteLook") && CustomData["disableNoteLook"].IsBoolean) ||
+             (CustomData.HasKey("flip") && CustomData["flip"].IsArray) ||
+             (CustomData.HasKey("uninteractable") && CustomData["uninteractable"].IsBoolean) ||
+             (CustomData.HasKey(CustomKeyLocalRotation) && CustomData[CustomKeyLocalRotation].IsArray) ||
+             (CustomData.HasKey(CustomKeyNoteJumpMovementSpeed) && CustomData[CustomKeyNoteJumpMovementSpeed].IsNumber) ||
+             (CustomData.HasKey(CustomKeyNoteJumpStartBeatOffset) &&
+              CustomData[CustomKeyNoteJumpStartBeatOffset].IsNumber) ||
+             (CustomData.HasKey(CustomKeyCoordinate) && CustomData[CustomKeyCoordinate].IsArray) ||
+             (CustomData.HasKey(CustomKeyWorldRotation) &&
+              (CustomData[CustomKeyWorldRotation].IsArray || CustomData[CustomKeyWorldRotation].IsNumber)));
+
+        public override bool IsMappingExtensions() =>
+            (PosX <= -1000 || PosX >= 1000 || PosY < 0 || PosY > 2 ||
+             TailPosX <= -1000 || TailPosX >= 1000 || TailPosY < 0 || TailPosY > 2 ||
+             (CutDirection >= 1000 && CutDirection <= 1360) ||
+             (CutDirection >= 2000 && CutDirection <= 2360)) &&
+            !IsNoodleExtensions();
+        
+        
 
         public override void Apply(BaseObject originalData)
         {
@@ -119,6 +148,18 @@ namespace Beatmap.Base
             if (comparison == 0) comparison = string.Compare(CustomData?.ToString(), chain.CustomData?.ToString(), StringComparison.Ordinal);
 
             return comparison;
+        }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3Chain.ToJson(this)
+        };
+
+        public override BaseItem Clone()
+        {
+            var chain = new BaseChain(this);
+            chain.ParseCustom();
+            return chain;
         }
     }
 }

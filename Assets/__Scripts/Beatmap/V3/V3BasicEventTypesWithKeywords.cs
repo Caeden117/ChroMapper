@@ -4,32 +4,26 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3BasicEventTypesWithKeywords : BaseEventTypesWithKeywords, V3Object
+    public class V3BasicEventTypesWithKeywords
     {
-        public V3BasicEventTypesWithKeywords()
+        public static BaseEventTypesWithKeywords GetFromJson(JSONNode node)
         {
-        }
-
-        public V3BasicEventTypesWithKeywords(BaseEventTypesWithKeywords other) : base(other)
-        {
-        }
-
-        public V3BasicEventTypesWithKeywords(JSONNode node)
-        {
+            var withKeywords = new BaseEventTypesWithKeywords();
+            
             if (node.HasKey("d"))
-                Keywords = node["d"].AsArray.Linq
-                    .Select(x => new V3BasicEventTypesForKeywords(x) as BaseEventTypesForKeywords).ToArray();
-            else Keywords = new BaseEventTypesForKeywords[]{};
+                withKeywords.Keywords = node["d"].AsArray.Linq
+                    .Select(x => V3BasicEventTypesForKeywords.GetFromJson(x.Value)).ToArray();
+            else withKeywords.Keywords = new BaseEventTypesForKeywords[]{};
+
+            return withKeywords;
         }
 
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseEventTypesWithKeywords withKeywords)
         {
             JSONNode node = new JSONObject();
             node["d"] = new JSONArray();
-            foreach (var k in Keywords) node["d"].Add(k.ToJson());
+            foreach (var k in withKeywords.Keywords) node["d"].Add(V3BasicEventTypesForKeywords.ToJson(k));
             return node;
         }
-
-        public override BaseItem Clone() => new V3BasicEventTypesWithKeywords(ToJson());
     }
 }

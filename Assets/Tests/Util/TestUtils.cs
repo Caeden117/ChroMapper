@@ -50,7 +50,7 @@ namespace Tests.Util
                     SceneManager.GetActiveScene().name.StartsWith("01") && !SceneTransitionManager.IsLoading);
             }
 
-            Settings.TestRunnerSettings.Load_MapV3 = version == 3;
+            Settings.TestRunnerSettings.MapVersion = version;
 
             yield return LoadMapper();
         }

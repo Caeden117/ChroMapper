@@ -4,63 +4,42 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3LightTranslationEventBox : BaseLightTranslationEventBox, V3Object
+    public static class V3LightTranslationEventBox
     {
-        public V3LightTranslationEventBox()
+        public static BaseLightTranslationEventBox GetFromJson(JSONNode node)
         {
+            var box = new BaseLightTranslationEventBox();
+            
+            box.IndexFilter = V3IndexFilter.GetFromJson(BaseItem.GetRequiredNode(node, "f"));
+            box.BeatDistribution = node["w"].AsFloat;
+            box.BeatDistributionType = node["d"].AsInt;
+            box.TranslationDistribution = node["s"].AsFloat;
+            box.TranslationDistributionType = node["t"].AsInt;
+            box.TranslationAffectFirst = node["b"].AsInt;
+            box.Axis = node["a"].AsInt;
+            box.Flip = node["r"].AsInt;
+            box.Easing = node["i"].AsInt;
+            box.Events = BaseItem.GetRequiredNode(node, "l").AsArray.Linq.Select(x => V3LightTranslationBase.GetFromJson(x.Value)).ToArray();
+
+            return box;
         }
 
-        public V3LightTranslationEventBox(JSONNode node)
-        {
-            IndexFilter = new V3IndexFilter(RetrieveRequiredNode(node, "f"));
-            BeatDistribution = node["w"].AsFloat;
-            BeatDistributionType = node["d"].AsInt;
-            TranslationDistribution = node["s"].AsFloat;
-            TranslationDistributionType = node["t"].AsInt;
-            TranslationAffectFirst = node["b"].AsInt;
-            Axis = node["a"].AsInt;
-            Flip = node["r"].AsInt;
-            Easing = node["i"].AsInt;
-            Events = RetrieveRequiredNode(node, "l").AsArray.Linq.Select(x => new V3LightTranslationBase(x)).ToArray();
-        }
-
-        public V3LightTranslationEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
-            float translationDistribution, int translationDistributionType, int translationAffectFirst, int axis,
-            int flip,
-            BaseLightTranslationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
-            translationDistribution, translationDistributionType, translationAffectFirst, axis, flip, events)
-        {
-        }
-
-        public V3LightTranslationEventBox(BaseIndexFilter indexFilter, float beatDistribution, int beatDistributionType,
-            float translationDistribution, int translationDistributionType, int translationAffectFirst, int axis,
-            int flip, int easing,
-            BaseLightTranslationBase[] events) : base(indexFilter, beatDistribution, beatDistributionType,
-            translationDistribution, translationDistributionType, translationAffectFirst, axis, flip, easing, events)
-        {
-        }
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(BaseLightTranslationEventBox box)
         {
             JSONNode node = new JSONObject();
-            node["f"] = IndexFilter.ToJson();
-            node["w"] = BeatDistribution;
-            node["d"] = BeatDistributionType;
-            node["s"] = TranslationDistribution;
-            node["t"] = TranslationDistributionType;
-            node["b"] = TranslationAffectFirst;
-            node["a"] = Axis;
-            node["r"] = Flip;
-            node["i"] = Easing;
+            node["f"] = box.IndexFilter.ToJson();
+            node["w"] = box.BeatDistribution;
+            node["d"] = box.BeatDistributionType;
+            node["s"] = box.TranslationDistribution;
+            node["t"] = box.TranslationDistributionType;
+            node["b"] = box.TranslationAffectFirst;
+            node["a"] = box.Axis;
+            node["r"] = box.Flip;
+            node["i"] = box.Easing;
             var ary = new JSONArray();
-            foreach (var k in Events) ary.Add(k.ToJson());
+            foreach (var k in box.Events) ary.Add(V3LightTranslationBase.ToJson(k));
             node["l"] = ary;
             return node;
         }
-
-        public override BaseItem Clone() =>
-            new V3LightTranslationEventBox((V3IndexFilter)IndexFilter.Clone(), BeatDistribution, BeatDistributionType,
-                TranslationDistribution, TranslationDistributionType, TranslationAffectFirst, Axis, Flip,
-                (V3LightTranslationBase[])Events.Clone());
     }
 }

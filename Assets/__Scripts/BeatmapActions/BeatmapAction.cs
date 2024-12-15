@@ -108,13 +108,19 @@ public abstract class BeatmapAction : INetSerializable
 
     protected virtual void RefreshEventAppearance()
     {
-        var events = Data.OfType<BaseEvent>();
+        var events = Data.OfType<BaseEvent>().ToList();
         if (!events.Any())
             return;
 
         var eventContainer = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
         eventContainer.MarkEventsToBeRelinked(events);
         eventContainer.LinkAllLightEvents();
-        eventContainer.RefreshEventsAppearance(events);
+        foreach (var evt in events)
+        {
+            if (evt.Prev != null && eventContainer.LoadedContainers.TryGetValue(evt.Prev, out var evtPrevContainer))
+                (evtPrevContainer as EventContainer).RefreshAppearance();
+            if (eventContainer.LoadedContainers.TryGetValue(evt, out var evtContainer))
+                (evtContainer as EventContainer).RefreshAppearance();
+        }
     }
 }

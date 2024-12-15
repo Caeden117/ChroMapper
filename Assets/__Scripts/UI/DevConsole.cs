@@ -144,11 +144,20 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         StartCoroutine(nameof(ScrollToBottom));
     }
 
-    public void OpenFolder()
+    // grumble grumble grumble im not feeling like doing this right
+    public static void OpenFolder(string subfolder = null)
     {
         try
         {
             var path = Application.persistentDataPath;
+
+            if (!string.IsNullOrWhiteSpace(subfolder))
+            {
+                path = Path.Combine(path, subfolder);
+            }
+
+            Directory.CreateDirectory(subfolder);
+
             OSTools.OpenFileBrowser(path);
         }
         catch

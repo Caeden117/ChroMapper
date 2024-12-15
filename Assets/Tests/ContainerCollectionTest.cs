@@ -39,12 +39,12 @@ namespace Tests
             var noteGridContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            var noteBlue0 = new V3ColorNote { Color = (int)NoteType.Blue };
+            var noteBlue0 = new BaseNote { Color = (int)NoteType.Blue };
 
-            var noteBlue1 = new V3ColorNote { Color = (int)NoteType.Blue, JsonTime = 1 };
-            var noteRed1 = new V3ColorNote { Color = (int)NoteType.Red, JsonTime = 1, PosX = 1 };
+            var noteBlue1 = new BaseNote { Color = (int)NoteType.Blue, JsonTime = 1 };
+            var noteRed1 = new BaseNote { Color = (int)NoteType.Red, JsonTime = 1, PosX = 1 };
 
-            var noteRed2 = new V3ColorNote { Color = (int)NoteType.Red, JsonTime = 2, PosX = 1 };
+            var noteRed2 = new BaseNote { Color = (int)NoteType.Red, JsonTime = 2, PosX = 1 };
 
             foreach (var note in new List<BaseNote> { noteBlue0, noteBlue1, noteRed1, noteRed2 })
             {
@@ -98,11 +98,11 @@ namespace Tests
             var noteGridContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            var note0 = new V3ColorNote { JsonTime = 0 };
-            var note1 = new V3ColorNote { JsonTime = 1 };
-            var note2 = new V3ColorNote { JsonTime = 2 };
-            var note3 = new V3ColorNote { JsonTime = 3 };
-            var note4 = new V3ColorNote { JsonTime = 4 };
+            var note0 = new BaseNote { JsonTime = 0 };
+            var note1 = new BaseNote { JsonTime = 1 };
+            var note2 = new BaseNote { JsonTime = 2 };
+            var note3 = new BaseNote { JsonTime = 3 };
+            var note4 = new BaseNote { JsonTime = 4 };
             var notes = new List<BaseNote> { note0, note1, note2, note3, note4 };
 
             foreach (var index in insertOrder)
@@ -124,7 +124,7 @@ namespace Tests
             var noteGridContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            var noteA = new V3ColorNote();
+            var noteA = new BaseNote();
             var noteB = BeatmapFactory.Clone(noteA);
             var noteC = BeatmapFactory.Clone(noteB);
 
@@ -143,7 +143,7 @@ namespace Tests
             var noteGridContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            var noteA = new V3ColorNote();
+            var noteA = new BaseNote();
             var noteB = BeatmapFactory.Clone(noteA);
             var noteC = BeatmapFactory.Clone(noteB);
             var noteD = BeatmapFactory.Clone(noteC);
@@ -183,9 +183,9 @@ namespace Tests
             var notesContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            var noteA = new V3ColorNote { JsonTime = 0, PosX = 0, PosY = 0 };
-            var noteB = new V3ColorNote { JsonTime = 0, PosX = 1, PosY = 1 };
-            var noteC = new V3ColorNote { JsonTime = 0, PosX = 2, PosY = 2 };
+            var noteA = new BaseNote { JsonTime = 0, PosX = 0, PosY = 0 };
+            var noteB = new BaseNote { JsonTime = 0, PosX = 1, PosY = 1 };
+            var noteC = new BaseNote { JsonTime = 0, PosX = 2, PosY = 2 };
             
             if (mirrorA) notesContainer.SpawnObject(noteA);
             if (mirrorB) notesContainer.SpawnObject(noteB);
@@ -211,9 +211,9 @@ namespace Tests
             var notesContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            var noteA = new V3ColorNote { JsonTime = 0, PosX = (int)GridX.Left };
-            var noteB = new V3ColorNote { JsonTime = 1, PosX = (int)GridX.MiddleLeft };
-            var noteC = new V3ColorNote { JsonTime = 2, PosX = (int)GridX.MiddleRight };
+            var noteA = new BaseNote { JsonTime = 0, PosX = (int)GridX.Left };
+            var noteB = new BaseNote { JsonTime = 1, PosX = (int)GridX.MiddleLeft };
+            var noteC = new BaseNote { JsonTime = 2, PosX = (int)GridX.MiddleRight };
             
             if (mirrorA) notesContainer.SpawnObject(noteA);
             if (mirrorB) notesContainer.SpawnObject(noteB);
@@ -239,9 +239,9 @@ namespace Tests
             var notesContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            var noteA = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Base };
-            var noteB = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Upper };
-            var noteC = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Top };
+            var noteA = new BaseNote { JsonTime = 0, PosY = (int)GridY.Base };
+            var noteB = new BaseNote { JsonTime = 0, PosY = (int)GridY.Upper };
+            var noteC = new BaseNote { JsonTime = 0, PosY = (int)GridY.Top };
             
             notesContainer.SpawnObject(noteA);
             notesContainer.SpawnObject(noteB);
@@ -267,9 +267,9 @@ namespace Tests
             var notesContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
 
-            var noteA = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Base };
-            var noteB = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Upper };
-            var noteC = new V3ColorNote { JsonTime = 0, PosY = (int)GridY.Top };
+            var noteA = new BaseNote { JsonTime = 0, PosY = (int)GridY.Base };
+            var noteB = new BaseNote { JsonTime = 0, PosY = (int)GridY.Upper };
+            var noteC = new BaseNote { JsonTime = 0, PosY = (int)GridY.Top };
             
             notesContainer.SpawnObject(noteA);
             notesContainer.SpawnObject(noteB);
@@ -285,6 +285,47 @@ namespace Tests
             
             actionContainer.Undo();
             CheckUtils.CheckNotesAreSorted(notesContainer.MapObjects);
+        }
+        
+        [Test]
+        public void MoveSelection_NoteIntegrity()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var root = notesContainer.transform.root;
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var selectionController = root.GetComponentInChildren<SelectionController>();
+
+            var baseNoteA = new BaseNote{ JsonTime = 0 };
+            var baseNoteB = new BaseNote{ JsonTime = 1 };
+            PlaceUtils.PlaceNote(notePlacement, baseNoteA);
+            PlaceUtils.PlaceNote(notePlacement, baseNoteB);
+
+            SelectionController.Select(baseNoteA);
+            SelectionController.Select(baseNoteB, addsToSelection: true);
+            
+            selectionController.MoveSelection(1);
+            AssertNoteStateAfterMove(notesContainer, 1, 2);
+
+            selectionController.MoveSelection(-1);
+            AssertNoteStateAfterMove(notesContainer, 0, 1);
+            
+            actionContainer.Undo();
+            AssertNoteStateAfterMove(notesContainer, 1, 2);
+            
+            actionContainer.Undo();
+            AssertNoteStateAfterMove(notesContainer, 0, 1);
+        }
+
+        private static void AssertNoteStateAfterMove(NoteGridContainer notesContainer, int firstObjectTime, int secondObjectTime)
+        {
+            Assert.AreEqual(2, notesContainer.MapObjects.Count, "Notes should not be deleted");
+            Assert.AreEqual(2, SelectionController.SelectedObjects.Count, "Notes should be selected");
+            CheckUtils.CheckNote("First note after move", notesContainer, 0, firstObjectTime, (int)GridX.Left, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.Up, 0);
+            CheckUtils.CheckNote("Second note after move", notesContainer, 1, secondObjectTime, (int)GridX.Left, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.Up, 0);
         }
     }
 }

@@ -60,7 +60,6 @@ public class Settings
     public bool NoteJumpSpeedForEditorScale = false;
     public bool RotateTrack = true; // 360/90 mode
     public bool Reset360DisplayOnCompleteTurn = true;
-    public bool DontPlacePerfectZeroDurationWalls = true;
     public bool PrecisionPlacementGrid = false; // Old setting, migrated to below
     public PrecisionPlacementMode PrecisionPlacementMode = PrecisionPlacementMode.Off;
     public int PrecisionPlacementGridPrecision = 4;
@@ -221,7 +220,7 @@ public class Settings
     public bool Reminder_Loading360Levels = true;
     public bool Reminder_SettingsFailed = true;
     public bool WaveformWorkflow = true;
-    public bool Load_MapV3 = false;
+    public int MapVersion = 3;
     public CameraPosition[] SavedPositions = new CameraPosition[8];
 
     public int CursorPrecisionA = 1;

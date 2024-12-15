@@ -436,11 +436,8 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         {
             var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             noteCollection.ClearSpecialAngles(con.ObjectData);
-            
-            if (Settings.Instance.Load_MapV3)
-            {
-                StartDragSliders(noteContainer);
-            }
+
+            StartDragSliders(noteContainer);
         }
 
         return true;
@@ -481,12 +478,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         {
             var noteCollection = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
             noteCollection.RefreshSpecialAngles(draggedObjectData, false, false);
-            
-            if (Settings.Instance.Load_MapV3)
-            {
-                FinishSliderDrag(actions);
-                ClearDraggedAttachedSliders();
-            }
+
+            FinishSliderDrag(actions);
+            ClearDraggedAttachedSliders();
         }
 
         if (actions.Count == 1)

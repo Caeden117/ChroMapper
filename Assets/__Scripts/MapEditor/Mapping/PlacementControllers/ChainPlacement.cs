@@ -17,7 +17,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
 
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Placed a chain.");
-    public override BaseChain GenerateOriginalData() => new V3Chain();
+    public override BaseChain GenerateOriginalData() => new BaseChain();
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 transformedPoint) => throw new System.NotImplementedException();
 
     /// <summary>
@@ -31,7 +31,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         var notes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
         notes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
-        if (!Settings.Instance.Load_MapV3 && notes.Count > 1)
+        if (Settings.Instance.MapVersion == 2 && notes.Count > 1)
         {
             PersistentUI.Instance.ShowDialogBox("Chain placement is not supported in v2 format.\nConvert map to v3 to place chains.",
                 null, PersistentUI.DialogBoxPresetType.Ok);
@@ -68,7 +68,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         }
     }
 
-    private bool IsColorNote(BaseObject o) => o is BaseNote && !(o is BaseBombNote);
+    private static bool IsColorNote(BaseObject o) => ArcPlacement.IsColorNote(o);
 
     public bool TryCreateChainData(BaseNote head, BaseNote tail, out BaseChain chain, out BaseNote tailNote)
     {
@@ -86,7 +86,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         }
         else
         {
-            chain = new V3Chain(head, tail);
+            chain = new BaseChain(head, tail);
             return true;
         }
     }

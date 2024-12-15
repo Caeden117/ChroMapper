@@ -18,30 +18,25 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
 
     public void PromptSwitchVersion()
     {
-        var v1 = Settings.Instance.Load_MapV3 ? "3" : "2";
-        var v2 = Settings.Instance.Load_MapV3 ? "2" : "3";
-        var extraMsg = v1 == "3" ? "\n\nNOTE: Beatmap v2 is deprecated as stated legacy in internal game code, it is unlikely to be supported in the near future." : "";
-        PersistentUI.Instance.ShowDialogBox($"Do you want to change map version from map v{v1} to v{v2}?\nWARNING: Map containing incompatible data (including custom data) may result in loss, please >>manually backup<< your map before conversion." + extraMsg, (res) =>
+        var currentVersion = Settings.Instance.MapVersion == 3 ? "3" : "2";
+        var convertVersion = Settings.Instance.MapVersion == 3 ? "2" : "3";
+        var extraMsg = currentVersion == "3" ? "\n\nNOTE: Beatmap v2 is deprecated as stated legacy in internal game code, it is unlikely to be supported in the near future." : "";
+        
+        // TODO: Check if any data would be lost from conversion (e.g. AngleOffset from v3 to v2)
+        PersistentUI.Instance.ShowDialogBox($"Do you want to change map version from map v{currentVersion} to v{convertVersion}?\nWARNING: Map containing incompatible data (including custom data) may result in loss, please >>manually backup<< your map before conversion." + extraMsg, (res) =>
         {
             if (res != 0) return;
 
-            // what the fuck how does this converter even work?
-            if (v1 == "3")
+            if (Settings.Instance.MapVersion == 3)
             {
-                Settings.Instance.Load_MapV3 = false;
-                var map = BeatSaberSongContainer.Instance.Map;
-                var mapV2 = Beatmap.Converters.V3ToV2.Difficulty(map as V3Difficulty);
-                BeatSaberSongContainer.Instance.Map = mapV2;
-                map.MainNode = null;
+                BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 3, toVersion: 2);
+                Settings.Instance.MapVersion = 2;
             }
             else
             {
-                Settings.Instance.Load_MapV3 = true;
-                var map = BeatSaberSongContainer.Instance.Map;
-                var mapV3 = Beatmap.Converters.V2ToV3.Difficulty(map as V2Difficulty);
-                BeatSaberSongContainer.Instance.Map = mapV3;
+                BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 2, toVersion: 3);
+                Settings.Instance.MapVersion = 3;
             }
-            pauseManager.Quit(true);
         }, PersistentUI.DialogBoxPresetType.YesNoCancel);
     }
 }

@@ -31,7 +31,7 @@ public class MapLoader : MonoBehaviour
         
         if (Settings.Instance.Load_Events) LoadObjects(map.Events);
         
-        if (Settings.Instance.Load_MapV3)
+        if (Settings.Instance.Load_Notes)
         {
             LoadObjects(map.Arcs);
             LoadObjects(map.Chains);

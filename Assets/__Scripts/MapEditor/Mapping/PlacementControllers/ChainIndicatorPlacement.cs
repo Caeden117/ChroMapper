@@ -23,7 +23,7 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Edited a chain.");
 
-    public override BaseChain GenerateOriginalData() => new V3Chain();
+    public override BaseChain GenerateOriginalData() => new BaseChain();
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 roundedHit)
     {

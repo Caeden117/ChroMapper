@@ -87,13 +87,11 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
         if (notes)
         {
             BeatSaberSongContainer.Instance.Map.Notes = map.Notes;
+            BeatSaberSongContainer.Instance.Map.Arcs = map.Arcs;
+            BeatSaberSongContainer.Instance.Map.Chains = map.Chains;
             loader.LoadObjects(map.Notes);
-
-            if (Settings.Instance.Load_MapV3)
-            {
-                loader.LoadObjects(map.Arcs);
-                loader.LoadObjects(map.Chains);
-            }
+            loader.LoadObjects(map.Arcs);
+            loader.LoadObjects(map.Chains);
         }
 
         if (obstacles)

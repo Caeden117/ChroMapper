@@ -63,11 +63,6 @@ namespace Tests.Util
             Assert.AreEqual(value, evt.Value, $"{msg}: Mismatched value");
             Assert.AreEqual(floatValue, evt.FloatValue, 0.001f, $"{msg}: Mismatched float value");
 
-            if (evt is BaseColorBoostEvent boostEvt)
-            {
-                Assert.AreEqual(value == 1, boostEvt.Toggle, $"{msg}: Mismatched toggle");
-            }
-
             // ConvertToJSON causes gradient to get updated
             if (customData != null)
             {
@@ -92,22 +87,19 @@ namespace Tests.Util
         public static void CheckRotationEvent(string msg, EventGridContainer container, int idx, float time,
             int executionTime, float rotation, JSONNode customData = null)
         {
-            var obj = container.MapObjects.Skip(idx).First();
-            Assert.IsInstanceOf<BaseRotationEvent>(obj);
-            if (obj is BaseRotationEvent evt)
-            {
-                Assert.AreEqual(time, evt.JsonTime, 0.001f, $"{msg}: Mismatched time");
-                Assert.AreEqual(executionTime == 0 ? 14 : 15, evt.Type, $"{msg}: Mismatched type");
-                Assert.AreEqual(executionTime, evt.ExecutionTime, $"{msg}: Mismatched execution time");
-                Assert.AreEqual(rotation, evt.Rotation, 0.001f, $"{msg}: Mismatched rotation");
+            var evt = container.MapObjects.Skip(idx).First();
 
-                // ConvertToJSON causes gradient to get updated
-                if (customData != null)
-                {
-                    // Custom data needed to be saved before compare
-                    Assert.AreEqual(customData.ToString(), evt.CustomData?.ToString(),
-                        $"{msg}: Mismatched custom data");
-                }
+            Assert.AreEqual(time, evt.JsonTime, 0.001f, $"{msg}: Mismatched time");
+            Assert.AreEqual(executionTime == 0 ? 14 : 15, evt.Type, $"{msg}: Mismatched type");
+            Assert.AreEqual(executionTime, evt.Type == 14 ? 0 : 1, $"{msg}: Mismatched execution time");
+            Assert.AreEqual(rotation, evt.Rotation, 0.001f, $"{msg}: Mismatched rotation");
+        
+            // ConvertToJSON causes gradient to get updated
+            if (customData != null)
+            {
+                // Custom data needed to be saved before compare
+                Assert.AreEqual(customData.ToString(), evt.CustomData?.ToString(),
+                    $"{msg}: Mismatched custom data");
             }
         }
 

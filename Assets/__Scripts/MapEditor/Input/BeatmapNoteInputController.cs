@@ -156,10 +156,10 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
     public void UpdateNotePreciseDirection(NoteContainer note, bool shiftForward)
     {
         var original = BeatmapFactory.Clone(note.ObjectData);
-
-        if (note.NoteData is V3ColorNote cnote)
+        
+        if (Settings.Instance.MapVersion >= 3)
         {
-            cnote.AngleOffset += (shiftForward ^ Settings.Instance.InvertScrollNoteAngle)
+            note.NoteData.AngleOffset += (shiftForward ^ Settings.Instance.InvertScrollNoteAngle)
                 ? 5
                 : -5;
 

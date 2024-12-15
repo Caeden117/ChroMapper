@@ -56,20 +56,14 @@ public class DingOnNotePassingGrid : MonoBehaviour
 
         beatSaberCutCallbackController.NotePassedThreshold += PlaySound;
         defaultCallbackController.NotePassedThreshold += TriggerBongoCat;
-        if (Settings.Instance.Load_MapV3)
-        {
-            beatSaberCutCallbackController.ChainPassedThreshold += PlaySound;
-        }
+        beatSaberCutCallbackController.ChainPassedThreshold += PlaySound;
     }
 
     private void OnDisable()
     {
         beatSaberCutCallbackController.NotePassedThreshold -= PlaySound;
         defaultCallbackController.NotePassedThreshold -= TriggerBongoCat;
-        if (Settings.Instance.Load_MapV3)
-        {
-            beatSaberCutCallbackController.ChainPassedThreshold -= PlaySound;
-        }
+        beatSaberCutCallbackController.ChainPassedThreshold -= PlaySound;
 
         Settings.ClearSettingNotifications("Ding_Red_Notes");
         Settings.ClearSettingNotifications("Ding_Blue_Notes");
@@ -139,9 +133,9 @@ public class DingOnNotePassingGrid : MonoBehaviour
         // (Commonly occurs when Unity freezes for some unrelated fucking reason)
         if (objectData.SongBpmTime - container.AudioTimeSyncController.CurrentSongBpmTime <= -0.5f) return;
 
-        if (Settings.Instance.Load_MapV3 && objectData is BaseChain)
+        if (objectData is BaseChain)
         {
-            return; // Chains don't have a hitsound. May want to impplement hitsounds for links later.
+            return; // Chains don't have a hitsound. May want to implement hitsounds for links later.
         }
 
         // Skip fake notes

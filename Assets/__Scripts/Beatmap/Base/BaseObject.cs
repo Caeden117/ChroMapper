@@ -54,7 +54,8 @@ namespace Beatmap.Base
                 jsonTime = value;
             }
         }
-        private float songBpmTime { get; set; }
+
+        private float songBpmTime;
         public float SongBpmTime
         {
             get => songBpmTime;
@@ -75,7 +76,20 @@ namespace Beatmap.Base
 
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
-        public JSONNode CustomData { get; set; } = new JSONObject();
+
+        private JSONNode customData = new JSONObject();
+
+        public JSONNode CustomData
+        {
+            get => customData;
+            set
+            {
+                customData = value ?? new JSONObject();
+                ParseCustom();
+            }
+        }
+        
+        public void SetCustomData(JSONNode node) => customData = node ?? new JSONObject();
 
         public virtual bool IsChroma() => false;
 
@@ -99,7 +113,6 @@ namespace Beatmap.Base
         {
             JsonTime = originalData.JsonTime;
             CustomData = originalData.CustomData?.Clone();
-            RefreshCustom();
         }
 
         protected virtual void ParseCustom()
@@ -112,10 +125,12 @@ namespace Beatmap.Base
 
         protected internal virtual JSONNode SaveCustom()
         {
-            CustomData = CustomData is JSONObject ? CustomData : new JSONObject();
-            if (CustomTrack != null) CustomData[CustomKeyTrack] = CustomTrack; else CustomData.Remove(CustomKeyTrack);
-            if (CustomColor != null) CustomData[CustomKeyColor] = CustomColor; else CustomData.Remove(CustomKeyColor);
-            return CustomData;
+            var node = CustomData is JSONObject ? CustomData : new JSONObject();
+            if (CustomTrack != null) node[CustomKeyTrack] = CustomTrack; else node.Remove(CustomKeyTrack);
+            if (CustomColor != null) node[CustomKeyColor] = CustomColor; else node.Remove(CustomKeyColor);
+            
+            SetCustomData(node);
+            return node;
         }
 
         public void WriteCustom() => SaveCustom();

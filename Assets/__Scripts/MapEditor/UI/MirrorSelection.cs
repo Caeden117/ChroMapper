@@ -70,7 +70,8 @@ public class MirrorSelection : MonoBehaviour
         }
 
         var events = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
-        var allActions = new List<BeatmapAction>();
+        var originalObjects = new List<BaseObject>();
+        var editedObjects = new List<BaseObject>();
         foreach (var original in SelectionController.SelectedObjects)
         {
             var edited = BeatmapFactory.Clone(original);
@@ -266,25 +267,11 @@ public class MirrorSelection : MonoBehaviour
             {
                 if (e.IsLaneRotationEvent())
                 {
-                    if (e is BaseRotationEvent re)
-                    {
-                        re.Rotation *= -1;
-                    }
-                    else
-                    {
-                        if (e.CustomLaneRotation != null)
-                            e.CustomLaneRotation *= -1;
-
-                        var rotation = e.GetRotationDegreeFromValue();
-                        if (rotation != null)
-                        {
-                            if (e.Value >= 0 && e.Value < BaseEvent.LightValueToRotationDegrees.Length)
-                                e.Value = BaseEvent.LightValueToRotationDegrees.ToList()
-                                    .IndexOf((int)(rotation ?? 0) * -1);
-                            else if (e.Value >= 1000 && e.Value <= 1720) //Invert Mapping Extensions rotation
-                                e.Value = 1720 - (e.Value - 1000);
-                        }
-                    }
+                
+                    e.Rotation *= -1;
+                    
+                    if (e.CustomLaneRotation != null)
+                        e.CustomLaneRotation *= -1;
 
                     tracksManager.RefreshTracks();
                 }
@@ -391,12 +378,12 @@ public class MirrorSelection : MonoBehaviour
                     : (int)NoteType.Red;
             }
 
-            allActions.Add(new BeatmapObjectModifiedAction(edited, original, original, "e", true));
+            edited.SaveCustom();
+
+            editedObjects.Add(edited);
+            originalObjects.Add(original);
         }
 
-        foreach (var unique in SelectionController.SelectedObjects.DistinctBy(x => x.ObjectType))
-            BeatmapObjectContainerCollection.GetCollectionForType(unique.ObjectType).RefreshPool(true);
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true,
-            "Mirrored a selection of objects."), true);
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedCollectionAction(editedObjects, originalObjects, "Mirrored a selection of objects."), true);
     }
 }

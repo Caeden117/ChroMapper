@@ -1,8 +1,11 @@
+using Beatmap.V3;
+using SimpleJSON;
+
 namespace Beatmap.Base
 {
-    public abstract class BaseLightTranslationEventBox : BaseEventBox
+    public class BaseLightTranslationEventBox : BaseEventBox
     {
-        protected BaseLightTranslationEventBox()
+        public BaseLightTranslationEventBox()
         {
         }
 
@@ -40,5 +43,12 @@ namespace Beatmap.Base
         public int Axis { get; set; }
         public int Flip { get; set; }
         public BaseLightTranslationBase[] Events { get; set; }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            3 => V3LightTranslationEventBox.ToJson(this)
+        };
+
+        public override BaseItem Clone() => throw new System.NotImplementedException();
     }
 }

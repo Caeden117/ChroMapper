@@ -78,7 +78,7 @@ public class RotationCallbackController : MonoBehaviour
         {
             for (var i = 0; i < idx; i++)
             {
-                Rotation += span[i].GetRotationDegreeFromValue() ?? 0f;
+                Rotation += span[i].Rotation;
             }
 
             LatestRotationEvent = span[idx - 1];
@@ -101,8 +101,7 @@ public class RotationCallbackController : MonoBehaviour
 
         if (e == LatestRotationEvent) return;
 
-        var rotationValue = e.GetRotationDegreeFromValue() ?? 0;
-        Rotation += rotationValue;
+        Rotation += e.Rotation;
         LatestRotationEvent = e;
         RotationChangedEvent.Invoke(true, Rotation);
     }

@@ -24,7 +24,7 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, "Edited an arc.");
 
-    public override BaseArc GenerateOriginalData() => new V3Arc();
+    public override BaseArc GenerateOriginalData() => new BaseArc();
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit hit, Vector3 roundedHit)
     {

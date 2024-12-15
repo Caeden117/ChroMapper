@@ -114,6 +114,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             bookmark.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
     }
 
+    public void RefreshBookTooltips() => UpdateBookmarkTooltip(null);
+    
     private void UpdateBookmarkTooltip(object _)
     {
         foreach (BookmarkContainer bookContainer in bookmarkContainers)
@@ -178,9 +180,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             return;
         }
 
-        var newBookmark = Settings.Instance.Load_MapV3
-            ? (BaseBookmark)new V3Bookmark(Atsc.CurrentJsonTime, name)
-            : new V2Bookmark(Atsc.CurrentJsonTime, name);
+        var newBookmark = new BaseBookmark(Atsc.CurrentJsonTime, name);
 
         if (color != null)
         {

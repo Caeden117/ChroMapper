@@ -1,3 +1,4 @@
+using Beatmap.Base;
 using Beatmap.V2;
 using Beatmap.V3;
 using NUnit.Framework;
@@ -87,7 +88,7 @@ namespace TestsEditMode
         [Test]
         public void TestItWithANote()
         {
-            var note = new V3ColorNote
+            var note = new BaseNote
             {
                 JsonTime = 8,
                 CutDirection = 8
@@ -108,7 +109,8 @@ namespace TestsEditMode
         [Test]
         public void DoesNotRemoveV3CustomData()
         {
-            var note = new V3ColorNote
+            Settings.Instance.MapVersion = 3;
+            var note = new BaseNote
             {
                 CustomColor = new UnityEngine.Color(0, 1, 0)
             };
@@ -123,7 +125,8 @@ namespace TestsEditMode
         [Test]
         public void DoesNotRemoveV2CustomData()
         {
-            var note = new V2Note
+            Settings.Instance.MapVersion = 2;
+            var note = new BaseNote
             {
                 CustomColor = new UnityEngine.Color(0, 1, 0)
             };

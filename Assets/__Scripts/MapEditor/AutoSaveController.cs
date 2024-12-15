@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Beatmap.Base;
@@ -34,6 +35,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     private int objectsOutsideMap = FALSE;
     private int objectsCheckIsComplete = FALSE;
     private int saveFlag = (int)SaveType.None;
+
+    private string saveWarningMessage; 
 
     private static MapExporter Exporter => new MapExporter(BeatSaberSongContainer.Instance.Song);
 
@@ -79,6 +82,12 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 if (saveFlag == (int)SaveType.Menu) pauseManager.SaveAndExitToMenu();
                 if (saveFlag == (int)SaveType.Quit) pauseManager.SaveAndQuitCM();
             }
+        }
+
+        if (!string.IsNullOrEmpty(saveWarningMessage))
+        {
+            PersistentUI.Instance.ShowDialogBox(saveWarningMessage, null, PersistentUI.DialogBoxPresetType.Ok);
+            saveWarningMessage = null;
         }
 
         if (!Settings.Instance.AutoSave || !Application.isFocused) return;
@@ -207,33 +216,30 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             removedObjects.AddRange(obstaclesToRemove);
         }
 
-        if (Settings.Instance.Load_MapV3)
+        if (Settings.Instance.RemoveArcsOutsideMap)
         {
-            if (Settings.Instance.RemoveArcsOutsideMap)
+            var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
+            var arcsToRemove = BeatSaberSongContainer.Instance.Map.Arcs.Where(arc =>
+                arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime).ToList();
+            foreach (var arc in arcsToRemove)
             {
-                var arcCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Arc);
-                var arcsToRemove = BeatSaberSongContainer.Instance.Map.Arcs.Where(arc =>
-                    arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime).ToList();
-                foreach (var arc in arcsToRemove)
-                {
-                    arcCollection.DeleteObject(arc, false, false, inCollectionOfDeletes: true);
-                }
-                arcCollection.DoPostObjectsDeleteWorkflow();
-                removedObjects.AddRange(arcsToRemove);
+                arcCollection.DeleteObject(arc, false, false, inCollectionOfDeletes: true);
             }
+            arcCollection.DoPostObjectsDeleteWorkflow();
+            removedObjects.AddRange(arcsToRemove);
+        }
 
-            if (Settings.Instance.RemoveChainsOutsideMap)
+        if (Settings.Instance.RemoveChainsOutsideMap)
+        {
+            var chainCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
+            var chainsToRemove = BeatSaberSongContainer.Instance.Map.Chains.Where(chain =>
+                chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime).ToList();
+            foreach (var chain in chainsToRemove)
             {
-                var chainCollection = BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Chain);
-                var chainsToRemove = BeatSaberSongContainer.Instance.Map.Chains.Where(chain =>
-                    chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime).ToList();
-                foreach (var chain in chainsToRemove)
-                {
-                    chainCollection.DeleteObject(chain, false, false, inCollectionOfDeletes: true);
-                }
-                chainCollection.DoPostObjectsDeleteWorkflow();
-                removedObjects.AddRange(chainsToRemove);
+                chainCollection.DeleteObject(chain, false, false, inCollectionOfDeletes: true);
             }
+            chainCollection.DoPostObjectsDeleteWorkflow();
+            removedObjects.AddRange(chainsToRemove);
         }
         
         if (removedObjects.Count > 0) BeatmapActionContainer.AddAction(new SelectionDeletedAction(removedObjects));
@@ -259,20 +265,81 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             if (BeatSaberSongContainer.Instance.Map.Obstacles.Any(obst => obst.SongBpmTime >= maxSongBpmTime))
                 return true;
         }
-        if (Settings.Instance.Load_MapV3)
+        if (Settings.Instance.RemoveArcsOutsideMap)
         {
-            if (Settings.Instance.RemoveArcsOutsideMap)
-                if (BeatSaberSongContainer.Instance.Map.Arcs.Any(arc => arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime))
-                    return true;
-
-            if (Settings.Instance.RemoveChainsOutsideMap)
-                if (BeatSaberSongContainer.Instance.Map.Chains.Any(chain => chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime))
-                    return true;
+            if (BeatSaberSongContainer.Instance.Map.Arcs.Any(arc =>
+                    arc.SongBpmTime >= maxSongBpmTime || arc.TailSongBpmTime >= maxSongBpmTime))
+                return true;
         }
+        if (Settings.Instance.RemoveChainsOutsideMap)
+        {
+            if (BeatSaberSongContainer.Instance.Map.Chains.Any(chain =>
+                    chain.SongBpmTime >= maxSongBpmTime || chain.TailSongBpmTime >= maxSongBpmTime))
+                return true;
+        }
+        
         return false;
     }
 
     public void ToggleAutoSave(bool enabled) => Settings.Instance.AutoSave = enabled;
+
+    private void DisplayWarningIfIncompatibleDataIsPresent()
+    {
+        switch (Settings.Instance.MapVersion)
+        {
+            case 2:
+                var stringBuilder = new StringBuilder();
+                var map = BeatSaberSongContainer.Instance.Map; 
+
+                if (map.Notes.Any(note => note.AngleOffset != 0))
+                {
+                    stringBuilder.AppendLine("* Note Angle Offset");
+                }
+
+                if (map.Obstacles.Any(obs => obs.PosY != (int)GridY.Base && obs.PosY != (int)GridY.Top))
+                {
+                    stringBuilder.AppendLine("* Obstacle Y position");
+                }
+                
+                if (map.Obstacles.Any(obs =>
+                        (obs.PosY == (int)GridY.Base && obs.Height < (int)ObstacleHeight.Full) ||
+                        (obs.PosY == (int)GridY.Top && obs.Height < (int)ObstacleHeight.Crouch)))
+                {
+                    stringBuilder.AppendLine("* Obstacle Height");
+                }
+
+                if (map.Chains.Any())
+                {
+                    stringBuilder.AppendLine("* Chains");
+                }
+                
+                if (map.Arcs.Any())
+                {
+                    stringBuilder.AppendLine("* Arcs");
+                }
+
+                if (map.LightColorEventBoxGroups.Any() || map.LightRotationEventBoxGroups.Any() ||
+                    map.LightTranslationEventBoxGroups.Any())
+                {
+                    stringBuilder.AppendLine("* Group Lighting");
+                }
+
+                if (stringBuilder.Length != 0)
+                {
+                    // TODO: Localise this string somehow? Can only access localisation string on main thread :(
+                    stringBuilder.Insert(0, "Warning\nThe following properties are not saved in v2 format:\n");
+                    stringBuilder.AppendLine("Save in v3 or v4 format to ensure data is not lost.");
+                }
+
+                saveWarningMessage = stringBuilder.ToString();
+
+                break;
+            
+            case 3:
+                // No vanilla v2 features are unsupported in v3
+                break;
+        }
+    }
 
     public void Save(bool auto = false)
     {
@@ -315,6 +382,11 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                         var newDirectoryInfo = new DirectoryInfo(autoSaveDir);
                         currentAutoSaves.Add(newDirectoryInfo);
                         CleanAutosaves();
+                    }
+
+                    if (!auto)
+                    {
+                        DisplayWarningIfIncompatibleDataIsPresent();
                     }
 
                     BeatSaberSongContainer.Instance.Map.Save();

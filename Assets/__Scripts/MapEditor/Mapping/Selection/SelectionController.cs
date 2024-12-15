@@ -162,12 +162,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         {
             clearTypes.AddRange(new[]
             {
-                ObjectType.Note, ObjectType.Obstacle, ObjectType.CustomNote
+                ObjectType.Note, ObjectType.Obstacle, ObjectType.CustomNote, ObjectType.Arc, ObjectType.Chain
             });
-            if (Settings.Instance.Load_MapV3)
-            {
-                clearTypes.AddRange(new[] { ObjectType.Arc, ObjectType.Chain });
-            }
         }
 
         if (hasNoteOrObstacle && !hasEvent)
@@ -474,38 +470,35 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     public void MoveSelection(float beats, bool snapObjects = false)
     {
-        var allActions = new List<BeatmapAction>();
-        foreach (var data in SelectedObjects)
+        var originalObjects = new List<BaseObject>();
+        var editedObjects = new List<BaseObject>();
+        
+        foreach (var original in SelectedObjects)
         {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType);
-            var original = BeatmapFactory.Clone(data);
-
-            collection.DeleteObject(data, false, false, default, true, false);
-
-            data.JsonTime += beats;
+            var edited = BeatmapFactory.Clone(original);
+            
+            edited.JsonTime += beats;
             if (snapObjects)
-                data.JsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
+                edited.JsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
 
-            if (data is BaseSlider slider)
+            if (edited is BaseSlider slider)
             {
                 slider.TailJsonTime += beats;
                 if (snapObjects)
                     slider.TailJsonTime = Mathf.Round(beats / (1f / atsc.GridMeasureSnapping)) * (1f / atsc.GridMeasureSnapping);
             }
 
-            collection.SpawnObject(data, false, true);
-
-            allActions.Add(new BeatmapObjectModifiedAction(data, data, original, "", true));
+            editedObjects.Add(edited);
+            originalObjects.Add(original);
         }
 
         RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
-        BeatmapActionContainer.AddAction(new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."));
-        BeatmapObjectContainerCollection.RefreshAllPools();
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedCollectionAction(editedObjects, originalObjects, "Shifted a selection of objects."), perform: true);
     }
 
     public void ShiftSelection(int leftRight, int upDown)
     {
-        var allActions = SelectedObjects.AsParallel().Select(original =>
+        var editedObjects = SelectedObjects.AsParallel().Select(original =>
         {
             var edited = BeatmapFactory.Clone(original);
             if (edited is BaseNote note)
@@ -705,13 +698,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     }
                 }
             }
-            return new BeatmapObjectModifiedAction(edited, original, original, "", true);
+
+            edited.SaveCustom();
+
+            return edited;
         }).ToList();
 
-        RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
-
+        var originalObjects = SelectedObjects.ToList();
+        
         BeatmapActionContainer.AddAction(
-            new ActionCollectionAction(allActions, true, true, "Shifted a selection of objects."), true);
+            new BeatmapObjectModifiedCollectionAction(editedObjects, originalObjects, "Shifted a selection of objects."), true);
         tracksManager.RefreshTracks();
     }
 

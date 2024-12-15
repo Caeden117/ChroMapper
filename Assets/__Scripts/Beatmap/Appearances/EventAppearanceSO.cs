@@ -47,8 +47,8 @@ namespace Beatmap.Appearances
             {
                 if (e.EventData.IsLaneRotationEvent())
                 {
-                    var rotation = e.EventData.GetRotationDegreeFromValue();
-                    e.UpdateTextDisplay(true, rotation != null ? $"{rotation}°" : "Invalid Rotation");
+                    var rotation = e.EventData.Rotation;
+                    e.UpdateTextDisplay(true, $"{rotation}°");
                 }
                 else if (e.EventData.IsLaserRotationEvent(envName) || e.EventData.IsUtilityEvent(envName))
                 {

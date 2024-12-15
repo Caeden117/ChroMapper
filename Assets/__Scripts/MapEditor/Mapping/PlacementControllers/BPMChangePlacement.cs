@@ -12,7 +12,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicting) =>
         new BeatmapObjectPlacementAction(spawned, conflicting, $"Placed a BPM Event at time {spawned.JsonTime}");
 
-    public override BaseBpmEvent GenerateOriginalData() => BeatmapFactory.BpmEvent(0, 0);
+    public override BaseBpmEvent GenerateOriginalData() => new(0, 100);
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __) =>
         instantiatedContainer.transform.localPosition =
@@ -46,11 +46,11 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
                 // Place a very fast bpm event slighty behind the original event to account for drift
                 var aVeryLargeBpm = 100000f;
                 var offsetRequiredInBeats = jsonTimeOffset * prevBpm / (aVeryLargeBpm - prevBpm);
-                var offsetEvent = BeatmapFactory.BpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm);
+                var offsetEvent = new BaseBpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm);
                 objectContainerCollection.SpawnObject(offsetEvent, out var offsetConflicting);
 
                 // Place the bpm event on the next beat
-                var queuedEvent = BeatmapFactory.BpmEvent(Mathf.Ceil(oldTime), bpm);
+                var queuedEvent = new BaseBpmEvent(Mathf.Ceil(oldTime), bpm);
                 objectContainerCollection.SpawnObject(queuedEvent, out var queuedConflicting);
 
                 BeatmapActionContainer.AddAction(new ActionCollectionAction(new List<BeatmapAction>{

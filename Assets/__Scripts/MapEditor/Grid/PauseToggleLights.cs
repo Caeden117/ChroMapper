@@ -13,8 +13,9 @@ public class PauseToggleLights : MonoBehaviour
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private EventGridContainer eventGrid;
 
-    private readonly BaseEvent defaultBoostEvent = new V2Event(0, 5, 0);
-    private readonly List<BaseEvent> lastChromaEvents = new List<BaseEvent>();
+    private readonly BaseEvent defaultBoostEvent = new BaseEvent{ Type = (int)EventTypeValue.ColorBoost };
+
+private readonly List<BaseEvent> lastChromaEvents = new List<BaseEvent>();
     private readonly Dictionary<int, LastEvents> lastEvents = new Dictionary<int, LastEvents>();
     private PlatformDescriptor descriptor;
 
@@ -76,7 +77,7 @@ public class PauseToggleLights : MonoBehaviour
                     ? lastEvents[(int)EventTypeValue.ColorBoost].LastEvent
                     : defaultBoostEvent);
 
-            var blankEvent = new V3BasicEvent(0, 0, 0);
+            var blankEvent = new BaseEvent();
             for (var i = 0; i < 16; i++)
             {
                 // Boost light events are already handled above; skip them.
@@ -111,7 +112,7 @@ public class PauseToggleLights : MonoBehaviour
                 // Pass an empty even if it is not a ring or rotation event, OR it is null.
                 else if (regular is null || (!regular.IsRingEvent() && !regular.IsLaneRotationEvent()))
                 {
-                    descriptor.EventPassed(isPlaying, 0, new V3BasicEvent(0, i, 0));
+                    descriptor.EventPassed(isPlaying, 0, new BaseEvent { Type = i });
                     continue;
                 }
 
@@ -123,19 +124,14 @@ public class PauseToggleLights : MonoBehaviour
                     descriptor.EventPassed(isPlaying, 0, propEvent.Value);
 
                 if (regular.IsLightEvent() && Settings.Instance.EmulateChromaLite)
-                    descriptor.EventPassed(isPlaying, 0, chroma ?? (BaseEvent)new V3BasicEvent(0, i, ColourManager.RGBReset));
+                    descriptor.EventPassed(isPlaying, 0,
+                        chroma ?? new BaseEvent { JsonTime = 0, Type = i, Value = ColourManager.RGBReset });
             }
         }
         else
         {
-            var leftSpeedReset = new V3BasicEvent(0, (int)EventTypeValue.LeftLaserRotation, 0)
-            {
-                CustomLockRotation = true
-            };
-            var rightSpeedReset = new V3BasicEvent(0, (int)EventTypeValue.RightLaserRotation, 0)
-            {
-                CustomLockRotation = true
-            };
+            var leftSpeedReset = new BaseEvent { Type = (int)EventTypeValue.LeftLaserRotation, CustomLockRotation = true };
+            var rightSpeedReset = new BaseEvent { Type = (int)EventTypeValue.RightLaserRotation, CustomLockRotation = true };
             descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
             descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
             descriptor.KillChromaLights();

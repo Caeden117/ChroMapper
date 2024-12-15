@@ -37,7 +37,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void OnChangeWallLowerBound(InputAction.CallbackContext context)
     {
-        if (!Settings.Instance.Load_MapV3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
+        if (Settings.Instance.MapVersion < 3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var obs);
         if (obs != null && !obs.Dragging && context.performed)
         {
@@ -45,7 +45,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             var tweakValue = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollWallDuration)
                 ? 1
                 : -1;
-            var data = obs.ObjectData as V3Obstacle;
+            var data = obs.ObjectData as BaseObstacle;
             data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
             data.Height = Mathf.Min(data.Height, 5 - data.PosY);
             obs.UpdateGridPosition();
@@ -55,7 +55,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
     }
     public void OnChangeWallUpperBound(InputAction.CallbackContext context)
     {
-        if (!Settings.Instance.Load_MapV3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
+        if (Settings.Instance.MapVersion < 3 || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var obs);
         if (obs != null && !obs.Dragging && context.performed)
         {
@@ -63,7 +63,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             var tweakValue = ((context.ReadValue<float>() > 0) ^ Settings.Instance.InvertScrollWallDuration)
                 ? 1
                 : -1;
-            var data = obs.ObjectData as V3Obstacle;
+            var data = obs.ObjectData as BaseObstacle;
             data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);

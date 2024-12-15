@@ -37,26 +37,28 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
     internal int queuedValue = (int)LightValue.RedOn;
     internal float queuedFloatValue = 1.0f;
+    internal float queuedRotation = 30f;
+    
     public static bool CanPlaceChromaEvents => Settings.Instance.PlaceChromaColor;
 
     public void OnRotation15Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateQueuedRotation(negativeRotations ? 3 : 4);
+        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateRotation(negativeRotations ? -15f : 15f);
     }
 
     public void OnRotation30Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateQueuedRotation(negativeRotations ? 2 : 5);
+        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateRotation(negativeRotations ? -30f : 30f);
     }
 
     public void OnRotation45Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateQueuedRotation(negativeRotations ? 1 : 6);
+        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateRotation(negativeRotations ? -45f : 45f);
     }
 
     public void OnRotation60Degrees(InputAction.CallbackContext context)
     {
-        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateQueuedRotation(negativeRotations ? 0 : 7);
+        if (queuedData.IsLaneRotationEvent() && context.performed) UpdateRotation(negativeRotations ? -60f : 60f);
     }
 
     public void OnNegativeRotationModifier(InputAction.CallbackContext context) =>
@@ -106,7 +108,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
     public override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> container) =>
         new BeatmapObjectPlacementAction(spawned, container, "Placed an Event.");
 
-    public override BaseEvent GenerateOriginalData() => BeatmapFactory.Event(0, 0, (int)LightValue.RedOn);
+    public override BaseEvent GenerateOriginalData() => new BaseEvent();
 
     public override void OnPhysicsRaycast(Intersections.IntersectionHit _, Vector3 __)
     {
@@ -144,6 +146,8 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
 
         UpdateQueuedValue(queuedValue);
         UpdateQueuedFloatValue(queuedFloatValue);
+        UpdateQueuedRotation(queuedRotation);
+
         UpdateAppearance();
     }
 
@@ -197,15 +201,19 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         UpdateAppearance();
     }
 
-    private void UpdateQueuedRotation(int value)
+    private void UpdateQueuedRotation(float rotation)
     {
-        if (queuedData.IsLaneRotationEvent())
-        {
-            if (queuedData.CustomData == null) queuedData.CustomData = new JSONObject();
-            queuedData.CustomData["_queuedRotation"] = value;
-        }
+        if (!queuedData.IsLaneRotationEvent())
+            return;
 
-        UpdateValue(value);
+        queuedData.Rotation = rotation;
+    }
+
+    public void UpdateRotation(float rotation)
+    {
+        queuedRotation = rotation;
+        UpdateQueuedRotation(queuedRotation);
+        UpdateAppearance();
     }
 
     public void SwapColors(bool red)
@@ -245,42 +253,12 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
             }
         }
 
-        if (evt.CustomData != null && evt.CustomData.HasKey("_queuedRotation"))
-        {
-            if (evt.IsLaneRotationEvent()) queuedValue = queuedData.CustomData["_queuedRotation"];
-
-            evt.CustomData.Remove("_queuedRotation");
-        }
-
-        if (!PlacePrecisionRotation)
-            UpdateQueuedValue(queuedValue);
-        else if (evt.IsLaneRotationEvent()) evt.Value = 1360 + PrecisionRotationValue;
-
-        if (evt.CustomData?.Count <= 0) evt.CustomData = null;
-
-        // convert event to their respective event type
-        // TODO: cleaner factory would be better, also this is ugly as hell
-        if (Settings.Instance.Load_MapV3)
-        {
-            if (evt.IsLaneRotationEvent())
-            {
-                queuedData = evt is V3RotationEvent ? evt : new V3RotationEvent(evt);
-            }
-
-            if (evt.IsColorBoostEvent())
-            {
-                queuedData = evt is V3ColorBoostEvent ? evt : new V3ColorBoostEvent(evt);
-            }
-            base.ApplyToMap();
-            queuedData = new V3BasicEvent(evt); // need to convert back to regular event
-            queuedData.CustomData = null;
-        }
-        else
-        {
-            base.ApplyToMap();
-        }
-
+        base.ApplyToMap();
+        
         if (evt.IsLaneRotationEvent()) TracksManager.RefreshTracks();
+
+        queuedData = new BaseEvent(evt); // need to convert back to regular event
+        queuedData.CustomData = null;
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued)
@@ -322,7 +300,7 @@ public class EventPlacement : PlacementController<BaseEvent, EventContainer, Eve
         else if ((startingValue < 7 && right) || (startingValue > 0 && !right))
         {
             if (evt != null) startingValue += right ? 1 : -1;
-            var objectData = BeatmapFactory.Event(Atsc.CurrentJsonTime, rotationType, startingValue);
+            var objectData = new BaseEvent { JsonTime = Atsc.CurrentJsonTime, Type = rotationType, Value = startingValue };
 
             objectContainerCollection.SpawnObject(objectData, out var conflicting);
             BeatmapActionContainer.AddAction(GenerateAction(objectData, conflicting));

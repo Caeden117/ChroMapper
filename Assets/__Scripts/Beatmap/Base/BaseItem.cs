@@ -24,5 +24,11 @@ namespace Beatmap.Base
             if (!node.HasKey(key)) throw new ArgumentException($"{GetType().Name} missing required node \"{key}\".");
             return node[key];
         }
+
+        public static JSONNode GetRequiredNode(JSONNode node, string key)
+        {
+            if (!node.HasKey(key)) throw new ArgumentException($"Missing required node \"{key}\".");
+            return node[key];
+        }
     }
 }

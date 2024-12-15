@@ -3,38 +3,28 @@ using SimpleJSON;
 
 namespace Beatmap.V3
 {
-    public class V3FloatFxEvent : FloatFxEventBase
+    public static class V3FloatFxEvent
     {
-        public V3FloatFxEvent()
+        public static FloatFxEventBase GetFromJson(JSONNode node)
         {
+            var floatFxEventBase = new FloatFxEventBase();
+            
+            floatFxEventBase.JsonTime = node["b"].AsFloat;
+            floatFxEventBase.UsePreviousEventValue = node["p"].AsInt;
+            floatFxEventBase.Value = node["v"].AsFloat;
+            floatFxEventBase.Easing = node["i"].AsInt;
 
+            return floatFxEventBase;
         }
 
-        public V3FloatFxEvent(float jsonTime, int usePreviousEventValues, float value, int easing)
-        {
-            JsonTime = jsonTime;
-            UsePreviousEventValue = usePreviousEventValues;
-            Value = value;
-            Easing = easing;
-        }
-
-        public V3FloatFxEvent(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            UsePreviousEventValue = node["p"].AsInt;
-            Value = node["v"].AsFloat;
-            Easing = node["i"].AsInt;
-        }
-
-        public override BaseItem Clone() => new V3FloatFxEvent(JsonTime, UsePreviousEventValue, Value, Easing);
-        public override JSONNode ToJson()
+        public static JSONNode ToJson(FloatFxEventBase floatFxEventBase)
         {
             return new JSONObject
             {
-                ["b"] = JsonTime,
-                ["p"] = UsePreviousEventValue,
-                ["v"] = Value,
-                ["i"] = Easing
+                ["b"] = floatFxEventBase.JsonTime,
+                ["p"] = floatFxEventBase.UsePreviousEventValue,
+                ["v"] = floatFxEventBase.Value,
+                ["i"] = floatFxEventBase.Easing
             };
         }
     }

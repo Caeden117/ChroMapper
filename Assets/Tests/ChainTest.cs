@@ -43,10 +43,16 @@ namespace Tests
                 var root = notesContainer.transform.root;
                 var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-                BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Down);
-                BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red,
-                    (int)NoteCutDirection.Up);
+                BaseNote baseNoteA = new BaseNote
+                {
+                    JsonTime = 2f, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Down
+                };
+                BaseNote baseNoteB = new BaseNote
+                {
+                    JsonTime =3f, PosX = (int)GridX.Left, PosY = (int)GridY.Upper, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Up
+                };
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
                 PlaceUtils.PlaceNote(notePlacement, baseNoteB);
 
@@ -87,6 +93,7 @@ namespace Tests
             var headCustomData = new JSONObject { ["coordinates"] = headCoordinates };
             var tailCustomData = new JSONObject { ["coordinates"] = tailCoordinates };
 
+            Settings.Instance.MapVersion = 3;
             var chainCustomData = new JSONObject
             {
                 ["coordinates"] = headCoordinates,
@@ -99,11 +106,17 @@ namespace Tests
                 var root = notesContainer.transform.root;
                 var notePlacement = root.GetComponentInChildren<NotePlacement>();
 
-                BaseNote baseNoteA = new V3ColorNote(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteType.Red,
-                    (int)NoteCutDirection.Down, headCustomData);
+                BaseNote baseNoteA = new BaseNote
+                {
+                    JsonTime = 2f, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Down, CustomData = headCustomData
+                };
 
-                BaseNote baseNoteB = new V3ColorNote(3f, (int)GridX.Left, (int)GridY.Upper, (int)NoteType.Red,
-                    (int)NoteCutDirection.Up, tailCustomData);
+                BaseNote baseNoteB = new BaseNote
+                {
+                    JsonTime = 3f, PosX = (int)GridX.Left, PosY = (int)GridY.Upper, Type = (int)NoteType.Red,
+                    CutDirection = (int)NoteCutDirection.Up, CustomData = tailCustomData
+                };
 
                 PlaceUtils.PlaceNote(notePlacement, baseNoteA);
                 PlaceUtils.PlaceNote(notePlacement, baseNoteB);
@@ -147,8 +160,19 @@ namespace Tests
                 var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
-                BaseChain baseChain = new V3Chain(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red,
-                    (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                BaseChain baseChain = new BaseChain
+                {
+                    JsonTime = 2f,
+                    PosX = (int)GridX.Left,
+                    PosY = (int)GridY.Base,
+                    Color = (int)NoteColor.Red,
+                    CutDirection = (int)NoteCutDirection.Left,
+                    TailJsonTime = 3f,
+                    TailPosX = (int)GridX.Left,
+                    TailPosY = (int)GridY.Base,
+                    SliceCount = 5,
+                    Squish = 1f
+                };
                 PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
                 if (chainsContainer.LoadedContainers[baseChain] is ChainContainer containerA)
@@ -177,8 +201,19 @@ namespace Tests
                 var chainPlacement = root.GetComponentInChildren<ChainPlacement>();
                 var inputController = root.GetComponentInChildren<BeatmapChainInputController>();
 
-                BaseChain baseChain = new V3Chain(2f, (int)GridX.Left, (int)GridY.Base, (int)NoteColor.Red,
-                    (int)NoteCutDirection.Left, 0, 3f, (int)GridX.Left, (int)GridY.Base, 5, 1f);
+                BaseChain baseChain = new BaseChain
+                {
+                    JsonTime = 2f,
+                    PosX = (int)GridX.Left,
+                    PosY = (int)GridY.Base,
+                    Color = (int)NoteColor.Red,
+                    CutDirection = (int)NoteCutDirection.Left,
+                    TailJsonTime = 3f,
+                    TailPosX = (int)GridX.Left,
+                    TailPosY = (int)GridY.Base,
+                    SliceCount = 5,
+                    Squish = 1f
+                };
                 PlaceUtils.PlaceChain(chainPlacement, baseChain);
 
                 if (chainsContainer.LoadedContainers[baseChain] is ChainContainer containerA)

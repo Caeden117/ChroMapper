@@ -80,7 +80,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
                 ? (easingFunc(progress) * floatValueDiff) + startFloatValue
                 : (progress * floatValueDiff) + startFloatValue;
 
-            var data = BeatmapFactory.Event(newTime, type, value, newFloatValue);
+            var data = new BaseEvent { JsonTime = newTime, Type = type, Value = value, FloatValue = newFloatValue };
             if (propMode != EventGridContainer.PropMode.Off)
             {
                 data.CustomLightID = propID;

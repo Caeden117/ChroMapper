@@ -8,54 +8,34 @@ using LiteNetLib.Utils;
 
 namespace Beatmap.V3
 {
-    public class V3VfxEventEventBoxGroup : BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>, V3Object
+    public static class V3VfxEventEventBoxGroup
     {
-        public override void Serialize(NetDataWriter writer) => throw new NotImplementedException();
-        public override void Deserialize(NetDataReader reader) => throw new NotImplementedException();
-        public V3VfxEventEventBoxGroup()
+        public static BaseVfxEventEventBoxGroup<BaseVfxEventEventBox> GetFromJson(JSONNode node)
         {
+            var vfxGroup = new BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>();
+            
+            vfxGroup.JsonTime = node["b"].AsFloat;
+            vfxGroup.ID = node["g"].AsInt;
+            vfxGroup.Type = node["t"].AsInt;
+            vfxGroup.Events = new List<BaseVfxEventEventBox>(BaseItem.GetRequiredNode(node, "e").AsArray.Linq
+                .Select(x => V3VfxEventEventBox.GetFromJson(x.Value)).ToList());
+            vfxGroup.CustomData = node["customData"];
+
+            return vfxGroup;
         }
-
-        public V3VfxEventEventBoxGroup(JSONNode node)
-        {
-            JsonTime = node["b"].AsFloat;
-            ID = node["g"].AsInt;
-            Type = node["t"].AsInt;
-            Events = new List<BaseVfxEventEventBox>(RetrieveRequiredNode(node, "e").AsArray.Linq
-                .Select(x => new V3VfxEventEventBox(x)).ToList());
-            CustomData = node["customData"];
-        }
-
-        public V3VfxEventEventBoxGroup(float time, int id, int type, List<BaseVfxEventEventBox> events,
-            JSONNode customData = null) : base(time, id, type, events, customData)
-        {
-        }
-
-        public override Color? CustomColor
-        {
-            get => null;
-            set { }
-        }
-
-        public override string CustomKeyTrack { get; } = "track";
-        public override string CustomKeyColor { get; } = "color";
-
-        public override JSONNode ToJson()
+        public static JSONNode ToJson<T>(BaseVfxEventEventBoxGroup<T> vfxGroup) where T : BaseVfxEventEventBox
         {
             JSONNode node = new JSONObject();
-            node["b"] = JsonTime;
-            node["g"] = ID;
-            node["t"] = Type;
+            node["b"] = vfxGroup.JsonTime;
+            node["g"] = vfxGroup.ID;
+            node["t"] = vfxGroup.Type;
             var ary = new JSONArray();
-            foreach (var k in Events) ary.Add(k.ToJson());
+            foreach (var k in vfxGroup.Events) ary.Add(V3VfxEventEventBox.ToJson(k));
             node["e"] = ary;
-            CustomData = SaveCustom();
-            if (!CustomData.Children.Any()) return node;
-            node["customData"] = CustomData;
+            vfxGroup.CustomData = vfxGroup.SaveCustom();
+            if (!vfxGroup.CustomData.Children.Any()) return node;
+            node["customData"] = vfxGroup.CustomData;
             return node;
         }
-
-        // TODO: proper event box group cloning
-        public override BaseItem Clone() => new V3VfxEventEventBoxGroup(JsonTime, ID, Type, Events);
     }
 }

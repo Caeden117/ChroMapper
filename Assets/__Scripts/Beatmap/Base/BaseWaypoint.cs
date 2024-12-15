@@ -1,16 +1,18 @@
 using Beatmap.Enums;
+using Beatmap.V2;
+using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 
 namespace Beatmap.Base
 {
-    public abstract class BaseWaypoint : BaseGrid
+    public class BaseWaypoint : BaseObject
     {
-        protected BaseWaypoint()
+        public BaseWaypoint()
         {
         }
 
-        protected BaseWaypoint(BaseWaypoint other)
+        public BaseWaypoint(BaseWaypoint other)
         {
             SetTimes(other.JsonTime, other.SongBpmTime);
             PosX = other.PosX;
@@ -19,19 +21,25 @@ namespace Beatmap.Base
             CustomData = other.SaveCustom().Clone();
         }
 
-        protected BaseWaypoint(float time, int posX, int posY, int offsetDirection, JSONNode customData = null) :
-            base(time, posX, posY, customData) =>
-            OffsetDirection = offsetDirection;
-
-        public override ObjectType ObjectType { get; set; } = ObjectType.Note;
+        public int PosX { get; set; }
+        public int PosY { get; set; }
         public int OffsetDirection { get; set; }
+        
+        public override ObjectType ObjectType { get; set; } = ObjectType.Waypoint;
 
-        public override string CustomKeyAnimation { get; } = "animation";
+        public override string CustomKeyColor { get; } = "unusedKeyColor";
+
+        public override string CustomKeyTrack { get; } = "unusedKeyTrack";
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
             // Only down to 1/4 spacing
-            if (other is BaseWaypoint waypoint) return Vector2.Distance(waypoint.GetPosition(), GetPosition()) < 0.1;
+            if (other is BaseWaypoint waypoint)
+            {
+                return Vector2.Distance(
+                    new Vector2(waypoint.PosX, waypoint.PosY),
+                    new Vector2(PosX, PosY)) < 0.1;
+            }
             return false;
         }
 
@@ -41,5 +49,13 @@ namespace Beatmap.Base
 
             if (originalData is BaseWaypoint waypoint) OffsetDirection = waypoint.OffsetDirection;
         }
+
+        public override JSONNode ToJson() => Settings.Instance.MapVersion switch
+        {
+            2 => V2Waypoint.ToJson(this),
+            3 => V3Waypoint.ToJson(this)
+        };
+
+        public override BaseItem Clone() => new BaseWaypoint(this);
     }
 }

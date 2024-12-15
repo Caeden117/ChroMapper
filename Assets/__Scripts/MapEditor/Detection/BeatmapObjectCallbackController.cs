@@ -49,11 +49,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         noteGridContainer.ObjectDeletedEvent += NoteGridContainerObjectDeletedEvent;
         eventGridContainer.ObjectSpawnedEvent += EventGridContainerObjectSpawnedEventGrid;
         eventGridContainer.ObjectDeletedEvent += EventGridContainerObjectDeletedEventGrid;
-        if (Settings.Instance.Load_MapV3 && chainGridContainer != null)
-        {
-            chainGridContainer.ObjectSpawnedEvent += ChainGridContainerObjectSpawnedEvent;
-            chainGridContainer.ObjectDeletedEvent += ChainGridContainerObjectDeletedEvent;
-        }
+        chainGridContainer.ObjectSpawnedEvent += ChainGridContainerObjectSpawnedEvent;
+        chainGridContainer.ObjectDeletedEvent += ChainGridContainerObjectDeletedEvent;
     }
 
     private void LateUpdate()
@@ -222,10 +219,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         noteGridContainer.ObjectDeletedEvent -= NoteGridContainerObjectDeletedEvent;
         eventGridContainer.ObjectSpawnedEvent -= EventGridContainerObjectSpawnedEventGrid;
         eventGridContainer.ObjectDeletedEvent -= EventGridContainerObjectDeletedEventGrid;
-        if (Settings.Instance.Load_MapV3 && chainGridContainer != null)
-        {
-            chainGridContainer.ObjectSpawnedEvent -= ChainGridContainerObjectSpawnedEvent;
-            chainGridContainer.ObjectDeletedEvent -= ChainGridContainerObjectDeletedEvent;
-        }
+        chainGridContainer.ObjectSpawnedEvent -= ChainGridContainerObjectSpawnedEvent;
+        chainGridContainer.ObjectDeletedEvent -= ChainGridContainerObjectDeletedEvent;
     }
 }
