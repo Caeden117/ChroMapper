@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using Beatmap.Info;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -26,7 +27,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     [FormerlySerializedAs("bpmChangesContainer")][SerializeField] private BPMChangeGridContainer bpmChangeGridContainer;
     [SerializeField] private GridRenderingController gridRenderingController;
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
-    [FormerlySerializedAs("song")][HideInInspector] public BeatSaberSong Song;
+
+    public BaseInfo MapInfo;
 
     [SerializeField] private float currentSeconds;
     [FormerlySerializedAs("stopScheduled")] public bool StopScheduled;
@@ -116,7 +118,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         {
             //Init dat stuff
             clip = BeatSaberSongContainer.Instance.LoadedSong;
-            Song = BeatSaberSongContainer.Instance.Song;
+            // Song = BeatSaberSongContainer.Instance.Song;
+            MapInfo = BeatSaberSongContainer.Instance.Info;
             ResetTime();
             IsPlaying = false;
             SongAudioSource.clip = clip;
@@ -438,10 +441,10 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangeGridContainer.FindRoundedBpmTime(beat, snap);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float GetBeatFromSeconds(float seconds) => Song.BeatsPerMinute / 60 * seconds;
+    public float GetBeatFromSeconds(float seconds) => MapInfo.BeatsPerMinute / 60 * seconds;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float GetSecondsFromBeat(float beat) => 60 / Song.BeatsPerMinute * beat;
+    public float GetSecondsFromBeat(float beat) => 60 / MapInfo.BeatsPerMinute * beat;
 
     private void ValidatePosition()
     {

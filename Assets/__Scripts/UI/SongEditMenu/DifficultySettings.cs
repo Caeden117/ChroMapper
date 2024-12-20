@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Info;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
-using static BeatSaberSong;
+using Beatmap.V4;
 
 /// <summary>
 ///     Holds users changes to a difficulty until they ask to save them
@@ -13,27 +15,36 @@ public class DifficultySettings
 {
     private List<BaseEnvironmentEnhancement> envEnhancements;
     private BaseDifficulty map;
+
+    public InfoDifficulty InfoDifficulty { get; }
     public string CustomName = "";
     public bool ForceDirty;
     public float NoteJumpMovementSpeed = 16;
     public float NoteJumpStartBeatOffset;
+    
+    public int EnvironmentNameIndex;
+    public string EnvironmentName;
+    
+    // v4 fields
+    public string Mappers;
+    public string Lighters;
+    public string LightshowFilePath;
 
-    public DifficultySettings(DifficultyBeatmap difficultyBeatmap)
+    public DifficultySettings(InfoDifficulty infoDifficulty)
     {
-        difficultyBeatmap.GetOrCreateCustomData();
-        DifficultyBeatmap = difficultyBeatmap;
+        InfoDifficulty = infoDifficulty;
 
         Revert();
     }
 
-    public DifficultySettings(DifficultyBeatmap difficultyBeatmap, bool forceDirty) : this(difficultyBeatmap) =>
+    public DifficultySettings(InfoDifficulty infoDifficulty, bool forceDirty) : this(infoDifficulty) =>
         ForceDirty = forceDirty;
 
     public BaseDifficulty Map
     {
         get
         {
-            map ??= BeatSaberSongContainer.Instance.Song.GetMapFromDifficultyBeatmap(DifficultyBeatmap);
+            map ??= BeatSaberSongUtils.GetMapFromInfoFiles(BeatSaberSongContainer.Instance.Info, InfoDifficulty);
             return map;
         }
     }
@@ -48,18 +59,20 @@ public class DifficultySettings
         set => envEnhancements = value;
     }
 
-    public DifficultyBeatmap DifficultyBeatmap { get; }
-
     /// <summary>
     ///     Check if the user has made changes
     /// </summary>
     /// <returns>True if changes have been made, false otherwise</returns>
     public bool IsDirty() =>
-        ForceDirty || NoteJumpMovementSpeed != DifficultyBeatmap.NoteJumpMovementSpeed ||
-        NoteJumpStartBeatOffset != DifficultyBeatmap.NoteJumpStartBeatOffset ||
-        !(CustomName ?? "").Equals(DifficultyBeatmap.CustomData == null
+        ForceDirty ||
+        NoteJumpMovementSpeed != InfoDifficulty.NoteJumpSpeed ||
+        NoteJumpStartBeatOffset != InfoDifficulty.NoteStartBeatOffset ||
+        EnvironmentName != EnvironmentNameFromIndex ||
+        Mappers != string.Join(',', InfoDifficulty.Mappers) ||
+        Lighters != string.Join(',', InfoDifficulty.Lighters) ||
+        !(CustomName ?? "").Equals(InfoDifficulty.CustomData == null
             ? ""
-            : DifficultyBeatmap.CustomData["_difficultyLabel"].Value) ||
+            : InfoDifficulty.CustomData["_difficultyLabel"].Value) ||
         EnvRemovalChanged();
 
     private bool EnvRemovalChanged() =>
@@ -73,15 +86,43 @@ public class DifficultySettings
     {
         ForceDirty = false;
 
-        DifficultyBeatmap.NoteJumpMovementSpeed = NoteJumpMovementSpeed;
-        DifficultyBeatmap.NoteJumpStartBeatOffset = NoteJumpStartBeatOffset;
+        InfoDifficulty.NoteJumpSpeed = NoteJumpMovementSpeed;
+        InfoDifficulty.NoteStartBeatOffset = NoteJumpStartBeatOffset;
 
-        if (string.IsNullOrEmpty(CustomName))
-            DifficultyBeatmap.CustomData?.Remove("_difficultyLabel");
+        InfoDifficulty.Mappers = Mappers.Split(',').Select(x => x.Trim()).ToList();
+        InfoDifficulty.Lighters = Lighters.Split(',').Select(x => x.Trim()).ToList();
+        
+        var previousLightshowFileName = InfoDifficulty.LightshowFileName;
+        InfoDifficulty.LightshowFileName = LightshowFilePath;
+        
+        var environmentNameIndex = BeatSaberSongContainer.Instance.Info.EnvironmentNames.IndexOf(EnvironmentName);
+        if (environmentNameIndex >= 0)
+        {
+            InfoDifficulty.EnvironmentNameIndex = EnvironmentNameIndex = environmentNameIndex;
+        }
         else
-            DifficultyBeatmap.GetOrCreateCustomData()["_difficultyLabel"] = CustomName;
+        {
+            BeatSaberSongContainer.Instance.Info.EnvironmentNames.Add(EnvironmentName);
+            InfoDifficulty.EnvironmentNameIndex = EnvironmentNameIndex = BeatSaberSongContainer.Instance.Info.EnvironmentNames.Count;
+        }
+        
 
-        DifficultyBeatmap.CustomData?.Remove("_environmentRemoval");
+        // Map lightshow diff has changed and requires reloading the lights for this difficulty
+        if (Map is { MajorVersion: 4 } && previousLightshowFileName != LightshowFilePath)
+        {
+            V4Difficulty.LoadLightsFromLightshowFile(Map, BeatSaberSongContainer.Instance.Info, InfoDifficulty);
+        }
+
+        // TODO: Check if this needs adjustment for v4
+        if (string.IsNullOrEmpty(CustomName))
+        {
+            InfoDifficulty.CustomData?.Remove("_difficultyLabel");
+            InfoDifficulty.CustomData?.Remove("difficultyLabel");
+        }
+        else
+            InfoDifficulty.CustomLabel = CustomName;
+
+        InfoDifficulty.CustomData?.Remove("_environmentRemoval");
 
         // Map save is sloooow so only do it if we need to
         if (EnvRemovalChanged())
@@ -94,9 +135,9 @@ public class DifficultySettings
     private List<BaseEnvironmentEnhancement> GetEnvEnhancementsFromMap()
     {
         var enhancements = new List<BaseEnvironmentEnhancement>();
-        if (DifficultyBeatmap.CustomData != null)
+        if (InfoDifficulty.CustomData != null)
         {
-            foreach (var ent in DifficultyBeatmap.CustomData["_environmentRemoval"])
+            foreach (var ent in InfoDifficulty.CustomData["_environmentRemoval"])
                 enhancements.Add(Settings.Instance.MapVersion == 3 ? V3EnvironmentEnhancement.GetFromJson(ent.Value.Value) : V2EnvironmentEnhancement.GetFromJson(ent.Value.Value));
         }
 
@@ -105,14 +146,23 @@ public class DifficultySettings
         return enhancements;
     }
 
+    private string EnvironmentNameFromIndex => BeatSaberSongContainer.Instance.Info.EnvironmentNames
+                                                   .ElementAtOrDefault(InfoDifficulty.EnvironmentNameIndex)
+                                               ?? "DefaultEnvironment";
+    
     /// <summary>
     ///     Discard any changes from the user
     /// </summary>
     public void Revert()
     {
-        NoteJumpMovementSpeed = DifficultyBeatmap.NoteJumpMovementSpeed;
-        NoteJumpStartBeatOffset = DifficultyBeatmap.NoteJumpStartBeatOffset;
-        CustomName = DifficultyBeatmap.CustomData?["_difficultyLabel"]?.Value ?? "";
+        NoteJumpMovementSpeed = InfoDifficulty.NoteJumpSpeed;
+        NoteJumpStartBeatOffset = InfoDifficulty.NoteStartBeatOffset;
+        Mappers = string.Join(',', InfoDifficulty.Mappers);
+        Lighters = string.Join(',', InfoDifficulty.Lighters);
+        EnvironmentNameIndex = InfoDifficulty.EnvironmentNameIndex;
+        EnvironmentName = EnvironmentNameFromIndex;
+        LightshowFilePath = InfoDifficulty.LightshowFileName;
+        CustomName = InfoDifficulty.CustomData?["_difficultyLabel"]?.Value ?? "";
 
         envEnhancements = null;
     }

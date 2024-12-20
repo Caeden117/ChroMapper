@@ -187,91 +187,91 @@ namespace Beatmap.Base
         public override string CustomKeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyColor,
-            3 => V3BasicEvent.CustomKeyColor
+            3 or 4 => V3BasicEvent.CustomKeyColor
         };
 
         public override string CustomKeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyTrack,
-            3 => V3BasicEvent.CustomKeyTrack
+            3 or 4 => V3BasicEvent.CustomKeyTrack
         };
 
         public string CustomKeyPropID => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyPropID,
-            3 => V3BasicEvent.CustomKeyPropID
+            3 or 4 => V3BasicEvent.CustomKeyPropID
         };
 
         public string CustomKeyLightID => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLightID,
-            3 => V3BasicEvent.CustomKeyLightID
+            3 or 4 => V3BasicEvent.CustomKeyLightID
         };
 
         public string CustomKeyLerpType => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLerpType,
-            3 => V3BasicEvent.CustomKeyLerpType
+            3 or 4 => V3BasicEvent.CustomKeyLerpType
         };
 
         public string CustomKeyEasing => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyEasing,
-            3 => V3BasicEvent.CustomKeyEasing
+            3 or 4 => V3BasicEvent.CustomKeyEasing
         };
 
         public string CustomKeyLightGradient => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLightGradient,
-            3 => V3BasicEvent.CustomKeyLightGradient
+            3 or 4 => V3BasicEvent.CustomKeyLightGradient
         };
 
         public string CustomKeyStep => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyStep,
-            3 => V3BasicEvent.CustomKeyStep
+            3 or 4 => V3BasicEvent.CustomKeyStep
         };
 
         public string CustomKeyProp => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyProp,
-            3 => V3BasicEvent.CustomKeyProp
+            3 or 4 => V3BasicEvent.CustomKeyProp
         };
 
         public string CustomKeySpeed => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeySpeed,
-            3 => V3BasicEvent.CustomKeySpeed
+            3 or 4 => V3BasicEvent.CustomKeySpeed
         };
 
         public string CustomKeyRingRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyRingRotation,
-            3 => V3BasicEvent.CustomKeyRingRotation
+            3 or 4 => V3BasicEvent.CustomKeyRingRotation
         };
 
         public string CustomKeyDirection => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyDirection,
-            3 => V3BasicEvent.CustomKeyDirection
+            3 or 4 => V3BasicEvent.CustomKeyDirection
         };
 
         public string CustomKeyLockRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLockRotation,
-            3 => V3BasicEvent.CustomKeyLockRotation
+            3 or 4 => V3BasicEvent.CustomKeyLockRotation
         };
 
         public string CustomKeyLaneRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyLaneRotation,
-            3 => V3BasicEvent.CustomKeyLaneRotation
+            3 or 4 => V3BasicEvent.CustomKeyLaneRotation
         };
 
         public string CustomKeyNameFilter => Settings.Instance.MapVersion switch
         {
             2 => V2Event.CustomKeyNameFilter,
-            3 => V3BasicEvent.CustomKeyNameFilter
+            3 or 4 => V3BasicEvent.CustomKeyNameFilter
         };
 
         public string CustomKeyStepMult => V2Event.CustomKeyStepMult;
@@ -546,7 +546,7 @@ namespace Beatmap.Base
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2Event.ToJson(this),
-            3 => Type switch
+            3 or 4 => Type switch
             {
                 (int)EventTypeValue.EarlyLaneRotation => V3RotationEvent.ToJson(this),
                 (int)EventTypeValue.LateLaneRotation => V3RotationEvent.ToJson(this),

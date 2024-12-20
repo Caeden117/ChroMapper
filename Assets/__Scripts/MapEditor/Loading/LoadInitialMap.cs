@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Beatmap.Containers;
+using Beatmap.Info;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -25,8 +26,8 @@ public class LoadInitialMap : MonoBehaviour
 
     [FormerlySerializedAs("DirectionalPlatformPrefabs")] [SerializeField] private GameObject[] directionalPlatformPrefabs;
 
-    private BeatSaberSong.DifficultyBeatmap diff;
-    private BeatSaberSong song;
+    private InfoDifficulty infoDifficulty;
+    private BaseInfo info;
 
     private void Awake() => SceneTransitionManager.Instance.AddLoadRoutine(LoadMap());
 
@@ -36,30 +37,29 @@ public class LoadInitialMap : MonoBehaviour
         PersistentUI.Instance.LevelLoadSliderLabel.text = "";
         yield return new WaitUntil(() => atsc.Initialized); //Wait until Start has been called
 
-        song = BeatSaberSongContainer.Instance.Song; //Grab songe data
-        diff = BeatSaberSongContainer.Instance.DifficultyData;
+        info = BeatSaberSongContainer.Instance.Info; //Grab songe data
+        infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
 
         //Set up some local variables
         var environmentID = 0;
         var customPlat = false;
         var directional = false;
 
+        //Grab platform by name (Official or Custom)
         environmentID =
-            SongInfoEditUI.GetEnvironmentIDFromString(song
-                .EnvironmentName); //Grab platform by name (Official or Custom)
-        if (song.CustomData != null && song.CustomData["_customEnvironment"] != null &&
-            song.CustomData["_customEnvironment"].Value != "")
+            SongInfoEditUI.GetEnvironmentIDFromString(info.EnvironmentNames[infoDifficulty.EnvironmentNameIndex]); 
+        if (!string.IsNullOrEmpty(info.CustomEnvironmentMetadata.Name))
         {
             if (CustomPlatformsLoader.Instance.GetAllEnvironmentIds()
-                .IndexOf(song.CustomData["_customEnvironment"] ?? "") >= 0)
+                .IndexOf(info.CustomEnvironmentMetadata.Name) >= 0)
             {
                 customPlat = true;
             }
         }
 
-        if (rotationController.IsActive && diff.ParentBeatmapSet.BeatmapCharacteristicName != "Lawless")
+        if (rotationController.IsActive && infoDifficulty.Characteristic != "Lawless")
         {
-            environmentID = SongInfoEditUI.GetDirectionalEnvironmentIDFromString(song.AllDirectionsEnvironmentName);
+            environmentID = SongInfoEditUI.GetDirectionalEnvironmentIDFromString(info.AllDirectionsEnvironmentName);
             directional = true;
         }
 
@@ -70,7 +70,7 @@ public class LoadInitialMap : MonoBehaviour
 
         if (customPlat)
         {
-            platform = CustomPlatformsLoader.Instance.LoadPlatform(song.CustomData["_customEnvironment"], platform);
+            platform = CustomPlatformsLoader.Instance.LoadPlatform(info.CustomEnvironmentMetadata.Name, platform);
         }
 
         if (directional && !customPlat) platform = directionalPlatformPrefabs[environmentID];
@@ -82,26 +82,26 @@ public class LoadInitialMap : MonoBehaviour
         descriptor.Colors = descriptor.DefaultColors.Clone();
 
         //Update Colors
-        var leftNote = BeatSaberSong.DefaultLeftNote; //Have default note as base
-        if (descriptor.Colors.RedNoteColor != BeatSaberSong.DefaultLeftColor)
+        var leftNote = DefaultColors.LeftNote; //Have default note as base
+        if (descriptor.Colors.RedNoteColor != DefaultColors.Left)
             leftNote = descriptor.Colors.RedNoteColor; //Prioritize platforms
-        if (diff.ColorLeft != null) leftNote = diff.ColorLeft.Value; //Then prioritize custom colors
+        if (infoDifficulty.CustomColorLeft != null) leftNote = infoDifficulty.CustomColorLeft.Value; //Then prioritize custom colors
 
-        var rightNote = BeatSaberSong.DefaultRightNote;
-        if (descriptor.Colors.BlueNoteColor != BeatSaberSong.DefaultRightColor)
+        var rightNote = DefaultColors.RightNote;
+        if (descriptor.Colors.BlueNoteColor != DefaultColors.Right)
             rightNote = descriptor.Colors.BlueNoteColor;
-        if (diff.ColorRight != null) rightNote = diff.ColorRight.Value;
+        if (infoDifficulty.CustomColorRight != null) rightNote = infoDifficulty.CustomColorRight.Value;
 
         noteGridContainer.UpdateColor(leftNote, rightNote);
-        obstacleGridContainer.UpdateColor(diff.ObstacleColor ?? BeatSaberSong.DefaultLeftColor);
+        obstacleGridContainer.UpdateColor(infoDifficulty.CustomColorObstacle ?? DefaultColors.Left);
         arcGridContainer.UpdateColor(leftNote, rightNote);
         chainGridContainer.UpdateColor(leftNote, rightNote);
-        if (diff.ColorLeft != null) descriptor.Colors.RedNoteColor = diff.ColorLeft.Value;
-        if (diff.ColorRight != null) descriptor.Colors.BlueNoteColor = diff.ColorRight.Value;
+        if (infoDifficulty.CustomColorLeft != null) descriptor.Colors.RedNoteColor = infoDifficulty.CustomColorLeft.Value;
+        if (infoDifficulty.CustomColorRight != null) descriptor.Colors.BlueNoteColor = infoDifficulty.CustomColorRight.Value;
 
-        if (diff.EnvColorLeft != null) descriptor.Colors.RedColor = diff.EnvColorLeft.Value;
-        if (diff.EnvColorRight != null) descriptor.Colors.BlueColor = diff.EnvColorRight.Value;
-        if (diff.EnvColorWhite != null) descriptor.Colors.WhiteColor = diff.EnvColorWhite.Value;
+        if (infoDifficulty.CustomEnvColorLeft != null) descriptor.Colors.RedColor = infoDifficulty.CustomEnvColorLeft.Value;
+        if (infoDifficulty.CustomEnvColorRight != null) descriptor.Colors.BlueColor = infoDifficulty.CustomEnvColorRight.Value;
+        if (infoDifficulty.CustomEnvColorWhite != null) descriptor.Colors.WhiteColor = infoDifficulty.CustomEnvColorWhite.Value;
 
         PlatformLoadedEvent.Invoke(descriptor); //Trigger event for classes that use the platform
         Platform = descriptor;

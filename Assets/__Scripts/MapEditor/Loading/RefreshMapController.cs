@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Beatmap.Base;
+using Beatmap.Info;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,14 +13,14 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
     [SerializeField] private TMP_FontAsset cancelFontAsset;
     [SerializeField] private TMP_FontAsset moreOptionsFontAsset;
     [SerializeField] private TMP_FontAsset thingYouCanRefreshFontAsset;
-    private BeatSaberSong.DifficultyBeatmap diff;
+    private InfoDifficulty infoDifficulty;
     private BaseDifficulty map;
-    private BeatSaberSong song;
+    private BaseInfo info;
 
     private void Start()
     {
-        song = BeatSaberSongContainer.Instance.Song;
-        diff = BeatSaberSongContainer.Instance.DifficultyData;
+        info = BeatSaberSongContainer.Instance.Info;
+        infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
         map = BeatSaberSongContainer.Instance.Map;
     }
 
@@ -67,7 +68,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
 
     private void RefreshMap(bool notes, bool obstacles, bool events, bool others, bool full)
     {
-        map = song.GetMapFromDifficultyBeatmap(diff);
+        map = BeatSaberSongUtils.GetMapFromInfoFiles(info, infoDifficulty);
         loader.UpdateMapData(map);
         
         var currentSongBpmTime = atsc.CurrentSongBpmTime;

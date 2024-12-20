@@ -1,15 +1,17 @@
 ﻿using System.Linq;
 using Beatmap.Base;
+using Beatmap.Info;
 
 public class SoundExtensionsReq : RequirementCheck
 {
     public override string Name => "Sound Extensions";
 
-    public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map) =>
-        HasSounds(mapInfo) || HasNotesWithCustomSounds(map) ? RequirementType.Suggestion : RequirementType.None;
+    public override RequirementType IsRequiredOrSuggested(InfoDifficulty infoDifficulty, BaseDifficulty map) =>
+        HasSounds(infoDifficulty) || HasNotesWithCustomSounds(map) ? RequirementType.Suggestion : RequirementType.None;
 
-    private bool HasSounds(BeatSaberSong.DifficultyBeatmap mapInfo) =>
-        mapInfo.CustomData != null && mapInfo.CustomData.HasKey("_sounds");
+    // Mod currently doesn't support v4 so this fine as is
+    private bool HasSounds(InfoDifficulty infoDifficulty) =>
+        infoDifficulty.CustomData != null && infoDifficulty.CustomData.HasKey("_sounds");
 
     private bool HasNotesWithCustomSounds(BaseDifficulty map) =>
         map.Notes.Any(note => note.CustomData != null &&

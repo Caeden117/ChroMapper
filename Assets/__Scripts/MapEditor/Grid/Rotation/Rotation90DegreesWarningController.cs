@@ -10,13 +10,13 @@ public class Rotation90DegreesWarningController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        if (BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet.BeatmapCharacteristicName == "90Degree")
+        if (BeatSaberSongContainer.Instance.MapDifficultyInfo.Characteristic == "90Degree")
             rotationCallback.RotationChangedEvent += RotationChangedEvent;
     }
 
     private void OnDestroy()
     {
-        if (BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet.BeatmapCharacteristicName == "90Degree")
+        if (BeatSaberSongContainer.Instance.MapDifficultyInfo.Characteristic == "90Degree")
             rotationCallback.RotationChangedEvent -= RotationChangedEvent;
     }
 

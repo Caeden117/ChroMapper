@@ -18,35 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - rid: 0
-    - rid: 1
-    - rid: 2
-    - rid: 3
-    - rid: 4
-    - rid: 5
-    - rid: 6
-    - rid: 7
-    - rid: 8
-    - rid: 9
-    - rid: 10
-    - rid: 11
-    - rid: 12
-    - rid: 13
-    - rid: 14
-    - rid: 15
-    - rid: 16
-    - rid: 17
-    - rid: 18
-    - rid: 19
-    - rid: 20
-    - rid: 21
-    - rid: 22
-    - rid: 23
-    - rid: 24
-    - rid: 25
-    - rid: 26
-    - rid: 27
-    - rid: 28
-    - rid: 29
   m_TableData:
   - m_Id: 1
     m_Localized: 'Notes: {NotesCount}'
@@ -765,7 +736,8 @@ MonoBehaviour:
   - m_Id: 42988137944907776
     m_Localized: Easing Time
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 0
   - m_Id: 43247577315082240
     m_Localized: Ease FloatValue
     m_Metadata:
@@ -854,13 +826,38 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 0
+  - m_Id: 444025876411969536
+    m_Localized: 'Warning
+
+      The following properties are not saved in v{0} format:
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444026126589620224
+    m_Localized: Save in a different format to ensure data is not lost.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444093981712576512
+    m_Localized: Change Beatmap Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444094241088335872
+    m_Localized: 'WARNING: Map containing incompatible data (including custom data)
+      may result in data loss. Please manually backup your map before conversion.
+
+
+      Select
+      a map version to change to.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 0
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f604
+        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f6040000c3d37bb99800
     - rid: 1
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
@@ -902,10 +899,6 @@ MonoBehaviour:
       data:
         m_Entries: 
     - rid: 11
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    - rid: 12
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 

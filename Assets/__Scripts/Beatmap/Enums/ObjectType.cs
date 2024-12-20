@@ -11,6 +11,7 @@ namespace Beatmap.Enums
         Arc,
         Chain,
         Bookmark,
-        Waypoint
+        Waypoint,
+        NJSEvent
     }
 }

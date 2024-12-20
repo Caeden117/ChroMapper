@@ -13,17 +13,25 @@ namespace Beatmap.Info
         
         public BaseBpmInfo InitWithSongContainerInstance()
         {
-            Version = BeatSaberSongContainer.Instance.Song.Version[0] == '4' ? "4.0.0" : "2.0.0";
+            Version = BeatSaberSongContainer.Instance.Info.Version[0] == '4' ? "4.0.0" : "2.0.0";
             AudioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples;
             AudioFrequency = BeatSaberSongContainer.Instance.LoadedSongFrequency;
 
             return this;
         }
-        
-        public static string GetOutputFileName(BeatSaberSong info) => info.Version[0] == '4'
-            ? V4AudioData.FileName
-            : V2BpmInfo.FileName;
-        
+
+        public static string GetOutputFileName(BaseInfo info)
+        {
+            if (info.Version[0] == '4')
+            {
+                return !string.IsNullOrWhiteSpace(info.AudioDataFilename)
+                    ? info.AudioDataFilename
+                    : V4AudioData.FileName;
+            }
+
+            return V2BpmInfo.FileName;
+        }
+
         public static List<BaseBpmEvent> GetBpmEvents(List<BpmInfoBpmRegion> bpmRegions, int audioFrequency)
         {
             var bpmEvents = new List<BaseBpmEvent>();

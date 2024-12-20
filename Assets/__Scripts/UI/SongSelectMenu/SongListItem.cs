@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Beatmap.Info;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -44,7 +45,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
     private bool ignoreToggle;
     private string previousSearch = "";
 
-    private BeatSaberSong song;
+    private BaseInfo mapInfo;
 
     private SongList songList;
 
@@ -88,8 +89,8 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (BeatSaberSongContainer.Instance != null && song != null)
-            BeatSaberSongContainer.Instance.SelectSongForEditing(song);
+        if (BeatSaberSongContainer.Instance != null && mapInfo != null)
+            BeatSaberSongContainer.Instance.SelectSongForEditing(mapInfo);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -114,28 +115,28 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             : stripped;
     }
 
-    public void AssignSong(BeatSaberSong song, string searchFieldText)
+    public void AssignSong(BaseInfo mapInfo, string searchFieldText)
     {
-        if (this.song == song && previousSearch == searchFieldText) return;
+        if (this.mapInfo == mapInfo && previousSearch == searchFieldText) return;
 
         StopCoroutine(nameof(LoadImage));
         StopCoroutine(nameof(LoadDuration));
 
         previousSearch = searchFieldText;
-        this.song = song;
-        var songName = HighlightSubstring(song.SongName, searchFieldText);
-        var artistName = HighlightSubstring(song.SongAuthorName, searchFieldText);
+        this.mapInfo = mapInfo;
+        var songName = HighlightSubstring(mapInfo.SongName, searchFieldText);
+        var artistName = HighlightSubstring(mapInfo.SongAuthorName, searchFieldText);
 
-        title.text = $"{songName} <size=50%><i>{song.SongSubName.StripTMPTags()}</i></size>";
+        title.text = $"{songName} <size=50%><i>{mapInfo.SongSubName.StripTMPTags()}</i></size>";
         artist.text = artistName;
-        folder.text = song.Directory;
+        folder.text = mapInfo.Directory;
 
         duration.text = "-:--";
-        bpm.text = $"{song.BeatsPerMinute:N0}";
+        bpm.text = $"{mapInfo.BeatsPerMinute:N0}";
 
         ignoreToggle = true;
-        favouriteToggle.isOn = this.song.IsFavourite;
-        favouritePreviewImage.gameObject.SetActive(this.song.IsFavourite);
+        favouriteToggle.isOn = this.mapInfo.IsFavourite;
+        favouritePreviewImage.gameObject.SetActive(this.mapInfo.IsFavourite);
         ignoreToggle = false;
 
         StartCoroutine(nameof(LoadImage));
@@ -144,7 +145,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     private IEnumerator LoadImage()
     {
-        var fullPath = Path.Combine(song.Directory, song.CoverImageFilename);
+        var fullPath = Path.Combine(mapInfo.Directory, mapInfo.CoverImageFilename);
 
         if (cache.TryGetValue(fullPath, out var spriteRef) && spriteRef.TryGetTarget(out var existingSprite))
         {
@@ -231,8 +232,8 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     private IEnumerator LoadDuration()
     {
-        var cacheKey = Path.GetFullPath(song.Directory);
-        var fullPath = Path.Combine(song.Directory, song.SongFilename);
+        var cacheKey = Path.GetFullPath(mapInfo.Directory);
+        var fullPath = Path.Combine(mapInfo.Directory, mapInfo.SongFilename);
 
         if (!File.Exists(fullPath)) yield break;
 
@@ -251,7 +252,7 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             yield break;
         }
 
-        yield return song.LoadAudio((clip) => SetDuration(cacheKey, clip.length), 0, null);
+        yield return BeatSaberSongExtensions.LoadAudio(mapInfo, (clip) => SetDuration(cacheKey, clip.length), 0, null);
     }
 
     private static bool FindBytes(Stream fs, BinaryReader br, byte[] bytes, int searchLength)
@@ -338,9 +339,9 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
     {
         if (ignoreToggle) return;
 
-        songList.RemoveSong(song);
-        song.IsFavourite = isFavourite;
+        songList.RemoveSong(mapInfo);
+        mapInfo.IsFavourite = isFavourite;
         favouritePreviewImage.gameObject.SetActive(isFavourite);
-        songList.AddSong(song);
+        songList.AddSong(mapInfo);
     }
 }

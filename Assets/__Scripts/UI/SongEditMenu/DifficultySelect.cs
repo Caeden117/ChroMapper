@@ -3,67 +3,123 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Beatmap.Base;
-using Beatmap.V2;
-using Beatmap.V3;
-using SimpleJSON;
+using Beatmap.Info;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
-using static BeatSaberSong;
 
+// Big class which holds data for all characteristics, difficulties, and stuff
 public class DifficultySelect : MonoBehaviour
 {
     [SerializeField] private TMP_InputField njsField;
     [SerializeField] private TMP_InputField songBeatOffsetField;
+    
+    [SerializeField] private TMP_Dropdown environmentDropdown;
+    
+    // v4 fields
+    [SerializeField] private TMP_InputField mappersField;
+    [SerializeField] private TMP_InputField lightersField;
+    // TODO: Turn this into a dropdown to reduce possible user error
+    [SerializeField] private TMP_InputField lightshowFilePathField;
+    
     [SerializeField] private CharacteristicSelect characteristicSelect;
     [SerializeField] private Color copyColor;
     [SerializeField] private EnvRemoval envRemoval;
     [SerializeField] private Button openEditorButton;
 
-    private readonly Dictionary<string, int> diffRankLookup = new Dictionary<string, int>
-    {
-        {"Easy", 1},
-        {"Normal", 3},
-        {"Hard", 5},
-        {"Expert", 7},
-        {"ExpertPlus", 9}
-    };
-
-    private readonly HashSet<DifficultyRow> rows = new HashSet<DifficultyRow>();
-    private readonly Dictionary<string, string> selectedMemory = new Dictionary<string, string>();
+    private readonly HashSet<DifficultyRow> rows = new();
+    private readonly Dictionary<string, string> selectedMemory = new();
+    
+    
+    // Characteristics[CharacteristicName] -> diffs
     public Dictionary<string, Dictionary<string, DifficultySettings>> Characteristics;
     private CopySource copySource;
-    private DifficultyBeatmapSet currentCharacteristic;
     private Dictionary<string, DifficultySettings> diffs;
 
+    private InfoDifficultySet currentDifficultySet;
+    
     private bool loading;
     private DifficultyRow selected;
 
     public BaseDifficulty CurrentDiff => selected != null ? diffs[selected.Name].Map : null;
 
-    private BeatSaberSong Song => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
+    private BaseInfo MapInfo => BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Info : null;
+    
 
+    // TODO: Clean this up
+    private List<string> environmentNames = new();
+    
     /// <summary>
     ///     Load song data and set up listeners on UI elements
     /// </summary>
     public void Start()
     {
-        if (Song?.DifficultyBeatmapSets != null)
+        environmentDropdown.ClearOptions();
+        environmentNames.Clear();
+        environmentNames.AddRange(SongInfoEditUI.VanillaEnvironments.Select(it => it.JsonName).ToList());
+
+        if (MapInfo?.DifficultySets != null)
         {
-            Characteristics = Song.DifficultyBeatmapSets.GroupBy(it => it.BeatmapCharacteristicName).ToDictionary(
+            Characteristics = MapInfo.DifficultySets.GroupBy(it => it.Characteristic).ToDictionary(
                 characteristic => characteristic.Key,
-                characteristic => characteristic.SelectMany(i => i.DifficultyBeatmaps).GroupBy(map => map.Difficulty)
+                characteristic => characteristic.SelectMany(i => i.Difficulties).GroupBy(map => map.Difficulty)
                     .ToDictionary(
                         grouped => grouped.Key,
                         grouped => new DifficultySettings(grouped.First())
                     ),
                 StringComparer.OrdinalIgnoreCase
             );
+
+            foreach (var difficultySetting in Characteristics.Values.SelectMany(c => c.Values))
+            {
+                // This means use default
+                if (difficultySetting.InfoDifficulty.EnvironmentNameIndex == -1)
+                {
+                    difficultySetting.InfoDifficulty.EnvironmentNameIndex = 0;
+                }
+
+                difficultySetting.EnvironmentNameIndex = difficultySetting.InfoDifficulty.EnvironmentNameIndex;
+                difficultySetting.EnvironmentName = 
+                    MapInfo.EnvironmentNames.ElementAtOrDefault(difficultySetting.InfoDifficulty.EnvironmentNameIndex)
+                    ?? "DefaultEnvironment";
+            }
+            
+            // Handle unsupported environment for dropdown
+            if (!SongInfoEditUI.VanillaEnvironments.Any(env => env.JsonName == MapInfo.EnvironmentName))
+            {
+                environmentNames.Add(MapInfo.EnvironmentName);
+            }
+        
+            // Add any unsupported environments present in environmentNames
+            foreach (var environmentName in MapInfo.EnvironmentNames)
+            {
+                if (!environmentNames.Any(env => env == environmentName))
+                {
+                    environmentNames.Add(environmentName);
+                }
+            }
+
+            if (MapInfo.MajorVersion == 4)
+            {
+                mappersField.interactable = true;
+                lightersField.interactable = true;
+            }
+            else
+            {
+                mappersField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
+                mappersField.interactable = false;
+                lightersField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
+                lightersField.interactable = false;
+            }
         }
         else
         {
             Characteristics = new Dictionary<string, Dictionary<string, DifficultySettings>>();
         }
+
+        environmentDropdown.AddOptions(environmentNames);
+        environmentDropdown.value = 0;
 
         foreach (Transform child in transform)
         {
@@ -112,6 +168,50 @@ public class DifficultySelect : MonoBehaviour
         selected.ShowDirtyObjects(diff);
     }
 
+    public void UpdateEnvironment()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+        
+        var diff = diffs[selected.Name];
+        
+        diff.EnvironmentName = environmentDropdown.options[environmentDropdown.value].text;
+
+        selected.ShowDirtyObjects(diff);
+    }
+    
+    public void UpdateLightshowFilePath()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.LightshowFilePath = lightshowFilePathField.text;
+        
+        selected.ShowDirtyObjects(diff);
+    }
+
+    public void UpdateMappers()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.Mappers = mappersField.text;
+        
+        selected.ShowDirtyObjects(diff);
+    }
+
+    public void UpdateLighters()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.Lighters = lightersField.text;
+        
+        selected.ShowDirtyObjects(diff);
+    }
+
     public void UpdateEnvRemoval()
     {
         if (selected == null || !diffs.ContainsKey(selected.Name)) return;
@@ -138,6 +238,10 @@ public class DifficultySelect : MonoBehaviour
         {
             njsField.text = localDiff.NoteJumpMovementSpeed.ToString();
             songBeatOffsetField.text = localDiff.NoteJumpStartBeatOffset.ToString();
+            mappersField.text = localDiff.Mappers;
+            lightersField.text = localDiff.Lighters;
+            lightshowFilePathField.text = localDiff.LightshowFilePath;
+            environmentDropdown.value = localDiff.EnvironmentNameIndex;
             envRemoval.UpdateFromDiff(localDiff.EnvEnhancements);
         }
 
@@ -172,27 +276,27 @@ public class DifficultySelect : MonoBehaviour
     /// <param name="row">UI row that was clicked on</param>
     private void SaveDiff(DifficultyRow row)
     {
-        var localSong = BeatSaberSongContainer.Instance.Song;
-        if (!Directory.Exists(localSong.Directory))
-            localSong.SaveSong();
+        var mapInfo = BeatSaberSongContainer.Instance.Info;
+        if (!Directory.Exists(mapInfo.Directory))
+            mapInfo.Save();
 
         var localDiff = diffs[row.Name];
         var firstSave = localDiff.ForceDirty;
         localDiff.Commit();
         row.ShowDirtyObjects(false, true);
 
-        var diff = localDiff.DifficultyBeatmap;
+        var diff = localDiff.InfoDifficulty;
 
-        if (!localSong.DifficultyBeatmapSets.Contains(currentCharacteristic))
-            localSong.DifficultyBeatmapSets.Add(currentCharacteristic);
-        if (!currentCharacteristic.DifficultyBeatmaps.Contains(diff))
-            currentCharacteristic.DifficultyBeatmaps.Add(diff);
+        if (!mapInfo.DifficultySets.Contains(currentDifficultySet))
+            mapInfo.DifficultySets.Add(currentDifficultySet);
+        if (!currentDifficultySet.Difficulties.Contains(diff))
+            currentDifficultySet.Difficulties.Add(diff);
 
         var map = TryGetExistingMapFromDiff(localDiff) ?? new BaseDifficulty();
         var oldPath = map.DirectoryAndFile;
 
-        diff.UpdateName();
-        map.DirectoryAndFile = Path.Combine(localSong.Directory, diff.BeatmapFilename);
+        diff.SetBeatmapFileNameToDefault();
+        map.DirectoryAndFile = Path.Combine(mapInfo.Directory, diff.BeatmapFileName);
         if (File.Exists(oldPath) && oldPath != map.DirectoryAndFile && !File.Exists(map.DirectoryAndFile))
         {
             if (firstSave)
@@ -205,9 +309,28 @@ public class DifficultySelect : MonoBehaviour
             map.Save();
         }
 
-        diff.RefreshRequirementsAndWarnings(map);
+        diff.RefreshRequirementsAndWarnings(mapInfo, map);
+        
+        // Handle environmentName indexes
+        var environmentNames = new List<string>();
+        foreach (var difficultySetting in Characteristics.Values.SelectMany(c => c.Values))
+        {
+            var environmentNameIndex = environmentNames.IndexOf(difficultySetting.EnvironmentName);
 
-        localSong.SaveSong();
+            if (environmentNameIndex == -1)
+            {
+                environmentNames.Add(difficultySetting.EnvironmentName);
+                difficultySetting.InfoDifficulty.EnvironmentNameIndex = environmentNames.Count - 1;
+            }
+            else
+            {
+                difficultySetting.InfoDifficulty.EnvironmentNameIndex = environmentNameIndex;
+            }
+        }
+        
+        mapInfo.EnvironmentNames = environmentNames;
+
+        mapInfo.Save();
         characteristicSelect.Recalculate();
 
         Debug.Log("Saved " + row.Name);
@@ -245,9 +368,13 @@ public class DifficultySelect : MonoBehaviour
             selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 0.0f);
 
             // Clean the UI, if we're selecting a new item they'll be repopulated
-            BeatSaberSongContainer.Instance.DifficultyData = null;
+            BeatSaberSongContainer.Instance.MapDifficultyInfo = null;
             njsField.text = "";
             songBeatOffsetField.text = "";
+            mappersField.SetTextWithoutNotify("");
+            lightersField.SetTextWithoutNotify("");
+            lightshowFilePathField.SetTextWithoutNotify("");
+            environmentDropdown.SetValueWithoutNotify(0);
             envRemoval.ClearList();
         }
 
@@ -278,16 +405,33 @@ public class DifficultySelect : MonoBehaviour
         // Select a difficulty
         selected = row;
         openEditorButton.interactable = true;
-        if (!loading) selectedMemory[currentCharacteristic.BeatmapCharacteristicName] = selected.Name;
+        if (!loading) selectedMemory[currentDifficultySet.Characteristic] = selected.Name;
         var selImage = selected.Background;
         selImage.color = new Color(selImage.color.r, selImage.color.g, selImage.color.b, 1.0f);
 
-        var diff = diffs[row.Name];
-        BeatSaberSongContainer.Instance.DifficultyData = diff.DifficultyBeatmap;
+        var selectedDifficultySettings = diffs[row.Name];
+        BeatSaberSongContainer.Instance.MapDifficultyInfo = selectedDifficultySettings.InfoDifficulty;
 
-        njsField.text = diff.NoteJumpMovementSpeed.ToString();
-        songBeatOffsetField.text = diff.NoteJumpStartBeatOffset.ToString();
-        envRemoval.UpdateFromDiff(diff.EnvEnhancements);
+        njsField.text = selectedDifficultySettings.NoteJumpMovementSpeed.ToString();
+        songBeatOffsetField.text = selectedDifficultySettings.NoteJumpStartBeatOffset.ToString();
+        mappersField.text = selectedDifficultySettings.Mappers;
+        lightersField.text = selectedDifficultySettings.Lighters;
+
+        if (selectedDifficultySettings.Map is { MajorVersion: 4 })
+        {
+            lightshowFilePathField.interactable = true;
+            lightshowFilePathField.text = selectedDifficultySettings.LightshowFilePath;
+        }
+        else
+        {
+            lightshowFilePathField.SetTextWithoutNotify($"Not used in v{selectedDifficultySettings.Map?.MajorVersion ?? 3} map");
+            lightshowFilePathField.interactable = false;
+        }
+        
+
+        environmentDropdown.value = environmentNames.IndexOf(selectedDifficultySettings.EnvironmentName);
+        
+        envRemoval.UpdateFromDiff(selectedDifficultySettings.EnvEnhancements);
     }
 
     /// <summary>
@@ -325,17 +469,13 @@ public class DifficultySelect : MonoBehaviour
             // This diff has previously been saved, confirm deletion
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "deletediff.dialog",
                 r => HandleDeleteDifficulty(row, r), PersistentUI.DialogBoxPresetType.YesNo,
-                new object[] { diffs[row.Name].DifficultyBeatmap.Difficulty });
+                new object[] { diffs[row.Name].InfoDifficulty.Difficulty });
         }
         else if (val && !diffs.ContainsKey(row.Name)) // Create if does not exist
         {
-            var map = new DifficultyBeatmap(currentCharacteristic)
-            {
-                Difficulty = row.Name,
-                DifficultyRank = diffRankLookup[row.Name]
-            };
+            var map = new InfoDifficulty(currentDifficultySet) { Difficulty = row.Name };
 
-            map.UpdateName();
+            map.SetBeatmapFileNameToDefault();
 
             if (copySource != null)
             {
@@ -345,24 +485,32 @@ public class DifficultySelect : MonoBehaviour
 
                 if (fromDiff != null)
                 {
-                    map.NoteJumpMovementSpeed = fromDiff.DifficultyBeatmap.NoteJumpMovementSpeed;
-                    map.NoteJumpStartBeatOffset = fromDiff.DifficultyBeatmap.NoteJumpStartBeatOffset;
+                    map.NoteJumpSpeed = fromDiff.InfoDifficulty.NoteJumpSpeed;
+                    map.NoteStartBeatOffset = fromDiff.InfoDifficulty.NoteStartBeatOffset;
 
-                    map.CustomData = fromDiff.DifficultyBeatmap.CustomData?.Clone();
+                    map.Mappers = fromDiff.InfoDifficulty.Mappers.ToList();
+                    map.Lighters = fromDiff.InfoDifficulty.Lighters.ToList();
+                    
+                    map.ColorSchemeIndex = fromDiff.InfoDifficulty.ColorSchemeIndex;
+                    map.EnvironmentNameIndex = fromDiff.InfoDifficulty.EnvironmentNameIndex;
+
+                    map.LightshowFileName = fromDiff.InfoDifficulty.LightshowFileName;
+
+                    map.CustomData = fromDiff.InfoDifficulty.CustomData?.Clone().AsObject;
 
                     // Yes this copies custom data, but color overrides dont copy since they're ripped from these fields instead.
-                    map.ColorLeft = fromDiff.DifficultyBeatmap.ColorLeft;
-                    map.ColorRight = fromDiff.DifficultyBeatmap.ColorRight;
-                    map.EnvColorLeft = fromDiff.DifficultyBeatmap.EnvColorLeft;
-                    map.EnvColorRight = fromDiff.DifficultyBeatmap.EnvColorRight;
-                    map.EnvColorWhite = fromDiff.DifficultyBeatmap.EnvColorWhite;
-                    map.ObstacleColor = fromDiff.DifficultyBeatmap.ObstacleColor;
-                    map.BoostColorLeft = fromDiff.DifficultyBeatmap.BoostColorLeft;
-                    map.BoostColorRight = fromDiff.DifficultyBeatmap.BoostColorRight;
-                    map.BoostColorWhite = fromDiff.DifficultyBeatmap.BoostColorWhite;
+                    map.CustomColorLeft = fromDiff.InfoDifficulty.CustomColorLeft;
+                    map.CustomColorRight = fromDiff.InfoDifficulty.CustomColorRight;
+                    map.CustomEnvColorLeft = fromDiff.InfoDifficulty.CustomEnvColorLeft;
+                    map.CustomEnvColorRight = fromDiff.InfoDifficulty.CustomEnvColorRight;
+                    map.CustomEnvColorWhite = fromDiff.InfoDifficulty.CustomEnvColorWhite;
+                    map.CustomColorObstacle = fromDiff.InfoDifficulty.CustomColorObstacle;
+                    map.CustomEnvColorBoostLeft = fromDiff.InfoDifficulty.CustomEnvColorBoostLeft;
+                    map.CustomEnvColorBoostRight = fromDiff.InfoDifficulty.CustomEnvColorBoostRight;
+                    map.CustomEnvColorBoostWhite = fromDiff.InfoDifficulty.CustomEnvColorBoostWhite;
 
                     // This sets the current filename as the filename for another diff and will trigger the copy on save
-                    map.UpdateName(fromDiff.DifficultyBeatmap.BeatmapFilename);
+                    map.BeatmapFileName = fromDiff.InfoDifficulty.BeatmapFileName;
                 }
             }
 
@@ -397,26 +545,26 @@ public class DifficultySelect : MonoBehaviour
             return;
         }
 
-        var diff = diffs[row.Name].DifficultyBeatmap;
+        var diff = diffs[row.Name].InfoDifficulty;
 
-        var fileToDelete = Song.GetMapFromDifficultyBeatmap(diff)?.DirectoryAndFile;
+        var fileToDelete = Path.Combine(MapInfo.Directory, diff.BeatmapFileName);// BeatSaberSong.GetMapFromDifficultyBeatmap(diff)?.DirectoryAndFile;
         if (File.Exists(fileToDelete)) FileOperationAPIWrapper.MoveToRecycleBin(fileToDelete);
 
         // Remove status effects if present
         if (copySource != null && row == copySource.Obj &&
-            currentCharacteristic == copySource.Characteristic)
+            currentDifficultySet == copySource.CharacteristicSet)
         {
             CancelCopy();
         }
 
         if (row == selected) DeselectDiff();
 
-        currentCharacteristic.DifficultyBeatmaps.Remove(diffs[row.Name].DifficultyBeatmap);
-        if (currentCharacteristic.DifficultyBeatmaps.Count == 0)
-            Song.DifficultyBeatmapSets.Remove(currentCharacteristic);
+        currentDifficultySet.Difficulties.Remove(diffs[row.Name].InfoDifficulty);
+        if (currentDifficultySet.Difficulties.Count == 0)
+            MapInfo.DifficultySets.Remove(currentDifficultySet);
 
         diffs.Remove(row.Name);
-        Song.SaveSong();
+        MapInfo.Save();
 
         row.SetInteractable(false);
         row.NameInput.text = "";
@@ -431,17 +579,17 @@ public class DifficultySelect : MonoBehaviour
     private void SetCopySource(DifficultyRow row)
     {
         // If we copied from the current characteristic remove the highlight
-        if (copySource != null && currentCharacteristic == copySource.Characteristic)
+        if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
             copySource.Obj.CopyImage.color = Color.white;
 
         // Clicking twice on the same source removes it
-        if (copySource != null && copySource.Obj == row && currentCharacteristic == copySource.Characteristic)
+        if (copySource != null && copySource.Obj == row && currentDifficultySet == copySource.CharacteristicSet)
         {
             CancelCopy();
             return;
         }
 
-        copySource = new CopySource(diffs[row.Name], currentCharacteristic, row);
+        copySource = new CopySource(diffs[row.Name], currentDifficultySet, row);
         SetPasteMode(true);
         row.CopyImage.color = copyColor;
     }
@@ -451,7 +599,7 @@ public class DifficultySelect : MonoBehaviour
     /// </summary>
     public void CancelCopy()
     {
-        if (copySource != null && currentCharacteristic == copySource.Characteristic)
+        if (copySource != null && currentDifficultySet == copySource.CharacteristicSet)
             copySource.Obj.CopyImage.color = Color.white;
         copySource = null;
         SetPasteMode(false);
@@ -465,13 +613,13 @@ public class DifficultySelect : MonoBehaviour
     {
         DeselectDiff();
 
-        currentCharacteristic = Song?.DifficultyBeatmapSets?.Find(it =>
-            it.BeatmapCharacteristicName.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-        if (currentCharacteristic == null)
+        currentDifficultySet = MapInfo?.DifficultySets?.Find(it =>
+            it.Characteristic.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        if (currentDifficultySet == null)
             // Create a new set locally if the song doesn't have one,
             // will only be written back if a difficulty is created
-            currentCharacteristic = new DifficultyBeatmapSet(name);
-
+            currentDifficultySet = new InfoDifficultySet { Characteristic = name };
+        
         if (!Characteristics.ContainsKey(name)) Characteristics.Add(name, new Dictionary<string, DifficultySettings>());
         diffs = Characteristics[name];
 
@@ -483,16 +631,16 @@ public class DifficultySelect : MonoBehaviour
             row.SetInteractable(diffs.ContainsKey(row.Name));
             // Highlight the copy source if it's here
             row.CopyImage.color =
-                copySource != null && currentCharacteristic == copySource.Characteristic && copySource.Obj == row
+                copySource != null && currentDifficultySet == copySource.CharacteristicSet && copySource.Obj == row
                     ? copyColor
                     : Color.white;
-
+            
             row.NameInput.text = hasDiff ? diffs[row.Name].CustomName : "";
 
             if (hasDiff)
             {
                 row.ShowDirtyObjects(diffs[row.Name]);
-                if (firstLoad && Settings.Instance.LastLoadedMap.Equals(Song.Directory) &&
+                if (firstLoad && Settings.Instance.LastLoadedMap.Equals(MapInfo?.Directory) &&
                     Settings.Instance.LastLoadedDiff.Equals(row.Name))
                 {
                     selectedMemory[name] = row.Name;
@@ -518,6 +666,9 @@ public class DifficultySelect : MonoBehaviour
         {
             njsField.text = "";
             songBeatOffsetField.text = "";
+            mappersField.text = "";
+            lightersField.text = "";
+            
             envRemoval.ClearList();
         }
     }

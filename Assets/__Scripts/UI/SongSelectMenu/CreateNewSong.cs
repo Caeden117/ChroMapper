@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Beatmap.Info;
 using UnityEngine;
 
 public class CreateNewSong : MonoBehaviour
@@ -14,29 +15,29 @@ public class CreateNewSong : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(res)) return;
 
-        var song = new BeatSaberSong(list.SelectedFolderPath, res);
-        
+        var song = new BaseInfo { SongName = res };
+
         if (string.IsNullOrWhiteSpace(song.CleanSongName))
         {
             PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.invalid", HandleNewSongName,
                 "newmap.dialog.default");
             return;
         }
-        
-        if (list.Songs.Any(x => Path.GetFullPath(x.Directory).Equals(
-            Path.GetFullPath(Path.Combine(
-                list.SelectedFolderPath,
-                song.CleanSongName)),
-            StringComparison.CurrentCultureIgnoreCase
-        )))
+
+        var songDirectory = Path.Combine(list.SelectedFolderPath, song.CleanSongName);
+        if (list.SongInfos.Any(x => Path.GetFullPath(x.Directory).Equals(
+                Path.GetFullPath(Path.Combine(songDirectory)),
+                StringComparison.CurrentCultureIgnoreCase)))
         {
             PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.duplicate", HandleNewSongName,
                 "newmap.dialog.default");
             return;
         }
 
-        var standardSet = new BeatSaberSong.DifficultyBeatmapSet();
-        song.DifficultyBeatmapSets.Add(standardSet);
+        song.Directory = songDirectory;
+
+        var standardSet = new InfoDifficultySet { Characteristic = "Standard" };
+        song.DifficultySets.Add(standardSet);
         BeatSaberSongContainer.Instance.SelectSongForEditing(song);
         PersistentUI.Instance.ShowDialogBox("SongSelectMenu", "newmap.message", null,
             PersistentUI.DialogBoxPresetType.Ok);

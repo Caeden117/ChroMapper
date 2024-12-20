@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Beatmap.Info;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "ImageList", menuName = "ImageList")]
@@ -22,22 +23,19 @@ public class ImageList : ScriptableObject
     public Sprite GetRandomSprite() =>
         Settings.Instance.DarkTheme ? DarkSprite : Sprites[Random.Range(0, Sprites.Length)];
 
-    public Sprite GetBgSprite(BeatSaberSong song)
+    public Sprite GetBgSprite(BaseInfo mapInfo)
     {
         if (Settings.Instance.DarkTheme) return DarkSprite;
-        if (song.CustomData != null)
+        if (!string.IsNullOrEmpty(mapInfo.CustomEnvironmentMetadata.Name))
         {
-            if (song.CustomData && !string.IsNullOrEmpty(song.CustomData["_customEnvironment"]))
+            switch (mapInfo.CustomEnvironmentMetadata.Name)
             {
-                switch (song.CustomData["_customEnvironment"].Value)
-                {
-                    case "Vapor Frame": return VaporFramePlatform;
-                    case "Big Mirror V2": return BigMirrorV2Platform;
-                }
+                case "Vapor Frame": return VaporFramePlatform;
+                case "Big Mirror V2": return BigMirrorV2Platform;
             }
         }
 
-        return song.EnvironmentName switch
+        return mapInfo.EnvironmentName switch
         {
             "DefaultEnvironment" => DefaultPlatform,
             "TriangleEnvironment" => TrianglePlatform,

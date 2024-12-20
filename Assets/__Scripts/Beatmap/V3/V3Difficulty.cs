@@ -7,6 +7,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.V3.Customs;
+using Beatmap.V4;
 using SimpleJSON;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ namespace Beatmap.V3
                 if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
                 {                    
                     var insertedBpm = (BeatSaberSongContainer.Instance != null)
-                        ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        ? BeatSaberSongContainer.Instance.Info.BeatsPerMinute
                         : 100; // This path only appears in tests
                     difficulty.BpmEvents.Insert(0, new BaseBpmEvent
                     {
@@ -117,9 +118,19 @@ namespace Beatmap.V3
                 foreach (var e in difficulty.LightTranslationEventBoxGroups) lightTranslationEventBoxGroups.Add(e.ToJson());
                 json["lightTranslationEventBoxGroups"] = lightTranslationEventBoxGroups;
 
+                var floatFxEvents = difficulty.VfxEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .SelectMany(box => box.FloatFxEvents)
+                    .ToList();
+                var floatFxEventsCommonData = floatFxEvents
+                    .Select(V4CommonData.FloatFxEvent.FromFloatFxEventBase)
+                    .ToList();
+                
                 var vfxEventBoxGroups = new JSONArray();
-                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(e.ToJson());
+                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.ToJson(e, floatFxEventsCommonData));
                 json["vfxEventBoxGroups"] = vfxEventBoxGroups;
+                
+                difficulty.FxEventsCollection.FloatFxEvents = floatFxEvents.ToArray();
                 
                 json["_fxEventsCollection"] = difficulty.FxEventsCollection?.ToJson() ?? new BaseFxEventsCollection().ToJson();
                 json["basicEventTypesWithKeywords"] = difficulty.EventTypesWithKeywords?.ToJson() ?? new BaseEventTypesWithKeywords().ToJson();
@@ -218,7 +229,7 @@ namespace Beatmap.V3
             foreach (var c in difficulty.Chains.Where(c => c.CustomFake)) fakeBurstSliders.Add(c.ToJson());
             customData["fakeBurstSliders"] = fakeBurstSliders;
             
-            BeatSaberSong.CleanObject(customData);
+            SimpleJSONHelper.CleanObject(customData);
 
             return customData;
         }
@@ -230,6 +241,20 @@ namespace Beatmap.V3
                 var map = new BaseDifficulty { DirectoryAndFile = path, Version = version };
 
                 var nodeEnum = mainNode.GetEnumerator();
+                while (nodeEnum.MoveNext())
+                {
+                    var key = nodeEnum.Current.Key;
+                    var node = nodeEnum.Current.Value;
+
+                    // Load this first so vfx can reference this
+                    if (key == "_fxEventsCollection")
+                    {
+                        map.FxEventsCollection = V3FxEventsCollection.GetFromJson(node);
+                        break;
+                    }
+                }
+
+                nodeEnum = mainNode.GetEnumerator();
                 while (nodeEnum.MoveNext())
                 {
                     var key = nodeEnum.Current.Key;
@@ -285,10 +310,7 @@ namespace Beatmap.V3
                             break;
                         case "vfxEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n));
-                            break;
-                        case "_fxEventsCollection":
-                            map.FxEventsCollection = V3FxEventsCollection.GetFromJson(node);
+                                map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n, map.FxEventsCollection.FloatFxEvents));
                             break;
                         case "basicEventTypesWithKeywords":
                             map.EventTypesWithKeywords = V3BasicEventTypesWithKeywords.GetFromJson(node);

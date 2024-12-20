@@ -29,6 +29,7 @@ namespace Beatmap.Base
         public int Frequency { get; set; }
         public float StrobeBrightness { get; set; }
         public int StrobeFade { get; set; }
+        public int Easing { get; set; } // new to V4
 
         public override string CustomKeyColor { get; } = "unusedColor";
 

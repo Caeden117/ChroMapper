@@ -24,6 +24,8 @@ namespace Beatmap.Base
         }
     }
 
+    // Well... Turns out IntFxEvents was never used in v3 format and then got removed in v4
+    // TODO: Would be worth cleaning up this later
     public class IntFxEventBase : FxEventBase<int>
     {
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch

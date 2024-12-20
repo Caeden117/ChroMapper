@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 7913ec13eb217cb4fa9867515853bf00
   m_SerializeEntries:
-  - m_GUID: 9f793d99c69041d4a8090d2c7e89789e
-    m_Address: Contributors_sv-SE
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-sv-SE
   - m_GUID: bde88879d26980941988724ceef45a79
     m_Address: Mapper_sv-SE
     m_ReadOnly: 1

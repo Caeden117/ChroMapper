@@ -15,13 +15,13 @@ public class NotePlacementUI : MonoBehaviour
 
     private void Start()
     {
-        var set = BeatSaberSongContainer.Instance.DifficultyData.ParentBeatmapSet;
+        var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
 
         //ChromaToggle notes will be disabled until the mod is revived with some pretty breaking changes I have in mind.
         //The biggest of that is to create a new ChromaToggle characteristic that'll hold maps made for CT.
         foreach (var toggle in chromaToggles)
         {
-            if (set.BeatmapCharacteristicName != "ChromaToggle")
+            if (infoDifficulty.Characteristic != "ChromaToggle")
             {
                 toggle.interactable = false;
                 var tooltip = toggle.GetComponent<Tooltip>();
@@ -31,7 +31,7 @@ public class NotePlacementUI : MonoBehaviour
 
         foreach (var toggle in singleSaberDisabledToggles)
         {
-            if (set.BeatmapCharacteristicName == "OneSaber")
+            if (infoDifficulty.Characteristic == "OneSaber")
             {
                 toggle.interactable = false;
                 var tooltip = toggle.GetComponent<Tooltip>();

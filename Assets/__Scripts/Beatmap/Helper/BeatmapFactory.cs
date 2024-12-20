@@ -7,6 +7,7 @@ using Beatmap.V2;
 using Beatmap.V2.Customs;
 using Beatmap.V3;
 using Beatmap.V3.Customs;
+using Beatmap.V4;
 using SimpleJSON;
 using UnityEngine;
 
@@ -18,15 +19,24 @@ namespace Beatmap.Helper
         {
             var v = PeekMapVersionFromJson(mainNode);
 
-            if (v[0] == '3')
+            switch (v[0])
             {
-                Settings.Instance.MapVersion = 3;
-                return V3Difficulty.GetFromJson(mainNode, directoryAndFile);
-            }
-            else
-            {
-                Settings.Instance.MapVersion = 2;
-                return V2Difficulty.GetFromJson(mainNode, directoryAndFile);
+                case '4':
+                    Settings.Instance.MapVersion = 4;
+                    var difficulty = V4Difficulty.GetFromJson(mainNode, directoryAndFile);
+                    var info = BeatSaberSongContainer.Instance.Info;
+                    var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+                    V4Difficulty.LoadBpmFromAudioData(difficulty, info);
+                    V4Difficulty.LoadLightsFromLightshowFile(difficulty, info, infoDifficulty);
+                    return difficulty;
+                case '3':
+                    Settings.Instance.MapVersion = 3;
+                    return V3Difficulty.GetFromJson(mainNode, directoryAndFile);
+                case '2':
+                    Settings.Instance.MapVersion = 2;
+                    return V2Difficulty.GetFromJson(mainNode, directoryAndFile);
+                default:
+                    return null;
             }
         }
 
@@ -50,38 +60,38 @@ namespace Beatmap.Helper
             return cloneable.Clone() as TConcrete;
         }
 
-        // instantiate from JSON
-        public static BaseBpmEvent BpmEvent(JSONNode node) => Settings.Instance.MapVersion == 3
+        // instantiate from JSON - Used for node editor
+        public static BaseBpmEvent BpmEvent(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3BpmEvent.GetFromJson(node)
             : V2BpmEvent.GetFromJson(node);
 
-        public static BaseNote Note(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseNote Note(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? node.HasKey("c")
                 ? V3ColorNote.GetFromJson(node)
                 : V3BombNote.GetFromJson(node)
             : V2Note.GetFromJson(node);
 
-        public static BaseNote Bomb(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseNote Bomb(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3BombNote.GetFromJson(node)
             : V2Note.GetFromJson(node);
 
-        public static BaseObstacle Obstacle(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseObstacle Obstacle(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3Obstacle.GetFromJson(node)
             : V2Obstacle.GetFromJson(node);
 
-        public static BaseArc Arc(JSONNode node) => Settings.Instance.MapVersion == 3 
+        public static BaseArc Arc(JSONNode node) => Settings.Instance.MapVersion is 3 or 4 
             ? V3Arc.GetFromJson(node) 
             : V2Arc.GetFromJson(node);
 
         public static BaseChain Chain(JSONNode node) => V3Chain.GetFromJson(node);
 
-        public static BaseWaypoint Waypoint(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseWaypoint Waypoint(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3Waypoint.GetFromJson(node)
             : V2Waypoint.GetFromJson(node);
 
         public static BaseEvent Event(JSONNode node)
         {
-            if (Settings.Instance.MapVersion == 3)
+            if (Settings.Instance.MapVersion is 3 or 4)
             {
                 if (node.HasKey("e") || node.HasKey("r"))
                     return V3RotationEvent.GetFromJson(node);
@@ -105,23 +115,23 @@ namespace Beatmap.Helper
         public static BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>
             LightTranslationEventBoxGroups(JSONNode node) => V3LightTranslationEventBoxGroup.GetFromJson(node);
 
-        public static BaseEventTypesWithKeywords EventTypesWithKeywords(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseEventTypesWithKeywords EventTypesWithKeywords(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3BasicEventTypesWithKeywords.GetFromJson(node)
             : V2SpecialEventsKeywordFilters.GetFromJson(node);
 
-        public static BaseBpmChange BpmChange(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseBpmChange BpmChange(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3BpmChange.GetFromJson(node)
             : V2BpmChange.GetFromJson(node);
 
-        public static BaseBookmark Bookmark(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseBookmark Bookmark(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3Bookmark.GetFromJson(node)
             : V2Bookmark.GetFromJson(node);
 
-        public static BaseCustomEvent CustomEvent(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseCustomEvent CustomEvent(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3CustomEvent.GetFromJson(node)
             : V2CustomEvent.GetFromJson(node);
 
-        public static BaseEnvironmentEnhancement EnvironmentEnhancement(JSONNode node) => Settings.Instance.MapVersion == 3
+        public static BaseEnvironmentEnhancement EnvironmentEnhancement(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3EnvironmentEnhancement.GetFromJson(node)
             : V2EnvironmentEnhancement.GetFromJson(node);
 
