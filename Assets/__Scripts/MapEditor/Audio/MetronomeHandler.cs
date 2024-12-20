@@ -17,30 +17,49 @@ public class MetronomeHandler : MonoBehaviour
     private Animator metronomeUIAnimator;
     private bool metronomeUIDirection = true;
 
-    private float metronomeVolume;
+    private bool metronomeActive = true;
 
     private float songSpeed = 1;
 
     private void Start()
     {
         metronomeUIAnimator = metronomeUI.GetComponent<Animator>();
+        metronomeActive = Settings.Instance.MetronomeVolume != 0;
+        
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
+        Settings.NotifyBySettingName("MetronomeVolume", value =>
+        {
+            if ((float)value != 0 && !metronomeActive)
+            {
+                metronomeActive = true;
+            } 
+            else if (metronomeActive && (float)value == 0)
+            {
+                metronomeActive = false;
+            }
+        });
 
         atsc.PlayToggle += OnPlayToggle;
     }
 
     private void LateUpdate()
     {
-        metronomeVolume = Settings.Instance.MetronomeVolume;
-        if (metronomeVolume != 0f && atsc.IsPlaying && !atsc.StopScheduled)
+        if (metronomeActive && atsc.IsPlaying && !atsc.StopScheduled)
         {
             if (atsc.CurrentAudioBeats > queuedDingSongBpmTime)
             {
                 var nextJsonTime = Mathf.Ceil(atsc.CurrentJsonTime);
+                
+                if (Mathf.Abs(Mathf.Floor(bpmChangeGridContainer.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats))
+                              - Mathf.Floor(atsc.CurrentJsonTime)) > 0.01f)
+                {
+                    nextJsonTime = Mathf.Ceil(nextJsonTime + 1f);
+                }
                 queuedDingSongBpmTime = bpmChangeGridContainer.JsonTimeToSongBpmTime(nextJsonTime);
 
                 var delay = atsc.GetSecondsFromBeat(queuedDingSongBpmTime - atsc.CurrentAudioBeats) / songSpeed;
-                audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, metronomeVolume, 1f, delay);
+                audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, Settings.Instance.MetronomeVolume,
+                    1f, delay);
 
                 if (!metronomeUI.activeInHierarchy) metronomeUI.SetActive(true);
                 RunAnimation(60f / delay);
@@ -73,7 +92,7 @@ public class MetronomeHandler : MonoBehaviour
 
     private void OnPlayToggle(bool playing)
     {
-        if (metronomeVolume == 0) return;
+        if (!metronomeActive) return;
         if (!playing)
         {
             queuedDingSongBpmTime = 0;
