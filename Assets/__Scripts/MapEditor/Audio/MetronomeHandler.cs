@@ -92,7 +92,7 @@ public class MetronomeHandler : MonoBehaviour
 
     private void OnPlayToggle(bool playing)
     {
-        if (Settings.Instance.MetronomeVolume == 0) return;
+        if (!metronomeActive) return;
         if (!playing)
         {
             queuedDingSongBpmTime = 0;
