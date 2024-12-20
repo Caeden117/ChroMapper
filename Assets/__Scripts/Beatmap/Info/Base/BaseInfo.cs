@@ -110,7 +110,7 @@ namespace Beatmap.Info
         // TODO: This might be better as just a constant. No other all directions environment exists in vanilla.
         public string AllDirectionsEnvironmentName { get; set; } = "GlassDesertEnvironment";
         
-        public List<string> EnvironmentNames { get; set; } = new();
+        public List<string> EnvironmentNames { get; set; } = new() { "DefaultEnvironment" };
 
         public List<InfoColorScheme> ColorSchemes { get; set; } = new();
 
