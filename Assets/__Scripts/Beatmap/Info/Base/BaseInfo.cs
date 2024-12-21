@@ -241,7 +241,26 @@ namespace Beatmap.Info
         public int EnvironmentNameIndex { get; set; }
         public int ColorSchemeIndex { get; set; }
 
-        public float NoteJumpSpeed { get; set; }
+        private float noteJumpSpeed;
+        public float NoteJumpSpeed
+        {
+            get
+            {
+                if (noteJumpSpeed == 0)
+                {
+                    return DifficultyRank switch
+                    {
+                        9 => 16,
+                        7 => 12,
+                        _ => 10,
+                    };
+                }
+
+                return noteJumpSpeed;
+            }
+            set => noteJumpSpeed = value;
+        }
+
         public float NoteStartBeatOffset { get; set; }
 
         public List<string> Mappers { get; set; } = new();
