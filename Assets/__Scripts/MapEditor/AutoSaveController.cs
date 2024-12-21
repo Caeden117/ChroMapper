@@ -338,6 +338,11 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 {
                     stringBuilder.AppendLine("* Rotation Properties (v4)");
                 }
+
+                if (map.NJSEvents.Any())
+                {
+                    stringBuilder.AppendLine("NJS Events (v4)");
+                }
                 break;
             
             case 3:
@@ -348,6 +353,11 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                     || map.Chains.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0))
                 {
                     stringBuilder.AppendLine("Rotation Properties (v4)");
+                }
+
+                if (map.NJSEvents.Any())
+                {
+                    stringBuilder.AppendLine("NJS Events (v4)");
                 }
                 break;
             
