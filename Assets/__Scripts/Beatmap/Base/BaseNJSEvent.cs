@@ -87,7 +87,7 @@ namespace Beatmap.Base
                 ["usePrevious"] = UsePrevious,
                 ["easing"] = Easing,
                 ["relative-njs"] = RelativeNJS,
-                ["customData"] = CustomData,
+                // ["customData"] = CustomData,
             }
         };
 

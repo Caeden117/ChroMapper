@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Containers;
 using UnityEngine;
@@ -20,12 +19,12 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
     
     internal override void ApplyToMap() => CreateAndOpenNJSDialogue(isInitialPlacement: true);
     
-    private void AttemptPlaceNJSChange(string njsInput, string easingInput, bool extend)
+    private void AttemptPlaceNJSChange(string njsInput, int easingDropdownValu, bool extend)
     {
         if (string.IsNullOrEmpty(njsInput) || string.IsNullOrWhiteSpace(njsInput)) return;
-        if (float.TryParse(njsInput, out var relativeNJS) && int.TryParse(easingInput, out var easing))
+        if (float.TryParse(njsInput, out var relativeNJS))
         {
-            queuedData.Easing = easing;
+            queuedData.Easing = MapTMPDropdownValueToEasing(easingDropdownValu);
             queuedData.RelativeNJS = relativeNJS;
             queuedData.UsePrevious = extend ? 1 : 0;
             base.ApplyToMap();
@@ -59,23 +58,77 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
             .WithLabel($"Relative NJS")
             .WithInitialValue(0.ToString());
 
-        // TODO: Change into easing dropdown
-        var easingInput = createNJSEventDialogueBox
-            .AddComponent<TextBoxComponent>()
+        var easingDropdown = createNJSEventDialogueBox
+            .AddComponent<DropdownComponent>()
             .WithLabel("Easing")
-            .WithInitialValue((-1).ToString());
-        
+            .WithOptions(beatSaberMapFormatEasings);
+            // .WithInitialValue(1); // This doesn't seem to change the initial option even though the value has changed
         
         var extendToggle = createNJSEventDialogueBox
             .AddComponent<ToggleComponent>()
             .WithLabel("Use previous NJS event value")
             .WithInitialValue(false);
 
-        createNJSEventDialogueBox.OnQuickSubmit(() => AttemptPlaceNJSChange(njsTextInput.Value, easingInput.Value, extendToggle.Value));
+        createNJSEventDialogueBox.OnQuickSubmit(() => AttemptPlaceNJSChange(njsTextInput.Value, easingDropdown.Value, extendToggle.Value));
 
         createNJSEventDialogueBox.AddFooterButton(null, "PersistentUI", "cancel");
-        createNJSEventDialogueBox.AddFooterButton(() => AttemptPlaceNJSChange(njsTextInput.Value, easingInput.Value, extendToggle.Value), "PersistentUI", "ok");
+        createNJSEventDialogueBox.AddFooterButton(() => AttemptPlaceNJSChange(njsTextInput.Value, easingDropdown.Value, extendToggle.Value), "PersistentUI", "ok");
 
         createNJSEventDialogueBox.Open();
+        
+        easingDropdown.Value = 1;
+    }
+    
+    // Probably move to easings class at some point
+    private List<string> beatSaberMapFormatEasings = new()
+    {
+        // Not using an enum because Enum.GetNames has unexpected order for negatives
+        "None", // -1
+        "Linear", // 0
+        "InQuad", // 1
+        "OutQuad", // etc.
+        "InOutQuad",
+        "InSine",
+        "OutSine",
+        "InOutSine",
+        "InCubic",
+        "OutCubic",
+        "InOutCubic",
+        "InQuart",
+        "OutQuart",
+        "InOutQuart",
+        "InQuint",
+        "OutQuint",
+        "InOutQuint",
+        "InExpo",
+        "OutExpo",
+        "InOutExpo",
+        "InCirc",
+        "OutCirc",
+        "InOutCirc",
+        "InBack",
+        "OutBack",
+        "InOutBack",
+        "InElastic",
+        "OutElastic",
+        "InOutElastic",
+        "InBounce",
+        "OutBounce",
+        "InOutBounce", // 30
+        "BeatSaberInOutBack", // 100
+        "BeatSaberInOutElastic", // 101
+        "BeatSaberInOutBounce" // 102
+    };
+    
+    private static int MapTMPDropdownValueToEasing(int dropdownEasing)
+    {
+        if (dropdownEasing >= 32)
+        {
+            return dropdownEasing + (100 - 32);
+        }
+        else
+        {
+            return dropdownEasing - 1;
+        }
     }
 }
