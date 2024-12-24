@@ -2,11 +2,10 @@
 using Beatmap.Helper;
 using UnityEngine.InputSystem;
 
-// TODO: This is a stub
 public class BeatmapNJSEventInputController : BeatmapInputController<NJSEventContainer>
-    // , CMInput.INJSEventObjectsActions
+    , CMInput.INJSEventObjectsActions
 {
-    public void OnTweakNJSEventValue(InputAction.CallbackContext context)
+    public void OnTweakNJSValue(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -15,9 +14,15 @@ public class BeatmapNJSEventInputController : BeatmapInputController<NJSEventCon
             {
                 var original = BeatmapFactory.Clone(containerToEdit.ObjectData);
 
-                var modifier = context.ReadValue<float>() > 0 ? 1 : -1;
+                // Think decimal NJS will be more common eventually. Can tweak this later.
+                var modifier = context.ReadValue<float>() > 0 ? 0.5f : -0.5f;
 
                 containerToEdit.NJSData.RelativeNJS += modifier;
+                if (containerToEdit.NJSData.RelativeNJS <= -BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed)
+                {
+                    containerToEdit.NJSData.RelativeNJS = 0.5f - BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
+                }
+                
                 containerToEdit.UpdateNJSText();
 
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,

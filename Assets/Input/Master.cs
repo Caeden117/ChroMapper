@@ -4974,6 +4974,56 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""NJS Event Objects"",
+            ""id"": ""35179148-120d-4b47-8334-25343c889384"",
+            ""actions"": [
+                {
+                    ""name"": ""Tweak NJS Value"",
+                    ""type"": ""Value"",
+                    ""id"": ""7f78b17d-9f0c-4942-a799-c23a570bdd29"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""9e3b3c13-fee0-4469-a395-3ec55a7e30da"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak NJS Value"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""bdfa4eed-282a-4ab8-81de-a0b28f4c505a"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak NJS Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Binding"",
+                    ""id"": ""fc0b0a47-8fe0-4954-8551-48aeca5f2b9c"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak NJS Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
             ""name"": ""Switch Version"",
             ""id"": ""de1a703f-7892-4a54-9acf-417af3e6a8f1"",
             ""actions"": [
@@ -5291,6 +5341,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         // Chain Placement
         m_ChainPlacement = asset.FindActionMap("Chain Placement", throwIfNotFound: true);
         m_ChainPlacement_SpawnChain = m_ChainPlacement.FindAction("SpawnChain", throwIfNotFound: true);
+        // NJS Event Objects
+        m_NJSEventObjects = asset.FindActionMap("NJS Event Objects", throwIfNotFound: true);
+        m_NJSEventObjects_TweakNJSValue = m_NJSEventObjects.FindAction("Tweak NJS Value", throwIfNotFound: true);
         // Switch Version
         m_SwitchVersion = asset.FindActionMap("Switch Version", throwIfNotFound: true);
         m_SwitchVersion_SwitchingVersion = m_SwitchVersion.FindAction("SwitchingVersion", throwIfNotFound: true);
@@ -8326,6 +8379,52 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     }
     public ChainPlacementActions @ChainPlacement => new ChainPlacementActions(this);
 
+    // NJS Event Objects
+    private readonly InputActionMap m_NJSEventObjects;
+    private List<INJSEventObjectsActions> m_NJSEventObjectsActionsCallbackInterfaces = new List<INJSEventObjectsActions>();
+    private readonly InputAction m_NJSEventObjects_TweakNJSValue;
+    public struct NJSEventObjectsActions
+    {
+        private @CMInput m_Wrapper;
+        public NJSEventObjectsActions(@CMInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TweakNJSValue => m_Wrapper.m_NJSEventObjects_TweakNJSValue;
+        public InputActionMap Get() { return m_Wrapper.m_NJSEventObjects; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NJSEventObjectsActions set) { return set.Get(); }
+        public void AddCallbacks(INJSEventObjectsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_NJSEventObjectsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_NJSEventObjectsActionsCallbackInterfaces.Add(instance);
+            @TweakNJSValue.started += instance.OnTweakNJSValue;
+            @TweakNJSValue.performed += instance.OnTweakNJSValue;
+            @TweakNJSValue.canceled += instance.OnTweakNJSValue;
+        }
+
+        private void UnregisterCallbacks(INJSEventObjectsActions instance)
+        {
+            @TweakNJSValue.started -= instance.OnTweakNJSValue;
+            @TweakNJSValue.performed -= instance.OnTweakNJSValue;
+            @TweakNJSValue.canceled -= instance.OnTweakNJSValue;
+        }
+
+        public void RemoveCallbacks(INJSEventObjectsActions instance)
+        {
+            if (m_Wrapper.m_NJSEventObjectsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(INJSEventObjectsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_NJSEventObjectsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_NJSEventObjectsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public NJSEventObjectsActions @NJSEventObjects => new NJSEventObjectsActions(this);
+
     // Switch Version
     private readonly InputActionMap m_SwitchVersion;
     private List<ISwitchVersionActions> m_SwitchVersionActionsCallbackInterfaces = new List<ISwitchVersionActions>();
@@ -8672,6 +8771,10 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     public interface IChainPlacementActions
     {
         void OnSpawnChain(InputAction.CallbackContext context);
+    }
+    public interface INJSEventObjectsActions
+    {
+        void OnTweakNJSValue(InputAction.CallbackContext context);
     }
     public interface ISwitchVersionActions
     {
