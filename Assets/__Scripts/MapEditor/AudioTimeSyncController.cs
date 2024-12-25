@@ -191,14 +191,30 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         Settings.ClearSettingNotifications("SongVolume");
     }
 
+    private bool toggledPlayingPreviousFrame;
+    private IEnumerator TrackToggledPlayingPreviousFrame()
+    {
+        toggledPlayingPreviousFrame = true;
+        yield return null;
+        toggledPlayingPreviousFrame = false;
+    }
+    
     public void OnTogglePlaying(InputAction.CallbackContext context)
     {
-        if (context.performed) TogglePlaying();
+        if (context.performed)
+        {
+            TogglePlaying();
+            
+            // On maps with dense lighting, it can take longer than the cancelPlayInputDuration to start playing.
+            // When this happens it becomes impossible to play without holding so track if this was performed on the
+            // previous frame to determine if we want to ignore the cancelPlaying behaviour
+            if (IsPlaying) StartCoroutine(TrackToggledPlayingPreviousFrame());
+        }
 
         // if play is held and released a significant time later, cancel playing instead of merely toggling
         if (!CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.IPlaybackActions))
-            && context.canceled
-            && context.duration >= cancelPlayInputDuration)
+            && context is { canceled: true, duration: >= cancelPlayInputDuration }
+            && !toggledPlayingPreviousFrame)
         {
             CancelPlaying();
         }
