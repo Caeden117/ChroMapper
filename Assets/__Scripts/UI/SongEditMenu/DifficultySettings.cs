@@ -72,7 +72,7 @@ public class DifficultySettings
         Lighters != string.Join(',', InfoDifficulty.Lighters) ||
         !(CustomName ?? "").Equals(InfoDifficulty.CustomData == null
             ? ""
-            : InfoDifficulty.CustomData["_difficultyLabel"].Value) ||
+            : InfoDifficulty.CustomLabel) ||
         EnvRemovalChanged();
 
     private bool EnvRemovalChanged() =>
@@ -113,7 +113,6 @@ public class DifficultySettings
             V4Difficulty.LoadLightsFromLightshowFile(Map, BeatSaberSongContainer.Instance.Info, InfoDifficulty);
         }
 
-        // TODO: Check if this needs adjustment for v4
         if (string.IsNullOrEmpty(CustomName))
         {
             InfoDifficulty.CustomData?.Remove("_difficultyLabel");
@@ -162,7 +161,7 @@ public class DifficultySettings
         EnvironmentNameIndex = InfoDifficulty.EnvironmentNameIndex;
         EnvironmentName = EnvironmentNameFromIndex;
         LightshowFilePath = InfoDifficulty.LightshowFileName;
-        CustomName = InfoDifficulty.CustomData?["_difficultyLabel"]?.Value ?? "";
+        CustomName = InfoDifficulty.CustomLabel;
 
         envEnhancements = null;
     }

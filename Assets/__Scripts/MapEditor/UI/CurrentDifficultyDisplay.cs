@@ -17,7 +17,7 @@ public class CurrentDifficultyDisplay : MonoBehaviour
             : $"{info.SongAuthorName} - {info.SongName}\n";
 
         string diffStr = (!string.IsNullOrWhiteSpace(infoDifficulty.CustomLabel))
-            ? $"{infoDifficulty.CustomData["_difficultyLabel"].Value} - [{infoDifficulty.Difficulty}]"
+            ? $"{infoDifficulty.CustomLabel} - [{infoDifficulty.Difficulty}]"
             : $"[{infoDifficulty.Difficulty}]";
 
         string display = "";
