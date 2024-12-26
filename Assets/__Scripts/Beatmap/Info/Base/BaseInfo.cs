@@ -269,7 +269,7 @@ namespace Beatmap.Info
         // CustomData Properties
         public JSONObject CustomData { get; set; } = new();
 
-        public string CustomLabel { get; set; }
+        public string CustomLabel { get; set; } = "";
         public bool? CustomOneSaberFlag { get; set; }
         public bool? CustomShowRotationNoteSpawnLinesFlag { get; set; }
         

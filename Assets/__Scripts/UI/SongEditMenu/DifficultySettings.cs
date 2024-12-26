@@ -70,9 +70,7 @@ public class DifficultySettings
         EnvironmentName != EnvironmentNameFromIndex ||
         Mappers != string.Join(',', InfoDifficulty.Mappers) ||
         Lighters != string.Join(',', InfoDifficulty.Lighters) ||
-        !(CustomName ?? "").Equals(InfoDifficulty.CustomData == null
-            ? ""
-            : InfoDifficulty.CustomLabel) ||
+        (CustomName ?? "") != (InfoDifficulty.CustomLabel ?? "") ||
         EnvRemovalChanged();
 
     private bool EnvRemovalChanged() =>
@@ -118,8 +116,8 @@ public class DifficultySettings
             InfoDifficulty.CustomData?.Remove("_difficultyLabel");
             InfoDifficulty.CustomData?.Remove("difficultyLabel");
         }
-        else
-            InfoDifficulty.CustomLabel = CustomName;
+
+        InfoDifficulty.CustomLabel = CustomName;
 
         InfoDifficulty.CustomData?.Remove("_environmentRemoval");
 
