@@ -377,11 +377,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                     stringBuilder.AppendLine("* Object CustomData (v2/v3)");
                 }
 
-                if (map.Bookmarks.Any())
-                {
-                    stringBuilder.AppendLine("* Custom Bookmarks (v2/v3)");
-                }
-
                 if (map.EnvironmentEnhancements.Any())
                 {
                     stringBuilder.AppendLine("* Environment Enhancements (v2/v3)");

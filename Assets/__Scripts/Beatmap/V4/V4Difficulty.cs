@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Beatmap.Base;
+using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.Info;
 using SimpleJSON;
@@ -579,6 +580,34 @@ namespace Beatmap.V4
 
             var bpmEvents = BaseBpmInfo.GetBpmEvents(bpmInfo.BpmRegions, bpmInfo.AudioFrequency);
             map.BpmEvents = bpmEvents;
+        }
+
+        public static void LoadBookmarksFromOfficialEditor(BaseDifficulty map, BaseInfo info, InfoDifficulty infoDifficulty)
+        {
+            var bookmarksFolder = Path.Combine(info.Directory, "Bookmarks");
+            var bookmarkFilePath = Path.Combine(bookmarksFolder, infoDifficulty.BookmarkFileName);
+            if (!File.Exists(bookmarkFilePath))
+            {
+                return;
+            }
+            
+            var node = BeatSaberSongUtils.GetNodeFromFile(Path.Combine(bookmarksFolder, bookmarkFilePath));
+            if (!node["bookmarks"].IsArray)
+            {
+                return;
+            }
+                
+            var color = node["color"].ReadHtmlStringColor();
+            foreach (var bookmarkObject in node["bookmarks"].AsArray.Children.Select(x => x.AsObject))
+            {
+                map.Bookmarks.Add(new BaseBookmark
+                    {
+                        JsonTime = bookmarkObject["beat"].AsFloat,
+                        Name = bookmarkObject["text"].Value,
+                        Color = color
+                    }
+                );
+            }
         }
         
         public static void LoadLightsFromLightshowFile(BaseDifficulty map, BaseInfo info, InfoDifficulty infoDifficulty)

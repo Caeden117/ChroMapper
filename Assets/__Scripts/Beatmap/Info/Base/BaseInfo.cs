@@ -265,6 +265,9 @@ namespace Beatmap.Info
 
         public List<string> Mappers { get; set; } = new();
         public List<string> Lighters { get; set; } = new();
+        
+        // For official editor compatibility
+        public string BookmarkFileName => $"ChroMapper.{Characteristic}{Difficulty}.bookmarks.dat";
 
         // CustomData Properties
         public JSONObject CustomData { get; set; } = new();

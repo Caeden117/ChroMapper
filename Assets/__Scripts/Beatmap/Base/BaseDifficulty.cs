@@ -288,15 +288,22 @@ namespace Beatmap.Base
             if (Settings.Instance.MapVersion == 4)
             {
                 // User error. In this case, write to a different file
-                if (songContainer.MapDifficultyInfo.BeatmapFileName ==
-                    songContainer.MapDifficultyInfo.LightshowFileName)
+                var mapDifficultyInfo = songContainer.MapDifficultyInfo;
+                if (mapDifficultyInfo.BeatmapFileName == mapDifficultyInfo.LightshowFileName)
                 {
-                    songContainer.MapDifficultyInfo.LightshowFileName = $"LightsFor-{songContainer.MapDifficultyInfo.LightshowFileName}";
+                    mapDifficultyInfo.LightshowFileName = $"LightsFor-{mapDifficultyInfo.LightshowFileName}";
                 }
 
                 var lightshowJson = V4Difficulty.GetLightshowOutputJson(this);
-                File.WriteAllText(Path.Combine(songContainer.Info.Directory, songContainer.MapDifficultyInfo.LightshowFileName),
+                File.WriteAllText(Path.Combine(songContainer.Info.Directory, mapDifficultyInfo.LightshowFileName),
                     lightshowJson.ToString(2));
+                
+                // Write bookmarks for official editor compability
+                var bookmarksJson = GetOfficialBookmarkOutputJson(mapDifficultyInfo.Characteristic, mapDifficultyInfo.Difficulty);
+                var bookmarksFolder = Path.Combine(songContainer.Info.Directory, "Bookmarks");
+                if (!Directory.Exists(bookmarksFolder)) Directory.CreateDirectory(bookmarksFolder);
+                File.WriteAllText(Path.Combine(bookmarksFolder, mapDifficultyInfo.BookmarkFileName), 
+                    bookmarksJson.ToString(2));
             }
 
             // Write Bpm file
@@ -320,6 +327,29 @@ namespace Beatmap.Base
             }
 
             return true;
+        }
+        
+        private JSONNode GetOfficialBookmarkOutputJson(string characteristic, string difficulty)
+        {
+            var json = new JSONObject();
+            json["name"] = "ChroMapper";
+            json["characteristic"] = characteristic;
+            json["difficulty"] = difficulty;
+            json["color"] = "00FFFF"; // Cyan
+
+            var bookmarksNode = new JSONArray();
+            foreach (var bookmark in Bookmarks)
+            {
+                var bookmarkObject = new JSONObject();
+                bookmarkObject["beat"] = bookmark.JsonTime;
+                bookmarkObject["label"] = bookmark.Name;
+                bookmarkObject["text"] = bookmark.Name;
+                bookmarksNode.Add(bookmarkObject);
+            }
+            
+            json["bookmarks"] = bookmarksNode;
+            
+            return json;
         }
 
         public bool IsChroma() =>

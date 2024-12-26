@@ -28,6 +28,7 @@ namespace Beatmap.Helper
                     var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
                     V4Difficulty.LoadBpmFromAudioData(difficulty, info);
                     V4Difficulty.LoadLightsFromLightshowFile(difficulty, info, infoDifficulty);
+                    V4Difficulty.LoadBookmarksFromOfficialEditor(difficulty, info, infoDifficulty);
                     return difficulty;
                 case '3':
                     Settings.Instance.MapVersion = 3;
