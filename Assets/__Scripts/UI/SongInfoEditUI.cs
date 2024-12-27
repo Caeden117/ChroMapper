@@ -152,7 +152,15 @@ public class SongInfoEditUI : MenuBase
         Info.SongAuthorName = songAuthorField.text;
         Info.LevelAuthorName = authorField.text;
         Info.CoverImageFilename = coverImageField.text;
+        
         Info.SongFilename = audioPath.text;
+        
+        // If there isn't a preview audio file, just set it to the songFileName
+        var songPreviewPath = Path.Combine(Info.Directory, Info.SongPreviewFilename);
+        if (Info.SongPreviewFilename != Info.SongFilename && !File.Exists(songPreviewPath))
+        {
+            Info.SongPreviewFilename = audioPath.text;    
+        }
 
         Info.BeatsPerMinute = GetTextValue(bpmField);
         Info.PreviewStartTime = GetTextValue(prevStartField);
