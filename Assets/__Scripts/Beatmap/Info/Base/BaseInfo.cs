@@ -155,9 +155,9 @@ namespace Beatmap.Info
                 
                 var lastEditedByKey = BeatSaberSongContainer.Instance?.Info.MajorVersion switch
                 {
-                    2 => "_lastEditedByKey",
-                    4 => "lastEditedByKey",
-                    _ => "lastEditedByKey"
+                    2 => "_lastEditedBy",
+                    4 => "lastEditedBy",
+                    _ => "lastEditedBy"
                 };
                 
                 editorsNode[lastEditedByKey] = editorName;
