@@ -183,7 +183,8 @@ namespace Beatmap.Info
                 var setNode = new JSONObject { ["_beatmapCharacteristicName"] = beatmapSet.Characteristic };
                 var difficultyBeatmapsArray = new JSONArray();
 
-                foreach (var difficulty in beatmapSet.Difficulties)
+                // The ordering isn't strictly necessary, but it's nice to have them grouped in order for json editing
+                foreach (var difficulty in beatmapSet.Difficulties.OrderBy(x => x.DifficultyRank))
                 {
                     var node = new JSONObject();
                     node["_difficulty"] = difficulty.Difficulty;

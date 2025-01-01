@@ -200,8 +200,11 @@ namespace Beatmap.Info
             json["colorSchemes"] = colorSchemes;
 
             var difficultyBeatmaps = new JSONArray();
-            foreach (var difficulty in info.DifficultySets.SelectMany(x => x.Difficulties))
+            foreach (var difficulty in info.DifficultySets.SelectMany(x => x.Difficulties)
+                         .OrderBy(x => x.Characteristic).ThenBy(x => x.DifficultyRank))
             {
+                // The orderings aren't strictly necessary, but it's nice to have them grouped in order for json editing
+                
                 var node = new JSONObject();
 
                 node["characteristic"] = difficulty.Characteristic;
