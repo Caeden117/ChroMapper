@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using Beatmap.Base;
 using Beatmap.Containers;
 using UnityEngine;
@@ -19,12 +20,20 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
     
     internal override void ApplyToMap() => CreateAndOpenNJSDialogue(isInitialPlacement: true);
     
-    private void AttemptPlaceNJSChange(string njsInput, int easingDropdownValu, bool extend)
+    private void AttemptPlaceNJSChange(string njsInput, int easingDropdownValue, bool extend)
     {
         if (string.IsNullOrEmpty(njsInput) || string.IsNullOrWhiteSpace(njsInput)) return;
-        if (float.TryParse(njsInput, out var relativeNJS))
+        if (float.TryParse(njsInput, out var absoluteNJS))
         {
-            queuedData.Easing = MapTMPDropdownValueToEasing(easingDropdownValu);
+            if (absoluteNJS <= 0)
+            {
+                CreateAndOpenNJSDialogue(isInitialPlacement: false);
+                return;
+            }
+            
+            var relativeNJS = absoluteNJS - BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
+            
+            queuedData.Easing = MapTMPDropdownValueToEasing(easingDropdownValue);
             queuedData.RelativeNJS = relativeNJS;
             queuedData.UsePrevious = extend ? 1 : 0;
             base.ApplyToMap();
@@ -50,13 +59,15 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
         {
             createNJSEventDialogueBox
                 .AddComponent<TextComponent>()
-                .WithInitialValue("Mapper", "NJS.dialogue.invalidnumber");
+                .WithInitialValue("NJS must a be positive number");
+                //.WithInitialValue("Mapper", "NJS.dialogue.invalidnumber");
         }
 
+        var diffNJS = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
         var njsTextInput = createNJSEventDialogueBox
             .AddComponent<TextBoxComponent>()
-            .WithLabel($"Relative NJS")
-            .WithInitialValue(0.ToString());
+            .WithLabel("NJS")
+            .WithInitialValue(diffNJS.ToString(CultureInfo.InvariantCulture));
 
         var easingDropdown = createNJSEventDialogueBox
             .AddComponent<DropdownComponent>()
