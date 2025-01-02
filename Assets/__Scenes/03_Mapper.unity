@@ -52674,6 +52674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoSaveToggle: {fileID: 1207263925}
   pauseManager: {fileID: 614713889}
+  beatmapActionContainer: {fileID: 1524038337}
 --- !u!114 &1524038333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70344,6 +70345,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapLoader: {fileID: 1117169519}
   dropdown: {fileID: 1247663301}
+  beatmapActionContainer: {fileID: 1524038337}
+  autoSaveController: {fileID: 1524038332}
 --- !u!1 &2009189581
 GameObject:
   m_ObjectHideFlags: 0

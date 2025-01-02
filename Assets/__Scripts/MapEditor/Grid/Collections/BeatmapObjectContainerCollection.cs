@@ -516,8 +516,6 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     {
         var span = MapObjects.AsSpan();
 
-        // lmao why do anything if we dont have objects to recycle or create containers for
-        if (span.Length == 0) return;
 
         // Easier to process recyclings at the beginning, rather than try to deal with it later.
         if (forceRefresh)
@@ -548,6 +546,9 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
                 }
             }
         }
+        
+        // lmao why do anything if we dont have objects to create containers for
+        if (span.Length == 0) return;
 
         // We need to copy GetBetween implementation:
         //   - We are binary searching by SongBpmTime, not JsonTime (this should still be sorted since MapObjects is always sorted by JsonTime)

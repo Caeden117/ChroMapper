@@ -162,6 +162,16 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
         }
     }
 
+    private int activeActionsAfterSave;
+    public void UpdateActiveActionsAfterSave() => activeActionsAfterSave = beatmapActions.Count(x => x.Active);
+    public bool ContainsUnsavedActions => activeActionsAfterSave != beatmapActions.Count(x => x.Active);
+
+    public void ClearBeatmapActions()
+    {
+        activeActionsAfterSave = 0;
+        beatmapActions.Clear();
+    }
+
     public class BeatmapActionParams
     {
         public NodeEditorController NodeEditor;
