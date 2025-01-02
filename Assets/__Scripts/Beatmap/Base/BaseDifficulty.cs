@@ -297,7 +297,9 @@ namespace Beatmap.Base
 
                 var lightshowJson = V4Difficulty.GetLightshowOutputJson(this);
                 File.WriteAllText(Path.Combine(songContainer.Info.Directory, mapDifficultyInfo.LightshowFileName),
-                    lightshowJson.ToString(2));
+                    Settings.Instance.FormatJson
+                        ? lightshowJson.ToString(2)
+                        : lightshowJson.ToString());
                 
                 // Write bookmarks for official editor compability
                 var bookmarksJson = GetOfficialBookmarkOutputJson(mapDifficultyInfo.Characteristic, mapDifficultyInfo.Difficulty);
