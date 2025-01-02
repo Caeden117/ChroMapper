@@ -16,7 +16,9 @@ public class LoadedDifficultySelectController : MonoBehaviour
         // ToList() to keep the ordering the same in case the ordering changes on save (which it currently does)
         setDifficulties = BeatSaberSongContainer.Instance.MapDifficultyInfo.ParentSet.Difficulties.ToList();
         
-        var options = setDifficulties.Select(x => new TMP_Dropdown.OptionData(x.Difficulty)); 
+        var options = setDifficulties.Select(x => Settings.Instance.DisplayDiffDetailsInEditor 
+            ? new TMP_Dropdown.OptionData(!string.IsNullOrWhiteSpace(x.CustomLabel) ? x.CustomLabel : x.Difficulty) 
+            : new TMP_Dropdown.OptionData(x.Difficulty)); 
         
         dropdown.options = new List<TMP_Dropdown.OptionData>(options);
         dropdown.value = setDifficulties.IndexOf(BeatSaberSongContainer.Instance.MapDifficultyInfo);
