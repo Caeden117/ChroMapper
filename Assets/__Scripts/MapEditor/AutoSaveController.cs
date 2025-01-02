@@ -23,6 +23,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
     private const int maximumAutosaveCount = 15;
     [SerializeField] private Toggle autoSaveToggle;
     [SerializeField] private PauseManager pauseManager;
+    [SerializeField] private BeatmapActionContainer beatmapActionContainer;
 
     private List<DirectoryInfo> currentAutoSaves = new List<DirectoryInfo>();
 
@@ -411,6 +412,11 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             PersistentUI.DisplayMessageType.Bottom);
         notification.SkipFade = true;
         notification.WaitTime = 5.0f;
+
+        if (!auto)
+        {
+            beatmapActionContainer.UpdateActiveActionsAfterSave();
+        }
 
         savingThread = Task.Run(
             () => //I could very well move this to its own function but I need access to the "auto" variable.
