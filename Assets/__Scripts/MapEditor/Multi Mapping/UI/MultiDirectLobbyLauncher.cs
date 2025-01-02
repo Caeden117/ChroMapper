@@ -5,6 +5,7 @@ public class MultiDirectLobbyLauncher : MonoBehaviour
 {
     [SerializeField] private AutoSaveController autoSave;
     [SerializeField] private MultiLobbyLauncher multiLobbyLauncher;
+    [SerializeField] private LoadedDifficultySelectController loadedDifficultySelectController;
 
     private DialogBox dialogBox;
     private TextBoxComponent portTextBox;
@@ -56,6 +57,9 @@ public class MultiDirectLobbyLauncher : MonoBehaviour
     private void StartMultiSession()
     {
         autoSave.Save();
+            
+        // Prevent changing difficulty in multi mapper
+        loadedDifficultySelectController.Disable();
 
         var port = int.Parse(portTextBox.Value);
 

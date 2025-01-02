@@ -22,6 +22,13 @@ public class LoadedDifficultySelectController : MonoBehaviour
         
         dropdown.options = new List<TMP_Dropdown.OptionData>(options);
         dropdown.value = setDifficulties.IndexOf(BeatSaberSongContainer.Instance.MapDifficultyInfo);
+
+        if (BeatSaberSongContainer.Instance.MultiMapperConnection != null)
+        {
+            // Disable in MultiMapper
+            gameObject.SetActive(false);
+            return;
+        }
         
         if (setDifficulties.Count == 1)
         {
@@ -46,5 +53,7 @@ public class LoadedDifficultySelectController : MonoBehaviour
         
         BeatSaberSongContainer.Instance.Map = newMap;
     }
+
+    public void Disable() => gameObject.SetActive(false);
 }
 
