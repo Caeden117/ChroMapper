@@ -70,7 +70,31 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
         ConvertBookmarkTimesFromOldDevVersions();
 
-        bookmarkContainers = BeatSaberSongContainer.Instance.Map.Bookmarks.Select(bookmark =>
+        bookmarkContainers = InstantiateBookmarkContainers();
+
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineWidth), UpdateBookmarkWidth);
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTooltipTimeInfo), UpdateBookmarkTooltip);
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineBrightness), UpdateBookmarkBrightness);
+
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent += RefreshBookmarksFromLoadedDifficulty;
+
+        BookmarksUpdated.Invoke();
+    }
+
+    private void RefreshBookmarksFromLoadedDifficulty()
+    {
+        foreach (var container in bookmarkContainers)
+        {
+            Destroy(container.gameObject);
+        }
+
+        bookmarkContainers = InstantiateBookmarkContainers();
+        BookmarksUpdated.Invoke();
+    }
+
+    private List<BookmarkContainer> InstantiateBookmarkContainers()
+    {
+        return BeatSaberSongContainer.Instance.Map.Bookmarks.Select(bookmark =>
         {
             var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
             container.name = bookmark.Name;
@@ -78,12 +102,6 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             container.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
             return container;
         }).OrderBy(it => it.Data.JsonTime).ToList();
-
-        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineWidth), UpdateBookmarkWidth);
-        Settings.NotifyBySettingName(nameof(Settings.BookmarkTooltipTimeInfo), UpdateBookmarkTooltip);
-        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineBrightness), UpdateBookmarkBrightness);
-
-        BookmarksUpdated.Invoke();
     }
 
     // There was a significant amount of time where bookmarks did not account for official bpm events
@@ -247,6 +265,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTimelineWidth));
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTooltipTimeInfo));
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTimelineBrightness));
+
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent -= RefreshBookmarksFromLoadedDifficulty;
     }
 
     public void OnColorBookmarkModifier(InputAction.CallbackContext context) => ShiftContext = context;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Info;
 using TMPro;
@@ -9,6 +10,8 @@ public class LoadedDifficultySelectController : MonoBehaviour
     [SerializeField] private MapLoader mapLoader;
     [SerializeField] private TMP_Dropdown dropdown;
 
+    public static Action LoadedDifficultyChangedEvent;
+    
     // Checking for unsaved changes before switching
     [SerializeField] private BeatmapActionContainer beatmapActionContainer;
     [SerializeField] private AutoSaveController autoSaveController;
@@ -101,6 +104,8 @@ public class LoadedDifficultySelectController : MonoBehaviour
 
         // A great way to get ghost objects without this
         beatmapActionContainer.ClearBeatmapActions();
+        
+        LoadedDifficultyChangedEvent?.Invoke();
     }
 
     public void Disable() => gameObject.SetActive(false);

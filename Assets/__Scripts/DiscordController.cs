@@ -37,6 +37,7 @@ public class DiscordController : MonoBehaviour
                 ActivityManager.ClearActivity(res => { });
                 SceneManager.activeSceneChanged += SceneUpdated;
                 LoadInitialMap.PlatformLoadedEvent += LoadPlatform;
+                LoadedDifficultySelectController.LoadedDifficultyChangedEvent += LoadedDifficultyChanged;
             }
             else
             {
@@ -70,6 +71,7 @@ public class DiscordController : MonoBehaviour
     {
         SceneManager.activeSceneChanged -= SceneUpdated;
         LoadInitialMap.PlatformLoadedEvent -= LoadPlatform;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent -= LoadedDifficultyChanged;
     }
 
     private void OnApplicationQuit() => Discord?.Dispose();
@@ -90,6 +92,13 @@ public class DiscordController : MonoBehaviour
             .Find(x => x.JsonName == jsonEnvironmentName)?.HumanName ?? jsonEnvironmentName;
         activity.Assets.LargeText = platformName;
 
+        UpdatePresence();
+    }
+
+    private void LoadedDifficultyChanged()
+    {
+        var diff = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+        activity.State = $"{diff.Characteristic} {diff.Difficulty}";
         UpdatePresence();
     }
 

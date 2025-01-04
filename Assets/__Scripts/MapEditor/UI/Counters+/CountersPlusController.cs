@@ -112,6 +112,7 @@ public class CountersPlusController : MonoBehaviour
 
         LoadInitialMap.LevelLoadedEvent += LevelLoadedEvent;
         SelectionController.SelectionChangedEvent += SelectionChangedEvent;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent += LoadedDifficultyChangedEvent;
     }
 
     private void Update() // i do want to update this every single frame
@@ -177,6 +178,7 @@ public class CountersPlusController : MonoBehaviour
         Settings.ClearSettingNotifications("CountersPlus");
         SelectionController.SelectionChangedEvent -= SelectionChangedEvent;
         LoadInitialMap.LevelLoadedEvent -= LevelLoadedEvent;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent -= LoadedDifficultyChangedEvent;
     }
 
     public void UpdateStatistic(CountersPlusStatistic stat)
@@ -191,6 +193,12 @@ public class CountersPlusController : MonoBehaviour
     private void LevelLoadedEvent()
     {
         // Bit archaic but this allows us to refresh everything once on startup
+        foreach (var enumValue in Enum.GetValues(typeof(CountersPlusStatistic)))
+            UpdateStatistic((CountersPlusStatistic)enumValue);
+    }
+
+    private void LoadedDifficultyChangedEvent()
+    {
         foreach (var enumValue in Enum.GetValues(typeof(CountersPlusStatistic)))
             UpdateStatistic((CountersPlusStatistic)enumValue);
     }
