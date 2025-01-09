@@ -4,6 +4,7 @@ using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Enums;
 using Beatmap.Shared;
+using TMPro;
 using UnityEngine;
 
 namespace Beatmap.Containers
@@ -25,7 +26,7 @@ namespace Beatmap.Containers
         [SerializeField] private EventAppearanceSO eventAppearance;
         [SerializeField] private List<Renderer> eventRenderer;
         [SerializeField] private TracksManager tracksManager;
-        [SerializeField] private TextMesh valueDisplay;
+        [SerializeField] private TextMeshPro valueDisplay;
         [SerializeField] private LightGradientController lightGradientController;
         [SerializeField] private GameObject[] eventModels;
         [SerializeField] private CreateEventTypeLabels labels;
