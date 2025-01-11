@@ -124,8 +124,8 @@ public class GridRenderingController : MonoBehaviour
 
     private void UpdateOneBeat(object value)
     {
-        foreach (var renderer in oneBeat)
-            foreach (var mat in renderer.materials) mat.SetFloat(gridThickness, (float)value);
+        oneBeatPropertyBlock.SetFloat(gridThickness, (float)value);
+        foreach (var g in oneBeat) g.SetPropertyBlock(oneBeatPropertyBlock);
     }
 
     private int GetLowestDenominator(int a)
