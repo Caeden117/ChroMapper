@@ -8,7 +8,7 @@
     }
     SubShader
     {
-        Tags { "Queue"="Transparent-1" "RenderType"="Opaque" }
+        Tags { "Queue"="Transparent-100" "RenderType"="Opaque" }
         LOD 100
         Cull Front
         ZWrite Off

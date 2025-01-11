@@ -12,7 +12,7 @@ Shader "Grid ZDir" {
 	}
 
 	SubShader{
-		Tags{ "Queue" = "Transparent" "RenderType" = "Transparent"}
+		Tags{ "Queue" = "Transparent-90" "RenderType" = "Transparent"}
 
 		Pass
 		{
