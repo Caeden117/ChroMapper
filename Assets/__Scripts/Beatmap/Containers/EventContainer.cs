@@ -224,8 +224,6 @@ namespace Beatmap.Containers
             valueDisplay.text = text;
         }
 
-        public void UpdateTextColor(Color c) => valueDisplay.color = c;
-
         public void RefreshAppearance() => eventAppearance.SetEventAppearance(this);
     }
 }
