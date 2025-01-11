@@ -86,7 +86,7 @@ SubShader {
 
 	Tags
 	{
-		"Queue"="Transparent"
+		"Queue"="Transparent-5" // Makes text on events batch better
 		"IgnoreProjector"="True"
 		"RenderType"="Transparent"
 	}
