@@ -37,6 +37,7 @@ namespace Beatmap.V4
                 box.TranslationDistributionType = commonBoxData.TranslationDistributionType;
                 box.TranslationAffectFirst = commonBoxData.TranslationAffectFirst;
                 box.Easing = commonBoxData.Easing;
+                box.Axis = commonBoxData.Axis;
                 box.Flip = commonBoxData.Flip;
 
                 box.Events = boxNode["l"].AsArray.Linq.Select(

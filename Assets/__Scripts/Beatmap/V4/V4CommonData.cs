@@ -642,9 +642,9 @@ namespace Beatmap.V4
                 TransitionType = node["p"].AsInt,
                 Easing = node["e"].AsInt, 
                 Color = node["c"].AsInt, 
-                Brightness = node["b"].AsInt, 
+                Brightness = node["b"].AsFloat, 
                 Frequency = node["f"].AsInt, 
-                StrobeBrightness = node["sb"].AsInt, 
+                StrobeBrightness = node["sb"].AsFloat, 
                 StrobeFade = node["sf"].AsInt,
             };
 
@@ -791,7 +791,7 @@ namespace Beatmap.V4
             {
                 TransitionType = node["p"].AsInt,
                 Easing = node["e"].AsInt, 
-                Rotation = node["r"].AsInt, 
+                Rotation = node["r"].AsFloat, 
                 Direction = node["d"].AsInt, 
                 Loop = node["l"].AsInt,
             };
@@ -929,7 +929,7 @@ namespace Beatmap.V4
             {
                 TransitionType = node["p"].AsInt,
                 Easing = node["e"].AsInt, 
-                Translation = node["t"].AsInt, 
+                Translation = node["t"].AsFloat, 
             };
 
             public static LightTranslationEvent FromBaseLightTranslationEvent(BaseLightTranslationBase baseLightTranslationEvent) => new()
@@ -1043,7 +1043,7 @@ namespace Beatmap.V4
 
             public static FloatFxEvent GetFromJson(JSONNode node) => new()
             {
-                TransitionType = node["p"].AsInt, Easing = node["e"].AsInt, Value = node["v"].AsInt,
+                TransitionType = node["p"].AsInt, Easing = node["e"].AsInt, Value = node["v"].AsFloat,
             };
 
             public static FloatFxEvent FromFloatFxEventBase(FloatFxEventBase floatFxEvent) => new()

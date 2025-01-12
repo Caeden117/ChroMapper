@@ -37,6 +37,7 @@ namespace Beatmap.V4
                 box.RotationDistributionType = commonBoxData.RotationDistributionType;
                 box.RotationAffectFirst = commonBoxData.RotationAffectFirst;
                 box.Easing = commonBoxData.Easing;
+                box.Axis = commonBoxData.Axis;
                 box.Flip = commonBoxData.Flip;
 
                 box.Events = boxNode["l"].AsArray.Linq.Select(

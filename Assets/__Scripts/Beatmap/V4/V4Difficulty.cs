@@ -15,7 +15,8 @@ namespace Beatmap.V4
 {
     public class V4Difficulty
     {
-        private const string version = "4.1.0";
+        private const string beatmapVersion = "4.1.0";
+        private const string lightshowVersion = "4.0.0";
 
         public static JSONNode GetOutputJson(BaseDifficulty difficulty)
         {
@@ -24,7 +25,7 @@ namespace Beatmap.V4
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-                var json = new JSONObject { ["version"] = version };
+                var json = new JSONObject { ["version"] = beatmapVersion };
                 
                 // LINQ abuse
 
@@ -160,7 +161,6 @@ namespace Beatmap.V4
             }
         }
         
-        // TODO: Holy hell this seems like a pain to do
         public static JSONNode GetLightshowOutputJson(BaseDifficulty difficulty)
         {
             try
@@ -168,7 +168,7 @@ namespace Beatmap.V4
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-                var json = new JSONObject { ["version"] = version };
+                var json = new JSONObject { ["version"] = lightshowVersion };
 
                 // Basic events
                 var basicEvents = new JSONArray();
@@ -424,12 +424,11 @@ namespace Beatmap.V4
             }
         }
 
-        // TODO: WIP
         public static BaseDifficulty GetFromJson(JSONNode mainNode, string path)
         {
             try
             {
-                var map = new BaseDifficulty { DirectoryAndFile = path, Version = version };
+                var map = new BaseDifficulty { DirectoryAndFile = path, Version = beatmapVersion };
 
                 // Get common Data
                 var notesCommonData = new List<V4CommonData.Note>();
