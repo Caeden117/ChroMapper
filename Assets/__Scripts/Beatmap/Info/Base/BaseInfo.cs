@@ -81,8 +81,11 @@ namespace Beatmap.Info
         }
 
         public string SongName { get; set; } = "New Song";
+
         public string CleanSongName => Path.GetInvalidFileNameChars()
-            .Aggregate(SongName, (res, el) => res.Replace(el.ToString(), string.Empty));
+            .Aggregate(SongName, (res, el) => res.Replace(el.ToString(), string.Empty))
+            .Trim('.'); // Windows disallows trailing periods and macOS treats leading period as hidden folder
+
         public string SongSubName { get; set; } = "";
         public string SongAuthorName { get; set; } = "";
 
