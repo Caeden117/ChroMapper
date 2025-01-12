@@ -324,11 +324,10 @@ namespace Beatmap.Base
             {
                 var bpmOutputJson = Settings.Instance.MapVersion switch
                 {
-                    2 => V2BpmInfo.GetOutputJson(bpmInfo),
-                    3 => V2BpmInfo.GetOutputJson(bpmInfo),
+                    2 or 3 => V2BpmInfo.GetOutputJson(bpmInfo),
                     4 => V4AudioData.GetOutputJson(bpmInfo)
                 };
-                var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(songContainer.Info);
+                var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(Settings.Instance.MapVersion, songContainer.Info);
                 
                 File.WriteAllText(Path.Combine(songContainer.Info.Directory, bpmOutputFileName),
                     bpmOutputJson.ToString(2));

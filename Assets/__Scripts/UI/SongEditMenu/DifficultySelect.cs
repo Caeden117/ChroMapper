@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Info;
+using Beatmap.V4;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
@@ -292,7 +293,19 @@ public class DifficultySelect : MonoBehaviour
         if (!currentDifficultySet.Difficulties.Contains(diff))
             currentDifficultySet.Difficulties.Add(diff);
 
-        var map = TryGetExistingMapFromDiff(localDiff) ?? new BaseDifficulty();
+        var map = TryGetExistingMapFromDiff(localDiff);
+        if (map == null)
+        {
+            map = new BaseDifficulty();
+            Settings.Instance.MapVersion = map.MajorVersion;
+
+            if (map.MajorVersion == 4)
+            {
+                V4Difficulty.LoadBpmFromAudioData(map, mapInfo);
+                V4Difficulty.LoadLightsFromLightshowFile(map, mapInfo, diff);
+            }
+        }
+
         var oldPath = map.DirectoryAndFile;
 
         diff.SetBeatmapFileNameToDefault();
@@ -306,6 +319,7 @@ public class DifficultySelect : MonoBehaviour
         }
         else
         {
+            Settings.Instance.MapVersion = map.MajorVersion;
             map.Save();
         }
 

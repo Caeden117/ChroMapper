@@ -20,9 +20,9 @@ namespace Beatmap.Info
             return this;
         }
 
-        public static string GetOutputFileName(BaseInfo info)
+        public static string GetOutputFileName(int difficultyMajorVersion, BaseInfo info)
         {
-            if (info.Version[0] == '4')
+            if (difficultyMajorVersion == 4)
             {
                 return !string.IsNullOrWhiteSpace(info.AudioDataFilename)
                     ? info.AudioDataFilename
