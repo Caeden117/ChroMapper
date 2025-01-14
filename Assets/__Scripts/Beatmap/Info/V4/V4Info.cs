@@ -213,11 +213,17 @@ namespace Beatmap.Info
                 var authorsNode = new JSONObject();
                 
                 var mappers = new JSONArray();
-                foreach (var mapper in difficulty.Mappers) mappers.Add(mapper);
+                foreach (var mapper in difficulty.Mappers.Where(mapper => !string.IsNullOrEmpty(mapper)))
+                {
+                    mappers.Add(mapper);
+                }
                 authorsNode["mappers"] = mappers;
 
                 var lighters = new JSONArray();
-                foreach (var lighter in difficulty.Lighters) lighters.Add(lighter);
+                foreach (var lighter in difficulty.Lighters.Where(lighter => !string.IsNullOrEmpty(lighter)))
+                {
+                    lighters.Add(lighter);
+                }
                 authorsNode["lighters"] = lighters;
 
                 node["beatmapAuthors"] = authorsNode;
