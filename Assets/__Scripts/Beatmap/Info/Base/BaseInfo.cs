@@ -296,7 +296,7 @@ namespace Beatmap.Info
 
         public void SetBeatmapFileNameToDefault() => BeatmapFileName = $"{Difficulty}{Characteristic}.dat";
         
-        public void RefreshRequirementsAndWarnings(BaseInfo info, BaseDifficulty map)
+        public void RefreshRequirementsAndWarnings(int majorInfoVersion, BaseDifficulty map)
         {
             if (!Settings.Instance.AutomaticModRequirements) return;
 
@@ -316,13 +316,14 @@ namespace Beatmap.Info
                         break;
                 }
             }
+                
+            CustomData ??= new JSONObject();
 
             if (requiredArray.Count > 0)
             {
-                CustomData ??= new JSONObject();
-                CustomData[info.MajorVersion == 4 ? "requirements" : "_requirements"] = requiredArray;
+                CustomData[majorInfoVersion == 4 ? "requirements" : "_requirements"] = requiredArray;
             }
-            else if (CustomData != null)
+            else
             {
                 CustomData.Remove("requirements");
                 CustomData.Remove("_requirements");
@@ -331,9 +332,9 @@ namespace Beatmap.Info
             if (suggestedArray.Count > 0)
             {
                 CustomData ??= new JSONObject();
-                CustomData[info.MajorVersion == 4 ? "suggestions" : "_suggestions"] = suggestedArray;
+                CustomData[majorInfoVersion == 4 ? "suggestions" : "_suggestions"] = suggestedArray;
             }
-            else if (CustomData != null)
+            else
             {
                 CustomData.Remove("suggestions");
                 CustomData.Remove("_suggestions");

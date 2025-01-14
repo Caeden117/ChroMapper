@@ -427,14 +427,14 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
                 //Saving Map Data
-                var originalMap = BeatSaberSongContainer.Instance.Map.DirectoryAndFile;
-                var originalInfo = BeatSaberSongContainer.Instance.Info.Directory;
+                var originalMapDirectoryAndFile = BeatSaberSongContainer.Instance.Map.DirectoryAndFile;
+                var originalInfoDirectory = BeatSaberSongContainer.Instance.Info.Directory;
 
                 try
                 {
                     if (auto)
                     {
-                        var autoSaveDir = Path.Combine(originalInfo, "autosaves", $"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}");
+                        var autoSaveDir = Path.Combine(originalInfoDirectory, "autosaves", $"{DateTime.Now:dd-MM-yyyy_HH-mm-ss}");
 
                         Debug.Log($"Auto saved to: {autoSaveDir}");
                         //We need to create the autosave directory before we can save the .dat difficulty into it.
@@ -455,22 +455,10 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
                     BeatSaberSongContainer.Instance.Map.Save();
 
-                    var set = BeatSaberSongContainer.Instance.MapDifficultyInfo.ParentSet; //Grab our set
-                    BeatSaberSongContainer.Instance.Info.DifficultySets.Remove(set); //Yeet it out
-                    var data = BeatSaberSongContainer.Instance.MapDifficultyInfo; //Grab our diff data
-                    set.Difficulties.Remove(data); //Yeet out our difficulty data
-                    if (BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData ==
-                        null) //if for some reason this be null, make new customdata
-                    {
-                        BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData = new JSONObject();
-                    }
-
-                    set.Difficulties.Add(BeatSaberSongContainer.Instance
-                        .MapDifficultyInfo); //Add back our difficulty data
-                    BeatSaberSongContainer.Instance.Info.DifficultySets.Add(set); //Add back our difficulty set
+                    BeatSaberSongContainer.Instance.MapDifficultyInfo.RefreshRequirementsAndWarnings(
+                        BeatSaberSongContainer.Instance.Info.MajorVersion, BeatSaberSongContainer.Instance.Map);
+                    
                     BeatSaberSongContainer.Instance.Info.Save(); //Save
-                    // TODO: Make sure this works for v4
-
                 }
                 catch (Exception ex)
                 {
@@ -479,8 +467,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                 }
 
                 // Revert directory if it was changed by autosave
-                BeatSaberSongContainer.Instance.Info.Directory = originalInfo;
-                BeatSaberSongContainer.Instance.Map.DirectoryAndFile = originalMap;
+                BeatSaberSongContainer.Instance.Info.Directory = originalInfoDirectory;
+                BeatSaberSongContainer.Instance.Map.DirectoryAndFile = originalMapDirectoryAndFile;
 
                 notification.SkipDisplay = true;
             });
