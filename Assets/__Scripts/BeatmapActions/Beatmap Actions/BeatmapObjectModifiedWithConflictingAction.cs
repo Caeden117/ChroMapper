@@ -8,6 +8,7 @@ public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedA
 {
     private BaseObject conflictingObject;
 
+    // This constructor is needed for United Mapping
     public BeatmapObjectModifiedWithConflictingAction() : base() { }
 
     public BeatmapObjectModifiedWithConflictingAction(BaseObject edited, BaseObject originalObject,

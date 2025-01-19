@@ -6,6 +6,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
 {
     private IEnumerable<BaseObject> removedConflictObjects;
 
+    // This constructor is needed for United Mapping
     public BeatmapObjectPlacementAction() : base() { }
 
     public BeatmapObjectPlacementAction(IEnumerable<BaseObject> placedContainers,

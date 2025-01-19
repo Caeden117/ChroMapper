@@ -15,6 +15,7 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
     
     private readonly float firstBpmEventJsonTime;
 
+    // This constructor is needed for United Mapping
     public BeatmapObjectModifiedCollectionAction() : base() { }
 
     public BeatmapObjectModifiedCollectionAction(List<BaseObject> editedObjects, List<BaseObject> originalObjects,

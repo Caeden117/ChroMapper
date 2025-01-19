@@ -21,6 +21,9 @@ public class ActionCollectionAction : BeatmapAction
     private bool clearSelection;
     private bool forceRefreshesPool;
 
+    // This constructor is needed for United Mapping
+    public ActionCollectionAction() : base() { }
+    
     public ActionCollectionAction(IEnumerable<BeatmapAction> beatmapActions, bool forceRefreshPool = false,
         bool clearsSelection = true, string comment = "No comment.")
         : base(beatmapActions.SelectMany(x => x.Data), comment)

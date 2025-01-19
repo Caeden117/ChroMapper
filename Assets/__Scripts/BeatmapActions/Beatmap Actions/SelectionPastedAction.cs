@@ -7,6 +7,7 @@ public class SelectionPastedAction : BeatmapAction
 {
     private IEnumerable<BaseObject> removed;
 
+    // This constructor is needed for United Mapping
     public SelectionPastedAction() : base() { }
 
     public SelectionPastedAction(IEnumerable<BaseObject> pasteData, IEnumerable<BaseObject> removed) :

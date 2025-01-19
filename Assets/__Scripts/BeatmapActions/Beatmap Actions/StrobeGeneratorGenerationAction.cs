@@ -7,6 +7,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
 {
     private IEnumerable<BaseObject> conflictingData;
 
+    // This constructor is needed for United Mapping
     public StrobeGeneratorGenerationAction() : base() { }
 
     public StrobeGeneratorGenerationAction(IEnumerable<BaseObject> generated, IEnumerable<BaseObject> conflicting)

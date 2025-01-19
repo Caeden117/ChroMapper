@@ -5,6 +5,7 @@ using Beatmap.Base;
 
 public class SelectionDeletedAction : BeatmapAction
 {
+    // This constructor is needed for United Mapping
     public SelectionDeletedAction() : base() { }
 
     public SelectionDeletedAction(IEnumerable<BaseObject> deletedData) : base(deletedData)

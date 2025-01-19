@@ -12,6 +12,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction
     private BaseObject originalData;
     private BaseObject originalObject;
 
+    // This constructor is needed for United Mapping
     public BeatmapObjectModifiedAction() : base() { }
 
     public BeatmapObjectModifiedAction(BaseObject edited, BaseObject originalObject, BaseObject originalData,
