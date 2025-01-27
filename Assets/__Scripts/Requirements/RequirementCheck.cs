@@ -26,6 +26,7 @@ public abstract class RequirementCheck
         RegisterRequirement(new NoodleExtensionsReq());
         RegisterRequirement(new CinemaReq());
         RegisterRequirement(new SoundExtensionsReq());
+        RegisterRequirement(new VivifyReq());
     }
 
     public static void RegisterRequirement(RequirementCheck req) => requirementsAndSuggestions.Add(req);
