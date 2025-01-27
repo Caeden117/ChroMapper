@@ -16,8 +16,8 @@ public class VivifyReq : RequirementCheck
         map.CustomEvents.Any(ev => vivifyEventTypes.Contains(ev.Type));
 
     private bool MapHasVivifyBundles() =>
-        BeatSaberSongContainer.Instance.Map.CustomData != null &&
-        BeatSaberSongContainer.Instance.Map.CustomData.HasKey("_assetBundle");
+        BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData != null &&
+        BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData.HasKey("_assetBundle");
     
     private static readonly string[] vivifyEventTypes = new[]
     {
