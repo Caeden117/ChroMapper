@@ -30,6 +30,6 @@ public class VivifyReq : RequirementCheck
         "SetAnimatorProperty",
         "SetCameraProperty",
         "AssignObjectPrefab",
-        "SetRenderSettings"
+        "SetRenderingSettings"
     };
 }
