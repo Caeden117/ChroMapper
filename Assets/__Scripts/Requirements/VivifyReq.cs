@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Beatmap.Base;
+using Beatmap.Info;
 using UnityEngine;
 
 public class VivifyReq : RequirementCheck
 {
     public override string Name => "Vivify";
 
-    public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map)
+    public override RequirementType IsRequiredOrSuggested(InfoDifficulty infoDifficulty, BaseDifficulty map)
         => MapHasVivifyBundles() || MapHasVivifyEvents(map) ? RequirementType.Requirement : RequirementType.None;
     
     private bool MapHasVivifyEvents(BaseDifficulty map) =>
         map.CustomEvents.Any(ev => vivifyEventTypes.Contains(ev.Type));
 
     private bool MapHasVivifyBundles() =>
-        BeatSaberSongContainer.Instance.Song.CustomData != null &&
-        BeatSaberSongContainer.Instance.Song.CustomData.HasKey("_assetBundle");
+        BeatSaberSongContainer.Instance.Map.CustomData != null &&
+        BeatSaberSongContainer.Instance.Map.CustomData.HasKey("_assetBundle");
     
     private static readonly string[] vivifyEventTypes = new[]
     {
