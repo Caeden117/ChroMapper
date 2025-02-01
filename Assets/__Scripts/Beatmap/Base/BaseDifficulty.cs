@@ -322,12 +322,15 @@ namespace Beatmap.Base
             // Don't write if created difficulty before supplying audio file
             if (bpmInfo.AudioSamples != default)
             {
-                var bpmOutputJson = Settings.Instance.MapVersion switch
+                var bpmOutputJson = songContainer.Info.MajorVersion switch
                 {
-                    2 or 3 => V2BpmInfo.GetOutputJson(bpmInfo),
-                    4 => V4AudioData.GetOutputJson(bpmInfo)
+                    2 => V2BpmInfo.GetOutputJson(bpmInfo),
+                    4 => V4AudioData.GetOutputJson(bpmInfo),
                 };
-                var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(Settings.Instance.MapVersion, songContainer.Info);
+
+                if (bpmOutputJson == null) return true;
+                
+                var bpmOutputFileName = BaseBpmInfo.GetOutputFileName(songContainer.Info.MajorVersion, songContainer.Info);
                 
                 File.WriteAllText(Path.Combine(songContainer.Info.Directory, bpmOutputFileName),
                     bpmOutputJson.ToString(2));
