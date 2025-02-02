@@ -159,6 +159,12 @@ namespace Beatmap.Info
             }
             json["_environmentNames"] = environmentNames;
 
+            // This is pretty terrible design however we're stuck with switching the serialization method of colors
+            // until we get out of SimpleJSON.
+            // Just remember to change JSONNode.ColorContainerType whenever you need to serialize colors in a particular format (objects/arrays)
+            var oldColorContainerType = JSONNode.ColorContainerType;
+            JSONNode.ColorContainerType = JSONContainerType.Object;
+
             var colorSchemes = new JSONArray();
             foreach (var colorScheme in info.ColorSchemes)
             {
@@ -176,6 +182,9 @@ namespace Beatmap.Info
                 colorSchemes.Add(node);
             }
             json["_colorSchemes"] = colorSchemes;
+
+
+            JSONNode.ColorContainerType = oldColorContainerType;
 
             var beatmapSetArray = new JSONArray();
             foreach (var beatmapSet in info.DifficultySets)
