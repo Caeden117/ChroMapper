@@ -84,7 +84,10 @@ public class InputBoxFileValidator : MonoBehaviour
     {
         var exts = new[] { new ExtensionFilter(filetypeName, extensions), new ExtensionFilter("All Files", "*") };
 
-        if (BeatSaberSongContainer.Instance.Info is null || BeatSaberSongContainer.Instance.Info.Directory is null)
+        var isSongDirectoryMissing = BeatSaberSongContainer.Instance.Info is null 
+                                     || string.IsNullOrEmpty(BeatSaberSongContainer.Instance.Info.Directory)
+                                     || !Directory.Exists(BeatSaberSongContainer.Instance.Info.Directory);
+        if (isSongDirectoryMissing)
         {
             PersistentUI.Instance.ShowDialogBox("Cannot locate song directory. Did you forget to save your map?", null,
                 PersistentUI.DialogBoxPresetType.Ok);
