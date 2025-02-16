@@ -166,5 +166,107 @@ namespace Beatmap.Converters
 
             return n;
         }
+        
+        public static JSONNode CustomEventData(JSONNode node)
+        {
+            if (node == null) return null;
+            if (!node.Children.Any()) return null;
+            var n = node.Clone();
+            
+            if (n.HasKey(V3CustomEvent.CustomKeyTrack)) 
+            {
+                n[V2CustomEvent.CustomKeyTrack] = n[V3CustomEvent.CustomKeyTrack];
+                n.Remove(V3CustomEvent.CustomKeyTrack);
+            }
+
+            if (n.HasKey(V3CustomEvent.DataKeyDuration)) 
+            {
+                n[V2CustomEvent.DataKeyDuration] = n[V3CustomEvent.DataKeyDuration];
+                n.Remove(V3CustomEvent.DataKeyDuration);
+            }
+
+            if (n.HasKey(V3CustomEvent.DataKeyEasing)) 
+            {
+                n[V2CustomEvent.DataKeyEasing] = n[V3CustomEvent.DataKeyEasing];
+                n.Remove(V3CustomEvent.DataKeyEasing);
+            }
+
+            if (n.HasKey(V3CustomEvent.DataKeyRepeat)) 
+            {
+                n[V2CustomEvent.DataKeyRepeat] = n[V3CustomEvent.DataKeyRepeat];
+                n.Remove(V3CustomEvent.DataKeyRepeat);
+            }
+
+            if (n.HasKey(V3CustomEvent.DataKeyChildrenTracks)) 
+            {
+                n[V2CustomEvent.DataKeyChildrenTracks] = n[V3CustomEvent.DataKeyChildrenTracks];
+                n.Remove(V3CustomEvent.DataKeyChildrenTracks);
+            }
+
+            if (n.HasKey(V3CustomEvent.DataKeyParentTrack)) 
+            {
+                n[V2CustomEvent.DataKeyParentTrack] = n[V3CustomEvent.DataKeyParentTrack];
+                n.Remove(V3CustomEvent.DataKeyParentTrack);
+            }
+
+            if (n.HasKey(V3CustomEvent.DataKeyWorldPositionStays)) 
+            {
+                n[V2CustomEvent.DataKeyWorldPositionStays] = n[V3CustomEvent.DataKeyWorldPositionStays];
+                n.Remove(V3CustomEvent.DataKeyWorldPositionStays);
+            }
+            
+            return n;
+        }
+
+        public static JSONNode CustomDataRoot(JSONNode node, BaseDifficulty difficulty)
+        {
+            if (node == null) return null;
+            if (!node.Children.Any()) return null;
+            var n = node.Clone();
+            
+            if (n.HasKey("time"))
+            {
+                n["_time"] = n["time"];
+                n.Remove("time");
+            }
+
+            if (n.HasKey("bookmarks"))
+            {
+                n["_bookmarks"] = n["bookmarks"];
+                n["_bookmarks"].Remove("bookmarksUseOfficialBpmEvents");
+                n.Remove("bookmarks");
+            }
+
+            if (n.HasKey("customEvents"))
+            {
+                var array = new JSONArray();
+                foreach (var customEvent in difficulty.CustomEvents)
+                {
+                    array.Add(V2CustomEvent.ToJson(customEvent));
+                }
+
+                n["_customEvents"] = array;
+                n.Remove("customEvents");
+            }
+
+            if (n.HasKey("environment"))
+            {
+                var array = new JSONArray();
+                foreach (var enhancement in difficulty.EnvironmentEnhancements)
+                {
+                    array.Add(V2EnvironmentEnhancement.ToJson(enhancement));
+                }
+
+                n["_environment"] = array;
+                n.Remove("environment");
+            }
+
+            n.Remove("fakeColorNotes");
+            n.Remove("fakeBombNotes");
+            n.Remove("fakeObstacles");
+            n.Remove("fakeBurstSliders");
+
+            return n;
+        }
     }
 }

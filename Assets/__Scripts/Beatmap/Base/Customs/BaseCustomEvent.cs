@@ -61,6 +61,8 @@ namespace Beatmap.Base.Customs
                 ParseCustom();
             }
         }
+        
+        public void SetData(JSONNode node) => Data = node;
 
         public float? DataDuration { get; set; }
         public string? DataEasing { get; set; }

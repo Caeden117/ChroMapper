@@ -233,6 +233,10 @@ namespace Beatmap.Base
                     env.LocalPosition = V2ToV3.RescaleVector3(env.LocalPosition);
                     env.Geometry = V2ToV3.Geometry(env.Geometry?.AsObject);
                 }
+
+                foreach (var evt in CustomEvents) evt.SetData(V2ToV3.CustomEventData(evt.SaveCustom()));
+                
+                CustomData = V2ToV3.CustomDataRoot(CustomData, this);
             }
 
             if (fromVersion is 3 or 4 && toVersion == 2)
@@ -250,20 +254,11 @@ namespace Beatmap.Base
                     env.LocalPosition = V3ToV2.RescaleVector3(env.LocalPosition);
                     env.Geometry = V3ToV2.Geometry(env.Geometry?.AsObject);
                 }
-            }
-        }
-        
-        // TODO: Bullet - I don't think this is needed anymore. Can remove code completely if no issues come up.
-        // Cleans an array by filtering out null elements, or objects with invalid time.
-        // Could definitely be optimized a little bit, but since saving is done on a separate thread, I'm not too worried about it.
-        protected static JSONArray CleanupArray(JSONArray original, string timeKey = "_time")
-        {
-            var array = original.Clone().AsArray;
-            foreach (JSONNode node in original)
-                if (node is null || node[timeKey].IsNull || float.IsNaN(node[timeKey]))
-                    array.Remove(node);
 
-            return array;
+                foreach (var evt in CustomEvents) evt.SetData(V3ToV2.CustomEventData(evt.SaveCustom()));
+
+                CustomData = V3ToV2.CustomDataRoot(CustomData, this);
+            }
         }
 
         public bool Save()
