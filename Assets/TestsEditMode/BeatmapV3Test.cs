@@ -286,7 +286,20 @@ namespace TestsEditMode
         ],
         ""_il"": []
     },
-    ""useNormalEventsAsCompatibleEvents"": false
+    ""useNormalEventsAsCompatibleEvents"": false,
+    ""customData"": {
+        ""foo"": ""bar"",
+        ""time"": 123.456,
+        ""customEvents"": [
+            {
+                ""b"": 0,
+                ""t"": ""ACustomEventType"",
+                ""d"": {
+                    ""foo"": ""bar"",
+                }
+            }
+        ]
+    }
 }";
 
 
@@ -322,6 +335,7 @@ namespace TestsEditMode
             
             AssertDifficulty(reparsed, true); // This should have the same stuff
             AssertDifficultyLightshow(difficulty);
+            AssertDifficultyCustomProperties(difficulty);
         }
 
         [Test]
@@ -336,6 +350,19 @@ namespace TestsEditMode
             reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
 
             AssertDifficulty(reparsed, false); // This should have the same stuff
+            AssertDifficultyCustomProperties(reparsed);
+        }
+
+        [Test]
+        public void RootCustomDataPropertiesPersist()
+        {
+            var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
+            Assert.AreEqual("bar", difficulty.CustomData["foo"].Value);
+            Assert.AreEqual(123.456f, difficulty.CustomData["time"].AsFloat, 0.001);
+
+            var output = V3Difficulty.GetOutputJson(difficulty);
+            Assert.AreEqual("bar", output["customData"]["foo"].Value);
+            Assert.AreEqual(123.456f, output["customData"]["time"].AsFloat, 0.001);
         }
 
         private static void AssertDifficulty(BaseDifficulty difficulty, bool slidersExist)
@@ -536,6 +563,17 @@ namespace TestsEditMode
             Assert.AreEqual(0, fxFloatEvent.UsePreviousEventValue);
             Assert.AreEqual(1, fxFloatEvent.Easing);
             Assert.AreEqual(100, fxFloatEvent.Value);
+        }
+
+
+
+        private static void AssertDifficultyCustomProperties(BaseDifficulty difficulty)
+        {
+            Assert.AreEqual(1, difficulty.CustomEvents.Count);
+
+            var customEvent = difficulty.CustomEvents[0];
+            Assert.AreEqual("ACustomEventType", customEvent.Type);
+            Assert.AreEqual("bar", customEvent.Data["foo"].Value);
         }
     }
 }
