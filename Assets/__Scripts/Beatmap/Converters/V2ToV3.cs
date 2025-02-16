@@ -282,6 +282,26 @@ namespace Beatmap.Converters
                 n.Remove("_environment");
             }
 
+            if (n.HasKey("_pointDefinitions"))
+            {
+                n["pointDefinitions"] = new JSONObject();
+                foreach (var p in difficulty.PointDefinitions)
+                {
+                    n["pointDefinitions"][p.Key] = p.Value;
+                }
+                
+                n.Remove("_pointDefinitions");
+            }
+
+            if (n.HasKey("_materials"))
+            {
+                n["materials"] = new JSONObject();
+                foreach (var m in difficulty.Materials)
+                    n["materials"][m.Key] = V3Material.ToJson(m.Value);
+
+                n.Remove("_materials");
+            }
+
             var bombArray = new JSONArray();
             var noteArray = new JSONArray();
             foreach (var note in difficulty.Notes.Where(note =>note.CustomFake))
