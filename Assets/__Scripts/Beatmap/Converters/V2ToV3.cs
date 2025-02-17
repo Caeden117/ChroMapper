@@ -181,5 +181,159 @@ namespace Beatmap.Converters
 
             return n;
         }
+        
+        public static JSONNode CustomEventData(JSONNode node)
+        {
+            if (node == null) return null;
+            if (!node.Children.Any()) return null;
+            var n = node.Clone();
+            
+            if (n.HasKey(V2CustomEvent.CustomKeyTrack)) 
+            {
+                n[V3CustomEvent.CustomKeyTrack] = n[V2CustomEvent.CustomKeyTrack];
+                n.Remove(V2CustomEvent.CustomKeyTrack);
+            }
+
+            if (n.HasKey(V2CustomEvent.DataKeyDuration)) 
+            {
+                n[V3CustomEvent.DataKeyDuration] = n[V2CustomEvent.DataKeyDuration];
+                n.Remove(V2CustomEvent.DataKeyDuration);
+            }
+
+            if (n.HasKey(V2CustomEvent.DataKeyEasing)) 
+            {
+                n[V3CustomEvent.DataKeyEasing] = n[V2CustomEvent.DataKeyEasing];
+                n.Remove(V2CustomEvent.DataKeyEasing);
+            }
+
+            if (n.HasKey(V2CustomEvent.DataKeyRepeat)) 
+            {
+                n[V3CustomEvent.DataKeyRepeat] = n[V2CustomEvent.DataKeyRepeat];
+                n.Remove(V2CustomEvent.DataKeyRepeat);
+            }
+
+            if (n.HasKey(V2CustomEvent.DataKeyChildrenTracks)) 
+            {
+                n[V3CustomEvent.DataKeyChildrenTracks] = n[V2CustomEvent.DataKeyChildrenTracks];
+                n.Remove(V2CustomEvent.DataKeyChildrenTracks);
+            }
+
+            if (n.HasKey(V2CustomEvent.DataKeyParentTrack)) 
+            {
+                n[V3CustomEvent.DataKeyParentTrack] = n[V2CustomEvent.DataKeyParentTrack];
+                n.Remove(V2CustomEvent.DataKeyParentTrack);
+            }
+
+            if (n.HasKey(V2CustomEvent.DataKeyWorldPositionStays)) 
+            {
+                n[V3CustomEvent.DataKeyWorldPositionStays] = n[V2CustomEvent.DataKeyWorldPositionStays];
+                n.Remove(V2CustomEvent.DataKeyWorldPositionStays);
+            }
+            
+            return n;
+        }
+
+        public static JSONNode CustomDataRoot(JSONNode node, BaseDifficulty difficulty)
+        {
+            if (node == null) return null;
+            if (!node.Children.Any()) return null;
+            var n = node.Clone();
+            
+            if (n.HasKey("_time"))
+            {
+                n["time"] = n["_time"];
+                n.Remove("_time");
+            }
+
+            if (n.HasKey("_bookmarks"))
+            {
+                n["bookmarks"] = n["_bookmarks"];
+                n["bookmarks"].Remove("_bookmarksUseOfficialBpmEvents");
+                n.Remove("_bookmarks");
+            }
+
+            if (n.HasKey("_customEvents"))
+            {
+                var array = new JSONArray();
+                foreach (var customEvent in difficulty.CustomEvents)
+                {
+                    array.Add(V3CustomEvent.ToJson(customEvent));
+                }
+
+                n["customEvents"] = array;
+                n.Remove("_customEvents");
+            }
+
+            if (n.HasKey("_environment"))
+            {
+                var array = new JSONArray();
+                
+                foreach (var material in difficulty.Materials)
+                {
+                    array.Add(V3Material.ToJson(material.Value));
+                }
+
+                foreach (var enhancement in difficulty.EnvironmentEnhancements)
+                {
+                    array.Add(V3EnvironmentEnhancement.ToJson(enhancement));
+                }
+
+                n["environment"] = array;
+                n.Remove("_environment");
+            }
+
+            if (n.HasKey("_pointDefinitions"))
+            {
+                n["pointDefinitions"] = new JSONObject();
+                foreach (var p in difficulty.PointDefinitions)
+                {
+                    n["pointDefinitions"][p.Key] = p.Value;
+                }
+                
+                n.Remove("_pointDefinitions");
+            }
+
+            if (n.HasKey("_materials"))
+            {
+                n["materials"] = new JSONObject();
+                foreach (var m in difficulty.Materials)
+                    n["materials"][m.Key] = V3Material.ToJson(m.Value);
+
+                n.Remove("_materials");
+            }
+
+            var bombArray = new JSONArray();
+            var noteArray = new JSONArray();
+            foreach (var note in difficulty.Notes.Where(note =>note.CustomFake))
+            {
+                if (note.Type == (int)NoteType.Bomb)
+                {
+                    bombArray.Add(V3BombNote.ToJson(note));
+                }
+                else
+                {
+                    noteArray.Add(V3ColorNote.ToJson(note));
+                }
+            }
+            if (noteArray.Count > 0) n["fakeColorNotes"] = noteArray;
+            if (bombArray.Count > 0) n["fakeBombNotes"] = bombArray;
+
+            var obstacleArray = new JSONArray();
+            foreach (var obstacle in difficulty.Obstacles.Where(obstacle => obstacle.CustomFake))
+            {
+                obstacleArray.Add(V3Obstacle.ToJson(obstacle));
+            }
+            if (obstacleArray.Count > 0) n["fakeObstacles"] = obstacleArray;
+            
+            
+            var chainArray = new JSONArray();
+            foreach (var chain in difficulty.Chains.Where(chain => chain.CustomFake))
+            {
+                chainArray.Add(V3Chain.ToJson(chain));
+            }
+            if (chainArray.Count > 0) n["fakeBurstSliders"] = chainArray;
+
+            return n;
+        }
     }
 }

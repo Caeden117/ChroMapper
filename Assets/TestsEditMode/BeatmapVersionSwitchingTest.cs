@@ -29,7 +29,10 @@ namespace TestsEditMode
             }
         }
     ],
-    ""customData"": {}
+    ""customData"": {
+        ""foo"": ""bar"",
+        ""time"": ""123.456""
+    }
 }";
 
 
@@ -53,6 +56,11 @@ namespace TestsEditMode
             difficulty.Notes[0].CustomData.Remove("somePropertyThatCMShouldNotTouch");
 
             Assert.AreEqual(0, difficulty.Notes[0].CustomData.Children.Count());
+
+            difficulty.CustomData.Remove("foo");
+            difficulty.CustomData.Remove("time");
+            difficulty.Time = 0;
+            Assert.AreEqual(0, difficulty.CustomData.Children.Count());
 
             var outputJson = V3Difficulty.GetOutputJson(difficulty);
             Assert.IsFalse(outputJson["colorNotes"].HasKey("customData"));
@@ -79,6 +87,9 @@ namespace TestsEditMode
             Assert.AreEqual(5, difficulty.Notes[0].CustomCoordinate[0].AsInt);
             Assert.AreEqual(6, difficulty.Notes[0].CustomCoordinate[1].AsInt);
             
+            Assert.AreEqual("bar", difficulty.CustomData["foo"].Value);
+            Assert.AreEqual(123.456f, difficulty.CustomData["time"].AsFloat, 0.001);
+            
             difficulty.ConvertCustomDataVersion(fromVersion: 3, toVersion: 2);
             
             // Check CustomData
@@ -91,6 +102,9 @@ namespace TestsEditMode
             Assert.AreEqual(5, difficulty.Notes[0].CustomCoordinate[0].AsInt);
             Assert.AreEqual(6, difficulty.Notes[0].CustomCoordinate[1].AsInt);
             
+            Assert.AreEqual("bar", difficulty.CustomData["foo"].Value);
+            Assert.AreEqual(123.456f, difficulty.CustomData["_time"].AsFloat, 0.001);
+            Assert.IsFalse(difficulty.CustomData.HasKey("time"));
             
             difficulty.ConvertCustomDataVersion(fromVersion: 2, toVersion: 3);
             
@@ -103,6 +117,10 @@ namespace TestsEditMode
             Assert.IsTrue(difficulty.Notes[0].CustomCoordinate is JSONArray);
             Assert.AreEqual(5, difficulty.Notes[0].CustomCoordinate[0].AsInt);
             Assert.AreEqual(6, difficulty.Notes[0].CustomCoordinate[1].AsInt);
+            
+            Assert.AreEqual("bar", difficulty.CustomData["foo"].Value);
+            Assert.AreEqual(123.456f, difficulty.CustomData["time"].AsFloat, 0.001);
+            Assert.IsFalse(difficulty.CustomData.HasKey("_time"));
         }
     }
 }

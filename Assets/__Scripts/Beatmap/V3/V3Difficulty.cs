@@ -159,7 +159,7 @@ namespace Beatmap.V3
 
         private static JSONNode GetOutputCustomJsonData(BaseDifficulty difficulty)
         {
-            var customData = new JSONObject();
+            var customData = difficulty.CustomData?.Clone() ?? new JSONObject();
 
             if (difficulty.Bookmarks.Any())
             {
