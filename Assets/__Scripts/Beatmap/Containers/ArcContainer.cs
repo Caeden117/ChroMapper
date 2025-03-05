@@ -125,7 +125,14 @@ namespace Beatmap.Containers
             var p2 = this.p2();
             var p3 = this.p3();
 
-            if (ArcData.MidAnchorMode != (int)SliderMidAnchorMode.Straight && ArcData.MidAnchorMode != (int)SliderMidAnchorMode.Straight)
+            var useMidAnchorMode = ArcData.MidAnchorMode != (int)SliderMidAnchorMode.Straight
+                                   && ArcData.CutDirection != (int)NoteCutDirection.Any
+                                   && ArcData.PosX == ArcData.TailPosX
+                                   && (ArcData.CutDirection == ArcData.TailCutDirection
+                                       || Mathf.Approximately(180f,
+                                           Mathf.Abs(NoteContainer.Directionalize(ArcData.CutDirection).z -
+                                                     NoteContainer.Directionalize(ArcData.TailCutDirection).z)));
+            if (useMidAnchorMode)
             {
                 var (headToMidControl, midPoint, midToTailControl) = GetMidAnchorPoints(p0, p1, p2, p3);
 
