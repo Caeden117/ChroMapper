@@ -38,19 +38,21 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
         {
             if (willResetGrid && (Mathf.Abs(queuedData.JsonTime - Mathf.Round(queuedData.JsonTime)) > BeatmapObjectContainerCollection.Epsilon))
             {
+                // e.g. Placing a bpm event at beat 3.5 will create a bpm event at beat 3 and 4.
+                //      The bpm on beat 3 will be such that the bpm event on beat 4 lines with where the cursor is. 
                 var prevBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
                           BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
-                var oldTime = queuedData.JsonTime;
-                var jsonTimeOffset = 1 - (oldTime % 1);
 
-                // Place a very fast bpm event slighty behind the original event to account for drift
-                var aVeryLargeBpm = 100000f;
-                var offsetRequiredInBeats = jsonTimeOffset * prevBpm / (aVeryLargeBpm - prevBpm);
-                var offsetEvent = new BaseBpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm);
+                var prevBeat = Mathf.Floor(queuedData.JsonTime);
+                var nextBeat = Mathf.Ceil(queuedData.JsonTime);
+                
+                // Place an offset bpm event on the previous beat to scale the grid so it "resets"
+                var offsetBpm = prevBpm / (queuedData.JsonTime - prevBeat);
+                var offsetEvent = new BaseBpmEvent(prevBeat, offsetBpm);
                 objectContainerCollection.SpawnObject(offsetEvent, out var offsetConflicting);
 
                 // Place the bpm event on the next beat
-                var queuedEvent = new BaseBpmEvent(Mathf.Ceil(oldTime), bpm);
+                var queuedEvent = new BaseBpmEvent(nextBeat, bpm);
                 objectContainerCollection.SpawnObject(queuedEvent, out var queuedConflicting);
 
                 BeatmapActionContainer.AddAction(new ActionCollectionAction(new List<BeatmapAction>{
