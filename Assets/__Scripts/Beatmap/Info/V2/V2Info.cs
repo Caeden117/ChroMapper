@@ -216,7 +216,7 @@ namespace Beatmap.Info
                 setNode["_difficultyBeatmaps"] = difficultyBeatmapsArray;
 
                 PopulateDifficultySetCustomData(beatmapSet);
-                if (beatmapSet.CustomData.Count >= 0)
+                if (beatmapSet.CustomData.Count > 0)
                 {
                     setNode["_customData"] = beatmapSet.CustomData;
                 }
