@@ -113,6 +113,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             || !BeatSaberSongContainer.Instance.Map.CustomData[bookmarksUseOfficialBpmEventsKey].IsBoolean
             || !BeatSaberSongContainer.Instance.Map.CustomData[bookmarksUseOfficialBpmEventsKey].AsBool;
 
+        bookmarksNeedConversion &= BeatSaberSongContainer.Instance.Map.MajorVersion != 4;
+        
         foreach (var bookmark in BeatSaberSongContainer.Instance.Map.Bookmarks)
         {
             if (bookmarksNeedConversion)
