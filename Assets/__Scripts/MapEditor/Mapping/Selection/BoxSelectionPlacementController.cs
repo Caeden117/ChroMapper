@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,11 +76,24 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
         transformed = transformedPoint;
 
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
-        roundedHit = new Vector3(
-            Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, Bounds.min.x + 0.01f), Bounds.max.x)),
-            Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
-            roundedHit.z
-        );
+        
+        if (UsePrecisionPlacement)
+        {
+            roundedHit = new Vector3(
+                Mathf.Ceil(roundedHit.x),
+                Mathf.Ceil(roundedHit.y),
+                roundedHit.z
+            );
+        }
+        else
+        {
+            roundedHit = new Vector3(
+                Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, Bounds.min.x + 0.01f), Bounds.max.x)),
+                Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
+                roundedHit.z
+            );
+        }
+
         instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1, 0);
         if (!IsSelecting)
         {
