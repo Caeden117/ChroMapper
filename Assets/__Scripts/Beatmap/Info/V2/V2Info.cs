@@ -111,17 +111,20 @@ namespace Beatmap.Info
                 if (customData["_contributors"].IsArray)
                 {
                     info.CustomContributors = customData["_contributors"].AsArray.Children.Select(V2Contributor.GetFromJson).ToList();
+                    customData.Remove("_contributors");
                 }
 
                 if (customData["_editors"].IsObject)
                 {
                     info.CustomEditorsData = new BaseInfo.CustomEditorsMetadata(customData["_editors"]);
+                    customData.Remove("_editors");
                 }
 
                 if (customData["_customEnvironment"].IsString)
                 {
                     info.CustomEnvironmentMetadata.Name = customData["_customEnvironment"].Value;
                     // Don't need save retrieve since it's calculated on save
+                    customData.Remove("_customEnvironment");
                 }
                 
                 info.CustomData = customData;
@@ -256,11 +259,13 @@ namespace Beatmap.Info
             if (customData["_characteristicLabel"].IsString)
             {
                 difficultySet.CustomCharacteristicLabel = customData["_characteristicLabel"].Value;
+                customData.Remove("_characteristicLabel");
             }
 
             if (customData["_characteristicIconImageFilename"].IsString)
             {
                 difficultySet.CustomCharacteristicIconImageFileName = customData["_characteristicIconImageFilename"].Value;
+                customData.Remove("_characteristicIconImageFilename");
             }
         }
 
@@ -269,85 +274,101 @@ namespace Beatmap.Info
             if (customData["_oneSaber"].IsBoolean)
             {
                 difficulty.CustomOneSaberFlag = customData["_oneSaber"].AsBool;
+                customData.Remove("_oneSaber");
             }
 
             if (customData["_showRotationNoteSpawnLines"].IsBoolean)
             {
                 difficulty.CustomShowRotationNoteSpawnLinesFlag = customData["_showRotationNoteSpawnLines"].AsBool;
+                customData.Remove("_showRotationNoteSpawnLines");
             }
 
             if (customData["_difficultyLabel"].IsString)
             {
                 difficulty.CustomLabel = customData["_difficultyLabel"].Value;
+                customData.Remove("_difficultyLabel");
             }
             
             if (customData["_information"].IsArray)
             {
                 difficulty.CustomInformation =
                     customData["_information"].AsArray.Children.Select(x => x.Value).ToList();
+                customData.Remove("_information");
             }
 
             if (customData["_warnings"].IsArray)
             {
                 difficulty.CustomWarnings =
                     customData["_warnings"].AsArray.Children.Select(x => x.Value).ToList();
+                customData.Remove("_warnings");
             }
 
             if (customData["_suggestions"].IsArray)
             {
                 difficulty.CustomSuggestions =
                     customData["_suggestions"].AsArray.Children.Select(x => x.Value).ToList();
+                customData.Remove("_suggestions");
             }
 
             if (customData["_requirements"].IsArray)
             {
                 difficulty.CustomRequirements =
                     customData["_requirements"].AsArray.Children.Select(x => x.Value).ToList();
+                customData.Remove("_requirements");
             }
 
             if (customData["_colorLeft"].IsObject)
             {
                 difficulty.CustomColorLeft = customData["_colorLeft"].ReadColor();
+                customData.Remove("_colorLeft");
             }
             
             if (customData["_colorRight"].IsObject)
             {
                 difficulty.CustomColorRight = customData["_colorRight"].ReadColor();
+                customData.Remove("_colorRight");
             }
             
             if (customData["_obstacleColor"].IsObject)
             {
                 difficulty.CustomColorObstacle = customData["_obstacleColor"].ReadColor();
+                customData.Remove("_obstacleColor");
             }
 
             if (customData["_envColorLeft"].IsObject)
             {
                 difficulty.CustomEnvColorLeft = customData["_envColorLeft"].ReadColor();
+                customData.Remove("_envColorLeft");
             }
             
             if (customData["_envColorRight"].IsObject)
             {
                 difficulty.CustomEnvColorRight = customData["_envColorRight"].ReadColor();
+                customData.Remove("_envColorRight");
             }
             
             if (customData["_envColorWhite"].IsObject)
             {
                 difficulty.CustomEnvColorWhite = customData["_envColorWhite"].ReadColor();
+                customData.Remove("_envColorWhite");
             }
             
             if (customData["_envColorLeftBoost"].IsObject)
             {
                 difficulty.CustomEnvColorBoostLeft = customData["_envColorLeftBoost"].ReadColor();
+                customData.Remove("_envColorLeftBoost");
             }
             
             if (customData["_envColorRightBoost"].IsObject)
             {
                 difficulty.CustomEnvColorBoostRight = customData["_envColorRightBoost"].ReadColor();
+                customData.Remove("_envColorRightBoost");
             }
             
             if (customData["_envColorWhiteBoost"].IsObject)
             {
                 difficulty.CustomEnvColorBoostWhite = customData["_envColorWhiteBoost"].ReadColor();
+                customData.Remove("_envColorWhiteBoost");
             }
         }
 
