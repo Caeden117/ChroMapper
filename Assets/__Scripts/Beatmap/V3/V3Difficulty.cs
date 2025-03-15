@@ -355,7 +355,7 @@ namespace Beatmap.V3
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
             var materials = new Dictionary<string, BaseMaterial>();
 
-            var nodeEnum = mainNode["customData"].GetEnumerator();
+            var nodeEnum = mainNode["customData"].Clone().GetEnumerator();
             while (nodeEnum.MoveNext())
             {
                 var key = nodeEnum.Current.Key;
@@ -365,24 +365,31 @@ namespace Beatmap.V3
                 {
                     case "BPMChanges":
                         foreach (JSONNode n in node) bpmList.Add(V3BpmChange.GetFromJson(n));
+                        map.CustomData.Remove(key);
                         break;
                     case "bookmarks":
                         foreach (JSONNode n in node) bookmarksList.Add(V3Bookmark.GetFromJson(n));
+                        map.CustomData.Remove(key);
                         break;
                     case "customEvents":
                         foreach (JSONNode n in node) customEventsList.Add(V3CustomEvent.GetFromJson(n));
+                        map.CustomData.Remove(key);
                         break;
                     case "fakeColorNotes":
                         foreach (JSONNode n in node) map.Notes.Add(V3ColorNote.GetFromJson(n, true));
+                        map.CustomData.Remove(key);
                         break;
                     case "fakeBombNotes":
                         foreach (JSONNode n in node) map.Notes.Add(V3BombNote.GetFromJson(n, true));
+                        map.CustomData.Remove(key);
                         break;
                     case "fakeObstacles":
                         foreach (JSONNode n in node) map.Obstacles.Add(V3Obstacle.GetFromJson(n, true));
+                        map.CustomData.Remove(key);
                         break;
                     case "fakeBurstSliders":
                         foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n, true));
+                        map.CustomData.Remove(key);
                         break;
                     case "pointDefinitions":
                         // TODO: array is incorrect, but some old v3 NE/Chroma map uses them, temporarily this needs to be here
@@ -415,9 +422,11 @@ namespace Beatmap.V3
                         }
 
                         Debug.LogWarning("Could not read point definitions");
+                        map.CustomData.Remove(key);
                         break;
                     case "environment":
                         foreach (JSONNode n in node) envEnhancementsList.Add(V3EnvironmentEnhancement.GetFromJson(n));
+                        map.CustomData.Remove(key);
                         break;
                     case "materials":
                         if (node is JSONObject matObj)
@@ -431,9 +440,11 @@ namespace Beatmap.V3
                         }
 
                         Debug.LogWarning("Could not read materials");
+                        map.CustomData.Remove(key);
                         break;
                     case "time":
                         map.Time = node.AsFloat;
+                        map.CustomData.Remove(key);
                         break;
                 }
             }
