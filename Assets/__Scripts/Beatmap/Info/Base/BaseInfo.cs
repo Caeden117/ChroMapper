@@ -296,7 +296,7 @@ namespace Beatmap.Info
 
         public void SetBeatmapFileNameToDefault() => BeatmapFileName = $"{Difficulty}{Characteristic}.dat";
         
-        public void RefreshRequirementsAndWarnings(int majorInfoVersion, BaseDifficulty map)
+        public void RefreshRequirementsAndWarnings(BaseDifficulty map)
         {
             if (!Settings.Instance.AutomaticModRequirements) return;
 

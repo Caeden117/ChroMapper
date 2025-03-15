@@ -455,8 +455,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
                     BeatSaberSongContainer.Instance.Map.Save();
 
-                    BeatSaberSongContainer.Instance.MapDifficultyInfo.RefreshRequirementsAndWarnings(
-                        BeatSaberSongContainer.Instance.Info.MajorVersion, BeatSaberSongContainer.Instance.Map);
+                    BeatSaberSongContainer.Instance.MapDifficultyInfo.RefreshRequirementsAndWarnings(BeatSaberSongContainer.Instance.Map);
                     
                     BeatSaberSongContainer.Instance.Info.Save(); //Save
                 }

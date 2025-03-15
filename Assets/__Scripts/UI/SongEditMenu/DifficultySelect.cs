@@ -323,7 +323,7 @@ public class DifficultySelect : MonoBehaviour
             map.Save();
         }
 
-        diff.RefreshRequirementsAndWarnings(mapInfo.MajorVersion, map);
+        diff.RefreshRequirementsAndWarnings(map);
         
         // Handle environmentName indexes
         var environmentNames = new List<string>();
