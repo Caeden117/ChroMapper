@@ -120,6 +120,6 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
         EditorScaleChangedEvent?.Invoke(EditorScale);
         previousEditorScale = EditorScale;
         foreach (var offset in scalingOffsets)
-            offset.localScale = new Vector3(offset.localScale.x, offset.localScale.y, 8 * EditorScale);
+            offset.localScale = new Vector3(offset.localScale.x, offset.localScale.y, Settings.Instance.TrackLength * EditorScale);
     }
 }
