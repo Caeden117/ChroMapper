@@ -512,6 +512,15 @@ public class DifficultySelect : MonoBehaviour
 
                     map.CustomData = fromDiff.InfoDifficulty.CustomData?.Clone().AsObject;
 
+                    map.CustomLabel = fromDiff.InfoDifficulty.CustomLabel;
+                    map.CustomOneSaberFlag = fromDiff.InfoDifficulty.CustomOneSaberFlag;
+                    map.CustomShowRotationNoteSpawnLinesFlag = fromDiff.InfoDifficulty.CustomShowRotationNoteSpawnLinesFlag;
+
+                    map.CustomInformation = fromDiff.InfoDifficulty.CustomInformation.ToList();
+                    map.CustomWarnings = fromDiff.InfoDifficulty.CustomWarnings.ToList();
+                    map.CustomSuggestions = fromDiff.InfoDifficulty.CustomSuggestions.ToList();
+                    map.CustomRequirements = fromDiff.InfoDifficulty.CustomRequirements.ToList();
+
                     // Yes this copies custom data, but color overrides dont copy since they're ripped from these fields instead.
                     map.CustomColorLeft = fromDiff.InfoDifficulty.CustomColorLeft;
                     map.CustomColorRight = fromDiff.InfoDifficulty.CustomColorRight;
