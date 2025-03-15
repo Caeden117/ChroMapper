@@ -207,10 +207,10 @@ namespace Beatmap.Info
                     node["_beatmapColorSchemeIdx"] = difficulty.ColorSchemeIndex;
                     node["_environmentNameIdx"] = difficulty.EnvironmentNameIndex;
 
-                    PopulateDifficultyCustomData(difficulty);
-                    if (difficulty.CustomData.Count > 0)
+                    var diffCustomData = GetOutputDifficultyCustomData(difficulty);
+                    if (diffCustomData.Count > 0)
                     {
-                        node["_customData"] = difficulty.CustomData;
+                        node["_customData"] = diffCustomData;
                     }
                     
                     difficultyBeatmapsArray.Add(node);
@@ -218,10 +218,10 @@ namespace Beatmap.Info
 
                 setNode["_difficultyBeatmaps"] = difficultyBeatmapsArray;
 
-                PopulateDifficultySetCustomData(beatmapSet);
-                if (beatmapSet.CustomData.Count > 0)
+                var diffSetCustomData = GetOutputDifficultySetCustomData(beatmapSet);
+                if (diffSetCustomData.Count > 0)
                 {
-                    setNode["_customData"] = beatmapSet.CustomData;
+                    setNode["_customData"] = diffSetCustomData;
                 }
                 
                 beatmapSetArray.Add(setNode);
@@ -230,6 +230,7 @@ namespace Beatmap.Info
             json["_difficultyBeatmapSets"] = beatmapSetArray;
 
             // CustomData writing
+            var customData = info.CustomData.Clone();
             if (info.CustomContributors.Any())
             {
                 var customContributors = new JSONArray();
@@ -238,18 +239,18 @@ namespace Beatmap.Info
                     customContributors.Add(V2Contributor.ToJson(customContributor));
                 }
                 
-                info.CustomData["_contributors"] = customContributors;
+                customData["_contributors"] = customContributors;
             }
             
             if (!string.IsNullOrEmpty(info.CustomEnvironmentMetadata.Name))
             {
-                info.CustomData["_customEnvironment"] = info.CustomEnvironmentMetadata.Name;
-                info.CustomData["_customEnvironmentHash"] = info.CustomEnvironmentMetadata.Hash;
+                customData["_customEnvironment"] = info.CustomEnvironmentMetadata.Name;
+                customData["_customEnvironmentHash"] = info.CustomEnvironmentMetadata.Hash;
             }
             
-            info.CustomData["_editors"] = info.CustomEditorsData.ToJson();
+            customData["_editors"] = info.CustomEditorsData.ToJson();
             
-            json["_customData"] = info.CustomData;
+            json["_customData"] = customData;
             
             return json;
         }
@@ -372,57 +373,63 @@ namespace Beatmap.Info
             }
         }
 
-        private static void PopulateDifficultySetCustomData(InfoDifficultySet difficultySet)
+        private static JSONNode GetOutputDifficultySetCustomData(InfoDifficultySet difficultySet)
         {
+            var customData = difficultySet.CustomData.Clone();
+
             if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicLabel))
             {
-                difficultySet.CustomData["_characteristicLabel"] = difficultySet.CustomCharacteristicLabel;
+                customData["_characteristicLabel"] = difficultySet.CustomCharacteristicLabel;
             }
             
             if (!string.IsNullOrWhiteSpace(difficultySet.CustomCharacteristicIconImageFileName))
             {
-                difficultySet.CustomData["_characteristicIconImageFilename"] = difficultySet.CustomCharacteristicIconImageFileName;
+                customData["_characteristicIconImageFilename"] = difficultySet.CustomCharacteristicIconImageFileName;
             }
+
+            return customData;
         }
 
-        private static void PopulateDifficultyCustomData(InfoDifficulty difficulty)
+        private static JSONNode GetOutputDifficultyCustomData(InfoDifficulty difficulty)
         {
+            var customData = difficulty.CustomData.Clone();
+
             if (difficulty.CustomOneSaberFlag != null)
             {
-                difficulty.CustomData["_oneSaber"] = difficulty.CustomOneSaberFlag.Value;
+                customData["_oneSaber"] = difficulty.CustomOneSaberFlag.Value;
             }
 
             if (difficulty.CustomShowRotationNoteSpawnLinesFlag != null)
             {
-                difficulty.CustomData["_showRotationNoteSpawnLines"] = difficulty.CustomShowRotationNoteSpawnLinesFlag.Value;
+                customData["_showRotationNoteSpawnLines"] = difficulty.CustomShowRotationNoteSpawnLinesFlag.Value;
             }
 
             if (!string.IsNullOrWhiteSpace(difficulty.CustomLabel))
             {
-                difficulty.CustomData["_difficultyLabel"] = difficulty.CustomLabel;
+                customData["_difficultyLabel"] = difficulty.CustomLabel;
             }
 
             if (difficulty.CustomInformation.Any())
             {
-                difficulty.CustomData["_information"] =
+                customData["_information"] =
                     SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomInformation, s => s);
             }
             
             if (difficulty.CustomWarnings.Any())
             {
-                difficulty.CustomData["_warnings"] =
+                customData["_warnings"] =
                     SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomWarnings, s => s);
             }
             
             if (difficulty.CustomSuggestions.Any())
             {
-                difficulty.CustomData["_suggestions"] =
+                customData["_suggestions"] =
                     SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomSuggestions, s => s);
             }
             
             if (difficulty.CustomRequirements.Any())
             {
-                difficulty.CustomData["_requirements"] =
+                customData["_requirements"] =
                     SimpleJSONHelper.MapSequenceToJSONArray(difficulty.CustomRequirements, s => s);
             }
             
@@ -431,50 +438,52 @@ namespace Beatmap.Info
 
             if (difficulty.CustomColorLeft != null)
             {
-                difficulty.CustomData["_colorLeft"] = difficulty.CustomColorLeft.Value;
+                customData["_colorLeft"] = difficulty.CustomColorLeft.Value;
             }
 
             if (difficulty.CustomColorRight != null)
             {
-                difficulty.CustomData["_colorRight"] = difficulty.CustomColorRight.Value;
+                customData["_colorRight"] = difficulty.CustomColorRight.Value;
             }
 
             if (difficulty.CustomColorObstacle != null)
             {
-                difficulty.CustomData["_obstacleColor"] = difficulty.CustomColorObstacle.Value;
+                customData["_obstacleColor"] = difficulty.CustomColorObstacle.Value;
             }
 
             if (difficulty.CustomEnvColorLeft != null)
             {
-                difficulty.CustomData["_envColorLeft"] = difficulty.CustomEnvColorLeft.Value;
+                customData["_envColorLeft"] = difficulty.CustomEnvColorLeft.Value;
             }
 
             if (difficulty.CustomEnvColorRight != null)
             {
-                difficulty.CustomData["_envColorRight"] = difficulty.CustomEnvColorRight.Value;
+                customData["_envColorRight"] = difficulty.CustomEnvColorRight.Value;
             }
 
             if (difficulty.CustomEnvColorWhite != null)
             {
-                difficulty.CustomData["_envColorWhite"] = difficulty.CustomEnvColorWhite.Value;
+                customData["_envColorWhite"] = difficulty.CustomEnvColorWhite.Value;
             }
 
             if (difficulty.CustomEnvColorBoostLeft != null)
             {
-                difficulty.CustomData["_envColorLeftBoost"] = difficulty.CustomEnvColorBoostLeft.Value;
+                customData["_envColorLeftBoost"] = difficulty.CustomEnvColorBoostLeft.Value;
             }
 
             if (difficulty.CustomEnvColorBoostRight != null)
             {
-                difficulty.CustomData["_envColorRightBoost"] = difficulty.CustomEnvColorBoostRight.Value;
+                customData["_envColorRightBoost"] = difficulty.CustomEnvColorBoostRight.Value;
             }
 
             if (difficulty.CustomEnvColorBoostWhite != null)
             {
-                difficulty.CustomData["_envColorWhiteBoost"] = difficulty.CustomEnvColorBoostWhite.Value;
+                customData["_envColorWhiteBoost"] = difficulty.CustomEnvColorBoostWhite.Value;
             }
             
             JSONNode.ColorContainerType = JSONContainerType.Array;
+
+            return customData;
         }
     }
 }
