@@ -19,7 +19,7 @@ namespace Beatmap.Info
             get => directory;
             set
             {
-                LastWriteTime = System.IO.Directory.GetLastWriteTime(value);
+                LastWriteTime = File.GetLastWriteTime(Path.Combine(value, "Info.dat"));
                 isFavourite = File.Exists(Path.Combine(value, ".favourite"));
                 directory = value;
             }
