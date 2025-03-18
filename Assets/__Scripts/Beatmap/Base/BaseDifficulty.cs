@@ -213,6 +213,8 @@ namespace Beatmap.Base
                 }
             }
 
+            CustomData[BookmarksUseOfficialBpmEventsKey] = true;
+
             BpmChanges.Clear();
         }
 
