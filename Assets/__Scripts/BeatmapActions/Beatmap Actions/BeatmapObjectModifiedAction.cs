@@ -42,12 +42,8 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         {
             // This is an optimisation only possible if the object has not changed position in the MapObjects
             if (originalData != originalObject) originalObject.Apply(originalData);
+            if (originalObject is BaseBpmEvent) BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(originalObject.JsonTime);
             if (!inCollection) RefreshPools(Data);
-        }
-
-        if (originalObject is BaseBpmEvent)
-        {
-            BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(originalObject.JsonTime);
         }
 
         if (!Networked)
@@ -70,12 +66,8 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         {
             // This is an optimisation only possible if the object has not changed position in the MapObjects 
             editedObject.Apply(editedData);
+            if (originalObject is BaseBpmEvent) BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(originalObject.JsonTime);
             if (!inCollection) RefreshPools(Data);
-        }
-
-        if (originalObject is BaseBpmEvent)
-        {
-            BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(originalObject.JsonTime);
         }
 
         if (!Networked)
