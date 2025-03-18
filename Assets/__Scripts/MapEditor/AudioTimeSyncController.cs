@@ -132,6 +132,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
             LoadInitialMap.LevelLoadedEvent += OnLevelLoaded;
             Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
             Settings.NotifyBySettingName("SongVolume", UpdateSongVolume);
+            Settings.NotifyBySettingName(nameof(Settings.TrackLength), UpdateTrackLength);
 
             Initialized = true;
         }
@@ -334,6 +335,8 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     private void UpdateSongSpeed(object obj) => songSpeed = (float)obj;
 
+    private void UpdateTrackLength(object _) => UpdateMovables();
+
     private void OnLevelLoaded() => levelLoaded = true;
 
     private void UpdateMovables()
@@ -341,9 +344,9 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         Shader.SetGlobalFloat(songTime, currentSongBpmTime);
         Shader.SetGlobalFloat(songTimeSeconds, currentSeconds);
         
-        // CM's grid extends from [songTime - 2 beats, songTime + 8 beats]
-        Shader.SetGlobalFloat(viewStart, GetSecondsFromBeat(currentSongBpmTime - 2));
-        Shader.SetGlobalFloat(viewEnd, GetSecondsFromBeat(currentSongBpmTime + 8));
+        // set view range based on track length
+        Shader.SetGlobalFloat(viewStart, GetSecondsFromBeat(currentSongBpmTime - (Settings.Instance.TrackLength / 4)));
+        Shader.SetGlobalFloat(viewEnd, GetSecondsFromBeat(currentSongBpmTime + Settings.Instance.TrackLength));
         
         var position = currentSongBpmTime * EditorScaleController.EditorScale;
 

@@ -118,7 +118,7 @@ public class GridRenderingController : MonoBehaviour
         foreach (var trans in gridFrontTransforms)
         {
             var scale = trans.localScale;
-            trans.localScale = new Vector3(scale.x, scale.y, Settings.Instance.TrackLength * 4);
+            trans.localScale = new Vector3(scale.x, scale.y, Settings.Instance.TrackLength * EditorScaleController.EditorScale);
         }
     }
 
