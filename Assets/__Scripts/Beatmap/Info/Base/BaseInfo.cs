@@ -19,12 +19,18 @@ namespace Beatmap.Info
             get => directory;
             set
             {
+                // Even though we set LastWriteTime here, it is indeed supposed to be the write time of Info.dat
+                // The field is of the BaseInfo class and refers to the write time of the Info.dat file
+                // The reason it's set here is because we only get the path information at this point
                 LastWriteTime = File.GetLastWriteTime(Path.Combine(value, "Info.dat"));
+
                 isFavourite = File.Exists(Path.Combine(value, ".favourite"));
                 directory = value;
             }
         }
         
+        // Used for sorting maps by last modified
+        // The Info.dat file is written any time the map is saved, so it is a reliable way to see when the map was last modified
         public DateTime LastWriteTime { get; private set; }
         
         // These values piggy back off of Application.productName and Application.version here.
