@@ -17,6 +17,11 @@ public class CreateEventTypeLabels : MonoBehaviour
         5, 2, 4, 3, 6, 13, 7, 8, 9, 10, 16, 17, 11, 12, 0, 1, 14, 15
     };
 
+    private static readonly int[] eventToModifiedArrayGaga =
+    {
+        // Like wtaf
+    };
+
     public TMP_FontAsset AvailableAsset;
     public TMP_FontAsset UtilityAsset;
     public TMP_FontAsset RedAsset;
@@ -258,6 +263,7 @@ public class CreateEventTypeLabels : MonoBehaviour
         }
 
         if (EventContainer.ModifyTypeMode == 2) return eventToModifiedArrayInterscope[eventType];
+        if (EventContainer.ModifyTypeMode == 3) return eventToModifiedArrayGaga[eventType];
 
         return -1;
     }

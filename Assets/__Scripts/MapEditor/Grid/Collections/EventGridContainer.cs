@@ -63,7 +63,10 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
 
     public override ObjectType ContainerType => ObjectType.Event;
     private static int ExtraInterscopeLanes => EventContainer.ModifyTypeMode == 2 ? 2 : 0;
-    private int SpecialEventTypeCount => 7 + labels.NoRotationLaneOffset + ExtraInterscopeLanes;
+    
+    // 6 util event lanes for height, not final.
+    private static int ExtraGagaLanes => EventContainer.ModifyTypeMode == 3 ? 6 : 0; 
+    private int SpecialEventTypeCount => 7 + labels.NoRotationLaneOffset + ExtraInterscopeLanes + ExtraGagaLanes;
 
     public PropMode PropagationEditing
     {
@@ -81,8 +84,10 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                     ? platformDescriptor.LightingManagers[EventTypeToPropagate].LightIDPlacementMapReverse?.Count
                     : platformDescriptor.LightingManagers[EventTypeToPropagate].LightsGroupedByZ?.Length) ?? 0;
 
+            var extraLanes = ExtraInterscopeLanes + ExtraGagaLanes;
+
             labels.UpdateLabels(value, EventTypeToPropagate,
-                value == PropMode.Off ? 16 + ExtraInterscopeLanes : propagationLength + 1);
+                value == PropMode.Off ? 16 + extraLanes : propagationLength + 1);
             eventPlacement.SetGridSize(value != PropMode.Off
                 ? propagationLength + 1
                 : SpecialEventTypeCount + platformDescriptor.LightingManagers.Count(s => s != null));
