@@ -303,7 +303,13 @@ namespace Beatmap.Info
             //Saving Map Requirement Info
             foreach (var req in RequirementCheck.requirementsAndSuggestions)
             {
-                switch (req.IsRequiredOrSuggested(this, map))
+                // get this result before clearing from the lists to allow preserving Chroma as requirement
+                var requirementType = req.IsRequiredOrSuggested(this, map);
+
+                CustomRequirements.RemoveAll(x => x.Equals(req.Name));
+                CustomSuggestions.RemoveAll(x => x.Equals(req.Name));
+
+                switch (requirementType)
                 {
                     case RequirementCheck.RequirementType.Requirement:
                         CustomRequirements.Add(req.Name);
