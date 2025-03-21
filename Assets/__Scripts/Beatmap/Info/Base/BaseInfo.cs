@@ -302,48 +302,28 @@ namespace Beatmap.Info
 
         public void SetBeatmapFileNameToDefault() => BeatmapFileName = $"{Difficulty}{Characteristic}.dat";
         
-        public void RefreshRequirementsAndWarnings(int majorInfoVersion, BaseDifficulty map)
+        public void RefreshRequirementsAndWarnings(BaseDifficulty map)
         {
             if (!Settings.Instance.AutomaticModRequirements) return;
 
             //Saving Map Requirement Info
-            var requiredArray = new JSONArray(); //Generate suggestions and requirements array
-            var suggestedArray = new JSONArray();
-
             foreach (var req in RequirementCheck.requirementsAndSuggestions)
             {
-                switch (req.IsRequiredOrSuggested(this, map))
+                // get this result before clearing from the lists to allow preserving Chroma as requirement
+                var requirementType = req.IsRequiredOrSuggested(this, map);
+
+                CustomRequirements.RemoveAll(x => x.Equals(req.Name));
+                CustomSuggestions.RemoveAll(x => x.Equals(req.Name));
+
+                switch (requirementType)
                 {
                     case RequirementCheck.RequirementType.Requirement:
-                        requiredArray.Add(req.Name);
+                        CustomRequirements.Add(req.Name);
                         break;
                     case RequirementCheck.RequirementType.Suggestion:
-                        suggestedArray.Add(req.Name);
+                        CustomSuggestions.Add(req.Name);
                         break;
                 }
-            }
-                
-            CustomData ??= new JSONObject();
-
-            if (requiredArray.Count > 0)
-            {
-                CustomData[majorInfoVersion == 4 ? "requirements" : "_requirements"] = requiredArray;
-            }
-            else
-            {
-                CustomData.Remove("requirements");
-                CustomData.Remove("_requirements");
-            }
-
-            if (suggestedArray.Count > 0)
-            {
-                CustomData ??= new JSONObject();
-                CustomData[majorInfoVersion == 4 ? "suggestions" : "_suggestions"] = suggestedArray;
-            }
-            else
-            {
-                CustomData.Remove("suggestions");
-                CustomData.Remove("_suggestions");
             }
         }
     }

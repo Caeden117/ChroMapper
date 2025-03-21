@@ -111,12 +111,6 @@ public class DifficultySettings
             V4Difficulty.LoadLightsFromLightshowFile(Map, BeatSaberSongContainer.Instance.Info, InfoDifficulty);
         }
 
-        if (string.IsNullOrEmpty(CustomName))
-        {
-            InfoDifficulty.CustomData?.Remove("_difficultyLabel");
-            InfoDifficulty.CustomData?.Remove("difficultyLabel");
-        }
-
         InfoDifficulty.CustomLabel = CustomName;
 
         InfoDifficulty.CustomData?.Remove("_environmentRemoval");

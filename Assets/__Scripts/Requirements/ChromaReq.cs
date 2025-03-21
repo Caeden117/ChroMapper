@@ -20,8 +20,7 @@ public class ChromaReq : HeckRequirementCheck
         map.IsChroma();
 
     private bool RequiresChroma(InfoDifficulty infoDifficulty, BaseDifficulty map) =>
-        infoDifficulty.CustomData != null && infoDifficulty.CustomData.HasKey("_requirements") &&
-        infoDifficulty.CustomData["_requirements"].Linq.Any(x => x.Value == "Chroma");
+        infoDifficulty.CustomRequirements.Any(x => x == "Chroma");
 
     private bool HasEnvironmentRemoval(InfoDifficulty infoDifficulty, BaseDifficulty map) =>
         (infoDifficulty.CustomData != null && infoDifficulty.CustomData.HasKey("_environmentRemoval") &&
