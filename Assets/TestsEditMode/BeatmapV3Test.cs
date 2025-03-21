@@ -358,7 +358,10 @@ namespace TestsEditMode
         {
             var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
             Assert.AreEqual("bar", difficulty.CustomData["foo"].Value);
-            Assert.AreEqual(123.456f, difficulty.CustomData["time"].AsFloat, 0.001);
+            
+            // Key be gone
+            Assert.IsFalse(difficulty.CustomData.HasKey("time"));
+            Assert.AreEqual(123.456f, difficulty.Time, 0.001);
 
             var output = V3Difficulty.GetOutputJson(difficulty);
             Assert.AreEqual("bar", output["customData"]["foo"].Value);

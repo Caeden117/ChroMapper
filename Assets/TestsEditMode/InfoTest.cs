@@ -80,7 +80,8 @@ namespace TestsEditMode
         {
             ""_customData"": {
                 ""_characteristicLabel"" : ""A Custom Characteristic"",
-                ""_characteristicIconImageFilename"" : ""customCharacteristic.png""
+                ""_characteristicIconImageFilename"" : ""customCharacteristic.png"",
+                ""foo"" : ""bar"",
             }
             ""_beatmapCharacteristicName"": ""Standard"",
             ""_difficultyBeatmaps"": [
@@ -93,6 +94,7 @@ namespace TestsEditMode
                     ""_beatmapColorSchemeIdx"": 0,
                     ""_environmentNameIdx"": 0,
                     ""_customData"": {
+                        ""foo"": ""bar"",
                         ""_oneSaber"" : true,
                         ""_showRotationNoteSpawnLines"" : true,
 						""_difficultyLabel"": ""ACustomLabel"",
@@ -203,7 +205,8 @@ namespace TestsEditMode
                 ""_iconPath"": ""Bullet.png""
             }
         ],
-        ""_customEnvironment"": ""Big Mirror V2""
+        ""_customEnvironment"": ""Big Mirror V2"",
+        ""foo"": ""bar""
     }
 }
 ";
@@ -258,6 +261,7 @@ namespace TestsEditMode
             ""beatmapDataFilename"": ""Easy.dat"",
             ""lightshowDataFilename"": ""Lightshow.dat"",
             ""customData"": {
+                ""foo"" : ""bar"",
                 ""oneSaber"" : true,
                 ""showRotationNoteSpawnLines"" : true,
 				""difficultyLabel"": ""ACustomLabel"",
@@ -393,7 +397,8 @@ namespace TestsEditMode
                 ""iconPath"" : ""customCharacteristic.png""
             },
         ],
-        ""customEnvironment"": ""Big Mirror V2""
+        ""customEnvironment"": ""Big Mirror V2"",
+        ""foo"" : ""bar"",
     }
 }
 ";
@@ -444,6 +449,12 @@ namespace TestsEditMode
 
             Assert.AreEqual("WeaveEnvironment", info.EnvironmentName);
             Assert.AreEqual("GlassDesertEnvironment", info.AllDirectionsEnvironmentName);
+            
+            // All supported customData properties are removed on load
+            // Only v2 has a direct characteristic set customData
+            Assert.AreEqual(1, info.DifficultySets[0].CustomData.Count);
+            Assert.AreEqual(true, info.DifficultySets[0].CustomData.HasKey("foo"));
+            Assert.AreEqual("bar", info.DifficultySets[0].CustomData["foo"].Value);
         }
 
         private void AssertV4Info(BaseInfo info)
@@ -541,6 +552,11 @@ namespace TestsEditMode
             Assert.AreEqual(1, easyDifficulty.CustomRequirements.Count);
             Assert.AreEqual("Noodle Extensions", easyDifficulty.CustomRequirements[0]);
             
+            // All supported customData properties are removed on load
+            Assert.AreEqual(1, easyDifficulty.CustomData.Count);
+            Assert.AreEqual(true, easyDifficulty.CustomData.HasKey("foo"));
+            Assert.AreEqual("bar", easyDifficulty.CustomData["foo"].Value);
+            
             AssertColorsAreEqual(new Color(0.111f, 0.111f, 0.111f),easyDifficulty.CustomColorLeft!.Value);
             AssertColorsAreEqual(new Color(0.222f, 0.222f, 0.222f),easyDifficulty.CustomColorRight!.Value);
             AssertColorsAreEqual(new Color(0.333f, 0.333f, 0.333f),easyDifficulty.CustomColorObstacle!.Value);
@@ -616,6 +632,11 @@ namespace TestsEditMode
             Assert.AreEqual("Bullet.png", contributor.LocalImageLocation);
 
             Assert.AreEqual("Big Mirror V2", info.CustomEnvironmentMetadata.Name);
+            
+            // All supported customData properties are removed on load
+            Assert.AreEqual(1, easyDifficulty.CustomData.Count);
+            Assert.AreEqual(true, easyDifficulty.CustomData.HasKey("foo"));
+            Assert.AreEqual("bar", easyDifficulty.CustomData["foo"].Value);
         }
 
         private void AssertColorsAreEqual(Color expected, Color actual)
