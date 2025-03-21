@@ -41,7 +41,8 @@ public class SongInfoEditUI : MenuBase
         new Environment("Interscope", "InterscopeEnvironment"),
         new Environment("Skrillex", "SkrillexEnvironment"),
         new Environment("Billie", "BillieEnvironment"),
-        new Environment("Spooky", "HalloweenEnvironment")
+        new Environment("Spooky", "HalloweenEnvironment"),
+        new Environment("Gaga", "GagaEnvironment")
     };
 
     private static readonly List<string> vanillaDirectionalEnvironments = new() { "GlassDesertEnvironment" };
