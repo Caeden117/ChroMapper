@@ -141,9 +141,10 @@ public static class BeatSaberSongExtensions
         }
 
         // while we could just add the specific bookmark files for each diff, for better official editor compatibility it makes more sense to add every bookmark file that exists
-        if (info.MajorVersion == 4)
+        var bookmarksDir = Path.Combine(info.Directory, "Bookmarks");
+        if (info.MajorVersion == 4 && Directory.Exists(bookmarksDir))
         {
-            var bookmarkFiles = Directory.GetFiles(Path.Combine(info.Directory, "Bookmarks"), "*.bookmarks.dat");
+            var bookmarkFiles = Directory.GetFiles(bookmarksDir, "*.bookmarks.dat");
             foreach (var file in bookmarkFiles)
             {
                 // path relative to info directory in order to get the subdir in the zip
