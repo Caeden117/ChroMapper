@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
@@ -68,6 +68,7 @@ public class DifficultySettings
         NoteJumpMovementSpeed != InfoDifficulty.NoteJumpSpeed ||
         NoteJumpStartBeatOffset != InfoDifficulty.NoteStartBeatOffset ||
         EnvironmentName != EnvironmentNameFromIndex ||
+        LightshowFilePath != InfoDifficulty.LightshowFileName ||
         Mappers != string.Join(',', InfoDifficulty.Mappers) ||
         Lighters != string.Join(',', InfoDifficulty.Lighters) ||
         (CustomName ?? "") != (InfoDifficulty.CustomLabel ?? "") ||
