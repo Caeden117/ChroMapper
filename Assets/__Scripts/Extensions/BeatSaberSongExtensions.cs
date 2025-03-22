@@ -122,7 +122,7 @@ public static class BeatSaberSongExtensions
         TryAddToFileDictionary(exportedFiles, info.Directory, info.SongFilename);
         TryAddToFileDictionary(exportedFiles, info.Directory, info.SongPreviewFilename);
         TryAddToFileDictionary(exportedFiles, info.Directory, "cinema-video.json");
-        TryAddToFileDictionary(exportedFiles, info.Directory, info.Version[0] == '4' ? info.AudioDataFilename: "BPMInfo.dat");
+        TryAddToFileDictionary(exportedFiles, info.Directory, info.MajorVersion == 4 ? info.AudioDataFilename : "BPMInfo.dat");
 
         foreach (var contributor in info.CustomContributors.DistinctBy(it => it.LocalImageLocation))
         {
@@ -138,6 +138,18 @@ public static class BeatSaberSongExtensions
         {
             TryAddToFileDictionary(exportedFiles, info.Directory, map.BeatmapFileName);
             TryAddToFileDictionary(exportedFiles, info.Directory, map.LightshowFileName);
+        }
+
+        // while we could just add the specific bookmark files for each diff, for better official editor compatibility it makes more sense to add every bookmark file that exists
+        var bookmarksDir = Path.Combine(info.Directory, "Bookmarks");
+        if (info.MajorVersion == 4 && Directory.Exists(bookmarksDir))
+        {
+            var bookmarkFiles = Directory.GetFiles(bookmarksDir, "*.bookmarks.dat");
+            foreach (var file in bookmarkFiles)
+            {
+                // path relative to info directory in order to get the subdir in the zip
+                TryAddToFileDictionary(exportedFiles, info.Directory, Path.GetRelativePath(info.Directory, file));
+            }
         }
 
         // Don't package to zip if any paths are absolute or rooted
