@@ -5,8 +5,8 @@ using UnityEngine;
 public class GagaArc : MonoBehaviour
 {
     public GameObject targetObject;
-    public float thickness = 0.5f;
     public Material arcMaterial;
+    private float thickness = 1.25f;
     
     private LineRenderer lineRenderer;
     // Start is called before the first frame update
