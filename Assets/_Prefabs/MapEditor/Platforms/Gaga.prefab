@@ -210,7 +210,6 @@ GameObject:
   - component: {fileID: 3005341156537957674}
   - component: {fileID: 3005341156537958358}
   - component: {fileID: 3005341156537958000}
-  - component: {fileID: 7494518468869207895}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -283,26 +282,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7494518468869207895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 1
-  PropGroup: 0
 --- !u!1 &3005341156537957377
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +293,6 @@ GameObject:
   - component: {fileID: 3005341156537957673}
   - component: {fileID: 3005341156537958357}
   - component: {fileID: 3005341156537958007}
-  - component: {fileID: 4523976046081251037}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -387,26 +365,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4523976046081251037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 1
-  PropGroup: 0
 --- !u!1 &3005341156537957378
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,7 +376,6 @@ GameObject:
   - component: {fileID: 3005341156537957672}
   - component: {fileID: 3005341156537958359}
   - component: {fileID: 3005341156537958006}
-  - component: {fileID: 7727605868864866803}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -491,26 +448,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7727605868864866803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 1
-  PropGroup: 0
 --- !u!1 &3005341156537957379
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,7 +459,6 @@ GameObject:
   - component: {fileID: 3005341156537957677}
   - component: {fileID: 3005341156537958346}
   - component: {fileID: 3005341156537958003}
-  - component: {fileID: 8003665744492674175}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -595,26 +531,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8003665744492674175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 1
-  PropGroup: 0
 --- !u!1 &3005341156537957380
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,7 +794,6 @@ GameObject:
   - component: {fileID: 3005341156537957678}
   - component: {fileID: 3005341156537958347}
   - component: {fileID: 3005341156537958002}
-  - component: {fileID: 1702482534086386915}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -951,26 +866,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1702482534086386915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 1
-  PropGroup: 0
 --- !u!1 &3005341156537957389
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,7 +877,6 @@ GameObject:
   - component: {fileID: 3005341156537957679}
   - component: {fileID: 3005341156537958356}
   - component: {fileID: 3005341156537958001}
-  - component: {fileID: 2743495975702956765}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -1055,26 +949,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2743495975702956765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 1
-  PropGroup: 0
 --- !u!1 &3005341156537957390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1764,6 +1638,7 @@ GameObject:
   - component: {fileID: 3005341156537957636}
   - component: {fileID: 3005341156537958379}
   - component: {fileID: 3005341156537957962}
+  - component: {fileID: 954203357047811038}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -1836,6 +1711,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &954203357047811038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1847,6 +1742,7 @@ GameObject:
   - component: {fileID: 3005341156537957691}
   - component: {fileID: 3005341156537958378}
   - component: {fileID: 3005341156537957963}
+  - component: {fileID: 5260490721605348849}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -1919,6 +1815,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5260490721605348849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1930,6 +1846,7 @@ GameObject:
   - component: {fileID: 3005341156537957639}
   - component: {fileID: 3005341156537958377}
   - component: {fileID: 3005341156537957967}
+  - component: {fileID: 1873328443369614180}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -2002,6 +1919,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1873328443369614180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957411
 GameObject:
   m_ObjectHideFlags: 0
@@ -2013,6 +1950,7 @@ GameObject:
   - component: {fileID: 3005341156537957638}
   - component: {fileID: 3005341156537958383}
   - component: {fileID: 3005341156537957960}
+  - component: {fileID: 1124945853542621283}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -2085,6 +2023,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1124945853542621283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957415
 GameObject:
   m_ObjectHideFlags: 0
@@ -2096,6 +2054,7 @@ GameObject:
   - component: {fileID: 3005341156537957690}
   - component: {fileID: 3005341156537958388}
   - component: {fileID: 3005341156537957972}
+  - component: {fileID: 3013529940899329838}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -2168,6 +2127,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3013529940899329838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957416
 GameObject:
   m_ObjectHideFlags: 0
@@ -2511,6 +2490,7 @@ GameObject:
   - component: {fileID: 3005341156537957637}
   - component: {fileID: 3005341156537958376}
   - component: {fileID: 3005341156537957961}
+  - component: {fileID: 5532860232487683153}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -2583,6 +2563,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5532860232487683153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957422
 GameObject:
   m_ObjectHideFlags: 0
@@ -3169,6 +3169,7 @@ GameObject:
   - component: {fileID: 3005341156537957666}
   - component: {fileID: 3005341156537957902}
   - component: {fileID: 3005341156537958051}
+  - component: {fileID: 7797190306603692856}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -3241,6 +3242,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7797190306603692856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 2
+  PropGroup: 0
 --- !u!1 &3005341156537957445
 GameObject:
   m_ObjectHideFlags: 0
@@ -3252,6 +3273,7 @@ GameObject:
   - component: {fileID: 3005341156537957676}
   - component: {fileID: 3005341156537957901}
   - component: {fileID: 3005341156537958049}
+  - component: {fileID: 5066257289123896655}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -3324,6 +3346,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5066257289123896655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 2
+  PropGroup: 0
 --- !u!1 &3005341156537957446
 GameObject:
   m_ObjectHideFlags: 0
@@ -3335,6 +3377,7 @@ GameObject:
   - component: {fileID: 3005341156537957667}
   - component: {fileID: 3005341156537957900}
   - component: {fileID: 3005341156537958050}
+  - component: {fileID: 922934990737320079}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -3407,6 +3450,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &922934990737320079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 2
+  PropGroup: 0
 --- !u!1 &3005341156537957448
 GameObject:
   m_ObjectHideFlags: 0
@@ -5089,6 +5152,7 @@ GameObject:
   - component: {fileID: 3005341156537957665}
   - component: {fileID: 3005341156537957897}
   - component: {fileID: 3005341156537958060}
+  - component: {fileID: 8329757282878290679}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -5161,6 +5225,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8329757282878290679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 2
+  PropGroup: 0
 --- !u!1 &3005341156537957498
 GameObject:
   m_ObjectHideFlags: 0
@@ -5172,6 +5256,7 @@ GameObject:
   - component: {fileID: 3005341156537957664}
   - component: {fileID: 3005341156537957903}
   - component: {fileID: 3005341156537958061}
+  - component: {fileID: 7002153554101981921}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -5244,6 +5329,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7002153554101981921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 2
+  PropGroup: 0
 --- !u!1 &3005341156537957499
 GameObject:
   m_ObjectHideFlags: 0
@@ -5255,6 +5360,7 @@ GameObject:
   - component: {fileID: 3005341156537957671}
   - component: {fileID: 3005341156537957896}
   - component: {fileID: 3005341156537958062}
+  - component: {fileID: 1591270557234513613}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -5327,6 +5433,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1591270557234513613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 2
+  PropGroup: 0
 --- !u!1 &3005341156537957504
 GameObject:
   m_ObjectHideFlags: 0
@@ -5338,6 +5464,7 @@ GameObject:
   - component: {fileID: 3005341156537957730}
   - component: {fileID: 3005341156537958105}
   - component: {fileID: 3005341156537957948}
+  - component: {fileID: 8321462599476321584}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -5410,6 +5537,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957504}
   m_Mesh: {fileID: 4300000, guid: b132689bc7788cf4eb4b7fd0b2e481bd, type: 2}
+--- !u!114 &8321462599476321584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 3005341156537957631}
+  thickness: 0.5
+  arcMaterial: {fileID: 0}
 --- !u!1 &3005341156537957505
 GameObject:
   m_ObjectHideFlags: 0
@@ -5421,6 +5563,7 @@ GameObject:
   - component: {fileID: 3005341156537957731}
   - component: {fileID: 3005341156537958106}
   - component: {fileID: 3005341156537957949}
+  - component: {fileID: 8232064194740628582}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -5493,6 +5636,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957505}
   m_Mesh: {fileID: 4300000, guid: b132689bc7788cf4eb4b7fd0b2e481bd, type: 2}
+--- !u!114 &8232064194740628582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 3005341156537957573}
+  thickness: 0.5
+  arcMaterial: {fileID: 0}
 --- !u!1 &3005341156537957506
 GameObject:
   m_ObjectHideFlags: 0
@@ -5504,6 +5662,7 @@ GameObject:
   - component: {fileID: 3005341156537957820}
   - component: {fileID: 3005341156537957934}
   - component: {fileID: 3005341156537958036}
+  - component: {fileID: 960982970063676240}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -5576,6 +5735,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &960982970063676240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 1
+  PropGroup: 0
 --- !u!1 &3005341156537957507
 GameObject:
   m_ObjectHideFlags: 0
@@ -5587,6 +5766,7 @@ GameObject:
   - component: {fileID: 3005341156537957822}
   - component: {fileID: 3005341156537957933}
   - component: {fileID: 3005341156537958026}
+  - component: {fileID: 3368939075856210427}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -5659,6 +5839,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3368939075856210427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 1
+  PropGroup: 0
 --- !u!1 &3005341156537957508
 GameObject:
   m_ObjectHideFlags: 0
@@ -5836,6 +6036,7 @@ GameObject:
   - component: {fileID: 3005341156537957728}
   - component: {fileID: 3005341156537958111}
   - component: {fileID: 3005341156537957938}
+  - component: {fileID: 4453353876593062732}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -5908,6 +6109,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957510}
   m_Mesh: {fileID: 4300000, guid: b132689bc7788cf4eb4b7fd0b2e481bd, type: 2}
+--- !u!114 &4453353876593062732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 3005341156537957620}
+  thickness: 0.5
+  arcMaterial: {fileID: 0}
 --- !u!1 &3005341156537957511
 GameObject:
   m_ObjectHideFlags: 0
@@ -6155,6 +6371,7 @@ GameObject:
   - component: {fileID: 3005341156537957821}
   - component: {fileID: 3005341156537957932}
   - component: {fileID: 3005341156537958027}
+  - component: {fileID: 735505365701478106}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -6227,6 +6444,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &735505365701478106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 1
+  PropGroup: 0
 --- !u!1 &3005341156537957517
 GameObject:
   m_ObjectHideFlags: 0
@@ -6238,6 +6475,7 @@ GameObject:
   - component: {fileID: 3005341156537957817}
   - component: {fileID: 3005341156537957922}
   - component: {fileID: 3005341156537958031}
+  - component: {fileID: 161259833301609290}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -6310,6 +6548,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &161259833301609290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 1
+  PropGroup: 0
 --- !u!1 &3005341156537957518
 GameObject:
   m_ObjectHideFlags: 0
@@ -6321,6 +6579,7 @@ GameObject:
   - component: {fileID: 3005341156537957816}
   - component: {fileID: 3005341156537957923}
   - component: {fileID: 3005341156537958024}
+  - component: {fileID: 2409078650562636471}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -6393,6 +6652,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2409078650562636471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 1
+  PropGroup: 0
 --- !u!1 &3005341156537957519
 GameObject:
   m_ObjectHideFlags: 0
@@ -6404,6 +6683,7 @@ GameObject:
   - component: {fileID: 3005341156537957823}
   - component: {fileID: 3005341156537957921}
   - component: {fileID: 3005341156537958025}
+  - component: {fileID: 3220237718341484}
   m_Layer: 0
   m_Name: GlowingCore
   m_TagString: Untagged
@@ -6476,6 +6756,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3220237718341484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 1
+  PropGroup: 0
 --- !u!1 &3005341156537957520
 GameObject:
   m_ObjectHideFlags: 0
@@ -6487,7 +6787,6 @@ GameObject:
   - component: {fileID: 3005341156537957782}
   - component: {fileID: 3005341156537957947}
   - component: {fileID: 3005341156537958072}
-  - component: {fileID: 3357168703702243243}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -6560,26 +6859,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3357168703702243243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 0
-  PropGroup: 0
 --- !u!1 &3005341156537957521
 GameObject:
   m_ObjectHideFlags: 0
@@ -6591,7 +6870,6 @@ GameObject:
   - component: {fileID: 3005341156537957781}
   - component: {fileID: 3005341156537957893}
   - component: {fileID: 3005341156537958079}
-  - component: {fileID: 1768201539516158631}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -6664,26 +6942,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1768201539516158631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 0
-  PropGroup: 0
 --- !u!1 &3005341156537957522
 GameObject:
   m_ObjectHideFlags: 0
@@ -6695,7 +6953,6 @@ GameObject:
   - component: {fileID: 3005341156537957770}
   - component: {fileID: 3005341156537957944}
   - component: {fileID: 3005341156537958020}
-  - component: {fileID: 6802933433972359452}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -6768,26 +7025,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6802933433972359452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 0
-  PropGroup: 0
 --- !u!1 &3005341156537957523
 GameObject:
   m_ObjectHideFlags: 0
@@ -6799,7 +7036,6 @@ GameObject:
   - component: {fileID: 3005341156537957771}
   - component: {fileID: 3005341156537957945}
   - component: {fileID: 3005341156537958075}
-  - component: {fileID: 5088287691402678951}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -6872,26 +7108,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5088287691402678951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 0
-  PropGroup: 0
 --- !u!1 &3005341156537957524
 GameObject:
   m_ObjectHideFlags: 0
@@ -7002,7 +7218,6 @@ GameObject:
   - component: {fileID: 3005341156537957783}
   - component: {fileID: 3005341156537957892}
   - component: {fileID: 3005341156537958073}
-  - component: {fileID: 634756775105446858}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -7075,26 +7290,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &634756775105446858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 0
-  PropGroup: 0
 --- !u!1 &3005341156537957532
 GameObject:
   m_ObjectHideFlags: 0
@@ -7106,7 +7301,6 @@ GameObject:
   - component: {fileID: 3005341156537957780}
   - component: {fileID: 3005341156537957946}
   - component: {fileID: 3005341156537958074}
-  - component: {fileID: 4548064998389987908}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -7179,26 +7373,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4548064998389987908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 0
-  PropGroup: 0
 --- !u!1 &3005341156537957538
 GameObject:
   m_ObjectHideFlags: 0
@@ -7797,6 +7971,7 @@ GameObject:
   - component: {fileID: 3005341156537957733}
   - component: {fileID: 3005341156537958108}
   - component: {fileID: 3005341156537957943}
+  - component: {fileID: 1034627467765327189}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -7869,6 +8044,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957563}
   m_Mesh: {fileID: 4300000, guid: b132689bc7788cf4eb4b7fd0b2e481bd, type: 2}
+--- !u!114 &1034627467765327189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 3005341156537957623}
+  thickness: 0.5
+  arcMaterial: {fileID: 0}
 --- !u!1 &3005341156537957564
 GameObject:
   m_ObjectHideFlags: 0
@@ -8016,6 +8206,7 @@ GameObject:
   - component: {fileID: 3005341156537957785}
   - component: {fileID: 3005341156537958096}
   - component: {fileID: 3005341156537957931}
+  - component: {fileID: 6219087925514865823}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -8088,6 +8279,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957567}
   m_Mesh: {fileID: 4300000, guid: b132689bc7788cf4eb4b7fd0b2e481bd, type: 2}
+--- !u!114 &6219087925514865823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 3005341156537957624}
+  thickness: 0.5
+  arcMaterial: {fileID: 0}
 --- !u!1 &3005341156537957573
 GameObject:
   m_ObjectHideFlags: 0
@@ -8708,6 +8914,7 @@ GameObject:
   - component: {fileID: 3005341156537957834}
   - component: {fileID: 3005341156537958080}
   - component: {fileID: 3005341156537957975}
+  - component: {fileID: 1053484874629948144}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -8780,6 +8987,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957614}
   m_Mesh: {fileID: 4300000, guid: b132689bc7788cf4eb4b7fd0b2e481bd, type: 2}
+--- !u!114 &1053484874629948144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 3005341156537957603}
+  thickness: 0.5
+  arcMaterial: {fileID: 0}
 --- !u!1 &3005341156537957616
 GameObject:
   m_ObjectHideFlags: 0
@@ -9926,7 +10148,6 @@ GameObject:
   - component: {fileID: 3005341156537958130}
   - component: {fileID: 3005341156537958372}
   - component: {fileID: 3005341156537958042}
-  - component: {fileID: 8859159874101409108}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -9999,26 +10220,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8859159874101409108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 2
-  PropGroup: 0
 --- !u!1 &3005341156537957866
 GameObject:
   m_ObjectHideFlags: 0
@@ -10030,7 +10231,6 @@ GameObject:
   - component: {fileID: 3005341156537958131}
   - component: {fileID: 3005341156537958373}
   - component: {fileID: 3005341156537958041}
-  - component: {fileID: 1684700216320942090}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -10103,26 +10303,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1684700216320942090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 2
-  PropGroup: 0
 --- !u!1 &3005341156537957867
 GameObject:
   m_ObjectHideFlags: 0
@@ -10134,7 +10314,6 @@ GameObject:
   - component: {fileID: 3005341156537958140}
   - component: {fileID: 3005341156537958374}
   - component: {fileID: 3005341156537958040}
-  - component: {fileID: 3564507350139932412}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -10207,26 +10386,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3564507350139932412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 2
-  PropGroup: 0
 --- !u!1 &3005341156537957870
 GameObject:
   m_ObjectHideFlags: 0
@@ -10270,7 +10429,6 @@ GameObject:
   - component: {fileID: 3005341156537958129}
   - component: {fileID: 3005341156537957914}
   - component: {fileID: 3005341156537957989}
-  - component: {fileID: 4140024279583005935}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -10343,26 +10501,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4140024279583005935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 2
-  PropGroup: 0
 --- !u!1 &3005341156537957877
 GameObject:
   m_ObjectHideFlags: 0
@@ -10374,7 +10512,6 @@ GameObject:
   - component: {fileID: 3005341156537958128}
   - component: {fileID: 3005341156537957913}
   - component: {fileID: 3005341156537957988}
-  - component: {fileID: 823529476140409221}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -10447,26 +10584,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &823529476140409221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 2
-  PropGroup: 0
 --- !u!1 &3005341156537957878
 GameObject:
   m_ObjectHideFlags: 0
@@ -10478,7 +10595,6 @@ GameObject:
   - component: {fileID: 3005341156537958135}
   - component: {fileID: 3005341156537957915}
   - component: {fileID: 3005341156537958043}
-  - component: {fileID: 1043530791139543867}
   m_Layer: 0
   m_Name: Disk
   m_TagString: Untagged
@@ -10551,26 +10667,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1043530791139543867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005341156537957878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideLightGroup: 0
-  OverrideLightGroupID: 0
-  UseInvertedPlatformColors: 0
-  CanBeTurnedOff: 1
-  currentAlpha: 0
-  multiplyAlpha: 1
-  LightID: 2
-  PropGroup: 0
 --- !u!1 &3005341156537957882
 GameObject:
   m_ObjectHideFlags: 0
