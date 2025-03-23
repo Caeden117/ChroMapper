@@ -446,16 +446,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private void FinishDrag()
     {
         if (!(IsDraggingObject || IsDraggingObjectAtTime)) return;
-        //First, find and delete anything that's overlapping our dragged object.
-        var selected = SelectionController.IsObjectSelected(draggedObjectData);
 
+        // Spawn our dragged object and delete anything that's overlapping.
         objectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
-        if (conflicting.Contains(draggedObjectData))
-        {
-            conflicting.Remove(draggedObjectData);
-
-            if (selected) SelectionController.Select(draggedObjectData);
-        }
 
         queuedData = BeatmapFactory.Clone(originalQueued);
         var actions = new List<BeatmapAction>();
