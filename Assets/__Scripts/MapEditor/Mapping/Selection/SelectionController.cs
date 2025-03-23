@@ -457,7 +457,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, totalRemoved));
         SelectionPastedEvent?.Invoke(pasted);
         SelectionChangedEvent?.Invoke();
-        RefreshSelectionMaterial(false);
 
         if (eventPlacement.objectContainerCollection.PropagationEditing != EventGridContainer.PropMode.Off)
         {
