@@ -20,7 +20,7 @@ public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedA
         base.Undo(param);
         if (conflictingObject != null)
         {
-            SpawnObject(conflictingObject);
+            SpawnObject(conflictingObject, refreshesPool: true);
         }
     }
 
