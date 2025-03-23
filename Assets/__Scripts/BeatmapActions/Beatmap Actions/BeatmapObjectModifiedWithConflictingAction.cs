@@ -2,47 +2,49 @@ using System;
 using System.Linq;
 using LiteNetLib.Utils;
 using Beatmap.Base;
+using System.Collections.Generic;
 
 
 public class BeatmapObjectModifiedWithConflictingAction : BeatmapObjectModifiedAction
 {
-    private BaseObject conflictingObject;
+    private IEnumerable<BaseObject> conflictingObjects;
 
     // This constructor is needed for United Mapping
     public BeatmapObjectModifiedWithConflictingAction() : base() { }
 
     public BeatmapObjectModifiedWithConflictingAction(BaseObject edited, BaseObject originalObject,
-        BaseObject originalData, BaseObject conflicting, string comment = "No comment.") : base(edited,
-        originalObject, originalData, comment) => conflictingObject = conflicting;
+        BaseObject originalData, IEnumerable<BaseObject> conflicting, string comment = "No comment.") : base(edited,
+        originalObject, originalData, comment) => conflictingObjects = conflicting;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         base.Undo(param);
-        if (conflictingObject != null)
-        {
-            SpawnObject(conflictingObject, refreshesPool: true);
-        }
+
+        foreach (var obj in conflictingObjects)
+            SpawnObject(obj);
+
+        RefreshPools(conflictingObjects);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         base.Redo(param);
-        if (conflictingObject != null)
-        {
-            DeleteObject(conflictingObject);
-        }
+
+        foreach (var obj in conflictingObjects)
+            DeleteObject(obj, false);
+
+        RefreshPools(conflictingObjects);
     }
 
     public override void Serialize(NetDataWriter writer)
     {
         base.Serialize(writer);
-        writer.PutBeatmapObject(conflictingObject);
+        SerializeBeatmapObjectList(writer, conflictingObjects);
     }
 
     public override void Deserialize(NetDataReader reader)
     {
         base.Deserialize(reader);
-        conflictingObject = reader.GetBeatmapObject();
-        Data = Data.Append(conflictingObject);
+        conflictingObjects = DeserializeBeatmapObjectList(reader);
     }
 }
