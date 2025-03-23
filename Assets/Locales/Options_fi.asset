@@ -224,10 +224,6 @@ MonoBehaviour:
     m_Localized: "Waveformi seuraa Ty\xF6nkulkua"
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: "Ota K\xE4ytt\xF6\xF6n Node-editori"
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: "Node-editorin Pikan\xE4pp\xE4in"
     m_Metadata:
@@ -501,10 +497,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Localized: Kuinka kaukana nuotit ja eventit katoavat.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: "Ota k\xE4ytt\xF6\xF6n Node-editori. Kokeile objektin valitsemista!"
     m_Metadata:
       m_Items: []
   - m_Id: 116

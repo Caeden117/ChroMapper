@@ -224,10 +224,6 @@ MonoBehaviour:
     m_Localized: Waveform follows Workflow
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: Enable Node Editor
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: Node Editor Keybind
     m_Metadata:
@@ -502,10 +498,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Localized: How far notes and events will despawn.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
     m_Metadata:
       m_Items: []
   - m_Id: 116

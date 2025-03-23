@@ -224,10 +224,6 @@ MonoBehaviour:
     m_Localized: La forme d'onde suit le workflow
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: "Activer l'\xE9diteur de noeuds"
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: "Raccourci de l'\xE9diteur de noeuds"
     m_Metadata:
@@ -491,11 +487,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Localized: "\xC0 quelle distance les notes et \xE9v\xE9nements disparaissent."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: "Activer l'\xE9diteur de n\u0153uds. Essayez de s\xE9lectionner
-      un objet !"
     m_Metadata:
       m_Items: []
   - m_Id: 116

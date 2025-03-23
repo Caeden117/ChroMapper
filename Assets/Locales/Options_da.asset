@@ -224,10 +224,6 @@ MonoBehaviour:
     m_Localized: "B\xF8lgeform f\xF8lger Workflow"
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: "Aktiv\xE9r Node Editor"
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: Node Editor Keybind
     m_Metadata:
@@ -485,10 +481,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Localized: Hvor langt noter og begivenheder vil forsvinde.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: "Aktiv\xE9r note-editor. Pr\xF8v at v\xE6lge et objekt!"
     m_Metadata:
       m_Items: []
   - m_Id: 116
