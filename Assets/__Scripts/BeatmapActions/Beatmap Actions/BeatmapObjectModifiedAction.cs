@@ -33,7 +33,6 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         if (originalObject != editedObject || editedData.CompareTo(originalData) != 0)
         {
             DeleteObject(editedObject, false);
-            SelectionController.Deselect(editedObject, false);
 
             if (originalData != originalObject) originalObject.Apply(originalData);
             SpawnObject(originalObject, false, !inCollection);
@@ -57,7 +56,6 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         if (originalObject != editedObject || editedData.CompareTo(originalData) != 0)
         {
             DeleteObject(originalObject, false);
-            SelectionController.Deselect(originalObject, false);
 
             editedObject.Apply(editedData);
             SpawnObject(editedObject, false, !inCollection);

@@ -40,7 +40,6 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
         foreach (var obj in editedObjects)
         {
             DeleteObject(obj, false);
-            SelectionController.Deselect(obj, false);
         }
 
         foreach (var obj in originalObjects)
@@ -67,7 +66,6 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
         foreach (var obj in originalObjects)
         {
             DeleteObject(obj, false);
-            SelectionController.Deselect(obj, false);
         }
 
         foreach (var obj in editedObjects)

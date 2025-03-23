@@ -28,6 +28,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
             DeleteObject(obj, false);
         }
 
+        SelectionController.SelectionChangedEvent?.Invoke();
         RefreshPools(Data);
     }
 

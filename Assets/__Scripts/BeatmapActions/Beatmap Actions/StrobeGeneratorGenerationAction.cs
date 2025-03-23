@@ -17,8 +17,12 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     {
         foreach (var obj in Data)
             DeleteObject(obj, false);
+
+        SelectionController.SelectionChangedEvent?.Invoke();
+
         foreach (var obj in conflictingData)
             SpawnObject(obj);
+
         BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
         RefreshEventAppearance();
     }
@@ -27,8 +31,12 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     {
         foreach (var obj in conflictingData)
             DeleteObject(obj, false);
+
+        SelectionController.SelectionChangedEvent?.Invoke();
+
         foreach (var obj in Data)
             SpawnObject(obj);
+
         BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
         RefreshEventAppearance();
     }
