@@ -465,6 +465,8 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 actions.Add(new BeatmapObjectModifiedAction(draggedObjectData, draggedObjectData,
                     originalDraggedObjectData, "Modified via alt-click and drag."));
             }
+
+            SelectionController.SelectionChangedEvent?.Invoke();
         }
 
         if (DraggedObjectContainer is NoteContainer)
