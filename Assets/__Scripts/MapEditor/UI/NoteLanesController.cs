@@ -10,6 +10,7 @@ public class NoteLanesController : MonoBehaviour
     {
         Settings.NotifyBySettingName("NoteLanes", UpdateNoteLanes);
         UpdateNoteLanes(4);
+        if (Settings.NonPersistentSettings.ContainsKey("NoteLanes")) Settings.NonPersistentSettings["NoteLanes"] = 4;
     }
 
     private void OnDestroy() => Settings.ClearSettingNotifications("NoteLanes");
