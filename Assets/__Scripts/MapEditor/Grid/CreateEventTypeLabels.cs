@@ -19,7 +19,7 @@ public class CreateEventTypeLabels : MonoBehaviour
 
     private static readonly int[] eventToModifiedArrayGaga =
     {
-        // Like wtaf
+        4, 10, 6, 2, 3, 7, 11, 0, 1, 18, 16, 12, 13, 17, 19
     };
 
     public TMP_FontAsset AvailableAsset;

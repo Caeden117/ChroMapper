@@ -6,26 +6,29 @@ public class GagaArc : MonoBehaviour
 {
     public GameObject targetObject;
     public Material arcMaterial;
-    private float thickness = 1.25f;
+    private float thickness = 3.5f;
+    private int increments = 10;
     
     private LineRenderer lineRenderer;
-    // Start is called before the first frame update
+    // TODO: Align PROPERLY with Z.
     void Start()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.material = arcMaterial;
-       // lineRenderer.alignment = LineAlignment.TransformZ;
         lineRenderer.startWidth = thickness;
         lineRenderer.endWidth = thickness;
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, gameObject.transform.position);
-        lineRenderer.SetPosition(1, targetObject.transform.position);
+        lineRenderer.positionCount = increments;
     }
-
-    // Update is called once per frame
     void Update()
     {
-        lineRenderer.SetPosition(0, gameObject.transform.position);
-        lineRenderer.SetPosition(1, targetObject.transform.position);
+        for (int i = 0; i < increments; i++)
+        {
+            float t = (float)i / (increments - 1); // Normalize t between 0 and 1
+            lineRenderer.SetPosition(i, Vector3.Lerp(
+                gameObject.transform.position,
+                targetObject.transform.position,
+                t)
+            );
+        }
     }
 }

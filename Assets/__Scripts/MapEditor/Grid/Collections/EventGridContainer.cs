@@ -64,7 +64,6 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
     public override ObjectType ContainerType => ObjectType.Event;
     private static int ExtraInterscopeLanes => EventContainer.ModifyTypeMode == 2 ? 2 : 0;
     
-    // 6 util event lanes for height, not final.
     private static int ExtraGagaLanes => EventContainer.ModifyTypeMode == 3 ? 6 : 0; 
     private int SpecialEventTypeCount => 7 + labels.NoRotationLaneOffset + ExtraInterscopeLanes + ExtraGagaLanes;
 

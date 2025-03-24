@@ -3260,7 +3260,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 2
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957445
 GameObject:
@@ -3364,7 +3364,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 2
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957446
 GameObject:
@@ -3468,7 +3468,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 2
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957448
 GameObject:
@@ -4717,6 +4717,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005341156537957714}
+  - component: {fileID: 1190131104180243308}
   m_Layer: 0
   m_Name: DynamicTeslaDisc
   m_TagString: Untagged
@@ -4743,6 +4744,19 @@ Transform:
   m_Father: {fileID: 3005341156537957803}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1190131104180243308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e972a40c11cb40645b95a17e78b7e514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightEventType: 19
 --- !u!1 &3005341156537957481
 GameObject:
   m_ObjectHideFlags: 0
@@ -4752,6 +4766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005341156537957715}
+  - component: {fileID: 7184724110185769139}
   m_Layer: 0
   m_Name: DynamicTeslaDisc
   m_TagString: Untagged
@@ -4778,6 +4793,19 @@ Transform:
   m_Father: {fileID: 3005341156537957813}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7184724110185769139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e972a40c11cb40645b95a17e78b7e514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightEventType: 18
 --- !u!1 &3005341156537957482
 GameObject:
   m_ObjectHideFlags: 0
@@ -4787,6 +4815,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005341156537957724}
+  - component: {fileID: 7497586783760720653}
   m_Layer: 0
   m_Name: DynamicTeslaDisc
   m_TagString: Untagged
@@ -4814,6 +4843,19 @@ Transform:
   m_Father: {fileID: 3005341156537957812}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7497586783760720653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e972a40c11cb40645b95a17e78b7e514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightEventType: 13
 --- !u!1 &3005341156537957484
 GameObject:
   m_ObjectHideFlags: 0
@@ -4906,6 +4948,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005341156537957712}
+  - component: {fileID: 5129756619592993946}
   m_Layer: 0
   m_Name: DynamicTeslaDisc
   m_TagString: Untagged
@@ -4933,6 +4976,19 @@ Transform:
   m_Father: {fileID: 3005341156537957814}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5129756619592993946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e972a40c11cb40645b95a17e78b7e514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightEventType: 12
 --- !u!1 &3005341156537957486
 GameObject:
   m_ObjectHideFlags: 0
@@ -4942,6 +4998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005341156537957719}
+  - component: {fileID: 1560953788906249769}
   m_Layer: 0
   m_Name: DynamicTeslaDisc
   m_TagString: Untagged
@@ -4969,6 +5026,19 @@ Transform:
   m_Father: {fileID: 3005341156537957815}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1560953788906249769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e972a40c11cb40645b95a17e78b7e514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightEventType: 16
 --- !u!1 &3005341156537957487
 GameObject:
   m_ObjectHideFlags: 0
@@ -4978,6 +5048,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005341156537957713}
+  - component: {fileID: 7479656852463267591}
   m_Layer: 0
   m_Name: DynamicTeslaDisc
   m_TagString: Untagged
@@ -5005,6 +5076,19 @@ Transform:
   m_Father: {fileID: 3005341156537957808}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7479656852463267591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e972a40c11cb40645b95a17e78b7e514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeightEventType: 17
 --- !u!1 &3005341156537957489
 GameObject:
   m_ObjectHideFlags: 0
@@ -5243,7 +5327,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 2
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957498
 GameObject:
@@ -5347,7 +5431,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 2
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957499
 GameObject:
@@ -5451,7 +5535,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 2
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957504
 GameObject:
@@ -5498,8 +5582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 3005341156537957631}
-  thickness: 0.5
-  arcMaterial: {fileID: 0}
+  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957505
 GameObject:
   m_ObjectHideFlags: 0
@@ -5545,8 +5628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 3005341156537957573}
-  thickness: 0.5
-  arcMaterial: {fileID: 0}
+  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957506
 GameObject:
   m_ObjectHideFlags: 0
@@ -5649,7 +5731,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 1
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957507
 GameObject:
@@ -5753,7 +5835,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 1
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957508
 GameObject:
@@ -5862,8 +5944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 3005341156537957620}
-  thickness: 0.5
-  arcMaterial: {fileID: 0}
+  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957511
 GameObject:
   m_ObjectHideFlags: 0
@@ -6150,7 +6231,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 1
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957517
 GameObject:
@@ -6254,7 +6335,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 1
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957518
 GameObject:
@@ -6358,7 +6439,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 1
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957519
 GameObject:
@@ -6462,7 +6543,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 1
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957520
 GameObject:
@@ -7537,8 +7618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 3005341156537957623}
-  thickness: 0.5
-  arcMaterial: {fileID: 0}
+  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957564
 GameObject:
   m_ObjectHideFlags: 0
@@ -7720,8 +7800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 3005341156537957624}
-  thickness: 0.5
-  arcMaterial: {fileID: 0}
+  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957573
 GameObject:
   m_ObjectHideFlags: 0
@@ -7801,6 +7880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SmallRingManager: {fileID: 0}
   BigRingManager: {fileID: 0}
+  DiskManager: {fileID: 4756535247563525126}
   LightingManagers:
   - {fileID: 2338020547487942786}
   - {fileID: 6171449407854277071}
@@ -7832,7 +7912,7 @@ MonoBehaviour:
     RedNoteColor: {r: 0.85, g: 0.4333333, b: 0.7833334, a: 1}
     BlueNoteColor: {r: 0.4705882, g: 0.8, b: 0.4078431, a: 1}
     ObstacleColor: {r: 0.9921569, g: 0, b: 0.7719755, a: 1}
-  SortMode: 0
+  SortMode: 3
   DisablableObjects:
   - {fileID: 3005341156537957600}
   - {fileID: 3005341156537957628}
@@ -8376,8 +8456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 3005341156537957603}
-  thickness: 0.5
-  arcMaterial: {fileID: 0}
+  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957616
 GameObject:
   m_ObjectHideFlags: 0
@@ -10242,6 +10321,7 @@ GameObject:
   m_Component:
   - component: {fileID: 843921455562562787}
   - component: {fileID: 1067881547660520457}
+  - component: {fileID: 4756535247563525126}
   m_Layer: 14
   m_Name: Dynamic
   m_TagString: Untagged
@@ -10293,3 +10373,25 @@ MonoBehaviour:
   RotatingLights: []
   GroupingMultiplier: 1
   GroupingOffset: 0.001
+--- !u!114 &4756535247563525126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9185728343506093327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdaf6c51d608f0f42942a88885e6a47c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minPositionY: 0
+  maxPositionY: 8
+  moveSpeed: 10
+  Disks:
+  - {fileID: 7184724110185769139}
+  - {fileID: 1560953788906249769}
+  - {fileID: 5129756619592993946}
+  - {fileID: 7497586783760720653}
+  - {fileID: 7479656852463267591}
+  - {fileID: 1190131104180243308}

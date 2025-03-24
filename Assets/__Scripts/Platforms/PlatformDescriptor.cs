@@ -16,6 +16,9 @@ public class PlatformDescriptor : MonoBehaviour
     [Tooltip("Leave null if you do not want big rings.")]
     public TrackLaneRingsManagerBase BigRingManager;
 
+    [Tooltip("Leave null if you do not want gaga environment disks.")]
+    public GagaDiskManager DiskManager;
+
     [Header("Lighting Groups")]
     [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
     public LightsManager[] LightingManagers = { };
@@ -210,6 +213,11 @@ public class PlatformDescriptor : MonoBehaviour
                     SmallRingManager.HandlePositionEvent(e);
                 break;
             case 12:
+                if (DiskManager != null) // The haha funny way to filter out gaga height events
+                {
+                    DiskManager.HandlePositionEvent(e);
+                    return;
+                }
                 var leftEventTypes = new List<int>() { (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights };
 
                 foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
@@ -222,6 +230,11 @@ public class PlatformDescriptor : MonoBehaviour
 
                 break;
             case 13:
+                if (DiskManager != null) // The haha funny way to filter out gaga height events
+                {
+                    DiskManager.HandlePositionEvent(e);
+                    return;
+                }
                 var rightEventTypes = new List<int>() { (int)EventTypeValue.RightLasers, (int)EventTypeValue.ExtraRightLasers, (int)EventTypeValue.ExtraRightLights };
 
                 foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
@@ -243,8 +256,36 @@ public class PlatformDescriptor : MonoBehaviour
                         ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor,
                         ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor);
                 }
-
                 break;
+            case 16:
+                if (DiskManager != null) // The haha funny way to filter out gaga height events
+                {
+                    DiskManager.HandlePositionEvent(e);
+                    return;
+                }
+                break;
+            case 17: 
+                if (DiskManager != null) // The haha funny way to filter out gaga height events
+                {
+                    DiskManager.HandlePositionEvent(e);
+                    return;
+                }
+                break;
+            case 18:
+                if (DiskManager != null) // The haha funny way to filter out gaga height events
+                {
+                    DiskManager.HandlePositionEvent(e);
+                    return;
+                }
+                break;
+            case 19:
+                if (DiskManager != null) // The haha funny way to filter out gaga height events
+                {
+                    DiskManager.HandlePositionEvent(e);
+                    return;
+                }
+                break;
+            
             default:
                 if (e.Type < LightingManagers.Length && LightingManagers[e.Type] != null)
                     HandleLights(LightingManagers[e.Type], e.Value, e);
