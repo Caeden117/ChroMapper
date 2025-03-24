@@ -332,14 +332,18 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         if (!context.performed) return;
 
+        var snapped = IsSnapped;
         CurrentJsonTime += (1f / gridMeasureSnapping);
+        if (snapped) SnapToGrid(true);
     }
 
     public void OnMoveCursorBackward(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
 
+        var snapped = IsSnapped;
         CurrentJsonTime -= (1f / gridMeasureSnapping);
+        if (snapped) SnapToGrid(true);
     }
 
     private void UpdateSongVolume(object obj) => SongAudioSource.volume = (float)obj;
