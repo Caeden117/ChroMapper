@@ -41,7 +41,6 @@ public class GagaDisk : MonoBehaviour
     
     public void SetPosition(float destinationY, float moveSpeed)
     {
-        Debug.Log("Setting position to " + destinationY);
         destPosY = destinationY;
         this.moveSpeed = moveSpeed;
     }

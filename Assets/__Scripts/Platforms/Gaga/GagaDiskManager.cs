@@ -17,7 +17,6 @@ public class GagaDiskManager : MonoBehaviour
     {
         foreach (var disk in Disks) 
         {
-            Debug.Log("Disk: " + disk);
             disk.Init(20); // Start at Y 20 (default).
         }
     }
