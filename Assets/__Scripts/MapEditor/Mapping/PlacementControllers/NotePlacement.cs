@@ -42,6 +42,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     private bool diagonal;
     private bool flagDirectionsUpdate;
+    private bool updateAttachedSliderDirection;
 
     private static readonly int alwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
 
@@ -171,6 +172,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             ToggleDiagonalAngleOffset(DraggedObjectContainer.NoteData, value);
             DraggedObjectContainer.NoteData.CutDirection = value;
             noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
+            updateAttachedSliderDirection = true;
         }
         // TODO: This IsActive is a workaround to prevent ghost notes. This happens because bomb placement could be
         //       dragging a note and quick editing results in issues
@@ -258,7 +260,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             baseSlider.SetTimes(queued.JsonTime, queued.SongBpmTime);
             baseSlider.PosX = queued.PosX;
             baseSlider.PosY = queued.PosY;
-            baseSlider.CutDirection = queued.CutDirection;
+            if (updateAttachedSliderDirection) baseSlider.CutDirection = queued.CutDirection;
             baseSlider.CustomCoordinate = queued.CustomCoordinate;
         }
 
@@ -269,7 +271,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             baseSlider.TailPosY = queued.PosY;
             baseSlider.CustomTailCoordinate = queued.CustomCoordinate;
 
-            if (baseSlider is BaseArc baseArc)
+            if (baseSlider is BaseArc baseArc && updateAttachedSliderDirection)
             {
                 baseArc.TailCutDirection = queued.CutDirection;
             }
@@ -280,6 +282,8 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             if (baseSliderContainer is ArcContainer arcContainer) arcContainer.NotifySplineChanged();
             if (baseSliderContainer is ChainContainer chainContainer) chainContainer.GenerateChain();
         }
+
+        updateAttachedSliderDirection = false;
     }
 
     internal override void RefreshVisuals()
