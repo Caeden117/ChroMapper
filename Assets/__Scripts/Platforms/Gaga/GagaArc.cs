@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class GagaArc : MonoBehaviour
 {
-    public GameObject targetObject;
-    public Material arcMaterial;
-    private float thickness = 3.5f;
-    private int increments = 10;
+    public GameObject TargetObject;
+    public Material ArcMaterial;
+    private readonly float thickness = 3.5f;
+    private readonly int increments = 10;
     
     private LineRenderer lineRenderer;
     // TODO: Align PROPERLY with Z.
     void Start()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = arcMaterial;
+        lineRenderer.material = ArcMaterial;
         lineRenderer.startWidth = thickness;
         lineRenderer.endWidth = thickness;
         lineRenderer.positionCount = increments;
@@ -26,7 +26,7 @@ public class GagaArc : MonoBehaviour
             float t = (float)i / (increments - 1); // Normalize t between 0 and 1
             lineRenderer.SetPosition(i, Vector3.Lerp(
                 gameObject.transform.position,
-                targetObject.transform.position,
+                TargetObject.transform.position,
                 t)
             );
         }

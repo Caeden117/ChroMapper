@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class GagaDiskManager : MonoBehaviour
 {
-    public float minPositionY = 0;
-    public float maxPositionY = 8;
-    public float moveSpeed = 10;
+    public float MinPositionY = 0;
+    public float MaxPositionY = 8;
+    public float MoveSpeed = 10;
 
     public List<GagaDisk> Disks = new List<GagaDisk>();
 
@@ -43,6 +43,6 @@ public class GagaDiskManager : MonoBehaviour
         var fValue = evt.FloatValue;
         Disks.Where(d => d.HeightEventType == evt.Type)
             .ToList()
-            .ForEach(d => d.SetPosition(evt.Value * 6f, moveSpeed));
+            .ForEach(d => d.SetPosition(evt.Value * 6f, MoveSpeed));
     }
 }
