@@ -358,9 +358,14 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public static void RefreshFutureObjectsPosition(float jsonTime)
     {
-        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
+        // we have to refresh bpm events FIRST, and only then can we refresh other objects
+        // this is a janky way of accomplishing that
+        var objectTypes = new List<ObjectType> { ObjectType.BpmChange };
+        objectTypes.AddRange(((IEnumerable<ObjectType>)Enum.GetValues(typeof(ObjectType))).Where(x => x != ObjectType.BpmChange));
+
+        foreach (var objectType in objectTypes)
         {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(objectType);
             if (collection == null) continue;
             // REVIEW: not sure if allocation is avoidable
             foreach (var obj in collection.LoadedObjects)

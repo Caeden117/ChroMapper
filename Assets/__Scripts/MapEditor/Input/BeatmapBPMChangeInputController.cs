@@ -42,15 +42,15 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
                     containerToEdit.ObjectData, original, "Tweaked bpm"));
 
+                BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
+                bpmChanges.RefreshModifiedBeat();
+
                 // Update cursor position
                 var atsc = bpmChanges.AudioTimeSyncController;
                 if (containerToEdit.BpmData.JsonTime < atsc.CurrentJsonTime)
                 {
                     atsc.MoveToJsonTime(atsc.CurrentJsonTime);
                 }
-
-                BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
-                bpmChanges.RefreshModifiedBeat();
             }
         }
     }

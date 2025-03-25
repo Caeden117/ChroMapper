@@ -156,13 +156,13 @@ namespace Beatmap.Base
 
         public BaseBpmEvent FindLastBpmEventByJsonTime(float jsonTime)
         {
-            return BpmEvents.LastOrDefault(x => x.JsonTime <= jsonTime);
+            return BpmEvents.LastOrDefault(x => x.JsonTime < jsonTime);
         }
 
         public BaseBpmEvent FindLastBpmEventBySongBpmTime(float songBpmTime)
         {
             if (songBpm is null) return null;
-            return BpmEvents.LastOrDefault(x => x.SongBpmTime <= songBpmTime);
+            return BpmEvents.LastOrDefault(x => x.SongBpmTime < songBpmTime);
         }
 
         public float? BpmAtJsonTime(float jsonTime)
