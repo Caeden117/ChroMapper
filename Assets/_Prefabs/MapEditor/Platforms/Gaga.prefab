@@ -3749,7 +3749,7 @@ Transform:
   m_GameObject: {fileID: 3005341156537957451}
   m_LocalRotation: {x: 0.00000006556708, y: -0.000000043711385, z: 0.000000043711392,
     w: 1}
-  m_LocalPosition: {x: 0, y: 59.71, z: -0}
+  m_LocalPosition: {x: 0, y: 59.71, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5581,8 +5581,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 3005341156537957631}
-  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  TargetObject: {fileID: 3005341156537957631}
+  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957505
 GameObject:
   m_ObjectHideFlags: 0
@@ -5627,8 +5627,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 3005341156537957573}
-  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  TargetObject: {fileID: 3005341156537957573}
+  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957506
 GameObject:
   m_ObjectHideFlags: 0
@@ -5943,8 +5943,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 3005341156537957620}
-  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  TargetObject: {fileID: 3005341156537957620}
+  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957511
 GameObject:
   m_ObjectHideFlags: 0
@@ -7617,8 +7617,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 3005341156537957623}
-  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  TargetObject: {fileID: 3005341156537957623}
+  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957564
 GameObject:
   m_ObjectHideFlags: 0
@@ -7799,8 +7799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 3005341156537957624}
-  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  TargetObject: {fileID: 3005341156537957624}
+  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957573
 GameObject:
   m_ObjectHideFlags: 0
@@ -8455,8 +8455,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84b3350f4b99c34f8628b4252f89ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 3005341156537957603}
-  arcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  TargetObject: {fileID: 3005341156537957603}
+  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
 --- !u!1 &3005341156537957616
 GameObject:
   m_ObjectHideFlags: 0
@@ -10385,9 +10385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaf6c51d608f0f42942a88885e6a47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minPositionY: 0
-  maxPositionY: 8
-  moveSpeed: 10
+  MinPositionY: 0
+  MaxPositionY: 8
+  MoveSpeed: 10
   Disks:
   - {fileID: 7184724110185769139}
   - {fileID: 1560953788906249769}

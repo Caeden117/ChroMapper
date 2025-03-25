@@ -25,7 +25,7 @@ public class GagaDiskManager : MonoBehaviour
     {
         foreach (var disk in Disks)
         {
-            disk.FixedUpdateDisk(Time.fixedDeltaTime);
+            disk.FixedUpdateDisk(TimeHelper.FixedDeltaTime);
         }
     }
 
@@ -33,7 +33,7 @@ public class GagaDiskManager : MonoBehaviour
     {
         foreach (var disk in Disks)
         {
-            disk.LateUpdateDisk(Time.deltaTime);
+            disk.LateUpdateDisk(TimeHelper.InterpolationFactor);
         }
     }
 
