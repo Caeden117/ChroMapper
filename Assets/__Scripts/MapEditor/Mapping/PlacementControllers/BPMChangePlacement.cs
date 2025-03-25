@@ -20,7 +20,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
 
     public override void TransferQueuedToDraggedObject(ref BaseBpmEvent dragged, BaseBpmEvent queued)
     {
-        dragged.SetTimes(queued.JsonTime, queued.SongBpmTime);
+        dragged.SetTimes(queued.JsonTime);
         objectContainerCollection.RefreshModifiedBeat();
     }
 
@@ -39,9 +39,8 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
             if (willResetGrid && (Mathf.Abs(queuedData.JsonTime - Mathf.Round(queuedData.JsonTime)) > BeatmapObjectContainerCollection.Epsilon))
             {
                 // e.g. Placing a bpm event at beat 3.5 will create a bpm event at beat 3 and 4.
-                //      The bpm on beat 3 will be such that the bpm event on beat 4 lines with where the cursor is. 
-                var prevBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
-                          BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
+                //      The bpm on beat 3 will be such that the bpm event on beat 4 lines with where the cursor is.
+                var prevBpm = (float)BeatSaberSongContainer.Instance.Map.BpmAtSongBpmTime(SongBpmTime);
 
                 var prevBeat = Mathf.Floor(queuedData.JsonTime);
                 var nextBeat = Mathf.Ceil(queuedData.JsonTime);
@@ -89,8 +88,8 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
                 .WithInitialValue("Mapper", "bpm.dialogue.invalidnumber");
         }
 
-        var lastBpm = objectContainerCollection.FindLastBpm(SongBpmTime, false)?.Bpm ??
-                      BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
+        var lastBpm = (float)BeatSaberSongContainer.Instance.Map.BpmAtSongBpmTime(SongBpmTime);
+
         var bpmTextInput = createBpmEventDialogueBox
             .AddComponent<TextBoxComponent>()
             .WithLabel("Mapper", "bpm.dialogue.beatsperminute")

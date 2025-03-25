@@ -57,7 +57,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         instantiatedContainer.ObstacleData.Duration = RoundedJsonTime - startJsonTime;
         obstacleAppearanceSo.SetObstacleAppearance(instantiatedContainer);
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
-        var songBpmDuration = BpmChangeGridContainer.JsonTimeToSongBpmTime(RoundedJsonTime) - startSongBpmTime;
+        var songBpmDuration = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(RoundedJsonTime) - startSongBpmTime;
 
         // Check if Chroma Color notes button is active and apply _color
         queuedData.CustomColor = (CanPlaceChromaObjects && dropdown.Visible)
@@ -214,15 +214,14 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
         if (IsPlacing)
         {
             IsPlacing = false;
-            queuedData.SetTimes(startJsonTime, startSongBpmTime);
+            queuedData.SetTimes(startJsonTime);
 
             var endSongBpmTime = startSongBpmTime + (instantiatedContainer.GetScale().z / EditorScaleController.EditorScale);
-            var endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
 
             if (endSongBpmTime - startSongBpmTime < SmallestRankableWallDuration)
             {
                 endSongBpmTime = startSongBpmTime + SmallestRankableWallDuration;
-                endJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(endSongBpmTime);
+                var endJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(endSongBpmTime);
                 queuedData.Duration = endJsonTime - startJsonTime;
             }
 
@@ -246,7 +245,7 @@ public class ObstaclePlacement : PlacementController<BaseObstacle, ObstacleConta
 
     public override void TransferQueuedToDraggedObject(ref BaseObstacle dragged, BaseObstacle queued)
     {
-        dragged.SetTimes(queued.JsonTime, queued.SongBpmTime);
+        dragged.SetTimes(queued.JsonTime);
         dragged.PosX = queued.PosX;
         dragged.CustomCoordinate = queued.CustomCoordinate;
     }

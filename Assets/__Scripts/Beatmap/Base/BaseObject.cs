@@ -12,7 +12,7 @@ namespace Beatmap.Base
         public virtual void Serialize(NetDataWriter writer)
         {
             writer.Put(jsonTime);
-            writer.Put(songBpmTime);
+            writer.Put((float)songBpmTime);
             writer.Put(CustomData?.ToString());
         }
 
@@ -49,28 +49,21 @@ namespace Beatmap.Base
             get => jsonTime;
             set
             {
-                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-                songBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(value) ?? value;
+                var map = BeatSaberSongContainer.Instance.Map;
+                songBpmTime = map?.JsonTimeToSongBpmTime(value);
                 jsonTime = value;
             }
         }
 
-        private float songBpmTime;
-        public float SongBpmTime
-        {
-            get => songBpmTime;
-            set
-            {
-                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-                jsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
-                songBpmTime = value;
-            }
-        }
+        // should only be set directly when initializing
+        // read from SongBpmTime instead, and write to JsonTime to update this
+        // really should be private but we need to set this from BaseDifficulty on init
+        internal float? songBpmTime; 
+        public float SongBpmTime => (float)songBpmTime;
 
-        public void SetTimes(float jsonTime, float songBpmTime)
+        public void SetTimes(float jsonTime)
         {
             this.jsonTime = jsonTime;
-            this.songBpmTime = songBpmTime;
             RecomputeSongBpmTime();
         }
 

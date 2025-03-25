@@ -178,7 +178,7 @@ namespace Beatmap.Animations
                     {
                         continue;
                     }
-                    var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+                    var map = BeatSaberSongContainer.Instance.Map;
                     foreach (var ce in events.Where(ev => ev.Type == "AssignPathAnimation"))
                     {
                         foreach (var jprop in ce.Data)
@@ -196,7 +196,7 @@ namespace Beatmap.Animations
                                 TimeEnd = time_end,
                             };
                             if (p.Transition != 0) {
-                                p.Transition = bpmChangeGridContainer.JsonTimeToSongBpmTime(ce.JsonTime + p.Transition) - ce.SongBpmTime;
+                                p.Transition = (float)map.JsonTimeToSongBpmTime(ce.JsonTime + p.Transition) - ce.SongBpmTime;
                             }
                             AddPointDef(p, jprop.Key);
                         }

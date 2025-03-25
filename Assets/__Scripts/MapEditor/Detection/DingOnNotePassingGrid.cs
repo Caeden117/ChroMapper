@@ -88,10 +88,10 @@ public class DingOnNotePassingGrid : MonoBehaviour
         if (!playing) return;
         
         // Since we schedule hit sounds ahead of time using the note callback, there will be a small period ahead of the
-        // playback cursor when start play is toggled where hit sounds are not scheduled play on play so we do that here 
-        var bpmCollection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-        var currentJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats);
-        var endJsonTime = bpmCollection.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats + beatSaberCutCallbackController.Offset);
+        // playback cursor when start play is toggled where hit sounds are not scheduled play on play so we do that here
+        var map = BeatSaberSongContainer.Instance.Map;
+        var currentJsonTime = (float)map.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats);
+        var endJsonTime = (float)map.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats + beatSaberCutCallbackController.Offset);
         var notes = container.GetBetween(currentJsonTime, endJsonTime);
         
         foreach (var n in notes) PlaySound(false, 0, n);

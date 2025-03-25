@@ -235,7 +235,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
     {
-        dragged.SetTimes(queued.JsonTime, queued.SongBpmTime);
+        dragged.SetTimes(queued.JsonTime);
         dragged.PosX = queued.PosX;
         dragged.PosY = queued.PosY;
         dragged.CutDirection = queued.CutDirection;
@@ -255,7 +255,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         var epsilon = BeatmapObjectContainerCollection.Epsilon;
         foreach (var baseSlider in DraggedAttachedSliderDatas[IndicatorType.Head])
         {
-            baseSlider.SetTimes(queued.JsonTime, queued.SongBpmTime);
+            baseSlider.SetTimes(queued.JsonTime);
             baseSlider.PosX = queued.PosX;
             baseSlider.PosY = queued.PosY;
             baseSlider.CutDirection = queued.CutDirection;
@@ -264,7 +264,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
         foreach (var baseSlider in DraggedAttachedSliderDatas[IndicatorType.Tail])
         {
-            baseSlider.SetTailTimes(queued.JsonTime, queued.SongBpmTime);
+            baseSlider.SetTailTimes(queued.JsonTime);
             baseSlider.TailPosX = queued.PosX;
             baseSlider.TailPosY = queued.PosY;
             baseSlider.CustomTailCoordinate = queued.CustomCoordinate;

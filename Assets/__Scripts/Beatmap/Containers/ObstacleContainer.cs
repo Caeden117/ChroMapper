@@ -58,9 +58,7 @@ namespace Beatmap.Containers
             if (ObstacleData.CustomSize != null && ObstacleData.CustomSize.IsArray && ObstacleData.CustomSize[2].IsNumber)
                 return ObstacleData.CustomSize[2];
 
-            var obstacleStart = ObstacleData.SongBpmTime;
-            var obstacleEnd = bpmChangeGridContainer?.JsonTimeToSongBpmTime(ObstacleData.JsonTime + ObstacleData.Duration) ?? 0;
-            var length = obstacleEnd - obstacleStart;
+            var length = ObstacleData.DurationSongBpm;
 
             //Take half jump duration into account if the setting is enabled.
             if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls && !UIMode.AnimationMode)

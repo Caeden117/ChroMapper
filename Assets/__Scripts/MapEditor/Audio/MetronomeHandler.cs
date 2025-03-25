@@ -49,13 +49,14 @@ public class MetronomeHandler : MonoBehaviour
             if (atsc.CurrentAudioBeats > queuedDingSongBpmTime)
             {
                 var nextJsonTime = Mathf.Ceil(atsc.CurrentJsonTime);
-                
-                if (Mathf.Abs(Mathf.Floor(bpmChangeGridContainer.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats))
+
+                var map = BeatSaberSongContainer.Instance.Map;
+                if (Mathf.Abs(Mathf.Floor((float)map.SongBpmTimeToJsonTime(atsc.CurrentAudioBeats))
                               - Mathf.Floor(atsc.CurrentJsonTime)) > 0.01f)
                 {
                     nextJsonTime = Mathf.Ceil(nextJsonTime + 1f);
                 }
-                queuedDingSongBpmTime = bpmChangeGridContainer.JsonTimeToSongBpmTime(nextJsonTime);
+                queuedDingSongBpmTime = (float)map.JsonTimeToSongBpmTime(nextJsonTime);
 
                 var delay = atsc.GetSecondsFromBeat(queuedDingSongBpmTime - atsc.CurrentAudioBeats) / songSpeed;
                 audioUtil.PlayOneShotSound(CowBell ? cowbellSound : metronomeSound, Settings.Instance.MetronomeVolume,
