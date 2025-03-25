@@ -90,6 +90,9 @@ public class CreateEventTypeLabels : MonoBehaviour
                 }
                 else
                 {
+                    var envIndex = BeatSaberSongContainer.Instance.MapDifficultyInfo.EnvironmentNameIndex;
+                    var environment = BeatSaberSongContainer.Instance.Info.EnvironmentNames[envIndex];
+                    var isGaga = environment == "GagaEnvironment";
                     switch (i)
                     {
                         case (int)EventTypeValue.RingRotation:
@@ -101,11 +104,13 @@ public class CreateEventTypeLabels : MonoBehaviour
                             textMesh.text = "Ring Zoom";
                             break;
                         case (int)EventTypeValue.LeftLaserRotation:
-                            textMesh.text = "Left Laser Speed";
+                            var txtlrr = !isGaga ? "Left Laser Speed" : "Tower 3 Height";
+                            textMesh.text = txtlrr;
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.RightLaserRotation:
-                            textMesh.text = "Right Laser Speed";
+                            var txtrlr = !isGaga ? "Right Laser Speed" : "Tower 4 Height";
+                            textMesh.text = txtrlr;
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.EarlyLaneRotation:
@@ -121,19 +126,23 @@ public class CreateEventTypeLabels : MonoBehaviour
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent0:
-                            textMesh.text = "Utility Event 0";
+                            var txtue0 = !isGaga ? "Utility Event 0" : "Tower 2 Height";
+                            textMesh.text = txtue0;
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent1:
-                            textMesh.text = "Utility Event 1";
+                            var txtue1 = !isGaga ? "Utility Event 1" : "Tower 5 Height";
+                            textMesh.text = txtue1;
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent2:
-                            textMesh.text = "Utility Event 2";
+                            var txtue2 = !isGaga ? "Utility Event 2" : "Tower 1 Height";
+                            textMesh.text = txtue2;
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent3:
-                            textMesh.text = "Utility Event 3";
+                            var txtue3 = !isGaga ? "Utility Event 3" : "Tower 6 Height";
+                            textMesh.text = txtue3;
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.SpecialEvent0:
