@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Beatmap.Base;
 
 namespace Beatmap.Info
@@ -40,10 +41,17 @@ namespace Beatmap.Info
             {
                 var samples = bpmRegion.EndSampleIndex - bpmRegion.StartSampleIndex;
                 var beats = bpmRegion.EndBeat - bpmRegion.StartBeat;
-                
+                var rawBpm = beats / samples * audioFrequency * 60;
+
+                // use rounded bpm if unrounding was caused by numerical error in conversion to BPM regions
+                var roundedBpm = (float)Math.Round(beats / samples * audioFrequency * 60);
+                var roundedBpmSamples = beats * 60 / roundedBpm * audioFrequency;
+                const float threshold = 1.1f; // expect max of 0.5 samples either direction for both start and end, so max of 1 total, plus some margin
+                var useRounded = Math.Abs(roundedBpmSamples - samples) < threshold;
+
                 bpmEvents.Add(new BaseBpmEvent
                 {
-                    Bpm = beats / samples * audioFrequency * 60,
+                    Bpm = useRounded ? roundedBpm : rawBpm,
                     JsonTime = bpmRegion.StartBeat
                 });
             }
@@ -67,28 +75,33 @@ namespace Beatmap.Info
             }
             else
             {
+                // This SHOULD be 0, since the fist BpmEvent is supposed to be at beat 0
+                var previousEndSampleIndex = (int)Math.Round(bpmEvents[0].SongBpmTime * (60f / songBpm) * audioFrequency, MidpointRounding.AwayFromZero);
+
                 for (var i = 0; i < bpmEvents.Count - 1; i++)
                 {
                     var currentBpmEvent = bpmEvents[i];
                     var nextBpmEvent = bpmEvents[i + 1];
+                    var endSampleIndex = (int)Math.Round(nextBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency, MidpointRounding.AwayFromZero);
 
                     regions.Add(new BpmInfoBpmRegion
                     {
-                        StartSampleIndex = (int)(currentBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
-                        EndSampleIndex = (int)(nextBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency),
+                        StartSampleIndex = previousEndSampleIndex,
+                        EndSampleIndex = endSampleIndex,
                         StartBeat = currentBpmEvent.JsonTime,
                         EndBeat = nextBpmEvent.JsonTime,
                     });
+
+                    previousEndSampleIndex = endSampleIndex;
                 }
 
                 var lastBpmEvent = bpmEvents[^1];
-                var lastStartSampleIndex = lastBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency;
-                var secondsDiff = (audioSamples - lastStartSampleIndex) / audioFrequency;
+                var secondsDiff = (float)(audioSamples - previousEndSampleIndex) / audioFrequency;
                 var jsonBeatsDiff = secondsDiff * (lastBpmEvent.Bpm / 60f);
 
                 regions.Add(new BpmInfoBpmRegion
                 {
-                    StartSampleIndex = (int)lastStartSampleIndex,
+                    StartSampleIndex = previousEndSampleIndex,
                     EndSampleIndex = audioSamples,
                     StartBeat = lastBpmEvent.JsonTime,
                     EndBeat = lastBpmEvent.JsonTime + jsonBeatsDiff,
