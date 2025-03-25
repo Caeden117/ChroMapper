@@ -32,6 +32,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
     public List<BaseEvent> AllRotationEvents = new List<BaseEvent>();
     public List<BaseEvent> AllBoostEvents = new List<BaseEvent>();
     public List<BaseEvent> AllBpmEvents = new List<BaseEvent>();
+    public List<BaseEvent> AllUtilityEvents = new List<BaseEvent>();
+    public List<BaseEvent> AllLaserRotationEvents = new List<BaseEvent>();
 
     private HashSet<BaseEvent> lightEventsWithKnownPrevNext = new HashSet<BaseEvent>();
 
@@ -210,6 +212,14 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 {
                     events.Remove(e);
                 }
+            } 
+            else if (e.IsUtilityEvent())
+            {
+                AllUtilityEvents.Remove(e);
+            }
+            else if (e.IsLaserRotationEvent())
+            {
+                AllLaserRotationEvents.Remove(e);
             }
 
             MarkEventToBeRelinked(e);
@@ -238,6 +248,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 AddToAllLightEvents(e);
                 lightEventsWithKnownPrevNext.Add(e);
             }
+            else if (e.IsUtilityEvent()) AllUtilityEvents.Add(e);
+            else if (e.IsLaserRotationEvent()) AllLaserRotationEvents.Add(e);
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
