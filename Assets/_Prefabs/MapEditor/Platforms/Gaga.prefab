@@ -620,6 +620,10 @@ Transform:
   - {fileID: 3005341156537957751}
   - {fileID: 3005341156537957724}
   - {fileID: 3005341156537957763}
+  - {fileID: 3005341156537957651}
+  - {fileID: 3005341156537957703}
+  - {fileID: 3005341156537957633}
+  - {fileID: 3005341156537957790}
   m_Father: {fileID: 843921455562562787}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
@@ -761,7 +765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957688}
   m_Layer: 13
-  m_Name: RunwayLightL0
+  m_Name: RunwayLightL0_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -774,14 +778,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957385}
-  m_LocalRotation: {x: -0, y: 0.30070573, z: 4.440892e-16, w: 0.953717}
-  m_LocalPosition: {x: 4.179, y: -0.963, z: 0.728}
+  m_LocalRotation: {x: 0.000000013144266, y: 0.953717, z: -0.000000041688295, w: -0.30070573}
+  m_LocalPosition: {x: 39.821, y: -0.9470001, z: -141.428}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3005341156537957694}
-  m_Father: {fileID: 3005341156537957811}
-  m_RootOrder: 1
+  m_Father: {fileID: 3005341156537957814}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 1.8680995e-14, y: -34.999992, z: -5.924856e-14}
 --- !u!1 &3005341156537957388
 GameObject:
@@ -1146,7 +1150,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957646}
   m_Layer: 13
-  m_Name: RunwayLightL1
+  m_Name: RunwayLightL1_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1159,14 +1163,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957393}
-  m_LocalRotation: {x: -0, y: 0.30070573, z: 4.440892e-16, w: 0.953717}
-  m_LocalPosition: {x: 4.028, y: -0.963, z: 0.834}
+  m_LocalRotation: {x: 0.000000013144266, y: 0.953717, z: -0.000000041688295, w: -0.30070573}
+  m_LocalPosition: {x: 39.972, y: -0.9470001, z: -141.534}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3005341156537957644}
-  m_Father: {fileID: 3005341156537957811}
-  m_RootOrder: 0
+  m_Father: {fileID: 3005341156537957814}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 1.8680995e-14, y: -34.999992, z: -5.924856e-14}
 --- !u!1 &3005341156537957394
 GameObject:
@@ -1386,7 +1390,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957633}
   m_Layer: 13
-  m_Name: RunwayLightR0
+  m_Name: RunwayLightR0_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1399,14 +1403,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957397}
-  m_LocalRotation: {x: 0, y: -0.30070576, z: 0, w: 0.953717}
-  m_LocalPosition: {x: -4.013, y: -0.974, z: 0.83}
+  m_LocalRotation: {x: -0.00000001314427, y: 0.953717, z: -0.000000041688295, w: 0.30070576}
+  m_LocalPosition: {x: -39.987, y: -0.9580002, z: -141.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3005341156537957635}
-  m_Father: {fileID: 3005341156537957811}
-  m_RootOrder: 2
+  m_Father: {fileID: 3005341156537957812}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 34.999992, z: 0}
 --- !u!1 &3005341156537957400
 GameObject:
@@ -1605,7 +1609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957651}
   m_Layer: 13
-  m_Name: RunwayLightR0
+  m_Name: RunwayLightR0_Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1618,14 +1622,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957403}
-  m_LocalRotation: {x: 0, y: -0.30070576, z: 0, w: 0.953717}
-  m_LocalPosition: {x: -4.312, y: -0.972, z: 0.828}
+  m_LocalRotation: {x: -0.000000013144273, y: 0.953717, z: -0.000000041688295, w: 0.30070576}
+  m_LocalPosition: {x: -39.688, y: -0.9560013, z: -125.528}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3005341156537957662}
-  m_Father: {fileID: 3005341156537957669}
-  m_RootOrder: 2
+  m_Father: {fileID: 3005341156537957812}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 34.999992, z: 0}
 --- !u!1 &3005341156537957408
 GameObject:
@@ -3004,6 +3008,10 @@ Transform:
   - {fileID: 3005341156537957753}
   - {fileID: 3005341156537957747}
   - {fileID: 3005341156537957712}
+  - {fileID: 3005341156537958119}
+  - {fileID: 3005341156537958084}
+  - {fileID: 3005341156537957646}
+  - {fileID: 3005341156537957688}
   - {fileID: 3005341156537957761}
   m_Father: {fileID: 843921455562562787}
   m_RootOrder: 4
@@ -3988,7 +3996,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3005341156537957814}
-  m_RootOrder: 4
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0.0000075134335, y: 0.000005008956, z: -0.000005008956}
 --- !u!33 &3005341156537957918
 MeshFilter:
@@ -4071,7 +4079,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3005341156537957811}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
 --- !u!33 &3005341156537957935
 MeshFilter:
@@ -4184,10 +4192,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3005341156537958119}
-  - {fileID: 3005341156537958084}
-  - {fileID: 3005341156537957651}
-  - {fileID: 3005341156537957703}
   - {fileID: 3005341156537957716}
   m_Father: {fileID: 843921455562562787}
   m_RootOrder: 0
@@ -5203,7 +5207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957703}
   m_Layer: 13
-  m_Name: RunwayLightR1
+  m_Name: RunwayLightR1_Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5216,14 +5220,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957492}
-  m_LocalRotation: {x: 0, y: -0.30070576, z: 0, w: 0.953717}
-  m_LocalPosition: {x: -4.464, y: -0.972, z: 0.722}
+  m_LocalRotation: {x: -0.000000013144273, y: 0.953717, z: -0.000000041688295, w: 0.30070576}
+  m_LocalPosition: {x: -39.536, y: -0.9560013, z: -125.422}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3005341156537957708}
-  m_Father: {fileID: 3005341156537957669}
-  m_RootOrder: 3
+  m_Father: {fileID: 3005341156537957812}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 34.999992, z: 0}
 --- !u!1 &3005341156537957497
 GameObject:
@@ -7207,7 +7211,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3005341156537957669}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
 --- !u!33 &3005341156537957895
 MeshFilter:
@@ -7371,10 +7375,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3005341156537957646}
-  - {fileID: 3005341156537957688}
-  - {fileID: 3005341156537957633}
-  - {fileID: 3005341156537957790}
   - {fileID: 3005341156537957757}
   m_Father: {fileID: 843921455562562787}
   m_RootOrder: 1
@@ -7733,7 +7733,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957790}
   m_Layer: 13
-  m_Name: RunwayLightR1
+  m_Name: RunwayLightR1_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7746,14 +7746,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957565}
-  m_LocalRotation: {x: 0, y: -0.30070576, z: 0, w: 0.953717}
-  m_LocalPosition: {x: -4.165, y: -0.974, z: 0.724}
+  m_LocalRotation: {x: -0.00000001314427, y: 0.953717, z: -0.000000041688295, w: 0.30070576}
+  m_LocalPosition: {x: -39.835, y: -0.9580002, z: -141.424}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3005341156537957784}
-  m_Father: {fileID: 3005341156537957811}
-  m_RootOrder: 3
+  m_Father: {fileID: 3005341156537957812}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 34.999992, z: 0}
 --- !u!1 &3005341156537957567
 GameObject:
@@ -7882,15 +7882,26 @@ MonoBehaviour:
   BigRingManager: {fileID: 0}
   DiskManager: {fileID: 4756535247563525126}
   LightingManagers:
-  - {fileID: 2338020547487942786}
-  - {fileID: 6171449407854277071}
-  - {fileID: 6240774557477132331}
-  - {fileID: 4166895043124446616}
-  - {fileID: 5067459280385891790}
-  - {fileID: 4786764634807591612}
-  - {fileID: 8858751428837440776}
   - {fileID: 3844721586655642130}
   - {fileID: 2854019642613168003}
+  - {fileID: 4166895043124446616}
+  - {fileID: 5067459280385891790}
+  - {fileID: 2338020547487942786}
+  - {fileID: 0}
+  - {fileID: 6240774557477132331}
+  - {fileID: 4786764634807591612}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 6171449407854277071}
+  - {fileID: 8858751428837440776}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   RotationController: {fileID: 0}
   Colors:
     RedColor: {r: 1, g: 0, b: 0, a: 1}
@@ -9851,7 +9862,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537958119}
   m_Layer: 13
-  m_Name: RunwayLightL1
+  m_Name: RunwayLightL1_Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9864,14 +9875,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957870}
-  m_LocalRotation: {x: -0, y: 0.30070573, z: 4.440892e-16, w: 0.953717}
-  m_LocalPosition: {x: 4.326, y: -0.968, z: 0.837}
+  m_LocalRotation: {x: 0.000000013144266, y: 0.953717, z: -0.000000041688295, w: -0.30070573}
+  m_LocalPosition: {x: 39.674, y: -0.9520001, z: -125.536995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3005341156537957658}
-  m_Father: {fileID: 3005341156537957669}
-  m_RootOrder: 0
+  m_Father: {fileID: 3005341156537957814}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 1.8680995e-14, y: -34.999992, z: -5.924856e-14}
 --- !u!1 &3005341156537957876
 GameObject:
@@ -10132,7 +10143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537958084}
   m_Layer: 13
-  m_Name: RunwayLightL0
+  m_Name: RunwayLightL0_Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10145,14 +10156,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3005341156537957882}
-  m_LocalRotation: {x: -0, y: 0.30070573, z: 4.440892e-16, w: 0.953717}
-  m_LocalPosition: {x: 4.478, y: -0.968, z: 0.731}
+  m_LocalRotation: {x: 0.000000013144266, y: 0.953717, z: -0.000000041688295, w: -0.30070573}
+  m_LocalPosition: {x: 39.522, y: -0.9520001, z: -125.431}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3005341156537958143}
-  m_Father: {fileID: 3005341156537957669}
-  m_RootOrder: 1
+  m_Father: {fileID: 3005341156537957814}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 1.8680995e-14, y: -34.999992, z: -5.924856e-14}
 --- !u!1 &3005341156537957883
 GameObject:

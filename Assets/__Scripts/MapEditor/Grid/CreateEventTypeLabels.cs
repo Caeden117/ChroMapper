@@ -16,12 +16,11 @@ public class CreateEventTypeLabels : MonoBehaviour
     {
         5, 2, 4, 3, 6, 13, 7, 8, 9, 10, 16, 17, 11, 12, 0, 1, 14, 15
     };
-
+    
     private static readonly int[] eventToModifiedArrayGaga =
     {
-        4, 10, 6, 2, 3, 7, 11, 0, 1, 18, 16, 12, 13, 17, 19
+        9, 10, 5, 6, 2, 11, 4, 7, 18, 19, 3, 8, 14, 15, 0, 1, 13, 16, 12, 17
     };
-
     public TMP_FontAsset AvailableAsset;
     public TMP_FontAsset UtilityAsset;
     public TMP_FontAsset RedAsset;
@@ -157,7 +156,6 @@ public class CreateEventTypeLabels : MonoBehaviour
                             if (lightingManagers.Length > i)
                             {
                                 var customLight = lightingManagers[i];
-
                                 if (customLight != null)
                                 {
                                     textMesh.text = customLight.name;
@@ -172,7 +170,6 @@ public class CreateEventTypeLabels : MonoBehaviour
 
                             break;
                     }
-
                     if (Settings.Instance.DarkTheme) textMesh.font = darkTheme.TekoReplacement;
                 }
 
