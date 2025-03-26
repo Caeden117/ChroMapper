@@ -111,6 +111,15 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
 
     public bool IsPlaying { get; private set; }
 
+    public bool IsSnapped
+    {
+        get
+        {
+            if (IsPlaying) return false;
+            return Mathf.Approximately(currentJsonTime, (float)Math.Round(currentJsonTime * gridMeasureSnapping, MidpointRounding.AwayFromZero) / gridMeasureSnapping);
+        }
+    }
+
     // Use this for initialization
     private void Start()
     {
@@ -257,8 +266,10 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
                 if (Settings.Instance.InvertScrollTime) value *= -1;
                 // +1 beat if we're going forward, -1 beat if we're going backwards
                 var beatShiftRaw = 1f / GridMeasureSnapping * (value > 0 ? 1f : -1f);
+                var snapped = IsSnapped;
 
                 MoveToJsonTime(Mathf.Max(0, CurrentJsonTime + beatShiftRaw));
+                if (snapped) SnapToGrid(true);
             }
         }
     }
@@ -321,14 +332,18 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         if (!context.performed) return;
 
+        var snapped = IsSnapped;
         CurrentJsonTime += (1f / gridMeasureSnapping);
+        if (snapped) SnapToGrid(true);
     }
 
     public void OnMoveCursorBackward(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
 
+        var snapped = IsSnapped;
         CurrentJsonTime -= (1f / gridMeasureSnapping);
+        if (snapped) SnapToGrid(true);
     }
 
     private void UpdateSongVolume(object obj) => SongAudioSource.volume = (float)obj;
