@@ -28,7 +28,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
 
         foreach (var data in removedConflictObjects)
         {
-            SpawnObject(data, true);
+            SpawnObject(data);
         }
 
         RefreshPools(removedConflictObjects);
@@ -45,7 +45,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
 
         foreach (var obj in Data)
         {
-            SpawnObject(obj, true);
+            SpawnObject(obj);
         }
 
         RefreshPools(Data);

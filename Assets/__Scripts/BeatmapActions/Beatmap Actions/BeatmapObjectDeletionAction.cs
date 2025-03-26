@@ -15,7 +15,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
     {
         foreach (var obj in Data)
         {
-            SpawnObject(obj, true);
+            SpawnObject(obj);
         }
 
         RefreshPools(Data);

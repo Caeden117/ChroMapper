@@ -465,7 +465,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             if (conflicting.Any())
             {
                 actions.Add(new BeatmapObjectModifiedWithConflictingAction(draggedObjectData, draggedObjectData,
-                    originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag."));
+                    originalDraggedObjectData, conflicting, "Modified via alt-click and drag."));
             }
             else
             {
@@ -601,7 +601,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             if (conflictingArcs.Any())
             {
                 actions.Add(new BeatmapObjectModifiedWithConflictingAction(draggedSlider, draggedSlider,
-                    originalSlider, conflictingArcs.First(), "Modified via alt-click and drag."));
+                    originalSlider, conflictingArcs, "Modified via alt-click and drag."));
             }
             else
             {
