@@ -28,6 +28,7 @@ namespace Beatmap.Containers
         {
             var absoluteNJS = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed + NJSData.RelativeNJS;
             njsText.text = absoluteNJS.ToString(CultureInfo.InvariantCulture);
+            njsText.enabled = NJSData.UsePrevious != 1;
         }
 
         public override void UpdateGridPosition()
