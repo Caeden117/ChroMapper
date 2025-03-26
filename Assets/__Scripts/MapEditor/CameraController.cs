@@ -64,6 +64,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     private List<TrackAnimator> playerTracks = new();
     private TrackAnimator currentTrack;
 
+
+    private bool ignoreInitialMouseMovement = false;
+    private int framesAfterRightClick = 0;
+
     public bool LockedOntoNoteGrid
     {
         get => lockOntoNoteGrid;
@@ -234,7 +238,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         if (lockMouse && !mouseLocked)
         {
             instance.savedMousePos = Mouse.current.position.ReadValue();
-
+            
+            mouseX = 0;
+            mouseY = 0;
             // Locked state automatically hides the cursor, so no need to set visibility
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -289,6 +295,38 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public void OnRotateCamera(CallbackContext context)
     {
+        if (!canMoveCamera) return;
+        
+        if (ignoreInitialMouseMovement)
+        {
+            framesAfterRightClick++;
+            
+            // Ignore the first 3 frames
+            if (framesAfterRightClick <= 3)
+            {
+                mouseX = 0;
+                mouseY = 0;
+                return;
+            }
+            
+            // After 8 frames, return to normal mouse handling
+            if (framesAfterRightClick > 8)
+            {
+                ignoreInitialMouseMovement = false;
+            }
+            else
+            {
+                // Between frames 4-8, apply limit mouse movement
+                var delta = context.ReadValue<Vector2>();
+                delta.x = Mathf.Clamp(delta.x, -0.1f, 0.1f);
+                delta.y = Mathf.Clamp(delta.y, -0.1f, 0.1f);
+                
+                mouseX = delta.x * mouseSensitivity / 10f;
+                mouseY = delta.y * mouseSensitivity / 10f;
+                return;
+            }
+        }
+        
         var deltaMouseMovement = context.ReadValue<Vector2>();
         mouseX = deltaMouseMovement.x * mouseSensitivity / 10f;
         mouseY = deltaMouseMovement.y * mouseSensitivity / 10f;
@@ -297,6 +335,15 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     public void OnHoldtoMoveCamera(CallbackContext context)
     {
         if (customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
+        
+        if (context.performed && !canMoveCamera)
+        {
+            mouseX = 0;
+            mouseY = 0;
+            ignoreInitialMouseMovement = true;
+            framesAfterRightClick = 0;
+        }
+        
         canMoveCamera = context.performed;
         if (canMoveCamera)
             CMInputCallbackInstaller.DisableActionMaps(typeof(CameraController), actionMapsDisabledWhileMoving);
