@@ -140,7 +140,15 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         ignoreToggle = false;
 
         StartCoroutine(nameof(LoadImage));
-        StartCoroutine(nameof(LoadDuration));
+
+        if (mapInfo.SongDurationMetadata > 0)
+        {
+            SetDuration(mapInfo.SongDurationMetadata);
+        }
+        else
+        {
+            StartCoroutine(nameof(LoadDuration));
+        }
     }
 
     private IEnumerator LoadImage()
