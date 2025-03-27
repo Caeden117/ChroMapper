@@ -12,18 +12,36 @@ public class BeatmapObjectModifiedAction : BeatmapAction
     private BaseObject originalData;
     private BaseObject originalObject;
 
+    private MergeType mergeType;
+    private int mergeCount;
+
     // This constructor is needed for United Mapping
     public BeatmapObjectModifiedAction() : base() { }
 
     public BeatmapObjectModifiedAction(BaseObject edited, BaseObject originalObject, BaseObject originalData,
-        string comment = "No comment.", bool keepSelection = false) : base(new[] { edited, originalObject }, comment)
+        string comment = "No comment.", bool keepSelection = false, MergeType mergeType = MergeType.None) : base(new[] { edited, originalObject }, comment)
     {
         editedObject = edited;
         editedData = BeatmapFactory.Clone(edited);
 
         this.originalData = originalData;
         this.originalObject = originalObject;
+        this.mergeType = mergeType;
         addToSelection = keepSelection;
+    }
+
+    public BeatmapObjectModifiedAction TryMerge(BeatmapObjectModifiedAction previous)
+    {
+        if (mergeType == MergeType.None || previous.mergeType != mergeType || originalObject != previous.editedObject || editedData.CompareTo(previous.originalData) == 0) return null;
+
+        previous.editedObject = editedObject;
+        previous.editedData = editedData;
+
+        previous.Comment = previous.Comment.Replace($" ({previous.mergeCount}x merged)", "");
+        previous.mergeCount++;
+        previous.Comment += $" ({previous.mergeCount}x merged)";
+
+        return previous;
     }
 
     public override BaseObject DoesInvolveObject(BaseObject obj) => obj == editedObject ? originalObject : null;
@@ -90,5 +108,25 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         originalObject = BeatmapFactory.Clone(originalData);
 
         Data = new[] { editedObject, originalObject };
+    }
+
+    public enum MergeType
+    {
+        None,
+        NoteDirectionChange,
+        NotePreciseDirectionTweak,
+        ArcHeadDirectionChange,
+        ArcTailDirectionChange,
+        ArcHeadMultTweak,
+        ArcTailMultTweak,
+        ChainSliceCountTweak,
+        ChainSquishTweak,
+        WallDurationTweak,
+        WallLowerBoundTweak,
+        WallUpperBoundTweak,
+        EventMainTweak,
+        EventAltTweak,
+        BPMValueTweak,
+        NJSValueTweak
     }
 }

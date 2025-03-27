@@ -31,7 +31,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             obs.ObstacleData.Duration += snapping;
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.WallDurationTweak));
         }
     }
 
@@ -50,7 +50,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             data.Height = Mathf.Min(data.Height, 5 - data.PosY);
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.WallLowerBoundTweak));
         }
     }
     public void OnChangeWallUpperBound(InputAction.CallbackContext context)
@@ -67,7 +67,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.WallUpperBoundTweak));
         }
     }
 

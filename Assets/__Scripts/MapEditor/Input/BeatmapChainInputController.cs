@@ -37,7 +37,7 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
         c.ChainData.SliceCount += modifier;
         c.ChainData.SliceCount = Mathf.Clamp(c.ChainData.SliceCount, minChainCount, maxChainCount);
         c.GenerateChain();
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.ChainSliceCountTweak));
     }
 
     public void OnInvertChainColor(InputAction.CallbackContext context)
@@ -81,6 +81,6 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
         c.ChainData.Squish += modifier;
         c.ChainData.Squish = Mathf.Clamp(c.ChainData.Squish, minChainSquish, maxChainSquish);
         c.GenerateChain();
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original));
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(c.ObjectData, c.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.ChainSquishTweak));
     }
 }
