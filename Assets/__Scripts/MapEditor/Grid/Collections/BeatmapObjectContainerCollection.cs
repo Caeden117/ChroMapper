@@ -359,9 +359,20 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     public static void RefreshFutureObjectsPosition(float jsonTime)
     {
         // we have to refresh bpm events FIRST, and only then can we refresh other objects
-        // this is a janky way of accomplishing that
-        var objectTypes = new List<ObjectType> { ObjectType.BpmChange };
-        objectTypes.AddRange(((IEnumerable<ObjectType>)Enum.GetValues(typeof(ObjectType))).Where(x => x != ObjectType.BpmChange));
+        var objectTypes = new List<ObjectType>
+        { 
+            ObjectType.BpmChange,
+            ObjectType.Note,
+            ObjectType.Event,
+            ObjectType.Obstacle,
+            ObjectType.CustomNote,
+            ObjectType.CustomEvent,
+            ObjectType.Arc,
+            ObjectType.Chain,
+            ObjectType.Bookmark,
+            ObjectType.Waypoint,
+            ObjectType.NJSEvent
+        };
 
         foreach (var objectType in objectTypes)
         {
