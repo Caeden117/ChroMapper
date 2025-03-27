@@ -42,7 +42,7 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                         .BpmChange);
 
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
-                    containerToEdit.ObjectData, original, "Tweaked bpm", mergeType: BeatmapObjectModifiedAction.MergeType.BPMValueTweak));
+                    containerToEdit.ObjectData, original, "Tweaked bpm", mergeType: ActionMergeType.BPMValueTweak));
 
                 // Update cursor position
                 var atsc = bpmChanges.AudioTimeSyncController;

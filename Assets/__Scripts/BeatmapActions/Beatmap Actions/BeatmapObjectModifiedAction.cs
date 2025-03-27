@@ -2,7 +2,7 @@ using LiteNetLib.Utils;
 using Beatmap.Base;
 using Beatmap.Helper;
 
-public class BeatmapObjectModifiedAction : BeatmapAction
+public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
 {
     private bool addToSelection;
 
@@ -12,36 +12,46 @@ public class BeatmapObjectModifiedAction : BeatmapAction
     private BaseObject originalData;
     private BaseObject originalObject;
 
-    private MergeType mergeType;
-    private int mergeCount;
+    public ActionMergeType MergeType { get; set; }
+    public int MergeCount { get; set; }
 
     // This constructor is needed for United Mapping
     public BeatmapObjectModifiedAction() : base() { }
 
     public BeatmapObjectModifiedAction(BaseObject edited, BaseObject originalObject, BaseObject originalData,
-        string comment = "No comment.", bool keepSelection = false, MergeType mergeType = MergeType.None) : base(new[] { edited, originalObject }, comment)
+        string comment = "No comment.", bool keepSelection = false, ActionMergeType mergeType = ActionMergeType.None) : base(new[] { edited, originalObject }, comment)
     {
         editedObject = edited;
         editedData = BeatmapFactory.Clone(edited);
 
         this.originalData = originalData;
         this.originalObject = originalObject;
-        this.mergeType = mergeType;
         addToSelection = keepSelection;
+        MergeType = mergeType;
     }
 
-    public BeatmapObjectModifiedAction TryMerge(BeatmapObjectModifiedAction previous)
+    public IMergeableAction TryMerge(IMergeableAction previous)
     {
-        if (mergeType == MergeType.None || previous.mergeType != mergeType || originalObject != previous.editedObject || editedData.CompareTo(previous.originalData) == 0) return null;
+        return CanMerge(previous) ? DoMerge(previous) : null;
+    }
 
-        previous.editedObject = editedObject;
-        previous.editedData = editedData;
+    public bool CanMerge(IMergeableAction previous)
+    {
+        if (previous is not BeatmapObjectModifiedAction previousAction) return false;
+        return MergeType != ActionMergeType.None && previous.MergeType == MergeType && originalObject == previousAction.editedObject && editedData.CompareTo(previousAction.originalData) != 0;
+    }
 
-        previous.Comment = previous.Comment.Replace($" ({previous.mergeCount}x merged)", "");
-        previous.mergeCount++;
-        previous.Comment += $" ({previous.mergeCount}x merged)";
+    public IMergeableAction DoMerge(IMergeableAction previous)
+    {
+        if (previous is not BeatmapObjectModifiedAction previousAction) return null;
+        previousAction.editedObject = editedObject;
+        previousAction.editedData = editedData;
 
-        return previous;
+        previousAction.Comment = previousAction.Comment.Replace($" ({previousAction.MergeCount}x merged)", "");
+        previousAction.MergeCount++;
+        previousAction.Comment += $" ({previousAction.MergeCount}x merged)";
+
+        return previousAction;
     }
 
     public override BaseObject DoesInvolveObject(BaseObject obj) => obj == editedObject ? originalObject : null;
@@ -108,25 +118,5 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         originalObject = BeatmapFactory.Clone(originalData);
 
         Data = new[] { editedObject, originalObject };
-    }
-
-    public enum MergeType
-    {
-        None,
-        NoteDirectionChange,
-        NotePreciseDirectionTweak,
-        ArcHeadDirectionChange,
-        ArcTailDirectionChange,
-        ArcHeadMultTweak,
-        ArcTailMultTweak,
-        ChainSliceCountTweak,
-        ChainSquishTweak,
-        WallDurationTweak,
-        WallLowerBoundTweak,
-        WallUpperBoundTweak,
-        EventMainTweak,
-        EventAltTweak,
-        BPMValueTweak,
-        NJSValueTweak
     }
 }

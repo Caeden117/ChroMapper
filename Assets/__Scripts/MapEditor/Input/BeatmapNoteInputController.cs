@@ -147,12 +147,12 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
         BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note)
             .RefreshSpecialAngles(note.ObjectData, false, false);
 
-        var actions = new List<BeatmapAction> { new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original, "Update Note Direction", mergeType: BeatmapObjectModifiedAction.MergeType.NoteDirectionChange) };
+        var actions = new List<BeatmapAction> { new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original, "Update Note Direction", mergeType: ActionMergeType.NoteDirectionChange) };
         CommonNotePlacement.UpdateAttachedSlidersDirection(note.NoteData, actions);
 
         if (actions.Count > 1)
         {
-            BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, true, "Update Note Direction"));
+            BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, true, "Update Note Direction", mergeType: ActionMergeType.NoteDirectionChange));
         }
         else
         {
@@ -172,7 +172,7 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
 
             BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note)
                 .RefreshSpecialAngles(note.ObjectData, false, false);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.NotePreciseDirectionTweak));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(note.ObjectData, note.ObjectData, original, mergeType: ActionMergeType.NotePreciseDirectionTweak));
         }
         else
         {

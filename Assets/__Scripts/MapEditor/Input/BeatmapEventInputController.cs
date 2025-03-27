@@ -116,7 +116,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         if (e.EventData.CompareTo(original) == 0) return;
 
         eventAppearanceSo.SetEventAppearance(e);
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.EventMainTweak));
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original, mergeType: ActionMergeType.EventMainTweak));
     }
 
     // for event that occasionally gets changed
@@ -141,7 +141,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         }
 
         eventAppearanceSo.SetEventAppearance(e);
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.EventAltTweak));
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(e.ObjectData, e.ObjectData, original, mergeType: ActionMergeType.EventAltTweak));
     }
 
     private void RefreshPrevEventContainer(EventContainer e)
