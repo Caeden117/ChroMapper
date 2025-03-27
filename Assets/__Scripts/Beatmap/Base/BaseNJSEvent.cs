@@ -79,6 +79,29 @@ namespace Beatmap.Base
             }
         }
 
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseNJSEvent njsEvent) return comparison;
+
+            // Early return if use previous is 1 in both
+            // Why: relative NJS and easing are irrelevant if this is set to 1, so these events can be considered equal
+            if (UsePrevious == 1 && njsEvent.UsePrevious == 1) return comparison;
+
+            // Compare by relative NJS if times match
+            if (comparison == 0) comparison = RelativeNJS.CompareTo(njsEvent.RelativeNJS);
+
+            // Compare by easing if relative NJS matches
+            if (comparison == 0) comparison = Easing.CompareTo(njsEvent.Easing);
+
+            // Compare by use previous if easing matches
+            if (comparison == 0) comparison = UsePrevious.CompareTo(njsEvent.UsePrevious);
+
+            return comparison;
+        }
+
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             _ => new JSONObject
