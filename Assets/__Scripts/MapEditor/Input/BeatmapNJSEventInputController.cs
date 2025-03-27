@@ -12,6 +12,8 @@ public class BeatmapNJSEventInputController : BeatmapInputController<NJSEventCon
             RaycastFirstObject(out var containerToEdit);
             if (containerToEdit != null)
             {
+                if (containerToEdit.NJSData.UsePrevious == 1) return;
+
                 var original = BeatmapFactory.Clone(containerToEdit.ObjectData);
 
                 // Think decimal NJS will be more common eventually. Can tweak this later.
