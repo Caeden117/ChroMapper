@@ -48,6 +48,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             var data = obs.ObjectData as BaseObstacle;
             data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
             data.Height = Mathf.Min(data.Height, 5 - data.PosY);
+            if (data.CompareTo(original) == 0) return;
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
             BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.WallLowerBoundTweak));
@@ -65,6 +66,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
                 : -1;
             var data = obs.ObjectData as BaseObstacle;
             data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
+            if (data.CompareTo(original) == 0) return;
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
             BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original, mergeType: BeatmapObjectModifiedAction.MergeType.WallUpperBoundTweak));
