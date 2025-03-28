@@ -25,6 +25,7 @@ namespace Beatmap.Base
 
         protected BaseObject()
         {
+            JsonTime = 0; // needed to set songBpmTime
         }
 
         protected BaseObject(float time, JSONNode customData = null)
