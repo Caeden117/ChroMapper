@@ -71,7 +71,7 @@ namespace Beatmap.Base
             get => tailJsonTime;
             set
             {
-                var map = BeatSaberSongContainer.Instance.Map;
+                var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
                 tailSongBpmTime = map?.JsonTimeToSongBpmTime(value);
                 tailJsonTime = value;
             }

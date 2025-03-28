@@ -105,7 +105,7 @@ namespace Beatmap.Base
             get => duration; 
             set
             {
-                var map = BeatSaberSongContainer.Instance.Map;
+                var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
                 durationSongBpm = map?.JsonTimeToSongBpmTime(value + JsonTime) - songBpmTime;
                 duration = value;
             }
