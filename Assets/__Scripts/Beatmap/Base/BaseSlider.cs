@@ -34,6 +34,7 @@ namespace Beatmap.Base
 
         protected BaseSlider()
         {
+            TailJsonTime = 0; // needed to set tailSongBpmTime
         }
 
         protected BaseSlider(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
