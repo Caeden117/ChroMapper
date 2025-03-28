@@ -20,8 +20,12 @@ public class SelectionPastedAction : BeatmapAction
     {
         foreach (var obj in Data)
             DeleteObject(obj, false);
+
+        SelectionController.SelectionChangedEvent?.Invoke();
+
         foreach (var obj in removed)
             SpawnObject(obj);
+
         RefreshPools(removed);
         RefreshEventAppearance();
     }

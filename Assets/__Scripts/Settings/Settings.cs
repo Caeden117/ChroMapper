@@ -166,7 +166,6 @@ public class Settings
     public float Camera_MouseSensitivity = 2;
     public float Camera_MovementSpeed = 15;
 
-    public bool NodeEditor_Enabled = true;
     public bool NodeEditor_UseKeybind = true;
 
     public int NodeEditorTextSize = 10;

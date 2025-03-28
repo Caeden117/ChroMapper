@@ -224,10 +224,6 @@ MonoBehaviour:
     m_Localized: "V\xE5gform f\xF6ljer arbetsfl\xF6de"
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: Aktivera nodredigeraren
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: Nodredigerarens tangentbindning
     m_Metadata:
@@ -498,10 +494,6 @@ MonoBehaviour:
   - m_Id: 114
     m_Localized: "Hur l\xE5ngt innan block och h\xE4ndelser f\xF6rsvinner fr\xE5n
       bild."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: Aktivera nodredigeraren. Prova att markera ett objekt!
     m_Metadata:
       m_Items: []
   - m_Id: 116

@@ -227,9 +227,6 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
         else
         {
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
-            SelectionController.RefreshSelectionMaterial(selected.Any());
-            SelectionController.SelectionChangedEvent?.Invoke();
-            OnPhysicsRaycast(previousHit, transformed);
         }
     }
 
@@ -239,12 +236,14 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
         IsSelecting = false;
         selected.Clear(); // oh shit turned out i didnt need to rewrite the whole thing, just move it over here
         OnPhysicsRaycast(previousHit, transformed);
+        SelectionController.SelectionChangedEvent?.Invoke();
     }
 
     public override void CancelPlacement()
     {
         IsSelecting = false;
-        foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject);
+        foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject, false);
+        SelectionController.SelectionChangedEvent?.Invoke();
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued) { }

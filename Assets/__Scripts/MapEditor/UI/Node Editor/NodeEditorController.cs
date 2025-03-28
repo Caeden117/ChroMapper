@@ -43,8 +43,8 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
     private void Update()
     {
-        if (!Settings.Instance.NodeEditor_Enabled || UIMode.SelectedMode != UIModeType.Normal) return;
-        if (SelectionController.SelectedObjects.Count == 0 && IsActive)
+        if (UIMode.SelectedMode != UIModeType.Normal) return;
+        if (!SelectionController.HasSelectedObjects() && IsActive)
         {
             if (!Settings.Instance.NodeEditor_UseKeybind)
             {

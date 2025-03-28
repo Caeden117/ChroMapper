@@ -224,10 +224,6 @@ MonoBehaviour:
     m_Localized: Waveform volgt de workflow
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: Node-editor inscakelen
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: Node-editor sneltoets
     m_Metadata:
@@ -498,10 +494,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Localized: Hoe ver noten en evenementen zullen despawnen.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: Schakel de Node-editor in. Probeer een object te selecteren!
     m_Metadata:
       m_Items: []
   - m_Id: 116

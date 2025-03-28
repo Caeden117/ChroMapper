@@ -251,10 +251,6 @@ MonoBehaviour:
       \u0437\u0430 \u0440\u0430\u0431\u043E\u0447\u0438\u043C \u043F\u0440\u043E\u0441\u0442\u0440\u0430\u043D\u0441\u0442\u0432\u043E\u043C"
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C Node Editor"
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: "\u041F\u0440\u0438\u0432\u044F\u0437\u043A\u0430 Node Editor"
     m_Metadata:
@@ -608,10 +604,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Localized: How far notes and events will despawn.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: Enable Node Editor. Try selecting an object!
     m_Metadata:
       m_Items: []
   - m_Id: 116

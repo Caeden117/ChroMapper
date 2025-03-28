@@ -224,10 +224,6 @@ MonoBehaviour:
     m_Localized: Seguir el workflow con la forma de onda
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: Habilitar el editor de nodo
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: Atajo del editor de nodo
     m_Metadata:
@@ -490,10 +486,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Localized: "C\xF3mo de lejos desaparecer\xE1n las notas y los eventos."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: "Activa el editor de nodos. \xA1Prueba a seleccionar un objeto!"
     m_Metadata:
       m_Items: []
   - m_Id: 116

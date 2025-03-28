@@ -219,10 +219,6 @@ MonoBehaviour:
     m_Key: visuals.waveform
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Key: visuals.nodeeditor
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Key: visuals.nodeeditor.keybind
     m_Metadata:
@@ -441,10 +437,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Key: graphics.despawn.tooltip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Key: visuals.nodeeditor.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 116
