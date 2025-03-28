@@ -392,6 +392,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                         obj.RecomputeSongBpmTime();
                     }
                 }
+                else if (collection is ObstacleGridContainer)
+                {
+                    if ((obj as BaseObstacle).Duration + obj.JsonTime > jsonTime)
+                    {
+                        obj.RecomputeSongBpmTime();
+                    }
+                }
             }
             foreach (var container in collection.LoadedContainers)
             {
