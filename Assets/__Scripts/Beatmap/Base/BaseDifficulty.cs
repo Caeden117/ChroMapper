@@ -99,6 +99,8 @@ namespace Beatmap.Base
 
         public void BootstrapBpmEvents(float songBpm)
         {
+            this.songBpm = songBpm;
+
             // remove invalid bpm events
             BpmEvents.RemoveAll(x => x.JsonTime < 0);
             BpmEvents.RemoveAll(x => x.Bpm < 0);
@@ -128,8 +130,6 @@ namespace Beatmap.Base
 
                 lastBpmEvent = bpmEvent;
             }
-
-            this.songBpm = songBpm;
         }
 
         public float? JsonTimeToSongBpmTime(float jsonTime)
