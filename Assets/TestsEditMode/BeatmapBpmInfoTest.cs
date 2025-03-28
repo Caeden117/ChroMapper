@@ -82,16 +82,16 @@ namespace TestsEditMode
         [Test]
         public void GetFromJson_V4AudioData()
         {
-          var bpmInfo = V4AudioData.GetFromJson(JSON.Parse(audioDataJson));
+            var bpmInfo = V4AudioData.GetFromJson(JSON.Parse(audioDataJson));
 
-          AssertCommonGetFromJson(bpmInfo);
-          
-          Assert.AreEqual("4.0.0", bpmInfo.Version);
+            AssertCommonGetFromJson(bpmInfo);
 
-          Assert.AreEqual(1, bpmInfo.LufsRegions.Count);
-          Assert.AreEqual(0, bpmInfo.LufsRegions[0].StartSampleIndex);
-          Assert.AreEqual(882000, bpmInfo.LufsRegions[0].EndSampleIndex);
-          Assert.AreEqual(3.1f, bpmInfo.LufsRegions[0].Loudness);
+            Assert.AreEqual("4.0.0", bpmInfo.Version);
+
+            Assert.AreEqual(1, bpmInfo.LufsRegions.Count);
+            Assert.AreEqual(0, bpmInfo.LufsRegions[0].StartSampleIndex);
+            Assert.AreEqual(882000, bpmInfo.LufsRegions[0].EndSampleIndex);
+            Assert.AreEqual(3.1f, bpmInfo.LufsRegions[0].Loudness);
         }
 
         private void AssertCommonGetFromJson(BaseBpmInfo bpmInfo)
@@ -162,13 +162,17 @@ namespace TestsEditMode
             var songBpm = 60f;
             var audioFrequency = 44100;
             var audiosamples = 44100 * 20;
-            var bpmEvents = new List<BaseBpmEvent>
+            var difficulty = new BaseDifficulty
             {
-                new() { JsonTime = 0, Bpm = 60 },
-                new() { JsonTime = 10, Bpm = 120 }
+                BpmEvents = new List<BaseBpmEvent>
+                {
+                    new() { JsonTime = 0, Bpm = 60 },
+                    new() { JsonTime = 10, Bpm = 120 }
+                }
             };
+            difficulty.BootstrapBpmEvents(songBpm);
 
-            var regions = BaseBpmInfo.GetBpmInfoRegions(bpmEvents, songBpm, audiosamples, audioFrequency);
+            var regions = BaseBpmInfo.GetBpmInfoRegions(difficulty.BpmEvents, songBpm, audiosamples, audioFrequency);
             Assert.AreEqual(2, regions.Count);
             
             Assert.AreEqual(0f, regions[0].StartBeat);
@@ -205,27 +209,41 @@ namespace TestsEditMode
             var songBpm = 60f;
             var audioFrequency = 44100;
             var audiosamples = 44100 * 20;
-            
-            var initialBpmEvents = new List<BaseBpmEvent>
+
+            var initialDifficulty = new BaseDifficulty
             {
-                new() { JsonTime = 0, Bpm = 60 },
-                new() { JsonTime = 10, Bpm = 120 }
+                BpmEvents = new List<BaseBpmEvent>
+                {
+                    new() { JsonTime = 0, Bpm = 60 },
+                    new() { JsonTime = 10, Bpm = 120 }
+                }
             };
+            initialDifficulty.BootstrapBpmEvents(songBpm);
+
+            var initialBpmEvents = initialDifficulty.BpmEvents;
             var initialRegions = BaseBpmInfo.GetBpmInfoRegions(initialBpmEvents, songBpm, audiosamples, audioFrequency);
             
             // Loop conversion to and from a bunch of times
-            List<BaseBpmEvent> bpmEvents = new List<BaseBpmEvent>
+            var difficulty = new BaseDifficulty
             {
-                new() { JsonTime = 0, Bpm = 60 },
-                new() { JsonTime = 10, Bpm = 120 }
+                BpmEvents = new List<BaseBpmEvent>
+                {
+                    new() { JsonTime = 0, Bpm = 60 },
+                    new() { JsonTime = 10, Bpm = 120 }
+                }
             };
+            difficulty.BootstrapBpmEvents(songBpm);
+
             List<BpmInfoBpmRegion> regions = new List<BpmInfoBpmRegion>();
+
             for (var i = 0; i < 100; i++)
             {
-                regions = BaseBpmInfo.GetBpmInfoRegions(bpmEvents, songBpm, audiosamples, audioFrequency);
-                bpmEvents = BaseBpmInfo.GetBpmEvents(regions, audioFrequency);
+                regions = BaseBpmInfo.GetBpmInfoRegions(difficulty.BpmEvents, songBpm, audiosamples, audioFrequency);
+                difficulty.BpmEvents = BaseBpmInfo.GetBpmEvents(regions, audioFrequency);
+                difficulty.BootstrapBpmEvents(songBpm);
             }
-            
+            var bpmEvents = difficulty.BpmEvents;
+
             // Compare bpm events
             Assert.AreEqual(initialBpmEvents.Count, bpmEvents.Count);
             
