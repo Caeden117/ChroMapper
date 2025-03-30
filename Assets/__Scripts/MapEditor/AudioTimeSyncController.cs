@@ -68,7 +68,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         private set
         {
             currentJsonTime = value;
-            currentSongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(value) ?? value;
+            currentSongBpmTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(value);
             currentSeconds = GetSecondsFromBeat(currentSongBpmTime);
             ValidatePosition();
             UpdateMovables();
@@ -85,7 +85,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         private set
         {
             currentSongBpmTime = value;
-            currentJsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
+            currentJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(value);
             currentSeconds = GetSecondsFromBeat(value);
             ValidatePosition();
             UpdateMovables();
@@ -99,7 +99,7 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         {
             currentSeconds = value;
             currentSongBpmTime = GetBeatFromSeconds(value);
-            currentJsonTime = bpmChangeGridContainer.SongBpmTimeToJsonTime(currentSongBpmTime);
+            currentJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(currentSongBpmTime);
             ValidatePosition();
             UpdateMovables();
         }
@@ -427,24 +427,22 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
     {
         if (IsPlaying) return;
         var songBpmTime = GetBeatFromSeconds(seconds);
-        UpdateCurrentTimes(songBpmTime);
+        currentJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(songBpmTime);
+
+        SnapToGrid();
         SongAudioSource.time = CurrentSeconds;
-        ValidatePosition();
-        UpdateMovables();
     }
 
     public void SnapToGrid(bool positionValidated = false)
     {
-        UpdateCurrentTimes(currentSongBpmTime);
+        var jsonTime = (float)Math.Round(CurrentJsonTime * GridMeasureSnapping, MidpointRounding.AwayFromZero) / GridMeasureSnapping;
+
+        currentJsonTime = jsonTime;
+        currentSongBpmTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(jsonTime);
+        currentSeconds = GetSecondsFromBeat(currentSongBpmTime);
+
         if (!positionValidated) ValidatePosition();
         UpdateMovables();
-    }
-
-    private void UpdateCurrentTimes(float songBpmTime)
-    {
-        currentJsonTime = bpmChangeGridContainer.SongBpmTimeToRoundedJsonTime(songBpmTime);
-        currentSongBpmTime = bpmChangeGridContainer.JsonTimeToSongBpmTime(currentJsonTime);
-        currentSeconds = GetSecondsFromBeat(currentSongBpmTime);
     }
 
     public void RefreshGridSnapping() => GridMeasureSnappingChanged?.Invoke(GridMeasureSnapping);
@@ -471,8 +469,6 @@ public class AudioTimeSyncController : MonoBehaviour, CMInput.IPlaybackActions, 
         CurrentJsonTime = jsonTime;
         SongAudioSource.time = CurrentSeconds;
     }
-
-    public float FindRoundedBeatTime(float beat, float snap = -1) => bpmChangeGridContainer.FindRoundedBpmTime(beat, snap);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float GetBeatFromSeconds(float seconds) => MapInfo.BeatsPerMinute / 60 * seconds;

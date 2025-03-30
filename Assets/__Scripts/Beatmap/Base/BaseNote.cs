@@ -36,7 +36,7 @@ namespace Beatmap.Base
 
         public BaseNote(BaseNote other)
         {
-            SetTimes(other.JsonTime, other.SongBpmTime);
+            SetTimes(other.JsonTime);
             PosX = other.PosX;
             PosY = other.PosY;
             Color = other.Color;

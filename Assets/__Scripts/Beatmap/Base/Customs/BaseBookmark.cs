@@ -41,7 +41,7 @@ namespace Beatmap.Base.Customs
 
         protected BaseBookmark(BaseBookmark other)
         {
-            SetTimes(other.JsonTime, other.SongBpmTime);
+            SetTimes(other.JsonTime);
             Name = other.Name;
             Color = other.Color;
         }

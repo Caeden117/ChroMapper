@@ -53,8 +53,8 @@ namespace Beatmap.Base
 
         public float EditorScale { get; private set; }
 
-        public virtual float SpawnSongBpmTime { get { return SongBpmTime - Hjd; } }
-        public virtual float DespawnSongBpmTime { get { return SongBpmTime + Hjd; } }
+        public virtual float SpawnSongBpmTime => SongBpmTime - Hjd;
+        public virtual float DespawnSongBpmTime => SongBpmTime + Hjd;
 
         public virtual JSONNode CustomAnimation { get; set; }
 

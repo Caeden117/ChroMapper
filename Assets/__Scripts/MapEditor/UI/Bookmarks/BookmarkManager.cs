@@ -108,18 +108,19 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     // while the objects did. This ensures maps in this period display bookmarks in the correct place.
     private void ConvertBookmarkTimesFromOldDevVersions()
     {
-        var bookmarksUseOfficialBpmEventsKey = BeatSaberSongContainer.Instance.Map.BookmarksUseOfficialBpmEventsKey;
-        var bookmarksNeedConversion = !BeatSaberSongContainer.Instance.Map.CustomData.HasKey(bookmarksUseOfficialBpmEventsKey)
-            || !BeatSaberSongContainer.Instance.Map.CustomData[bookmarksUseOfficialBpmEventsKey].IsBoolean
-            || !BeatSaberSongContainer.Instance.Map.CustomData[bookmarksUseOfficialBpmEventsKey].AsBool;
+        var map = BeatSaberSongContainer.Instance.Map;
+        var bookmarksUseOfficialBpmEventsKey = map.BookmarksUseOfficialBpmEventsKey;
+        var bookmarksNeedConversion = !map.CustomData.HasKey(bookmarksUseOfficialBpmEventsKey)
+            || !map.CustomData[bookmarksUseOfficialBpmEventsKey].IsBoolean
+            || !map.CustomData[bookmarksUseOfficialBpmEventsKey].AsBool;
 
-        bookmarksNeedConversion &= BeatSaberSongContainer.Instance.Map.MajorVersion != 4;
+        bookmarksNeedConversion &= map.MajorVersion != 4;
         
-        foreach (var bookmark in BeatSaberSongContainer.Instance.Map.Bookmarks)
+        foreach (var bookmark in map.Bookmarks)
         {
             if (bookmarksNeedConversion)
             {
-                bookmark.SongBpmTime = bookmark.JsonTime;
+                bookmark.JsonTime = (float)map.SongBpmTimeToJsonTime(bookmark.JsonTime);
             }
             else
             {

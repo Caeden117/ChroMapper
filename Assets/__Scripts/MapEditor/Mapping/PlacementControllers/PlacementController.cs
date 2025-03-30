@@ -77,7 +77,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         get => roundedJsonTime;
         set
         {
-            SongBpmTime = BpmChangeGridContainer.JsonTimeToSongBpmTime(value);
+            SongBpmTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(value);
             roundedJsonTime = value;
         }
     }
@@ -184,7 +184,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)),
                 roundedHit.z);
 
-            queuedData.SetTimes(roundedJsonTime, SongBpmTime);
+            queuedData.SetTimes(roundedJsonTime);
             OnPhysicsRaycast(hit, roundedHit);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
@@ -348,7 +348,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                        EditorScaleController.EditorScale;
         }
 
-        var hitPointJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(realTime);
+        var hitPointJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(realTime);
         roundedJsonTime = (float)Math.Round((hitPointJsonTime - offsetJsonTime) / snap, MidpointRounding.AwayFromZero) * snap;
 
         if (!Atsc.IsPlaying) roundedJsonTime += offsetJsonTime;

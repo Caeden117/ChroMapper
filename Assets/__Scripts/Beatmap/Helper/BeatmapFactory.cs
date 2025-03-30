@@ -17,28 +17,36 @@ namespace Beatmap.Helper
     {
         public static BaseDifficulty GetDifficultyFromJson(JSONNode mainNode, string directoryAndFile)
         {
+            var info = BeatSaberSongContainer.Instance.Info;
+            var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+            BaseDifficulty difficulty;
+
             var v = PeekMapVersionFromJson(mainNode);
 
             switch (v[0])
             {
                 case '4':
                     Settings.Instance.MapVersion = 4;
-                    var difficulty = V4Difficulty.GetFromJson(mainNode, directoryAndFile);
-                    var info = BeatSaberSongContainer.Instance.Info;
-                    var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+                    difficulty = V4Difficulty.GetFromJson(mainNode, directoryAndFile);
                     V4Difficulty.LoadBpmFromAudioData(difficulty, info);
                     V4Difficulty.LoadLightsFromLightshowFile(difficulty, info, infoDifficulty);
                     V4Difficulty.LoadBookmarksFromOfficialEditor(difficulty, info, infoDifficulty);
-                    return difficulty;
+                    break;
                 case '3':
                     Settings.Instance.MapVersion = 3;
-                    return V3Difficulty.GetFromJson(mainNode, directoryAndFile);
+                    difficulty = V3Difficulty.GetFromJson(mainNode, directoryAndFile);
+                    break;
                 case '2':
                     Settings.Instance.MapVersion = 2;
-                    return V2Difficulty.GetFromJson(mainNode, directoryAndFile);
+                    difficulty = V2Difficulty.GetFromJson(mainNode, directoryAndFile);
+                    break;
                 default:
                     return null;
             }
+
+            difficulty.BootstrapBpmEvents(info.BeatsPerMinute);
+            difficulty.RecomputeAllObjectSongBpmTimes();
+            return difficulty;
         }
 
         private static string PeekMapVersionFromJson(JSONNode mainNode)

@@ -359,9 +359,25 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public static void RefreshFutureObjectsPosition(float jsonTime)
     {
-        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
+        // we have to refresh bpm events FIRST, and only then can we refresh other objects
+        var objectTypes = new List<ObjectType>
+        { 
+            ObjectType.BpmChange,
+            ObjectType.Note,
+            ObjectType.Event,
+            ObjectType.Obstacle,
+            ObjectType.CustomNote,
+            ObjectType.CustomEvent,
+            ObjectType.Arc,
+            ObjectType.Chain,
+            ObjectType.Bookmark,
+            ObjectType.Waypoint,
+            ObjectType.NJSEvent
+        };
+
+        foreach (var objectType in objectTypes)
         {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(objectType);
             if (collection == null) continue;
             // REVIEW: not sure if allocation is avoidable
             foreach (var obj in collection.LoadedObjects)
@@ -373,6 +389,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 else if (collection is ChainGridContainer || collection is ArcGridContainer)
                 {
                     if ((obj as BaseSlider).TailJsonTime > jsonTime)
+                    {
+                        obj.RecomputeSongBpmTime();
+                    }
+                }
+                else if (collection is ObstacleGridContainer)
+                {
+                    if ((obj as BaseObstacle).Duration + obj.JsonTime > jsonTime)
                     {
                         obj.RecomputeSongBpmTime();
                     }

@@ -93,6 +93,102 @@ namespace Beatmap.Base
             new List<BaseObject>(CustomEvents),
         };
 
+        #region BPM Time Conversion Logic
+
+        private float? songBpm;
+
+        public void BootstrapBpmEvents(float songBpm)
+        {
+            this.songBpm = songBpm;
+
+            // remove invalid bpm events
+            BpmEvents.RemoveAll(x => x.JsonTime < 0);
+            BpmEvents.RemoveAll(x => x.Bpm < 0);
+
+            if (!BpmEvents.Any()) return;
+
+            BpmEvents.Sort();
+
+            // insert beat 0 bpm event if needed
+            if (BpmEvents.First().JsonTime > 0)
+            {
+                var newBpmEvent = new BaseBpmEvent(0, songBpm);
+                BpmEvents.Insert(0, newBpmEvent);
+            }
+
+            BaseBpmEvent lastBpmEvent = null;
+            foreach (var bpmEvent in BpmEvents)
+            {
+                if (lastBpmEvent is null)
+                {
+                    bpmEvent.songBpmTime = bpmEvent.JsonTime;
+                }
+                else
+                {
+                    bpmEvent.songBpmTime = lastBpmEvent.songBpmTime + (bpmEvent.JsonTime - lastBpmEvent.JsonTime) * (songBpm / lastBpmEvent.Bpm);
+                }
+
+                lastBpmEvent = bpmEvent;
+            }
+        }
+
+        public float? JsonTimeToSongBpmTime(float jsonTime)
+        {
+            if (songBpm is null) return null;
+            var lastBpmEvent = FindLastBpmEventByJsonTime(jsonTime, inclusive: false);
+            if (lastBpmEvent is null)
+            {
+                return jsonTime;
+            }
+            return lastBpmEvent.SongBpmTime + (jsonTime - lastBpmEvent.JsonTime) * (songBpm / lastBpmEvent.Bpm);
+        }
+
+        public float? SongBpmTimeToJsonTime(float songBpmTime)
+        {
+            if (songBpm is null) return null;
+            var lastBpmEvent = FindLastBpmEventBySongBpmTime(songBpmTime, inclusive: false);
+            if (lastBpmEvent is null)
+            {
+                return songBpmTime;
+            }
+            return lastBpmEvent.JsonTime + (songBpmTime - lastBpmEvent.SongBpmTime) * (lastBpmEvent.Bpm / songBpm);
+        }
+
+        public BaseBpmEvent FindLastBpmEventByJsonTime(float jsonTime, bool inclusive = false)
+        {
+            return BpmEvents.LastOrDefault(x => inclusive ? x.JsonTime <= jsonTime : x.JsonTime < jsonTime);
+        }
+
+        public BaseBpmEvent FindLastBpmEventBySongBpmTime(float songBpmTime, bool inclusive = false)
+        {
+            if (songBpm is null) return null;
+            return BpmEvents.LastOrDefault(x => inclusive ? x.SongBpmTime <= songBpmTime : x.SongBpmTime < songBpmTime);
+        }
+
+        public float? BpmAtJsonTime(float jsonTime)
+        {
+            return FindLastBpmEventByJsonTime(jsonTime, inclusive: true)?.Bpm ?? songBpm;
+        }
+
+        public float? BpmAtSongBpmTime(float songBpmTime)
+        {
+            return FindLastBpmEventBySongBpmTime(songBpmTime, inclusive: true)?.Bpm ?? songBpm;
+        }
+
+        public void RecomputeAllObjectSongBpmTimes()
+        {
+            foreach (var objList in AllBaseObjectProperties())
+            {
+                if (objList is null) continue;
+                foreach (var obj in objList)
+                {
+                    obj.RecomputeSongBpmTime();
+                }
+            }
+        }
+
+        #endregion
+
         public void ConvertCustomBpmToOfficial()
         {
             var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;

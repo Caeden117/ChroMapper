@@ -34,6 +34,7 @@ namespace Beatmap.Base
 
         protected BaseSlider()
         {
+            TailJsonTime = 0; // needed to set tailSongBpmTime
         }
 
         protected BaseSlider(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
@@ -71,27 +72,17 @@ namespace Beatmap.Base
             get => tailJsonTime;
             set
             {
-                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-                tailSongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(value) ?? value;
+                var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
+                tailSongBpmTime = map?.JsonTimeToSongBpmTime(value);
                 tailJsonTime = value;
             }
         }
-        private float tailSongBpmTime { get; set; }
-        public float TailSongBpmTime
-        {
-            get => tailSongBpmTime;
-            set
-            {
-                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-                tailJsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
-                tailSongBpmTime = value;
-            }
-        }
+        private float? tailSongBpmTime;
+        public float TailSongBpmTime => (float)tailSongBpmTime;
 
-        public void SetTailTimes(float jsonTime, float songBpmTime)
+        public void SetTailTimes(float jsonTime)
         {
-            this.tailJsonTime = jsonTime;
-            this.tailSongBpmTime = songBpmTime;
+            TailJsonTime = jsonTime;
         }
 
         public int TailPosX { get; set; }
@@ -140,9 +131,8 @@ namespace Beatmap.Base
         public virtual void SwapHeadAndTail()
         {
             var tempJsonTime = JsonTime;
-            var tempJsonSongBpmTime = SongBpmTime;
-            SetTimes(tailJsonTime, tailSongBpmTime);
-            SetTailTimes(tempJsonTime, tempJsonSongBpmTime);
+            SetTimes(tailJsonTime);
+            SetTailTimes(tempJsonTime);
             (PosX, TailPosX) = (TailPosX, PosX);
             (PosY, TailPosY) = (TailPosY, PosY);
         }
