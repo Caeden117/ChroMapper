@@ -85,13 +85,12 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
             mergedActions.Add((BeatmapAction)currentAction.DoMerge(previousAction));
         }
 
-        previousActionCollection.actions = mergedActions;
+        var merged = new ActionCollectionAction(mergedActions, forceRefreshesPool, clearSelection, Comment, MergeType);
 
-        previousActionCollection.Comment = previousActionCollection.Comment.Replace($" ({previousActionCollection.MergeCount}x merged)", "");
-        previousActionCollection.MergeCount++;
-        previousActionCollection.Comment += $" ({previousActionCollection.MergeCount}x merged)";
+        merged.MergeCount = previousActionCollection.MergeCount + 1;
+        merged.Comment += $" ({merged.MergeCount}x merged)";
 
-        return previous;
+        return merged;
     }
 
     public override BaseObject DoesInvolveObject(BaseObject obj)

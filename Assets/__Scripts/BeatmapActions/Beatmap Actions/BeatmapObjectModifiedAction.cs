@@ -44,14 +44,12 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     public IMergeableAction DoMerge(IMergeableAction previous)
     {
         if (previous is not BeatmapObjectModifiedAction previousAction) return null;
-        previousAction.editedObject = editedObject;
-        previousAction.editedData = editedData;
+        var merged = new BeatmapObjectModifiedAction(editedObject, previousAction.originalObject, previousAction.originalData, Comment, addToSelection, MergeType);
 
-        previousAction.Comment = previousAction.Comment.Replace($" ({previousAction.MergeCount}x merged)", "");
-        previousAction.MergeCount++;
-        previousAction.Comment += $" ({previousAction.MergeCount}x merged)";
+        merged.MergeCount = previousAction.MergeCount + 1;
+        merged.Comment += $" ({merged.MergeCount}x merged)";
 
-        return previousAction;
+        return merged;
     }
 
     public override BaseObject DoesInvolveObject(BaseObject obj) => obj == editedObject ? originalObject : null;
