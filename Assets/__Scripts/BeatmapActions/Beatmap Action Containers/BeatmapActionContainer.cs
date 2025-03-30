@@ -43,7 +43,7 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
             instance.beatmapActions.RemoveAll(x => !x.Networked && !x.Active);
         }
 
-        var previousAction = instance.beatmapActions.LastOrDefault();
+        var previousAction = instance.beatmapActions.LastOrDefault(x => !x.Networked);
         if (action is IMergeableAction mergeableAction && previousAction is IMergeableAction previousMergeableAction and not null)
         {
             var merged = (BeatmapAction)mergeableAction.TryMerge(previousMergeableAction);
