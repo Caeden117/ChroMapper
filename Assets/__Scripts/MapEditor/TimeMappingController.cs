@@ -10,6 +10,14 @@ public class TimeMappingController : MonoBehaviour
 
     private void Start()
     {
+        TrackTimeMapping();
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent += TrackTimeMapping;
+    }
+
+    private void OnDestroy() => LoadedDifficultySelectController.LoadedDifficultyChangedEvent -= TrackTimeMapping;
+
+    private void TrackTimeMapping()
+    {        
         map = BeatSaberSongContainer.Instance.Map;
         timeAtLoad = map.Time;
         stopwatch = Stopwatch.StartNew();
