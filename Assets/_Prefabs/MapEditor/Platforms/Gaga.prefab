@@ -5551,6 +5551,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957730}
   - component: {fileID: 8321462599476321584}
+  - component: {fileID: 8782211330259104789}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -5587,6 +5588,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957631}
   ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+--- !u!114 &8782211330259104789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957505
 GameObject:
   m_ObjectHideFlags: 0
@@ -5597,6 +5618,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957731}
   - component: {fileID: 8232064194740628582}
+  - component: {fileID: 8401454047979878178}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -5633,6 +5655,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957573}
   ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+--- !u!114 &8401454047979878178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957506
 GameObject:
   m_ObjectHideFlags: 0
@@ -5913,6 +5955,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957728}
   - component: {fileID: 4453353876593062732}
+  - component: {fileID: 1429897537638004861}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -5949,6 +5992,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957620}
   ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+--- !u!114 &1429897537638004861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957511
 GameObject:
   m_ObjectHideFlags: 0
@@ -7583,6 +7646,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957733}
   - component: {fileID: 1034627467765327189}
+  - component: {fileID: 5404767642879797201}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -7619,6 +7683,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957623}
   ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+--- !u!114 &5404767642879797201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957564
 GameObject:
   m_ObjectHideFlags: 0
@@ -7765,6 +7849,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957785}
   - component: {fileID: 6219087925514865823}
+  - component: {fileID: 8807258139053043909}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -7801,6 +7886,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957624}
   ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+--- !u!114 &8807258139053043909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957573
 GameObject:
   m_ObjectHideFlags: 0
@@ -8432,6 +8537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005341156537957834}
   - component: {fileID: 1053484874629948144}
+  - component: {fileID: 5598459400539078002}
   m_Layer: 13
   m_Name: LightningWithTarget
   m_TagString: Untagged
@@ -8468,6 +8574,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957603}
   ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+--- !u!114 &5598459400539078002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3005341156537957614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bbd4261539e9e44803b613e65c101f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideLightGroup: 0
+  OverrideLightGroupID: 0
+  UseInvertedPlatformColors: 0
+  CanBeTurnedOff: 1
+  currentAlpha: 0
+  multiplyAlpha: 1
+  LightID: 0
+  PropGroup: 0
 --- !u!1 &3005341156537957616
 GameObject:
   m_ObjectHideFlags: 0
@@ -10396,9 +10522,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaf6c51d608f0f42942a88885e6a47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinPositionY: 0
-  MaxPositionY: 8
-  MoveSpeed: 10
+  MinEventValue: 0
+  MaxEventValue: 8
   Disks:
   - {fileID: 7184724110185769139}
   - {fileID: 1560953788906249769}

@@ -6,47 +6,52 @@ public class GagaDisk : MonoBehaviour
 {
     // Based off of the TrackLaneRings system.
     public int HeightEventType = 0;
+    private GagaArc arc;
     private Vector3 basePosition;
     private float prevPosY;
     private float destPosY;
     private float posY;
-    private float moveSpeed;
+    private float startTime;
+    private float destTime;
     
     public void Reset()
     {
         prevPosY = 0;
         destPosY = 0;
         posY = 0;
-        moveSpeed = 0;
+        destTime = 0;
+        startTime = 0;
     }
 
-    public void Init(float posY)
+    public void Init(float positionY)
     {
-        this.posY = posY;
-        this.basePosition = gameObject.transform.position;
+        arc = gameObject.transform.GetComponentInChildren<GagaArc>();
+        
+        posY = destPosY = prevPosY = positionY;
+        basePosition = gameObject.transform.position;
     }
 
-    public void FixedUpdateDisk(float fixedDeltaTime)
+    public void LateUpdateDisk(float jsonTime)
     {
-        prevPosY = posY;
-        posY = Mathf.Lerp(posY, destPosY, fixedDeltaTime * moveSpeed);
-    }
-
-    public void LateUpdateDisk(float interpolationFactor)
-    {
+        var easedFactor = Easing.Cubic.InOut(LerpTime(startTime, destTime, jsonTime));
         transform.position = new Vector3(basePosition.x,
-            prevPosY + (posY - prevPosY) * interpolationFactor,
+            Mathf.Lerp(prevPosY, destPosY, easedFactor),
             basePosition.z);
     }
-    
-    public void SetPosition(float destinationY, float moveSpeed)
+
+    private float LerpTime(float timeStart, float targetTime, float x)
     {
-        destPosY = destinationY;
-        this.moveSpeed = moveSpeed;
+        var e = Mathf.Clamp01((x - timeStart) / (targetTime - timeStart));
+        return !float.IsNaN(e) ? e : 0;
     }
     
-    public int GetHeightEventType() => HeightEventType != 0 ? HeightEventType : -1;
+    public void SetPosition(int startValue, int destinationValue, float timeStart, float timeDest)
+    { 
+        prevPosY = GetPositionForValue(startValue);
+        destPosY = GetPositionForValue(destinationValue);
+        startTime = timeStart;
+        destTime = timeDest;
+    }
     
-    public float GetPosition() => posY;
-    public float GetDestinationPosition() => destPosY;
+    private int GetPositionForValue(int value) => (value * 6) - 4;
 }
