@@ -213,11 +213,8 @@ public class PlatformDescriptor : MonoBehaviour
                     SmallRingManager.HandlePositionEvent(e);
                 break;
             case 12:
-                if (DiskManager != null) // The haha funny way to filter out gaga height events
-                {
-                    DiskManager.HandlePositionEvent(e);
-                    return;
-                }
+                if (HandleGagaHeightEvent(e)) return;
+                
                 var leftEventTypes = new List<int>() { (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights };
 
                 foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
@@ -230,11 +227,8 @@ public class PlatformDescriptor : MonoBehaviour
 
                 break;
             case 13:
-                if (DiskManager != null) // The haha funny way to filter out gaga height events
-                {
-                    DiskManager.HandlePositionEvent(e);
-                    return;
-                }
+                if (HandleGagaHeightEvent(e)) return;
+                
                 var rightEventTypes = new List<int>() { (int)EventTypeValue.RightLasers, (int)EventTypeValue.ExtraRightLasers, (int)EventTypeValue.ExtraRightLights };
 
                 foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
@@ -258,32 +252,10 @@ public class PlatformDescriptor : MonoBehaviour
                 }
                 break;
             case 16:
-                if (DiskManager != null) // The haha funny way to filter out gaga height events
-                {
-                    DiskManager.HandlePositionEvent(e);
-                    return;
-                }
-                break;
             case 17: 
-                if (DiskManager != null) // The haha funny way to filter out gaga height events
-                {
-                    DiskManager.HandlePositionEvent(e);
-                    return;
-                }
-                break;
             case 18:
-                if (DiskManager != null) // The haha funny way to filter out gaga height events
-                {
-                    DiskManager.HandlePositionEvent(e);
-                    return;
-                }
-                break;
             case 19:
-                if (DiskManager != null) // The haha funny way to filter out gaga height events
-                {
-                    DiskManager.HandlePositionEvent(e);
-                    return;
-                }
+                if (HandleGagaHeightEvent(e)) return;
                 break;
             
             default:
@@ -556,6 +528,18 @@ public class PlatformDescriptor : MonoBehaviour
         chromaCustomColors[group] = gradient.EndColor;
         group.ChangeColor(chromaCustomColors[group].WithAlpha(1), 0, group.ControllingLights);
         group.ChangeMultiplierAlpha(chromaCustomColors[group].a, group.ControllingLights);
+    }
+
+    // Handle Gaga Env Height events, and pass it to the case so it can ignore anything after if the manager is valid.
+    private bool HandleGagaHeightEvent(BaseEvent evt)
+    {
+        if (DiskManager != null)
+        {
+            DiskManager.HandlePositionEvent(evt);
+            return true;
+        }
+        else
+            return false;
     }
 
     private class Gradient
