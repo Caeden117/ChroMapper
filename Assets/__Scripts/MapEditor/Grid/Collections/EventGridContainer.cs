@@ -519,4 +519,16 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 (evtContainer as EventContainer).RefreshAppearance();
         }
     }
+    
+    private BaseEvent GetNextEventWithSameTypeOrDefault(BaseEvent e)
+    {
+        
+        if (e == null) return null;
+        
+        List<BaseEvent> events = new List<BaseEvent>();
+        events.AddRange(AllUtilityEvents);
+        events.AddRange(AllLaserRotationEvents);
+        
+        return events.FirstOrDefault(x=> x.Type == e.Type && x.JsonTime > e.JsonTime);
+    }
 }
