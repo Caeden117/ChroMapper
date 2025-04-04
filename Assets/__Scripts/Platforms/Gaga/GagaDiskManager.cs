@@ -78,12 +78,31 @@ public class GagaDiskManager : MonoBehaviour
         cachedHeightEvents.TryGetValue(type, out var evts) ? evts : new();
     
     private BaseEvent GetNextHeightEvent(BaseEvent e)
-    { ;
+    {
         var heightEvents = GetCachedHeightEvents(e.Type);
         
         if (!heightEvents.Any()) return null;
         
         return heightEvents.FirstOrDefault(ev => ev.JsonTime > e.JsonTime);
+    }
+    
+    private BaseEvent GetNextHeightEvent(int type)
+    {
+        var heightEvents = GetCachedHeightEvents(type);
+        
+        if (!heightEvents.Any()) return null;
+        
+        return heightEvents.FirstOrDefault(ev => ev.JsonTime > atsc.CurrentJsonTime);
+    }
+    
+    private BaseEvent GetPreviousHeightEvent(int type)
+    {
+        var heightEvents = GetCachedHeightEvents(type)
+            .Reverse<BaseEvent>().ToList();
+        
+        if (!heightEvents.Any()) return null;
+        
+        return heightEvents.FirstOrDefault(ev => ev.JsonTime > atsc.CurrentJsonTime);
     }
     private void UpdateEventCache(BaseEvent evt)
     {
@@ -96,6 +115,40 @@ public class GagaDiskManager : MonoBehaviour
         else cachedHeightEvents[evt.Type] = new List<BaseEvent>();
         
         cachedHeightEvents[evt.Type].AddRange(events);
+        
+        // Update position queue
+        foreach (var disk in Disks)
+        {
+            if (disk.HeightEventType == evt.Type)
+            {
+                var prevEvt = GetPreviousHeightEvent(evt.Type);
+                var nextEvt = GetNextHeightEvent(evt);
+                
+                var fromValue = 4;
+                var toValue = 4;
+                var fromTime = 0f;
+                var toTime = 0.1f;
+                
+                if (prevEvt != null)
+                {
+                    fromValue = prevEvt.Value;
+                    fromTime = prevEvt.JsonTime;
+                    if (nextEvt != null)
+                    {
+                        toValue = nextEvt.Value;
+                        toTime = nextEvt.JsonTime;
+                    }
+                }
+                
+                disk.SetPosition(
+                    ClampValue(fromValue), 
+                    ClampValue(toValue), 
+                    fromTime,
+                    toTime
+                );
+                return;
+            }
+        }
     }
     
     private void UpdateEventCache(int eventType)
