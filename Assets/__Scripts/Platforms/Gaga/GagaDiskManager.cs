@@ -92,7 +92,7 @@ public class GagaDiskManager : MonoBehaviour
         
         if (!heightEvents.Any()) return null;
         
-        return heightEvents.FirstOrDefault(ev => ev.JsonTime > atsc.CurrentJsonTime);
+        return heightEvents.FirstOrDefault(ev => ev.JsonTime >= atsc.CurrentJsonTime);
     }
     
     private BaseEvent GetPreviousHeightEvent(int type)
@@ -102,7 +102,7 @@ public class GagaDiskManager : MonoBehaviour
         
         if (!heightEvents.Any()) return null;
         
-        return heightEvents.FirstOrDefault(ev => ev.JsonTime > atsc.CurrentJsonTime);
+        return heightEvents.FirstOrDefault(ev => ev.JsonTime >= atsc.CurrentJsonTime);
     }
     private void UpdateEventCache(BaseEvent evt)
     {
