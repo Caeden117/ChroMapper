@@ -65,15 +65,15 @@ public class GagaDiskManager : MonoBehaviour
             });
     }
     
+    private int ClampValue(int value) => Math.Clamp(value, minEventValue, maxEventValue);
+    
     private List<BaseEvent> GetHeightEventsFromGrid()
     {
         return eventGridContainer.AllUtilityEvents.Where(x => heightEventTypes.Contains(x.Type))
             .Concat(eventGridContainer.AllLaserRotationEvents).Where(x => heightEventTypes.Contains(x.Type))
             .OrderBy(x => x.JsonTime).ToList();
     }
-
-    private int ClampValue(int value) => Math.Clamp(value, minEventValue, maxEventValue);
-
+    
     private List<BaseEvent> GetCachedHeightEvents(int type) =>
         cachedHeightEvents.TryGetValue(type, out var evts) ? evts : new();
     
