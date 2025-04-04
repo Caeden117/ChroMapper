@@ -29,7 +29,7 @@ public class PlatformDescriptor : MonoBehaviour
     [FormerlySerializedAs("colors")][HideInInspector] public PlatformColors Colors;
     [FormerlySerializedAs("defaultColors")] public PlatformColors DefaultColors = new PlatformColors();
 
-    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17")]
+    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17 | 3 = Gaga Lanes")]
     public int SortMode;
 
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
