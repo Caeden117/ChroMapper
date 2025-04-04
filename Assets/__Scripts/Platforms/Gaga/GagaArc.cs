@@ -6,7 +6,7 @@ public class GagaArc : MonoBehaviour
 {
     public GameObject TargetObject;
     public Material ArcMaterial;
-    private readonly float thickness = 1.5f;
+    private readonly float thickness = 5f;
     private readonly int increments = 5;
     
     private LineRenderer lineRenderer;

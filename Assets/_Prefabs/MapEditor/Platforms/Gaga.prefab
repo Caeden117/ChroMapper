@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e37bcbc237986146b98d60db1789365, type: 2}
+  - {fileID: 2100000, guid: 3ca3a0fcb4b841f42a6986d929d86dd0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1557,7 +1557,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e37bcbc237986146b98d60db1789365, type: 2}
+  - {fileID: 2100000, guid: 3ca3a0fcb4b841f42a6986d929d86dd0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5587,7 +5587,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957631}
-  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  ArcMaterial: {fileID: 2100000, guid: d72a97ef80b373a4db107cfa817d4254, type: 2}
 --- !u!114 &8782211330259104789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5654,7 +5654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957573}
-  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  ArcMaterial: {fileID: 2100000, guid: d72a97ef80b373a4db107cfa817d4254, type: 2}
 --- !u!114 &8401454047979878178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5991,7 +5991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957620}
-  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  ArcMaterial: {fileID: 2100000, guid: d72a97ef80b373a4db107cfa817d4254, type: 2}
 --- !u!114 &1429897537638004861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7682,7 +7682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957623}
-  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  ArcMaterial: {fileID: 2100000, guid: d72a97ef80b373a4db107cfa817d4254, type: 2}
 --- !u!114 &5404767642879797201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7885,7 +7885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957624}
-  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  ArcMaterial: {fileID: 2100000, guid: d72a97ef80b373a4db107cfa817d4254, type: 2}
 --- !u!114 &8807258139053043909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8573,7 +8573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetObject: {fileID: 3005341156537957603}
-  ArcMaterial: {fileID: 2100000, guid: fb188bc24cdab074398580328234a46e, type: 2}
+  ArcMaterial: {fileID: 2100000, guid: d72a97ef80b373a4db107cfa817d4254, type: 2}
 --- !u!114 &5598459400539078002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10522,8 +10522,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaf6c51d608f0f42942a88885e6a47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinEventValue: 0
-  MaxEventValue: 8
   Disks:
   - {fileID: 7184724110185769139}
   - {fileID: 1560953788906249769}
