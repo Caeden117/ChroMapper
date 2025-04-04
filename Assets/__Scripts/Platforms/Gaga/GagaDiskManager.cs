@@ -33,6 +33,12 @@ public class GagaDiskManager : MonoBehaviour
         eventGridContainer.ObjectDeletedEvent += UpdateEventCache;
     }
 
+    public void OnDestroy()
+    {
+        eventGridContainer.ObjectSpawnedEvent -= UpdateEventCache;
+        eventGridContainer.ObjectDeletedEvent -= UpdateEventCache;
+    }
+
     private void LateUpdate()
     {
         foreach (var disk in Disks)
