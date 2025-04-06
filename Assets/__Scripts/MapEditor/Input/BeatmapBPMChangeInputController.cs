@@ -35,12 +35,14 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                 if (containerToEdit.BpmData.Bpm <= 0) containerToEdit.BpmData.Bpm = 1f;
                 containerToEdit.UpdateGridPosition();
 
+                if (containerToEdit.BpmData.CompareTo(original) == 0) return;
+
                 var bpmChanges =
                     BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType
                         .BpmChange);
 
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
-                    containerToEdit.ObjectData, original, "Tweaked bpm"));
+                    containerToEdit.ObjectData, original, "Tweaked bpm", mergeType: ActionMergeType.BPMValueTweak));
 
                 BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
                 bpmChanges.RefreshModifiedBeat();

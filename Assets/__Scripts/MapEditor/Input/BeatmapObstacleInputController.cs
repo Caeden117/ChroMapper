@@ -31,7 +31,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             obs.ObstacleData.Duration += snapping;
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original, mergeType: ActionMergeType.WallDurationTweak));
         }
     }
 
@@ -48,9 +48,10 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             var data = obs.ObjectData as BaseObstacle;
             data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
             data.Height = Mathf.Min(data.Height, 5 - data.PosY);
+            if (data.CompareTo(original) == 0) return;
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original, mergeType: ActionMergeType.WallLowerBoundTweak));
         }
     }
     public void OnChangeWallUpperBound(InputAction.CallbackContext context)
@@ -65,9 +66,10 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
                 : -1;
             var data = obs.ObjectData as BaseObstacle;
             data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
+            if (data.CompareTo(original) == 0) return;
             obs.UpdateGridPosition();
             obstacleAppearanceSo.SetObstacleAppearance(obs);
-            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original));
+            BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(obs.ObjectData, obs.ObjectData, original, mergeType: ActionMergeType.WallUpperBoundTweak));
         }
     }
 

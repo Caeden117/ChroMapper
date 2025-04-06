@@ -186,13 +186,13 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
                 noteData.CutDirection = value;
 
                 var actions = new List<BeatmapAction>{
-                    new BeatmapObjectModifiedAction(noteData, noteData, originalData, "Quick edit", true)
+                    new BeatmapObjectModifiedAction(noteData, noteData, originalData, "Quick edit", true, mergeType: ActionMergeType.NoteDirectionChange)
                 };
                 CommonNotePlacement.UpdateAttachedSlidersDirection(noteData, actions);
 
                 if (actions.Count > 1)
                 {
-                    BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, false, "Quick edit"), true);
+                    BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, false, "Quick edit", mergeType: ActionMergeType.NoteDirectionChange), true);
                     SelectionController.SelectionChangedEvent?.Invoke();
                 }
                 else

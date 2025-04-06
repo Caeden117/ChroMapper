@@ -2,7 +2,7 @@ using LiteNetLib.Utils;
 using Beatmap.Base;
 using Beatmap.Helper;
 
-public class BeatmapObjectModifiedAction : BeatmapAction
+public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
 {
     private bool addToSelection;
 
@@ -12,11 +12,14 @@ public class BeatmapObjectModifiedAction : BeatmapAction
     private BaseObject originalData;
     private BaseObject originalObject;
 
+    public ActionMergeType MergeType { get; set; }
+    public int MergeCount { get; set; }
+
     // This constructor is needed for United Mapping
     public BeatmapObjectModifiedAction() : base() { }
 
     public BeatmapObjectModifiedAction(BaseObject edited, BaseObject originalObject, BaseObject originalData,
-        string comment = "No comment.", bool keepSelection = false) : base(new[] { edited, originalObject }, comment)
+        string comment = "No comment.", bool keepSelection = false, ActionMergeType mergeType = ActionMergeType.None) : base(new[] { edited, originalObject }, comment)
     {
         editedObject = edited;
         editedData = BeatmapFactory.Clone(edited);
@@ -24,6 +27,29 @@ public class BeatmapObjectModifiedAction : BeatmapAction
         this.originalData = originalData;
         this.originalObject = originalObject;
         addToSelection = keepSelection;
+        MergeType = mergeType;
+    }
+
+    public IMergeableAction TryMerge(IMergeableAction previous)
+    {
+        return CanMerge(previous) ? DoMerge(previous) : null;
+    }
+
+    public bool CanMerge(IMergeableAction previous)
+    {
+        if (previous is not BeatmapObjectModifiedAction previousAction) return false;
+        return MergeType != ActionMergeType.None && previous.MergeType == MergeType && originalObject == previousAction.editedObject && editedData.CompareTo(previousAction.originalData) != 0;
+    }
+
+    public IMergeableAction DoMerge(IMergeableAction previous)
+    {
+        if (previous is not BeatmapObjectModifiedAction previousAction) return null;
+        var merged = new BeatmapObjectModifiedAction(editedObject, previousAction.originalObject, previousAction.originalData, Comment, addToSelection, MergeType);
+
+        merged.MergeCount = previousAction.MergeCount + 1;
+        merged.Comment += $" ({merged.MergeCount}x merged)";
+
+        return merged;
     }
 
     public override BaseObject DoesInvolveObject(BaseObject obj) => obj == editedObject ? originalObject : null;

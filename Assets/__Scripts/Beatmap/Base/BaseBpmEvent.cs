@@ -67,6 +67,19 @@ namespace Beatmap.Base
             if (originalData is BaseBpmEvent bpm) Bpm = bpm.Bpm;
         }
 
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseBpmEvent bpmEvent) return comparison;
+
+            // Compare by BPM
+            if (comparison == 0) comparison = Bpm.CompareTo(bpmEvent.Bpm);
+
+            return comparison;
+        }
+
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2BpmEvent.ToJson(this),

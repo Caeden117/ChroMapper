@@ -36,11 +36,24 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     /// </param>
     public static void AddAction(BeatmapAction action, bool perform = false)
     {
-        // Clear all local, inactive actions from the queue
-        // This essentially removes all actions that were undone prior to this action being added
         if (!action.Networked)
         {
+            // Clear all local, inactive actions from the queue
+            // This essentially removes all actions that were undone prior to this action being added
             instance.beatmapActions.RemoveAll(x => !x.Networked && !x.Active);
+
+            // Merge local actions
+            // Networked actions shouldn't get merged since they're received in already-merged form
+            var previousAction = instance.beatmapActions.LastOrDefault(x => !x.Networked);
+            if (action is IMergeableAction mergeableAction && previousAction is IMergeableAction previousMergeableAction and not null)
+            {
+                var merged = (BeatmapAction)mergeableAction.TryMerge(previousMergeableAction);
+                if (merged is not null)
+                {
+                    instance.beatmapActions.Remove(previousAction);
+                    action = merged;
+                }
+            }
         }
 
         instance.beatmapActions.Add(action);
