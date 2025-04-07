@@ -30,9 +30,11 @@ public class GagaArc : MonoBehaviour
         var rot = Quaternion.LookRotation(direction).eulerAngles;
         var heightAngle = Mathf.Atan((tPosition.y - sPosition.y) / (tPosition.z - sPosition.z)) * Mathf.Rad2Deg;
         if (Mathf.Abs(tPosition.x) < 14.08) heightAngle = -heightAngle;
-       
-        lightningMesh.transform.position = (sPosition + tPosition) / 2f; // Midpoint
-        lightningMesh.transform.rotation = Quaternion.Euler((-90 * filterLogo) - heightAngle, rot.y, 90);
+        
+        lightningMesh.transform.SetPositionAndRotation(
+            (sPosition + tPosition) / 2f,
+            Quaternion.Euler((-90 * filterLogo) - heightAngle, rot.y, 90));
+        
         lightningMesh.transform.localScale = new Vector3(Vector3.Distance(sPosition,tPosition) / 10f, 1, thickness); 
     }
 }
