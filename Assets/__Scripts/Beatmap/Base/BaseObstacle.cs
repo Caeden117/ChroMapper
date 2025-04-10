@@ -105,9 +105,8 @@ namespace Beatmap.Base
             get => duration; 
             set
             {
-                var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
-                durationSongBpm = map?.JsonTimeToSongBpmTime(value + JsonTime) - songBpmTime;
                 duration = value;
+                RecomputeDurationSongBpm();
             }
         }
         private float? durationSongBpm;
@@ -288,7 +287,13 @@ namespace Beatmap.Base
         public override void RecomputeSongBpmTime()
         {
             base.RecomputeSongBpmTime();
-            Duration = Duration;
+            RecomputeDurationSongBpm();
+        }
+
+        private void RecomputeDurationSongBpm()
+        {
+            var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
+            durationSongBpm = map?.JsonTimeToSongBpmTime(JsonTime + duration) - songBpmTime;
         }
 
         protected void InferType() =>

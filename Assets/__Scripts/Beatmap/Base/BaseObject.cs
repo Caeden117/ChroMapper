@@ -50,9 +50,8 @@ namespace Beatmap.Base
             get => jsonTime;
             set
             {
-                var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
-                songBpmTime = map?.JsonTimeToSongBpmTime(value);
                 jsonTime = value;
+                RecomputeSongBpmTime();
             }
         }
 
@@ -62,11 +61,7 @@ namespace Beatmap.Base
         internal float? songBpmTime; 
         public float SongBpmTime => (float)songBpmTime;
 
-        public void SetTimes(float jsonTime)
-        {
-            this.jsonTime = jsonTime;
-            RecomputeSongBpmTime();
-        }
+        public void SetTimes(float jsonTime) => JsonTime = jsonTime;
 
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
@@ -95,7 +90,11 @@ namespace Beatmap.Base
 
         public abstract string CustomKeyTrack { get; }
 
-        public virtual void RecomputeSongBpmTime() => JsonTime = JsonTime;
+        public virtual void RecomputeSongBpmTime()
+        {
+            var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
+            songBpmTime = map?.JsonTimeToSongBpmTime(JsonTime);
+        }
 
         public virtual bool IsConflictingWith(BaseObject other, bool deletion = false) =>
             Mathf.Abs(JsonTime - other.JsonTime) < BeatmapObjectContainerCollection.Epsilon &&

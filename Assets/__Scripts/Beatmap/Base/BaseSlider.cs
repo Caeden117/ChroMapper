@@ -72,9 +72,8 @@ namespace Beatmap.Base
             get => tailJsonTime;
             set
             {
-                var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
-                tailSongBpmTime = map?.JsonTimeToSongBpmTime(value);
                 tailJsonTime = value;
+                RecomputeTailSongBpmTime();
             }
         }
         private float? tailSongBpmTime;
@@ -97,7 +96,13 @@ namespace Beatmap.Base
         public override void RecomputeSongBpmTime()
         {
             base.RecomputeSongBpmTime();
-            TailJsonTime = TailJsonTime;
+            RecomputeTailSongBpmTime();
+        }
+
+        private void RecomputeTailSongBpmTime()
+        {
+            var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
+            tailSongBpmTime = map?.JsonTimeToSongBpmTime(TailJsonTime);
         }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
