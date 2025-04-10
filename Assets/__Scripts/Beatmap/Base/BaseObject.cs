@@ -26,12 +26,14 @@ namespace Beatmap.Base
         protected BaseObject()
         {
             JsonTime = 0; // needed to set songBpmTime
+            SetMap();
         }
 
         protected BaseObject(float time, JSONNode customData = null)
         {
             JsonTime = time;
             CustomData = customData;
+            SetMap();
         }
 
         protected BaseObject(float jsonTime, float songBpmTime, JSONNode customData = null)
@@ -39,10 +41,25 @@ namespace Beatmap.Base
             this.jsonTime = jsonTime;
             this.songBpmTime = songBpmTime;
             CustomData = customData;
+            SetMap();
+        }
+
+        public void SetMap(BaseDifficulty map = null)
+        {
+            if (map != null)
+            {
+                Map = map;
+            }
+            else
+            {
+                Map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
+            }
         }
 
         public abstract ObjectType ObjectType { get; set; }
         public bool HasAttachedContainer { get; set; } = false;
+        
+        protected BaseDifficulty Map;
 
         private float jsonTime;
         public float JsonTime
@@ -90,11 +107,7 @@ namespace Beatmap.Base
 
         public abstract string CustomKeyTrack { get; }
 
-        public virtual void RecomputeSongBpmTime()
-        {
-            var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
-            songBpmTime = map?.JsonTimeToSongBpmTime(JsonTime);
-        }
+        public virtual void RecomputeSongBpmTime() => songBpmTime = Map?.JsonTimeToSongBpmTime(JsonTime);
 
         public virtual bool IsConflictingWith(BaseObject other, bool deletion = false) =>
             Mathf.Abs(JsonTime - other.JsonTime) < BeatmapObjectContainerCollection.Epsilon &&

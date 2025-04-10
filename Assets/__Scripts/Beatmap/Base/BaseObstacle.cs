@@ -290,11 +290,7 @@ namespace Beatmap.Base
             RecomputeDurationSongBpm();
         }
 
-        private void RecomputeDurationSongBpm()
-        {
-            var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
-            durationSongBpm = map?.JsonTimeToSongBpmTime(JsonTime + duration) - songBpmTime;
-        }
+        private void RecomputeDurationSongBpm() => durationSongBpm = Map?.JsonTimeToSongBpmTime(JsonTime + duration) - songBpmTime;
 
         protected void InferType() =>
             InternalType = PosY switch

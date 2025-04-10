@@ -99,11 +99,7 @@ namespace Beatmap.Base
             RecomputeTailSongBpmTime();
         }
 
-        private void RecomputeTailSongBpmTime()
-        {
-            var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
-            tailSongBpmTime = map?.JsonTimeToSongBpmTime(TailJsonTime);
-        }
+        private void RecomputeTailSongBpmTime() => tailSongBpmTime = Map?.JsonTimeToSongBpmTime(TailJsonTime);
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
