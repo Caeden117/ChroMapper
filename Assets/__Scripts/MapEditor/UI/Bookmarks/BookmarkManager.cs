@@ -122,10 +122,6 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             {
                 bookmark.JsonTime = (float)map.SongBpmTimeToJsonTime(bookmark.JsonTime);
             }
-            else
-            {
-                bookmark.RecomputeSongBpmTime();
-            }
         }
     }
 

@@ -57,11 +57,6 @@ public class MapLoader : MonoBehaviour
         collection.MapObjects = objects;
 
         var span = objects.AsSpan();
-
-        for (var i = 0; i < span.Length; i++)
-        {
-            span[i].RecomputeSongBpmTime();
-        }
         
         if (objects is List<BaseEvent> eventsList)
         {
