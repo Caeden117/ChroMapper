@@ -25,23 +25,23 @@ namespace Beatmap.Base
 
         protected BaseObject()
         {
-            JsonTime = 0; // needed to set songBpmTime
             SetMap();
+            JsonTime = 0; // needed to set songBpmTime
         }
 
         protected BaseObject(float time, JSONNode customData = null)
         {
+            SetMap();
             JsonTime = time;
             CustomData = customData;
-            SetMap();
         }
 
         protected BaseObject(float jsonTime, float songBpmTime, JSONNode customData = null)
         {
+            SetMap();
             this.jsonTime = jsonTime;
             this.songBpmTime = songBpmTime;
             CustomData = customData;
-            SetMap();
         }
 
         public void SetMap(BaseDifficulty map = null)
