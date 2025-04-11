@@ -29,7 +29,7 @@ namespace Beatmap.Base
 
         public BaseNJSEvent(BaseNJSEvent other)
         {
-            SetTimes(other.JsonTime);
+            JsonTime = other.JsonTime;
             UsePrevious = other.UsePrevious;
             Easing = other.Easing;
             RelativeNJS = other.RelativeNJS;

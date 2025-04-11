@@ -78,8 +78,6 @@ namespace Beatmap.Base
         internal float? songBpmTime; 
         public float SongBpmTime => (float)songBpmTime;
 
-        public void SetTimes(float jsonTime) => JsonTime = jsonTime;
-
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
 

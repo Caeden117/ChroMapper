@@ -16,7 +16,7 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
             new Vector3(0.5f, 0.5f, instantiatedContainer.transform.localPosition.z);
 
     public override void TransferQueuedToDraggedObject(ref BaseNJSEvent dragged, BaseNJSEvent queued) =>
-        dragged.SetTimes(queued.JsonTime);
+        dragged.JsonTime = queued.JsonTime;
     
     internal override void ApplyToMap() => CreateAndOpenNJSDialogue(isInitialPlacement: true);
     

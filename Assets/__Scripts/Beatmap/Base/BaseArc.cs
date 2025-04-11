@@ -35,13 +35,13 @@ namespace Beatmap.Base
 
         public BaseArc(BaseArc other)
         {
-            SetTimes(other.JsonTime);
+            JsonTime = other.JsonTime;
             Color = other.Color;
             PosX = other.PosX;
             PosY = other.PosY;
             CutDirection = other.CutDirection;
             HeadControlPointLengthMultiplier = other.HeadControlPointLengthMultiplier;
-            SetTailTimes(other.TailJsonTime);
+            TailJsonTime = other.TailJsonTime;
             TailPosX = other.TailPosX;
             TailPosY = other.TailPosY;
             TailCutDirection = other.TailCutDirection;
@@ -52,13 +52,13 @@ namespace Beatmap.Base
 
         public BaseArc(BaseNote start, BaseNote end)
         {
-            SetTimes(start.JsonTime);
+            JsonTime = start.JsonTime;
             Color = start.Color;
             PosX = start.PosX;
             PosY = start.PosY;
             CutDirection = start.CutDirection;
             HeadControlPointLengthMultiplier = 1f;
-            SetTailTimes(end.JsonTime);
+            TailJsonTime = end.JsonTime;
             TailPosX = end.PosX;
             TailPosY = end.PosY;
             TailCutDirection = end.CutDirection;

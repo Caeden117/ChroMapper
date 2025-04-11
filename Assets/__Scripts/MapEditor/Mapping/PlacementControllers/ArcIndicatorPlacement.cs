@@ -91,7 +91,7 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
     {
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Head)
         {
-            dragged.SetTimes(queued.JsonTime);
+            dragged.JsonTime = queued.JsonTime;
             dragged.PosX = queued.PosX;
             dragged.PosY = queued.PosY;
             dragged.CutDirection = queued.CutDirection;
@@ -100,7 +100,7 @@ public class ArcIndicatorPlacement : PlacementController<BaseArc, ArcIndicatorCo
 
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
         {
-            dragged.SetTailTimes(queued.JsonTime);
+            dragged.TailJsonTime = queued.JsonTime;
             dragged.TailPosX = queued.PosX;
             dragged.TailPosY = queued.PosY;
             dragged.TailCutDirection = queued.TailCutDirection;

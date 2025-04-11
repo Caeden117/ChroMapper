@@ -40,7 +40,7 @@ namespace Beatmap.Base
 
         private BaseObstacle(BaseObstacle other)
         {
-            SetTimes(other.JsonTime);
+            JsonTime = other.JsonTime;
             PosX = other.PosX;
             InternalPosY = other.PosY;
             InternalType = other.Type;

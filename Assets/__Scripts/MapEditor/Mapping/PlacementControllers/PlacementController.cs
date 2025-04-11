@@ -184,7 +184,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)),
                 roundedHit.z);
 
-            queuedData.SetTimes(roundedJsonTime);
+            queuedData.JsonTime = roundedJsonTime;
             OnPhysicsRaycast(hit, roundedHit);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {

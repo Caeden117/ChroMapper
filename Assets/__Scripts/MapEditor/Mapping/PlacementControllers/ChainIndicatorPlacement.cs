@@ -90,7 +90,7 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
     {
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Head)
         {
-            dragged.SetTimes(queued.JsonTime);
+            dragged.JsonTime = queued.JsonTime;
             dragged.PosX = queued.PosX;
             dragged.PosY = queued.PosY;
             dragged.CutDirection = queued.CutDirection;
@@ -99,7 +99,7 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
 
         if (DraggedObjectContainer.IndicatorType == IndicatorType.Tail)
         {
-            dragged.SetTailTimes(queued.JsonTime);
+            dragged.TailJsonTime = queued.JsonTime;
             dragged.TailPosX = queued.PosX;
             dragged.TailPosY = queued.PosY;
             dragged.CustomTailCoordinate = queued.CustomTailCoordinate;

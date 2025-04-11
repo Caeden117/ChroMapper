@@ -79,11 +79,6 @@ namespace Beatmap.Base
         private float? tailSongBpmTime;
         public float TailSongBpmTime => (float)tailSongBpmTime;
 
-        public void SetTailTimes(float jsonTime)
-        {
-            TailJsonTime = jsonTime;
-        }
-
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
 
@@ -132,8 +127,8 @@ namespace Beatmap.Base
         public virtual void SwapHeadAndTail()
         {
             var tempJsonTime = JsonTime;
-            SetTimes(tailJsonTime);
-            SetTailTimes(tempJsonTime);
+            JsonTime = tailJsonTime;
+            TailJsonTime = tempJsonTime;
             (PosX, TailPosX) = (TailPosX, PosX);
             (PosY, TailPosY) = (TailPosY, PosY);
         }

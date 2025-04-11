@@ -13,7 +13,7 @@ namespace Beatmap.Base.Customs
 
         protected BaseBpmChange(BaseBpmChange other)
         {
-            SetTimes(other.JsonTime);
+            JsonTime = other.JsonTime;
             Bpm = other.Bpm;
             BeatsPerBar = other.BeatsPerBar;
             MetronomeOffset = other.MetronomeOffset;
@@ -21,7 +21,7 @@ namespace Beatmap.Base.Customs
 
         protected BaseBpmChange(BaseBpmEvent other)
         {
-            SetTimes(other.JsonTime);
+            JsonTime = other.JsonTime;
             Bpm = other.Bpm;
             BeatsPerBar = 4;
             MetronomeOffset = 4;
