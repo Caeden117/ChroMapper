@@ -42,7 +42,7 @@ namespace Beatmap.Base
             JsonTime = node["beat"].AsFloat;
             UsePrevious = node["usePrevious"].AsInt;
             Easing = node["easing"].AsInt;
-            RelativeNJS = node["relative-njs"].AsInt;
+            RelativeNJS = node["relative-njs"].AsFloat;
             CustomData = node["customData"].AsObject;
         }
 
