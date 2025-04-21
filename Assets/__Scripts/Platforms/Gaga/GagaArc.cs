@@ -7,7 +7,7 @@ public class GagaArc : MonoBehaviour
 {
     public GameObject TargetObject;
     public Material ArcMaterial;
-    private readonly float thickness = 1f;
+    private const float thickness = 1f;
 
     private GameObject lightningMesh;
     void Start()
@@ -24,7 +24,9 @@ public class GagaArc : MonoBehaviour
         var sPosition = transform.position;
         var tPosition = TargetObject.transform.position;
        
-        float filterLogo = -Math.Sign(tPosition.x - (Math.Sign(tPosition.x) * 14.08)); 
+        // A multiplier (-1 or 1) for the rotation of the plane to make it face the correct direction.
+        // Also accounts for inner towers as they face the opposite direction compared to the outer towers.
+        float towerFilter = -Math.Sign(tPosition.x - (Math.Sign(tPosition.x) * 14.08)); 
        
         var direction = new Vector3(tPosition.x - sPosition.x, 0, tPosition.z - sPosition.z);
         var rot = Quaternion.LookRotation(direction).eulerAngles;
@@ -33,7 +35,7 @@ public class GagaArc : MonoBehaviour
         
         lightningMesh.transform.SetPositionAndRotation(
             (sPosition + tPosition) / 2f,
-            Quaternion.Euler((-90 * filterLogo) - heightAngle, rot.y, 90));
+            Quaternion.Euler((-90 * towerFilter) - heightAngle, rot.y, 90));
         
         lightningMesh.transform.localScale = new Vector3(Vector3.Distance(sPosition,tPosition) / 10f, 1, thickness); 
     }
