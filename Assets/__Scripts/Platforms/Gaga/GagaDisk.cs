@@ -8,13 +8,12 @@ public class GagaDisk : MonoBehaviour
     private Vector3 basePosition;
     private float prevPosY;
     private float destPosY;
-    private float posY;
     private float startTime;
     private float destTime;
-
-    public void Init(float positionY)
+    
+    public void Init(float positionY = 20f)
     {
-        posY = destPosY = prevPosY = positionY;
+        destPosY = prevPosY = positionY;
         basePosition = gameObject.transform.position;
     }
 

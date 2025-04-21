@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class GagaDiskManager : MonoBehaviour
 {
-    private readonly int minEventValue = 0;
-    private readonly int maxEventValue = 8;
+    private const int minEventValue = 0;
+    private const int maxEventValue = 8;
     private readonly int[] heightEventTypes = new[] { 18, 16, 12, 13, 17, 19 };
     
     public List<GagaDisk> Disks = new List<GagaDisk>();
@@ -23,7 +23,7 @@ public class GagaDiskManager : MonoBehaviour
         foreach (var disk in Disks)
         {
             // Start at Y 20 (default).
-            disk.Init(20); 
+            disk.Init(); 
             
             // Init cache for each height event type.
             UpdateEventCache(disk.HeightEventType);
@@ -49,23 +49,22 @@ public class GagaDiskManager : MonoBehaviour
 
     public void HandlePositionEvent(BaseEvent evt)
     {
-        var value = evt.Value;
-        Disks.Where(d => d.HeightEventType == evt.Type)
-            .ToList()
-            .ForEach(d =>
-            {
-                var nextEvent = GetNextHeightEvent(evt);
-                if (nextEvent != null)
-                {
-                    var fromValue = evt.Value;
-                    var toValue = nextEvent.Value;
-                    var toTime = nextEvent.JsonTime;
-                    d.SetPosition(ClampValue(fromValue), ClampValue(toValue), evt.JsonTime, toTime);
-                }
-            });
+        foreach (var d in Disks.Where(d => d.HeightEventType == evt.Type))
+        {
+            var nextEvent = GetNextHeightEvent(evt);
+            if (nextEvent == null) return;
+
+            var fromValue = evt.Value;
+            var toValue = nextEvent.Value;
+            var toTime = nextEvent.JsonTime;
+            d.SetPosition(ClampEventValue(fromValue),
+                ClampEventValue(toValue),
+                evt.JsonTime,
+                toTime);
+        }
     }
     
-    private int ClampValue(int value) => Math.Clamp(value, minEventValue, maxEventValue);
+    private  int ClampEventValue(int value) => Math.Clamp(value, minEventValue, maxEventValue);
     
     private List<BaseEvent> GetHeightEventsFromGrid()
     {
@@ -141,8 +140,8 @@ public class GagaDiskManager : MonoBehaviour
                 }
                 
                 disk.SetPosition(
-                    ClampValue(fromValue), 
-                    ClampValue(toValue), 
+                    ClampEventValue(fromValue), 
+                    ClampEventValue(toValue), 
                     fromTime,
                     toTime
                 );
