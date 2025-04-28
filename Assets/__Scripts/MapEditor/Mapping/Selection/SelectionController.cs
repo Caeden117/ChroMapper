@@ -568,15 +568,19 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 var events = eventPlacement.objectContainerCollection;
                 if (eventPlacement.objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Light)
                 {
-                    var max = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].ControllingLights
-                        .Select(x => x.LightID).Max();
+                    var max = events.platformDescriptor.LightingManagers[events.EventTypeToPropagate].LightIDPlacementMap
+                        .Count - 1;
 
-                    var curId = e.CustomLightID != null ? e.CustomLightID[0] : 0;
-                    var newId = Math.Min(curId + leftRight, max);
-                    if (newId < 1)
+                    var curLane = (e.CustomLightID != null)
+                        ? labels.LightIDToEditor(e.Type, e.CustomLightID[0])
+                        : -1;
+                    var newLane = Math.Min(curLane + leftRight, max);
+                    if (newLane < 0)
                         e.CustomLightID = null;
-                    else
+                    else {
+                        var newId = labels.EditorToLightID(e.Type, newLane);
                         e.CustomLightID = new[] { newId };
+                    }
                 }
                 else if (eventPlacement.objectContainerCollection.PropagationEditing == EventGridContainer.PropMode.Prop)
                 {
