@@ -40,7 +40,7 @@ namespace Beatmap.Base
 
         private BaseObstacle(BaseObstacle other)
         {
-            SetTimes(other.JsonTime);
+            JsonTime = other.JsonTime;
             PosX = other.PosX;
             InternalPosY = other.PosY;
             InternalType = other.Type;
@@ -105,9 +105,8 @@ namespace Beatmap.Base
             get => duration; 
             set
             {
-                var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
-                durationSongBpm = map?.JsonTimeToSongBpmTime(value + JsonTime) - songBpmTime;
                 duration = value;
+                RecomputeDurationSongBpm();
             }
         }
         private float? durationSongBpm;
@@ -288,8 +287,10 @@ namespace Beatmap.Base
         public override void RecomputeSongBpmTime()
         {
             base.RecomputeSongBpmTime();
-            Duration = Duration;
+            RecomputeDurationSongBpm();
         }
+
+        private void RecomputeDurationSongBpm() => durationSongBpm = Map?.JsonTimeToSongBpmTime(JsonTime + duration) - songBpmTime;
 
         protected void InferType() =>
             InternalType = PosY switch

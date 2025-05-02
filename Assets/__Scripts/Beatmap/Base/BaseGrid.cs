@@ -29,7 +29,7 @@ namespace Beatmap.Base
         {
             PosX = posX;
             PosY = posY;
-            RecomputeSongBpmTime();
+            RecomputeSpawnParameters();
         }
 
         protected BaseGrid(float jsonTime, float songBpmTime, int posX, int posY, JSONNode customData = null) :
@@ -37,7 +37,7 @@ namespace Beatmap.Base
         {
             PosX = posX;
             PosY = posY;
-            RecomputeSongBpmTime();
+            RecomputeSpawnParameters();
         }
 
         public int PosX { get; set; }
@@ -98,18 +98,17 @@ namespace Beatmap.Base
             }
         }
 
-        public override void RecomputeSongBpmTime()
+        public void RecomputeSpawnParameters()
         {
             var njs = CustomNoteJumpMovementSpeed?.AsFloat
-                ?? BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
+                ?? BeatSaberSongContainer.Instance?.MapDifficultyInfo?.NoteJumpSpeed ?? 0f;
             var offset = CustomNoteJumpStartBeatOffset?.AsFloat
-                ?? BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteStartBeatOffset;
-            var bpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
+                ?? BeatSaberSongContainer.Instance?.MapDifficultyInfo?.NoteStartBeatOffset ?? 0f;
+            var bpm = BeatSaberSongContainer.Instance?.Info?.BeatsPerMinute ?? 0f;
             Hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
             // (5 / 3) * njs * (60 / bpm) = 100
             EditorScale = 100f * njs / bpm;
             Jd = Hjd * EditorScale;
-            base.RecomputeSongBpmTime();
         }
 
         private Vector2 DerivePositionFromData()
@@ -145,6 +144,8 @@ namespace Beatmap.Base
             CustomSpawnEffect = (CustomData?.HasKey(CustomKeySpawnEffect) ?? false) ? CustomData[CustomKeySpawnEffect] : null;
             CustomNoteJumpMovementSpeed = (CustomData?.HasKey(CustomKeyNoteJumpMovementSpeed) ?? false) ? CustomData?[CustomKeyNoteJumpMovementSpeed] : null;
             CustomNoteJumpStartBeatOffset = (CustomData?.HasKey(CustomKeyNoteJumpStartBeatOffset) ?? false) ? CustomData?[CustomKeyNoteJumpStartBeatOffset] : null;
+
+            RecomputeSpawnParameters();
         }
 
         protected internal override JSONNode SaveCustom()

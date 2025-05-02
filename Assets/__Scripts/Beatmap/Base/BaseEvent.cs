@@ -37,7 +37,7 @@ namespace Beatmap.Base
 
         public BaseEvent(BaseEvent other)
         {
-            SetTimes(other.JsonTime);
+            JsonTime = other.JsonTime;
             Type = other.Type;
             Value = other.Value;
             FloatValue = other.FloatValue;

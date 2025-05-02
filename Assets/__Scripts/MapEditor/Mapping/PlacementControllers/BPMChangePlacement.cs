@@ -20,7 +20,7 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
 
     public override void TransferQueuedToDraggedObject(ref BaseBpmEvent dragged, BaseBpmEvent queued)
     {
-        dragged.SetTimes(queued.JsonTime);
+        dragged.JsonTime = queued.JsonTime;
         objectContainerCollection.RefreshModifiedBeat();
     }
 

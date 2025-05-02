@@ -167,7 +167,7 @@ namespace Beatmap.Info
 
             var audioNode = new JSONObject();
             audioNode["songFilename"] = info.SongFilename;
-            audioNode["songDuration"] = BeatSaberSongContainer.Instance.LoadedSongLength;
+            audioNode["songDuration"] = BeatSaberSongContainer.Instance?.LoadedSongLength;
             audioNode["audioDataFilename"] = info.AudioDataFilename;
             audioNode["bpm"] = info.BeatsPerMinute;
             audioNode["lufs"] = info.Lufs;

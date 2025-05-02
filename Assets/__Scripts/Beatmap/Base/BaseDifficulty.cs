@@ -119,6 +119,8 @@ namespace Beatmap.Base
             BaseBpmEvent lastBpmEvent = null;
             foreach (var bpmEvent in BpmEvents)
             {
+                bpmEvent.SetMap(this);
+
                 if (lastBpmEvent is null)
                 {
                     bpmEvent.songBpmTime = bpmEvent.JsonTime;
@@ -182,6 +184,7 @@ namespace Beatmap.Base
                 if (objList is null) continue;
                 foreach (var obj in objList)
                 {
+                    obj.SetMap(this);
                     obj.RecomputeSongBpmTime();
                 }
             }

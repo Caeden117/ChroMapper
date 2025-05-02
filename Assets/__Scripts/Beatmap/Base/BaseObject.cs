@@ -25,24 +25,41 @@ namespace Beatmap.Base
 
         protected BaseObject()
         {
+            SetMap();
             JsonTime = 0; // needed to set songBpmTime
         }
 
         protected BaseObject(float time, JSONNode customData = null)
         {
+            SetMap();
             JsonTime = time;
             CustomData = customData;
         }
 
         protected BaseObject(float jsonTime, float songBpmTime, JSONNode customData = null)
         {
+            SetMap();
             this.jsonTime = jsonTime;
             this.songBpmTime = songBpmTime;
             CustomData = customData;
         }
 
+        public void SetMap(BaseDifficulty map = null)
+        {
+            if (map != null)
+            {
+                Map = map;
+            }
+            else
+            {
+                Map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
+            }
+        }
+
         public abstract ObjectType ObjectType { get; set; }
         public bool HasAttachedContainer { get; set; } = false;
+        
+        protected BaseDifficulty Map;
 
         private float jsonTime;
         public float JsonTime
@@ -50,9 +67,8 @@ namespace Beatmap.Base
             get => jsonTime;
             set
             {
-                var map = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Map : null;
-                songBpmTime = map?.JsonTimeToSongBpmTime(value);
                 jsonTime = value;
+                RecomputeSongBpmTime();
             }
         }
 
@@ -61,12 +77,6 @@ namespace Beatmap.Base
         // really should be private but we need to set this from BaseDifficulty on init
         internal float? songBpmTime; 
         public float SongBpmTime => (float)songBpmTime;
-
-        public void SetTimes(float jsonTime)
-        {
-            this.jsonTime = jsonTime;
-            RecomputeSongBpmTime();
-        }
 
         public virtual Color? CustomColor { get; set; }
         public abstract string CustomKeyColor { get; }
@@ -95,7 +105,7 @@ namespace Beatmap.Base
 
         public abstract string CustomKeyTrack { get; }
 
-        public virtual void RecomputeSongBpmTime() => JsonTime = JsonTime;
+        public virtual void RecomputeSongBpmTime() => songBpmTime = Map?.JsonTimeToSongBpmTime(JsonTime);
 
         public virtual bool IsConflictingWith(BaseObject other, bool deletion = false) =>
             Mathf.Abs(JsonTime - other.JsonTime) < BeatmapObjectContainerCollection.Epsilon &&

@@ -26,7 +26,7 @@ namespace Beatmap.Base
 
         public BaseBpmEvent(BaseBpmEvent other)
         {
-            SetTimes(other.JsonTime);
+            JsonTime = other.JsonTime;
             Bpm = other.Bpm;
             CustomData = other.CustomData.Clone();
         }

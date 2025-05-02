@@ -128,7 +128,7 @@ namespace Beatmap.Animations
             enabled = (UIMode.AnimationMode && TracksManager != null);
             if (!enabled) return;
 
-            obj.RecomputeSongBpmTime();
+            obj.RecomputeSpawnParameters();
 
             var duration = 0f;
 
