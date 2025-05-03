@@ -1138,7 +1138,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 1
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957393
 GameObject:
@@ -1378,7 +1378,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 2
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957397
 GameObject:
@@ -5195,7 +5195,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 3
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957492
 GameObject:
@@ -7805,7 +7805,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 3
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957565
 GameObject:
@@ -9727,7 +9727,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 2
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957865
 GameObject:
@@ -10393,7 +10393,7 @@ MonoBehaviour:
   CanBeTurnedOff: 1
   currentAlpha: 0
   multiplyAlpha: 1
-  LightID: 1
+  LightID: 0
   PropGroup: 0
 --- !u!1 &3005341156537957885
 GameObject:
