@@ -66,6 +66,8 @@ public class MapLoader : MonoBehaviour
             events.AllRotationEvents = eventsList.FindAll(it => it.IsLaneRotationEvent());
             events.AllBoostEvents = eventsList.FindAll(it => it.IsColorBoostEvent());
             events.AllBpmEvents = eventsList.FindAll(it => it.IsBpmEvent());
+            events.AllUtilityEvents = eventsList.FindAll(it => it.IsUtilityEvent());
+            events.AllLaserRotationEvents = eventsList.FindAll(it => it.IsLaserRotationEvent());
 
             events.LinkAllLightEvents();
         }
