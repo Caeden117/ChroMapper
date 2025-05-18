@@ -23,6 +23,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     [FormerlySerializedAs("tipc")] public TimelineInputPlaybackController Tipc;
     [SerializeField] private RectTransform timelineCanvas;
 
+    [SerializeField] private BookmarkRenderingController bookmarkRenderingController;
+    
     public InputAction.CallbackContext ShiftContext;
 
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
@@ -87,6 +89,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         {
             Destroy(container.gameObject);
         }
+
+        bookmarkRenderingController.ClearCachedBookmarks();
 
         bookmarkContainers = InstantiateBookmarkContainers();
         BookmarksUpdated.Invoke();

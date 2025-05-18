@@ -6319,6 +6319,7 @@ MonoBehaviour:
   Atsc: {fileID: 570484802}
   Tipc: {fileID: 1649845923}
   timelineCanvas: {fileID: 1919095322}
+  bookmarkRenderingController: {fileID: 1891278561}
 --- !u!1 &210755191
 GameObject:
   m_ObjectHideFlags: 0

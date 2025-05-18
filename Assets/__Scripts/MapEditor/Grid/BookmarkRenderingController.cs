@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base.Customs;
@@ -37,6 +36,16 @@ public class BookmarkRenderingController : MonoBehaviour
         Settings.NotifyBySettingName(nameof(Settings.GridBookmarksHasLine), RefreshBookmarkGridLine);
     }
 
+    public void ClearCachedBookmarks()
+    {
+        for (var i = renderedBookmarks.Count - 1; i >= 0; i--)
+        {
+            var bookmark = renderedBookmarks[i];
+            Destroy(bookmark.Text.gameObject);
+            renderedBookmarks.Remove(bookmark);
+        }
+    }
+    
     private void DisplayRenderedBookmarks(object _) => UpdateRenderedBookmarks();
 
     private void UpdateRenderedBookmarks()
