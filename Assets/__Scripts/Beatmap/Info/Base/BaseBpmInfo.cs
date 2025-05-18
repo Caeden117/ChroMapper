@@ -15,7 +15,9 @@ namespace Beatmap.Info
         public BaseBpmInfo InitWithSongContainerInstance()
         {
             Version = BeatSaberSongContainer.Instance.Info.Version[0] == '4' ? "4.0.0" : "2.0.0";
-            AudioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples;
+            
+            // This -1 is so the official editor doesn't yell at you that the audio is out of sync
+            AudioSamples = BeatSaberSongContainer.Instance.LoadedSongSamples - 1; 
             AudioFrequency = BeatSaberSongContainer.Instance.LoadedSongFrequency;
 
             return this;

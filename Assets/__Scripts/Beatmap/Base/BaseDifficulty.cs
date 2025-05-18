@@ -412,9 +412,9 @@ namespace Beatmap.Base
             }
 
             // Write Bpm file
-            var bpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Info.BeatsPerMinute,
-                songContainer.LoadedSongSamples, songContainer.LoadedSongFrequency);
-            var bpmInfo = new BaseBpmInfo { BpmRegions = bpmRegions }.InitWithSongContainerInstance();
+            var bpmInfo = new BaseBpmInfo().InitWithSongContainerInstance();
+            bpmInfo.BpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Info.BeatsPerMinute,
+                bpmInfo.AudioSamples, bpmInfo.AudioFrequency);
 
             // Don't write if created difficulty before supplying audio file
             if (bpmInfo.AudioSamples != default)
