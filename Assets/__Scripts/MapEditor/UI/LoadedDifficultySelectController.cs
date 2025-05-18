@@ -104,6 +104,7 @@ public class LoadedDifficultySelectController : MonoBehaviour
 
         // A great way to get ghost objects without this
         beatmapActionContainer.ClearBeatmapActions();
+        SelectionController.DeselectAll();
         
         LoadedDifficultyChangedEvent?.Invoke();
     }
