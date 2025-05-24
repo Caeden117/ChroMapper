@@ -112,12 +112,9 @@ namespace Beatmap.Info
         public float Lufs { get; set; } // Some normalisation thing 
         
         public string CoverImageFilename { get; set; } = "cover.png";
-
-        // TODO: Could probably convert this to EnvironmentNames.FirstOrDefault() ?? "DefaultEnvironment";
-        public string EnvironmentName { get; set; } = "DefaultEnvironment";
         
-        // TODO: This might be better as just a constant. No other all directions environment exists in vanilla.
-        public string AllDirectionsEnvironmentName { get; set; } = "GlassDesertEnvironment";
+        public string EnvironmentName => EnvironmentNames.FirstOrDefault() ?? "DefaultEnvironment";
+        public string AllDirectionsEnvironmentName => "GlassDesertEnvironment";
         
         public List<string> EnvironmentNames { get; set; } = new() { "DefaultEnvironment" };
 

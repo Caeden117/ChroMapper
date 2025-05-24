@@ -74,7 +74,6 @@ public class SongInfoEditUI : MenuBase
     [SerializeField] private TMP_InputField prevStartField;
     [SerializeField] private TMP_InputField prevDurField;
 
-    [SerializeField] private TMP_Dropdown environmentDropdown;
     [SerializeField] private TMP_Dropdown customPlatformsDropdown;
 
     [SerializeField] private TMP_InputField audioPath;
@@ -178,11 +177,6 @@ public class SongInfoEditUI : MenuBase
             offset.interactable = false;
         }
 
-        if (TryGetEnvironmentNameFromID(environmentDropdown.value, out var environmentName))
-        {
-            Info.EnvironmentName = environmentName;
-        }
-
         if (Info.CustomData == null) Info.CustomData = new JSONObject();
 
         if (customPlatformsDropdown.value > 0)
@@ -254,26 +248,6 @@ public class SongInfoEditUI : MenuBase
         bpmField.text = Info.BeatsPerMinute.ToString(CultureInfo.InvariantCulture);
         prevStartField.text = Info.PreviewStartTime.ToString(CultureInfo.InvariantCulture);
         prevDurField.text = Info.PreviewDuration.ToString(CultureInfo.InvariantCulture);
-
-        environmentDropdown.ClearOptions();
-        environmentDropdown.AddOptions(VanillaEnvironments.Select(it => it.HumanName).ToList());
-
-        // Handle unsupported environment
-        if (!VanillaEnvironments.Any(env => env.JsonName == Info.EnvironmentName))
-        {
-            environmentDropdown.AddOptions(new List<string> { Info.EnvironmentName });
-        }
-        
-        // Add any unsupported environments present in environmentNames
-        foreach (var environmentName in Info.EnvironmentNames)
-        {
-            if (!VanillaEnvironments.Any(env => env.JsonName == environmentName))
-            {
-                environmentDropdown.AddOptions(new List<string> { environmentName });
-            }
-        }
-
-        environmentDropdown.value = GetEnvironmentIDFromString(Info.EnvironmentName);
 
         customPlatformsDropdown.ClearOptions();
         customPlatformsDropdown.AddOptions(new List<string> { "None" });
@@ -622,7 +596,6 @@ public class SongInfoEditUI : MenuBase
         !NearlyEqual(Info.PreviewStartTime, GetTextValue(prevStartField)) ||
         !NearlyEqual(Info.PreviewDuration, GetTextValue(prevDurField)) ||
         !NearlyEqual(Info.SongTimeOffset, GetTextValue(offset)) ||
-        environmentDropdown.value != GetEnvironmentIDFromString(Info.EnvironmentName) ||
         customPlatformsDropdown.value != CustomPlatformFromSong();
 
     private static bool NearlyEqual(float a, float b, float epsilon = 0.01f) =>
