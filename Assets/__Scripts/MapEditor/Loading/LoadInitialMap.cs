@@ -24,8 +24,6 @@ public class LoadInitialMap : MonoBehaviour
 
     [FormerlySerializedAs("PlatformPrefabs")] [Space] [SerializeField] private GameObject[] platformPrefabs;
 
-    [FormerlySerializedAs("DirectionalPlatformPrefabs")] [SerializeField] private GameObject[] directionalPlatformPrefabs;
-
     private InfoDifficulty infoDifficulty;
     private BaseInfo info;
 
@@ -57,12 +55,6 @@ public class LoadInitialMap : MonoBehaviour
             }
         }
 
-        if (rotationController.IsActive && infoDifficulty.Characteristic != "Lawless")
-        {
-            environmentID = SongInfoEditUI.GetDirectionalEnvironmentIDFromString(info.AllDirectionsEnvironmentName);
-            directional = true;
-        }
-
         //Instantiate platform, grab descriptor
         var platform = platformPrefabs[environmentID] == null
             ? platformPrefabs[0]
@@ -72,8 +64,6 @@ public class LoadInitialMap : MonoBehaviour
         {
             platform = CustomPlatformsLoader.Instance.LoadPlatform(info.CustomEnvironmentMetadata.Name, platform);
         }
-
-        if (directional && !customPlat) platform = directionalPlatformPrefabs[environmentID];
 
         var instantiate = customPlat ? platform : Instantiate(platform, PlatformOffset, Quaternion.identity);
         var descriptor = instantiate.GetComponent<PlatformDescriptor>();

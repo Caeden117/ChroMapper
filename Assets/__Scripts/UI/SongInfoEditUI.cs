@@ -42,10 +42,9 @@ public class SongInfoEditUI : MenuBase
         new Environment("Skrillex", "SkrillexEnvironment"),
         new Environment("Billie", "BillieEnvironment"),
         new Environment("Spooky", "HalloweenEnvironment"),
-        new Environment("Gaga", "GagaEnvironment")
+        new Environment("Gaga", "GagaEnvironment"),
+        new Environment("Glass Desert", "GlassDesertEnvironment")
     };
-
-    private static readonly List<string> vanillaDirectionalEnvironments = new() { "GlassDesertEnvironment" };
 
     public static List<string> CharacteristicDropdownToBeatmapName = new()
     {
@@ -108,9 +107,6 @@ public class SongInfoEditUI : MenuBase
 
         LoadFromSong();
     }
-
-    public static int GetDirectionalEnvironmentIDFromString(string platforms) =>
-        vanillaDirectionalEnvironments.IndexOf(platforms);
 
     public static int GetEnvironmentIDFromString(string environment) =>
         VanillaEnvironments.TakeWhile(i => i.JsonName != environment).Count();
