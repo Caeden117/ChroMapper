@@ -38936,6 +38936,7 @@ MonoBehaviour:
   - {fileID: 6708941186443475604, guid: 13ec37cf3bdde8c459f5a0fd7194c674, type: 3}
   - {fileID: 6708941186443475604, guid: d8e1f60581f704b42b1e56801083c0d5, type: 3}
   - {fileID: 3005341156537957574, guid: 89a50c1aa36dfc7439fc09156f0b8f78, type: 3}
+  - {fileID: 749128188192919665, guid: 558261e2e6dd38a46af6768faf558ab7, type: 3}
   - {fileID: 3009465475994126661, guid: 363064460cb46a547afb83aceb44c1ab, type: 3}
   directionalPlatformPrefabs:
   - {fileID: 749128188192919665, guid: 558261e2e6dd38a46af6768faf558ab7, type: 3}
