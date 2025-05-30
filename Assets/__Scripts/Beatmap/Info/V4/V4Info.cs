@@ -141,8 +141,9 @@ namespace Beatmap.Info
                 if (customData["customEnvironment"].IsString)
                 {
                     info.CustomEnvironmentMetadata.Name = customData["customEnvironment"].Value;
-                    // Don't need save retrieve since it's calculated on save
+                    info.CustomEnvironmentMetadata.Hash = customData["customEnvironmentHash"].Value;
                     customData.Remove("customEnvironment");
+                    customData.Remove("customEnvironmentHash");
                 }
                 
                 info.CustomData = customData;

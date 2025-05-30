@@ -92,6 +92,10 @@ public class SongInfoEditUI : MenuBase
     [SerializeField] private GameObject questExportButton;
     private MapExporter exporter => new(Info);
 
+    // Store the custom environment hash on load to deal with edge case of loading a map containing a custom platform
+    // not present in the Beat Saber install, and then switching and saving different custom platform in the Info
+    private string initialCustomEnvironmentHash;
+
     private void Start()
     {
         if (BeatSaberSongContainer.Instance == null)
@@ -183,10 +187,15 @@ public class SongInfoEditUI : MenuBase
             {
                 Info.CustomEnvironmentMetadata.Hash = info.Md5Hash;
             }
+            else
+            {
+                Info.CustomEnvironmentMetadata.Hash = initialCustomEnvironmentHash;
+            }
         }
         else
         {
             Info.CustomEnvironmentMetadata.Name = null;
+            Info.CustomEnvironmentMetadata.Hash = null;
         }
 
         contributorController.Commit();
@@ -245,12 +254,21 @@ public class SongInfoEditUI : MenuBase
         prevStartField.text = Info.PreviewStartTime.ToString(CultureInfo.InvariantCulture);
         prevDurField.text = Info.PreviewDuration.ToString(CultureInfo.InvariantCulture);
 
+        var allCustomEnvironmentIds = CustomPlatformsLoader.Instance.GetAllEnvironmentIds();
+        
         customPlatformsDropdown.ClearOptions();
         customPlatformsDropdown.AddOptions(new List<string> { "None" });
-        customPlatformsDropdown.AddOptions(CustomPlatformsLoader.Instance.GetAllEnvironmentIds());
+        customPlatformsDropdown.AddOptions(allCustomEnvironmentIds);
+
+        var hasCustomEnvironment = !string.IsNullOrEmpty(Info.CustomEnvironmentMetadata.Name);
+        var hasCustomEnvironmentDropdownOption = allCustomEnvironmentIds.Contains(Info.CustomEnvironmentMetadata.Name);
+        if (hasCustomEnvironment && !hasCustomEnvironmentDropdownOption)
+        {
+            customPlatformsDropdown.AddOptions(new List<string> { Info.CustomEnvironmentMetadata.Name });
+            initialCustomEnvironmentHash = Info.CustomEnvironmentMetadata.Hash;
+        }
 
         customPlatformsDropdown.value = CustomPlatformFromSong();
-        if (customPlatformsDropdown.value == 0) customPlatformsDropdown.captionText.text = "None";
 
         contributorController.UndoChanges();
 
@@ -265,8 +283,16 @@ public class SongInfoEditUI : MenuBase
     {
         if (!string.IsNullOrEmpty(Info.CustomEnvironmentMetadata.Name))
         {
-            return CustomPlatformsLoader.Instance.GetAllEnvironmentIds()
-                                .IndexOf(Info.CustomEnvironmentMetadata.Name) + 1;
+            var allIds = CustomPlatformsLoader.Instance.GetAllEnvironmentIds();
+            var id = allIds.IndexOf(Info.CustomEnvironmentMetadata.Name);
+            
+            // Map has a custom platform which the user does not have
+            if (id == -1)
+            {
+                return allIds.Count + 1;
+            }
+            
+            return id + 1;
         }
 
         return 0;
