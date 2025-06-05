@@ -18,6 +18,7 @@ public class ContributorsController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+    #if UNITY_EDITOR
         if (!Application.IsPlaying(gameObject))
         {
             // Render 6 example objects in the editor
@@ -29,6 +30,7 @@ public class ContributorsController : MonoBehaviour
 
             return;
         }
+    #endif
 
         transform.parent.gameObject.SetActive(false);
 
