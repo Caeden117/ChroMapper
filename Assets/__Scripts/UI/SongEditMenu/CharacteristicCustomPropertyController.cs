@@ -1,6 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class CharacteristicCustomPropertyController : MonoBehaviour
@@ -16,46 +20,89 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
     [SerializeField] private Image LegacyIcon;
     [SerializeField] private Image LightshowIcon;
     [SerializeField] private Image LawlessIcon;
+
+    [SerializeField] private GameObject listContainer;
+    [SerializeField] private GameObject CustomPropertyItemPrefab;
     
+    private Dictionary<string, CharacteristicCustomPropertyItem> characteristicToCustomPropertyItem = new();
+    private Dictionary<string, Image> characteristicToIcon = new();
+
     private IEnumerator Start()
     {
         if (BeatSaberSongContainer.Instance.Info == null) yield break;
+        
+        characteristicToIcon = new Dictionary<string, Image>
+        {
+            { "Standard", StandardIcon },
+            { "OneSaber", OneSaberIcon },
+            { "NoArrows", NoArrowsIcon },
+            { "360Degree", ThreeSixtyDegreesIcon },
+            { "90Degree", NinetyDegreesIcon },
+            { "Legacy", LegacyIcon },
+            { "Lightshow", LightshowIcon },
+            { "Lawless", LawlessIcon },
+        };
 
-        yield return ReplaceCharacteristicIcon(StandardIcon, "Standard");
-        yield return ReplaceCharacteristicIcon(OneSaberIcon, "OneSaber");
-        yield return ReplaceCharacteristicIcon(NoArrowsIcon, "NoArrows");
-        yield return ReplaceCharacteristicIcon(ThreeSixtyDegreesIcon, "ThreeSixtyDegrees");
-        yield return ReplaceCharacteristicIcon(NinetyDegreesIcon, "NinetyDegrees");
-        yield return ReplaceCharacteristicIcon(LegacyIcon, "Legacy");
-        yield return ReplaceCharacteristicIcon(LightshowIcon, "Lightshow");
-        yield return ReplaceCharacteristicIcon(LawlessIcon, "Lawless");
+        foreach (var characteristicIcon in characteristicToIcon)
+        {
+            var item = Instantiate(CustomPropertyItemPrefab, listContainer.transform)
+                .GetComponent<CharacteristicCustomPropertyItem>();
+            item.Setup(this, characteristicIcon.Key, characteristicIcon.Value.sprite);
+            characteristicToCustomPropertyItem[characteristicIcon.Key] = item;
+            
+            yield return CleanLoad(characteristicIcon.Key);
+            ReplaceCharacteristicIcon(characteristicIcon.Key);
+        }
     }
 
-    private static int ReplaceCharacteristicIcon(Image image, string characteristic)
+    private IEnumerator CleanLoad(string characteristic)
     {
-        var info = BeatSaberSongContainer.Instance.Info;
-        var standardCharacteristic = info.DifficultySets.Find(c => c.Characteristic == characteristic);
-        if (!string.IsNullOrEmpty(standardCharacteristic?.CustomCharacteristicIconImageFileName))
+        var customPropertyItem = characteristicToCustomPropertyItem[characteristic];
+        var customImageFileName = customPropertyItem.iconImageFileName;
+        if (string.IsNullOrEmpty(customImageFileName))
         {
-            var imagePath = Path.Combine(info.Directory, standardCharacteristic.CustomCharacteristicIconImageFileName);
-            if (File.Exists(imagePath))
-            {
-                var texture = new Texture2D(1, 1);
-                texture.LoadImage(File.ReadAllBytes(imagePath));
-                var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
-                image.overrideSprite = sprite;
-            }
+            customPropertyItem.Image.overrideSprite = null;
         }
-        
-        if (!string.IsNullOrEmpty(standardCharacteristic?.CustomCharacteristicLabel))
+        else
         {
-            var tooltip = image.GetComponent<Tooltip>();
-            tooltip.TooltipOverride = standardCharacteristic.CustomCharacteristicLabel;
-        }
+            var location = Path.Combine(BeatSaberSongContainer.Instance.Info.Directory, customImageFileName);
+
+            var uriPath = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor
+                ? Uri.EscapeDataString(location)
+                : Uri.EscapeUriString(location);
         
-        return 0;
+            var request = UnityWebRequestTexture.GetTexture($"file:///{uriPath}");
+        
+            yield return request.SendWebRequest();
+        
+            var tex = DownloadHandlerTexture.GetContent(request);
+            customPropertyItem.Image.overrideSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one / 2f);
+        }
+    }
+
+    public void ReplaceCharacteristicIcon(string characteristic)
+    {
+        if (!characteristicToIcon.ContainsKey(characteristic)) return;
+        
+        var customPropertyItem = characteristicToCustomPropertyItem[characteristic];
+        var characteristicIcon = characteristicToIcon[characteristic];
+        
+        characteristicIcon.overrideSprite = customPropertyItem.Image.overrideSprite;
+        
+        var tooltip = characteristicIcon.GetComponent<Tooltip>();
+        tooltip.TooltipOverride = customPropertyItem.CustomNameField.text;
     }
 
     public void OpenEditDialog() => EditDialog.SetActive(!EditDialog.activeSelf);
+
+    public void CommitToInfo()
+    {
+        foreach (var characteristicCustomPropertyItem in characteristicToCustomPropertyItem)
+        {
+            characteristicCustomPropertyItem.Value.CommitToInfo();
+        }
+    }
+
+    public bool IsDirty() => characteristicToCustomPropertyItem.Any(x => x.Value.IsDirty());
 }
 

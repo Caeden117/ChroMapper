@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Beatmap.Info;
 using QuestDumper;
+using SFB;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -81,6 +82,8 @@ public class SongInfoEditUI : MenuBase
     [SerializeField] private Image revertInfoButtonImage;
 
     [SerializeField] private ContributorsController contributorController;
+
+    [SerializeField] private CharacteristicCustomPropertyController characteristicCustomPropertyController;
 
     private Coroutine reloadSongDataCoroutine;
     public Action TempSongLoadedEvent;
@@ -200,6 +203,8 @@ public class SongInfoEditUI : MenuBase
 
         contributorController.Commit();
         Info.CustomContributors = contributorController.Contributors;
+        
+        characteristicCustomPropertyController.CommitToInfo();
 
         Info.Save();
 
@@ -514,6 +519,14 @@ public class SongInfoEditUI : MenuBase
         if (contributorController.IsDirty())
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsavedcontributor.warning", callback,
+                PersistentUI.DialogBoxPresetType.YesNoCancel);
+            return true;
+        }
+
+        if (characteristicCustomPropertyController.IsDirty())
+        {
+            // TODO
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaved.warning", callback,
                 PersistentUI.DialogBoxPresetType.YesNoCancel);
             return true;
         }
