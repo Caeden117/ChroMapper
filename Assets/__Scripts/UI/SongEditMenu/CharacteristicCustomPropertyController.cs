@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteAlways]
 public class CharacteristicCustomPropertyController : MonoBehaviour
 {
     [SerializeField] private GameObject EditDialog;
@@ -29,6 +30,35 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
 
     private IEnumerator Start()
     {
+#if UNITY_EDITOR
+        if (!Application.IsPlaying(gameObject))
+        {
+            // Render an icon for each characteristic in editor
+            var icons = new List<Image>
+            {
+                StandardIcon,
+                OneSaberIcon,
+                NoArrowsIcon,
+                ThreeSixtyDegreesIcon,
+                NinetyDegreesIcon,
+                LegacyIcon,
+                LightshowIcon,
+                LawlessIcon
+            };
+
+            foreach (var image in icons)
+            {
+                var itemObject = Instantiate(CustomPropertyItemPrefab, listContainer.transform);
+                itemObject.hideFlags = HideFlags.HideAndDontSave;
+
+                var item = itemObject.GetComponent<CharacteristicCustomPropertyItem>();
+                item.Image.sprite = image.sprite;
+            }
+
+            yield break;
+        }
+#endif
+
         if (BeatSaberSongContainer.Instance.Info == null) yield break;
         
         characteristicToIcon = new Dictionary<string, Image>
@@ -49,7 +79,7 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
                 .GetComponent<CharacteristicCustomPropertyItem>();
             yield return item.Setup(this, characteristic, image.sprite);
             characteristicToCustomPropertyItem[characteristic] = item;
-            
+
             ReplaceCharacteristicIcon(characteristic);
         }
     }
