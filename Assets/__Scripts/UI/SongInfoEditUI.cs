@@ -632,7 +632,9 @@ public class SongInfoEditUI : MenuBase
         !NearlyEqual(Info.PreviewStartTime, GetTextValue(prevStartField)) ||
         !NearlyEqual(Info.PreviewDuration, GetTextValue(prevDurField)) ||
         !NearlyEqual(Info.SongTimeOffset, GetTextValue(offset)) ||
-        customPlatformsDropdown.value != CustomPlatformFromSong();
+        customPlatformsDropdown.value != CustomPlatformFromSong() ||
+        contributorController.IsDirty() ||
+        characteristicCustomPropertyController.IsDirty();
 
     private static bool NearlyEqual(float a, float b, float epsilon = 0.01f) =>
         a.Equals(b) || Math.Abs(a - b) < epsilon;

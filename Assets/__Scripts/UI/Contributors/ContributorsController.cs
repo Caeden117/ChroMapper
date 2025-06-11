@@ -15,6 +15,7 @@ public class ContributorsController : MonoBehaviour
     [SerializeField] private GameObject listItemPrefab;
     public readonly List<BaseContributor> Contributors = new();
 
+    private int initialItemsCount;
     private readonly List<ContributorListItem> items = new();
 
     // Start is called before the first frame update
@@ -50,6 +51,8 @@ public class ContributorsController : MonoBehaviour
             Contributors.Add(item);
             items.Add(listItem);
         }
+        
+        initialItemsCount = items.Count;
     }
 
     public void RemoveContributor(ContributorListItem item)
@@ -88,7 +91,7 @@ public class ContributorsController : MonoBehaviour
         Contributors.Clear();
     }
 
-    public bool IsDirty() => items.Any(it => it.Dirty);
+    public bool IsDirty() => items.Count != initialItemsCount || items.Any(it => it.Dirty);
 
     public void Commit()
     {
