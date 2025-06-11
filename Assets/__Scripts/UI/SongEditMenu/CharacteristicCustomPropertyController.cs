@@ -1,10 +1,8 @@
-﻿using System;
+﻿using __Scripts.UI.SongEditMenu;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class CharacteristicCustomPropertyController : MonoBehaviour
@@ -23,6 +21,8 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
 
     [SerializeField] private GameObject listContainer;
     [SerializeField] private GameObject CustomPropertyItemPrefab;
+
+    public ImageBrowser ImageBrowser; // Used by items
     
     private Dictionary<string, CharacteristicCustomPropertyItem> characteristicToCustomPropertyItem = new();
     private Dictionary<string, Image> characteristicToIcon = new();
@@ -47,36 +47,10 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
         {
             var item = Instantiate(CustomPropertyItemPrefab, listContainer.transform)
                 .GetComponent<CharacteristicCustomPropertyItem>();
-            item.Setup(this, characteristicIcon.Key, characteristicIcon.Value.sprite);
+            yield return item.Setup(this, characteristicIcon.Key, characteristicIcon.Value.sprite);
             characteristicToCustomPropertyItem[characteristicIcon.Key] = item;
             
-            yield return CleanLoad(characteristicIcon.Key);
             ReplaceCharacteristicIcon(characteristicIcon.Key);
-        }
-    }
-
-    private IEnumerator CleanLoad(string characteristic)
-    {
-        var customPropertyItem = characteristicToCustomPropertyItem[characteristic];
-        var customImageFileName = customPropertyItem.iconImageFileName;
-        if (string.IsNullOrEmpty(customImageFileName))
-        {
-            customPropertyItem.Image.overrideSprite = null;
-        }
-        else
-        {
-            var location = Path.Combine(BeatSaberSongContainer.Instance.Info.Directory, customImageFileName);
-
-            var uriPath = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor
-                ? Uri.EscapeDataString(location)
-                : Uri.EscapeUriString(location);
-        
-            var request = UnityWebRequestTexture.GetTexture($"file:///{uriPath}");
-        
-            yield return request.SendWebRequest();
-        
-            var tex = DownloadHandlerTexture.GetContent(request);
-            customPropertyItem.Image.overrideSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one / 2f);
         }
     }
 

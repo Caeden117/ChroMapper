@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using __Scripts.UI.SongEditMenu;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Base.Customs;
 using Beatmap.Info;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,11 +9,13 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class ContributorsController : MonoBehaviour
 {
+    public ImageBrowser ImageBrowser; // Used in items
+    
     [SerializeField] private GameObject listContainer;
     [SerializeField] private GameObject listItemPrefab;
-    public readonly List<BaseContributor> Contributors = new List<BaseContributor>();
+    public readonly List<BaseContributor> Contributors = new();
 
-    private readonly List<ContributorListItem> items = new List<ContributorListItem>();
+    private readonly List<ContributorListItem> items = new();
 
     // Start is called before the first frame update
     private void Start()
