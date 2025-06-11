@@ -43,14 +43,14 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
             { "Lawless", LawlessIcon },
         };
 
-        foreach (var characteristicIcon in characteristicToIcon)
+        foreach (var (characteristic, image) in characteristicToIcon)
         {
             var item = Instantiate(CustomPropertyItemPrefab, listContainer.transform)
                 .GetComponent<CharacteristicCustomPropertyItem>();
-            yield return item.Setup(this, characteristicIcon.Key, characteristicIcon.Value.sprite);
-            characteristicToCustomPropertyItem[characteristicIcon.Key] = item;
+            yield return item.Setup(this, characteristic, image.sprite);
+            characteristicToCustomPropertyItem[characteristic] = item;
             
-            ReplaceCharacteristicIcon(characteristicIcon.Key);
+            ReplaceCharacteristicIcon(characteristic);
         }
     }
 
@@ -62,6 +62,14 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
         var characteristicIcon = characteristicToIcon[characteristic];
         
         characteristicIcon.overrideSprite = customPropertyItem.Image.overrideSprite;
+    }
+
+    public void ReplaceCharacteristicTooltip(string characteristic)
+    {
+        if (!characteristicToIcon.ContainsKey(characteristic)) return;
+        
+        var customPropertyItem = characteristicToCustomPropertyItem[characteristic];
+        var characteristicIcon = characteristicToIcon[characteristic];
         
         var tooltip = characteristicIcon.GetComponent<Tooltip>();
         tooltip.TooltipOverride = customPropertyItem.CustomNameField.text;
@@ -71,9 +79,20 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
 
     public void CommitToInfo()
     {
-        foreach (var characteristicCustomPropertyItem in characteristicToCustomPropertyItem)
+        foreach (var (_, customPropertyItem) in characteristicToCustomPropertyItem)
         {
-            characteristicCustomPropertyItem.Value.CommitToInfo();
+            customPropertyItem.CommitToInfo();
+        }
+    }
+
+    public void UndoChanges()
+    {
+        foreach (var (characteristic, customPropertyItem) in characteristicToCustomPropertyItem)
+        {
+            customPropertyItem.UndoChanges();
+            
+            ReplaceCharacteristicTooltip(characteristic);
+            StartCoroutine(customPropertyItem.ReplaceCharacteristicIcons());
         }
     }
 

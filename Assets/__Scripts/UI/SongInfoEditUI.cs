@@ -276,6 +276,7 @@ public class SongInfoEditUI : MenuBase
         customPlatformsDropdown.value = CustomPlatformFromSong();
 
         contributorController.UndoChanges();
+        characteristicCustomPropertyController.UndoChanges();
 
         ReloadAudio();
     }

@@ -32,11 +32,15 @@ public class CharacteristicCustomPropertyItem : MonoBehaviour
         initialCustomName = CustomNameField.text = difficultySet?.CustomCharacteristicLabel ?? "";
         initialImageFileName = iconImageFileName = difficultySet?.CustomCharacteristicIconImageFileName ?? "";
 
+        CustomNameField.onEndEdit.AddListener(_ => controller.ReplaceCharacteristicTooltip(characteristic));
+
         if (!string.IsNullOrEmpty(initialImageFileName))
         {
             yield return controller.ImageBrowser.LoadImageIntoSprite(initialImageFileName, Image, isOverride: true);
         }
     }
+
+    public void OnDestroy() => CustomNameField.onEndEdit.RemoveAllListeners();
 
     public bool IsDirty() => CustomNameField.text != initialCustomName || iconImageFileName != initialImageFileName;
     
@@ -53,6 +57,12 @@ public class CharacteristicCustomPropertyItem : MonoBehaviour
         initialImageFileName = difficultySet.CustomCharacteristicIconImageFileName = iconImageFileName;
     }
 
+    public void UndoChanges()
+    {
+        iconImageFileName = initialImageFileName;
+        CustomNameField.text = initialCustomName;
+    }
+
     public void Clear()
     {
         CustomNameField.text = null;
@@ -60,6 +70,7 @@ public class CharacteristicCustomPropertyItem : MonoBehaviour
         Image.overrideSprite = null;
         
         controller.ReplaceCharacteristicIcon(characteristic);
+        controller.ReplaceCharacteristicTooltip(characteristic);
     }
 
     private void LoadImageCallback(string imageFileName)
@@ -68,9 +79,17 @@ public class CharacteristicCustomPropertyItem : MonoBehaviour
         StartCoroutine( ReplaceCharacteristicIcons());
     }
 
-    private IEnumerator ReplaceCharacteristicIcons()
+    public IEnumerator ReplaceCharacteristicIcons()
     {
-        yield return controller.ImageBrowser.LoadImageIntoSprite(iconImageFileName, Image, isOverride: true);
+        if (!string.IsNullOrEmpty(iconImageFileName))
+        {
+            yield return controller.ImageBrowser.LoadImageIntoSprite(iconImageFileName, Image, isOverride: true);
+        }
+        else
+        {
+            Image.overrideSprite = null;
+        }
+        
         controller.ReplaceCharacteristicIcon(characteristic);
     }
 
