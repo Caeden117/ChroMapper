@@ -121,10 +121,13 @@ namespace Beatmap.Info
                     {
                         var characteristic = characteristicNode["characteristic"].Value;
                         var difficultySet = info.DifficultySets.FirstOrDefault(x => x.Characteristic == characteristic);
-                        if (difficultySet != null)
+                        if (difficultySet == null)
                         {
-                            ParseDifficultySetCustomData(characteristicNode, difficultySet);
+                            difficultySet = new InfoDifficultySet { Characteristic = characteristic };
+                            info.DifficultySets.Add(difficultySet);
                         }
+
+                        ParseDifficultySetCustomData(characteristicNode, difficultySet);
                     }
 
                     // recreated on save so we can just remove the entire array

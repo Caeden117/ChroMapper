@@ -81,6 +81,7 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
             characteristicToCustomPropertyItem[characteristic] = item;
 
             ReplaceCharacteristicIcon(characteristic);
+            ReplaceCharacteristicTooltip(characteristic);
         }
     }
 
