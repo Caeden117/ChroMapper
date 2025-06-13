@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Beatmap.Info;
 using QuestDumper;
+using SFB;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -81,6 +82,8 @@ public class SongInfoEditUI : MenuBase
     [SerializeField] private Image revertInfoButtonImage;
 
     [SerializeField] private ContributorsController contributorController;
+
+    [SerializeField] private CharacteristicCustomPropertyController characteristicCustomPropertyController;
 
     private Coroutine reloadSongDataCoroutine;
     public Action TempSongLoadedEvent;
@@ -200,6 +203,8 @@ public class SongInfoEditUI : MenuBase
 
         contributorController.Commit();
         Info.CustomContributors = contributorController.Contributors;
+        
+        characteristicCustomPropertyController.CommitToInfo();
 
         Info.Save();
 
@@ -271,6 +276,7 @@ public class SongInfoEditUI : MenuBase
         customPlatformsDropdown.value = CustomPlatformFromSong();
 
         contributorController.UndoChanges();
+        characteristicCustomPropertyController.UndoChanges();
 
         ReloadAudio();
     }
@@ -518,6 +524,14 @@ public class SongInfoEditUI : MenuBase
             return true;
         }
 
+        if (characteristicCustomPropertyController.IsDirty())
+        {
+            // TODO
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaved.warning", callback,
+                PersistentUI.DialogBoxPresetType.YesNoCancel);
+            return true;
+        }
+
         callback(0);
         return false;
     }
@@ -618,7 +632,9 @@ public class SongInfoEditUI : MenuBase
         !NearlyEqual(Info.PreviewStartTime, GetTextValue(prevStartField)) ||
         !NearlyEqual(Info.PreviewDuration, GetTextValue(prevDurField)) ||
         !NearlyEqual(Info.SongTimeOffset, GetTextValue(offset)) ||
-        customPlatformsDropdown.value != CustomPlatformFromSong();
+        customPlatformsDropdown.value != CustomPlatformFromSong() ||
+        contributorController.IsDirty() ||
+        characteristicCustomPropertyController.IsDirty();
 
     private static bool NearlyEqual(float a, float b, float epsilon = 0.01f) =>
         a.Equals(b) || Math.Abs(a - b) < epsilon;

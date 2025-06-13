@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Globalization;
-using System.IO;
-using Beatmap.Info;
-using SFB;
+﻿using Beatmap.Info;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class ContributorListItem : MonoBehaviour
@@ -47,7 +41,7 @@ public class ContributorListItem : MonoBehaviour
     private void CheckLoadImage()
     {
         if (!string.IsNullOrWhiteSpace(imagePath))
-            StartCoroutine(LoadImage());
+            SetImageLocation(imagePath);
     }
 
     private void UpdateName() => nameText.text = Contributor.Name;
@@ -60,96 +54,13 @@ public class ContributorListItem : MonoBehaviour
         Dirty = false;
     }
 
-    public void BrowseForImage()
-    {
-        var extensions = new[]
-        {
-            new ExtensionFilter("Image Files", "png", "jpg", "jpeg"), new ExtensionFilter("All Files", "*")
-        };
-
-        var songDir = BeatSaberSongContainer.Instance.Info.Directory;
-        CMInputCallbackInstaller.DisableActionMaps(typeof(ContributorListItem),
-            new[] { typeof(CMInput.IMenusExtendedActions) });
-        var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, extensions, false);
-        StartCoroutine(ClearDisabledActionMaps());
-        if (paths.Length > 0)
-        {
-            var directory = new DirectoryInfo(songDir);
-            var file = new FileInfo(paths[0]);
-
-            var fullDirectory = directory.FullName;
-            var fullFile = file.FullName;
-#if UNITY_STANDALONE_WIN
-            var ignoreCase = true;
-#else
-            var ignoreCase = false;
-#endif
-
-            if (!fullFile.StartsWith(fullDirectory, ignoreCase, CultureInfo.InvariantCulture))
-            {
-                if (FileExistsAlready(songDir, file.Name)) return;
-
-                PersistentUI.Instance.ShowDialogBox("SongEditMenu", "files.badpath", result =>
-                {
-                    if (FileExistsAlready(songDir, file.Name)) return;
-
-                    if (result == 0)
-                    {
-                        File.Copy(fullFile, Path.Combine(songDir, file.Name));
-                        SetImageLocation(file.Name);
-                    }
-                }, PersistentUI.DialogBoxPresetType.YesNo);
-            }
-            else
-            {
-                SetImageLocation(fullFile.Substring(fullDirectory.Length + 1));
-            }
-        }
-    }
-
-    private IEnumerator ClearDisabledActionMaps()
-    {
-        yield return new WaitForEndOfFrame();
-        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(ContributorListItem),
-            new[] { typeof(CMInput.IMenusExtendedActions) });
-    }
-
-    private bool FileExistsAlready(string songDir, string fileName)
-    {
-        var newFile = Path.Combine(songDir, fileName);
-
-        if (!File.Exists(newFile)) return false;
-
-        PersistentUI.Instance.ShowDialogBox("SongEditMenu", "files.conflict", result =>
-        {
-            if (result == 0) SetImageLocation(fileName);
-        }, PersistentUI.DialogBoxPresetType.YesNo);
-
-        return true;
-    }
+    public void BrowseForImage() => controller.ImageBrowser.BrowseForImage(SetImageLocation);
 
     private void SetImageLocation(string path)
     {
         imagePath = path;
-        StartCoroutine(LoadImage());
+        StartCoroutine(controller.ImageBrowser.LoadImageIntoSprite(imagePath, contributorImage, isOverride: false));
     }
-
-    private IEnumerator LoadImage()
-    {
-        var location = Path.Combine(BeatSaberSongContainer.Instance.Info.Directory, imagePath);
-
-        var uriPath = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor
-            ? Uri.EscapeDataString(location)
-            : Uri.EscapeUriString(location);
-        
-        var request = UnityWebRequestTexture.GetTexture($"file:///{uriPath}");
-        
-        yield return request.SendWebRequest();
-        
-        var tex = DownloadHandlerTexture.GetContent(request);
-        contributorImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one / 2f);
-    }
-
 
     public void Delete() => controller.RemoveContributor(this);
 }

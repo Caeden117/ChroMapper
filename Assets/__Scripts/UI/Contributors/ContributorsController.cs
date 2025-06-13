@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using __Scripts.UI.SongEditMenu;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Beatmap.Base.Customs;
 using Beatmap.Info;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,15 +9,19 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class ContributorsController : MonoBehaviour
 {
+    public ImageBrowser ImageBrowser; // Used in items
+    
     [SerializeField] private GameObject listContainer;
     [SerializeField] private GameObject listItemPrefab;
-    public readonly List<BaseContributor> Contributors = new List<BaseContributor>();
+    public readonly List<BaseContributor> Contributors = new();
 
-    private readonly List<ContributorListItem> items = new List<ContributorListItem>();
+    private int initialItemsCount;
+    private readonly List<ContributorListItem> items = new();
 
     // Start is called before the first frame update
     private void Start()
     {
+    #if UNITY_EDITOR
         if (!Application.IsPlaying(gameObject))
         {
             // Render 6 example objects in the editor
@@ -29,6 +33,7 @@ public class ContributorsController : MonoBehaviour
 
             return;
         }
+    #endif
 
         transform.parent.gameObject.SetActive(false);
 
@@ -46,6 +51,8 @@ public class ContributorsController : MonoBehaviour
             Contributors.Add(item);
             items.Add(listItem);
         }
+        
+        initialItemsCount = items.Count;
     }
 
     public void RemoveContributor(ContributorListItem item)
@@ -84,7 +91,7 @@ public class ContributorsController : MonoBehaviour
         Contributors.Clear();
     }
 
-    public bool IsDirty() => items.Any(it => it.Dirty);
+    public bool IsDirty() => items.Count != initialItemsCount || items.Any(it => it.Dirty);
 
     public void Commit()
     {

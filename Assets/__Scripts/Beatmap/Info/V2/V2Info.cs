@@ -223,7 +223,11 @@ namespace Beatmap.Info
                     setNode["_customData"] = diffSetCustomData;
                 }
                 
-                beatmapSetArray.Add(setNode);
+                // Only add non-empty sets
+                if (beatmapSet.Difficulties.Count > 0 || diffSetCustomData.Count > 0)
+                {
+                    beatmapSetArray.Add(setNode);
+                }
             }
 
             json["_difficultyBeatmapSets"] = beatmapSetArray;

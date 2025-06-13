@@ -1,8 +1,11 @@
-﻿using System.Collections;
-using System.IO;
+﻿using __Scripts.UI.SongEditMenu;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteAlways]
 public class CharacteristicCustomPropertyController : MonoBehaviour
 {
     [SerializeField] private GameObject EditDialog;
@@ -16,46 +19,114 @@ public class CharacteristicCustomPropertyController : MonoBehaviour
     [SerializeField] private Image LegacyIcon;
     [SerializeField] private Image LightshowIcon;
     [SerializeField] private Image LawlessIcon;
+
+    [SerializeField] private GameObject listContainer;
+    [SerializeField] private GameObject CustomPropertyItemPrefab;
+
+    public ImageBrowser ImageBrowser; // Used by items
     
+    private Dictionary<string, CharacteristicCustomPropertyItem> characteristicToCustomPropertyItem = new();
+    private Dictionary<string, Image> characteristicToIcon = new();
+
     private IEnumerator Start()
     {
-        if (BeatSaberSongContainer.Instance.Info == null) yield break;
+#if UNITY_EDITOR
+        if (!Application.IsPlaying(gameObject))
+        {
+            // Render an icon for each characteristic in editor
+            var icons = new List<Image>
+            {
+                StandardIcon,
+                OneSaberIcon,
+                NoArrowsIcon,
+                ThreeSixtyDegreesIcon,
+                NinetyDegreesIcon,
+                LegacyIcon,
+                LightshowIcon,
+                LawlessIcon
+            };
 
-        yield return ReplaceCharacteristicIcon(StandardIcon, "Standard");
-        yield return ReplaceCharacteristicIcon(OneSaberIcon, "OneSaber");
-        yield return ReplaceCharacteristicIcon(NoArrowsIcon, "NoArrows");
-        yield return ReplaceCharacteristicIcon(ThreeSixtyDegreesIcon, "ThreeSixtyDegrees");
-        yield return ReplaceCharacteristicIcon(NinetyDegreesIcon, "NinetyDegrees");
-        yield return ReplaceCharacteristicIcon(LegacyIcon, "Legacy");
-        yield return ReplaceCharacteristicIcon(LightshowIcon, "Lightshow");
-        yield return ReplaceCharacteristicIcon(LawlessIcon, "Lawless");
+            foreach (var image in icons)
+            {
+                var itemObject = Instantiate(CustomPropertyItemPrefab, listContainer.transform);
+                itemObject.hideFlags = HideFlags.HideAndDontSave;
+
+                var item = itemObject.GetComponent<CharacteristicCustomPropertyItem>();
+                item.Image.sprite = image.sprite;
+            }
+
+            yield break;
+        }
+#endif
+
+        if (BeatSaberSongContainer.Instance.Info == null) yield break;
+        
+        characteristicToIcon = new Dictionary<string, Image>
+        {
+            { "Standard", StandardIcon },
+            { "OneSaber", OneSaberIcon },
+            { "NoArrows", NoArrowsIcon },
+            { "360Degree", ThreeSixtyDegreesIcon },
+            { "90Degree", NinetyDegreesIcon },
+            { "Legacy", LegacyIcon },
+            { "Lightshow", LightshowIcon },
+            { "Lawless", LawlessIcon },
+        };
+
+        foreach (var (characteristic, image) in characteristicToIcon)
+        {
+            var item = Instantiate(CustomPropertyItemPrefab, listContainer.transform)
+                .GetComponent<CharacteristicCustomPropertyItem>();
+            yield return item.Setup(this, characteristic, image.sprite);
+            characteristicToCustomPropertyItem[characteristic] = item;
+
+            ReplaceCharacteristicIcon(characteristic);
+            ReplaceCharacteristicTooltip(characteristic);
+        }
     }
 
-    private static int ReplaceCharacteristicIcon(Image image, string characteristic)
+    public void ReplaceCharacteristicIcon(string characteristic)
     {
-        var info = BeatSaberSongContainer.Instance.Info;
-        var standardCharacteristic = info.DifficultySets.Find(c => c.Characteristic == characteristic);
-        if (!string.IsNullOrEmpty(standardCharacteristic?.CustomCharacteristicIconImageFileName))
-        {
-            var imagePath = Path.Combine(info.Directory, standardCharacteristic.CustomCharacteristicIconImageFileName);
-            if (File.Exists(imagePath))
-            {
-                var texture = new Texture2D(1, 1);
-                texture.LoadImage(File.ReadAllBytes(imagePath));
-                var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
-                image.overrideSprite = sprite;
-            }
-        }
+        if (!characteristicToIcon.ContainsKey(characteristic)) return;
         
-        if (!string.IsNullOrEmpty(standardCharacteristic?.CustomCharacteristicLabel))
-        {
-            var tooltip = image.GetComponent<Tooltip>();
-            tooltip.TooltipOverride = standardCharacteristic.CustomCharacteristicLabel;
-        }
+        var customPropertyItem = characteristicToCustomPropertyItem[characteristic];
+        var characteristicIcon = characteristicToIcon[characteristic];
         
-        return 0;
+        characteristicIcon.overrideSprite = customPropertyItem.Image.overrideSprite;
+    }
+
+    public void ReplaceCharacteristicTooltip(string characteristic)
+    {
+        if (!characteristicToIcon.ContainsKey(characteristic)) return;
+        
+        var customPropertyItem = characteristicToCustomPropertyItem[characteristic];
+        var characteristicIcon = characteristicToIcon[characteristic];
+        
+        var tooltip = characteristicIcon.GetComponent<Tooltip>();
+        tooltip.TooltipOverride = customPropertyItem.CustomNameField.text;
     }
 
     public void OpenEditDialog() => EditDialog.SetActive(!EditDialog.activeSelf);
+
+    public void CommitToInfo()
+    {
+        foreach (var (_, customPropertyItem) in characteristicToCustomPropertyItem)
+        {
+            customPropertyItem.CommitToInfo();
+        }
+    }
+
+    public void UndoChanges()
+    {
+        foreach (var (characteristic, customPropertyItem) in characteristicToCustomPropertyItem)
+        {
+            customPropertyItem.UndoChanges();
+            
+            ReplaceCharacteristicTooltip(characteristic);
+            StartCoroutine(customPropertyItem.ReplaceCharacteristicIcons());
+        }
+    }
+
+    public bool IsDirty() => characteristicToCustomPropertyItem.Any(x => x.Value.IsDirty());
 }
 
