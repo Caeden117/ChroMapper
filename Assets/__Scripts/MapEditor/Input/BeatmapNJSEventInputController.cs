@@ -1,4 +1,5 @@
 ﻿using Beatmap.Containers;
+using Beatmap.Enums;
 using Beatmap.Helper;
 using UnityEngine.InputSystem;
 
@@ -31,6 +32,8 @@ public class BeatmapNJSEventInputController : BeatmapInputController<NJSEventCon
 
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
                     containerToEdit.ObjectData, original, "Tweaked NJS", mergeType: ActionMergeType.NJSValueTweak));
+                
+                BeatmapObjectContainerCollection.GetCollectionForType<NJSEventGridContainer>(ObjectType.NJSEvent).UpdateHJDLine();
             }
         }
     }

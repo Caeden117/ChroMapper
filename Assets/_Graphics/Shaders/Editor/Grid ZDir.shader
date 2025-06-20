@@ -38,6 +38,7 @@ Shader "Grid ZDir" {
 			uniform float _Offset = 0;
 			uniform float _Rotation = 0;
 			uniform float _EditorScale = 4;
+			uniform float _CurrentHJD = 2;
 
 			// Define instanced properties
 			UNITY_INSTANCING_BUFFER_START(Props)
@@ -136,6 +137,15 @@ Shader "Grid ZDir" {
 						time = timeInNewBeat + _BPMChange_Json_Times[_BPMChange_Count - 1];
 					}
 				}
+
+				// HJD line
+				float timeOffsetToCursor = timeButRAWWW - (_Offset / _EditorScale);
+				float hjdRange = gridThickness / 10;
+				if (_CurrentHJD - hjdRange < timeOffsetToCursor && timeOffsetToCursor < _CurrentHJD + hjdRange)
+				{
+					return float4(0.5, 0, 0, 1);
+				}
+
 				if ((abs(time * editorScaleMult) % gridSpacing) / gridSpacing <= gridThickness / 2
 				 || (abs(time * editorScaleMult) % gridSpacing) / gridSpacing >= 1 - (gridThickness / 2)) {
 					return gridColour;
