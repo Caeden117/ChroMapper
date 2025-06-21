@@ -14,6 +14,14 @@
         Add("Events", true);
         Add("BPM Changes", true); // Bpm Events. Name not changed to preserve settings.
         Add("Current BPM", true);
+        
+        // For NJS Events, I feel the user should decide which of the other stats they want to enable
+        Add("NJS Events", true);
+        Add("Current NJS", true);
+        Add("Current HJD", false);
+        Add("Current JD", false);
+        Add("Current RT", false);
+        
         Add("Time Spent Mapping", true);
     }
 }

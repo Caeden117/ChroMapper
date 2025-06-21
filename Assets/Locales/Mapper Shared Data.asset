@@ -751,6 +751,26 @@ MonoBehaviour:
     m_Key: change.beatmap.version.warning
     m_Metadata:
       m_Items: []
+  - m_Id: 469752073015914496
+    m_Key: countersplus.njsevents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752216670826496
+    m_Key: countersplus.currentnjs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752496527372288
+    m_Key: countersplus.currenthjd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752582758068224
+    m_Key: countersplus.currentjd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752663171264512
+    m_Key: countersplus.currentrt
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
