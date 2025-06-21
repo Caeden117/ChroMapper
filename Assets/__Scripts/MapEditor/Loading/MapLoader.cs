@@ -56,8 +56,6 @@ public class MapLoader : MonoBehaviour
         
         collection.MapObjects = objects;
 
-        var span = objects.AsSpan();
-        
         if (objects is List<BaseEvent> eventsList)
         {
             manager.RefreshTracks();
