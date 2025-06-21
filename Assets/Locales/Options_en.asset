@@ -1432,6 +1432,54 @@ MonoBehaviour:
     m_Localized: How bright the bookmarks on the timeline are.
     m_Metadata:
       m_Items: []
+  - m_Id: 513132648409722880
+    m_Localized: Show NJS (Note Jump Speed) Event count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513132913414238208
+    m_Localized: Show NJS Event Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133409642344448
+    m_Localized: Show Current NJS (Note Jump Speed) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133637388857344
+    m_Localized: Show Current NJS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134051299553280
+    m_Localized: Show Current HJD (Half Jump Duration) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134225774211072
+    m_Localized: Show Current HJD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134545464061952
+    m_Localized: Show Current JD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134705308987392
+    m_Localized: Show Current RT (Reaction Time) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134839585435648
+    m_Localized: Show Current RT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134485426794496
+    m_Localized: Show Current JD (Jump Distance) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144347351183360
+    m_Localized: Displays the HJD (Half Jump Duration) line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144631343312896
+    m_Localized: Display HJD Line On Grid
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

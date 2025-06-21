@@ -851,13 +851,38 @@ MonoBehaviour:
       a map version to change to.'
     m_Metadata:
       m_Items: []
+  - m_Id: 469752073015914496
+    m_Localized: 'NJS Events: {NJSEventCount}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 469752216670826496
+    m_Localized: 'Current NJS: {CurrentNJS:F2}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 469752496527372288
+    m_Localized: 'Current HJD: {CurrentHJD:F2}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 469752582758068224
+    m_Localized: 'Current JD: {CurrentJD:F1}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 469752663171264512
+    m_Localized: 'Current RT: {CurrentRT:F0}ms'
+    m_Metadata:
+      m_Items:
+      - rid: 0
   references:
     version: 2
     RefIds:
     - rid: 0
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f6040000c3d37bb99800
+        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f6040000c3d37bb9980000f09d8405e5840600f01df726e5840600f09d337ce5840600f0dd1f68e5840600f09dec8ee58406
     - rid: 1
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:

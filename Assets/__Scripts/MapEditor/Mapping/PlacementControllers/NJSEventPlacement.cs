@@ -20,6 +20,13 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
     
     internal override void ApplyToMap() => CreateAndOpenNJSDialogue(isInitialPlacement: true);
     
+    internal override void Start()
+    {
+        // v2 info cannot switch to v4 version => cannot place and save NJS events
+        gameObject.SetActive(BeatSaberSongContainer.Instance.Info.MajorVersion != 2);
+        base.Start();
+    }
+    
     private void AttemptPlaceNJSChange(string njsInput, int easingDropdownValue, bool extend)
     {
         if (string.IsNullOrEmpty(njsInput) || string.IsNullOrWhiteSpace(njsInput)) return;

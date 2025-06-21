@@ -36,6 +36,11 @@ namespace Tests.Util
             CleanupType(ObjectType.BpmChange);
         }
 
+        public static void CleanupNJSEvents()
+        {
+            CleanupType(ObjectType.NJSEvent);
+        }
+
         public static void CleanupBookmarks()
         {
             var bookmarkManager = Object.FindObjectOfType<BookmarkManager>();

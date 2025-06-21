@@ -142,6 +142,7 @@ public class Settings
 
     public bool MeasureLinesShowOnTop = false;
     public bool HighContrastGrids = false;
+    public bool DisplayHJDLine = true;
     public float GridTransparency = 0f;
     public float InterfaceOpacity = 0.1f;
     public int TrackLength = 8;
