@@ -1472,6 +1472,14 @@ MonoBehaviour:
     m_Localized: Show Current JD (Jump Distance) in Counters+
     m_Metadata:
       m_Items: []
+  - m_Id: 513144347351183360
+    m_Localized: Displays the HJD (Half Jump Duration) line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144631343312896
+    m_Localized: Display HJD Line On Grid
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

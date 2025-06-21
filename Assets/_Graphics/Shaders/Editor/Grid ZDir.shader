@@ -39,6 +39,7 @@ Shader "Grid ZDir" {
 			uniform float _Rotation = 0;
 			uniform float _EditorScale = 4;
 			uniform float _CurrentHJD = 2;
+			uniform int _DisplayHJDLine = 1;
 
 			// Define instanced properties
 			UNITY_INSTANCING_BUFFER_START(Props)
@@ -141,7 +142,7 @@ Shader "Grid ZDir" {
 				// HJD line
 				float timeOffsetToCursor = timeButRAWWW - (_Offset / _EditorScale);
 				float hjdRange = gridThickness / 10;
-				if (_CurrentHJD - hjdRange < timeOffsetToCursor && timeOffsetToCursor < _CurrentHJD + hjdRange)
+				if (_DisplayHJDLine && _CurrentHJD - hjdRange < timeOffsetToCursor && timeOffsetToCursor < _CurrentHJD + hjdRange)
 				{
 					return float4(0.5, 0, 0, 1);
 				}

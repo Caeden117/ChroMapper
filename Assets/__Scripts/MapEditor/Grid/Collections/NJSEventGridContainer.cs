@@ -11,6 +11,7 @@ public class NJSEventGridContainer : BeatmapObjectContainerCollection<BaseNJSEve
     [SerializeField] private CountersPlusController countersPlus;
     
     private static readonly int currentHJDShaderID = Shader.PropertyToID("_CurrentHJD");
+    private static readonly int DisplayHJDLine = Shader.PropertyToID("_DisplayHJDLine");
     
     public override ObjectType ContainerType => ObjectType.NJSEvent;
 
@@ -19,6 +20,10 @@ public class NJSEventGridContainer : BeatmapObjectContainerCollection<BaseNJSEve
         AudioTimeSyncController.PlayToggle += OnPlayToggle;
         AudioTimeSyncController.TimeChanged += UpdateHJDLine;
         UIMode.PreviewModeSwitched += OnUIPreviewModeSwitch;
+        
+        Settings.NotifyBySettingName("DisplayHJDLine", UpdateDisplayHJDLine);
+        UpdateHJDLine();
+        UpdateDisplayHJDLine(Settings.Instance.DisplayHJDLine);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -26,6 +31,8 @@ public class NJSEventGridContainer : BeatmapObjectContainerCollection<BaseNJSEve
         AudioTimeSyncController.PlayToggle -= OnPlayToggle;
         AudioTimeSyncController.TimeChanged -= UpdateHJDLine;
         UIMode.PreviewModeSwitched -= OnUIPreviewModeSwitch;
+        
+        Settings.ClearSettingNotifications("DisplayHJDLine");
     }
 
     private void OnPlayToggle(bool isPlaying)
@@ -112,4 +119,6 @@ public class NJSEventGridContainer : BeatmapObjectContainerCollection<BaseNJSEve
         
         countersPlus.UpdateStatistic(CountersPlusStatistic.NJSEvents);
     }
+    
+    private void UpdateDisplayHJDLine(object value) => Shader.SetGlobalInt(DisplayHJDLine, (bool)value ? 1 : 0);
 }

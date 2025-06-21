@@ -1351,6 +1351,14 @@ MonoBehaviour:
     m_Key: countersplus.showcurrentrt
     m_Metadata:
       m_Items: []
+  - m_Id: 513144347351183360
+    m_Key: appearance.displayhjdline.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144631343312896
+    m_Key: appearance.displayhjdline
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
