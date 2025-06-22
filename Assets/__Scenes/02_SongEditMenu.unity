@@ -22097,7 +22097,6 @@ MonoBehaviour:
   listItemPrefab: {fileID: 5898834732875970076, guid: 8a225b3ff95035544af0c5aab403bb8f,
     type: 3}
   difficultySelect: {fileID: 187183939}
-  envRemovalToggle: {fileID: 127209248}
 --- !u!114 &1528691867
 MonoBehaviour:
   m_ObjectHideFlags: 0

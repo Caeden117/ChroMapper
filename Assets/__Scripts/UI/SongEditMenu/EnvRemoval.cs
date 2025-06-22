@@ -13,7 +13,6 @@ public class EnvRemoval : MonoBehaviour
     [SerializeField] private GameObject listItemPrefab;
 
     [SerializeField] private DifficultySelect difficultySelect;
-    [SerializeField] private Image envRemovalToggle;
 
     private readonly List<EnvRemovalListItem> envRemovalList = new List<EnvRemovalListItem>();
     public List<BaseEnvironmentEnhancement> EnvRemovalList => envRemovalList.Select(it => it.Value).ToList();
