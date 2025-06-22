@@ -27,6 +27,8 @@ public class DifficultySelect : MonoBehaviour
     [SerializeField] private CharacteristicSelect characteristicSelect;
     [SerializeField] private Color copyColor;
     [SerializeField] private EnvRemoval envRemoval;
+    [SerializeField] private SongCoreInformation songCoreInformation;
+    [SerializeField] private SongCoreInformation songCoreWarning;
     [SerializeField] private Button openEditorButton;
 
     private readonly HashSet<DifficultyRow> rows = new();
@@ -224,6 +226,28 @@ public class DifficultySelect : MonoBehaviour
         selected.ShowDirtyObjects(diff);
     }
 
+    public void UpdateCustomWarnings()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.SongCoreWarnings = songCoreWarning.InfoList;
+
+        selected.ShowDirtyObjects(diff);
+    }
+    
+    public void UpdateSongCoreInformation()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.SongCoreInfos = songCoreInformation.InfoList;
+
+        selected.ShowDirtyObjects(diff);
+    }
+
     /// <summary>
     ///     Revert the diff to the saved version
     /// </summary>
@@ -244,6 +268,8 @@ public class DifficultySelect : MonoBehaviour
             lightshowFilePathField.text = localDiff.LightshowFilePath;
             environmentDropdown.value = localDiff.EnvironmentNameIndex;
             envRemoval.UpdateFromDiff(localDiff.EnvEnhancements);
+            songCoreInformation.UpdateFromDiff(localDiff.SongCoreInfos);
+            songCoreWarning.UpdateFromDiff(localDiff.SongCoreWarnings);
         }
 
         row.ShowDirtyObjects(localDiff);
@@ -390,6 +416,8 @@ public class DifficultySelect : MonoBehaviour
             lightshowFilePathField.SetTextWithoutNotify("");
             environmentDropdown.SetValueWithoutNotify(0);
             envRemoval.ClearList();
+            songCoreInformation.ClearList();
+            songCoreWarning.ClearList();
         }
 
         selected = null;
@@ -446,6 +474,8 @@ public class DifficultySelect : MonoBehaviour
         environmentDropdown.value = environmentNames.IndexOf(selectedDifficultySettings.EnvironmentName);
         
         envRemoval.UpdateFromDiff(selectedDifficultySettings.EnvEnhancements);
+        songCoreInformation.UpdateFromDiff(selectedDifficultySettings.SongCoreInfos);
+        songCoreWarning.UpdateFromDiff(selectedDifficultySettings.SongCoreWarnings);
     }
 
     /// <summary>
@@ -693,6 +723,8 @@ public class DifficultySelect : MonoBehaviour
             lightersField.text = "";
             
             envRemoval.ClearList();
+            songCoreInformation.ClearList();
+            songCoreWarning.ClearList();
         }
     }
 

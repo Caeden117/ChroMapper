@@ -13,6 +13,8 @@ using Beatmap.V4;
 /// </summary>
 public class DifficultySettings
 {
+    private List<string> songCoreInfos;
+    private List<string> songCoreWarnings;
     private List<BaseEnvironmentEnhancement> envEnhancements;
     private BaseDifficulty map;
 
@@ -59,6 +61,26 @@ public class DifficultySettings
         set => envEnhancements = value;
     }
 
+    public List<string> SongCoreInfos
+    {
+        get
+        {
+            songCoreInfos ??= InfoDifficulty.CustomInformation.ToList();
+            return songCoreInfos;
+        }
+        set => songCoreInfos = value;
+    }
+    
+    public List<string> SongCoreWarnings
+    {
+        get
+        {
+            songCoreWarnings ??= InfoDifficulty.CustomWarnings.ToList();
+            return songCoreWarnings;
+        }
+        set => songCoreWarnings = value;
+    }
+
     /// <summary>
     ///     Check if the user has made changes
     /// </summary>
@@ -72,11 +94,16 @@ public class DifficultySettings
         Mappers != string.Join(',', InfoDifficulty.Mappers) ||
         Lighters != string.Join(',', InfoDifficulty.Lighters) ||
         (CustomName ?? "") != (InfoDifficulty.CustomLabel ?? "") ||
-        EnvRemovalChanged();
+        EnvRemovalChanged() || SongCoreInfoWarningsChanged();
 
     private bool EnvRemovalChanged() =>
         envEnhancements != null && Map != null &&
         !(Map.EnvironmentEnhancements.All(envEnhancements.Contains) && Map.EnvironmentEnhancements.Count == envEnhancements.Count);
+
+    private bool SongCoreInfoWarningsChanged() =>
+        songCoreInfos != null && songCoreWarnings != null && InfoDifficulty != null &&
+        !(InfoDifficulty.CustomInformation.SequenceEqual(songCoreInfos) &&
+          InfoDifficulty.CustomWarnings.SequenceEqual(songCoreWarnings));
 
     /// <summary>
     ///     Save the users changes to the backing DifficultyBeatmap object
@@ -113,6 +140,8 @@ public class DifficultySettings
         }
 
         InfoDifficulty.CustomLabel = CustomName;
+        InfoDifficulty.CustomInformation = songCoreInfos;
+        InfoDifficulty.CustomWarnings = songCoreWarnings;
 
         InfoDifficulty.CustomData?.Remove("_environmentRemoval");
 
@@ -157,5 +186,7 @@ public class DifficultySettings
         CustomName = InfoDifficulty.CustomLabel;
 
         envEnhancements = null;
+        songCoreInfos = null;
+        songCoreWarnings = null;
     }
 }
