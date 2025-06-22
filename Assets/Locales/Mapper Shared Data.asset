@@ -771,6 +771,14 @@ MonoBehaviour:
     m_Key: countersplus.currentrt
     m_Metadata:
       m_Items: []
+  - m_Id: 515086303031586816
+    m_Key: gradient.colors.white
+    m_Metadata:
+      m_Items: []
+  - m_Id: 515091128582533120
+    m_Key: bar.events.transition.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
