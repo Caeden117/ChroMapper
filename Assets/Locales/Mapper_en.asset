@@ -880,6 +880,10 @@ MonoBehaviour:
     m_Localized: Use White events.
     m_Metadata:
       m_Items: []
+  - m_Id: 515091128582533120
+    m_Localized: The light will fade from previous event.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
