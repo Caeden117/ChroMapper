@@ -29,6 +29,7 @@ public class DifficultySelect : MonoBehaviour
     [SerializeField] private EnvRemoval envRemoval;
     [SerializeField] private SongCoreInformation songCoreInformation;
     [SerializeField] private SongCoreInformation songCoreWarning;
+    [SerializeField] private SongCoreFlagController songCoreFlagController;
     [SerializeField] private Button openEditorButton;
 
     private readonly HashSet<DifficultyRow> rows = new();
@@ -248,6 +249,18 @@ public class DifficultySelect : MonoBehaviour
         selected.ShowDirtyObjects(diff);
     }
 
+    public void UpdateSongCoreFlags()
+    {
+        if (selected == null || !diffs.ContainsKey(selected.Name)) return;
+
+        var diff = diffs[selected.Name];
+
+        diff.ForceOneSaber = songCoreFlagController.ForceOneSaber;
+        diff.ShowRotationNoteSpawnLine = songCoreFlagController.ShowRotationNoteSpawnLine;
+
+        selected.ShowDirtyObjects(diff);
+    }
+
     /// <summary>
     ///     Revert the diff to the saved version
     /// </summary>
@@ -270,6 +283,7 @@ public class DifficultySelect : MonoBehaviour
             envRemoval.UpdateFromDiff(localDiff.EnvEnhancements);
             songCoreInformation.UpdateFromDiff(localDiff.SongCoreInfos);
             songCoreWarning.UpdateFromDiff(localDiff.SongCoreWarnings);
+            songCoreFlagController.UpdateFromDiff(localDiff.ForceOneSaber, localDiff.ShowRotationNoteSpawnLine);
         }
 
         row.ShowDirtyObjects(localDiff);
@@ -476,6 +490,7 @@ public class DifficultySelect : MonoBehaviour
         envRemoval.UpdateFromDiff(selectedDifficultySettings.EnvEnhancements);
         songCoreInformation.UpdateFromDiff(selectedDifficultySettings.SongCoreInfos);
         songCoreWarning.UpdateFromDiff(selectedDifficultySettings.SongCoreWarnings);
+        songCoreFlagController.UpdateFromDiff(selectedDifficultySettings.ForceOneSaber, selectedDifficultySettings.ShowRotationNoteSpawnLine);
     }
 
     /// <summary>

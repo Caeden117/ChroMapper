@@ -13,9 +13,13 @@ using Beatmap.V4;
 /// </summary>
 public class DifficultySettings
 {
+    public bool? ForceOneSaber;
+    public bool? ShowRotationNoteSpawnLine;
+    
     private List<string> songCoreInfos;
     private List<string> songCoreWarnings;
     private List<BaseEnvironmentEnhancement> envEnhancements;
+    
     private BaseDifficulty map;
 
     public InfoDifficulty InfoDifficulty { get; }
@@ -94,8 +98,14 @@ public class DifficultySettings
         Mappers != string.Join(',', InfoDifficulty.Mappers) ||
         Lighters != string.Join(',', InfoDifficulty.Lighters) ||
         (CustomName ?? "") != (InfoDifficulty.CustomLabel ?? "") ||
+        SongCoreFlagsChanged() ||
         EnvRemovalChanged() || SongCoreInfoWarningsChanged();
 
+    private bool SongCoreFlagsChanged() =>
+        InfoDifficulty != null &&
+        !(ForceOneSaber == InfoDifficulty.CustomOneSaberFlag &&
+          ShowRotationNoteSpawnLine == InfoDifficulty.CustomShowRotationNoteSpawnLinesFlag);
+    
     private bool EnvRemovalChanged() =>
         envEnhancements != null && Map != null &&
         !(Map.EnvironmentEnhancements.All(envEnhancements.Contains) && Map.EnvironmentEnhancements.Count == envEnhancements.Count);
@@ -142,6 +152,8 @@ public class DifficultySettings
         InfoDifficulty.CustomLabel = CustomName;
         InfoDifficulty.CustomInformation = songCoreInfos;
         InfoDifficulty.CustomWarnings = songCoreWarnings;
+        InfoDifficulty.CustomOneSaberFlag = ForceOneSaber;
+        InfoDifficulty.CustomShowRotationNoteSpawnLinesFlag = ShowRotationNoteSpawnLine;
 
         InfoDifficulty.CustomData?.Remove("_environmentRemoval");
 
@@ -188,5 +200,8 @@ public class DifficultySettings
         envEnhancements = null;
         songCoreInfos = null;
         songCoreWarnings = null;
+
+        ForceOneSaber = InfoDifficulty.CustomOneSaberFlag;
+        ShowRotationNoteSpawnLine = InfoDifficulty.CustomShowRotationNoteSpawnLinesFlag;
     }
 }
