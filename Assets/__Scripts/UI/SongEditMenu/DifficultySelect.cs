@@ -242,7 +242,7 @@ public class DifficultySelect : MonoBehaviour
             mappersField.text = localDiff.Mappers;
             lightersField.text = localDiff.Lighters;
             lightshowFilePathField.text = localDiff.LightshowFilePath;
-            environmentDropdown.value = localDiff.EnvironmentNameIndex;
+            environmentDropdown.value = environmentNames.IndexOf(localDiff.EnvironmentName);
             envRemoval.UpdateFromDiff(localDiff.EnvEnhancements);
         }
 
