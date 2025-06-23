@@ -417,7 +417,7 @@ namespace Beatmap.Base
                 bpmInfo.AudioSamples, bpmInfo.AudioFrequency);
 
             // Don't write if created difficulty before supplying audio file
-            if (bpmInfo.AudioSamples != default)
+            if (bpmInfo.AudioSamples > 0)
             {
                 var bpmOutputJson = songContainer.Info.MajorVersion switch
                 {
