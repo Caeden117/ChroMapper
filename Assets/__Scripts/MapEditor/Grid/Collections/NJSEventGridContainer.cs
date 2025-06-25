@@ -92,8 +92,17 @@ public class NJSEventGridContainer : BeatmapObjectContainerCollection<BaseNJSEve
         var previousNJSEvent = MapObjects.FindLast(x => x.JsonTime <= AudioTimeSyncController.CurrentJsonTime + 0.01f);
         var nextNJSEvent = MapObjects.Find(x => x.JsonTime >= AudioTimeSyncController.CurrentJsonTime - 0.01f);
         
+        // Account for UsePrevious
         var previousNJS = (previousNJSEvent?.RelativeNJS ?? 0) + baseNJS;
-        var nextNJS = (nextNJSEvent?.RelativeNJS ?? previousNJSEvent?.RelativeNJS ?? 0) + baseNJS;
+        if (previousNJSEvent?.UsePrevious == 1)
+        {
+            var previousNonExtendNJSEvent = MapObjects.FindLast(x => x.UsePrevious == 0 && x.JsonTime <= previousNJSEvent.JsonTime);
+            previousNJS = (previousNonExtendNJSEvent?.RelativeNJS ?? 0) + baseNJS;
+        }
+        
+        var nextNJS = nextNJSEvent?.UsePrevious == 1
+            ? previousNJS 
+            : (nextNJSEvent?.RelativeNJS ?? previousNJSEvent?.RelativeNJS ?? 0) + baseNJS;
         
         var previousJsonTime = previousNJSEvent?.JsonTime ?? 0;
         var nextJsonTime = nextNJSEvent?.JsonTime ?? previousJsonTime;

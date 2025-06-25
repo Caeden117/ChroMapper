@@ -156,5 +156,41 @@ namespace Tests
             Assert.AreEqual(1200f, countersPlusController.CurrentRT, delta);
             Assert.AreEqual(30f, countersPlusController.CurrentJD, delta);
         }
+        
+        [UnityTest]
+        public IEnumerator NJSEventsStats_CursorBetweenExtendNJSEvents()
+        {
+            njsEventGridContainer.SpawnObject(new BaseNJSEvent
+            {
+                JsonTime = 0,
+                RelativeNJS = -5 // 5 NJS
+            });
+            njsEventGridContainer.SpawnObject(new BaseNJSEvent
+            {
+                JsonTime = 5,
+                RelativeNJS = 999, // Ignored
+                UsePrevious = 1
+            });
+            njsEventGridContainer.SpawnObject(new BaseNJSEvent
+            {
+                JsonTime = 10,
+                RelativeNJS = 5 // 15 NJS
+            });
+            
+            atsc.MoveToJsonTime(2.5f);
+            yield return null;
+            
+            // Between first NJS event and extend event => State of the first NJS 
+            Assert.AreEqual(5f, countersPlusController.CurrentNJS, delta);
+            Assert.AreEqual(4f, countersPlusController.CurrentHJD, delta);
+            Assert.AreEqual(2400f, countersPlusController.CurrentRT, delta);
+            Assert.AreEqual(24f, countersPlusController.CurrentJD, delta);
+            
+            atsc.MoveToJsonTime(7.5f);
+            yield return null;
+
+            // Halfway between extend njs and second njs event
+            NJSEventsStats_InitialState();
+        }
     }
 }
