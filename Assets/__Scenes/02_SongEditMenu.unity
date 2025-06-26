@@ -309,7 +309,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EditDialog: {fileID: 8253645}
-  EnvRemoval: {fileID: 1528691866}
 --- !u!1 &21620968
 GameObject:
   m_ObjectHideFlags: 0
