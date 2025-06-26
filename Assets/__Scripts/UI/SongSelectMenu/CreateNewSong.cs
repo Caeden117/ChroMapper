@@ -1,26 +1,78 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Beatmap.Info;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class CreateNewSong : MonoBehaviour
 {
     [SerializeField] private SongList list;
 
-    public void CreateSong() => PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog", HandleNewSongName,
-        "newmap.dialog.default");
+    private DialogBox createNewSongDialogueBox;
+    private TextComponent textComponent;
+    private TextBoxComponent folderTextBoxComponent;
+    private DropdownComponent versionDropdownComponent;
 
-    private void HandleNewSongName(string res)
+    private void InitialiseDialogueBox()
     {
-        if (string.IsNullOrWhiteSpace(res)) return;
+        createNewSongDialogueBox = PersistentUI.Instance.CreateNewDialogBox()
+            .WithNoTitle()
+            .DontDestroyOnClose();
+        
+        textComponent = createNewSongDialogueBox
+            .AddComponent<TextComponent>();
 
-        var song = new BaseInfo { SongName = res };
+        folderTextBoxComponent = createNewSongDialogueBox
+            .AddComponent<TextBoxComponent>()
+            .WithLabel("SongSelectMenu", "foldername");
+        
+        var dropdownOptions = new List<string>
+        {
+            LocalizationSettings.StringDatabase.GetLocalizedString("SongSelectMenu", "newmap.v4format"),
+            LocalizationSettings.StringDatabase.GetLocalizedString("SongSelectMenu", "newmap.v2format")
+        };
+        
+        versionDropdownComponent = createNewSongDialogueBox
+            .AddComponent<DropdownComponent>()
+            .WithLabel("SongSelectMenu", "format.version")
+            .WithOptions(dropdownOptions);
+        
+        // This dialogue box remains open otherwise on error. We'll only close on success or cancel.
+        createNewSongDialogueBox.OnQuickSubmit(HandleNewSong, closeOnQuickSubmit: false);
+
+        // Cancel button
+        createNewSongDialogueBox.AddFooterButton(null, "PersistentUI", "cancel");
+
+        // Submit/OK button
+        createNewSongDialogueBox.AddFooterButton(null, "PersistentUI", "ok")
+            .OnClick(HandleNewSong);
+    }
+
+    public void CreateSong()
+    {
+        // The user will be selecting and editing a way more often than creating a map
+        // So only create the dialogue box once we need it
+        if (createNewSongDialogueBox == null) InitialiseDialogueBox();
+
+        textComponent.Value = LocalizationSettings.StringDatabase.GetLocalizedString("SongSelectMenu", "newmap.dialog");
+        folderTextBoxComponent.Value = "";
+        createNewSongDialogueBox.Open();
+    }
+
+    private void HandleNewSong()
+    {
+        var folderName = folderTextBoxComponent.Value;
+
+        if (string.IsNullOrWhiteSpace(folderName)) return;
+
+        var isV4 = versionDropdownComponent.Value == 0;
+        var song = new BaseInfo { SongName = folderName, Version = isV4 ? V4Info.Version : V2Info.Version };
 
         if (string.IsNullOrWhiteSpace(song.CleanSongName))
         {
-            PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.invalid", HandleNewSongName,
-                "newmap.dialog.default");
+            textComponent.Value = LocalizationSettings.StringDatabase.GetLocalizedString("SongSelectMenu", "newmap.dialog.invalid");
             return;
         }
 
@@ -29,12 +81,13 @@ public class CreateNewSong : MonoBehaviour
                 Path.GetFullPath(Path.Combine(songDirectory)),
                 StringComparison.CurrentCultureIgnoreCase)))
         {
-            PersistentUI.Instance.ShowInputBox("SongSelectMenu", "newmap.dialog.duplicate", HandleNewSongName,
-                "newmap.dialog.default");
+            textComponent.Value = LocalizationSettings.StringDatabase.GetLocalizedString("SongSelectMenu", "newmap.dialog.duplicate");
             return;
         }
 
         song.Directory = songDirectory;
+
+        createNewSongDialogueBox.Close();
 
         var standardSet = new InfoDifficultySet { Characteristic = "Standard" };
         song.DifficultySets.Add(standardSet);

@@ -7,6 +7,8 @@ namespace Beatmap.Info
 {
     public static class V4Info
     {
+        public const string Version = "4.0.1";
+        
         public static BaseInfo GetFromJson(JSONNode node)
         {
             var info = new BaseInfo();
@@ -159,7 +161,7 @@ namespace Beatmap.Info
         {
             var json = new JSONObject();
 
-            json["version"] = "4.0.1";
+            json["version"] = Version;
 
             var songNode = new JSONObject();
             songNode["title"] = info.SongName;
