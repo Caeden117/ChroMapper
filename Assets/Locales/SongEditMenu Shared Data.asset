@@ -457,6 +457,30 @@ MonoBehaviour:
     m_Key: not.supported.in.version
     m_Metadata:
       m_Items: []
+  - m_Id: 469552834243588096
+    m_Key: gameplay.options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469553272154091520
+    m_Key: warnings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469553502958252032
+    m_Key: information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469559603908964352
+    m_Key: force.one.saber.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469559790123479040
+    m_Key: show.rotation.spawn.lines.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469575148062502912
+    m_Key: unsavedcharacteristics.warning
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

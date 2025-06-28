@@ -519,6 +519,38 @@ MonoBehaviour:
     m_Localized: Not supported in current format
     m_Metadata:
       m_Items: []
+  - m_Id: 469552834243588096
+    m_Localized: Gameplay Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469553272154091520
+    m_Localized: Warnings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469553502958252032
+    m_Localized: Information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469559603908964352
+    m_Localized: 'True will always make the level One Saber.
+
+
+      False will always
+      make the level have both sabers.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469559790123479040
+    m_Localized: 'True will only show the spawn lines if the map has rotational events.
+
+
+      False
+      will hide these spawn lines.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469575148062502912
+    m_Localized: You have unsaved characteristic changes, do you want to save them?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

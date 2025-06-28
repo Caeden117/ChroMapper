@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fi
+  - m_GUID: df7ccad32df5e604da98a7ea3a351f71
+    m_Address: SongEditMenu_fi
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fi
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:

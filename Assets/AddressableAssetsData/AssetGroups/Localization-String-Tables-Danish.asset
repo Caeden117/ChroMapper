@@ -22,11 +22,6 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-da
-  - m_GUID: 5a77ccc6707481a43926194cc7f27a56
-    m_Address: SongEditMenu_da
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-da
   - m_GUID: a784d9fce741d1149be1b43ce769bdc2
     m_Address: Options_da
     m_ReadOnly: 1

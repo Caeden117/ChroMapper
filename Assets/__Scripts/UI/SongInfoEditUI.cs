@@ -526,8 +526,7 @@ public class SongInfoEditUI : MenuBase
 
         if (characteristicCustomPropertyController.IsDirty())
         {
-            // TODO
-            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsaved.warning", callback,
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "unsavedcharacteristics.warning", callback,
                 PersistentUI.DialogBoxPresetType.YesNoCancel);
             return true;
         }
