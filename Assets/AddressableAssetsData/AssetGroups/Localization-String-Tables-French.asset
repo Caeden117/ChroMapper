@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 4e3c43f4e56bf1e408ec7a906a6b655b
   m_SerializeEntries:
-  - m_GUID: 31885116beacb504c96e24fc9c389d4e
-    m_Address: Mapper_fr
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-fr
   - m_GUID: 5e480b63f9d727d44bf2d82e1179a829
     m_Address: Options_fr
     m_ReadOnly: 1

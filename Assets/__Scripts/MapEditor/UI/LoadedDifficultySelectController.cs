@@ -59,8 +59,7 @@ public class LoadedDifficultySelectController : MonoBehaviour
         // => Map is dirty
         if (beatmapActionContainer.ContainsUnsavedActions)
         {
-            // TODO: Different localise message
-            PersistentUI.Instance.ShowDialogBox("Mapper", "save", UnsavedChangesDialogueResult,
+            PersistentUI.Instance.ShowDialogBox("Mapper", "save.unsaved.changes.switch", UnsavedChangesDialogueResult,
                 PersistentUI.DialogBoxPresetType.YesNoCancel);
             return;
         }

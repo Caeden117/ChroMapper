@@ -17,21 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 8c01df2a9e2e9254099a9aabd160e28d
   m_SerializeEntries:
-  - m_GUID: 7d243bcc9348bd34ab47236f8648b568
-    m_Address: Mapper_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-  - m_GUID: 2421f46aee3c43d42bd48d9b835bc2c3
-    m_Address: Mapper_en-OWO
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en-OWO
-  - m_GUID: 4932ab3a5fea4f142854aae14cdd935f
-    m_Address: Mapper_en-PT
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en-PT
   - m_GUID: 53d557cb44b215146879d0ef52d6b1a4
     m_Address: Options_en
     m_ReadOnly: 1
