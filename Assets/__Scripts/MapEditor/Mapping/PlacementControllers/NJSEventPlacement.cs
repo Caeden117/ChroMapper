@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -77,8 +77,10 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
         var easingDropdown = createNJSEventDialogueBox
             .AddComponent<DropdownComponent>()
             .WithLabel("Mapper", "easing")
-            .WithOptions(beatSaberMapFormatEasings);
-            // .WithInitialValue(1); // This doesn't seem to change the initial option even though the value has changed
+            .WithOptions(beatSaberMapFormatEasings)
+            .WithInitialValue(1);
+            // This doesn't seem to change the initial option even though the value has changed
+            // so we'll change it anyway on opening the dialogue
         
         var extendToggle = createNJSEventDialogueBox
             .AddComponent<ToggleComponent>()
