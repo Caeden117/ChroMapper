@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4
-    m_Localized: Introduce la ruta...
+    m_Localized: Introducir ruta...
     m_Metadata:
       m_Items: []
   - m_Id: 5
@@ -49,15 +49,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8
-    m_Localized: "{0}\n\n\xBFLe gustar\xEDa que ChroMapper generara las carpetas
+    m_Localized: "{0}\n\n\xBFTe gustar\xEDa que ChroMapper generara las carpetas
       faltantes?"
     m_Metadata:
       m_Items: []
   - m_Id: 9
-    m_Localized: "No es necesario utilizar una verdadera instalaci\xF3n de Beat Sabre,
+    m_Localized: "No es necesario utilizar una instalaci\xF3n real de Beat Saber,
       simplemente podr\xEDas emular una. Esa carpeta debe contener los siguientes
-      subdirectorios:\n/ Beat Saber_Data / CustomLevels /\n/ Beat Saber_Data / CustomWIPLevels
-      /"
+      subdirectorios:\n/Beat Saber_Data/CustomLevels/\n/Beat Saber_Data/CustomWIPLevels/"
     m_Metadata:
       m_Items: []
   - m_Id: 10
@@ -69,16 +68,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12
-    m_Localized: "Perfil de gr\xE1ficos por defecto, puedes retocar los ajustes m\xE1s
+    m_Localized: "Perfil de gr\xE1ficos por defecto, puedes cambiar los ajustes m\xE1s
       tarde"
     m_Metadata:
       m_Items: []
   - m_Id: 300762992517451776
-    m_Localized: Lighting Preset
+    m_Localized: "Preajuste de iluminaci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 300762994845290496
-    m_Localized: Tweak ChroMapper's lighting to match other map editors.
+    m_Localized: "Ajusta la iluminaci\xF3n de ChroMapper para que coincida con otros
+      editores de mapeo."
     m_Metadata:
       m_Items: []
   references:

@@ -70,6 +70,10 @@ MonoBehaviour:
     m_Localized: "Awe youw suwe you want to wemowe aww fwends? \u25CF\uFE3F\u25CF"
     m_Metadata:
       m_Items: []
+  - m_Id: 2582460100608
+    m_Localized: Clear All
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

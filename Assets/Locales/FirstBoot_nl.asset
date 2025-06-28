@@ -44,7 +44,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: Er is geen "CustomWIPLevels" gevonden op de gekozen locatie!
+    m_Localized: Er is geen "CustomWIPLevels" folder gevonden op de gekozen locatie!
     m_Metadata:
       m_Items: []
   - m_Id: 8

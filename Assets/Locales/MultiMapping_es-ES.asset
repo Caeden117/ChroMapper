@@ -17,34 +17,34 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 4bc9586dd75931946bdf2f3334dc9397, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345579
+    - rid: 590492266702831625
   m_TableData:
   - m_Id: 34914570240
-    m_Localized: Join Session
+    m_Localized: "Unirse a una sesi\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 104179306496
-    m_Localized: Host Session
+    m_Localized: "Crear una sesi\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 757656064000
-    m_Localized: Downloading song... this can take several moments.
+    m_Localized: "Descargando canci\xF3n... esto puede tardar varios minutos."
     m_Metadata:
       m_Items: []
   - m_Id: 1057586548736
-    m_Localized: Loading song...
+    m_Localized: "Cargando canci\xF3n..."
     m_Metadata:
       m_Items: []
   - m_Id: 1753480302592
-    m_Localized: Use Direct Connection
+    m_Localized: "Usar conexi\xF3n directa"
     m_Metadata:
       m_Items: []
   - m_Id: 1870388137984
-    m_Localized: Room Code
+    m_Localized: "C\xF3digo de sala"
     m_Metadata:
       m_Items: []
   - m_Id: 2715376816128
-    m_Localized: Use Room Code
+    m_Localized: "Usar c\xF3digo de sala"
     m_Metadata:
       m_Items: []
   - m_Id: 3327472570368
@@ -52,99 +52,98 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3409345384448
-    m_Localized: Port
+    m_Localized: Puerto
     m_Metadata:
       m_Items: []
   - m_Id: 3460121628672
-    m_Localized: Mapper Customization
+    m_Localized: "Personalizaci\xF3n de Mapper"
     m_Metadata:
       m_Items: []
   - m_Id: 4051690459136
-    m_Localized: Display Name
+    m_Localized: Nombre a mostrar
     m_Metadata:
       m_Items: []
   - m_Id: 4114886037504
-    m_Localized: Grid Color
+    m_Localized: "Color de la cuadr\xEDcula"
     m_Metadata:
       m_Items: []
   - m_Id: 4175602782208
-    m_Localized: ChroMapTogether Server URL
+    m_Localized: URL del servidor ChroMapTogether
     m_Metadata:
       m_Items: []
   - m_Id: 4250194284544
-    m_Localized: Apply Changes
+    m_Localized: Aplicar cambios
     m_Metadata:
       m_Items: []
   - m_Id: 4642059718656
-    m_Localized: 'Connection rejected.
-
-      This could be because the room code
-      is invalid
-
-      or your CM version is not the same as the host.'
+    m_Localized: "Conexi\xF3n rechazada.\nEsto podr\xEDa ser porque que el c\xF3digo
+      de la sala no es v\xE1lido, o tu versi\xF3n de CM no es la misma que la del
+      host."
     m_Metadata:
       m_Items: []
   - m_Id: 4885769752576
-    m_Localized: 'Connection with the host lost: {0}. Returning to song list...'
+    m_Localized: "Se perdi\xF3 la conexi\xF3n con el host: {0}. Regresando a la lista
+      de canciones..."
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345579
+      - rid: 590492266702831625
   - m_Id: 5357561843712
-    m_Localized: 'A networking error occured: {0}.'
+    m_Localized: 'Se produjo un error de red: {0}.'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345579
+      - rid: 590492266702831625
   - m_Id: 5800807501824
-    m_Localized: 'Connection with the ChroMapTogether server lost: {0}.'
+    m_Localized: "Se perdi\xF3 la conexi\xF3n con el servidor ChroMapTogether: {0}."
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345579
+      - rid: 590492266702831625
   - m_Id: 6140520960000
-    m_Localized: United Mapping
+    m_Localized: Mapeo unido
     m_Metadata:
       m_Items: []
   - m_Id: 6238239854592
-    m_Localized: Map with friends!
+    m_Localized: "\xA1Mapea con amigos!"
     m_Metadata:
       m_Items: []
   - m_Id: 1970900842393600
-    m_Localized: Friends will need to connect using your Public IP and Port. Port
-      forwarding is required for clients to connect.
+    m_Localized: "Tus amigos deber\xE1n conectarse usando tu Puerto e IP p\xFAblica.
+      El reenv\xEDo de puertos es necesario para que los clientes se conecten."
     m_Metadata:
       m_Items: []
   - m_Id: 1970841337802752
-    m_Localized: The ChroMapTogether server will be used to host this session. You
-      will be given a short room code to pass to friends.
+    m_Localized: "Se usar\xE1 el servidor ChroMapTogether para crear esta sesi\xF3n.
+      Se te proporcionar\xE1 un c\xF3digo de sala breve para que se lo pases a tus
+      amigos."
     m_Metadata:
       m_Items: []
   - m_Id: 2018274558160896
-    m_Localized: User Trace
+    m_Localized: Rastro de usuario
     m_Metadata:
       m_Items: []
   - m_Id: 2018332712185856
-    m_Localized: This object was first created/modified by {0}.
+    m_Localized: Este objeto fue creado/modificado por primera vez por {0}.
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345579
+      - rid: 590492266702831625
   - m_Id: 2018498240393216
-    m_Localized: This object was last modified by {0}.
+    m_Localized: "Este objeto fue modificado por \xFAltima vez por {0}."
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345579
+      - rid: 590492266702831625
   - m_Id: 2336103375384576
-    m_Localized: Are you sure you want to ban {0}?
+    m_Localized: "\xBFEst\xE1s seguro de querer banear a {0}?"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345579
+      - rid: 590492266702831625
   - m_Id: 2336237542780928
-    m_Localized: Are you sure you want to kick {0}?
+    m_Localized: "\xBFEst\xE1s seguro de querer expulsar a {0}?"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345579
+      - rid: 590492266702831625
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345579
+    - rid: 590492266702831625
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010928e7104000000109267df0400000010129b46050000003059b4a92b07000030993ed02b07000030d973ac4c08000030d9b0cb4c0800

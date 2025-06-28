@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345578
+    - rid: 590492266702831624
   m_TableData:
   - m_Id: 1
     m_Localized: "Inst\xE4llningar - {tabName}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 2
     m_Localized: "\xD6vriga alternativ"
     m_Metadata:
@@ -278,7 +278,7 @@ MonoBehaviour:
     m_Localized: "Inl\xE4sta Plugins: {Count}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 67
     m_Localized: Information om Plugins
     m_Metadata:
@@ -325,7 +325,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} Decimal Place(s)'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 74
     m_Localized: 'How many decimal places to round "_time" values for every map object
       when saving to disk.
@@ -563,7 +563,7 @@ MonoBehaviour:
     m_Localized: Insticksprogram
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 132
     m_Localized: Experimentellt
     m_Metadata:
@@ -576,47 +576,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 139
     m_Localized: '{TextValue} takter'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 140
     m_Localized: '{TextValue} takter'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 143
     m_Localized: "F\xE4st rotations displayen"
     m_Metadata:
@@ -662,7 +662,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 154
     m_Localized: UI Scale
     m_Metadata:
@@ -675,7 +675,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 157
     m_Localized: Event Models
     m_Metadata:
@@ -745,7 +745,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 174
     m_Localized: Song
     m_Metadata:
@@ -866,7 +866,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 3301721636864
     m_Localized: Changes the transparency of the grid background
     m_Metadata:
@@ -875,7 +875,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 23812497342464
     m_Localized: Grid Transparency
     m_Metadata:
@@ -924,7 +924,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 67492742661058560
     m_Localized: Scales the (total) rendering resolution for performance or visual
       improvements.
@@ -1266,7 +1266,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345578
+      - rid: 590492266702831624
   - m_Id: 322078335378526208
     m_Localized: Objects and Lighting
     m_Metadata:
@@ -1404,10 +1404,58 @@ MonoBehaviour:
     m_Localized: How bright the bookmarks on the timeline are.
     m_Metadata:
       m_Items: []
+  - m_Id: 513132648409722880
+    m_Localized: Show NJS (Note Jump Speed) Event count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513132913414238208
+    m_Localized: Show NJS Event Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133409642344448
+    m_Localized: Show Current NJS (Note Jump Speed) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133637388857344
+    m_Localized: Show Current NJS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134051299553280
+    m_Localized: Show Current HJD (Half Jump Duration) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134225774211072
+    m_Localized: Show Current HJD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134485426794496
+    m_Localized: Show Current JD (Jump Distance) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134545464061952
+    m_Localized: Show Current JD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134705308987392
+    m_Localized: Show Current RT (Reaction Time) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134839585435648
+    m_Localized: Show Current RT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144347351183360
+    m_Localized: Displays the HJD (Half Jump Duration) line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144631343312896
+    m_Localized: Display HJD Line On Grid
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345578
+    - rid: 590492266702831624
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04

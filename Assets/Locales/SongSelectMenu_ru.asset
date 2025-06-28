@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345608
+    - rid: 590492266702831654
   m_TableData:
   - m_Id: 1
     m_Localized: "\u041D\u043E\u0432\u0430\u044F \u043A\u0430\u0440\u0442\u0430"
@@ -67,7 +67,7 @@ MonoBehaviour:
     m_Localized: "\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430: {CurrentPage}/{MaxPage}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345608
+      - rid: 590492266702831654
   - m_Id: 13
     m_Localized: "\u041F\u043E\u0438\u0441\u043A..."
     m_Metadata:
@@ -150,17 +150,32 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 161103413248
-    m_Localized: 'Could not create a folder with that name.
-
-
-      Please enter
-      a different name for the new beatmap.'
+    m_Localized: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043E\u0437\u0434\u0430\u0442\u044C
+      \u043A\u0430\u0440\u0442\u0443 \u0441 \u0442\u0430\u043A\u0438\u043C \u0438\u043C\u0435\u043D\u0435\u043C.\n\n\u041F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430,
+      \u0432\u0432\u0435\u0434\u0438\u0442\u0435 \u0434\u0440\u0443\u0433\u043E\u0435
+      \u0438\u043C\u044F \u0434\u043B\u044F \u043D\u043E\u0432\u043E\u0439 \u043A\u0430\u0440\u0442\u044B."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236920806895616
+    m_Localized: Folder Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236923126345728
+    m_Localized: v4 (VNJS + Official editor compatible)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236925030559744
+    m_Localized: v2/v3 (Heck mods compatible)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210237660006838272
+    m_Localized: Map Format Version
     m_Metadata:
       m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345608
+    - rid: 590492266702831654
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0c00000000000000

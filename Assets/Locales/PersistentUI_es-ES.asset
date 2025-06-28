@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3
-    m_Localized: Vale
+    m_Localized: Ok
     m_Metadata:
       m_Items: []
   - m_Id: 4
@@ -58,13 +58,13 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 9
     m_Localized: "Algunos ajustes de ChroMapper fallaron al cargarse.\n\nSi este
-      cuadro de di\xE1logo sigue mostrandose cuando inicie ChroMapper, intente borrar
-      su fichero de configuraci\xF3n ubicado en:\n{0}/ChroMapperSettings.json"
+      cuadro de di\xE1logo sigue mostr\xE1ndose cuando \nChroMapper se inicie, intenta
+      borrar tu fichero de configuraci\xF3n ubicado en:\n{0}/ChroMapperSettings.json"
     m_Metadata:
       m_Items: []
   - m_Id: 10
     m_Localized: "Discord RPC ha encontrado un error: {0}.\nDiscord RPC ser\xE1 desactivado
-      hasta que reinicie ChroMapper."
+      hasta que ChroMapper se reinicie."
     m_Metadata:
       m_Items: []
   - m_Id: 11
@@ -76,11 +76,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 365546173453295616
-    m_Localized: This audio file is too long to have a rendered spectrogram.
+    m_Localized: Este archivo de audio es demasiado largo para tener un espectrograma
+      renderizado.
     m_Metadata:
       m_Items: []
   - m_Id: 365546339392544768
-    m_Localized: Your system does not have enough video memory for a rendered spectrogram.
+    m_Localized: Tu sistema no tiene suficiente memoria de video para un espectrograma
+      renderizado.
     m_Metadata:
       m_Items: []
   references:
