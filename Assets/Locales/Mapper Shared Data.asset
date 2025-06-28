@@ -779,6 +779,34 @@ MonoBehaviour:
     m_Key: bar.events.transition.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 517335715707482112
+    m_Key: save.unsaved.changes.switch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517336294072643584
+    m_Key: loaded.difficulty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517338952263135232
+    m_Key: njs.dialog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339511007342592
+    m_Key: njs.dialogue.invalidnumber
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339586072801280
+    m_Key: njs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339628183613440
+    m_Key: easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339662874701824
+    m_Key: njs.dialogue.useprevious
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

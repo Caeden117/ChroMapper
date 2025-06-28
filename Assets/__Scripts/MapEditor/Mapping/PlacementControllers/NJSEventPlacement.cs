@@ -59,32 +59,32 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
 
         var createNJSEventDialogueBox = PersistentUI.Instance
             .CreateNewDialogBox()
-            .WithTitle("[WIP] Please enter the NJS and easing for this NJS event");
-            // .WithTitle("Mapper", "NJS.dialog");
+            .WithTitle("Mapper", "njs.dialog");
 
         if (!isInitialPlacement)
         {
             createNJSEventDialogueBox
                 .AddComponent<TextComponent>()
-                .WithInitialValue("NJS must a be positive number");
-                //.WithInitialValue("Mapper", "NJS.dialogue.invalidnumber");
+                .WithInitialValue("Mapper", "njs.dialogue.invalidnumber");
         }
 
         var diffNJS = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
         var njsTextInput = createNJSEventDialogueBox
             .AddComponent<TextBoxComponent>()
-            .WithLabel("NJS")
+            .WithLabel("Mapper","njs")
             .WithInitialValue(diffNJS.ToString(CultureInfo.InvariantCulture));
 
         var easingDropdown = createNJSEventDialogueBox
             .AddComponent<DropdownComponent>()
-            .WithLabel("Easing")
-            .WithOptions(beatSaberMapFormatEasings);
-            // .WithInitialValue(1); // This doesn't seem to change the initial option even though the value has changed
+            .WithLabel("Mapper", "easing")
+            .WithOptions(beatSaberMapFormatEasings)
+            .WithInitialValue(1);
+            // This doesn't seem to change the initial option even though the value has changed
+            // so we'll change it anyway on opening the dialogue
         
         var extendToggle = createNJSEventDialogueBox
             .AddComponent<ToggleComponent>()
-            .WithLabel("Use previous NJS event value")
+            .WithLabel("Mapper", "njs.dialogue.useprevious")
             .WithInitialValue(false);
 
         createNJSEventDialogueBox.OnQuickSubmit(() => AttemptPlaceNJSChange(njsTextInput.Value, easingDropdown.Value, extendToggle.Value));

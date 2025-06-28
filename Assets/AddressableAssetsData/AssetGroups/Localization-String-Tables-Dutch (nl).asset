@@ -27,6 +27,16 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-nl
+  - m_GUID: 96078c8bb99077345be93ea4b614d283
+    m_Address: SongEditMenu_nl
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl
+  - m_GUID: 93e4496d786ba6b48b7d4549a1d292e6
+    m_Address: Mapper_nl
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-nl
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:

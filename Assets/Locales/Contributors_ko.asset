@@ -70,6 +70,10 @@ MonoBehaviour:
     m_Localized: "\uC815\uB9D0 \uBAA8\uB4E0 \uCC38\uC5EC\uC790\uB97C \uC0AD\uC81C\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items: []
+  - m_Id: 2582460100608
+    m_Localized: Clear All
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

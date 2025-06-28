@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345619
+    - rid: 590492266702831665
   m_TableData:
   - m_Id: 1
     m_Localized: "Datos de la canci\xF3n"
@@ -40,11 +40,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6
-    m_Localized: "Subt\xEDtulo"
+    m_Localized: Subnombre
     m_Metadata:
       m_Items: []
   - m_Id: 7
-    m_Localized: "Subt\xEDtulo"
+    m_Localized: Subnombre
     m_Metadata:
       m_Items: []
   - m_Id: 8
@@ -77,7 +77,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15
-    m_Localized: Golpes por minuto
+    m_Localized: Pulsaciones por minuto
     m_Metadata:
       m_Items: []
   - m_Id: 16
@@ -97,12 +97,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20
-    m_Localized: 'This feature is deprecated.
-
-      Shifts the song forward by this
-      amount
-
-      (in seconds)'
+    m_Localized: "Esta caracter\xEDstica est\xE1 obsoleta.\nAvanza la canci\xF3n
+      en esta cantidad\n(en segundos)"
     m_Metadata:
       m_Items: []
   - m_Id: 21
@@ -114,7 +110,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23
-    m_Localized: El tiempo (en segundos) cuando la vista previa empieza.
+    m_Localized: "El tiempo (en segundos) cuando la vista previa de la canci\xF3n
+      empieza."
     m_Metadata:
       m_Items: []
   - m_Id: 24
@@ -290,11 +287,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 67
-    m_Localized: You have unsaved changes, do you want to save them?
+    m_Localized: "Tienes cambios sin guardar, \xBFquieres guardarlos?"
     m_Metadata:
       m_Items: []
   - m_Id: 68
-    m_Localized: You have unsaved difficulties, do you want to save them?
+    m_Localized: "Tienes dificultades sin guardar \xBFquieres guardarlas?"
     m_Metadata:
       m_Items: []
   - m_Id: 69
@@ -326,7 +323,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75
-    m_Localized: You have unsaved contributor changes, do you want to save them?
+    m_Localized: "Tienes cambios de colaborador sin guardar, \xBFdeseas guardarlos?"
     m_Metadata:
       m_Items: []
   - m_Id: 76
@@ -340,18 +337,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 104117528192749568
-    m_Localized: '{0}% complete.'
+    m_Localized: '{0}% completado.'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345619
+      - rid: 590492266702831665
   - m_Id: 44795657592176640
-    m_Localized: Reaction Time
+    m_Localized: "Tiempo de reacci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 44793699250667520
-    m_Localized: 'How much time the player has to react
-
-      (in milliseconds)'
+    m_Localized: "Cu\xE1nto tiempo tiene el jugador para reaccionar\n(en milisegundos)"
     m_Metadata:
       m_Items: []
   - m_Id: 56342565678678016
@@ -359,22 +354,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 56344581129830400
-    m_Localized: 'Removes objects using Contains lookup.
-
-      (Does not effect
-      the editor environment.)'
+    m_Localized: "Elimina objetos utilizando b\xFAsqueda de Contains.\n(No afecta
+      el entorno del editor.)"
     m_Metadata:
       m_Items: []
   - m_Id: 104117395359141888
-    m_Localized: Exporting song to your Quest...
+    m_Localized: "Exportando canci\xF3n a tu Quest..."
     m_Metadata:
       m_Items: []
   - m_Id: 104118050203242496
-    m_Localized: Could not find any connected devices.
+    m_Localized: "No se pudo encontrar ning\xFAn dispositivo conectado."
     m_Metadata:
       m_Items: []
   - m_Id: 104118270903324672
-    m_Localized: Could not find a connected Quest.
+    m_Localized: No se pudo encontrar una Quest conectada.
     m_Metadata:
       m_Items: []
   - m_Id: 115483511321985024
@@ -390,32 +383,147 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 115521560328208384
-    m_Localized: "Using Song Time Offset can result in desynced cut noises in game.
-      \nUsing Song Time Offset can also make notes partially invisible.\nIt is recommended
-      that you apply your offsets using a audio manipulator such as Audacity."
+    m_Localized: "Usar la compensaci\xF3n del tiempo de canci\xF3n puede resultar
+      en ruidos cortados desincronizados en el juego.\nUsar la compensaci\xF3n del
+      tiempo de canci\xF3n tambi\xE9n puede hacer que las notas sean parcialmente
+      invisibles.\nSe recomienda que apliques la compensaci\xF3n usando un manipulador
+      de audio como Audacity."
     m_Metadata:
       m_Items: []
   - m_Id: 216566409055109120
-    m_Localized: Map packaged to zip successfully.
+    m_Localized: Mapa comprimido en zip exitosamente.
     m_Metadata:
       m_Items: []
   - m_Id: 216566610293620736
-    m_Localized: 'Error packaging map to zip.
-
-      No zip created.'
+    m_Localized: "Error al comprimir el mapa en zip.\nNo se cre\xF3 ning\xFAn zip."
     m_Metadata:
       m_Items: []
   - m_Id: 272807305041276928
-    m_Localized: 'Error while creating the packaged zip:
+    m_Localized: 'Error al crear el zip comprimido:
 
-      Cannot use absolute
-      paths for files.'
+      No se pueden usar rutas
+      absolutas para los archivos.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235661746958336
+    m_Localized: Standard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235795247460352
+    m_Localized: One Saber
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235843557453824
+    m_Localized: No Arrows
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235906199384064
+    m_Localized: 360 Degrees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235989112385536
+    m_Localized: 90 Degrees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236071702425600
+    m_Localized: Legacy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236133086064640
+    m_Localized: Luces
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236188597678080
+    m_Localized: Lawless
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390239759607132160
+    m_Localized: Custom Characteristics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396267615118290944
+    m_Localized: Mapper names
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396267995176759296
+    m_Localized: Mappers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268125703499776
+    m_Localized: Who created the mapping?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268829063114752
+    m_Localized: Lighters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268841406951424
+    m_Localized: Lighter names
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268859580870656
+    m_Localized: Who created the lightshow?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396269682226491392
+    m_Localized: Lightshow File
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396269752590135296
+    m_Localized: Name of shared lightshow file
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396270278006403072
+    m_Localized: Custom Properties
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396270297077903360
+    m_Localized: 'Additional properties provided by mods
+
+      (Such as SongCore
+      and Chroma)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396272057888665600
+    m_Localized: Not supported in current format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469552834243588096
+    m_Localized: Gameplay Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469553272154091520
+    m_Localized: Warnings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469553502958252032
+    m_Localized: Information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469559603908964352
+    m_Localized: 'True will always make the level One Saber.
+
+
+      False will always
+      make the level have both sabers.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469559790123479040
+    m_Localized: 'True will only show the spawn lines if the map has rotational events.
+
+
+      False
+      will hide these spawn lines.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469575148062502912
+    m_Localized: You have unsaved characteristic changes, do you want to save them?
     m_Metadata:
       m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345619
+    - rid: 590492266702831665
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010d21a57e67101

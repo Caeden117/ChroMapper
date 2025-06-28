@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345626
+    - rid: 590492266702831672
   m_TableData:
   - m_Id: 1
     m_Localized: Nuevo mapa
@@ -67,7 +67,7 @@ MonoBehaviour:
     m_Localized: "P\xE1gina: {CurrentPage}/{MaxPage}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345626
+      - rid: 590492266702831672
   - m_Id: 13
     m_Localized: Buscar...
     m_Metadata:
@@ -89,8 +89,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 19
-    m_Localized: Por favor introduce el ID de un mapa de BeatSaver, or un enlace
-      directo a un mapa de ritmos comprimido.
+    m_Localized: Por favor introduce el ID de BeatSaver a un mapa, o un enlace directo
+      a un mapa de ritmos comprimido.
     m_Metadata:
       m_Items: []
   - m_Id: 20
@@ -138,17 +138,33 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 161103413248
-    m_Localized: 'Could not create a folder with that name.
+    m_Localized: 'No se pudo crear una carpeta con ese nombre.
 
 
-      Please enter
-      a different name for the new beatmap.'
+      Por favor
+      ingresa un nombre diferente para el nuevo Beatmap.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236920806895616
+    m_Localized: Folder Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236923126345728
+    m_Localized: v4 (VNJS + Official editor compatible)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236925030559744
+    m_Localized: v2/v3 (Heck mods compatible)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210237660006838272
+    m_Localized: Map Format Version
     m_Metadata:
       m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345626
+    - rid: 590492266702831672
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0c00000000000000

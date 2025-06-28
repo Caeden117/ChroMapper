@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345573
+    - rid: 590492266702831619
   m_TableData:
   - m_Id: 1
     m_Localized: Instellingen - {tabName}
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 2
     m_Localized: Overige opties
     m_Metadata:
@@ -275,7 +275,7 @@ MonoBehaviour:
     m_Localized: 'Geladen Plugins: {Count}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 67
     m_Localized: Plugin informatie
     m_Metadata:
@@ -322,7 +322,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} Decimalen'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 74
     m_Localized: 'Het aantal decimalen waarnaar de "_time" waarde wordt afgerond
       bij het opslaan.
@@ -564,7 +564,7 @@ MonoBehaviour:
     m_Localized: Plugins
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 132
     m_Localized: Experimenteel
     m_Metadata:
@@ -577,47 +577,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 139
     m_Localized: '{TextValue} Beats'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 140
     m_Localized: '{TextValue} Beats'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 143
     m_Localized: Rotatie-weergave limiteren
     m_Metadata:
@@ -663,7 +663,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 154
     m_Localized: Gebruikersinterface grootte
     m_Metadata:
@@ -676,7 +676,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 157
     m_Localized: Evenementmodellen
     m_Metadata:
@@ -747,7 +747,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 174
     m_Localized: Lied
     m_Metadata:
@@ -869,7 +869,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 3301721636864
     m_Localized: Veranderingen in de transparantie van de rasterachtergrond
     m_Metadata:
@@ -878,7 +878,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 23812497342464
     m_Localized: Transparantie raster
     m_Metadata:
@@ -929,7 +929,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 67492742661058560
     m_Localized: Scales the (total) rendering resolution for performance or visual
       improvements.
@@ -944,7 +944,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3769025302958080
-    m_Localized: Export to Quest
+    m_Localized: Exporteren naar Quest
     m_Metadata:
       m_Items: []
   - m_Id: 1698793607168
@@ -960,16 +960,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3769095658213376
-    m_Localized: "ADB does not seem to be installed or could not be found. Would
-      you\n      like to download it? This will allow Quest functionality."
+    m_Localized: "ADB lijkt niet ge\xEFnstalleerd te zijn of kan niet gevonden worden.
+      Wil\nje deze downloaden? Dit zal Quest functionaliteit mogelijk maken."
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635263
-    m_Localized: Downloading ADB
+    m_Localized: ADB aan het downloaden
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635264
-    m_Localized: Finished downloading ADB
+    m_Localized: ADB downloaden voltooid
     m_Metadata:
       m_Items: []
   - m_Id: 3779515244679168
@@ -977,15 +977,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21544433260560384
-    m_Localized: Install ADB for Quest functionality
+    m_Localized: Installeer ADB voor Quest-functionaliteit
     m_Metadata:
       m_Items: []
   - m_Id: 71906481403138048
-    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Localized: 'Voortgang ADB Download: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 91579491578740736
-    m_Localized: Appearance
+    m_Localized: Weergave
     m_Metadata:
       m_Items: []
   - m_Id: 101771971410460672
@@ -993,7 +993,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101773637585141760
-    m_Localized: Makes the transitions between scenes instant.
+    m_Localized: "Zorgt voor directe overgangen tussen sc\xE8nes."
     m_Metadata:
       m_Items: []
   - m_Id: 101773995594153984
@@ -1041,7 +1041,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 101855392124043264
-    m_Localized: Display Difficulty Info
+    m_Localized: Toon Moeilijkheids Info
     m_Metadata:
       m_Items: []
   - m_Id: 102096011425677312
@@ -1271,7 +1271,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345573
+      - rid: 590492266702831619
   - m_Id: 322078335378526208
     m_Localized: Objects and Lighting
     m_Metadata:
@@ -1409,10 +1409,58 @@ MonoBehaviour:
     m_Localized: How bright the bookmarks on the timeline are.
     m_Metadata:
       m_Items: []
+  - m_Id: 513132648409722880
+    m_Localized: Show NJS (Note Jump Speed) Event count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513132913414238208
+    m_Localized: Show NJS Event Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133409642344448
+    m_Localized: Show Current NJS (Note Jump Speed) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133637388857344
+    m_Localized: Show Current NJS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134051299553280
+    m_Localized: Show Current HJD (Half Jump Duration) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134225774211072
+    m_Localized: Show Current HJD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134485426794496
+    m_Localized: Show Current JD (Jump Distance) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134545464061952
+    m_Localized: Show Current JD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134705308987392
+    m_Localized: Show Current RT (Reaction Time) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134839585435648
+    m_Localized: Show Current RT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144347351183360
+    m_Localized: Displays the HJD (Half Jump Duration) line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144631343312896
+    m_Localized: Display HJD Line On Grid
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345573
+    - rid: 590492266702831619
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04

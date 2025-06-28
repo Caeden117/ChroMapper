@@ -27,6 +27,16 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en-OWO
+  - m_GUID: f89ca4bb7a1abfb4b952f4eab9c9f1a3
+    m_Address: SongEditMenu_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
+  - m_GUID: 2421f46aee3c43d42bd48d9b835bc2c3
+    m_Address: Mapper_en-OWO
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-OWO
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: be3f562163bab164eadc484f377f1007, type: 2}
   m_SchemaSet:

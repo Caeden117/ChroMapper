@@ -884,6 +884,35 @@ MonoBehaviour:
     m_Localized: The light will fade from previous event.
     m_Metadata:
       m_Items: []
+  - m_Id: 517335715707482112
+    m_Localized: There are unsaved changes. Do you want to save before switching
+      difficulties?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517336294072643584
+    m_Localized: Loaded Difficulty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517338952263135232
+    m_Localized: Please enter the NJS and easing for this NJS event.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339586072801280
+    m_Localized: NJS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339511007342592
+    m_Localized: NJS must a be positive number.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339628183613440
+    m_Localized: Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339662874701824
+    m_Localized: Use previous NJS event value
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

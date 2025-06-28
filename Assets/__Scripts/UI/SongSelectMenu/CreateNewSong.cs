@@ -20,13 +20,15 @@ public class CreateNewSong : MonoBehaviour
         createNewSongDialogueBox = PersistentUI.Instance.CreateNewDialogBox()
             .WithNoTitle()
             .DontDestroyOnClose();
-        
+
         textComponent = createNewSongDialogueBox
-            .AddComponent<TextComponent>();
+            .AddComponent<TextComponent>()
+            .WithInitialValue("SongSelectMenu", "newmap.dialog");
 
         folderTextBoxComponent = createNewSongDialogueBox
             .AddComponent<TextBoxComponent>()
-            .WithLabel("SongSelectMenu", "foldername");
+            .WithLabel("SongSelectMenu", "foldername")
+            .WithInitialValue("");
         
         var dropdownOptions = new List<string>
         {
@@ -37,7 +39,8 @@ public class CreateNewSong : MonoBehaviour
         versionDropdownComponent = createNewSongDialogueBox
             .AddComponent<DropdownComponent>()
             .WithLabel("SongSelectMenu", "format.version")
-            .WithOptions(dropdownOptions);
+            .WithOptions(dropdownOptions)
+            .WithInitialValue(0);
         
         // This dialogue box remains open otherwise on error. We'll only close on success or cancel.
         createNewSongDialogueBox.OnQuickSubmit(HandleNewSong, closeOnQuickSubmit: false);
