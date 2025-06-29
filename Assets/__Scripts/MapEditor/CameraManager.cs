@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
@@ -7,7 +8,14 @@ public class CameraManager : MonoBehaviour
 
     public CameraController SelectedCameraController;
 
-    private void Start() => SelectedCameraController = editingCameraController;
+    public CameraController[] CameraControllers { get; } = new CameraController[2];
+
+    private void Start()
+    {
+        SelectedCameraController = editingCameraController;
+        CameraControllers[0] = editingCameraController;
+        CameraControllers[1] = playingCameraController;
+    }
 
     public void SelectCamera(CameraType cameraType)
     {

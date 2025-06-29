@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -208,8 +209,6 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                 HideStuff(false, false, true, true, true);
                 break;
             case UIModeType.Preview:
-                HideStuff(false, false, false, false, false);
-                break;
             case UIModeType.Playing:
                 HideStuff(false, false, false, false, false);
                 break;
@@ -225,8 +224,11 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         foreach (var c in canvases) c.enabled = showCanvases;
 
         // If this is not used, then there is a chance the moved items may break.
-        var fixTheCam = cameraManager.SelectedCameraController.LockedOntoNoteGrid;
-        if (fixTheCam) cameraManager.SelectedCameraController.LockedOntoNoteGrid = false;
+        var lockedCameraControllers = cameraManager.CameraControllers.Where(x => x.LockedOntoNoteGrid).ToList();
+        foreach (var cameraController in lockedCameraControllers)
+        {
+            cameraController.LockedOntoNoteGrid = false;
+        }
 
         if (showPlacement)
         {
@@ -266,7 +268,11 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
             }
         }
 
-        if (fixTheCam) cameraManager.SelectedCameraController.LockedOntoNoteGrid = true;
+        foreach (var c in lockedCameraControllers)
+        {
+            c.LockedOntoNoteGrid = true;
+        }
+        
         //foreach (Renderer r in _verticalGridRenderers) r.enabled = showMainGrid;
         atsc.RefreshGridSnapping();
     }
