@@ -94,6 +94,9 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
         if (!string.IsNullOrEmpty(saveWarningMessage))
         {
+            // Prevent exiting editor so user doesn't lose data
+            SceneTransitionManager.Instance.CancelLoading(string.Empty);
+            
             PersistentUI.Instance.ShowDialogBox(saveWarningMessage, null, PersistentUI.DialogBoxPresetType.Ok);
             saveWarningMessage = null;
         }
@@ -291,7 +294,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
     public void ToggleAutoSave(bool enabled) => Settings.Instance.AutoSave = enabled;
 
-    private void DisplayWarningIfIncompatibleDataIsPresent()
+    private void ScheduleWarningIfIncompatibleDataIsPresent()
     {
         var map = BeatSaberSongContainer.Instance.Map; 
         var stringBuilder = new StringBuilder();
@@ -342,7 +345,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
                 if (map.NJSEvents.Any())
                 {
-                    stringBuilder.AppendLine("NJS Events (v4)");
+                    stringBuilder.AppendLine("* NJS Events (v4)");
                 }
                 break;
             
@@ -353,12 +356,12 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                     || map.Arcs.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0)
                     || map.Chains.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0))
                 {
-                    stringBuilder.AppendLine("Rotation Properties (v4)");
+                    stringBuilder.AppendLine("* Rotation Properties (v4)");
                 }
 
                 if (map.NJSEvents.Any())
                 {
-                    stringBuilder.AppendLine("NJS Events (v4)");
+                    stringBuilder.AppendLine("* NJS Events (v4)");
                 }
                 break;
             
@@ -450,7 +453,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
                     if (!auto)
                     {
-                        DisplayWarningIfIncompatibleDataIsPresent();
+                        ScheduleWarningIfIncompatibleDataIsPresent();
                     }
 
                     BeatSaberSongContainer.Instance.Map.Save();
