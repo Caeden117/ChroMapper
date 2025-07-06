@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Info;
+using Beatmap.V3;
 using Beatmap.V4;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 // Big class which holds data for all characteristics, difficulties, and stuff
@@ -106,11 +108,14 @@ public class DifficultySelect : MonoBehaviour
 
             if (MapInfo.MajorVersion == 4)
             {
+                lightshowFilePathField.interactable = true;
                 mappersField.interactable = true;
                 lightersField.interactable = true;
             }
             else
             {
+                lightshowFilePathField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
+                lightshowFilePathField.interactable = false;
                 mappersField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
                 mappersField.interactable = false;
                 lightersField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
@@ -336,7 +341,12 @@ public class DifficultySelect : MonoBehaviour
         var map = TryGetExistingMapFromDiff(localDiff);
         if (map == null)
         {
-            map = new BaseDifficulty();
+            map = new BaseDifficulty
+            {
+                Version = mapInfo.MajorVersion == 4
+                    ? V4Difficulty.BeatmapVersion
+                    : V3Difficulty.Version
+            };
             Settings.Instance.MapVersion = map.MajorVersion;
 
             if (map.MajorVersion == 4)
@@ -348,7 +358,7 @@ public class DifficultySelect : MonoBehaviour
 
         var oldPath = map.DirectoryAndFile;
 
-        diff.SetBeatmapFileNameToDefault();
+        diff.InitDefaultFileNames(mapInfo.MajorVersion);
         map.DirectoryAndFile = Path.Combine(mapInfo.Directory, diff.BeatmapFileName);
         if (File.Exists(oldPath) && oldPath != map.DirectoryAndFile && !File.Exists(map.DirectoryAndFile))
         {
@@ -472,18 +482,22 @@ public class DifficultySelect : MonoBehaviour
         songBeatOffsetField.text = selectedDifficultySettings.NoteJumpStartBeatOffset.ToString();
         mappersField.text = selectedDifficultySettings.Mappers;
         lightersField.text = selectedDifficultySettings.Lighters;
+        
+        var mapInfo = BeatSaberSongContainer.Instance.Info;
 
-        if (selectedDifficultySettings.Map is { MajorVersion: 4 })
+        // null map means will we create the map on save and map version created is determined by the Info version
+        var mapIsV4 = (selectedDifficultySettings.Map == null && mapInfo.MajorVersion == 4)
+                      || selectedDifficultySettings.Map is { MajorVersion: 4 };
+        if (mapIsV4)
         {
             lightshowFilePathField.interactable = true;
             lightshowFilePathField.text = selectedDifficultySettings.LightshowFilePath;
         }
         else
         {
-            lightshowFilePathField.SetTextWithoutNotify($"Not used in v{selectedDifficultySettings.Map?.MajorVersion ?? 3} map");
+            lightshowFilePathField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
             lightshowFilePathField.interactable = false;
         }
-        
 
         environmentDropdown.value = environmentNames.IndexOf(selectedDifficultySettings.EnvironmentName);
         
@@ -534,7 +548,7 @@ public class DifficultySelect : MonoBehaviour
         {
             var map = new InfoDifficulty(currentDifficultySet) { Difficulty = row.Name };
 
-            map.SetBeatmapFileNameToDefault();
+            map.InitDefaultFileNames(MapInfo.MajorVersion);
 
             if (copySource != null)
             {

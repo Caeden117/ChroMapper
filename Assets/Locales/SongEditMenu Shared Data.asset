@@ -481,6 +481,10 @@ MonoBehaviour:
     m_Key: unsavedcharacteristics.warning
     m_Metadata:
       m_Items: []
+  - m_Id: 472331903532134400
+    m_Key: lightshowfile.placeholder
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

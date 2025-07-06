@@ -15,7 +15,7 @@ namespace Beatmap.V4
 {
     public class V4Difficulty
     {
-        private const string beatmapVersion = "4.1.0";
+        public const string BeatmapVersion = "4.1.0";
         private const string lightshowVersion = "4.0.0";
 
         public static JSONNode GetOutputJson(BaseDifficulty difficulty)
@@ -25,7 +25,7 @@ namespace Beatmap.V4
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-                var json = new JSONObject { ["version"] = beatmapVersion };
+                var json = new JSONObject { ["version"] = BeatmapVersion };
                 
                 // LINQ abuse
 
@@ -428,7 +428,7 @@ namespace Beatmap.V4
         {
             try
             {
-                var map = new BaseDifficulty { DirectoryAndFile = path, Version = beatmapVersion };
+                var map = new BaseDifficulty { DirectoryAndFile = path, Version = BeatmapVersion };
 
                 // Get common Data
                 var notesCommonData = new List<V4CommonData.Note>();
@@ -575,10 +575,18 @@ namespace Beatmap.V4
 
         public static void LoadBpmFromAudioData(BaseDifficulty map, BaseInfo info)
         {
-            var bpmInfo = V4AudioData.GetFromJson(BeatSaberSongUtils.GetNodeFromFile(Path.Combine(info.Directory, info.AudioDataFilename)));
+            var filePath = Path.Combine(info.Directory, info.AudioDataFilename);
+            if (!File.Exists(filePath))
+            {
+                Debug.Log($"No AudioData found at {filePath}");
+                return;
+            }
+            
+            var bpmInfo = V4AudioData.GetFromJson(BeatSaberSongUtils.GetNodeFromFile(filePath));
 
             var bpmEvents = BaseBpmInfo.GetBpmEvents(bpmInfo.BpmRegions, bpmInfo.AudioFrequency);
             map.BpmEvents = bpmEvents;
+            map.BootstrapBpmEvents(info.BeatsPerMinute);
         }
 
         public static void LoadBookmarksFromOfficialEditor(BaseDifficulty map, BaseInfo info, InfoDifficulty infoDifficulty)
@@ -597,22 +605,29 @@ namespace Beatmap.V4
             }
                 
             var color = node["color"].ReadHtmlStringColor();
-            foreach (var bookmarkObject in node["bookmarks"].AsArray.Children.Select(x => x.AsObject))
-            {
-                map.Bookmarks.Add(new BaseBookmark
-                    {
-                        JsonTime = bookmarkObject["beat"].AsFloat,
-                        Name = bookmarkObject["text"].Value,
-                        Color = color
-                    }
-                );
-            }
+            var bookmarks = node["bookmarks"].AsArray.Children
+                .Select(jsonNode => jsonNode.AsObject)
+                .Select(jsonObj => new BaseBookmark
+                {
+                    JsonTime = jsonObj["beat"].AsFloat,
+                    Name = jsonObj["text"].Value,
+                    Color = color
+                })
+                .ToList();
+
+            map.Bookmarks = bookmarks;
         }
         
         public static void LoadLightsFromLightshowFile(BaseDifficulty map, BaseInfo info, InfoDifficulty infoDifficulty)
         {
-            var path = Path.Combine(info.Directory, infoDifficulty.LightshowFileName);
-            var mainNode = BeatSaberSongUtils.GetNodeFromFile(path);
+            var filePath = Path.Combine(info.Directory, infoDifficulty.LightshowFileName);
+            if (!File.Exists(filePath))
+            {
+                Debug.Log($"No lightshow file found at {filePath}");
+                return;
+            }
+            
+            var mainNode = BeatSaberSongUtils.GetNodeFromFile(filePath);
 
             LoadLightsFromJson(map, mainNode);
         }
@@ -736,6 +751,16 @@ namespace Beatmap.V4
                 }
             }
 
+            // List of empty lighting data - need this so we don't touch the map existing lights if an exception occurs
+            var events = new List<BaseEvent>();
+            var lightColorEventBoxGroups = new List<BaseLightColorEventBoxGroup<BaseLightColorEventBox>>();
+            var lightRotationEventBoxGroups = new List<BaseLightRotationEventBoxGroup<BaseLightRotationEventBox>>();
+            var lightTranslationEventBoxGroups = new List<BaseLightTranslationEventBoxGroup<BaseLightTranslationEventBox>>();
+            var vfxEventBoxGroups = new List<BaseVfxEventEventBoxGroup<BaseVfxEventEventBox>>();
+            var waypoints = new List<BaseWaypoint>();
+            var eventTypesWithKeywords = new BaseEventTypesWithKeywords();
+            var useNormalEventsAsCompatibleEvents = true;
+            
             // Get the actual things we're working with
             nodeEnum = mainNode.GetEnumerator();
             while (nodeEnum.MoveNext())
@@ -748,7 +773,7 @@ namespace Beatmap.V4
                     case "basicEvents":
                         foreach (JSONNode n in node)
                         {
-                            map.Events.Add(V4BasicEvent.GetFromJson(n, basicEventsCommonData));
+                            events.Add(V4BasicEvent.GetFromJson(n, basicEventsCommonData));
                         }
 
                         break;
@@ -756,7 +781,7 @@ namespace Beatmap.V4
                     case "colorBoostEvents":
                         foreach (JSONNode n in node)
                         {
-                            map.Events.Add(V4ColorBoostEvent.GetFromJson(n, colorBoostEventsCommonData));
+                            events.Add(V4ColorBoostEvent.GetFromJson(n, colorBoostEventsCommonData));
                         }
 
                         break;
@@ -769,21 +794,21 @@ namespace Beatmap.V4
                             switch (type)
                             {
                                 case 1: // Light Color
-                                    map.LightColorEventBoxGroups.Add(V4LightColorEventBoxGroup.GetFromJson(n,
+                                    lightColorEventBoxGroups.Add(V4LightColorEventBoxGroup.GetFromJson(n,
                                         indexFilters, lightColorEventBoxesCommonData, lightColorEventsCommonData));
                                     break;
                                 case 2: // Light Rotation
-                                    map.LightRotationEventBoxGroups.Add(V4LightRotationEventBoxGroup.GetFromJson(n,
+                                    lightRotationEventBoxGroups.Add(V4LightRotationEventBoxGroup.GetFromJson(n,
                                         indexFilters, lightRotationEventBoxesCommonData,
                                         lightRotationEventsCommonData));
                                     break;
                                 case 3: // Light Translation
-                                    map.LightTranslationEventBoxGroups.Add(V4LightTranslationEventBoxGroup.GetFromJson(
+                                    lightTranslationEventBoxGroups.Add(V4LightTranslationEventBoxGroup.GetFromJson(
                                         n, indexFilters, lightTranslationEventBoxesCommonData,
                                         lightTranslationEventsCommonData));
                                     break;
                                 case 4: // FX Events
-                                    map.VfxEventBoxGroups.Add(V4VfxEventEventBoxGroup.GetFromJson(n, indexFilters,
+                                    vfxEventBoxGroups.Add(V4VfxEventEventBoxGroup.GetFromJson(n, indexFilters,
                                         fxEventBoxesCommonData, floatFxEventsCommonData));
                                     break;
                             }
@@ -794,21 +819,30 @@ namespace Beatmap.V4
                     case "waypoints":
                         foreach (JSONNode n in node)
                         {
-                            map.Waypoints.Add(V4Waypoint.GetFromJson(n, waypointsCommonData)); 
+                            waypoints.Add(V4Waypoint.GetFromJson(n, waypointsCommonData)); 
                         }
                         break;
                     
-                    
                     case "basicEventTypesWithKeywords":
-                        map.EventTypesWithKeywords = V4BasicEventTypesWithKeywords.GetFromJson(node);
+                        eventTypesWithKeywords = V4BasicEventTypesWithKeywords.GetFromJson(node);
                         break;
                     
                     case "useNormalEventsAsCompatibleEvents":
-                        map.UseNormalEventsAsCompatibleEvents = node.AsBool;
+                        useNormalEventsAsCompatibleEvents = node.AsBool;
                         break;
                 }
             }
 
+            // Finally replace all the lighting data with what we parsed
+            map.Events = events;
+            map.LightColorEventBoxGroups = lightColorEventBoxGroups;
+            map.LightRotationEventBoxGroups = lightRotationEventBoxGroups;
+            map.LightTranslationEventBoxGroups = lightTranslationEventBoxGroups;
+            map.VfxEventBoxGroups = vfxEventBoxGroups;
+            map.Waypoints = waypoints;
+            map.EventTypesWithKeywords = eventTypesWithKeywords;
+            map.UseNormalEventsAsCompatibleEvents = useNormalEventsAsCompatibleEvents;
+            
             // Important!
             map.Events.Sort();
         }

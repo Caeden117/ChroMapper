@@ -19609,12 +19609,12 @@ PrefabInstance:
     - target: {fileID: 2411046508428019631, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2411046508428019631, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
       propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
-      value: 49
+      value: 472331903532134400
       objectReference: {fileID: 0}
     - target: {fileID: 2892911137493216669, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}

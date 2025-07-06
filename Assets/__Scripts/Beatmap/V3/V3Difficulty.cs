@@ -15,7 +15,7 @@ namespace Beatmap.V3
 {
     public class V3Difficulty
     {
-        private const string version = "3.3.0";
+        public const string Version = "3.3.0";
 
         public static JSONNode GetOutputJson(BaseDifficulty difficulty)
         {
@@ -24,7 +24,7 @@ namespace Beatmap.V3
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-                var json = new JSONObject { ["version"] = version };
+                var json = new JSONObject { ["version"] = Version };
 
                 var bpmEvents = new JSONArray();
                 if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
@@ -238,7 +238,7 @@ namespace Beatmap.V3
         {
             try
             {
-                var map = new BaseDifficulty { DirectoryAndFile = path, Version = version };
+                var map = new BaseDifficulty { DirectoryAndFile = path, Version = Version };
 
                 var nodeEnum = mainNode.GetEnumerator();
                 while (nodeEnum.MoveNext())

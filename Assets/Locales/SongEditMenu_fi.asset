@@ -532,6 +532,10 @@ MonoBehaviour:
     m_Localized: You have unsaved characteristic changes, do you want to save them?
     m_Metadata:
       m_Items: []
+  - m_Id: 472331903532134400
+    m_Localized: Lightshow.dat
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -128,9 +128,6 @@ public class DifficultySettings
         InfoDifficulty.Mappers = Mappers.Split(',').Select(x => x.Trim()).ToList();
         InfoDifficulty.Lighters = Lighters.Split(',').Select(x => x.Trim()).ToList();
         
-        var previousLightshowFileName = InfoDifficulty.LightshowFileName;
-        InfoDifficulty.LightshowFileName = LightshowFilePath;
-        
         var environmentNameIndex = BeatSaberSongContainer.Instance.Info.EnvironmentNames.IndexOf(EnvironmentName);
         if (environmentNameIndex >= 0)
         {
@@ -142,7 +139,9 @@ public class DifficultySettings
             InfoDifficulty.EnvironmentNameIndex = EnvironmentNameIndex = BeatSaberSongContainer.Instance.Info.EnvironmentNames.Count;
         }
         
-
+        var previousLightshowFileName = InfoDifficulty.LightshowFileName;
+        InfoDifficulty.LightshowFileName = LightshowFilePath;
+        
         // Map lightshow diff has changed and requires reloading the lights for this difficulty
         if (Map is { MajorVersion: 4 } && previousLightshowFileName != LightshowFilePath)
         {
@@ -150,8 +149,8 @@ public class DifficultySettings
         }
 
         InfoDifficulty.CustomLabel = CustomName;
-        InfoDifficulty.CustomInformation = songCoreInfos;
-        InfoDifficulty.CustomWarnings = songCoreWarnings;
+        InfoDifficulty.CustomInformation = SongCoreInfos;
+        InfoDifficulty.CustomWarnings = SongCoreWarnings;
         InfoDifficulty.CustomOneSaberFlag = ForceOneSaber;
         InfoDifficulty.CustomShowRotationNoteSpawnLinesFlag = ShowRotationNoteSpawnLine;
 

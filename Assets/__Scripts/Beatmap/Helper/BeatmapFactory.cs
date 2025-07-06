@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
+using Beatmap.Info;
 using Beatmap.V2;
 using Beatmap.V2.Customs;
 using Beatmap.V3;
@@ -15,10 +16,10 @@ namespace Beatmap.Helper
 {
     public static class BeatmapFactory
     {
-        public static BaseDifficulty GetDifficultyFromJson(JSONNode mainNode, string directoryAndFile)
+        // In the case of v4, we need the info and map info to read additional files
+        public static BaseDifficulty GetDifficultyFromJson(JSONNode mainNode, string directoryAndFile,
+            BaseInfo info, InfoDifficulty infoDifficulty)
         {
-            var info = BeatSaberSongContainer.Instance.Info;
-            var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
             BaseDifficulty difficulty;
 
             var v = PeekMapVersionFromJson(mainNode);
@@ -143,17 +144,5 @@ namespace Beatmap.Helper
         public static BaseEnvironmentEnhancement EnvironmentEnhancement(JSONNode node) => Settings.Instance.MapVersion is 3 or 4
             ? V3EnvironmentEnhancement.GetFromJson(node)
             : V2EnvironmentEnhancement.GetFromJson(node);
-
-        // instantiate from good ol parameter
-
-        // public static BaseEventTypesWithKeywords EventTypesWithKeywords(BaseEventTypesForKeywords[] keywords) => Settings.Instance.MapVersion == 3 ? (BaseEventTypesWithKeywords)new V3BasicEventTypesWithKeywords(keywords) : new V2SpecialEventsKeywordFilters(keywords);
-
-        // instantiate from empty
-
-        
-
-
-        // public static Materials = new Dictionary<string, JSONObject>();
-        // public static PointDefinitions = new Dictionary<string, List<JSONArray>>();
     }
 }
