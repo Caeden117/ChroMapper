@@ -124,20 +124,20 @@ public static class BeatSaberSongExtensions
         TryAddToFileDictionary(exportedFiles, info.Directory, "cinema-video.json");
         TryAddToFileDictionary(exportedFiles, info.Directory, info.MajorVersion == 4 ? info.AudioDataFilename : "BPMInfo.dat");
 
-        foreach (var contributor in info.CustomContributors.DistinctBy(it => it.LocalImageLocation))
+        foreach (var contributor in info.CustomContributors)
         {
-            var imageLocation = Path.Combine(info.Directory!, contributor.LocalImageLocation);
-            if (contributor.LocalImageLocation != info.CoverImageFilename &&
-                File.Exists(imageLocation) && !File.GetAttributes(imageLocation).HasFlag(FileAttributes.Directory))
-            {
-                exportedFiles.Add(imageLocation, contributor.LocalImageLocation);
-            }
+            TryAddToFileDictionary(exportedFiles, info.Directory, contributor.LocalImageLocation);
         }
 
         foreach (var map in info.DifficultySets.SelectMany(set => set.Difficulties))
         {
             TryAddToFileDictionary(exportedFiles, info.Directory, map.BeatmapFileName);
             TryAddToFileDictionary(exportedFiles, info.Directory, map.LightshowFileName);
+        }
+        
+        foreach (var difficultySet in info.DifficultySets)
+        {
+            TryAddToFileDictionary(exportedFiles, info.Directory, difficultySet.CustomCharacteristicIconImageFileName);
         }
 
         // while we could just add the specific bookmark files for each diff, for better official editor compatibility it makes more sense to add every bookmark file that exists
