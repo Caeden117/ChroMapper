@@ -16,6 +16,7 @@ public class SelectionPastedAction : BeatmapAction
         this.affectsSeveralObjects = true;
         this.removed = removed;
     }
+
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var obj in Data)
@@ -32,7 +33,11 @@ public class SelectionPastedAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        SelectionController.DeselectAll();
+        if (!Networked)
+        {
+            SelectionController.DeselectAll();
+        }
+
         foreach (var obj in Data)
         {
             SpawnObject(obj);
