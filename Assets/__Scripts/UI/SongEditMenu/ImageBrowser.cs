@@ -29,7 +29,21 @@ namespace __Scripts.UI.SongEditMenu
             var songDir = BeatSaberSongContainer.Instance.Info.Directory;
             CMInputCallbackInstaller.DisableActionMaps(typeof(ImageBrowser),
                 new[] { typeof(CMInput.IMenusExtendedActions) });
-            var paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, extensions, false);
+
+            string[] paths;
+            try
+            {
+                paths = StandaloneFileBrowser.OpenFilePanel("Open File", songDir, extensions, false);
+            }
+            catch (DllNotFoundException)
+            {
+                // This seems to be an apple silicon exclusive issue
+                // Try updating package later
+                PersistentUI.Instance.DisplayMessage("File browser not supported on this OS",
+                    PersistentUI.DisplayMessageType.Bottom);
+                return;
+            }
+            
             StartCoroutine(ClearDisabledActionMaps());
             if (paths.Length > 0)
             {
