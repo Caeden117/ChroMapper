@@ -23,7 +23,7 @@ namespace Beatmap.Base
     {
         public string DirectoryAndFile { get; set; }
 
-        public string Version { get; set; } = "3.3.0";
+        public string Version { get; set; }
 
         public int MajorVersion
         {

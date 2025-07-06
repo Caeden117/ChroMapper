@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -15,7 +15,7 @@ namespace Beatmap.V4
 {
     public class V4Difficulty
     {
-        private const string beatmapVersion = "4.1.0";
+        public const string BeatmapVersion = "4.1.0";
         private const string lightshowVersion = "4.0.0";
 
         public static JSONNode GetOutputJson(BaseDifficulty difficulty)
@@ -25,7 +25,7 @@ namespace Beatmap.V4
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-                var json = new JSONObject { ["version"] = beatmapVersion };
+                var json = new JSONObject { ["version"] = BeatmapVersion };
                 
                 // LINQ abuse
 
@@ -428,7 +428,7 @@ namespace Beatmap.V4
         {
             try
             {
-                var map = new BaseDifficulty { DirectoryAndFile = path, Version = beatmapVersion };
+                var map = new BaseDifficulty { DirectoryAndFile = path, Version = BeatmapVersion };
 
                 // Get common Data
                 var notesCommonData = new List<V4CommonData.Note>();
