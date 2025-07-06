@@ -36,6 +36,13 @@ public class BPMChangePlacement : PlacementController<BaseBpmEvent, BpmEventCont
         if (string.IsNullOrEmpty(obj) || string.IsNullOrWhiteSpace(obj)) return;
         if (float.TryParse(obj, out var bpm))
         {
+            // Prevent users from shooting themselves in the foot 
+            if (bpm <= 0)
+            {
+                CreateAndOpenBpmDialogue(isInitialPlacement: false);
+                return;
+            }
+            
             if (willResetGrid && (Mathf.Abs(queuedData.JsonTime - Mathf.Round(queuedData.JsonTime)) > BeatmapObjectContainerCollection.Epsilon))
             {
                 // e.g. Placing a bpm event at beat 3.5 will create a bpm event at beat 3 and 4.
