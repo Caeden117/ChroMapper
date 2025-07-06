@@ -387,7 +387,8 @@ namespace Beatmap.Base
             {
                 // Either user error or an non-v4 map has been converted to v4.
                 // In this case, write to a different file
-                if (mapDifficultyInfo.BeatmapFileName == mapDifficultyInfo.LightshowFileName)
+                if (string.IsNullOrWhiteSpace(mapDifficultyInfo.LightshowFileName)
+                    || mapDifficultyInfo.BeatmapFileName == mapDifficultyInfo.LightshowFileName)
                 {
                     mapDifficultyInfo.LightshowFileName = $"LightsFor-{mapDifficultyInfo.LightshowFileName}";
                 }
@@ -404,11 +405,6 @@ namespace Beatmap.Base
                 if (!Directory.Exists(bookmarksFolder)) Directory.CreateDirectory(bookmarksFolder);
                 File.WriteAllText(Path.Combine(bookmarksFolder, mapDifficultyInfo.BookmarkFileName), 
                     bookmarksJson.ToString(2));
-            }
-            else
-            {
-                // Separate lightshows are not loaded in non-v4, so we'll change the lightshow to refer to the same file
-                mapDifficultyInfo.LightshowFileName = mapDifficultyInfo.BeatmapFileName;
             }
 
             // Write Bpm file

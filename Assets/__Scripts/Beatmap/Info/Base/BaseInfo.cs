@@ -224,14 +224,7 @@ namespace Beatmap.Info
         public string CustomCharacteristicIconImageFileName => ParentSet.CustomCharacteristicIconImageFileName;
 
         public string BeatmapFileName { get; set; }
-
-        private string lightshowFileName = "Lightshow.dat";
-
-        public string LightshowFileName
-        {
-            get => string.IsNullOrEmpty(lightshowFileName) ? BeatmapFileName : lightshowFileName;
-            set => lightshowFileName = value;
-        }
+        public string LightshowFileName { get; set; }
 
         public string Difficulty { get; set; }
 
@@ -299,7 +292,11 @@ namespace Beatmap.Info
         public Color? CustomEnvColorBoostRight { get; set; }
         public Color? CustomEnvColorBoostWhite { get; set; }
 
-        public void SetBeatmapFileNameToDefault() => BeatmapFileName = $"{Difficulty}{Characteristic}.dat";
+        public void InitDefaultFileNames(int infoMajorVersion)
+        {
+            BeatmapFileName = $"{Difficulty}{Characteristic}.dat";
+            if (infoMajorVersion == 4 && string.IsNullOrWhiteSpace(LightshowFileName)) LightshowFileName = "Lightshow.dat";
+        }
         
         public void RefreshRequirementsAndWarnings(BaseDifficulty map)
         {

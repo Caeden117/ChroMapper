@@ -108,11 +108,14 @@ public class DifficultySelect : MonoBehaviour
 
             if (MapInfo.MajorVersion == 4)
             {
+                lightshowFilePathField.interactable = true;
                 mappersField.interactable = true;
                 lightersField.interactable = true;
             }
             else
             {
+                lightshowFilePathField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
+                lightshowFilePathField.interactable = false;
                 mappersField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
                 mappersField.interactable = false;
                 lightersField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
@@ -355,7 +358,7 @@ public class DifficultySelect : MonoBehaviour
 
         var oldPath = map.DirectoryAndFile;
 
-        diff.SetBeatmapFileNameToDefault();
+        diff.InitDefaultFileNames(mapInfo.MajorVersion);
         map.DirectoryAndFile = Path.Combine(mapInfo.Directory, diff.BeatmapFileName);
         if (File.Exists(oldPath) && oldPath != map.DirectoryAndFile && !File.Exists(map.DirectoryAndFile))
         {
@@ -492,9 +495,7 @@ public class DifficultySelect : MonoBehaviour
         }
         else
         {
-            var notSupportedString = LocalizationSettings.StringDatabase.GetLocalizedString("Mapper", 
-                "not.supported.in.version");
-            lightshowFilePathField.SetTextWithoutNotify(notSupportedString);
+            lightshowFilePathField.placeholder.GetComponent<LocalizeStringEvent>().StringReference.TableEntryReference = "not.supported.in.version";
             lightshowFilePathField.interactable = false;
         }
 
@@ -547,7 +548,7 @@ public class DifficultySelect : MonoBehaviour
         {
             var map = new InfoDifficulty(currentDifficultySet) { Difficulty = row.Name };
 
-            map.SetBeatmapFileNameToDefault();
+            map.InitDefaultFileNames(MapInfo.MajorVersion);
 
             if (copySource != null)
             {
