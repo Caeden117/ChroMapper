@@ -61,7 +61,7 @@ public static class BeatSaberSongUtils
     
     public static BaseDifficulty GetMapFromInfoFiles(BaseInfo info, InfoDifficulty difficultyData)
     {
-        if (!System.IO.Directory.Exists(info.Directory))
+        if (!Directory.Exists(info.Directory))
         {
             Debug.LogWarning("Failed to get difficulty json file.");
             return null;
@@ -75,8 +75,7 @@ public static class BeatSaberSongUtils
             return null;
         }
 
-        return BeatmapFactory.GetDifficultyFromJson(mainNode, fullPath);
-        
+        return BeatmapFactory.GetDifficultyFromJson(mainNode, fullPath, info, difficultyData);
     }
 
     public static JSONNode GetNodeFromFile(string file)

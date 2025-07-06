@@ -62,16 +62,19 @@ namespace Tests.Util
 
             if (!mapperInit) yield return InitMapper();
 
-            BeatSaberSongContainer.Instance.Info =
-                new BaseInfo { Directory = "testmap", SongName = "test" };
+            var info = new BaseInfo { Directory = "testmap", SongName = "test" };
+            BeatSaberSongContainer.Instance.Info = info;
             var parentSet = new InfoDifficultySet { Characteristic = "Lawless" };
             var diff = new InfoDifficulty(parentSet);
-            
+
             BeatSaberSongContainer.Instance.MapDifficultyInfo = diff;
             BeatSaberSongContainer.Instance.LoadedSong = AudioClip.Create("Fake", 44100 * 20, 1, 44100, false);
             BeatSaberSongContainer.Instance.Map = BeatmapFactory.GetDifficultyFromJson(loadVersion == 3
-                ? new JSONObject { ["version"] = "3.2.0" }
-                : new JSONObject { ["_version"] = "2.6.0" }, "testmap");
+                    ? new JSONObject { ["version"] = "3.2.0" }
+                    : new JSONObject { ["_version"] = "2.6.0" }, 
+                "testmap",
+                info,
+                diff);
             SceneTransitionManager.Instance.LoadScene("03_Mapper");
             yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
         }

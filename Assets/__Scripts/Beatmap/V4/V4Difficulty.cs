@@ -575,10 +575,18 @@ namespace Beatmap.V4
 
         public static void LoadBpmFromAudioData(BaseDifficulty map, BaseInfo info)
         {
-            var bpmInfo = V4AudioData.GetFromJson(BeatSaberSongUtils.GetNodeFromFile(Path.Combine(info.Directory, info.AudioDataFilename)));
+            var filePath = Path.Combine(info.Directory, info.AudioDataFilename);
+            if (!File.Exists(filePath))
+            {
+                Debug.Log($"No AudioData found at {filePath}");
+                return;
+            }
+            
+            var bpmInfo = V4AudioData.GetFromJson(BeatSaberSongUtils.GetNodeFromFile(filePath));
 
             var bpmEvents = BaseBpmInfo.GetBpmEvents(bpmInfo.BpmRegions, bpmInfo.AudioFrequency);
             map.BpmEvents = bpmEvents;
+            map.BootstrapBpmEvents(info.BeatsPerMinute);
         }
 
         public static void LoadBookmarksFromOfficialEditor(BaseDifficulty map, BaseInfo info, InfoDifficulty infoDifficulty)
@@ -611,8 +619,14 @@ namespace Beatmap.V4
         
         public static void LoadLightsFromLightshowFile(BaseDifficulty map, BaseInfo info, InfoDifficulty infoDifficulty)
         {
-            var path = Path.Combine(info.Directory, infoDifficulty.LightshowFileName);
-            var mainNode = BeatSaberSongUtils.GetNodeFromFile(path);
+            var filePath = Path.Combine(info.Directory, infoDifficulty.LightshowFileName);
+            if (!File.Exists(filePath))
+            {
+                Debug.Log($"No lightshow file found at {filePath}");
+                return;
+            }
+            
+            var mainNode = BeatSaberSongUtils.GetNodeFromFile(filePath);
 
             LoadLightsFromJson(map, mainNode);
         }

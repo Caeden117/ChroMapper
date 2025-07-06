@@ -150,8 +150,8 @@ public class DifficultySettings
         }
 
         InfoDifficulty.CustomLabel = CustomName;
-        InfoDifficulty.CustomInformation = songCoreInfos;
-        InfoDifficulty.CustomWarnings = songCoreWarnings;
+        InfoDifficulty.CustomInformation = SongCoreInfos;
+        InfoDifficulty.CustomWarnings = SongCoreWarnings;
         InfoDifficulty.CustomOneSaberFlag = ForceOneSaber;
         InfoDifficulty.CustomShowRotationNoteSpawnLinesFlag = ShowRotationNoteSpawnLine;
 
