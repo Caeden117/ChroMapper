@@ -146,7 +146,8 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
                           EditorScaleController.EditorScale;
             if (startSongBpmBeat > endSongBpmBeat) (startSongBpmBeat, endSongBpmBeat) = (endSongBpmBeat, startSongBpmBeat);
 
-            SelectionController.ForEachObjectBetweenSongBpmTimeByGroup(startSongBpmBeat, endSongBpmBeat, true, true, true, (bocc, bo) =>
+            SelectionController.ForEachObjectBetweenSongBpmTimeByGroup(startSongBpmBeat, endSongBpmBeat, true, 
+                true, true, true, (bocc, bo) =>
             {
                 if (!selectedTypes.Contains(bo.ObjectType)) return; // Must be a type we can select
                 

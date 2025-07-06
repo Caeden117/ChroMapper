@@ -118,11 +118,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="hasEvent">Whether or not an object is in the event group</param>
     /// <param name="hasBpmChange">Whether or not an object is in the bpm change group</param>
     public static void GetObjectTypes(IEnumerable<BaseObject> objects, out bool hasNoteOrObstacle, out bool hasEvent,
-        out bool hasBpmChange)
+        out bool hasBpmChange, out bool hasNjsEvent)
     {
         hasNoteOrObstacle = false;
         hasEvent = false;
         hasBpmChange = false;
+        hasNjsEvent = false;
         foreach (var obj in objects)
         {
             switch (obj.ObjectType)
@@ -141,6 +142,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 case ObjectType.BpmChange:
                     hasBpmChange = true;
                     break;
+                case ObjectType.NJSEvent:
+                    hasNjsEvent = true;
+                    break;
             }
         }
     }
@@ -153,9 +157,10 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="hasNoteOrObstacle">Whether or not to include the note or obstacle group</param>
     /// <param name="hasEvent">Whether or not to include the event group</param>
     /// <param name="hasBpmChange">Whether or not to include the bpm change group</param>
+    /// <param name="hasNjsEvent">Whether or not the include the njs event group</param>
     /// <param name="callback">Callback with an object container and the collection it belongs to</param>
     public static void ForEachObjectBetweenSongBpmTimeByGroup(float start, float end, bool hasNoteOrObstacle, bool hasEvent,
-        bool hasBpmChange, Action<BeatmapObjectContainerCollection, BaseObject> callback)
+        bool hasBpmChange, bool hasNjsEvent, Action<BeatmapObjectContainerCollection, BaseObject> callback)
     {
         var clearTypes = new List<ObjectType>();
         if (hasNoteOrObstacle)
@@ -182,6 +187,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (hasBpmChange)
         {
             clearTypes.Add(ObjectType.BpmChange);
+        }
+
+        if (hasNjsEvent)
+        {
+            clearTypes.Add(ObjectType.NJSEvent);
         }
 
         var epsilon = BeatmapObjectContainerCollection.Epsilon;
@@ -265,8 +275,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             DeselectAll(); //This SHOULD deselect every object unless you otherwise specify, but it aint working.
         if (first.SongBpmTime > second.SongBpmTime)
             (first, second) = (second, first);
-        GetObjectTypes(new[] { first, second }, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
-        ForEachObjectBetweenSongBpmTimeByGroup(first.SongBpmTime, second.SongBpmTime, hasNoteOrObstacle, hasEvent, hasBpmChange,
+        GetObjectTypes(new[] { first, second }, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange, out var hasNjsEvent);
+        ForEachObjectBetweenSongBpmTimeByGroup(first.SongBpmTime, second.SongBpmTime, hasNoteOrObstacle, hasEvent, hasBpmChange, hasNjsEvent,
             (collection, beatmapObject) =>
             {
                 if (SelectedObjects.Contains(beatmapObject)) return;
@@ -420,9 +430,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     end = beatmapObject.SongBpmTime;
             }
 
-            GetObjectTypes(pasted, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange);
+            GetObjectTypes(pasted, out var hasNoteOrObstacle, out var hasEvent, out var hasBpmChange, out var hasNjsEvent);
             var toRemove = new List<(BeatmapObjectContainerCollection, BaseObject)>();
-            ForEachObjectBetweenSongBpmTimeByGroup(start, end, hasNoteOrObstacle, hasEvent, hasBpmChange,
+            ForEachObjectBetweenSongBpmTimeByGroup(start, end, hasNoteOrObstacle, hasEvent, hasBpmChange, hasNjsEvent,
                 (collection, beatmapObject) =>
                 {
                     if (pasted.Contains(beatmapObject)) return;
