@@ -12,15 +12,11 @@ namespace Beatmap.Containers
 
         [SerializeField] public BaseObstacle ObstacleData;
 
-        private BPMChangeGridContainer bpmChangeGridContainer;
-
         public override BaseObject ObjectData
         {
             get => ObstacleData;
             set => ObstacleData = (BaseObstacle)value;
         }
-
-        public int ChunkEnd => (int)((ObstacleData.JsonTime + ObstacleData.Duration) / Intersections.ChunkSize);
 
         public bool IsRotatedByNoodleExtensions => ObstacleData.CustomWorldRotation != null;
 
@@ -28,7 +24,6 @@ namespace Beatmap.Containers
             ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<ObstacleContainer>();
-            container.bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(Enums.ObjectType.BpmChange);
             container.ObstacleData = data;
             container.manager = manager;
             return container;
