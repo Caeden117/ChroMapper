@@ -164,6 +164,11 @@ public static class BeatSaberSongExtensions
 
     private static bool TryAddToFileDictionary(IDictionary<string, string> fileMap, string directory, string fileLocation)
     {
+        if (directory == null || fileLocation == null)
+        {
+            return false;
+        }
+        
         var fullPath = Path.Combine(directory, fileLocation);
 
         return File.Exists(fullPath) && fileMap.TryAdd(fullPath, fileLocation);
