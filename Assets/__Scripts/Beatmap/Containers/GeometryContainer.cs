@@ -25,6 +25,10 @@ namespace Beatmap.Containers
 
         public static GeometryContainer SpawnGeometry(BaseEnvironmentEnhancement eh, ref GameObject prefab)
         {
+            var type_str = (string)eh.Geometry[eh.GeometryKeyType];
+            if (type_str == null)
+                return null;
+
             var container = Instantiate(prefab).GetComponent<GeometryContainer>();
             PrimitiveType type;
             if (eh.Geometry[eh.GeometryKeyType] == "Triangle")
@@ -37,7 +41,7 @@ namespace Beatmap.Containers
             }
             container.EnvironmentEnhancement = eh;
             container.Shape = GameObject.CreatePrimitive(type);
-            
+
             var collider = container.Shape.GetComponentInChildren<Collider>();
             if (collider != null) DestroyImmediate(collider);
 

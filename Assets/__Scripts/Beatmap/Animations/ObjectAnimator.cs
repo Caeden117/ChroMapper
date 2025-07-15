@@ -42,7 +42,7 @@ namespace Beatmap.Animations
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         private IAnimateProperty[] properties = new IAnimateProperty[0];
-        
+
         private static readonly int opaqueAlpha = Shader.PropertyToID("_OpaqueAlpha");
         private static readonly int animationSpawned = Shader.PropertyToID("_AnimationSpawned");
         private static readonly int alwaysOpaque = Shader.PropertyToID("_AlwaysOpaque");
@@ -198,12 +198,13 @@ namespace Beatmap.Animations
                             if (p.Transition != 0) {
                                 p.Transition = (float)map.JsonTimeToSongBpmTime(ce.JsonTime + p.Transition) - ce.SongBpmTime;
                             }
-                            AddPointDef(p, jprop.Key);
+                            AddPointDef(p, jprop.Key, ce);
                         }
                     }
                 }
 
-                 AnimationTrack.transform.SetParent(this.tracks[0].Track.ObjectParentTransform, false);
+                if (tracks.Count > 0)
+                    AnimationTrack.transform.SetParent(this.tracks[0].Track.ObjectParentTransform, false);
             }
 
             // Individual Path Animation
@@ -221,7 +222,7 @@ namespace Beatmap.Animations
                         TimeBegin = time_begin,
                         TimeEnd = time_end,
                     };
-                    AddPointDef(p, jprop.Key);
+                    AddPointDef(p, jprop.Key, null);
                 }
             }
 
@@ -292,7 +293,7 @@ namespace Beatmap.Animations
 
         public void AddParent(string name)
         {
-            var track = TracksManager.CreateAnimationTrack(name);
+            var track = TracksManager.GetAnimationTrack(name);
             track.Children.Add(this);
             track.OnChildrenChanged();
             this.tracks.Add(track);
@@ -437,49 +438,49 @@ namespace Beatmap.Animations
             }
         }
 
-        private void AddPointDef(IPointDefinition.UntypedParams p, string key)
+        private void AddPointDef(IPointDefinition.UntypedParams p, string key, BaseCustomEvent source)
         {
             switch (key)
             {
             case "_dissolve":
             case "dissolve":
-                AddPointDef<float>((float f) => Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
+                AddPointDef<float>(source, (float f) => Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_dissolveArrow":
             case "dissolveArrow":
-                AddPointDef<float>((float f) => OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
+                AddPointDef<float>(source, (float f) => OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
             case "localRotation":
-                AddPointDef<Quaternion>((Quaternion q) => LocalRotation.Add(q), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                AddPointDef<Quaternion>(source, (Quaternion q) => LocalRotation.Add(q), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_rotation":
             case "offsetWorldRotation":
-                AddPointDef<Quaternion>((Quaternion v) => WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                AddPointDef<Quaternion>(source, (Quaternion v) => WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
             case "offsetPosition":
-                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_definitePosition":
-                AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "position":
             case "definitePosition":
-                AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (Vector3 v) => WorldPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
             case "scale":
-                AddPointDef<Vector3>((Vector3 v) => Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
+                AddPointDef<Vector3>(source, (Vector3 v) => Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
                 break;
             case "_color":
             case "color":
-                AddPointDef<Color>((Color c) => Colors.Add(c), PointDataParsers.ParseColor, p, Color.white);
+                AddPointDef<Color>(source, (Color c) => Colors.Add(c), PointDataParsers.ParseColor, p, Color.white);
                 break;
             }
         }
 
-        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
+        private void AddPointDef<T>(BaseCustomEvent source, Action<T> setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
         {
             try
             {
@@ -491,7 +492,7 @@ namespace Beatmap.Animations
                         _default
                     );
                 }
-                GetAnimateProperty<T>(p.Key, setter, _default).AddPointDef(parser, p);
+                GetAnimateProperty<T>(p.Key, setter, _default).AddPointDef(parser, p, source);
             }
             catch (Exception e)
             {

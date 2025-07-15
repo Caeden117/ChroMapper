@@ -22,15 +22,15 @@ public class MapLoader : MonoBehaviour
     public void HardRefresh()
     {
         LoadObjects(map.BpmEvents);
-        
+
         if (Settings.Instance.Load_Others) LoadObjects(map.CustomEvents);
 
         if (Settings.Instance.Load_Notes) LoadObjects(map.Notes);
-        
+
         if (Settings.Instance.Load_Obstacles) LoadObjects(map.Obstacles);
-        
+
         if (Settings.Instance.Load_Events) LoadObjects(map.Events);
-        
+
         if (Settings.Instance.Load_Notes)
         {
             LoadObjects(map.Arcs);
@@ -50,10 +50,10 @@ public class MapLoader : MonoBehaviour
         var collection = BeatmapObjectContainerCollection.GetCollectionForType<BeatmapObjectContainerCollection<T>, T>();
 
         if (collection == null) return;
-        
+
         // We need to force sort our objects when loading externally for Binary Search operations and ordered algorithms to work.
         objects.Sort();
-        
+
         collection.MapObjects = objects;
 
         if (objects is List<BaseEvent> eventsList)
@@ -73,8 +73,7 @@ public class MapLoader : MonoBehaviour
         if (objects is List<BaseCustomEvent> customEventsList)
         {
             var events = collection as CustomEventGridContainer;
-            events.RefreshEventsByTrack();
-            events.LoadAnimationTracks();
+            events.LoadAll();
         }
 
         collection.RefreshPool(true);

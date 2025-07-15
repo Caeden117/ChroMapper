@@ -5,6 +5,8 @@ using UnityEngine;
 
 using SimpleJSON;
 
+using Beatmap.Base.Customs;
+
 namespace Beatmap.Animations
 {
     public interface IPointDefinition
@@ -27,6 +29,7 @@ namespace Beatmap.Animations
     public class PointDefinition<T> : IPointDefinition, IComparable<PointDefinition<T>>
         where T : struct
     {
+        public BaseCustomEvent Source;
         public PointData[] Points;
         public float StartTime { get; private set; } = 0;
         // For AnimateTrack
@@ -44,8 +47,9 @@ namespace Beatmap.Animations
             StartTime = start;
         }
 
-        public PointDefinition(Parser parser, IPointDefinition.UntypedParams p)
+        public PointDefinition(Parser parser, IPointDefinition.UntypedParams p, BaseCustomEvent source)
         {
+            Source = source;
             StartTime = p.Time;
             Transition = p.Transition;
             Duration = p.Duration;
@@ -137,7 +141,7 @@ namespace Beatmap.Animations
             {
                 var i = 0;
                 Value = parser(data, ref i);
-                
+
                 var len = data.Count;
                 if (len > i)
                 {
@@ -157,7 +161,7 @@ namespace Beatmap.Animations
                 for (; i < len; ++i)
                 {
                     string str = data[i];
-                    
+
                     if (str[0] == 'e')
                     {
                         Easing = global::Easing.Named(str);
@@ -205,7 +209,7 @@ namespace Beatmap.Animations
 
                 result = data[0].Value switch
                 {
-                    // Intentionally not supporting baseSaber_Color since those don't mirror with left handed 
+                    // Intentionally not supporting baseSaber_Color since those don't mirror with left handed
                     // mode while baseNote_Color does. Should almost always use baseNote over baseSaber.
                     "baseNote0Color" => LoadInitialMap.Platform != null
                         ? LoadInitialMap.Platform.Colors.RedNoteColor
@@ -246,7 +250,7 @@ namespace Beatmap.Animations
             if (data[i] is JSONArray array)
             {
                 i += 1;
-                
+
                 var innerIdx = 0;
                 var subColor = ParseColor(array, ref innerIdx);
 

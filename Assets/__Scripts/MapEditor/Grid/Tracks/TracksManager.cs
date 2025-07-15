@@ -90,7 +90,7 @@ public class TracksManager : MonoBehaviour
         return CreateTrack(vectorRotation);
     }
 
-    public TrackAnimator CreateAnimationTrack(string name)
+    public TrackAnimator GetAnimationTrack(string name)
     {
         if (animationTracks.TryGetValue(name, out var animator)) return animator;
 
@@ -102,20 +102,6 @@ public class TracksManager : MonoBehaviour
         animator.Track = obj.GetComponent<Track>();
         animationTracks.Add(name, animator);
         return animator;
-    }
-
-    public void ResetAnimationTracks()
-    {
-        foreach (var at in animationTracks)
-        {
-            at.Value.SetEvents(new List<BaseCustomEvent>());
-            at.Value.Children.Clear();
-            if (at.Value.Animator != null)
-            {
-                GameObject.Destroy(at.Value.Animator);
-                at.Value.Animator = null;
-            }
-        }
     }
 
     // Used for world rotation

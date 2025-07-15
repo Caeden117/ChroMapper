@@ -24,13 +24,12 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     [SerializeField] private TracksManager tracksManager;
     [SerializeField] private CameraController playerCamera;
     private List<string> customEventTypes = new List<string>();
-    private List<GeometryContainer> geometries = new List<GeometryContainer>();
-
     public override ObjectType ContainerType => ObjectType.CustomEvent;
 
     public ReadOnlyCollection<string> CustomEventTypes => customEventTypes.AsReadOnly();
 
     public Dictionary<string, List<BaseCustomEvent>> EventsByTrack;
+    public Dictionary<BaseEnvironmentEnhancement, GeometryContainer> LoadedGeometry = new();
 
     private void Start()
     {
@@ -43,74 +42,20 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         }
     }
 
-    // During refresh? How to update when events are added
-    public void LoadAnimationTracks()
+    public void LoadAll()
     {
-        playerCamera.ClearPlayerTracks();
+        EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
 
         var span = MapObjects.AsSpan();
 
-        for (var i = 0; i < span.Length; i++)
+        foreach (var ev in span)
         {
-            var ev = span[i];
-
-            var tracks = ev.CustomTrack switch
-            {
-                JSONArray arr => arr,
-                JSONString s => JSONObject.Parse($"[{s}]").AsArray,
-                _ => null,
-            };
-            switch (ev.Type)
-            {
-                case "AssignTrackParent":
-                    if (ev.DataParentTrack == null) continue;
-                    var parent = tracksManager.CreateAnimationTrack(ev.DataParentTrack);
-                    tracks = ev.DataChildrenTracks switch
-                    {
-                        JSONArray arr => arr,
-                        JSONString s => JSONObject.Parse($"[{s}]").AsArray,
-                    };
-                    foreach (var tr in tracks)
-                    {
-                        var at = tracksManager.CreateAnimationTrack(tr.Value);
-                        at.Track.transform.SetParent(parent.Track.ObjectParentTransform, ev.DataWorldPositionStays ?? false);
-                        if (at.Animator == null)
-                        {
-                            at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
-                            at.Animator.Atsc = AudioTimeSyncController;
-                            at.Animator.SetTrack(at.Track, tr.Value);
-                        }
-
-                        if (!parent.Children.Contains(at.Animator))
-                        {
-                            parent.Children.Add(at.Animator);
-                            at.Parents.Add(parent);
-                            at.OnChildrenChanged();
-                        }
-                    }
-                    break;
-                case "AssignPlayerToTrack":
-                    if (ev.CustomTrack == null) continue;
-                    playerCamera.gameObject.SetActive(true);
-                    var track = tracksManager.CreateAnimationTrack(ev.CustomTrack);
-                    playerCamera.AddPlayerTrack(ev.JsonTime, track);
-                    break;
-            }
+            AddCustomEvent(ev);
         }
-
-        // TODO: Geometry should probably be handled separately
-        geometries.ForEach((gc) => GameObject.Destroy(gc.gameObject));
-        geometries.Clear();
 
         BeatSaberSongContainer.Instance.Map.EnvironmentEnhancements.ForEach((eh) =>
         {
-            if (eh.Geometry is JSONNode)
-            {
-                var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
-                container.Setup();
-                geometries.Add(container);
-                geometryAppearanceSo.SetGeometryAppearance(container);
-            }
+            AddEnvironmentEnhancement(eh);
         });
     }
 
@@ -135,41 +80,6 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
             CreateNewType();
     }
 
-    public void RefreshEventsByTrack()
-    {
-        EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
-
-        //foreach (var loadedObject in UnsortedObjects)
-        var span = MapObjects.AsSpan();
-
-        for (var i = 0; i < span.Length; i++)
-        {
-            var customEvent = span[i];
-
-            var tracks = customEvent.CustomTrack switch
-            {
-                JSONString s => new List<string> { s },
-                JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
-                _ => new List<string>()
-            };
-
-            foreach (var track in tracks)
-            {
-                if (!EventsByTrack.ContainsKey(track))
-                {
-                    EventsByTrack[track] = new List<BaseCustomEvent>();
-                }
-                EventsByTrack[track].Add(customEvent);
-            }
-        }
-
-        foreach (var track in EventsByTrack)
-        {
-            var at = tracksManager.CreateAnimationTrack(track.Key);
-            at.SetEvents(track.Value.Where(ev => ev.Type == "AnimateTrack").ToList());
-        }
-    }
-
     protected override void OnObjectSpawned(BaseObject obj, bool inCollection = false)
     {
         var customEvent = obj as BaseCustomEvent;
@@ -179,9 +89,102 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
             RefreshTrack();
         }
 
-        tracksManager.ResetAnimationTracks();
-        RefreshEventsByTrack();
-        LoadAnimationTracks();
+        AddCustomEvent(customEvent);
+    }
+
+    protected override void OnObjectDelete(BaseObject obj, bool inCollection = false)
+    {
+        var ev = obj as BaseCustomEvent;
+
+        var tracks = ev.CustomTrack switch
+        {
+            JSONString s => new List<string> { s },
+            JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
+            _ => new List<string>()
+        };
+
+        foreach (var track in tracks)
+        {
+            EventsByTrack[track].Remove(ev);
+            if (EventsByTrack[track].Count == 0)
+            {
+                EventsByTrack.Remove(track);
+            }
+
+            if (ev.Type == "AnimateTrack")
+                tracksManager.GetAnimationTrack(track).RemoveEvent(ev);
+        }
+    }
+
+    private void AddCustomEvent(BaseCustomEvent ev)
+    {
+        var tracks = ev.CustomTrack switch
+        {
+            JSONString s => new List<string> { s },
+            JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
+            _ => new List<string>()
+        };
+
+        foreach (var track in tracks)
+        {
+            if (!EventsByTrack.ContainsKey(track))
+            {
+                EventsByTrack[track] = new List<BaseCustomEvent>();
+            }
+            EventsByTrack[track].Add(ev);
+
+            if (ev.Type == "AnimateTrack")
+                tracksManager.GetAnimationTrack(track).AddEvent(ev);
+        }
+
+        switch (ev.Type)
+        {
+            case "AssignTrackParent":
+                if (ev.DataParentTrack == null) return;
+                var parent = tracksManager.GetAnimationTrack(ev.DataParentTrack);
+                var children = ev.DataChildrenTracks switch
+                {
+                    JSONArray arr => arr,
+                    JSONString s => JSONObject.Parse($"[{s}]").AsArray,
+                };
+                foreach (var tr in children)
+                {
+                    var at = tracksManager.GetAnimationTrack(tr.Value);
+                    at.Track.transform.SetParent(parent.Track.ObjectParentTransform, ev.DataWorldPositionStays ?? false);
+                    if (at.Animator == null)
+                    {
+                        at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
+                        at.Animator.Atsc = AudioTimeSyncController;
+                        at.Animator.SetTrack(at.Track, tr.Value);
+                    }
+
+                    if (!parent.Children.Contains(at.Animator))
+                    {
+                        parent.Children.Add(at.Animator);
+                        at.Parents.Add(parent);
+                        at.OnChildrenChanged();
+                    }
+                }
+                break;
+            case "AssignPlayerToTrack":
+                if (ev.CustomTrack == null) return;
+                playerCamera.gameObject.SetActive(true);
+                var track = tracksManager.GetAnimationTrack(ev.CustomTrack);
+                playerCamera.AddPlayerTrack(ev.JsonTime, track);
+                break;
+        }
+    }
+
+    public void AddEnvironmentEnhancement(BaseEnvironmentEnhancement eh)
+    {
+        if (eh.Geometry is JSONNode)
+        {
+            var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
+            if (container == null) return;
+            container.Setup();
+            LoadedGeometry.Add(eh, container);
+            geometryAppearanceSo.SetGeometryAppearance(container);
+        }
     }
 
     private void OnUIPreviewModeSwitch() => RefreshPool(true);
