@@ -64615,11 +64615,13 @@ MonoBehaviour:
   - {fileID: 120631926}
   - {fileID: 322207089}
   - {fileID: 458724369}
+  - {fileID: 1472799625}
   thingsThatRequireAMoveForPreview:
   - {fileID: 617466177}
   - {fileID: 1125491375}
   - {fileID: 565602430}
   - {fileID: 866552293}
+  - {fileID: 764249666}
   rotationCallbackController: {fileID: 226696885}
   atsc: {fileID: 570484802}
 --- !u!225 &1799035894
