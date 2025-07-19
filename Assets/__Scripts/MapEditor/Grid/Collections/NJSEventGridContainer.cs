@@ -126,8 +126,42 @@ public class NJSEventGridContainer : BeatmapObjectContainerCollection<BaseNJSEve
         
         CurrentNJS = currentNJS;
         
+        var baseBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
+        var noteStartBeatOffset = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteStartBeatOffset;
+        var baseHalfJumpDuration = SpawnParameterHelper.CalculateHalfJumpDuration(baseNJS, noteStartBeatOffset, baseBpm);
+        var baseJumpDistance = SpawnParameterHelper.CalculateJumpDistance(baseNJS, noteStartBeatOffset, baseBpm);
+        var msPerBeat = 60000 / baseBpm;
+        var baseReactionTime = msPerBeat * baseHalfJumpDuration;
+        
+        if (CurrentNJS > baseNJS)
+        {
+            // Keep reaction time the same
+            CurrentRT = baseReactionTime;
+            CurrentHJD = baseHalfJumpDuration;
+            
+            var factor = CurrentNJS / baseNJS;
+            CurrentJD = baseJumpDistance * factor;
+        }
+        else
+        {
+            // Keep jump distance the same
+            CurrentJD = baseJumpDistance;
+            
+            var factor = baseNJS / CurrentNJS;
+            CurrentHJD = baseHalfJumpDuration * factor;
+            CurrentRT = baseReactionTime * factor;
+        }
+        
         countersPlus.UpdateStatistic(CountersPlusStatistic.NJSEvents);
     }
+
+    private float currentRT;
+    public float CurrentRT {get => currentRT; private set => currentRT = value; }
+    private float currentJD;
+    public float CurrentJD {get => currentJD; private set => currentJD = value; }
+    private float currentHJD;
+    public float CurrentHJD {get => currentHJD; private set => currentHJD = value; }
+    
     
     private void UpdateDisplayHJDLine(object value) => Shader.SetGlobalInt(DisplayHJDLine, (bool)value ? 1 : 0);
 }

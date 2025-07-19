@@ -1,4 +1,5 @@
 using Beatmap.Base.Customs;
+using Beatmap.Enums;
 using LiteNetLib.Utils;
 using SimpleJSON;
 using UnityEngine;
@@ -46,10 +47,10 @@ namespace Beatmap.Base
         public int Rotation { get; set; }
 
         // Half Jump Duration (SongBpmTime)
-        public float Hjd { get; private set; }
+        public float Hjd => BeatmapObjectContainerCollection.GetCollectionForType<NJSEventGridContainer>(ObjectType.NJSEvent).CurrentHJD;
 
         // Half Jump Distance
-        public float Jd { get; private set; }
+        public float Jd => BeatmapObjectContainerCollection.GetCollectionForType<NJSEventGridContainer>(ObjectType.NJSEvent).CurrentJD;
 
         public float EditorScale { get; private set; }
 
@@ -105,10 +106,10 @@ namespace Beatmap.Base
             var offset = CustomNoteJumpStartBeatOffset?.AsFloat
                 ?? BeatSaberSongContainer.Instance?.MapDifficultyInfo?.NoteStartBeatOffset ?? 0f;
             var bpm = BeatSaberSongContainer.Instance?.Info?.BeatsPerMinute ?? 0f;
-            Hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
+            // Hjd = SpawnParameterHelper.CalculateHalfJumpDuration(njs, offset, bpm);
             // (5 / 3) * njs * (60 / bpm) = 100
             EditorScale = 100f * njs / bpm;
-            Jd = Hjd * EditorScale;
+            // Jd = Hjd * EditorScale;
         }
 
         private Vector2 DerivePositionFromData()

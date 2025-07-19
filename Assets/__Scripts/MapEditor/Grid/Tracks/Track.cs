@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Beatmap.Base;
 using Beatmap.V2;
 using Beatmap.Containers;
@@ -45,6 +45,18 @@ public class Track : MonoBehaviour
         var z = 0f;
         var v2 = Object is V2Object;
         var position = ObjectParentTransform.localPosition;
+        
+        spawnPosition = Object.Jd;
+        if (Object is BaseObstacle obs)
+        {
+            despawnPosition = -(Object.Jd * 0.5f) - (obs.DurationSongBpm * obs.EditorScale);
+            despawnTime = obs.SongBpmTime + obs.DurationSongBpm + (obs.Hjd * 0.5f);
+        }
+        else
+        {
+            despawnPosition = -Object.Jd;
+            despawnTime = Object.DespawnSongBpmTime;
+        }
 
         // Jump in
         if (time < Object.SpawnSongBpmTime)
@@ -110,17 +122,6 @@ public class Track : MonoBehaviour
         obj.AssignTrack(this);
         if (obj.ObjectData is BaseGrid g) {
             Object = g;
-            spawnPosition = Object.Jd;
-            if (Object is BaseObstacle obs)
-            {
-                despawnPosition = -(Object.Jd * 0.5f) - (obs.DurationSongBpm * obs.EditorScale);
-                despawnTime = obs.SongBpmTime + obs.DurationSongBpm + (obs.Hjd * 0.5f);
-            }
-            else
-            {
-                despawnPosition = -Object.Jd;
-                despawnTime = Object.DespawnSongBpmTime;
-            }
         }
     }
 
