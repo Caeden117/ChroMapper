@@ -7,6 +7,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.Helper;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
@@ -278,21 +279,21 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     private void HandleTrackAssign(string res)
     {
         if (res is null) return;
-        if (res == "")
-        {
-            foreach (var obj in SelectionController.SelectedObjects)
-            {
-                if (obj.CustomData == null) continue;
-                obj.CustomData.Remove("_track");
-            }
-        }
-
-        // TODO: deal with track
+        var modified = new List<BaseObject>();
+        var value = (res == "")
+            ? null
+            : res;
         foreach (var obj in SelectionController.SelectedObjects)
         {
-            obj.CustomTrack = res;
-            obj.WriteCustom();
+            var mod = BeatmapFactory.Clone(obj);
+            modified.Add(mod);
+
+            mod.CustomTrack = value;
+            mod.WriteCustom();
         }
+        BeatmapActionContainer.AddAction(
+            new BeatmapObjectModifiedCollectionAction(modified, SelectionController.SelectedObjects.ToList(), $"Assigned track to ({SelectionController.SelectedObjects.Count}) objects."),
+            true);
     }
 
     public override ObjectContainer CreateContainer() =>

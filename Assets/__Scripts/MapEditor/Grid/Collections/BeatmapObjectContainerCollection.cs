@@ -563,14 +563,14 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
                     case BaseObstacle obs when obs.SongBpmTime > upperBound || obs.SongBpmTime + obs.Duration < lowerBound:
                     case BaseSlider slider when slider.SongBpmTime > upperBound || slider.TailSongBpmTime < lowerBound:
                     case not null when obj.SongBpmTime > upperBound || obj.SongBpmTime < lowerBound:
-                    case not null when TrackFilterID != null && TrackFilterID != ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""):
+                    case not null when !obj.HasMatchingTrack(TrackFilterID):
                         RecycleContainer(obj);
                         break;
                     default: continue;
                 }
             }
         }
-        
+
         // lmao why do anything if we dont have objects to create containers for
         if (span.Length == 0) return;
 
@@ -593,7 +593,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         {
             var obj = windowSpan[i];
 
-            if (TrackFilterID == null || TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+            if (obj.HasMatchingTrack(TrackFilterID))
             {
                 CreateContainerFromPool(obj);
             }
@@ -606,8 +606,8 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         for (var i = 0; i < startIdx; i++)
         {
             var obj = span[i];
-            
-            if (TrackFilterID != null && TrackFilterID != ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+
+            if (!obj.HasMatchingTrack(TrackFilterID))
                 continue;
 
             if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound)

@@ -150,7 +150,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
             if (obj.SongBpmTime > curTime + offset) return;
 
-            if (BeatmapObjectContainerCollection.TrackFilterID == null || BeatmapObjectContainerCollection.TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+            if (obj.HasMatchingTrack(BeatmapObjectContainerCollection.TrackFilterID))
                 NotePassedThreshold?.Invoke(natural, nextNoteIndex, obj);
 
             nextNoteIndex++;

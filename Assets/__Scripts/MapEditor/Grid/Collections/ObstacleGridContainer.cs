@@ -87,7 +87,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         {
             while (spawnIndex < SpawnSortedObjects.Length && time + Track.JUMP_TIME >= SpawnSortedObjects[spawnIndex].SpawnSongBpmTime)
             {
-                if (TrackFilterID == null || TrackFilterID == ((SpawnSortedObjects[spawnIndex].CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+                if (SpawnSortedObjects[spawnIndex].HasMatchingTrack(TrackFilterID))
                     CreateContainerFromPool(SpawnSortedObjects[spawnIndex]);
                 ++spawnIndex;
             }
@@ -135,7 +135,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
         var toSpawn = SpawnSortedObjects.Where(o => (o.SpawnSongBpmTime <= time && time < o.DespawnSongBpmTime));
         foreach (var obj in toSpawn)
         {
-            if (TrackFilterID == null || TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+            if (obj.HasMatchingTrack(TrackFilterID))
                 CreateContainerFromPool(obj);
         }
     }

@@ -150,9 +150,8 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
                 true, true, true, (bocc, bo) =>
             {
                 if (!selectedTypes.Contains(bo.ObjectType)) return; // Must be a type we can select
-                
-                if (   BeatmapObjectContainerCollection.TrackFilterID != null 
-                    && BeatmapObjectContainerCollection.TrackFilterID != ((bo.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+
+                if (!bo.HasMatchingTrack(BeatmapObjectContainerCollection.TrackFilterID))
                 {
                     return;
                 }
