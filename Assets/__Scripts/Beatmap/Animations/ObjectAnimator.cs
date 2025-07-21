@@ -38,6 +38,14 @@ namespace Beatmap.Animations
         public bool AnimatedLife { get; private set; } = false;
         public bool ShouldRecycle;
 
+        public enum TargetTypes {
+            None,
+            GameplayObject,
+            Transform,
+        };
+
+        public TargetTypes TargetType;
+
         private List<TrackAnimator> tracks = new List<TrackAnimator>();
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
@@ -51,6 +59,8 @@ namespace Beatmap.Animations
         {
             AnimatedProperties = new Dictionary<string, IAnimateProperty>();
             properties = new IAnimateProperty[0];
+
+            TargetType = TargetTypes.None;
 
             OnDisable();
 
@@ -124,6 +134,8 @@ namespace Beatmap.Animations
         public void SetData(BaseGrid obj)
         {
             ResetData();
+
+            TargetType = TargetTypes.GameplayObject;
 
             enabled = (UIMode.AnimationMode && TracksManager != null);
             if (!enabled) return;
@@ -253,6 +265,8 @@ namespace Beatmap.Animations
             var v2 = eh is V2EnvironmentEnhancement;
             ResetData();
 
+            TargetType = TargetTypes.Transform;
+
             LocalTarget = AnimationThis.transform;
             //WorldTarget = container.transform;
             WorldTarget = AnimationThis.transform;
@@ -284,6 +298,8 @@ namespace Beatmap.Animations
         public void SetTrack(Track track, string name)
         {
             ResetData();
+
+            TargetType = TargetTypes.Transform;
 
             LocalTarget = track.ObjectParentTransform;
             WorldTarget = track.transform;
@@ -438,6 +454,7 @@ namespace Beatmap.Animations
             }
         }
 
+        // Only used for gameplay objects?
         private void AddPointDef(IPointDefinition.UntypedParams p, string key, BaseCustomEvent source)
         {
             switch (key)
@@ -463,11 +480,8 @@ namespace Beatmap.Animations
                 AddPointDef<Vector3>(source, (Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_definitePosition":
-                AddPointDef<Vector3>(source, (Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
-                break;
-            case "position":
             case "definitePosition":
-                AddPointDef<Vector3>(source, (Vector3 v) => WorldPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
             case "scale":

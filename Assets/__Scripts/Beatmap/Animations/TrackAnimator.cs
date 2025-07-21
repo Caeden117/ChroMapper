@@ -116,8 +116,10 @@ namespace Beatmap.Animations
             case "localRotation":
                 AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => animator.LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
-            case "_rotation":
             case "rotation":
+                AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.Transform) animator.WorldRotation.Add(v); }, PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                break;
+            case "_rotation":
             case "offsetWorldRotation":
                 AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => animator.WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
@@ -125,11 +127,13 @@ namespace Beatmap.Animations
                 AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "offsetPosition":
+                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.GameplayObject) animator.OffsetPosition.Add(v); }, PointDataParsers.ParseVector3, p, Vector3.zero);
+                break;
             case "localPosition":
-                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.Transform) animator.OffsetPosition.Add(v * 1.667f); }, PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "position":
-                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.WorldPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.Transform) animator.WorldPosition.Add(v * 1.667f); }, PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
             case "scale":

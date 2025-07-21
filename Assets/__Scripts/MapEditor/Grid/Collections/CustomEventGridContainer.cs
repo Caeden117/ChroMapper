@@ -146,6 +146,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
                 {
                     JSONArray arr => arr,
                     JSONString s => JSONObject.Parse($"[{s}]").AsArray,
+                    _ => new JSONArray(),
                 };
                 foreach (var tr in children)
                 {
