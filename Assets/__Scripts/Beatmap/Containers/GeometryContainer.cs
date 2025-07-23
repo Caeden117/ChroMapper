@@ -13,8 +13,8 @@ namespace Beatmap.Containers
 
         public override BaseObject ObjectData
         {
-            get => null;
-            set => _ = value;
+            get => EnvironmentEnhancement;
+            set => EnvironmentEnhancement = (BaseEnvironmentEnhancement)value;
         }
 
         public BaseEnvironmentEnhancement EnvironmentEnhancement;
@@ -37,10 +37,14 @@ namespace Beatmap.Containers
             }
             else
             {
-                type = (PrimitiveType)Enum.Parse(typeof(PrimitiveType), (string)eh.Geometry[eh.GeometryKeyType]);
+                if (!Enum.TryParse<PrimitiveType>((string)eh.Geometry[eh.GeometryKeyType], out type))
+                {
+                    Debug.LogError($"Invalid geometry type '{(string)eh.Geometry[eh.GeometryKeyType]}'!");
+                }
             }
             container.EnvironmentEnhancement = eh;
             container.Shape = GameObject.CreatePrimitive(type);
+            container.Shape.layer = 9;
 
             var collider = container.Shape.GetComponentInChildren<Collider>();
             if (collider != null) DestroyImmediate(collider);
@@ -54,10 +58,25 @@ namespace Beatmap.Containers
 
                 container.Shape.GetComponent<MeshFilter>().sharedMesh = triangleMesh;
             }
+            var mesh = container.Shape.GetComponent<MeshFilter>().sharedMesh;
+            container.SelectionRenderers[0].GetComponent<MeshFilter>().sharedMesh = mesh;
+            var intersection = container.Animator.AnimationThis.AddComponent<IntersectionCollider>();
+            var renderer = container.Shape.GetComponent<MeshRenderer>();
+            intersection.Mesh = mesh;
+            intersection.BoundsRenderer = renderer;
+
+            if (container.MaterialPropertyBlock == null)
+            {
+                container.MaterialPropertyBlock = new MaterialPropertyBlock();
+                container.modelRenderers.Add(renderer);
+            }
+
+            container.Colliders.Add(intersection);
             container.Shape.transform.parent = container.Animator.AnimationThis.transform;
             container.Shape.transform.localScale = 1.667f * Vector3.one;
             container.Animator.SetGeometry(eh);
             container.gameObject.SetActive(true);
+            container.UpdateCollisionGroups();
             return container;
         }
 

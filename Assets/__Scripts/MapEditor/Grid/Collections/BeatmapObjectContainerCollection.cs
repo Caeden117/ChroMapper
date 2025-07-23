@@ -149,6 +149,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             Type t when t == typeof(BaseCustomEvent) => ObjectType.CustomEvent,
             Type t when t == typeof(BaseBookmark) => ObjectType.Bookmark,
             Type t when t == typeof(BaseNJSEvent) => ObjectType.NJSEvent,
+            Type t when t == typeof(BaseEnvironmentEnhancement) => ObjectType.EnvironmentEnhancement,
             _ => throw new ArgumentException(nameof(TBaseObject))
         };
 

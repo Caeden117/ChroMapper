@@ -16,8 +16,6 @@ using UnityEngine.InputSystem;
 public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCustomEvent>, CMInput.ICustomEventsContainerActions
 {
     [SerializeField] private GameObject customEventPrefab;
-    [SerializeField] private GameObject geometryPrefab;
-    [SerializeField] private GeometryAppearanceSO geometryAppearanceSo;
     [SerializeField] private TextMeshProUGUI customEventLabelPrefab;
     [SerializeField] private Transform customEventLabelTransform;
     [SerializeField] private Transform[] customEventScalingOffsets;
@@ -29,7 +27,6 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     public ReadOnlyCollection<string> CustomEventTypes => customEventTypes.AsReadOnly();
 
     public Dictionary<string, List<BaseCustomEvent>> EventsByTrack;
-    public Dictionary<BaseEnvironmentEnhancement, GeometryContainer> LoadedGeometry = new();
 
     private void Start()
     {
@@ -52,11 +49,6 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         {
             AddCustomEvent(ev);
         }
-
-        BeatSaberSongContainer.Instance.Map.EnvironmentEnhancements.ForEach((eh) =>
-        {
-            AddEnvironmentEnhancement(eh);
-        });
     }
 
     public void OnAssignObjectstoTrack(InputAction.CallbackContext context)
@@ -173,18 +165,6 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
                 var track = tracksManager.GetAnimationTrack(ev.CustomTrack);
                 playerCamera.AddPlayerTrack(ev.JsonTime, track);
                 break;
-        }
-    }
-
-    public void AddEnvironmentEnhancement(BaseEnvironmentEnhancement eh)
-    {
-        if (eh.Geometry is JSONNode)
-        {
-            var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
-            if (container == null) return;
-            container.Setup();
-            LoadedGeometry.Add(eh, container);
-            geometryAppearanceSo.SetGeometryAppearance(container);
         }
     }
 

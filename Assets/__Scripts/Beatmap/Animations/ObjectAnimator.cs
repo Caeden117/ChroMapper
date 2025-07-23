@@ -98,7 +98,7 @@ namespace Beatmap.Animations
                 LocalTarget.localScale = Vector3.one;
             }
 
-            if (container?.ObjectData != null)
+            if (container != null && !(container is GeometryContainer))
             {
                 container.UpdateGridPosition();
                 container.MaterialPropertyBlock.SetFloat(opaqueAlpha, 1);
@@ -120,7 +120,7 @@ namespace Beatmap.Animations
                 Atsc.TimeChanged -= OnTimeChanged;
             }
 
-            if (container?.ObjectData == null)
+            if (container is GeometryContainer)
             {
                 foreach (var track in tracks)
                 {

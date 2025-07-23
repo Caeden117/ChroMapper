@@ -25,6 +25,8 @@ public class MapLoader : MonoBehaviour
 
         if (Settings.Instance.Load_Others) LoadObjects(map.CustomEvents);
 
+        if (Settings.Instance.Load_Others) LoadObjects(map.EnvironmentEnhancements);
+
         if (Settings.Instance.Load_Notes) LoadObjects(map.Notes);
 
         if (Settings.Instance.Load_Obstacles) LoadObjects(map.Obstacles);
