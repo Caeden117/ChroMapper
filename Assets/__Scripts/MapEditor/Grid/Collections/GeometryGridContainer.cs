@@ -16,8 +16,6 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
 
     public override ObjectType ContainerType => ObjectType.EnvironmentEnhancement;
 
-    public Dictionary<BaseEnvironmentEnhancement, GeometryContainer> LoadedGeometry = new();
-
     protected override void OnObjectSpawned(BaseObject obj, bool inCollection = false)
     {
         var eh = obj as BaseEnvironmentEnhancement;
@@ -37,7 +35,8 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
         var eh = obj as BaseEnvironmentEnhancement;
         if (LoadedContainers.ContainsKey(eh))
         {
-            GameObject.Destroy(LoadedContainers[eh].gameObject);
+            // Must be immediate to prevent light id conflicts
+            GameObject.DestroyImmediate(LoadedContainers[eh].gameObject);
             LoadedContainers.Remove(eh);
             ObjectsWithContainers.Remove(eh);
         }
@@ -45,14 +44,26 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
 
     public void LoadAll()
     {
+        foreach (var to_delete in LoadedContainers.Keys.ToList())
+        {
+            OnObjectDelete(to_delete);
+        }
+
         foreach (var to_spawn in MapObjects)
         {
-            OnObjectSpawned(to_spawn);
+            if (to_spawn.HasMatchingTrack(TrackFilterID))
+            {
+                OnObjectSpawned(to_spawn);
+            }
         }
     }
 
     public override void RefreshPool(bool force)
     {
+        if (force)
+        {
+            LoadAll();
+        }
     }
 
     public override void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)

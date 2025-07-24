@@ -71,6 +71,21 @@ public class LightingEvent : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if (OverrideLightGroup)
+        {
+            var descriptor = LoadInitialMap.Platform;
+
+            if (descriptor != null && OverrideLightGroupID >= 0 && OverrideLightGroupID < descriptor.LightingManagers.Length)
+            {
+                var lm = descriptor.LightingManagers[OverrideLightGroupID];
+                lm.ControllingLights.Remove(this);
+                lm.LightIDPlacementMapReverse?.Remove(LightID);
+            }
+        }
+    }
+
     private void Update()
     {
         if (float.IsNaN(multiplyAlpha)) multiplyAlpha = 0;

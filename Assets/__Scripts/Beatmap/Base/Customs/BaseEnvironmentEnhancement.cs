@@ -213,10 +213,11 @@ namespace Beatmap.Base.Customs
 
         #endregion
 
+        public override bool HasMatchingTrack(string filter) =>
+            (filter == null) || filter == Track;
+
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
-            if (other is BaseEnvironmentEnhancement eh)
-                return Equals(eh);
             return false;
         }
 
