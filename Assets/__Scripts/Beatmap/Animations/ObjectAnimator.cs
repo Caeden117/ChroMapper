@@ -47,7 +47,7 @@ namespace Beatmap.Animations
 
         public TargetTypes TargetType;
 
-        public string ColorKeyword;
+        public string ColorKeyword = "_Color";
 
         private List<TrackAnimator> tracks = new List<TrackAnimator>();
 
@@ -85,7 +85,7 @@ namespace Beatmap.Animations
             WorldPosition = new Aggregator<Vector3>(Vector3.zero, (a, b) => a + b);
             Scale = new Aggregator<Vector3>(Vector3.one, (a, b) => Vector3.Scale(a, b));
             Colors = new Aggregator<Color>(
-                container?.MaterialPropertyBlock?.GetColor((container is ObstacleContainer) ? "_ColorTint" : "_Color") ?? Color.white,
+                container?.MaterialPropertyBlock?.GetColor(ColorKeyword) ?? Color.white,
                 (a, b) => a * b);
             Opacity = new Aggregator<float>(1.0f, (a, b) => a * b);
             OpacityArrow = new Aggregator<float>(1.0f, (a, b) => a * b);
@@ -123,15 +123,11 @@ namespace Beatmap.Animations
                 Atsc.TimeChanged -= OnTimeChanged;
             }
 
-            if (container is GeometryContainer)
+            foreach (var track in tracks)
             {
-                foreach (var track in tracks)
-                {
-                    track.Children.Remove(this);
-                    track.OnChildrenChanged();
-                }
-                tracks.Clear();
+                track.RemoveChild(this);
             }
+            tracks.Clear();
         }
 
         public void AttachToObject(BaseGrid obj)
@@ -328,8 +324,7 @@ namespace Beatmap.Animations
         public void AddParent(string name)
         {
             var track = TracksManager.GetAnimationTrack(name);
-            track.Children.Add(this);
-            track.OnChildrenChanged();
+            track.AddChild(this);
             this.tracks.Add(track);
         }
 

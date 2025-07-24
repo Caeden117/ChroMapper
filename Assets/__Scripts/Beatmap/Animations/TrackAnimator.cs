@@ -92,6 +92,18 @@ namespace Beatmap.Animations
             }
         }
 
+        public void AddChild(ObjectAnimator oa)
+        {
+            Children.Add(oa);
+            OnChildrenChanged();
+        }
+
+        public void RemoveChild(ObjectAnimator oa)
+        {
+            Children.Remove(oa);
+            OnChildrenChanged();
+        }
+
         public void OnChildrenChanged()
         {
             CachedChildren = Children.Where(o => o.enabled).ToArray();
