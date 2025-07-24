@@ -141,7 +141,7 @@ namespace Beatmap.Animations
                 break;
             case "_color":
             case "color":
-                AddPointDef<Color>(source, (ObjectAnimator animator, Color v) => animator.Colors.Add(v), PointDataParsers.ParseColor, p, Color.white);
+                AddPointDef<Color>(source, (ObjectAnimator animator, Color v) => { if (animator.TargetType != ObjectAnimator.TargetTypes.Transform) animator.Colors.Add(v); }, PointDataParsers.ParseColor, p, Color.white);
                 break;
             case "_time":
             case "time":

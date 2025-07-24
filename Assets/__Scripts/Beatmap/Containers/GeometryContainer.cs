@@ -1,4 +1,5 @@
 using System;
+using Beatmap.Animations;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using UnityEngine;
@@ -18,6 +19,8 @@ namespace Beatmap.Containers
         }
 
         public BaseEnvironmentEnhancement EnvironmentEnhancement;
+
+        public ObjectAnimator MaterialAnimator;
 
         public override void UpdateGridPosition()
         {
@@ -74,7 +77,7 @@ namespace Beatmap.Containers
             container.Colliders.Add(intersection);
             container.Shape.transform.parent = container.Animator.AnimationThis.transform;
             container.Shape.transform.localScale = 1.667f * Vector3.one;
-            container.Animator.SetGeometry(eh);
+            container.Animator.AttachToGeometry(eh);
             container.gameObject.SetActive(true);
             container.UpdateCollisionGroups();
             return container;

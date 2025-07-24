@@ -42,9 +42,12 @@ namespace Beatmap.Animations
             None,
             GameplayObject,
             Transform,
+            Material,
         };
 
         public TargetTypes TargetType;
+
+        public string ColorKeyword;
 
         private List<TrackAnimator> tracks = new List<TrackAnimator>();
 
@@ -131,11 +134,14 @@ namespace Beatmap.Animations
             }
         }
 
-        public void SetData(BaseGrid obj)
+        public void AttachToObject(BaseGrid obj)
         {
             ResetData();
 
             TargetType = TargetTypes.GameplayObject;
+            ColorKeyword = (container is ObstacleContainer)
+                ? "_ColorTint"
+                : "_Color";
 
             enabled = (UIMode.AnimationMode && TracksManager != null);
             if (!enabled) return;
@@ -260,7 +266,7 @@ namespace Beatmap.Animations
             Atsc.TimeChanged += OnTimeChanged;
         }
 
-        public void SetGeometry(BaseEnvironmentEnhancement eh)
+        public void AttachToGeometry(BaseEnvironmentEnhancement eh)
         {
             var v2 = eh is V2EnvironmentEnhancement;
             ResetData();
@@ -295,7 +301,7 @@ namespace Beatmap.Animations
             OnTimeChanged();
         }
 
-        public void SetTrack(Track track, string name)
+        public void AttachToTrack(Track track, string name)
         {
             ResetData();
 
@@ -305,6 +311,18 @@ namespace Beatmap.Animations
             WorldTarget = track.transform;
 
             Atsc.TimeChanged += OnTimeChanged;
+        }
+
+        public void AttachToMaterial(GeometryContainer con, string track, string colorKeyword)
+        {
+            ResetData();
+
+            TargetType = TargetTypes.Material;
+            container = con;
+            ColorKeyword = colorKeyword;
+
+            enabled = true;
+            AddParent(track);
         }
 
         public void AddParent(string name)
@@ -370,6 +388,17 @@ namespace Beatmap.Animations
 
         public void LateUpdate()
         {
+            if (TargetType == TargetTypes.Material)
+            {
+                if (Colors.Count > 0)
+                {
+                    var color = Colors.Get();
+                    container.MaterialPropertyBlock.SetColor(ColorKeyword, color);
+                    container.UpdateMaterials();
+                }
+                return;
+            }
+
             if (LocalRotation.Count > 0)
                 LocalTarget.localRotation = LocalRotation.Get();
 
@@ -402,7 +431,7 @@ namespace Beatmap.Animations
                 {
                     var color = Colors.Get();
                     container.MaterialPropertyBlock
-                        .SetColor((container is ObstacleContainer) ? "_ColorTint" : "_Color", color);
+                        .SetColor(ColorKeyword, color);
                 }
 
                 if (container is NoteContainer nc)
