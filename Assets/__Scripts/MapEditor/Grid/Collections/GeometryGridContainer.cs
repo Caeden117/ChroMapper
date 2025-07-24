@@ -42,27 +42,22 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
         }
     }
 
-    public void LoadAll()
-    {
-        foreach (var to_delete in LoadedContainers.Keys.ToList())
-        {
-            OnObjectDelete(to_delete);
-        }
-
-        foreach (var to_spawn in MapObjects)
-        {
-            if (to_spawn.HasMatchingTrack(TrackFilterID))
-            {
-                OnObjectSpawned(to_spawn);
-            }
-        }
-    }
-
     public override void RefreshPool(bool force)
     {
         if (force)
         {
-            LoadAll();
+            foreach (var to_delete in LoadedContainers.Keys.ToList())
+            {
+                OnObjectDelete(to_delete);
+            }
+
+            foreach (var to_spawn in MapObjects)
+            {
+                if (to_spawn.HasMatchingTrack(TrackFilterID))
+                {
+                    OnObjectSpawned(to_spawn);
+                }
+            }
         }
     }
 
@@ -72,12 +67,10 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
 
     internal override void SubscribeToCallbacks()
     {
-        LoadInitialMap.LevelLoadedEvent += LoadAll;
     }
 
     internal override void UnsubscribeToCallbacks()
     {
-        LoadInitialMap.LevelLoadedEvent -= LoadAll;
     }
 
     public override ObjectContainer CreateContainer() =>
