@@ -27,8 +27,7 @@ namespace Beatmap.Containers
         private Vector3 interPoint;
         private MaterialPropertyBlock arrowMaterialPropertyBlock;
 
-        public const float
-            posOffsetFactor = 0.17333f; // Hardcoded because haven't found exact relationship between ChainScale yet
+        private readonly float posOffsetFactor = 0.5f / 0.6f * (1 - BaseChain.ChainHeadScale.y) / 2f;
 
         public override BaseObject ObjectData
         {
@@ -72,9 +71,9 @@ namespace Beatmap.Containers
                 if (!AttachedHead.Animator.AnimatedTrack)
                 {
                     AttachedHead.UpdateGridPosition();
-                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
+                    AttachedHead.DirectionTarget.localPosition -= posOffsetFactor * headDirection;
                 }
-                AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
+                AttachedHead.DirectionTarget.localScale = BaseChain.ChainHeadScale;
             }
         }
 
@@ -134,6 +133,13 @@ namespace Beatmap.Containers
                 Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
                 SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
             }
+
+            // I hate doing it this way but whatever
+            var scale = new Vector3(5 / 3f, 1 / 3f, 5 / 3f);
+            if (!Settings.Instance.AccurateNoteSize) scale *= 0.9f;
+            foreach (var node in nodes) node.transform.localScale = scale;
+            tailNode.transform.localScale = scale;
+            tailLinkIndicator.transform.localScale = scale;
 
             UpdateMaterials();
 
@@ -256,8 +262,8 @@ namespace Beatmap.Containers
                     if (!IsHeadNote((BaseNote)note)) continue;
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
-                    AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
-                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
+                    AttachedHead.DirectionTarget.localScale = BaseChain.ChainHeadScale;
+                    AttachedHead.DirectionTarget.localPosition -= posOffsetFactor * headDirection;
                     break;
                 }
             }
@@ -271,8 +277,8 @@ namespace Beatmap.Containers
                 }
                 else
                 {
-                    AttachedHead.DirectionTarget.localScale = BaseChain.ChainScale;
-                    AttachedHead.transform.localPosition -= posOffsetFactor * headDirection;
+                    AttachedHead.DirectionTarget.localScale = BaseChain.ChainHeadScale;
+                    AttachedHead.DirectionTarget.localPosition -= posOffsetFactor * headDirection;
                 }
             }
         }
