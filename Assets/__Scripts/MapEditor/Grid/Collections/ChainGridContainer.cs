@@ -65,6 +65,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.AccurateNoteSize), AppearanceChanged);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -81,6 +82,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
+        Settings.ClearSettingNotifications(nameof(Settings.AccurateNoteSize));
     }
 
     private void OnPlayToggle(bool isPlaying)
