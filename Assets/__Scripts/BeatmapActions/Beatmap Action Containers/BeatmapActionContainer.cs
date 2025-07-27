@@ -45,7 +45,7 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
             // Merge local actions
             // Networked actions shouldn't get merged since they're received in already-merged form
             var previousAction = instance.beatmapActions.LastOrDefault(x => !x.Networked);
-            if (action is IMergeableAction mergeableAction && previousAction is IMergeableAction previousMergeableAction and not null)
+            if (action is IMergeableAction mergeableAction && previousAction is IMergeableAction previousMergeableAction)
             {
                 var merged = (BeatmapAction)mergeableAction.TryMerge(previousMergeableAction);
                 if (merged is not null)

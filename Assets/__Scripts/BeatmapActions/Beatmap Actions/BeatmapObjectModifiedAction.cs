@@ -12,6 +12,8 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     private BaseObject originalData;
     private BaseObject originalObject;
 
+    private BaseObject preMergeOriginalData;
+    
     public ActionMergeType MergeType { get; set; }
     public int MergeCount { get; set; }
 
@@ -48,6 +50,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
 
         merged.MergeCount = previousAction.MergeCount + 1;
         merged.Comment += $" ({merged.MergeCount}x merged)";
+        merged.preMergeOriginalData = originalData;
 
         return merged;
     }
@@ -81,7 +84,25 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     {
         if (originalObject != editedObject || editedData.CompareTo(originalData) != 0)
         {
-            DeleteObject(originalObject, false);
+            if (Networked && MergeCount > 0)
+            {
+                /*
+                 * Since actions over the network come merged, we use the pre-merge data to correctly remove object
+                 * e.g.
+                 * PC 1 edits object A to B
+                 * PC 2 receives edit Action A to B
+                 * PC 1 edits objects B to C -> Merges into A to C
+                 * PC 2 receives edit Action A to C (with preMerge original data B)
+                 */
+                DeleteObject(preMergeOriginalData, false);
+                
+                // We've now handled the intermediate data, now treat it as a non-merged action so undos and redos work 
+                MergeCount = 0;
+            }
+            else
+            {
+                DeleteObject(originalObject, false);
+            }
 
             editedObject.Apply(editedData);
             SpawnObject(editedObject, false, !inCollection);
@@ -104,6 +125,12 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     {
         writer.PutBeatmapObject(editedData);
         writer.PutBeatmapObject(originalData);
+        
+        writer.Put(MergeCount);
+        if (MergeCount > 0)
+        {
+            writer.PutBeatmapObject(preMergeOriginalData);
+        }
     }
 
     public override void Deserialize(NetDataReader reader)
@@ -112,6 +139,12 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
         editedObject = BeatmapFactory.Clone(editedData);
         originalData = reader.GetBeatmapObject();
         originalObject = BeatmapFactory.Clone(originalData);
+        
+        MergeCount = reader.GetInt();
+        if (MergeCount > 0)
+        {
+            preMergeOriginalData = reader.GetBeatmapObject();
+        }
 
         Data = new[] { editedObject, originalObject };
     }
