@@ -2039,8 +2039,8 @@ MonoBehaviour:
   DespawnCallbackController: {fileID: 1288723589}
   GridTransform: {fileID: 764249666}
   PoolTransform: {fileID: 1996577492}
-  UseChunkLoadingWhenPlaying: 0
-  ChunksLoadedWhilePlaying: 2
+  UseChunkLoadingWhenPlaying: 1
+  ChunksLoadedWhilePlaying: 3
   IgnoreTrackFilter: 0
   njsEventPrefab: {fileID: 1119461675923126, guid: c79fb2762ceb3c140afa8096b5f9b3b7,
     type: 3}
