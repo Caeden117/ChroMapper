@@ -519,4 +519,14 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 (evtContainer as EventContainer).RefreshAppearance();
         }
     }
+
+    public void UpdateColor(Color red, Color redBoost, Color blue, Color blueBoost, Color white, Color whiteBoost)
+    {
+        eventAppearanceSo.RedColor = red;
+        eventAppearanceSo.RedBoostColor = redBoost;
+        eventAppearanceSo.BlueColor = blue;
+        eventAppearanceSo.BlueBoostColor = blueBoost;
+        eventAppearanceSo.WhiteColor = white;
+        eventAppearanceSo.WhiteBoostColor = whiteBoost;
+    }
 }

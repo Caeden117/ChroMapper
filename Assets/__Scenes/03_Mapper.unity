@@ -40176,6 +40176,7 @@ MonoBehaviour:
   obstacleGridContainer: {fileID: 25550678}
   arcGridContainer: {fileID: 25550680}
   chainGridContainer: {fileID: 25550681}
+  eventGridContainer: {fileID: 25550674}
   loader: {fileID: 1117169519}
   platformPrefabs:
   - {fileID: 3009465475994126661, guid: 363064460cb46a547afb83aceb44c1ab, type: 3}

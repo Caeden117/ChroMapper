@@ -35,12 +35,14 @@ public class CustomColorsUIController : MonoBehaviour
     private void Start()
     {
         LoadInitialMap.PlatformLoadedEvent += LoadedPlatform;
+        LoadInitialMap.PlatformColorsRefreshedEvent += PlatformColorsChanged;
         SubscribeCustomColorButtons();
     }
 
     private void OnDestroy()
     {
         LoadInitialMap.PlatformLoadedEvent -= LoadedPlatform;
+        LoadInitialMap.PlatformColorsRefreshedEvent -= PlatformColorsChanged;
         UnsubscribeCustomColorButtons();
     }
 
@@ -85,6 +87,19 @@ public class CustomColorsUIController : MonoBehaviour
             BoostRight = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostRight ?? platform.DefaultColors.BlueBoostColor,
             BoostWhite = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostWhite ?? platform.DefaultColors.WhiteBoostColor
         };
+    }
+
+    private void PlatformColorsChanged(PlatformColors colors)
+    {
+        redLight.image.color = platform.Colors.RedColor;
+        blueLight.image.color = platform.Colors.BlueColor;
+        whiteLight.image.color = platform.Colors.WhiteColor;
+        redBoost.image.color = platform.Colors.RedBoostColor;
+        blueBoost.image.color = platform.Colors.BlueBoostColor;
+        whiteBoost.image.color = platform.Colors.WhiteBoostColor;
+        obstacle.image.color = obstacleAppearance.DefaultObstacleColor;
+        
+        CustomColorsUpdatedEvent?.Invoke();
     }
 
     private void LoadedPlatform(PlatformDescriptor obj)
