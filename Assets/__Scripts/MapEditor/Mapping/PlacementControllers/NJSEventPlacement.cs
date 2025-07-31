@@ -103,25 +103,26 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
         // Not using an enum because Enum.GetNames has unexpected order for negatives
         "None", // -1
         "Linear", // 0
-        "InQuad", // 1
-        "OutQuad", // etc.
-        "InOutQuad",
-        "InSine",
-        "OutSine",
-        "InOutSine",
-        "InCubic",
-        "OutCubic",
-        "InOutCubic",
-        "InQuart",
-        "OutQuart",
-        "InOutQuart",
-        "InQuint",
-        "OutQuint",
-        "InOutQuint",
-        "InExpo",
-        "OutExpo",
-        "InOutExpo",
-        "InCirc",
+        "InQuad",
+        "OutQuad",
+        "InOutQuad", // 3
+        // This easings don't actually work in game and function as "None"
+        // "InSine",
+        // "OutSine",
+        // "InOutSine",
+        // "InCubic",
+        // "OutCubic",
+        // "InOutCubic",
+        // "InQuart",
+        // "OutQuart",
+        // "InOutQuart",
+        // "InQuint",
+        // "OutQuint",
+        // "InOutQuint",
+        // "InExpo",
+        // "OutExpo",
+        // "InOutExpo",
+        "InCirc", // 19
         "OutCirc",
         "InOutCirc",
         "InBack",
@@ -140,13 +141,13 @@ public class NJSEventPlacement : PlacementController<BaseNJSEvent, NJSEventConta
     
     private static int MapTMPDropdownValueToEasing(int dropdownEasing)
     {
-        if (dropdownEasing >= 32)
+        var mapFormatValue = dropdownEasing switch
         {
-            return dropdownEasing + (100 - 32);
-        }
-        else
-        {
-            return dropdownEasing - 1;
-        }
+            >= 17 => dropdownEasing + (100 - 17),
+            >= 5 => dropdownEasing + (19 - 5),
+            _ => dropdownEasing - 1
+        };
+        
+        return mapFormatValue;
     }
 }
