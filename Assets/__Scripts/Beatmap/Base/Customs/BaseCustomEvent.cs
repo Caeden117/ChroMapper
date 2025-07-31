@@ -74,68 +74,68 @@ namespace Beatmap.Base.Customs
         public string KeyTime => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.KeyTime,
-            3 => V3CustomEvent.KeyTime
+            3 or 4 => V3CustomEvent.KeyTime
         };
 
         public string KeyType => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.KeyType,
-            3 => V3CustomEvent.KeyType
+            3 or 4 => V3CustomEvent.KeyType
         };
 
         public string KeyData => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.KeyData,
-            3 => V3CustomEvent.KeyData
+            3 or 4 => V3CustomEvent.KeyData
         };
 
         public string DataKeyDuration => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.DataKeyDuration,
-            3 => V3CustomEvent.DataKeyDuration
+            3 or 4 => V3CustomEvent.DataKeyDuration
         };
 
         public string DataKeyEasing => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.DataKeyEasing,
-            3 => V3CustomEvent.DataKeyEasing
+            3 or 4 => V3CustomEvent.DataKeyEasing
         };
 
         public string DataKeyRepeat => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.DataKeyRepeat,
-            3 => V3CustomEvent.DataKeyRepeat
+            3 or 4 => V3CustomEvent.DataKeyRepeat
         };
 
         public string DataKeyChildrenTracks  => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.DataKeyChildrenTracks,
-            3 => V3CustomEvent.DataKeyChildrenTracks
+            3 or 4 => V3CustomEvent.DataKeyChildrenTracks
         };
 
         public string DataKeyParentTrack  => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.DataKeyParentTrack,
-            3 => V3CustomEvent.DataKeyParentTrack
+            3 or 4 => V3CustomEvent.DataKeyParentTrack
         };
 
         public string DataKeyWorldPositionStays  => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.DataKeyWorldPositionStays,
-            3 => V3CustomEvent.DataKeyWorldPositionStays
+            3 or 4 => V3CustomEvent.DataKeyWorldPositionStays
         };
 
 
         public override string CustomKeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.CustomKeyColor,
-            3 => V3CustomEvent.CustomKeyColor
+            3 or 4 => V3CustomEvent.CustomKeyColor
         };
 
         public override string CustomKeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.CustomKeyTrack,
-            3 => V3CustomEvent.CustomKeyTrack
+            3 or 4 => V3CustomEvent.CustomKeyTrack
         };
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
