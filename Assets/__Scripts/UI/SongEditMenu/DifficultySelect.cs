@@ -302,8 +302,6 @@ public class DifficultySelect : MonoBehaviour
         }
         catch (Exception) { }
 
-        ;
-
         return null;
     }
 
@@ -546,9 +544,9 @@ public class DifficultySelect : MonoBehaviour
         }
         else if (val && !diffs.ContainsKey(row.Name)) // Create if does not exist
         {
-            var map = new InfoDifficulty(currentDifficultySet) { Difficulty = row.Name };
+            var newMapInfo = new InfoDifficulty(currentDifficultySet) { Difficulty = row.Name };
 
-            map.InitDefaultFileNames(MapInfo.MajorVersion);
+            newMapInfo.InitDefaultFileNames(MapInfo.MajorVersion);
 
             if (copySource != null)
             {
@@ -558,45 +556,57 @@ public class DifficultySelect : MonoBehaviour
 
                 if (fromDiff != null)
                 {
-                    map.NoteJumpSpeed = fromDiff.InfoDifficulty.NoteJumpSpeed;
-                    map.NoteStartBeatOffset = fromDiff.InfoDifficulty.NoteStartBeatOffset;
+                    newMapInfo.NoteJumpSpeed = fromDiff.InfoDifficulty.NoteJumpSpeed;
+                    newMapInfo.NoteStartBeatOffset = fromDiff.InfoDifficulty.NoteStartBeatOffset;
 
-                    map.Mappers = fromDiff.InfoDifficulty.Mappers.ToList();
-                    map.Lighters = fromDiff.InfoDifficulty.Lighters.ToList();
+                    newMapInfo.Mappers = fromDiff.InfoDifficulty.Mappers.ToList();
+                    newMapInfo.Lighters = fromDiff.InfoDifficulty.Lighters.ToList();
                     
-                    map.ColorSchemeIndex = fromDiff.InfoDifficulty.ColorSchemeIndex;
-                    map.EnvironmentNameIndex = fromDiff.InfoDifficulty.EnvironmentNameIndex;
+                    newMapInfo.ColorSchemeIndex = fromDiff.InfoDifficulty.ColorSchemeIndex;
+                    newMapInfo.EnvironmentNameIndex = fromDiff.InfoDifficulty.EnvironmentNameIndex;
 
-                    map.LightshowFileName = fromDiff.InfoDifficulty.LightshowFileName;
+                    newMapInfo.LightshowFileName = fromDiff.InfoDifficulty.LightshowFileName;
 
-                    map.CustomData = fromDiff.InfoDifficulty.CustomData?.Clone().AsObject;
+                    newMapInfo.CustomData = fromDiff.InfoDifficulty.CustomData?.Clone().AsObject;
 
-                    map.CustomLabel = fromDiff.InfoDifficulty.CustomLabel;
-                    map.CustomOneSaberFlag = fromDiff.InfoDifficulty.CustomOneSaberFlag;
-                    map.CustomShowRotationNoteSpawnLinesFlag = fromDiff.InfoDifficulty.CustomShowRotationNoteSpawnLinesFlag;
+                    newMapInfo.CustomLabel = fromDiff.InfoDifficulty.CustomLabel;
+                    newMapInfo.CustomOneSaberFlag = fromDiff.InfoDifficulty.CustomOneSaberFlag;
+                    newMapInfo.CustomShowRotationNoteSpawnLinesFlag = fromDiff.InfoDifficulty.CustomShowRotationNoteSpawnLinesFlag;
 
-                    map.CustomInformation = fromDiff.InfoDifficulty.CustomInformation.ToList();
-                    map.CustomWarnings = fromDiff.InfoDifficulty.CustomWarnings.ToList();
-                    map.CustomSuggestions = fromDiff.InfoDifficulty.CustomSuggestions.ToList();
-                    map.CustomRequirements = fromDiff.InfoDifficulty.CustomRequirements.ToList();
+                    newMapInfo.CustomInformation = fromDiff.InfoDifficulty.CustomInformation.ToList();
+                    newMapInfo.CustomWarnings = fromDiff.InfoDifficulty.CustomWarnings.ToList();
+                    newMapInfo.CustomSuggestions = fromDiff.InfoDifficulty.CustomSuggestions.ToList();
+                    newMapInfo.CustomRequirements = fromDiff.InfoDifficulty.CustomRequirements.ToList();
 
                     // Yes this copies custom data, but color overrides dont copy since they're ripped from these fields instead.
-                    map.CustomColorLeft = fromDiff.InfoDifficulty.CustomColorLeft;
-                    map.CustomColorRight = fromDiff.InfoDifficulty.CustomColorRight;
-                    map.CustomEnvColorLeft = fromDiff.InfoDifficulty.CustomEnvColorLeft;
-                    map.CustomEnvColorRight = fromDiff.InfoDifficulty.CustomEnvColorRight;
-                    map.CustomEnvColorWhite = fromDiff.InfoDifficulty.CustomEnvColorWhite;
-                    map.CustomColorObstacle = fromDiff.InfoDifficulty.CustomColorObstacle;
-                    map.CustomEnvColorBoostLeft = fromDiff.InfoDifficulty.CustomEnvColorBoostLeft;
-                    map.CustomEnvColorBoostRight = fromDiff.InfoDifficulty.CustomEnvColorBoostRight;
-                    map.CustomEnvColorBoostWhite = fromDiff.InfoDifficulty.CustomEnvColorBoostWhite;
+                    newMapInfo.CustomColorLeft = fromDiff.InfoDifficulty.CustomColorLeft;
+                    newMapInfo.CustomColorRight = fromDiff.InfoDifficulty.CustomColorRight;
+                    newMapInfo.CustomEnvColorLeft = fromDiff.InfoDifficulty.CustomEnvColorLeft;
+                    newMapInfo.CustomEnvColorRight = fromDiff.InfoDifficulty.CustomEnvColorRight;
+                    newMapInfo.CustomEnvColorWhite = fromDiff.InfoDifficulty.CustomEnvColorWhite;
+                    newMapInfo.CustomColorObstacle = fromDiff.InfoDifficulty.CustomColorObstacle;
+                    newMapInfo.CustomEnvColorBoostLeft = fromDiff.InfoDifficulty.CustomEnvColorBoostLeft;
+                    newMapInfo.CustomEnvColorBoostRight = fromDiff.InfoDifficulty.CustomEnvColorBoostRight;
+                    newMapInfo.CustomEnvColorBoostWhite = fromDiff.InfoDifficulty.CustomEnvColorBoostWhite;
 
                     // This sets the current filename as the filename for another diff and will trigger the copy on save
-                    map.BeatmapFileName = fromDiff.InfoDifficulty.BeatmapFileName;
+                    newMapInfo.BeatmapFileName = fromDiff.InfoDifficulty.BeatmapFileName;
+
+                    // v4 bookmarks are stored separated from the beatmap file so don't forget to also copy them
+                    if (fromDiff.Map.MajorVersion == 4)
+                    {
+                        var fromDiffBookmarkLocation = Path.Combine(MapInfo.Directory, "Bookmarks", fromDiff.InfoDifficulty.BookmarkFileName);
+                        var destinationBookmarkLocation = Path.Combine(MapInfo.Directory, "Bookmarks", newMapInfo.BookmarkFileName);
+
+                        if (File.Exists(fromDiffBookmarkLocation))
+                        {
+                            File.Copy(fromDiffBookmarkLocation, destinationBookmarkLocation, true);
+                        }
+                    }
                 }
             }
 
-            diffs[row.Name] = new DifficultySettings(map, true);
+            diffs[row.Name] = new DifficultySettings(newMapInfo, true);
 
             if (!string.IsNullOrEmpty(diffs[row.Name].CustomName)) diffs[row.Name].CustomName += " (Copy)";
 
@@ -629,8 +639,11 @@ public class DifficultySelect : MonoBehaviour
 
         var diff = diffs[row.Name].InfoDifficulty;
 
-        var fileToDelete = Path.Combine(MapInfo.Directory, diff.BeatmapFileName);// BeatSaberSong.GetMapFromDifficultyBeatmap(diff)?.DirectoryAndFile;
+        var fileToDelete = Path.Combine(MapInfo.Directory, diff.BeatmapFileName);
         if (File.Exists(fileToDelete)) FileOperationAPIWrapper.MoveToRecycleBin(fileToDelete);
+        
+        var bookmarkFileToDelete = Path.Combine(MapInfo.Directory, "Bookmarks", diff.BookmarkFileName);
+        if (File.Exists(bookmarkFileToDelete)) FileOperationAPIWrapper.MoveToRecycleBin(bookmarkFileToDelete);
 
         // Remove status effects if present
         if (copySource != null && row == copySource.Obj &&
