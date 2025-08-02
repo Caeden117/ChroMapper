@@ -336,7 +336,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
 
                 if (map.Notes.Any(obj => obj.Rotation != 0)
                     || map.Obstacles.Any(obj => obj.Rotation != 0)
-                    || map.Events.Any(obj => obj.Rotation != 0)
                     || map.Arcs.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0)
                     || map.Chains.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0))
                 {
@@ -352,7 +351,6 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
             case 3:
                 if (map.Notes.Any(obj => obj.Rotation != 0)
                     || map.Obstacles.Any(obj => obj.Rotation != 0)
-                    || map.Events.Any(obj => obj.Rotation != 0)
                     || map.Arcs.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0)
                     || map.Chains.Any(obj => obj.Rotation != 0 || obj.TailRotation != 0))
                 {
