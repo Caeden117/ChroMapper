@@ -42,6 +42,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     private bool diagonal;
     private bool flagDirectionsUpdate;
+    private bool updateAttachedSliderDirection;
 
     private static readonly int alwaysTranslucent = Shader.PropertyToID("_AlwaysTranslucent");
 
@@ -171,6 +172,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             ToggleDiagonalAngleOffset(DraggedObjectContainer.NoteData, value);
             DraggedObjectContainer.NoteData.CutDirection = value;
             noteAppearanceSo.SetNoteAppearance(DraggedObjectContainer);
+            updateAttachedSliderDirection = true;
         }
         // TODO: This IsActive is a workaround to prevent ghost notes. This happens because bomb placement could be
         //       dragging a note and quick editing results in issues
@@ -184,13 +186,13 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
                 noteData.CutDirection = value;
 
                 var actions = new List<BeatmapAction>{
-                    new BeatmapObjectModifiedAction(noteData, noteData, originalData, "Quick edit", true)
+                    new BeatmapObjectModifiedAction(noteData, noteData, originalData, "Quick edit", true, mergeType: ActionMergeType.NoteDirectionChange)
                 };
                 CommonNotePlacement.UpdateAttachedSlidersDirection(noteData, actions);
 
                 if (actions.Count > 1)
                 {
-                    BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, false, "Quick edit"), true);
+                    BeatmapActionContainer.AddAction(new ActionCollectionAction(actions, true, false, "Quick edit", mergeType: ActionMergeType.NoteDirectionChange), true);
                     SelectionController.SelectionChangedEvent?.Invoke();
                 }
                 else
@@ -235,7 +237,7 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
     public override void TransferQueuedToDraggedObject(ref BaseNote dragged, BaseNote queued)
     {
-        dragged.SetTimes(queued.JsonTime, queued.SongBpmTime);
+        dragged.JsonTime = queued.JsonTime;
         dragged.PosX = queued.PosX;
         dragged.PosY = queued.PosY;
         dragged.CutDirection = queued.CutDirection;
@@ -255,21 +257,21 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
         var epsilon = BeatmapObjectContainerCollection.Epsilon;
         foreach (var baseSlider in DraggedAttachedSliderDatas[IndicatorType.Head])
         {
-            baseSlider.SetTimes(queued.JsonTime, queued.SongBpmTime);
+            baseSlider.JsonTime = queued.JsonTime;
             baseSlider.PosX = queued.PosX;
             baseSlider.PosY = queued.PosY;
-            baseSlider.CutDirection = queued.CutDirection;
+            if (updateAttachedSliderDirection) baseSlider.CutDirection = queued.CutDirection;
             baseSlider.CustomCoordinate = queued.CustomCoordinate;
         }
 
         foreach (var baseSlider in DraggedAttachedSliderDatas[IndicatorType.Tail])
         {
-            baseSlider.SetTailTimes(queued.JsonTime, queued.SongBpmTime);
+            baseSlider.TailJsonTime = queued.JsonTime;
             baseSlider.TailPosX = queued.PosX;
             baseSlider.TailPosY = queued.PosY;
             baseSlider.CustomTailCoordinate = queued.CustomCoordinate;
 
-            if (baseSlider is BaseArc baseArc)
+            if (baseSlider is BaseArc baseArc && updateAttachedSliderDirection)
             {
                 baseArc.TailCutDirection = queued.CutDirection;
             }
@@ -280,6 +282,8 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
             if (baseSliderContainer is ArcContainer arcContainer) arcContainer.NotifySplineChanged();
             if (baseSliderContainer is ChainContainer chainContainer) chainContainer.GenerateChain();
         }
+
+        updateAttachedSliderDirection = false;
     }
 
     internal override void RefreshVisuals()

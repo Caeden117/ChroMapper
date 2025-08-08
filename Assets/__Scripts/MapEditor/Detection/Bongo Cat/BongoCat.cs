@@ -80,7 +80,7 @@ public class BongoCat : MonoBehaviour
         if (next is not null)
         {
             // clamp to accommodate sliders and long gaps between notes
-            var half = (next.SongBpmTime - note.SongBpmTime) * 60f / BeatSaberSongContainer.Instance.Song.BeatsPerMinute / 2f;
+            var half = (next.SongBpmTime - note.SongBpmTime) * 60f / BeatSaberSongContainer.Instance.Info.BeatsPerMinute / 2f;
             timer = Mathf.Clamp(half, 0.05f, 0.2f);
         }
 

@@ -8,7 +8,7 @@ Shader "Basic Gradient"
     }
         SubShader
     {
-        Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
+        Tags { "Queue" = "Transparent-80" "RenderType" = "Transparent" }
         LOD 100
         ZWrite Off
         Cull Off

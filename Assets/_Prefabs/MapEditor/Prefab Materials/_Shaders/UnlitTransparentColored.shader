@@ -5,7 +5,9 @@ Shader "Unlit/Transparent Colored" {
     }
 
     SubShader {
-        Tags {"Queue"="Transparent-2" "IgnoreProjector"="True" "RenderType"="Transparent"}
+        // Render the transparent track underneath everything
+        // Followed by outline then by other grid shaders like Grid Z and Grid Vertical
+        Tags {"Queue"="Transparent-101" "IgnoreProjector"="True" "RenderType"="Transparent"}
         
         ZWrite Off
         Lighting Off

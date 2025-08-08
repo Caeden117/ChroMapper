@@ -33,12 +33,12 @@ namespace Beatmap.Base
 
         public BaseChain(BaseChain other)
         {
-            SetTimes(other.JsonTime, other.SongBpmTime);
+            JsonTime = other.JsonTime;
             Color = other.Color;
             PosX = other.PosX;
             PosY = other.PosY;
             CutDirection = other.CutDirection;
-            SetTailTimes(other.TailJsonTime, other.TailSongBpmTime);
+            TailJsonTime = other.TailJsonTime;
             TailPosX = other.TailPosX;
             TailPosY = other.TailPosY;
             SliceCount = other.SliceCount;
@@ -48,12 +48,12 @@ namespace Beatmap.Base
 
         public BaseChain(BaseNote start, BaseNote end)
         {
-            SetTimes(start.JsonTime, start.SongBpmTime);
+            JsonTime = start.JsonTime;
             Color = start.Color;
             PosX = start.PosX;
             PosY = start.PosY;
             CutDirection = start.CutDirection;
-            SetTailTimes(end.JsonTime, end.SongBpmTime);
+            TailJsonTime = end.JsonTime;
             TailPosX = end.PosX;
             TailPosY = end.PosY;
             SliceCount = 5;
@@ -152,7 +152,7 @@ namespace Beatmap.Base
 
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
-            3 => V3Chain.ToJson(this)
+            3 or 4 => V3Chain.ToJson(this)
         };
 
         public override BaseItem Clone()

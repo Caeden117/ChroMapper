@@ -26,7 +26,7 @@ namespace Beatmap.Base
 
         public BaseBpmEvent(BaseBpmEvent other)
         {
-            SetTimes(other.JsonTime, other.SongBpmTime);
+            JsonTime = other.JsonTime;
             Bpm = other.Bpm;
             CustomData = other.CustomData.Clone();
         }
@@ -67,10 +67,23 @@ namespace Beatmap.Base
             if (originalData is BaseBpmEvent bpm) Bpm = bpm.Bpm;
         }
 
+        public override int CompareTo(BaseObject other)
+        {
+            var comparison = base.CompareTo(other);
+
+            // Early return if we're comparing against a different object type
+            if (other is not BaseBpmEvent bpmEvent) return comparison;
+
+            // Compare by BPM
+            if (comparison == 0) comparison = Bpm.CompareTo(bpmEvent.Bpm);
+
+            return comparison;
+        }
+
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2BpmEvent.ToJson(this),
-            3 => V3BpmEvent.ToJson(this)
+            3 or 4 => V3BpmEvent.ToJson(this)
         };
 
         public override BaseItem Clone() {

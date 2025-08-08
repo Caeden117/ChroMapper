@@ -113,6 +113,11 @@ namespace TestsEditMode
                 ]
             }
         ]
+    },
+    ""_customData"": 
+    {
+        ""_foo"": ""_bar"",
+        ""_time"": 123.456
     }
 }";
 
@@ -161,6 +166,20 @@ namespace TestsEditMode
             reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
 
             AssertDifficulty(reparsed); // This should have the same stuff
+        }
+        
+        [Test]
+        public void RootCustomDataPropertiesPersist()
+        {
+            var difficulty = V2Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
+            Assert.AreEqual("_bar", difficulty.CustomData["_foo"].Value);
+            
+            Assert.IsFalse(difficulty.CustomData.HasKey("_time"));
+            Assert.AreEqual(123.456f, difficulty.Time, 0.001);
+
+            var output = V2Difficulty.GetOutputJson(difficulty);
+            Assert.AreEqual("_bar", output["_customData"]["_foo"].Value);
+            Assert.AreEqual(123.456f, output["_customData"]["_time"].AsFloat, 0.001);
         }
 
         private static void AssertDifficulty(BaseDifficulty difficulty)

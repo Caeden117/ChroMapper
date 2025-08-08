@@ -7,6 +7,7 @@ using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.V3.Customs;
+using Beatmap.V4;
 using SimpleJSON;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Beatmap.V3
 {
     public class V3Difficulty
     {
-        private const string version = "3.3.0";
+        public const string Version = "3.3.0";
 
         public static JSONNode GetOutputJson(BaseDifficulty difficulty)
         {
@@ -23,13 +24,13 @@ namespace Beatmap.V3
                 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
                 Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-                var json = new JSONObject { ["version"] = version };
+                var json = new JSONObject { ["version"] = Version };
 
                 var bpmEvents = new JSONArray();
                 if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
                 {                    
                     var insertedBpm = (BeatSaberSongContainer.Instance != null)
-                        ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        ? BeatSaberSongContainer.Instance.Info.BeatsPerMinute
                         : 100; // This path only appears in tests
                     difficulty.BpmEvents.Insert(0, new BaseBpmEvent
                     {
@@ -117,9 +118,19 @@ namespace Beatmap.V3
                 foreach (var e in difficulty.LightTranslationEventBoxGroups) lightTranslationEventBoxGroups.Add(e.ToJson());
                 json["lightTranslationEventBoxGroups"] = lightTranslationEventBoxGroups;
 
+                var floatFxEvents = difficulty.VfxEventBoxGroups
+                    .SelectMany(group => group.Events)
+                    .SelectMany(box => box.FloatFxEvents)
+                    .ToList();
+                var floatFxEventsCommonData = floatFxEvents
+                    .Select(V4CommonData.FloatFxEvent.FromFloatFxEventBase)
+                    .ToList();
+                
                 var vfxEventBoxGroups = new JSONArray();
-                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(e.ToJson());
+                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.ToJson(e, floatFxEventsCommonData));
                 json["vfxEventBoxGroups"] = vfxEventBoxGroups;
+                
+                difficulty.FxEventsCollection.FloatFxEvents = floatFxEvents.ToArray();
                 
                 json["_fxEventsCollection"] = difficulty.FxEventsCollection?.ToJson() ?? new BaseFxEventsCollection().ToJson();
                 json["basicEventTypesWithKeywords"] = difficulty.EventTypesWithKeywords?.ToJson() ?? new BaseEventTypesWithKeywords().ToJson();
@@ -148,7 +159,7 @@ namespace Beatmap.V3
 
         private static JSONNode GetOutputCustomJsonData(BaseDifficulty difficulty)
         {
-            var customData = new JSONObject();
+            var customData = difficulty.CustomData?.Clone() ?? new JSONObject();
 
             if (difficulty.Bookmarks.Any())
             {
@@ -218,7 +229,7 @@ namespace Beatmap.V3
             foreach (var c in difficulty.Chains.Where(c => c.CustomFake)) fakeBurstSliders.Add(c.ToJson());
             customData["fakeBurstSliders"] = fakeBurstSliders;
             
-            BeatSaberSong.CleanObject(customData);
+            SimpleJSONHelper.CleanObject(customData);
 
             return customData;
         }
@@ -227,9 +238,23 @@ namespace Beatmap.V3
         {
             try
             {
-                var map = new BaseDifficulty { DirectoryAndFile = path, Version = version };
+                var map = new BaseDifficulty { DirectoryAndFile = path, Version = Version };
 
                 var nodeEnum = mainNode.GetEnumerator();
+                while (nodeEnum.MoveNext())
+                {
+                    var key = nodeEnum.Current.Key;
+                    var node = nodeEnum.Current.Value;
+
+                    // Load this first so vfx can reference this
+                    if (key == "_fxEventsCollection")
+                    {
+                        map.FxEventsCollection = V3FxEventsCollection.GetFromJson(node);
+                        break;
+                    }
+                }
+
+                nodeEnum = mainNode.GetEnumerator();
                 while (nodeEnum.MoveNext())
                 {
                     var key = nodeEnum.Current.Key;
@@ -285,10 +310,7 @@ namespace Beatmap.V3
                             break;
                         case "vfxEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n));
-                            break;
-                        case "_fxEventsCollection":
-                            map.FxEventsCollection = V3FxEventsCollection.GetFromJson(node);
+                                map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n, map.FxEventsCollection.FloatFxEvents));
                             break;
                         case "basicEventTypesWithKeywords":
                             map.EventTypesWithKeywords = V3BasicEventTypesWithKeywords.GetFromJson(node);
@@ -333,7 +355,7 @@ namespace Beatmap.V3
             var envEnhancementsList = new List<BaseEnvironmentEnhancement>();
             var materials = new Dictionary<string, BaseMaterial>();
 
-            var nodeEnum = mainNode["customData"].GetEnumerator();
+            var nodeEnum = mainNode["customData"].Clone().GetEnumerator();
             while (nodeEnum.MoveNext())
             {
                 var key = nodeEnum.Current.Key;
@@ -343,24 +365,31 @@ namespace Beatmap.V3
                 {
                     case "BPMChanges":
                         foreach (JSONNode n in node) bpmList.Add(V3BpmChange.GetFromJson(n));
+                        map.CustomData.Remove(key);
                         break;
                     case "bookmarks":
                         foreach (JSONNode n in node) bookmarksList.Add(V3Bookmark.GetFromJson(n));
+                        map.CustomData.Remove(key);
                         break;
                     case "customEvents":
                         foreach (JSONNode n in node) customEventsList.Add(V3CustomEvent.GetFromJson(n));
+                        map.CustomData.Remove(key);
                         break;
                     case "fakeColorNotes":
                         foreach (JSONNode n in node) map.Notes.Add(V3ColorNote.GetFromJson(n, true));
+                        map.CustomData.Remove(key);
                         break;
                     case "fakeBombNotes":
                         foreach (JSONNode n in node) map.Notes.Add(V3BombNote.GetFromJson(n, true));
+                        map.CustomData.Remove(key);
                         break;
                     case "fakeObstacles":
                         foreach (JSONNode n in node) map.Obstacles.Add(V3Obstacle.GetFromJson(n, true));
+                        map.CustomData.Remove(key);
                         break;
                     case "fakeBurstSliders":
                         foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n, true));
+                        map.CustomData.Remove(key);
                         break;
                     case "pointDefinitions":
                         // TODO: array is incorrect, but some old v3 NE/Chroma map uses them, temporarily this needs to be here
@@ -393,9 +422,11 @@ namespace Beatmap.V3
                         }
 
                         Debug.LogWarning("Could not read point definitions");
+                        map.CustomData.Remove(key);
                         break;
                     case "environment":
                         foreach (JSONNode n in node) envEnhancementsList.Add(V3EnvironmentEnhancement.GetFromJson(n));
+                        map.CustomData.Remove(key);
                         break;
                     case "materials":
                         if (node is JSONObject matObj)
@@ -409,9 +440,11 @@ namespace Beatmap.V3
                         }
 
                         Debug.LogWarning("Could not read materials");
+                        map.CustomData.Remove(key);
                         break;
                     case "time":
                         map.Time = node.AsFloat;
+                        map.CustomData.Remove(key);
                         break;
                 }
             }

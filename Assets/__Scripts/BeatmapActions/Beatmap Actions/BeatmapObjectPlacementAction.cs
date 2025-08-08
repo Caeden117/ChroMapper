@@ -6,6 +6,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
 {
     private IEnumerable<BaseObject> removedConflictObjects;
 
+    // This constructor is needed for United Mapping
     public BeatmapObjectPlacementAction() : base() { }
 
     public BeatmapObjectPlacementAction(IEnumerable<BaseObject> placedContainers,
@@ -23,11 +24,12 @@ public class BeatmapObjectPlacementAction : BeatmapAction
             DeleteObject(obj, false);
         }
 
+        SelectionController.SelectionChangedEvent?.Invoke();
         RefreshPools(Data);
 
         foreach (var data in removedConflictObjects)
         {
-            SpawnObject(data, true);
+            SpawnObject(data);
         }
 
         RefreshPools(removedConflictObjects);
@@ -40,11 +42,12 @@ public class BeatmapObjectPlacementAction : BeatmapAction
             DeleteObject(obj, false);
         }
 
+        SelectionController.SelectionChangedEvent?.Invoke();
         RefreshPools(removedConflictObjects);
 
         foreach (var obj in Data)
         {
-            SpawnObject(obj, true);
+            SpawnObject(obj);
         }
 
         RefreshPools(Data);

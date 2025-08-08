@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345602
+    - rid: 2007761200731127840
   m_TableData:
   - m_Id: 1
     m_Localized: Song Info
@@ -365,7 +365,7 @@ MonoBehaviour:
     m_Localized: '{0}% complete.'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345602
+      - rid: 2007761200731127840
   - m_Id: 44795657592176640
     m_Localized: Reaction Time
     m_Metadata:
@@ -434,10 +434,129 @@ MonoBehaviour:
       paths for files.'
     m_Metadata:
       m_Items: []
+  - m_Id: 390235661746958336
+    m_Localized: Standard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235795247460352
+    m_Localized: One Saber
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235843557453824
+    m_Localized: No Arrows
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235906199384064
+    m_Localized: 360 Degrees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390235989112385536
+    m_Localized: 90 Degrees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236071702425600
+    m_Localized: Legacy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236133086064640
+    m_Localized: Lightshow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390236188597678080
+    m_Localized: Lawless
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390239759607132160
+    m_Localized: Custom Characteristics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396267615118290944
+    m_Localized: Mapper names
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396267995176759296
+    m_Localized: Mappers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268125703499776
+    m_Localized: Who created the mapping?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268829063114752
+    m_Localized: Lighters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268841406951424
+    m_Localized: Lighter names
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396268859580870656
+    m_Localized: Who created the lightshow?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396269682226491392
+    m_Localized: Lightshow File
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396269752590135296
+    m_Localized: Name of shared lightshow file
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396270278006403072
+    m_Localized: Custom Properties
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396270297077903360
+    m_Localized: 'Additional properties provided by mods
+
+      (Such as SongCore
+      and Chroma)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 396272057888665600
+    m_Localized: Not supported in current format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469552834243588096
+    m_Localized: Gameplay Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469553272154091520
+    m_Localized: Warnings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469553502958252032
+    m_Localized: Information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469559603908964352
+    m_Localized: 'True will always make the level One Saber.
+
+
+      False will always
+      make the level have both sabers.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469559790123479040
+    m_Localized: 'True will only show the spawn lines if the map has rotational events.
+
+
+      False
+      will hide these spawn lines.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469575148062502912
+    m_Localized: You have unsaved characteristic changes, do you want to save them?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472331903532134400
+    m_Localized: Lightshow.dat
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345602
+    - rid: 2007761200731127840
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010d21a57e67101

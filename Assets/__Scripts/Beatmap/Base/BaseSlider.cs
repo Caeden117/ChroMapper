@@ -34,6 +34,7 @@ namespace Beatmap.Base
 
         protected BaseSlider()
         {
+            TailJsonTime = 0; // needed to set tailSongBpmTime
         }
 
         protected BaseSlider(float time, int posX, int posY, int color, int cutDirection, int angleOffset,
@@ -71,31 +72,17 @@ namespace Beatmap.Base
             get => tailJsonTime;
             set
             {
-                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-                tailSongBpmTime = bpmChangeGridContainer?.JsonTimeToSongBpmTime(value) ?? value;
                 tailJsonTime = value;
+                RecomputeTailSongBpmTime();
             }
         }
-        private float tailSongBpmTime { get; set; }
-        public float TailSongBpmTime
-        {
-            get => tailSongBpmTime;
-            set
-            {
-                var bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
-                tailJsonTime = bpmChangeGridContainer?.SongBpmTimeToJsonTime(value) ?? value;
-                tailSongBpmTime = value;
-            }
-        }
-
-        public void SetTailTimes(float jsonTime, float songBpmTime)
-        {
-            this.tailJsonTime = jsonTime;
-            this.tailSongBpmTime = songBpmTime;
-        }
+        private float? tailSongBpmTime;
+        public float TailSongBpmTime => (float)tailSongBpmTime;
 
         public int TailPosX { get; set; }
         public int TailPosY { get; set; }
+
+        public int TailRotation { get; set; }
 
         public JSONNode CustomTailCoordinate { get; set; }
 
@@ -104,8 +91,10 @@ namespace Beatmap.Base
         public override void RecomputeSongBpmTime()
         {
             base.RecomputeSongBpmTime();
-            TailJsonTime = TailJsonTime;
+            RecomputeTailSongBpmTime();
         }
+
+        private void RecomputeTailSongBpmTime() => tailSongBpmTime = Map?.JsonTimeToSongBpmTime(TailJsonTime);
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {
@@ -138,9 +127,8 @@ namespace Beatmap.Base
         public virtual void SwapHeadAndTail()
         {
             var tempJsonTime = JsonTime;
-            var tempJsonSongBpmTime = SongBpmTime;
-            SetTimes(tailJsonTime, tailSongBpmTime);
-            SetTailTimes(tempJsonTime, tempJsonSongBpmTime);
+            JsonTime = tailJsonTime;
+            TailJsonTime = tempJsonTime;
             (PosX, TailPosX) = (TailPosX, PosX);
             (PosY, TailPosY) = (TailPosY, PosY);
         }

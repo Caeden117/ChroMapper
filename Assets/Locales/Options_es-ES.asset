@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345607
+    - rid: 2007761200731127845
   m_TableData:
   - m_Id: 1
     m_Localized: Ajustes - {tabName}
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 2
     m_Localized: Opciones varias
     m_Metadata:
@@ -165,7 +165,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 38
-    m_Localized: Spectrogram
+    m_Localized: Espectrograma
     m_Metadata:
       m_Items: []
   - m_Id: 39
@@ -224,10 +224,6 @@ MonoBehaviour:
     m_Localized: Seguir el workflow con la forma de onda
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Localized: Habilitar el editor de nodo
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Localized: Atajo del editor de nodo
     m_Metadata:
@@ -282,7 +278,7 @@ MonoBehaviour:
     m_Localized: 'Plugins cargados: {Count}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 67
     m_Localized: "Informaci\xF3n de plugin"
     m_Metadata:
@@ -320,7 +316,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} decimal(es)'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 74
     m_Localized: "Por cu\xE1ntos decimales redondear los valores de \"_time\" por
       cada objeto del mapa visible cuando se guarda al disco.\nMenor precisi\xF3n
@@ -413,8 +409,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97
-    m_Localized: Take half jump into account when loading hyper (negative duration)
-      walls. Will require a restart of the editor.
+    m_Localized: "Toma en cuenta el medio salto al cargar paredes hiper (de duraci\xF3n
+      negativa). Ser\xE1 necesario reiniciar el editor."
     m_Metadata:
       m_Items: []
   - m_Id: 98
@@ -458,7 +454,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 107
-    m_Localized: Show song spectrogram
+    m_Localized: "Mostrar espectrograma de la canci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 108
@@ -490,10 +486,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Localized: "C\xF3mo de lejos desaparecer\xE1n las notas y los eventos."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Localized: "Activa el editor de nodos. \xA1Prueba a seleccionar un objeto!"
     m_Metadata:
       m_Items: []
   - m_Id: 116
@@ -564,7 +556,7 @@ MonoBehaviour:
     m_Localized: Extensiones
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 132
     m_Localized: Experimentales
     m_Metadata:
@@ -577,47 +569,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 139
     m_Localized: '{TextValue} golpes'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 140
     m_Localized: '{TextValue} golpes'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 143
     m_Localized: "Restringe el visor de rotaci\xF3n"
     m_Metadata:
@@ -664,7 +656,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 154
     m_Localized: Escala de la interfaz de usuario
     m_Metadata:
@@ -677,13 +669,13 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 157
     m_Localized: Modelo de eventos
     m_Metadata:
       m_Items: []
   - m_Id: 158
-    m_Localized: Change lighting event models.
+    m_Localized: "Cambiar modelos de eventos de iluminaci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 159
@@ -749,7 +741,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 174
     m_Localized: "Canci\xF3n"
     m_Metadata:
@@ -768,43 +760,43 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2783503364096
-    m_Localized: Show stats about your map.
+    m_Localized: "Muestra estad\xEDsticas de tu mapa."
     m_Metadata:
       m_Items: []
   - m_Id: 4183771754496
-    m_Localized: Show Note count in Counters+
+    m_Localized: Muestra el conteo de notas en Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 4556741849088
-    m_Localized: Show Notes Per Second in Counters+
+    m_Localized: Muestra las Notas Por Segundo en Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 4756105506816
-    m_Localized: Show Swings Per Second in Counters+
+    m_Localized: Muestra los Cortes Por Segundo en Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 4923839918080
-    m_Localized: Show Red/Blue Note Ratio in Counters+
+    m_Localized: "Muestra la relaci\xF3n de notas rojas y azules en Counters+"
     m_Metadata:
       m_Items: []
   - m_Id: 5194288640000
-    m_Localized: Show Obstacle count in Counters+
+    m_Localized: "Muestra el conteo de obst\xE1culos en Counters+"
     m_Metadata:
       m_Items: []
   - m_Id: 5433380745216
-    m_Localized: Show Event count in Counters+
+    m_Localized: Muestra el conteo de eventos en Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 5576540729344
-    m_Localized: Show BPM Change count in Counters+
+    m_Localized: Muestra el conteo de Cambios de BPM en Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 5797878345728
-    m_Localized: Show Current BPM in Counters+
+    m_Localized: Muestra el BPM actual en Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 6094344335360
-    m_Localized: Show Time Spent Mapping in Counters+
+    m_Localized: Muestra el tiempo gastado mapeando en Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 7740667375616
@@ -820,7 +812,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 8262946304000
-    m_Localized: Show Swings Per Second
+    m_Localized: Muestra los Cortes Por Segundo
     m_Metadata:
       m_Items: []
   - m_Id: 8468374925312
@@ -836,7 +828,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9070869917696
-    m_Localized: Show BPM Change Count
+    m_Localized: Muestra el conteo de Cambios de BPM
     m_Metadata:
       m_Items: []
   - m_Id: 9291620331520
@@ -844,11 +836,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9443374444544
-    m_Localized: Show Time Spent Mapping
+    m_Localized: Muestra el tiempo gastado mapeando
     m_Metadata:
       m_Items: []
   - m_Id: 1564790530682880
-    m_Localized: Show Bomb count in Counters+
+    m_Localized: Muestra el conteo de bombas en Counters+
     m_Metadata:
       m_Items: []
   - m_Id: 1565145339441152
@@ -860,7 +852,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3517145853952
-    m_Localized: Compensates for audio latency by offsetting visuals during playback
+    m_Localized: "Compensa la latencia de audio al desplazar las im\xE1genes durante
+      la reproducci\xF3n"
     m_Metadata:
       m_Items: []
   - m_Id: 4573925912576
@@ -871,16 +864,16 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 3301721636864
-    m_Localized: Changes the transparency of the grid background
+    m_Localized: "Cambia la transparencia del fondo de la cuadr\xEDcula"
     m_Metadata:
       m_Items: []
   - m_Id: 4978382077952
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 23812497342464
     m_Localized: "Trasparencia de la cuadr\xEDcula"
     m_Metadata:
@@ -890,7 +883,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1664599280979968
-    m_Localized: Tweak the maximum framerate that CM will run at.
+    m_Localized: "Ajusta la velocidad de fotogramas m\xE1xima a la que CM se ejecutar\xE1."
     m_Metadata:
       m_Items: []
   - m_Id: 1894945813565440
@@ -903,23 +896,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4089437985878016
-    m_Localized: Makes Editor Scale independent of map BPM
+    m_Localized: Hace que la escala del editor sea independiente del BPM del mapa
     m_Metadata:
       m_Items: []
   - m_Id: 4090246341505024
-    m_Localized: BPM Independent Editor Scale
+    m_Localized: Escala de editor independiente de BPM
     m_Metadata:
       m_Items: []
   - m_Id: 9689541752557568
-    m_Localized: Visualize event alpha using the height of the event
+    m_Localized: Visualiza el Alpha del evento usando la altura del evento
     m_Metadata:
       m_Items: []
   - m_Id: 9689824679333888
-    m_Localized: Visualize Event Alpha
+    m_Localized: Visualiza el Alpha del evento
     m_Metadata:
       m_Items: []
   - m_Id: 16675690602758144
-    m_Localized: Smooths out jagged lines
+    m_Localized: "Suaviza las l\xEDneas irregulares"
     m_Metadata:
       m_Items: []
   - m_Id: 16676035970138112
@@ -930,14 +923,14 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 67492742661058560
-    m_Localized: Scales the (total) rendering resolution for performance or visual
-      improvements.
+    m_Localized: "Escala la resoluci\xF3n de renderizado (total) para lograr mejoras
+      visuales o rendimiento."
     m_Metadata:
       m_Items: []
   - m_Id: 67493661524013056
-    m_Localized: Render Scale
+    m_Localized: Escala de renderizado
     m_Metadata:
       m_Items: []
   - m_Id: 1698793607168
@@ -945,92 +938,94 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1897456816128
-    m_Localized: Adds special Quest functionality if ADB is installed
+    m_Localized: "A\xF1ade funcionalidad especial de Quest si ADB est\xE1 instalado"
     m_Metadata:
       m_Items: []
   - m_Id: 3768991576559616
-    m_Localized: Successfully exported files to Quest
+    m_Localized: "Archivos exportados a Quest con \xE9xito"
     m_Metadata:
       m_Items: []
   - m_Id: 3769025302958080
-    m_Localized: Export to Quest
+    m_Localized: Exportar a Quest
     m_Metadata:
       m_Items: []
   - m_Id: 3769067959029760
-    m_Localized: Failed to download ADB. Error {0}
+    m_Localized: No se pudo descargar ADB. Error {0}
     m_Metadata:
       m_Items: []
   - m_Id: 3769095658213376
-    m_Localized: "ADB does not seem to be installed or could not be found. Would
-      you\n      like to download it? This will allow Quest functionality."
+    m_Localized: "ADB parece no estar instalado o no se pudo encontrar. \xBFQuieres
+      descargarlo? Esto permitir\xE1 la funcionalidad con Quest."
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635263
-    m_Localized: Downloading ADB
+    m_Localized: Descargando ADB
     m_Metadata:
       m_Items: []
   - m_Id: 3777059370635264
-    m_Localized: Finished downloading ADB
+    m_Localized: Se ha terminado de descargar ADB
     m_Metadata:
       m_Items: []
   - m_Id: 3779515244679168
-    m_Localized: Extracting ADB from zip. This may take a while.
+    m_Localized: Extrayendo ADB del archivo zip. Esto puede tardar un rato.
     m_Metadata:
       m_Items: []
   - m_Id: 21544433260560384
-    m_Localized: Install ADB for Quest functionality
+    m_Localized: Instalar ADB para la funcionalidad con Quest
     m_Metadata:
       m_Items: []
   - m_Id: 71906481403138048
-    m_Localized: 'Downloading ADB Progess: {0}'
+    m_Localized: 'Descargando ADB Progreso: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 91579491578740736
-    m_Localized: Appearance
+    m_Localized: Apariencia
     m_Metadata:
       m_Items: []
   - m_Id: 101771971410460672
-    m_Localized: Track and Grid
+    m_Localized: "Pista y cuadr\xEDcula"
     m_Metadata:
       m_Items: []
   - m_Id: 101773637585141760
-    m_Localized: Makes the transitions between scenes instant.
+    m_Localized: "Hace que las transiciones entre escenas sean instant\xE1neas."
     m_Metadata:
       m_Items: []
   - m_Id: 101773995594153984
-    m_Localized: Instant Loading Transitions
+    m_Localized: "Transiciones de carga instant\xE1neas"
     m_Metadata:
       m_Items: []
   - m_Id: 101788523392335872
-    m_Localized: Length of the track in beats
+    m_Localized: Longitud de la pista en tiempos
     m_Metadata:
       m_Items: []
   - m_Id: 101788529759289344
-    m_Localized: Track Length
+    m_Localized: Longitud de la pista
     m_Metadata:
       m_Items: []
   - m_Id: 101795760294789120
-    m_Localized: Hides disableable platform objects on load
+    m_Localized: Oculta los objetos de plataforma que se pueden deshabilitar durante
+      la carga
     m_Metadata:
       m_Items: []
   - m_Id: 101795765399257088
-    m_Localized: Hide Disableable Objects On Load
+    m_Localized: Ocultar objetos desactivables al cargar
     m_Metadata:
       m_Items: []
   - m_Id: 101802838346366976
-    m_Localized: Changes the transparency of passed notes
+    m_Localized: Cambia la transparencia de las notas pasadas
     m_Metadata:
       m_Items: []
   - m_Id: 101802902695378944
-    m_Localized: Passed Note Transparency
+    m_Localized: Transparencia de Nota Pasada
     m_Metadata:
       m_Items: []
   - m_Id: 101855016515731456
-    m_Localized: Editor Map Info Display
+    m_Localized: "Mostrar informaci\xF3n del mapa del editor"
     m_Metadata:
       m_Items: []
   - m_Id: 101855364424859648
-    m_Localized: Display artist and song name in top right corner.
+    m_Localized: "Mostrar el nombre del artista y la canci\xF3n en la esquina superior
+      derecha."
     m_Metadata:
       m_Items: []
   - m_Id: 101855374591852544
@@ -1122,11 +1117,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 90253772483395584
-    m_Localized: Displays non-default floatValue on top of events
+    m_Localized: Muestra un floatValue no predeterminado en la parte superior de
+      los eventos
     m_Metadata:
       m_Items: []
   - m_Id: 90254225048797184
-    m_Localized: Display FloatValue Text
+    m_Localized: Mostrar texto de floatValue
     m_Metadata:
       m_Items: []
   - m_Id: 206088741188730880
@@ -1272,7 +1268,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345607
+      - rid: 2007761200731127845
   - m_Id: 322078335378526208
     m_Localized: Objects and Lighting
     m_Metadata:
@@ -1410,10 +1406,58 @@ MonoBehaviour:
     m_Localized: How bright the bookmarks on the timeline are.
     m_Metadata:
       m_Items: []
+  - m_Id: 513132648409722880
+    m_Localized: Show NJS (Note Jump Speed) Event count in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513132913414238208
+    m_Localized: Show NJS Event Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133409642344448
+    m_Localized: Show Current NJS (Note Jump Speed) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133637388857344
+    m_Localized: Show Current NJS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134051299553280
+    m_Localized: Show Current HJD (Half Jump Duration) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134225774211072
+    m_Localized: Show Current HJD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134485426794496
+    m_Localized: Show Current JD (Jump Distance) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134545464061952
+    m_Localized: Show Current JD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134705308987392
+    m_Localized: Show Current RT (Reaction Time) in Counters+
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134839585435648
+    m_Localized: Show Current RT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144347351183360
+    m_Localized: Displays the HJD (Half Jump Duration) line on the editor grid track.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144631343312896
+    m_Localized: Display HJD Line On Grid
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345607
+    - rid: 2007761200731127845
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04

@@ -41,7 +41,7 @@ namespace Beatmap.Base.Customs
 
         protected BaseBookmark(BaseBookmark other)
         {
-            SetTimes(other.JsonTime, other.SongBpmTime);
+            JsonTime = other.JsonTime;
             Name = other.Name;
             Color = other.Color;
         }
@@ -92,7 +92,7 @@ namespace Beatmap.Base.Customs
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2Bookmark.ToJson(this),
-            3 => V3Bookmark.ToJson(this)
+            3 or 4 => V3Bookmark.ToJson(this)
         };
 
         public override BaseItem Clone() => new BaseBookmark(this);

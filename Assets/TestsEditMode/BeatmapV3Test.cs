@@ -275,7 +275,7 @@ namespace TestsEditMode
             ]
         }
     ],
-    ""_fxEventsCollections"": {
+    ""_fxEventsCollection"": {
         ""_fl"": [
             {
                 ""b"": 0,
@@ -286,7 +286,20 @@ namespace TestsEditMode
         ],
         ""_il"": []
     },
-    ""useNormalEventsAsCompatibleEvents"": false
+    ""useNormalEventsAsCompatibleEvents"": false,
+    ""customData"": {
+        ""foo"": ""bar"",
+        ""time"": 123.456,
+        ""customEvents"": [
+            {
+                ""b"": 0,
+                ""t"": ""ACustomEventType"",
+                ""d"": {
+                    ""foo"": ""bar"",
+                }
+            }
+        ]
+    }
 }";
 
 
@@ -308,6 +321,7 @@ namespace TestsEditMode
             
             Assert.AreEqual("3.3.0",difficulty.Version);
             AssertDifficulty(difficulty, true);
+            AssertDifficultyLightshow(difficulty);
         }
         
         [Test]
@@ -320,6 +334,8 @@ namespace TestsEditMode
             reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
             
             AssertDifficulty(reparsed, true); // This should have the same stuff
+            AssertDifficultyLightshow(difficulty);
+            AssertDifficultyCustomProperties(difficulty);
         }
 
         [Test]
@@ -334,9 +350,24 @@ namespace TestsEditMode
             reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
 
             AssertDifficulty(reparsed, false); // This should have the same stuff
+            AssertDifficultyCustomProperties(reparsed);
         }
 
-        // Chains are tested outside of this method
+        [Test]
+        public void RootCustomDataPropertiesPersist()
+        {
+            var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
+            Assert.AreEqual("bar", difficulty.CustomData["foo"].Value);
+            
+            // Key be gone
+            Assert.IsFalse(difficulty.CustomData.HasKey("time"));
+            Assert.AreEqual(123.456f, difficulty.Time, 0.001);
+
+            var output = V3Difficulty.GetOutputJson(difficulty);
+            Assert.AreEqual("bar", output["customData"]["foo"].Value);
+            Assert.AreEqual(123.456f, output["customData"]["time"].AsFloat, 0.001);
+        }
+
         private static void AssertDifficulty(BaseDifficulty difficulty, bool slidersExist)
         {
             Assert.AreEqual(2, difficulty.Notes.Count);
@@ -364,11 +395,188 @@ namespace TestsEditMode
             Assert.AreEqual(1, difficulty.BpmEvents.Count);
             BeatmapAssert.BpmEventPropertiesAreEqual(difficulty.BpmEvents[0], 10, 128);
             
+            // Rotation events
+            Assert.AreEqual(4, difficulty.Events.Count);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, null, 15f);
+            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, null, 15f);
+        }
+
+        private static void AssertDifficultyLightshow(BaseDifficulty difficulty)
+        {
+            // Basic + Boost
             Assert.AreEqual(4, difficulty.Events.Count);
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[0], 10, 1, 3, 1, null);
             BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[1], 10, 5, 1, 0, null);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[2], 10, 14, 4, null, 15f);
-            BeatmapAssert.EventPropertiesAreEqual(difficulty.Events[3], 15, 15, 4, null, 15f);
+
+            // Color
+            Assert.AreEqual(1, difficulty.LightColorEventBoxGroups.Count);
+            var colorGroup = difficulty.LightColorEventBoxGroups[0];
+            
+            Assert.AreEqual(2, colorGroup.JsonTime);
+            Assert.AreEqual(0f, colorGroup.ID);
+            
+            Assert.AreEqual(1, colorGroup.Events.Count);
+            var colorGroupBox = colorGroup.Events[0];
+            
+            var colorIndexFilter = colorGroupBox.IndexFilter;
+            Assert.AreEqual(1, colorIndexFilter.Chunks);
+            Assert.AreEqual(1, colorIndexFilter.Type);
+            Assert.AreEqual(1, colorIndexFilter.Param0);
+            Assert.AreEqual(0, colorIndexFilter.Param1);
+            Assert.AreEqual(0, colorIndexFilter.Reverse);
+            Assert.AreEqual(0, colorIndexFilter.Random);
+            Assert.AreEqual(0, colorIndexFilter.Seed);
+            Assert.AreEqual(0, colorIndexFilter.Limit);
+            Assert.AreEqual(0, colorIndexFilter.LimitAffectsType);
+
+            Assert.AreEqual(1, colorGroupBox.BeatDistribution);
+            Assert.AreEqual(1, colorGroupBox.BeatDistributionType);
+            Assert.AreEqual(1, colorGroupBox.BrightnessDistribution);
+            Assert.AreEqual(1, colorGroupBox.BrightnessDistributionType);
+            Assert.AreEqual(0, colorGroupBox.Easing);
+            Assert.AreEqual(1, colorGroupBox.BrightnessAffectFirst);
+
+            Assert.AreEqual(1, colorGroupBox.Events.Length);
+            var colorGroupEvent = colorGroupBox.Events[0];
+            
+            Assert.AreEqual(0, colorGroupEvent.JsonTime);
+            Assert.AreEqual(0, colorGroupEvent.TransitionType);
+            Assert.AreEqual(1, colorGroupEvent.Color);
+            Assert.AreEqual(1, colorGroupEvent.Brightness);
+            Assert.AreEqual(0, colorGroupEvent.StrobeBrightness);
+            
+            // Rotation
+            Assert.AreEqual(1, difficulty.LightRotationEventBoxGroups.Count);
+            var rotationGroup = difficulty.LightRotationEventBoxGroups[0];
+            
+            Assert.AreEqual(2, rotationGroup.JsonTime);
+            Assert.AreEqual(0f, rotationGroup.ID);
+            
+            Assert.AreEqual(1, rotationGroup.Events.Count);
+            var rotationGroupBox = rotationGroup.Events[0];
+            
+            var rotationIndexFilter = rotationGroupBox.IndexFilter;
+            Assert.AreEqual(1, rotationIndexFilter.Chunks);
+            Assert.AreEqual(1, rotationIndexFilter.Type);
+            Assert.AreEqual(1, rotationIndexFilter.Param0);
+            Assert.AreEqual(0, rotationIndexFilter.Param1);
+            Assert.AreEqual(0, rotationIndexFilter.Reverse);
+            Assert.AreEqual(0, rotationIndexFilter.Random);
+            Assert.AreEqual(0, rotationIndexFilter.Seed);
+            Assert.AreEqual(0, rotationIndexFilter.Limit);
+            Assert.AreEqual(0, rotationIndexFilter.LimitAffectsType);
+
+            Assert.AreEqual(1, rotationGroupBox.BeatDistribution);
+            Assert.AreEqual(1, rotationGroupBox.BeatDistributionType);
+            Assert.AreEqual(1, rotationGroupBox.RotationDistribution);
+            Assert.AreEqual(1, rotationGroupBox.RotationDistributionType);
+            Assert.AreEqual(0, rotationGroupBox.Easing);
+            Assert.AreEqual(1, rotationGroupBox.RotationAffectFirst);
+            Assert.AreEqual(0, rotationGroupBox.Axis);
+            Assert.AreEqual(1, rotationGroupBox.Flip);
+
+            Assert.AreEqual(1, rotationGroupBox.Events.Length);
+            var rotationGroupEvent = rotationGroupBox.Events[0];
+            
+            Assert.AreEqual(0, rotationGroupEvent.JsonTime);
+            Assert.AreEqual(0, rotationGroupEvent.UsePrevious);
+            Assert.AreEqual(1, rotationGroupEvent.EaseType);
+            Assert.AreEqual(340, rotationGroupEvent.Rotation);
+            Assert.AreEqual(1, rotationGroupEvent.Direction);
+            Assert.AreEqual(1, rotationGroupEvent.Loop);
+            
+            // Translation
+            Assert.AreEqual(1, difficulty.LightTranslationEventBoxGroups.Count);
+            var translationGroup = difficulty.LightTranslationEventBoxGroups[0];
+            
+            Assert.AreEqual(2, translationGroup.JsonTime);
+            Assert.AreEqual(0f, translationGroup.ID);
+            
+            Assert.AreEqual(1, translationGroup.Events.Count);
+            var translationGroupBox = translationGroup.Events[0];
+            
+            var translationIndexFilter = translationGroupBox.IndexFilter;
+            Assert.AreEqual(1, translationIndexFilter.Chunks);
+            Assert.AreEqual(1, translationIndexFilter.Type);
+            Assert.AreEqual(1, translationIndexFilter.Param0);
+            Assert.AreEqual(0, translationIndexFilter.Param1);
+            Assert.AreEqual(0, translationIndexFilter.Reverse);
+            Assert.AreEqual(0, translationIndexFilter.Random);
+            Assert.AreEqual(0, translationIndexFilter.Seed);
+            Assert.AreEqual(0, translationIndexFilter.Limit);
+            Assert.AreEqual(0, translationIndexFilter.LimitAffectsType);
+
+            Assert.AreEqual(1, translationGroupBox.BeatDistribution);
+            Assert.AreEqual(1, translationGroupBox.BeatDistributionType);
+            Assert.AreEqual(1, translationGroupBox.TranslationDistribution);
+            Assert.AreEqual(1, translationGroupBox.TranslationDistributionType);
+            Assert.AreEqual(0, translationGroupBox.Easing);
+            Assert.AreEqual(1, translationGroupBox.TranslationAffectFirst);
+            Assert.AreEqual(0, translationGroupBox.Axis);
+            Assert.AreEqual(1, translationGroupBox.Flip);
+
+            Assert.AreEqual(1, translationGroupBox.Events.Length);
+            var translationGroupEvent = translationGroupBox.Events[0];
+            
+            Assert.AreEqual(0, translationGroupEvent.JsonTime);
+            Assert.AreEqual(0, translationGroupEvent.UsePrevious);
+            Assert.AreEqual(1, translationGroupEvent.EaseType);
+            Assert.AreEqual(100, translationGroupEvent.Translation);
+            
+            // FloatFX
+            Assert.AreEqual(1, difficulty.VfxEventBoxGroups.Count);
+            var vfxGroup = difficulty.VfxEventBoxGroups[0];
+            
+            Assert.AreEqual(2, vfxGroup.JsonTime);
+            Assert.AreEqual(0f, vfxGroup.ID);
+            
+            Assert.AreEqual(1, vfxGroup.Events.Count);
+            var vfxGroupBox = vfxGroup.Events[0];
+            
+            var vfxIndexFilter = vfxGroupBox.IndexFilter;
+            Assert.AreEqual(1, vfxIndexFilter.Chunks);
+            Assert.AreEqual(1, vfxIndexFilter.Type);
+            Assert.AreEqual(1, vfxIndexFilter.Param0);
+            Assert.AreEqual(0, vfxIndexFilter.Param1);
+            Assert.AreEqual(0, vfxIndexFilter.Reverse);
+            Assert.AreEqual(0, vfxIndexFilter.Random);
+            Assert.AreEqual(0, vfxIndexFilter.Seed);
+            Assert.AreEqual(0, vfxIndexFilter.Limit);
+            Assert.AreEqual(0, vfxIndexFilter.LimitAffectsType);
+
+            Assert.AreEqual(1, vfxGroupBox.BeatDistribution);
+            Assert.AreEqual(1, vfxGroupBox.BeatDistributionType);
+            Assert.AreEqual(1, vfxGroupBox.VfxDistribution);
+            Assert.AreEqual(1, vfxGroupBox.VfxDistributionType);
+            Assert.AreEqual(0, vfxGroupBox.Easing);
+            Assert.AreEqual(1, vfxGroupBox.VfxAffectFirst);
+
+            Assert.AreEqual(1, vfxGroupBox.FloatFxEvents.Count);
+            var fxFloatEvent = vfxGroupBox.FloatFxEvents[0];
+            Assert.AreEqual(0, fxFloatEvent.JsonTime);
+            Assert.AreEqual(0, fxFloatEvent.UsePreviousEventValue);
+            Assert.AreEqual(1, fxFloatEvent.Easing);
+            Assert.AreEqual(100, fxFloatEvent.Value);
+            
+            Assert.AreEqual(0, difficulty.FxEventsCollection.IntFxEvents.Length);
+            Assert.AreEqual(1, difficulty.FxEventsCollection.FloatFxEvents.Length);
+            fxFloatEvent = difficulty.FxEventsCollection.FloatFxEvents[0];
+            
+            Assert.AreEqual(0, fxFloatEvent.JsonTime);
+            Assert.AreEqual(0, fxFloatEvent.UsePreviousEventValue);
+            Assert.AreEqual(1, fxFloatEvent.Easing);
+            Assert.AreEqual(100, fxFloatEvent.Value);
+        }
+
+
+
+        private static void AssertDifficultyCustomProperties(BaseDifficulty difficulty)
+        {
+            Assert.AreEqual(1, difficulty.CustomEvents.Count);
+
+            var customEvent = difficulty.CustomEvents[0];
+            Assert.AreEqual("ACustomEventType", customEvent.Type);
+            Assert.AreEqual("bar", customEvent.Data["foo"].Value);
         }
     }
 }

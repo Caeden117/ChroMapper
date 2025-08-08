@@ -70,7 +70,6 @@ private readonly List<BaseEvent> lastChromaEvents = new List<BaseEvent>();
                     lastChromaEvents.Add(e);
                 }
             }
-
             // We handle Boost Lights first to set the correct colors
             descriptor.EventPassed(isPlaying, 0,
                 lastEvents.ContainsKey((int)EventTypeValue.ColorBoost)
@@ -85,11 +84,16 @@ private readonly List<BaseEvent> lastChromaEvents = new List<BaseEvent>();
 
                 blankEvent.Type = i;
                 if (lastEvents.ContainsKey(i) && lastEvents[i].LastEvent == null) lastEvents[i].LastEvent = blankEvent;
+                
+                var gagaActive = descriptor.DiskManager != null 
+                                 && (blankEvent.IsLaserRotationEvent() || blankEvent.IsUtilityEvent());
+                if (gagaActive) continue;
 
                 // No events with this event type exist prior to this time; pass a blank event and skip.
                 if (!lastEvents.ContainsKey(i))
                 {
                     if (blankEvent.IsRingEvent() || blankEvent.IsLaneRotationEvent()) continue;
+                    
                     descriptor.EventPassed(isPlaying, 0, blankEvent);
                     continue;
                 }
@@ -130,10 +134,13 @@ private readonly List<BaseEvent> lastChromaEvents = new List<BaseEvent>();
         }
         else
         {
-            var leftSpeedReset = new BaseEvent { Type = (int)EventTypeValue.LeftLaserRotation, CustomLockRotation = true };
-            var rightSpeedReset = new BaseEvent { Type = (int)EventTypeValue.RightLaserRotation, CustomLockRotation = true };
-            descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
-            descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
+            if (descriptor.DiskManager == null)
+            {
+                var leftSpeedReset = new BaseEvent { Type = (int)EventTypeValue.LeftLaserRotation, CustomLockRotation = true };
+                var rightSpeedReset = new BaseEvent { Type = (int)EventTypeValue.RightLaserRotation, CustomLockRotation = true };
+                descriptor.EventPassed(isPlaying, 0, leftSpeedReset);
+                descriptor.EventPassed(isPlaying, 0, rightSpeedReset);
+            }
             descriptor.KillChromaLights();
             descriptor.KillLights();
         }

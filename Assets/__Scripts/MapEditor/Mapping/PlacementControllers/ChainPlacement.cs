@@ -10,7 +10,6 @@ using UnityEngine.Serialization;
 
 public class ChainPlacement : PlacementController<BaseChain, ChainContainer, ChainGridContainer>, CMInput.IChainPlacementActions
 {
-    public const int ChainDefaultSpawnCount = 3;
     private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
     [SerializeField] private SelectionController selectionController;
     [FormerlySerializedAs("notesContainer")][SerializeField] private NoteGridContainer noteGridContainer;
@@ -38,13 +37,27 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
             return;
         }
 
+        var removedTailNotes = new List<BaseNote>();
         var generatedObjects = new List<BaseChain>();
-        var tailNotes = new List<BaseNote>();
-        for (int i = 1; i < notes.Count; i++)
+
+        // is there better way than this?
+        var redNotes = notes.Where(n => n.Color == (int)NoteColor.Red).ToList();
+        var blueNotes = notes.Where(n => n.Color == (int)NoteColor.Blue).ToList();
+
+        for (var i = 1; i < redNotes.Count; i++)
         {
-            if (TryCreateChainData(notes[i - 1], notes[i], out var chain, out var tailNote))
+            if (TryCreateChainData(redNotes[i - 1], redNotes[i], out var chain, out var tailNote))
             {
-                tailNotes.Add(tailNote);
+                removedTailNotes.Add(tailNote);
+                generatedObjects.Add(chain);
+            }
+        }
+        
+        for (var i = 1; i < blueNotes.Count; i++)
+        {
+            if (TryCreateChainData(blueNotes[i - 1], blueNotes[i], out var chain, out var tailNote))
+            {
+                removedTailNotes.Add(tailNote);
                 generatedObjects.Add(chain);
             }
         }
@@ -52,10 +65,10 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         if (generatedObjects.Count > 0)
         {
             SelectionController.DeselectAll();
-            SelectionController.SelectedObjects = new HashSet<BaseObject>(tailNotes);
+            SelectionController.SelectedObjects = new HashSet<BaseObject>(removedTailNotes);
             selectionController.Delete(false);
 
-            foreach (BaseChain chainData in generatedObjects)
+            foreach (var chainData in generatedObjects)
             {
                 objectContainerCollection.SpawnObject(chainData, false);
             }
@@ -64,7 +77,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
             SelectionController.SelectionChangedEvent?.Invoke();
             SelectionController.RefreshSelectionMaterial(false);
             BeatmapActionContainer.AddAction(
-                new BeatmapObjectPlacementAction(generatedObjects.ToArray(), tailNotes, $"Placed {generatedObjects.Count} chains"));
+                new BeatmapObjectPlacementAction(generatedObjects.ToArray(), removedTailNotes, $"Placed {generatedObjects.Count} chains"));
         }
     }
 

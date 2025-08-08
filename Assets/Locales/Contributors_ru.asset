@@ -73,6 +73,10 @@ MonoBehaviour:
       \u0432\u0441\u0435\u0445 \u0443\u0447\u0430\u0441\u0442\u043D\u0438\u043A\u043E\u0432?"
     m_Metadata:
       m_Items: []
+  - m_Id: 2582460100608
+    m_Localized: Clear All
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

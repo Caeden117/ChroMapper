@@ -1,9 +1,23 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
+using UnityEngine;
 
 namespace SimpleJSON
 {
+    public partial class JSONNode
+    {
+        public Color ReadHtmlStringColor()
+        {
+            if (IsString && ColorUtility.TryParseHtmlString($"#{Value}", out var color))
+            {
+                return color;
+            }
+
+            return Color.white;
+        }
+    }
+    
     public class JSONNumberWithOverridenRounding : JSONNumber
     {
         private int precision;

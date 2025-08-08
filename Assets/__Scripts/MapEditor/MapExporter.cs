@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using Beatmap.Info;
 using QuestDumper;
 using UnityEngine.Localization.Settings;
 using Debug = UnityEngine.Debug;
@@ -26,9 +27,9 @@ public struct MapExporter
         "sdcard/ModData/com.beatgames.beatsaber/Mods/SongLoader/CustomWIPLevels";
 
 
-    private readonly BeatSaberSong song;
+    private readonly BaseInfo info;
 
-    public MapExporter(BeatSaberSong song) => this.song = song;
+    public MapExporter(BaseInfo info) => this.info = info;
 
     /// <summary>
     /// Exports the files to the Quest using adb
@@ -68,8 +69,8 @@ public struct MapExporter
         dialog.Open();
 
         // We should always be exporting to WIP Levels. CustomLevels are for downloaded BeatSaver songs.
-        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_WIP_LOCATION, song.CleanSongName).Replace("\\", @"/");
-        var exportedFiles = song.GetFilesForArchiving();
+        var songExportPath = Path.Combine(QUEST_CUSTOM_SONGS_WIP_LOCATION, info.CleanSongName).Replace("\\", @"/");
+        var exportedFiles = BeatSaberSongExtensions.GetFilesForArchiving(info);
 
         if (exportedFiles == null) return;
 
@@ -115,13 +116,13 @@ public struct MapExporter
     {
         var infoFileLocation = "";
         var zipPath = "";
-        if (Directory.Exists(song.Directory))
+        if (Directory.Exists(info.Directory))
         {
-            zipPath = Path.Combine(song.Directory, song.CleanSongName + ".zip");
+            zipPath = Path.Combine(info.Directory, info.CleanSongName + ".zip");
             // Mac doesn't seem to like overwriting existing zips, so delete the old one first
             File.Delete(zipPath);
 
-            infoFileLocation = Path.Combine(song.Directory, "Info.dat");
+            infoFileLocation = Path.Combine(info.Directory, "Info.dat");
         }
 
         if (!File.Exists(infoFileLocation))
@@ -132,7 +133,7 @@ public struct MapExporter
             return false;
         }
 
-        var exportedFiles = song.GetFilesForArchiving();
+        var exportedFiles = BeatSaberSongExtensions.GetFilesForArchiving(info);
         if (exportedFiles == null)
         {
             return false;
@@ -154,14 +155,14 @@ public struct MapExporter
     /// </summary>
     public void OpenSelectedMapInFileBrowser()
     {
-        if (!Directory.Exists(song.Directory))
+        if (!Directory.Exists(info.Directory))
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "explorer.warning", null,
                 PersistentUI.DialogBoxPresetType.Ok);
             return;
         }
 
-        var path = song.Directory;
+        var path = info.Directory;
         OSTools.OpenFileBrowser(path);
     }
 }

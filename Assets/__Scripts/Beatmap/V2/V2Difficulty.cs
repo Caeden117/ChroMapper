@@ -32,7 +32,7 @@ namespace Beatmap.V2
                 if (difficulty.BpmEvents.Count > 0 && difficulty.BpmEvents.First().JsonTime != 0)
                 {
                     var insertedBpm = (BeatSaberSongContainer.Instance != null)
-                        ? BeatSaberSongContainer.Instance.Song.BeatsPerMinute
+                        ? BeatSaberSongContainer.Instance.Info.BeatsPerMinute
                         : 100; // This path only appears in tests
                     allEvents.Add(new BaseBpmEvent
                     {
@@ -79,7 +79,7 @@ namespace Beatmap.V2
 
         private static JSONNode GetOutputCustomJsonData(BaseDifficulty difficulty)
         {
-            var customData = new JSONObject();
+            var customData = difficulty.CustomData?.Clone() ?? new JSONObject();
 
             if (difficulty.Bookmarks.Any())
             {
@@ -129,7 +129,7 @@ namespace Beatmap.V2
 
             if (difficulty.Time > 0) customData["_time"] = Math.Round(difficulty.Time, 3);
 
-            BeatSaberSong.CleanObject(customData);
+            SimpleJSONHelper.CleanObject(customData);
 
             return customData;
         }
@@ -210,7 +210,7 @@ namespace Beatmap.V2
                     case "_customData":
                         map.CustomData = mNode;
 
-                        var dataNodeEnum = mNode.GetEnumerator();
+                        var dataNodeEnum = mNode.Clone().GetEnumerator();
                         while (dataNodeEnum.MoveNext())
                         {
                             var cKey = dataNodeEnum.Current.Key;
@@ -219,15 +219,19 @@ namespace Beatmap.V2
                             {
                                 case "_BPMChanges":
                                     foreach (JSONNode n in cNode) bpmList.Add(V2BpmChange.GetFromJson(n));
+                                    map.CustomData.Remove(cKey);
                                     break;
                                 case "_bpmChanges":
                                     foreach (JSONNode n in cNode) bpmList.Add(V2BpmChange.GetFromJson(n));
+                                    map.CustomData.Remove(cKey);
                                     break;
                                 case "_bookmarks":
                                     foreach (JSONNode n in cNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
+                                    map.CustomData.Remove(cKey);
                                     break;
                                 case "_customEvents":
                                     foreach (JSONNode n in cNode) customEventsList.Add(V2CustomEvent.GetFromJson(n));
+                                    map.CustomData.Remove(cKey);
                                     break;
                                 case "_pointDefinitions":
                                     foreach (JSONNode n in cNode)
@@ -238,10 +242,12 @@ namespace Beatmap.V2
                                         else
                                             Debug.LogWarning($"Duplicate key {n["_name"]} found in point definitions");
                                     }
+                                    map.CustomData.Remove(cKey);
                                     break;
                                 case "_environment":
                                     foreach (JSONNode n in cNode)
                                         envEnhancementsList.Add(V2EnvironmentEnhancement.GetFromJson(n));
+                                    map.CustomData.Remove(cKey);
                                     break;
                                 case "_materials":
                                     if (cNode is JSONObject matObj)
@@ -254,9 +260,11 @@ namespace Beatmap.V2
                                         break;
                                     }
                                     Debug.LogWarning("Could not read materials");
+                                    map.CustomData.Remove(cKey);
                                     break;
                                 case "_time":
                                     map.Time = cNode.AsFloat;
+                                    map.CustomData.Remove(cKey);
                                     break;
                             }
                         }

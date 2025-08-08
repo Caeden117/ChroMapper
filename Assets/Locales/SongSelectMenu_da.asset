@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 95d340fdffc264d469407a049a1fb729, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345599
+    - rid: 2007761200731127837
   m_TableData:
   - m_Id: 1
     m_Localized: Ny Map
@@ -69,7 +69,7 @@ MonoBehaviour:
     m_Localized: 'Side: {CurrentPage}/{MaxPage}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345599
+      - rid: 2007761200731127837
   - m_Id: 13
     m_Localized: "S\xF8g..."
     m_Metadata:
@@ -144,10 +144,26 @@ MonoBehaviour:
       a different name for the new beatmap.'
     m_Metadata:
       m_Items: []
+  - m_Id: 210236920806895616
+    m_Localized: Folder Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236923126345728
+    m_Localized: v4 (VNJS + Official editor compatible)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236925030559744
+    m_Localized: v2/v3 (Heck mods compatible)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210237660006838272
+    m_Localized: Map Format Version
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345599
+    - rid: 2007761200731127837
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0c00000000000000

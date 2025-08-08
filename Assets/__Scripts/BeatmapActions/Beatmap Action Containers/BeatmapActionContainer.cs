@@ -38,12 +38,34 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     {
         if (!action.Networked)
         {
+            // Clear all local, inactive actions from the queue
+            // This essentially removes all actions that were undone prior to this action being added
             instance.beatmapActions.RemoveAll(x => !x.Networked && !x.Active);
-            ActionCreatedEvent?.Invoke(action);
+
+            // Merge local actions
+            // Networked actions shouldn't get merged since they're received in already-merged form
+            var previousAction = instance.beatmapActions.LastOrDefault(x => !x.Networked);
+            if (action is IMergeableAction mergeableAction && previousAction is IMergeableAction previousMergeableAction)
+            {
+                var merged = (BeatmapAction)mergeableAction.TryMerge(previousMergeableAction);
+                if (merged is not null)
+                {
+                    instance.beatmapActions.Remove(previousAction);
+                    action = merged;
+                }
+            }
         }
+
         instance.beatmapActions.Add(action);
         if (perform) instance.DoRedo(action);
         Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
+
+        // Deferring ActionCreatedEvent until after execution brings AddAction in line with Undo/Redo
+        // TODO: May make more sense to refactor ActionCreatedEvent to add a Networked boolean parameter and invoke this event unconditionally
+        if (!action.Networked)
+        {
+            ActionCreatedEvent?.Invoke(action);
+        }
     }
 
     public static void RemoveAllActionsOfType<T>() where T : BeatmapAction =>
@@ -160,6 +182,16 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
                 }
             }
         }
+    }
+
+    private int activeActionsAfterSave;
+    public void UpdateActiveActionsAfterSave() => activeActionsAfterSave = beatmapActions.Count(x => x.Active);
+    public bool ContainsUnsavedActions => activeActionsAfterSave != beatmapActions.Count(x => x.Active);
+
+    public void ClearBeatmapActions()
+    {
+        activeActionsAfterSave = 0;
+        beatmapActions.Clear();
     }
 
     public class BeatmapActionParams

@@ -32,9 +32,9 @@ public class InputBoxFileValidator : MonoBehaviour
         startOffset = transform.offsetMax;
         // This will get un-done on start, but will stop negative text scroll
         // Shouldn't really be in awake but it needs to run before SongInfoEditUI sets the text value
-        var song = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
+        var info = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Info : null;
 
-        if (forceStartupValidationAlign || (enableValidation && Directory.Exists(song?.Directory)))
+        if (forceStartupValidationAlign || (enableValidation && Directory.Exists(info?.Directory)))
             transform.offsetMax = new Vector2(startOffset.x - 36, startOffset.y);
     }
 
@@ -42,17 +42,17 @@ public class InputBoxFileValidator : MonoBehaviour
 
     public void OnUpdate()
     {
-        var song = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Song : null;
+        var info = BeatSaberSongContainer.Instance != null ? BeatSaberSongContainer.Instance.Info : null;
 
         var filename = input.text;
-        if (!enableValidation || filename.Length == 0 || !Directory.Exists(song?.Directory))
+        if (!enableValidation || filename.Length == 0 || !Directory.Exists(info?.Directory))
         {
             if (!forceStartupValidationAlign) SetValidationState(false);
 
             return;
         }
 
-        var path = Path.Combine(song.Directory, filename);
+        var path = Path.Combine(info.Directory, filename);
         SetValidationState(true, File.Exists(path));
     }
 
@@ -84,7 +84,10 @@ public class InputBoxFileValidator : MonoBehaviour
     {
         var exts = new[] { new ExtensionFilter(filetypeName, extensions), new ExtensionFilter("All Files", "*") };
 
-        if (BeatSaberSongContainer.Instance.Song is null || BeatSaberSongContainer.Instance.Song.Directory is null)
+        var isSongDirectoryMissing = BeatSaberSongContainer.Instance.Info is null 
+                                     || string.IsNullOrEmpty(BeatSaberSongContainer.Instance.Info.Directory)
+                                     || !Directory.Exists(BeatSaberSongContainer.Instance.Info.Directory);
+        if (isSongDirectoryMissing)
         {
             PersistentUI.Instance.ShowDialogBox("Cannot locate song directory. Did you forget to save your map?", null,
                 PersistentUI.DialogBoxPresetType.Ok);
@@ -92,7 +95,7 @@ public class InputBoxFileValidator : MonoBehaviour
             return;
         }
 
-        var songDir = BeatSaberSongContainer.Instance.Song.Directory;
+        var songDir = BeatSaberSongContainer.Instance.Info.Directory;
         CMInputCallbackInstaller.DisableActionMaps(typeof(InputBoxFileValidator),
             new[] { typeof(CMInput.IMenusExtendedActions) });
         string[] paths;

@@ -4,6 +4,7 @@ using Beatmap.Base;
 
 public class BeatmapObjectDeletionAction : BeatmapAction
 {
+    // This constructor is needed for United Mapping
     public BeatmapObjectDeletionAction() : base() { }
 
     public BeatmapObjectDeletionAction(IEnumerable<BaseObject> objs, string comment) : base(objs, comment) { }
@@ -14,7 +15,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
     {
         foreach (var obj in Data)
         {
-            SpawnObject(obj, true);
+            SpawnObject(obj);
         }
 
         RefreshPools(Data);
@@ -27,6 +28,7 @@ public class BeatmapObjectDeletionAction : BeatmapAction
             DeleteObject(obj, false);
         }
 
+        SelectionController.SelectionChangedEvent?.Invoke();
         RefreshPools(Data);
     }
 

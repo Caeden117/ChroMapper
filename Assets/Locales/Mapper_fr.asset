@@ -17,53 +17,53 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 1057323853537345632
+    - rid: 2007761200731127870
   m_TableData:
   - m_Id: 1
     m_Localized: 'Notes: {NotesCount}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 2
     m_Localized: 'Notes par seconde : {NPSCount:F2}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 3
     m_Localized: "Notes s\xE9lectionn\xE9es : {NotesSelected}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 4
     m_Localized: "NPS s\xE9lectionn\xE9es : {NPSselected:F2}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 5
     m_Localized: 'Obstacles : {ObstacleCount}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 6
     m_Localized: "\xC9v\xE9nements : {EventCount}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 7
     m_Localized: 'Changements de BPM : {BPMCount}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 8
     m_Localized: 'Temps de travail : {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 9
     m_Localized: "S\xE9lectionn\xE9s : {SelectedCount}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 10
     m_Localized: Quitter
     m_Metadata:
@@ -141,7 +141,7 @@ MonoBehaviour:
     m_Localized: "Sauvez t\xF4t; sauvez souvent !"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 30
     m_Localized: Quitter ChroMapper
     m_Metadata:
@@ -188,7 +188,7 @@ MonoBehaviour:
     m_Localized: Changer de workflow.
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 42
     m_Localized: Supprimez des objets.
     m_Metadata:
@@ -273,7 +273,7 @@ MonoBehaviour:
     m_Localized: '{Keybind} pour changer'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 65
     m_Localized: "Placer des \xE9v\xE9nements RVB Chroma."
     m_Metadata:
@@ -366,7 +366,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86
-    m_Localized: Changer les couleurs
+    m_Localized: Inverser les couleurs
     m_Metadata:
       m_Items: []
   - m_Id: 87
@@ -608,7 +608,7 @@ MonoBehaviour:
     m_Localized: 'Swings par seconde: {OverallSPS:F2}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 143
     m_Localized: "Les \xC9tapes du D\xE9grad\xE9 Chroma"
     m_Metadata:
@@ -695,17 +695,17 @@ MonoBehaviour:
     m_Localized: 'BPM actuel : {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 1123800776704
     m_Localized: 'Ratio Rouge/Bleu : {RedBlueRatio:F2}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 3209883108945920
     m_Localized: 'Bombes : {BombCount}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 12803634470490112
     m_Localized: "S\xE9lectionnez la nouvelle couleur pour ce signet."
     m_Metadata:
@@ -731,7 +731,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43247628972130304
-    m_Localized: Easing applies to floatValue.
+    m_Localized: L'assouplissement s'applique au floatValue.
     m_Metadata:
       m_Items: []
   - m_Id: 43247577315082240
@@ -745,7 +745,8 @@ MonoBehaviour:
   - m_Id: 42988137944907776
     m_Localized: Temps d'assouplissement
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 2007761200731127870
   - m_Id: 42585459012075520
     m_Localized: Transition
     m_Metadata:
@@ -786,18 +787,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 240390057914204160
-    m_Localized: 'BPM Events: {BPMCount}'
+    m_Localized: "\xC9v\xE9nements de BPM : {BPMCount}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 256289992891105280
-    m_Localized: Enter the beat you want to go to
+    m_Localized: "Entrez le rythme auquel vous voulez acc\xE9der"
     m_Metadata:
       m_Items: []
   - m_Id: 256290009261473792
-    m_Localized: 'Invalid number
-
-      Enter the beat you want to go to'
+    m_Localized: "Nombre invalide\nEntrez le rythme auquel vous voulez acc\xE9der"
     m_Metadata:
       m_Items: []
   - m_Id: 294393564396453888
@@ -816,16 +815,103 @@ MonoBehaviour:
     m_Localized: "Arcs\_: {ArcCount}"
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
   - m_Id: 357744742603026432
     m_Localized: 'Chains: {ChainCount}'
     m_Metadata:
       m_Items:
-      - rid: 1057323853537345632
+      - rid: 2007761200731127870
+  - m_Id: 444025876411969536
+    m_Localized: 'Warning
+
+      The following properties are not saved in v{0} format:
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444026126589620224
+    m_Localized: Save in a different format to ensure data is not lost.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444093981712576512
+    m_Localized: Changer la version de la carte
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444094241088335872
+    m_Localized: 'WARNING: Map containing incompatible data (including custom data)
+      may result in data loss. Please manually backup your map before conversion.
+
+
+      Select
+      a map version to change to.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752073015914496
+    m_Localized: 'NJS Events: {NJSEventCount}'
+    m_Metadata:
+      m_Items:
+      - rid: 2007761200731127870
+  - m_Id: 469752216670826496
+    m_Localized: 'Current NJS: {CurrentNJS:F2}'
+    m_Metadata:
+      m_Items:
+      - rid: 2007761200731127870
+  - m_Id: 469752496527372288
+    m_Localized: 'Current HJD: {CurrentHJD:F2}'
+    m_Metadata:
+      m_Items:
+      - rid: 2007761200731127870
+  - m_Id: 469752582758068224
+    m_Localized: 'Current JD: {CurrentJD:F1}'
+    m_Metadata:
+      m_Items:
+      - rid: 2007761200731127870
+  - m_Id: 469752663171264512
+    m_Localized: 'Current RT: {CurrentRT:F0}ms'
+    m_Metadata:
+      m_Items:
+      - rid: 2007761200731127870
+  - m_Id: 515086303031586816
+    m_Localized: Use White events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 515091128582533120
+    m_Localized: The light will fade from previous event.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517335715707482112
+    m_Localized: There are unsaved changes. Do you want to save before switching
+      difficulties?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517336294072643584
+    m_Localized: Loaded Difficulty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517338952263135232
+    m_Localized: Please enter the NJS and easing for this NJS event.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339511007342592
+    m_Localized: NJS must a be positive number.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339586072801280
+    m_Localized: NJS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339628183613440
+    m_Localized: Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339662874701824
+    m_Localized: Use previous NJS event value
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 1057323853537345632
+    - rid: 2007761200731127870
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d0000000000000009000000000000004000000000000000000083e97b09560300f09d46e2f6f60400f01daff2f6f604
+        m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d00000000000000090000000000000040000000000000000000c3d37bb99800000083e97b09560300f09d46e2f6f60400f01daff2f6f60400f09d8405e5840600f01df726e5840600f0dd1f68e5840600f09d337ce5840600f09dec8ee58406

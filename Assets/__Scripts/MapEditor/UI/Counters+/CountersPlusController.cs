@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
@@ -14,6 +14,7 @@ public class CountersPlusController : MonoBehaviour
     [SerializeField] private ArcGridContainer arcGrid;
     [SerializeField] private ChainGridContainer chainGrid;
     [SerializeField] private BPMChangeGridContainer bpm;
+    [SerializeField] private NJSEventGridContainer njsEventGrid;
     [SerializeField] private AudioSource cameraAudioSource;
     [SerializeField] private AudioTimeSyncController atsc;
 
@@ -31,8 +32,11 @@ public class CountersPlusController : MonoBehaviour
     [FormerlySerializedAs("currentBPMString")][SerializeField] private LocalizeStringEvent currentBpmString;
     [SerializeField] private LocalizeStringEvent selectionString;
     [SerializeField] private LocalizeStringEvent timeMappingString;
+    [SerializeField] private LocalizeStringEvent[] njsEventStrings;
 
+    // Cached values so we can avoid calculating and refreshing strings when values won't be changed
     private float lastBpm;
+    private float lastNJS;
 
     private SwingsPerSecond swingsPerSecond;
 
@@ -78,13 +82,24 @@ public class CountersPlusController : MonoBehaviour
     public int EventCount => eventGrid.MapObjects.Count;
 
     public int BPMCount => bpm.MapObjects.Count;
+    
+    // public int NJSEventCount => njsEventGrid.MapObjects.Count;
 
     public int SelectedCount => SelectionController.SelectedObjects.Count;
 
     public float OverallSPS => swingsPerSecond.Total.Overall;
 
-    public float CurrentBPM
-        => bpm.FindLastBpm(atsc.CurrentSongBpmTime)?.Bpm ?? BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+    public float CurrentBPM => (float)BeatSaberSongContainer.Instance.Map.BpmAtJsonTime(atsc.CurrentJsonTime);
+
+    public float CurrentNJS => njsEventGrid.CurrentNJS;
+
+    public float CurrentHJD { get; private set; }
+
+    public float CurrentJD { get; private set; }
+
+    public float CurrentRT { get; private set; }
+
+    public float NJSEventCount => njsEventGrid.MapObjects.Count;
 
     public float RedBlueRatio
     {
@@ -109,6 +124,7 @@ public class CountersPlusController : MonoBehaviour
 
         LoadInitialMap.LevelLoadedEvent += LevelLoadedEvent;
         SelectionController.SelectionChangedEvent += SelectionChangedEvent;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent += LoadedDifficultyChangedEvent;
     }
 
     private void Update() // i do want to update this every single frame
@@ -160,6 +176,9 @@ public class CountersPlusController : MonoBehaviour
 
             if ((stringRefreshQueue & CountersPlusStatistic.Chains) != 0)
                 chainString.StringReference.RefreshString();
+            
+            if ((stringRefreshQueue & CountersPlusStatistic.NJSEvents) != 0)
+                UpdateNJSEventsStats();
 
             stringRefreshQueue = 0;
         }
@@ -170,6 +189,7 @@ public class CountersPlusController : MonoBehaviour
         Settings.ClearSettingNotifications("CountersPlus");
         SelectionController.SelectionChangedEvent -= SelectionChangedEvent;
         LoadInitialMap.LevelLoadedEvent -= LevelLoadedEvent;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent -= LoadedDifficultyChangedEvent;
     }
 
     public void UpdateStatistic(CountersPlusStatistic stat)
@@ -181,9 +201,51 @@ public class CountersPlusController : MonoBehaviour
         stringRefreshQueue |= stat;
     }
 
+    private void UpdateNJSEventsStats()
+    {
+        if (lastNJS == CurrentNJS) return;
+        
+        lastNJS = CurrentNJS;
+        
+        var baseNJS = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
+        var baseBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
+        var noteStartBeatOffset = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteStartBeatOffset;
+        var baseHalfJumpDuration = SpawnParameterHelper.CalculateHalfJumpDuration(baseNJS, noteStartBeatOffset, baseBpm);
+        var baseJumpDistance = SpawnParameterHelper.CalculateJumpDistance(baseNJS, noteStartBeatOffset, baseBpm);
+        var msPerBeat = 60000 / baseBpm;
+        var baseReactionTime = msPerBeat * baseHalfJumpDuration;
+        
+        if (CurrentNJS > baseNJS)
+        {
+            // Keep reaction time the same
+            CurrentRT = baseReactionTime;
+            CurrentHJD = baseHalfJumpDuration;
+            
+            var factor = CurrentNJS / baseNJS;
+            CurrentJD = baseJumpDistance * factor;
+        }
+        else
+        {
+            // Keep jump distance the same
+            CurrentJD = baseJumpDistance;
+            
+            var factor = baseNJS / CurrentNJS;
+            CurrentHJD = baseHalfJumpDuration * factor;
+            CurrentRT = baseReactionTime * factor;
+        }
+        
+        foreach (var str in njsEventStrings) str.StringReference.RefreshString();
+    }
+    
     private void LevelLoadedEvent()
     {
         // Bit archaic but this allows us to refresh everything once on startup
+        foreach (var enumValue in Enum.GetValues(typeof(CountersPlusStatistic)))
+            UpdateStatistic((CountersPlusStatistic)enumValue);
+    }
+
+    private void LoadedDifficultyChangedEvent()
+    {
         foreach (var enumValue in Enum.GetValues(typeof(CountersPlusStatistic)))
             UpdateStatistic((CountersPlusStatistic)enumValue);
     }

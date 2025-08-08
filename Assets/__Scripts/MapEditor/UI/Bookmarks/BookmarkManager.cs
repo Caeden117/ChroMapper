@@ -23,6 +23,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
     [FormerlySerializedAs("tipc")] public TimelineInputPlaybackController Tipc;
     [SerializeField] private RectTransform timelineCanvas;
 
+    [SerializeField] private BookmarkRenderingController bookmarkRenderingController;
+    
     public InputAction.CallbackContext ShiftContext;
 
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
@@ -70,7 +72,33 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
         ConvertBookmarkTimesFromOldDevVersions();
 
-        bookmarkContainers = BeatSaberSongContainer.Instance.Map.Bookmarks.Select(bookmark =>
+        bookmarkContainers = InstantiateBookmarkContainers();
+
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineWidth), UpdateBookmarkWidth);
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTooltipTimeInfo), UpdateBookmarkTooltip);
+        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineBrightness), UpdateBookmarkBrightness);
+
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent += RefreshBookmarksFromLoadedDifficulty;
+
+        BookmarksUpdated.Invoke();
+    }
+
+    private void RefreshBookmarksFromLoadedDifficulty()
+    {
+        foreach (var container in bookmarkContainers)
+        {
+            Destroy(container.gameObject);
+        }
+
+        bookmarkRenderingController.ClearCachedBookmarks();
+
+        bookmarkContainers = InstantiateBookmarkContainers();
+        BookmarksUpdated.Invoke();
+    }
+
+    private List<BookmarkContainer> InstantiateBookmarkContainers()
+    {
+        return BeatSaberSongContainer.Instance.Map.Bookmarks.Select(bookmark =>
         {
             var container = Instantiate(bookmarkContainerPrefab, transform).GetComponent<BookmarkContainer>();
             container.name = bookmark.Name;
@@ -78,32 +106,25 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
             container.RefreshPosition(timelineCanvas.sizeDelta.x + CanvasWidthOffset);
             return container;
         }).OrderBy(it => it.Data.JsonTime).ToList();
-
-        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineWidth), UpdateBookmarkWidth);
-        Settings.NotifyBySettingName(nameof(Settings.BookmarkTooltipTimeInfo), UpdateBookmarkTooltip);
-        Settings.NotifyBySettingName(nameof(Settings.BookmarkTimelineBrightness), UpdateBookmarkBrightness);
-
-        BookmarksUpdated.Invoke();
     }
 
     // There was a significant amount of time where bookmarks did not account for official bpm events
     // while the objects did. This ensures maps in this period display bookmarks in the correct place.
     private void ConvertBookmarkTimesFromOldDevVersions()
     {
-        var bookmarksUseOfficialBpmEventsKey = BeatSaberSongContainer.Instance.Map.BookmarksUseOfficialBpmEventsKey;
-        var bookmarksNeedConversion = !BeatSaberSongContainer.Instance.Map.CustomData.HasKey(bookmarksUseOfficialBpmEventsKey)
-            || !BeatSaberSongContainer.Instance.Map.CustomData[bookmarksUseOfficialBpmEventsKey].IsBoolean
-            || !BeatSaberSongContainer.Instance.Map.CustomData[bookmarksUseOfficialBpmEventsKey].AsBool;
+        var map = BeatSaberSongContainer.Instance.Map;
+        var bookmarksUseOfficialBpmEventsKey = map.BookmarksUseOfficialBpmEventsKey;
+        var bookmarksNeedConversion = !map.CustomData.HasKey(bookmarksUseOfficialBpmEventsKey)
+            || !map.CustomData[bookmarksUseOfficialBpmEventsKey].IsBoolean
+            || !map.CustomData[bookmarksUseOfficialBpmEventsKey].AsBool;
 
-        foreach (var bookmark in BeatSaberSongContainer.Instance.Map.Bookmarks)
+        bookmarksNeedConversion &= map.MajorVersion != 4;
+        
+        foreach (var bookmark in map.Bookmarks)
         {
             if (bookmarksNeedConversion)
             {
-                bookmark.SongBpmTime = bookmark.JsonTime;
-            }
-            else
-            {
-                bookmark.RecomputeSongBpmTime();
+                bookmark.JsonTime = (float)map.SongBpmTimeToJsonTime(bookmark.JsonTime);
             }
         }
     }
@@ -247,6 +268,8 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTimelineWidth));
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTooltipTimeInfo));
         Settings.ClearSettingNotifications(nameof(Settings.BookmarkTimelineBrightness));
+
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent -= RefreshBookmarksFromLoadedDifficulty;
     }
 
     public void OnColorBookmarkModifier(InputAction.CallbackContext context) => ShiftContext = context;

@@ -51,6 +51,7 @@ namespace SFB {
 
         public void OpenFilePanelAsync(string title, string directory, ExtensionFilter[] extensions, bool multiselect, Action<string[]> cb) {
             _openFileCb = cb;
+            UnityEngine.Debug.Log("Open File Panel, MAC");
             DialogOpenFilePanelAsync(
                 title,
                 directory,

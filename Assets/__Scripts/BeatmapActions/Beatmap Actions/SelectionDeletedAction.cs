@@ -5,6 +5,7 @@ using Beatmap.Base;
 
 public class SelectionDeletedAction : BeatmapAction
 {
+    // This constructor is needed for United Mapping
     public SelectionDeletedAction() : base() { }
 
     public SelectionDeletedAction(IEnumerable<BaseObject> deletedData) : base(deletedData)
@@ -24,7 +25,7 @@ public class SelectionDeletedAction : BeatmapAction
             }
         }
 
-        SelectionController.RefreshSelectionMaterial(false);
+        SelectionController.SelectionChangedEvent?.Invoke();
         RefreshPools(Data);
         RefreshEventAppearance();
     }
@@ -34,6 +35,7 @@ public class SelectionDeletedAction : BeatmapAction
         foreach (var data in Data)
             DeleteObject(data, false);
 
+        SelectionController.SelectionChangedEvent?.Invoke();
         RefreshPools(Data);
         RefreshEventAppearance();
     }

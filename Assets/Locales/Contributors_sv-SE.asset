@@ -70,6 +70,10 @@ MonoBehaviour:
     m_Localized: "\xC4r du s\xE4ker p\xE5 att du vill ta bort alla medverkande?"
     m_Metadata:
       m_Items: []
+  - m_Id: 2582460100608
+    m_Localized: Clear All
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

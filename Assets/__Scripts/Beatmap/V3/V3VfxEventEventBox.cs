@@ -1,13 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.V4;
 using SimpleJSON;
 
 namespace Beatmap.V3
 {
     public static class V3VfxEventEventBox
     {
-        public static BaseVfxEventEventBox GetFromJson(JSONNode node)
+        public static BaseVfxEventEventBox GetFromJson(JSONNode node, IList<FloatFxEventBase> floatFxEvents)
         {
             var vfxBox = new BaseVfxEventEventBox();
             
@@ -21,13 +23,18 @@ namespace Beatmap.V3
 
             if (node.HasKey("l"))
             {
-                vfxBox.VfxData = node["l"].AsArray.Linq.Select(x => x.Value.AsInt).ToArray();
+                vfxBox.FloatFxEvents = node["l"].AsArray.Linq.Select(x =>
+                { 
+                    var floatFxIndex = x.Value.AsInt;
+                    var floatFxEvent = (FloatFxEventBase)floatFxEvents[floatFxIndex].Clone();
+                    return floatFxEvent;
+                }).ToList();
             }
 
             return vfxBox;
         }
 
-        public static JSONNode ToJson(BaseVfxEventEventBox vfxBox)
+        public static JSONNode ToJson(BaseVfxEventEventBox vfxBox, IList<V4CommonData.FloatFxEvent> floatFxEvents)
         {
             JSONNode node = new JSONObject();
             node["f"] = vfxBox.IndexFilter.ToJson();
@@ -39,7 +46,10 @@ namespace Beatmap.V3
             node["i"] = vfxBox.Easing;
 
             node["l"] = new JSONArray();
-            foreach (var data in vfxBox.VfxData) node["l"].Add(data);
+            foreach (var data in vfxBox.FloatFxEvents)
+            {
+                node["l"].Add(floatFxEvents.IndexOf(V4CommonData.FloatFxEvent.FromFloatFxEventBase(data)));
+            }
 
             return node;
         }

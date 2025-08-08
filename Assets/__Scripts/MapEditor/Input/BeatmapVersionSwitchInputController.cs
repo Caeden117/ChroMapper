@@ -1,3 +1,4 @@
+using System;
 using Beatmap.V2;
 using Beatmap.V3;
 using UnityEngine;
@@ -16,27 +17,51 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
         PromptSwitchVersion();
     }
 
+    private void OnChangeVersion(int version)
+    {
+        switch (version)
+        {
+            case 2:
+                if (Settings.Instance.MapVersion is 3 or 4)
+                    BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: Settings.Instance.MapVersion, toVersion: 2);
+                Settings.Instance.MapVersion = 2;
+                break;
+            case 3:
+                if (Settings.Instance.MapVersion == 2)
+                    BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 2, toVersion: 3);
+                Settings.Instance.MapVersion = 3;
+                break;
+            case 4:
+                if (Settings.Instance.MapVersion == 2)
+                    BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 2, toVersion: 4);
+                Settings.Instance.MapVersion = 4;
+                break;
+        }
+    }
+
     public void PromptSwitchVersion()
     {
-        var currentVersion = Settings.Instance.MapVersion == 3 ? "3" : "2";
-        var convertVersion = Settings.Instance.MapVersion == 3 ? "2" : "3";
-        var extraMsg = currentVersion == "3" ? "\n\nNOTE: Beatmap v2 is deprecated as stated legacy in internal game code, it is unlikely to be supported in the near future." : "";
-        
-        // TODO: Check if any data would be lost from conversion (e.g. AngleOffset from v3 to v2)
-        PersistentUI.Instance.ShowDialogBox($"Do you want to change map version from map v{currentVersion} to v{convertVersion}?\nWARNING: Map containing incompatible data (including custom data) may result in loss, please >>manually backup<< your map before conversion." + extraMsg, (res) =>
-        {
-            if (res != 0) return;
+        // Don't expect this to be used that often so destroy on close
+        var switchVersionDialogueBox = PersistentUI.Instance
+            .CreateNewDialogBox()
+            .WithTitle("Mapper","change.beatmap.version");
 
-            if (Settings.Instance.MapVersion == 3)
-            {
-                BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 3, toVersion: 2);
-                Settings.Instance.MapVersion = 2;
-            }
-            else
-            {
-                BeatSaberSongContainer.Instance.Map.ConvertCustomDataVersion(fromVersion: 2, toVersion: 3);
-                Settings.Instance.MapVersion = 3;
-            }
-        }, PersistentUI.DialogBoxPresetType.YesNoCancel);
+        switchVersionDialogueBox
+            .AddComponent<TextComponent>()
+            .WithInitialValue("Mapper", "change.beatmap.version.warning");
+
+        // Cancel button
+        switchVersionDialogueBox.AddFooterButton(null, "PersistentUI", "cancel");
+
+        switchVersionDialogueBox.AddFooterButton(() => OnChangeVersion(2), "v2");
+        switchVersionDialogueBox.AddFooterButton(() => OnChangeVersion(3), "v3");
+        
+        // v4 difficulty is only supported with v4 info
+        if (BeatSaberSongContainer.Instance.Info.MajorVersion == 4)
+        {
+            switchVersionDialogueBox.AddFooterButton(() => OnChangeVersion(4), "v4");
+        }
+        
+        switchVersionDialogueBox.Open();
     }
 }

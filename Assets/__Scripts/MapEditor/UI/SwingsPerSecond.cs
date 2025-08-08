@@ -120,7 +120,7 @@ public class SwingsPerSecond
     public void Update()
     {
         var interval = 10;
-        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
 
         var swings = SwingCount(songBpm);
         var red = swings[0];

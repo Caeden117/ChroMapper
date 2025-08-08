@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Xml.Linq;
+using Beatmap.Info;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
@@ -16,18 +18,18 @@ public class SongList : MonoBehaviour
         Name, Modified, Artist
     }
 
-    private static readonly IComparer<BeatSaberSong> sortName =
+    private static readonly IComparer<BaseInfo> sortName =
         new WithFavouriteComparer((a, b) =>
             string.Compare(a.SongName, b.SongName, StringComparison.InvariantCultureIgnoreCase));
 
-    private static readonly IComparer<BeatSaberSong> sortModified =
+    private static readonly IComparer<BaseInfo> sortModified =
         new WithFavouriteComparer((a, b) => b.LastWriteTime.CompareTo(a.LastWriteTime));
 
-    private static readonly IComparer<BeatSaberSong> sortArtist =
+    private static readonly IComparer<BaseInfo> sortArtist =
         new WithFavouriteComparer((a, b) =>
             string.Compare(a.SongAuthorName, b.SongAuthorName, StringComparison.InvariantCultureIgnoreCase));
 
-    public SortedSet<BeatSaberSong> Songs = new(sortName);
+    public SortedSet<BaseInfo> SongInfos = new(sortName);
     public bool FilteredBySearch;
 
     [SerializeField] private TMP_InputField searchField;
@@ -42,7 +44,7 @@ public class SongList : MonoBehaviour
     [SerializeField] private RecyclingListView newList;
     private SongSortType currentSort = SongSortType.Name;
 
-    private List<BeatSaberSong> filteredSongs = new();
+    private List<BaseInfo> filteredSongs = new();
 
     public string SelectedFolderPath => songFolderPaths[selectedFolder];
     private static int selectedFolder;
@@ -50,6 +52,7 @@ public class SongList : MonoBehaviour
     [SerializeField] private GameObject songFolderPrefab;
     private readonly List<GameObject> songFolderObjects = new();
     private readonly List<string> songFolderPaths = new();
+    private readonly List<bool> songFolderCacheZips = new();
 
     private void Start()
     {
@@ -70,8 +73,8 @@ public class SongList : MonoBehaviour
 
     private void AddDefaultFolders()
     {
-        InitFolderObject("WIP Levels", Settings.Instance.CustomWIPSongsFolder);
-        InitFolderObject("Custom Levels", Settings.Instance.CustomSongsFolder);
+        InitFolderObject("WIP Levels", Settings.Instance.CustomWIPSongsFolder, true);
+        InitFolderObject("Custom Levels", Settings.Instance.CustomSongsFolder, false);
     }
 
     /*
@@ -80,6 +83,7 @@ public class SongList : MonoBehaviour
      *   <folder>
      *     <Name></Name>
      *     <Path></Path>
+     *     <CacheZIPs></CacheZIPs>
      *   <folder>
      * </folders>
      */
@@ -96,14 +100,15 @@ public class SongList : MonoBehaviour
         {
             var tabName = folder.Element("Name")?.Value;
             var path = folder.Element("Path")?.Value;
+            bool.TryParse(folder.Element("CacheZIPs")?.Value, out var cacheZips);
 
             if (tabName == null || path == null || !Directory.Exists(path)) continue;
 
-            InitFolderObject(tabName, path);
+            InitFolderObject(tabName, path, cacheZips);
         }
     }
 
-    private void InitFolderObject(string tabName, string folderPath)
+    private void InitFolderObject(string tabName, string folderPath, bool cacheZips)
     {
         var prefab = Instantiate(songFolderPrefab, songFolderPrefab.transform.parent, true);
         var button = prefab.GetComponent<Button>();
@@ -116,6 +121,7 @@ public class SongList : MonoBehaviour
 
         songFolderObjects.Add(prefab);
         songFolderPaths.Add(folderPath);
+        songFolderCacheZips.Add(cacheZips);
 
         prefab.SetActive(true);
 
@@ -133,10 +139,10 @@ public class SongList : MonoBehaviour
 
     public event Action<SongSortType> SortTypeChanged;
 
-    private void SwitchSort(IComparer<BeatSaberSong> newSort, Sprite sprite)
+    private void SwitchSort(IComparer<BaseInfo> newSort, Sprite sprite)
     {
         sortImage.sprite = sprite;
-        Songs = new SortedSet<BeatSaberSong>(Songs, newSort);
+        SongInfos = new SortedSet<BaseInfo>(SongInfos, newSort);
         UpdateSongList();
     }
 
@@ -187,7 +193,46 @@ public class SongList : MonoBehaviour
     public void TriggerRefresh()
     {
         StopAllCoroutines();
+        StartCoroutine(RefreshCacheZips());
         StartCoroutine(RefreshSongList());
+    }
+
+    private IEnumerator RefreshCacheZips()
+    {
+        if (!songFolderCacheZips[selectedFolder]) yield break;
+        
+        var zipFileInfos = new DirectoryInfo(songFolderPaths[selectedFolder])
+            .EnumerateFiles()
+            .Where(f => f.Extension == ".zip")
+            .ToList();
+        if (zipFileInfos.Count > 0)
+        {
+            var cacheFolderPath = Path.Combine(songFolderPaths[selectedFolder], "ChroMapperZipCache");
+            if (Directory.Exists(cacheFolderPath))
+            {
+                Directory.Delete(cacheFolderPath, true); 
+            }
+            Directory.CreateDirectory(cacheFolderPath);
+            
+            var iterBeginTime = Time.realtimeSinceStartup;
+            foreach (var zipFileInfo in zipFileInfos)
+            {
+                if (Time.realtimeSinceStartup - iterBeginTime > 0.02f)
+                {
+                    yield return null;
+                    iterBeginTime = Time.realtimeSinceStartup;
+                }
+                
+                var extractedZipFolderName = Path.Combine(cacheFolderPath, zipFileInfo.Name);
+                Directory.CreateDirectory(extractedZipFolderName);
+                ZipFile.ExtractToDirectory(zipFileInfo.FullName, extractedZipFolderName);
+            }
+                
+            InitFolderObject($"Cache - {Path.GetFileNameWithoutExtension(songFolderPaths[selectedFolder])}", cacheFolderPath, false);
+        }
+
+        // Probably only want to check for zips once
+        songFolderCacheZips[selectedFolder] = false;
     }
 
     public IEnumerator RefreshSongList()
@@ -195,7 +240,7 @@ public class SongList : MonoBehaviour
         var directories = new DirectoryInfo(songFolderPaths[selectedFolder])
             .GetDirectories()
             .Where(dir => !dir.Attributes.HasFlag(FileAttributes.Hidden));
-        Songs.Clear();
+        SongInfos.Clear();
         newList.Clear();
         var iterBeginTime = Time.realtimeSinceStartup;
         foreach (var dir in directories)
@@ -207,8 +252,8 @@ public class SongList : MonoBehaviour
                 iterBeginTime = Time.realtimeSinceStartup;
             }
 
-            var song = BeatSaberSong.GetSongFromFolder(dir.FullName);
-            if (song == null)
+            var mapInfo = BeatSaberSongUtils.GetInfoFromFolder(dir.FullName);
+            if (mapInfo == null)
                 Debug.LogWarning($"No song at location {dir} exists! Is it in a subfolder?");
             /*
                  * Subfolder loading support has been removed for the following:
@@ -224,7 +269,7 @@ public class SongList : MonoBehaviour
                     if (song != null) songs.Add(song);
                 }*/
             else
-                Songs.Add(song);
+                SongInfos.Add(mapInfo);
         }
 
         UpdateSongList();
@@ -239,14 +284,14 @@ public class SongList : MonoBehaviour
         }
         else
         {
-            filteredSongs = Songs.ToList();
+            filteredSongs = SongInfos.ToList();
             ReloadListItems();
         }
     }
 
     public void FilterBySearch()
     {
-        filteredSongs = Songs.Where(x =>
+        filteredSongs = SongInfos.Where(x =>
             x.SongName.IndexOf(searchField.text, StringComparison.InvariantCultureIgnoreCase) >= 0 ||
             x.SongAuthorName.IndexOf(searchField.text, StringComparison.InvariantCultureIgnoreCase) >= 0).ToList();
         ReloadListItems();
@@ -260,11 +305,11 @@ public class SongList : MonoBehaviour
             newList.Refresh();
     }
 
-    public void RemoveSong(BeatSaberSong song) => Songs.Remove(song);
+    public void RemoveSong(BaseInfo mapInfo) => SongInfos.Remove(mapInfo);
 
-    public void AddSong(BeatSaberSong song)
+    public void AddSong(BaseInfo song)
     {
-        Songs.Add(song);
+        SongInfos.Add(song);
         UpdateSongList();
     }
 
@@ -281,11 +326,11 @@ public class SongList : MonoBehaviour
         }
     }
 
-    private class WithFavouriteComparer : FuncComparer<BeatSaberSong>
+    private class WithFavouriteComparer : FuncComparer<BaseInfo>
     {
-        public WithFavouriteComparer(Comparison<BeatSaberSong> comparison) : base(comparison) { }
+        public WithFavouriteComparer(Comparison<BaseInfo> comparison) : base(comparison) { }
 
-        public override int Compare(BeatSaberSong a, BeatSaberSong b) =>
+        public override int Compare(BaseInfo a, BaseInfo b) =>
             a?.IsFavourite != b?.IsFavourite ? a?.IsFavourite == true ? -1 : 1 : base.Compare(a, b);
     }
 }

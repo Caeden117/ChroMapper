@@ -32,6 +32,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
     public List<BaseEvent> AllRotationEvents = new List<BaseEvent>();
     public List<BaseEvent> AllBoostEvents = new List<BaseEvent>();
     public List<BaseEvent> AllBpmEvents = new List<BaseEvent>();
+    public List<BaseEvent> AllUtilityEvents = new List<BaseEvent>();
+    public List<BaseEvent> AllLaserRotationEvents = new List<BaseEvent>();
 
     private HashSet<BaseEvent> lightEventsWithKnownPrevNext = new HashSet<BaseEvent>();
 
@@ -63,7 +65,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
 
     public override ObjectType ContainerType => ObjectType.Event;
     private static int ExtraInterscopeLanes => EventContainer.ModifyTypeMode == 2 ? 2 : 0;
-    private int SpecialEventTypeCount => 7 + labels.NoRotationLaneOffset + ExtraInterscopeLanes;
+    private static int ExtraGagaLanes => EventContainer.ModifyTypeMode == 3 ? 4 : 0;
+    private int SpecialEventTypeCount => 7 + labels.NoRotationLaneOffset + ExtraInterscopeLanes + ExtraGagaLanes;
 
     public PropMode PropagationEditing
     {
@@ -81,8 +84,10 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                     ? platformDescriptor.LightingManagers[EventTypeToPropagate].LightIDPlacementMapReverse?.Count
                     : platformDescriptor.LightingManagers[EventTypeToPropagate].LightsGroupedByZ?.Length) ?? 0;
 
+            var extraLanes = ExtraInterscopeLanes + ExtraGagaLanes;
+
             labels.UpdateLabels(value, EventTypeToPropagate,
-                value == PropMode.Off ? 16 + ExtraInterscopeLanes : propagationLength + 1);
+                value == PropMode.Off ? 16 + extraLanes : propagationLength + 1);
             eventPlacement.SetGridSize(value != PropMode.Off
                 ? propagationLength + 1
                 : SpecialEventTypeCount + platformDescriptor.LightingManagers.Count(s => s != null));
@@ -207,6 +212,14 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 {
                     events.Remove(e);
                 }
+            } 
+            else if (e.IsUtilityEvent())
+            {
+                AllUtilityEvents.Remove(e);
+            }
+            else if (e.IsLaserRotationEvent())
+            {
+                AllLaserRotationEvents.Remove(e);
             }
 
             MarkEventToBeRelinked(e);
@@ -235,6 +248,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 AddToAllLightEvents(e);
                 lightEventsWithKnownPrevNext.Add(e);
             }
+            else if (e.IsUtilityEvent()) AllUtilityEvents.Add(e);
+            else if (e.IsLaserRotationEvent()) AllLaserRotationEvents.Add(e);
         }
 
         countersPlus.UpdateStatistic(CountersPlusStatistic.Events);
@@ -503,5 +518,15 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
             if (LoadedContainers.TryGetValue(evt, out var evtContainer))
                 (evtContainer as EventContainer).RefreshAppearance();
         }
+    }
+
+    public void UpdateColor(Color red, Color redBoost, Color blue, Color blueBoost, Color white, Color whiteBoost)
+    {
+        eventAppearanceSo.RedColor = red;
+        eventAppearanceSo.RedBoostColor = redBoost;
+        eventAppearanceSo.BlueColor = blue;
+        eventAppearanceSo.BlueBoostColor = blueBoost;
+        eventAppearanceSo.WhiteColor = white;
+        eventAppearanceSo.WhiteBoostColor = whiteBoost;
     }
 }

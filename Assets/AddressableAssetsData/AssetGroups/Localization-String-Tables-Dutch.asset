@@ -17,21 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: e5277bae54c1ce04bbe6c4841e4353e8
   m_SerializeEntries:
-  - m_GUID: 629d8a24657e936408405d0528afe267
-    m_Address: Contributors_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
-  - m_GUID: 93e4496d786ba6b48b7d4549a1d292e6
-    m_Address: Mapper_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
-  - m_GUID: 96078c8bb99077345be93ea4b614d283
-    m_Address: SongEditMenu_nl
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-nl
   - m_GUID: eb2b22059adf2a747a7d29855caee4e9
     m_Address: Options_nl
     m_ReadOnly: 1

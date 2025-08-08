@@ -113,7 +113,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
 
     private void RefreshWalls()
     {
-        var time = AudioTimeSyncController.CurrentJsonTime;
+        var time = AudioTimeSyncController.CurrentSongBpmTime;
         foreach (var obj in LoadedContainers.Values.ToList())
         {
             RecycleContainer(obj.ObjectData);

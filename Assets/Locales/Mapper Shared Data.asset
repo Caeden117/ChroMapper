@@ -735,6 +735,78 @@ MonoBehaviour:
     m_Key: countersplus.chains
     m_Metadata:
       m_Items: []
+  - m_Id: 444025876411969536
+    m_Key: unsupported.properties.warning.header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444026126589620224
+    m_Key: unsupported.properties.warning.subheader
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444093981712576512
+    m_Key: change.beatmap.version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444094241088335872
+    m_Key: change.beatmap.version.warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752073015914496
+    m_Key: countersplus.njsevents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752216670826496
+    m_Key: countersplus.currentnjs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752496527372288
+    m_Key: countersplus.currenthjd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752582758068224
+    m_Key: countersplus.currentjd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752663171264512
+    m_Key: countersplus.currentrt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 515086303031586816
+    m_Key: gradient.colors.white
+    m_Metadata:
+      m_Items: []
+  - m_Id: 515091128582533120
+    m_Key: bar.events.transition.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517335715707482112
+    m_Key: save.unsaved.changes.switch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517336294072643584
+    m_Key: loaded.difficulty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517338952263135232
+    m_Key: njs.dialog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339511007342592
+    m_Key: njs.dialogue.invalidnumber
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339586072801280
+    m_Key: njs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339628183613440
+    m_Key: easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339662874701824
+    m_Key: njs.dialogue.useprevious
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

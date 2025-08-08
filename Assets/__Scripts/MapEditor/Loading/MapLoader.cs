@@ -37,6 +37,11 @@ public class MapLoader : MonoBehaviour
             LoadObjects(map.Chains);
         }
 
+        if (Settings.Instance.Load_Notes || Settings.Instance.Load_Obstacles)
+        {
+            LoadObjects(map.NJSEvents);
+        }
+
         manager.RefreshTracks();
     }
 
@@ -51,13 +56,6 @@ public class MapLoader : MonoBehaviour
         
         collection.MapObjects = objects;
 
-        var span = objects.AsSpan();
-
-        for (var i = 0; i < span.Length; i++)
-        {
-            span[i].RecomputeSongBpmTime();
-        }
-        
         if (objects is List<BaseEvent> eventsList)
         {
             manager.RefreshTracks();
@@ -66,6 +64,8 @@ public class MapLoader : MonoBehaviour
             events.AllRotationEvents = eventsList.FindAll(it => it.IsLaneRotationEvent());
             events.AllBoostEvents = eventsList.FindAll(it => it.IsColorBoostEvent());
             events.AllBpmEvents = eventsList.FindAll(it => it.IsBpmEvent());
+            events.AllUtilityEvents = eventsList.FindAll(it => it.IsUtilityEvent());
+            events.AllLaserRotationEvents = eventsList.FindAll(it => it.IsLaserRotationEvent());
 
             events.LinkAllLightEvents();
         }

@@ -169,6 +169,48 @@ namespace Tests
                     (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
             }
         }
+        
+        [Test]
+        public void UpdateNoteDirectionMergeAction()
+        {
+            var actionContainer = Object.FindObjectOfType<BeatmapActionContainer>();
+            var notesContainer = BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            
+            var root = notesContainer.transform.root;
+            var notePlacement = root.GetComponentInChildren<NotePlacement>();
+            var inputController = root.GetComponentInChildren<BeatmapNoteInputController>();
+
+            var baseNoteA = new BaseNote
+            {
+                JsonTime = 2, PosX = (int)GridX.Left, PosY = (int)GridY.Base, Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left
+            };
+            PlaceUtils.PlaceNote(notePlacement, baseNoteA);
+
+            if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerA)
+                inputController.UpdateNoteDirection(containerA, true);
+
+            CheckUtils.CheckNote("Update note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.DownLeft, 0);
+            
+            if (notesContainer.LoadedContainers[baseNoteA] is NoteContainer containerB)
+                inputController.UpdateNoteDirection(containerB, true);
+
+            CheckUtils.CheckNote("Update note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.Down, 0);
+            
+            // Undo merged direction
+            actionContainer.Undo();
+
+            CheckUtils.CheckNote("Undo note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.Left, 0);
+
+            // Redo merged direction
+            actionContainer.Redo();
+            
+            CheckUtils.CheckNote("Undo note direction", notesContainer, 0, 2, (int)GridX.Left, (int)GridY.Base,
+                (int)NoteType.Red, (int)NoteCutDirection.Down, 0);
+        }
 
         [Test]
         public void UpdateNoteDirectionAffectsSlider()

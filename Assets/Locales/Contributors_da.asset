@@ -70,6 +70,10 @@ MonoBehaviour:
     m_Localized: "Er du sikker p\xE5, at du vil fjerne alle bidragydere?"
     m_Metadata:
       m_Items: []
+  - m_Id: 2582460100608
+    m_Localized: Clear All
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

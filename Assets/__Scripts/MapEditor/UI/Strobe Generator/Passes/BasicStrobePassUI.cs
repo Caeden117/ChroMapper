@@ -42,15 +42,28 @@ public class BasicStrobePassUI : StrobeGeneratorPassUIController
         return new StrobeLightingPass(values, swapColors.isOn, dynamicallyChangeTypeA.isOn, precision, internalName, easingTime.isOn, easingFloatValue.isOn);
     }
 
-    private int GetTypeFromEventIds(int eventValue, int eventColor)
+    private static int GetTypeFromEventIds(int eventValue, int eventColor)
     {
-        return eventValue switch
+        return (eventValue, eventColor) switch
         {
-            0 => (int)LightValue.Off,
-            1 => eventColor == 0 ? (int)LightValue.RedOn : (int)LightValue.BlueOn,
-            2 => eventColor == 0 ? (int)LightValue.RedFlash : (int)LightValue.BlueFlash,
-            3 => eventColor == 0 ? (int)LightValue.RedFade : (int)LightValue.BlueFade,
-            4 => eventColor == 0 ? (int)LightValue.RedTransition : (int)LightValue.BlueTransition,
+            (0, _) => (int)LightValue.Off,
+
+            (1, 0) => (int)LightValue.RedOn,
+            (1, 1) => (int)LightValue.BlueOn,
+            (1, 2) => (int)LightValue.WhiteOn,
+
+            (2, 0) => (int)LightValue.RedFlash,
+            (2, 1) => (int)LightValue.BlueFlash,
+            (2, 2) => (int)LightValue.WhiteFlash,
+
+            (3, 0) => (int)LightValue.RedFade,
+            (3, 1) => (int)LightValue.BlueFade,
+            (3, 2) => (int)LightValue.WhiteFade,
+
+            (4, 0) => (int)LightValue.RedTransition,
+            (4, 1) => (int)LightValue.BlueTransition,
+            (4, 2) => (int)LightValue.WhiteTransition,
+
             _ => -1,
         };
     }

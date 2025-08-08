@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.V3;
 using NUnit.Framework;
@@ -324,7 +325,7 @@ namespace TestsEditMode
         [Test]
         public void V3VfxEventEventBoxGroupTest()
         {
-            Assert.Throws<ArgumentException>(() => V3VfxEventEventBoxGroup.GetFromJson(new JSONObject()));
+            Assert.Throws<ArgumentException>(() => V3VfxEventEventBoxGroup.GetFromJson(new JSONObject(), new List<FloatFxEventBase>()));
             Assert.DoesNotThrow(() => V3VfxEventEventBoxGroup.GetFromJson(new JSONObject
             {
                 ["e"] = new JSONArray
@@ -334,7 +335,7 @@ namespace TestsEditMode
                         ["f"] = new JSONObject()
                     }
                 }
-            }));
+            }, new List<FloatFxEventBase>()));
 
             var json = new JSONObject
             {
@@ -347,7 +348,7 @@ namespace TestsEditMode
                     }
                 }
             };
-            var group = V3VfxEventEventBoxGroup.GetFromJson(json);
+            var group = V3VfxEventEventBoxGroup.GetFromJson(json, new List<FloatFxEventBase>());
 
             AssertBaseEventBoxGroupDefaults(group);
         }
@@ -422,7 +423,7 @@ namespace TestsEditMode
                 Assert.AreEqual(0, vfxEventEventBox.VfxDistributionType);
                 Assert.AreEqual(0, vfxEventEventBox.VfxAffectFirst);
                 Assert.AreEqual(0, vfxEventEventBox.Easing);
-                Assert.AreEqual(0, vfxEventEventBox.VfxData.Length);
+                Assert.AreEqual(0, vfxEventEventBox.FloatFxEvents.Count);
             }
         }
 

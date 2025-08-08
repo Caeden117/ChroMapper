@@ -9,11 +9,14 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI timeMesh;
+    [SerializeField] private TextMeshProUGUI currentBeatMesh;
     [SerializeField] private AudioSource mainAudioSource;
     public bool IsClicked;
     private float lastSongTime;
 
     private float songLength;
+
+    private string timeMeshFloatFormat = "F3";
 
     public static bool IsHovering { get; private set; }
 
@@ -23,7 +26,19 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
         yield return new WaitUntil(() => mainAudioSource.clip != null);
         songLength = mainAudioSource.clip.length;
         slider.value = 0;
+
+        timeMeshFloatFormat = $"F{Settings.Instance.TimeValueDecimalPrecision}";
+        Settings.NotifyBySettingName(nameof(Settings.TimeValueDecimalPrecision), UpdateTimeMeshFloatFormat);
     }
+
+    private void OnDestroy() => Settings.ClearSettingNotifications(nameof(Settings.TimeValueDecimalPrecision));
+
+    private void UpdateTimeMeshFloatFormat(object value)
+    {
+        timeMeshFloatFormat = $"F{value}";
+        currentBeatMesh.text = atsc.CurrentJsonTime.ToString(timeMeshFloatFormat);
+    }
+    
 
     // Update is called once per frame
     private void Update()
@@ -43,6 +58,7 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
             "<mspace=0.4em>{3}{0:0}</mspace>:<mspace=0.4em>{1:00}</mspace><size=20>.<mspace=0.4em>{2:000}</mspace></size>",
             minutes, seconds, milliseconds,
             atsc.CurrentSeconds < 0 ? "-" : "");
+        currentBeatMesh.text = atsc.CurrentJsonTime.ToString(timeMeshFloatFormat);
     }
 
     public void OnPointerEnter(PointerEventData eventData) => IsHovering = true;

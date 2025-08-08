@@ -76,10 +76,14 @@ public class LightingEvent : MonoBehaviour
         if (float.IsNaN(multiplyAlpha)) multiplyAlpha = 0;
 
         colorTime += Time.deltaTime;
-        var color = Color.Lerp(currentColor, targetColor, easing(colorTime / timeToTransitionColor));
+        var color = timeToTransitionColor == 0
+            ? targetColor
+            : Color.Lerp(currentColor, targetColor, easing(colorTime / timeToTransitionColor));
 
         alphaTime += Time.deltaTime;
-        var alpha = Mathf.Lerp(currentAlpha, targetAlpha, easing(alphaTime / timeToTransitionAlpha)) * multiplyAlpha;
+        var alpha = timeToTransitionAlpha == 0
+            ? targetAlpha
+            : Mathf.Lerp(currentAlpha, targetAlpha, easing(alphaTime / timeToTransitionAlpha)) * multiplyAlpha;
 
         SetEmission(alpha > 0);
 

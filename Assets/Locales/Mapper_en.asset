@@ -18,35 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - rid: 0
-    - rid: 1
-    - rid: 2
-    - rid: 3
-    - rid: 4
-    - rid: 5
-    - rid: 6
-    - rid: 7
-    - rid: 8
-    - rid: 9
-    - rid: 10
-    - rid: 11
-    - rid: 12
-    - rid: 13
-    - rid: 14
-    - rid: 15
-    - rid: 16
-    - rid: 17
-    - rid: 18
-    - rid: 19
-    - rid: 20
-    - rid: 21
-    - rid: 22
-    - rid: 23
-    - rid: 24
-    - rid: 25
-    - rid: 26
-    - rid: 27
-    - rid: 28
-    - rid: 29
   m_TableData:
   - m_Id: 1
     m_Localized: 'Notes: {NotesCount}'
@@ -765,7 +736,8 @@ MonoBehaviour:
   - m_Id: 42988137944907776
     m_Localized: Easing Time
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 0
   - m_Id: 43247577315082240
     m_Localized: Ease FloatValue
     m_Metadata:
@@ -854,13 +826,100 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 0
+  - m_Id: 444025876411969536
+    m_Localized: 'Warning
+
+      The following properties are not saved in v{0} format:
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444026126589620224
+    m_Localized: Save in a different format to ensure data is not lost.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444093981712576512
+    m_Localized: Change Beatmap Version
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444094241088335872
+    m_Localized: 'WARNING: Map containing incompatible data (including custom data)
+      may result in data loss. Please manually backup your map before conversion.
+
+
+      Select
+      a map version to change to.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 469752073015914496
+    m_Localized: 'NJS Events: {NJSEventCount}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 469752216670826496
+    m_Localized: 'Current NJS: {CurrentNJS:F2}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 469752496527372288
+    m_Localized: 'Current HJD: {CurrentHJD:F2}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 469752582758068224
+    m_Localized: 'Current JD: {CurrentJD:F1}'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 469752663171264512
+    m_Localized: 'Current RT: {CurrentRT:F0}ms'
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 515086303031586816
+    m_Localized: Use White events.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 515091128582533120
+    m_Localized: The light will fade from previous event.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517335715707482112
+    m_Localized: There are unsaved changes. Do you want to save before switching
+      difficulties?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517336294072643584
+    m_Localized: Loaded Difficulty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517338952263135232
+    m_Localized: Please enter the NJS and easing for this NJS event.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339586072801280
+    m_Localized: NJS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339511007342592
+    m_Localized: NJS must a be positive number.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339628183613440
+    m_Localized: Easing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 517339662874701824
+    m_Localized: Use previous NJS event value
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 0
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f604
+        m_Entries: 00003fb3360000000000bfa70501000000b07a265f670b00000083e97b09560300f09d46e2f6f60400f01daff2f6f6040000c3d37bb9980000f09d8405e5840600f01df726e5840600f09d337ce5840600f0dd1f68e5840600f09dec8ee58406
     - rid: 1
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
@@ -902,10 +961,6 @@ MonoBehaviour:
       data:
         m_Entries: 
     - rid: 11
-      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
-      data:
-        m_Entries: 
-    - rid: 12
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 

@@ -7,6 +7,7 @@ public class SelectionPastedAction : BeatmapAction
 {
     private IEnumerable<BaseObject> removed;
 
+    // This constructor is needed for United Mapping
     public SelectionPastedAction() : base() { }
 
     public SelectionPastedAction(IEnumerable<BaseObject> pasteData, IEnumerable<BaseObject> removed) :
@@ -15,19 +16,28 @@ public class SelectionPastedAction : BeatmapAction
         this.affectsSeveralObjects = true;
         this.removed = removed;
     }
+
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var obj in Data)
             DeleteObject(obj, false);
+
+        SelectionController.SelectionChangedEvent?.Invoke();
+
         foreach (var obj in removed)
             SpawnObject(obj);
+
         RefreshPools(removed);
         RefreshEventAppearance();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        SelectionController.DeselectAll();
+        if (!Networked)
+        {
+            SelectionController.DeselectAll();
+        }
+
         foreach (var obj in Data)
         {
             SpawnObject(obj);

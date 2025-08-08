@@ -9,28 +9,13 @@ using UnityEngine.UI;
 
 public class EnvRemoval : MonoBehaviour
 {
-    [SerializeField] private GameObject diffInfoContainer;
-    [SerializeField] private GameObject envRemovalContainer;
-
     [SerializeField] private GameObject listContainer;
     [SerializeField] private GameObject listItemPrefab;
 
     [SerializeField] private DifficultySelect difficultySelect;
-    [SerializeField] private Image envRemovalToggle;
 
     private readonly List<EnvRemovalListItem> envRemovalList = new List<EnvRemovalListItem>();
     public List<BaseEnvironmentEnhancement> EnvRemovalList => envRemovalList.Select(it => it.Value).ToList();
-
-    public void ToggleEnvRemoval()
-    {
-        var oldActive = envRemovalContainer.activeSelf;
-        envRemovalContainer.SetActive(!oldActive);
-        diffInfoContainer.SetActive(oldActive);
-        envRemovalToggle.enabled = !oldActive;
-        envRemovalToggle.transform.localPosition += (oldActive)
-            ? new Vector3(-152, 0, 0)
-            : new Vector3(152, 0, 0);
-    }
 
     public void AddItem()
     {

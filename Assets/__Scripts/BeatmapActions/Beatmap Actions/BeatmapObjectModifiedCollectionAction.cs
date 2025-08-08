@@ -15,6 +15,7 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
     
     private readonly float firstBpmEventJsonTime;
 
+    // This constructor is needed for United Mapping
     public BeatmapObjectModifiedCollectionAction() : base() { }
 
     public BeatmapObjectModifiedCollectionAction(List<BaseObject> editedObjects, List<BaseObject> originalObjects,
@@ -39,7 +40,6 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
         foreach (var obj in editedObjects)
         {
             DeleteObject(obj, false);
-            SelectionController.Deselect(obj, false);
         }
 
         foreach (var obj in originalObjects)
@@ -66,7 +66,6 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
         foreach (var obj in originalObjects)
         {
             DeleteObject(obj, false);
-            SelectionController.Deselect(obj, false);
         }
 
         foreach (var obj in editedObjects)

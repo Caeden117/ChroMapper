@@ -12,15 +12,11 @@ namespace Beatmap.Containers
 
         [SerializeField] public BaseObstacle ObstacleData;
 
-        private BPMChangeGridContainer bpmChangeGridContainer;
-
         public override BaseObject ObjectData
         {
             get => ObstacleData;
             set => ObstacleData = (BaseObstacle)value;
         }
-
-        public int ChunkEnd => (int)((ObstacleData.JsonTime + ObstacleData.Duration) / Intersections.ChunkSize);
 
         public bool IsRotatedByNoodleExtensions => ObstacleData.CustomWorldRotation != null;
 
@@ -28,7 +24,6 @@ namespace Beatmap.Containers
             ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<ObstacleContainer>();
-            container.bpmChangeGridContainer = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(Enums.ObjectType.BpmChange);
             container.ObstacleData = data;
             container.manager = manager;
             return container;
@@ -58,9 +53,7 @@ namespace Beatmap.Containers
             if (ObstacleData.CustomSize != null && ObstacleData.CustomSize.IsArray && ObstacleData.CustomSize[2].IsNumber)
                 return ObstacleData.CustomSize[2];
 
-            var obstacleStart = ObstacleData.SongBpmTime;
-            var obstacleEnd = bpmChangeGridContainer?.JsonTimeToSongBpmTime(ObstacleData.JsonTime + ObstacleData.Duration) ?? 0;
-            var length = obstacleEnd - obstacleStart;
+            var length = ObstacleData.DurationSongBpm;
 
             //Take half jump duration into account if the setting is enabled.
             if (ObstacleData.Duration < 0 && Settings.Instance.ShowMoreAccurateFastWalls && !UIMode.AnimationMode)

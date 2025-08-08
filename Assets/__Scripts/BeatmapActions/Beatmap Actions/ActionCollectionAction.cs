@@ -15,14 +15,20 @@ using Beatmap.Containers;
  * next undo will affect the wrong object this can cause seemingly random unselected, ghost, or stacked object.
  * For this case, use BeatmapObjectModifiedCollectionAction
  */
-public class ActionCollectionAction : BeatmapAction
+public class ActionCollectionAction : BeatmapAction, IMergeableAction
 {
     private IEnumerable<BeatmapAction> actions;
     private bool clearSelection;
     private bool forceRefreshesPool;
 
+    public ActionMergeType MergeType {  get; set; }
+    public int MergeCount { get; set; }
+
+    // This constructor is needed for United Mapping
+    public ActionCollectionAction() : base() { }
+    
     public ActionCollectionAction(IEnumerable<BeatmapAction> beatmapActions, bool forceRefreshPool = false,
-        bool clearsSelection = true, string comment = "No comment.")
+        bool clearsSelection = true, string comment = "No comment.", ActionMergeType mergeType = ActionMergeType.None)
         : base(beatmapActions.SelectMany(x => x.Data), comment)
     {
         foreach (var beatmapAction in beatmapActions)
@@ -35,6 +41,56 @@ public class ActionCollectionAction : BeatmapAction
         actions = beatmapActions;
         clearSelection = clearsSelection;
         forceRefreshesPool = forceRefreshPool;
+        MergeType = mergeType;
+    }
+    
+    public IMergeableAction TryMerge(IMergeableAction previous)
+    {
+        return CanMerge(previous) ? DoMerge(previous) : null;
+    }
+
+    public bool CanMerge(IMergeableAction previous)
+    {
+        if (previous is not ActionCollectionAction previousActionCollection) return false;
+
+        if (MergeType == ActionMergeType.None || previousActionCollection.MergeType != MergeType) return false;
+
+        foreach (var action in actions)
+            if (action is not IMergeableAction) return false;
+
+        foreach (var action in previousActionCollection.actions)
+            if (action is not IMergeableAction) return false;
+
+        if (actions.Count() != previousActionCollection.actions.Count()) return false;
+
+        return true;
+    }
+
+    public IMergeableAction DoMerge(IMergeableAction previous)
+    {
+        if (previous is not ActionCollectionAction previousActionCollection) return null;
+
+        var actionPairs = new Dictionary<IMergeableAction, IMergeableAction>();
+        foreach (var action in actions)
+        {
+            var modifiedAction = (IMergeableAction)action;
+            var correspondingAction = (IMergeableAction)previousActionCollection.actions.FirstOrDefault(x => modifiedAction.CanMerge((IMergeableAction)x));
+            if (correspondingAction == null) return null;
+            actionPairs[modifiedAction] = correspondingAction;
+        }
+
+        var mergedActions = new List<BeatmapAction>();
+        foreach (var (currentAction, previousAction) in actionPairs)
+        {
+            mergedActions.Add((BeatmapAction)currentAction.DoMerge(previousAction));
+        }
+
+        var merged = new ActionCollectionAction(mergedActions, forceRefreshesPool, clearSelection, Comment, MergeType);
+
+        merged.MergeCount = previousActionCollection.MergeCount + 1;
+        merged.Comment += $" ({merged.MergeCount}x merged)";
+
+        return merged;
     }
 
     public override BaseObject DoesInvolveObject(BaseObject obj)

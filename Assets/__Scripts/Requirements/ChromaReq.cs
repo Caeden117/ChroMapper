@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.Info;
 using Beatmap.V3;
 
 public class ChromaReq : HeckRequirementCheck
 {
     public override string Name => "Chroma";
 
-    public override RequirementType IsRequiredOrSuggested(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map)
+    public override RequirementType IsRequiredOrSuggested(InfoDifficulty infoDifficulty, BaseDifficulty map)
     {
-        if (mapInfo != null && (HasEnvironmentRemoval(mapInfo, map) || HasChromaEvents(map) || HasChromaTracks(map)))
-            return RequiresChroma(mapInfo, map) ? RequirementType.Requirement : RequirementType.Suggestion;
+        if (infoDifficulty != null && (HasEnvironmentRemoval(infoDifficulty, map) || HasChromaEvents(map) || HasChromaTracks(map)))
+            return RequiresChroma(infoDifficulty, map) ? RequirementType.Requirement : RequirementType.Suggestion;
 
         return RequirementType.None;
     }
@@ -18,13 +19,12 @@ public class ChromaReq : HeckRequirementCheck
     private bool HasChromaEvents(BaseDifficulty map) =>
         map.IsChroma();
 
-    private bool RequiresChroma(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map) =>
-        mapInfo.CustomData != null && mapInfo.CustomData.HasKey("_requirements") &&
-        mapInfo.CustomData["_requirements"].Linq.Any(x => x.Value == "Chroma");
+    private bool RequiresChroma(InfoDifficulty infoDifficulty, BaseDifficulty map) =>
+        infoDifficulty.CustomRequirements.Any(x => x == "Chroma");
 
-    private bool HasEnvironmentRemoval(BeatSaberSong.DifficultyBeatmap mapInfo, BaseDifficulty map) =>
-        (mapInfo.CustomData != null && mapInfo.CustomData.HasKey("_environmentRemoval") &&
-         mapInfo.CustomData["_environmentRemoval"].AsArray.Count > 0) ||
+    private bool HasEnvironmentRemoval(InfoDifficulty infoDifficulty, BaseDifficulty map) =>
+        (infoDifficulty.CustomData != null && infoDifficulty.CustomData.HasKey("_environmentRemoval") &&
+         infoDifficulty.CustomData["_environmentRemoval"].AsArray.Count > 0) ||
         (map.CustomData != null &&
          map.CustomData.HasKey("_environment") &&
          map.CustomData["_environment"].AsArray.Count > 0);

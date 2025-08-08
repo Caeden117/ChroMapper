@@ -118,14 +118,14 @@ public class GridRenderingController : MonoBehaviour
         foreach (var trans in gridFrontTransforms)
         {
             var scale = trans.localScale;
-            trans.localScale = new Vector3(scale.x, scale.y, Settings.Instance.TrackLength * 4);
+            trans.localScale = new Vector3(scale.x, scale.y, Settings.Instance.TrackLength * EditorScaleController.EditorScale);
         }
     }
 
     private void UpdateOneBeat(object value)
     {
-        foreach (var renderer in oneBeat)
-            foreach (var mat in renderer.materials) mat.SetFloat(gridThickness, (float)value);
+        oneBeatPropertyBlock.SetFloat(gridThickness, (float)value);
+        foreach (var g in oneBeat) g.SetPropertyBlock(oneBeatPropertyBlock);
     }
 
     private int GetLowestDenominator(int a)

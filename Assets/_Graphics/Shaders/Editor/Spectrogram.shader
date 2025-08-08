@@ -55,6 +55,7 @@ Shader "Unlit/Spectrogram"
             uniform float _ViewEnd = 1;
 
             uniform float _EditorScale;
+            uniform float _SongBPM;
 
             uniform uint FFTInitialized = 0;
             uniform uint FFTFrequency = 1024;
@@ -215,9 +216,7 @@ Shader "Unlit/Spectrogram"
                     Remap(value, GradientKeys[lowerGradientIdx], GradientKeys[upperGradientIdx], 0, 1));
 
                 // Add 0.2 to each component if we are within outline
-                // TODO: Because units are in seconds, this outline scales with the length of grid
-                //   Need to make the outline time/scale independent
-                if (abs(currentSeconds - _SongTimeSeconds) < _OutlineWidth / _EditorScale)
+                if (abs(currentSeconds - _SongTimeSeconds) < _OutlineWidth / _EditorScale / (_SongBPM / 120))
                 {
                     color += float4(0.5, 0.5, 0.5, 0.5);
                 }

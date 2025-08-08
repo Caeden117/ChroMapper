@@ -35,13 +35,13 @@ namespace Beatmap.Base
 
         public BaseArc(BaseArc other)
         {
-            SetTimes(other.JsonTime, other.SongBpmTime);
+            JsonTime = other.JsonTime;
             Color = other.Color;
             PosX = other.PosX;
             PosY = other.PosY;
             CutDirection = other.CutDirection;
             HeadControlPointLengthMultiplier = other.HeadControlPointLengthMultiplier;
-            SetTailTimes(other.TailJsonTime, other.TailSongBpmTime);
+            TailJsonTime = other.TailJsonTime;
             TailPosX = other.TailPosX;
             TailPosY = other.TailPosY;
             TailCutDirection = other.TailCutDirection;
@@ -52,13 +52,13 @@ namespace Beatmap.Base
 
         public BaseArc(BaseNote start, BaseNote end)
         {
-            SetTimes(start.JsonTime, start.SongBpmTime);
+            JsonTime = start.JsonTime;
             Color = start.Color;
             PosX = start.PosX;
             PosY = start.PosY;
             CutDirection = start.CutDirection;
             HeadControlPointLengthMultiplier = 1f;
-            SetTailTimes(end.JsonTime, end.SongBpmTime);
+            TailJsonTime = end.JsonTime;
             TailPosX = end.PosX;
             TailPosY = end.PosY;
             TailCutDirection = end.CutDirection;
@@ -79,63 +79,63 @@ namespace Beatmap.Base
         public override string CustomKeyColor => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyColor,
-            3 => V3Arc.CustomKeyColor
+            3 or 4 => V3Arc.CustomKeyColor
         };
 
         public override string CustomKeyTrack => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyTrack,
-            3 => V3Arc.CustomKeyTrack
+            3 or 4 => V3Arc.CustomKeyTrack
         };
         
 
         public override string CustomKeyTailCoordinate => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyTailCoordinate,
-            3 => V3Arc.CustomKeyTailCoordinate
+            3 or 4 => V3Arc.CustomKeyTailCoordinate
         };
         
 
         public override string CustomKeyAnimation => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyAnimation,
-            3 => V3Arc.CustomKeyAnimation
+            3 or 4 => V3Arc.CustomKeyAnimation
         };
         
         public override string CustomKeyCoordinate => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyCoordinate,
-            3 => V3Arc.CustomKeyCoordinate
+            3 or 4 => V3Arc.CustomKeyCoordinate
         };
         
         public override string CustomKeyWorldRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyWorldRotation,
-            3 => V3Arc.CustomKeyWorldRotation
+            3 or 4 => V3Arc.CustomKeyWorldRotation
         };
         
         public override string CustomKeyLocalRotation => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyLocalRotation,
-            3 => V3Arc.CustomKeyLocalRotation
+            3 or 4 => V3Arc.CustomKeyLocalRotation
         };
         
         public override string CustomKeySpawnEffect => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeySpawnEffect,
-            3 => V3Arc.CustomKeySpawnEffect
+            3 or 4 => V3Arc.CustomKeySpawnEffect
         };
         
         public override string CustomKeyNoteJumpMovementSpeed => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyNoteJumpMovementSpeed,
-            3 => V3Arc.CustomKeyNoteJumpMovementSpeed
+            3 or 4 => V3Arc.CustomKeyNoteJumpMovementSpeed
         };
         
         public override string CustomKeyNoteJumpStartBeatOffset => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.CustomKeyNoteJumpStartBeatOffset,
-            3 => V3Arc.CustomKeyNoteJumpStartBeatOffset
+            3 or 4 => V3Arc.CustomKeyNoteJumpStartBeatOffset
         };
         
         public override bool IsChroma() =>
@@ -228,7 +228,7 @@ namespace Beatmap.Base
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2Arc.ToJson(this),
-            3 => V3Arc.ToJson(this)
+            3 or 4 => V3Arc.ToJson(this)
         };
 
         public override BaseItem Clone()

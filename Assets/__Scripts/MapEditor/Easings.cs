@@ -279,4 +279,55 @@ public class Easing
             return (Out((k * 2f) - 1f) * 0.5f) + 0.5f;
         }
     }
+
+    // Maps Beat Saber's easing value to corresponding easing
+    public class BeatSaber
+    {
+        // VNJS doesn't support all easings
+        public static float EaseVNJS(int? easingType, float k) => easingType switch
+        {
+            >= 4 and <= 18 => 0,
+            _ => Ease(easingType, k)
+        };
+        
+        public static float Ease(int? easingType, float k) => easingType switch
+        {
+            -1 => 0,
+            0 => Linear(k),
+            1 => Quadratic.In(k),
+            2 => Quadratic.Out(k),
+            3 => Quadratic.InOut(k),
+            4 => Sinusoidal.In(k),
+            5 => Sinusoidal.Out(k),
+            6 => Sinusoidal.InOut(k),
+            7 => Cubic.In(k),
+            8 => Cubic.Out(k),
+            9 => Cubic.InOut(k),
+            10 => Quartic.In(k),
+            11 => Quartic.Out(k),
+            12 => Quartic.InOut(k),
+            13 => Quintic.In(k),
+            14 => Quintic.Out(k),
+            15 => Quintic.InOut(k),
+            16 => Exponential.In(k),
+            17 => Exponential.Out(k),
+            18 => Exponential.InOut(k),
+            19 => Circular.In(k),
+            20 => Circular.Out(k),
+            21 => Circular.InOut(k),
+            22 => Back.In(k),
+            23 => Back.Out(k),
+            24 => Back.InOut(k),
+            25 => Elastic.In(k),
+            26 => Elastic.Out(k),
+            27 => Elastic.InOut(k),
+            28 => Bounce.In(k),
+            29 => Bounce.Out(k),
+            30 => Bounce.InOut(k),
+            // These are BeatSaber custom easings. We don't have the formula for this - so default to none for now 
+            100 or 101 or 102 => 0,
+            _ => 0
+        };
+
+    }
 }

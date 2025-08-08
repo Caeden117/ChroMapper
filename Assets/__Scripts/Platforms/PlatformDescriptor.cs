@@ -16,6 +16,9 @@ public class PlatformDescriptor : MonoBehaviour
     [Tooltip("Leave null if you do not want big rings.")]
     public TrackLaneRingsManagerBase BigRingManager;
 
+    [Tooltip("Leave null if you do not want gaga environment disks.")]
+    public GagaDiskManager DiskManager;
+
     [Header("Lighting Groups")]
     [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
     public LightsManager[] LightingManagers = { };
@@ -26,7 +29,7 @@ public class PlatformDescriptor : MonoBehaviour
     [FormerlySerializedAs("colors")][HideInInspector] public PlatformColors Colors;
     [FormerlySerializedAs("defaultColors")] public PlatformColors DefaultColors = new PlatformColors();
 
-    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17")]
+    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17 | 3 = Gaga Lanes")]
     public int SortMode;
 
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
@@ -210,6 +213,8 @@ public class PlatformDescriptor : MonoBehaviour
                     SmallRingManager.HandlePositionEvent(e);
                 break;
             case 12:
+                if (HandleGagaHeightEvent(e)) return;
+                
                 var leftEventTypes = new List<int>() { (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights };
 
                 foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
@@ -222,6 +227,8 @@ public class PlatformDescriptor : MonoBehaviour
 
                 break;
             case 13:
+                if (HandleGagaHeightEvent(e)) return;
+                
                 var rightEventTypes = new List<int>() { (int)EventTypeValue.RightLasers, (int)EventTypeValue.ExtraRightLasers, (int)EventTypeValue.ExtraRightLights };
 
                 foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
@@ -243,8 +250,14 @@ public class PlatformDescriptor : MonoBehaviour
                         ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor,
                         ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor);
                 }
-
                 break;
+            case 16:
+            case 17: 
+            case 18:
+            case 19:
+                if (HandleGagaHeightEvent(e)) return;
+                break;
+            
             default:
                 if (e.Type < LightingManagers.Length && LightingManagers[e.Type] != null)
                     HandleLights(LightingManagers[e.Type], e.Value, e);
@@ -515,6 +528,18 @@ public class PlatformDescriptor : MonoBehaviour
         chromaCustomColors[group] = gradient.EndColor;
         group.ChangeColor(chromaCustomColors[group].WithAlpha(1), 0, group.ControllingLights);
         group.ChangeMultiplierAlpha(chromaCustomColors[group].a, group.ControllingLights);
+    }
+
+    // Handle Gaga Env Height events, and pass it to the case so it can ignore anything after if the manager is valid.
+    private bool HandleGagaHeightEvent(BaseEvent evt)
+    {
+        if (DiskManager != null)
+        {
+            DiskManager.HandlePositionEvent(evt);
+            return true;
+        }
+        else
+            return false;
     }
 
     private class Gradient

@@ -67,7 +67,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13
-    m_Localized: "\xBFEst\xE1 seguro de que desea eliminar a todos los colaboradores?"
+    m_Localized: "\xBFEst\xE1s seguro de querer eliminar a todos los colaboradores?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2582460100608
+    m_Localized: Clear All
     m_Metadata:
       m_Items: []
   references:

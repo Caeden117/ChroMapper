@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,11 +76,24 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
         transformed = transformedPoint;
 
         var roundedHit = ParentTrack.InverseTransformPoint(hit.Point);
-        roundedHit = new Vector3(
-            Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, Bounds.min.x + 0.01f), Bounds.max.x)),
-            Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
-            roundedHit.z
-        );
+        
+        if (UsePrecisionPlacement)
+        {
+            roundedHit = new Vector3(
+                Mathf.Ceil(roundedHit.x),
+                Mathf.Ceil(roundedHit.y),
+                roundedHit.z
+            );
+        }
+        else
+        {
+            roundedHit = new Vector3(
+                Mathf.Ceil(Math.Min(Math.Max(roundedHit.x, Bounds.min.x + 0.01f), Bounds.max.x)),
+                Mathf.Ceil(Math.Min(Math.Max(roundedHit.y, 0.01f), 3f)),
+                roundedHit.z
+            );
+        }
+
         instantiatedContainer.transform.localPosition = roundedHit - new Vector3(0.5f, 1, 0);
         if (!IsSelecting)
         {
@@ -93,6 +106,7 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
             TestForType<BPMChangePlacement>(hit, ObjectType.BpmChange);
             TestForType<ArcPlacement>(hit, ObjectType.Arc);
             TestForType<ChainPlacement>(hit, ObjectType.Chain);
+            TestForType<NJSEventPlacement>(hit, ObjectType.NJSEvent);
 
             instantiatedContainer.transform.localScale = Vector3.right + Vector3.up;
             var localScale = instantiatedContainer.transform.localScale;
@@ -132,7 +146,8 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
                           EditorScaleController.EditorScale;
             if (startSongBpmBeat > endSongBpmBeat) (startSongBpmBeat, endSongBpmBeat) = (endSongBpmBeat, startSongBpmBeat);
 
-            SelectionController.ForEachObjectBetweenSongBpmTimeByGroup(startSongBpmBeat, endSongBpmBeat, true, true, true, (bocc, bo) =>
+            SelectionController.ForEachObjectBetweenSongBpmTimeByGroup(startSongBpmBeat, endSongBpmBeat, true, 
+                true, true, true, (bocc, bo) =>
             {
                 if (!selectedTypes.Contains(bo.ObjectType)) return; // Must be a type we can select
                 
@@ -213,9 +228,6 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
         else
         {
             StartCoroutine(WaitABitFuckOffOtherPlacementControllers());
-            SelectionController.RefreshSelectionMaterial(selected.Any());
-            SelectionController.SelectionChangedEvent?.Invoke();
-            OnPhysicsRaycast(previousHit, transformed);
         }
     }
 
@@ -225,12 +237,14 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
         IsSelecting = false;
         selected.Clear(); // oh shit turned out i didnt need to rewrite the whole thing, just move it over here
         OnPhysicsRaycast(previousHit, transformed);
+        SelectionController.SelectionChangedEvent?.Invoke();
     }
 
     public override void CancelPlacement()
     {
         IsSelecting = false;
-        foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject);
+        foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject, false);
+        SelectionController.SelectionChangedEvent?.Invoke();
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued) { }

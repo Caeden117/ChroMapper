@@ -89,7 +89,7 @@ public class MirrorSelection : MonoBehaviour
                     var customSize = obstacle.CustomSize;
                     if (customSize != null && customSize.IsArray && customSize[0].IsNumber)
                     {
-                        flipped.x -= customSize[0];
+                        flipped.x -= customSize[0].AsFloat;
                     }
                     else
                     {
@@ -103,17 +103,17 @@ public class MirrorSelection : MonoBehaviour
                 {
                     if (obstacle.CustomLocalRotation.IsNumber)
                     {
-                        obstacle.CustomLocalRotation = -obstacle.CustomLocalRotation;
+                        obstacle.CustomLocalRotation = -obstacle.CustomLocalRotation.AsFloat;
                     }
                     else if (obstacle.CustomLocalRotation is JSONArray rot)
                     {
                         if (rot.Count > 1)
                         {
-                            rot[1] = -rot[1];
+                            rot[1] = -rot[1].AsFloat;
                         }
                         if (rot.Count > 2)
                         {
-                            rot[2] = -rot[2];
+                            rot[2] = -rot[2].AsFloat;
                         }
                     }
                 }
@@ -122,17 +122,17 @@ public class MirrorSelection : MonoBehaviour
                 {
                     if (obstacle.CustomWorldRotation.IsNumber)
                     {
-                        obstacle.CustomWorldRotation = -obstacle.CustomWorldRotation;
+                        obstacle.CustomWorldRotation = -obstacle.CustomWorldRotation.AsFloat;
                     }
                     else if (obstacle.CustomWorldRotation is JSONArray rot)
                     {
                         if (rot.Count > 1)
                         {
-                            rot[1] = -rot[1];
+                            rot[1] = -rot[1].AsFloat;
                         }
                         if (rot.Count > 2)
                         {
-                            rot[2] = -rot[2];
+                            rot[2] = -rot[2].AsFloat;
                         }
                     }
                 }
@@ -193,17 +193,17 @@ public class MirrorSelection : MonoBehaviour
                     {
                         if (note.CustomLocalRotation.IsNumber)
                         {
-                            note.CustomLocalRotation = -note.CustomLocalRotation;
+                            note.CustomLocalRotation = -note.CustomLocalRotation.AsFloat;
                         }
                         else if (note.CustomLocalRotation is JSONArray rot)
                         {
                             if (rot.Count > 1)
                             {
-                                rot[1] = -rot[1];
+                                rot[1] = -rot[1].AsFloat;
                             }
                             if (rot.Count > 2)
                             {
-                                rot[2] = -rot[2];
+                                rot[2] = -rot[2].AsFloat;
                             }
                         }
                     }
@@ -212,17 +212,17 @@ public class MirrorSelection : MonoBehaviour
                     {
                         if (note.CustomWorldRotation.IsNumber)
                         {
-                            note.CustomWorldRotation = -note.CustomWorldRotation;
+                            note.CustomWorldRotation = -note.CustomWorldRotation.AsFloat;
                         }
                         else if (note.CustomWorldRotation is JSONArray rot)
                         {
                             if (rot.Count > 1)
                             {
-                                rot[1] = -rot[1];
+                                rot[1] = -rot[1].AsFloat;
                             }
                             if (rot.Count > 2)
                             {
-                                rot[2] = -rot[2];
+                                rot[2] = -rot[2].AsFloat;
                             }
                         }
                     }

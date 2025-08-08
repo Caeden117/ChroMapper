@@ -5,6 +5,7 @@ public class MultiLobbyLauncher : MonoBehaviour
 {
     [SerializeField] private AutoSaveController autoSave;
     [SerializeField] private MultiDirectLobbyLauncher multiDirectLobbyLauncher;
+    [SerializeField] private LoadedDifficultySelectController loadedDifficultySelectController;
 
     private DialogBox dialogBox;
     internal MultiServerRelayModeNetListener serverNetListener;
@@ -60,6 +61,9 @@ public class MultiLobbyLauncher : MonoBehaviour
     private void StartMultiSession(Guid roomId, int port, string roomCode)
     {
         autoSave.Save();
+            
+        // Prevent changing difficulty in multi mapper
+        loadedDifficultySelectController.Disable();
 
         this.roomCode = roomCode;
         this.roomId = roomId;

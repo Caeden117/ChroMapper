@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Beatmap.Helper;
+using Beatmap.Info;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -61,18 +62,19 @@ namespace Tests.Util
 
             if (!mapperInit) yield return InitMapper();
 
-            BeatSaberSongContainer.Instance.Song =
-                new BeatSaberSong("testmap", (JSONNode)new JSONObject { ["_songName"] = "Test" });
-            var parentSet = new BeatSaberSong.DifficultyBeatmapSet("Lawless");
-            var diff = new BeatSaberSong.DifficultyBeatmap(parentSet)
-            {
-                CustomData = new JSONObject()
-            };
-            BeatSaberSongContainer.Instance.DifficultyData = diff;
+            var info = new BaseInfo { Directory = "testmap", SongName = "test" };
+            BeatSaberSongContainer.Instance.Info = info;
+            var parentSet = new InfoDifficultySet { Characteristic = "Lawless" };
+            var diff = new InfoDifficulty(parentSet);
+
+            BeatSaberSongContainer.Instance.MapDifficultyInfo = diff;
             BeatSaberSongContainer.Instance.LoadedSong = AudioClip.Create("Fake", 44100 * 20, 1, 44100, false);
             BeatSaberSongContainer.Instance.Map = BeatmapFactory.GetDifficultyFromJson(loadVersion == 3
-                ? new JSONObject { ["version"] = "3.2.0" }
-                : new JSONObject { ["_version"] = "2.6.0" }, "testmap");
+                    ? new JSONObject { ["version"] = "3.2.0" }
+                    : new JSONObject { ["_version"] = "2.6.0" }, 
+                "testmap",
+                info,
+                diff);
             SceneTransitionManager.Instance.LoadScene("03_Mapper");
             yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
         }

@@ -142,6 +142,7 @@ public class Settings
 
     public bool MeasureLinesShowOnTop = false;
     public bool HighContrastGrids = false;
+    public bool DisplayHJDLine = true;
     public float GridTransparency = 0f;
     public float InterfaceOpacity = 0.1f;
     public int TrackLength = 8;
@@ -166,7 +167,6 @@ public class Settings
     public float Camera_MouseSensitivity = 2;
     public float Camera_MovementSpeed = 15;
 
-    public bool NodeEditor_Enabled = true;
     public bool NodeEditor_UseKeybind = true;
 
     public int NodeEditorTextSize = 10;

@@ -35,28 +35,24 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                 if (containerToEdit.BpmData.Bpm <= 0) containerToEdit.BpmData.Bpm = 1f;
                 containerToEdit.UpdateGridPosition();
 
+                if (containerToEdit.BpmData.CompareTo(original) == 0) return;
+
                 var bpmChanges =
                     BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(ObjectType
                         .BpmChange);
 
                 BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(containerToEdit.ObjectData,
-                    containerToEdit.ObjectData, original, "Tweaked bpm"));
-
-                // Update cursor position
-                var atsc = bpmChanges.AudioTimeSyncController;
-                if (containerToEdit.BpmData.SongBpmTime < atsc.CurrentSongBpmTime)
-                {
-                    var lastBpmChange = bpmChanges.FindLastBpm(atsc.CurrentSongBpmTime);
-                    if (lastBpmChange == containerToEdit.BpmData)
-                    {
-                        var newTime = lastBpmChange.SongBpmTime + ((atsc.CurrentSongBpmTime - lastBpmChange.SongBpmTime) *
-                            (lastBpmChange.Bpm - modifier) / lastBpmChange.Bpm);
-                        atsc.MoveToSongBpmTime(newTime);
-                    }
-                }
+                    containerToEdit.ObjectData, original, "Tweaked bpm", mergeType: ActionMergeType.BPMValueTweak));
 
                 BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
                 bpmChanges.RefreshModifiedBeat();
+
+                // Update cursor position
+                var atsc = bpmChanges.AudioTimeSyncController;
+                if (containerToEdit.BpmData.JsonTime < atsc.CurrentJsonTime)
+                {
+                    atsc.MoveToJsonTime(atsc.CurrentJsonTime);
+                }
             }
         }
     }

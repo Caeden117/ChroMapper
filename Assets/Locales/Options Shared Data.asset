@@ -219,10 +219,6 @@ MonoBehaviour:
     m_Key: visuals.waveform
     m_Metadata:
       m_Items: []
-  - m_Id: 54
-    m_Key: visuals.nodeeditor
-    m_Metadata:
-      m_Items: []
   - m_Id: 55
     m_Key: visuals.nodeeditor.keybind
     m_Metadata:
@@ -441,10 +437,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 114
     m_Key: graphics.despawn.tooltip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 115
-    m_Key: visuals.nodeeditor.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 116
@@ -1317,6 +1309,54 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 388776364043268096
     m_Key: graphics.bookmarkuibrightness.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513132648409722880
+    m_Key: countersplus.shownjsevents.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513132913414238208
+    m_Key: countersplus.shownjsevents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133409642344448
+    m_Key: countersplus.showcurrentnjs.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513133637388857344
+    m_Key: countersplus.showcurrentnjs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134051299553280
+    m_Key: countersplus.showcurrenthjd.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134225774211072
+    m_Key: countersplus.showcurrenthjd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134485426794496
+    m_Key: countersplus.showcurrentjd.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134545464061952
+    m_Key: countersplus.showcurrentjd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134705308987392
+    m_Key: countersplus.showcurrentrt.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513134839585435648
+    m_Key: countersplus.showcurrentrt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144347351183360
+    m_Key: appearance.displayhjdline.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 513144631343312896
+    m_Key: appearance.displayhjdline
     m_Metadata:
       m_Items: []
   m_Metadata:

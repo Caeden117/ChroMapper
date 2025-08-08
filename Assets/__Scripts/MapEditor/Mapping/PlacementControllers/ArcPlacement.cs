@@ -28,8 +28,8 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
 
         // is there better way than this?
         var generatedObjects = new List<BaseArc>();
-        var red = notes.Where(n => n.Color == 0).ToList();
-        var blue = notes.Where(n => n.Color == 1).ToList();
+        var red = notes.Where(n => n.Color == (int)NoteColor.Red).ToList();
+        var blue = notes.Where(n => n.Color == (int)NoteColor.Blue).ToList();
 
         for (var i = 1; i < red.Count; i++)
         {
@@ -42,7 +42,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
 
         if (generatedObjects.Count > 0)
         {
-            foreach (BaseArc arcData in generatedObjects)
+            foreach (var arcData in generatedObjects)
             {
                 objectContainerCollection.SpawnObject(arcData, false);
             }

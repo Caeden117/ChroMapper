@@ -371,7 +371,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                     tempMaterial.SetColor(baseColor, Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
                     tempMaterial.SetColor(emissionColor,
-                        BeatSaberSong.DefaultRightColor * LightsManager.HDRIntensity);
+                        DefaultColors.Right * LightsManager.HDRIntensity);
                 }
 
                 if (tempMaterial.name.ToUpper().Contains("GLOW_RED"))
@@ -380,7 +380,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                     tempMaterial.SetColor(baseColor, Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
                     tempMaterial.SetColor(emissionColor,
-                        BeatSaberSong.DefaultLeftColor * LightsManager.HDRIntensity);
+                        DefaultColors.Left * LightsManager.HDRIntensity);
                 }
 
                 materials[i] = tempMaterial;

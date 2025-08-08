@@ -4952,6 +4952,56 @@
             ]
         },
         {
+            "name": "NJS Event Objects",
+            "id": "35179148-120d-4b47-8334-25343c889384",
+            "actions": [
+                {
+                    "name": "Tweak NJS Value",
+                    "type": "Value",
+                    "id": "7f78b17d-9f0c-4942-a799-c23a570bdd29",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "Keyboard",
+                    "id": "9e3b3c13-fee0-4469-a395-3ec55a7e30da",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak NJS Value",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Modifier",
+                    "id": "bdfa4eed-282a-4ab8-81de-a0b28f4c505a",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak NJS Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Binding",
+                    "id": "fc0b0a47-8fe0-4954-8551-48aeca5f2b9c",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak NJS Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
             "name": "Switch Version",
             "id": "de1a703f-7892-4a54-9acf-417af3e6a8f1",
             "actions": [

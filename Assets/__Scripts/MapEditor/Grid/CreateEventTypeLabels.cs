@@ -16,7 +16,11 @@ public class CreateEventTypeLabels : MonoBehaviour
     {
         5, 2, 4, 3, 6, 13, 7, 8, 9, 10, 16, 17, 11, 12, 0, 1, 14, 15
     };
-
+    
+    private static readonly int[] eventToModifiedArrayGaga =
+    {
+        9, 10, 5, 6, 2, 11, 4, 7, 18, 19, 3, 8, 14, 15, 0, 1, 13, 16, 12, 17
+    };
     public TMP_FontAsset AvailableAsset;
     public TMP_FontAsset UtilityAsset;
     public TMP_FontAsset RedAsset;
@@ -86,6 +90,9 @@ public class CreateEventTypeLabels : MonoBehaviour
                 }
                 else
                 {
+                    var envIndex = BeatSaberSongContainer.Instance.MapDifficultyInfo.EnvironmentNameIndex;
+                    var environment = BeatSaberSongContainer.Instance.Info.EnvironmentNames[envIndex];
+                    var isGaga = environment == "GagaEnvironment";
                     switch (i)
                     {
                         case (int)EventTypeValue.RingRotation:
@@ -97,11 +104,11 @@ public class CreateEventTypeLabels : MonoBehaviour
                             textMesh.text = "Ring Zoom";
                             break;
                         case (int)EventTypeValue.LeftLaserRotation:
-                            textMesh.text = "Left Laser Speed";
+                            textMesh.text = !isGaga ? "Left Laser Speed" : "Tower 3 Height";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.RightLaserRotation:
-                            textMesh.text = "Right Laser Speed";
+                            textMesh.text = !isGaga ? "Right Laser Speed" : "Tower 4 Height";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.EarlyLaneRotation:
@@ -117,19 +124,19 @@ public class CreateEventTypeLabels : MonoBehaviour
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent0:
-                            textMesh.text = "Utility Event 0";
+                            textMesh.text = !isGaga ? "Utility Event 0" : "Tower 2 Height";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent1:
-                            textMesh.text = "Utility Event 1";
+                            textMesh.text = !isGaga ? "Utility Event 1" : "Tower 5 Height";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent2:
-                            textMesh.text = "Utility Event 2";
+                            textMesh.text = !isGaga ? "Utility Event 2" : "Tower 1 Height";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.UtilityEvent3:
-                            textMesh.text = "Utility Event 3";
+                            textMesh.text = !isGaga ? "Utility Event 3" : "Tower 6 Height";
                             textMesh.font = UtilityAsset;
                             break;
                         case (int)EventTypeValue.SpecialEvent0:
@@ -152,7 +159,6 @@ public class CreateEventTypeLabels : MonoBehaviour
                             if (lightingManagers.Length > i)
                             {
                                 var customLight = lightingManagers[i];
-
                                 if (customLight != null)
                                 {
                                     textMesh.text = customLight.name;
@@ -167,7 +173,6 @@ public class CreateEventTypeLabels : MonoBehaviour
 
                             break;
                     }
-
                     if (Settings.Instance.DarkTheme) textMesh.font = darkTheme.TekoReplacement;
                 }
 
@@ -258,6 +263,7 @@ public class CreateEventTypeLabels : MonoBehaviour
         }
 
         if (EventContainer.ModifyTypeMode == 2) return eventToModifiedArrayInterscope[eventType];
+        if (EventContainer.ModifyTypeMode == 3) return eventToModifiedArrayGaga[eventType];
 
         return -1;
     }

@@ -131,6 +131,22 @@ MonoBehaviour:
     m_Key: newmap.dialog.invalid
     m_Metadata:
       m_Items: []
+  - m_Id: 210236920806895616
+    m_Key: foldername
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236923126345728
+    m_Key: newmap.v4format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210236925030559744
+    m_Key: newmap.v2format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210237660006838272
+    m_Key: format.version
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

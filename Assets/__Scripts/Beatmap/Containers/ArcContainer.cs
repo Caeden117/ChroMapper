@@ -117,7 +117,7 @@ namespace Beatmap.Containers
         public void RecomputePosition()
         {
             if (ArcData == null) return; // in case that this container has already been recycled when about to compute
-            this.transform.localPosition = new Vector3(0, 0, ArcData.SongBpmTime * EditorScaleController.EditorScale);
+            transform.localPosition = new Vector3(0, 0, ArcData.SongBpmTime * EditorScaleController.EditorScale);
             splineRenderer.positionCount = numSamples + 1;
 
             var p0 = this.p0();
@@ -125,13 +125,81 @@ namespace Beatmap.Containers
             var p2 = this.p2();
             var p3 = this.p3();
 
-            for (int i = 0; i <= numSamples; i++)
+            var useMidAnchorMode = ArcData.MidAnchorMode != (int)SliderMidAnchorMode.Straight
+                                   && ArcData.CutDirection != (int)NoteCutDirection.Any
+                                   && ArcData.PosX == ArcData.TailPosX
+                                   && (ArcData.CutDirection == ArcData.TailCutDirection
+                                       || Mathf.Approximately(180f,
+                                           Mathf.Abs(NoteContainer.Directionalize(ArcData.CutDirection).z -
+                                                     NoteContainer.Directionalize(ArcData.TailCutDirection).z)));
+            if (useMidAnchorMode)
             {
-                splineRenderer.SetPosition(i, SampleCubicBezierPoint(p0, p1, p2, p3, (float)i / numSamples));
+                var (headToMidControl, midPoint, midToTailControl) = GetMidAnchorPoints(p0, p1, p2, p3);
+
+                for (int i = 0; i <= numSamples; i++)
+                {
+                    splineRenderer.SetPosition(i, i <= numSamples / 2
+                        ? SampleCubicBezierPoint(p0, p1, headToMidControl, midPoint, (float)i / numSamples * 2)
+                        : SampleCubicBezierPoint(midPoint, midToTailControl, p2, p3, ((float)i / numSamples * 2) - 1));
+                }
+            }
+            else
+            {
+                for (int i = 0; i <= numSamples; i++)
+                {
+                    splineRenderer.SetPosition(i, SampleCubicBezierPoint(p0, p1, p2, p3, (float)i / numSamples));
+                }
             }
 
             splineRenderer.enabled = true;
             ResetIndicatorsPosition();
+        }
+
+        private (Vector3 headToMidControl, Vector3 midPoint, Vector3 midToTailControl) GetMidAnchorPoints(
+            Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
+        {
+            // Yoinked from ArcViewer :smil:
+            const float midPointRotationDeg = 90f;
+            const float midPointOffset = 2.5f / 0.6f; // Scaled to CM units
+            const float controlXMod = 0.25f;
+            const float controlYMod = 0.25f;
+            const float controlZMod = 0.15f;
+
+            // Get the midpoint between the two end points; this is the center point which dictates rotation
+            var midPoint = (p0 + p3) / 2f;
+
+            // Offset the midpoint based on rotation direction
+            var rotateClockwise = ArcData.MidAnchorMode == (int)SliderMidAnchorMode.Clockwise;
+            var midPointRotation = rotateClockwise ? -midPointRotationDeg : midPointRotationDeg;
+
+            // Directionless arcs shouldn't offset the midpoint at all
+            var headAngle = NoteContainer.Directionalize(ArcData.CutDirection).z;
+            var headCutDirection = new Vector2(Mathf.Sin((headAngle + midPointRotation) * Mathf.Deg2Rad),
+                -Mathf.Cos((headAngle + midPointRotation) * Mathf.Deg2Rad));
+            midPoint += (Vector3)headCutDirection * midPointOffset;
+
+            // Calculate the control points to use for the midPoint
+            var p1Dist = new Vector3(Mathf.Abs(midPoint.x - p1.x), Mathf.Abs(midPoint.y - p1.y), Mathf.Abs(midPoint.z - p1.z));
+            var p2Dist = new Vector3(Mathf.Abs(midPoint.x - p2.x), Mathf.Abs(midPoint.y - p2.y), Mathf.Abs(midPoint.z - p2.z));
+
+            var isEqualXOffset = Mathf.Approximately(p1.x, p2.x);
+            var isEqualYOffset = Mathf.Approximately(p1.y, p2.y);
+
+            // Offset the middle control point based on distances from head and tail control points
+            // Don't offset a coordinate if the end control point offsets are equal
+            var controlX = isEqualXOffset ? 0f : (p1Dist.x + p2Dist.x) * controlXMod;
+            var controlY = isEqualYOffset ? 0f : (p1Dist.y + p2Dist.y) * controlYMod;
+            var controlZ = (p1Dist.z + p2Dist.z) * controlZMod;
+
+            if (p1.x < p2.x) controlX = -controlX;
+            if (p1.y < p2.y) controlY = -controlY;
+
+            var controlPointOffset = new Vector3(controlX, controlY, -controlZ);
+            var headToMidControl = midPoint + controlPointOffset;
+            // The second half of the arc uses a mirrored control point position
+            var midToTailControl = midPoint - controlPointOffset;
+
+            return (headToMidControl, midPoint, midToTailControl);
         }
 
         private void ResetIndicatorsPosition()

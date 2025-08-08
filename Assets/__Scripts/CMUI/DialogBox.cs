@@ -30,6 +30,7 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
     private bool callbacksInstalled = false;
     private DialogBox parent = null;
     private Action quickSubmitCallback = null;
+    private bool closeOnQuickSubmit = true;
 
     /// <summary>
     /// Assigns the specified title to the dialog box.
@@ -105,10 +106,12 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
     /// The Quick Submit behavior is not active by default. A callback *must* be given for Quick Submit to work.
     /// </remarks>
     /// <param name="onQuickSubmit">Callback on quick submit</param>
+    /// <param name="closeOnQuickSubmit">Whether this dialog box closes on quick submit</param>
     /// <returns>Itself, for method chaining.</returns>
-    public DialogBox OnQuickSubmit(Action onQuickSubmit)
+    public DialogBox OnQuickSubmit(Action onQuickSubmit, bool closeOnQuickSubmit = true)
     {
         quickSubmitCallback = onQuickSubmit;
+        this.closeOnQuickSubmit = closeOnQuickSubmit;
         return this;
     }
 
@@ -297,7 +300,8 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
             && quickSubmitCallback != null)
         {
             quickSubmitCallback.Invoke();
-            Close();
+            
+            if (closeOnQuickSubmit) Close();
         }
     }
 

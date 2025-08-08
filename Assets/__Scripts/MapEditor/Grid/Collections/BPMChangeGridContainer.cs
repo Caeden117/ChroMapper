@@ -40,7 +40,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
 
     private void Start()
     {
-        Shader.SetGlobalFloat(songBpm, BeatSaberSongContainer.Instance.Song.BeatsPerMinute);
+        Shader.SetGlobalFloat(songBpm, BeatSaberSongContainer.Instance.Info.BeatsPerMinute);
     }
 
     internal override void SubscribeToCallbacks()
@@ -93,7 +93,7 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
             }
             else
             {
-                var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+                var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
                 var passedBeats = (obj.JsonTime - lastChange.JsonTime - 0.01f) / songBpm * lastChange.Bpm;
                 obj.Beat = lastChange.Beat + Mathf.CeilToInt(passedBeats);
             }
@@ -108,14 +108,15 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
 
     public void RefreshGridProperties()
     {
+        var songContainer = BeatSaberSongContainer.Instance;
         // Could probably save a tiny bit of performance since this should always be constant (0, Song BPM) but whatever
         var bpmChangeCount = 1;
         bpmShaderTimes[0] = 0;
         bpmShaderJsonTimes[0] = 0;
-        bpmShaderBpMs[0] = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
+        bpmShaderBpMs[0] = songContainer.Info.BeatsPerMinute;
 
         // Grab the last object before grid ends
-        var lastBpmChange = FindLastBpm(AudioTimeSyncController.CurrentSongBpmTime - firstVisibleBeatTime, false);
+        var lastBpmChange = songContainer.Map.FindLastBpmEventBySongBpmTime(AudioTimeSyncController.CurrentSongBpmTime - firstVisibleBeatTime);
 
         // Plug this last bpm change in
         // Believe it or not, I cannot actually skip this BPM change if it exists
@@ -162,114 +163,6 @@ public class BPMChangeGridContainer : BeatmapObjectContainerCollection<BaseBpmEv
 
     protected override void OnContainerDespawn(ObjectContainer container, BaseObject obj)
         => RefreshGridProperties();
-
-    public float FindRoundedBpmTime(float beatTimeInSongBpm, float snap = -1)
-    {
-        if (snap == -1) snap = 1f / AudioTimeSyncController.GridMeasureSnapping;
-        var lastBpm = FindLastBpm(beatTimeInSongBpm); //Find the last BPM Change before our beat time
-        if (lastBpm is null)
-        {
-            return (float)Math.Round(beatTimeInSongBpm / snap, MidpointRounding.AwayFromZero) *
-                   snap; //If its null, return rounded song bpm
-        }
-
-        var jsonTime = SongBpmTimeToJsonTime(beatTimeInSongBpm);
-        var roundedJsonTime = (float)Math.Round(jsonTime / snap, MidpointRounding.AwayFromZero) * snap;
-
-        return JsonTimeToSongBpmTime(roundedJsonTime);
-    }
-
-    public float SongBpmTimeToRoundedJsonTime(float songBpmTime, float snap = -1)
-    {
-        if (snap == -1) snap = 1f / AudioTimeSyncController.GridMeasureSnapping;
-
-        var jsonTime = SongBpmTimeToJsonTime(songBpmTime);
-        return (float)Math.Round(jsonTime / snap, MidpointRounding.AwayFromZero) * snap;
-    }
-
-    /// <summary>
-    ///     Find the last <see cref="BaseBpmEvent" /> before a given beat time.
-    /// </summary>
-    /// <param name="beatTimeInSongBpm">Time in raw beats (Unmodified by any BPM Changes)</param>
-    /// <param name="inclusive">Whether or not to include <see cref="BaseBpmEvent" />s with the same time value.</param>
-    /// <returns>The last <see cref="BaseBpmEvent" /> before the given beat (or <see cref="null" /> if there is none).</returns>
-    public BaseBpmEvent FindLastBpm(float beatTimeInSongBpm, bool inclusive = true)
-    {
-        return inclusive
-            ? MapObjects.FindLast(x => x.SongBpmTime <= beatTimeInSongBpm + 0.01f)
-            : MapObjects.FindLast(x => x.SongBpmTime + 0.01f < beatTimeInSongBpm);
-    }
-
-    /// <summary>
-    ///     Find the next <see cref="BaseBpmEvent" /> after a given beat time.
-    /// </summary>
-    /// <param name="beatTimeInSongBpm">Time in raw beats (Unmodified by any BPM Changes)</param>
-    /// <param name="inclusive">Whether or not to include <see cref="BaseBpmEvent" />s with the same time value.</param>
-    /// <returns>The next <see cref="BaseBpmEvent" /> after the given beat (or <see cref="null" /> if there is none).</returns>
-    public BaseBpmEvent FindNextBpm(float beatTimeInSongBpm, bool inclusive = false)
-    {
-        return inclusive
-            ? MapObjects.Find(x => x.SongBpmTime >= beatTimeInSongBpm - 0.01f)
-            : MapObjects.Find(x => x.SongBpmTime - 0.01f > beatTimeInSongBpm);
-    }
-
-    private BaseBpmEvent DefaultEvent()
-    {
-        var defaultEvent = new BaseBpmEvent { Bpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute };
-        return defaultEvent;
-    }
-
-    public float JsonTimeToSongBpmTime(float jsonTime)
-    {
-        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-        var bpms = MapObjects.FindAll(x => x.JsonTime <= jsonTime);
-        bpms.Insert(0, DefaultEvent());
-
-        var currentSongBeats = 0f;
-        for (int i = 0; i < bpms.Count - 1; i++)
-        {
-            var bpmChange = bpms[i];
-            var nextBpmChange = bpms[i + 1];
-
-            var timeDiff = nextBpmChange.JsonTime - bpmChange.JsonTime;
-
-            currentSongBeats += timeDiff * (songBpm / bpmChange.Bpm);
-        }
-
-        currentSongBeats += (jsonTime - bpms.Last().JsonTime) * (songBpm / bpms.Last().Bpm);
-        return currentSongBeats;
-    }
-
-    public float SongBpmTimeToJsonTime(float songBpmTime)
-    {
-        var songBpm = BeatSaberSongContainer.Instance.Song.BeatsPerMinute;
-        var bpms = MapObjects.FindAll(x => x.SongBpmTime <= songBpmTime);
-        bpms.Insert(0, DefaultEvent());
-
-        var seconds = songBpmTime * (60f / songBpm);
-
-        var currentSeconds = 0f;
-        var nextSeconds = 0f;
-        for (int i = 0; i < bpms.Count - 1; i++)
-        {
-            var bpmChange = bpms[i];
-            var nextBpmChange = bpms[i + 1];
-
-            var timeDiff = nextBpmChange.JsonTime - bpmChange.JsonTime;
-            var scale = bpmChange.Bpm / 60;
-            nextSeconds += timeDiff / scale;
-
-            if (nextSeconds > seconds)
-            {
-                return bpmChange.JsonTime + scale * (seconds - currentSeconds);
-            }
-
-            currentSeconds = nextSeconds;
-        }
-
-        var lastBpm = bpms.Last();
-        return lastBpm.JsonTime + lastBpm.Bpm / 60 * (seconds - currentSeconds);
-    }
 
     public override ObjectContainer CreateContainer() =>
         BpmEventContainer.SpawnBpmChange(null, ref bpmPrefab);

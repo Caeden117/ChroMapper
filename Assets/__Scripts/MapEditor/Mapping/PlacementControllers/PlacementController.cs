@@ -77,7 +77,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
         get => roundedJsonTime;
         set
         {
-            SongBpmTime = BpmChangeGridContainer.JsonTimeToSongBpmTime(value);
+            SongBpmTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(value);
             roundedJsonTime = value;
         }
     }
@@ -184,7 +184,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                 Mathf.Round(Mathf.Clamp(y, farBottomPoint, farTopPoint - 1)),
                 roundedHit.z);
 
-            queuedData.SetTimes(roundedJsonTime, SongBpmTime);
+            queuedData.JsonTime = roundedJsonTime;
             OnPhysicsRaycast(hit, roundedHit);
             if ((IsDraggingObject || IsDraggingObjectAtTime) && queuedData != null)
             {
@@ -348,7 +348,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
                        EditorScaleController.EditorScale;
         }
 
-        var hitPointJsonTime = BpmChangeGridContainer.SongBpmTimeToJsonTime(realTime);
+        var hitPointJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(realTime);
         roundedJsonTime = (float)Math.Round((hitPointJsonTime - offsetJsonTime) / snap, MidpointRounding.AwayFromZero) * snap;
 
         if (!Atsc.IsPlaying) roundedJsonTime += offsetJsonTime;
@@ -446,16 +446,9 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
     private void FinishDrag()
     {
         if (!(IsDraggingObject || IsDraggingObjectAtTime)) return;
-        //First, find and delete anything that's overlapping our dragged object.
-        var selected = SelectionController.IsObjectSelected(draggedObjectData);
 
+        // Spawn our dragged object and delete anything that's overlapping.
         objectContainerCollection.SpawnObject(draggedObjectData, out var conflicting);
-        if (conflicting.Contains(draggedObjectData))
-        {
-            conflicting.Remove(draggedObjectData);
-
-            if (selected) SelectionController.Select(draggedObjectData);
-        }
 
         queuedData = BeatmapFactory.Clone(originalQueued);
         var actions = new List<BeatmapAction>();
@@ -465,13 +458,15 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             if (conflicting.Any())
             {
                 actions.Add(new BeatmapObjectModifiedWithConflictingAction(draggedObjectData, draggedObjectData,
-                    originalDraggedObjectData, conflicting.First(), "Modified via alt-click and drag."));
+                    originalDraggedObjectData, conflicting, "Modified via alt-click and drag."));
             }
             else
             {
                 actions.Add(new BeatmapObjectModifiedAction(draggedObjectData, draggedObjectData,
                     originalDraggedObjectData, "Modified via alt-click and drag."));
             }
+
+            SelectionController.SelectionChangedEvent?.Invoke();
         }
 
         if (DraggedObjectContainer is NoteContainer)
@@ -601,7 +596,7 @@ public abstract class PlacementController<TBo, TBoc, TBocc> : MonoBehaviour, CMI
             if (conflictingArcs.Any())
             {
                 actions.Add(new BeatmapObjectModifiedWithConflictingAction(draggedSlider, draggedSlider,
-                    originalSlider, conflictingArcs.First(), "Modified via alt-click and drag."));
+                    originalSlider, conflictingArcs, "Modified via alt-click and drag."));
             }
             else
             {

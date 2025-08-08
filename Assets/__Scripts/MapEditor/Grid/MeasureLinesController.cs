@@ -54,10 +54,12 @@ public class MeasureLinesController : MonoBehaviour
         var existing = new Queue<TextMeshProUGUI>(measureTextsByBeat.Select(x => x.Item2));
         measureTextsByBeat.Clear();
 
+        var songContainer = BeatSaberSongContainer.Instance;
+
         var rawBeatsInSong =
-            Mathf.FloorToInt(atsc.GetBeatFromSeconds(BeatSaberSongContainer.Instance.LoadedSong.length));
+            Mathf.FloorToInt(atsc.GetBeatFromSeconds(songContainer.LoadedSong.length));
         var modifiedBeatsInSong =
-            Mathf.FloorToInt(bpmChangeGridContainer.SongBpmTimeToJsonTime(rawBeatsInSong));
+            Mathf.FloorToInt((float)songContainer.Map.SongBpmTimeToJsonTime(rawBeatsInSong));
 
         // This stops CM freezing for a few seconds as a result of instantiating a bajillion lines from insanely
         // high bpm events. Should be reasonable to assume that you're not mapping at >10x the info bpm
@@ -68,7 +70,7 @@ public class MeasureLinesController : MonoBehaviour
         {
             var text = existing.Count > 0 ? existing.Dequeue() : Instantiate(measureLinePrefab, parent);
             text.text = $"{jsonBeat}";
-            var jsonBeatPosition = bpmChangeGridContainer.JsonTimeToSongBpmTime(jsonBeat);
+            var jsonBeatPosition = (float)songContainer.Map.JsonTimeToSongBpmTime(jsonBeat);
             text.transform.localPosition = new Vector3(0, jsonBeatPosition * EditorScaleController.EditorScale, 0);
             measureTextsByBeat.Add((jsonBeatPosition, text));
 

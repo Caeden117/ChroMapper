@@ -148,6 +148,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             Type t when t == typeof(BaseBpmEvent) => ObjectType.BpmChange,
             Type t when t == typeof(BaseCustomEvent) => ObjectType.CustomEvent,
             Type t when t == typeof(BaseBookmark) => ObjectType.Bookmark,
+            Type t when t == typeof(BaseNJSEvent) => ObjectType.NJSEvent,
             _ => throw new ArgumentException(nameof(TBaseObject))
         };
 
@@ -219,6 +220,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         dequeued.UpdateGridPosition();
         dequeued.SafeSetActive(true);
         UpdateContainerData(dequeued, obj);
+        dequeued.SetOutlineColor(SelectionController.SelectedColor, false);
         dequeued.OutlineVisible = SelectionController.IsObjectSelected(obj);
         PluginLoader.BroadcastEvent<ObjectLoadedAttribute, ObjectContainer>(dequeued);
         LoadedContainers.Add(obj, dequeued);
@@ -357,9 +359,25 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
     public static void RefreshFutureObjectsPosition(float jsonTime)
     {
-        foreach (var objectType in System.Enum.GetValues(typeof(Beatmap.Enums.ObjectType)))
+        // we have to refresh bpm events FIRST, and only then can we refresh other objects
+        var objectTypes = new List<ObjectType>
+        { 
+            ObjectType.BpmChange,
+            ObjectType.Note,
+            ObjectType.Event,
+            ObjectType.Obstacle,
+            ObjectType.CustomNote,
+            ObjectType.CustomEvent,
+            ObjectType.Arc,
+            ObjectType.Chain,
+            ObjectType.Bookmark,
+            ObjectType.Waypoint,
+            ObjectType.NJSEvent
+        };
+
+        foreach (var objectType in objectTypes)
         {
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType((Beatmap.Enums.ObjectType)objectType);
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(objectType);
             if (collection == null) continue;
             // REVIEW: not sure if allocation is avoidable
             foreach (var obj in collection.LoadedObjects)
@@ -371,6 +389,13 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
                 else if (collection is ChainGridContainer || collection is ArcGridContainer)
                 {
                     if ((obj as BaseSlider).TailJsonTime > jsonTime)
+                    {
+                        obj.RecomputeSongBpmTime();
+                    }
+                }
+                else if (collection is ObstacleGridContainer)
+                {
+                    if ((obj as BaseObstacle).Duration + obj.JsonTime > jsonTime)
                     {
                         obj.RecomputeSongBpmTime();
                     }
@@ -515,8 +540,6 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     {
         var span = MapObjects.AsSpan();
 
-        // lmao why do anything if we dont have objects to recycle or create containers for
-        if (span.Length == 0) return;
 
         // Easier to process recyclings at the beginning, rather than try to deal with it later.
         if (forceRefresh)
@@ -547,6 +570,9 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
                 }
             }
         }
+        
+        // lmao why do anything if we dont have objects to create containers for
+        if (span.Length == 0) return;
 
         // We need to copy GetBetween implementation:
         //   - We are binary searching by SongBpmTime, not JsonTime (this should still be sorted since MapObjects is always sorted by JsonTime)

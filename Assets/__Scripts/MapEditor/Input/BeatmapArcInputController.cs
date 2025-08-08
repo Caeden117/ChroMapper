@@ -32,7 +32,7 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
         var original = BeatmapFactory.Clone(s.ArcData);
         s.ChangeHeadMultiplier(modifier);
         s.NotifySplineChanged();
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original, mergeType: ActionMergeType.ArcHeadMultTweak));
     }
 
     public void OnInvertArcColor(InputAction.CallbackContext context)
@@ -76,6 +76,6 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
         var original = BeatmapFactory.Clone(s.ArcData);
         s.ChangeTailMultiplier(modifier);
         s.NotifySplineChanged();
-        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original));
+        BeatmapActionContainer.AddAction(new BeatmapObjectModifiedAction(s.ObjectData, s.ObjectData, original, mergeType: ActionMergeType.ArcTailMultTweak));
     }
 }
