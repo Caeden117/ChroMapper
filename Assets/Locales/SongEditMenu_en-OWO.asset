@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: b86ac019838731d46842f98842efbe60, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 590492266702831627
+    - rid: 2007761200731127819
   m_TableData:
   - m_Id: 1
     m_Localized: Song InfOwO
@@ -360,7 +360,7 @@ MonoBehaviour:
     m_Localized: '{0}% compwete!'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831627
+      - rid: 2007761200731127819
   - m_Id: 44795657592176640
     m_Localized: Weaction Twime
     m_Metadata:
@@ -552,7 +552,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 590492266702831627
+    - rid: 2007761200731127819
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010d21a57e67101

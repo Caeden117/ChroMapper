@@ -17,53 +17,53 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8944026aec77cf8479a89f2280c8e1ff, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 590492266702831664
+    - rid: 2007761200731127856
   m_TableData:
   - m_Id: 1
     m_Localized: 'Noten: {NotesCount}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 2
     m_Localized: 'Noten pro Sekunde: {NPSCount:F2}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 3
     m_Localized: "Ausgew\xE4hlte Noten: {NotesSelected}"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 4
     m_Localized: 'NPS der Auswahl: {NPSselected:F2}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 5
     m_Localized: 'Hindernisse: {ObstacleCount}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 6
     m_Localized: 'Events: {EventCount}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 7
     m_Localized: "BPM-\xC4nderungen: {BPMCount}"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 8
     m_Localized: 'Zeit am mappen: {hours:0}:{minutes:00}:{seconds:00}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 9
     m_Localized: "Ausgew\xE4hlt: {SelectedCount}"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 10
     m_Localized: "Zur\xFCck"
     m_Metadata:
@@ -136,7 +136,7 @@ MonoBehaviour:
     m_Localized: "Speichere fr\xFCh, speichere oft!"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 30
     m_Localized: ChroMapper beenden
     m_Metadata:
@@ -182,7 +182,7 @@ MonoBehaviour:
     m_Localized: "Workflows \xE4ndern"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 42
     m_Localized: "Dinge l\xF6schen"
     m_Metadata:
@@ -267,7 +267,7 @@ MonoBehaviour:
     m_Localized: "{Keybind} zum \xE4ndern"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 65
     m_Localized: Setze Chroma RGB Events.
     m_Metadata:
@@ -586,7 +586,7 @@ MonoBehaviour:
     m_Localized: "Schw\xFCnge pro Sekunde: {OverallSPS:F2}"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 143
     m_Localized: Chroma Stufengradient
     m_Metadata:
@@ -673,17 +673,17 @@ MonoBehaviour:
     m_Localized: 'Momentaner BPM: {CurrentBPM:0.###}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 1123800776704
     m_Localized: "Rot/Blau Verh\xE4ltnis: {RedBlueRatio:F2}"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 3209883108945920
     m_Localized: Bomben:{BombCount}
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 12803634470490112
     m_Localized: "W\xE4hle die neue Farbe f\xFCr dieses Lesezeichen aus."
     m_Metadata:
@@ -724,7 +724,7 @@ MonoBehaviour:
     m_Localized: Easing Zeit
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 42585459012075520
     m_Localized: "\xDCbergang"
     m_Metadata:
@@ -766,7 +766,7 @@ MonoBehaviour:
     m_Localized: 'BPM Events: {BPMCount}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 256289992891105280
     m_Localized: "Gib die Beatzahl ein, zu der du gehen m\xF6chtest"
     m_Metadata:
@@ -791,12 +791,12 @@ MonoBehaviour:
     m_Localized: 'Arcs: {ArcCount}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 357744742603026432
     m_Localized: 'Chains: {ChainCount}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 444025876411969536
     m_Localized: 'Warning
 
@@ -826,27 +826,27 @@ MonoBehaviour:
     m_Localized: 'NJS Events: {NJSEventCount}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 469752216670826496
     m_Localized: 'Current NJS: {CurrentNJS:F2}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 469752496527372288
     m_Localized: 'Current HJD: {CurrentHJD:F2}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 469752582758068224
     m_Localized: 'Current JD: {CurrentJD:F1}'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 469752663171264512
     m_Localized: 'Current RT: {CurrentRT:F0}ms'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831664
+      - rid: 2007761200731127856
   - m_Id: 515086303031586816
     m_Localized: Use White events.
     m_Metadata:
@@ -887,7 +887,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 590492266702831664
+    - rid: 2007761200731127856
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 290000000000000000b07a265f670b00070000000000000000003fb3360000000600000000000000010000000000000003000000000000000200000000000000040000000000000005000000000000000000bfa7050100008d0000000000000008000000000000001d00000000000000090000000000000040000000000000000000c3d37bb99800000083e97b09560300f09d46e2f6f60400f01daff2f6f60400f09d8405e5840600f01df726e5840600f0dd1f68e5840600f09d337ce5840600f09dec8ee58406

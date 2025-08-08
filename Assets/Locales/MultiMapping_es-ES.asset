@@ -17,7 +17,7 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 4bc9586dd75931946bdf2f3334dc9397, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 590492266702831625
+    - rid: 2007761200731127817
   m_TableData:
   - m_Id: 34914570240
     m_Localized: "Unirse a una sesi\xF3n"
@@ -86,17 +86,17 @@ MonoBehaviour:
       de canciones..."
     m_Metadata:
       m_Items:
-      - rid: 590492266702831625
+      - rid: 2007761200731127817
   - m_Id: 5357561843712
     m_Localized: 'Se produjo un error de red: {0}.'
     m_Metadata:
       m_Items:
-      - rid: 590492266702831625
+      - rid: 2007761200731127817
   - m_Id: 5800807501824
     m_Localized: "Se perdi\xF3 la conexi\xF3n con el servidor ChroMapTogether: {0}."
     m_Metadata:
       m_Items:
-      - rid: 590492266702831625
+      - rid: 2007761200731127817
   - m_Id: 6140520960000
     m_Localized: Mapeo unido
     m_Metadata:
@@ -124,26 +124,26 @@ MonoBehaviour:
     m_Localized: Este objeto fue creado/modificado por primera vez por {0}.
     m_Metadata:
       m_Items:
-      - rid: 590492266702831625
+      - rid: 2007761200731127817
   - m_Id: 2018498240393216
     m_Localized: "Este objeto fue modificado por \xFAltima vez por {0}."
     m_Metadata:
       m_Items:
-      - rid: 590492266702831625
+      - rid: 2007761200731127817
   - m_Id: 2336103375384576
     m_Localized: "\xBFEst\xE1s seguro de querer banear a {0}?"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831625
+      - rid: 2007761200731127817
   - m_Id: 2336237542780928
     m_Localized: "\xBFEst\xE1s seguro de querer expulsar a {0}?"
     m_Metadata:
       m_Items:
-      - rid: 590492266702831625
+      - rid: 2007761200731127817
   references:
     version: 2
     RefIds:
-    - rid: 590492266702831625
+    - rid: 2007761200731127817
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 0010928e7104000000109267df0400000010129b46050000003059b4a92b07000030993ed02b07000030d973ac4c08000030d9b0cb4c0800
