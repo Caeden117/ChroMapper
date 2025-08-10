@@ -1,0 +1,15 @@
+name: Promote Stable Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Promote last Dev release to Stable
+        run: |
+          curl -X POST \
+            --fail -H "Authorization: Basic ${{ secrets.WEBHOOK_TOKEN }}" \
+            "${{ secrets.WEBHOOK_URL }}"
