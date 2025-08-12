@@ -27,7 +27,6 @@ public class Plugin
     {
         Name = name;
         AssemblyName = assemblyName;
-        
         this.pluginInstance = pluginInstance;
         foreach (var methodInfo in pluginInstance.GetType().GetMethods(bindingFlags))
         {
