@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -50,7 +49,7 @@ internal class PluginLoader : MonoBehaviour
 
                 if (pluginAttribute == null) continue;
                 try {
-                    var plugin = new Plugin(pluginAttribute.Name, assembly.GetName().Version, Activator.CreateInstance(type));
+                    var plugin = new Plugin(pluginAttribute.Name, assembly.GetName(), Activator.CreateInstance(type));
                     plugins.Add(plugin);
                 }
                 catch (Exception e) {

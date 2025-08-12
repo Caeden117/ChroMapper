@@ -22,8 +22,8 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
     private readonly List<string> lines = new List<string>();
     private readonly List<LogLineUI> uiElements = new List<LogLineUI>();
     private readonly ConcurrentQueue<Logline> backlog = new ConcurrentQueue<Logline>();
+    private readonly Dictionary<string, string> loadedPluginAssemblies = new();
     private StreamWriter writer;
-    private readonly List<(string AssemblyName, string PluginName)> loadedPluginAssemblies = new();
 
     internal class Logline
     {
@@ -42,17 +42,15 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
     public void LogFormat(LogType logType, Object context, string format, params object[] args) =>
         // This will not always be called from the main thread
         backlog.Enqueue(new Logline(logType, string.Format(format, args), null));
-
-    
     
     public void LogException(Exception exception, Object context)
     {
         // Check if a plugin is causing the exception. If so, warn the user to update or remove the plugin.
         var plugin = loadedPluginAssemblies
-            .FirstOrDefault(p => p.AssemblyName == exception.Source);
+            .FirstOrDefault(p => p.Value == exception.Source);
         
-        if (!plugin.Equals(default))
-            Debug.LogWarning($"The following exception is caused by the '{plugin.PluginName}' plugin, please check for an update or remove it!");
+        if (plugin.Key != null)
+            Debug.LogWarning($"The following exception is caused by the '{plugin.Key}' plugin, please check for an update or remove it!");
         
         backlog.Enqueue(new Logline(LogType.Exception, $"[{exception.GetType()}] {exception.Message}" , exception.StackTrace));
     }
@@ -84,12 +82,8 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
     private void UpdateLoadedPluginAssemblies(Plugin[] plugins)
     {
         loadedPluginAssemblies.Clear();
-
         foreach (var plugin in plugins)
-        {
-            loadedPluginAssemblies
-                .Add((plugin.PluginInstance.GetType().Assembly.GetName().Name, plugin.Name));
-        }
+            loadedPluginAssemblies.Add(plugin.Name, plugin.AssemblyName.Name);
     }
 
     private void SceneLoaded(Scene arg0, LoadSceneMode arg1)

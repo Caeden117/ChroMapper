@@ -19,13 +19,16 @@ public class Plugin
 
     private readonly Dictionary<Type, MethodInfo> methods = new Dictionary<Type, MethodInfo>();
 
-    public readonly object PluginInstance;
+    private readonly object pluginInstance;
 
-    public Plugin(string name, Version version, object pluginInstance)
+    public readonly AssemblyName AssemblyName;
+
+    public Plugin(string name, AssemblyName assemblyName, object pluginInstance)
     {
         Name = name;
-        Version = version;
-        this.PluginInstance = pluginInstance;
+        AssemblyName = assemblyName;
+        
+        this.pluginInstance = pluginInstance;
         foreach (var methodInfo in pluginInstance.GetType().GetMethods(bindingFlags))
         {
             foreach (var t in attributes)
@@ -37,14 +40,14 @@ public class Plugin
     }
 
     public string Name { get; }
-    public Version Version { get; }
+    public Version Version => AssemblyName.Version;
 
     public bool CallMethod<T>()
     {
         methods.TryGetValue(typeof(T), out var methodInfo);
         try
         {
-            methodInfo?.Invoke(PluginInstance, new object[0]);
+            methodInfo?.Invoke(pluginInstance, new object[0]);
             return true;
         }
         catch (TargetInvocationException e)
@@ -59,7 +62,7 @@ public class Plugin
         methods.TryGetValue(typeof(T), out var methodInfo);
         try
         {
-            methodInfo?.Invoke(PluginInstance, new object[1] { obj });
+            methodInfo?.Invoke(pluginInstance, new object[1] { obj });
             return true;
         }
         catch (TargetInvocationException e)
