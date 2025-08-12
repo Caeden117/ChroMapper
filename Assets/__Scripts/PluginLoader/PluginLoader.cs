@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ internal class PluginLoader : MonoBehaviour
     ///     This does NOT include plugins added by external mod loaders (BepinEx, IPA, BSIPA, etc.)
     /// </summary>
     public static IReadOnlyList<Plugin> LoadedPlugins => plugins.AsReadOnly();
+    
+    public static Action<Plugin[]> PluginsLoadedEvent;
 
     private void Start()
     {
@@ -56,9 +59,11 @@ internal class PluginLoader : MonoBehaviour
                 }
             }
         }
-
+        
         foreach (var plugin in plugins)
             plugin.Init();
+        
+        PluginsLoadedEvent.Invoke(plugins.ToArray());
     }
 
     public static void BroadcastEvent<T>() where T : Attribute

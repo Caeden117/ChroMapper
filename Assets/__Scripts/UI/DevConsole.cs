@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -22,6 +23,7 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
     private readonly List<LogLineUI> uiElements = new List<LogLineUI>();
     private readonly ConcurrentQueue<Logline> backlog = new ConcurrentQueue<Logline>();
     private StreamWriter writer;
+    private readonly List<(string AssemblyName, string PluginName)> loadedPluginAssemblies = new();
 
     internal class Logline
     {
@@ -41,7 +43,19 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         // This will not always be called from the main thread
         backlog.Enqueue(new Logline(logType, string.Format(format, args), null));
 
-    public void LogException(Exception exception, Object context) => backlog.Enqueue(new Logline(LogType.Exception, "[" + exception.GetType() + "] " + exception.Message, exception.StackTrace));
+    
+    
+    public void LogException(Exception exception, Object context)
+    {
+        // Check if a plugin is causing the exception. If so, warn the user to update or remove the plugin.
+        var plugin = loadedPluginAssemblies
+            .FirstOrDefault(p => p.AssemblyName == exception.Source);
+        
+        if (!plugin.Equals(default))
+            Debug.LogWarning($"The following exception is caused by the '{plugin.PluginName}' plugin, please check for an update or remove it!");
+        
+        backlog.Enqueue(new Logline(LogType.Exception, $"[{exception.GetType()}] {exception.Message}" , exception.StackTrace));
+    }
 
     public void OnEnable()
     {
@@ -56,12 +70,21 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
         Application.logMessageReceived += LogCallback;
 
         SceneManager.sceneLoaded += SceneLoaded;
+
+        PluginLoader.PluginsLoadedEvent += UpdateLoadedPluginAssemblies;
     }
 
     public void OnDisable()
     {
         Application.logMessageReceived -= LogCallback;
         SceneManager.sceneLoaded -= SceneLoaded;
+        PluginLoader.PluginsLoadedEvent -= UpdateLoadedPluginAssemblies;
+    }
+
+    private void UpdateLoadedPluginAssemblies(Plugin[] plugins)
+    {
+        foreach (var plugin in plugins)
+            loadedPluginAssemblies.Add((plugin.PluginInstance.GetType().Assembly.GetName().Name, plugin.Name));
     }
 
     private void SceneLoaded(Scene arg0, LoadSceneMode arg1)
