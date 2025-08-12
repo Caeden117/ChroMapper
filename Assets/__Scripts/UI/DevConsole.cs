@@ -83,8 +83,13 @@ public class DevConsole : MonoBehaviour, ILogHandler, CMInput.IDebugActions
 
     private void UpdateLoadedPluginAssemblies(Plugin[] plugins)
     {
+        loadedPluginAssemblies.Clear();
+
         foreach (var plugin in plugins)
-            loadedPluginAssemblies.Add((plugin.PluginInstance.GetType().Assembly.GetName().Name, plugin.Name));
+        {
+            loadedPluginAssemblies
+                .Add((plugin.PluginInstance.GetType().Assembly.GetName().Name, plugin.Name));
+        }
     }
 
     private void SceneLoaded(Scene arg0, LoadSceneMode arg1)
