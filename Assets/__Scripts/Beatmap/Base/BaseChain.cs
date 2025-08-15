@@ -25,7 +25,7 @@ namespace Beatmap.Base
             base.Deserialize(reader);
         }
 
-        public static readonly Vector3 ChainScale = new Vector3(1.5f, 0.8f, 1.5f);
+        public static readonly Vector3 ChainHeadScale = new Vector3(1.0f, 0.6f, 1.0f);
 
         public BaseChain()
         {

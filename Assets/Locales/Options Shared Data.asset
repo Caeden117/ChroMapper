@@ -1359,6 +1359,14 @@ MonoBehaviour:
     m_Key: appearance.displayhjdline
     m_Metadata:
       m_Items: []
+  - m_Id: 525526229004759040
+    m_Key: appearance.accuratenotesize.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 525527249894158336
+    m_Key: appearance.accuratenotesize
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

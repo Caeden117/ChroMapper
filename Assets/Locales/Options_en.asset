@@ -1480,6 +1480,15 @@ MonoBehaviour:
     m_Localized: Display HJD Line On Grid
     m_Metadata:
       m_Items: []
+  - m_Id: 525526229004759040
+    m_Localized: Changes note size to be game-accurate, as opposed to the default
+      90% scale.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 525527249894158336
+    m_Localized: Accurate Note Size
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

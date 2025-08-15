@@ -154,8 +154,12 @@ namespace Beatmap.Containers
                                           new Vector3(0, offsetY, NoteData.SongBpmTime * EditorScaleController.EditorScale);
             }
             transform.localScale = NoteData.GetScale();
-            DirectionTarget.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            DirectionTarget.localScale = Vector3.one;
             DirectionTarget.localEulerAngles = DirectionTargetEuler;
+
+            // default scale prior to this setting worked out to be 90%
+            if (!Settings.Instance.AccurateNoteSize && NoteData.Type != (int)NoteType.Bomb)
+                transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
 
             UpdateCollisionGroups();
 
