@@ -2,13 +2,17 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Beatmap.Base.Customs;
+
 namespace Beatmap.Animations
 {
     public interface IAnimateProperty
     {
         public float StartTime { get; }
+        public bool IsEmpty();
         public void UpdateProperty(float time);
         public void Sort();
+        public void RemoveEvent(BaseCustomEvent ev);
     }
 
     public class AnimateProperty<T> : IAnimateProperty
@@ -29,7 +33,12 @@ namespace Beatmap.Animations
             count = 0;
         }
 
-        public void AddPointDef(PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p)
+        public bool IsEmpty()
+        {
+            return PointDefinitions.Count == 0;
+        }
+
+        public void AddPointDef(PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, BaseCustomEvent source)
         {
             for (var i = 0; i <= p.Repeat; ++i)
             {
@@ -41,7 +50,7 @@ namespace Beatmap.Animations
                     pp.Time = pp.TimeBegin;
                 }
 
-                PointDefinitions.Add(new PointDefinition<T>(parser, pp));
+                PointDefinitions.Add(new PointDefinition<T>(parser, pp, source));
             }
         }
 
@@ -87,6 +96,11 @@ namespace Beatmap.Animations
             PointDefinitions.Sort();
             StartTime = PointDefinitions[0].StartTime;
             count = PointDefinitions.Count;
+        }
+
+        public void RemoveEvent(BaseCustomEvent ev)
+        {
+            PointDefinitions.RemoveAll((pd) => pd.Source == ev);
         }
 
         private void GetIndexes(float time, out int prev, out int next)

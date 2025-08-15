@@ -31,7 +31,7 @@ namespace Beatmap.Appearances
             if (chain.ChainData.CustomColor != null)
                 chain.SetColor((Color)chain.ChainData.CustomColor);
 
-            chain.Animator.SetData(chain.ChainData);
+            chain.Animator.AttachToObject(chain.ChainData);
         }
     }
 }

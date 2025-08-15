@@ -38,11 +38,22 @@ namespace Beatmap.Animations
         public bool AnimatedLife { get; private set; } = false;
         public bool ShouldRecycle;
 
+        public enum TargetTypes {
+            None,
+            GameplayObject,
+            Transform,
+            Material,
+        };
+
+        public TargetTypes TargetType;
+
+        public string ColorKeyword = "_Color";
+
         private List<TrackAnimator> tracks = new List<TrackAnimator>();
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         private IAnimateProperty[] properties = new IAnimateProperty[0];
-        
+
         private static readonly int opaqueAlpha = Shader.PropertyToID("_OpaqueAlpha");
         private static readonly int animationSpawned = Shader.PropertyToID("_AnimationSpawned");
         private static readonly int alwaysOpaque = Shader.PropertyToID("_AlwaysOpaque");
@@ -51,6 +62,8 @@ namespace Beatmap.Animations
         {
             AnimatedProperties = new Dictionary<string, IAnimateProperty>();
             properties = new IAnimateProperty[0];
+
+            TargetType = TargetTypes.None;
 
             OnDisable();
 
@@ -72,7 +85,7 @@ namespace Beatmap.Animations
             WorldPosition = new Aggregator<Vector3>(Vector3.zero, (a, b) => a + b);
             Scale = new Aggregator<Vector3>(Vector3.one, (a, b) => Vector3.Scale(a, b));
             Colors = new Aggregator<Color>(
-                container?.MaterialPropertyBlock?.GetColor((container is ObstacleContainer) ? "_ColorTint" : "_Color") ?? Color.white,
+                container?.MaterialPropertyBlock?.GetColor(ColorKeyword) ?? Color.white,
                 (a, b) => a * b);
             Opacity = new Aggregator<float>(1.0f, (a, b) => a * b);
             OpacityArrow = new Aggregator<float>(1.0f, (a, b) => a * b);
@@ -88,7 +101,7 @@ namespace Beatmap.Animations
                 LocalTarget.localScale = Vector3.one;
             }
 
-            if (container?.ObjectData != null)
+            if (container != null && !(container is GeometryContainer))
             {
                 container.UpdateGridPosition();
                 container.MaterialPropertyBlock.SetFloat(opaqueAlpha, 1);
@@ -110,20 +123,21 @@ namespace Beatmap.Animations
                 Atsc.TimeChanged -= OnTimeChanged;
             }
 
-            if (container?.ObjectData == null)
+            foreach (var track in tracks)
             {
-                foreach (var track in tracks)
-                {
-                    track.Children.Remove(this);
-                    track.OnChildrenChanged();
-                }
-                tracks.Clear();
+                track.RemoveChild(this);
             }
+            tracks.Clear();
         }
 
-        public void SetData(BaseGrid obj)
+        public void AttachToObject(BaseGrid obj)
         {
             ResetData();
+
+            TargetType = TargetTypes.GameplayObject;
+            ColorKeyword = (container is ObstacleContainer)
+                ? "_ColorTint"
+                : "_Color";
 
             enabled = (UIMode.AnimationMode && TracksManager != null);
             if (!enabled) return;
@@ -198,12 +212,13 @@ namespace Beatmap.Animations
                             if (p.Transition != 0) {
                                 p.Transition = (float)map.JsonTimeToSongBpmTime(ce.JsonTime + p.Transition) - ce.SongBpmTime;
                             }
-                            AddPointDef(p, jprop.Key);
+                            AddPointDef(p, jprop.Key, ce);
                         }
                     }
                 }
 
-                 AnimationTrack.transform.SetParent(this.tracks[0].Track.ObjectParentTransform, false);
+                if (tracks.Count > 0)
+                    AnimationTrack.transform.SetParent(this.tracks[0].Track.ObjectParentTransform, false);
             }
 
             // Individual Path Animation
@@ -221,7 +236,7 @@ namespace Beatmap.Animations
                         TimeBegin = time_begin,
                         TimeEnd = time_end,
                     };
-                    AddPointDef(p, jprop.Key);
+                    AddPointDef(p, jprop.Key, null);
                 }
             }
 
@@ -247,10 +262,12 @@ namespace Beatmap.Animations
             Atsc.TimeChanged += OnTimeChanged;
         }
 
-        public void SetGeometry(BaseEnvironmentEnhancement eh)
+        public void AttachToGeometry(BaseEnvironmentEnhancement eh)
         {
             var v2 = eh is V2EnvironmentEnhancement;
             ResetData();
+
+            TargetType = TargetTypes.Transform;
 
             LocalTarget = AnimationThis.transform;
             //WorldTarget = container.transform;
@@ -280,9 +297,11 @@ namespace Beatmap.Animations
             OnTimeChanged();
         }
 
-        public void SetTrack(Track track, string name)
+        public void AttachToTrack(Track track, string name)
         {
             ResetData();
+
+            TargetType = TargetTypes.Transform;
 
             LocalTarget = track.ObjectParentTransform;
             WorldTarget = track.transform;
@@ -290,11 +309,22 @@ namespace Beatmap.Animations
             Atsc.TimeChanged += OnTimeChanged;
         }
 
+        public void AttachToMaterial(GeometryContainer con, string track, string colorKeyword)
+        {
+            ResetData();
+
+            TargetType = TargetTypes.Material;
+            container = con;
+            ColorKeyword = colorKeyword;
+
+            enabled = true;
+            AddParent(track);
+        }
+
         public void AddParent(string name)
         {
-            var track = TracksManager.CreateAnimationTrack(name);
-            track.Children.Add(this);
-            track.OnChildrenChanged();
+            var track = TracksManager.GetAnimationTrack(name);
+            track.AddChild(this);
             this.tracks.Add(track);
         }
 
@@ -353,6 +383,17 @@ namespace Beatmap.Animations
 
         public void LateUpdate()
         {
+            if (TargetType == TargetTypes.Material)
+            {
+                if (Colors.Count > 0)
+                {
+                    var color = Colors.Get();
+                    container.MaterialPropertyBlock.SetColor(ColorKeyword, color);
+                    container.UpdateMaterials();
+                }
+                return;
+            }
+
             if (LocalRotation.Count > 0)
                 LocalTarget.localRotation = LocalRotation.Get();
 
@@ -385,7 +426,7 @@ namespace Beatmap.Animations
                 {
                     var color = Colors.Get();
                     container.MaterialPropertyBlock
-                        .SetColor((container is ObstacleContainer) ? "_ColorTint" : "_Color", color);
+                        .SetColor(ColorKeyword, color);
                 }
 
                 if (container is NoteContainer nc)
@@ -437,49 +478,47 @@ namespace Beatmap.Animations
             }
         }
 
-        private void AddPointDef(IPointDefinition.UntypedParams p, string key)
+        // Only used for gameplay objects?
+        private void AddPointDef(IPointDefinition.UntypedParams p, string key, BaseCustomEvent source)
         {
             switch (key)
             {
             case "_dissolve":
             case "dissolve":
-                AddPointDef<float>((float f) => Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
+                AddPointDef<float>(source, (float f) => Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_dissolveArrow":
             case "dissolveArrow":
-                AddPointDef<float>((float f) => OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
+                AddPointDef<float>(source, (float f) => OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
             case "localRotation":
-                AddPointDef<Quaternion>((Quaternion q) => LocalRotation.Add(q), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                AddPointDef<Quaternion>(source, (Quaternion q) => LocalRotation.Add(q), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_rotation":
             case "offsetWorldRotation":
-                AddPointDef<Quaternion>((Quaternion v) => WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                AddPointDef<Quaternion>(source, (Quaternion v) => WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
             case "offsetPosition":
-                AddPointDef<Vector3>((Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (Vector3 v) => OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_definitePosition":
-                AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
-                break;
-            case "position":
             case "definitePosition":
-                AddPointDef<Vector3>((Vector3 v) => WorldPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (Vector3 v) => WorldPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
             case "scale":
-                AddPointDef<Vector3>((Vector3 v) => Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
+                AddPointDef<Vector3>(source, (Vector3 v) => Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
                 break;
             case "_color":
             case "color":
-                AddPointDef<Color>((Color c) => Colors.Add(c), PointDataParsers.ParseColor, p, Color.white);
+                AddPointDef<Color>(source, (Color c) => Colors.Add(c), PointDataParsers.ParseColor, p, Color.white);
                 break;
             }
         }
 
-        private void AddPointDef<T>(Action<T> setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
+        private void AddPointDef<T>(BaseCustomEvent source, Action<T> setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
         {
             try
             {
@@ -491,7 +530,7 @@ namespace Beatmap.Animations
                         _default
                     );
                 }
-                GetAnimateProperty<T>(p.Key, setter, _default).AddPointDef(parser, p);
+                GetAnimateProperty<T>(p.Key, setter, _default).AddPointDef(parser, p, source);
             }
             catch (Exception e)
             {
