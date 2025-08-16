@@ -291,7 +291,10 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
         }
     }
 
-    public void OnAttemptQuickSubmit(InputAction.CallbackContext context)
+    public void OnAttemptQuickSubmit(InputAction.CallbackContext context) => AttemptQuickSubmit(context);
+    public void OnAttemptQuickSubmitAlt(InputAction.CallbackContext context) => AttemptQuickSubmit(context);
+
+    private void AttemptQuickSubmit(InputAction.CallbackContext context)
     {
         if (context.performed
             && currentSelectable != null
