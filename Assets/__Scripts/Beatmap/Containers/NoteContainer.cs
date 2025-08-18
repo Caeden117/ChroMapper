@@ -159,7 +159,7 @@ namespace Beatmap.Containers
 
             // default scale prior to this setting worked out to be 90%
             if (!Settings.Instance.AccurateNoteSize && NoteData.Type != (int)NoteType.Bomb)
-                transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+                DirectionTarget.localScale = new Vector3(0.9f, 0.9f, 0.9f);
 
             UpdateCollisionGroups();
 
