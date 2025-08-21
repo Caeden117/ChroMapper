@@ -38,7 +38,7 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
     public void OnIncreaseSongSpeed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        songSpeed++;
+        songSpeed += 0.5f;
         if (songSpeed > 30) songSpeed = 30;
         Settings.ManuallyNotifySettingUpdatedEvent("SongSpeed", songSpeed);
         UpdateSongSpeed(songSpeed);
