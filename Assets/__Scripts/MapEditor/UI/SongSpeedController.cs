@@ -29,8 +29,8 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
     public void OnDecreaseSongSpeed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        songSpeed--;
-        if (songSpeed < 1) songSpeed = 1;
+        songSpeed -= 0.5f;
+        if (songSpeed < 0.5f) songSpeed = 0.5f;
         Settings.ManuallyNotifySettingUpdatedEvent("SongSpeed", songSpeed);
         UpdateSongSpeed(songSpeed);
     }
@@ -39,7 +39,7 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
     {
         if (!context.performed) return;
         songSpeed++;
-        if (songSpeed > 20) songSpeed = 20;
+        if (songSpeed > 30) songSpeed = 30;
         Settings.ManuallyNotifySettingUpdatedEvent("SongSpeed", songSpeed);
         UpdateSongSpeed(songSpeed);
     }
