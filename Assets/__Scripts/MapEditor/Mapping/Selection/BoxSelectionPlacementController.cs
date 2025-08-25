@@ -241,9 +241,12 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
 
     public override void CancelPlacement()
     {
-        IsSelecting = false;
-        foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject, false);
-        SelectionController.SelectionChangedEvent?.Invoke();
+        if (IsSelecting)
+        {
+            IsSelecting = false;
+            foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject, false);
+            SelectionController.SelectionChangedEvent?.Invoke();
+        }
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued) { }
