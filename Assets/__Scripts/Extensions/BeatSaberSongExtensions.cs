@@ -159,6 +159,12 @@ public static class BeatSaberSongExtensions
             return null;
         }
 
+        // Zip specification requires any relative paths must be using forward slashes
+        foreach (var exportedFile in exportedFiles.ToList())
+        {
+            exportedFiles[exportedFile.Key] = exportedFile.Value.Replace('\\', '/');
+        }
+
         return exportedFiles;
     }
 
