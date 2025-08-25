@@ -40,7 +40,7 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
     {
         if (!context.performed) return;
         songSpeed += (Settings.Instance.SongSpeedChangeAmount / 10.0f);
-        songSpeed = 10f - Mathf.Round((10f - songSpeed) / Settings.Instance.SongSpeedChangeAmount) * Settings.Instance.SongSpeedChangeAmount; // fix 1% -> 11% (SSCA = +/-10%) bug 
+        songSpeed = 10f - (Mathf.Round((10f - songSpeed) / Settings.Instance.SongSpeedChangeAmount * 10) * Settings.Instance.SongSpeedChangeAmount / 10.0f); // fix 1% -> 11% (SSCA = +/-10%) bug 
         if (songSpeed > 30) songSpeed = 30;
         Settings.ManuallyNotifySettingUpdatedEvent("SongSpeed", songSpeed);
         UpdateSongSpeed(songSpeed);
