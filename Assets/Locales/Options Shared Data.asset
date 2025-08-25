@@ -1367,6 +1367,18 @@ MonoBehaviour:
     m_Key: appearance.accuratenotesize
     m_Metadata:
       m_Items: []
+  - m_Id: 535382107536941056
+    m_Key: map.bettersongspeed.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 535382867704209408
+    m_Key: map.bettersongspeed.info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 535385690646962176
+    m_Key: map.bettersongspeed
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
