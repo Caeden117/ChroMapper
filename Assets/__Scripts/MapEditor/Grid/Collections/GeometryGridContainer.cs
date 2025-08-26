@@ -21,12 +21,21 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
         var eh = obj as BaseEnvironmentEnhancement;
         if (eh.Geometry is JSONNode)
         {
-            var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
-            if (container == null) return;
-            container.Setup();
-            LoadedContainers.Add(eh, container);
-            ObjectsWithContainers.Add(eh);
-            geometryAppearanceSo.SetGeometryAppearance(container);
+            try
+            {
+                var container = GeometryContainer.SpawnGeometry(eh, ref geometryPrefab);
+                if (container == null) return;
+                container.Setup();
+                LoadedContainers.Add(eh, container);
+                ObjectsWithContainers.Add(eh);
+                geometryAppearanceSo.SetGeometryAppearance(container);
+                container.OutlineVisible = SelectionController.IsObjectSelected(obj);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error in geometry:");
+                Debug.LogException(e);
+            }
         }
     }
 
