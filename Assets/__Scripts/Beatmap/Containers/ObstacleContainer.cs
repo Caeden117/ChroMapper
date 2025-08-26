@@ -7,6 +7,7 @@ namespace Beatmap.Containers
     {
         private static readonly int colorTint = Shader.PropertyToID("_ColorTint");
         private static readonly int shaderScale = Shader.PropertyToID("_WorldScale");
+        private static readonly int handleScale = Shader.PropertyToID("_HandleScale");
 
         [SerializeField] private TracksManager manager;
 
@@ -40,6 +41,7 @@ namespace Beatmap.Containers
             Animator.LocalTarget.localScale = scale;
 
             MaterialPropertyBlock.SetVector(shaderScale, scale);
+            MaterialPropertyBlock.SetFloat(handleScale, 1);
             UpdateMaterials();
         }
 
