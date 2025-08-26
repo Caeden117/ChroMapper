@@ -60,10 +60,11 @@ namespace Beatmap.Containers
                 }
 
                 container.Shape.GetComponent<MeshFilter>().sharedMesh = triangleMesh;
-            }
-            if (type == PrimitiveType.Quad)
-            {
                 container.SelectionRenderers[0].transform.localPosition = new Vector3(0, 0, 0.01f);
+            }
+            else if (type == PrimitiveType.Quad)
+            {
+                container.SelectionRenderers[0].transform.localPosition = new Vector3(0, 0, -0.01f);
             }
             var mesh = container.Shape.GetComponent<MeshFilter>().sharedMesh;
             container.SelectionRenderers[0].GetComponent<MeshFilter>().sharedMesh = mesh;
