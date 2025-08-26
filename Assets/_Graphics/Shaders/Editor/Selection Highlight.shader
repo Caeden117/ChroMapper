@@ -1,4 +1,4 @@
-﻿Shader "Unlit/Instanced Toon Outline"
+﻿Shader "Unlit/Selection Highlight"
 {
     Properties
     {
@@ -10,7 +10,6 @@
     {
         Tags { "Queue"="Transparent-100" "RenderType"="Opaque" }
         LOD 100
-        Cull Front
         ZWrite Off
         ZTest LEqual
         ColorMask RGB
