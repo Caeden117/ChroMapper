@@ -259,12 +259,14 @@ namespace Beatmap.V4
                 var lightColorEventBoxesCommonData = difficulty.LightColorEventBoxGroups
                     .SelectMany(group => group.Events)
                     .Select(V4CommonData.LightColorEventBox.FromBaseLightColorEventBox)
+                    .Distinct()
                     .ToList();
                 
                 var lightColorEventsCommonData = difficulty.LightColorEventBoxGroups
                     .SelectMany(group => group.Events)
                     .SelectMany(box => box.Events)
                     .Select(V4CommonData.LightColorEvent.FromBaseLightColorEvent)
+                    .Distinct()
                     .ToList();
 
                 foreach (var lightColorBoxData in lightColorEventBoxesCommonData)
@@ -290,12 +292,14 @@ namespace Beatmap.V4
                 var lightRotationEventBoxesCommonData = difficulty.LightRotationEventBoxGroups
                     .SelectMany(group => group.Events)
                     .Select(V4CommonData.LightRotationEventBox.FromBaseLightRotationEventBox)
+                    .Distinct()
                     .ToList();
                 
                 var lightRotationEventsCommonData = difficulty.LightRotationEventBoxGroups
                     .SelectMany(group => group.Events)
                     .SelectMany(box => box.Events)
                     .Select(V4CommonData.LightRotationEvent.FromBaseLightRotationEvent)
+                    .Distinct()
                     .ToList();
 
                 foreach (var lightRotationBoxData in lightRotationEventBoxesCommonData)
@@ -321,12 +325,14 @@ namespace Beatmap.V4
                 var lightTranslationEventBoxesCommonData = difficulty.LightTranslationEventBoxGroups
                     .SelectMany(group => group.Events)
                     .Select(V4CommonData.LightTranslationEventBox.FromBaseLightTranslationEventBox)
+                    .Distinct()
                     .ToList();
                 
                 var lightTranslationEventsCommonData = difficulty.LightTranslationEventBoxGroups
                     .SelectMany(group => group.Events)
                     .SelectMany(box => box.Events)
                     .Select(V4CommonData.LightTranslationEvent.FromBaseLightTranslationEvent)
+                    .Distinct()
                     .ToList();
 
                 foreach (var lightTranslationBoxData in lightTranslationEventBoxesCommonData)
@@ -346,19 +352,20 @@ namespace Beatmap.V4
                 }
                 
                 // Float FX effects
-                // Translation Group events
                 var fxEventBoxes = new JSONArray();
                 var floatFxEvents = new JSONArray();
 
                 var fxEventBoxesCommonData = difficulty.VfxEventBoxGroups
                     .SelectMany(group => group.Events)
                     .Select(V4CommonData.FxEventBox.FromBaseFxEventBox)
+                    .Distinct()
                     .ToList();
                 
                 var floatFxEventsCommonData = difficulty.VfxEventBoxGroups
                     .SelectMany(group => group.Events)
                     .SelectMany(box => box.FloatFxEvents)
                     .Select(V4CommonData.FloatFxEvent.FromFloatFxEventBase)
+                    .Distinct()
                     .ToList();
 
                 foreach (var fxEventBoxData in fxEventBoxesCommonData)
