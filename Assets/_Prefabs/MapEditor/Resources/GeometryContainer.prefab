@@ -75,6 +75,7 @@ MonoBehaviour:
   WorldTarget: {fileID: 0}
   ShouldRecycle: 0
   TargetType: 0
+  ColorKeyword: _Color
 --- !u!1 &5931499825299354663
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,6 +130,7 @@ MonoBehaviour:
   WorldTarget: {fileID: 0}
   ShouldRecycle: 0
   TargetType: 3
+  ColorKeyword: _Color
 --- !u!1 &7714162157884114255
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,7 +158,7 @@ Transform:
   m_GameObject: {fileID: 7714162157884114255}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6666666, y: 1.666667, z: 1.666667}
+  m_LocalScale: {x: 1.667, y: 1.667, z: 1.667}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1927478196830974443}
@@ -190,7 +192,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 714c52575879a884685fa7c22c92f9d0, type: 2}
+  - {fileID: 2100000, guid: 724e2f9a5a8b8bb74b1c46e432c8452d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
