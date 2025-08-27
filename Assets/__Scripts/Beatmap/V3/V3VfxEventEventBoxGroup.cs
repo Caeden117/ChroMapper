@@ -25,14 +25,14 @@ namespace Beatmap.V3
             return vfxGroup;
         }
         public static JSONNode ToJson(BaseVfxEventEventBoxGroup<BaseVfxEventEventBox> vfxGroup,
-            IList<V4CommonData.FloatFxEvent> floatFxEventsCommonData)
+            IList<FloatFxEventBase> floatFxEvents)
         {
             JSONNode node = new JSONObject();
             node["b"] = vfxGroup.JsonTime;
             node["g"] = vfxGroup.ID;
             node["t"] = vfxGroup.Type;
             var ary = new JSONArray();
-            foreach (var k in vfxGroup.Events) ary.Add(V3VfxEventEventBox.ToJson(k, floatFxEventsCommonData));
+            foreach (var k in vfxGroup.Events) ary.Add(V3VfxEventEventBox.ToJson(k, floatFxEvents));
             node["e"] = ary;
             vfxGroup.CustomData = vfxGroup.SaveCustom();
             if (!vfxGroup.CustomData.Children.Any()) return node;

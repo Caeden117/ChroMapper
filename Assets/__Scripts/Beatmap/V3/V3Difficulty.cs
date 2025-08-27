@@ -121,13 +121,11 @@ namespace Beatmap.V3
                 var floatFxEvents = difficulty.VfxEventBoxGroups
                     .SelectMany(group => group.Events)
                     .SelectMany(box => box.FloatFxEvents)
-                    .ToList();
-                var floatFxEventsCommonData = floatFxEvents
-                    .Select(V4CommonData.FloatFxEvent.FromFloatFxEventBase)
+                    .Distinct()
                     .ToList();
                 
                 var vfxEventBoxGroups = new JSONArray();
-                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.ToJson(e, floatFxEventsCommonData));
+                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.ToJson(e, floatFxEvents));
                 json["vfxEventBoxGroups"] = vfxEventBoxGroups;
                 
                 difficulty.FxEventsCollection.FloatFxEvents = floatFxEvents.ToArray();
