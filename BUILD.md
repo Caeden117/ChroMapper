@@ -1,6 +1,6 @@
 # Build guide
 
-ChroMapper is developed with Unity **2021.3.32f1** in C#.
+ChroMapper is developed with Unity **2021.3.45f1** in C#.
 
 This GitHub repository comes with the assets and scripts you need to easily open it up in Unity, no dependency bullshit required.
 
