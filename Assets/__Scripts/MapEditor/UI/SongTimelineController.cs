@@ -16,7 +16,7 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
 
     private float songLength;
 
-    private const string beatFormat = "F3";
+    private const string beatFormat = "<mspace=0.4em>{0:0}</mspace><size=20>.<mspace=0.4em>{1:000}</mspace></size>";
 
     private const string timeFormat =
         "<mspace=0.4em>{3}{0:0}</mspace>:<mspace=0.4em>{1:00}</mspace><size=20>.<mspace=0.4em>{2:000}</mspace></size>";
@@ -49,7 +49,9 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
             minutes, seconds, milliseconds,
             atsc.CurrentSeconds < 0 ? "-" : "");
 
-        currentBeatMesh.text = atsc.CurrentJsonTime.ToString(beatFormat);
+        var beatIntegerPart = (int)atsc.CurrentJsonTime;
+        var beatDecimalPart = atsc.CurrentJsonTime % 1 * 100;
+        currentBeatMesh.text = string.Format(beatFormat, beatIntegerPart, beatDecimalPart);
     }
 
     public void OnPointerEnter(PointerEventData eventData) => IsHovering = true;
