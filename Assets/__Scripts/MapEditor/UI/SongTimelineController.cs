@@ -16,7 +16,10 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
 
     private float songLength;
 
-    private string timeMeshFloatFormat = "F3";
+    private const string beatFormat = "F3";
+
+    private const string timeFormat =
+        "<mspace=0.4em>{3}{0:0}</mspace>:<mspace=0.4em>{1:00}</mspace><size=20>.<mspace=0.4em>{2:000}</mspace></size>";
 
     public static bool IsHovering { get; private set; }
 
@@ -26,19 +29,7 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
         yield return new WaitUntil(() => mainAudioSource.clip != null);
         songLength = mainAudioSource.clip.length;
         slider.value = 0;
-
-        timeMeshFloatFormat = $"F{Settings.Instance.TimeValueDecimalPrecision}";
-        Settings.NotifyBySettingName(nameof(Settings.TimeValueDecimalPrecision), UpdateTimeMeshFloatFormat);
     }
-
-    private void OnDestroy() => Settings.ClearSettingNotifications(nameof(Settings.TimeValueDecimalPrecision));
-
-    private void UpdateTimeMeshFloatFormat(object value)
-    {
-        timeMeshFloatFormat = $"F{value}";
-        currentBeatMesh.text = atsc.CurrentJsonTime.ToString(timeMeshFloatFormat);
-    }
-    
 
     // Update is called once per frame
     private void Update()
@@ -54,11 +45,11 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
         var rawMins = atsc.CurrentSeconds / 60;
         var minutes = Mathf.Abs(atsc.CurrentSeconds > 0 ? Mathf.FloorToInt(rawMins) : Mathf.CeilToInt(rawMins));
         var milliseconds = Mathf.FloorToInt((atsc.CurrentSeconds - Mathf.FloorToInt(atsc.CurrentSeconds)) * 1000);
-        timeMesh.text = string.Format(
-            "<mspace=0.4em>{3}{0:0}</mspace>:<mspace=0.4em>{1:00}</mspace><size=20>.<mspace=0.4em>{2:000}</mspace></size>",
+        timeMesh.text = string.Format(timeFormat,
             minutes, seconds, milliseconds,
             atsc.CurrentSeconds < 0 ? "-" : "");
-        currentBeatMesh.text = atsc.CurrentJsonTime.ToString(timeMeshFloatFormat);
+
+        currentBeatMesh.text = atsc.CurrentJsonTime.ToString(beatFormat);
     }
 
     public void OnPointerEnter(PointerEventData eventData) => IsHovering = true;
