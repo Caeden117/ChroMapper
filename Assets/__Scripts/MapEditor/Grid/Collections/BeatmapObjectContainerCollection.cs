@@ -10,6 +10,7 @@ using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.Shared;
 using Beatmap.V2;
+using SimpleJSON;
 using UnityEngine;
 
 public abstract class BeatmapObjectContainerCollection : MonoBehaviour
@@ -103,7 +104,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         UnsubscribeToCallbacks();
     }
 
-    private void UpdateEpsilon(object precision) => Epsilon = 1 / Mathf.Pow(10, (int)precision);
+    private void UpdateEpsilon(object precision)
+    {
+        Epsilon = 1 / Mathf.Pow(10, (int)precision);
+        JSONNumber.DecimalPrecision = (int)precision;
+    }
 
     /// <summary>
     ///     Grab a <see cref="BeatmapObjectContainerCollection" /> whose <see cref="ContainerType" /> matches the given type.
