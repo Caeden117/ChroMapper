@@ -105,6 +105,7 @@ public class ChainIndicatorPlacement : PlacementController<BaseChain, ChainIndic
             dragged.CustomTailCoordinate = queued.CustomTailCoordinate;
         }
 
+        DraggedObjectContainer.ParentChain.AdjustTimePlacement();
         DraggedObjectContainer.ParentChain.GenerateChain(dragged);
     }
 

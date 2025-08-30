@@ -55,13 +55,18 @@ namespace Beatmap.Containers
             UpdateMaterials();
         }
 
-        public override void UpdateGridPosition()
+        public void AdjustTimePlacement()
         {
             if (!(Animator != null && Animator.AnimatedTrack))
             {
                 transform.localPosition =
                     new Vector3(-1.5f, offsetY, ChainData.SongBpmTime * EditorScaleController.EditorScale);
             }
+        }
+
+        public override void UpdateGridPosition()
+        {
+            AdjustTimePlacement();
 
             GenerateChain();
             UpdateCollisionGroups();
