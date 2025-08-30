@@ -29,8 +29,9 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
     public void OnDecreaseSongSpeed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        songSpeed--;
-        if (songSpeed < 1) songSpeed = 1;
+        songSpeed -= Settings.Instance.SongSpeedChangeAmount / 2.0f;
+        songSpeed = 10f - (Mathf.Round((10f - songSpeed) / Settings.Instance.SongSpeedChangeAmount * 2) * Settings.Instance.SongSpeedChangeAmount / 2.0f); // fix 1% -> 11% (SSCA = +/-10%) bug but actually this time
+        if (songSpeed < 0.5f) songSpeed = 0.5f;
         Settings.ManuallyNotifySettingUpdatedEvent("SongSpeed", songSpeed);
         UpdateSongSpeed(songSpeed);
     }
@@ -38,8 +39,9 @@ public class SongSpeedController : MonoBehaviour, CMInput.ISongSpeedActions
     public void OnIncreaseSongSpeed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        songSpeed++;
-        if (songSpeed > 20) songSpeed = 20;
+        songSpeed += Settings.Instance.SongSpeedChangeAmount / 2.0f;
+        songSpeed = 10f - (Mathf.Round((10f - songSpeed) / Settings.Instance.SongSpeedChangeAmount * 2) * Settings.Instance.SongSpeedChangeAmount / 2.0f); // fix 1% -> 11% (SSCA = +/-10%) bug but actually this time 
+        if (songSpeed > 30) songSpeed = 30;
         Settings.ManuallyNotifySettingUpdatedEvent("SongSpeed", songSpeed);
         UpdateSongSpeed(songSpeed);
     }

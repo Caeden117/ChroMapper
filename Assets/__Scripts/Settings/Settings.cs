@@ -68,6 +68,7 @@ public class Settings
     public bool VanillaOnlyShift = true;
     public bool Animations = true;
     public float PastNotesGridScale = 0.5f;
+    public float SongSpeedChangeAmount = 2;
     // SongSpeed is a non-persistent setting
     // NoteLanes is a non-persistent setting
 
