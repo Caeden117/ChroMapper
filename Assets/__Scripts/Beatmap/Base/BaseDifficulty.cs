@@ -98,6 +98,15 @@ namespace Beatmap.Base
 
         private float? songBpm;
 
+        public void ValidateBpmEventsAndObjectTimes(float songBpm)
+        {
+            if (this.songBpm == null || !Mathf.Approximately(this.songBpm.Value, songBpm))
+            {
+                BootstrapBpmEvents(songBpm);
+                RecomputeAllObjectSongBpmTimes();
+            }
+        }
+
         public void BootstrapBpmEvents(float songBpm)
         {
             this.songBpm = songBpm;
