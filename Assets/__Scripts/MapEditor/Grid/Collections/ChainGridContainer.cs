@@ -71,7 +71,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
     internal override void UnsubscribeToCallbacks()
     {
         var notesContainer = GetCollectionForType(ObjectType.Note) as NoteGridContainer;
-        notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
+        if (notesContainer != null) notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
         SpawnCallbackController.ChainPassedThreshold -= SpawnCallback;
         SpawnCallbackController.RecursiveChainCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
