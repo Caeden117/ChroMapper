@@ -25,6 +25,7 @@ namespace Beatmap.Containers
         [SerializeField] private MeshRenderer arrowRenderer;
         [SerializeField] private SpriteRenderer swingArcRenderer;
 
+        private BaseNote noteData;
         public BaseNote NoteData
         {
             get => noteData;
@@ -35,7 +36,6 @@ namespace Beatmap.Containers
             }
         }
 
-        [SerializeField] public BaseNote noteData;
         public bool IsChainHead; // future idea to mark the note and just switch the prefab instead of constantly searching
         public MaterialPropertyBlock ArrowMaterialPropertyBlock;
 
@@ -179,8 +179,12 @@ namespace Beatmap.Containers
                 DirectionTarget.localPosition = -ChainContainer.PosOffsetFactor * headDirection;
                 DirectionTarget.localScale = BaseChain.ChainHeadScale;
             }
-            else
+            else if (NoteData.Type != (int)NoteType.Bomb)
+            {
+                // Only apply this to notes as bomb DirectionTarget affects hover placement as well
+                // really need to think about prefab structure soon
                 DirectionTarget.localPosition = Vector3.zero;
+            }
 
             UpdateCollisionGroups();
 
