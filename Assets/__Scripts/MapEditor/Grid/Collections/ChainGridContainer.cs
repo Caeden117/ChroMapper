@@ -71,8 +71,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
     internal override void UnsubscribeToCallbacks()
     {
         var notesContainer = GetCollectionForType(ObjectType.Note) as NoteGridContainer;
-        if (notesContainer != null)
-            notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
+        notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
         SpawnCallbackController.ChainPassedThreshold -= SpawnCallback;
         SpawnCallbackController.RecursiveChainCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
@@ -102,10 +101,8 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
 
     private void AppearanceChanged(object _) => RefreshPool(true);
 
-    protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj)
-    {
+    protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj) =>
         (container as ChainContainer).DetectHeadNote();
-    }
 
     protected override void OnContainerDespawn(ObjectContainer container, BaseObject obj)
     {
@@ -121,13 +118,11 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         {
             LoadedContainers.TryGetValue(chain, out var con);
             var container = con as ChainContainer;
-            if (container != null && container.IsHeadNote(note))
-            {
-                GetCollectionForType(ObjectType.Note).LoadedContainers.TryGetValue(note, out var noteContainer);
-                container.AttachedHead = noteContainer as NoteContainer;
-                container.DetectHeadNote(false);
-                break;
-            }
+            if (container == null || !container.IsHeadNote(note)) continue;
+            GetCollectionForType(ObjectType.Note).LoadedContainers.TryGetValue(note, out var noteContainer);
+            container.AttachedHead = noteContainer as NoteContainer;
+            container.DetectHeadNote(false);
+            break;
         }
     }
 

@@ -279,8 +279,16 @@ public class NotePlacement : PlacementController<BaseNote, NoteContainer, NoteGr
 
         foreach (var baseSliderContainer in DraggedAttachedSliderContainers)
         {
-            if (baseSliderContainer is ArcContainer arcContainer) arcContainer.NotifySplineChanged();
-            if (baseSliderContainer is ChainContainer chainContainer) chainContainer.GenerateChain();
+            switch (baseSliderContainer)
+            {
+                case ArcContainer arcContainer:
+                    arcContainer.NotifySplineChanged();
+                    break;
+                case ChainContainer chainContainer:
+                    chainContainer.AdjustTimePlacement();
+                    chainContainer.GenerateChain();
+                    break;
+            }
         }
 
         updateAttachedSliderDirection = false;

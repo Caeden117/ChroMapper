@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
-
-using Beatmap.Animations;
 using System;
 
 namespace Beatmap.Containers
@@ -27,7 +25,18 @@ namespace Beatmap.Containers
         [SerializeField] private MeshRenderer arrowRenderer;
         [SerializeField] private SpriteRenderer swingArcRenderer;
 
-        [SerializeField] public BaseNote NoteData;
+        public BaseNote NoteData
+        {
+            get => noteData;
+            set
+            {
+                noteData = value;
+                IsChainHead = false; // wouldn't have done this if i knew where to actually reset them
+            }
+        }
+
+        [SerializeField] public BaseNote noteData;
+        public bool IsChainHead; // future idea to mark the note and just switch the prefab instead of constantly searching
         public MaterialPropertyBlock ArrowMaterialPropertyBlock;
 
         [NonSerialized] public Vector3 DirectionTargetEuler = Vector3.zero;
@@ -150,9 +159,10 @@ namespace Beatmap.Containers
         {
             if (!(Animator != null && Animator.AnimatedTrack))
             {
-                transform.localPosition = (Vector3)NoteData.GetPosition() +
-                                          new Vector3(0, offsetY, NoteData.SongBpmTime * EditorScaleController.EditorScale);
+                transform.localPosition = (Vector3)NoteData.GetPosition()
+                    + new Vector3(0, offsetY, NoteData.SongBpmTime * EditorScaleController.EditorScale);
             }
+
             transform.localScale = NoteData.GetScale();
             DirectionTarget.localScale = Vector3.one;
             DirectionTarget.localEulerAngles = DirectionTargetEuler;
@@ -160,6 +170,17 @@ namespace Beatmap.Containers
             // default scale prior to this setting worked out to be 90%
             if (!Settings.Instance.AccurateNoteSize && NoteData.Type != (int)NoteType.Bomb)
                 DirectionTarget.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+
+            // pls make this a prefab instead of scaling/offsetting it in the next update
+            if (IsChainHead)
+            {
+                var zRads = Mathf.Deg2Rad * Directionalize(NoteData.CutDirection).z;
+                var headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
+                DirectionTarget.localPosition = -ChainContainer.PosOffsetFactor * headDirection;
+                DirectionTarget.localScale = BaseChain.ChainHeadScale;
+            }
+            else
+                DirectionTarget.localPosition = Vector3.zero;
 
             UpdateCollisionGroups();
 
