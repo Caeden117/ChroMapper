@@ -94,7 +94,6 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         var noteData = obj as BaseNote;
         noteAppearanceSo.SetNoteAppearance(note);
         note.Setup();
-        note.SetBomb(noteData.Type == (int)NoteType.Bomb);
         note.DirectionTargetEuler = NoteContainer.Directionalize(noteData);
 
         if (!note.Animator.AnimatedTrack)

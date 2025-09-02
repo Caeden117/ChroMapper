@@ -104,10 +104,8 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
     protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj) =>
         (container as ChainContainer).DetectHeadNote();
 
-    protected override void OnContainerDespawn(ObjectContainer container, BaseObject obj)
-    {
-        (container as ChainContainer).ResetHeadNoteScale();
-    }
+    protected override void OnContainerDespawn(ObjectContainer container, BaseObject obj) =>
+        (container as ChainContainer).DetachHeadNote();
 
     private void CheckUpdatedNote(BaseObject obj)
     {

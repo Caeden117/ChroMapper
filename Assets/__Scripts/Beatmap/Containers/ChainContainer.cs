@@ -4,6 +4,7 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using Beatmap.Shared;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Beatmap.Containers
 {
@@ -14,7 +15,9 @@ namespace Beatmap.Containers
         private static readonly int lit = Shader.PropertyToID("_Lit");
         private static readonly int translucentAlpha = Shader.PropertyToID("_TranslucentAlpha");
 
-        [SerializeField] private GameObject tailNode;
+        [SerializeField] private GameObject mainObject;
+        [SerializeField] private GameObject simpleLink;
+        [SerializeField] private GameObject complexLink;
         public NoteContainer AttachedHead;
         private readonly List<GameObject> nodes = new List<GameObject>();
         [SerializeField] public BaseChain ChainData;
@@ -44,6 +47,7 @@ namespace Beatmap.Containers
         public override void Setup()
         {
             base.Setup();
+            SetModel();
 
             MaterialPropertyBlock.SetFloat(lit, Settings.Instance.SimpleBlocks ? 0 : 1);
             MaterialPropertyBlock.SetFloat(translucentAlpha, Settings.Instance.PastNoteModelAlpha);
@@ -53,6 +57,12 @@ namespace Beatmap.Containers
             foreach (var gameObj in indicators) gameObj.GetComponent<ChainIndicatorContainer>().Setup();
 
             UpdateMaterials();
+        }
+
+        private void SetModel()
+        {
+            simpleLink.SetActive(Settings.Instance.SimpleBlocks);
+            complexLink.SetActive(!Settings.Instance.SimpleBlocks);
         }
 
         public void AdjustTimePlacement()
@@ -93,7 +103,7 @@ namespace Beatmap.Containers
             var chainTail = (Vector3)ChainData.GetTailPosition() + new Vector3(1.5f, 0, 0);
             var headTrans = chainHead;
             var headRot = Quaternion.Euler(NoteContainer.Directionalize(ChainData.CutDirection));
-            tailNode.transform.localPosition = chainTail
+            mainObject.transform.localPosition = chainTail
                 + new Vector3(
                     0,
                     0,
@@ -113,39 +123,51 @@ namespace Beatmap.Containers
             {
                 if (i >= nodes.Count) break;
                 nodes[i].SetActive(true);
-                Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, tailNode, nodes[i]);
+                Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, mainObject, nodes[i]);
                 Colliders.Add(nodes[i].GetComponent<IntersectionCollider>());
-                SelectionRenderers.Add(nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer);
+                nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer.ForEach(SelectionRenderers.Add);
             }
 
             for (; i < nodes.Count; ++i) nodes[i].SetActive(false);
             for (; i < ChainData.SliceCount - 2; ++i)
             {
-                var newNode = Instantiate(tailNode, Animator.AnimationThis.transform);
+                var newNode = Instantiate(mainObject, Animator.AnimationThis.transform);
                 newNode.SetActive(true);
-                newNode.GetComponent<MeshRenderer>().sharedMaterial =
-                    tailNode.GetComponent<MeshRenderer>().sharedMaterial;
-                Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, tailNode, newNode);
+
+                var cpfMain = mainObject.GetComponent<ChainComponentsFetcher>();
+                var cpfNode = newNode.GetComponent<ChainComponentsFetcher>();
+
+                for (var i1 = 0; i1 < cpfMain.NoteRenderer.Count; i1++)
+                {
+                    cpfMain.NoteRenderer[i1].sharedMaterial = cpfNode.NoteRenderer[i1].sharedMaterial;
+                }
+
+                Interpolate(ChainData.SliceCount - 1, i + 1, headTrans, headRot, mainObject, newNode);
                 nodes.Add(newNode);
                 Colliders.Add(nodes[i].GetComponent<IntersectionCollider>());
-                SelectionRenderers.Add(nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer);
+                nodes[i].GetComponent<ChainComponentsFetcher>().SelectionRenderer.ForEach(SelectionRenderers.Add);
             }
 
             if (ChainData.SliceCount == 1)
-                tailNode.SetActive(false);
+                mainObject.SetActive(false);
             else
             {
-                tailNode.SetActive(true);
-                Interpolate(ChainData.SliceCount - 1, ChainData.SliceCount - 1, headTrans, headRot, tailNode, tailNode);
-                Colliders.Add(tailNode.GetComponent<IntersectionCollider>());
-                SelectionRenderers.Add(tailNode.GetComponent<ChainComponentsFetcher>().SelectionRenderer);
+                mainObject.SetActive(true);
+                Interpolate(
+                    ChainData.SliceCount - 1,
+                    ChainData.SliceCount - 1,
+                    headTrans,
+                    headRot,
+                    mainObject,
+                    mainObject);
+                Colliders.Add(mainObject.GetComponent<IntersectionCollider>());
+                mainObject.GetComponent<ChainComponentsFetcher>().SelectionRenderer.ForEach(SelectionRenderers.Add);
             }
 
-            // I hate doing it this way but whatever
-            var scale = new Vector3(5 / 3f, 1 / 3f, 5 / 3f);
+            var scale = Vector3.one;
             if (!Settings.Instance.AccurateNoteSize) scale *= 0.9f;
             foreach (var node in nodes) node.transform.localScale = scale;
-            tailNode.transform.localScale = scale;
+            mainObject.transform.localScale = scale;
             tailLinkIndicator.transform.localScale = scale;
 
             UpdateMaterials();
@@ -234,12 +256,10 @@ namespace Beatmap.Containers
         {
             foreach (var c in Colliders)
             {
-                var r = c.GetComponent<MeshRenderer>();
+                var cpf = c.GetComponent<ChainComponentsFetcher>();
+                var dot = cpf.DotRenderer;
 
-                // i dont like this code smell but whatever
-                var dot = c.transform.GetChild(0).GetComponent<MeshRenderer>();
-
-                var time = ChainData.SongBpmTime + c.transform.localPosition.z / EditorScaleController.EditorScale;
+                var time = ChainData.SongBpmTime + (c.transform.localPosition.z / EditorScaleController.EditorScale);
                 MaterialPropertyBlock.SetFloat(objectTime, time);
                 arrowMaterialPropertyBlock.SetFloat(objectTime, time);
 
@@ -251,7 +271,7 @@ namespace Beatmap.Containers
                 MaterialPropertyBlock.SetFloat(translucentAlpha, alpha);
                 arrowMaterialPropertyBlock.SetFloat(translucentAlpha, alpha);
 
-                r.SetPropertyBlock(MaterialPropertyBlock);
+                cpf.NoteRenderer.ForEach(r => r.SetPropertyBlock(MaterialPropertyBlock));
                 dot.SetPropertyBlock(arrowMaterialPropertyBlock);
             }
 
@@ -280,7 +300,7 @@ namespace Beatmap.Containers
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
                     AttachedHead.IsChainHead = true;
-                    AttachedHead.UpdateGridPosition();
+                    AttachedHead.SetChainHeadModel();
                     break;
                 }
             }
@@ -291,7 +311,7 @@ namespace Beatmap.Containers
                     if (AttachedHead.NoteData != null)
                     {
                         AttachedHead.IsChainHead = false;
-                        AttachedHead.UpdateGridPosition();
+                        AttachedHead.SetChainHeadModel();
                     }
 
                     AttachedHead = null;
@@ -300,16 +320,16 @@ namespace Beatmap.Containers
                 else
                 {
                     AttachedHead.IsChainHead = true;
-                    AttachedHead.UpdateGridPosition();
+                    AttachedHead.SetChainHeadModel();
                 }
             }
         }
 
-        public void ResetHeadNoteScale()
+        public void DetachHeadNote()
         {
             if (AttachedHead == null || AttachedHead.NoteData == null) return;
             AttachedHead.IsChainHead = false;
-            AttachedHead.UpdateGridPosition();
+            AttachedHead.SetModelInfer();
         }
 
         public bool IsHeadNote(BaseNote baseNote)
@@ -340,6 +360,6 @@ namespace Beatmap.Containers
             }
         }
 
-        public Quaternion GetTailNodeRotation() => tailNode.transform.rotation;
+        public Quaternion GetTailNodeRotation() => mainObject.transform.rotation;
     }
 }
