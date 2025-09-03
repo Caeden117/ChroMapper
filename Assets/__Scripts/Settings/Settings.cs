@@ -110,6 +110,7 @@ public class Settings
     public bool VisualizeChromaGradients = true;
     public bool VisualizeChromaAlpha = true;
     public bool SimpleBlocks = false;
+    public bool SolidChainLink = false;
     public bool PyramidEventModels = false; // Old setting, migrated to below
     public EventModelType EventModel = EventModelType.Block;
     public float PastNoteModelAlpha = 0.4f;

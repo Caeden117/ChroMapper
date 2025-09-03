@@ -17,7 +17,9 @@ namespace Beatmap.Containers
 
         [SerializeField] private GameObject mainObject;
         [SerializeField] private GameObject simpleLink;
+        [SerializeField] private GameObject simpleLinkSolid;
         [SerializeField] private GameObject complexLink;
+        [SerializeField] private GameObject complexLinkSolid;
         public NoteContainer AttachedHead;
         private readonly List<GameObject> nodes = new List<GameObject>();
         [SerializeField] public BaseChain ChainData;
@@ -61,8 +63,10 @@ namespace Beatmap.Containers
 
         private void SetModel()
         {
-            simpleLink.SetActive(Settings.Instance.SimpleBlocks);
-            complexLink.SetActive(!Settings.Instance.SimpleBlocks);
+            simpleLink.SetActive(Settings.Instance.SimpleBlocks && !Settings.Instance.SolidChainLink);
+            simpleLinkSolid.SetActive(Settings.Instance.SimpleBlocks && Settings.Instance.SolidChainLink);
+            complexLink.SetActive(!Settings.Instance.SimpleBlocks && !Settings.Instance.SolidChainLink);
+            complexLinkSolid.SetActive(!Settings.Instance.SimpleBlocks && Settings.Instance.SolidChainLink);
         }
 
         public void AdjustTimePlacement()
