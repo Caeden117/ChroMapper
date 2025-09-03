@@ -81,17 +81,15 @@ namespace Beatmap.Containers
         public override void UpdateGridPosition()
         {
             AdjustTimePlacement();
-
             GenerateChain();
             UpdateCollisionGroups();
 
             if (AttachedHead == null || AttachedHead.Animator.AnimatedTrack || IsHeadNote(AttachedHead.NoteData))
                 return;
 
-            // usually this does not need to update often and is already checked
+            // usually this does not update often and is already checked
             // but if attached head note data is different, then we update the head note
             // also temporary (permanent) fix because this shit needs rewrite
-            if (AttachedHead.NoteData != null) AttachedHead.UpdateGridPosition();
             AttachedHead = null;
             DetectHeadNote();
         }
@@ -303,7 +301,6 @@ namespace Beatmap.Containers
                     if (!IsHeadNote(note)) continue;
                     collection.LoadedContainers.TryGetValue(note, out var container);
                     AttachedHead = container as NoteContainer;
-                    AttachedHead.IsChainHead = true;
                     AttachedHead.SetChainHeadModel();
                     break;
                 }
@@ -312,28 +309,20 @@ namespace Beatmap.Containers
             {
                 if (!IsHeadNote(AttachedHead.NoteData))
                 {
-                    if (AttachedHead.NoteData != null)
-                    {
-                        AttachedHead.IsChainHead = false;
-                        AttachedHead.SetChainHeadModel();
-                    }
-
+                    if (AttachedHead.NoteData != null) AttachedHead.SetModelInfer();
                     AttachedHead = null;
                     DetectHeadNote();
                 }
                 else
-                {
-                    AttachedHead.IsChainHead = true;
                     AttachedHead.SetChainHeadModel();
-                }
             }
         }
 
         public void DetachHeadNote()
         {
             if (AttachedHead == null || AttachedHead.NoteData == null) return;
-            AttachedHead.IsChainHead = false;
             AttachedHead.SetModelInfer();
+            AttachedHead = null;
         }
 
         public bool IsHeadNote(BaseNote baseNote)

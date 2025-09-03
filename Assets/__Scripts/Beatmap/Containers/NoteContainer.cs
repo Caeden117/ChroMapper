@@ -28,18 +28,7 @@ namespace Beatmap.Containers
         [SerializeField] private MeshRenderer arrowRenderer;
         [SerializeField] private SpriteRenderer swingArcRenderer;
 
-        private BaseNote noteData;
-        public BaseNote NoteData
-        {
-            get => noteData;
-            set
-            {
-                noteData = value;
-                IsChainHead = false; // wouldn't have done this if i knew where to actually reset them
-            }
-        }
-
-        public bool IsChainHead; // future idea to mark the note and just switch the prefab instead of constantly searching
+        public BaseNote NoteData;
         public MaterialPropertyBlock ArrowMaterialPropertyBlock;
 
         [NonSerialized] public Vector3 DirectionTargetEuler = Vector3.zero;
