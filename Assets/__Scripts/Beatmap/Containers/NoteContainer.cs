@@ -120,19 +120,6 @@ namespace Beatmap.Containers
         public void SetArrowVisible(bool b) => arrowRenderer.enabled = b;
 
         // TODO: have proper model swapper instead of convoluting the container
-        public void SetChainHeadModel()
-        {
-            if (NoteData.Type == (int)NoteType.Bomb) return;
-            simpleBlock.SetActive(false);
-            complexBlock.SetActive(false);
-
-            simpleChainHead.SetActive(Settings.Instance.SimpleBlocks);
-            complexChainHead.SetActive(!Settings.Instance.SimpleBlocks);
-
-            bombRenderer.gameObject.SetActive(false);
-            bombRenderer.enabled = false;
-        }
-
         public void SetModelInfer()
         {
             if (NoteData == null) return;
@@ -140,6 +127,11 @@ namespace Beatmap.Containers
                 SetBombModel();
             else
                 SetNoteModel();
+
+            // does this cause performance hit if it reassigned?
+            var ic = DirectionTarget.GetComponent<IntersectionCollider>();
+            ic.BoundsRenderer = simpleBlock.GetComponent<MeshRenderer>();
+            ic.Mesh = ic.transform.GetChild(ic.transform.childCount - 1).GetComponent<MeshFilter>().mesh; // ew
         }
 
         public void SetNoteModel()
@@ -164,6 +156,25 @@ namespace Beatmap.Containers
 
             bombRenderer.gameObject.SetActive(true);
             bombRenderer.enabled = true;
+        }
+
+        public void SetChainHeadModel()
+        {
+            if (NoteData.Type == (int)NoteType.Bomb) return;
+            
+            // unfortunately the size collision has also changed
+            var ic = DirectionTarget.GetComponent<IntersectionCollider>();
+            ic.BoundsRenderer = simpleChainHead.GetComponent<MeshRenderer>();
+            ic.Mesh = ic.transform.GetChild(ic.transform.childCount - 2).GetComponent<MeshFilter>().mesh; // ew
+
+            simpleBlock.SetActive(false);
+            complexBlock.SetActive(false);
+
+            simpleChainHead.SetActive(Settings.Instance.SimpleBlocks);
+            complexChainHead.SetActive(!Settings.Instance.SimpleBlocks);
+
+            bombRenderer.gameObject.SetActive(false);
+            bombRenderer.enabled = false;
         }
 
         public void SetArcVisible(bool showArcVisualizer)
