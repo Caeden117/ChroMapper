@@ -415,10 +415,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68de7bd199f83bf46be7192f0f31a930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mesh: {fileID: -1612127717390028150, guid: 16ace9ddddf3e9c5d95680505f9896d3, type: 3}
+  Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   BoundsRenderer: {fileID: 7588338185495981865}
   Center: {x: 0, y: 0, z: 0}
-  Size: {x: 1.666667, y: 1.666667, z: 1.666667}
+  Size: {x: 0.8333333, y: 0.2, z: 0.8333333}
   MeshTriangles: 
   MeshVertices: []
   CollisionLayer: 0
