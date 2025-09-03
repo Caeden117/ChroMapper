@@ -1371,6 +1371,21 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: 2712436f06f6af25d86f9769cf556fa8,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.10387959
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: 2712436f06f6af25d86f9769cf556fa8,
+        type: 3}
+      propertyPath: m_LODs.Array.data[1].screenRelativeHeight
+      value: 0.031195508
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: 2712436f06f6af25d86f9769cf556fa8,
+        type: 3}
+      propertyPath: m_LODs.Array.data[2].screenRelativeHeight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7295918509156739725, guid: 2712436f06f6af25d86f9769cf556fa8,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -1710,6 +1725,21 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e88679da0d9d22a05bab2dc661a2a8f5,
         type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: e88679da0d9d22a05bab2dc661a2a8f5,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.1024671
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: e88679da0d9d22a05bab2dc661a2a8f5,
+        type: 3}
+      propertyPath: m_LODs.Array.data[1].screenRelativeHeight
+      value: 0.025933336
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: e88679da0d9d22a05bab2dc661a2a8f5,
+        type: 3}
+      propertyPath: m_LODs.Array.data[2].screenRelativeHeight
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5746578055069821130, guid: e88679da0d9d22a05bab2dc661a2a8f5,
