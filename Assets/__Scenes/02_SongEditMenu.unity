@@ -29568,6 +29568,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1757455336493702345, guid: 16c79367c31039f489988c1894e49e3f,
         type: 3}
+      propertyPath: fileValidationType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757455336493702345, guid: 16c79367c31039f489988c1894e49e3f,
+        type: 3}
       propertyPath: extensions.Array.size
       value: 2
       objectReference: {fileID: 0}

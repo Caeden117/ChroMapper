@@ -332,6 +332,12 @@ public class SongInfoEditUI : MenuBase
         Debug.Log("Loading audio");
         if (File.Exists(fullPath))
         {
+            if (!FileContentValidationHelper.IsSupportedAudioFormat(fullPath))
+            {
+                SceneTransitionManager.Instance.CancelLoading("load.error.audio2");
+                yield break;
+            }
+
             yield return BeatSaberSongExtensions.LoadAudio(Info,(clip) =>
             {
                 previewAudio.clip = clip;
