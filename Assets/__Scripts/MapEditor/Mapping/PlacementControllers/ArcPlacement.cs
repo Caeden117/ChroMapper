@@ -16,6 +16,11 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
     {
         if (context.performed || context.canceled) return;
 
+        SpawnArcsFromSelection();
+    }
+
+    public int SpawnArcsFromSelection()
+    {
         var notes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
         notes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
@@ -23,7 +28,7 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
         {
             PersistentUI.Instance.ShowDialogBox("Arc placement is not supported in v2 format.\nConvert map to v3 to place arcs.",
                 null, PersistentUI.DialogBoxPresetType.Ok);
-            return;
+            return 0;
         }
 
         // is there better way than this?
@@ -54,6 +59,8 @@ public class ArcPlacement : PlacementController<BaseArc, ArcContainer, ArcGridCo
             BeatmapActionContainer.AddAction(
                 new BeatmapObjectPlacementAction(generatedObjects.ToArray(), new List<BaseObject>(), $"Placed {generatedObjects.Count} arcs"));
         }
+
+        return generatedObjects.Count;
     }
 
     public static bool IsColorNote(BaseObject o) => o is BaseNote note && note.Type != (int)NoteType.Bomb;

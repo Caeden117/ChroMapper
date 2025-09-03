@@ -884,6 +884,14 @@ MonoBehaviour:
     m_Localized: The light will fade from previous event.
     m_Metadata:
       m_Items: []
+  - m_Id: 502391667578236928
+    m_Localized: Chain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 502391726109749248
+    m_Localized: Arc
+    m_Metadata:
+      m_Items: []
   - m_Id: 517335715707482112
     m_Localized: There are unsaved changes. Do you want to save before switching
       difficulties?
@@ -911,6 +919,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 517339662874701824
     m_Localized: Use previous NJS event value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 541615550373949440
+    m_Localized: To place an arc, select at least 2 notes and press {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 541615662227648512
+    m_Localized: To place a chain, select at least 2 notes and press {0}
     m_Metadata:
       m_Items: []
   references:
