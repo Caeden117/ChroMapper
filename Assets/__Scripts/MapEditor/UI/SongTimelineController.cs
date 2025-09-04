@@ -50,7 +50,7 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
             atsc.CurrentSeconds < 0 ? "-" : "");
 
         var beatIntegerPart = (int)atsc.CurrentJsonTime;
-        var beatDecimalPart = atsc.CurrentJsonTime % 1 * 100;
+        var beatDecimalPart = Mathf.FloorToInt((atsc.CurrentJsonTime - Mathf.FloorToInt(atsc.CurrentJsonTime)) * 1000);
         currentBeatMesh.text = string.Format(beatFormat, beatIntegerPart, beatDecimalPart);
     }
 
