@@ -21,10 +21,19 @@ public class InputBoxFileValidator : MonoBehaviour
     [SerializeField] private string filetypeName;
     [SerializeField] private string[] extensions;
 
+    [SerializeField] private FileValidationType fileValidationType;
+    
     [SerializeField] private bool enableValidation;
     [SerializeField] private bool forceStartupValidationAlign;
 
     private Vector2 startOffset;
+
+    public enum FileValidationType
+    {
+        None,
+        Audio,
+        // Image
+    }
 
     public void Awake()
     {
@@ -53,7 +62,14 @@ public class InputBoxFileValidator : MonoBehaviour
         }
 
         var path = Path.Combine(info.Directory, filename);
-        SetValidationState(true, File.Exists(path));
+
+        var validationState = File.Exists(path);
+        if (fileValidationType == FileValidationType.Audio)
+        {
+            validationState = validationState && FileContentValidationHelper.IsSupportedAudioFormat(path);
+        }
+        
+        SetValidationState(true, validationState);
     }
 
     public void SetValidationState(bool visible, bool state = false)
@@ -124,6 +140,12 @@ public class InputBoxFileValidator : MonoBehaviour
 #else
             var ignoreCase = false;
 #endif
+
+            if (fileValidationType == FileValidationType.Audio && !FileContentValidationHelper.IsSupportedAudioFormat(fullFile))
+            {
+                PersistentUI.Instance.DisplayMessage("SongEditMenu", "load.error.audio2", PersistentUI.DisplayMessageType.Bottom);
+                return;
+            }
 
             if (!fullFile.StartsWith(fullDirectory, ignoreCase, CultureInfo.InvariantCulture))
             {
