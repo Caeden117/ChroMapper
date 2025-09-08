@@ -27,6 +27,11 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
     {
         if (context.performed || context.canceled) return;
 
+        SpawnChainFromSelection();
+    }
+
+    public int SpawnChainFromSelection()
+    {
         var notes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
         notes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
@@ -34,7 +39,7 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
         {
             PersistentUI.Instance.ShowDialogBox("Chain placement is not supported in v2 format.\nConvert map to v3 to place chains.",
                 null, PersistentUI.DialogBoxPresetType.Ok);
-            return;
+            return 0;
         }
 
         var removedTailNotes = new List<BaseNote>();
@@ -79,6 +84,8 @@ public class ChainPlacement : PlacementController<BaseChain, ChainContainer, Cha
             BeatmapActionContainer.AddAction(
                 new BeatmapObjectPlacementAction(generatedObjects.ToArray(), removedTailNotes, $"Placed {generatedObjects.Count} chains"));
         }
+        
+        return generatedObjects.Count;
     }
 
     private static bool IsColorNote(BaseObject o) => ArcPlacement.IsColorNote(o);
