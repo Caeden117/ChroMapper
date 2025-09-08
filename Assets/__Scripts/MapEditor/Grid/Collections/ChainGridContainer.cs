@@ -38,6 +38,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         chain.ChainData = chainData;
         chainAppearanceSO.SetChainAppearance(chain);
         chain.Setup();
+        chain.SetIndicatorBlocksActive(!isPlaying);
 
         if (!chain.Animator.AnimatedTrack)
         {
