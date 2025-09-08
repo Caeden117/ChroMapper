@@ -16,27 +16,19 @@ namespace Beatmap.Containers
         private static readonly Color unassignedColor = new Color(0.1544118f, 0.1544118f, 0.1544118f);
 
         [SerializeField] private GameObject simpleBlock;
+        [SerializeField] private GameObject simpleChainHead;
         [SerializeField] private GameObject complexBlock;
+        [SerializeField] private GameObject complexChainHead;
         [SerializeField] public Transform DirectionTarget;
 
         [SerializeField] private List<MeshRenderer> noteRenderer;
+        [SerializeField] private List<MeshRenderer> chainRenderer;
         [SerializeField] private MeshRenderer bombRenderer;
         [SerializeField] private MeshRenderer dotRenderer;
         [SerializeField] private MeshRenderer arrowRenderer;
         [SerializeField] private SpriteRenderer swingArcRenderer;
 
-        private BaseNote noteData;
-        public BaseNote NoteData
-        {
-            get => noteData;
-            set
-            {
-                noteData = value;
-                IsChainHead = false; // wouldn't have done this if i knew where to actually reset them
-            }
-        }
-
-        public bool IsChainHead; // future idea to mark the note and just switch the prefab instead of constantly searching
+        public BaseNote NoteData;
         public MaterialPropertyBlock ArrowMaterialPropertyBlock;
 
         [NonSerialized] public Vector3 DirectionTargetEuler = Vector3.zero;
@@ -51,16 +43,10 @@ namespace Beatmap.Containers
         {
             base.Setup();
 
-            if (simpleBlock != null)
-            {
-                simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
-                complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
-
-                MaterialPropertyBlock.SetFloat(lit, Settings.Instance.SimpleBlocks ? 0 : 1);
-                MaterialPropertyBlock.SetFloat(translucentAlpha, Settings.Instance.PastNoteModelAlpha);
-
-                UpdateMaterials();
-            }
+            SetModelInfer();
+            MaterialPropertyBlock.SetFloat(lit, Settings.Instance.SimpleBlocks ? 0 : 1);
+            MaterialPropertyBlock.SetFloat(translucentAlpha, Settings.Instance.PastNoteModelAlpha);
+            UpdateMaterials();
 
             if (ArrowMaterialPropertyBlock == null)
             {
@@ -133,13 +119,62 @@ namespace Beatmap.Containers
 
         public void SetArrowVisible(bool b) => arrowRenderer.enabled = b;
 
-        public void SetBomb(bool b)
+        // TODO: have proper model swapper instead of convoluting the container
+        public void SetModelInfer()
         {
-            simpleBlock.SetActive(!b && Settings.Instance.SimpleBlocks);
-            complexBlock.SetActive(!b && !Settings.Instance.SimpleBlocks);
+            if (NoteData == null) return;
+            if (NoteData.Type == (int)NoteType.Bomb)
+                SetBombModel();
+            else
+                SetNoteModel();
 
-            bombRenderer.gameObject.SetActive(b);
-            bombRenderer.enabled = b;
+            // does this cause performance hit if it reassigned?
+            var ic = DirectionTarget.GetComponent<IntersectionCollider>();
+            ic.BoundsRenderer = simpleBlock.GetComponent<MeshRenderer>();
+            ic.Mesh = ic.transform.GetChild(ic.transform.childCount - 1).GetComponent<MeshFilter>().mesh; // ew
+        }
+
+        public void SetNoteModel()
+        {
+            simpleBlock.SetActive(Settings.Instance.SimpleBlocks);
+            complexBlock.SetActive(!Settings.Instance.SimpleBlocks);
+
+            simpleChainHead.SetActive(false);
+            complexChainHead.SetActive(false);
+
+            bombRenderer.gameObject.SetActive(false);
+            bombRenderer.enabled = false;
+        }
+
+        public void SetBombModel()
+        {
+            simpleBlock.SetActive(false);
+            complexBlock.SetActive(false);
+
+            simpleChainHead.SetActive(false);
+            complexChainHead.SetActive(false);
+
+            bombRenderer.gameObject.SetActive(true);
+            bombRenderer.enabled = true;
+        }
+
+        public void SetChainHeadModel()
+        {
+            if (NoteData.Type == (int)NoteType.Bomb) return;
+            
+            // unfortunately the size collision has also changed
+            var ic = DirectionTarget.GetComponent<IntersectionCollider>();
+            ic.BoundsRenderer = simpleChainHead.GetComponent<MeshRenderer>();
+            ic.Mesh = ic.transform.GetChild(ic.transform.childCount - 2).GetComponent<MeshFilter>().mesh; // ew
+
+            simpleBlock.SetActive(false);
+            complexBlock.SetActive(false);
+
+            simpleChainHead.SetActive(Settings.Instance.SimpleBlocks);
+            complexChainHead.SetActive(!Settings.Instance.SimpleBlocks);
+
+            bombRenderer.gameObject.SetActive(false);
+            bombRenderer.enabled = false;
         }
 
         public void SetArcVisible(bool showArcVisualizer)
@@ -169,17 +204,9 @@ namespace Beatmap.Containers
 
             // default scale prior to this setting worked out to be 90%
             if (!Settings.Instance.AccurateNoteSize && NoteData.Type != (int)NoteType.Bomb)
-                DirectionTarget.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+                DirectionTarget.localScale *= 0.9f;
 
-            // pls make this a prefab instead of scaling/offsetting it in the next update
-            if (IsChainHead)
-            {
-                var zRads = Mathf.Deg2Rad * Directionalize(NoteData.CutDirection).z;
-                var headDirection = new Vector3(Mathf.Sin(zRads), -Mathf.Cos(zRads), 0f);
-                DirectionTarget.localPosition = -ChainContainer.PosOffsetFactor * headDirection;
-                DirectionTarget.localScale = BaseChain.ChainHeadScale;
-            }
-            else if (NoteData.Type != (int)NoteType.Bomb)
+            if (NoteData.Type != (int)NoteType.Bomb)
             {
                 // Only apply this to notes as bomb DirectionTarget affects hover placement as well
                 // really need to think about prefab structure soon
@@ -210,6 +237,7 @@ namespace Beatmap.Containers
         internal override void UpdateMaterials()
         {
             foreach (var renderer in noteRenderer) renderer.SetPropertyBlock(MaterialPropertyBlock);
+            foreach (var renderer in chainRenderer) renderer.SetPropertyBlock(MaterialPropertyBlock);
             foreach (var renderer in SelectionRenderers) renderer.SetPropertyBlock(MaterialPropertyBlock);
             bombRenderer.SetPropertyBlock(MaterialPropertyBlock);
             if (dotRenderer != null)
