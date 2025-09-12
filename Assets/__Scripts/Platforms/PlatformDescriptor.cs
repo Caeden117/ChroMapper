@@ -9,8 +9,7 @@ using UnityEngine.Serialization;
 
 public class PlatformDescriptor : MonoBehaviour
 {
-    [Header("Rings")]
-    [Tooltip("Leave null if you do not want small rings.")]
+    [Header("Rings")] [Tooltip("Leave null if you do not want small rings.")]
     public TrackLaneRingsManager SmallRingManager;
 
     [Tooltip("Leave null if you do not want big rings.")]
@@ -19,17 +18,20 @@ public class PlatformDescriptor : MonoBehaviour
     [Tooltip("Leave null if you do not want gaga environment disks.")]
     public GagaDiskManager DiskManager;
 
-    [Header("Lighting Groups")]
-    [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
+    [Header("Lighting Groups")] [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
     public LightsManager[] LightingManagers = { };
 
     [Tooltip("If you want a thing to rotate around a 360 level with the track, place it here.")]
     public GridRotationController RotationController;
 
-    [FormerlySerializedAs("colors")][HideInInspector] public PlatformColors Colors;
-    [FormerlySerializedAs("defaultColors")] public PlatformColors DefaultColors = new PlatformColors();
+    [FormerlySerializedAs("colors")] [HideInInspector]
+    public PlatformColors Colors;
 
-    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17 | 3 = Gaga Lanes")]
+    [FormerlySerializedAs("defaultColors")]
+    public PlatformColors DefaultColors = new PlatformColors();
+
+    [Tooltip(
+        "-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17 | 3 = Gaga Lanes")]
     public int SortMode;
 
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
@@ -37,9 +39,6 @@ public class PlatformDescriptor : MonoBehaviour
 
     [Tooltip("Change scale of normal map for shiny objects.")]
     public float NormalMapScale = 2f;
-
-    private readonly Dictionary<LightsManager, Color> chromaCustomColors = new Dictionary<LightsManager, Color>();
-    private readonly Dictionary<LightsManager, Gradient> chromaGradients = new Dictionary<LightsManager, Gradient>();
 
     private readonly Dictionary<int, List<PlatformEventHandler>> platformEventHandlers =
         new Dictionary<int, List<PlatformEventHandler>>();
@@ -86,6 +85,7 @@ public class PlatformDescriptor : MonoBehaviour
     private void OnDestroy()
     {
         if (callbackController != null) callbackController.EventPassedThreshold -= EventPassed;
+        if (atsc != null) atsc.TimeChanged -= UpdateTime;
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
     }
 
@@ -115,6 +115,7 @@ public class PlatformDescriptor : MonoBehaviour
         }
 
         callbackController.EventPassedThreshold += EventPassed;
+        atsc.TimeChanged += UpdateTime;
         RefreshLightingManagers();
 
         if (Settings.Instance.HideDisablableObjectsOnLoad) ToggleDisablableObjects();
@@ -122,15 +123,36 @@ public class PlatformDescriptor : MonoBehaviour
 
     public void RefreshLightingManagers()
     {
-        foreach (var manager in LightingManagers)
+        for (var i = 0; i < LightingManagers.Length; i++)
         {
+            var manager = LightingManagers[i];
             if (manager is null) continue;
             IEnumerable<LightingEvent> allLights = manager.ControllingLights;
             var lights = allLights.Where(x => !x.UseInvertedPlatformColors);
             var invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
             manager.ChangeColor(Colors.BlueColor, 0, lights);
             manager.ChangeColor(Colors.RedColor, 0, invertedLights);
+            manager.SetColors(Colors);
             manager.ChangeAlpha(0, 0, allLights);
+            manager.atsc = atsc;
+            StartCoroutine(BuildLightEvent(manager, i)); // where is my proper platform loaded
+        }
+    }
+
+    private IEnumerator BuildLightEvent(LightsManager manager, int type)
+    {
+        yield return new WaitForSeconds(0.1f);
+        manager.BuildLightingData(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == type));
+    }
+
+    public void UpdateTime()
+    {
+        // if (atsc.IsPlaying) return; // maybe lateupdate, maybe callback
+        var time = atsc.CurrentSongBpmTime;
+        foreach (var manager in LightingManagers)
+        {
+            if (manager == null) continue;
+            manager.UpdateTime(time);
         }
     }
 
@@ -143,26 +165,6 @@ public class PlatformDescriptor : MonoBehaviour
     public void ToggleDisablableObjects()
     {
         foreach (var go in DisablableObjects) go.SetActive(!go.activeInHierarchy);
-    }
-
-    public void KillLights()
-    {
-        foreach (var manager in LightingManagers)
-        {
-            if (manager != null) manager.ChangeAlpha(0, 1, manager.ControllingLights);
-        }
-    }
-
-    public void KillChromaLights()
-    {
-        chromaCustomColors.Clear();
-        foreach (var kvp in chromaGradients)
-        {
-            StopCoroutine(kvp.Value.Routine);
-            kvp.Key.ChangeMultiplierAlpha(1, kvp.Key.ControllingLights);
-        }
-
-        chromaGradients.Clear();
     }
 
     public void EventPassed(bool isPlaying, int index, BaseObject obj)
@@ -181,41 +183,38 @@ public class PlatformDescriptor : MonoBehaviour
                     string filter = e.CustomNameFilter;
                     if (filter.Contains("Big") || filter.Contains("Large"))
                     {
-                        if (BigRingManager != null)
-                            BigRingManager.HandleRotationEvent(e);
+                        if (BigRingManager != null) BigRingManager.HandleRotationEvent(e);
                     }
                     else if (filter.Contains("Small") || filter.Contains("Panels") || filter.Contains("Triangle"))
                     {
-                        if (SmallRingManager != null)
-                            SmallRingManager.HandleRotationEvent(e);
+                        if (SmallRingManager != null) SmallRingManager.HandleRotationEvent(e);
                     }
                     else
                     {
-                        if (BigRingManager != null)
-                            BigRingManager.HandleRotationEvent(e);
-                        if (SmallRingManager != null)
-                            SmallRingManager.HandleRotationEvent(e);
+                        if (BigRingManager != null) BigRingManager.HandleRotationEvent(e);
+                        if (SmallRingManager != null) SmallRingManager.HandleRotationEvent(e);
                     }
                 }
                 else
                 {
-                    if (BigRingManager != null)
-                        BigRingManager.HandleRotationEvent(e);
-                    if (SmallRingManager != null)
-                        SmallRingManager.HandleRotationEvent(e);
+                    if (BigRingManager != null) BigRingManager.HandleRotationEvent(e);
+                    if (SmallRingManager != null) SmallRingManager.HandleRotationEvent(e);
                 }
 
                 break;
             case 9:
-                if (BigRingManager != null)
-                    BigRingManager.HandlePositionEvent(e);
-                if (SmallRingManager != null)
-                    SmallRingManager.HandlePositionEvent(e);
+                if (BigRingManager != null) BigRingManager.HandlePositionEvent(e);
+                if (SmallRingManager != null) SmallRingManager.HandlePositionEvent(e);
                 break;
             case 12:
                 if (HandleGagaHeightEvent(e)) return;
-                
-                var leftEventTypes = new List<int>() { (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights };
+
+                var leftEventTypes = new List<int>()
+                {
+                    (int)EventTypeValue.LeftLasers,
+                    (int)EventTypeValue.ExtraLeftLasers,
+                    (int)EventTypeValue.ExtraLeftLights
+                };
 
                 foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
                 {
@@ -228,8 +227,13 @@ public class PlatformDescriptor : MonoBehaviour
                 break;
             case 13:
                 if (HandleGagaHeightEvent(e)) return;
-                
-                var rightEventTypes = new List<int>() { (int)EventTypeValue.RightLasers, (int)EventTypeValue.ExtraRightLasers, (int)EventTypeValue.ExtraRightLights };
+
+                var rightEventTypes = new List<int>()
+                {
+                    (int)EventTypeValue.RightLasers,
+                    (int)EventTypeValue.ExtraRightLasers,
+                    (int)EventTypeValue.ExtraRightLights
+                };
 
                 foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
                 {
@@ -241,293 +245,28 @@ public class PlatformDescriptor : MonoBehaviour
 
                 break;
             case 5:
-                ColorBoost = e.Value == 1;
                 foreach (var manager in LightingManagers)
                 {
                     if (manager == null) continue;
-
-                    manager.Boost(ColorBoost, ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
-                        ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor,
-                        ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor);
+                    manager.ToggleBoost(e.Value == 1);
                 }
+
                 break;
             case 16:
-            case 17: 
+            case 17:
             case 18:
             case 19:
                 if (HandleGagaHeightEvent(e)) return;
                 break;
-            
+
             default:
-                if (e.Type < LightingManagers.Length && LightingManagers[e.Type] != null)
-                    HandleLights(LightingManagers[e.Type], e.Value, e);
                 break;
         }
 
         if (atsc != null && atsc.IsPlaying && platformEventHandlers.TryGetValue(e.Type, out var eventHandlers))
         {
-            foreach (var handler in eventHandlers)
-                handler.OnEventTrigger(e.Type, e);
+            foreach (var handler in eventHandlers) handler.OnEventTrigger(e.Type, e);
         }
-    }
-
-    private void HandleLights(LightsManager group, int value, BaseEvent e)
-    {
-        var mainColor = Color.white;
-        var invertedColor = Color.white;
-        if (group is null) return; //Why go through extra processing for shit that dont exist
-        //Check if its a legacy Chroma RGB event
-        if (value >= ColourManager.RgbintOffset && Settings.Instance.EmulateChromaLite)
-        {
-            if (chromaCustomColors.ContainsKey(group)) chromaCustomColors[group] = ColourManager.ColourFromInt(value);
-            else chromaCustomColors.Add(group, ColourManager.ColourFromInt(value));
-            return;
-        }
-
-        if (value == ColourManager.RGBReset && Settings.Instance.EmulateChromaLite)
-        {
-            if (chromaCustomColors.ContainsKey(@group))
-                chromaCustomColors.Remove(@group);
-        }
-
-        if (chromaGradients.ContainsKey(group))
-        {
-            var gradientEvent = chromaGradients[group].GradientEvent;
-            if (atsc.CurrentJsonTime >= gradientEvent.CustomLightGradient.Duration + gradientEvent.JsonTime ||
-                !Settings.Instance.EmulateChromaLite)
-            {
-                StopCoroutine(chromaGradients[group].Routine);
-                chromaGradients.Remove(group);
-                chromaCustomColors.Remove(group);
-            }
-        }
-
-        if (e.CustomLightGradient != null && Settings.Instance.EmulateChromaLite)
-        {
-            if (chromaGradients.ContainsKey(group))
-            {
-                StopCoroutine(chromaGradients[group].Routine);
-                chromaGradients.Remove(group);
-            }
-
-            var gradient = new Gradient { GradientEvent = e, Routine = StartCoroutine(GradientRoutine(e, group)) };
-
-            // If the gradient is over already then null is returned due to coroutine never yielding
-            if (gradient.Routine != null) chromaGradients.Add(group, gradient);
-        }
-
-        //Set initial light values
-        if (value <= 4)
-        {
-            mainColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-            invertedColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-        }
-        else if (value <= 8)
-        {
-            mainColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-            invertedColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-        }
-        else if (value <= 12)
-        {
-            mainColor = invertedColor = ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor;
-        }
-
-        //Check if it is a PogU new Chroma event
-        if ((e.CustomColor != null) && Settings.Instance.EmulateChromaLite && !e.IsWhite) // White overrides Chroma
-        {
-            mainColor = invertedColor = (Color)e.CustomColor;
-            chromaCustomColors.Remove(group);
-            if (chromaGradients.ContainsKey(group))
-            {
-                StopCoroutine(chromaGradients[group].Routine);
-                chromaGradients.Remove(group);
-            }
-        }
-
-        if (chromaCustomColors.ContainsKey(group) && Settings.Instance.EmulateChromaLite)
-        {
-            mainColor = invertedColor = chromaCustomColors[group];
-            group.ChangeMultiplierAlpha(mainColor.a, group.ControllingLights);
-        }
-
-        //Check to see if we're soloing any particular event
-        if (SoloAnEventType && e.Type != SoloEventType) mainColor = invertedColor = Color.black.WithAlpha(0);
-
-        IEnumerable<LightingEvent> allLights = group.ControllingLights;
-
-        if (e.CustomLightID != null && Settings.Instance.EmulateChromaAdvanced)
-        {
-            var lightIDArr = e.CustomLightID;
-            var deezLights = new List<LightingEvent>(lightIDArr.Length);
-            foreach (var lightID in lightIDArr)
-            {
-                if (group.LightIDMap != null)
-                {
-                    if (group.LightIDMap.TryGetValue(lightID, out var lightingEvent))
-                    {
-                        if (lightingEvent is LightingEvent)
-                        {
-                            deezLights.Add(lightingEvent);
-                        }
-                    }
-                }
-            }
-            allLights = deezLights;
-
-            // Temporarily(?) commented as Debug.LogWarning is expensive
-            //if (allLights.Count() < lightIDArr.Length)
-            //{
-            //    Debug.LogWarning($"Missing lights for {lightIDArr} in event type {e._type}!");
-            //}
-        }
-
-        foreach (var light in allLights)
-        {
-            var color = light.UseInvertedPlatformColors ? invertedColor : mainColor;
-            var floatValue = e.FloatValue;
-            light.UpdateMultiplyAlpha();
-
-            switch (value)
-            {
-                case (int)LightValue.Off:
-                    if (light.CanBeTurnedOff)
-                    {
-                        light.UpdateTargetAlpha(0, 0);
-                    }
-                    else
-                    {
-                        // The game uses its floatValue but it's still dimmer than what an On would be
-                        // This factor is very quick eyeball probably not that accurate
-                        light.UpdateTargetAlpha(color.a * floatValue * (2f / 3f), 0);
-                    }
-                    TrySetTransition(light, e);
-                    break;
-                case (int)LightValue.BlueOn:
-                case (int)LightValue.RedOn:
-                case (int)LightValue.WhiteOn:
-                case (int)LightValue.BlueTransition:
-                case (int)LightValue.RedTransition:
-                case (int)LightValue.WhiteTransition:
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
-                    light.UpdateTargetAlpha(color.a * floatValue, 0);
-                    light.UpdateEasing(Easing.Linear);
-                    TrySetTransition(light, e);
-                    break;
-                case (int)LightValue.BlueFlash:
-                case (int)LightValue.RedFlash:
-                case (int)LightValue.WhiteFlash:
-                    light.UpdateTargetAlpha(color.a * floatValue, 0);
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
-                    light.UpdateEasing(Easing.Cubic.Out);
-                    break;
-                case (int)LightValue.BlueFade:
-                case (int)LightValue.RedFade:
-                case (int)LightValue.WhiteFade:
-                    light.UpdateTargetAlpha(color.a * floatValue, 0);
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
-                    light.UpdateEasing(Easing.Exponential.Out);
-                    if (light.CanBeTurnedOff)
-                    {
-                        light.UpdateTargetAlpha(0, LightsManager.FadeTime);
-                        light.UpdateTargetColor(Color.black, LightsManager.FadeTime);
-                    }
-                    else
-                    {
-                        light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FadeTime);
-                    }
-                    break;
-            }
-        }
-
-        group.SetValue(value);
-    }
-
-
-    private bool TryGetNextTransitionNote(in BaseEvent e, out BaseEvent transitionEvent)
-    {
-        transitionEvent = null;
-        if (e.Next is { IsTransition: true })
-        {
-            transitionEvent = e.Next;
-            return true;
-        }
-        return false;
-    }
-
-    private Color InferColorFromValue(bool useInvertedPlatformColors, int value)
-    {
-        if (value <= 4)
-        {
-            if (!useInvertedPlatformColors) return ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-            else return ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-        }
-        else if (value <= 8)
-        {
-            if (!useInvertedPlatformColors) return ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-            else return ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-        }
-        else if (value <= 12)
-        {
-            return ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor;
-        }
-        else
-        {
-            return Color.white;
-        }
-    }
-
-    private void TrySetTransition(LightingEvent light, BaseEvent e)
-    {
-        if (TryGetNextTransitionNote(e, out var transition))
-        {
-            var nextChromaColor = transition.CustomColor;
-            if (e.IsWhite) // White overrides Chroma
-            {
-                nextChromaColor = null;
-            }
-            var targetColor = nextChromaColor ?? InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
-            var targetAlpha = transition.FloatValue;
-            if (nextChromaColor.HasValue)
-            {
-                targetAlpha *= nextChromaColor.Value.a;
-            }
-            var transitionTime = atsc.GetSecondsFromBeat(transition.SongBpmTime - e.SongBpmTime);
-
-            if (e.IsOff)
-            {
-                light.UpdateTargetAlpha(0, 0);
-            }
-
-            light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
-            light.UpdateTargetAlpha(targetAlpha, transitionTime);
-            light.UpdateEasing(e.CustomEasing ?? "easeLinear");
-        }
-    }
-
-    private IEnumerator GradientRoutine(BaseEvent gradientEvent, LightsManager group)
-    {
-        var gradient = gradientEvent.CustomLightGradient;
-        var easingFunc = Easing.ByName[gradient.EasingType];
-
-        // TODO: Proper Duration Scaling
-        float progress;
-        while ((progress = (atsc.CurrentJsonTime - gradientEvent.JsonTime) / gradient.Duration) < 1)
-        {
-            var lerped = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
-            if (!SoloAnEventType || gradientEvent.Type == SoloEventType)
-            {
-                chromaCustomColors[group] = lerped;
-                group.ChangeColor(lerped.WithAlpha(1), 0, group.ControllingLights);
-                group.ChangeMultiplierAlpha(lerped.a, group.ControllingLights);
-            }
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        chromaCustomColors[group] = gradient.EndColor;
-        group.ChangeColor(chromaCustomColors[group].WithAlpha(1), 0, group.ControllingLights);
-        group.ChangeMultiplierAlpha(chromaCustomColors[group].a, group.ControllingLights);
     }
 
     // Handle Gaga Env Height events, and pass it to the case so it can ignore anything after if the manager is valid.
@@ -542,7 +281,7 @@ public class PlatformDescriptor : MonoBehaviour
             return false;
     }
 
-    private class Gradient
+    public class Gradient
     {
         public BaseEvent GradientEvent;
         public Coroutine Routine;
