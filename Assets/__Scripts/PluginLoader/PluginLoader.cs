@@ -17,6 +17,8 @@ internal class PluginLoader : MonoBehaviour
     ///     This does NOT include plugins added by external mod loaders (BepinEx, IPA, BSIPA, etc.)
     /// </summary>
     public static IReadOnlyList<Plugin> LoadedPlugins => plugins.AsReadOnly();
+    
+    public static Action<Plugin[]> PluginsLoadedEvent;
 
     private void Start()
     {
@@ -47,7 +49,7 @@ internal class PluginLoader : MonoBehaviour
 
                 if (pluginAttribute == null) continue;
                 try {
-                    var plugin = new Plugin(pluginAttribute.Name, assembly.GetName().Version, Activator.CreateInstance(type));
+                    var plugin = new Plugin(pluginAttribute.Name, assembly.GetName(), Activator.CreateInstance(type));
                     plugins.Add(plugin);
                 }
                 catch (Exception e) {
@@ -56,9 +58,11 @@ internal class PluginLoader : MonoBehaviour
                 }
             }
         }
-
+        
         foreach (var plugin in plugins)
             plugin.Init();
+        
+        PluginsLoadedEvent.Invoke(plugins.ToArray());
     }
 
     public static void BroadcastEvent<T>() where T : Attribute

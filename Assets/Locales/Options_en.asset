@@ -1480,13 +1480,43 @@ MonoBehaviour:
     m_Localized: Display HJD Line On Grid
     m_Metadata:
       m_Items: []
+  - m_Id: 525526229004759040
+    m_Localized: Changes note size to be game-accurate, as opposed to the default
+      90% scale.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 525527249894158336
+    m_Localized: Accurate Note Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 535382107536941056
+    m_Localized: How precise should changing the song speed with keybinds be?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 535382867704209408
+    m_Localized: +/-{TextValue}
+    m_Metadata:
+      m_Items:
+      - rid: 0
+  - m_Id: 535385690646962176
+    m_Localized: Song Speed Precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 539782053475614720
+    m_Localized: Fill hollow part of chain link for better visibility.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 539782955901091840
+    m_Localized: Solid Chain Link
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 0
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0000b21e8704000000b0ba6917caef00000083d17b022c04
+        m_Entries: 0000b21e8704000000b0ba6917caef00000083d17b022c0400e056b0e10f6e07
     - rid: 1
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:

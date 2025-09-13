@@ -34,7 +34,7 @@ namespace Beatmap.V3
             return vfxBox;
         }
 
-        public static JSONNode ToJson(BaseVfxEventEventBox vfxBox, IList<V4CommonData.FloatFxEvent> floatFxEvents)
+        public static JSONNode ToJson(BaseVfxEventEventBox vfxBox, IList<FloatFxEventBase> floatFxEvents)
         {
             JSONNode node = new JSONObject();
             node["f"] = vfxBox.IndexFilter.ToJson();
@@ -48,7 +48,7 @@ namespace Beatmap.V3
             node["l"] = new JSONArray();
             foreach (var data in vfxBox.FloatFxEvents)
             {
-                node["l"].Add(floatFxEvents.IndexOf(V4CommonData.FloatFxEvent.FromFloatFxEventBase(data)));
+                node["l"].Add(floatFxEvents.IndexOf(data));
             }
 
             return node;

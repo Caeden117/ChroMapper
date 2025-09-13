@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using LiteNetLib.Utils;
@@ -112,6 +113,13 @@ namespace Beatmap.Base
             IsConflictingWithObjectAtSameTime(other, deletion);
 
         protected abstract bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false);
+
+        public virtual bool HasMatchingTrack(string filter) =>
+            (filter == null) || CustomTrack switch {
+                JSONString str => filter == (string)str,
+                JSONArray arr => arr.Children.Any((it) => filter == (string)it),
+                _ => false,
+            };
 
         public virtual void Apply(BaseObject originalData)
         {

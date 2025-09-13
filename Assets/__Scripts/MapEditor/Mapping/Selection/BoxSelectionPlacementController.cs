@@ -150,9 +150,8 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
                 true, true, true, (bocc, bo) =>
             {
                 if (!selectedTypes.Contains(bo.ObjectType)) return; // Must be a type we can select
-                
-                if (   BeatmapObjectContainerCollection.TrackFilterID != null 
-                    && BeatmapObjectContainerCollection.TrackFilterID != ((bo.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+
+                if (!bo.HasMatchingTrack(BeatmapObjectContainerCollection.TrackFilterID))
                 {
                     return;
                 }
@@ -242,9 +241,12 @@ public class BoxSelectionPlacementController : PlacementController<BaseEvent, Ev
 
     public override void CancelPlacement()
     {
-        IsSelecting = false;
-        foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject, false);
-        SelectionController.SelectionChangedEvent?.Invoke();
+        if (IsSelecting)
+        {
+            IsSelecting = false;
+            foreach (var selectedObject in selected) SelectionController.Deselect(selectedObject, false);
+            SelectionController.SelectionChangedEvent?.Invoke();
+        }
     }
 
     public override void TransferQueuedToDraggedObject(ref BaseEvent dragged, BaseEvent queued) { }

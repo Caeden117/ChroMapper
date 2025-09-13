@@ -4508,6 +4508,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Attempt Quick Submit Alt",
+                    "type": "Button",
+                    "id": "24e08172-bc9a-408f-921d-5a6a56a139ae",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -4574,6 +4583,17 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Attempt Quick Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5b60e14d-dac9-47c4-8367-8f8e000763d8",
+                    "path": "<Keyboard>/numpadEnter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Attempt Quick Submit Alt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

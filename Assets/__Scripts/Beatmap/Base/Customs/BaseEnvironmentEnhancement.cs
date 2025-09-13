@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Beatmap.Base.Customs
 {
-    public class BaseEnvironmentEnhancement : BaseItem
+    public class BaseEnvironmentEnhancement : BaseObject
     {
         public BaseEnvironmentEnhancement()
         {
@@ -39,6 +39,8 @@ namespace Beatmap.Base.Customs
             LookupMethod = EnvironmentLookupMethod.Contains;
         }
 
+        public override ObjectType ObjectType { get; set; } = ObjectType.EnvironmentEnhancement;
+
         public string ID { get; set; }
         public EnvironmentLookupMethod LookupMethod { get; set; } = EnvironmentLookupMethod.Contains;
         public JSONNode Geometry { get; set; }
@@ -68,10 +70,10 @@ namespace Beatmap.Base.Customs
                 {
                     if (Components["ILightWithId"] != null)
                         Components["ILightWithId"]["lightID"] = value;
-                    else
+                    else if (value != null)
                         Components["ILightWithId"] = new JSONObject { ["lightID"] = value };
                 }
-                else
+                else if (value != null)
                 {
                     var iLightWithID = new JSONObject { ["lightID"] = value };
                     Components = new JSONObject { ["ILightWithId"] = iLightWithID };
@@ -95,10 +97,10 @@ namespace Beatmap.Base.Customs
                 {
                     if (Components["ILightWithId"] != null)
                         Components["ILightWithId"]["type"] = value;
-                    else
+                    else if (value != null)
                         Components["ILightWithId"] = new JSONObject { ["type"] = value };
                 }
-                else
+                else if (value != null)
                 {
                     var iLightWithID = new JSONObject { ["type"] = value };
                     Components = new JSONObject { ["ILightWithId"] = iLightWithID };
@@ -131,6 +133,8 @@ namespace Beatmap.Base.Customs
             2 => V2EnvironmentEnhancement.KeyTrack,
             3 => V3EnvironmentEnhancement.KeyTrack
         };
+
+        public override string CustomKeyTrack => KeyTrack;
 
         public string KeyDuplicate => Settings.Instance.MapVersion switch
         {
@@ -204,9 +208,18 @@ namespace Beatmap.Base.Customs
             2 => V2EnvironmentEnhancement.GeometryKeyMaterial,
             3 or 4 => V3EnvironmentEnhancement.GeometryKeyMaterial
         };
-        
+
+        public override string CustomKeyColor => null;
+
         #endregion
 
+        public override bool HasMatchingTrack(string filter) =>
+            (filter == null) || filter == Track;
+
+        protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
+        {
+            return false;
+        }
 
         private static Vector3? ReadVector3OrNull(JSONNode node, string key) =>
             !node.HasKey(key) || node[key].IsNull ? (Vector3?)null : node[key].ReadVector3();
@@ -254,6 +267,12 @@ namespace Beatmap.Base.Customs
                 return hashCode;
             }
         }
+
+        protected override void ParseCustom()
+        {
+        }
+
+        protected internal override JSONNode SaveCustom() => null;
 
         private void InstantiateHelper(ref JSONNode node)
         {

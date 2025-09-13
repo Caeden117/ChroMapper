@@ -21,10 +21,12 @@ public class Plugin
 
     private readonly object pluginInstance;
 
-    public Plugin(string name, Version version, object pluginInstance)
+    public readonly AssemblyName AssemblyName;
+
+    public Plugin(string name, AssemblyName assemblyName, object pluginInstance)
     {
         Name = name;
-        Version = version;
+        AssemblyName = assemblyName;
         this.pluginInstance = pluginInstance;
         foreach (var methodInfo in pluginInstance.GetType().GetMethods(bindingFlags))
         {
@@ -37,7 +39,7 @@ public class Plugin
     }
 
     public string Name { get; }
-    public Version Version { get; }
+    public Version Version => AssemblyName.Version;
 
     public bool CallMethod<T>()
     {

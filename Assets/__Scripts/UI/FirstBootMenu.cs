@@ -100,6 +100,7 @@ public class FirstBootMenu : MonoBehaviour
             case 2:
                 Settings.Instance.ChromaticAberration = false;
                 Settings.Instance.SimpleBlocks = true;
+                Settings.Instance.SolidChainLink = true;
                 Settings.Instance.Reflections = false;
                 Settings.Instance.HighQualityBloom = false;
                 Settings.Instance.DisplayFloatValueText = false;

@@ -46,11 +46,14 @@ namespace Beatmap.Appearances
                     break;
             }
 
-            ShaderType shader = (ShaderType)Enum.Parse(typeof(ShaderType), basemat.Shader ?? "Standard");
+            ShaderType shader = ShaderType.Standard;
+            if (!Enum.TryParse(basemat.Shader ?? "Standard", out shader))
+            {
+                Debug.LogError($"Invalid shader '{basemat.Shader}'!");
+            }
 
             var meshRenderer = container.Shape.GetComponent<MeshRenderer>();
 
-            // Why can't we have C#9
             var material = shader switch
             {
                 ShaderType.OpaqueLight  => lightMaterial,
@@ -62,29 +65,29 @@ namespace Beatmap.Appearances
                 _ => regularMaterial,
             };
 
+            var colorKeyword = shader switch
+            {
+                ShaderType.OpaqueLight => "_EmissionColor",
+                ShaderType.TransparentLight => "_EmissionColor",
+                ShaderType.Obstacle => "_ColorTint",
+                _ => "_Color",
+            };
+
             if (basemat.Color is Color color)
             {
-                var colorKeyword = shader switch
-                {
-                    ShaderType.OpaqueLight => "_EmissionColor",
-                    ShaderType.TransparentLight => "_EmissionColor",
-                    ShaderType.Obstacle => "_ColorTint",
-                    _ => "_Color",
-                };
-
                 container.MaterialPropertyBlock.SetColor(colorKeyword, color);
             }
 
             // For animating material color
             if (basemat.Track is string track)
             {
-                container.Animator.AddParent(track);
+                container.MaterialAnimator.AttachToMaterial(container, track, colorKeyword);
             }
 
             meshRenderer.sharedMaterial = material;
             meshRenderer.SetPropertyBlock(container.MaterialPropertyBlock);
 
-            if (eh.LightID != null)
+            if (eh.Components?.HasKey("ILightWithId") ?? false)
             {
                 var light = container.Shape.AddComponent<LightingEvent>();
                 light.OverrideLightGroup = true;

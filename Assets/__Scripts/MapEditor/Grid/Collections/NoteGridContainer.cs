@@ -32,6 +32,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.AccurateNoteSize), AppearanceChanged);
     }
 
     internal override void UnsubscribeToCallbacks()
@@ -45,6 +46,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
+        Settings.ClearSettingNotifications(nameof(Settings.AccurateNoteSize));
     }
 
     private void OnPlayToggle(bool isPlaying)
@@ -92,7 +94,6 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         var noteData = obj as BaseNote;
         noteAppearanceSo.SetNoteAppearance(note);
         note.Setup();
-        note.SetBomb(noteData.Type == (int)NoteType.Bomb);
         note.DirectionTargetEuler = NoteContainer.Directionalize(noteData);
 
         if (!note.Animator.AnimatedTrack)

@@ -38,6 +38,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         chain.ChainData = chainData;
         chainAppearanceSO.SetChainAppearance(chain);
         chain.Setup();
+        chain.SetIndicatorBlocksActive(!isPlaying);
 
         if (!chain.Animator.AnimatedTrack)
         {
@@ -65,13 +66,13 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         Settings.NotifyBySettingName(nameof(Settings.NoteColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorMultiplier), AppearanceChanged);
         Settings.NotifyBySettingName(nameof(Settings.ArrowColorWhiteBlend), AppearanceChanged);
+        Settings.NotifyBySettingName(nameof(Settings.AccurateNoteSize), AppearanceChanged);
     }
 
     internal override void UnsubscribeToCallbacks()
     {
         var notesContainer = GetCollectionForType(ObjectType.Note) as NoteGridContainer;
-        if (notesContainer != null)
-            notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
+        if (notesContainer != null) notesContainer.ContainerSpawnedEvent -= CheckUpdatedNote;
         SpawnCallbackController.ChainPassedThreshold -= SpawnCallback;
         SpawnCallbackController.RecursiveChainCheckFinished -= RecursiveCheckFinished;
         DespawnCallbackController.ChainPassedThreshold -= DespawnCallback;
@@ -81,6 +82,7 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         Settings.ClearSettingNotifications(nameof(Settings.NoteColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
+        Settings.ClearSettingNotifications(nameof(Settings.AccurateNoteSize));
     }
 
     private void OnPlayToggle(bool isPlaying)
@@ -100,15 +102,11 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
 
     private void AppearanceChanged(object _) => RefreshPool(true);
 
-    protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj)
-    {
+    protected override void OnContainerSpawn(ObjectContainer container, BaseObject obj) =>
         (container as ChainContainer).DetectHeadNote();
-    }
 
-    protected override void OnContainerDespawn(ObjectContainer container, BaseObject obj)
-    {
-        (container as ChainContainer).ResetHeadNoteScale();
-    }
+    protected override void OnContainerDespawn(ObjectContainer container, BaseObject obj) =>
+        (container as ChainContainer).DetachHeadNote();
 
     private void CheckUpdatedNote(BaseObject obj)
     {
@@ -119,13 +117,11 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         {
             LoadedContainers.TryGetValue(chain, out var con);
             var container = con as ChainContainer;
-            if (container != null && container.IsHeadNote(note))
-            {
-                GetCollectionForType(ObjectType.Note).LoadedContainers.TryGetValue(note, out var noteContainer);
-                container.AttachedHead = noteContainer as NoteContainer;
-                container.DetectHeadNote(false);
-                break;
-            }
+            if (container == null || !container.IsHeadNote(note)) continue;
+            GetCollectionForType(ObjectType.Note).LoadedContainers.TryGetValue(note, out var noteContainer);
+            container.AttachedHead = noteContainer as NoteContainer;
+            container.DetectHeadNote(false);
+            break;
         }
     }
 

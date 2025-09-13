@@ -12,6 +12,7 @@ namespace Beatmap.Enums
         Chain,
         Bookmark,
         Waypoint,
-        NJSEvent
+        NJSEvent,
+        EnvironmentEnhancement
     }
 }

@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using Beatmap.V3;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.Base
 {
@@ -43,7 +45,7 @@ namespace Beatmap.Base
         }
     }
 
-    public class FloatFxEventBase : FxEventBase<float>
+    public class FloatFxEventBase : FxEventBase<float>, IEquatable<FloatFxEventBase>
     {
         public int Easing;
 
@@ -60,6 +62,37 @@ namespace Beatmap.Base
             floatFxEvents.Value = Value;
             floatFxEvents.Easing = Easing;
             return floatFxEvents;
+        }
+
+        public bool Equals(FloatFxEventBase other)
+        {
+            if (other is null) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Easing == other.Easing 
+                   && Mathf.Approximately(JsonTime, other.JsonTime) 
+                   && UsePreviousEventValue == other.UsePreviousEventValue 
+                   && Mathf.Approximately(Value, other.Value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((FloatFxEventBase)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Easing;
+                hashCode = (hashCode * 397) ^ JsonTime.GetHashCode();
+                hashCode = (hashCode * 397) ^ UsePreviousEventValue;
+                hashCode = (hashCode * 397) ^ Value.GetHashCode();
+
+                return hashCode;
+            }
         }
     }
 

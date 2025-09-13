@@ -68,6 +68,7 @@ public class Settings
     public bool VanillaOnlyShift = true;
     public bool Animations = true;
     public float PastNotesGridScale = 0.5f;
+    public float SongSpeedChangeAmount = 2;
     // SongSpeed is a non-persistent setting
     // NoteLanes is a non-persistent setting
 
@@ -109,6 +110,7 @@ public class Settings
     public bool VisualizeChromaGradients = true;
     public bool VisualizeChromaAlpha = true;
     public bool SimpleBlocks = false;
+    public bool SolidChainLink = false;
     public bool PyramidEventModels = false; // Old setting, migrated to below
     public EventModelType EventModel = EventModelType.Block;
     public float PastNoteModelAlpha = 0.4f;
@@ -148,6 +150,7 @@ public class Settings
     public int TrackLength = 8;
     public float OneBeatWidth = 0.1f;
 
+    public bool AccurateNoteSize = false;
     public float NoteColorMultiplier = 1f;
     public float ArrowColorMultiplier = 1.72f;
     public float ArrowColorWhiteBlend = 0.75f;

@@ -1,4 +1,5 @@
 using System;
+using Beatmap.Animations;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using UnityEngine;
@@ -13,11 +14,13 @@ namespace Beatmap.Containers
 
         public override BaseObject ObjectData
         {
-            get => null;
-            set => _ = value;
+            get => EnvironmentEnhancement;
+            set => EnvironmentEnhancement = (BaseEnvironmentEnhancement)value;
         }
 
         public BaseEnvironmentEnhancement EnvironmentEnhancement;
+
+        public ObjectAnimator MaterialAnimator;
 
         public override void UpdateGridPosition()
         {
@@ -25,6 +28,10 @@ namespace Beatmap.Containers
 
         public static GeometryContainer SpawnGeometry(BaseEnvironmentEnhancement eh, ref GameObject prefab)
         {
+            var type_str = (string)eh.Geometry[eh.GeometryKeyType];
+            if (type_str == null)
+                return null;
+
             var container = Instantiate(prefab).GetComponent<GeometryContainer>();
             PrimitiveType type;
             if (eh.Geometry[eh.GeometryKeyType] == "Triangle")
@@ -33,11 +40,15 @@ namespace Beatmap.Containers
             }
             else
             {
-                type = (PrimitiveType)Enum.Parse(typeof(PrimitiveType), (string)eh.Geometry[eh.GeometryKeyType]);
+                if (!Enum.TryParse<PrimitiveType>((string)eh.Geometry[eh.GeometryKeyType], out type))
+                {
+                    Debug.LogError($"Invalid geometry type '{(string)eh.Geometry[eh.GeometryKeyType]}'!");
+                }
             }
             container.EnvironmentEnhancement = eh;
             container.Shape = GameObject.CreatePrimitive(type);
-            
+            container.Shape.layer = 9;
+
             var collider = container.Shape.GetComponentInChildren<Collider>();
             if (collider != null) DestroyImmediate(collider);
 
@@ -49,11 +60,31 @@ namespace Beatmap.Containers
                 }
 
                 container.Shape.GetComponent<MeshFilter>().sharedMesh = triangleMesh;
+                container.SelectionRenderers[0].transform.localPosition = new Vector3(0, 0, 0.01f);
             }
+            else if (type == PrimitiveType.Quad)
+            {
+                container.SelectionRenderers[0].transform.localPosition = new Vector3(0, 0, -0.01f);
+            }
+            var mesh = container.Shape.GetComponent<MeshFilter>().sharedMesh;
+            container.SelectionRenderers[0].GetComponent<MeshFilter>().sharedMesh = mesh;
+            var intersection = container.Shape.AddComponent<IntersectionCollider>();
+            var renderer = container.Shape.GetComponent<MeshRenderer>();
+            intersection.Mesh = mesh;
+            intersection.BoundsRenderer = renderer;
+
+            if (container.MaterialPropertyBlock == null)
+            {
+                container.MaterialPropertyBlock = new MaterialPropertyBlock();
+                container.modelRenderers.Add(renderer);
+            }
+
+            container.Colliders.Add(intersection);
             container.Shape.transform.parent = container.Animator.AnimationThis.transform;
             container.Shape.transform.localScale = 1.667f * Vector3.one;
-            container.Animator.SetGeometry(eh);
+            container.Animator.AttachToGeometry(eh);
             container.gameObject.SetActive(true);
+            container.UpdateCollisionGroups();
             return container;
         }
 

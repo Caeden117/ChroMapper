@@ -278,7 +278,9 @@ namespace Beatmap.Base
         public string CustomKeyPropMult => V2Event.CustomKeyPropMult;
         public string CustomKeySpeedMult => V2Event.CustomKeySpeedMult;
         public string CustomKeyPreciseSpeed => V2Event.CustomKeyPreciseSpeed;
-        
+
+        public override bool HasMatchingTrack(string filter) =>
+            true;
 
         public override bool IsChroma() =>
             CustomData != null &&

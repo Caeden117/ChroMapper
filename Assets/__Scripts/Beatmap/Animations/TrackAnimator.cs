@@ -17,36 +17,49 @@ namespace Beatmap.Animations
         public Track Track;
         public ObjectAnimator Animator;
 
-        public Dictionary<string, IAnimateProperty> AnimatedProperties;
+        public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
         private IAnimateProperty[] properties = new IAnimateProperty[0];
 
         public List<TrackAnimator> Parents = new List<TrackAnimator>();
         public List<ObjectAnimator> Children = new List<ObjectAnimator>();
         public ObjectAnimator[] CachedChildren = new ObjectAnimator[] {};
 
-        public void SetEvents(List<BaseCustomEvent> events)
+        public void AddEvent(BaseCustomEvent ev)
         {
-            AnimatedProperties = new Dictionary<string, IAnimateProperty>();
-
-            foreach (var ev in events)
+            foreach (var jprop in ev.Data)
             {
-                foreach (var jprop in ev.Data)
+                var p = new IPointDefinition.UntypedParams
                 {
-                    var p = new IPointDefinition.UntypedParams
-                    {
-                        Key = jprop.Key,
-                        Points = jprop.Value,
-                        Easing = ev.DataEasing,
-                        Time = ev.JsonTime,
-                        Duration = ev.DataDuration ?? 0,
-                        TimeBegin = ev.JsonTime,
-                        TimeEnd = ev.JsonTime + (ev.DataDuration ?? 0),
-                        Repeat = ev.DataRepeat ?? 0
-                    };
-                    AddPointDef(p, jprop.Key);
-                }
+                    Key = jprop.Key,
+                    Points = jprop.Value,
+                    Easing = ev.DataEasing,
+                    Time = ev.JsonTime,
+                    Duration = ev.DataDuration ?? 0,
+                    TimeBegin = ev.JsonTime,
+                    TimeEnd = ev.JsonTime + (ev.DataDuration ?? 0),
+                    Repeat = ev.DataRepeat ?? 0
+                };
+                AddPointDef(p, jprop.Key, ev);
             }
 
+            RefreshProperties();
+        }
+
+        public void RemoveEvent(BaseCustomEvent ev)
+        {
+            foreach (var prop in AnimatedProperties.Keys.ToList())
+            {
+                AnimatedProperties[prop].RemoveEvent(ev);
+                if (AnimatedProperties[prop].IsEmpty())
+                {
+                    AnimatedProperties.Remove(prop);
+                }
+            }
+            RefreshProperties();
+        }
+
+        private void RefreshProperties()
+        {
             properties = new IAnimateProperty[AnimatedProperties.Count];
             var i = 0;
             foreach (var prop in AnimatedProperties)
@@ -79,6 +92,18 @@ namespace Beatmap.Animations
             }
         }
 
+        public void AddChild(ObjectAnimator oa)
+        {
+            Children.Add(oa);
+            OnChildrenChanged();
+        }
+
+        public void RemoveChild(ObjectAnimator oa)
+        {
+            Children.Remove(oa);
+            OnChildrenChanged();
+        }
+
         public void OnChildrenChanged()
         {
             CachedChildren = Children.Where(o => o.enabled).ToArray();
@@ -87,57 +112,61 @@ namespace Beatmap.Animations
             Parents.ForEach((t) => t.OnChildrenChanged());
         }
 
-        private void AddPointDef(IPointDefinition.UntypedParams p, string key)
+        private void AddPointDef(IPointDefinition.UntypedParams p, string key, BaseCustomEvent source)
         {
             switch (key)
             {
             case "_dissolve":
             case "dissolve":
-                AddPointDef<float>((ObjectAnimator animator, float f) => animator.Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
+                AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_dissolveArrow":
             case "dissolveArrow":
-                AddPointDef<float>((ObjectAnimator animator, float f) => animator.OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
+                AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;
             case "_localRotation":
             case "localRotation":
-                AddPointDef<Quaternion>((ObjectAnimator animator, Quaternion v) => animator.LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => animator.LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                break;
+            case "rotation":
+                AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.Transform) animator.WorldRotation.Add(v); }, PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_rotation":
-            case "rotation":
             case "offsetWorldRotation":
-                AddPointDef<Quaternion>((ObjectAnimator animator, Quaternion v) => animator.WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => animator.WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
                 break;
             case "_position":
-                AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v), PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "offsetPosition":
+                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.GameplayObject) animator.OffsetPosition.Add(v); }, PointDataParsers.ParseVector3, p, Vector3.zero);
+                break;
             case "localPosition":
-                AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.Transform) animator.OffsetPosition.Add(v * 1.667f); }, PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "position":
-                AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.WorldPosition.Add(v * 1.667f), PointDataParsers.ParseVector3, p, Vector3.zero);
+                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.Transform) animator.WorldPosition.Add(v * 1.667f); }, PointDataParsers.ParseVector3, p, Vector3.zero);
                 break;
             case "_scale":
             case "scale":
-                AddPointDef<Vector3>((ObjectAnimator animator, Vector3 v) => animator.Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
+                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
                 break;
             case "_color":
             case "color":
-                AddPointDef<Color>((ObjectAnimator animator, Color v) => animator.Colors.Add(v), PointDataParsers.ParseColor, p, Color.white);
+                AddPointDef<Color>(source, (ObjectAnimator animator, Color v) => { if (animator.TargetType != ObjectAnimator.TargetTypes.Transform) animator.Colors.Add(v); }, PointDataParsers.ParseColor, p, Color.white);
                 break;
             case "_time":
             case "time":
-                AddPointDef<float>((ObjectAnimator animator, float f) => animator.SetLifeTime(f), PointDataParsers.ParseFloat, p, -1);
+                AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.SetLifeTime(f), PointDataParsers.ParseFloat, p, -1);
                 break;
             }
         }
 
-        private void AddPointDef<T>(Action<ObjectAnimator, T> _setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
+        private void AddPointDef<T>(BaseCustomEvent source, Action<ObjectAnimator, T> _setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
         {
             Action<T> setter = (v) => { for (var i = 0; i < CachedChildren.Length; ++i) { _setter(CachedChildren[i], v); } };
 
-            GetAnimateProperty<T>(p.Key, setter, _default).AddPointDef(parser, p);
+            GetAnimateProperty<T>(p.Key, setter, _default).AddPointDef(parser, p, source);
         }
 
         private AnimateProperty<T> GetAnimateProperty<T>(string key, Action<T> setter, T _default) where T : struct

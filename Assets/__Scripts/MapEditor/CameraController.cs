@@ -143,11 +143,13 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
             if (playerTracks[current] != currentTrack)
             {
                 DisconnectPlayerTrack();
+                cameraAnimator.ResetData();
                 currentTrack = playerTracks[current];
+                cameraAnimator.transform.SetParent(currentTrack.Track.ObjectParentTransform);
                 cameraAnimator.LocalTarget = cameraAnimator.AnimationThis.transform;
                 cameraAnimator.WorldTarget = cameraAnimator.transform;
                 cameraAnimator.enabled = true;
-                cameraAnimator.ResetData();
+                cameraAnimator.TargetType = ObjectAnimator.TargetTypes.Transform;
 
                 currentTrack.Children.Add(cameraAnimator);
                 currentTrack.OnChildrenChanged();

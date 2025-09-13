@@ -332,6 +332,12 @@ public class SongInfoEditUI : MenuBase
         Debug.Log("Loading audio");
         if (File.Exists(fullPath))
         {
+            if (!FileContentValidationHelper.IsSupportedAudioFormat(fullPath))
+            {
+                SceneTransitionManager.Instance.CancelLoading("load.error.audio2");
+                yield break;
+            }
+
             yield return BeatSaberSongExtensions.LoadAudio(Info,(clip) =>
             {
                 previewAudio.clip = clip;
@@ -499,6 +505,11 @@ public class SongInfoEditUI : MenuBase
             Settings.Instance.LastLoadedDiff = BeatSaberSongContainer.Instance.MapDifficultyInfo.Difficulty;
             BeatSaberSongContainer.Instance.Map = map;
             Settings.Instance.MapVersion = map.MajorVersion;
+            
+            // Need to ensure the difficulty's bpm events and times have been computed with the current Info bpm in case
+            // it has changed. This fixes an edge case the song info bpm not applying to everything in editor
+            map.ValidateBpmEventsAndObjectTimes(Info.BeatsPerMinute);
+            
             SceneTransitionManager.Instance.LoadScene("03_Mapper", LoadAudio(false, true));
         }
     }

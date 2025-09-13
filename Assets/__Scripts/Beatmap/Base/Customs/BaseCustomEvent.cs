@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Enums;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
@@ -140,27 +141,39 @@ namespace Beatmap.Base.Customs
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
+        public override bool HasMatchingTrack(string filter) =>
+            base.HasMatchingTrack(filter)
+            || DataChildrenTracks switch {
+                JSONString str => filter == (string)str,
+                JSONArray arr => arr.Children.Any((it) => filter == (string)it),
+                _ => false,
+            }
+            || DataParentTrack switch {
+                JSONString str => filter == (string)str,
+                _ => false,
+            };
+
         protected override void ParseCustom()
         {
             CustomTrack = Data.HasKey(CustomKeyTrack) ? Data[CustomKeyTrack] : null;
-            
+
             // I don't know why but tenary operator causes these properties to be set to default on node editor or save
             // when they shouldn't be. I guess some sort of implicit cast was happening but I couldn't see why?
             if (Data.HasKey(DataKeyDuration))
                 DataDuration = Data[DataKeyDuration].AsFloat;
             else
                 DataDuration = null;
-            
+
             if (Data.HasKey(DataKeyRepeat))
                 DataRepeat = Data[DataKeyRepeat].AsInt;
             else
                 DataRepeat = null;
-            
+
             if (Data.HasKey(DataKeyWorldPositionStays))
                 DataWorldPositionStays = Data[DataKeyWorldPositionStays].AsBool;
             else
                 DataWorldPositionStays = null;
-            
+
             DataEasing = Data.HasKey(DataKeyEasing) ? Data[DataKeyEasing] : null;
             DataChildrenTracks = Data.HasKey(DataKeyChildrenTracks) ? Data[DataKeyChildrenTracks] : null;
             DataParentTrack = Data.HasKey(DataKeyParentTrack) ? Data[DataKeyParentTrack] : null;

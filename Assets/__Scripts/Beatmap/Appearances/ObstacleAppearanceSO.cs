@@ -49,7 +49,7 @@ namespace Beatmap.Appearances
                     obj.SetColor(DefaultObstacleColor);
                 }
             }
-            obj.Animator.SetData(obj.ObstacleData);
+            obj.Animator.AttachToObject(obj.ObstacleData);
         }
     }
 }

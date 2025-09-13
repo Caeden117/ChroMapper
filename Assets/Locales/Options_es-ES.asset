@@ -17,13 +17,13 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 3d3fb288927a2264891ce15662e46756, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 2007761200731127845
+    - rid: 7923550464931004524
   m_TableData:
   - m_Id: 1
     m_Localized: Ajustes - {tabName}
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 2
     m_Localized: Opciones varias
     m_Metadata:
@@ -278,7 +278,7 @@ MonoBehaviour:
     m_Localized: 'Plugins cargados: {Count}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 67
     m_Localized: "Informaci\xF3n de plugin"
     m_Metadata:
@@ -316,7 +316,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} decimal(es)'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 74
     m_Localized: "Por cu\xE1ntos decimales redondear los valores de \"_time\" por
       cada objeto del mapa visible cuando se guarda al disco.\nMenor precisi\xF3n
@@ -556,7 +556,7 @@ MonoBehaviour:
     m_Localized: Extensiones
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 132
     m_Localized: Experimentales
     m_Metadata:
@@ -569,47 +569,47 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 135
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 136
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 137
     m_Localized: "{TextValue}\xB0"
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 138
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 139
     m_Localized: '{TextValue} golpes'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 140
     m_Localized: '{TextValue} golpes'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 141
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 142
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 143
     m_Localized: "Restringe el visor de rotaci\xF3n"
     m_Metadata:
@@ -656,7 +656,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 154
     m_Localized: Escala de la interfaz de usuario
     m_Metadata:
@@ -669,7 +669,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 157
     m_Localized: Modelo de eventos
     m_Metadata:
@@ -741,7 +741,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 174
     m_Localized: "Canci\xF3n"
     m_Metadata:
@@ -864,7 +864,7 @@ MonoBehaviour:
     m_Localized: '{TextValue} ms'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 3301721636864
     m_Localized: "Cambia la transparencia del fondo de la cuadr\xEDcula"
     m_Metadata:
@@ -873,7 +873,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 23812497342464
     m_Localized: "Trasparencia de la cuadr\xEDcula"
     m_Metadata:
@@ -923,7 +923,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 67492742661058560
     m_Localized: "Escala la resoluci\xF3n de renderizado (total) para lograr mejoras
       visuales o rendimiento."
@@ -1268,7 +1268,7 @@ MonoBehaviour:
     m_Localized: '{TextValue}m'
     m_Metadata:
       m_Items:
-      - rid: 2007761200731127845
+      - rid: 7923550464931004524
   - m_Id: 322078335378526208
     m_Localized: Objects and Lighting
     m_Metadata:
@@ -1454,10 +1454,40 @@ MonoBehaviour:
     m_Localized: Display HJD Line On Grid
     m_Metadata:
       m_Items: []
+  - m_Id: 535382867704209408
+    m_Localized: +/-{TextValue}
+    m_Metadata:
+      m_Items:
+      - rid: 7923550464931004524
+  - m_Id: 535382107536941056
+    m_Localized: How precise should changing the song speed with keybinds be?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 535385690646962176
+    m_Localized: Song Speed Precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 525526229004759040
+    m_Localized: Changes note size to be game-accurate, as opposed to the default
+      90% scale.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 525527249894158336
+    m_Localized: Accurate Note Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 539782053475614720
+    m_Localized: Fill hollow part of chain link for better visibility.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 539782955901091840
+    m_Localized: Solid Chain Link
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 2007761200731127845
+    - rid: 7923550464931004524
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c04
+        m_Entries: 010000000000000042000000000000004900000000000000830000000000000086000000000000008700000000000000880000000000000089000000000000008a000000000000008b000000000000008c000000000000008d000000000000008e0000000000000099000000000000009c00000000000000ad0000000000000000b07a73ae0400000000b21e8704000000b0ba6917caef00000083d17b022c0400e056b0e10f6e07

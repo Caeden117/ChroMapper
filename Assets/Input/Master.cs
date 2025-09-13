@@ -4530,6 +4530,15 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attempt Quick Submit Alt"",
+                    ""type"": ""Button"",
+                    ""id"": ""24e08172-bc9a-408f-921d-5a6a56a139ae"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -4596,6 +4605,17 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Attempt Quick Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5b60e14d-dac9-47c4-8367-8f8e000763d8"",
+                    ""path"": ""<Keyboard>/numpadEnter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Attempt Quick Submit Alt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -5321,6 +5341,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         m_DialogBox_NavigateDown = m_DialogBox.FindAction("Navigate Down", throwIfNotFound: true);
         m_DialogBox_NavigateUp = m_DialogBox.FindAction("Navigate Up", throwIfNotFound: true);
         m_DialogBox_AttemptQuickSubmit = m_DialogBox.FindAction("Attempt Quick Submit", throwIfNotFound: true);
+        m_DialogBox_AttemptQuickSubmitAlt = m_DialogBox.FindAction("Attempt Quick Submit Alt", throwIfNotFound: true);
         // United Mapping
         m_UnitedMapping = asset.FindActionMap("United Mapping", throwIfNotFound: true);
         m_UnitedMapping_KickPlayer = m_UnitedMapping.FindAction("Kick Player", throwIfNotFound: true);
@@ -8046,6 +8067,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_DialogBox_NavigateDown;
     private readonly InputAction m_DialogBox_NavigateUp;
     private readonly InputAction m_DialogBox_AttemptQuickSubmit;
+    private readonly InputAction m_DialogBox_AttemptQuickSubmitAlt;
     public struct DialogBoxActions
     {
         private @CMInput m_Wrapper;
@@ -8054,6 +8076,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         public InputAction @NavigateDown => m_Wrapper.m_DialogBox_NavigateDown;
         public InputAction @NavigateUp => m_Wrapper.m_DialogBox_NavigateUp;
         public InputAction @AttemptQuickSubmit => m_Wrapper.m_DialogBox_AttemptQuickSubmit;
+        public InputAction @AttemptQuickSubmitAlt => m_Wrapper.m_DialogBox_AttemptQuickSubmitAlt;
         public InputActionMap Get() { return m_Wrapper.m_DialogBox; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -8075,6 +8098,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @AttemptQuickSubmit.started += instance.OnAttemptQuickSubmit;
             @AttemptQuickSubmit.performed += instance.OnAttemptQuickSubmit;
             @AttemptQuickSubmit.canceled += instance.OnAttemptQuickSubmit;
+            @AttemptQuickSubmitAlt.started += instance.OnAttemptQuickSubmitAlt;
+            @AttemptQuickSubmitAlt.performed += instance.OnAttemptQuickSubmitAlt;
+            @AttemptQuickSubmitAlt.canceled += instance.OnAttemptQuickSubmitAlt;
         }
 
         private void UnregisterCallbacks(IDialogBoxActions instance)
@@ -8091,6 +8117,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @AttemptQuickSubmit.started -= instance.OnAttemptQuickSubmit;
             @AttemptQuickSubmit.performed -= instance.OnAttemptQuickSubmit;
             @AttemptQuickSubmit.canceled -= instance.OnAttemptQuickSubmit;
+            @AttemptQuickSubmitAlt.started -= instance.OnAttemptQuickSubmitAlt;
+            @AttemptQuickSubmitAlt.performed -= instance.OnAttemptQuickSubmitAlt;
+            @AttemptQuickSubmitAlt.canceled -= instance.OnAttemptQuickSubmitAlt;
         }
 
         public void RemoveCallbacks(IDialogBoxActions instance)
@@ -8746,6 +8775,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         void OnNavigateDown(InputAction.CallbackContext context);
         void OnNavigateUp(InputAction.CallbackContext context);
         void OnAttemptQuickSubmit(InputAction.CallbackContext context);
+        void OnAttemptQuickSubmitAlt(InputAction.CallbackContext context);
     }
     public interface IUnitedMappingActions
     {

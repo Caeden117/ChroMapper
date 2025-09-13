@@ -98,6 +98,15 @@ namespace Beatmap.Base
 
         private float? songBpm;
 
+        public void ValidateBpmEventsAndObjectTimes(float songBpm)
+        {
+            if (this.songBpm == null || !Mathf.Approximately(this.songBpm.Value, songBpm))
+            {
+                BootstrapBpmEvents(songBpm);
+                RecomputeAllObjectSongBpmTimes();
+            }
+        }
+
         public void BootstrapBpmEvents(float songBpm)
         {
             this.songBpm = songBpm;
@@ -409,12 +418,15 @@ namespace Beatmap.Base
 
             // Write Bpm file
             var bpmInfo = new BaseBpmInfo().InitWithSongContainerInstance();
-            bpmInfo.BpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Info.BeatsPerMinute,
-                bpmInfo.AudioSamples, bpmInfo.AudioFrequency);
 
-            // Don't write if created difficulty before supplying audio file
-            if (bpmInfo.AudioSamples > 0)
+            // Don't create a default bpmInfo file before the user has actually started mapping
+            //   This prevents a confusing workflow where the v4 difficulty starts with an already placed bpm
+            //   event which may not match the song bpm depending on the order the user saved
+            if (bpmInfo.AudioSamples > 0 && !this.IsEmpty())
             {
+                bpmInfo.BpmRegions = BaseBpmInfo.GetBpmInfoRegions(BpmEvents, songContainer.Info.BeatsPerMinute,
+                    bpmInfo.AudioSamples, bpmInfo.AudioFrequency);
+
                 var bpmOutputJson = songContainer.Info.MajorVersion switch
                 {
                     2 => V2BpmInfo.GetOutputJson(bpmInfo),
@@ -454,6 +466,29 @@ namespace Beatmap.Base
             
             return json;
         }
+
+        private bool IsEmpty() =>
+            BpmEvents.Count == 0 &&
+            Notes.Count == 0 &&
+            Obstacles.Count == 0 &&
+            Arcs.Count == 0 &&
+            Chains.Count == 0 &&
+            Waypoints.Count == 0 &&
+            Events.Count == 0 &&
+            NJSEvents.Count == 0 &&
+            LightColorEventBoxGroups.Count == 0 &&
+            LightRotationEventBoxGroups.Count == 0 &&
+            LightTranslationEventBoxGroups.Count == 0 &&
+            VfxEventBoxGroups.Count == 0 &&
+            (FxEventsCollection?.FloatFxEvents.Length ?? 0) == 0 &&
+            (EventTypesWithKeywords?.Keywords.Length ?? 0) == 0 &&
+            Bookmarks.Count == 0 &&
+            CustomEvents.Count == 0 &&
+            Materials.Count == 0 &&
+            PointDefinitions.Count == 0 &&
+            EnvironmentEnhancements.Count == 0 &&
+            CustomData.Count == 0;
+        
 
         public bool IsChroma() =>
             Notes.Any(x => x.IsChroma())  || Arcs.Any(x => x.IsChroma()) ||

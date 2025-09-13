@@ -10,6 +10,7 @@ using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.Shared;
 using Beatmap.V2;
+using SimpleJSON;
 using UnityEngine;
 
 public abstract class BeatmapObjectContainerCollection : MonoBehaviour
@@ -103,7 +104,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         UnsubscribeToCallbacks();
     }
 
-    private void UpdateEpsilon(object precision) => Epsilon = 1 / Mathf.Pow(10, (int)precision);
+    private void UpdateEpsilon(object precision)
+    {
+        Epsilon = 1 / Mathf.Pow(10, (int)precision);
+        JSONNumber.DecimalPrecision = (int)precision;
+    }
 
     /// <summary>
     ///     Grab a <see cref="BeatmapObjectContainerCollection" /> whose <see cref="ContainerType" /> matches the given type.
@@ -149,6 +154,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             Type t when t == typeof(BaseCustomEvent) => ObjectType.CustomEvent,
             Type t when t == typeof(BaseBookmark) => ObjectType.Bookmark,
             Type t when t == typeof(BaseNJSEvent) => ObjectType.NJSEvent,
+            Type t when t == typeof(BaseEnvironmentEnhancement) => ObjectType.EnvironmentEnhancement,
             _ => throw new ArgumentException(nameof(TBaseObject))
         };
 
@@ -563,14 +569,14 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
                     case BaseObstacle obs when obs.SongBpmTime > upperBound || obs.SongBpmTime + obs.Duration < lowerBound:
                     case BaseSlider slider when slider.SongBpmTime > upperBound || slider.TailSongBpmTime < lowerBound:
                     case not null when obj.SongBpmTime > upperBound || obj.SongBpmTime < lowerBound:
-                    case not null when TrackFilterID != null && TrackFilterID != ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""):
+                    case not null when !obj.HasMatchingTrack(TrackFilterID):
                         RecycleContainer(obj);
                         break;
                     default: continue;
                 }
             }
         }
-        
+
         // lmao why do anything if we dont have objects to create containers for
         if (span.Length == 0) return;
 
@@ -593,7 +599,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         {
             var obj = windowSpan[i];
 
-            if (TrackFilterID == null || TrackFilterID == ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+            if (obj.HasMatchingTrack(TrackFilterID))
             {
                 CreateContainerFromPool(obj);
             }
@@ -606,8 +612,8 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         for (var i = 0; i < startIdx; i++)
         {
             var obj = span[i];
-            
-            if (TrackFilterID != null && TrackFilterID != ((obj.CustomTrack as SimpleJSON.JSONString)?.Value ?? ""))
+
+            if (!obj.HasMatchingTrack(TrackFilterID))
                 continue;
 
             if (obj is BaseObstacle obs && obs.SongBpmTime < lowerBound && obs.SongBpmTime + obs.Duration >= lowerBound)

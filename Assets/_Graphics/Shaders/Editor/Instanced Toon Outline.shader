@@ -28,7 +28,7 @@
             UNITY_INSTANCING_BUFFER_START(Props)
                UNITY_DEFINE_INSTANCED_PROP(fixed4, _OutlineColor)
                UNITY_DEFINE_INSTANCED_PROP(fixed, _Outline)
-			   UNITY_DEFINE_INSTANCED_PROP(fixed, _HandleScale)
+               UNITY_DEFINE_INSTANCED_PROP(fixed, _HandleScale)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             struct appdata

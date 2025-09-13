@@ -10,11 +10,6 @@ using UnityEngine.Networking;
 
 public static class BeatSaberSongExtensions
 {
-    private static readonly Dictionary<string, AudioType> extensionToAudio = new()
-    {
-        {".ogg", AudioType.OGGVORBIS}, {".egg", AudioType.OGGVORBIS}, {".wav", AudioType.WAV}
-    };
-
     /// <summary>
     ///     Try and load the song, this is used for the song preview as well as later
     ///     passed to the mapping scene
@@ -26,13 +21,14 @@ public static class BeatSaberSongExtensions
         if (!Directory.Exists(mapInfo.Directory)) yield break;
 
         var fullPath = Path.Combine(mapInfo.Directory, overrideLocalPath ?? mapInfo.SongFilename);
+        if (!File.Exists(fullPath)) yield break;
 
-        // Commented out since Song Time Offset changes need to reload the song, even if its the same file
-        //if (fullPath == loadedSong)
-        //{
-        //    yield break;
-        //}
-        var audioType = extensionToAudio[Path.GetExtension(fullPath)];
+        var audioType = FileContentValidationHelper.GetAudioType(fullPath);
+        if (audioType == AudioType.UNKNOWN)
+        {
+            SceneTransitionManager.Instance.CancelLoading("load.error.audio2");
+            yield break;
+        }
 
         var uriPath = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.WindowsEditor
             ? Uri.EscapeDataString(fullPath)
@@ -48,6 +44,7 @@ public static class BeatSaberSongExtensions
         {
             Debug.Log("Error getting Audio data!");
             SceneTransitionManager.Instance.CancelLoading("load.error.audio");
+            yield break;
         }
 
         clip.name = "Song";
@@ -157,6 +154,12 @@ public static class BeatSaberSongExtensions
         {
             PersistentUI.Instance.ShowDialogBox("SongEditMenu", "zip.path.error", null, PersistentUI.DialogBoxPresetType.Ok);
             return null;
+        }
+
+        // Zip specification requires any relative paths must be using forward slashes
+        foreach (var exportedFile in exportedFiles.ToList())
+        {
+            exportedFiles[exportedFile.Key] = exportedFile.Value.Replace('\\', '/');
         }
 
         return exportedFiles;
