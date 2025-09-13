@@ -128,13 +128,10 @@ public class PlatformDescriptor : MonoBehaviour
             var manager = LightingManagers[i];
             if (manager is null) continue;
             IEnumerable<LightingEvent> allLights = manager.ControllingLights;
-            var lights = allLights.Where(x => !x.UseInvertedPlatformColors);
-            var invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
-            manager.ChangeColor(Colors.BlueColor, 0, lights);
-            manager.ChangeColor(Colors.RedColor, 0, invertedLights);
             manager.SetColors(Colors);
-            manager.ChangeAlpha(0, 0, allLights);
             manager.atsc = atsc;
+            LightsManager.FlashTimeBeat = atsc.GetBeatFromSeconds(LightsManager.FlashTimeSecond);
+            LightsManager.FadeTimeBeat = atsc.GetBeatFromSeconds(LightsManager.FadeTimeSecond);
             StartCoroutine(BuildLightEvent(manager, i)); // where is my proper platform loaded
         }
     }
