@@ -31,7 +31,7 @@ public class CreateEventTypeLabels : MonoBehaviour
 
     private readonly List<LaneInfo> laneObjs = new List<LaneInfo>();
 
-    private LightsManager[] lightingManagers;
+    private BasicLightManager[] lightingManagers;
     private bool loadedWithRotationEvents;
     [HideInInspector] public int NoRotationLaneOffset => loadedWithRotationEvents || RotationCallback.IsActive ? 0 : -2;
 

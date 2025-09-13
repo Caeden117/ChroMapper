@@ -6,58 +6,27 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class LightsManager : MonoBehaviour
+public class BasicLightManager : MonoBehaviour
 {
     public AudioTimeSyncController atsc;
+    public PlatformColorScheme ColorScheme;
+    private bool useBoost;
 
-    public struct LightingData
-    {
-        public float StartTime;
-        public float StartTimeLocal; // local is used to interpolate flash/fade/chroma gradient
-        public int StartValue;
-        public Color? StartChromaColor;
-        public float StartAlpha;
-        
-        public float EndTime;
-        public float EndTimeLocal;
-        public int EndValue;
-        public Color? EndChromaColor;
-        public float EndAlpha;
-        
-        public Func<float, float> Easing;
-        public bool UseHSV;
-
-        // this is far cheaper to do, normally there is no math involved and is always unique
-        // but this might backfire if some float weirdness involved especially with how ATSC work
-        public static bool operator ==(LightingData m1, LightingData m2) => m1.StartTime == m2.StartTime;
-        public static bool operator !=(LightingData m1, LightingData m2) => m1.StartTime != m2.StartTime;
-    }
-
-    public struct ChromaGradientData
-    {
-        public float StartTime;
-        public float EndTime;
-        public Color StartColor;
-        public Color EndColor;
-        public Func<float, float> Easing;
-    }
+    [FormerlySerializedAs("disableCustomInitialization")]
+    public bool DisableCustomInitialization;
 
     public static readonly float FadeTimeSecond = 1.2f;
     public static readonly float FlashTimeSecond = 0.5f;
     public static float FadeTimeBeat = FadeTimeSecond;
     public static float FlashTimeBeat = FlashTimeSecond;
     public static readonly float HDRIntensity = Mathf.GammaToLinearSpace(2.4169f);
-    public static readonly float HDRFlashIntensity = Mathf.GammaToLinearSpace(3);
 
-    [FormerlySerializedAs("disableCustomInitialization")]
-    public bool DisableCustomInitialization;
+    public float GroupingMultiplier = 1.0f;
+    public float GroupingOffset = 0.001f;
 
     public List<LightingEvent> ControllingLights = new();
     public LightGroup[] LightsGroupedByZ = { };
     public List<RotatingLightsBase> RotatingLights = new();
-
-    public float GroupingMultiplier = 1.0f;
-    public float GroupingOffset = 0.001f;
 
     public Dictionary<int, int> LightIDPlacementMap;
     public Dictionary<int, int> LightIDPlacementMapReverse;
@@ -68,9 +37,15 @@ public class LightsManager : MonoBehaviour
     public readonly List<(float time, Color? data)> ChromaLiteColorTimes = new();
     public readonly List<ChromaGradientData> ChromaGradientTimes = new();
 
-    public PlatformColors Colors;
-    public bool UseBoost;
-
+    public struct ChromaGradientData
+    {
+        public float StartTime;
+        public float EndTime;
+        public Color StartColor;
+        public Color EndColor;
+        public Func<float, float> Easing;
+    }
+    
     private void Start() => LoadOldLightOrder();
 
     public void LoadOldLightOrder()
@@ -122,6 +97,7 @@ public class LightsManager : MonoBehaviour
         {
             var (idx, lightingData) = CurrentLightingDataMap[lightingEvent];
 
+            // swap out event
             // do we bsearch this fella and next object for playback update
             if (lightingData.EndTime <= currentTime)
             {
@@ -167,11 +143,11 @@ public class LightsManager : MonoBehaviour
         }
     }
 
-    public void SetColors(PlatformColors colors) => Colors = colors;
+    public void SetColors(PlatformColorScheme colorScheme) => ColorScheme = colorScheme;
 
     public void ToggleBoost(bool boost)
     {
-        UseBoost = boost;
+        useBoost = boost;
         foreach (var lightingEvent in ControllingLights)
         {
             lightingEvent.UpdateBoostState(boost);
@@ -255,7 +231,9 @@ public class LightsManager : MonoBehaviour
                 new ChromaGradientData
                 {
                     StartTime = evt.SongBpmTime,
-                    EndTime = evt.SongBpmTime + evt.CustomLightGradient.Duration, // TODO: duration is not actual song bpm time
+                    EndTime =
+                        evt.SongBpmTime
+                        + evt.CustomLightGradient.Duration, // TODO: duration is not actual song bpm time
                     StartColor = evt.CustomLightGradient.StartColor,
                     EndColor = evt.CustomLightGradient.EndColor,
                     Easing = Easing.Named(evt.CustomLightGradient.EasingType)
@@ -298,68 +276,90 @@ public class LightsManager : MonoBehaviour
             {
                 StartTime = evt.SongBpmTime,
                 StartTimeLocal = evt.SongBpmTime,
-                StartAlpha = evt.FloatValue,
                 StartValue = evt.Value,
                 StartChromaColor = chromaColor,
+                StartAlpha = evt.FloatValue,
                 EndTime = float.MaxValue,
                 EndTimeLocal = float.MaxValue,
-                EndAlpha = evt.FloatValue,
                 EndValue = evt.Value,
                 EndChromaColor = chromaColor,
+                EndAlpha = evt.FloatValue,
                 Easing = Easing.Linear
             };
 
-            var floatValue = evt.FloatValue;
+            LightingData? previousData = null;
+            if (LightingDataMap[lightingEvent].Count > 0)
+            {
+                previousData = LightingDataMap[lightingEvent][^1];
+                var lightingData = previousData.Value;
+                lightingData.EndTime = data.StartTime;
+                previousData = lightingData;
+            }
 
             switch (evt.Value)
             {
                 case (int)LightValue.Off:
                     if (lightingEvent.CanBeTurnedOff)
                         data.StartAlpha = data.EndAlpha = 0f;
+                    // The game uses its floatValue but it's still dimmer than what an On would be
+                    // This factor is very quick eyeball probably not that accurate
                     else
-                    {
-                        // The game uses its floatValue but it's still dimmer than what an On would be
-                        // This factor is very quick eyeball probably not that accurate
-                        data.StartAlpha = data.EndAlpha = floatValue * (2f / 3f);
-                    }
-
-                    TrySetTransition(evt, lightingEvent, ref data);
+                        data.StartAlpha = data.EndAlpha = evt.FloatValue * (2f / 3f);
                     break;
                 case (int)LightValue.BlueOn:
                 case (int)LightValue.RedOn:
                 case (int)LightValue.WhiteOn:
+                    break;
                 case (int)LightValue.BlueTransition:
                 case (int)LightValue.RedTransition:
                 case (int)LightValue.WhiteTransition:
-                    TrySetTransition(evt, lightingEvent, ref data);
+                    if (previousData != null)
+                    {
+                        var lightingData = previousData.Value;
+                        if ((lightingData.StartValue % 4 == 0
+                                || lightingData.StartValue % 4 == 1)
+                            && lightingData.StartValue <= 12) // Is On or Transition (off is also included)
+                        {
+                            lightingData.EndTime = data.StartTime;
+                            lightingData.EndTimeLocal = data.StartTime;
+                            lightingData.EndValue = data.StartValue;
+                            lightingData.EndChromaColor = chromaColor;
+                            lightingData.EndAlpha = data.StartAlpha;
+                            lightingData.Easing = Easing.Named(evt.CustomEasing ?? "easeLinear");
+                            lightingData.UseHSV = evt.CustomLerpType == "HSV";
+                        }
+
+                        previousData = lightingData;
+                    }
+
                     break;
                 case (int)LightValue.BlueFlash:
                 case (int)LightValue.RedFlash:
                 case (int)LightValue.WhiteFlash:
                     data.EndTimeLocal = data.StartTime + FlashTimeBeat;
-                    data.StartAlpha = floatValue * 1.2f;
-                    data.EndAlpha = floatValue;
+                    data.StartAlpha = evt.FloatValue * 1.2f;
+                    data.EndAlpha = evt.FloatValue;
                     data.Easing = Easing.Cubic.Out;
                     break;
                 case (int)LightValue.BlueFade:
                 case (int)LightValue.RedFade:
                 case (int)LightValue.WhiteFade:
                     data.EndTimeLocal = data.StartTime + FadeTimeBeat;
-                    data.StartAlpha = floatValue * 1.2f;
+                    data.StartAlpha = evt.FloatValue * 1.2f;
                     data.EndAlpha = 0f;
                     data.Easing = Easing.Exponential.Out;
-                    // uh idk where exactly this is used
-                    if (!lightingEvent.CanBeTurnedOff) data.EndAlpha = 1f;
+                    if (!lightingEvent.CanBeTurnedOff) data.EndAlpha = evt.FloatValue * (2f / 3f);
 
                     break;
             }
 
             if (ChromaGradientTimes.Count > 0)
             {
-                if (ChromaGradientTimes.Any(cg => cg.StartTime >= evt.SongBpmTime && evt.SongBpmTime <= cg.EndTime))
+                if (ChromaGradientTimes.Any(cg => cg.StartTime <= evt.SongBpmTime && evt.SongBpmTime <= cg.EndTime))
                 {
                     var chromaGradient =
-                        ChromaGradientTimes.Last(cg => cg.StartTime >= evt.SongBpmTime && evt.SongBpmTime <= cg.EndTime);
+                        ChromaGradientTimes.Last(cg =>
+                            cg.StartTime <= evt.SongBpmTime && evt.SongBpmTime <= cg.EndTime);
                     data.StartTimeLocal = chromaGradient.StartTime;
                     data.EndTimeLocal = chromaGradient.EndTime;
                     data.StartChromaColor = chromaGradient.StartColor;
@@ -368,56 +368,20 @@ public class LightsManager : MonoBehaviour
                 }
             }
 
-            if (LightingDataMap[lightingEvent].Count > 0)
-            {
-                var previousData = LightingDataMap[lightingEvent][^1];
-                previousData.EndTime = data.StartTime;
-                LightingDataMap[lightingEvent][^1] = previousData;
-            }
-
+            if (previousData != null) LightingDataMap[lightingEvent][^1] = previousData.Value;
             LightingDataMap[lightingEvent].Add(data);
         }
-    }
-
-    // TODO: possibly check for previous light data instead of next event
-    private void TrySetTransition(BaseEvent e, LightingEvent lightingEvent, ref LightingData data)
-    {
-        if (!TryGetNextTransitionNote(e, out var transition)) return;
-        var nextChromaColor = transition.CustomColor;
-        if (e.IsWhite) // White overrides Chroma
-            nextChromaColor = null;
-        if (e.IsOff)
-        {
-            data.StartAlpha = 0f;
-            data.StartValue = transition.Value;
-        }
-
-        data.EndTime = transition.SongBpmTime;
-        data.EndTimeLocal = transition.SongBpmTime;
-        data.EndAlpha = transition.FloatValue;
-        data.EndValue = transition.Value;
-        data.EndChromaColor = nextChromaColor;
-        data.Easing = Easing.Named(e.CustomEasing ?? "easeLinear");
-        data.UseHSV = e.CustomLerpType == "HSV";
-    }
-
-    private bool TryGetNextTransitionNote(in BaseEvent e, out BaseEvent transitionEvent)
-    {
-        transitionEvent = null;
-        if (e.Next is not { IsTransition: true }) return false;
-        transitionEvent = e.Next;
-        return true;
     }
 
     private Color InferColorFromValue(bool useInvertedPlatformColors, int value)
     {
         return value switch
         {
-            <= 4 when !useInvertedPlatformColors => UseBoost ? Colors.BlueBoostColor : Colors.BlueColor,
-            <= 4 => UseBoost ? Colors.RedBoostColor : Colors.RedColor,
-            <= 8 when !useInvertedPlatformColors => UseBoost ? Colors.RedBoostColor : Colors.RedColor,
-            <= 8 => UseBoost ? Colors.BlueBoostColor : Colors.BlueColor,
-            <= 12 => UseBoost ? Colors.WhiteBoostColor : Colors.WhiteColor,
+            <= 4 when !useInvertedPlatformColors => useBoost ? ColorScheme.BlueBoostColor : ColorScheme.BlueColor,
+            <= 4 => useBoost ? ColorScheme.RedBoostColor : ColorScheme.RedColor,
+            <= 8 when !useInvertedPlatformColors => useBoost ? ColorScheme.RedBoostColor : ColorScheme.RedColor,
+            <= 8 => useBoost ? ColorScheme.BlueBoostColor : ColorScheme.BlueColor,
+            <= 12 => useBoost ? ColorScheme.WhiteBoostColor : ColorScheme.WhiteColor,
             _ => Color.white
         };
     }

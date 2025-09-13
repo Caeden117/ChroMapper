@@ -212,31 +212,31 @@ namespace Beatmap.Animations
                     // Intentionally not supporting baseSaber_Color since those don't mirror with left handed
                     // mode while baseNote_Color does. Should almost always use baseNote over baseSaber.
                     "baseNote0Color" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.RedNoteColor
+                        ? LoadInitialMap.Platform.ColorScheme.RedNoteColor
                         : DefaultColors.LeftNote,
                     "baseNote1Color" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.BlueNoteColor
+                        ? LoadInitialMap.Platform.ColorScheme.BlueNoteColor
                         : DefaultColors.RightNote,
                     "baseEnvironmentColor0" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.RedColor
+                        ? LoadInitialMap.Platform.ColorScheme.RedColor
                         : DefaultColors.Left,
                     "baseEnvironmentColor1" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.BlueColor
+                        ? LoadInitialMap.Platform.ColorScheme.BlueColor
                         : DefaultColors.Right,
                     "baseEnvironmentColorW" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.WhiteColor
+                        ? LoadInitialMap.Platform.ColorScheme.WhiteColor
                         : DefaultColors.White,
                     "baseEnvironmentColor0Boost" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.RedBoostColor
+                        ? LoadInitialMap.Platform.ColorScheme.RedBoostColor
                         : DefaultColors.Left,
                     "baseEnvironmentColor1Boost" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.BlueBoostColor
+                        ? LoadInitialMap.Platform.ColorScheme.BlueBoostColor
                         : DefaultColors.Right,
                     "baseEnvironmentColorWBoost" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.WhiteBoostColor
+                        ? LoadInitialMap.Platform.ColorScheme.WhiteBoostColor
                         : DefaultColors.White,
                     "baseObstaclesColor" => LoadInitialMap.Platform != null
-                        ? LoadInitialMap.Platform.Colors.ObstacleColor
+                        ? LoadInitialMap.Platform.ColorScheme.ObstacleColor
                         : DefaultColors.White,
                     _ => DefaultColors.White
                 };

@@ -62,14 +62,6 @@ public class PauseToggleLights : MonoBehaviour
                 }
             }
 
-            // We handle Boost Lights first to set the correct colors
-            descriptor.EventPassed(
-                isPlaying,
-                0,
-                lastEvents.ContainsKey((int)EventTypeValue.ColorBoost)
-                    ? lastEvents[(int)EventTypeValue.ColorBoost].LastEvent
-                    : defaultBoostEvent);
-
             var blankEvent = new BaseEvent();
             for (var i = 0; i < 16; i++)
             {

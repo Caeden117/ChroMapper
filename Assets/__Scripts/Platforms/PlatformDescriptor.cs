@@ -19,16 +19,16 @@ public class PlatformDescriptor : MonoBehaviour
     public GagaDiskManager DiskManager;
 
     [Header("Lighting Groups")] [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
-    public LightsManager[] LightingManagers = { };
+    public BasicLightManager[] LightingManagers = { };
 
     [Tooltip("If you want a thing to rotate around a 360 level with the track, place it here.")]
     public GridRotationController RotationController;
 
-    [FormerlySerializedAs("colors")] [HideInInspector]
-    public PlatformColors Colors;
+    [FormerlySerializedAs("Colors")] [FormerlySerializedAs("colors")] [HideInInspector]
+    public PlatformColorScheme ColorScheme;
 
-    [FormerlySerializedAs("defaultColors")]
-    public PlatformColors DefaultColors = new PlatformColors();
+    [FormerlySerializedAs("DefaultColors")] [FormerlySerializedAs("defaultColors")]
+    public PlatformColorScheme DefaultColorScheme = new PlatformColorScheme();
 
     [Tooltip(
         "-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17 | 3 = Gaga Lanes")]
@@ -44,6 +44,7 @@ public class PlatformDescriptor : MonoBehaviour
         new Dictionary<int, List<PlatformEventHandler>>();
 
     private AudioTimeSyncController atsc;
+    private ColorBoostManager colorBoostManager = new();
 
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
@@ -123,20 +124,26 @@ public class PlatformDescriptor : MonoBehaviour
 
     public void RefreshLightingManagers()
     {
+        colorBoostManager.atsc = atsc;
+        BuildBoostEvent();
+
         for (var i = 0; i < LightingManagers.Length; i++)
         {
             var manager = LightingManagers[i];
             if (manager is null) continue;
-            IEnumerable<LightingEvent> allLights = manager.ControllingLights;
-            manager.SetColors(Colors);
+
+            manager.SetColors(ColorScheme);
             manager.atsc = atsc;
-            LightsManager.FlashTimeBeat = atsc.GetBeatFromSeconds(LightsManager.FlashTimeSecond);
-            LightsManager.FadeTimeBeat = atsc.GetBeatFromSeconds(LightsManager.FadeTimeSecond);
+            colorBoostManager.OnStateChange += manager.ToggleBoost;
+            BasicLightManager.FlashTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FlashTimeSecond);
+            BasicLightManager.FadeTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FadeTimeSecond);
             StartCoroutine(BuildLightEvent(manager, i)); // where is my proper platform loaded
         }
     }
 
-    private IEnumerator BuildLightEvent(LightsManager manager, int type)
+    private void BuildBoostEvent() =>
+        colorBoostManager.BuildBoostEventData(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == 5));
+    private IEnumerator BuildLightEvent(BasicLightManager manager, int type)
     {
         yield return new WaitForSeconds(0.1f);
         manager.BuildLightingData(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == type));
@@ -146,6 +153,7 @@ public class PlatformDescriptor : MonoBehaviour
     {
         // if (atsc.IsPlaying) return; // maybe lateupdate, maybe callback
         var time = atsc.CurrentSongBpmTime;
+        colorBoostManager.UpdateTime(time);
         foreach (var manager in LightingManagers)
         {
             if (manager == null) continue;
@@ -241,22 +249,11 @@ public class PlatformDescriptor : MonoBehaviour
                 }
 
                 break;
-            case 5:
-                foreach (var manager in LightingManagers)
-                {
-                    if (manager == null) continue;
-                    manager.ToggleBoost(e.Value == 1);
-                }
-
-                break;
             case 16:
             case 17:
             case 18:
             case 19:
                 if (HandleGagaHeightEvent(e)) return;
-                break;
-
-            default:
                 break;
         }
 

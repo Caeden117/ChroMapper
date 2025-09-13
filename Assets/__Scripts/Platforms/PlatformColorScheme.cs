@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class PlatformColors
+public class PlatformColorScheme
 {
     public Color RedColor = DefaultColors.Left;
     public Color BlueColor = DefaultColors.Right;
@@ -14,8 +14,8 @@ public class PlatformColors
     public Color BlueNoteColor = DefaultColors.RightNote;
     public Color ObstacleColor = DefaultColors.LeftNote;
 
-    public PlatformColors Clone() =>
-        new PlatformColors
+    public PlatformColorScheme Clone() =>
+        new PlatformColorScheme
         {
             RedColor = RedColor,
             BlueColor = BlueColor,

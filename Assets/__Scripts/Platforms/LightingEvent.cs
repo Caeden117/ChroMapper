@@ -42,7 +42,6 @@ public class LightingEvent : MonoBehaviour
         lightRenderer = GetComponentInChildren<Renderer>();
         boostSprite = GetComponent<BoostSprite>();
 
-
         if (lightRenderer is SpriteRenderer spriteRenderer)
         {
             if (boostSprite != null) boostSprite.Setup(spriteRenderer.sprite);
@@ -116,7 +115,7 @@ public class LightingEvent : MonoBehaviour
         var hue = Mathf.LerpAngle(sH * 360f, eH * 360f, t);
         return Color
             .HSVToRGB(
-                Mathf.Repeat(hue, 360f),
+                Mathf.Repeat(hue, 360f) / 360f,
                 Mathf.Lerp(sS, eS, t),
                 Mathf.Lerp(sV, eV, t))
             .WithAlpha(Mathf.Lerp(start.a, end.a, t));
