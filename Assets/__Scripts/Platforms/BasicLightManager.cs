@@ -6,9 +6,8 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class BasicLightManager : MonoBehaviour
+public class BasicLightManager : BasicEventManager<BasicLightState>
 {
-    public AudioTimeSyncController atsc;
     public PlatformColorScheme ColorScheme;
     private bool useBoost;
 
@@ -32,8 +31,8 @@ public class BasicLightManager : MonoBehaviour
     public Dictionary<int, int> LightIDPlacementMapReverse;
     public Dictionary<int, LightingEvent> LightIDMap;
 
-    public readonly Dictionary<LightingEvent, (int index, LightingData data)> CurrentLightingDataMap = new();
-    public readonly Dictionary<LightingEvent, List<LightingData>> LightingDataMap = new();
+    public readonly Dictionary<LightingEvent, List<BasicLightState>> LightStatesMap = new();
+    public readonly Dictionary<LightingEvent, int> CurrentIndexMap = new();
     public readonly List<(float time, Color? data)> ChromaLiteColorTimes = new();
     public readonly List<ChromaGradientData> ChromaGradientTimes = new();
 
@@ -45,7 +44,7 @@ public class BasicLightManager : MonoBehaviour
         public Color EndColor;
         public Func<float, float> Easing;
     }
-    
+
     private void Start() => LoadOldLightOrder();
 
     public void LoadOldLightOrder()
@@ -91,34 +90,20 @@ public class BasicLightManager : MonoBehaviour
     //     if (atsc.IsPlaying) UpdateTime(atsc.CurrentSongBpmTime);
     // }
 
-    public void UpdateTime(float currentTime)
+    public override void UpdateTime(float currentTime)
     {
         foreach (var lightingEvent in ControllingLights)
         {
-            var (idx, lightingData) = CurrentLightingDataMap[lightingEvent];
+            var stateTimes = LightStatesMap[lightingEvent];
+            var currentIndex = CurrentIndexMap[lightingEvent];
+            var (index, lightingData) = Atsc.IsPlaying
+                ? UseCurrentOrNextState(currentTime, currentIndex, stateTimes)
+                : SearchCurrentState(currentTime, currentIndex, stateTimes);
 
-            // swap out event
-            // do we bsearch this fella and next object for playback update
-            if (lightingData.EndTime <= currentTime)
+            if (index != currentIndex)
             {
-                while (++idx < LightingDataMap[lightingEvent].Count)
-                {
-                    lightingData = LightingDataMap[lightingEvent][idx];
-                    if (lightingData.EndTime > currentTime) break;
-                }
-            }
-            else if (lightingData.StartTime > currentTime)
-            {
-                while (--idx >= 0)
-                {
-                    lightingData = LightingDataMap[lightingEvent][idx];
-                    if (lightingData.StartTime <= currentTime) break;
-                }
-            }
-
-            if (lightingData != CurrentLightingDataMap[lightingEvent].data)
-            {
-                lightingEvent.UpdateStartTime(lightingData.StartTimeLocal);
+                lightingEvent.UpdateStartTimeAlpha(lightingData.StartTimeAlpha);
+                lightingEvent.UpdateStartTimeColor(lightingData.StartTimeColor);
                 lightingEvent.UpdateStartAlpha(lightingData.StartAlpha);
                 lightingEvent.UpdateStartColor(
                     (lightingData.StartChromaColor
@@ -126,7 +111,8 @@ public class BasicLightManager : MonoBehaviour
                     .Multiply(
                         HDRIntensity));
 
-                lightingEvent.UpdateEndTime(lightingData.EndTimeLocal);
+                lightingEvent.UpdateEndTimeAlpha(lightingData.EndTimeAlpha);
+                lightingEvent.UpdateEndTimeColor(lightingData.EndTimeColor);
                 lightingEvent.UpdateEndAlpha(lightingData.EndAlpha);
                 lightingEvent.UpdateEndColor(
                     (lightingData.EndChromaColor
@@ -136,7 +122,7 @@ public class BasicLightManager : MonoBehaviour
 
                 lightingEvent.UpdateUseHSV(lightingData.UseHSV);
                 lightingEvent.UpdateEasing(lightingData.Easing);
-                CurrentLightingDataMap[lightingEvent] = (idx, lightingData);
+                CurrentIndexMap[lightingEvent] = index;
             }
 
             lightingEvent.UpdateTime(currentTime);
@@ -151,17 +137,17 @@ public class BasicLightManager : MonoBehaviour
         foreach (var lightingEvent in ControllingLights)
         {
             lightingEvent.UpdateBoostState(boost);
-            if (!CurrentLightingDataMap.ContainsKey(lightingEvent)) continue;
+            if (!CurrentIndexMap.TryGetValue(lightingEvent, out var currentIndex)) continue;
             lightingEvent.UpdateStartColor(
-                CurrentLightingDataMap[lightingEvent].data.StartChromaColor
+                LightStatesMap[lightingEvent][currentIndex].StartChromaColor
                 ?? InferColorFromValue(
                     lightingEvent.UseInvertedPlatformColors,
-                    CurrentLightingDataMap[lightingEvent].data.StartValue));
+                    LightStatesMap[lightingEvent][currentIndex].StartValue));
             lightingEvent.UpdateEndColor(
-                CurrentLightingDataMap[lightingEvent].data.EndChromaColor
+                LightStatesMap[lightingEvent][currentIndex].EndChromaColor
                 ?? InferColorFromValue(
                     lightingEvent.UseInvertedPlatformColors,
-                    CurrentLightingDataMap[lightingEvent].data.EndValue));
+                    LightStatesMap[lightingEvent][currentIndex].EndValue));
         }
     }
 
@@ -178,31 +164,34 @@ public class BasicLightManager : MonoBehaviour
 
     public void BuildLightingData(IEnumerable<BaseEvent> events)
     {
-        foreach (var lightingEvent in ControllingLights) LightingDataMap[lightingEvent] = new List<LightingData>();
+        foreach (var lightingEvent in ControllingLights)
+        {
+            CurrentIndexMap[lightingEvent] = 0;
+            LightStatesMap[lightingEvent] = new List<BasicLightState>();
+        }
+
         foreach (var evt in events) AddLightingData(evt);
         foreach (var lightingEvent in ControllingLights)
         {
-            if (LightingDataMap[lightingEvent].Count == 0 || LightingDataMap[lightingEvent][0].StartTime != 0f)
+            if (LightStatesMap[lightingEvent].Count != 0 && LightStatesMap[lightingEvent][0].StartTime == 0f) continue;
+            var data = new BasicLightState { Easing = Easing.Linear };
+            if (LightStatesMap[lightingEvent].Count > 0)
             {
-                var data = new LightingData { Easing = Easing.Linear };
-                if (LightingDataMap[lightingEvent].Count > 0)
-                {
-                    data.EndTime = LightingDataMap[lightingEvent][0].StartTime;
-                    data.EndTimeLocal = LightingDataMap[lightingEvent][0].StartTime;
-                }
-                else
-                {
-                    data.EndTime = float.MaxValue;
-                    data.EndTimeLocal = float.MaxValue;
-                }
-
-                LightingDataMap[lightingEvent].Insert(0, data);
+                data.EndTime = LightStatesMap[lightingEvent][0].StartTime;
+                data.EndTimeAlpha = LightStatesMap[lightingEvent][0].StartTime;
+                data.EndTimeColor = LightStatesMap[lightingEvent][0].StartTime;
+            }
+            else
+            {
+                data.EndTime = float.MaxValue;
+                data.EndTimeAlpha = float.MaxValue;
+                data.EndTimeColor = float.MaxValue;
             }
 
-            CurrentLightingDataMap[lightingEvent] = (0, LightingDataMap[lightingEvent][0]);
+            LightStatesMap[lightingEvent].Insert(0, data);
         }
 
-        UpdateTime(atsc.CurrentSongBpmTime);
+        UpdateTime(Atsc.CurrentSongBpmTime);
     }
 
     // only sequential for now
@@ -272,25 +261,27 @@ public class BasicLightManager : MonoBehaviour
 
         foreach (var lightingEvent in affectedLights)
         {
-            var data = new LightingData
+            var data = new BasicLightState
             {
                 StartTime = evt.SongBpmTime,
-                StartTimeLocal = evt.SongBpmTime,
+                StartTimeAlpha = evt.SongBpmTime,
+                StartTimeColor = evt.SongBpmTime,
                 StartValue = evt.Value,
                 StartChromaColor = chromaColor,
                 StartAlpha = evt.FloatValue,
                 EndTime = float.MaxValue,
-                EndTimeLocal = float.MaxValue,
+                EndTimeAlpha = float.MaxValue,
+                EndTimeColor = float.MaxValue,
                 EndValue = evt.Value,
                 EndChromaColor = chromaColor,
                 EndAlpha = evt.FloatValue,
                 Easing = Easing.Linear
             };
 
-            LightingData? previousData = null;
-            if (LightingDataMap[lightingEvent].Count > 0)
+            BasicLightState? previousData = null;
+            if (LightStatesMap[lightingEvent].Count > 0)
             {
-                previousData = LightingDataMap[lightingEvent][^1];
+                previousData = LightStatesMap[lightingEvent][^1];
                 var lightingData = previousData.Value;
                 lightingData.EndTime = data.StartTime;
                 previousData = lightingData;
@@ -321,7 +312,8 @@ public class BasicLightManager : MonoBehaviour
                             && lightingData.StartValue <= 12) // Is On or Transition (off is also included)
                         {
                             lightingData.EndTime = data.StartTime;
-                            lightingData.EndTimeLocal = data.StartTime;
+                            lightingData.EndTimeAlpha = data.StartTime;
+                            lightingData.EndTimeColor = data.StartTime;
                             lightingData.EndValue = data.StartValue;
                             lightingData.EndChromaColor = chromaColor;
                             lightingData.EndAlpha = data.StartAlpha;
@@ -336,7 +328,8 @@ public class BasicLightManager : MonoBehaviour
                 case (int)LightValue.BlueFlash:
                 case (int)LightValue.RedFlash:
                 case (int)LightValue.WhiteFlash:
-                    data.EndTimeLocal = data.StartTime + FlashTimeBeat;
+                    data.EndTimeAlpha = data.StartTime + FlashTimeBeat;
+                    data.EndTimeColor = data.StartTime + FlashTimeBeat;
                     data.StartAlpha = evt.FloatValue * 1.2f;
                     data.EndAlpha = evt.FloatValue;
                     data.Easing = Easing.Cubic.Out;
@@ -344,7 +337,8 @@ public class BasicLightManager : MonoBehaviour
                 case (int)LightValue.BlueFade:
                 case (int)LightValue.RedFade:
                 case (int)LightValue.WhiteFade:
-                    data.EndTimeLocal = data.StartTime + FadeTimeBeat;
+                    data.EndTimeAlpha = data.StartTime + FadeTimeBeat;
+                    data.EndTimeColor = data.StartTime + FadeTimeBeat;
                     data.StartAlpha = evt.FloatValue * 1.2f;
                     data.EndAlpha = 0f;
                     data.Easing = Easing.Exponential.Out;
@@ -360,16 +354,16 @@ public class BasicLightManager : MonoBehaviour
                     var chromaGradient =
                         ChromaGradientTimes.Last(cg =>
                             cg.StartTime <= evt.SongBpmTime && evt.SongBpmTime <= cg.EndTime);
-                    data.StartTimeLocal = chromaGradient.StartTime;
-                    data.EndTimeLocal = chromaGradient.EndTime;
+                    data.StartTimeColor = chromaGradient.StartTime;
+                    data.EndTimeColor = chromaGradient.EndTime;
                     data.StartChromaColor = chromaGradient.StartColor;
                     data.EndChromaColor = chromaGradient.EndColor;
                     data.Easing = chromaGradient.Easing;
                 }
             }
 
-            if (previousData != null) LightingDataMap[lightingEvent][^1] = previousData.Value;
-            LightingDataMap[lightingEvent].Add(data);
+            if (previousData != null) LightStatesMap[lightingEvent][^1] = previousData.Value;
+            LightStatesMap[lightingEvent].Add(data);
         }
     }
 
@@ -386,9 +380,33 @@ public class BasicLightManager : MonoBehaviour
         };
     }
 
+    public override void InsertEvent(BaseEvent evt) => throw new NotImplementedException();
+    public override void ModifyEvent(BaseEvent oldEvt, BaseEvent newEvt) => throw new NotImplementedException();
+    public override void RemoveEvent(BaseEvent evt) => throw new NotImplementedException();
+
     [Serializable]
     public class LightGroup
     {
         public List<LightingEvent> Lights = new List<LightingEvent>();
     }
+}
+
+public struct BasicLightState : IBasicEventState
+{
+    public float StartTime { get; set; }
+    public float StartTimeAlpha; // local is used to interpolate flash/fade
+    public float StartTimeColor; // special case for chroma gradient
+    public int StartValue;
+    public Color? StartChromaColor;
+    public float StartAlpha;
+
+    public float EndTime { get; set; }
+    public float EndTimeAlpha;
+    public float EndTimeColor;
+    public int EndValue;
+    public Color? EndChromaColor;
+    public float EndAlpha;
+
+    public Func<float, float> Easing;
+    public bool UseHSV;
 }

@@ -44,7 +44,7 @@ public class PlatformDescriptor : MonoBehaviour
         new Dictionary<int, List<PlatformEventHandler>>();
 
     private AudioTimeSyncController atsc;
-    private ColorBoostManager colorBoostManager = new();
+    private ColorBoostManager colorBoostManager;
 
     private BeatmapObjectCallbackController callbackController;
     private RotationCallbackController rotationCallback;
@@ -54,11 +54,10 @@ public class PlatformDescriptor : MonoBehaviour
     public bool SoloAnEventType { get; private set; }
     public int SoloEventType { get; private set; }
 
-    public bool ColorBoost { get; private set; }
-
     // loading happens too fast now
     private void Awake()
     {
+        colorBoostManager = gameObject.AddComponent<ColorBoostManager>();
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
     }
 
@@ -124,16 +123,15 @@ public class PlatformDescriptor : MonoBehaviour
 
     public void RefreshLightingManagers()
     {
-        colorBoostManager.atsc = atsc;
+        colorBoostManager.Atsc = atsc;
         BuildBoostEvent();
 
         for (var i = 0; i < LightingManagers.Length; i++)
         {
             var manager = LightingManagers[i];
             if (manager is null) continue;
-
+            manager.Atsc = atsc;
             manager.SetColors(ColorScheme);
-            manager.atsc = atsc;
             colorBoostManager.OnStateChange += manager.ToggleBoost;
             BasicLightManager.FlashTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FlashTimeSecond);
             BasicLightManager.FadeTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FadeTimeSecond);
@@ -143,6 +141,7 @@ public class PlatformDescriptor : MonoBehaviour
 
     private void BuildBoostEvent() =>
         colorBoostManager.BuildBoostEventData(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == 5));
+
     private IEnumerator BuildLightEvent(BasicLightManager manager, int type)
     {
         yield return new WaitForSeconds(0.1f);

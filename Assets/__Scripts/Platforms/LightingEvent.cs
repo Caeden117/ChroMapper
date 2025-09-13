@@ -16,10 +16,12 @@ public class LightingEvent : MonoBehaviour
 
     private float colorTime;
 
-    private float startTime;
+    private float startTimeAlpha;
+    private float startTimeColor;
     private Color startColor = Color.white;
     private float startAlpha;
-    private float endTime;
+    private float endTimeAlpha;
+    private float endTimeColor;
     private Color endColor = Color.white;
     private float endAlpha;
     private bool useHSV;
@@ -97,12 +99,12 @@ public class LightingEvent : MonoBehaviour
     {
         if (float.IsNaN(multiplyAlpha)) multiplyAlpha = 0;
 
-        var normalizedTime = Mathf.Clamp01((time - startTime) / (endTime - startTime));
-        var easeTime = easing(normalizedTime);
+        var nTimeAlpha = Mathf.Clamp01((time - startTimeAlpha) / (endTimeAlpha - startTimeAlpha));
+        var nTimeColor = Mathf.Clamp01((time - startTimeColor) / (endTimeColor - startTimeColor));
         var color = useHSV
-            ? LerpHSV(startColor, endColor, easeTime)
-            : Color.Lerp(startColor, endColor, easeTime);
-        var alpha = Mathf.Lerp(startAlpha, endAlpha, easeTime) * multiplyAlpha * color.a;
+            ? LerpHSV(startColor, endColor, easing(nTimeColor))
+            : Color.Lerp(startColor, endColor, easing(nTimeColor));
+        var alpha = Mathf.Lerp(startAlpha, endAlpha, easing(nTimeAlpha)) * multiplyAlpha * color.a;
 
         SetEmission(alpha > 0);
         UpdateLighting(color, alpha);
@@ -121,14 +123,15 @@ public class LightingEvent : MonoBehaviour
             .WithAlpha(Mathf.Lerp(start.a, end.a, t));
     }
 
-    public void UpdateStartColor(Color value) => startColor = value;
+    public void UpdateStartTimeAlpha(float value) => startTimeAlpha = value;
+    public void UpdateStartTimeColor(float value) => startTimeColor = value;
     public void UpdateStartAlpha(float value) => startAlpha = value;
-    public void UpdateStartTime(float value) => startTime = value;
-    public void UpdateEndTime(float value) => endTime = value;
-    public void UpdateEndColor(Color value) => endColor = value;
+    public void UpdateStartColor(Color value) => startColor = value;
+    public void UpdateEndTimeAlpha(float value) => endTimeAlpha = value;
+    public void UpdateEndTimeColor(float value) => endTimeColor = value;
     public void UpdateEndAlpha(float value) => endAlpha = value;
+    public void UpdateEndColor(Color value) => endColor = value;
     public void UpdateUseHSV(bool value) => useHSV = value;
-    public void UpdateEasing(string easingName) => easing = Easing.ByName[easingName];
     public void UpdateEasing(Func<float, float> _easing) => easing = _easing;
     public void UpdateMultiplyAlpha(float target = 1) => multiplyAlpha = Mathf.Clamp(target, 0f, 1.5f);
 

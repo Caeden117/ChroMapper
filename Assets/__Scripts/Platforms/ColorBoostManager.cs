@@ -3,71 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 
-public class ColorBoostManager
+public class ColorBoostManager : BasicEventManager<ColorBoostState>
 {
-    public struct BoostStateData
-    {
-        public float StartTime;
-        public float EndTime;
-        public bool State;
-    }
-
-    public AudioTimeSyncController atsc;
-    public List<BoostStateData> StatesTime = new();
-    public (int index, BoostStateData data) Current;
-    public bool State;
+    public List<ColorBoostState> StateTimes = new();
+    public int CurrentIndex;
+    public bool Boost;
 
     public event Action<bool> OnStateChange;
 
-    public void UpdateTime(float currentTime)
+    public override void UpdateTime(float currentTime)
     {
-        var (idx, data) = Current;
-        if (data.EndTime <= currentTime)
-        {
-            while (++idx < StatesTime.Count)
-            {
-                data = StatesTime[idx];
-                if (data.EndTime > currentTime) break;
-            }
-
-            Current = (idx, data);
-        }
-        else if (data.StartTime > currentTime)
-        {
-            while (--idx >= 0)
-            {
-                data = StatesTime[idx];
-                if (data.StartTime <= currentTime) break;
-            }
-
-            Current = (idx, data);
-        }
-
-        if (data.State == State) return;
-        State = data.State;
-        OnStateChange(State);
+        var (idx, state) = Atsc.IsPlaying
+            ? UseCurrentOrNextState(currentTime, CurrentIndex, StateTimes)
+            : SearchCurrentState(currentTime, CurrentIndex, StateTimes);
+        CurrentIndex = idx;
+        
+        if (state.Boost == Boost) return;
+        Boost = state.Boost;
+        OnStateChange(Boost);
     }
 
     public void BuildBoostEventData(IEnumerable<BaseEvent> events)
     {
         var previousTime = float.MaxValue;
-        StatesTime = events
+        StateTimes = events
             .Reverse()
             .Select(e =>
             {
-                var data = new BoostStateData
+                var data = new ColorBoostState
                 {
-                    StartTime = e.SongBpmTime, EndTime = previousTime, State = e.Value == 1
+                    StartTime = e.SongBpmTime, EndTime = previousTime, Boost = e.Value == 1
                 };
                 previousTime = e.SongBpmTime;
                 return data;
             })
             .Reverse()
             .ToList();
-        if (StatesTime.Count == 0 || StatesTime[0].StartTime != 0f)
-            StatesTime.Insert(0, new BoostStateData { EndTime = previousTime });
-        Current = (0, StatesTime[0]);
-
-        UpdateTime(atsc.CurrentSongBpmTime);
+        if (StateTimes.Count == 0 || StateTimes[0].StartTime != 0f)
+            StateTimes.Insert(0, new ColorBoostState { EndTime = previousTime });
+        CurrentIndex = 0;
+        UpdateTime(Atsc.CurrentSongBpmTime);
     }
+
+    public override void InsertEvent(BaseEvent evt) => throw new NotImplementedException();
+    public override void ModifyEvent(BaseEvent oldEvt, BaseEvent newEvt) => throw new NotImplementedException();
+    public override void RemoveEvent(BaseEvent evt) => throw new NotImplementedException();
+}
+
+public struct ColorBoostState : IBasicEventState
+{
+    public float StartTime { get; set; }
+    public float EndTime { get; set; }
+    public bool Boost;
 }
