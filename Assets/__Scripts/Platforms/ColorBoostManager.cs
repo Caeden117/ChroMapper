@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
 
 public class ColorBoostManager : BasicEventManager<ColorBoostState>
 {
-    public List<ColorBoostState> StateTimes = new();
+    public readonly List<ColorBoostState> States = new();
     public int CurrentIndex;
     public bool Boost;
 
@@ -13,45 +12,51 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
 
     public override void UpdateTime(float currentTime)
     {
-        var (idx, state) = Atsc.IsPlaying
-            ? UseCurrentOrNextState(currentTime, CurrentIndex, StateTimes)
-            : SearchCurrentState(currentTime, CurrentIndex, StateTimes);
+        var (idx, state) = GetCurrentState(currentTime, CurrentIndex, States);
         CurrentIndex = idx;
-        
+
+        UpdateObject(state);
+    }
+
+    private void UpdateObject(ColorBoostState state)
+    {
         if (state.Boost == Boost) return;
         Boost = state.Boost;
         OnStateChange(Boost);
     }
 
-    public void BuildBoostEventData(IEnumerable<BaseEvent> events)
+    protected override ColorBoostState InitializeState(BaseEvent evt) =>
+        new() { BaseEvent = evt, StartTime = float.MinValue, EndTime = float.MaxValue };
+
+    public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        var previousTime = float.MaxValue;
-        StateTimes = events
-            .Reverse()
-            .Select(e =>
-            {
-                var data = new ColorBoostState
-                {
-                    StartTime = e.SongBpmTime, EndTime = previousTime, Boost = e.Value == 1
-                };
-                previousTime = e.SongBpmTime;
-                return data;
-            })
-            .Reverse()
-            .ToList();
-        if (StateTimes.Count == 0 || StateTimes[0].StartTime != 0f)
-            StateTimes.Insert(0, new ColorBoostState { EndTime = previousTime });
         CurrentIndex = 0;
-        UpdateTime(Atsc.CurrentSongBpmTime);
+        InitializeStates(States);
+        foreach (var evt in events) InsertEvent(evt);
     }
 
-    public override void InsertEvent(BaseEvent evt) => throw new NotImplementedException();
-    public override void ModifyEvent(BaseEvent oldEvt, BaseEvent newEvt) => throw new NotImplementedException();
-    public override void RemoveEvent(BaseEvent evt) => throw new NotImplementedException();
+    public override void InsertEvent(BaseEvent evt)
+    {
+        var state = InitializeState(evt);
+        state.StartTime = evt.SongBpmTime;
+        state.Boost = evt.Value == 1;
+
+        InsertState(state, States);
+    }
+
+    public override void RemoveEvent(BaseEvent evt)
+    {
+        var state = States.Find(s => s.BaseEvent == evt);
+        RemoveState(state, States);
+    }
+
+    public override void ResetState() => UpdateObject(States[CurrentIndex]);
 }
 
 public struct ColorBoostState : IBasicEventState
 {
+    public BaseEvent BaseEvent { get; set; }
+
     public float StartTime { get; set; }
     public float EndTime { get; set; }
     public bool Boost;

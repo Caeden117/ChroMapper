@@ -5,13 +5,13 @@ using Beatmap.Enums;
 
 public class StrobeGeneratorGenerationAction : BeatmapAction
 {
-    private IEnumerable<BaseObject> conflictingData;
+    public IEnumerable<BaseObject> ConflictingData;
 
     // This constructor is needed for United Mapping
     public StrobeGeneratorGenerationAction() : base() { }
 
     public StrobeGeneratorGenerationAction(IEnumerable<BaseObject> generated, IEnumerable<BaseObject> conflicting)
-        : base(generated) { affectsSeveralObjects = true; conflictingData = conflicting; }
+        : base(generated) { affectsSeveralObjects = true; ConflictingData = conflicting; }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
@@ -20,7 +20,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
 
         SelectionController.SelectionChangedEvent?.Invoke();
 
-        foreach (var obj in conflictingData)
+        foreach (var obj in ConflictingData)
             SpawnObject(obj);
 
         BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event).RefreshPool(true);
@@ -29,7 +29,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (var obj in conflictingData)
+        foreach (var obj in ConflictingData)
             DeleteObject(obj, false);
 
         SelectionController.SelectionChangedEvent?.Invoke();
@@ -44,12 +44,12 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
     public override void Serialize(NetDataWriter writer)
     {
         SerializeBeatmapObjectList(writer, Data);
-        SerializeBeatmapObjectList(writer, conflictingData);
+        SerializeBeatmapObjectList(writer, ConflictingData);
     }
 
     public override void Deserialize(NetDataReader reader)
     {
         Data = DeserializeBeatmapObjectList(reader);
-        conflictingData = DeserializeBeatmapObjectList(reader);
+        ConflictingData = DeserializeBeatmapObjectList(reader);
     }
 }

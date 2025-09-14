@@ -5,7 +5,7 @@ using System.Linq;
 
 public class SelectionPastedAction : BeatmapAction
 {
-    private IEnumerable<BaseObject> removed;
+    public IEnumerable<BaseObject> Removed;
 
     // This constructor is needed for United Mapping
     public SelectionPastedAction() : base() { }
@@ -14,20 +14,18 @@ public class SelectionPastedAction : BeatmapAction
         base(pasteData)
     {
         this.affectsSeveralObjects = true;
-        this.removed = removed;
+        this.Removed = removed;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (var obj in Data)
-            DeleteObject(obj, false);
+        foreach (var obj in Data) DeleteObject(obj, false);
 
         SelectionController.SelectionChangedEvent?.Invoke();
 
-        foreach (var obj in removed)
-            SpawnObject(obj);
+        foreach (var obj in Removed) SpawnObject(obj);
 
-        RefreshPools(removed);
+        RefreshPools(Removed);
         RefreshEventAppearance();
     }
 
@@ -48,8 +46,7 @@ public class SelectionPastedAction : BeatmapAction
             }
         }
 
-        foreach (var obj in removed)
-            DeleteObject(obj, false);
+        foreach (var obj in Removed) DeleteObject(obj, false);
         RefreshPools(Data);
         RefreshEventAppearance();
     }
@@ -57,12 +54,12 @@ public class SelectionPastedAction : BeatmapAction
     public override void Serialize(NetDataWriter writer)
     {
         SerializeBeatmapObjectList(writer, Data);
-        SerializeBeatmapObjectList(writer, removed);
+        SerializeBeatmapObjectList(writer, Removed);
     }
 
     public override void Deserialize(NetDataReader reader)
     {
         Data = DeserializeBeatmapObjectList(reader);
-        removed = DeserializeBeatmapObjectList(reader);
+        Removed = DeserializeBeatmapObjectList(reader);
     }
 }

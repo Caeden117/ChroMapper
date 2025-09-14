@@ -17,7 +17,7 @@ using Beatmap.Containers;
  */
 public class ActionCollectionAction : BeatmapAction, IMergeableAction
 {
-    private IEnumerable<BeatmapAction> actions;
+    public IEnumerable<BeatmapAction> Actions;
     private bool clearSelection;
     private bool forceRefreshesPool;
 
@@ -38,7 +38,7 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
             affectsSeveralObjects = true;
         }
 
-        actions = beatmapActions;
+        Actions = beatmapActions;
         clearSelection = clearsSelection;
         forceRefreshesPool = forceRefreshPool;
         MergeType = mergeType;
@@ -55,13 +55,13 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
 
         if (MergeType == ActionMergeType.None || previousActionCollection.MergeType != MergeType) return false;
 
-        foreach (var action in actions)
+        foreach (var action in Actions)
             if (action is not IMergeableAction) return false;
 
-        foreach (var action in previousActionCollection.actions)
+        foreach (var action in previousActionCollection.Actions)
             if (action is not IMergeableAction) return false;
 
-        if (actions.Count() != previousActionCollection.actions.Count()) return false;
+        if (Actions.Count() != previousActionCollection.Actions.Count()) return false;
 
         return true;
     }
@@ -71,10 +71,10 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
         if (previous is not ActionCollectionAction previousActionCollection) return null;
 
         var actionPairs = new Dictionary<IMergeableAction, IMergeableAction>();
-        foreach (var action in actions)
+        foreach (var action in Actions)
         {
             var modifiedAction = (IMergeableAction)action;
-            var correspondingAction = (IMergeableAction)previousActionCollection.actions.FirstOrDefault(x => modifiedAction.CanMerge((IMergeableAction)x));
+            var correspondingAction = (IMergeableAction)previousActionCollection.Actions.FirstOrDefault(x => modifiedAction.CanMerge((IMergeableAction)x));
             if (correspondingAction == null) return null;
             actionPairs[modifiedAction] = correspondingAction;
         }
@@ -95,7 +95,7 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
 
     public override BaseObject DoesInvolveObject(BaseObject obj)
     {
-        foreach (var action in actions)
+        foreach (var action in Actions)
         {
             var involvedObject = action.DoesInvolveObject(obj);
 
@@ -109,7 +109,7 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
     {
         if (clearSelection && !Networked) SelectionController.DeselectAll();
 
-        foreach (var action in actions) action.Redo(param);
+        foreach (var action in Actions) action.Redo(param);
 
         if (forceRefreshesPool) RefreshPools(Data);
 
@@ -120,7 +120,7 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
     {
         if (clearSelection && !Networked) SelectionController.DeselectAll();
 
-        foreach (var action in actions) action.Undo(param);
+        foreach (var action in Actions) action.Undo(param);
 
         if (forceRefreshesPool) RefreshPools(Data);
 
@@ -129,7 +129,7 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
 
     protected override void RefreshEventAppearance()
     {
-        var events = actions.SelectMany(x => x.Data).OfType<BaseEvent>().ToList();
+        var events = Actions.SelectMany(x => x.Data).OfType<BaseEvent>().ToList();
         if (!events.Any())
             return;
 
@@ -149,9 +149,9 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
     {
         writer.Put(clearSelection);
         writer.Put(forceRefreshesPool);
-        writer.Put(actions.Count());
+        writer.Put(Actions.Count());
 
-        foreach (var action in actions)
+        foreach (var action in Actions)
         {
             writer.PutBeatmapAction(action);
         }
@@ -172,7 +172,7 @@ public class ActionCollectionAction : BeatmapAction, IMergeableAction
             deserializedActions.Add(action);
         }
 
-        actions = deserializedActions;
-        Data = actions.Where(x => x != null && x.Data != null).SelectMany(x => x.Data);
+        Actions = deserializedActions;
+        Data = Actions.Where(x => x != null && x.Data != null).SelectMany(x => x.Data);
     }
 }

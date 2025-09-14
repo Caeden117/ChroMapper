@@ -6,6 +6,7 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class PlatformDescriptor : MonoBehaviour
 {
@@ -40,8 +41,7 @@ public class PlatformDescriptor : MonoBehaviour
     [Tooltip("Change scale of normal map for shiny objects.")]
     public float NormalMapScale = 2f;
 
-    private readonly Dictionary<int, List<PlatformEventHandler>> platformEventHandlers =
-        new Dictionary<int, List<PlatformEventHandler>>();
+    private readonly Dictionary<int, List<PlatformEventHandler>> platformEventHandlers = new();
 
     private AudioTimeSyncController atsc;
     private ColorBoostManager colorBoostManager;
@@ -58,6 +58,9 @@ public class PlatformDescriptor : MonoBehaviour
     private void Awake()
     {
         colorBoostManager = gameObject.AddComponent<ColorBoostManager>();
+        BeatmapActionContainer.ActionCreatedEvent += HandleActionEventRedo;
+        BeatmapActionContainer.ActionRedoEvent += HandleActionEventRedo;
+        BeatmapActionContainer.ActionUndoEvent += HandleActionEventUndo;
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
     }
 
@@ -84,6 +87,9 @@ public class PlatformDescriptor : MonoBehaviour
 
     private void OnDestroy()
     {
+        BeatmapActionContainer.ActionCreatedEvent -= HandleActionEventRedo;
+        BeatmapActionContainer.ActionRedoEvent -= HandleActionEventRedo;
+        BeatmapActionContainer.ActionUndoEvent -= HandleActionEventUndo;
         if (callbackController != null) callbackController.EventPassedThreshold -= EventPassed;
         if (atsc != null) atsc.TimeChanged -= UpdateTime;
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
@@ -106,6 +112,7 @@ public class PlatformDescriptor : MonoBehaviour
     private void LevelLoaded()
     {
         callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
+
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
         atsc = rotationCallback.Atsc;
         if (RotationController != null)
@@ -140,12 +147,12 @@ public class PlatformDescriptor : MonoBehaviour
     }
 
     private void BuildBoostEvent() =>
-        colorBoostManager.BuildBoostEventData(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == 5));
+        colorBoostManager.BuildFromEvents(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == 5));
 
     private IEnumerator BuildLightEvent(BasicLightManager manager, int type)
     {
-        yield return new WaitForSeconds(0.1f);
-        manager.BuildLightingData(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == type));
+        yield return new WaitForSeconds(0.05f);
+        manager.BuildFromEvents(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == type));
     }
 
     public void UpdateTime()
@@ -169,6 +176,319 @@ public class PlatformDescriptor : MonoBehaviour
     public void ToggleDisablableObjects()
     {
         foreach (var go in DisablableObjects) go.SetActive(!go.activeInHierarchy);
+    }
+
+    private bool AddEvents(IEnumerable<BaseEvent> events)
+    {
+        var mark = false;
+        foreach (var baseEvent in events)
+        {
+            if (baseEvent.Type < LightingManagers.Length)
+            {
+                var manager = LightingManagers[baseEvent.Type];
+                if (manager != null) manager.InsertEvent(baseEvent);
+            }
+
+            if (baseEvent.Type == 5) colorBoostManager.InsertEvent(baseEvent);
+            mark = true;
+        }
+
+        return mark;
+    }
+
+    private bool RemoveEvents(IEnumerable<BaseEvent> events)
+    {
+        var mark = false;
+        foreach (var baseEvent in events)
+        {
+            if (baseEvent.Type < LightingManagers.Length)
+            {
+                var manager = LightingManagers[baseEvent.Type];
+                if (manager != null) manager.RemoveEvent(baseEvent);
+            }
+
+            if (baseEvent.Type == 5) colorBoostManager.RemoveEvent(baseEvent);
+            mark = true;
+        }
+
+        return mark;
+    }
+
+    private void HandleActionEventRedo(BeatmapAction action)
+    {
+        if (!HandleActionEventRedoNoNotify(action) || atsc.IsPlaying) return;
+        colorBoostManager.ResetState();
+        foreach (var manager in LightingManagers.Where(manager => manager != null)) manager.ResetState();
+        UpdateTime();
+    }
+
+    private bool HandleActionEventRedoNoNotify(BeatmapAction action)
+    {
+        return action switch
+        {
+            ActionCollectionAction actionCollectionAction => actionCollectionAction
+                .Actions.ToArray()
+                .Select(HandleActionEventRedoNoNotify)
+                .Any(),
+            BeatmapObjectPlacementAction beatmapObjectPlacementAction => HandlePlacementActionRedo(
+                beatmapObjectPlacementAction),
+            SelectionDeletedAction selectionDeletedAction => HandleSelectionDeletedActionRedo(selectionDeletedAction),
+            SelectionPastedAction selectionPastedAction => HandleSelectionPastedActionRedo(selectionPastedAction),
+            StrobeGeneratorGenerationAction strobeGeneratorGenerationAction =>
+                HandleStrobeGeneratorGenerationActionRedo(
+                    strobeGeneratorGenerationAction),
+            BeatmapObjectDeletionAction beatmapObjectDeletionAction =>
+                HandleDeletionActionRedo(beatmapObjectDeletionAction),
+            BeatmapObjectModifiedWithConflictingAction beatmapObjectModifiedWithConflictingAction =>
+                HandleModifiedWithConflictingActionRedo(beatmapObjectModifiedWithConflictingAction),
+            BeatmapObjectModifiedAction beatmapObjectModifiedAction =>
+                HandleModifiedActionRedo(beatmapObjectModifiedAction),
+            BeatmapObjectModifiedCollectionAction beatmapObjectModifiedCollectionAction =>
+                HandleModifiedCollectionActionRedo(beatmapObjectModifiedCollectionAction),
+            _ => false
+        };
+    }
+
+    private bool HandlePlacementActionRedo(BeatmapObjectPlacementAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .RemovedConflictObjects
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        b = AddEvents(
+                action
+                    .Data.Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+        return b;
+    }
+
+    private bool HandleSelectionDeletedActionRedo(SelectionDeletedAction action) =>
+        RemoveEvents(
+            action
+                .Data.Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+
+    private bool HandleSelectionPastedActionRedo(SelectionPastedAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .Removed
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        b = AddEvents(
+                action
+                    .Data.Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+        return b;
+    }
+
+    private bool HandleStrobeGeneratorGenerationActionRedo(StrobeGeneratorGenerationAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .ConflictingData
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .Data.Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleDeletionActionRedo(BeatmapObjectDeletionAction action) =>
+        RemoveEvents(
+            action
+                .Data.Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+
+    private bool HandleModifiedActionRedo(BeatmapObjectModifiedAction action)
+    {
+        var b = RemoveEvents(
+            new List<BaseObject> { action.OriginalObject }
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                new List<BaseObject> { action.EditedObject }
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleModifiedCollectionActionRedo(BeatmapObjectModifiedCollectionAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .OriginalObjects
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .EditedObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleModifiedWithConflictingActionRedo(BeatmapObjectModifiedWithConflictingAction action)
+    {
+        var b = RemoveEvents(
+            new List<BaseObject> { action.OriginalObject }
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        b = RemoveEvents(
+                action
+                    .ConflictingObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+        return AddEvents(
+                new List<BaseObject> { action.EditedObject }
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private void HandleActionEventUndo(BeatmapAction action)
+    {
+        if (!HandleActionEventUndoNoNotify(action) || atsc.IsPlaying) return;
+        colorBoostManager.ResetState();
+        foreach (var manager in LightingManagers.Where(manager => manager != null)) manager.ResetState();
+        UpdateTime();
+    }
+
+    private bool HandleActionEventUndoNoNotify(BeatmapAction action)
+    {
+        return action switch
+        {
+            ActionCollectionAction actionCollectionAction => actionCollectionAction
+                .Actions.ToArray()
+                .Select(HandleActionEventUndoNoNotify)
+                .Any(),
+            BeatmapObjectPlacementAction beatmapObjectPlacementAction => HandlePlacementActionUndo(
+                beatmapObjectPlacementAction),
+            SelectionDeletedAction selectionDeletedAction => HandleSelectionDeletedActionUndo(selectionDeletedAction),
+            SelectionPastedAction selectionPastedAction => HandleSelectionPastedActionUndo(selectionPastedAction),
+            StrobeGeneratorGenerationAction strobeGeneratorGenerationAction =>
+                HandleStrobeGeneratorGenerationActionUndo(
+                    strobeGeneratorGenerationAction),
+            BeatmapObjectDeletionAction beatmapObjectDeletionAction =>
+                HandleDeletionActionUndo(beatmapObjectDeletionAction),
+            BeatmapObjectModifiedWithConflictingAction beatmapObjectModifiedWithConflictingAction =>
+                HandleModifiedWithConflictingActionUndo(beatmapObjectModifiedWithConflictingAction),
+            BeatmapObjectModifiedAction beatmapObjectModifiedAction =>
+                HandleModifiedActionUndo(beatmapObjectModifiedAction),
+            BeatmapObjectModifiedCollectionAction beatmapObjectModifiedCollectionAction =>
+                HandleModifiedCollectionActionUndo(beatmapObjectModifiedCollectionAction),
+            _ => false
+        };
+    }
+
+    private bool HandlePlacementActionUndo(BeatmapObjectPlacementAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .Data
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .RemovedConflictObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleSelectionDeletedActionUndo(SelectionDeletedAction action) =>
+        AddEvents(
+            action
+                .Data
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+
+    private bool HandleSelectionPastedActionUndo(SelectionPastedAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .Data
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .Removed
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleStrobeGeneratorGenerationActionUndo(StrobeGeneratorGenerationAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .Data
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .ConflictingData.Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleDeletionActionUndo(BeatmapObjectDeletionAction action) =>
+        AddEvents(
+            action
+                .Data.Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+
+    private bool HandleModifiedActionUndo(BeatmapObjectModifiedAction action)
+    {
+        var b = RemoveEvents(
+            new List<BaseObject> { action.EditedObject }
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                new List<BaseObject> { action.OriginalObject }
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleModifiedCollectionActionUndo(BeatmapObjectModifiedCollectionAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .EditedObjects
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .OriginalObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleModifiedWithConflictingActionUndo(BeatmapObjectModifiedWithConflictingAction action)
+    {
+        var b = RemoveEvents(
+            new List<BaseObject> { action.EditedObject }
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        b = AddEvents(
+                new List<BaseObject> { action.OriginalObject }
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+        return AddEvents(
+                action
+                    .ConflictingObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
     }
 
     public void EventPassed(bool isPlaying, int index, BaseObject obj)
