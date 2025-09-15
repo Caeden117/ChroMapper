@@ -593,10 +593,4 @@ public class PlatformDescriptor : MonoBehaviour
         else
             return false;
     }
-
-    public class Gradient
-    {
-        public BaseEvent GradientEvent;
-        public Coroutine Routine;
-    }
 }
