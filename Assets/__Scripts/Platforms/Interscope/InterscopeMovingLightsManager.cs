@@ -2,7 +2,7 @@
 using Beatmap.Base;
 using UnityEngine;
 
-public class MovingLightsInterscope : RotatingLightsBase
+public class InterscopeMovingLightsManager : RotatingLightsManagerBase
 {
     public bool Left;
     [SerializeField] protected MovingLightsRandom MovingLightsRandom;
@@ -27,7 +27,7 @@ public class MovingLightsInterscope : RotatingLightsBase
         vector3.x *= Left ? 1f : -1f;
         transform.localPosition = startPosition + vector3;
 
-        MovingLightsRandom.ONSwitchStyle += SwitchStyle;
+        MovingLightsRandom.OnSwitchStyle += SwitchStyle;
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
     }
 

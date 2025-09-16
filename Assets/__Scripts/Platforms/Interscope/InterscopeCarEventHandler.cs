@@ -5,7 +5,8 @@ using UnityEngine.Serialization;
 
 public abstract class InterscopeCarEventHandler : PlatformEventHandler
 {
-    [FormerlySerializedAs("carRigidbody")] [SerializeField] protected Rigidbody CarRigidbody;
+    [FormerlySerializedAs("carRigidbody")] [SerializeField]
+    protected Rigidbody CarRigidbody;
 
     [FormerlySerializedAs("carFlags")]
     [Tooltip(
@@ -23,9 +24,7 @@ public abstract class InterscopeCarEventHandler : PlatformEventHandler
         if (@event.Value == 0
             || @event.Value == 1
             || eventValuesHash.Contains(@event.Value))
-        {
             OnCarGroupTriggered(@event);
-        }
     }
 
     protected abstract void OnCarGroupTriggered(BaseEvent @event);

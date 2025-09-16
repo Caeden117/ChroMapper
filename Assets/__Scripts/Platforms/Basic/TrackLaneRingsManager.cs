@@ -7,16 +7,28 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 {
     [FormerlySerializedAs("ringCount")] public int RingCount = 10;
     [FormerlySerializedAs("prefab")] public TrackLaneRing Prefab;
-    [FormerlySerializedAs("moveFirstRing")] public bool MoveFirstRing;
-    [FormerlySerializedAs("minPositionStep")] public float MINPositionStep = 1;
-    [FormerlySerializedAs("maxPositionStep")] public float MAXPositionStep = 2;
+
+    [FormerlySerializedAs("moveFirstRing")]
+    public bool MoveFirstRing;
+
+    [FormerlySerializedAs("minPositionStep")]
+    public float MINPositionStep = 1;
+
+    [FormerlySerializedAs("maxPositionStep")]
+    public float MAXPositionStep = 2;
+
     [FormerlySerializedAs("moveSpeed")] public float MoveSpeed = 1;
 
-    [FormerlySerializedAs("rotationStep")][Header("Rotation")] public float RotationStep = 5;
+    [FormerlySerializedAs("rotationStep")] [Header("Rotation")]
+    public float RotationStep = 5;
 
-    [FormerlySerializedAs("propagationSpeed")] public float PropagationSpeed = 1;
+    [FormerlySerializedAs("propagationSpeed")]
+    public float PropagationSpeed = 1;
+
     [FormerlySerializedAs("flexySpeed")] public float FlexySpeed = 1;
-    [FormerlySerializedAs("rotationEffect")] public TrackLaneRingsRotationEffect RotationEffect;
+
+    [FormerlySerializedAs("rotationEffect")]
+    public TrackLaneRingsRotationEffect RotationEffect;
 
     private bool zoomed;
     public TrackLaneRing[] Rings { get; private set; }
@@ -35,7 +47,8 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 
             if (RingCount <= 1) continue;
 
-            var lights = Rings[i].GetComponentsInChildren<LightingEvent>()
+            var lights = Rings[i]
+                .GetComponentsInChildren<LightingObject>()
                 .GroupBy(x => x.OverrideLightGroup ? x.OverrideLightGroupID : -1);
             foreach (var group in lights)
             {
@@ -77,13 +90,10 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     {
         var step = zoomed ? MAXPositionStep : MINPositionStep;
 
-        if (IsAffectedByZoom() && (evt.CustomStep != null))
-        {
-            step = evt.CustomStep.Value;
-        }
+        if (IsAffectedByZoom() && (evt.CustomStep != null)) step = evt.CustomStep.Value;
 
         // Multiplying MoveSpeed by 5 since I don't want to edit 20+ environment prefabs
-        var speed = evt.CustomSpeed ?? (MoveSpeed * 5); 
+        var speed = evt.CustomSpeed ?? (MoveSpeed * 5);
 
         zoomed = !zoomed;
         for (var i = 0; i < Rings.Length; i++)
@@ -97,8 +107,12 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
     {
         if (RotationEffect != null)
         {
-            RotationEffect.AddRingRotationEvent(Rings[0].GetDestinationRotation(),
-                Random.Range(0, RotationStep), PropagationSpeed, FlexySpeed, evt);
+            RotationEffect.AddRingRotationEvent(
+                Rings[0].GetDestinationRotation(),
+                Random.Range(0, RotationStep),
+                PropagationSpeed,
+                FlexySpeed,
+                evt);
         }
     }
 

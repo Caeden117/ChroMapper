@@ -1,31 +1,29 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Beatmap.Base;
+using UnityEngine;
 
-public class ColorBoostManager : BasicEventManager<ColorBoostState>
+public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLightState>
 {
-    public readonly List<ColorBoostState> States = new();
-    public int CurrentIndex;
-    public bool Boost;
+    public abstract void UpdateOffset(bool isLeftEvent, BaseEvent evt);
 
-    public event Action<bool> OnStateChange;
+    public abstract bool IsOverrideLightGroup();
+    public readonly List<RotatingLightState> States = new();
+    public int CurrentIndex;
+
+    public void Awake() => Priority = EventPriority.ColorBoost;
 
     public override void UpdateTime(float currentTime)
     {
         var (idx, state) = GetCurrentState(currentTime, CurrentIndex, States);
+        
+        if (CurrentIndex == idx) return;
         CurrentIndex = idx;
-
         UpdateObject(state);
     }
 
-    private void UpdateObject(ColorBoostState state)
-    {
-        if (state.Boost == Boost) return;
-        Boost = state.Boost;
-        OnStateChange(Boost);
-    }
+    private void UpdateObject(RotatingLightState state) => UpdateOffset(true, state.BaseEvent);
 
-    protected override ColorBoostState InitializeState(BaseEvent evt) =>
+    protected override RotatingLightState CreateState(BaseEvent evt) =>
         new() { BaseEvent = evt, StartTime = float.MinValue, EndTime = float.MaxValue };
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
@@ -37,10 +35,8 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
 
     public override void InsertEvent(BaseEvent evt)
     {
-        var state = InitializeState(evt);
+        var state = CreateState(evt);
         state.StartTime = evt.SongBpmTime;
-        state.Boost = evt.Value == 1;
-
         InsertState(state, States);
     }
 
@@ -50,14 +46,12 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
         RemoveState(state, States);
     }
 
-    public override void ResetState() => UpdateObject(States[CurrentIndex]);
+    public override void Reset() => UpdateObject(States[CurrentIndex]);
 }
 
-public struct ColorBoostState : IBasicEventState
+public struct RotatingLightState : IBasicEventState
 {
     public BaseEvent BaseEvent { get; set; }
-
     public float StartTime { get; set; }
     public float EndTime { get; set; }
-    public bool Boost;
 }

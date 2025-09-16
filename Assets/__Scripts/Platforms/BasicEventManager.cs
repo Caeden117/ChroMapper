@@ -2,11 +2,31 @@ using System.Collections.Generic;
 using Beatmap.Base;
 using UnityEngine;
 
-public abstract class BasicEventManager<T> : MonoBehaviour where T : IBasicEventState
+public abstract class BasicEventManager : MonoBehaviour
 {
+    public EventPriority Priority;
     public AudioTimeSyncController Atsc;
 
     public abstract void UpdateTime(float time);
+    public abstract void BuildFromEvents(IEnumerable<BaseEvent> events);
+    public abstract void InsertEvent(BaseEvent evt);
+    public abstract void RemoveEvent(BaseEvent evt);
+    public abstract void Reset();
+}
+
+public abstract class BasicEventManager<T> : BasicEventManager where T : IBasicEventState
+{
+    protected abstract T CreateState(BaseEvent evt);
+
+    protected void InitializeStates(List<T> states)
+    {
+        states.Clear();
+        var start = CreateState(new BaseEvent());
+        var end = CreateState(new BaseEvent());
+        end.StartTime = start.EndTime;
+        states.Add(start);
+        states.Add(end);
+    }
 
     protected (int index, T state) GetCurrentState(
         float currentTime,
@@ -71,22 +91,6 @@ public abstract class BasicEventManager<T> : MonoBehaviour where T : IBasicEvent
         }
     }
 
-    protected abstract T InitializeState(BaseEvent evt);
-
-    protected void InitializeStates(List<T> states)
-    {
-        states.Clear();
-        var start = InitializeState(new BaseEvent());
-        var end = InitializeState(new BaseEvent());
-        end.StartTime = start.EndTime;
-        states.Add(start);
-        states.Add(end);
-    }
-
-    public abstract void BuildFromEvents(IEnumerable<BaseEvent> events);
-
-    public abstract void InsertEvent(BaseEvent evt);
-
     protected virtual void InsertState(T newState, List<T> states)
     {
         int currentIndex;
@@ -114,8 +118,6 @@ public abstract class BasicEventManager<T> : MonoBehaviour where T : IBasicEvent
     protected virtual void UpdateFromNextStateOnInsert(ref T newState, ref T nextState) =>
         newState.EndTime = nextState.StartTime;
 
-    public abstract void RemoveEvent(BaseEvent evt);
-
     protected virtual void RemoveState(T currentState, List<T> states)
     {
         var index = states.IndexOf(currentState);
@@ -131,8 +133,15 @@ public abstract class BasicEventManager<T> : MonoBehaviour where T : IBasicEvent
     protected virtual void
         UpdatePreviousAndNextStateOnRemove(ref T previousState, ref T nextState, ref T currentState) =>
         previousState.EndTime = nextState.StartTime;
+}
 
-    public abstract void ResetState();
+public enum EventPriority
+{
+    ColorBoost,
+    SpecialFX,
+    Translation,
+    Rotation,
+    Light,
 }
 
 public interface IBasicEventState

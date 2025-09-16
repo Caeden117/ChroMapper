@@ -6,7 +6,6 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
 
 public class PlatformDescriptor : MonoBehaviour
 {
@@ -41,12 +40,12 @@ public class PlatformDescriptor : MonoBehaviour
     [Tooltip("Change scale of normal map for shiny objects.")]
     public float NormalMapScale = 2f;
 
-    private readonly Dictionary<int, List<PlatformEventHandler>> platformEventHandlers = new();
-
     private AudioTimeSyncController atsc;
     private ColorBoostManager colorBoostManager;
 
-    private BeatmapObjectCallbackController callbackController;
+    private readonly Dictionary<int, List<BasicEventManager>> eventTypeManagerMap = new();
+    private readonly List<BasicEventManager> sortedPriorityManagers = new();
+
     private RotationCallbackController rotationCallback;
 
     private static readonly int baseMap = Shader.PropertyToID("_BaseMap");
@@ -64,35 +63,18 @@ public class PlatformDescriptor : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
     }
 
-    private void Start()
-    {
-        var eventHandlers = GetComponentsInChildren<PlatformEventHandler>();
-
-        foreach (var handler in eventHandlers)
-        {
-            foreach (var type in handler.ListeningEventTypes)
-            {
-                if (!platformEventHandlers.TryGetValue(type, out var list))
-                {
-                    list = new List<PlatformEventHandler>();
-                    platformEventHandlers.Add(type, list);
-                }
-
-                list.Add(handler);
-            }
-        }
-
-        UpdateShinyMaterialSettings();
-    }
+    private void Start() => UpdateShinyMaterialSettings();
 
     private void OnDestroy()
     {
         BeatmapActionContainer.ActionCreatedEvent -= HandleActionEventRedo;
         BeatmapActionContainer.ActionRedoEvent -= HandleActionEventRedo;
         BeatmapActionContainer.ActionUndoEvent -= HandleActionEventUndo;
-        if (callbackController != null) callbackController.EventPassedThreshold -= EventPassed;
         if (atsc != null) atsc.TimeChanged -= UpdateTime;
         if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
+
+        foreach (var manager in LightingManagers.Where(manager => manager != null))
+            colorBoostManager.OnStateChange -= manager.ToggleBoost;
     }
 
     public void UpdateShinyMaterialSettings()
@@ -111,8 +93,6 @@ public class PlatformDescriptor : MonoBehaviour
 
     private void LevelLoaded()
     {
-        callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
-
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
         atsc = rotationCallback.Atsc;
         if (RotationController != null)
@@ -121,50 +101,115 @@ public class PlatformDescriptor : MonoBehaviour
             RotationController.Init();
         }
 
-        callbackController.EventPassedThreshold += EventPassed;
         atsc.TimeChanged += UpdateTime;
         RefreshLightingManagers();
 
         if (Settings.Instance.HideDisablableObjectsOnLoad) ToggleDisablableObjects();
     }
 
-    public void RefreshLightingManagers()
-    {
-        colorBoostManager.Atsc = atsc;
-        BuildBoostEvent();
+    public void RefreshLightingManagers() => StartCoroutine(PlatformLoadFromHell());
 
-        for (var i = 0; i < LightingManagers.Length; i++)
+    // first off, what the fuck
+    private IEnumerator PlatformLoadFromHell()
+    {
+        yield return new WaitForEndOfFrame(); // Actually wait for platform to fully load from Awake and Start
+
+        BasicLightManager.FlashTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FlashTimeSecond);
+        BasicLightManager.FadeTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FadeTimeSecond);
+
+        sortedPriorityManagers.Clear();
+        eventTypeManagerMap.Clear();
+
+        for (var type = 0; type < LightingManagers.Length; type++)
         {
-            var manager = LightingManagers[i];
+            var manager = LightingManagers[type];
             if (manager is null) continue;
-            manager.Atsc = atsc;
             manager.SetColors(ColorScheme);
             colorBoostManager.OnStateChange += manager.ToggleBoost;
-            BasicLightManager.FlashTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FlashTimeSecond);
-            BasicLightManager.FadeTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FadeTimeSecond);
-            StartCoroutine(BuildLightEvent(manager, i)); // where is my proper platform loaded
+            MapEventManager(manager, type);
+        }
+
+        MapEventManager(colorBoostManager, 5);
+
+        if (BigRingManager != null)
+        {
+            BigRingManager.RingFilter = RingFilter.Big;
+            MapEventManager(BigRingManager, 8);
+            MapEventManager(BigRingManager, 9);
+        }
+
+        if (SmallRingManager != null)
+        {
+            SmallRingManager.RingFilter = RingFilter.Small;
+            MapEventManager(SmallRingManager, 8);
+            MapEventManager(SmallRingManager, 9);
+        }
+
+        if (DiskManager != null)
+        {
+            MapEventManager(DiskManager, 12);
+            MapEventManager(DiskManager, 13);
+            MapEventManager(DiskManager, 16);
+            MapEventManager(DiskManager, 17);
+            MapEventManager(DiskManager, 18);
+            MapEventManager(DiskManager, 19);
+        }
+
+        foreach (var handler in GetComponentsInChildren<PlatformEventHandler>())
+        foreach (var type in handler.ListeningEventTypes)
+            MapEventManager(handler, type);
+
+        var leftEventTypes = new List<int>
+        {
+            (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights
+        };
+        foreach (var l in leftEventTypes
+            .Where(t => t <= LightingManagers.Length)
+            .SelectMany(eventType => LightingManagers[eventType].RotatingLights))
+            MapEventManager(l, 12);
+        var rightEventTypes = new List<int>
+        {
+            (int)EventTypeValue.RightLasers,
+            (int)EventTypeValue.ExtraRightLasers,
+            (int)EventTypeValue.ExtraRightLights
+        };
+        foreach (var l in rightEventTypes
+            .Where(t => t <= LightingManagers.Length)
+            .SelectMany(eventType => LightingManagers[eventType].RotatingLights))
+            MapEventManager(l, 13);
+
+        foreach (var (type, managers) in eventTypeManagerMap)
+        {
+            var events = BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == type);
+            managers.ForEach(manager =>
+            {
+                manager.BuildFromEvents(events);
+                manager.Atsc = atsc;
+            });
+        }
+
+        foreach (var manager in eventTypeManagerMap
+            .Values.SelectMany(manager => manager)
+            .OrderBy(manager => manager.Priority))
+            sortedPriorityManagers.Add(manager);
+
+        foreach (var manager in sortedPriorityManagers)
+        {
+            manager.Reset();
+            manager.UpdateTime(atsc.CurrentSongBpmTime);
         }
     }
 
-    private void BuildBoostEvent() =>
-        colorBoostManager.BuildFromEvents(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == 5));
-
-    private IEnumerator BuildLightEvent(BasicLightManager manager, int type)
+    private void MapEventManager(BasicEventManager manager, int type)
     {
-        yield return new WaitForSeconds(0.05f);
-        manager.BuildFromEvents(BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == type));
+        if (!eventTypeManagerMap.ContainsKey(type)) eventTypeManagerMap.Add(type, new());
+        eventTypeManagerMap[type].Add(manager);
     }
 
     public void UpdateTime()
     {
         // if (atsc.IsPlaying) return; // maybe lateupdate, maybe callback
-        var time = atsc.CurrentSongBpmTime;
-        colorBoostManager.UpdateTime(time);
-        foreach (var manager in LightingManagers)
-        {
-            if (manager == null) continue;
-            manager.UpdateTime(time);
-        }
+        foreach (var manager in sortedPriorityManagers) manager.UpdateTime(atsc.CurrentSongBpmTime);
     }
 
     public void UpdateSoloEventType(bool solo, int soloTypeID)
@@ -183,13 +228,8 @@ public class PlatformDescriptor : MonoBehaviour
         var mark = false;
         foreach (var baseEvent in events)
         {
-            if (baseEvent.Type < LightingManagers.Length)
-            {
-                var manager = LightingManagers[baseEvent.Type];
-                if (manager != null) manager.InsertEvent(baseEvent);
-            }
-
-            if (baseEvent.Type == 5) colorBoostManager.InsertEvent(baseEvent);
+            if (!eventTypeManagerMap.TryGetValue(baseEvent.Type, out var managers)) continue;
+            managers.ForEach(manager => manager.InsertEvent(baseEvent));
             mark = true;
         }
 
@@ -201,13 +241,8 @@ public class PlatformDescriptor : MonoBehaviour
         var mark = false;
         foreach (var baseEvent in events)
         {
-            if (baseEvent.Type < LightingManagers.Length)
-            {
-                var manager = LightingManagers[baseEvent.Type];
-                if (manager != null) manager.RemoveEvent(baseEvent);
-            }
-
-            if (baseEvent.Type == 5) colorBoostManager.RemoveEvent(baseEvent);
+            if (!eventTypeManagerMap.TryGetValue(baseEvent.Type, out var managers)) continue;
+            managers.ForEach(manager => manager.RemoveEvent(baseEvent));
             mark = true;
         }
 
@@ -217,8 +252,7 @@ public class PlatformDescriptor : MonoBehaviour
     private void HandleActionEventRedo(BeatmapAction action)
     {
         if (!HandleActionEventRedoNoNotify(action) || atsc.IsPlaying) return;
-        colorBoostManager.ResetState();
-        foreach (var manager in LightingManagers.Where(manager => manager != null)) manager.ResetState();
+        foreach (var manager in sortedPriorityManagers) manager.Reset();
         UpdateTime();
     }
 
@@ -355,8 +389,7 @@ public class PlatformDescriptor : MonoBehaviour
     private void HandleActionEventUndo(BeatmapAction action)
     {
         if (!HandleActionEventUndoNoNotify(action) || atsc.IsPlaying) return;
-        colorBoostManager.ResetState();
-        foreach (var manager in LightingManagers.Where(manager => manager != null)) manager.ResetState();
+        foreach (var manager in sortedPriorityManagers) manager.Reset();
         UpdateTime();
     }
 
@@ -489,108 +522,5 @@ public class PlatformDescriptor : MonoBehaviour
                     .Where(d => d is BaseEvent)
                     .Cast<BaseEvent>())
             || b;
-    }
-
-    public void EventPassed(bool isPlaying, int index, BaseObject obj)
-    {
-        var e = obj as BaseEvent;
-
-        // Two events at the same time should yield same results
-        Random.InitState(Mathf.RoundToInt(obj.JsonTime * 100));
-
-        // FUN PART BOIS
-        switch (e.Type)
-        {
-            case 8:
-                if (e.CustomNameFilter != null)
-                {
-                    string filter = e.CustomNameFilter;
-                    if (filter.Contains("Big") || filter.Contains("Large"))
-                    {
-                        if (BigRingManager != null) BigRingManager.HandleRotationEvent(e);
-                    }
-                    else if (filter.Contains("Small") || filter.Contains("Panels") || filter.Contains("Triangle"))
-                    {
-                        if (SmallRingManager != null) SmallRingManager.HandleRotationEvent(e);
-                    }
-                    else
-                    {
-                        if (BigRingManager != null) BigRingManager.HandleRotationEvent(e);
-                        if (SmallRingManager != null) SmallRingManager.HandleRotationEvent(e);
-                    }
-                }
-                else
-                {
-                    if (BigRingManager != null) BigRingManager.HandleRotationEvent(e);
-                    if (SmallRingManager != null) SmallRingManager.HandleRotationEvent(e);
-                }
-
-                break;
-            case 9:
-                if (BigRingManager != null) BigRingManager.HandlePositionEvent(e);
-                if (SmallRingManager != null) SmallRingManager.HandlePositionEvent(e);
-                break;
-            case 12:
-                if (HandleGagaHeightEvent(e)) return;
-
-                var leftEventTypes = new List<int>()
-                {
-                    (int)EventTypeValue.LeftLasers,
-                    (int)EventTypeValue.ExtraLeftLasers,
-                    (int)EventTypeValue.ExtraLeftLights
-                };
-
-                foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
-                {
-                    foreach (var l in LightingManagers[eventType].RotatingLights)
-                    {
-                        l.UpdateOffset(true, e);
-                    }
-                }
-
-                break;
-            case 13:
-                if (HandleGagaHeightEvent(e)) return;
-
-                var rightEventTypes = new List<int>()
-                {
-                    (int)EventTypeValue.RightLasers,
-                    (int)EventTypeValue.ExtraRightLasers,
-                    (int)EventTypeValue.ExtraRightLights
-                };
-
-                foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
-                {
-                    foreach (var l in LightingManagers[eventType].RotatingLights)
-                    {
-                        l.UpdateOffset(true, e);
-                    }
-                }
-
-                break;
-            case 16:
-            case 17:
-            case 18:
-            case 19:
-                if (HandleGagaHeightEvent(e)) return;
-                break;
-        }
-
-        if (atsc != null && atsc.IsPlaying && platformEventHandlers.TryGetValue(e.Type, out var eventHandlers))
-        {
-            foreach (var handler in eventHandlers) handler.OnEventTrigger(e.Type, e);
-        }
-    }
-
-    // Handle Gaga Env Height events, and pass it to the case so it can ignore anything after if the manager is valid.
-    private bool HandleGagaHeightEvent(BaseEvent evt)
-    {
-        if (DiskManager != null)
-        {
-            DiskManager.HandlePositionEvent(evt);
-            return true;
-        }
-        else
-            return false;
     }
 }

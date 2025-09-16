@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class LightingEvent : MonoBehaviour
+public class LightingObject : MonoBehaviour
 {
     public bool OverrideLightGroup;
     public int OverrideLightGroupID;
@@ -140,11 +140,8 @@ public class LightingEvent : MonoBehaviour
         if (boostSprite != null) lightPropertyBlock.SetTexture(mainTex, boostSprite.GetSprite(boost).texture);
     }
 
-    private void SetEmission(bool enabled)
+    private void SetEmission(bool b)
     {
-        if (isLightEnabled != enabled)
-        {
-            lightRenderer.enabled = isLightEnabled = enabled;
-        }
+        if (isLightEnabled != b) lightRenderer.enabled = isLightEnabled = b;
     }
 }

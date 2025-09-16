@@ -3,7 +3,7 @@ using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class RotatingLightsLinkinPark : RotatingLightsBase
+public class LinkinParkRotatingLightsManager : RotatingLightsManagerBase
 {
     [FormerlySerializedAs("_rotationVector")][SerializeField] protected Vector3 RotationVector = Vector3.up;
 
@@ -33,7 +33,7 @@ public class RotatingLightsLinkinPark : RotatingLightsBase
 
         transform.localRotation = startRotation * Quaternion.Euler(RotationVector * startRotationAngle);
 
-        RotatingLightsRandom.ONSwitchStyle += SwitchStyle;
+        RotatingLightsRandom.OnSwitchStyle += SwitchStyle;
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
     }
 

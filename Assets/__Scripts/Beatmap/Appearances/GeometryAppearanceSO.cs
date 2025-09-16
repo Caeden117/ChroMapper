@@ -89,7 +89,7 @@ namespace Beatmap.Appearances
 
             if (eh.Components?.HasKey("ILightWithId") ?? false)
             {
-                var light = container.Shape.AddComponent<LightingEvent>();
+                var light = container.Shape.AddComponent<LightingObject>();
                 light.OverrideLightGroup = true;
                 light.OverrideLightGroupID = eh.LightType ?? 0;
                 light.LightID = eh.LightID ?? 0;

@@ -222,7 +222,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         var tubeLights = gameObject.GetComponentsInChildren<TubeLight>();
         foreach (var tubeLight in tubeLights)
         {
-            if (tubeLight.gameObject.GetComponent<LightingEvent>() != null) continue;
+            if (tubeLight.gameObject.GetComponent<LightingObject>() != null) continue;
 
             var eventId = -(int)EventTypeValue.BackLasers;
             switch (tubeLight.lightsID)
@@ -330,7 +330,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         var eventHandlers = gameObject.GetComponentsInChildren<SongEventHandler>();
         foreach (var eventHandler in eventHandlers)
         {
-            if (eventHandler.gameObject.GetComponent<LightingEvent>() != null) continue;
+            if (eventHandler.gameObject.GetComponent<LightingObject>() != null) continue;
 
             var eventId = (int)eventHandler.eventType;
 
@@ -426,7 +426,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
         if (basicLightManager != null)
         {
-            var le = renderer.gameObject.AddComponent<LightingEvent>();
+            var le = renderer.gameObject.AddComponent<LightingObject>();
             basicLightManager.ControllingLights.Add(le);
         }
     }
