@@ -155,7 +155,7 @@ public class PlatformDescriptor : MonoBehaviour
             MapEventManager(DiskManager, 19);
         }
 
-        foreach (var handler in GetComponentsInChildren<PlatformEventHandler>())
+        foreach (var handler in GetComponentsInChildren<PlatformEventManager>())
         foreach (var type in handler.ListeningEventTypes)
             MapEventManager(handler, type);
 
@@ -183,8 +183,8 @@ public class PlatformDescriptor : MonoBehaviour
             var events = BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == type);
             managers.ForEach(manager =>
             {
-                manager.BuildFromEvents(events);
                 manager.Atsc = atsc;
+                manager.BuildFromEvents(events);
             });
         }
 

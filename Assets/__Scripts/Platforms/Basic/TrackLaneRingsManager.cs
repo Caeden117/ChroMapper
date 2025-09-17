@@ -86,8 +86,9 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
 
     protected virtual bool IsAffectedByZoom() => !Mathf.Approximately(MAXPositionStep, MINPositionStep);
 
-    public override void HandlePositionEvent(BaseEvent evt)
+    public override void HandlePositionEvent(RingRotationState state, BaseEvent evt, int index)
     {
+        zoomed = index % 2 == 0;
         var step = zoomed ? MAXPositionStep : MINPositionStep;
 
         if (IsAffectedByZoom() && (evt.CustomStep != null)) step = evt.CustomStep.Value;
@@ -95,7 +96,6 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
         // Multiplying MoveSpeed by 5 since I don't want to edit 20+ environment prefabs
         var speed = evt.CustomSpeed ?? (MoveSpeed * 5);
 
-        zoomed = !zoomed;
         for (var i = 0; i < Rings.Length; i++)
         {
             var destPosZ = (i + (MoveFirstRing ? 1 : 0)) * step;
@@ -103,18 +103,21 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
         }
     }
 
-    public override void HandleRotationEvent(BaseEvent evt)
+    public override void HandleRotationEvent(RingRotationState state, BaseEvent evt, int index)
     {
-        if (RotationEffect != null)
-        {
-            RotationEffect.AddRingRotationEvent(
-                Rings[0].GetDestinationRotation(),
-                Random.Range(0, RotationStep),
-                PropagationSpeed,
-                FlexySpeed,
-                evt);
-        }
+        if (RotationEffect == null) return;
+        
+        RotationEffect.AddRingRotationEvent(
+            state.RotationInitial, // TODO: this cause it to snap in unusual way
+            Random.Range(0, RotationStep),
+            PropagationSpeed,
+            FlexySpeed,
+            state.Direction,
+            evt);
     }
+
+    public override float GetRotationStep() => RotationEffect.RotationStep;
+    public override bool GetDirection() => Random.value < 0.5f;
 
     public override Object[] GetToDestroy() => new Object[] { this, RotationEffect };
 }

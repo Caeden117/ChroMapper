@@ -1,35 +1,37 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
-using UnityEditor.VersionControl;
-using UnityEngine;
+using Object = UnityEngine.Object;
 
 public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotationState>
 {
     public RingFilter RingFilter;
-    private readonly Dictionary<int, List<RingRotationState>> ringTypeStatesMap = new();
-    private readonly Dictionary<int, int> ringTypeIndexMap = new();
+    private readonly Dictionary<int, List<List<RingRotationState>>> ringTypeStateChunksMap = new();
 
-    public abstract void HandlePositionEvent(BaseEvent evt);
+    private readonly Dictionary<int, RingRotationState> ringTypeCurrentMap =
+        new();
 
-    public abstract void HandleRotationEvent(BaseEvent evt);
+    public abstract void HandlePositionEvent(RingRotationState state, BaseEvent evt, int index);
+    public abstract void HandleRotationEvent(RingRotationState state, BaseEvent evt, int index);
+    public virtual float GetRotationStep() => 0f;
+    public virtual bool GetDirection() => false;
 
     public abstract Object[] GetToDestroy();
 
     public override void UpdateTime(float currentTime)
     {
-        foreach (var (type, states) in ringTypeStatesMap)
+        foreach (var (type, states) in ringTypeStateChunksMap)
         {
-            var currentIndex = ringTypeIndexMap[type];
-            var (idx, state) = GetCurrentState(currentTime, currentIndex, states);
+            var currentState = ringTypeCurrentMap[type];
+            var state = GetCurrentState(currentTime, currentState, states);
 
-            if (currentIndex == idx) continue;
-            ringTypeIndexMap[type] = idx;
-            UpdateObject(state);
+            if (currentState == state) continue;
+            ringTypeCurrentMap[type] = state;
+            UpdateObject(state, GetStateIndex(state, ringTypeStateChunksMap[type]));
         }
     }
 
-    private void UpdateObject(RingRotationState state)
+    private void UpdateObject(RingRotationState state, int index)
     {
         var evt = state.BaseEvent;
         switch (evt.Type)
@@ -40,21 +42,21 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
                     var filter = evt.CustomNameFilter;
                     if (filter.Contains("Big") || filter.Contains("Large"))
                     {
-                        if (RingFilter == RingFilter.Big) HandleRotationEvent(evt);
+                        if (RingFilter == RingFilter.Big) HandleRotationEvent(state, evt, index);
                     }
                     else if (filter.Contains("Small") || filter.Contains("Panels") || filter.Contains("Triangle"))
                     {
-                        if (RingFilter == RingFilter.Small) HandleRotationEvent(evt);
+                        if (RingFilter == RingFilter.Small) HandleRotationEvent(state, evt, index);
                     }
                     else
-                        HandleRotationEvent(evt);
+                        HandleRotationEvent(state, evt, index);
                 }
                 else
-                    HandleRotationEvent(evt);
+                    HandleRotationEvent(state, evt, index);
 
                 break;
             case 9:
-                HandlePositionEvent(evt);
+                HandlePositionEvent(state, evt, index);
                 break;
         }
     }
@@ -64,45 +66,75 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        foreach (var type in new List<int> { 8, 9 }.Where(type => !ringTypeStatesMap.ContainsKey(type)))
+        foreach (var type in new List<int> { 8, 9 }.Where(type => !ringTypeStateChunksMap.ContainsKey(type)))
         {
-            ringTypeIndexMap[type] = 0;
-            ringTypeStatesMap[type] = new List<RingRotationState>();
-            InitializeStates(ringTypeStatesMap[type]);
-            foreach (var state in ringTypeStatesMap[type]) state.BaseEvent.Type = type;
+            ringTypeStateChunksMap[type] = new();
+            InitializeStates(ringTypeStateChunksMap[type]);
+            foreach (var state in ringTypeStateChunksMap[type].SelectMany(chunk => chunk)) state.BaseEvent.Type = type;
+            ringTypeCurrentMap[type] = GetStateAt(0, ringTypeStateChunksMap[type]);
         }
 
         foreach (var evt in events) InsertEvent(evt);
+    }
+
+    protected override void UpdateToPreviousStateOnInsert(
+         RingRotationState newState,
+         RingRotationState previousState)
+    {
+        base.UpdateToPreviousStateOnInsert( newState,  previousState);
+        newState.RotationInitial = previousState.RotationInitial + previousState.RotationChange;
     }
 
     public override void InsertEvent(BaseEvent evt)
     {
         var state = CreateState(evt);
         state.StartTime = evt.SongBpmTime;
-        InsertState(state, ringTypeStatesMap[evt.Type]);
+        state.RotationChange = evt.CustomRingRotation ?? GetRotationStep();
+        state.Direction = GetDirection();
+        if (evt.CustomData != null) state.Direction = evt.CustomDirection == 0;
+        state.RotationChange = state.Direction ? state.RotationChange : -state.RotationChange;
+
+        InsertState(state, ringTypeStateChunksMap[evt.Type]);
+
+        // need to update consequent event
+        // for (var i = ringTypeStateChunksMap[evt.Type].FindIndex(s => s.BaseEvent == evt) + 1;
+        //     i < ringTypeStateChunksMap[evt.Type].Count;
+        //     i++)
+        // {
+        //     var nextState = ringTypeStateChunksMap[evt.Type][i];
+        //     nextState.RotationInitial += state.RotationChange;
+        //     ringTypeStateChunksMap[evt.Type][i] = nextState;
+        // }
     }
 
     public override void RemoveEvent(BaseEvent evt)
     {
-        var state = ringTypeStatesMap[evt.Type].Find(s => s.BaseEvent == evt);
-        RemoveState(state, ringTypeStatesMap[evt.Type]);
+        RemoveState(evt, ringTypeStateChunksMap[evt.Type]);
+
+        // need to update consequent event
+        // for (var i = indexOf; i < ringTypeStateChunksMap[evt.Type].Count; i++)
+        // {
+        //     var nextState = ringTypeStateChunksMap[evt.Type][i];
+        //     nextState.RotationInitial -= state.RotationChange;
+        //     ringTypeStateChunksMap[evt.Type][i] = nextState;
+        // }
     }
 
     public override void Reset()
     {
-        foreach (var (type, states) in ringTypeStatesMap)
+        foreach (var state in ringTypeCurrentMap.Values)
         {
-            var index = ringTypeIndexMap[type];
-            UpdateObject(states[index]);
+            UpdateObject(state, GetStateIndex(state, ringTypeStateChunksMap[state.BaseEvent.Type]));
         }
     }
 }
 
-public struct RingRotationState : IBasicEventState
+public class RingRotationState : BasicEventState
 {
-    public BaseEvent BaseEvent { get; set; }
-    public float StartTime { get; set; }
-    public float EndTime { get; set; }
+    // unfortunately, you cannot modulo this out, so there's a chance this can overflow
+    public float RotationInitial;
+    public float RotationChange;
+    public bool Direction;
 }
 
 public enum RingFilter

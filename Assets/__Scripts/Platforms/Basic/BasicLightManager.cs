@@ -32,12 +32,16 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
     public Dictionary<int, int> LightIDPlacementMapReverse;
     public Dictionary<int, LightingObject> LightIDMap;
 
-    public readonly Dictionary<LightingObject, List<BasicLightState>> LightStatesMap = new();
-    public readonly Dictionary<LightingObject, int> CurrentIndexMap = new();
+    public readonly Dictionary<LightingObject, List<List<BasicLightState>>> StateChunksMap = new();
+    public readonly Dictionary<LightingObject, BasicLightState> CurrentStateMap = new();
     public readonly List<(float time, Color? data)> ChromaLiteColorTimes = new();
     public readonly List<ChromaGradientData> ChromaGradientTimes = new();
 
-    private void Start() => LoadOldLightOrder();
+    private void Start()
+    {
+        Priority = EventPriority.Light;
+        LoadOldLightOrder();
+    }
 
     public void LoadOldLightOrder()
     {
@@ -84,25 +88,25 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
 
     public override void UpdateTime(float currentTime)
     {
-        foreach (var lightingEvent in ControllingLights)
+        foreach (var lightingObject in ControllingLights)
         {
-            var states = LightStatesMap[lightingEvent];
-            var currentIndex = CurrentIndexMap[lightingEvent];
-            var (index, currentState) = GetCurrentState(currentTime, currentIndex, states);
+            var states = StateChunksMap[lightingObject];
+            var currentIndex = CurrentStateMap[lightingObject];
+            var currentState = GetCurrentState(currentTime, currentIndex, states);
 
-            if (index != currentIndex)
+            if (CurrentStateMap[lightingObject] != currentState)
             {
-                UpdateObject(lightingEvent, currentState);
-                CurrentIndexMap[lightingEvent] = index;
+                UpdateObject(lightingObject, currentState);
+                CurrentStateMap[lightingObject] = currentState;
             }
 
-            lightingEvent.UpdateTime(currentTime);
+            lightingObject.UpdateTime(currentTime);
         }
     }
 
     private void UpdateObject(LightingObject lightingObject, BasicLightState state)
     {
-        lightingObject.UpdateStartTimeAlpha(state.StartTimeAlpha);
+        lightingObject.UpdateStartTimeAlpha(state.StartTime);
         lightingObject.UpdateStartTimeColor(state.StartTimeColor);
         lightingObject.UpdateStartAlpha(state.StartAlpha);
         lightingObject.UpdateStartColor(GetStartColorFromState(lightingObject, state));
@@ -121,14 +125,14 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
     public void ToggleBoost(bool boost)
     {
         useBoost = boost;
-        foreach (var lightingEvent in ControllingLights)
+        foreach (var lightingObject in ControllingLights)
         {
-            lightingEvent.UpdateBoostState(boost);
-            if (!CurrentIndexMap.TryGetValue(lightingEvent, out var currentIndex)) continue;
-            lightingEvent.UpdateStartColor(
-                GetStartColorFromState(lightingEvent, LightStatesMap[lightingEvent][currentIndex]));
-            lightingEvent.UpdateEndColor(
-                GetEndColorFromState(lightingEvent, LightStatesMap[lightingEvent][currentIndex]));
+            lightingObject.UpdateBoostState(boost);
+            if (!CurrentStateMap.TryGetValue(lightingObject, out var currentIndex)) continue;
+            lightingObject.UpdateStartColor(
+                GetStartColorFromState(lightingObject, CurrentStateMap[lightingObject]));
+            lightingObject.UpdateEndColor(
+                GetEndColorFromState(lightingObject, CurrentStateMap[lightingObject]));
         }
     }
 
@@ -148,22 +152,22 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        foreach (var lightingEvent in ControllingLights.Where(lightingEvent =>
-            !LightStatesMap.ContainsKey(lightingEvent)))
+        foreach (var lightingObject in ControllingLights.Where(lightingObject =>
+            !StateChunksMap.ContainsKey(lightingObject)))
         {
-            CurrentIndexMap[lightingEvent] = 0;
-            if (!LightStatesMap.ContainsKey(lightingEvent)) LightStatesMap[lightingEvent] = new();
-            InitializeStates(LightStatesMap[lightingEvent]);
+            StateChunksMap[lightingObject] = new();
+            InitializeStates(StateChunksMap[lightingObject]);
+            CurrentStateMap[lightingObject] = GetStateAt(0, StateChunksMap[lightingObject]);
         }
 
         foreach (var evt in events) InsertEvent(evt);
     }
 
     protected override void UpdateToPreviousStateOnInsert(
-        ref BasicLightState newState,
-        ref BasicLightState previousState)
+        BasicLightState newState,
+        BasicLightState previousState)
     {
-        base.UpdateToPreviousStateOnInsert(ref newState, ref previousState);
+        base.UpdateToPreviousStateOnInsert(newState, previousState);
         if (!previousState.BaseEvent.IsFade && !previousState.BaseEvent.IsFlash)
             previousState.EndTimeAlpha = newState.StartTime;
         if (newState.BaseEvent.IsTransition
@@ -182,10 +186,10 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
     }
 
     protected override void UpdateFromNextStateOnInsert(
-        ref BasicLightState newState,
-        ref BasicLightState nextState)
+        BasicLightState newState,
+        BasicLightState nextState)
     {
-        base.UpdateFromNextStateOnInsert(ref newState, ref nextState);
+        base.UpdateFromNextStateOnInsert(newState, nextState);
         if (!newState.BaseEvent.IsFade && !newState.BaseEvent.IsFlash) newState.EndTimeAlpha = nextState.StartTime;
         if (nextState.BaseEvent.IsTransition
             && (newState.BaseEvent.IsOff
@@ -259,18 +263,17 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
             var filteredLights = new List<LightingObject>(lightIDArr.Length);
             foreach (var lightID in lightIDArr)
             {
-                if (!LightIDMap.TryGetValue(lightID, out var lightingEvent)) continue;
-                filteredLights.Add(lightingEvent);
+                if (!LightIDMap.TryGetValue(lightID, out var lightingObject)) continue;
+                filteredLights.Add(lightingObject);
             }
 
             affectedLights = filteredLights;
         }
 
-        foreach (var lightingEvent in affectedLights)
+        foreach (var lightingObject in affectedLights)
         {
             var newState = CreateState(evt);
             newState.StartTime = evt.SongBpmTime;
-            newState.StartTimeAlpha = evt.SongBpmTime;
             newState.StartTimeColor = evt.SongBpmTime;
             newState.StartColor = InferColorFromEvent(evt);
             newState.StartChromaColor = chromaColor;
@@ -284,7 +287,7 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
 
             if (evt.IsOff)
             {
-                if (lightingEvent.CanBeTurnedOff)
+                if (lightingObject.CanBeTurnedOff)
                     newState.StartAlpha = newState.EndAlpha = 0f;
                 // The game uses its floatValue but it's still dimmer than what an On would be
                 // This factor is very quick eyeball probably not that accurate
@@ -304,7 +307,7 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
                 newState.StartAlpha = evt.FloatValue * 1.2f;
                 newState.EndAlpha = 0f;
                 newState.Easing = Easing.Exponential.Out;
-                if (!lightingEvent.CanBeTurnedOff) newState.EndAlpha = evt.FloatValue * (2f / 3f);
+                if (!lightingObject.CanBeTurnedOff) newState.EndAlpha = evt.FloatValue * (2f / 3f);
             }
 
             if (ChromaGradientTimes.Count > 0)
@@ -322,7 +325,7 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
                 }
             }
 
-            InsertState(newState, LightStatesMap[lightingEvent]);
+            InsertState(newState, StateChunksMap[lightingObject]);
         }
     }
 
@@ -336,28 +339,27 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
             var filteredLights = new List<LightingObject>(lightIDArr.Length);
             foreach (var lightID in lightIDArr)
             {
-                if (!LightIDMap.TryGetValue(lightID, out var lightingEvent)) continue;
-                filteredLights.Add(lightingEvent);
+                if (!LightIDMap.TryGetValue(lightID, out var lightingObject)) continue;
+                filteredLights.Add(lightingObject);
             }
 
             affectedLights = filteredLights;
         }
 
-        foreach (var lightingEvent in affectedLights)
+        foreach (var lightingObject in affectedLights)
         {
-            var state = LightStatesMap[lightingEvent].Find(s => s.BaseEvent == evt);
-            RemoveState(state, LightStatesMap[lightingEvent]);
+            RemoveState(evt, StateChunksMap[lightingObject]);
         }
     }
 
-    // TODO: need to properly recalculate
+    // TODO: need to properly recalculate when (affected) chroma lite changed or removed
     protected override void
         UpdatePreviousAndNextStateOnRemove(
-            ref BasicLightState previousState,
-            ref BasicLightState nextState,
-            ref BasicLightState currentState)
+            BasicLightState previousState,
+            BasicLightState nextState,
+            BasicLightState currentState)
     {
-        base.UpdatePreviousAndNextStateOnRemove(ref previousState, ref nextState, ref currentState);
+        base.UpdatePreviousAndNextStateOnRemove(previousState, nextState, currentState);
         if (nextState.BaseEvent.IsTransition
             && (previousState.BaseEvent.IsOff
                 || previousState.BaseEvent.IsOn
@@ -376,16 +378,17 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
             previousState.EndTimeAlpha = nextState.StartTime;
             previousState.EndTimeColor = nextState.StartTimeColor;
             previousState.EndColor = previousState.StartColor;
-            previousState.StartChromaColor = previousState.StartChromaColor;
-            previousState.EndAlpha = previousState.StartAlpha;
+            previousState.EndChromaColor = previousState.StartChromaColor;
+            if (!previousState.BaseEvent.IsFade && !previousState.BaseEvent.IsFlash)
+                previousState.EndAlpha = previousState.StartAlpha;
         }
     }
 
 
     public override void Reset()
     {
-        foreach (var lightingEvent in CurrentIndexMap.Keys.ToArray())
-            UpdateObject(lightingEvent, LightStatesMap[lightingEvent][CurrentIndexMap[lightingEvent]]);
+        foreach (var lightingObject in CurrentStateMap.Keys.ToArray())
+            UpdateObject(lightingObject, CurrentStateMap[lightingObject]);
     }
 
     private LightColor InferColorFromEvent(BaseEvent evt) =>
@@ -432,20 +435,15 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
     }
 }
 
-public struct BasicLightState : IBasicEventState
+public class BasicLightState : BasicEventState
 {
-    public BaseEvent BaseEvent { get; set; }
-
-    public float StartTime { get; set; }
-    public float StartTimeAlpha; // used to interpolate flash/fade
-    public float StartTimeColor; // special case for chroma gradient
+    public float StartTimeColor; // this is supposedly the same as start time, special case for chroma gradient
     public LightColor StartColor;
     public Color? StartChromaColor;
     public float StartAlpha;
 
-    public float EndTime { get; set; }
-    public float EndTimeAlpha;
-    public float EndTimeColor;
+    public float EndTimeAlpha; // similarly this match next start, otherwise used to interpolate flash/fade
+    public float EndTimeColor; // also same case above, only special case for chroma gradient
     public LightColor EndColor;
     public Color? EndChromaColor;
     public float EndAlpha;

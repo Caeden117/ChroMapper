@@ -162,18 +162,18 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
         cachedHeightEvents[eventType].AddRange(events);
     }
 
-    private readonly Dictionary<int, List<GagaDiskState>> gagaDiskStatesMap = new();
-    private readonly Dictionary<int, int> gagaDiskIndexMap = new();
+    private readonly Dictionary<int, List<List<GagaDiskState>>> gagaDiskStateChunksMap = new();
+    private readonly Dictionary<int, GagaDiskState> gagaDiskCurrentStateMap = new();
 
     public override void UpdateTime(float currentTime)
     {
-        foreach (var (type, states) in gagaDiskStatesMap)
+        foreach (var (type, states) in gagaDiskStateChunksMap)
         {
-            var currentIndex = gagaDiskIndexMap[type];
-            var (idx, state) = GetCurrentState(currentTime, currentIndex, states);
+            var currentState = gagaDiskCurrentStateMap[type];
+            var state = GetCurrentState(currentTime, currentState, states);
 
-            if (currentIndex == idx) continue;
-            gagaDiskIndexMap[type] = idx;
+            if (currentState == state) continue;
+            gagaDiskCurrentStateMap[type] = state;
             UpdateObject(state.BaseEvent);
         }
     }
@@ -193,12 +193,12 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
                 17,
                 18,
                 19
-            }.Where(type => !gagaDiskStatesMap.ContainsKey(type)))
+            }.Where(type => !gagaDiskStateChunksMap.ContainsKey(type)))
         {
-            gagaDiskIndexMap[type] = 0;
-            gagaDiskStatesMap[type] = new List<GagaDiskState>();
-            InitializeStates(gagaDiskStatesMap[type]);
-            foreach (var state in gagaDiskStatesMap[type]) state.BaseEvent.Type = type;
+            gagaDiskStateChunksMap[type] = new List<List<GagaDiskState>>();
+            InitializeStates(gagaDiskStateChunksMap[type]);
+            foreach (var state in gagaDiskStateChunksMap[type].SelectMany(state => state)) state.BaseEvent.Type = type;
+            gagaDiskCurrentStateMap[type] = GetStateAt(0, gagaDiskStateChunksMap[type]);
         }
 
         foreach (var evt in events) InsertEvent(evt);
@@ -208,28 +208,17 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
     {
         var state = CreateState(evt);
         state.StartTime = evt.SongBpmTime;
-        InsertState(state, gagaDiskStatesMap[evt.Type]);
+        InsertState(state, gagaDiskStateChunksMap[evt.Type]);
     }
 
-    public override void RemoveEvent(BaseEvent evt)
-    {
-        var state = gagaDiskStatesMap[evt.Type].Find(s => s.BaseEvent == evt);
-        RemoveState(state, gagaDiskStatesMap[evt.Type]);
-    }
+    public override void RemoveEvent(BaseEvent evt) => RemoveState(evt, gagaDiskStateChunksMap[evt.Type]);
 
     public override void Reset()
     {
-        foreach (var (type, states) in gagaDiskStatesMap)
-        {
-            var index = gagaDiskIndexMap[type];
-            UpdateObject(states[index].BaseEvent);
-        }
+        foreach (var state in gagaDiskCurrentStateMap.Values) UpdateObject(state.BaseEvent);
     }
 }
 
-public struct GagaDiskState : IBasicEventState
+public class GagaDiskState : BasicEventState
 {
-    public BaseEvent BaseEvent { get; set; }
-    public float StartTime { get; set; }
-    public float EndTime { get; set; }
 }

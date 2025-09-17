@@ -9,17 +9,17 @@ internal class LinkinParkRingLaserManager : TrackLaneRingsManagerBase
 
     public override Object[] GetToDestroy() => new Object[] { this };
 
-    public override void HandlePositionEvent(BaseEvent evt)
+    public override void HandlePositionEvent(RingRotationState state, BaseEvent evt, int index)
     {
         if (SwitchOnZoom)
-            TriggerSwitch();
+            TriggerSwitch(index % 2 == 1);
     }
 
-    public override void HandleRotationEvent(BaseEvent evt)
+    public override void HandleRotationEvent(RingRotationState state, BaseEvent evt, int index)
     {
         if (!SwitchOnZoom)
-            TriggerSwitch();
+            TriggerSwitch(index % 2 == 1);
     }
 
-    private void TriggerSwitch() => lpLasers.ForEach(it => it.SwitchStyle());
+    private void TriggerSwitch(bool b) => lpLasers.ForEach(it => it.SwitchStyle(b));
 }

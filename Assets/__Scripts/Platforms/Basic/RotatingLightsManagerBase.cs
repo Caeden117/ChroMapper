@@ -1,23 +1,24 @@
 ﻿using System.Collections.Generic;
 using Beatmap.Base;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLightState>
 {
     public abstract void UpdateOffset(bool isLeftEvent, BaseEvent evt);
 
     public abstract bool IsOverrideLightGroup();
-    public readonly List<RotatingLightState> States = new();
-    public int CurrentIndex;
+    public readonly List<List<RotatingLightState>> StateChunks = new();
+    public RotatingLightState CurrentState;
 
     public void Awake() => Priority = EventPriority.ColorBoost;
 
     public override void UpdateTime(float currentTime)
     {
-        var (idx, state) = GetCurrentState(currentTime, CurrentIndex, States);
-        
-        if (CurrentIndex == idx) return;
-        CurrentIndex = idx;
+        var state = GetCurrentState(currentTime, CurrentState, StateChunks);
+
+        if (CurrentState == state) return;
+        CurrentState = state;
         UpdateObject(state);
     }
 
@@ -28,8 +29,8 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        CurrentIndex = 0;
-        InitializeStates(States);
+        InitializeStates(StateChunks);
+        CurrentState = GetStateAt(0, StateChunks);
         foreach (var evt in events) InsertEvent(evt);
     }
 
@@ -37,21 +38,14 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
     {
         var state = CreateState(evt);
         state.StartTime = evt.SongBpmTime;
-        InsertState(state, States);
+        InsertState(state, StateChunks);
     }
 
-    public override void RemoveEvent(BaseEvent evt)
-    {
-        var state = States.Find(s => s.BaseEvent == evt);
-        RemoveState(state, States);
-    }
+    public override void RemoveEvent(BaseEvent evt) => RemoveState(evt, StateChunks);
 
-    public override void Reset() => UpdateObject(States[CurrentIndex]);
+    public override void Reset() => UpdateObject(CurrentState);
 }
 
-public struct RotatingLightState : IBasicEventState
+public class RotatingLightState : BasicEventState
 {
-    public BaseEvent BaseEvent { get; set; }
-    public float StartTime { get; set; }
-    public float EndTime { get; set; }
 }

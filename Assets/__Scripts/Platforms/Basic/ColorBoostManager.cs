@@ -4,8 +4,8 @@ using Beatmap.Base;
 
 public class ColorBoostManager : BasicEventManager<ColorBoostState>
 {
-    public readonly List<ColorBoostState> States = new();
-    public int CurrentIndex;
+    public readonly List<List<ColorBoostState>> StateChunks = new();
+    public ColorBoostState CurrentState;
     public bool Boost;
 
     public event Action<bool> OnStateChange;
@@ -14,10 +14,10 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
 
     public override void UpdateTime(float currentTime)
     {
-        var (idx, state) = GetCurrentState(currentTime, CurrentIndex, States);
-        
-        if (CurrentIndex == idx) return;
-        CurrentIndex = idx;
+        var state = GetCurrentState(currentTime, CurrentState, StateChunks);
+
+        if (CurrentState == state) return;
+        CurrentState = state;
         UpdateObject(state);
     }
 
@@ -33,9 +33,9 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        CurrentIndex = 0;
-        InitializeStates(States);
+        InitializeStates(StateChunks);
         foreach (var evt in events) InsertEvent(evt);
+        CurrentState = GetStateAt(0, StateChunks);
     }
 
     public override void InsertEvent(BaseEvent evt)
@@ -44,23 +44,15 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
         state.StartTime = evt.SongBpmTime;
         state.Boost = evt.Value == 1;
 
-        InsertState(state, States);
+        InsertState(state, StateChunks);
     }
 
-    public override void RemoveEvent(BaseEvent evt)
-    {
-        var state = States.Find(s => s.BaseEvent == evt);
-        RemoveState(state, States);
-    }
+    public override void RemoveEvent(BaseEvent evt) => RemoveState(evt, StateChunks);
 
-    public override void Reset() => UpdateObject(States[CurrentIndex]);
+    public override void Reset() => UpdateObject(CurrentState);
 }
 
-public struct ColorBoostState : IBasicEventState
+public class ColorBoostState : BasicEventState
 {
-    public BaseEvent BaseEvent { get; set; }
-
-    public float StartTime { get; set; }
-    public float EndTime { get; set; }
     public bool Boost;
 }

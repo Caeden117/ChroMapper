@@ -17,9 +17,9 @@ public class MovingLightsRandom : MonoBehaviour
 
     public Action OnSwitchStyle;
 
-    public void SwitchStyle()
+    public void SwitchStyle(bool b)
     {
-        OverrideRandomValues = !OverrideRandomValues;
+        OverrideRandomValues = b;
         RandomUpdate(false);
         OnSwitchStyle.Invoke();
     }
