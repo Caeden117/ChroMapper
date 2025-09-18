@@ -823,6 +823,18 @@ MonoBehaviour:
     m_Key: place.chain.tutorial
     m_Metadata:
       m_Items: []
+  - m_Id: 547102692817469440
+    m_Key: bar.lightshow.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547103053439533056
+    m_Key: bar.lightshow.none
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547103143285719040
+    m_Key: bar.lightshow.static
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

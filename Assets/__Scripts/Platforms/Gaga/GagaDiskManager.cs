@@ -164,6 +164,27 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
 
     private readonly Dictionary<int, EventStateChunksContainer<GagaDiskState>> stateChunksContainerMap = new();
 
+    public override void Initialize()
+    {
+        stateChunksContainerMap.Clear();
+        foreach (var type in new List<int>
+            {
+                12,
+                13,
+                16,
+                17,
+                18,
+                19
+            }.Where(type => !stateChunksContainerMap.ContainsKey(type)))
+        {
+            var container = new EventStateChunksContainer<GagaDiskState>();
+            InitializeStates(container.Chunks);
+            foreach (var state in container.Chunks.SelectMany(state => state)) state.BaseEvent.Type = type;
+            container.Current = GetStateAt(0, container.Chunks);
+            stateChunksContainerMap[type] = container;
+        }
+    }
+
     public override void UpdateTime(float currentTime)
     {
         foreach (var container in stateChunksContainerMap.Values)
@@ -183,23 +204,6 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        foreach (var type in new List<int>
-            {
-                12,
-                13,
-                16,
-                17,
-                18,
-                19
-            }.Where(type => !stateChunksContainerMap.ContainsKey(type)))
-        {
-            var container = new EventStateChunksContainer<GagaDiskState>();
-            InitializeStates(container.Chunks);
-            foreach (var state in container.Chunks.SelectMany(state => state)) state.BaseEvent.Type = type;
-            container.Current = GetStateAt(0, container.Chunks);
-            stateChunksContainerMap[type] = container;
-        }
-
         foreach (var evt in events) InsertEvent(evt);
     }
 

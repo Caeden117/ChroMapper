@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,7 @@ public class PlatformDescriptor : MonoBehaviour
     private readonly List<BasicEventManager> sortedPriorityManagers = new();
 
     private RotationCallbackController rotationCallback;
+    private LightshowMode lightshowMode;
 
     private static readonly int baseMap = Shader.PropertyToID("_BaseMap");
 
@@ -178,21 +180,15 @@ public class PlatformDescriptor : MonoBehaviour
             .SelectMany(eventType => LightingManagers[eventType].RotatingLights))
             MapEventManager(l, 13);
 
-        foreach (var (type, managers) in eventTypeManagerMap)
-        {
-            var events = BeatSaberSongContainer.Instance.Map.Events.Where(e => e.Type == type);
-            managers.ForEach(manager =>
-            {
-                manager.Atsc = atsc;
-                manager.BuildFromEvents(events);
-            });
-        }
-
         foreach (var manager in eventTypeManagerMap
             .Values.SelectMany(manager => manager)
             .OrderBy(manager => manager.Priority))
+        {
+            manager.Atsc = atsc;
             sortedPriorityManagers.Add(manager);
+        }
 
+        PopulateLightshow();
         foreach (var manager in sortedPriorityManagers) manager.UpdateTime(atsc.CurrentSongBpmTime);
     }
 
@@ -202,10 +198,15 @@ public class PlatformDescriptor : MonoBehaviour
         eventTypeManagerMap[type].Add(manager);
     }
 
-    public void UpdateTime()
+    private void UpdateTime()
     {
-        // if (atsc.IsPlaying) return; // maybe lateupdate, maybe callback
+        if (lightshowMode != LightshowMode.Full) return;
         foreach (var manager in sortedPriorityManagers) manager.UpdateTime(atsc.CurrentSongBpmTime);
+    }
+
+    private void UpdateTime(float time)
+    {
+        foreach (var manager in sortedPriorityManagers) manager.UpdateTime(time);
     }
 
     public void UpdateSoloEventType(bool solo, int soloTypeID)
@@ -217,6 +218,67 @@ public class PlatformDescriptor : MonoBehaviour
     public void ToggleDisablableObjects()
     {
         foreach (var go in DisablableObjects) go.SetActive(!go.activeInHierarchy);
+    }
+
+    private void PopulateLightshow()
+    {
+        foreach (var manager in sortedPriorityManagers) manager.Initialize();
+
+        var events = lightshowMode == LightshowMode.Static
+            ? eventTypeManagerMap
+                .Keys.Select(type =>
+                {
+                    var evt = new BaseEvent { Type = type, songBpmTime = 0f };
+                    if (evt.IsLightEvent()) evt.Value = 1;
+                    return evt;
+                })
+                .ToList()
+            : BeatSaberSongContainer.Instance.Map.Events;
+        foreach (var (type, managers) in eventTypeManagerMap)
+            managers.ForEach(manager => manager.BuildFromEvents(events.Where(e => e.Type == type)));
+    }
+
+    public void SetLightshowMode(LightshowMode mode)
+    {
+        // in the future, it should be possible to toggle during playback
+        // but as of now, it causes race condition
+        if (atsc.IsPlaying) return;
+        var previousMode = lightshowMode;
+        lightshowMode = mode;
+
+        switch (mode)
+        {
+            case LightshowMode.Full:
+                if (previousMode == LightshowMode.Static)
+                {
+                    PopulateLightshow();
+                    // Ideally, I shouldn't reset but it just doesn't want to behave correctly
+                    foreach (var manager in sortedPriorityManagers) manager.Reset();
+                }
+
+                UpdateTime();
+                break;
+            case LightshowMode.Static:
+                if (previousMode != LightshowMode.Static)
+                {
+                    PopulateLightshow();
+                    foreach (var manager in sortedPriorityManagers) manager.Reset();
+                }
+
+                UpdateTime(0f);
+                break;
+            case LightshowMode.None:
+                if (previousMode == LightshowMode.Static)
+                {
+                    PopulateLightshow();
+                    foreach (var manager in sortedPriorityManagers) manager.Reset();
+                }
+
+                UpdateTime(-1f);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
+        }
     }
 
     private bool AddEvents(IEnumerable<BaseEvent> events)
@@ -247,6 +309,7 @@ public class PlatformDescriptor : MonoBehaviour
 
     private void HandleActionEventRedo(BeatmapAction action)
     {
+        if (lightshowMode == LightshowMode.Static) return;
         if (!HandleActionEventRedoNoNotify(action) || atsc.IsPlaying) return;
         // foreach (var manager in sortedPriorityManagers) manager.Reset();
         UpdateTime();
@@ -384,6 +447,7 @@ public class PlatformDescriptor : MonoBehaviour
 
     private void HandleActionEventUndo(BeatmapAction action)
     {
+        if (lightshowMode == LightshowMode.Static) return;
         if (!HandleActionEventUndoNoNotify(action) || atsc.IsPlaying) return;
         // foreach (var manager in sortedPriorityManagers) manager.Reset();
         UpdateTime();
@@ -519,4 +583,11 @@ public class PlatformDescriptor : MonoBehaviour
                     .Cast<BaseEvent>())
             || b;
     }
+}
+
+public enum LightshowMode
+{
+    Full,
+    Static,
+    None,
 }

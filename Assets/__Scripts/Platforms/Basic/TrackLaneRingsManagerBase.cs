@@ -16,12 +16,25 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
 
     public abstract Object[] GetToDestroy();
 
+    public override void Initialize()
+    {
+        stateChunksContainerMap.Clear();
+        foreach (var type in new List<int> { 8, 9 }.Where(type => !stateChunksContainerMap.ContainsKey(type)))
+        {
+            var container = new EventStateChunksContainer<RingRotationState>();
+            InitializeStates(container.Chunks);
+            foreach (var state in container.Chunks.SelectMany(chunk => chunk)) state.BaseEvent.Type = type;
+            container.Current = GetStateAt(0, container.Chunks);
+            stateChunksContainerMap[type] = container;
+        }
+    }
+
     public override void UpdateTime(float currentTime)
     {
-        foreach (var (type, container) in stateChunksContainerMap)
+        foreach (var container in stateChunksContainerMap.Values)
         {
             var state = GetCurrentState(currentTime, container.Current, container.Chunks);
-
+            
             if (container.Current == state) continue;
             container.Current = state;
             UpdateObject(state);
@@ -71,15 +84,6 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        foreach (var type in new List<int> { 8, 9 }.Where(type => !stateChunksContainerMap.ContainsKey(type)))
-        {
-            var container = new EventStateChunksContainer<RingRotationState>();
-            InitializeStates(container.Chunks);
-            foreach (var state in container.Chunks.SelectMany(chunk => chunk)) state.BaseEvent.Type = type;
-            container.Current = GetStateAt(0, container.Chunks);
-            stateChunksContainerMap[type] = container;
-        }
-
         foreach (var evt in events) InsertEvent(evt);
     }
 

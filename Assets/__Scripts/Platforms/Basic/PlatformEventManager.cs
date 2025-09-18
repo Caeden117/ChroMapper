@@ -11,6 +11,8 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
 
     private readonly Dictionary<int, EventStateChunksContainer<PlatformEventState>> stateChunksContainerMap = new();
 
+    public override void Initialize() => stateChunksContainerMap.Clear();
+
     public override void UpdateTime(float currentTime)
     {
         foreach (var container in stateChunksContainerMap.Values)

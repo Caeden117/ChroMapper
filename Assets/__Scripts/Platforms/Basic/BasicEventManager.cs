@@ -8,6 +8,7 @@ public abstract class BasicEventManager : MonoBehaviour
     public EventPriority Priority;
     public AudioTimeSyncController Atsc;
 
+    public abstract void Initialize();
     public abstract void UpdateTime(float time);
     public abstract void BuildFromEvents(IEnumerable<BaseEvent> events);
     public abstract void InsertEvent(BaseEvent evt);
@@ -19,7 +20,7 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
 {
     private const float chunkByTime = 10f;
 
-    private (int index, List<T> chunk) GetChunk(List<List<T>> chunks, float v)
+    private static (int index, List<T> chunk) GetChunk(List<List<T>> chunks, float v)
     {
         var index = Mathf.Clamp(Mathf.FloorToInt(v / chunkByTime), 0, chunks.Count - 1);
         return (index, chunks[index]);

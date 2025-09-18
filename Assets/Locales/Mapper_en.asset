@@ -929,6 +929,18 @@ MonoBehaviour:
     m_Localized: To place a chain, select at least 2 notes and press {0}
     m_Metadata:
       m_Items: []
+  - m_Id: 547103053439533056
+    m_Localized: No Lightshow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547103143285719040
+    m_Localized: Static Lightshow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547102692817469440
+    m_Localized: Full Lightshow
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

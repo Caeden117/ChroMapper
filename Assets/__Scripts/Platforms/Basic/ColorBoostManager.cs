@@ -11,6 +11,12 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
 
     public void Awake() => Priority = EventPriority.ColorBoost;
 
+    public override void Initialize()
+    {
+        InitializeStates(stateChunksContainer.Chunks);
+        stateChunksContainer.Current = GetStateAt(0, stateChunksContainer.Chunks);
+    }
+
     public override void UpdateTime(float currentTime)
     {
         var state = GetCurrentState(currentTime, stateChunksContainer.Current, stateChunksContainer.Chunks);
@@ -32,9 +38,7 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        InitializeStates(stateChunksContainer.Chunks);
         foreach (var evt in events) InsertEvent(evt);
-        stateChunksContainer.Current = GetStateAt(0, stateChunksContainer.Chunks);
     }
 
     public override void InsertEvent(BaseEvent evt)

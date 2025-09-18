@@ -32,7 +32,9 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
     public Dictionary<int, int> LightIDPlacementMapReverse;
     public Dictionary<int, LightingObject> LightIDMap;
 
-    private readonly Dictionary<LightingObject, EventStateChunksContainer<BasicLightState>> stateChunksContainerMap = new();
+    private readonly Dictionary<LightingObject, EventStateChunksContainer<BasicLightState>> stateChunksContainerMap =
+        new();
+
     private readonly List<(float time, Color? data)> chromaLiteColorTimes = new();
     private readonly List<ChromaGradientData> chromaGradientTimes = new();
 
@@ -80,10 +82,17 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
             .Select(x => new LightGroup { Lights = x.ToList() })
             .ToArray();
 
-    // public void LateUpdate()
-    // {
-    //     if (atsc.IsPlaying) UpdateTime(atsc.CurrentSongBpmTime);
-    // }
+    public override void Initialize()
+    {
+        stateChunksContainerMap.Clear();
+        foreach (var lightingObject in ControllingLights)
+        {
+            var container = new EventStateChunksContainer<BasicLightState>();
+            InitializeStates(container.Chunks);
+            container.Current = GetStateAt(0, container.Chunks);
+            stateChunksContainerMap[lightingObject] = container;
+        }
+    }
 
     public override void UpdateTime(float currentTime)
     {
@@ -150,15 +159,6 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        foreach (var lightingObject in ControllingLights.Where(lightingObject =>
-            !stateChunksContainerMap.ContainsKey(lightingObject)))
-        {
-            var container = new EventStateChunksContainer<BasicLightState>();
-            InitializeStates(container.Chunks);
-            container.Current = GetStateAt(0, container.Chunks);
-            stateChunksContainerMap[lightingObject] = container;
-        }
-
         foreach (var evt in events) InsertEvent(evt);
     }
 
