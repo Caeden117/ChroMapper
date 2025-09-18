@@ -50,7 +50,9 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
     public override void RemoveEvent(BaseEvent evt)
     {
         var state = RemoveState(evt, StateChunks);
-        if (CurrentState == state) CurrentState = GetStateAt(evt.SongBpmTime, StateChunks);
+        if (CurrentState != state) return;
+        CurrentState = GetStateAt(evt.SongBpmTime, StateChunks);
+        UpdateObject(CurrentState);
     }
 
     public override void Reset() => UpdateObject(CurrentState);

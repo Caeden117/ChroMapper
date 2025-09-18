@@ -214,8 +214,9 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
     public override void RemoveEvent(BaseEvent evt)
     {
         var state = RemoveState(evt, gagaDiskStateChunksMap[evt.Type]);
-        if (gagaDiskCurrentMap[evt.Type] == state)
-            gagaDiskCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, gagaDiskStateChunksMap[evt.Type]);
+        if (gagaDiskCurrentMap[evt.Type] != state) return;
+        gagaDiskCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, gagaDiskStateChunksMap[evt.Type]);
+        UpdateObject(gagaDiskCurrentMap[evt.Type].BaseEvent);
     }
 
     public override void Reset()

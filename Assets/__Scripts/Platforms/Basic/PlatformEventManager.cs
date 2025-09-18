@@ -60,8 +60,9 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
     public override void RemoveEvent(BaseEvent evt)
     {
         var state = RemoveState(evt, platformTypeStateChunksMap[evt.Type]);
-        if (platformTypeCurrentMap[evt.Type] == state)
-            platformTypeCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, platformTypeStateChunksMap[evt.Type]);
+        if (platformTypeCurrentMap[evt.Type] != state) return;
+        platformTypeCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, platformTypeStateChunksMap[evt.Type]);
+        UpdateObject(platformTypeCurrentMap[evt.Type]);
     }
 
     public override void Reset()

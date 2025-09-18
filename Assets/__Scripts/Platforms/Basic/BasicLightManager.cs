@@ -349,8 +349,9 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
         foreach (var lightingObject in affectedLights)
         {
             var state = RemoveState(evt, StateChunksMap[lightingObject]);
-            if (CurrentStateMap[lightingObject] == state)
-                CurrentStateMap[lightingObject] = GetStateAt(evt.SongBpmTime, StateChunksMap[lightingObject]);
+            if (CurrentStateMap[lightingObject] != state) continue;
+            CurrentStateMap[lightingObject] = GetStateAt(evt.SongBpmTime, StateChunksMap[lightingObject]);
+            UpdateObject(lightingObject, CurrentStateMap[lightingObject]);
         }
     }
 
@@ -377,19 +378,22 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
         }
         else
         {
-            previousState.EndTimeAlpha = nextState.StartTime;
             previousState.EndTimeColor = nextState.StartTimeColor;
             previousState.EndColor = previousState.StartColor;
             previousState.EndChromaColor = previousState.StartChromaColor;
+
             if (!previousState.BaseEvent.IsFade && !previousState.BaseEvent.IsFlash)
+            {
+                previousState.EndTimeAlpha = nextState.StartTime;
                 previousState.EndAlpha = previousState.StartAlpha;
+            }
         }
     }
 
 
     public override void Reset()
     {
-        foreach (var lightingObject in CurrentStateMap.Keys.ToArray())
+        foreach (var lightingObject in CurrentStateMap.Keys)
             UpdateObject(lightingObject, CurrentStateMap[lightingObject]);
     }
 

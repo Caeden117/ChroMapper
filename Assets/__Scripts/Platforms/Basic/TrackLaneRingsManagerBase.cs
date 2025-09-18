@@ -28,13 +28,14 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
 
             if (currentState == state) continue;
             ringTypeCurrentMap[type] = state;
-            UpdateObject(state, GetStateIndex(state, ringTypeStateChunksMap[type]));
+            UpdateObject(state);
         }
     }
 
-    private void UpdateObject(RingRotationState state, int index)
+    private void UpdateObject(RingRotationState state)
     {
         var evt = state.BaseEvent;
+        var index = GetStateIndex(state, ringTypeStateChunksMap[state.BaseEvent.Type]);
         switch (evt.Type)
         {
             case 8:
@@ -101,7 +102,7 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
         state.Direction = GetDirection();
         if (evt.CustomData != null) state.Direction = evt.CustomDirection == 0;
         state.RotationChange = state.Direction ? state.RotationChange : -state.RotationChange;
-        
+
         InsertState(state, ringTypeStateChunksMap[evt.Type]);
         UpdateConsequentStateAfterInsertFrom(state, ringTypeStateChunksMap[evt.Type]);
     }
@@ -120,9 +121,10 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
         var state = GetStateFrom(evt, ringTypeStateChunksMap[evt.Type]);
         UpdateConsequentStateBeforeRemoveFrom(state, ringTypeStateChunksMap[evt.Type]);
         RemoveState(state, ringTypeStateChunksMap[evt.Type]);
-        
-        if (ringTypeCurrentMap[evt.Type] == state)
-            ringTypeCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, ringTypeStateChunksMap[evt.Type]);
+
+        if (ringTypeCurrentMap[evt.Type] != state) return;
+        ringTypeCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, ringTypeStateChunksMap[evt.Type]);
+        UpdateObject(ringTypeCurrentMap[evt.Type]);
     }
 
     protected override RingRotationState UpdateToNextStateOnRemove(
@@ -136,8 +138,7 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
 
     public override void Reset()
     {
-        foreach (var state in ringTypeCurrentMap.Values)
-            UpdateObject(state, GetStateIndex(state, ringTypeStateChunksMap[state.BaseEvent.Type]));
+        foreach (var state in ringTypeCurrentMap.Values) UpdateObject(state);
     }
 }
 

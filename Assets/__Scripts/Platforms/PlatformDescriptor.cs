@@ -193,11 +193,7 @@ public class PlatformDescriptor : MonoBehaviour
             .OrderBy(manager => manager.Priority))
             sortedPriorityManagers.Add(manager);
 
-        foreach (var manager in sortedPriorityManagers)
-        {
-            manager.Reset();
-            manager.UpdateTime(atsc.CurrentSongBpmTime);
-        }
+        foreach (var manager in sortedPriorityManagers) manager.UpdateTime(atsc.CurrentSongBpmTime);
     }
 
     private void MapEventManager(BasicEventManager manager, int type)
@@ -252,7 +248,7 @@ public class PlatformDescriptor : MonoBehaviour
     private void HandleActionEventRedo(BeatmapAction action)
     {
         if (!HandleActionEventRedoNoNotify(action) || atsc.IsPlaying) return;
-        foreach (var manager in sortedPriorityManagers) manager.Reset();
+        // foreach (var manager in sortedPriorityManagers) manager.Reset();
         UpdateTime();
     }
 
@@ -389,7 +385,7 @@ public class PlatformDescriptor : MonoBehaviour
     private void HandleActionEventUndo(BeatmapAction action)
     {
         if (!HandleActionEventUndoNoNotify(action) || atsc.IsPlaying) return;
-        foreach (var manager in sortedPriorityManagers) manager.Reset();
+        // foreach (var manager in sortedPriorityManagers) manager.Reset();
         UpdateTime();
     }
 
