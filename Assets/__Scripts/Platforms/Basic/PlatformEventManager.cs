@@ -9,18 +9,15 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
 
     public abstract void OnEventTrigger(int type, BaseEvent evt);
 
-    private readonly Dictionary<int, List<List<PlatformEventState>>> platformTypeStateChunksMap = new();
-    private readonly Dictionary<int, PlatformEventState> platformTypeCurrentMap = new();
+    private readonly Dictionary<int, EventStateChunksContainer<PlatformEventState>> stateChunksContainerMap = new();
 
     public override void UpdateTime(float currentTime)
     {
-        foreach (var (type, states) in platformTypeStateChunksMap)
+        foreach (var container in stateChunksContainerMap.Values)
         {
-            var currentState = platformTypeCurrentMap[type];
-            var state = GetCurrentState(currentTime, currentState, states);
-
-            if (currentState == state) continue;
-            platformTypeCurrentMap[type] = state;
+            var state = GetCurrentState(currentTime, container.Current, container.Chunks);
+            if (container.Current == state) continue;
+            container.Current = state;
             UpdateObject(state);
         }
     }
@@ -38,13 +35,13 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
     {
         var baseEvents = events.ToList();
         var type = baseEvents.First().Type;
-        if (!platformTypeCurrentMap.ContainsKey(type))
+        if (!stateChunksContainerMap.ContainsKey(type))
         {
-            platformTypeStateChunksMap[type] = new List<List<PlatformEventState>>();
-            InitializeStates(platformTypeStateChunksMap[type]);
-            foreach (var state in platformTypeStateChunksMap[type].SelectMany(state => state))
-                state.BaseEvent.Type = type;
-            platformTypeCurrentMap[type] = GetStateAt(0, platformTypeStateChunksMap[type]);
+            var container = new EventStateChunksContainer<PlatformEventState>();
+            InitializeStates(container.Chunks);
+            foreach (var state in container.Chunks.SelectMany(state => state)) state.BaseEvent.Type = type;
+            container.Current = GetStateAt(0, container.Chunks);
+            stateChunksContainerMap[type] = container;
         }
 
         foreach (var evt in baseEvents) InsertEvent(evt);
@@ -54,20 +51,21 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
     {
         var state = CreateState(evt);
         state.StartTime = evt.SongBpmTime;
-        InsertState(state, platformTypeStateChunksMap[evt.Type]);
+        InsertState(state, stateChunksContainerMap[evt.Type].Chunks);
     }
 
     public override void RemoveEvent(BaseEvent evt)
     {
-        var state = RemoveState(evt, platformTypeStateChunksMap[evt.Type]);
-        if (platformTypeCurrentMap[evt.Type] != state) return;
-        platformTypeCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, platformTypeStateChunksMap[evt.Type]);
-        UpdateObject(platformTypeCurrentMap[evt.Type]);
+        var container = stateChunksContainerMap[evt.Type];
+        var state = RemoveState(evt, container.Chunks);
+        if (container.Current != state) return;
+        container.Current = GetStateAt(evt.SongBpmTime, container.Chunks);
+        UpdateObject(container.Current);
     }
 
     public override void Reset()
     {
-        foreach (var states in platformTypeCurrentMap.Values) UpdateObject(states);
+        foreach (var container in stateChunksContainerMap.Values) UpdateObject(container.Current);
     }
 }
 

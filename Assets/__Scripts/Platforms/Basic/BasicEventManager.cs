@@ -243,6 +243,13 @@ public enum EventPriority
     Light,
 }
 
+
+public class EventStateChunksContainer<T> where T : BasicEventState
+{
+    public T Current;
+    public readonly List<List<T>> Chunks = new();
+}
+
 public abstract class BasicEventState : IEquatable<BasicEventState>
 {
     private static int ID;

@@ -8,17 +8,16 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
     public abstract void UpdateOffset(bool isLeftEvent, BaseEvent evt);
 
     public abstract bool IsOverrideLightGroup();
-    public readonly List<List<RotatingLightState>> StateChunks = new();
-    public RotatingLightState CurrentState;
+    private readonly EventStateChunksContainer<RotatingLightState> stateChunksContainer = new();
 
     public void Awake() => Priority = EventPriority.ColorBoost;
 
     public override void UpdateTime(float currentTime)
     {
-        var state = GetCurrentState(currentTime, CurrentState, StateChunks);
+        var state = GetCurrentState(currentTime, stateChunksContainer.Current, stateChunksContainer.Chunks);
 
-        if (CurrentState == state) return;
-        CurrentState = state;
+        if (stateChunksContainer.Current == state) return;
+        stateChunksContainer.Current = state;
         UpdateObject(state);
     }
 
@@ -29,8 +28,8 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
-        InitializeStates(StateChunks);
-        CurrentState = GetStateAt(0, StateChunks);
+        InitializeStates(stateChunksContainer.Chunks);
+        stateChunksContainer.Current = GetStateAt(0, stateChunksContainer.Chunks);
         foreach (var evt in events) InsertEvent(evt);
     }
 
@@ -38,18 +37,18 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
     {
         var state = CreateState(evt);
         state.StartTime = evt.SongBpmTime;
-        InsertState(state, StateChunks);
+        InsertState(state, stateChunksContainer.Chunks);
     }
 
     public override void RemoveEvent(BaseEvent evt)
     {
-        var state = RemoveState(evt, StateChunks);
-        if (CurrentState != state) return;
-        CurrentState = GetStateAt(evt.SongBpmTime, StateChunks);
-        UpdateObject(CurrentState);
+        var state = RemoveState(evt, stateChunksContainer.Chunks);
+        if (stateChunksContainer.Current != state) return;
+        stateChunksContainer.Current = GetStateAt(evt.SongBpmTime, stateChunksContainer.Chunks);
+        UpdateObject(stateChunksContainer.Current);
     }
 
-    public override void Reset() => UpdateObject(CurrentState);
+    public override void Reset() => UpdateObject(stateChunksContainer.Current);
 }
 
 public class RotatingLightState : BasicEventState
