@@ -40,28 +40,28 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
     }
 
     protected T GetCurrentState(
-        float currentTime,
-        T currentState,
+        float currTime,
+        T currState,
         List<List<T>> chunks)
     {
         return Atsc.IsPlaying
-            ? UseCurrentOrNextState(currentTime, currentState, chunks)
-            : UseCurrentOrJumpState(currentTime, currentState, chunks);
+            ? UseCurrentOrNextState(currTime, currState, chunks)
+            : UseCurrentOrFindState(currTime, currState, chunks);
     }
 
     private T UseCurrentOrNextState(
-        float currentTime,
-        T currentState,
+        float currTime,
+        T currState,
         List<List<T>> chunks) =>
-        !(currentState.EndTime <= currentTime) ? currentState : GetStateAt(currentTime, chunks);
+        currTime < currState.EndTime ? currState : GetStateAt(currTime, chunks);
 
-    private T UseCurrentOrJumpState(
-        float currentTime,
-        T currentState,
+    private T UseCurrentOrFindState(
+        float currTime,
+        T currState,
         List<List<T>> chunks) =>
-        currentState.StartTime <= currentTime && currentTime < currentState.EndTime
-            ? currentState
-            : GetStateAt(currentTime, chunks);
+        currState.StartTime <= currTime && currTime < currState.EndTime
+            ? currState
+            : GetStateAt(currTime, chunks);
 
     protected T GetStateAt(float time, List<List<T>> chunks)
     {
@@ -164,7 +164,7 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
 
     protected void InsertState(T newState, List<List<T>> chunks)
     {
-        var (prevChunk, _, prevState) = GetOverlappingStateFrom(newState, chunks);
+        var (prevChunk, prevIndex, prevState) = GetOverlappingStateFrom(newState, chunks);
         var (nextChunk, _, nextState) = GetNextStateFrom(newState, chunks);
 
         UpdateToPreviousStateOnInsert(newState, prevState);
@@ -176,37 +176,62 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
         else if (nextChunk != chunk)
             chunk.Add(newState);
         else
-        {
-            var idx = chunk
-                .FindLastIndex(s =>
-                    s.StartTime <= newState.StartTime && newState.StartTime < s.EndTime);
-            chunk.Insert(
-                idx + 1,
-                newState);
-        }
+            chunk.Insert(prevIndex + 1, newState);
     }
 
-    protected virtual void UpdateToPreviousStateOnInsert(T newState, T previousState) =>
-        previousState.EndTime = newState.StartTime;
+    protected virtual void UpdateToPreviousStateOnInsert(T newState, T prevState) =>
+        prevState.EndTime = newState.StartTime;
 
     protected virtual void UpdateFromNextStateOnInsert(T newState, T nextState) =>
         newState.EndTime = nextState.StartTime;
 
-    private void RemoveState(T stateToRemove, List<List<T>> chunks)
+    protected virtual T UpdateToNextStateOnInsert(T newState, T nextState) => nextState;
+
+    protected void UpdateConsequentStateAfterInsertFrom(T currState, List<List<T>> chunks)
     {
+        var (chunkIdx, chunk) = GetChunk(chunks, currState.StartTime);
+        var index = chunk.IndexOf(currState) + 1;
+        while (chunkIdx < chunks.Count)
+        {
+            chunk = chunks[chunkIdx];
+            for (; index < chunk.Count; index++) chunk[index] = UpdateToNextStateOnInsert(currState, chunk[index]);
+            index = 0;
+            chunkIdx++;
+        }
+    }
+
+    protected virtual T UpdateToNextStateOnRemove(T currState, T nextState) => nextState;
+
+    protected void UpdateConsequentStateBeforeRemoveFrom(T currState, List<List<T>> chunks)
+    {
+        var (chunkIdx, chunk) = GetChunk(chunks, currState.StartTime);
+        var index = chunk.IndexOf(currState) + 1;
+        while (chunkIdx < chunks.Count)
+        {
+            chunk = chunks[chunkIdx];
+            for (; index < chunk.Count; index++) chunk[index] = UpdateToNextStateOnRemove(currState, chunk[index]);
+            index = 0;
+            chunkIdx++;
+        }
+    }
+
+    protected T RemoveState(T stateToRemove, List<List<T>> chunks)
+    {
+        var (_, currChunk) = GetChunk(chunks, stateToRemove.StartTime);
         var (_, _, prevState) = GetPreviousStateFrom(stateToRemove, chunks);
         var (_, _, nextState) = GetNextStateFrom(stateToRemove, chunks);
-        var (_, currChunk) = GetChunk(chunks, stateToRemove.StartTime);
 
         UpdatePreviousAndNextStateOnRemove(prevState, nextState, stateToRemove);
         currChunk.Remove(stateToRemove);
+
+        return stateToRemove;
     }
 
-    protected void RemoveState(BaseEvent evt, List<List<T>> chunks) => RemoveState(GetStateFrom(evt, chunks), chunks);
+    protected T RemoveState(BaseEvent evt, List<List<T>> chunks) => RemoveState(GetStateFrom(evt, chunks), chunks);
 
     protected virtual void
-        UpdatePreviousAndNextStateOnRemove(T previousState, T nextState, T currentState) =>
-        previousState.EndTime = nextState.StartTime;
+        UpdatePreviousAndNextStateOnRemove(T prevState, T nextState, T currState) =>
+        prevState.EndTime = nextState.StartTime;
 }
 
 public enum EventPriority
@@ -221,11 +246,11 @@ public enum EventPriority
 public abstract class BasicEventState : IEquatable<BasicEventState>
 {
     private static int ID;
+    private readonly int id = ID++; // maybe reference equality is better, idk
 
-    private readonly int id = ID++;
     public BaseEvent BaseEvent;
     public float StartTime;
     public float EndTime;
 
-    public bool Equals(BasicEventState other) => id == other.id;
+    public bool Equals(BasicEventState other) => id == other!.id;
 }

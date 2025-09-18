@@ -41,7 +41,11 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
         InsertState(state, StateChunks);
     }
 
-    public override void RemoveEvent(BaseEvent evt) => RemoveState(evt, StateChunks);
+    public override void RemoveEvent(BaseEvent evt)
+    {
+        var state = RemoveState(evt, StateChunks);
+        if (CurrentState == state) CurrentState = GetStateAt(evt.SongBpmTime, StateChunks);
+    }
 
     public override void Reset() => UpdateObject(CurrentState);
 }

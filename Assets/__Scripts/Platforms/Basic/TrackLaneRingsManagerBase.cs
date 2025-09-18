@@ -13,6 +13,7 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
 
     public abstract void HandlePositionEvent(RingRotationState state, BaseEvent evt, int index);
     public abstract void HandleRotationEvent(RingRotationState state, BaseEvent evt, int index);
+    public virtual float GetInitialRotation() => -45f;
     public virtual float GetRotationStep() => 0f;
     public virtual bool GetDirection() => false;
 
@@ -62,7 +63,14 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
     }
 
     protected override RingRotationState CreateState(BaseEvent evt) =>
-        new() { BaseEvent = evt, StartTime = float.MinValue, EndTime = float.MaxValue };
+        new()
+        {
+            BaseEvent = evt,
+            StartTime = float.MinValue,
+            EndTime = float.MaxValue,
+            RotationInitial = GetInitialRotation(),
+            RotationChange = GetRotationStep()
+        };
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
@@ -78,10 +86,10 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
     }
 
     protected override void UpdateToPreviousStateOnInsert(
-         RingRotationState newState,
-         RingRotationState previousState)
+        RingRotationState newState,
+        RingRotationState previousState)
     {
-        base.UpdateToPreviousStateOnInsert( newState,  previousState);
+        base.UpdateToPreviousStateOnInsert(newState, previousState);
         newState.RotationInitial = previousState.RotationInitial + previousState.RotationChange;
     }
 
@@ -93,39 +101,43 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
         state.Direction = GetDirection();
         if (evt.CustomData != null) state.Direction = evt.CustomDirection == 0;
         state.RotationChange = state.Direction ? state.RotationChange : -state.RotationChange;
-
+        
         InsertState(state, ringTypeStateChunksMap[evt.Type]);
+        UpdateConsequentStateAfterInsertFrom(state, ringTypeStateChunksMap[evt.Type]);
+    }
 
-        // need to update consequent event
-        // for (var i = ringTypeStateChunksMap[evt.Type].FindIndex(s => s.BaseEvent == evt) + 1;
-        //     i < ringTypeStateChunksMap[evt.Type].Count;
-        //     i++)
-        // {
-        //     var nextState = ringTypeStateChunksMap[evt.Type][i];
-        //     nextState.RotationInitial += state.RotationChange;
-        //     ringTypeStateChunksMap[evt.Type][i] = nextState;
-        // }
+    protected override RingRotationState UpdateToNextStateOnInsert(
+        RingRotationState currState,
+        RingRotationState nextState)
+    {
+        nextState = base.UpdateToNextStateOnInsert(currState, nextState);
+        nextState.RotationInitial += currState.RotationChange;
+        return nextState;
     }
 
     public override void RemoveEvent(BaseEvent evt)
     {
-        RemoveState(evt, ringTypeStateChunksMap[evt.Type]);
+        var state = GetStateFrom(evt, ringTypeStateChunksMap[evt.Type]);
+        UpdateConsequentStateBeforeRemoveFrom(state, ringTypeStateChunksMap[evt.Type]);
+        RemoveState(state, ringTypeStateChunksMap[evt.Type]);
+        
+        if (ringTypeCurrentMap[evt.Type] == state)
+            ringTypeCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, ringTypeStateChunksMap[evt.Type]);
+    }
 
-        // need to update consequent event
-        // for (var i = indexOf; i < ringTypeStateChunksMap[evt.Type].Count; i++)
-        // {
-        //     var nextState = ringTypeStateChunksMap[evt.Type][i];
-        //     nextState.RotationInitial -= state.RotationChange;
-        //     ringTypeStateChunksMap[evt.Type][i] = nextState;
-        // }
+    protected override RingRotationState UpdateToNextStateOnRemove(
+        RingRotationState currState,
+        RingRotationState nextState)
+    {
+        nextState = base.UpdateToNextStateOnRemove(currState, nextState);
+        nextState.RotationInitial -= currState.RotationChange;
+        return nextState;
     }
 
     public override void Reset()
     {
         foreach (var state in ringTypeCurrentMap.Values)
-        {
             UpdateObject(state, GetStateIndex(state, ringTypeStateChunksMap[state.BaseEvent.Type]));
-        }
     }
 }
 

@@ -348,7 +348,9 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
 
         foreach (var lightingObject in affectedLights)
         {
-            RemoveState(evt, StateChunksMap[lightingObject]);
+            var state = RemoveState(evt, StateChunksMap[lightingObject]);
+            if (CurrentStateMap[lightingObject] == state)
+                CurrentStateMap[lightingObject] = GetStateAt(evt.SongBpmTime, StateChunksMap[lightingObject]);
         }
     }
 

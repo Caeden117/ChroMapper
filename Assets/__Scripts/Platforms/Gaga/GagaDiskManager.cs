@@ -163,17 +163,17 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
     }
 
     private readonly Dictionary<int, List<List<GagaDiskState>>> gagaDiskStateChunksMap = new();
-    private readonly Dictionary<int, GagaDiskState> gagaDiskCurrentStateMap = new();
+    private readonly Dictionary<int, GagaDiskState> gagaDiskCurrentMap = new();
 
     public override void UpdateTime(float currentTime)
     {
         foreach (var (type, states) in gagaDiskStateChunksMap)
         {
-            var currentState = gagaDiskCurrentStateMap[type];
+            var currentState = gagaDiskCurrentMap[type];
             var state = GetCurrentState(currentTime, currentState, states);
 
             if (currentState == state) continue;
-            gagaDiskCurrentStateMap[type] = state;
+            gagaDiskCurrentMap[type] = state;
             UpdateObject(state.BaseEvent);
         }
     }
@@ -198,7 +198,7 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
             gagaDiskStateChunksMap[type] = new List<List<GagaDiskState>>();
             InitializeStates(gagaDiskStateChunksMap[type]);
             foreach (var state in gagaDiskStateChunksMap[type].SelectMany(state => state)) state.BaseEvent.Type = type;
-            gagaDiskCurrentStateMap[type] = GetStateAt(0, gagaDiskStateChunksMap[type]);
+            gagaDiskCurrentMap[type] = GetStateAt(0, gagaDiskStateChunksMap[type]);
         }
 
         foreach (var evt in events) InsertEvent(evt);
@@ -211,11 +211,16 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
         InsertState(state, gagaDiskStateChunksMap[evt.Type]);
     }
 
-    public override void RemoveEvent(BaseEvent evt) => RemoveState(evt, gagaDiskStateChunksMap[evt.Type]);
+    public override void RemoveEvent(BaseEvent evt)
+    {
+        var state = RemoveState(evt, gagaDiskStateChunksMap[evt.Type]);
+        if (gagaDiskCurrentMap[evt.Type] == state)
+            gagaDiskCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, gagaDiskStateChunksMap[evt.Type]);
+    }
 
     public override void Reset()
     {
-        foreach (var state in gagaDiskCurrentStateMap.Values) UpdateObject(state.BaseEvent);
+        foreach (var state in gagaDiskCurrentMap.Values) UpdateObject(state.BaseEvent);
     }
 }
 

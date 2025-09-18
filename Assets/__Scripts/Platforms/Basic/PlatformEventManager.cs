@@ -42,7 +42,8 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
         {
             platformTypeStateChunksMap[type] = new List<List<PlatformEventState>>();
             InitializeStates(platformTypeStateChunksMap[type]);
-            foreach (var state in platformTypeStateChunksMap[type].SelectMany(state => state)) state.BaseEvent.Type = type;
+            foreach (var state in platformTypeStateChunksMap[type].SelectMany(state => state))
+                state.BaseEvent.Type = type;
             platformTypeCurrentMap[type] = GetStateAt(0, platformTypeStateChunksMap[type]);
         }
 
@@ -56,11 +57,16 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
         InsertState(state, platformTypeStateChunksMap[evt.Type]);
     }
 
-    public override void RemoveEvent(BaseEvent evt) => RemoveState(evt, platformTypeStateChunksMap[evt.Type]);
+    public override void RemoveEvent(BaseEvent evt)
+    {
+        var state = RemoveState(evt, platformTypeStateChunksMap[evt.Type]);
+        if (platformTypeCurrentMap[evt.Type] == state)
+            platformTypeCurrentMap[evt.Type] = GetStateAt(evt.SongBpmTime, platformTypeStateChunksMap[evt.Type]);
+    }
 
     public override void Reset()
     {
-        foreach (var (type, states) in platformTypeStateChunksMap) UpdateObject(platformTypeCurrentMap[type]);
+        foreach (var states in platformTypeCurrentMap.Values) UpdateObject(states);
     }
 }
 
