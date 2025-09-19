@@ -99,14 +99,10 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
         UpdateConsequentStateAfterInsertFrom(state, container.Chunks);
     }
 
-    protected override RingRotationState UpdateToNextStateOnInsert(
+    protected override void UpdateToNextStateOnInsertConsequent(
         RingRotationState currState,
-        RingRotationState nextState)
-    {
-        nextState = base.UpdateToNextStateOnInsert(currState, nextState);
+        RingRotationState nextState) =>
         nextState.RotationInitial += currState.RotationChange;
-        return nextState;
-    }
 
     public override void RemoveEvent(BaseEvent evt)
     {

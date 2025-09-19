@@ -188,7 +188,9 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
         var (nextChunk, _, nextState) = GetNextStateFrom(newState, chunks);
 
         UpdateToPreviousStateOnInsert(newState, prevState);
+        UpdateFromPreviousStateAndNextStateOnInsert(newState, prevState, nextState);
         UpdateFromNextStateOnInsert(newState, nextState);
+        UpdateToNextStateOnInsert(newState, nextState);
 
         var (_, chunk) = GetChunk(chunks, newState.StartTime);
         if (prevChunk != chunk)
@@ -205,7 +207,11 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
     protected virtual void UpdateFromNextStateOnInsert(T newState, T nextState) =>
         newState.EndTime = nextState.StartTime;
 
-    protected virtual T UpdateToNextStateOnInsert(T newState, T nextState) => nextState;
+    protected virtual void UpdateToNextStateOnInsert(T newState, T prevState) { }
+
+    protected virtual void UpdateFromPreviousStateAndNextStateOnInsert(T newState, T prevState, T nextState) { }
+
+    protected virtual void UpdateToNextStateOnInsertConsequent(T newState, T nextState) { }
 
     protected void UpdateConsequentStateAfterInsertFrom(T currState, List<List<T>> chunks)
     {
@@ -214,7 +220,7 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
         while (chunkIdx < chunks.Count)
         {
             chunk = chunks[chunkIdx];
-            for (; index < chunk.Count; index++) chunk[index] = UpdateToNextStateOnInsert(currState, chunk[index]);
+            for (; index < chunk.Count; index++) UpdateToNextStateOnInsertConsequent(currState, chunk[index]);
             index = 0;
             chunkIdx++;
         }

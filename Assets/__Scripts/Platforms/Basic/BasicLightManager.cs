@@ -87,6 +87,13 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
         {
             stateChunksContainerMap[lightingObject] =
                 InitializeStates(new EventStateChunksContainer<BasicLightState>());
+            foreach (var state in stateChunksContainerMap[lightingObject].Chunks.SelectMany(chunk => chunk))
+            {
+                if (lightingObject.CanBeTurnedOff) continue;
+                state.CanBeTurnedOff = false;
+                state.BaseEvent.FloatValue = 1f;
+                state.StartAlpha = state.EndAlpha = GetNoTurnOffAlpha(state.BaseEvent.FloatValue);
+            }
         }
     }
 
@@ -157,6 +164,15 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
         }
     }
 
+    protected override void UpdateFromPreviousStateAndNextStateOnInsert(
+        BasicLightState newState,
+        BasicLightState previousState,
+        BasicLightState nextState)
+    {
+        if (newState.BaseEvent.IsOff && !nextState.BaseEvent.IsTransition)
+            newState.StartColor = newState.EndColor = previousState.StartColor;
+    }
+
     protected override void UpdateFromNextStateOnInsert(
         BasicLightState newState,
         BasicLightState nextState)
@@ -176,6 +192,13 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
             newState.Easing = Easing.Named(nextState.BaseEvent.CustomEasing ?? "easeLinear");
             newState.UseHSV = nextState.BaseEvent.CustomLerpType == "HSV";
         }
+    }
+
+    protected override void UpdateToNextStateOnInsert(
+        BasicLightState newState,
+        BasicLightState nextState)
+    {
+        if (nextState.BaseEvent.IsOff) nextState.StartColor = nextState.EndColor = newState.StartColor;
     }
 
     public override void InsertEvent(BaseEvent evt)
@@ -256,15 +279,14 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
             newState.EndColor = InferColorFromEvent(evt);
             newState.EndChromaColor = chromaColor;
             newState.EndAlpha = evt.FloatValue;
+            newState.CanBeTurnedOff = lightingObject.CanBeTurnedOff;
 
             if (evt.IsOff)
             {
                 if (lightingObject.CanBeTurnedOff)
                     newState.StartAlpha = newState.EndAlpha = 0f;
-                // The game uses its floatValue but it's still dimmer than what an On would be
-                // This factor is very quick eyeball probably not that accurate
                 else
-                    newState.StartAlpha = newState.EndAlpha = evt.FloatValue * (2f / 3f);
+                    newState.StartAlpha = newState.EndAlpha = GetNoTurnOffAlpha(evt.FloatValue);
             }
             else if (evt.IsFlash)
             {
@@ -279,7 +301,7 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
                 newState.StartAlpha = evt.FloatValue * 1.2f;
                 newState.EndAlpha = 0f;
                 newState.Easing = Easing.Exponential.Out;
-                if (!lightingObject.CanBeTurnedOff) newState.EndAlpha = evt.FloatValue * (2f / 3f);
+                if (!lightingObject.CanBeTurnedOff) newState.EndAlpha = GetNoTurnOffAlpha(evt.FloatValue);
             }
 
             if (chromaGradientTimes.Count > 0)
@@ -360,6 +382,12 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
                 previousState.EndTimeAlpha = nextState.StartTime;
                 previousState.EndAlpha = previousState.StartAlpha;
             }
+
+            if (previousState.BaseEvent.IsOff && !previousState.CanBeTurnedOff)
+                previousState.StartAlpha =
+                    previousState.EndAlpha = GetNoTurnOffAlpha(previousState.BaseEvent.FloatValue);
+
+            if (nextState.BaseEvent.IsOff && !nextState.CanBeTurnedOff) nextState.StartColor = previousState.EndColor;
         }
     }
 
@@ -407,6 +435,8 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
         public Func<float, float> Easing;
     }
 
+    private static float GetNoTurnOffAlpha(float value) => value * 2f / 3f;
+
     [Serializable]
     public class LightGroup
     {
@@ -419,18 +449,17 @@ public class BasicLightState : BasicEventState
     public float StartTimeColor; // this is supposedly the same as start time, special case for chroma gradient
     public LightColor StartColor;
     public Color? StartChromaColor;
-    public float StartAlpha = 1f;
+    public float StartAlpha;
 
     public float EndTimeAlpha; // similarly this match next start, otherwise used to interpolate flash/fade
     public float EndTimeColor; // also same case above, only special case for chroma gradient
     public LightColor EndColor;
     public Color? EndChromaColor;
-    public float EndAlpha = 1f;
+    public float EndAlpha;
 
     public Func<float, float> Easing = global::Easing.Linear;
     public bool UseHSV;
+    public bool CanBeTurnedOff = true;
 
-    public BasicLightState(BaseEvent evt) : base(evt)
-    {
-    }
+    public BasicLightState(BaseEvent evt) : base(evt) { }
 }
