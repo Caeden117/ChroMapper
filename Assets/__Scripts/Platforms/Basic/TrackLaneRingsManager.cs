@@ -116,7 +116,7 @@ public class TrackLaneRingsManager : TrackLaneRingsManagerBase
             evt);
     }
 
-    public override float GetRotationStep() => RotationEffect.RotationStep;
+    public override float GetRotationStep() => RotationEffect?.RotationStep ?? 0f;
     public override bool GetDirection() => Random.value < 0.5f;
 
     public override Object[] GetToDestroy() => new Object[] { this, RotationEffect };

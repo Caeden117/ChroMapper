@@ -97,7 +97,6 @@ public class PlatformDescriptor : MonoBehaviour
 
     private void HandleLevelLoaded()
     {
-        Debug.Log("HandleLevelLoaded");
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
         atsc = rotationCallback.Atsc;
         if (RotationController != null)
