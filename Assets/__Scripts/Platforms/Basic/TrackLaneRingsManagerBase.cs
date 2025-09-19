@@ -21,11 +21,9 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
         stateChunksContainerMap.Clear();
         foreach (var type in new List<int> { 8, 9 }.Where(type => !stateChunksContainerMap.ContainsKey(type)))
         {
-            var container = new EventStateChunksContainer<RingRotationState>();
-            InitializeStates(container.Chunks);
-            foreach (var state in container.Chunks.SelectMany(chunk => chunk)) state.BaseEvent.Type = type;
-            container.Current = GetStateAt(0, container.Chunks);
-            stateChunksContainerMap[type] = container;
+            stateChunksContainerMap[type] = InitializeStates(new EventStateChunksContainer<RingRotationState>());
+            foreach (var state in stateChunksContainerMap[type].Chunks.SelectMany(chunk => chunk))
+                state.BaseEvent.Type = type;
         }
     }
 
@@ -33,11 +31,10 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
     {
         foreach (var container in stateChunksContainerMap.Values)
         {
-            var state = GetCurrentState(currentTime, container.Current, container.Chunks);
-            
-            if (container.Current == state) continue;
-            container.Current = state;
-            UpdateObject(state);
+            var previousState = container.CurrentState;
+            SetCurrentState(currentTime, Atsc.IsPlaying, container);
+            if (container.CurrentState == previousState) continue;
+            UpdateObject(container.CurrentState);
         }
     }
 
@@ -121,13 +118,13 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
     public override void RemoveEvent(BaseEvent evt)
     {
         var container = stateChunksContainerMap[evt.Type];
-        var state = GetStateFrom(evt, container.Chunks);
+        var (_, _, state) = GetStateFrom(evt, container.Chunks);
         UpdateConsequentStateBeforeRemoveFrom(state, container.Chunks);
         RemoveState(state, container.Chunks);
 
-        if (container.Current != state) return;
-        container.Current = GetStateAt(evt.SongBpmTime, container.Chunks);
-        UpdateObject(container.Current);
+        if (container.CurrentState != state) return;
+        SetStateAt(evt.SongBpmTime, container);
+        UpdateObject(container.CurrentState);
     }
 
     protected override RingRotationState UpdateToNextStateOnRemove(
@@ -141,7 +138,7 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
 
     public override void Reset()
     {
-        foreach (var ringType in stateChunksContainerMap.Values) UpdateObject(ringType.Current);
+        foreach (var ringType in stateChunksContainerMap.Values) UpdateObject(ringType.CurrentState);
     }
 }
 

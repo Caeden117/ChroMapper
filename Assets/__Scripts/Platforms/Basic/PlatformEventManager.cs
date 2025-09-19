@@ -17,10 +17,10 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
     {
         foreach (var container in stateChunksContainerMap.Values)
         {
-            var state = GetCurrentState(currentTime, container.Current, container.Chunks);
-            if (container.Current == state) continue;
-            container.Current = state;
-            UpdateObject(state);
+            var previousState = container.CurrentState;
+            SetCurrentState(currentTime, Atsc.IsPlaying, container);
+            if (container.CurrentState == previousState) continue;
+            UpdateObject(container.CurrentState);
         }
     }
 
@@ -39,11 +39,9 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
         var type = baseEvents.First().Type;
         if (!stateChunksContainerMap.ContainsKey(type))
         {
-            var container = new EventStateChunksContainer<PlatformEventState>();
-            InitializeStates(container.Chunks);
-            foreach (var state in container.Chunks.SelectMany(state => state)) state.BaseEvent.Type = type;
-            container.Current = GetStateAt(0, container.Chunks);
-            stateChunksContainerMap[type] = container;
+            stateChunksContainerMap[type] = InitializeStates(new EventStateChunksContainer<PlatformEventState>());
+            foreach (var state in stateChunksContainerMap[type].Chunks.SelectMany(state => state))
+                state.BaseEvent.Type = type;
         }
 
         foreach (var evt in baseEvents) InsertEvent(evt);
@@ -60,14 +58,14 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
     {
         var container = stateChunksContainerMap[evt.Type];
         var state = RemoveState(evt, container.Chunks);
-        if (container.Current != state) return;
-        container.Current = GetStateAt(evt.SongBpmTime, container.Chunks);
-        UpdateObject(container.Current);
+        if (container.CurrentState != state) return;
+        SetStateAt(evt.SongBpmTime, container);
+        UpdateObject(container.CurrentState);
     }
 
     public override void Reset()
     {
-        foreach (var container in stateChunksContainerMap.Values) UpdateObject(container.Current);
+        foreach (var container in stateChunksContainerMap.Values) UpdateObject(container.CurrentState);
     }
 }
 

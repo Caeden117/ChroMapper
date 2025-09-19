@@ -29,7 +29,7 @@ public class PlatformDescriptor : MonoBehaviour
     public PlatformColorScheme ColorScheme;
 
     [FormerlySerializedAs("DefaultColors")] [FormerlySerializedAs("defaultColors")]
-    public PlatformColorScheme DefaultColorScheme = new PlatformColorScheme();
+    public PlatformColorScheme DefaultColorScheme = new();
 
     [Tooltip(
         "-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17 | 3 = Gaga Lanes")]
@@ -121,6 +121,7 @@ public class PlatformDescriptor : MonoBehaviour
 
         BasicLightManager.FlashTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FlashTimeSecond);
         BasicLightManager.FadeTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FadeTimeSecond);
+        BasicLightManager.ColorScheme = ColorScheme;
 
         sortedPriorityManagers.Clear();
         eventTypeManagerMap.Clear();
@@ -129,7 +130,6 @@ public class PlatformDescriptor : MonoBehaviour
         {
             var manager = LightingManagers[type];
             if (manager is null) continue;
-            manager.SetColors(ColorScheme);
             colorBoostManager.OnStateChange += manager.ToggleBoost;
             MapEventManager(manager, type);
         }

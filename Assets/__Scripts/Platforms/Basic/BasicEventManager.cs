@@ -20,77 +20,104 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
 {
     private const float chunkByTime = 10f;
 
-    private static (int index, List<T> chunk) GetChunk(List<List<T>> chunks, float v)
+    private static (int index, List<T> chunk) GetChunk(List<List<T>> chunks, float time)
     {
-        var index = Mathf.Clamp(Mathf.FloorToInt(v / chunkByTime), 0, chunks.Count - 1);
+        var index = Mathf.Clamp(Mathf.FloorToInt(time / chunkByTime), 0, chunks.Count - 1);
         return (index, chunks[index]);
     }
 
     protected abstract T CreateState(BaseEvent evt);
 
-    protected void InitializeStates(List<List<T>> chunks)
+    protected EventStateChunksContainer<T> InitializeStates(EventStateChunksContainer<T> container)
     {
-        chunks.Clear();
+        container.Chunks.Clear();
         for (var time = 0f; time < Atsc.SongAudioSource.clip.length; time += Atsc.GetSecondsFromBeat(chunkByTime))
-            chunks.Add(new List<T>());
+            container.Chunks.Add(new List<T>());
+
         var start = CreateState(new BaseEvent());
         var end = CreateState(new BaseEvent());
-        end.StartTime = start.EndTime;
-        chunks[0].Add(start);
-        chunks[^1].Add(end);
+        end.StartTime = end.EndTime;
+        container.Chunks[0].Add(start);
+        container.Chunks[^1].Add(end);
+
+        SetStateAt(0, container);
+        return container;
     }
 
-    protected T GetCurrentState(
-        float currTime,
-        T currState,
-        List<List<T>> chunks)
+    protected void SetCurrentState(float time, bool playing, EventStateChunksContainer<T> container)
     {
-        return Atsc.IsPlaying
-            ? UseCurrentOrNextState(currTime, currState, chunks)
-            : UseCurrentOrFindState(currTime, currState, chunks);
+        if (playing)
+            UseCurrentOrNextState(time, container);
+        else
+            UseCurrentOrFindState(time, container);
     }
 
-    private T UseCurrentOrNextState(
-        float currTime,
-        T currState,
-        List<List<T>> chunks) =>
-        currTime < currState.EndTime ? currState : GetStateAt(currTime, chunks);
+    private static void UseCurrentOrNextState(float time, EventStateChunksContainer<T> container)
+    {
+        if (time < container.CurrentState.EndTime) return;
+        SetNextState(time, container);
+    }
 
-    private T UseCurrentOrFindState(
-        float currTime,
-        T currState,
-        List<List<T>> chunks) =>
-        currState.StartTime <= currTime && currTime < currState.EndTime
-            ? currState
-            : GetStateAt(currTime, chunks);
+    private static void SetNextState(float time, EventStateChunksContainer<T> container)
+    {
+        while (container.CurrentChunkIndex < container.Chunks.Count)
+        {
+            var chunk = container.Chunks[container.CurrentChunkIndex];
+            while (container.CurrentLocalIndex < chunk.Count)
+            {
+                container.CurrentState = chunk[container.CurrentLocalIndex];
+                if (container.CurrentState.StartTime <= time && time < container.CurrentState.EndTime) return;
+                container.CurrentLocalIndex++;
+            }
 
-    protected T GetStateAt(float time, List<List<T>> chunks)
+            container.CurrentLocalIndex = 0;
+            container.CurrentChunkIndex++;
+        }
+    }
+
+    private static void UseCurrentOrFindState(float time, EventStateChunksContainer<T> container)
+    {
+        if (container.CurrentState.StartTime <= time && time < container.CurrentState.EndTime) return;
+        SetStateAt(time, container);
+    }
+
+    protected static void SetStateAt(float time, EventStateChunksContainer<T> container)
+    {
+        var (chunkIndex, localIndex, state) = GetStateAt(time, container.Chunks);
+        container.CurrentChunkIndex = chunkIndex;
+        container.CurrentLocalIndex = localIndex;
+        container.CurrentState = state;
+    }
+
+    // could be faster with bsearch shenanigan
+    private static (int chunkIndex, int localIndex, T state) GetStateAt(float time, List<List<T>> chunks)
     {
         var (chunkIdx, chunk) = GetChunk(chunks, time);
-        var idx = chunk
-            .FindLastIndex(s =>
-                s.StartTime <= time && time < s.EndTime);
+        var idx = BinarySearch(chunk, time);
 
         if (idx == -1)
         {
-            while (--chunkIdx >= 0)
+            chunkIdx--;
+            while (chunkIdx >= 0)
             {
                 chunk = chunks[chunkIdx];
-                if (chunks[chunkIdx].Count != 0) break;
+                idx = BinarySearch(chunk, time);
+
+                if (idx != -1) break;
+                chunkIdx--;
             }
 
-            idx = chunk.Count - 1;
+            // if for whatever reason we cannot find it at all at the first chunk, just default to first.
+            if (idx == -1) idx = 0;
         }
 
-        return chunk[idx];
+        return (chunkIdx, idx, chunk[idx]);
     }
 
-    protected T GetStateFrom(
-        BaseEvent evt,
-        List<List<T>> chunks) =>
+    protected static (int chunkIndex, int localIndex, T state) GetStateFrom(BaseEvent evt, List<List<T>> chunks) =>
         GetStateAt(evt.SongBpmTime, chunks);
 
-    protected int GetStateIndex(T state, List<List<T>> chunks)
+    protected static int GetStateIndex(T state, List<List<T>> chunks)
     {
         var (chunkIdx, chunk) = GetChunk(chunks, state.StartTime);
         var idx = chunk.IndexOf(state);
@@ -98,13 +125,10 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
         return idx;
     }
 
-    private (List<T> chunk, int index, T state) GetPreviousStateFrom(T state, List<List<T>> chunks)
+    private static (List<T> chunk, int index, T state) GetPreviousStateFrom(T state, List<List<T>> chunks)
     {
         var (chunkIdx, chunk) = GetChunk(chunks, state.StartTime);
-        var idx = chunk
-                .FindLastIndex(s =>
-                    s.StartTime <= state.StartTime && state.StartTime < s.EndTime)
-            - 1;
+        var idx = BinarySearch(chunk, state.StartTime) - 1;
 
         if (idx < 0)
         {
@@ -120,12 +144,10 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
         return (chunk, idx, chunk[idx]);
     }
 
-    private (List<T> chunk, int index, T state) GetOverlappingStateFrom(T state, List<List<T>> chunks)
+    private static (List<T> chunk, int index, T state) GetOverlappingStateFrom(T state, List<List<T>> chunks)
     {
         var (chunkIdx, chunk) = GetChunk(chunks, state.StartTime);
-        var idx = chunk
-            .FindLastIndex(s =>
-                s.StartTime <= state.StartTime && state.StartTime < s.EndTime);
+        var idx = BinarySearch(chunk, state.StartTime);
 
         if (idx < 0)
         {
@@ -141,13 +163,10 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
         return (chunk, idx, chunk[idx]);
     }
 
-    private (List<T> chunk, int index, T state) GetNextStateFrom(T state, List<List<T>> chunks)
+    private static (List<T> chunk, int index, T state) GetNextStateFrom(T state, List<List<T>> chunks)
     {
         var (chunkIdx, chunk) = GetChunk(chunks, state.StartTime);
-        var idx = chunk
-                .FindLastIndex(s =>
-                    s.StartTime <= state.StartTime && state.StartTime < s.EndTime)
-            + 1;
+        var idx = BinarySearch(chunk, state.StartTime) + 1;
 
         if (idx == -1 || idx == chunk.Count)
         {
@@ -228,11 +247,33 @@ public abstract class BasicEventManager<T> : BasicEventManager where T : BasicEv
         return stateToRemove;
     }
 
-    protected T RemoveState(BaseEvent evt, List<List<T>> chunks) => RemoveState(GetStateFrom(evt, chunks), chunks);
+    protected T RemoveState(BaseEvent evt, List<List<T>> chunks)
+    {
+        var (_, _, state) = GetStateFrom(evt, chunks);
+        return RemoveState(state, chunks);
+    }
 
     protected virtual void
         UpdatePreviousAndNextStateOnRemove(T prevState, T nextState, T currState) =>
         prevState.EndTime = nextState.StartTime;
+
+    private static int BinarySearch(List<T> chunk, float time)
+    {
+        var right = chunk.Count - 1;
+        var left = 0;
+
+        while (left <= right)
+        {
+            var mid = (left + right) / 2;
+            if (chunk[mid].StartTime <= time && time < chunk[mid].EndTime) return mid;
+            if (chunk[mid].StartTime <= time)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+
+        return -1;
+    }
 }
 
 public enum EventPriority
@@ -247,7 +288,9 @@ public enum EventPriority
 
 public class EventStateChunksContainer<T> where T : BasicEventState
 {
-    public T Current;
+    public T CurrentState;
+    public int CurrentChunkIndex;
+    public int CurrentLocalIndex;
     public readonly List<List<T>> Chunks = new();
 }
 

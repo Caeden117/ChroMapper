@@ -8,8 +8,8 @@ using UnityEngine.Serialization;
 
 public class BasicLightManager : BasicEventManager<BasicLightState>
 {
-    public PlatformColorScheme ColorScheme;
-    private bool useBoost;
+    public static PlatformColorScheme ColorScheme;
+    private static bool useBoost;
 
     [FormerlySerializedAs("disableCustomInitialization")]
     public bool DisableCustomInitialization;
@@ -49,15 +49,13 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
         if (!DisableCustomInitialization)
         {
             foreach (var e in GetComponentsInChildren<LightingObject>())
-            {
                 // No, stop that. Enforcing Light ID breaks Glass Desert
-                if (!e.OverrideLightGroup) ControllingLights.Add(e);
-            }
+                if (!e.OverrideLightGroup)
+                    ControllingLights.Add(e);
 
             foreach (var e in GetComponentsInChildren<RotatingLightsManagerBase>())
-            {
-                if (!e.IsOverrideLightGroup()) RotatingLights.Add(e);
-            }
+                if (!e.IsOverrideLightGroup())
+                    RotatingLights.Add(e);
 
             var lightIdOrder = ControllingLights
                 .OrderBy(x => x.LightID)
@@ -87,47 +85,24 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
         stateChunksContainerMap.Clear();
         foreach (var lightingObject in ControllingLights)
         {
-            var container = new EventStateChunksContainer<BasicLightState>();
-            InitializeStates(container.Chunks);
-            container.Current = GetStateAt(0, container.Chunks);
-            stateChunksContainerMap[lightingObject] = container;
+            stateChunksContainerMap[lightingObject] =
+                InitializeStates(new EventStateChunksContainer<BasicLightState>());
         }
     }
 
     public override void UpdateTime(float currentTime)
     {
-        foreach (var lightingObject in ControllingLights)
+        foreach (var (lightingObject, container) in stateChunksContainerMap)
         {
-            var container = stateChunksContainerMap[lightingObject];
-            var state = GetCurrentState(currentTime, container.Current, container.Chunks);
-
-            if (container.Current != state)
-            {
-                UpdateObject(lightingObject, state);
-                container.Current = state;
-            }
-
+            var previousState = container.CurrentState;
+            SetCurrentState(currentTime, Atsc.IsPlaying, container);
+            if (container.CurrentState != previousState) UpdateObject(lightingObject, container.CurrentState);
             lightingObject.UpdateTime(currentTime);
         }
     }
 
-    private void UpdateObject(LightingObject lightingObject, BasicLightState state)
-    {
-        lightingObject.UpdateStartTimeAlpha(state.StartTime);
-        lightingObject.UpdateStartTimeColor(state.StartTimeColor);
-        lightingObject.UpdateStartAlpha(state.StartAlpha);
-        lightingObject.UpdateStartColor(GetStartColorFromState(lightingObject, state));
-
-        lightingObject.UpdateEndTimeAlpha(state.EndTimeAlpha);
-        lightingObject.UpdateEndTimeColor(state.EndTimeColor);
-        lightingObject.UpdateEndAlpha(state.EndAlpha);
-        lightingObject.UpdateEndColor(GetEndColorFromState(lightingObject, state));
-
-        lightingObject.UpdateUseHSV(state.UseHSV);
-        lightingObject.UpdateEasing(state.Easing);
-    }
-
-    public void SetColors(PlatformColorScheme colorScheme) => ColorScheme = colorScheme;
+    private static void UpdateObject(LightingObject lightingObject, BasicLightState state) =>
+        lightingObject.UpdateFromState(state);
 
     public void ToggleBoost(bool boost)
     {
@@ -136,10 +111,9 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
         {
             lightingObject.UpdateBoostState(boost);
             if (!stateChunksContainerMap.TryGetValue(lightingObject, out var container)) continue;
-            lightingObject.UpdateStartColor(
-                GetStartColorFromState(lightingObject, container.Current));
-            lightingObject.UpdateEndColor(
-                GetEndColorFromState(lightingObject, container.Current));
+            lightingObject.UpdateStartAndEndColor(
+                GetStartColorFromState(lightingObject, container.CurrentState),
+                GetEndColorFromState(lightingObject, container.CurrentState));
         }
     }
 
@@ -347,11 +321,11 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
 
         foreach (var lightingObject in affectedLights)
         {
-            var lightId = stateChunksContainerMap[lightingObject];
-            var state = RemoveState(evt, lightId.Chunks);
-            if (lightId.Current != state) continue;
-            lightId.Current = GetStateAt(evt.SongBpmTime, lightId.Chunks);
-            UpdateObject(lightingObject, lightId.Current);
+            var container = stateChunksContainerMap[lightingObject];
+            var state = RemoveState(evt, container.Chunks);
+            if (container.CurrentState != state) continue;
+            SetStateAt(evt.SongBpmTime, container);
+            UpdateObject(lightingObject, container.CurrentState);
         }
     }
 
@@ -394,21 +368,21 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
     public override void Reset()
     {
         foreach (var lightingObject in stateChunksContainerMap.Keys)
-            UpdateObject(lightingObject, stateChunksContainerMap[lightingObject].Current);
+            UpdateObject(lightingObject, stateChunksContainerMap[lightingObject].CurrentState);
     }
 
     private LightColor InferColorFromEvent(BaseEvent evt) =>
         evt.IsBlue ? LightColor.Blue : evt.IsRed ? LightColor.Red : LightColor.White;
 
-    private Color GetStartColorFromState(LightingObject lightingObject, BasicLightState state) =>
+    public static Color GetStartColorFromState(LightingObject lightingObject, BasicLightState state) =>
         (state.StartChromaColor ?? GetColorFromScheme(state.StartColor, lightingObject.UseInvertedPlatformColors))
         .Multiply(HDRIntensity);
 
-    private Color GetEndColorFromState(LightingObject lightingObject, BasicLightState state) =>
+    public static Color GetEndColorFromState(LightingObject lightingObject, BasicLightState state) =>
         (state.EndChromaColor ?? GetColorFromScheme(state.EndColor, lightingObject.UseInvertedPlatformColors))
         .Multiply(HDRIntensity);
 
-    private Color GetColorFromScheme(LightColor value, bool useInvertedPlatformColors)
+    private static Color GetColorFromScheme(LightColor value, bool useInvertedPlatformColors)
     {
         return value switch
         {

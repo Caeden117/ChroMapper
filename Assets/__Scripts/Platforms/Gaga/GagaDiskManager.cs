@@ -177,11 +177,8 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
                 19
             }.Where(type => !stateChunksContainerMap.ContainsKey(type)))
         {
-            var container = new EventStateChunksContainer<GagaDiskState>();
-            InitializeStates(container.Chunks);
-            foreach (var state in container.Chunks.SelectMany(state => state)) state.BaseEvent.Type = type;
-            container.Current = GetStateAt(0, container.Chunks);
-            stateChunksContainerMap[type] = container;
+            stateChunksContainerMap[type] = InitializeStates(new EventStateChunksContainer<GagaDiskState>());
+            foreach (var state in stateChunksContainerMap[type].Chunks.SelectMany(state => state)) state.BaseEvent.Type = type;
         }
     }
 
@@ -189,11 +186,10 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
     {
         foreach (var container in stateChunksContainerMap.Values)
         {
-            var state = GetCurrentState(currentTime, container.Current, container.Chunks);
-
-            if (container.Current == state) continue;
-            container.Current = state;
-            UpdateObject(state.BaseEvent);
+            var previousState = container.CurrentState;
+            SetCurrentState(currentTime, Atsc.IsPlaying, container);
+            if (container.CurrentState == previousState) continue;
+            UpdateObject(container.CurrentState.BaseEvent);
         }
     }
 
@@ -218,14 +214,14 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
     {
         var container = stateChunksContainerMap[evt.Type];
         var state = RemoveState(evt, container.Chunks);
-        if (container.Current != state) return;
-        container.Current = GetStateAt(evt.SongBpmTime, container.Chunks);
-        UpdateObject(container.Current.BaseEvent);
+        if (container.CurrentState != state) return;
+        SetStateAt(evt.SongBpmTime, container);
+        UpdateObject(container.CurrentState.BaseEvent);
     }
 
     public override void Reset()
     {
-        foreach (var container in stateChunksContainerMap.Values) UpdateObject(container.Current.BaseEvent);
+        foreach (var container in stateChunksContainerMap.Values) UpdateObject(container.CurrentState.BaseEvent);
     }
 }
 
