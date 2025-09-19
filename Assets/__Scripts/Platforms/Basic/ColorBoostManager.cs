@@ -28,8 +28,7 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
         OnStateChange(Boost);
     }
 
-    protected override ColorBoostState CreateState(BaseEvent evt) =>
-        new() { BaseEvent = evt, StartTime = float.MinValue, EndTime = float.MaxValue };
+    protected override ColorBoostState CreateState(BaseEvent evt) => new(evt);
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
@@ -59,4 +58,8 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
 public class ColorBoostState : BasicEventState
 {
     public bool Boost;
+
+    public ColorBoostState(BaseEvent evt) : base(evt)
+    {
+    }
 }

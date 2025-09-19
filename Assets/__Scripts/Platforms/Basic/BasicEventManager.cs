@@ -299,9 +299,11 @@ public abstract class BasicEventState : IEquatable<BasicEventState>
     private static int ID;
     private readonly int id = ID++; // maybe reference equality is better, idk
 
+    protected BasicEventState(BaseEvent evt) => BaseEvent = evt;
+
     public BaseEvent BaseEvent;
-    public float StartTime;
-    public float EndTime;
+    public float StartTime = float.MinValue;
+    public float EndTime = float.MaxValue;
 
     public bool Equals(BasicEventState other) => id == other!.id;
 }

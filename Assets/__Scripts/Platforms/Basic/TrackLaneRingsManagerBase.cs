@@ -70,14 +70,7 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
     }
 
     protected override RingRotationState CreateState(BaseEvent evt) =>
-        new()
-        {
-            BaseEvent = evt,
-            StartTime = float.MinValue,
-            EndTime = float.MaxValue,
-            RotationInitial = GetInitialRotation(),
-            RotationChange = GetRotationStep()
-        };
+        new(evt) { RotationInitial = GetInitialRotation(), RotationChange = GetRotationStep() };
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
@@ -148,6 +141,10 @@ public class RingRotationState : BasicEventState
     public float RotationInitial;
     public float RotationChange;
     public bool Direction;
+
+    public RingRotationState(BaseEvent evt) : base(evt)
+    {
+    }
 }
 
 public enum RingFilter

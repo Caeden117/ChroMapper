@@ -24,8 +24,7 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
 
     private void UpdateObject(RotatingLightState state) => UpdateOffset(true, state.BaseEvent);
 
-    protected override RotatingLightState CreateState(BaseEvent evt) =>
-        new() { BaseEvent = evt, StartTime = float.MinValue, EndTime = float.MaxValue };
+    protected override RotatingLightState CreateState(BaseEvent evt) => new(evt);
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
@@ -52,4 +51,7 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
 
 public class RotatingLightState : BasicEventState
 {
+    public RotatingLightState(BaseEvent evt) : base(evt)
+    {
+    }
 }

@@ -128,8 +128,7 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
     //    }
     //}
 
-    protected override BasicLightState CreateState(BaseEvent evt) =>
-        new() { BaseEvent = evt, StartTime = float.MinValue, EndTime = float.MaxValue, Easing = Easing.Linear };
+    protected override BasicLightState CreateState(BaseEvent evt) => new(evt);
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
@@ -420,14 +419,18 @@ public class BasicLightState : BasicEventState
     public float StartTimeColor; // this is supposedly the same as start time, special case for chroma gradient
     public LightColor StartColor;
     public Color? StartChromaColor;
-    public float StartAlpha;
+    public float StartAlpha = 1f;
 
     public float EndTimeAlpha; // similarly this match next start, otherwise used to interpolate flash/fade
     public float EndTimeColor; // also same case above, only special case for chroma gradient
     public LightColor EndColor;
     public Color? EndChromaColor;
-    public float EndAlpha;
+    public float EndAlpha = 1f;
 
-    public Func<float, float> Easing;
+    public Func<float, float> Easing = global::Easing.Linear;
     public bool UseHSV;
+
+    public BasicLightState(BaseEvent evt) : base(evt)
+    {
+    }
 }

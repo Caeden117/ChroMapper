@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
-using UnityEngine;
 
 public class GagaDiskManager : BasicEventManager<GagaDiskState>
 {
@@ -178,7 +177,8 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
             }.Where(type => !stateChunksContainerMap.ContainsKey(type)))
         {
             stateChunksContainerMap[type] = InitializeStates(new EventStateChunksContainer<GagaDiskState>());
-            foreach (var state in stateChunksContainerMap[type].Chunks.SelectMany(state => state)) state.BaseEvent.Type = type;
+            foreach (var state in stateChunksContainerMap[type].Chunks.SelectMany(state => state))
+                state.BaseEvent.Type = type;
         }
     }
 
@@ -195,8 +195,7 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
 
     private void UpdateObject(BaseEvent evt) => HandlePositionEvent(evt);
 
-    protected override GagaDiskState CreateState(BaseEvent evt) =>
-        new() { BaseEvent = evt, StartTime = float.MinValue, EndTime = float.MaxValue };
+    protected override GagaDiskState CreateState(BaseEvent evt) => new(evt);
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
@@ -227,4 +226,7 @@ public class GagaDiskManager : BasicEventManager<GagaDiskState>
 
 public class GagaDiskState : BasicEventState
 {
+    public GagaDiskState(BaseEvent evt) : base(evt)
+    {
+    }
 }

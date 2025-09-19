@@ -30,8 +30,7 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
         OnEventTrigger(evt.Type, evt);
     }
 
-    protected override PlatformEventState CreateState(BaseEvent evt) =>
-        new() { BaseEvent = evt, StartTime = float.MinValue, EndTime = float.MaxValue };
+    protected override PlatformEventState CreateState(BaseEvent evt) => new(evt);
 
     public override void BuildFromEvents(IEnumerable<BaseEvent> events)
     {
@@ -71,4 +70,7 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
 
 public class PlatformEventState : BasicEventState
 {
+    public PlatformEventState(BaseEvent evt) : base(evt)
+    {
+    }
 }
