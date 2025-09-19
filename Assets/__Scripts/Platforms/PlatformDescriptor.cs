@@ -62,7 +62,8 @@ public class PlatformDescriptor : MonoBehaviour
         BeatmapActionContainer.ActionCreatedEvent += HandleActionEventRedo;
         BeatmapActionContainer.ActionRedoEvent += HandleActionEventRedo;
         BeatmapActionContainer.ActionUndoEvent += HandleActionEventUndo;
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent += HandleLevelLoaded;
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += HandleLevelLoaded;
     }
 
     private void Start() => UpdateShinyMaterialSettings();
@@ -72,8 +73,9 @@ public class PlatformDescriptor : MonoBehaviour
         BeatmapActionContainer.ActionCreatedEvent -= HandleActionEventRedo;
         BeatmapActionContainer.ActionRedoEvent -= HandleActionEventRedo;
         BeatmapActionContainer.ActionUndoEvent -= HandleActionEventUndo;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent -= HandleLevelLoaded;
         if (atsc != null) atsc.TimeChanged -= UpdateTime;
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= HandleLevelLoaded;
 
         foreach (var manager in LightingManagers.Where(manager => manager != null))
             colorBoostManager.OnStateChange -= manager.ToggleBoost;
@@ -93,8 +95,9 @@ public class PlatformDescriptor : MonoBehaviour
         }
     }
 
-    private void LevelLoaded()
+    private void HandleLevelLoaded()
     {
+        Debug.Log("HandleLevelLoaded");
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
         atsc = rotationCallback.Atsc;
         if (RotationController != null)
@@ -234,8 +237,11 @@ public class PlatformDescriptor : MonoBehaviour
                 })
                 .ToList()
             : BeatSaberSongContainer.Instance.Map.Events;
+        
         foreach (var (type, managers) in eventTypeManagerMap)
             managers.ForEach(manager => manager.BuildFromEvents(events.Where(e => e.Type == type)));
+        
+        foreach (var manager in sortedPriorityManagers) manager.Reset();
     }
 
     public void SetLightshowMode(LightshowMode mode)
@@ -249,30 +255,17 @@ public class PlatformDescriptor : MonoBehaviour
         switch (mode)
         {
             case LightshowMode.Full:
-                if (previousMode == LightshowMode.Static)
-                {
-                    PopulateLightshow();
-                    // Ideally, I shouldn't reset but it just doesn't want to behave correctly
-                    foreach (var manager in sortedPriorityManagers) manager.Reset();
-                }
+                if (previousMode == LightshowMode.Static) PopulateLightshow();
 
                 UpdateTime();
                 break;
             case LightshowMode.Static:
-                if (previousMode != LightshowMode.Static)
-                {
-                    PopulateLightshow();
-                    foreach (var manager in sortedPriorityManagers) manager.Reset();
-                }
+                if (previousMode != LightshowMode.Static) PopulateLightshow();
 
                 UpdateTime(0f);
                 break;
             case LightshowMode.None:
-                if (previousMode == LightshowMode.Static)
-                {
-                    PopulateLightshow();
-                    foreach (var manager in sortedPriorityManagers) manager.Reset();
-                }
+                if (previousMode == LightshowMode.Static) PopulateLightshow();
 
                 UpdateTime(-1f);
                 break;

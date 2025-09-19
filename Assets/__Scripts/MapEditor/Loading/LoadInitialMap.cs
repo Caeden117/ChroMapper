@@ -83,8 +83,10 @@ public class LoadInitialMap : MonoBehaviour
         loader.HardRefresh();
         LevelLoadedEvent?.Invoke();
     }
+    
+    public static GameObject[] PlatformPrefabs => FindObjectOfType<LoadInitialMap>().platformPrefabs;
 
-    private static void PopulateColorsFromMapInfo(PlatformDescriptor platformDescriptor)
+    public static void PopulateColorsFromMapInfo(PlatformDescriptor platformDescriptor)
     {
         var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;
         

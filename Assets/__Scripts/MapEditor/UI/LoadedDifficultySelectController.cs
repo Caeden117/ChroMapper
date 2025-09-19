@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Containers;
 using Beatmap.Info;
 using TMPro;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class LoadedDifficultySelectController : MonoBehaviour
     [SerializeField] private TMP_Dropdown dropdown;
 
     public static Action LoadedDifficultyChangedEvent;
-    
+
     // Checking for unsaved changes before switching
     [SerializeField] private BeatmapActionContainer beatmapActionContainer;
     [SerializeField] private AutoSaveController autoSaveController;
@@ -59,7 +60,10 @@ public class LoadedDifficultySelectController : MonoBehaviour
         // => Map is dirty
         if (beatmapActionContainer.ContainsUnsavedActions)
         {
-            PersistentUI.Instance.ShowDialogBox("Mapper", "save.unsaved.changes.switch", UnsavedChangesDialogueResult,
+            PersistentUI.Instance.ShowDialogBox(
+                "Mapper",
+                "save.unsaved.changes.switch",
+                UnsavedChangesDialogueResult,
                 PersistentUI.DialogBoxPresetType.YesNoCancel);
             return;
         }
@@ -88,8 +92,49 @@ public class LoadedDifficultySelectController : MonoBehaviour
     {
         // If saving, wait until it's done
         while (autoSaveController.IsSaving) ;
-        
-        BeatSaberSongContainer.Instance.MapDifficultyInfo = setDifficulties[value];
+
+        var info = BeatSaberSongContainer.Instance.Info;
+        var infoDifficulty = setDifficulties[value];
+        var currentPlatform = SongInfoEditUI.GetEnvironmentIDFromString(
+            info.EnvironmentNames[BeatSaberSongContainer.Instance.MapDifficultyInfo.EnvironmentNameIndex]);
+        BeatSaberSongContainer.Instance.MapDifficultyInfo = infoDifficulty;
+
+
+        var nextPlatform =
+            SongInfoEditUI.GetEnvironmentIDFromString(info.EnvironmentNames[infoDifficulty.EnvironmentNameIndex]);
+        var customPlat = false;
+        if (!string.IsNullOrEmpty(info.CustomEnvironmentMetadata.Name))
+        {
+            if (CustomPlatformsLoader
+                    .Instance.GetAllEnvironmentIds()
+                    .IndexOf(info.CustomEnvironmentMetadata.Name)
+                >= 0)
+                customPlat = true;
+        }
+
+        //Instantiate platform, grab descriptor
+        if (currentPlatform != nextPlatform || customPlat)
+        {
+            DestroyImmediate(LoadInitialMap.Platform.gameObject);
+            var platform = LoadInitialMap.PlatformPrefabs[nextPlatform] == null
+                ? LoadInitialMap.PlatformPrefabs[0]
+                : LoadInitialMap.PlatformPrefabs[nextPlatform];
+            if (customPlat)
+                platform = CustomPlatformsLoader.Instance.LoadPlatform(info.CustomEnvironmentMetadata.Name, platform);
+
+            var instantiate = customPlat
+                ? platform
+                : Instantiate(platform, LoadInitialMap.PlatformOffset, Quaternion.identity);
+            var descriptor = instantiate.GetComponent<PlatformDescriptor>();
+            EventContainer.ModifyTypeMode = descriptor.SortMode;
+
+            // this is already handled from LoadedDifficultyChangedEvent it seems
+            // LoadInitialMap.PopulateColorsFromMapInfo(descriptor);
+            // LoadInitialMap.UpdateObjectContainerColors(descriptor.ColorScheme);
+
+            LoadInitialMap.PlatformLoadedEvent.Invoke(descriptor);
+            LoadInitialMap.Platform = descriptor;
+        }
 
         var newMap = BeatSaberSongUtils.GetMapFromInfoFiles(
             BeatSaberSongContainer.Instance.Info,
@@ -104,10 +149,9 @@ public class LoadedDifficultySelectController : MonoBehaviour
         // A great way to get ghost objects without this
         beatmapActionContainer.ClearBeatmapActions();
         SelectionController.DeselectAll();
-        
+
         LoadedDifficultyChangedEvent?.Invoke();
     }
 
     public void Disable() => gameObject.SetActive(false);
 }
-
