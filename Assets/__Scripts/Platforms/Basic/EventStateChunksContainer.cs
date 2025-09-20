@@ -220,8 +220,8 @@ public class EventStateChunksContainer<T> : IEnumerable<T> where T : BasicEventS
     {
         var (chunkIdx, localIdx, _) = GetStateAt(time);
 
-        while (localIdx >= 0 && Chunks[chunkIdx][localIdx].StartTime <= time) localIdx--;
-        localIdx = localIdx >= 0 ? localIdx : 0;
+        // we want very first of the state of same time
+        while (localIdx > 0 && Mathf.Approximately(Chunks[chunkIdx][localIdx - 1].StartTime, time)) localIdx--;
 
         while (chunkIdx < Chunks.Count)
         {

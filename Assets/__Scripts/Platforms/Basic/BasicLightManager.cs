@@ -217,7 +217,7 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
             while (enumerator.MoveNext())
             {
                 var state = enumerator.Current;
-                if (state!.StartTime < until) break;
+                if (state!.StartTime >= until) break;
                 if (state.BaseEvent.CustomColor == null) state.StartChromaColor = state.EndChromaColor = from.Color;
             }
         }
@@ -225,6 +225,7 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
 
     private void UpdateExistingWithChromaGradient(float time)
     {
+        return; // TODO: properly handle this
         var fromIndex = chromaGradientDatas.FindLastIndex(cl => cl.StartTime <= time && time <= cl.EndTime);
         var from = fromIndex != -1 && fromIndex < chromaGradientDatas.Count
             ? chromaGradientDatas[fromIndex]
@@ -239,7 +240,7 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
             while (enumerator.MoveNext())
             {
                 var state = enumerator.Current;
-                if (state!.StartTime < from.EndTime || state!.StartTime < until) break;
+                if (state!.StartTime > from.EndTime || state!.StartTime >= until) break;
                 UpdateStateWithChromaGradient(state, from);
             }
         }
@@ -247,14 +248,9 @@ public class BasicLightManager : BasicEventManager<BasicLightState>
 
     private void InsertWithChromaGradient(BasicLightState state)
     {
-        if (chromaGradientDatas.Any(cg => cg.StartTime <= state.StartTime && state.StartTime <= cg.EndTime))
-        {
-            var chromaGradientData =
-                chromaGradientDatas.FindLast(cg =>
-                    cg.StartTime <= state.StartTime && state.StartTime <= cg.EndTime);
-            // update affected event
-            UpdateStateWithChromaGradient(state, chromaGradientData);
-        }
+        var chromaGradientIndex =
+            chromaGradientDatas.FindLastIndex(cg => cg.StartTime <= state.StartTime && state.StartTime <= cg.EndTime);
+        if (chromaGradientIndex != -1) UpdateStateWithChromaGradient(state, chromaGradientDatas[chromaGradientIndex]);
     }
 
     private void UpdateStateWithChromaGradient(BasicLightState state, ChromaGradientData chromaGradientData)
