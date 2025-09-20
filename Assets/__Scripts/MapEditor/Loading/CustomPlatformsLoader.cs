@@ -222,7 +222,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         var tubeLights = gameObject.GetComponentsInChildren<TubeLight>();
         foreach (var tubeLight in tubeLights)
         {
-            if (tubeLight.gameObject.GetComponent<LightingEvent>() != null) continue;
+            if (tubeLight.gameObject.GetComponent<LightingObject>() != null) continue;
 
             var eventId = -(int)EventTypeValue.BackLasers;
             switch (tubeLight.lightsID)
@@ -277,7 +277,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             var tubeLightsManager = platformDescriptor.LightingManagers[eventId];
             if (tubeLightsManager == null)
             {
-                tubeLightsManager = tubeLight.transform.parent.gameObject.AddComponent<LightsManager>();
+                tubeLightsManager = tubeLight.transform.parent.gameObject.AddComponent<BasicLightManager>();
                 tubeLightsManager.DisableCustomInitialization = true;
                 platformDescriptor.LightingManagers[eventId] = tubeLightsManager;
             }
@@ -330,14 +330,14 @@ public class CustomPlatformsLoader : MonoBehaviour
         var eventHandlers = gameObject.GetComponentsInChildren<SongEventHandler>();
         foreach (var eventHandler in eventHandlers)
         {
-            if (eventHandler.gameObject.GetComponent<LightingEvent>() != null) continue;
+            if (eventHandler.gameObject.GetComponent<LightingObject>() != null) continue;
 
             var eventId = (int)eventHandler.eventType;
 
             var tubeLightsManager = platformDescriptor.LightingManagers[eventId];
             if (tubeLightsManager == null)
             {
-                tubeLightsManager = eventHandler.transform.parent.gameObject.AddComponent<LightsManager>();
+                tubeLightsManager = eventHandler.transform.parent.gameObject.AddComponent<BasicLightManager>();
                 tubeLightsManager.DisableCustomInitialization = true;
                 platformDescriptor.LightingManagers[eventId] = tubeLightsManager;
             }
@@ -371,7 +371,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                     tempMaterial.SetColor(baseColor, Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
                     tempMaterial.SetColor(emissionColor,
-                        DefaultColors.Right * LightsManager.HDRIntensity);
+                        DefaultColors.Right * BasicLightManager.HDRIntensity);
                 }
 
                 if (tempMaterial.name.ToUpper().Contains("GLOW_RED"))
@@ -380,7 +380,7 @@ public class CustomPlatformsLoader : MonoBehaviour
                     tempMaterial.SetColor(baseColor, Color.white);
                     tempMaterial.EnableKeyword("_EMISSION");
                     tempMaterial.SetColor(emissionColor,
-                        DefaultColors.Left * LightsManager.HDRIntensity);
+                        DefaultColors.Left * BasicLightManager.HDRIntensity);
                 }
 
                 materials[i] = tempMaterial;
@@ -390,7 +390,7 @@ public class CustomPlatformsLoader : MonoBehaviour
         renderer.sharedMaterials = materials;
     }
 
-    private void SetRendererMaterials(Renderer renderer, LightsManager lightsManager = null, float width = 1f)
+    private void SetRendererMaterials(Renderer renderer, BasicLightManager basicLightManager = null, float width = 1f)
     {
         var materials = renderer.sharedMaterials;
 
@@ -424,10 +424,10 @@ public class CustomPlatformsLoader : MonoBehaviour
 
         renderer.sharedMaterials = materials;
 
-        if (lightsManager != null)
+        if (basicLightManager != null)
         {
-            var le = renderer.gameObject.AddComponent<LightingEvent>();
-            lightsManager.ControllingLights.Add(le);
+            var le = renderer.gameObject.AddComponent<LightingObject>();
+            basicLightManager.ControllingLights.Add(le);
         }
     }
 
@@ -695,7 +695,7 @@ public class CustomPlatformsLoader : MonoBehaviour
             if (eventId > 0)
             {
                 var currentLightsManager = platformDescriptor.LightingManagers[eventId];
-                var newLightsManager = gameObject.AddComponent<LightsManager>();
+                var newLightsManager = gameObject.AddComponent<BasicLightManager>();
 
                 newLightsManager.ControllingLights = currentLightsManager.ControllingLights;
                 newLightsManager.RotatingLights = currentLightsManager.RotatingLights;
@@ -716,7 +716,7 @@ public class CustomPlatformsLoader : MonoBehaviour
 
             foreach (var renderer in meshRenderers) SetRendererMaterials(renderer, tubeLightsManager);
 
-            var newLightsManager = gameObject.AddComponent<LightsManager>();
+            var newLightsManager = gameObject.AddComponent<BasicLightManager>();
 
             newLightsManager.ControllingLights = tubeLightsManager.ControllingLights;
             newLightsManager.RotatingLights = tubeLightsManager.RotatingLights;

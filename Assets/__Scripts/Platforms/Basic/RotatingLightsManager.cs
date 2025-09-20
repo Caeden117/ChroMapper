@@ -3,7 +3,7 @@ using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class RotatingLights : RotatingLightsBase
+public class RotatingLightsManager : RotatingLightsManagerBase
 {
     [FormerlySerializedAs("multiplier")] public float Multiplier = 20;
     [SerializeField] private float rotationSpeed;
@@ -27,10 +27,7 @@ public class RotatingLights : RotatingLightsBase
         {
             var descriptor = GetComponentInParent<PlatformDescriptor>();
 
-            if (descriptor != null)
-            {
-                descriptor.LightingManagers[OverrideLightGroupID].RotatingLights.Add(this);
-            }
+            if (descriptor != null) descriptor.LightingManagers[OverrideLightGroupID].RotatingLights.Add(this);
         }
 
         Settings.NotifyBySettingName("SongSpeed", UpdateSongSpeed);
@@ -62,30 +59,31 @@ public class RotatingLights : RotatingLightsBase
 
             if (speed > 0)
             {
-                if (evt.CustomPreciseSpeed.HasValue) this.speed = evt.CustomPreciseSpeed.Value;
+                if (evt.CustomPreciseSpeed.HasValue)
+                    this.speed = evt.CustomPreciseSpeed.Value;
                 else if (evt.CustomSpeed.HasValue) this.speed = evt.CustomSpeed.Value;
             }
 
-            if (evt.CustomDirection.HasValue)
-                rotateForwards = evt.CustomDirection.Value.Equals(0) ^ isLeftEvent;
+            if (evt.CustomDirection.HasValue) rotateForwards = evt.CustomDirection.Value.Equals(0) ^ isLeftEvent;
         }
 
         if (!lockRotation) //If we are not locking rotation, reset it to its default.
             transform.localRotation = startRotation;
-        if (UseZPositionForAngleOffset &&
-            !lockRotation) //BTS, FitBeat, and Timbaland has laser speeds offset by their Z position
+        if (UseZPositionForAngleOffset
+            && !lockRotation) //BTS, FitBeat, and Timbaland has laser speeds offset by their Z position
         {
             rotation = (Time.frameCount + (transform.position.z * zPositionModifier));
         }
+
         //Rotate by Rotation variable
         //In most cases, it is randomized, except in certain environments (see above)
-        if (!lockRotation &&
-            (this.speed > 0 || (evt.CustomPreciseSpeed.HasValue) && evt.CustomPreciseSpeed.Value >= 0))
+        if (!lockRotation && (this.speed > 0 || (evt.CustomPreciseSpeed.HasValue) && evt.CustomPreciseSpeed.Value >= 0))
         {
             transform.Rotate(rotationVector, rotation, Space.Self);
         }
 
-        rotationSpeed = this.speed * Multiplier * (rotateForwards ? -1 : 1) * Mathf.Sign(Multiplier); //Set rotation speed
+        rotationSpeed =
+            this.speed * Multiplier * (rotateForwards ? -1 : 1) * Mathf.Sign(Multiplier); //Set rotation speed
     }
 
     public override bool IsOverrideLightGroup() => OverrideLightGroup;

@@ -8,9 +8,9 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
 
     private BaseObject editedData;
 
-    private BaseObject editedObject;
+    public BaseObject EditedObject;
     private BaseObject originalData;
-    private BaseObject originalObject;
+    public BaseObject OriginalObject;
 
     private BaseObject preMergeOriginalData;
     
@@ -23,11 +23,11 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     public BeatmapObjectModifiedAction(BaseObject edited, BaseObject originalObject, BaseObject originalData,
         string comment = "No comment.", bool keepSelection = false, ActionMergeType mergeType = ActionMergeType.None) : base(new[] { edited, originalObject }, comment)
     {
-        editedObject = edited;
+        EditedObject = edited;
         editedData = BeatmapFactory.Clone(edited);
 
         this.originalData = originalData;
-        this.originalObject = originalObject;
+        this.OriginalObject = originalObject;
         addToSelection = keepSelection;
         MergeType = mergeType;
     }
@@ -40,13 +40,13 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     public bool CanMerge(IMergeableAction previous)
     {
         if (previous is not BeatmapObjectModifiedAction previousAction) return false;
-        return MergeType != ActionMergeType.None && previous.MergeType == MergeType && originalObject == previousAction.editedObject && editedData.CompareTo(previousAction.originalData) != 0;
+        return MergeType != ActionMergeType.None && previous.MergeType == MergeType && OriginalObject == previousAction.EditedObject && editedData.CompareTo(previousAction.originalData) != 0;
     }
 
     public IMergeableAction DoMerge(IMergeableAction previous)
     {
         if (previous is not BeatmapObjectModifiedAction previousAction) return null;
-        var merged = new BeatmapObjectModifiedAction(editedObject, previousAction.originalObject, previousAction.originalData, Comment, addToSelection, MergeType);
+        var merged = new BeatmapObjectModifiedAction(EditedObject, previousAction.OriginalObject, previousAction.originalData, Comment, addToSelection, MergeType);
 
         merged.MergeCount = previousAction.MergeCount + 1;
         merged.Comment += $" ({merged.MergeCount}x merged)";
@@ -55,34 +55,34 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
         return merged;
     }
 
-    public override BaseObject DoesInvolveObject(BaseObject obj) => obj == editedObject ? originalObject : null;
+    public override BaseObject DoesInvolveObject(BaseObject obj) => obj == EditedObject ? OriginalObject : null;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        if (originalObject != editedObject || editedData.CompareTo(originalData) != 0)
+        if (OriginalObject != EditedObject || editedData.CompareTo(originalData) != 0)
         {
-            DeleteObject(editedObject, false);
+            DeleteObject(EditedObject, false);
 
-            if (originalData != originalObject) originalObject.Apply(originalData);
-            SpawnObject(originalObject, false, !inCollection);
+            if (originalData != OriginalObject) OriginalObject.Apply(originalData);
+            SpawnObject(OriginalObject, false, !inCollection);
         }
         else
         {
             // This is an optimisation only possible if the object has not changed position in the MapObjects
-            if (originalData != originalObject) originalObject.Apply(originalData);
-            if (originalObject is BaseBpmEvent) BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(originalObject.JsonTime);
+            if (originalData != OriginalObject) OriginalObject.Apply(originalData);
+            if (OriginalObject is BaseBpmEvent) BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(OriginalObject.JsonTime);
             if (!inCollection) RefreshPools(Data);
         }
 
         if (!Networked)
         {
-            SelectionController.Select(originalObject, addToSelection, true, !inCollection);
+            SelectionController.Select(OriginalObject, addToSelection, true, !inCollection);
         }
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        if (originalObject != editedObject || editedData.CompareTo(originalData) != 0)
+        if (OriginalObject != EditedObject || editedData.CompareTo(originalData) != 0)
         {
             if (Networked && MergeCount > 0)
             {
@@ -101,23 +101,23 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
             }
             else
             {
-                DeleteObject(originalObject, false);
+                DeleteObject(OriginalObject, false);
             }
 
-            editedObject.Apply(editedData);
-            SpawnObject(editedObject, false, !inCollection);
+            EditedObject.Apply(editedData);
+            SpawnObject(EditedObject, false, !inCollection);
         }
         else
         {
             // This is an optimisation only possible if the object has not changed position in the MapObjects 
-            editedObject.Apply(editedData);
-            if (originalObject is BaseBpmEvent) BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(originalObject.JsonTime);
+            EditedObject.Apply(editedData);
+            if (OriginalObject is BaseBpmEvent) BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(OriginalObject.JsonTime);
             if (!inCollection) RefreshPools(Data);
         }
 
         if (!Networked)
         {
-            SelectionController.Select(editedObject, addToSelection, true, !inCollection);
+            SelectionController.Select(EditedObject, addToSelection, true, !inCollection);
         }
     }
 
@@ -136,9 +136,9 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     public override void Deserialize(NetDataReader reader)
     {
         editedData = reader.GetBeatmapObject();
-        editedObject = BeatmapFactory.Clone(editedData);
+        EditedObject = BeatmapFactory.Clone(editedData);
         originalData = reader.GetBeatmapObject();
-        originalObject = BeatmapFactory.Clone(originalData);
+        OriginalObject = BeatmapFactory.Clone(originalData);
         
         MergeCount = reader.GetInt();
         if (MergeCount > 0)
@@ -146,6 +146,6 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
             preMergeOriginalData = reader.GetBeatmapObject();
         }
 
-        Data = new[] { editedObject, originalObject };
+        Data = new[] { EditedObject, OriginalObject };
     }
 }

@@ -3,7 +3,7 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
 
-public class InterscopeCarSuspensionEffect : InterscopeCarEventHandler
+public class InterscopeCarSuspensionEffect : InterscopeCarEventManager
 {
     [SerializeField] private float contractDistance = 0.35f;
     [SerializeField] private float expandDistance = 0.45f;

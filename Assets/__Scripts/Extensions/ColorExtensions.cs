@@ -31,7 +31,7 @@ internal static class ColorExtensions
         color.r *= x;
         color.g *= x;
         color.b *= x;
-        color.a *= x;
+        // color.a *= x; // ideally, this shouldn't
         return color;
     }
 

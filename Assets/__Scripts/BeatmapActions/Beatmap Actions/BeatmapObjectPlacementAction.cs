@@ -4,18 +4,18 @@ using Beatmap.Base;
 
 public class BeatmapObjectPlacementAction : BeatmapAction
 {
-    private IEnumerable<BaseObject> removedConflictObjects;
+    public IEnumerable<BaseObject> RemovedConflictObjects;
 
     // This constructor is needed for United Mapping
     public BeatmapObjectPlacementAction() : base() { }
 
     public BeatmapObjectPlacementAction(IEnumerable<BaseObject> placedContainers,
         IEnumerable<BaseObject> conflictingObjects, string comment) : base(placedContainers, comment) =>
-        removedConflictObjects = conflictingObjects;
+        RemovedConflictObjects = conflictingObjects;
 
     public BeatmapObjectPlacementAction(BaseObject placedObject,
         IEnumerable<BaseObject> conflictingObject, string comment) : base(new[] { placedObject }, comment) =>
-        removedConflictObjects = conflictingObject;
+        RemovedConflictObjects = conflictingObject;
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
@@ -27,23 +27,23 @@ public class BeatmapObjectPlacementAction : BeatmapAction
         SelectionController.SelectionChangedEvent?.Invoke();
         RefreshPools(Data);
 
-        foreach (var data in removedConflictObjects)
+        foreach (var data in RemovedConflictObjects)
         {
             SpawnObject(data);
         }
 
-        RefreshPools(removedConflictObjects);
+        RefreshPools(RemovedConflictObjects);
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (var obj in removedConflictObjects)
+        foreach (var obj in RemovedConflictObjects)
         {
             DeleteObject(obj, false);
         }
 
         SelectionController.SelectionChangedEvent?.Invoke();
-        RefreshPools(removedConflictObjects);
+        RefreshPools(RemovedConflictObjects);
 
         foreach (var obj in Data)
         {
@@ -59,12 +59,12 @@ public class BeatmapObjectPlacementAction : BeatmapAction
         foreach (var baseObject in Data) baseObject.WriteCustom();
 
         SerializeBeatmapObjectList(writer, Data);
-        SerializeBeatmapObjectList(writer, removedConflictObjects);
+        SerializeBeatmapObjectList(writer, RemovedConflictObjects);
     }
 
     public override void Deserialize(NetDataReader reader)
     {
         Data = DeserializeBeatmapObjectList(reader);
-        removedConflictObjects = DeserializeBeatmapObjectList(reader);
+        RemovedConflictObjects = DeserializeBeatmapObjectList(reader);
     }
 }

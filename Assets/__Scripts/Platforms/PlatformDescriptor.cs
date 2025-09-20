@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,7 @@ using UnityEngine.Serialization;
 
 public class PlatformDescriptor : MonoBehaviour
 {
-    [Header("Rings")]
-    [Tooltip("Leave null if you do not want small rings.")]
+    [Header("Rings")] [Tooltip("Leave null if you do not want small rings.")]
     public TrackLaneRingsManager SmallRingManager;
 
     [Tooltip("Leave null if you do not want big rings.")]
@@ -19,17 +19,20 @@ public class PlatformDescriptor : MonoBehaviour
     [Tooltip("Leave null if you do not want gaga environment disks.")]
     public GagaDiskManager DiskManager;
 
-    [Header("Lighting Groups")]
-    [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
-    public LightsManager[] LightingManagers = { };
+    [Header("Lighting Groups")] [Tooltip("Manually map an Event ID (Index) to a group of lights (LightingManagers)")]
+    public BasicLightManager[] LightingManagers = { };
 
     [Tooltip("If you want a thing to rotate around a 360 level with the track, place it here.")]
     public GridRotationController RotationController;
 
-    [FormerlySerializedAs("colors")][HideInInspector] public PlatformColors Colors;
-    [FormerlySerializedAs("defaultColors")] public PlatformColors DefaultColors = new PlatformColors();
+    [FormerlySerializedAs("Colors")] [FormerlySerializedAs("colors")] [HideInInspector]
+    public PlatformColorScheme ColorScheme;
 
-    [Tooltip("-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17 | 3 = Gaga Lanes")]
+    [FormerlySerializedAs("DefaultColors")] [FormerlySerializedAs("defaultColors")]
+    public PlatformColorScheme DefaultColorScheme = new();
+
+    [Tooltip(
+        "-1 = No Sorting | 0 = Default Sorting | 1 = Collider Platform Special | 2 = New lanes 6/7 + 16/17 | 3 = Gaga Lanes")]
     public int SortMode;
 
     [Tooltip("Objects to disable through the L keybind, like lights and static objects in 360 environments.")]
@@ -38,55 +41,44 @@ public class PlatformDescriptor : MonoBehaviour
     [Tooltip("Change scale of normal map for shiny objects.")]
     public float NormalMapScale = 2f;
 
-    private readonly Dictionary<LightsManager, Color> chromaCustomColors = new Dictionary<LightsManager, Color>();
-    private readonly Dictionary<LightsManager, Gradient> chromaGradients = new Dictionary<LightsManager, Gradient>();
-
-    private readonly Dictionary<int, List<PlatformEventHandler>> platformEventHandlers =
-        new Dictionary<int, List<PlatformEventHandler>>();
-
     private AudioTimeSyncController atsc;
+    private ColorBoostManager colorBoostManager;
 
-    private BeatmapObjectCallbackController callbackController;
+    private readonly Dictionary<int, List<BasicEventManager>> eventTypeManagerMap = new();
+    private readonly List<BasicEventManager> sortedPriorityManagers = new();
+
     private RotationCallbackController rotationCallback;
+    private LightshowMode lightshowMode;
 
     private static readonly int baseMap = Shader.PropertyToID("_BaseMap");
 
     public bool SoloAnEventType { get; private set; }
     public int SoloEventType { get; private set; }
 
-    public bool ColorBoost { get; private set; }
-
     // loading happens too fast now
     private void Awake()
     {
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += LevelLoaded;
+        colorBoostManager = gameObject.AddComponent<ColorBoostManager>();
+        BeatmapActionContainer.ActionCreatedEvent += HandleActionEventRedo;
+        BeatmapActionContainer.ActionRedoEvent += HandleActionEventRedo;
+        BeatmapActionContainer.ActionUndoEvent += HandleActionEventUndo;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent += HandleLevelLoaded;
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent += HandleLevelLoaded;
     }
 
-    private void Start()
-    {
-        var eventHandlers = GetComponentsInChildren<PlatformEventHandler>();
-
-        foreach (var handler in eventHandlers)
-        {
-            foreach (var type in handler.ListeningEventTypes)
-            {
-                if (!platformEventHandlers.TryGetValue(type, out var list))
-                {
-                    list = new List<PlatformEventHandler>();
-                    platformEventHandlers.Add(type, list);
-                }
-
-                list.Add(handler);
-            }
-        }
-
-        UpdateShinyMaterialSettings();
-    }
+    private void Start() => UpdateShinyMaterialSettings();
 
     private void OnDestroy()
     {
-        if (callbackController != null) callbackController.EventPassedThreshold -= EventPassed;
-        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= LevelLoaded;
+        BeatmapActionContainer.ActionCreatedEvent -= HandleActionEventRedo;
+        BeatmapActionContainer.ActionRedoEvent -= HandleActionEventRedo;
+        BeatmapActionContainer.ActionUndoEvent -= HandleActionEventUndo;
+        LoadedDifficultySelectController.LoadedDifficultyChangedEvent -= HandleLevelLoaded;
+        if (atsc != null) atsc.TimeChanged -= UpdateTime;
+        if (SceneManager.GetActiveScene().name != "999_PrefabBuilding") LoadInitialMap.LevelLoadedEvent -= HandleLevelLoaded;
+
+        foreach (var manager in LightingManagers.Where(manager => manager != null))
+            colorBoostManager.OnStateChange -= manager.ToggleBoost;
     }
 
     public void UpdateShinyMaterialSettings()
@@ -103,9 +95,8 @@ public class PlatformDescriptor : MonoBehaviour
         }
     }
 
-    private void LevelLoaded()
+    private void HandleLevelLoaded()
     {
-        callbackController = GameObject.Find("Vertical Grid Callback").GetComponent<BeatmapObjectCallbackController>();
         rotationCallback = Resources.FindObjectsOfTypeAll<RotationCallbackController>().First();
         atsc = rotationCallback.Atsc;
         if (RotationController != null)
@@ -114,24 +105,110 @@ public class PlatformDescriptor : MonoBehaviour
             RotationController.Init();
         }
 
-        callbackController.EventPassedThreshold += EventPassed;
+        atsc.TimeChanged += UpdateTime;
         RefreshLightingManagers();
 
         if (Settings.Instance.HideDisablableObjectsOnLoad) ToggleDisablableObjects();
     }
 
-    public void RefreshLightingManagers()
+    public void RefreshLightingManagers() => StartCoroutine(PlatformLoadFromHell());
+
+    // first off, what the fuck
+    private IEnumerator PlatformLoadFromHell()
     {
-        foreach (var manager in LightingManagers)
+        yield return new WaitForEndOfFrame(); // Actually wait for platform to fully load from Awake and Start
+
+        BasicLightManager.FlashTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FlashTimeSecond);
+        BasicLightManager.FadeTimeBeat = atsc.GetBeatFromSeconds(BasicLightManager.FadeTimeSecond);
+        BasicLightManager.ColorScheme = ColorScheme;
+
+        sortedPriorityManagers.Clear();
+        eventTypeManagerMap.Clear();
+
+        for (var type = 0; type < LightingManagers.Length; type++)
         {
+            var manager = LightingManagers[type];
             if (manager is null) continue;
-            IEnumerable<LightingEvent> allLights = manager.ControllingLights;
-            var lights = allLights.Where(x => !x.UseInvertedPlatformColors);
-            var invertedLights = allLights.Where(x => x.UseInvertedPlatformColors);
-            manager.ChangeColor(Colors.BlueColor, 0, lights);
-            manager.ChangeColor(Colors.RedColor, 0, invertedLights);
-            manager.ChangeAlpha(0, 0, allLights);
+            colorBoostManager.OnStateChange += manager.ToggleBoost;
+            MapEventManager(manager, type);
         }
+
+        MapEventManager(colorBoostManager, 5);
+
+        if (BigRingManager != null)
+        {
+            BigRingManager.RingFilter = RingFilter.Big;
+            MapEventManager(BigRingManager, 8);
+            MapEventManager(BigRingManager, 9);
+        }
+
+        if (SmallRingManager != null)
+        {
+            SmallRingManager.RingFilter = RingFilter.Small;
+            MapEventManager(SmallRingManager, 8);
+            MapEventManager(SmallRingManager, 9);
+        }
+
+        if (DiskManager != null)
+        {
+            MapEventManager(DiskManager, 12);
+            MapEventManager(DiskManager, 13);
+            MapEventManager(DiskManager, 16);
+            MapEventManager(DiskManager, 17);
+            MapEventManager(DiskManager, 18);
+            MapEventManager(DiskManager, 19);
+        }
+
+        foreach (var handler in GetComponentsInChildren<PlatformEventManager>())
+        foreach (var type in handler.ListeningEventTypes)
+            MapEventManager(handler, type);
+
+        var leftEventTypes = new List<int>
+        {
+            (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights
+        };
+        foreach (var l in leftEventTypes
+            .Where(t => t <= LightingManagers.Length)
+            .SelectMany(eventType => LightingManagers[eventType].RotatingLights))
+            MapEventManager(l, 12);
+        var rightEventTypes = new List<int>
+        {
+            (int)EventTypeValue.RightLasers,
+            (int)EventTypeValue.ExtraRightLasers,
+            (int)EventTypeValue.ExtraRightLights
+        };
+        foreach (var l in rightEventTypes
+            .Where(t => t <= LightingManagers.Length)
+            .SelectMany(eventType => LightingManagers[eventType].RotatingLights))
+            MapEventManager(l, 13);
+
+        foreach (var manager in eventTypeManagerMap
+            .Values.SelectMany(manager => manager)
+            .OrderBy(manager => manager.Priority))
+        {
+            manager.Atsc = atsc;
+            sortedPriorityManagers.Add(manager);
+        }
+
+        PopulateLightshow();
+        foreach (var manager in sortedPriorityManagers) manager.UpdateTime(atsc.CurrentSongBpmTime);
+    }
+
+    private void MapEventManager(BasicEventManager manager, int type)
+    {
+        if (!eventTypeManagerMap.ContainsKey(type)) eventTypeManagerMap.Add(type, new());
+        eventTypeManagerMap[type].Add(manager);
+    }
+
+    private void UpdateTime()
+    {
+        if (lightshowMode != LightshowMode.Full) return;
+        foreach (var manager in sortedPriorityManagers) manager.UpdateTime(atsc.CurrentSongBpmTime);
+    }
+
+    private void UpdateTime(float time)
+    {
+        foreach (var manager in sortedPriorityManagers) manager.UpdateTime(time);
     }
 
     public void UpdateSoloEventType(bool solo, int soloTypeID)
@@ -145,406 +222,364 @@ public class PlatformDescriptor : MonoBehaviour
         foreach (var go in DisablableObjects) go.SetActive(!go.activeInHierarchy);
     }
 
-    public void KillLights()
+    private void PopulateLightshow()
     {
-        foreach (var manager in LightingManagers)
-        {
-            if (manager != null) manager.ChangeAlpha(0, 1, manager.ControllingLights);
-        }
+        foreach (var manager in sortedPriorityManagers) manager.Initialize();
+
+        var events = lightshowMode == LightshowMode.Static
+            ? eventTypeManagerMap
+                .Keys.Select(type =>
+                {
+                    var evt = new BaseEvent { Type = type, songBpmTime = 0f };
+                    if (evt.IsLightEvent()) evt.Value = 1;
+                    return evt;
+                })
+                .ToList()
+            : BeatSaberSongContainer.Instance.Map.Events;
+        
+        foreach (var (type, managers) in eventTypeManagerMap)
+            managers.ForEach(manager => manager.BuildFromEvents(events.Where(e => e.Type == type)));
+        
+        foreach (var manager in sortedPriorityManagers) manager.Reset();
     }
 
-    public void KillChromaLights()
+    public void SetLightshowMode(LightshowMode mode)
     {
-        chromaCustomColors.Clear();
-        foreach (var kvp in chromaGradients)
+        // in the future, it should be possible to toggle during playback
+        // but as of now, it causes race condition
+        if (atsc.IsPlaying) return;
+        var previousMode = lightshowMode;
+        lightshowMode = mode;
+
+        switch (mode)
         {
-            StopCoroutine(kvp.Value.Routine);
-            kvp.Key.ChangeMultiplierAlpha(1, kvp.Key.ControllingLights);
-        }
+            case LightshowMode.Full:
+                if (previousMode == LightshowMode.Static) PopulateLightshow();
 
-        chromaGradients.Clear();
-    }
-
-    public void EventPassed(bool isPlaying, int index, BaseObject obj)
-    {
-        var e = obj as BaseEvent;
-
-        // Two events at the same time should yield same results
-        Random.InitState(Mathf.RoundToInt(obj.JsonTime * 100));
-
-        // FUN PART BOIS
-        switch (e.Type)
-        {
-            case 8:
-                if (e.CustomNameFilter != null)
-                {
-                    string filter = e.CustomNameFilter;
-                    if (filter.Contains("Big") || filter.Contains("Large"))
-                    {
-                        if (BigRingManager != null)
-                            BigRingManager.HandleRotationEvent(e);
-                    }
-                    else if (filter.Contains("Small") || filter.Contains("Panels") || filter.Contains("Triangle"))
-                    {
-                        if (SmallRingManager != null)
-                            SmallRingManager.HandleRotationEvent(e);
-                    }
-                    else
-                    {
-                        if (BigRingManager != null)
-                            BigRingManager.HandleRotationEvent(e);
-                        if (SmallRingManager != null)
-                            SmallRingManager.HandleRotationEvent(e);
-                    }
-                }
-                else
-                {
-                    if (BigRingManager != null)
-                        BigRingManager.HandleRotationEvent(e);
-                    if (SmallRingManager != null)
-                        SmallRingManager.HandleRotationEvent(e);
-                }
-
+                UpdateTime();
                 break;
-            case 9:
-                if (BigRingManager != null)
-                    BigRingManager.HandlePositionEvent(e);
-                if (SmallRingManager != null)
-                    SmallRingManager.HandlePositionEvent(e);
-                break;
-            case 12:
-                if (HandleGagaHeightEvent(e)) return;
-                
-                var leftEventTypes = new List<int>() { (int)EventTypeValue.LeftLasers, (int)EventTypeValue.ExtraLeftLasers, (int)EventTypeValue.ExtraLeftLights };
+            case LightshowMode.Static:
+                if (previousMode != LightshowMode.Static) PopulateLightshow();
 
-                foreach (var eventType in leftEventTypes.Where(eventType => LightingManagers.Length >= eventType))
-                {
-                    foreach (var l in LightingManagers[eventType].RotatingLights)
-                    {
-                        l.UpdateOffset(true, e);
-                    }
-                }
-
+                UpdateTime(0f);
                 break;
-            case 13:
-                if (HandleGagaHeightEvent(e)) return;
-                
-                var rightEventTypes = new List<int>() { (int)EventTypeValue.RightLasers, (int)EventTypeValue.ExtraRightLasers, (int)EventTypeValue.ExtraRightLights };
+            case LightshowMode.None:
+                if (previousMode == LightshowMode.Static) PopulateLightshow();
 
-                foreach (var eventType in rightEventTypes.Where(eventType => LightingManagers.Length >= eventType))
-                {
-                    foreach (var l in LightingManagers[eventType].RotatingLights)
-                    {
-                        l.UpdateOffset(true, e);
-                    }
-                }
-
+                UpdateTime(-1f);
                 break;
-            case 5:
-                ColorBoost = e.Value == 1;
-                foreach (var manager in LightingManagers)
-                {
-                    if (manager == null) continue;
-
-                    manager.Boost(ColorBoost, ColorBoost ? Colors.RedBoostColor : Colors.RedColor,
-                        ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor,
-                        ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor);
-                }
-                break;
-            case 16:
-            case 17: 
-            case 18:
-            case 19:
-                if (HandleGagaHeightEvent(e)) return;
-                break;
-            
             default:
-                if (e.Type < LightingManagers.Length && LightingManagers[e.Type] != null)
-                    HandleLights(LightingManagers[e.Type], e.Value, e);
-                break;
-        }
-
-        if (atsc != null && atsc.IsPlaying && platformEventHandlers.TryGetValue(e.Type, out var eventHandlers))
-        {
-            foreach (var handler in eventHandlers)
-                handler.OnEventTrigger(e.Type, e);
+                throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
         }
     }
 
-    private void HandleLights(LightsManager group, int value, BaseEvent e)
+    private bool AddEvents(IEnumerable<BaseEvent> events)
     {
-        var mainColor = Color.white;
-        var invertedColor = Color.white;
-        if (group is null) return; //Why go through extra processing for shit that dont exist
-        //Check if its a legacy Chroma RGB event
-        if (value >= ColourManager.RgbintOffset && Settings.Instance.EmulateChromaLite)
+        var mark = false;
+        foreach (var baseEvent in events)
         {
-            if (chromaCustomColors.ContainsKey(group)) chromaCustomColors[group] = ColourManager.ColourFromInt(value);
-            else chromaCustomColors.Add(group, ColourManager.ColourFromInt(value));
-            return;
+            if (!eventTypeManagerMap.TryGetValue(baseEvent.Type, out var managers)) continue;
+            managers.ForEach(manager => manager.InsertEvent(baseEvent));
+            mark = true;
         }
 
-        if (value == ColourManager.RGBReset && Settings.Instance.EmulateChromaLite)
-        {
-            if (chromaCustomColors.ContainsKey(@group))
-                chromaCustomColors.Remove(@group);
-        }
-
-        if (chromaGradients.ContainsKey(group))
-        {
-            var gradientEvent = chromaGradients[group].GradientEvent;
-            if (atsc.CurrentJsonTime >= gradientEvent.CustomLightGradient.Duration + gradientEvent.JsonTime ||
-                !Settings.Instance.EmulateChromaLite)
-            {
-                StopCoroutine(chromaGradients[group].Routine);
-                chromaGradients.Remove(group);
-                chromaCustomColors.Remove(group);
-            }
-        }
-
-        if (e.CustomLightGradient != null && Settings.Instance.EmulateChromaLite)
-        {
-            if (chromaGradients.ContainsKey(group))
-            {
-                StopCoroutine(chromaGradients[group].Routine);
-                chromaGradients.Remove(group);
-            }
-
-            var gradient = new Gradient { GradientEvent = e, Routine = StartCoroutine(GradientRoutine(e, group)) };
-
-            // If the gradient is over already then null is returned due to coroutine never yielding
-            if (gradient.Routine != null) chromaGradients.Add(group, gradient);
-        }
-
-        //Set initial light values
-        if (value <= 4)
-        {
-            mainColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-            invertedColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-        }
-        else if (value <= 8)
-        {
-            mainColor = ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-            invertedColor = ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-        }
-        else if (value <= 12)
-        {
-            mainColor = invertedColor = ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor;
-        }
-
-        //Check if it is a PogU new Chroma event
-        if ((e.CustomColor != null) && Settings.Instance.EmulateChromaLite && !e.IsWhite) // White overrides Chroma
-        {
-            mainColor = invertedColor = (Color)e.CustomColor;
-            chromaCustomColors.Remove(group);
-            if (chromaGradients.ContainsKey(group))
-            {
-                StopCoroutine(chromaGradients[group].Routine);
-                chromaGradients.Remove(group);
-            }
-        }
-
-        if (chromaCustomColors.ContainsKey(group) && Settings.Instance.EmulateChromaLite)
-        {
-            mainColor = invertedColor = chromaCustomColors[group];
-            group.ChangeMultiplierAlpha(mainColor.a, group.ControllingLights);
-        }
-
-        //Check to see if we're soloing any particular event
-        if (SoloAnEventType && e.Type != SoloEventType) mainColor = invertedColor = Color.black.WithAlpha(0);
-
-        IEnumerable<LightingEvent> allLights = group.ControllingLights;
-
-        if (e.CustomLightID != null && Settings.Instance.EmulateChromaAdvanced)
-        {
-            var lightIDArr = e.CustomLightID;
-            var deezLights = new List<LightingEvent>(lightIDArr.Length);
-            foreach (var lightID in lightIDArr)
-            {
-                if (group.LightIDMap != null)
-                {
-                    if (group.LightIDMap.TryGetValue(lightID, out var lightingEvent))
-                    {
-                        if (lightingEvent is LightingEvent)
-                        {
-                            deezLights.Add(lightingEvent);
-                        }
-                    }
-                }
-            }
-            allLights = deezLights;
-
-            // Temporarily(?) commented as Debug.LogWarning is expensive
-            //if (allLights.Count() < lightIDArr.Length)
-            //{
-            //    Debug.LogWarning($"Missing lights for {lightIDArr} in event type {e._type}!");
-            //}
-        }
-
-        foreach (var light in allLights)
-        {
-            var color = light.UseInvertedPlatformColors ? invertedColor : mainColor;
-            var floatValue = e.FloatValue;
-            light.UpdateMultiplyAlpha();
-
-            switch (value)
-            {
-                case (int)LightValue.Off:
-                    if (light.CanBeTurnedOff)
-                    {
-                        light.UpdateTargetAlpha(0, 0);
-                    }
-                    else
-                    {
-                        // The game uses its floatValue but it's still dimmer than what an On would be
-                        // This factor is very quick eyeball probably not that accurate
-                        light.UpdateTargetAlpha(color.a * floatValue * (2f / 3f), 0);
-                    }
-                    TrySetTransition(light, e);
-                    break;
-                case (int)LightValue.BlueOn:
-                case (int)LightValue.RedOn:
-                case (int)LightValue.WhiteOn:
-                case (int)LightValue.BlueTransition:
-                case (int)LightValue.RedTransition:
-                case (int)LightValue.WhiteTransition:
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), 0);
-                    light.UpdateTargetAlpha(color.a * floatValue, 0);
-                    light.UpdateEasing(Easing.Linear);
-                    TrySetTransition(light, e);
-                    break;
-                case (int)LightValue.BlueFlash:
-                case (int)LightValue.RedFlash:
-                case (int)LightValue.WhiteFlash:
-                    light.UpdateTargetAlpha(color.a * floatValue, 0);
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FlashTime);
-                    light.UpdateEasing(Easing.Cubic.Out);
-                    break;
-                case (int)LightValue.BlueFade:
-                case (int)LightValue.RedFade:
-                case (int)LightValue.WhiteFade:
-                    light.UpdateTargetAlpha(color.a * floatValue, 0);
-                    light.UpdateTargetColor(color.Multiply(LightsManager.HDRFlashIntensity), 0);
-                    light.UpdateEasing(Easing.Exponential.Out);
-                    if (light.CanBeTurnedOff)
-                    {
-                        light.UpdateTargetAlpha(0, LightsManager.FadeTime);
-                        light.UpdateTargetColor(Color.black, LightsManager.FadeTime);
-                    }
-                    else
-                    {
-                        light.UpdateTargetColor(color.Multiply(LightsManager.HDRIntensity), LightsManager.FadeTime);
-                    }
-                    break;
-            }
-        }
-
-        group.SetValue(value);
+        return mark;
     }
 
-
-    private bool TryGetNextTransitionNote(in BaseEvent e, out BaseEvent transitionEvent)
+    private bool RemoveEvents(IEnumerable<BaseEvent> events)
     {
-        transitionEvent = null;
-        if (e.Next is { IsTransition: true })
+        var mark = false;
+        foreach (var baseEvent in events)
         {
-            transitionEvent = e.Next;
-            return true;
+            if (!eventTypeManagerMap.TryGetValue(baseEvent.Type, out var managers)) continue;
+            managers.ForEach(manager => manager.RemoveEvent(baseEvent));
+            mark = true;
         }
-        return false;
+
+        return mark;
     }
 
-    private Color InferColorFromValue(bool useInvertedPlatformColors, int value)
+    private void HandleActionEventRedo(BeatmapAction action)
     {
-        if (value <= 4)
-        {
-            if (!useInvertedPlatformColors) return ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-            else return ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-        }
-        else if (value <= 8)
-        {
-            if (!useInvertedPlatformColors) return ColorBoost ? Colors.RedBoostColor : Colors.RedColor;
-            else return ColorBoost ? Colors.BlueBoostColor : Colors.BlueColor;
-        }
-        else if (value <= 12)
-        {
-            return ColorBoost ? Colors.WhiteBoostColor : Colors.WhiteColor;
-        }
-        else
-        {
-            return Color.white;
-        }
+        if (lightshowMode == LightshowMode.Static) return;
+        if (!HandleActionEventRedoNoNotify(action) || atsc.IsPlaying) return;
+        // foreach (var manager in sortedPriorityManagers) manager.Reset();
+        UpdateTime();
     }
 
-    private void TrySetTransition(LightingEvent light, BaseEvent e)
+    private bool HandleActionEventRedoNoNotify(BeatmapAction action)
     {
-        if (TryGetNextTransitionNote(e, out var transition))
+        return action switch
         {
-            var nextChromaColor = transition.CustomColor;
-            if (e.IsWhite) // White overrides Chroma
-            {
-                nextChromaColor = null;
-            }
-            var targetColor = nextChromaColor ?? InferColorFromValue(light.UseInvertedPlatformColors, transition.Value);
-            var targetAlpha = transition.FloatValue;
-            if (nextChromaColor.HasValue)
-            {
-                targetAlpha *= nextChromaColor.Value.a;
-            }
-            var transitionTime = atsc.GetSecondsFromBeat(transition.SongBpmTime - e.SongBpmTime);
-
-            if (e.IsOff)
-            {
-                light.UpdateTargetAlpha(0, 0);
-            }
-
-            light.UpdateTargetColor(targetColor.Multiply(LightsManager.HDRIntensity), transitionTime);
-            light.UpdateTargetAlpha(targetAlpha, transitionTime);
-            light.UpdateEasing(e.CustomEasing ?? "easeLinear");
-        }
+            ActionCollectionAction actionCollectionAction => actionCollectionAction
+                .Actions.ToArray()
+                .Select(HandleActionEventRedoNoNotify)
+                .Any(),
+            BeatmapObjectPlacementAction beatmapObjectPlacementAction => HandlePlacementActionRedo(
+                beatmapObjectPlacementAction),
+            SelectionDeletedAction selectionDeletedAction => HandleSelectionDeletedActionRedo(selectionDeletedAction),
+            SelectionPastedAction selectionPastedAction => HandleSelectionPastedActionRedo(selectionPastedAction),
+            StrobeGeneratorGenerationAction strobeGeneratorGenerationAction =>
+                HandleStrobeGeneratorGenerationActionRedo(
+                    strobeGeneratorGenerationAction),
+            BeatmapObjectDeletionAction beatmapObjectDeletionAction =>
+                HandleDeletionActionRedo(beatmapObjectDeletionAction),
+            BeatmapObjectModifiedWithConflictingAction beatmapObjectModifiedWithConflictingAction =>
+                HandleModifiedWithConflictingActionRedo(beatmapObjectModifiedWithConflictingAction),
+            BeatmapObjectModifiedAction beatmapObjectModifiedAction =>
+                HandleModifiedActionRedo(beatmapObjectModifiedAction),
+            BeatmapObjectModifiedCollectionAction beatmapObjectModifiedCollectionAction =>
+                HandleModifiedCollectionActionRedo(beatmapObjectModifiedCollectionAction),
+            _ => false
+        };
     }
 
-    private IEnumerator GradientRoutine(BaseEvent gradientEvent, LightsManager group)
+    private bool HandlePlacementActionRedo(BeatmapObjectPlacementAction action)
     {
-        var gradient = gradientEvent.CustomLightGradient;
-        var easingFunc = Easing.ByName[gradient.EasingType];
+        var b = RemoveEvents(
+            action
+                .RemovedConflictObjects
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        b = AddEvents(
+                action
+                    .Data.Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+        return b;
+    }
 
-        // TODO: Proper Duration Scaling
-        float progress;
-        while ((progress = (atsc.CurrentJsonTime - gradientEvent.JsonTime) / gradient.Duration) < 1)
+    private bool HandleSelectionDeletedActionRedo(SelectionDeletedAction action) =>
+        RemoveEvents(
+            action
+                .Data.Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+
+    private bool HandleSelectionPastedActionRedo(SelectionPastedAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .Removed
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        b = AddEvents(
+                action
+                    .Data.Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+        return b;
+    }
+
+    private bool HandleStrobeGeneratorGenerationActionRedo(StrobeGeneratorGenerationAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .ConflictingData
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .Data.Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleDeletionActionRedo(BeatmapObjectDeletionAction action) =>
+        RemoveEvents(
+            action
+                .Data.Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+
+    private bool HandleModifiedActionRedo(BeatmapObjectModifiedAction action)
+    {
+        var b = RemoveEvents(
+            new List<BaseObject> { action.OriginalObject }
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                new List<BaseObject> { action.EditedObject }
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleModifiedCollectionActionRedo(BeatmapObjectModifiedCollectionAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .OriginalObjects
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .EditedObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleModifiedWithConflictingActionRedo(BeatmapObjectModifiedWithConflictingAction action)
+    {
+        var b = RemoveEvents(
+            new List<BaseObject> { action.OriginalObject }
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        b = RemoveEvents(
+                action
+                    .ConflictingObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+        return AddEvents(
+                new List<BaseObject> { action.EditedObject }
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private void HandleActionEventUndo(BeatmapAction action)
+    {
+        if (lightshowMode == LightshowMode.Static) return;
+        if (!HandleActionEventUndoNoNotify(action) || atsc.IsPlaying) return;
+        // foreach (var manager in sortedPriorityManagers) manager.Reset();
+        UpdateTime();
+    }
+
+    private bool HandleActionEventUndoNoNotify(BeatmapAction action)
+    {
+        return action switch
         {
-            var lerped = Color.LerpUnclamped(gradient.StartColor, gradient.EndColor, easingFunc(progress));
-            if (!SoloAnEventType || gradientEvent.Type == SoloEventType)
-            {
-                chromaCustomColors[group] = lerped;
-                group.ChangeColor(lerped.WithAlpha(1), 0, group.ControllingLights);
-                group.ChangeMultiplierAlpha(lerped.a, group.ControllingLights);
-            }
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        chromaCustomColors[group] = gradient.EndColor;
-        group.ChangeColor(chromaCustomColors[group].WithAlpha(1), 0, group.ControllingLights);
-        group.ChangeMultiplierAlpha(chromaCustomColors[group].a, group.ControllingLights);
+            ActionCollectionAction actionCollectionAction => actionCollectionAction
+                .Actions.ToArray()
+                .Select(HandleActionEventUndoNoNotify)
+                .Any(),
+            BeatmapObjectPlacementAction beatmapObjectPlacementAction => HandlePlacementActionUndo(
+                beatmapObjectPlacementAction),
+            SelectionDeletedAction selectionDeletedAction => HandleSelectionDeletedActionUndo(selectionDeletedAction),
+            SelectionPastedAction selectionPastedAction => HandleSelectionPastedActionUndo(selectionPastedAction),
+            StrobeGeneratorGenerationAction strobeGeneratorGenerationAction =>
+                HandleStrobeGeneratorGenerationActionUndo(
+                    strobeGeneratorGenerationAction),
+            BeatmapObjectDeletionAction beatmapObjectDeletionAction =>
+                HandleDeletionActionUndo(beatmapObjectDeletionAction),
+            BeatmapObjectModifiedWithConflictingAction beatmapObjectModifiedWithConflictingAction =>
+                HandleModifiedWithConflictingActionUndo(beatmapObjectModifiedWithConflictingAction),
+            BeatmapObjectModifiedAction beatmapObjectModifiedAction =>
+                HandleModifiedActionUndo(beatmapObjectModifiedAction),
+            BeatmapObjectModifiedCollectionAction beatmapObjectModifiedCollectionAction =>
+                HandleModifiedCollectionActionUndo(beatmapObjectModifiedCollectionAction),
+            _ => false
+        };
     }
 
-    // Handle Gaga Env Height events, and pass it to the case so it can ignore anything after if the manager is valid.
-    private bool HandleGagaHeightEvent(BaseEvent evt)
+    private bool HandlePlacementActionUndo(BeatmapObjectPlacementAction action)
     {
-        if (DiskManager != null)
-        {
-            DiskManager.HandlePositionEvent(evt);
-            return true;
-        }
-        else
-            return false;
+        var b = RemoveEvents(
+            action
+                .Data
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .RemovedConflictObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
     }
 
-    private class Gradient
+    private bool HandleSelectionDeletedActionUndo(SelectionDeletedAction action) =>
+        AddEvents(
+            action
+                .Data
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+
+    private bool HandleSelectionPastedActionUndo(SelectionPastedAction action)
     {
-        public BaseEvent GradientEvent;
-        public Coroutine Routine;
+        var b = RemoveEvents(
+            action
+                .Data
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .Removed
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
     }
+
+    private bool HandleStrobeGeneratorGenerationActionUndo(StrobeGeneratorGenerationAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .Data
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .ConflictingData.Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleDeletionActionUndo(BeatmapObjectDeletionAction action) =>
+        AddEvents(
+            action
+                .Data.Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+
+    private bool HandleModifiedActionUndo(BeatmapObjectModifiedAction action)
+    {
+        var b = RemoveEvents(
+            new List<BaseObject> { action.EditedObject }
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                new List<BaseObject> { action.OriginalObject }
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleModifiedCollectionActionUndo(BeatmapObjectModifiedCollectionAction action)
+    {
+        var b = RemoveEvents(
+            action
+                .EditedObjects
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        return AddEvents(
+                action
+                    .OriginalObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+
+    private bool HandleModifiedWithConflictingActionUndo(BeatmapObjectModifiedWithConflictingAction action)
+    {
+        var b = RemoveEvents(
+            new List<BaseObject> { action.EditedObject }
+                .Where(d => d is BaseEvent)
+                .Cast<BaseEvent>());
+        b = AddEvents(
+                new List<BaseObject> { action.OriginalObject }
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+        return AddEvents(
+                action
+                    .ConflictingObjects
+                    .Where(d => d is BaseEvent)
+                    .Cast<BaseEvent>())
+            || b;
+    }
+}
+
+public enum LightshowMode
+{
+    Full,
+    Static,
+    None,
 }

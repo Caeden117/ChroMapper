@@ -41,7 +41,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
     }
 
     private void Start() => AddRingRotationEvent(StartupRotationAngle, StartupRotationStep,
-        StartupRotationPropagationSpeed, StartupRotationFlexySpeed, new BaseEvent());
+        StartupRotationPropagationSpeed, StartupRotationFlexySpeed, false, new BaseEvent());
 
     private void FixedUpdate()
     {
@@ -86,10 +86,9 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
         activeEffects.Add(effect);
     }
 
-    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed,
+    public void AddRingRotationEvent(float angle, float step, float propagationSpeed, float flexySpeed, bool clockwise,
         BaseEvent evt)
     {
-        var multiplier = Random.value < 0.5f;
         var rotationStepLocal = RotationStep;
         var counterSpinEvent = false;
 
@@ -104,7 +103,6 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
             if (evt.CustomStepMult != null) step *= evt.CustomStepMult.Value;
             if (evt.CustomPropMult != null) propagationSpeed *= evt.CustomPropMult.Value;
             if (evt.CustomSpeedMult != null) flexySpeed *= evt.CustomSpeedMult.Value;
-            if (evt.CustomDirection != null) multiplier = evt.CustomDirection.Value == 0;
 
             counterSpinEvent = evt.CustomData.HasKey("_counterSpin") && evt.CustomData["_counterSpin"].AsBool;
         }
@@ -115,7 +113,7 @@ public class TrackLaneRingsRotationEffect : MonoBehaviour
             return;
         }
 
-        AddRingRotationEvent(angle, step, propagationSpeed, flexySpeed, rotationStepLocal, multiplier,
+        AddRingRotationEvent(angle, step, propagationSpeed, flexySpeed, rotationStepLocal, clockwise,
             counterSpinEvent);
     }
 

@@ -53,21 +53,21 @@ public class CustomColorsUIController : MonoBehaviour
         noteAppearance.UpdateColor(packet.NoteLeft, packet.NoteRight);
 
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorLeft = redLight.image.color =
-            eventAppearance.RedColor = platform.Colors.RedColor = packet.LightLeft;
+            eventAppearance.RedColor = platform.ColorScheme.RedColor = packet.LightLeft;
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorRight = eventAppearance.BlueColor =
-            platform.Colors.BlueColor = blueLight.image.color = packet.LightRight;
+            platform.ColorScheme.BlueColor = blueLight.image.color = packet.LightRight;
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorWhite = eventAppearance.WhiteColor =
-            platform.Colors.WhiteColor = whiteLight.image.color = packet.LightWhite;
+            platform.ColorScheme.WhiteColor = whiteLight.image.color = packet.LightWhite;
 
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorObstacle = obstacle.image.color =
             obstacleAppearance.DefaultObstacleColor = packet.Obstacle;
 
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostLeft = redBoost.image.color =
-            eventAppearance.RedBoostColor = platform.Colors.RedBoostColor = packet.BoostLeft;
+            eventAppearance.RedBoostColor = platform.ColorScheme.RedBoostColor = packet.BoostLeft;
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostRight = blueBoost.image.color =
-            eventAppearance.BlueBoostColor = platform.Colors.BlueBoostColor = packet.BoostRight;
+            eventAppearance.BlueBoostColor = platform.ColorScheme.BlueBoostColor = packet.BoostRight;
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostWhite = whiteBoost.image.color =
-            eventAppearance.WhiteBoostColor = platform.Colors.WhiteBoostColor = packet.BoostWhite;
+            eventAppearance.WhiteBoostColor = platform.ColorScheme.WhiteBoostColor = packet.BoostWhite;
 
         // Little dangerous but should be OK
         BeatmapObjectContainerCollection.RefreshAllPools(true);
@@ -77,26 +77,26 @@ public class CustomColorsUIController : MonoBehaviour
     {
         return new MapColorUpdatePacket()
         {
-            NoteLeft = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorLeft ?? platform.DefaultColors.RedNoteColor,
-            NoteRight = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorRight ?? platform.DefaultColors.BlueNoteColor,
-            LightLeft = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorLeft ?? platform.DefaultColors.RedColor,
-            LightRight = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorRight ?? platform.DefaultColors.BlueColor,
-            LightWhite = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorWhite ?? platform.DefaultColors.WhiteColor,
-            Obstacle = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorObstacle ?? platform.DefaultColors.ObstacleColor,
-            BoostLeft = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostLeft ?? platform.DefaultColors.RedBoostColor,
-            BoostRight = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostRight ?? platform.DefaultColors.BlueBoostColor,
-            BoostWhite = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostWhite ?? platform.DefaultColors.WhiteBoostColor
+            NoteLeft = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorLeft ?? platform.DefaultColorScheme.RedNoteColor,
+            NoteRight = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorRight ?? platform.DefaultColorScheme.BlueNoteColor,
+            LightLeft = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorLeft ?? platform.DefaultColorScheme.RedColor,
+            LightRight = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorRight ?? platform.DefaultColorScheme.BlueColor,
+            LightWhite = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorWhite ?? platform.DefaultColorScheme.WhiteColor,
+            Obstacle = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorObstacle ?? platform.DefaultColorScheme.ObstacleColor,
+            BoostLeft = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostLeft ?? platform.DefaultColorScheme.RedBoostColor,
+            BoostRight = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostRight ?? platform.DefaultColorScheme.BlueBoostColor,
+            BoostWhite = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostWhite ?? platform.DefaultColorScheme.WhiteBoostColor
         };
     }
 
-    private void PlatformColorsChanged(PlatformColors colors)
+    private void PlatformColorsChanged(PlatformColorScheme colorScheme)
     {
-        redLight.image.color = platform.Colors.RedColor;
-        blueLight.image.color = platform.Colors.BlueColor;
-        whiteLight.image.color = platform.Colors.WhiteColor;
-        redBoost.image.color = platform.Colors.RedBoostColor;
-        blueBoost.image.color = platform.Colors.BlueBoostColor;
-        whiteBoost.image.color = platform.Colors.WhiteBoostColor;
+        redLight.image.color = platform.ColorScheme.RedColor;
+        blueLight.image.color = platform.ColorScheme.BlueColor;
+        whiteLight.image.color = platform.ColorScheme.WhiteColor;
+        redBoost.image.color = platform.ColorScheme.RedBoostColor;
+        blueBoost.image.color = platform.ColorScheme.BlueBoostColor;
+        whiteBoost.image.color = platform.ColorScheme.WhiteBoostColor;
         obstacle.image.color = obstacleAppearance.DefaultObstacleColor;
         
         CustomColorsUpdatedEvent?.Invoke();
@@ -106,31 +106,31 @@ public class CustomColorsUIController : MonoBehaviour
     {
         platform = obj;
 
-        SetColorIfNotEqual(ref redNote, platform.Colors.RedNoteColor, DefaultColors.LeftNote,
+        SetColorIfNotEqual(ref redNote, platform.ColorScheme.RedNoteColor, DefaultColors.LeftNote,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorLeft);
-        SetColorIfNotEqual(ref blueNote, platform.Colors.BlueNoteColor, DefaultColors.RightNote,
+        SetColorIfNotEqual(ref blueNote, platform.ColorScheme.BlueNoteColor, DefaultColors.RightNote,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorRight);
-        SetColorIfNotEqual(ref redLight, platform.Colors.RedColor, DefaultColors.Left,
+        SetColorIfNotEqual(ref redLight, platform.ColorScheme.RedColor, DefaultColors.Left,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorLeft);
-        SetColorIfNotEqual(ref blueLight, platform.Colors.BlueColor, DefaultColors.Right,
+        SetColorIfNotEqual(ref blueLight, platform.ColorScheme.BlueColor, DefaultColors.Right,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorRight);
-        SetColorIfNotEqual(ref whiteLight, platform.Colors.WhiteColor, DefaultColors.White,
+        SetColorIfNotEqual(ref whiteLight, platform.ColorScheme.WhiteColor, DefaultColors.White,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorWhite);
-        SetColorIfNotEqual(ref redBoost, platform.Colors.RedBoostColor, DefaultColors.Left,
+        SetColorIfNotEqual(ref redBoost, platform.ColorScheme.RedBoostColor, DefaultColors.Left,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostLeft);
-        SetColorIfNotEqual(ref blueBoost, platform.Colors.BlueBoostColor, DefaultColors.Right,
+        SetColorIfNotEqual(ref blueBoost, platform.ColorScheme.BlueBoostColor, DefaultColors.Right,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostRight);
-        SetColorIfNotEqual(ref whiteBoost, platform.Colors.WhiteBoostColor, DefaultColors.White,
+        SetColorIfNotEqual(ref whiteBoost, platform.ColorScheme.WhiteBoostColor, DefaultColors.White,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostWhite);
-        SetColorIfNotEqual(ref obstacle, platform.Colors.ObstacleColor, DefaultColors.Left,
+        SetColorIfNotEqual(ref obstacle, platform.ColorScheme.ObstacleColor, DefaultColors.Left,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorObstacle);
 
-        platform.Colors.RedColor = eventAppearance.RedColor = redLight.image.color;
-        platform.Colors.BlueColor = eventAppearance.BlueColor = blueLight.image.color;
-        platform.Colors.WhiteColor = eventAppearance.WhiteColor = whiteLight.image.color;
-        platform.Colors.RedBoostColor = eventAppearance.RedBoostColor = redBoost.image.color;
-        platform.Colors.BlueBoostColor = eventAppearance.BlueBoostColor = blueBoost.image.color;
-        platform.Colors.WhiteBoostColor = eventAppearance.WhiteBoostColor = whiteBoost.image.color;
+        platform.ColorScheme.RedColor = eventAppearance.RedColor = redLight.image.color;
+        platform.ColorScheme.BlueColor = eventAppearance.BlueColor = blueLight.image.color;
+        platform.ColorScheme.WhiteColor = eventAppearance.WhiteColor = whiteLight.image.color;
+        platform.ColorScheme.RedBoostColor = eventAppearance.RedBoostColor = redBoost.image.color;
+        platform.ColorScheme.BlueBoostColor = eventAppearance.BlueBoostColor = blueBoost.image.color;
+        platform.ColorScheme.WhiteBoostColor = eventAppearance.WhiteBoostColor = whiteBoost.image.color;
         obstacleAppearance.DefaultObstacleColor = obstacle.image.color;
     }
 
@@ -157,42 +157,42 @@ public class CustomColorsUIController : MonoBehaviour
     public void UpdateRedLight()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorLeft = redLight.image.color =
-            eventAppearance.RedColor = platform.Colors.RedColor = picker.CurrentColor.WithAlpha(1);
+            eventAppearance.RedColor = platform.ColorScheme.RedColor = picker.CurrentColor.WithAlpha(1);
         RefreshLights();
     }
 
     public void UpdateBlueLight()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorRight = eventAppearance.BlueColor =
-            platform.Colors.BlueColor = blueLight.image.color = picker.CurrentColor.WithAlpha(1);
+            platform.ColorScheme.BlueColor = blueLight.image.color = picker.CurrentColor.WithAlpha(1);
         RefreshLights();
     }
 
     public void UpdateWhiteLight()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorWhite = eventAppearance.WhiteColor =
-            platform.Colors.WhiteColor = whiteLight.image.color = picker.CurrentColor.WithAlpha(1);
+            platform.ColorScheme.WhiteColor = whiteLight.image.color = picker.CurrentColor.WithAlpha(1);
         RefreshLights();
     }
 
     public void UpdateRedBoost()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostLeft = redBoost.image.color = eventAppearance.RedBoostColor =
-            platform.Colors.RedBoostColor = picker.CurrentColor.WithAlpha(1);
+            platform.ColorScheme.RedBoostColor = picker.CurrentColor.WithAlpha(1);
         RefreshLights();
     }
 
     public void UpdateBlueBoost()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostRight = blueBoost.image.color =
-            eventAppearance.BlueBoostColor = platform.Colors.BlueBoostColor = picker.CurrentColor.WithAlpha(1);
+            eventAppearance.BlueBoostColor = platform.ColorScheme.BlueBoostColor = picker.CurrentColor.WithAlpha(1);
         RefreshLights();
     }
 
     public void UpdateWhiteBoost()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostWhite = whiteBoost.image.color =
-            eventAppearance.WhiteBoostColor = platform.Colors.WhiteBoostColor = picker.CurrentColor.WithAlpha(1);
+            eventAppearance.WhiteBoostColor = platform.ColorScheme.WhiteBoostColor = picker.CurrentColor.WithAlpha(1);
         RefreshLights();
     }
 
@@ -217,14 +217,14 @@ public class CustomColorsUIController : MonoBehaviour
     private void ResetRedNote()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorLeft = null;
-        redNote.image.color = platform.DefaultColors.RedNoteColor.WithAlpha(1);
+        redNote.image.color = platform.DefaultColorScheme.RedNoteColor.WithAlpha(1);
         RefreshNotes();
     }
 
     private void ResetBlueNote()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorRight = null;
-        blueNote.image.color = platform.DefaultColors.BlueNoteColor.WithAlpha(1);
+        blueNote.image.color = platform.DefaultColorScheme.BlueNoteColor.WithAlpha(1);
         RefreshNotes();
     }
 
@@ -244,21 +244,21 @@ public class CustomColorsUIController : MonoBehaviour
     private void ResetRedLight()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorLeft = null;
-        redLight.image.color = eventAppearance.RedColor = platform.Colors.RedColor = platform.DefaultColors.RedColor;
+        redLight.image.color = eventAppearance.RedColor = platform.ColorScheme.RedColor = platform.DefaultColorScheme.RedColor;
         RefreshLights();
     }
 
     private void ResetBlueLight()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorRight = null;
-        blueLight.image.color = eventAppearance.BlueColor = platform.Colors.BlueColor = platform.DefaultColors.BlueColor;
+        blueLight.image.color = eventAppearance.BlueColor = platform.ColorScheme.BlueColor = platform.DefaultColorScheme.BlueColor;
         RefreshLights();
     }
 
     private void ResetWhiteLight()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorWhite = null;
-        whiteLight.image.color = eventAppearance.WhiteColor = platform.Colors.WhiteColor = platform.DefaultColors.WhiteColor;
+        whiteLight.image.color = eventAppearance.WhiteColor = platform.ColorScheme.WhiteColor = platform.DefaultColorScheme.WhiteColor;
         RefreshLights();
     }
 
@@ -266,7 +266,7 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostLeft = null;
         redBoost.image.color = eventAppearance.RedBoostColor =
-            platform.Colors.RedBoostColor = platform.DefaultColors.RedBoostColor;
+            platform.ColorScheme.RedBoostColor = platform.DefaultColorScheme.RedBoostColor;
         RefreshLights();
     }
 
@@ -274,7 +274,7 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostRight = null;
         blueBoost.image.color = eventAppearance.BlueBoostColor =
-            platform.Colors.BlueBoostColor = platform.DefaultColors.BlueBoostColor;
+            platform.ColorScheme.BlueBoostColor = platform.DefaultColorScheme.BlueBoostColor;
         RefreshLights();
     }
 
@@ -282,7 +282,7 @@ public class CustomColorsUIController : MonoBehaviour
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostWhite = null;
         whiteBoost.image.color = eventAppearance.WhiteBoostColor =
-            platform.Colors.WhiteBoostColor = platform.DefaultColors.WhiteBoostColor;
+            platform.ColorScheme.WhiteBoostColor = platform.DefaultColorScheme.WhiteBoostColor;
         RefreshLights();
     }
 
@@ -295,7 +295,7 @@ public class CustomColorsUIController : MonoBehaviour
     public void ResetObstacles()
     {
         BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorObstacle = null;
-        obstacleAppearance.DefaultObstacleColor = obstacle.image.color = platform.DefaultColors.ObstacleColor;
+        obstacleAppearance.DefaultObstacleColor = obstacle.image.color = platform.DefaultColorScheme.ObstacleColor;
         RefreshObstacles();
     }
 

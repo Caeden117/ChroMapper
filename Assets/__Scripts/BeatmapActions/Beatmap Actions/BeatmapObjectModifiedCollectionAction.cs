@@ -10,8 +10,8 @@ using NetDataReader = LiteNetLib.Utils.NetDataReader;
  */
 public class BeatmapObjectModifiedCollectionAction : BeatmapAction
 {
-    private List<BaseObject> editedObjects;
-    private List<BaseObject> originalObjects;
+    public List<BaseObject> EditedObjects;
+    public List<BaseObject> OriginalObjects;
     
     private readonly float firstBpmEventJsonTime;
 
@@ -21,28 +21,28 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
     public BeatmapObjectModifiedCollectionAction(List<BaseObject> editedObjects, List<BaseObject> originalObjects,
         string comment = "No comment.") : base(editedObjects.Concat(originalObjects), comment)
     {
-        this.editedObjects = editedObjects;
-        this.originalObjects = originalObjects;
+        this.EditedObjects = editedObjects;
+        this.OriginalObjects = originalObjects;
 
         firstBpmEventJsonTime = Data.OfType<BaseBpmEvent>().DefaultIfEmpty().Min(x => x?.JsonTime ?? -1f);
     }
 
     public override BaseObject DoesInvolveObject(BaseObject obj)
     {
-        var involvedObject = editedObjects.Find(x => x == obj);
-        involvedObject ??= originalObjects.Find(x => x == obj);
+        var involvedObject = EditedObjects.Find(x => x == obj);
+        involvedObject ??= OriginalObjects.Find(x => x == obj);
         
         return involvedObject;
     }
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (var obj in editedObjects)
+        foreach (var obj in EditedObjects)
         {
             DeleteObject(obj, false);
         }
 
-        foreach (var obj in originalObjects)
+        foreach (var obj in OriginalObjects)
         {
             SpawnObject(obj, false, false);
             
@@ -63,12 +63,12 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        foreach (var obj in originalObjects)
+        foreach (var obj in OriginalObjects)
         {
             DeleteObject(obj, false);
         }
 
-        foreach (var obj in editedObjects)
+        foreach (var obj in EditedObjects)
         {
             SpawnObject(obj, false, false);
             
@@ -89,15 +89,15 @@ public class BeatmapObjectModifiedCollectionAction : BeatmapAction
 
     public override void Serialize(NetDataWriter writer)
     {
-        SerializeBeatmapObjectList(writer, editedObjects);
-        SerializeBeatmapObjectList(writer, originalObjects);
+        SerializeBeatmapObjectList(writer, EditedObjects);
+        SerializeBeatmapObjectList(writer, OriginalObjects);
     }
 
     public override void Deserialize(NetDataReader reader)
     {
-        editedObjects = DeserializeBeatmapObjectList(reader).ToList();
-        originalObjects = DeserializeBeatmapObjectList(reader).ToList();
+        EditedObjects = DeserializeBeatmapObjectList(reader).ToList();
+        OriginalObjects = DeserializeBeatmapObjectList(reader).ToList();
 
-        Data = editedObjects.Concat(originalObjects);
+        Data = EditedObjects.Concat(OriginalObjects);
     }
 }

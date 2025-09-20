@@ -13,7 +13,7 @@ namespace Beatmap.Appearances
 
         public void SetObstacleAppearance(ObstacleContainer obj, PlatformDescriptor platform = null)
         {
-            if (platform != null) DefaultObstacleColor = platform.Colors.ObstacleColor;
+            if (platform != null) DefaultObstacleColor = platform.ColorScheme.ObstacleColor;
 
             if (obj.ObstacleData.Duration < 0 && Settings.Instance.ColorFakeWalls)
             {

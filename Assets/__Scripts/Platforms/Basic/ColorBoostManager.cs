@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using Beatmap.Base;
+
+public class ColorBoostManager : BasicEventManager<ColorBoostState>
+{
+    private readonly EventStateChunksContainer<ColorBoostState> stateChunksContainer = new();
+    public bool Boost;
+
+    public event Action<bool> OnStateChange;
+
+    public void Awake() => Priority = EventPriority.ColorBoost;
+
+    public override void Initialize() => InitializeStates(stateChunksContainer);
+
+    public override void UpdateTime(float currentTime)
+    {
+        var previousState = stateChunksContainer.CurrentState;
+        stateChunksContainer.SetCurrentState(currentTime, Atsc.IsPlaying);
+        if (stateChunksContainer.CurrentState == previousState) return;
+        UpdateObject(stateChunksContainer.CurrentState);
+    }
+
+    private void UpdateObject(ColorBoostState state)
+    {
+        if (state.Boost == Boost) return;
+        Boost = state.Boost;
+        OnStateChange(Boost);
+    }
+
+    protected override ColorBoostState CreateState(BaseEvent evt) => new(evt);
+
+    public override void BuildFromEvents(IEnumerable<BaseEvent> events)
+    {
+        foreach (var evt in events) InsertEvent(evt);
+    }
+
+    public override void InsertEvent(BaseEvent evt)
+    {
+        var state = CreateState(evt);
+        state.StartTime = evt.SongBpmTime;
+        state.Boost = evt.Value == 1;
+
+        HandleInsertState(stateChunksContainer, state);
+    }
+
+    public override void RemoveEvent(BaseEvent evt)
+    {
+        var state = HandleRemoveState(stateChunksContainer, evt);
+        if (stateChunksContainer.CurrentState != state) return;
+        stateChunksContainer.SetStateAt(evt.SongBpmTime);
+        UpdateObject(stateChunksContainer.CurrentState);
+    }
+
+    public override void Reset() => UpdateObject(stateChunksContainer.CurrentState);
+}
+
+public class ColorBoostState : BasicEventState
+{
+    public bool Boost;
+
+    public ColorBoostState(BaseEvent evt) : base(evt)
+    {
+    }
+}
