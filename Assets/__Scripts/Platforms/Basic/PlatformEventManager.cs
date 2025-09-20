@@ -18,7 +18,7 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
         foreach (var container in stateChunksContainerMap.Values)
         {
             var previousState = container.CurrentState;
-            SetCurrentState(currentTime, Atsc.IsPlaying, container);
+            container.SetCurrentState(currentTime, Atsc.IsPlaying);
             if (container.CurrentState == previousState) continue;
             UpdateObject(container.CurrentState);
         }
@@ -50,15 +50,15 @@ public abstract class PlatformEventManager : BasicEventManager<PlatformEventStat
     {
         var state = CreateState(evt);
         state.StartTime = evt.SongBpmTime;
-        InsertState(state, stateChunksContainerMap[evt.Type].Chunks);
+        HandleInsertState(stateChunksContainerMap[evt.Type], state);
     }
 
     public override void RemoveEvent(BaseEvent evt)
     {
         var container = stateChunksContainerMap[evt.Type];
-        var state = RemoveState(evt, container.Chunks);
+        var state = HandleRemoveState(container, evt);
         if (container.CurrentState != state) return;
-        SetStateAt(evt.SongBpmTime, container);
+        container.SetStateAt(evt.SongBpmTime);
         UpdateObject(container.CurrentState);
     }
 

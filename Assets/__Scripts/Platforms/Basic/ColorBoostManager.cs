@@ -16,7 +16,7 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
     public override void UpdateTime(float currentTime)
     {
         var previousState = stateChunksContainer.CurrentState;
-        SetCurrentState(currentTime, Atsc.IsPlaying, stateChunksContainer);
+        stateChunksContainer.SetCurrentState(currentTime, Atsc.IsPlaying);
         if (stateChunksContainer.CurrentState == previousState) return;
         UpdateObject(stateChunksContainer.CurrentState);
     }
@@ -41,14 +41,14 @@ public class ColorBoostManager : BasicEventManager<ColorBoostState>
         state.StartTime = evt.SongBpmTime;
         state.Boost = evt.Value == 1;
 
-        InsertState(state, stateChunksContainer.Chunks);
+        HandleInsertState(stateChunksContainer, state);
     }
 
     public override void RemoveEvent(BaseEvent evt)
     {
-        var state = RemoveState(evt, stateChunksContainer.Chunks);
+        var state = HandleRemoveState(stateChunksContainer, evt);
         if (stateChunksContainer.CurrentState != state) return;
-        SetStateAt(evt.SongBpmTime, stateChunksContainer);
+        stateChunksContainer.SetStateAt(evt.SongBpmTime);
         UpdateObject(stateChunksContainer.CurrentState);
     }
 

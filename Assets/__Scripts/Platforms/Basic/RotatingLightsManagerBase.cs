@@ -17,7 +17,7 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
     public override void UpdateTime(float currentTime)
     {
         var previousState = stateChunksContainer.CurrentState;
-        SetCurrentState(currentTime, Atsc.IsPlaying, stateChunksContainer);
+        stateChunksContainer.SetCurrentState(currentTime, Atsc.IsPlaying);
         if (stateChunksContainer.CurrentState == previousState) return;
         UpdateObject(stateChunksContainer.CurrentState);
     }
@@ -35,14 +35,14 @@ public abstract class RotatingLightsManagerBase : BasicEventManager<RotatingLigh
     {
         var state = CreateState(evt);
         state.StartTime = evt.SongBpmTime;
-        InsertState(state, stateChunksContainer.Chunks);
+        HandleInsertState(stateChunksContainer, state);
     }
 
     public override void RemoveEvent(BaseEvent evt)
     {
-        var state = RemoveState(evt, stateChunksContainer.Chunks);
+        var state = HandleRemoveState(stateChunksContainer, evt);
         if (stateChunksContainer.CurrentState != state) return;
-        SetStateAt(evt.SongBpmTime, stateChunksContainer);
+        stateChunksContainer.SetStateAt(evt.SongBpmTime);
         UpdateObject(stateChunksContainer.CurrentState);
     }
 

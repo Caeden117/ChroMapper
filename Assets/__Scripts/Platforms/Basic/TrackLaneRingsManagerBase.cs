@@ -32,7 +32,7 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
         foreach (var container in stateChunksContainerMap.Values)
         {
             var previousState = container.CurrentState;
-            SetCurrentState(currentTime, Atsc.IsPlaying, container);
+            container.SetCurrentState(currentTime, Atsc.IsPlaying);
             if (container.CurrentState == previousState) continue;
             UpdateObject(container.CurrentState);
         }
@@ -41,7 +41,7 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
     private void UpdateObject(RingRotationState state)
     {
         var evt = state.BaseEvent;
-        var index = GetStateIndex(state, stateChunksContainerMap[state.BaseEvent.Type].Chunks);
+        var index = stateChunksContainerMap[state.BaseEvent.Type].GetStateIndex(state);
         switch (evt.Type)
         {
             case 8:
@@ -77,11 +77,11 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
         foreach (var evt in events) InsertEvent(evt);
     }
 
-    protected override void UpdateToPreviousStateOnInsert(
+    protected override void OnInsertUpdateToPreviousState(
         RingRotationState newState,
         RingRotationState previousState)
     {
-        base.UpdateToPreviousStateOnInsert(newState, previousState);
+        base.OnInsertUpdateToPreviousState(newState, previousState);
         newState.RotationInitial = previousState.RotationInitial + previousState.RotationChange;
     }
 
@@ -95,11 +95,11 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
         state.RotationChange = state.Direction ? state.RotationChange : -state.RotationChange;
 
         var container = stateChunksContainerMap[evt.Type];
-        InsertState(state, container.Chunks);
-        UpdateConsequentStateAfterInsertFrom(state, container.Chunks);
+        HandleInsertState(container, state);
+        HandleInsertUpdateConsequentStateFrom(container, state);
     }
 
-    protected override void UpdateToNextStateOnInsertConsequent(
+    protected override void OnInsertConsequentUpdateToNextState(
         RingRotationState currState,
         RingRotationState nextState) =>
         nextState.RotationInitial += currState.RotationChange;
@@ -107,22 +107,21 @@ public abstract class TrackLaneRingsManagerBase : BasicEventManager<RingRotation
     public override void RemoveEvent(BaseEvent evt)
     {
         var container = stateChunksContainerMap[evt.Type];
-        var (_, _, state) = GetStateFrom(evt, container.Chunks);
-        UpdateConsequentStateBeforeRemoveFrom(state, container.Chunks);
-        RemoveState(state, container.Chunks);
+        var (_, _, state) = container.GetStateFrom(evt);
+        HandleRemoveUpdateConsequentStateFrom(container, state);
+        HandleRemoveState(container, state);
 
         if (container.CurrentState != state) return;
-        SetStateAt(evt.SongBpmTime, container);
+        container.SetStateAt(evt.SongBpmTime);
         UpdateObject(container.CurrentState);
     }
 
-    protected override RingRotationState UpdateToNextStateOnRemove(
+    protected override void OnRemoveUpdateToNextState(
         RingRotationState currState,
         RingRotationState nextState)
     {
-        nextState = base.UpdateToNextStateOnRemove(currState, nextState);
+        base.OnRemoveUpdateToNextState(currState, nextState);
         nextState.RotationInitial -= currState.RotationChange;
-        return nextState;
     }
 
     public override void Reset()
