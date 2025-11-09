@@ -58,7 +58,7 @@ The ChroMapper repository will also have miscellaneous branches for separate bug
 
 ChroMapper comes with a `.editorconfig` file which outlines most of the convention and styling guidelines used by the project.
 
-A nice quite from [OpenGovernment's contributing file](https://github.com/opengovernment/opengovernment/blob/master/CONTRIBUTING.md):
+A nice quote from [OpenGovernment's contributing file](https://github.com/opengovernment/opengovernment/blob/master/CONTRIBUTING.md):
 ```
 This is open source software. Consider the people who will read your code, and make it look nice for them. It's sort of like driving a car: Perhaps you love doing donuts when you're alone, but with passengers the goal is to make the ride as smooth as possible.
 ```
