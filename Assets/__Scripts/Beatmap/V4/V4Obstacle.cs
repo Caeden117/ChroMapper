@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
-using Beatmap.Enums;
 using SimpleJSON;
 
 namespace Beatmap.V4
@@ -23,7 +21,8 @@ namespace Beatmap.V4
             obstacle.Duration = obstacleData.Duration;
             obstacle.Width = obstacleData.Width;
             obstacle.Height = obstacleData.Height;
-            
+            obstacle.CustomData = node["customData"];
+
             return obstacle;
         }
 

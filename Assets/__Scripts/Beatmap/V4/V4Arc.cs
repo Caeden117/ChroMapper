@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
-using Beatmap.Enums;
 using SimpleJSON;
 
 namespace Beatmap.V4
@@ -26,20 +24,21 @@ namespace Beatmap.V4
             arc.Color = headNoteData.Color;
             arc.CutDirection = headNoteData.CutDirection;
             arc.AngleOffset = headNoteData.AngleOffset;
-            
+
             var tailIndex = node["ti"].AsInt;
             var tailNoteData = notesCommonData[tailIndex];
 
             arc.TailPosX = tailNoteData.PosX;
             arc.TailPosY = tailNoteData.PosY;
             arc.TailCutDirection = tailNoteData.CutDirection;
-            
+
             var arcIndex = node["ai"].AsInt;
             var arcData = arcsCommonData[arcIndex];
 
             arc.HeadControlPointLengthMultiplier = arcData.HeadControlPointLengthMultiplier;
             arc.TailControlPointLengthMultiplier = arcData.TailControlPointLengthMultiplier;
             arc.MidAnchorMode = arcData.MidAnchorMode;
+            arc.CustomData = node["customData"];
 
             return arc;
         }

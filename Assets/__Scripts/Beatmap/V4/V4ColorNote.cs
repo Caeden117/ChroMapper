@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
-using Beatmap.Enums;
 using SimpleJSON;
 
 namespace Beatmap.V4
@@ -23,7 +21,8 @@ namespace Beatmap.V4
             note.Color = noteData.Color;
             note.CutDirection = noteData.CutDirection;
             note.AngleOffset = noteData.AngleOffset;
-            
+            note.CustomData = node["customData"];
+
             return note;
         }
 

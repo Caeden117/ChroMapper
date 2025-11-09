@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
-using Beatmap.Enums;
 using SimpleJSON;
 
 namespace Beatmap.V4
@@ -34,6 +32,7 @@ namespace Beatmap.V4
             chain.TailPosY = chainData.TailPosY;
             chain.SliceCount = chainData.SliceCount;
             chain.Squish = chainData.Squish;
+            chain.CustomData = node["customData"];
 
             return chain;
         }

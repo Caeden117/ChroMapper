@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
 using SimpleJSON;
@@ -11,7 +10,7 @@ namespace Beatmap.V4
         public static BaseNote GetFromJson(JSONNode node, IList<V4CommonData.Bomb> bombsCommonData)
         {
             var note = new BaseNote();
-            
+
             note.JsonTime = node["b"].AsFloat;
             note.Rotation = node["r"].AsInt;
 
@@ -21,7 +20,8 @@ namespace Beatmap.V4
             note.PosX = bombData.PosX;
             note.PosY = bombData.PosY;
             note.Type = (int)NoteType.Bomb;
-            
+            note.CustomData = node["customData"];
+
             return note;
         }
 
