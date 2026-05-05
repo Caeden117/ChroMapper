@@ -180,7 +180,14 @@ public class CMInputCallbackInstaller : MonoBehaviour
     {
         if (sceneMode == LoadSceneMode.Single) ClearAllEvents();
         foreach (var obj in scene.GetRootGameObjects()) FindAndInstallCallbacksRecursive(obj.transform);
-        foreach (var transform in persistentObjects) FindAndInstallCallbacksRecursive(transform);
+
+        if (sceneMode == LoadSceneMode.Single)
+        {
+            // Ensure persistent objects don't have multiple callbacks installed.
+            // e.g. (Single) Mapper scene + (Additive) Environment scene
+            foreach (var objTransform in persistentObjects) FindAndInstallCallbacksRecursive(objTransform);
+        }
+        
         StartCoroutine(WaitThenReenableInputs());
     }
 
