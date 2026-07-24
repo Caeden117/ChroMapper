@@ -42,7 +42,13 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
     // you're about to witness bizarre
     public void OnEasingCurve(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (!context.performed) return;
+
+        if (KeybindsController.IsHoverKeyHeld && IsHovering)
+        {
+            OnEasingCurveHover();
+        }
+        else
         {
             var ease = currentEase;
             if (ease is EaseType.None or EaseType.Linear) return;
@@ -55,9 +61,8 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         }
     }
 
-    public void OnEasingCurveHover(InputAction.CallbackContext context)
+    private void OnEasingCurveHover()
     {
-        if (!context.performed || !IsHovering) return;
         EaseType ease;
         switch (HoveredObject)
         {
@@ -109,12 +114,16 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
 
     public void OnEasingNone(InputAction.CallbackContext context)
     {
-        if (context.performed) NotifyEasingChanged(EaseType.None);
+        if (!context.performed) return;
+        
+        if (KeybindsController.IsHoverKeyHeld && IsHovering)
+            OnEasingNoneHover();
+        else 
+            NotifyEasingChanged(EaseType.None);
     }
 
-    public void OnEasingNoneHover(InputAction.CallbackContext context)
+    private void OnEasingNoneHover()
     {
-        if (!context.performed || !IsHovering) return;
         switch (HoveredObject)
         {
             case GLSEventContainer glsEventContainer:
@@ -135,6 +144,13 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
     public void OnEasingStandard(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
+
+        if (KeybindsController.IsHoverKeyHeld && IsHovering)
+        {
+            OnEasingStandardHover();
+            return;
+        }
+        
         var ease = currentEase;
 
         var easeCurve = (int)(ease is EaseType.Linear or EaseType.None ? currentCurve : GetEaseCurve(ease));
@@ -162,9 +178,8 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         NotifyEasingChanged(ease);
     }
 
-    public void OnEasingStandardHover(InputAction.CallbackContext context)
+    private void OnEasingStandardHover()
     {
-        if (!context.performed || !IsHovering) return;
         EaseType ease;
         switch (HoveredObject)
         {
@@ -227,7 +242,13 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
 
     public void OnEasingAlternative(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (!context.performed) return;
+
+        if (KeybindsController.IsHoverKeyHeld && IsHovering)
+        {
+            OnEasingAlternativeHover();
+        }
+        else
         {
             var ease = easeAlternative.Contains(currentEase)
                 ? easeAlternative[(easeAlternative.IndexOf(currentEase) + 3) % easeAlternative.Count]
@@ -236,9 +257,8 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         }
     }
 
-    public void OnEasingAlternativeHover(InputAction.CallbackContext context)
+    private void OnEasingAlternativeHover()
     {
-        if (!context.performed || !IsHovering) return;
         EaseType ease;
         switch (HoveredObject)
         {
@@ -293,12 +313,16 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
 
     public void OnExtension(InputAction.CallbackContext context)
     {
-        if (context.performed) NotifyExtensionChanged(extension + 1);
+        if (!context.performed) return;
+
+        if (KeybindsController.IsHoverKeyHeld && IsHovering)
+            OnExtensionHover();
+        else
+            NotifyExtensionChanged(extension + 1);
     }
 
-    public void OnExtensionHover(InputAction.CallbackContext context)
+    private void OnExtensionHover()
     {
-        if (!context.performed || !IsHovering) return;
         switch (HoveredObject)
         {
             case GLSEventContainer glsEventContainer:

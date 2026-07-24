@@ -6236,27 +6236,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Easing (Curve) (Hover)",
-                    "type": "Button",
-                    "id": "1ef7b581-664a-486e-8c2b-be4e60483170",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Easing (None)",
                     "type": "Button",
                     "id": "12c5a2f7-f46d-42ce-b864-2c5f7338a971",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Easing (None) (Hover)",
-                    "type": "Button",
-                    "id": "248f039a-ee02-4c70-882a-b212549bf8d8",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press",
@@ -6272,27 +6254,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Easing (Standard) (Hover)",
-                    "type": "Button",
-                    "id": "70087515-2381-43dc-8c7f-f92fde2d34ac",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Easing (Alternative)",
                     "type": "Button",
                     "id": "e72e152e-c2d4-4aa4-8c46-5106c859b78a",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Easing (Alternative) (Hover)",
-                    "type": "Button",
-                    "id": "6825fe1d-56f4-4d98-9cbc-7bcd917e2ff4",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press",
@@ -6305,15 +6269,6 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Extension (Hover)",
-                    "type": "Button",
-                    "id": "b95bb507-b1c3-44cf-a53d-117e0f3ea427",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
@@ -6330,39 +6285,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "One Modifier",
-                    "id": "9ec63784-ed0a-4acd-926b-c40f6e8647b2",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Curve) (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "075ab992-8d21-40a3-9306-6dfae6e22747",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Curve) (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "4693d184-6516-473c-aa80-12caed0180b7",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Curve) (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "3d501e7d-3f04-4666-9e6e-6526e3462502",
                     "path": "<Keyboard>/g",
@@ -6372,39 +6294,6 @@
                     "action": "Easing (None)",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "One Modifier",
-                    "id": "d808801e-67e6-4f29-b6fc-bf2c21cc2163",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (None) (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "b3d1c265-9731-4b50-9579-d37d89c08e22",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (None) (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "c58522c8-f610-443a-99de-cb5b752349b0",
-                    "path": "<Keyboard>/g",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (None) (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -6418,39 +6307,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "One Modifier",
-                    "id": "e4a8b0b0-b6b9-49c2-a07c-21c80a459979",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Standard) (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "9fd8e1d3-ebf7-4a52-8449-6f3e64c3168b",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Standard) (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "12ddd7e9-c2cb-4bd7-9647-43eb7730cc30",
-                    "path": "<Keyboard>/v",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Standard) (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "613716f5-9ea7-4654-b8c8-793031397133",
                     "path": "<Keyboard>/b",
@@ -6462,39 +6318,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "One Modifier",
-                    "id": "48bc728e-9f22-41c6-98cf-a20b15c7df94",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Alternative) (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "7c5b4d69-6db0-4802-8236-2b9810c1a88b",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Alternative) (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "7ab84ad1-04c5-4535-a16c-5b0110572243",
-                    "path": "<Keyboard>/b",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Easing (Alternative) (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "30a99391-cfa1-4371-bf37-4495a06a344c",
                     "path": "<Keyboard>/4",
@@ -6504,39 +6327,6 @@
                     "action": "Extension",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "One Modifier",
-                    "id": "89ee8c45-1e6e-4941-abae-72017d767c4f",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Extension (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "20a0fc84-f694-457b-b2ab-08cb0067891e",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Extension (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "2fa4536d-9fc4-4224-a019-b6d1f057846e",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Extension (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         },

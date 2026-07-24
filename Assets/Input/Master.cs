@@ -6322,27 +6322,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Easing (Curve) (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""1ef7b581-664a-486e-8c2b-be4e60483170"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Easing (None)"",
                     ""type"": ""Button"",
                     ""id"": ""12c5a2f7-f46d-42ce-b864-2c5f7338a971"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Easing (None) (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""248f039a-ee02-4c70-882a-b212549bf8d8"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -6358,27 +6340,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Easing (Standard) (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""70087515-2381-43dc-8c7f-f92fde2d34ac"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Easing (Alternative)"",
                     ""type"": ""Button"",
                     ""id"": ""e72e152e-c2d4-4aa4-8c46-5106c859b78a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Easing (Alternative) (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""6825fe1d-56f4-4d98-9cbc-7bcd917e2ff4"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -6391,15 +6355,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Extension (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""b95bb507-b1c3-44cf-a53d-117e0f3ea427"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -6416,39 +6371,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""9ec63784-ed0a-4acd-926b-c40f6e8647b2"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Curve) (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""075ab992-8d21-40a3-9306-6dfae6e22747"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Curve) (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""4693d184-6516-473c-aa80-12caed0180b7"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Curve) (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""3d501e7d-3f04-4666-9e6e-6526e3462502"",
                     ""path"": ""<Keyboard>/g"",
@@ -6458,39 +6380,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""action"": ""Easing (None)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""d808801e-67e6-4f29-b6fc-bf2c21cc2163"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (None) (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""b3d1c265-9731-4b50-9579-d37d89c08e22"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (None) (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""c58522c8-f610-443a-99de-cb5b752349b0"",
-                    ""path"": ""<Keyboard>/g"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (None) (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -6504,39 +6393,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""e4a8b0b0-b6b9-49c2-a07c-21c80a459979"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Standard) (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""9fd8e1d3-ebf7-4a52-8449-6f3e64c3168b"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Standard) (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""12ddd7e9-c2cb-4bd7-9647-43eb7730cc30"",
-                    ""path"": ""<Keyboard>/v"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Standard) (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""613716f5-9ea7-4654-b8c8-793031397133"",
                     ""path"": ""<Keyboard>/b"",
@@ -6548,39 +6404,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""48bc728e-9f22-41c6-98cf-a20b15c7df94"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Alternative) (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""7c5b4d69-6db0-4802-8236-2b9810c1a88b"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Alternative) (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""7ab84ad1-04c5-4535-a16c-5b0110572243"",
-                    ""path"": ""<Keyboard>/b"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Easing (Alternative) (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""30a99391-cfa1-4371-bf37-4495a06a344c"",
                     ""path"": ""<Keyboard>/4"",
@@ -6590,39 +6413,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""action"": ""Extension"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""89ee8c45-1e6e-4941-abae-72017d767c4f"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Extension (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""20a0fc84-f694-457b-b2ab-08cb0067891e"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Extension (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""2fa4536d-9fc4-4224-a019-b6d1f057846e"",
-                    ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Extension (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -7629,15 +7419,10 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         // Easings Selection
         m_EasingsSelection = asset.FindActionMap("Easings Selection", throwIfNotFound: true);
         m_EasingsSelection_EasingCurve = m_EasingsSelection.FindAction("Easing (Curve)", throwIfNotFound: true);
-        m_EasingsSelection_EasingCurveHover = m_EasingsSelection.FindAction("Easing (Curve) (Hover)", throwIfNotFound: true);
         m_EasingsSelection_EasingNone = m_EasingsSelection.FindAction("Easing (None)", throwIfNotFound: true);
-        m_EasingsSelection_EasingNoneHover = m_EasingsSelection.FindAction("Easing (None) (Hover)", throwIfNotFound: true);
         m_EasingsSelection_EasingStandard = m_EasingsSelection.FindAction("Easing (Standard)", throwIfNotFound: true);
-        m_EasingsSelection_EasingStandardHover = m_EasingsSelection.FindAction("Easing (Standard) (Hover)", throwIfNotFound: true);
         m_EasingsSelection_EasingAlternative = m_EasingsSelection.FindAction("Easing (Alternative)", throwIfNotFound: true);
-        m_EasingsSelection_EasingAlternativeHover = m_EasingsSelection.FindAction("Easing (Alternative) (Hover)", throwIfNotFound: true);
         m_EasingsSelection_Extension = m_EasingsSelection.FindAction("Extension", throwIfNotFound: true);
-        m_EasingsSelection_ExtensionHover = m_EasingsSelection.FindAction("Extension (Hover)", throwIfNotFound: true);
         // Scroll Precision
         m_ScrollPrecision = asset.FindActionMap("Scroll Precision", throwIfNotFound: true);
         m_ScrollPrecision_Scroll = m_ScrollPrecision.FindAction("Scroll", throwIfNotFound: true);
@@ -14674,15 +14459,10 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_EasingsSelection;
     private List<IEasingsSelectionActions> m_EasingsSelectionActionsCallbackInterfaces = new List<IEasingsSelectionActions>();
     private readonly InputAction m_EasingsSelection_EasingCurve;
-    private readonly InputAction m_EasingsSelection_EasingCurveHover;
     private readonly InputAction m_EasingsSelection_EasingNone;
-    private readonly InputAction m_EasingsSelection_EasingNoneHover;
     private readonly InputAction m_EasingsSelection_EasingStandard;
-    private readonly InputAction m_EasingsSelection_EasingStandardHover;
     private readonly InputAction m_EasingsSelection_EasingAlternative;
-    private readonly InputAction m_EasingsSelection_EasingAlternativeHover;
     private readonly InputAction m_EasingsSelection_Extension;
-    private readonly InputAction m_EasingsSelection_ExtensionHover;
     /// <summary>
     /// Provides access to input actions defined in input action map "Easings Selection".
     /// </summary>
@@ -14699,41 +14479,21 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @EasingCurve => m_Wrapper.m_EasingsSelection_EasingCurve;
         /// <summary>
-        /// Provides access to the underlying input action "EasingsSelection/EasingCurveHover".
-        /// </summary>
-        public InputAction @EasingCurveHover => m_Wrapper.m_EasingsSelection_EasingCurveHover;
-        /// <summary>
         /// Provides access to the underlying input action "EasingsSelection/EasingNone".
         /// </summary>
         public InputAction @EasingNone => m_Wrapper.m_EasingsSelection_EasingNone;
-        /// <summary>
-        /// Provides access to the underlying input action "EasingsSelection/EasingNoneHover".
-        /// </summary>
-        public InputAction @EasingNoneHover => m_Wrapper.m_EasingsSelection_EasingNoneHover;
         /// <summary>
         /// Provides access to the underlying input action "EasingsSelection/EasingStandard".
         /// </summary>
         public InputAction @EasingStandard => m_Wrapper.m_EasingsSelection_EasingStandard;
         /// <summary>
-        /// Provides access to the underlying input action "EasingsSelection/EasingStandardHover".
-        /// </summary>
-        public InputAction @EasingStandardHover => m_Wrapper.m_EasingsSelection_EasingStandardHover;
-        /// <summary>
         /// Provides access to the underlying input action "EasingsSelection/EasingAlternative".
         /// </summary>
         public InputAction @EasingAlternative => m_Wrapper.m_EasingsSelection_EasingAlternative;
         /// <summary>
-        /// Provides access to the underlying input action "EasingsSelection/EasingAlternativeHover".
-        /// </summary>
-        public InputAction @EasingAlternativeHover => m_Wrapper.m_EasingsSelection_EasingAlternativeHover;
-        /// <summary>
         /// Provides access to the underlying input action "EasingsSelection/Extension".
         /// </summary>
         public InputAction @Extension => m_Wrapper.m_EasingsSelection_Extension;
-        /// <summary>
-        /// Provides access to the underlying input action "EasingsSelection/ExtensionHover".
-        /// </summary>
-        public InputAction @ExtensionHover => m_Wrapper.m_EasingsSelection_ExtensionHover;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -14763,33 +14523,18 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @EasingCurve.started += instance.OnEasingCurve;
             @EasingCurve.performed += instance.OnEasingCurve;
             @EasingCurve.canceled += instance.OnEasingCurve;
-            @EasingCurveHover.started += instance.OnEasingCurveHover;
-            @EasingCurveHover.performed += instance.OnEasingCurveHover;
-            @EasingCurveHover.canceled += instance.OnEasingCurveHover;
             @EasingNone.started += instance.OnEasingNone;
             @EasingNone.performed += instance.OnEasingNone;
             @EasingNone.canceled += instance.OnEasingNone;
-            @EasingNoneHover.started += instance.OnEasingNoneHover;
-            @EasingNoneHover.performed += instance.OnEasingNoneHover;
-            @EasingNoneHover.canceled += instance.OnEasingNoneHover;
             @EasingStandard.started += instance.OnEasingStandard;
             @EasingStandard.performed += instance.OnEasingStandard;
             @EasingStandard.canceled += instance.OnEasingStandard;
-            @EasingStandardHover.started += instance.OnEasingStandardHover;
-            @EasingStandardHover.performed += instance.OnEasingStandardHover;
-            @EasingStandardHover.canceled += instance.OnEasingStandardHover;
             @EasingAlternative.started += instance.OnEasingAlternative;
             @EasingAlternative.performed += instance.OnEasingAlternative;
             @EasingAlternative.canceled += instance.OnEasingAlternative;
-            @EasingAlternativeHover.started += instance.OnEasingAlternativeHover;
-            @EasingAlternativeHover.performed += instance.OnEasingAlternativeHover;
-            @EasingAlternativeHover.canceled += instance.OnEasingAlternativeHover;
             @Extension.started += instance.OnExtension;
             @Extension.performed += instance.OnExtension;
             @Extension.canceled += instance.OnExtension;
-            @ExtensionHover.started += instance.OnExtensionHover;
-            @ExtensionHover.performed += instance.OnExtensionHover;
-            @ExtensionHover.canceled += instance.OnExtensionHover;
         }
 
         /// <summary>
@@ -14804,33 +14549,18 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @EasingCurve.started -= instance.OnEasingCurve;
             @EasingCurve.performed -= instance.OnEasingCurve;
             @EasingCurve.canceled -= instance.OnEasingCurve;
-            @EasingCurveHover.started -= instance.OnEasingCurveHover;
-            @EasingCurveHover.performed -= instance.OnEasingCurveHover;
-            @EasingCurveHover.canceled -= instance.OnEasingCurveHover;
             @EasingNone.started -= instance.OnEasingNone;
             @EasingNone.performed -= instance.OnEasingNone;
             @EasingNone.canceled -= instance.OnEasingNone;
-            @EasingNoneHover.started -= instance.OnEasingNoneHover;
-            @EasingNoneHover.performed -= instance.OnEasingNoneHover;
-            @EasingNoneHover.canceled -= instance.OnEasingNoneHover;
             @EasingStandard.started -= instance.OnEasingStandard;
             @EasingStandard.performed -= instance.OnEasingStandard;
             @EasingStandard.canceled -= instance.OnEasingStandard;
-            @EasingStandardHover.started -= instance.OnEasingStandardHover;
-            @EasingStandardHover.performed -= instance.OnEasingStandardHover;
-            @EasingStandardHover.canceled -= instance.OnEasingStandardHover;
             @EasingAlternative.started -= instance.OnEasingAlternative;
             @EasingAlternative.performed -= instance.OnEasingAlternative;
             @EasingAlternative.canceled -= instance.OnEasingAlternative;
-            @EasingAlternativeHover.started -= instance.OnEasingAlternativeHover;
-            @EasingAlternativeHover.performed -= instance.OnEasingAlternativeHover;
-            @EasingAlternativeHover.canceled -= instance.OnEasingAlternativeHover;
             @Extension.started -= instance.OnExtension;
             @Extension.performed -= instance.OnExtension;
             @Extension.canceled -= instance.OnExtension;
-            @ExtensionHover.started -= instance.OnExtensionHover;
-            @ExtensionHover.performed -= instance.OnExtensionHover;
-            @ExtensionHover.canceled -= instance.OnExtensionHover;
         }
 
         /// <summary>
@@ -17137,26 +16867,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEasingCurve(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Easing (Curve) (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnEasingCurveHover(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Easing (None)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEasingNone(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Easing (None) (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnEasingNoneHover(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Easing (Standard)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -17165,13 +16881,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEasingStandard(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Easing (Standard) (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnEasingStandardHover(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Easing (Alternative)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -17179,26 +16888,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEasingAlternative(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Easing (Alternative) (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnEasingAlternativeHover(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Extension" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnExtension(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Extension (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnExtensionHover(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Scroll Precision" which allows adding and removing callbacks.
