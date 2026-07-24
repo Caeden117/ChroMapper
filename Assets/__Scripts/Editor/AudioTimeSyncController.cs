@@ -294,7 +294,8 @@ public class AudioTimeSyncController : MonoBehaviour,
     public void OnChangeTimeandPrecision(InputAction.CallbackContext context)
     {
         if (!KeybindsController.IsMouseInWindow
-            || customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
+            || customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)
+            || KeybindsController.IsHoverKeyHeld)
         {
             return;
         }
