@@ -6574,27 +6574,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Rotation 15 Degrees (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""5bb2cc56-afae-4425-9a6b-3faf3f0fa19a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Rotation 30 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""d56404ea-8964-482c-bce0-c2a0a0edfa9c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Rotation 30 Degrees (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""248ef4d9-513a-401b-badb-b2d9e005c06d"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -6610,27 +6592,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Rotation 45 Degrees (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""6dac4c5b-96ee-4674-9dc4-6b9b14125547"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Rotation 60 Degrees"",
                     ""type"": ""Button"",
                     ""id"": ""1240b163-fed9-4960-aaeb-7958add55e26"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Rotation 60 Degrees (Hover)"",
-                    ""type"": ""Button"",
-                    ""id"": ""9e3d017a-1b6e-45aa-b765-0e4e5cbc3712"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press"",
@@ -6954,138 +6918,6 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Rotate Counter Clockwise (Grid)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""f3bd7e1b-60ce-4a2f-9625-3ce851554f43"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation 15 Degrees (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Modifier"",
-                    ""id"": ""32254b33-2a1f-42fd-8d82-982a789351c3"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";ChroMapper Default"",
-                    ""action"": ""Rotation 15 Degrees (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Binding"",
-                    ""id"": ""6e8cea7e-73e9-4cc4-93b0-8c74975f0006"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";ChroMapper Default"",
-                    ""action"": ""Rotation 15 Degrees (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""9ce435de-dd01-40ce-84e7-361e633a0d40"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation 30 Degrees (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Modifier"",
-                    ""id"": ""145d3edd-3ff9-48f6-b21d-2fa60631b8b6"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";ChroMapper Default"",
-                    ""action"": ""Rotation 30 Degrees (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Binding"",
-                    ""id"": ""c95f0ec3-9cdb-4aed-a55a-0747ded71bb6"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";ChroMapper Default"",
-                    ""action"": ""Rotation 30 Degrees (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""3c57f454-db84-45cf-a36b-5324f5fdb072"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation 45 Degrees (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Modifier"",
-                    ""id"": ""dce4c219-6081-4245-a57f-6544bdbc6d2d"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";ChroMapper Default"",
-                    ""action"": ""Rotation 45 Degrees (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Binding"",
-                    ""id"": ""e326cca9-6c5c-404d-8a3d-42318060a5cc"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";ChroMapper Default"",
-                    ""action"": ""Rotation 45 Degrees (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""f2399878-7085-42d0-b923-e22b1c02394a"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotation 60 Degrees (Hover)"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Modifier"",
-                    ""id"": ""699326ec-f124-4d1c-91d5-f739e5014f92"",
-                    ""path"": ""<Keyboard>/alt"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";ChroMapper Default"",
-                    ""action"": ""Rotation 60 Degrees (Hover)"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Binding"",
-                    ""id"": ""763ce4e0-9ebc-4217-b00a-017afa928a31"",
-                    ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";ChroMapper Default"",
-                    ""action"": ""Rotation 60 Degrees (Hover)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -7437,13 +7269,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         m_RotationObjects_ModifyHover = m_RotationObjects.FindAction("Modify (Hover)", throwIfNotFound: true);
         m_RotationObjects_Invert = m_RotationObjects.FindAction("Invert", throwIfNotFound: true);
         m_RotationObjects_Rotation15Degrees = m_RotationObjects.FindAction("Rotation 15 Degrees", throwIfNotFound: true);
-        m_RotationObjects_Rotation15DegreesHover = m_RotationObjects.FindAction("Rotation 15 Degrees (Hover)", throwIfNotFound: true);
         m_RotationObjects_Rotation30Degrees = m_RotationObjects.FindAction("Rotation 30 Degrees", throwIfNotFound: true);
-        m_RotationObjects_Rotation30DegreesHover = m_RotationObjects.FindAction("Rotation 30 Degrees (Hover)", throwIfNotFound: true);
         m_RotationObjects_Rotation45Degrees = m_RotationObjects.FindAction("Rotation 45 Degrees", throwIfNotFound: true);
-        m_RotationObjects_Rotation45DegreesHover = m_RotationObjects.FindAction("Rotation 45 Degrees (Hover)", throwIfNotFound: true);
         m_RotationObjects_Rotation60Degrees = m_RotationObjects.FindAction("Rotation 60 Degrees", throwIfNotFound: true);
-        m_RotationObjects_Rotation60DegreesHover = m_RotationObjects.FindAction("Rotation 60 Degrees (Hover)", throwIfNotFound: true);
     }
 
     ~@CMInput()
@@ -14703,13 +14531,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_RotationObjects_ModifyHover;
     private readonly InputAction m_RotationObjects_Invert;
     private readonly InputAction m_RotationObjects_Rotation15Degrees;
-    private readonly InputAction m_RotationObjects_Rotation15DegreesHover;
     private readonly InputAction m_RotationObjects_Rotation30Degrees;
-    private readonly InputAction m_RotationObjects_Rotation30DegreesHover;
     private readonly InputAction m_RotationObjects_Rotation45Degrees;
-    private readonly InputAction m_RotationObjects_Rotation45DegreesHover;
     private readonly InputAction m_RotationObjects_Rotation60Degrees;
-    private readonly InputAction m_RotationObjects_Rotation60DegreesHover;
     /// <summary>
     /// Provides access to input actions defined in input action map "Rotation Objects".
     /// </summary>
@@ -14758,33 +14582,17 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Rotation15Degrees => m_Wrapper.m_RotationObjects_Rotation15Degrees;
         /// <summary>
-        /// Provides access to the underlying input action "RotationObjects/Rotation15DegreesHover".
-        /// </summary>
-        public InputAction @Rotation15DegreesHover => m_Wrapper.m_RotationObjects_Rotation15DegreesHover;
-        /// <summary>
         /// Provides access to the underlying input action "RotationObjects/Rotation30Degrees".
         /// </summary>
         public InputAction @Rotation30Degrees => m_Wrapper.m_RotationObjects_Rotation30Degrees;
-        /// <summary>
-        /// Provides access to the underlying input action "RotationObjects/Rotation30DegreesHover".
-        /// </summary>
-        public InputAction @Rotation30DegreesHover => m_Wrapper.m_RotationObjects_Rotation30DegreesHover;
         /// <summary>
         /// Provides access to the underlying input action "RotationObjects/Rotation45Degrees".
         /// </summary>
         public InputAction @Rotation45Degrees => m_Wrapper.m_RotationObjects_Rotation45Degrees;
         /// <summary>
-        /// Provides access to the underlying input action "RotationObjects/Rotation45DegreesHover".
-        /// </summary>
-        public InputAction @Rotation45DegreesHover => m_Wrapper.m_RotationObjects_Rotation45DegreesHover;
-        /// <summary>
         /// Provides access to the underlying input action "RotationObjects/Rotation60Degrees".
         /// </summary>
         public InputAction @Rotation60Degrees => m_Wrapper.m_RotationObjects_Rotation60Degrees;
-        /// <summary>
-        /// Provides access to the underlying input action "RotationObjects/Rotation60DegreesHover".
-        /// </summary>
-        public InputAction @Rotation60DegreesHover => m_Wrapper.m_RotationObjects_Rotation60DegreesHover;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -14838,27 +14646,15 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @Rotation15Degrees.started += instance.OnRotation15Degrees;
             @Rotation15Degrees.performed += instance.OnRotation15Degrees;
             @Rotation15Degrees.canceled += instance.OnRotation15Degrees;
-            @Rotation15DegreesHover.started += instance.OnRotation15DegreesHover;
-            @Rotation15DegreesHover.performed += instance.OnRotation15DegreesHover;
-            @Rotation15DegreesHover.canceled += instance.OnRotation15DegreesHover;
             @Rotation30Degrees.started += instance.OnRotation30Degrees;
             @Rotation30Degrees.performed += instance.OnRotation30Degrees;
             @Rotation30Degrees.canceled += instance.OnRotation30Degrees;
-            @Rotation30DegreesHover.started += instance.OnRotation30DegreesHover;
-            @Rotation30DegreesHover.performed += instance.OnRotation30DegreesHover;
-            @Rotation30DegreesHover.canceled += instance.OnRotation30DegreesHover;
             @Rotation45Degrees.started += instance.OnRotation45Degrees;
             @Rotation45Degrees.performed += instance.OnRotation45Degrees;
             @Rotation45Degrees.canceled += instance.OnRotation45Degrees;
-            @Rotation45DegreesHover.started += instance.OnRotation45DegreesHover;
-            @Rotation45DegreesHover.performed += instance.OnRotation45DegreesHover;
-            @Rotation45DegreesHover.canceled += instance.OnRotation45DegreesHover;
             @Rotation60Degrees.started += instance.OnRotation60Degrees;
             @Rotation60Degrees.performed += instance.OnRotation60Degrees;
             @Rotation60Degrees.canceled += instance.OnRotation60Degrees;
-            @Rotation60DegreesHover.started += instance.OnRotation60DegreesHover;
-            @Rotation60DegreesHover.performed += instance.OnRotation60DegreesHover;
-            @Rotation60DegreesHover.canceled += instance.OnRotation60DegreesHover;
         }
 
         /// <summary>
@@ -14897,27 +14693,15 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @Rotation15Degrees.started -= instance.OnRotation15Degrees;
             @Rotation15Degrees.performed -= instance.OnRotation15Degrees;
             @Rotation15Degrees.canceled -= instance.OnRotation15Degrees;
-            @Rotation15DegreesHover.started -= instance.OnRotation15DegreesHover;
-            @Rotation15DegreesHover.performed -= instance.OnRotation15DegreesHover;
-            @Rotation15DegreesHover.canceled -= instance.OnRotation15DegreesHover;
             @Rotation30Degrees.started -= instance.OnRotation30Degrees;
             @Rotation30Degrees.performed -= instance.OnRotation30Degrees;
             @Rotation30Degrees.canceled -= instance.OnRotation30Degrees;
-            @Rotation30DegreesHover.started -= instance.OnRotation30DegreesHover;
-            @Rotation30DegreesHover.performed -= instance.OnRotation30DegreesHover;
-            @Rotation30DegreesHover.canceled -= instance.OnRotation30DegreesHover;
             @Rotation45Degrees.started -= instance.OnRotation45Degrees;
             @Rotation45Degrees.performed -= instance.OnRotation45Degrees;
             @Rotation45Degrees.canceled -= instance.OnRotation45Degrees;
-            @Rotation45DegreesHover.started -= instance.OnRotation45DegreesHover;
-            @Rotation45DegreesHover.performed -= instance.OnRotation45DegreesHover;
-            @Rotation45DegreesHover.canceled -= instance.OnRotation45DegreesHover;
             @Rotation60Degrees.started -= instance.OnRotation60Degrees;
             @Rotation60Degrees.performed -= instance.OnRotation60Degrees;
             @Rotation60Degrees.canceled -= instance.OnRotation60Degrees;
-            @Rotation60DegreesHover.started -= instance.OnRotation60DegreesHover;
-            @Rotation60DegreesHover.performed -= instance.OnRotation60DegreesHover;
-            @Rotation60DegreesHover.canceled -= instance.OnRotation60DegreesHover;
         }
 
         /// <summary>
@@ -16981,26 +16765,12 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotation15Degrees(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Rotation 15 Degrees (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRotation15DegreesHover(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Rotation 30 Degrees" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotation30Degrees(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Rotation 30 Degrees (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRotation30DegreesHover(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Rotation 45 Degrees" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -17009,25 +16779,11 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotation45Degrees(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Rotation 45 Degrees (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRotation45DegreesHover(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Rotation 60 Degrees" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotation60Degrees(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Rotation 60 Degrees (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRotation60DegreesHover(InputAction.CallbackContext context);
     }
 }

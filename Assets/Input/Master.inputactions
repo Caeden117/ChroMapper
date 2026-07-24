@@ -6488,27 +6488,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Rotation 15 Degrees (Hover)",
-                    "type": "Button",
-                    "id": "5bb2cc56-afae-4425-9a6b-3faf3f0fa19a",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Rotation 30 Degrees",
                     "type": "Button",
                     "id": "d56404ea-8964-482c-bce0-c2a0a0edfa9c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Rotation 30 Degrees (Hover)",
-                    "type": "Button",
-                    "id": "248ef4d9-513a-401b-badb-b2d9e005c06d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press",
@@ -6524,27 +6506,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Rotation 45 Degrees (Hover)",
-                    "type": "Button",
-                    "id": "6dac4c5b-96ee-4674-9dc4-6b9b14125547",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Rotation 60 Degrees",
                     "type": "Button",
                     "id": "1240b163-fed9-4960-aaeb-7958add55e26",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Rotation 60 Degrees (Hover)",
-                    "type": "Button",
-                    "id": "9e3d017a-1b6e-45aa-b765-0e4e5cbc3712",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press",
@@ -6868,138 +6832,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Rotate Counter Clockwise (Grid)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "One Modifier",
-                    "id": "f3bd7e1b-60ce-4a2f-9625-3ce851554f43",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotation 15 Degrees (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Modifier",
-                    "id": "32254b33-2a1f-42fd-8d82-982a789351c3",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";ChroMapper Default",
-                    "action": "Rotation 15 Degrees (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Binding",
-                    "id": "6e8cea7e-73e9-4cc4-93b0-8c74975f0006",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";ChroMapper Default",
-                    "action": "Rotation 15 Degrees (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "One Modifier",
-                    "id": "9ce435de-dd01-40ce-84e7-361e633a0d40",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotation 30 Degrees (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Modifier",
-                    "id": "145d3edd-3ff9-48f6-b21d-2fa60631b8b6",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";ChroMapper Default",
-                    "action": "Rotation 30 Degrees (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Binding",
-                    "id": "c95f0ec3-9cdb-4aed-a55a-0747ded71bb6",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";ChroMapper Default",
-                    "action": "Rotation 30 Degrees (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "One Modifier",
-                    "id": "3c57f454-db84-45cf-a36b-5324f5fdb072",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotation 45 Degrees (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Modifier",
-                    "id": "dce4c219-6081-4245-a57f-6544bdbc6d2d",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";ChroMapper Default",
-                    "action": "Rotation 45 Degrees (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Binding",
-                    "id": "e326cca9-6c5c-404d-8a3d-42318060a5cc",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";ChroMapper Default",
-                    "action": "Rotation 45 Degrees (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "One Modifier",
-                    "id": "f2399878-7085-42d0-b923-e22b1c02394a",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotation 60 Degrees (Hover)",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Modifier",
-                    "id": "699326ec-f124-4d1c-91d5-f739e5014f92",
-                    "path": "<Keyboard>/alt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";ChroMapper Default",
-                    "action": "Rotation 60 Degrees (Hover)",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Binding",
-                    "id": "763ce4e0-9ebc-4217-b00a-017afa928a31",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";ChroMapper Default",
-                    "action": "Rotation 60 Degrees (Hover)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
