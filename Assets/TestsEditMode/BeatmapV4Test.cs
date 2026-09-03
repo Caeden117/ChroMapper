@@ -126,6 +126,99 @@ namespace TestsEditMode
     ""useNormalEventsAsCompatibleEvents"": false
 }";
 
+        // BeatSaver permits extensions only under customData, so the flat V3 VNJS fixture nests the array there without a V4 common-data table.
+        private const string flatV3VNJSJson = @"
+{
+    ""version"": ""3.3.0"",
+    ""customData"": {
+        ""njsEvents"": [
+            {""b"": 2, ""d"": 3, ""p"": 0, ""e"": 1},
+            {""b"": 4, ""d"": -2, ""p"": 1, ""e"": 0}
+        ]
+    }
+}";
+
+        // This is the exact beat/index sequence from the reported V4-to-V3 regression, including repeated common-data references.
+        private static readonly (float Beat, int Index)[] indexedV4VNJSEvents =
+        {
+            (4, 0),
+            (5, 1),
+            (7, 2),
+            (7.25f, 3),
+            (7.5f, 2),
+            (8, 4),
+            (40, 5),
+            (46, 6),
+            (110, 2),
+            (110.5f, 7),
+            (112, 8),
+            (128, 2),
+            (136, 0),
+            (140, 2),
+            (140.25f, 3),
+            (142, 2),
+            (143.5f, 9),
+            (144, 10),
+            (176, 11),
+            (177.5f, 1),
+            (178, 2),
+            (178.5f, 12),
+            (206, 2),
+            (208, 13),
+            (244, 2),
+            (244.25f, 14),
+            (245, 2),
+            (248, 10),
+            (262, 2),
+            (262.75f, 15),
+            (263, 2),
+            (263.375f, 16),
+            (264, 4),
+            (294, 2),
+            (294.5f, 15),
+            (295, 2),
+            (296, 4),
+            (312, 17),
+            (312.5f, 3),
+            (313, 2),
+            (313.5f, 4),
+            (313.531f, 17),
+            (314, 18),
+            (314.5f, 2),
+            (315, 4),
+            (315.031f, 19),
+            (317.5f, 1),
+            (318.5f, 4),
+            (345, 5),
+            (352, 14),
+            (353, 10)
+        };
+
+        // This is the exact indexed common-data table from the regression, including negative and extended easing identifiers.
+        private static readonly (int UsePrevious, int Easing, float RelativeNJS)[] indexedV4VNJSEventData =
+        {
+            (0, 0, 0),
+            (0, 2, -2),
+            (1, 0, 0),
+            (0, 20, -10),
+            (0, 1, 0),
+            (0, -1, 80),
+            (0, 20, -3),
+            (0, 20, 0),
+            (0, 1, -2),
+            (0, 20, 2),
+            (0, 19, 0),
+            (0, -1, 20),
+            (0, 2, 0),
+            (0, 20, -1),
+            (0, 20, -15),
+            (0, 20, -8),
+            (0, 2, 3),
+            (0, -1, 10),
+            (0, 2, -10),
+            (0, -1, 180)
+        };
+
 
 
         // For use in PlayMode
@@ -188,9 +281,157 @@ namespace TestsEditMode
 
             Settings.Instance.MapVersion = 3;
             var outputJson = V3Difficulty.GetOutputJson(difficulty);
+
+            // The V3 loader consumes recognized customData from its input node, so validate the serialized BeatSaver-safe VNJS shape before reparsing it.
+            Assert.IsFalse(outputJson.HasKey("njsEvents"));
+            Assert.IsFalse(outputJson.HasKey("njsEventData"));
+            var njsEvent = outputJson["customData"]["njsEvents"][0];
+            Assert.IsTrue(njsEvent.HasKey("b"));
+            Assert.IsTrue(njsEvent.HasKey("d"));
+            Assert.IsTrue(njsEvent.HasKey("p"));
+            Assert.IsTrue(njsEvent.HasKey("e"));
+            Assert.AreEqual(1f, njsEvent["b"].AsFloat);
+            Assert.AreEqual(3f, njsEvent["d"].AsFloat);
+            Assert.AreEqual(1, njsEvent["p"].AsInt);
+            Assert.AreEqual(2, njsEvent["e"].AsInt);
+
+            // The second half of the regression verifies that the same nested flat output survives a V3 load.
             var reparsed = V3Difficulty.GetFromJson(outputJson, "");
-            
-            AssertBeatmap(reparsed, containsRotationEvent: true, containsNJSEvent: false); // This should have compatible stuff
+            AssertBeatmap(reparsed, containsRotationEvent: true, containsNJSEvent: true); // This should have compatible stuff
+        }
+
+        [Test]
+        public void IndexedV4VNJSRegressionFlattensInsideCustomDataAndStripsBothRootArrays()
+        {
+            // Converting the reported indexed V4 payload must resolve every common-data reference before writing BeatSaver-safe V3 JSON.
+            var difficulty = V4Difficulty.GetFromJson(CreateIndexedV4VNJSRegressionJson(), "");
+            Settings.Instance.MapVersion = 3;
+
+            var outputJson = V3Difficulty.GetOutputJson(difficulty);
+
+            Assert.IsFalse(outputJson.HasKey("njsEvents"));
+            Assert.IsFalse(outputJson.HasKey("njsEventData"));
+            Assert.IsFalse(outputJson["customData"].HasKey("njsEventData"));
+
+            var flatEvents = outputJson["customData"]["njsEvents"].AsArray;
+            Assert.IsNotNull(flatEvents);
+            Assert.AreEqual(indexedV4VNJSEvents.Length, flatEvents.Count);
+
+            // Every output record must inline the referenced data and discard the V4 index field.
+            for (var i = 0; i < indexedV4VNJSEvents.Length; i++)
+            {
+                var sourceEvent = indexedV4VNJSEvents[i];
+                var sourceData = indexedV4VNJSEventData[sourceEvent.Index];
+                var flatEvent = flatEvents[i];
+
+                Assert.IsFalse(flatEvent.HasKey("i"));
+                Assert.AreEqual(sourceEvent.Beat, flatEvent["b"].AsFloat);
+                Assert.AreEqual(sourceData.RelativeNJS, flatEvent["d"].AsFloat);
+                Assert.AreEqual(sourceData.UsePrevious, flatEvent["p"].AsInt);
+                Assert.AreEqual(sourceData.Easing, flatEvent["e"].AsInt);
+            }
+        }
+
+        [Test]
+        public void FlatV3VNJSEventsLoadWithoutCommonDataIndexes()
+        {
+            // Direct V3 loading must preserve every customData-nested flat field without consulting njsEventData.
+            var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(flatV3VNJSJson), "");
+
+            Assert.AreEqual(2, difficulty.NJSEvents.Count);
+            Assert.AreEqual(2f, difficulty.NJSEvents[0].JsonTime);
+            Assert.AreEqual(3f, difficulty.NJSEvents[0].RelativeNJS);
+            Assert.AreEqual(0, difficulty.NJSEvents[0].UsePrevious);
+            Assert.AreEqual(1, difficulty.NJSEvents[0].Easing);
+            Assert.AreEqual(4f, difficulty.NJSEvents[1].JsonTime);
+            Assert.AreEqual(-2f, difficulty.NJSEvents[1].RelativeNJS);
+            Assert.AreEqual(1, difficulty.NJSEvents[1].UsePrevious);
+            Assert.AreEqual(0, difficulty.NJSEvents[1].Easing);
+        }
+
+        [Test]
+        public void FlatV3VNJSEventsKeepZeroFieldsWhenDefaultsAreRemoved()
+        {
+            // All four extension fields are structural, so default-value stripping must not erase zero-valued VNJS data.
+            Settings.Instance.MapVersion = 3;
+            Settings.Instance.SaveWithoutDefaultValues = true;
+            var difficulty = new BaseDifficulty
+            {
+                NJSEvents = new()
+                {
+                    new BaseNJSEvent
+                    {
+                        JsonTime = 0,
+                        RelativeNJS = 0,
+                        UsePrevious = 0,
+                        Easing = 0
+                    }
+                }
+            };
+
+            var outputJson = V3Difficulty.GetOutputJson(difficulty);
+            var njsEvent = outputJson["customData"]["njsEvents"][0];
+
+            Assert.IsFalse(outputJson.HasKey("njsEvents"));
+            Assert.IsFalse(outputJson.HasKey("njsEventData"));
+            Assert.IsTrue(njsEvent.HasKey("b"));
+            Assert.IsTrue(njsEvent.HasKey("d"));
+            Assert.IsTrue(njsEvent.HasKey("p"));
+            Assert.IsTrue(njsEvent.HasKey("e"));
+            Assert.AreEqual(0f, njsEvent["b"].AsFloat);
+            Assert.AreEqual(0f, njsEvent["d"].AsFloat);
+            Assert.AreEqual(0, njsEvent["p"].AsInt);
+            Assert.AreEqual(0, njsEvent["e"].AsInt);
+        }
+
+        [Test]
+        public void V3VNJSOptOutRetainsLegacyOmission()
+        {
+            // Choosing No in the converter records this opt-out, which must omit both possible VNJS representations.
+            Settings.Instance.MapVersion = 3;
+            var difficulty = new BaseDifficulty
+            {
+                SaveVNJSEventsInV3 = false,
+                NJSEvents = new() { new BaseNJSEvent { JsonTime = 1, RelativeNJS = 2 } }
+            };
+
+            var outputJson = V3Difficulty.GetOutputJson(difficulty);
+
+            Assert.IsFalse(outputJson.HasKey("njsEvents"));
+            Assert.IsFalse(outputJson.HasKey("njsEventData"));
+            Assert.IsFalse(outputJson["customData"].HasKey("njsEvents"));
+        }
+
+        // Building the regression JSON from authoritative tuple tables keeps every supplied beat/index/data value independently assertable.
+        private static JSONObject CreateIndexedV4VNJSRegressionJson()
+        {
+            var events = new JSONArray();
+            foreach (var (beat, index) in indexedV4VNJSEvents)
+            {
+                events.Add(new JSONObject
+                {
+                    ["b"] = beat,
+                    ["i"] = index
+                });
+            }
+
+            var eventData = new JSONArray();
+            foreach (var (usePrevious, easing, relativeNJS) in indexedV4VNJSEventData)
+            {
+                eventData.Add(new JSONObject
+                {
+                    ["p"] = usePrevious,
+                    ["e"] = easing,
+                    ["d"] = relativeNJS
+                });
+            }
+
+            return new JSONObject
+            {
+                ["version"] = "4.1.0",
+                ["njsEvents"] = events,
+                ["njsEventData"] = eventData
+            };
         }
 
         private static void AssertBeatmap(BaseDifficulty difficulty, bool containsRotationEvent = false, bool containsNJSEvent = false)

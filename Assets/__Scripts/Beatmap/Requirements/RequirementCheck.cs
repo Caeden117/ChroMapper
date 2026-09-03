@@ -20,6 +20,8 @@ public abstract class RequirementCheck
     internal static void Setup()
     {
         requirementsAndSuggestions.Clear();
+        // BeatToTheFuture must participate in automatic requirement refresh for flat V3 VNJS maps.
+        RegisterRequirement(new BeatToTheFutureReq());
         RegisterRequirement(new ChromaReq());
         RegisterRequirement(new ChromaGLSReq());
         RegisterRequirement(new LegacyChromaReq());

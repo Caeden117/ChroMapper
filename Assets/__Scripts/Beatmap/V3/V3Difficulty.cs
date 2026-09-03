@@ -144,6 +144,25 @@ namespace Beatmap.V3
                 }
 
                 var customDataJson = GetOutputCustomJsonData(difficulty);
+
+                if (difficulty.SaveVNJSEventsInV3 && difficulty.NJSEvents.Count > 0)
+                {
+                    var njsEvents = new JSONArray();
+
+                    foreach (var njsEvent in difficulty.NJSEvents)
+                    {
+                        njsEvents.Add(new JSONObject
+                        {
+                            ["b"] = njsEvent.JsonTime,
+                            ["d"] = njsEvent.RelativeNJS,
+                            ["p"] = njsEvent.UsePrevious,
+                            ["e"] = njsEvent.Easing
+                        });
+                    }
+
+                    customDataJson["njsEvents"] = njsEvents;
+                }
+
                 if (customDataJson.Children.Any())
                     json["customData"] = customDataJson;
 
@@ -161,6 +180,9 @@ namespace Beatmap.V3
         private static JSONNode GetOutputCustomJsonData(BaseDifficulty difficulty)
         {
             var customData = difficulty.CustomData?.Clone() ?? new JSONObject();
+
+            customData.Remove("njsEvents");
+            customData.Remove("njsEventData");
 
             if (difficulty.Bookmarks.Any())
             {
@@ -366,6 +388,22 @@ namespace Beatmap.V3
 
                 switch (key)
                 {
+                    case "njsEvents":
+                        foreach (JSONNode n in node)
+                        {
+                            map.NJSEvents.Add(new BaseNJSEvent
+                            {
+                                JsonTime = n["b"].AsFloat,
+                                RelativeNJS = n["d"].AsFloat,
+                                UsePrevious = n["p"].AsInt,
+                                Easing = n["e"].AsInt
+                            });
+                        }
+                        map.CustomData.Remove(key);
+                        break;
+                    case "njsEventData":
+                        map.CustomData.Remove(key);
+                        break;
                     case "BPMChanges":
                         foreach (JSONNode n in node) bpmList.Add(V3BpmChange.GetFromJson(n));
                         map.CustomData.Remove(key);

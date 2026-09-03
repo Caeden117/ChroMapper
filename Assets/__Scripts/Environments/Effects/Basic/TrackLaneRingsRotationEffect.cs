@@ -37,6 +37,8 @@ public class TrackLaneRingsRotationEffect : BasicMovementEffect<TrackLaneRingsRo
     private bool allowsCounterSpin;
     // Unity overloads null comparison; cache the initialized manager so snapshot reconstruction does not pay that native check per effect and event.
     private TrackLaneRingsManager ringManager;
+    // The declaration is immutable for an open map, so resolve it once instead of parsing three JSON scopes for every event snapshot.
+    private bool mappedForOldPropagation;
     // GreenDayGrenadeInactiveRingRotationEffectInitializes covers the inactive OEM template that intentionally owns no rings until enhancement setup.
     private bool isDormantTemplate;
     private float appliedSongSeconds = float.NaN;
@@ -65,6 +67,13 @@ public class TrackLaneRingsRotationEffect : BasicMovementEffect<TrackLaneRingsRo
         ringManager = Visual.Manager;
         ringManager.Atsc = Atsc;
         ringManager.UseCached = true;
+
+        var songContainer = BeatSaberSongContainer.Instance;
+        mappedForOldPropagation = songContainer != null
+            && RingPropagationCompatibility.IsMappedForOldPropagation(
+                songContainer.MapDifficultyInfo?.CustomData,
+                songContainer.Info?.CustomData,
+                songContainer.Map?.CustomData);
         // GreenDayGrenadeInactiveRingRotationEffectInitializes distinguishes its inactive, empty template from a live effect that lost its rings.
         isDormantTemplate = !gameObject.activeInHierarchy && ringManager.Rings.Count == 0;
 
@@ -215,7 +224,13 @@ public class TrackLaneRingsRotationEffect : BasicMovementEffect<TrackLaneRingsRo
         if (current.Base.CustomDirection.HasValue)
             current.Clockwise = current.Base.CustomDirection.Value == 0;
 
+        var hasExplicitPropagation = current.Base.CustomProp.HasValue;
         var prop = current.Base.CustomProp ?? PropagationSpeed;
+        // BeatToTheFuture changes explicit prop/_prop before Chroma applies propMult, so mirror that order and leave environment defaults untouched.
+        prop = RingPropagationCompatibility.ApplyVisualMultiplier(
+            prop,
+            hasExplicitPropagation,
+            mappedForOldPropagation);
         if (current.Base.CustomPropMult.HasValue)
             prop *= current.Base.CustomPropMult.Value;
         // Chroma propagates with the authored float exactly. Non-positive values never

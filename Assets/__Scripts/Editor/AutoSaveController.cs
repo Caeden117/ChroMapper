@@ -357,7 +357,8 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                     stringBuilder.AppendLine("* Rotation Properties (v4)");
                 }
 
-                if (map.NJSEvents.Any())
+                // BeatToTheFuture-compatible V3 preserves VNJS, so only the explicit legacy opt-out remains incompatible.
+                if (!map.SaveVNJSEventsInV3 && map.NJSEvents.Any())
                 {
                     stringBuilder.AppendLine("* NJS Events (v4)");
                 }

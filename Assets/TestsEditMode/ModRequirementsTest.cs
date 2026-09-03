@@ -11,7 +11,8 @@ using UnityEngine;
 
 namespace TestsEditMode
 {
-    public class HeckRequirementsTestEditMode
+    // The fixture covers requirements across multiple mods, so its name must not imply Heck-only coverage.
+    public class ModRequirementsTest
     {
         // For use in PlayMode
         public void TestEverything()
@@ -22,13 +23,14 @@ namespace TestsEditMode
         private InfoDifficulty _infoDifficulty;
 
         private HeckRequirementCheck _chromaReq, _noodleReq;
-        private RequirementCheck _chromaGLSReq;
+        private RequirementCheck _beatToTheFutureReq, _chromaGLSReq;
 
         [OneTimeSetUp]
         public void SetupReqs()
         {
             _chromaReq = new ChromaReq();
             _noodleReq = new NoodleExtensionsReq();
+            _beatToTheFutureReq = new BeatToTheFutureReq();
             _chromaGLSReq = new ChromaGLSReq();
         }
 
@@ -111,6 +113,60 @@ namespace TestsEditMode
                 _chromaGLSReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
             Assert.AreEqual(RequirementCheck.RequirementType.None,
                 _chromaReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+        }
+
+        [Test]
+        public void PreservedV3VNJSRequiresBeatToTheFuture()
+        {
+            // Flat VNJS has no OEM V3 runtime path, so preserving even one event must require BeatToTheFuture.
+            _difficulty.NJSEvents = new List<BaseNJSEvent> { new() };
+
+            Assert.AreEqual(
+                RequirementCheck.RequirementType.Requirement,
+                _beatToTheFutureReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            // Moving the runtime owner must not leave the same VNJS data attached to ChromaGLS as well.
+            Assert.AreEqual(
+                RequirementCheck.RequirementType.None,
+                _chromaGLSReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+        }
+
+        [Test]
+        public void OmittedV3VNJSDoesNotRequireBeatToTheFuture()
+        {
+            // The converter's No path does not write VNJS, so those in-memory events alone must not declare an unnecessary requirement.
+            _difficulty.SaveVNJSEventsInV3 = false;
+            _difficulty.NJSEvents = new List<BaseNJSEvent> { new() };
+
+            Assert.AreEqual(
+                RequirementCheck.RequirementType.None,
+                _beatToTheFutureReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+        }
+
+        // V3 saves containing raw V4 y=3/4 walls need BeatToTheFuture even without VNJS, so automatic requirement
+        // refresh must tag BeatToTheFuture and must not fall back to ChromaGLS or Mapping Extensions.
+        [TestCase(3)]
+        [TestCase(4)]
+        public void V3UpperLaneWallsRequireBeatToTheFutureOnSave(int posY)
+        {
+            _difficulty.Obstacles = new List<BaseObstacle>
+            {
+                new()
+                {
+                    PosY = posY,
+                    Width = 1,
+                    Height = 1
+                }
+            };
+
+            Assert.AreEqual(
+                RequirementCheck.RequirementType.Requirement,
+                _beatToTheFutureReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(
+                RequirementCheck.RequirementType.None,
+                _chromaGLSReq.IsRequiredOrSuggested(_infoDifficulty, _difficulty));
+            Assert.AreEqual(
+                RequirementCheck.RequirementType.None,
+                new MappingExtensionsReq().IsRequiredOrSuggested(_infoDifficulty, _difficulty));
         }
 
         [Test]

@@ -25,15 +25,17 @@ public class NJSEventPlacement : BasePlacement<BaseNJSEvent, NJSEventContainer, 
 
     public override void Start()
     {
-        // v2 info cannot switch to v4 version => cannot place and save NJS events
-        gameObject.SetActive(BeatSaberSongContainer.Instance.Info.MajorVersion != 2);
-        if (!gameObject.activeSelf)
-        {
-            gridLane.Hide = true;
-            gridLane.Controller.DeregisterChild(gridLane);
-        }
-        else
-            base.Start();
+        // V3MapDisplaysNJSEventLane proves lane support follows the difficulty format rather than its V2 Info.dat container.
+        HandleMapVersionChanged(Settings.Instance.MapVersion);
+        BeatmapVersionSwitchInputController.OnMapVersionChanged += HandleMapVersionChanged;
+        base.Start();
+    }
+
+    // Version changes can happen without a scene reload, so keep the initialized placement active and gate its lane and input together.
+    public override void OnDestroy()
+    {
+        BeatmapVersionSwitchInputController.OnMapVersionChanged -= HandleMapVersionChanged;
+        base.OnDestroy();
     }
 
     protected override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicts) =>
@@ -64,10 +66,63 @@ public class NJSEventPlacement : BasePlacement<BaseNJSEvent, NJSEventContainer, 
             QueuedData.Easing = supportedEasings[easingDropdownValue].id;
             QueuedData.RelativeNJS = relativeNJS;
             QueuedData.UsePrevious = extend ? 1 : 0;
-            base.HandleApply();
+            CompleteNJSPlacement();
         }
         else
             CreateAndOpenNJSDialogue(false);
+    }
+
+    private void CompleteNJSPlacement()
+    {
+        var difficultyInfo = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+        if (Settings.Instance.MapVersion == 3
+            && ObjectContainerCollection.MapObjects.Count == 0
+            && !difficultyInfo.CustomRequirements.Contains("BeatToTheFuture"))
+        {
+            CreateAndOpenBeatToTheFutureDialogue();
+            return;
+        }
+
+        base.HandleApply();
+    }
+
+    private void CreateAndOpenBeatToTheFutureDialogue()
+    {
+        var requirementDialogue = PersistentUI
+            .Instance
+            .CreateNewDialogBox()
+            .WithTitle("Variable Note Jump Speed");
+
+        requirementDialogue
+            .AddComponent<TextComponent>()
+            .WithInitialValue(
+                "Variable Note Jump Speed events in V3 maps require BeatToTheFuture. " +
+                "Do you want to add the BeatToTheFuture requirement and place this NJS event?");
+
+        // Footer buttons render left to right, so acceptance is left and cancellation is right.
+        requirementDialogue.AddFooterButton(AcceptBeatToTheFutureRequirementAndPlace, "Yes");
+        requirementDialogue.AddFooterButton(null, "No");
+        requirementDialogue.Open();
+    }
+
+    // Acceptance owns both metadata mutation and deferred placement so the prompt cannot create duplicate events.
+    private void AcceptBeatToTheFutureRequirementAndPlace()
+    {
+        var requirements = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomRequirements;
+        if (!requirements.Contains("BeatToTheFuture"))
+        {
+            requirements.Add("BeatToTheFuture");
+        }
+
+        base.HandleApply();
+    }
+
+    // V2 has no NJS serialization path, while V3 and V4 both support the initialized placement lane.
+    private void HandleMapVersionChanged(int mapVersion)
+    {
+        var supportsNJS = mapVersion != 2;
+        AllowPlacement = supportsNJS;
+        gridLane.Hide = !supportsNJS;
     }
 
     private void CreateAndOpenNJSDialogue(bool isInitialPlacement)

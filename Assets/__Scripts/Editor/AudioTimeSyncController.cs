@@ -329,6 +329,13 @@ public class AudioTimeSyncController : MonoBehaviour,
             return;
         }
 
+        if (controlSnap
+            && preciselyControlSnap
+            && IsCursorIntervalOwnedByHoveredObject())
+        {
+            return;
+        }
+
         var value = context.ReadValue<float>();
         if (context.performed)
         {
@@ -380,9 +387,8 @@ public class AudioTimeSyncController : MonoBehaviour,
             return;
         }
 
-        // GLS and Basic Event hover edits own Ctrl+Shift+Scroll instead of the global cursor interval.
-        if (GLSEventInputHoverTracker.IsHovering
-            || BeatmapEventInputController.IsCursorIntervalOwnedByPointer())
+        // VNJS, GLS and Basic Event hover edits own [Ctrl+]Shift+Scroll instead of the global cursor interval.
+        if (IsCursorIntervalOwnedByHoveredObject())
         {
             return;
         }
@@ -399,6 +405,13 @@ public class AudioTimeSyncController : MonoBehaviour,
             var addition = scrollDirection > 1 ? 1 : -1;
             GridMeasureSnapping = Mathf.Clamp(GridMeasureSnapping + addition, 1, 64);
         }
+    }
+
+    private static bool IsCursorIntervalOwnedByHoveredObject()
+    {
+        return GLSEventInputHoverTracker.IsHovering
+            || BeatmapEventInputController.IsCursorIntervalOwnedByPointer()
+            || BeatmapNJSEventInputController.IsCursorIntervalOwnedByPointer();
     }
 
     public void OnChangePrecisionModifier(InputAction.CallbackContext context) => controlSnap = context.performed;

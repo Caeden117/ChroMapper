@@ -4978,6 +4978,15 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Tweak VNJS Easing"",
+                    ""type"": ""Value"",
+                    ""id"": ""c332510c-aba5-4222-b67c-a042d20c831b"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -5011,6 +5020,50 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Tweak NJS Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Ctrl + Shift + Scroll"",
+                    ""id"": ""28f4b04d-9f32-4ccf-b710-129b2f27d3fb"",
+                    ""path"": ""TwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak VNJS Easing"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""27a1064f-f652-4c46-972b-16a952973f96"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak VNJS Easing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""c55c4eaf-e259-4206-9375-620ce5649edd"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak VNJS Easing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""287a0210-3040-45e3-a35a-0275e055b265"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak VNJS Easing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -8185,6 +8238,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         // NJS Event Objects
         m_NJSEventObjects = asset.FindActionMap("NJS Event Objects", throwIfNotFound: true);
         m_NJSEventObjects_TweakNJSValue = m_NJSEventObjects.FindAction("Tweak NJS Value", throwIfNotFound: true);
+        m_NJSEventObjects_TweakVNJSEasing = m_NJSEventObjects.FindAction("Tweak VNJS Easing", throwIfNotFound: true);
         // Switch Version
         m_SwitchVersion = asset.FindActionMap("Switch Version", throwIfNotFound: true);
         m_SwitchVersion_SwitchingVersion = m_SwitchVersion.FindAction("SwitchingVersion", throwIfNotFound: true);
@@ -13917,6 +13971,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_NJSEventObjects;
     private List<INJSEventObjectsActions> m_NJSEventObjectsActionsCallbackInterfaces = new List<INJSEventObjectsActions>();
     private readonly InputAction m_NJSEventObjects_TweakNJSValue;
+    private readonly InputAction m_NJSEventObjects_TweakVNJSEasing;
     /// <summary>
     /// Provides access to input actions defined in input action map "NJS Event Objects".
     /// </summary>
@@ -13932,6 +13987,10 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "NJSEventObjects/TweakNJSValue".
         /// </summary>
         public InputAction @TweakNJSValue => m_Wrapper.m_NJSEventObjects_TweakNJSValue;
+        /// <summary>
+        /// Provides access to the underlying input action "NJSEventObjects/TweakVNJSEasing".
+        /// </summary>
+        public InputAction @TweakVNJSEasing => m_Wrapper.m_NJSEventObjects_TweakVNJSEasing;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -13961,6 +14020,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @TweakNJSValue.started += instance.OnTweakNJSValue;
             @TweakNJSValue.performed += instance.OnTweakNJSValue;
             @TweakNJSValue.canceled += instance.OnTweakNJSValue;
+            @TweakVNJSEasing.started += instance.OnTweakVNJSEasing;
+            @TweakVNJSEasing.performed += instance.OnTweakVNJSEasing;
+            @TweakVNJSEasing.canceled += instance.OnTweakVNJSEasing;
         }
 
         /// <summary>
@@ -13975,6 +14037,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @TweakNJSValue.started -= instance.OnTweakNJSValue;
             @TweakNJSValue.performed -= instance.OnTweakNJSValue;
             @TweakNJSValue.canceled -= instance.OnTweakNJSValue;
+            @TweakVNJSEasing.started -= instance.OnTweakVNJSEasing;
+            @TweakVNJSEasing.performed -= instance.OnTweakVNJSEasing;
+            @TweakVNJSEasing.canceled -= instance.OnTweakVNJSEasing;
         }
 
         /// <summary>
@@ -17458,6 +17523,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTweakNJSValue(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Tweak VNJS Easing" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTweakVNJSEasing(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Switch Version" which allows adding and removing callbacks.
