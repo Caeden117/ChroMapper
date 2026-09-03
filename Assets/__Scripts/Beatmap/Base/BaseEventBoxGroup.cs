@@ -38,6 +38,8 @@ namespace Beatmap.Base
         // Shared GLS mutation code receives the non-generic group base, so expose its required ordering refresh polymorphically.
         public abstract void ResortOrderedEvents();
 
+        public abstract void PruneEmptyAutomaticAxisLanes();
+
         // Keep event invocation in the declaring base type so generic groups can invalidate their data-only indexes.
         protected void NotifyOrderedEventsResorted() => OnOrderedEventsResorted?.Invoke(this);
     }
@@ -89,6 +91,54 @@ namespace Beatmap.Base
             OrderedEventsInitialized = true;
             // Refresh only indexes that own this group instead of coupling selection to rendered containers.
             NotifyOrderedEventsResorted();
+        }
+
+        public override void PruneEmptyAutomaticAxisLanes()
+        {
+            var hasPermanentOrPopulatedBox = false;
+            for (var boxIndex = 0; boxIndex < Boxes.Count; boxIndex++)
+            {
+                var box = Boxes[boxIndex];
+                if (!box.IsAutomaticAxisLane || box.ReadOnlyEvents.Count > 0)
+                {
+                    hasPermanentOrPopulatedBox = true;
+                    break;
+                }
+            }
+
+            var retainedAutomaticIndex = hasPermanentOrPopulatedBox
+                ? -1
+                : Boxes.Count - 1;
+            // Most GLS mutations do not remove a lane, so remember whether indexes actually shifted before touching every child.
+            var removedBox = false;
+            for (var boxIndex = Boxes.Count - 1; boxIndex >= 0; boxIndex--)
+            {
+                var box = Boxes[boxIndex];
+                if (box.IsAutomaticAxisLane
+                    && box.ReadOnlyEvents.Count == 0
+                    && boxIndex != retainedAutomaticIndex)
+                {
+                    Boxes.RemoveAt(boxIndex);
+                    removedBox = true;
+                }
+            }
+
+            if (removedBox)
+            {
+                for (var boxIndex = 0; boxIndex < Boxes.Count; boxIndex++)
+                {
+                    var box = Boxes[boxIndex];
+                    foreach (var evt in box.ReadOnlyEvents)
+                    {
+                        evt.EventBoxData = box;
+                        evt.EventBoxGroupData = this;
+                        evt.BoxIndex = boxIndex;
+                        evt.JsonTime = JsonTime + evt.RelativeJsonTime;
+                    }
+                }
+            }
+
+            ResortOrderedEvents();
         }
 
         // Deserialization has complete group ownership here, so normalize each filter lane once and report accurate outer/inner beats.

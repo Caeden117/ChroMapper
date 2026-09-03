@@ -17,6 +17,8 @@ namespace Beatmap.Containers
         [SerializeField] public TracksDefinitionSO TracksDefinition;
 
         public BaseGLSEvent EventData;
+        // Missing-axis ghosts shift rendered lanes without changing authoritative BoxIndex ownership.
+        public int DisplayLaneIndex { private get; set; } = -1;
 
         // Expose the existing serialized ribbon renderer for color-transition appearance updates.
         public LightGradientController LightGradientController => lightGradientController;
@@ -50,9 +52,11 @@ namespace Beatmap.Containers
 
         public override void UpdateGridPosition()
         {
+            var laneIndex = DisplayLaneIndex >= 0
+                ? DisplayLaneIndex
+                : EventData.BoxIndex;
             transform.localPosition = new Vector3(
-                0.5f + EventData.BoxIndex,
-                // Keep every inner GLS node grounded after its shared 75%-scale appearance is applied. Fixes GLS nodes hovering too high above grid and being hard to tell where they are visually.
+                0.5f + laneIndex,
                 BeatmapConstant.EventNodeGroundedCenterY,
                 EventData.SongBpmTime * EditorScaleController.EditorScale);
             UpdateCollisionGroups();

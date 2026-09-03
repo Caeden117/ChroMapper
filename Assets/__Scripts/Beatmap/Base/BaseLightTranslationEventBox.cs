@@ -74,6 +74,7 @@ namespace Beatmap.Base
             TranslationAffectFirst = other.TranslationAffectFirst;
             Axis = other.Axis;
             Flip = other.Flip;
+            IsAutomaticAxisLane = other.IsAutomaticAxisLane;
             Events = other.Events.Select(x => x.Clone()).Cast<BaseLightTranslationBase>().ToArray();
         }
 

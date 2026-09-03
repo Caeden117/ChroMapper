@@ -304,6 +304,16 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
         }
     }
 
+    public void OnToggleStrobeFadeHover(InputAction.CallbackContext context)
+    {
+        // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.
+        TryGetHoveredEvent(context, out var evt);
+        if (GLSEventHoverMutation.ToggleColorStrobeFade(context, evt))
+        {
+            RefreshHoveredVisualAfterMutation();
+        }
+    }
+
     public void OnTweakEasingHover(InputAction.CallbackContext context)
     {
         // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.

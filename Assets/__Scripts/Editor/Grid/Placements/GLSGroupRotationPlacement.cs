@@ -83,6 +83,13 @@ public class
         BeatmapFactory.Clone(
             new BaseLightRotationEventBoxGroup()
             {
-                Boxes = new() { new BaseLightRotationEventBox { Events = new[] { new BaseLightRotationBase() } } }
+                Boxes = new()
+                {
+                    new BaseLightRotationEventBox
+                    {
+                        IsAutomaticAxisLane = true,
+                        Events = new[] { new BaseLightRotationBase() }
+                    }
+                }
             });
 }

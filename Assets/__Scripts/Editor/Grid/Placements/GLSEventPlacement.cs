@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -23,7 +22,8 @@ public abstract class
         base.CanPlace
         && glsEventGridProvider.GroupContext != null
         && glsEventGridProvider.GroupContext.GetType() == typeof(TGroup)
-        && QueuedData.EventBoxGroupData.ReadOnlyBoxes.Count > 0
+        // Transform groups expose display-only missing-axis lanes even when no corresponding box is serialized yet.
+        && glsEventGridProvider.DisplayedLaneCount > 0
         // Non-grid-aligned outer groups can produce a sub-epsilon negative residue at their visual zero offset.
         // Fixes the weird float rounding CatKid issue
         && QueuedData.RelativeJsonTime >= -BeatmapObjectContainerCollection.Epsilon;
@@ -75,11 +75,16 @@ public abstract class
         QueuedData.RecomputeSongBpmTime();
         // Re-evaluate after updating the offset so the hover node immediately hides before the group.
         PlacementVisualContainer.SafeSetActive(CanPlace);
-        if (group.ReadOnlyBoxes.Count == 0) return;
-        // Clamp to the final valid list index; Count itself is out of range and caused repeated placement exceptions.
-        var boxIndex = Math.Clamp(i, 0, group.ReadOnlyBoxes.Count - 1);
-        QueuedData.EventBoxData = group.ReadOnlyBoxes[boxIndex];
-        QueuedData.BoxIndex = boxIndex;
+        var boxIndex = Math.Clamp(i, 0, glsEventGridProvider.DisplayedLaneCount - 1);
+        if (!glsEventGridProvider.TryGetDisplayedBox(boxIndex, out var displayedBox)) return;
+        QueuedData.EventBoxData = displayedBox;
+        // Hover X uses the merged display lane while authored placement retains the group's real box index.
+        QueuedData.BoxIndex = glsEventGridProvider.GetAuthoredBoxIndex(boxIndex);
+        PlacementVisualContainer.DisplayLaneIndex = boxIndex;
+        if (DraggedObjectContainer != null)
+        {
+            DraggedObjectContainer.DisplayLaneIndex = boxIndex;
+        }
         // The hover preview bypasses collection positioning, so ground it with the finalized inner GLS node position.
         PlacementVisualContainer.UpdateGridPosition();
         // The hover preview's rotation/translation axis color depends on the box under the cursor.
@@ -88,8 +93,15 @@ public abstract class
 
     public override void HandleApply()
     {
-        // we omit the action here, the same otherwise
-        ObjectContainerCollection.SpawnObject(QueuedData, out _);
+        // Ghost lanes have no authored box index, so use the cached O(1) lane mapping instead of scanning every box.
+        if (QueuedData.BoxIndex < 0)
+        {
+            ObjectContainerCollection.PlaceInDisplayOnlyLane(QueuedData, QueuedData.EventBoxData);
+        }
+        else
+        {
+            ObjectContainerCollection.SpawnObject(QueuedData, out _);
+        }
         QueuedData = BeatmapFactory.Clone(QueuedData);
         QueuedData.EventBoxGroupData = glsEventGridProvider.GroupContext;
         PlacementVisualContainer.EventData = QueuedData;
@@ -154,8 +166,21 @@ public abstract class
         // Publish the destination group against the untouched pre-drag parent so undo restores the original source location.
         try
         {
-            ObjectContainerCollection.UseOriginalGroupForNextReplacement(originalDraggedGroup);
-            ObjectContainerCollection.SpawnObject(DraggedObjectData, out _);
+            // Alt-drag hover records -1 for a ghost destination, avoiding a linear membership scan on release.
+            if (DraggedObjectData.BoxIndex < 0)
+            {
+                // The immutable pre-drag child identifies the one source-array entry to replace without rebuilding every sibling.
+                ObjectContainerCollection.MoveToDisplayOnlyLane(
+                    DraggedObjectData,
+                    OriginalDraggedObjectData,
+                    DraggedObjectData.EventBoxData,
+                    originalDraggedGroup);
+            }
+            else
+            {
+                ObjectContainerCollection.UseOriginalGroupForNextReplacement(originalDraggedGroup);
+                ObjectContainerCollection.SpawnObject(DraggedObjectData, out _);
+            }
         }
         finally
         {

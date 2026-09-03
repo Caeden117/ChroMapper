@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Beatmap.Base;
 using Beatmap.Enums;
@@ -22,7 +21,28 @@ public class GLSEventGridProvider : MonoBehaviour
 
     private readonly Stack<TextMeshProUGUI> reuseLabels = new();
     private readonly Stack<TextMeshProUGUI> usedLabels = new();
+
+    // Pre-cached to prevent alloc / dealloc while alt dragging nodes around and stuff
+    private readonly BaseEventBox[] rotationUnusedLanes =
+    {
+        new BaseLightRotationEventBox { Axis = 0, IsAutomaticAxisLane = true },
+        new BaseLightRotationEventBox { Axis = 1, IsAutomaticAxisLane = true },
+        new BaseLightRotationEventBox { Axis = 2, IsAutomaticAxisLane = true }
+    };
+    private readonly BaseEventBox[] translationUnusedLanes =
+    {
+        new BaseLightTranslationEventBox { Axis = 0, IsAutomaticAxisLane = true },
+        new BaseLightTranslationEventBox { Axis = 1, IsAutomaticAxisLane = true },
+        new BaseLightTranslationEventBox { Axis = 2, IsAutomaticAxisLane = true }
+    };
+    private readonly List<BaseEventBox> axisUnusedLanes = new();
+    // Axis-scroll ordering is rebuilt only when the open group changes, keeping label, node, hover, and selection lookups allocation-free.
+    private readonly List<BaseEventBox> axisLaneOrder = new();
+    private readonly List<int> axisLaneAuthoredIndexes = new();
+    private readonly List<int> authoredLaneDisplayIndexes = new();
     private BaseEventBoxGroup groupContext;
+
+    public int DisplayedLaneCount => axisLaneOrder.Count;
 
     public BaseEventBoxGroup GroupContext
     {
@@ -71,6 +91,16 @@ public class GLSEventGridProvider : MonoBehaviour
 
     private void RefreshTrack()
     {
+        while (usedLabels.TryPop(out var usedLabel))
+        {
+            usedLabel.enabled = false;
+            reuseLabels.Push(usedLabel);
+        }
+
+        axisUnusedLanes.Clear();
+        axisLaneOrder.Clear();
+        axisLaneAuthoredIndexes.Clear();
+        authoredLaneDisplayIndexes.Clear();
         if (groupContext == null)
         {
             gridLane.Lane = 0;
@@ -79,15 +109,11 @@ public class GLSEventGridProvider : MonoBehaviour
         }
 
         var boxes = groupContext.ReadOnlyBoxes;
-        gridLane.Lane = boxes.Count;
+        AppendMissingAxisLanes(groupContext, axisUnusedLanes);
+        RebuildAxisLaneOrder(boxes);
+        gridLane.Lane = DisplayedLaneCount;
 
-        while (usedLabels.TryPop(out var label))
-        {
-            label.enabled = false;
-            reuseLabels.Push(label);
-        }
-
-        for (var i = 0; i < boxes.Count; i++)
+        for (var i = 0; i < DisplayedLaneCount; i++)
         {
             if (!reuseLabels.TryPop(out var label)) label = Instantiate(labelPrefab, targetCanvas);
             usedLabels.Push(label);
@@ -96,7 +122,7 @@ public class GLSEventGridProvider : MonoBehaviour
             pos.x = i;
             label.rectTransform.localPosition = pos;
 
-            var box = boxes[i];
+            var box = axisLaneOrder[i];
             var filter = box.IndexFilter;
 
             var sb = new StringBuilder();
@@ -135,7 +161,134 @@ public class GLSEventGridProvider : MonoBehaviour
 
             label.SetText(sb.ToString());
 
+            // Only disposable automatic lanes are dimmed; loaded, filtered, and explicitly added empty lanes remain fully authored.
+            var labelColor = labelPrefab.color;
+            labelColor.a *= box.IsAutomaticAxisLane && box.ReadOnlyEvents.Count == 0 ? 0.5f : 1f;
+            label.color = labelColor;
             label.enabled = true;
+        }
+    }
+
+    // Hover placement needs the lane's display box even when that missing-axis box has not been authored yet.
+    public bool TryGetDisplayedBox(int laneIndex, out BaseEventBox box)
+    {
+        if (laneIndex < 0 || laneIndex >= DisplayedLaneCount)
+        {
+            box = null;
+            return false;
+        }
+
+        box = axisLaneOrder[laneIndex];
+        return true;
+    }
+
+    public int GetAuthoredBoxIndex(int displayedLaneIndex) =>
+        displayedLaneIndex >= 0 && displayedLaneIndex < axisLaneAuthoredIndexes.Count
+            ? axisLaneAuthoredIndexes[displayedLaneIndex]
+            : -1;
+
+    public int GetDisplayedLaneIndex(int authoredBoxIndex) =>
+        authoredBoxIndex >= 0 && authoredBoxIndex < authoredLaneDisplayIndexes.Count
+            ? authoredLaneDisplayIndexes[authoredBoxIndex]
+            : authoredBoxIndex;
+
+    // Merge authored boxes and missing-axis ghosts in XYZ order while preserving authored filter order within each axis.
+    private void RebuildAxisLaneOrder(IReadOnlyList<BaseEventBox> authoredBoxes)
+    {
+        for (var boxIndex = 0; boxIndex < authoredBoxes.Count; boxIndex++)
+        {
+            authoredLaneDisplayIndexes.Add(-1);
+        }
+
+        if (axisUnusedLanes.Count == 0)
+        {
+            for (var boxIndex = 0; boxIndex < authoredBoxes.Count; boxIndex++)
+            {
+                AddAuthoredLane(authoredBoxes[boxIndex], boxIndex);
+            }
+            return;
+        }
+
+        for (var axis = 0; axis < 3; axis++)
+        {
+            for (var boxIndex = 0; boxIndex < authoredBoxes.Count; boxIndex++)
+            {
+                if ((int)authoredBoxes[boxIndex].GetAxis() == axis)
+                {
+                    AddAuthoredLane(authoredBoxes[boxIndex], boxIndex);
+                }
+            }
+
+            for (var unusedIndex = 0; unusedIndex < axisUnusedLanes.Count; unusedIndex++)
+            {
+                var unusedLane = axisUnusedLanes[unusedIndex];
+                if ((int)unusedLane.GetAxis() == axis)
+                {
+                    axisLaneOrder.Add(unusedLane);
+                    axisLaneAuthoredIndexes.Add(-1);
+                }
+            }
+        }
+
+        // Preserve malformed or future-axis authored data after the known XYZ lanes instead of making it inaccessible.
+        for (var boxIndex = 0; boxIndex < authoredBoxes.Count; boxIndex++)
+        {
+            if (authoredLaneDisplayIndexes[boxIndex] < 0)
+            {
+                AddAuthoredLane(authoredBoxes[boxIndex], boxIndex);
+            }
+        }
+    }
+
+    // Record both directions once so all later display/ownership conversions are constant-time.
+    private void AddAuthoredLane(BaseEventBox box, int authoredBoxIndex)
+    {
+        authoredLaneDisplayIndexes[authoredBoxIndex] = axisLaneOrder.Count;
+        axisLaneOrder.Add(box);
+        axisLaneAuthoredIndexes.Add(authoredBoxIndex);
+    }
+
+    private void AppendMissingAxisLanes(BaseEventBoxGroup group, ICollection<BaseEventBox> lanes)
+    {
+        BaseEventBox[] unusedLanes;
+        if (group is BaseLightRotationEventBoxGroup)
+        {
+            unusedLanes = rotationUnusedLanes;
+        }
+        else if (group is BaseLightTranslationEventBoxGroup)
+        {
+            unusedLanes = translationUnusedLanes;
+        }
+        else
+        {
+            return;
+        }
+
+        foreach (var box in group.ReadOnlyBoxes)
+        {
+            if (box.IndexFilter.Type == (int)IndexFilterType.StepAndOffset
+                && box.IndexFilter.Param1 == 0)
+            {
+                return;
+            }
+        }
+
+        var presentAxes = 0;
+        foreach (var box in group.ReadOnlyBoxes)
+        {
+            var axis = (int)box.GetAxis();
+            if (axis >= 0 && axis < unusedLanes.Length)
+            {
+                presentAxes |= 1 << axis;
+            }
+        }
+
+        for (var axis = 0; axis < unusedLanes.Length; axis++)
+        {
+            if ((presentAxes & (1 << axis)) == 0)
+            {
+                lanes.Add(unusedLanes[axis]);
+            }
         }
     }
 

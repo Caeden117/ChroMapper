@@ -74,6 +74,7 @@ namespace Beatmap.Base
             RotationAffectFirst = other.RotationAffectFirst;
             Axis = other.Axis;
             Flip = other.Flip;
+            IsAutomaticAxisLane = other.IsAutomaticAxisLane;
             Events = other.Events.Select(x => x.Clone()).Cast<BaseLightRotationBase>().ToArray();
         }
 

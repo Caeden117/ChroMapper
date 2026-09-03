@@ -28,79 +28,51 @@ public static class GLSEventBoxCommand
         return GLSCommonCommand.TriggerPlaceAction(group, BeatmapFactory.Clone(newGroup));
     }
 
-    public static BaseEventBoxGroup AddAllIdsEventBox(BaseEventBoxGroup group, TrackDefinitionGLS td, int count)
+    public static BaseEventBoxGroup AddAllIdsEventBox(BaseEventBoxGroup group, int count)
     {
         var newGroup = BeatmapFactory.Clone(group);
-        var axis = (int)Axis.X;
         switch (newGroup)
         {
             case BaseLightColorEventBoxGroup lcebg:
-                lcebg.Boxes.Clear();
-                for (var i = 0; i < count; i++)
-                {
-                    lcebg.Boxes.Add(
-                        new()
-                        {
-                            IndexFilter = new()
-                            {
-                                Type = (int)IndexFilterType.StepAndOffset, Param0 = i, Param1 = 0
-                            }
-                        });
-                }
-
+                RebuildIdLanes(
+                    lcebg,
+                    count,
+                    1,
+                    null,
+                    static _ => 0,
+                    static _ => new BaseLightColorEventBox());
                 break;
             case BaseLightRotationEventBoxGroup lrebg:
-                if (lrebg.Boxes.Count == count && lrebg.Boxes.Count > 0) axis = (lrebg.Boxes[0].Axis + 1) % 3;
-                lrebg.Boxes.Clear();
-                for (var i = 0; i < count; i++)
-                {
-                    lrebg.Boxes.Add(
-                        new()
-                        {
-                            IndexFilter = new()
-                            {
-                                Type = (int)IndexFilterType.StepAndOffset, Param0 = i, Param1 = 0
-                            },
-                            Axis = axis
-                        });
-                }
-
+                RebuildIdLanes(
+                    lrebg,
+                    count,
+                    3,
+                    null,
+                    static box => box.Axis,
+                    static axis => new BaseLightRotationEventBox { Axis = axis });
                 break;
             case BaseLightTranslationEventBoxGroup ltebg:
-                if (ltebg.Boxes.Count == count && ltebg.Boxes.Count > 0) axis = (ltebg.Boxes[0].Axis + 1) % 3;
-                ltebg.Boxes.Clear();
-                for (var i = 0; i < count; i++)
-                {
-                    ltebg.Boxes.Add(
-                        new()
-                        {
-                            IndexFilter = new()
-                            {
-                                Type = (int)IndexFilterType.StepAndOffset, Param0 = i, Param1 = 0
-                            },
-                            Axis = axis
-                        });
-                }
-
+                RebuildIdLanes(
+                    ltebg,
+                    count,
+                    3,
+                    null,
+                    static box => box.Axis,
+                    static axis => new BaseLightTranslationEventBox { Axis = axis });
                 break;
             case BaseVfxEventEventBoxGroup ffebg:
-                ffebg.Boxes.Clear();
-                for (var i = 0; i < count; i++)
-                {
-                    ffebg.Boxes.Add(
-                        new()
-                        {
-                            IndexFilter = new()
-                            {
-                                Type = (int)IndexFilterType.StepAndOffset, Param0 = i, Param1 = 0
-                            }
-                        });
-                }
-
+                RebuildIdLanes(
+                    ffebg,
+                    count,
+                    1,
+                    null,
+                    static _ => 0,
+                    static _ => new BaseVfxEventEventBox());
                 break;
         }
 
-        return GLSCommonCommand.TriggerPlaceAction(group, BeatmapFactory.Clone(newGroup));
+        // RebuildIdLanes already produced an independently cloned group; cloning the expanded ID lanes again doubled peak allocations.
+        return GLSCommonCommand.TriggerPlaceAction(group, newGroup);
     }
 
     public static BaseEventBoxGroup AddAllAxesEventBox(BaseEventBoxGroup group, TrackDefinitionGLS td)
@@ -111,28 +83,145 @@ public static class GLSEventBoxCommand
             case BaseLightColorEventBoxGroup:
                 return null;
             case BaseLightRotationEventBoxGroup lrebg:
-                lrebg.Boxes.Clear();
-                foreach (var (r, axis) in td.RotationTracks.Select((r, x) => (r, x)))
-                {
-                    if (!r) continue;
-                    lrebg.Boxes.Add(new() { Axis = axis });
-                }
-
+                // AddAxesPreservesMultipleExistingRotationAxisNodes adds only absent enabled axes and authors existing auto lanes.
+                AddMissingAxes(
+                    lrebg,
+                    td.RotationTracks,
+                    static box => box.Axis,
+                    static axis => new BaseLightRotationEventBox { Axis = axis });
                 break;
             case BaseLightTranslationEventBoxGroup ltebg:
-                ltebg.Boxes.Clear();
-                foreach (var (r, axis) in td.RotationTracks.Select((r, x) => (r, x)))
-                {
-                    if (!r) continue;
-                    ltebg.Boxes.Add(new() { Axis = axis });
-                }
-
+                // AddAxesPreservesTranslationNodeAndUsesTranslationTracks retains nodes and reads the correct track family.
+                AddMissingAxes(
+                    ltebg,
+                    td.TranslationTracks,
+                    static box => box.Axis,
+                    static axis => new BaseLightTranslationEventBox { Axis = axis });
                 break;
             case BaseVfxEventEventBoxGroup:
                 return null;
         }
 
-        return GLSCommonCommand.TriggerPlaceAction(group, BeatmapFactory.Clone(newGroup));
+        return GLSCommonCommand.TriggerPlaceAction(group, newGroup);
+    }
+
+    // +Ids snapshots nodes by axis, removes all non-ID source boxes, and independently clones each snapshot into every ID lane.
+    private static void RebuildIdLanes<TBox>(
+        BaseEventBoxGroup<TBox> group,
+        int count,
+        int partitionCount,
+        bool[] includedPartitions,
+        System.Func<TBox, int> getPartition,
+        System.Func<int, TBox> createBox)
+        where TBox : BaseEventBox
+    {
+        if (count <= 0)
+        {
+            return;
+        }
+
+        var boxes = group.Boxes;
+        var generatedPartitions = new bool[partitionCount];
+        if (includedPartitions != null)
+        {
+            var includedPartitionCount = System.Math.Min(generatedPartitions.Length, includedPartitions.Length);
+            for (var partition = 0; partition < includedPartitionCount; partition++)
+            {
+                generatedPartitions[partition] = includedPartitions[partition];
+            }
+        }
+
+        var sourceEvents = new System.Collections.Generic.List<BaseGLSEvent>[generatedPartitions.Length];
+        for (var partition = 0; partition < sourceEvents.Length; partition++)
+        {
+            sourceEvents[partition] = new System.Collections.Generic.List<BaseGLSEvent>();
+        }
+
+        for (var boxIndex = 0; boxIndex < boxes.Count; boxIndex++)
+        {
+            var box = boxes[boxIndex];
+            var partition = getPartition(box);
+            if (partition < 0 || partition >= generatedPartitions.Length)
+            {
+                continue;
+            }
+
+            // Existing partitions join generated layouts even when track metadata is stale, preventing node loss during conversion.
+            generatedPartitions[partition] = true;
+            for (var eventIndex = 0; eventIndex < box.ReadOnlyEvents.Count; eventIndex++)
+            {
+                sourceEvents[partition].Add(box.ReadOnlyEvents[eventIndex]);
+            }
+        }
+
+        boxes.Clear();
+        for (var partition = 0; partition < generatedPartitions.Length; partition++)
+        {
+            if (!generatedPartitions[partition])
+            {
+                continue;
+            }
+
+            for (var id = 0; id < count; id++)
+            {
+                var targetBox = createBox(partition);
+                targetBox.IndexFilter = new BaseIndexFilter
+                {
+                    Type = (int)IndexFilterType.StepAndOffset,
+                    Param0 = id,
+                    Param1 = 0
+                };
+                var clonedEvents = new BaseGLSEvent[sourceEvents[partition].Count];
+                for (var eventIndex = 0; eventIndex < sourceEvents[partition].Count; eventIndex++)
+                {
+                    clonedEvents[eventIndex] = BeatmapFactory.Clone(sourceEvents[partition][eventIndex]);
+                }
+
+                targetBox.SetEvents(clonedEvents);
+                targetBox.IsAutomaticAxisLane = false;
+                boxes.Add(targetBox);
+            }
+        }
+
+        GLSCommonCommand.RebindGroup(group);
+    }
+
+    // Add Axes is additive: preserve every authored filter lane and create one permanent lane only for a missing enabled axis.
+    private static void AddMissingAxes<TBox>(
+        BaseEventBoxGroup<TBox> group,
+        bool[] enabledAxes,
+        System.Func<TBox, int> getAxis,
+        System.Func<int, TBox> createBox)
+        where TBox : BaseEventBox
+    {
+        var boxes = group.Boxes;
+        var presentAxes = new bool[3];
+        for (var boxIndex = 0; boxIndex < boxes.Count; boxIndex++)
+        {
+            var axis = getAxis(boxes[boxIndex]);
+            if (axis < 0 || axis >= presentAxes.Length)
+            {
+                continue;
+            }
+
+            presentAxes[axis] = true;
+            if (axis < enabledAxes.Length && enabledAxes[axis])
+            {
+                boxes[boxIndex].IsAutomaticAxisLane = false;
+            }
+        }
+
+        var supportedAxisCount = System.Math.Min(presentAxes.Length, enabledAxes.Length);
+        for (var axis = 0; axis < supportedAxisCount; axis++)
+        {
+            if (enabledAxes[axis] && !presentAxes[axis])
+            {
+                boxes.Add(createBox(axis));
+            }
+        }
+
+        GLSCommonCommand.SortAxisTracks(boxes, getAxis);
+        GLSCommonCommand.RebindGroup(group);
     }
 
     public static BaseEventBoxGroup AddAllAxesAndIdsEventBox(BaseEventBoxGroup group, TrackDefinitionGLS td, int count)
@@ -141,78 +230,49 @@ public static class GLSEventBoxCommand
         switch (newGroup)
         {
             case BaseLightColorEventBoxGroup lcebg:
-                lcebg.Boxes.Clear();
-                for (var i = 0; i < count; i++)
-                {
-                    lcebg.Boxes.Add(
-                        new()
-                        {
-                            IndexFilter = new()
-                            {
-                                Type = (int)IndexFilterType.StepAndOffset, Param0 = i, Param1 = 0
-                            }
-                        });
-                }
-
+                // Non-axis +Axes IDs calls retain the same node-copy behavior if invoked outside the disabled UI action.
+                RebuildIdLanes(
+                    lcebg,
+                    count,
+                    1,
+                    null,
+                    static _ => 0,
+                    static _ => new BaseLightColorEventBox());
                 break;
             case BaseLightRotationEventBoxGroup lrebg:
-                lrebg.Boxes.Clear();
-                foreach (var (r, axis) in td.RotationTracks.Select((r, x) => (r, x)))
-                {
-                    if (!r) continue;
-                    for (var i = 0; i < count; i++)
-                    {
-                        lrebg.Boxes.Add(
-                            new()
-                            {
-                                IndexFilter = new()
-                                {
-                                    Type = (int)IndexFilterType.StepAndOffset, Param0 = i, Param1 = 0
-                                },
-                                Axis = axis
-                            });
-                    }
-                }
-
+                // AddAxesAndIdsCopiesNodesAndCreatesEmptyIdLanesForMissingAxes includes enabled empty rotation axes too.
+                RebuildIdLanes(
+                    lrebg,
+                    count,
+                    3,
+                    td.RotationTracks,
+                    static box => box.Axis,
+                    static axis => new BaseLightRotationEventBox { Axis = axis });
                 break;
             case BaseLightTranslationEventBoxGroup ltebg:
-                ltebg.Boxes.Clear();
-                foreach (var (r, axis) in td.RotationTracks.Select((r, x) => (r, x)))
-                {
-                    if (!r) continue;
-                    for (var i = 0; i < count; i++)
-                    {
-                        ltebg.Boxes.Add(
-                            new()
-                            {
-                                IndexFilter = new()
-                                {
-                                    Type = (int)IndexFilterType.StepAndOffset, Param0 = i, Param1 = 0
-                                },
-                                Axis = axis
-                            });
-                    }
-                }
-
+                // Translation +Axes IDs reads translation availability and clones each source axis into every generated lane.
+                RebuildIdLanes(
+                    ltebg,
+                    count,
+                    3,
+                    td.TranslationTracks,
+                    static box => box.Axis,
+                    static axis => new BaseLightTranslationEventBox { Axis = axis });
                 break;
             case BaseVfxEventEventBoxGroup ffebg:
-                ffebg.Boxes.Clear();
-                for (var i = 0; i < count; i++)
-                {
-                    ffebg.Boxes.Add(
-                        new()
-                        {
-                            IndexFilter = new()
-                            {
-                                Type = (int)IndexFilterType.StepAndOffset, Param0 = i, Param1 = 0
-                            }
-                        });
-                }
-
+                // FloatFX follows the same single-partition fallback when +Axes IDs is invoked programmatically.
+                RebuildIdLanes(
+                    ffebg,
+                    count,
+                    1,
+                    null,
+                    static _ => 0,
+                    static _ => new BaseVfxEventEventBox());
                 break;
         }
 
-        return GLSCommonCommand.TriggerPlaceAction(group, BeatmapFactory.Clone(newGroup));
+        // RebuildIdLanes already produced an independently cloned group; avoid deep-copying every expanded axis/ID event a second time.
+        return GLSCommonCommand.TriggerPlaceAction(group, newGroup);
     }
 
     public static BaseEventBoxGroup DeleteEventBox(BaseEventBoxGroup group, int targetIndex)

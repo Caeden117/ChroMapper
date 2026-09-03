@@ -249,8 +249,7 @@ public class EventBoxViewController : MonoBehaviour
     private void HandleAddIdsEventBox()
     {
         if (groupContext == null) return;
-        var td = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(groupContext.ID);
-        GLSEventBoxCommand.AddAllIdsEventBox(groupContext, td, GetGroupSize(groupContext));
+        GLSEventBoxCommand.AddAllIdsEventBox(groupContext, GetGroupSize(groupContext));
     }
 
     private void HandleAddAxesEventBox()

@@ -156,7 +156,10 @@ public static class GLSEventCommon
     {
         var sb = new StringBuilder();
 
-        sb.AppendLine((evt.Translation * 100f).ToString(CultureInfo.InvariantCulture));
+        // GLSTranslationYeetTest keeps sentinel-sized positions readable instead of exposing the implementation value.
+        sb.AppendLine(GLSEventTranslationCommand.IsYeet(evt.Translation)
+            ? "YEET"
+            : (evt.Translation * 100f).ToString(CultureInfo.InvariantCulture));
         sb.AppendLine(Easing.IDToShortName.GetValueOrDefault(evt.EaseType));
 
         return sb.ToString();

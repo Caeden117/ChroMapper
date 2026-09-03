@@ -35,6 +35,12 @@ namespace Beatmap.Base
         public int BeatDistributionType { get; set; }
 
         public int Easing { get; set; }
+
+        /// <summary>
+        /// Is it a temp ghost lane for ease of placement for rotation / translation XYZ? 
+        /// We don't serialize these, they only exist once used.
+        /// </summary>
+        public bool IsAutomaticAxisLane { get; set; }
         
         public abstract IReadOnlyList<BaseGLSEvent> ReadOnlyEvents { get; }
         public abstract void ClearEvents();

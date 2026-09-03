@@ -40,9 +40,14 @@ public static class GLSCommonCommand
             return;
         }
 
+        // Don't shift to an axis with something already at this beat.
+        if (!TryFindOpenAxis(originalGroup.Boxes, evt.BoxIndex, evt.RelativeJsonTime, direction, static box => box.Axis, out var targetAxis))
+        {
+            WarnNoOpenAxis();
+            return;
+        }
+
         var editedGroup = BeatmapFactory.Clone(originalGroup);
-        var sourceBox = editedGroup.Boxes[evt.BoxIndex];
-        var targetAxis = CycleAxis(sourceBox.Axis, direction);
         MoveEventToAxisTrack(
             editedGroup.Boxes,
             evt.BoxIndex,
@@ -66,9 +71,14 @@ public static class GLSCommonCommand
             return;
         }
 
+        // Translation uses the same same-beat occupancy search as rotation, including reverse wraparound.
+        if (!TryFindOpenAxis(originalGroup.Boxes, evt.BoxIndex, evt.RelativeJsonTime, direction, static box => box.Axis, out var targetAxis))
+        {
+            WarnNoOpenAxis();
+            return;
+        }
+
         var editedGroup = BeatmapFactory.Clone(originalGroup);
-        var sourceBox = editedGroup.Boxes[evt.BoxIndex];
-        var targetAxis = CycleAxis(sourceBox.Axis, direction);
         MoveEventToAxisTrack(
             editedGroup.Boxes,
             evt.BoxIndex,
@@ -79,6 +89,81 @@ public static class GLSCommonCommand
 
         RebindGroup(editedGroup);
         TriggerModifyEventBoxAction(originalGroup, editedGroup, ActionMergeType.ModifyGLSEventAxis);
+    }
+
+    // Treat an axis as occupied when any of its filter lanes already owns a node at the moving node's relative beat.
+    private static bool TryFindOpenAxis<TBox>(
+        IReadOnlyList<TBox> boxes,
+        int sourceBoxIndex,
+        float relativeJsonTime,
+        int direction,
+        Func<TBox, int> getAxis,
+        out int targetAxis)
+        where TBox : BaseEventBox
+    {
+        var sourceAxis = getAxis(boxes[sourceBoxIndex]);
+        var axisDirection = Math.Sign(direction);
+        for (var axisOffset = 1; axisOffset < 3; axisOffset++)
+        {
+            var candidateAxis = (sourceAxis + (axisDirection * axisOffset) + 6) % 3;
+            var occupied = false;
+            for (var boxIndex = 0; boxIndex < boxes.Count && !occupied; boxIndex++)
+            {
+                if (getAxis(boxes[boxIndex]) != candidateAxis)
+                {
+                    continue;
+                }
+
+                // AxisScrollSearchesSortedDestinationEventsWithoutLinearEnumeration covers this wheel-input hot path.
+                // SetEvents keeps each lane chronological, so binary search avoids walking every node on every pulse.
+                occupied = ContainsEventAtRelativeTime(boxes[boxIndex].ReadOnlyEvents, relativeJsonTime);
+            }
+
+            if (!occupied)
+            {
+                targetAxis = candidateAxis;
+                return true;
+            }
+        }
+
+        targetAxis = sourceAxis;
+        return false;
+    }
+
+    // AxisScrollSearchesSortedDestinationEventsWithoutLinearEnumeration protects the wheel-input lookup from linear scans.
+    // Comparing at each midpoint against the existing epsilon preserves same-beat occupancy semantics on sorted lane data.
+    private static bool ContainsEventAtRelativeTime(IReadOnlyList<BaseGLSEvent> events, float relativeJsonTime)
+    {
+        var lowerIndex = 0;
+        var upperIndex = events.Count - 1;
+        while (lowerIndex <= upperIndex)
+        {
+            var middleIndex = lowerIndex + ((upperIndex - lowerIndex) / 2);
+            var difference = events[middleIndex].RelativeJsonTime - relativeJsonTime;
+            if (Math.Abs(difference) < BeatmapObjectContainerCollection.Epsilon)
+            {
+                return true;
+            }
+
+            if (difference < 0)
+            {
+                lowerIndex = middleIndex + 1;
+            }
+            else
+            {
+                upperIndex = middleIndex - 1;
+            }
+        }
+
+        return false;
+    }
+
+    // Use the existing fading bottom notification and retain a diagnostic warning when every other axis is occupied.
+    private static void WarnNoOpenAxis()
+    {
+        const string message = "No open axis to shift to on this beat.";
+        Debug.LogWarning($"[GLSAxisScroll] {message}");
+        PersistentUI.Instance.DisplayMessage(message, PersistentUI.DisplayMessageType.Bottom);
     }
 
     // Reuse an existing destination-axis track, creating one only when the destination axis does not exist.
@@ -151,7 +236,7 @@ public static class GLSCommonCommand
     }
 
     // Preserve relative order within each axis while normalizing the three axis groups.
-    private static void SortAxisTracks<TBox>(List<TBox> boxes, Func<TBox, int> getAxis)
+    internal static void SortAxisTracks<TBox>(List<TBox> boxes, Func<TBox, int> getAxis)
     {
         var orderedBoxes = new List<TBox>(boxes.Count);
         for (var axis = (int)Axis.X; axis <= (int)Axis.Z; axis++)
@@ -173,6 +258,19 @@ public static class GLSCommonCommand
 
         boxes.Clear();
         boxes.AddRange(orderedBoxes);
+    }
+
+    internal static void SortAxisTracks(BaseEventBoxGroup group)
+    {
+        switch (group)
+        {
+            case BaseLightRotationEventBoxGroup rotationGroup:
+                SortAxisTracks(rotationGroup.Boxes, static box => box.Axis);
+                break;
+            case BaseLightTranslationEventBoxGroup translationGroup:
+                SortAxisTracks(translationGroup.Boxes, static box => box.Axis);
+                break;
+        }
     }
 
     // Resolve the cloned child by stable box and event indexes without scanning the beatmap.
@@ -200,12 +298,8 @@ public static class GLSCommonCommand
         return false;
     }
 
-    // Keep wheel direction reversible while wrapping through the three supported axes.
-    private static int CycleAxis(int currentAxis, int direction) =>
-        (currentAxis + Math.Sign(direction) + 3) % 3;
-
     // Rebind every edited child after a box split so inner lanes and outer previews share valid ownership.
-    private static void RebindGroup<TBox>(BaseEventBoxGroup<TBox> group)
+    internal static void RebindGroup<TBox>(BaseEventBoxGroup<TBox> group)
         where TBox : BaseEventBox
     {
         for (var boxIndex = 0; boxIndex < group.Boxes.Count; boxIndex++)
@@ -222,6 +316,65 @@ public static class GLSCommonCommand
 
         group.ResortOrderedEvents();
         group.SaveCustom();
+    }
+
+    // Ctrl+Arrow and other base-typed group edits share one ownership-finalization dispatch across every GLS node type.
+    internal static void RebindGroup(BaseEventBoxGroup group)
+    {
+        switch (group)
+        {
+            case BaseLightColorEventBoxGroup colorGroup:
+                RebindGroup(colorGroup);
+                break;
+            case BaseLightRotationEventBoxGroup rotationGroup:
+                RebindGroup(rotationGroup);
+                break;
+            case BaseLightTranslationEventBoxGroup translationGroup:
+                RebindGroup(translationGroup);
+                break;
+            case BaseVfxEventEventBoxGroup floatFxGroup:
+                RebindGroup(floatFxGroup);
+                break;
+        }
+    }
+
+    internal static bool TryMaterializeAutomaticAxisLane(
+        BaseEventBoxGroup group,
+        BaseEventBox displayBox,
+        out BaseEventBox materializedBox,
+        out int materializedBoxIndex)
+    {
+        switch (group)
+        {
+            case BaseLightRotationEventBoxGroup rotationGroup when displayBox is BaseLightRotationEventBox rotationBox:
+                materializedBox = (BaseEventBox)rotationBox.Clone();
+                rotationGroup.Boxes.Add((BaseLightRotationEventBox)materializedBox);
+                SortAxisTracks(rotationGroup.Boxes, static box => box.Axis);
+                break;
+            case BaseLightTranslationEventBoxGroup translationGroup when displayBox is BaseLightTranslationEventBox translationBox:
+                materializedBox = (BaseEventBox)translationBox.Clone();
+                translationGroup.Boxes.Add((BaseLightTranslationEventBox)materializedBox);
+                SortAxisTracks(translationGroup.Boxes, static box => box.Axis);
+                break;
+            default:
+                materializedBox = null;
+                materializedBoxIndex = -1;
+                return false;
+        }
+
+        // Resolve the stable index once after sorting so callers never assume a materialized lane was appended.
+        for (var boxIndex = 0; boxIndex < group.ReadOnlyBoxes.Count; boxIndex++)
+        {
+            if (ReferenceEquals(group.ReadOnlyBoxes[boxIndex], materializedBox))
+            {
+                materializedBoxIndex = boxIndex;
+                return true;
+            }
+        }
+
+        materializedBox = null;
+        materializedBoxIndex = -1;
+        return false;
     }
 
     public static (BaseEventBoxGroup group, TEvent evt) CopyGroupFrom<TEvent>(TEvent evt)

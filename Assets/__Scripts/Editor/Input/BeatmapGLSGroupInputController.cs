@@ -26,7 +26,7 @@ public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputContro
         where TEvent : BaseGLSEvent
     {
         evt = null;
-        if (!context.performed || !IsHovering || !RaycastFirstObject(out var container))
+        if (!context.performed || !IsHovering || !TryRaycastHoveredPreview(out var container))
         {
             return false;
         }
@@ -39,6 +39,10 @@ public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputContro
 
         return true;
     }
+
+    // Outer GLS regression tests replace only wheel-time target acquisition so primary and ghost preview ownership checks stay production-identical.
+    protected virtual bool TryRaycastHoveredPreview(out GLSGroupContainer container) =>
+        RaycastFirstObject(out container);
 
     // Resolve cached Unity references through Unity's overloaded null check rather than C# null coalescing.
     protected static ScrollPrecisionController ResolvePrecision(ref ScrollPrecisionController precision)
