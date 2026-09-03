@@ -29,6 +29,18 @@ public class SceneTransitionManager : MonoBehaviour
         Instance = this;
     }
 
+    // UpToNRandomMapsInDefaultSongLocationsLoadWithoutExceptions can end a PlayMode fixture after scene churn;
+    // clear only this owning instance so later NotesContainerTest setup never receives a destroyed Unity singleton.
+    private void OnDestroy()
+    {
+        if (object.ReferenceEquals(Instance, this))
+        {
+            Instance = null;
+            IsLoading = false;
+            externalRoutines.Clear();
+        }
+    }
+
     public void LoadScene(string scene, params IEnumerator[] routines)
     {
         if (IsLoading) return;

@@ -184,9 +184,12 @@ namespace Tests.Infrastructure
         {
             if (SceneManager.GetActiveScene().name.StartsWith("03")) yield break;
 
-            if (!mapperInit) yield return InitMapper();
+            if (!mapperInit || SceneTransitionManager.Instance == null)
+            {
+                yield return InitMapper();
+            }
 
-            var info = new BaseInfo { Directory = "testmap", SongName = "test" };
+            var info = new BaseInfo { Directory = "testmap", SongName = "test", Version = "2.1.0" };
             // BasicEventDenseMapChunkingTest scales the real map's 145 BPM timing to fit its high-beat events in
             // the shared 60-second clip while preserving the same JsonTime-to-SongBpmTime ratios.
             if (beatsPerMinute.HasValue)
@@ -200,7 +203,7 @@ namespace Tests.Infrastructure
             }
             BeatSaberSongContainer.Instance.Info = info;
             var parentSet = new InfoDifficultySet { Characteristic = "Lawless" };
-            var diff = new InfoDifficulty(parentSet);
+            var diff = new InfoDifficulty(parentSet) { LightshowFileName = "MissingTestLightshow.dat" };
 
             BeatSaberSongContainer.Instance.MapDifficultyInfo = diff;
             // Cursor and paste tests must reach anchors beyond beat 33 at the default 100 BPM without AudioTimeSyncController clamping them to the fake clip's end.

@@ -55,6 +55,7 @@ namespace Tests.Editor
             var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
             Assert.That(context, Is.Not.Null);
             Assert.DoesNotThrow(() => descriptor.Initialize(context));
+
             Assert.That(ringPositionEffects.All(effect => effect.Visual != null), Is.True);
             Assert.That(ringPositionEffects.Any(effect => !effect.Visual.gameObject.activeInHierarchy), Is.True);
 

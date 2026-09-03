@@ -23,6 +23,12 @@ namespace Tests.Editor
         // variant needs only its own scene reload instead of reloading the same DefaultEnvironment control five times.
         protected override IEnumerator OnMapLoaded()
         {
+            // EnvironmentEnhancementTrackTest guards the bulk-run regression where four half-second loading fades made
+            // every case two seconds slower before its production scene reload and assertions even began.
+            Assert.That(
+                PersistentUI.Instance.EnableTransitions,
+                Is.False,
+                "A preceding fixture re-enabled loading transitions for the shared test mapper.");
             yield return TestUtils.ReloadMap(2, CreateReportedDifficulty(false, TrackUsage.None));
             yield return MoveToReproductionBeat();
             tracklessEnhancementBaseline = CaptureBigRings();

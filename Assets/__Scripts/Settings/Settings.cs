@@ -12,13 +12,18 @@ public class Settings
 #if UNITY_EDITOR
     // Local settings object used when running tests
     public static bool TestMode = false;
-    public static Settings TestRunnerSettings = new()
-    {
-        InstantLoadingTransitions = true, // Run the tests faster
-        Reminder_SettingsFailed = false,
-        Reminder_Loading360Levels = false,
-        BeatSaberInstallation = "/root/bs",
-    };
+
+    private static Settings testRunnerSettings;
+
+    public static Settings TestRunnerSettings 
+        => testRunnerSettings ??=
+            new Settings
+            {
+                InstantLoadingTransitions = true, // Run the tests faster
+                Reminder_SettingsFailed = false,
+                Reminder_Loading360Levels = false,
+                BeatSaberInstallation = "/root/bs",
+            };
 #endif
 
     private static Settings instance;
