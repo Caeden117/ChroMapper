@@ -41,16 +41,6 @@ public class LightColorTween
 
         if (StartStrobeFrequency > 0 || EndStrobeFrequency > 0)
         {
-            // Interpolate strobe brightness between start and end
-            // When strobe brightness is 0, the light should be black (off) during the strobe on phase
-            // When strobe brightness is > 0, use the strobe brightness as the alpha channel.
-            //   Fixes bug where a 1/2 strobe node stays a solid color in CM rather than matching game rendering of flashing to 0 brightness.
-            // Use the event transition easing here as well as for normal brightness. Step easing keeps a non-transition node from fading between strobe levels.
-            var strobeBrightness = Mathf.LerpUnclamped(
-                StartStrobeBrightness,
-                EndStrobeBrightness,
-                Easing(nTimeAlpha));
-
             var duration = EndTimeAlpha - StartTimeAlpha;
             var elapsed = nTimeAlpha * duration;
             var elapsedHalf = elapsed * elapsed / (2f * duration);
@@ -63,16 +53,27 @@ public class LightColorTween
                     + (EndStrobeFrequency * elapsedHalf))
                 % 1f;
 
-            // Interpolate strobe color between start and end
-            var strobeColor = Color.LerpUnclamped(StartStrobeColor, EndStrobeColor, Easing(nTimeColor));
+            // ExplicitStrobeColorAlphaMultipliesSbWithoutScalingHdrRgb and InheritedStrobeColorComposesEndpointAlphaBeforeTweening
+            // require raw RGBA fallback and endpoint alpha composition before interpolation, matching ChromaGLS and basic-event ColorTween semantics.
+            var startStrobeColor = StartStrobeColor;
+            var endStrobeColor = EndStrobeColor;
             // If no explicit strobe color, fall back to normal color
-            if (StartStrobeColor == Color.clear && EndStrobeColor == Color.clear)
+            if (startStrobeColor == Color.clear && endStrobeColor == Color.clear)
             {
-                strobeColor = color;
+                startStrobeColor = StartColor;
+                endStrobeColor = EndColor;
             }
 
-            // Preserve zero strobe brightness as an off/transparent strobe color; opaque Color.black would not represent a zero light level.
-            var useStrobeColor = new Color(strobeColor.r, strobeColor.g, strobeColor.b, strobeBrightness);
+            // Interpolate strobe brightness between start and end after multiplying each endpoint by its authored color alpha.
+            // When strobe brightness is 0, the light should be transparent during the strobe-on phase.
+            // When strobe brightness is > 0, it scales rather than replaces the authored HDR alpha.
+            //   Fixes preview replacing custom alpha with sb instead of retaining their independent contribution.
+            // Use the event transition easing here as well as for normal brightness. Step easing keeps a non-transition node from fading between strobe levels.
+            var strobeColor = Color.LerpUnclamped(startStrobeColor, endStrobeColor, Easing(nTimeColor));
+            strobeColor.a = Mathf.LerpUnclamped(
+                startStrobeColor.a * StartStrobeBrightness,
+                endStrobeColor.a * EndStrobeBrightness,
+                Easing(nTimeAlpha));
 
             // Apply the base brightness to the off-phase color before mixing the strobe overlay.
             //   Because of the massive bloom at high light levels I can't even tell if this is right or if this just matches a bug we have with base light levels with the strobe light level.
@@ -82,11 +83,11 @@ public class LightColorTween
             if (StrobeFade)
             {
                 var fade = global::Easing.Cubic.InOut(1f - Mathf.Abs((phase * 2f) - 1f));
-                color = Color.LerpUnclamped(color, useStrobeColor, fade);
+                color = Color.LerpUnclamped(color, strobeColor, fade);
             }
             else if (phase >= 0.5f)
             {
-                color = useStrobeColor;
+                color = strobeColor;
             }
             // else // off phase: base color already scaled by brightness, nothing to do here.
         }
