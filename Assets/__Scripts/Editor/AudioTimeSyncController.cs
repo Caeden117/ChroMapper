@@ -468,6 +468,9 @@ public class AudioTimeSyncController : MonoBehaviour,
         Shader.SetGlobalVector(songBpmTimeId, Vector4Extensions.ToTimeVector(currentSongBpmTime));
         Shader.SetGlobalFloat(songTimeOriginId, VisualBeatOriginJsonTime);
 
+        if (TimeHelper.Instance != null)
+            TimeHelper.Instance.SynchronizeTime(currentSeconds, !IsPlaying);
+
         // set view range based on track length
         Shader.SetGlobalFloat(
             viewStartId,

@@ -12,6 +12,7 @@ public class TimeHelper : MonoBehaviour
     private float accumulator;
     private float currentTime;
     private int baseFrameCount;
+    private bool externallyControlled;
     private bool shouldResetAccumulator;
 
     public static float DeltaTime { get; private set; }
@@ -38,7 +39,10 @@ public class TimeHelper : MonoBehaviour
     {
         DeltaTime = Time.deltaTime;
         accumulator += DeltaTime;
-        currentTime += DeltaTime;
+        if (externallyControlled)
+            ApplyTime(currentTime);
+        else
+            currentTime += DeltaTime;
         InterpolationFactor = accumulator / FixedDeltaTime;
     }
 
@@ -61,9 +65,27 @@ public class TimeHelper : MonoBehaviour
 
     public void SetTime(float time)
     {
-        currentTime = time;
+        externallyControlled = false;
         baseFrameCount = Time.frameCount;
         shouldResetAccumulator = true;
+        ApplyTime(time);
+    }
+
+    internal void SynchronizeTime(float time, bool resetFrameState)
+    {
+        externallyControlled = true;
+        if (resetFrameState && !Mathf.Approximately(currentTime, time))
+        {
+            baseFrameCount = Time.frameCount;
+            shouldResetAccumulator = true;
+        }
+
+        ApplyTime(time);
+    }
+
+    private void ApplyTime(float time)
+    {
+        currentTime = time;
         TimeHelperOffset = EncodeTimeAsVector(time - GetShaderTimeValue());
         Shader.SetGlobalVector(timeHelperOffsetId, TimeHelperOffset);
     }
