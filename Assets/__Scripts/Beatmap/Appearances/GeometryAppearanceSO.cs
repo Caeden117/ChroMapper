@@ -126,8 +126,8 @@ namespace Beatmap.Appearances
 
         private static string CanonicalizeGlowingKeyword(string keyword) => keyword switch
         {
-            "_WHITEBOOSTTYPE_MAINEFFECT" => "_BLOOMTYPE_DEFERRED",
-            "_WHITEBOOSTTYPE_ALWAYS" => "_BLOOMTYPE_MIXED",
+            "_WHITEBOOSTTYPE_MAINEFFECT" => "_WHITEBOOSTTYPE_MAINEFFECT",
+            "_WHITEBOOSTTYPE_ALWAYS" => "_WHITEBOOSTTYPE_ALWAYS",
             "_CUTOUT_NORMAL" => "CUTOUT",
             "_NOISE_DITHERING" => "NOISE_DITHERING",
             "_ENABLE_COLOR_INSTANCING" => null,
