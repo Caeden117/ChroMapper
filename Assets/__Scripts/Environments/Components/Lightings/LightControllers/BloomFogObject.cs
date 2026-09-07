@@ -227,8 +227,8 @@ public sealed class BloomFogObject : MonoBehaviour
         var screenDirY = endScreenY - startScreenY;
         var screenDirLength = Mathf.Sqrt((screenDirX * screenDirX) + (screenDirY * screenDirY));
 
-        // Prevent division by zero
-        if (screenDirLength == 0) screenDirLength = 1E-06f;
+        // Keep sub-epsilon segments from expanding to full-width quads.
+        screenDirLength = Mathf.Max(screenDirLength, 1E-06f);
 
         // Normalize direction
         screenDirX /= screenDirLength;
@@ -315,6 +315,7 @@ public sealed class BloomFogObject : MonoBehaviour
     private static void ZeroQuad(ref BloomfogQuad quad) => quad = default;
 
     // Clip the line segment against a single frustum plane
+    // Near-plane tolerance can put the exact plane intersection outside the segment.
     private static void ClipPoints(
         ref Vector4 startClipPos,
         ref Vector4 endClipPos,
@@ -326,14 +327,14 @@ public sealed class BloomFogObject : MonoBehaviour
         if (startPointInsideFrustrum)
         {
             // Start point is inside, end point is outside - clip the end point
-            endClipPos = Vector4.Lerp(startClipPos, endClipPos, clipInterpolation);
-            endViewPos = Vector3.Lerp(startViewPos, endViewPos, clipInterpolation);
+            endClipPos = Vector4.LerpUnclamped(startClipPos, endClipPos, clipInterpolation);
+            endViewPos = Vector3.LerpUnclamped(startViewPos, endViewPos, clipInterpolation);
         }
         else
         {
             // End point is inside, start point is outside - clip the start point
-            startClipPos = Vector4.Lerp(startClipPos, endClipPos, clipInterpolation);
-            startViewPos = Vector3.Lerp(startViewPos, endViewPos, clipInterpolation);
+            startClipPos = Vector4.LerpUnclamped(startClipPos, endClipPos, clipInterpolation);
+            startViewPos = Vector3.LerpUnclamped(startViewPos, endViewPos, clipInterpolation);
         }
     }
 }
