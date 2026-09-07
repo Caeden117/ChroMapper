@@ -34,6 +34,8 @@ public class TubeBloomPrePassLightCollisionData : EnvironmentComponentData<Light
 
         comp.HitPointGameObject = container.GetGameObjectOrNull(HitPointGameObject, self);
         comp.HitPointTransform = container.GetComponentOrNull<Transform>(HitPointTransform);
+        if (comp.HitPointGameObject != null && comp.HitPointTransform == null)
+            comp.HitPointTransform = comp.HitPointGameObject.transform;
         var t = container.GetComponentOrNull<Transform>(ScaleTransform);
         comp.ScaleTransform = t != null ? t : self.transform;
         comp.EnvironmentLayerMask = container.Library.LayerMaskLookup[EnvironmentLayerMask[0]];
