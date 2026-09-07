@@ -26,8 +26,8 @@ Shader "ChroMapper/Object/Basic Gradient"
             #pragma multi_compile_instancing
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/Easings.hlsl"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
+            #include "../ShaderLibrary/Core/Easings.hlsl"
+            #include "../ShaderLibrary/Core/Tonemapping.hlsl"
 
             // Define instanced properties
             UNITY_INSTANCING_BUFFER_START(Props)

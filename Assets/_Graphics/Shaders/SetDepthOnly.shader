@@ -1,5 +1,6 @@
 // Replacement for the Beat Saber game shader Custom/SetDepthOnly.
-Shader "ChroMapper/Set Depth Only" {
+Shader "ChroMapper/Set Depth Only"
+{
     // AUDIT FINDINGS (Beat Saber 1.44.3)
     // D1. The 1.42.2 Custom/SetDepthOnly Properties block contains exactly the
     //     four controls below. Defaults are Ref=0, Always, Keep, and ZWrite On.
@@ -11,27 +12,34 @@ Shader "ChroMapper/Set Depth Only" {
     //     interpolated saturated vertex color without textures or other features.
     // D5. All 35 recovered game materials use Ref=1, Always, Replace, ZWrite Off.
     //     Their explicit material overrides differ intentionally from shader defaults.
-    // D6. Stage binaries cannot prove pass state. The established destination-
-    //     preserving blend, Cull Off, LEqual default, and Geometry-1 queue remain.
-    Properties {
+    // D6. Serialized original object 4570503278470229751 uses Cull Back,
+    //     ColorMask 0, and One/Zero blending. The shader queue supplies the
+    //     original material's saved order (1949) for current inheriting materials.
+    Properties
+    {
         _StencilRefValue ("Stencil Ref Value", Float) = 0
         [Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Stencil Comp Func", Float) = 8
         [Enum(UnityEngine.Rendering.StencilOp)] _StencilPass ("Stencill Pass Op", Float) = 0
         [Toggle] _ZWrite ("Z Write", Float) = 1
     }
-    SubShader {
-        Tags {
-            "Queue" = "Geometry-1"
+    SubShader
+    {
+        Tags
+        {
+            "Queue" = "Geometry-51"
             "RenderType" = "Opaque"
         }
-        Pass {
+        Pass
+        {
             Name ""
-            Blend Zero One, Zero One
+            Blend One Zero, One Zero
+            ColorMask 0
             ZClip On
             ZWrite [_ZWrite]
-            Cull Off
+            Cull Back
 
-            Stencil {
+            Stencil
+            {
                 Ref [_StencilRefValue]
                 Comp [_StencilComp]
                 Pass [_StencilPass]

@@ -101,10 +101,10 @@ Shader "ChroMapper/Mirror"
             #pragma multi_compile_fragment _ ACES_TONE_MAPPING
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomLighting.hlsl"
-            #include "ShaderLibrary/CustomTonemapping.hlsl"
-            #include "ShaderLibrary/PostProcess.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Lighting.hlsl"
+            #include "ShaderLibrary/Core/Tonemapping.hlsl"
+            #include "ShaderLibrary/Common/PostProcess.hlsl"
 
             sampler2D _NormalTex;
             float4 _NormalTex_ST;
@@ -246,7 +246,13 @@ Shader "ChroMapper/Mirror"
                     lightmap2.r * _LightmapLightBakeIdD +
                     lightmap2.g * _LightmapLightBakeIdE +
                     lightmap2.b * _LightmapLightBakeIdF;
-                lighting += decodedLightmap * 4.594793 * (1 - _Metallic) * _TintColor.rgb;
+                // Original D3D lightmaps use 0x4093088c; preserve other backends until their coefficients are verified.
+                #if defined(SHADER_API_D3D11)
+                const float mirrorLightmapDecodeScale = 4.5947933;
+                #else
+                const float mirrorLightmapDecodeScale = 4.594793;
+                #endif
+                lighting += decodedLightmap * mirrorLightmapDecodeScale * (1 - _Metallic) * _TintColor.rgb;
                 #endif
 
                 #if defined(ACES_TONE_MAPPING) && (defined(DIFFUSE) || defined(LIGHTMAP))

@@ -1,37 +1,9 @@
 ﻿Shader "ChroMapper/Object/Note"
 {
-    // AUDIT FINDINGS
-    // 1. Properties are the ordered union of the exact 1.42.2 NoteHD and NoteLW
-    //    contracts. The final section contains only ChroMapper-owned adapter/MPB data.
-    // 2. The sole authoritative default conflict is _BlendSrcFactorA: HD=1, LW=0.
-    //    The union uses HD=1; migrated editor materials retain their authored state.
-    // 3. The 1.44.3 corpora contain all 768 NoteHD variants (154 binaries) and all
-    //    1024 NoteLW variants (201 binaries); _shader.json reports no unreliable rows.
-    // 4. COLOR_INSTANCING selects the instanced _Color; otherwise _SimpleColor
-    //    is selected. All five ChroMapper materials enable the instanced route so MPBs
-    //    continue to own note color without changing their serialized fallback colors.
-    // 5. No NoteHD or NoteLW variant contains CLOSE_TO_CAMERA_CUTOUT, although
-    //    all three controlling properties are authoritative. The properties remain in
-    //    the contract, but no inert shader_feature or guessed formula is registered.
-    // 6. OVERDRAW_VIEW is present in the corpus but intentionally omitted: affected
-    //    binaries collapse to the diagnostic overdraw program, not note rendering.
-    // 7. _ZTest is the only non-authoritative render-state property. ChroMapper owns it
-    //    so editor placement can retain the existing target-side depth contract.
-    // 8. Full binary evidence: HD reflection/final-color/plane/cutout is
-    //    17ebe636fa11ba3112838446ee6736849924049501e7cfb169c9675d0970d758;
-    //    LW final color is 7bb6ae1661a9efa2d3c219607fa2df254ff51635e342a2cac29e7e46a04e63b6;
-    //    LW fake mirror is f30427033415f21d3d528bbb0b74706d4e19be97c20febe4e285e30d55999229.
-    // 9. The corpora contain no PRECISE_FOG or close-camera keyword and do not expose
-    //     the global distortion texture/parameter names. Those routes are not guessed
-    //     or registered; their authoritative material properties remain serialized.
-    // 10. Cross-check binaries: HD fog/plane/color is
-    //     dda161eb2095b1b12dd7005daf98f2e60730b775ae33213e6047957d7b9d0f94;
-    //     LW fog/plane is 86db107c7f908d3710bee18b0f87b64496d357c83ab819188b45e29bcc1e20bf;
-    //     LW simple-color/fake-mirror is
-    //     71f57659a4cb741ec6fb89ed87ea1842e6c8f1b8f6b8349a68ef22d13329fd68.
-    // 11. No 1.44 row contains REFLECTION_PROBE, FLIP_WORLD_NORMAL_Y,
-    //     _WHITEBOOSTTYPE_ALWAYS, _FOGTYPE_COLOR, or _FOGTYPE_ALPHA. Their exact
-    //     authoritative properties stay in the union, but guessed variants do not.
+    // Properties are the authoritative NoteHD/NoteLW union plus ChroMapper adapter data.
+    // _Color always uses Props. An MPB overrides the material fallback.
+    // Omitted routes remain serialized but have no authoritative formula.
+    // ChroMapper owns _ZTest. The union retains the documented property limits.
     Properties
     {
         _Smoothness ("Smoothness", Range(0, 1)) = 1
@@ -150,11 +122,11 @@
             #pragma multi_compile_fragment _ CM_PREVIEW_MODE
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/Camera.hlsl"
-            #include "../ShaderLibrary/Fog.hlsl"
-            #include "../ShaderLibrary/CustomBloom.hlsl"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
-            #include "../ShaderLibrary/ObjectShared.hlsl"
+            #include "../ShaderLibrary/Core/Camera.hlsl"
+            #include "../ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "../ShaderLibrary/Common/Bloom.hlsl"
+            #include "../ShaderLibrary/Core/Tonemapping.hlsl"
+            #include "../ShaderLibrary/Common/ObjectShared.hlsl"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
@@ -336,18 +308,33 @@
                 // This changes RGB only, so source reflection and cutout alpha remain intact.
                 if (abs(i.rotatedPos.z) < _OutlineWidth)
                     return interfaceColor;
-                color.rgb = ApplyTimelineWhitening(color.rgb, interfaceColor.rgb,
-                                                   i.rotatedPos.z, _OutlineWidth, isTranslucent);
+                color.rgb = abs(i.rotatedPos.z) < _OutlineWidth && isTranslucent < 1.0
+                                ? interfaceColor.rgb
+                                : color.rgb;
                 #endif
 
                 float editorAlpha = animation < 1.0 &&
-                                           (isTranslucent >= 1.0 || i.rotatedPos.w <= 0.0)
-                                               ? translucentAlpha
-                                               : 1.0;
+                                    (isTranslucent >= 1.0 || i.rotatedPos.w <= 0.0)
+                                        ? translucentAlpha
+                                        : 1.0;
                 // Dither is a ChroMapper editor adapter. Source CUTOUT/PLANE_CUT
                 // discard and mask evaluation above always happen first.
                 if (editorAlpha < 1.0)
-                    clip(OrderedDither4x4(i.screenPos.xy / i.screenPos.w, editorAlpha));
+                {
+                    const float thresholds[16] =
+                    {
+                        1.0 / 17.0, 9.0 / 17.0, 3.0 / 17.0, 11.0 / 17.0,
+                        13.0 / 17.0, 5.0 / 17.0, 15.0 / 17.0, 7.0 / 17.0,
+                        4.0 / 17.0, 12.0 / 17.0, 2.0 / 17.0, 10.0 / 17.0,
+                        16.0 / 17.0, 8.0 / 17.0, 14.0 / 17.0, 6.0 / 17.0
+                    };
+
+                    float2 normalizedScreenPosition = i.screenPos.xy / i.screenPos.w;
+                    int2 pixel = int2(normalizedScreenPosition * _ScreenParams.xy);
+                    int index = (pixel.x & 3) * 4 + (pixel.y & 3);
+                    float dither = editorAlpha - thresholds[index];
+                    clip(dither);
+                }
 
                 float frontBack = isFrontFace ? 1.0 : 0.2592592537;
                 float4 result = 0.0;
@@ -422,7 +409,8 @@
                 // LW f30427033415f21d... applies the mirror multiplier at the final
                 // premultiplied-output stage, after ACES and fog. Rebuild LW source
                 // alpha from its color/reflection path instead of HD's edge mask.
-                result.a = color.a * reflectionFactor * _ColorMultiplier *
+                result.a = color.a * reflectionFactor *
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _ColorMultiplier) *
                     _FakeMirrorTransparencyMultiplier;
                 result.rgb *= result.a;
                 #endif

@@ -2,7 +2,7 @@
 Shader "ChroMapper/Spectrogram"
 {
     // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // S1. The 1.42.2 Custom/Spectrogram Properties block is authoritative.
+    // S1. The 1.44.3 Custom/Spectrogram Properties block is authoritative.
     //     ToggleHeader is represented by Unity's standard Toggle attribute.
     // S2 [vertex-bead5cceaf6dbed1]: UV.x selects uint(max(uv.x * 63, 0)).
     //     The vertex offset is -uv.y * (1-sample) * _PeakOffset.xyz before the
@@ -16,7 +16,8 @@ Shader "ChroMapper/Spectrogram"
     // S5. Blue-noise dithering is unconditional in every non-OVERDRAW fragment:
     //     rgb += (blueNoise.r - 0.5) / 255. Output alpha is always zero.
     // S6. No white-boost or NOISE_DITHERING keyword variant exists. OVERDRAW_VIEW
-    //     remains omitted. Stage binaries cannot prove ShaderLab render state.
+    //     is a diagnostic family and remains omitted. Stage binaries cannot prove
+    //     ShaderLab render state.
     Properties
     {
         _Color ("Color", Vector) = (1,1,1,1)
@@ -71,11 +72,11 @@ Shader "ChroMapper/Spectrogram"
             #pragma multi_compile _ STEREO_INSTANCING_ON
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomLighting.hlsl"
-            #include "ShaderLibrary/CustomTonemapping.hlsl"
-            #include "ShaderLibrary/PostProcess.hlsl"
-            #include "ShaderLibrary/SpectrogramShared.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Lighting.hlsl"
+            #include "ShaderLibrary/Core/Tonemapping.hlsl"
+            #include "ShaderLibrary/Common/PostProcess.hlsl"
+            #include "ShaderLibrary/Families/SpectrogramShared.hlsl"
 
             float _SpectrogramData[64];
             float3 _PeakOffset;
@@ -122,8 +123,8 @@ Shader "ChroMapper/Spectrogram"
                 UNITY_TRANSFER_INSTANCE_ID(i, o);
 
                 uint index = CalculateSpectrogramIndex(i.uv.x);
-                i.vertex.xyz = ApplySpectrogramPeakOffset(
-                    i.vertex.xyz, i.uv.y, _SpectrogramData[index], _PeakOffset.xyz);
+                i.vertex.xyz = i.vertex.xyz - i.uv.y *
+                    (1.0 - _SpectrogramData[index]) * _PeakOffset.xyz;
 
                 o.vertex = UnityObjectToClipPos(i.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, i.vertex).xyz;

@@ -6,7 +6,6 @@ Shader "Hidden/BlitBlendColor"
     }
 
     HLSLINCLUDE
-
     struct AttributesDefault
     {
         uint vertexId : SV_VertexID;
@@ -31,7 +30,6 @@ Shader "Hidden/BlitBlendColor"
     {
         return _Color;
     }
-
     ENDHLSL
 
     SubShader

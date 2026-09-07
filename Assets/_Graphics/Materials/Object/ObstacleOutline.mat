@@ -13,8 +13,10 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - CUTOUT
+  - _WHITEBOOSTTYPE_MAINEFFECT
+  m_InvalidKeywords:
   - _BLOOMTYPE_DEFERRED
-  m_InvalidKeywords: []
+  - _ZWRITE_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -40,6 +42,7 @@ Material:
     - _FogHeightScale: 2.5
     - _FogScale: 1
     - _FogStartOffset: 7
+    - _WhiteBoostType: 1
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:

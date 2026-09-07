@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 /// environment scenes. Renders the active environment scene once per
 /// reflection bake ID (A-F) and cube face, applies the captured baking bloom
 /// profile and the captured 0.2 bloom blend, packs the six bake IDs into two
-/// cubemaps with the LitReflection.hlsl channel layout (probe 1 RGB = bake IDs
+/// cubemaps with the Reflection.hlsl channel layout (probe 1 RGB = bake IDs
 /// A-C, probe 2 RGB = D-F), saves them as assets, and
 /// assigns the resulting ReflectionProbeDataSO to every probe in the scene.
 ///
@@ -23,7 +23,7 @@ public static class ReflectionProbeBakePipeline
 {
     private const string environmentsPath = "Assets/__Scenes/Environments";
     private const string reflectionProbesPath = "Assets/__Scenes/Environments/ReflectionProbes";
-    private const string bloomShaderPath = "Assets/_Graphics/Shaders/Post Process/CustomBloom.shader";
+    private const string bloomShaderPath = "Assets/_Graphics/Shaders/Post Process/Bloom.shader";
     private const string packShaderPath =
         "Assets/Editor/Environments/ReflectionProbeBake/PackReflectionProbe.shader";
     private const string profileAssetPath =
@@ -67,7 +67,7 @@ public static class ReflectionProbeBakePipeline
     };
 
     // Bloom pyramid globals (mirrors BloomRenderer.RecordRender's usage of the
-    // CustomBloom shader).
+    // Bloom shader).
     private static readonly int combineParamsId = Shader.PropertyToID("_CombineParams");
     private static readonly int sampleScaleId = Shader.PropertyToID("_SampleScale");
     private static readonly int bloomTexId = Shader.PropertyToID("_BloomTex");
@@ -271,7 +271,7 @@ public static class ReflectionProbeBakePipeline
                 {
                     // Isolate the bake ID: the environment shaders gate their
                     // lightmap channels by the global _LightmapLightBakeId
-                    // colors (CustomLighting.hlsl), so rendering with only the
+                    // colors (Lighting.hlsl), so rendering with only the
                     // active ID white and the rest black captures exactly that
                     // ID's static light contribution. The light probe globals
                     // are set too for contract completeness.
@@ -296,7 +296,7 @@ public static class ReflectionProbeBakePipeline
                 }
 
                 // Pack bake IDs A-C into probe 1 and D-F into probe 2
-                // (LitReflection.hlsl:DecodeReflectionProbePair contract).
+                // (Reflection.hlsl:DecodeReflectionProbePair contract).
                 packMaterial.SetTexture(probeSourceAId, baked[0]);
                 packMaterial.SetTexture(probeSourceBId, baked[1]);
                 packMaterial.SetTexture(probeSourceCId, baked[2]);
@@ -331,7 +331,7 @@ public static class ReflectionProbeBakePipeline
     }
 
     /// <summary>
-    /// Runs the CustomBloom pyramid over a face render, mirroring
+    /// Runs the Bloom pyramid over a face render, mirroring
     /// BloomRenderer.RecordRender (same shader, passes, merge weights and
     /// per-level _CombineParams shaping) driven by the bake profile.
     /// </summary>

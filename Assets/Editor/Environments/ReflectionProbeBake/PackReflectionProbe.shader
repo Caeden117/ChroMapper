@@ -1,7 +1,7 @@
 // Packs the six bake-ID face renders of a BakedReflectionProbe into the two
-// packed cubemap channels that LitReflection.hlsl decodes at runtime.
+// packed cubemap channels that Reflection.hlsl decodes at runtime.
 //
-// The decode contract (LitReflection.hlsl:DecodeReflectionProbePair) is:
+// The decode contract (Reflection.hlsl:DecodeReflectionProbePair) is:
 //   probe1.rgb = bake IDs A / B / C, probe2.rgb = bake IDs D / E / F,
 //   decoded  = c * bakeId.rgb                          for c <= 0.5
 //   decoded  = 0.5 * bakeId.rgb + ((c - 0.5) * bakeId.w)^2   for c > 0.5

@@ -6,7 +6,7 @@
         [Space(10)]
         _Color ("Color", Color) = (1, 1, 1, 1)
         _MainTex ("Texture", 2D) = "white" {}
-        [KeywordEnum(None, Deferred, Mixed)] _BloomType ("Bloom Type", float) = 0
+        [KeywordEnum(None, MainEffect, Always)] _WhiteBoostType ("White Boost", Float) = 0
 
         [Header(Fog Settings)] [Space]
         [Toggle(FOG)] _EnableFog ("Enable Fog", float) = 1
@@ -42,7 +42,7 @@
             #pragma multi_compile_instancing
 
             #pragma shader_feature_local_fragment ALPHA_CUTOUT
-            #pragma shader_feature_local_fragment _ _BLOOMTYPE_DEFERRED _BLOOMTYPE_MIXED
+            #pragma shader_feature_local_fragment _ _WHITEBOOSTTYPE_MAINEFFECT _WHITEBOOSTTYPE_ALWAYS
             // Global: the post-process bloom runs (mirrors the game's MAIN_EFFECT_ENABLED gate).
             #pragma multi_compile _ POST_BLOOM
             #pragma shader_feature_local_fragment HEIGHT_FOG
@@ -50,10 +50,10 @@
             #pragma multi_compile_fragment _ BLOOM_FOG
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Camera.hlsl"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomBloom.hlsl"
-            #include "ShaderLibrary/CustomTonemapping.hlsl"
+            #include "ShaderLibrary/Core/Camera.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Bloom.hlsl"
+            #include "ShaderLibrary/Core/Tonemapping.hlsl"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
@@ -110,9 +110,19 @@
 
                 // The game's Unlit family has no white boost. The dispatcher keeps
                 // its no-bloom alpha contract and the Deferred/Mixed adapters.
-                albedo = ApplyBloomTypeComposition(
-                    albedo, albedo.rgb, albedo.a, albedo.a, 1,
-                    _BaseColorBoost, _BaseColorBoostThreshold, 1, 0);
+                #if defined(_WHITEBOOSTTYPE_ALWAYS) || (defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM))
+                albedo.rgb = CalculateBloomComposition(
+                    albedo.rgb, albedo.a, albedo.a, 1,
+                    _BaseColorBoost, _BaseColorBoostThreshold);
+                #elif defined(_WHITEBOOSTTYPE_MAINEFFECT)
+                albedo = CalculateBloomPostComposition(albedo.rgb, albedo.a, 1.0);
+                #else
+                if (1 > 0.5)
+                {
+                    albedo.rgb *= albedo.a;
+                    albedo.a = 0;
+                }
+                #endif
 
                 albedo = ApplyAcesTonemapping(albedo);
 

@@ -26,10 +26,10 @@ Shader "ChroMapper/Lightning"
         [Toggle(ENABLE_TIME_OFFSET)] _EnableTimeOffset ("Enable Time Offset", Float) = 0
         [ShowIfAny(ENABLE_TIME_OFFSET)] _TimeOffset ("Time Offset", Float) = 0.1
 
-        [Space(12)] [Header(Settings)] [Space] [Enum(UnityEngine.Rendering.BlendMode)] _BlendSrcFactor ("Blend Src", Float) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)] _BlendDstFactor ("Blend Dst", Float) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)] _BlendSrcFactorA ("Blend Src Factor A", Float) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)] _BlendDstFactorA ("Blend Dst Factor A", Float) = 10
+        [Space(12)] [Header(Settings)] [Space] [Enum(UnityEngine.Rendering.BlendMode)] _BlendModeSrc ("Blend Src", Float) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendModeDst ("Blend Dst", Float) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendModeSrcA ("Blend Src Factor A", Float) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendModeDstA ("Blend Dst Factor A", Float) = 10
         [InfoBox(Support on Quest ends after LogicalClear)] [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp ("Blend Operation", Float) = 0
         [Space] [Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull Mode", Float) = 0
         [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("ZTest", Float) = 4
@@ -49,7 +49,7 @@ Shader "ChroMapper/Lightning"
             "RenderType" = "Transparent"
         }
 
-        Blend [_BlendSrcFactor] [_BlendDstFactor], [_BlendSrcFactorA] [_BlendDstFactorA]
+        Blend [_BlendModeSrc] [_BlendModeDst], [_BlendModeSrcA] [_BlendModeDstA]
         BlendOp [_BlendOp]
         Cull [_CullMode]
         ZTest [_ZTest]
@@ -74,7 +74,6 @@ Shader "ChroMapper/Lightning"
             #pragma shader_feature_local_vertex _ ENABLE_TIME_OFFSET
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/CustomBloom.hlsl"
 
             sampler2D _MainTex;
             sampler2D _NoiseTex;
@@ -128,14 +127,24 @@ Shader "ChroMapper/Lightning"
                 float2 sourceMainUv = i.mainUv;
                 float2 sourcePathUv = i.pathUv;
 
+                // Original D3D vertices use separate width and noise-X controls.
+                // Preserve other backends until original evidence covers them.
+                #if defined(SHADER_API_D3D11)
+                float widthScale = _Extrude;
+                float noiseXStrength = _XNoiseOffsetStrength;
+                #else
+                float widthScale = _XNoiseOffsetStrength;
+                float noiseXStrength = _Extrude;
+                #endif
+
                 float3 localPath;
                 #if defined(ENABLE_TARGET_POINT)
                 float3 targetLocal = mul(unity_WorldToObject,
                                          float4(UNITY_ACCESS_INSTANCED_PROP(Props, _TargetPoint).xyz, 1)).xyz;
                 localPath = targetLocal * sourcePathUv.y;
-                localPath.y += i.vertex.y * _XNoiseOffsetStrength;
+                localPath.y += i.vertex.y * widthScale;
                 #else
-                localPath = float3(i.vertex.x, i.vertex.y * _XNoiseOffsetStrength, i.vertex.z);
+                localPath = float3(i.vertex.x, i.vertex.y * widthScale, i.vertex.z);
                 #endif
 
                 float objectTime = unity_ObjectToWorld._m03 + unity_ObjectToWorld._m23;
@@ -162,10 +171,8 @@ Shader "ChroMapper/Lightning"
                 float edgeAlpha = saturate(edge * _EdgeFadeStrength);
                 smallNoise *= deformationMask * _SmallScaleNoiseStrength;
                 bigNoise *= deformationMask * _BigScaleNoiseStrength;
-                // _Extrude scales only the first noise channel; the recovered
-                // shader multiplies each XY noise vector by float2(_Extrude, 1).
-                smallNoise.x *= _Extrude;
-                bigNoise.x *= _Extrude;
+                smallNoise.x *= noiseXStrength;
+                bigNoise.x *= noiseXStrength;
                 localPath.xy += smallNoise;
                 localPath.xy += bigNoise;
 
@@ -185,8 +192,12 @@ Shader "ChroMapper/Lightning"
                 albedo *= UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
                 albedo.a *= albedo.a;
 
-                albedo.rgb = CalculateLightningBloomComposition(
-                    albedo.rgb, albedo.a, _WhiteBoost, _ColorBoost);
+                {
+                    float3 colorContribution = albedo.rgb * (albedo.a * _ColorBoost);
+                    float3 whiteContribution = 1.0 - colorContribution;
+                    float colorBoost = saturate(albedo.a * _WhiteBoost);
+                    albedo.rgb = colorContribution + whiteContribution * colorBoost;
+                }
 
                 return albedo;
             }

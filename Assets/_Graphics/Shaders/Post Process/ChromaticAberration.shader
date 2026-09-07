@@ -5,7 +5,7 @@
 // CHROMATIC_ABERRATION pass: spectral samples along the radial offset with the
 // default R/G/B spectral lookup, running as pass 0 (the only pass). The
 // scene-owned ChromaticAberrationRenderer runs after the main-effect compositor.
-Shader "ChroMapper/Post Process/ChromaticAberration"
+Shader "ChroMapper/Post Process/Chromatic Aberration"
 {
     Properties
     {
@@ -18,18 +18,17 @@ Shader "ChroMapper/Post Process/ChromaticAberration"
     }
 
     HLSLINCLUDE
-
     #include "UnityCG.cginc"
 
     // Unity 6 no longer auto-injects the built-in RP texture macros into
     // HLSLINCLUDE/HLSLPROGRAM blocks; define the subset this shader uses so
-    // it compiles standalone (same fix as CustomBloom.shader).
-#ifndef TEXTURE2D_ARGS
+    // it compiles standalone (same fix as Bloom.shader).
+    #ifndef TEXTURE2D_ARGS
     #define TEXTURE2D_ARGS(textureName, samplerName) Texture2D textureName, SamplerState samplerName
     #define TEXTURE2D_PARAM(textureName, samplerName) textureName, samplerName
     #define TEXTURE2D_SAMPLER2D(textureName, samplerName) Texture2D textureName; SamplerState samplerName
     #define SAMPLE_TEXTURE2D(textureName, samplerName, coord) textureName.Sample(samplerName, coord)
-#endif
+    #endif
 
     struct VaryingsDefault
     {

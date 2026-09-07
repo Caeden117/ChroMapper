@@ -2,7 +2,7 @@
 Shader "ChroMapper/Spectrogram Unlit"
 {
     // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // U1. The 1.42.2 Custom/UnlitSpectrogram Properties block is authoritative;
+    // U1. The 1.44.3 Custom/UnlitSpectrogram Properties block is authoritative;
     //     _BlendMode* are established importer aliases for _Blend*Factor.
     // U2 [131d5989fe263d58]: UV.x selects uint(max(uv.x * 63, 0)). Visibility
     //     is step(uv.y, (sample + 0.05) * _SpectrogramScale). RGB is _Color.rgb
@@ -12,7 +12,7 @@ Shader "ChroMapper/Spectrogram Unlit"
     //     prepass sample. No white boost, tonemapping, or dithering route exists.
     // U4 [25a7770007c1a811,65e0d97fd4c2560c]: POSITION and UV0 are the only
     //     mesh inputs. Instancing selects transforms; stereo selects eye matrices
-    //     and render-target slices. OVERDRAW_VIEW remains omitted.
+    //     and render-target slices. Diagnostic OVERDRAW_VIEW remains omitted.
     // U5. Stage binaries do not contain ShaderLab render-state metadata. The
     //     established transparent blend, Cull Off, LEqual, and ZWrite Off remain.
     Properties
@@ -56,8 +56,8 @@ Shader "ChroMapper/Spectrogram Unlit"
             #pragma multi_compile _ STEREO_INSTANCING_ON
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/SpectrogramShared.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Families/SpectrogramShared.hlsl"
 
             float _SpectrogramData[64];
             float _SpectrogramScale;
@@ -107,8 +107,8 @@ Shader "ChroMapper/Spectrogram Unlit"
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
 
                 uint index = CalculateSpectrogramIndex(i.uv.x);
-                float visible = CalculateSpectrogramVisibility(
-                    i.uv.y, _SpectrogramData[index], _SpectrogramScale);
+                float visible = step(
+                    i.uv.y, (_SpectrogramData[index] + 0.05) * _SpectrogramScale);
                 float4 albedo = float4(_Color.rgb, _Color.a * visible);
 
                 #if defined(BLOOM_FOG)

@@ -72,9 +72,9 @@
             #pragma multi_compile_fragment _ BLOOM_FOG
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Camera.hlsl"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomBloom.hlsl"
+            #include "ShaderLibrary/Core/Camera.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Bloom.hlsl"
 
             float4 _Color;
             float _FogStartOffset;

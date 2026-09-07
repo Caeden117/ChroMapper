@@ -115,11 +115,10 @@ Shader "ChroMapper/Parametric Box Transparent"
             #pragma multi_compile _ POST_BLOOM
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Camera.hlsl"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomBloom.hlsl"
-            #include "ShaderLibrary/ParametricShared.hlsl"
-            #include "ShaderLibrary/LitReflection.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Bloom.hlsl"
+            #include "ShaderLibrary/Families/ParametricShared.hlsl"
+            #include "ShaderLibrary/Common/Reflection.hlsl"
 
             sampler3D _CutoutTex;
             float4 _TimeHelperOffset;
@@ -190,7 +189,12 @@ Shader "ChroMapper/Parametric Box Transparent"
                 o.vertex = UnityObjectToClipPos(i.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, i.vertex).xyz;
                 #if defined(REFLECTION_PROBE)
+                #if defined(SHADER_API_D3D11)
+                // The original D3D11 vertex transports the model normal without normalization.
+                o.worldNormal = mul((float3x3)unity_ObjectToWorld, i.normal);
+                #else
                 o.worldNormal = normalize(UnityObjectToWorldNormal(i.normal));
+                #endif
                 #endif
                 return o;
             }
@@ -256,7 +260,7 @@ Shader "ChroMapper/Parametric Box Transparent"
                 // f68fe436: MAIN_EFFECT_ENABLED disables the source white-boost route.
                 #if !defined(POST_BLOOM)
                 rgb = CalculateBloomComposition(color.rgb, alpha, alpha, 1,
-                                                 _BaseColorBoost, _BaseColorBoostThreshold);
+                                                _BaseColorBoost, _BaseColorBoostThreshold);
                 #endif
                 // 866b1448: the reflection contribution is attenuated by the
                 // squared fog inverse and _GlassOpacity, never by the source alpha.

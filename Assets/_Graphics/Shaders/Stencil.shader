@@ -16,26 +16,32 @@
 // S6. Queue, blend, depth, cull, and stencil declarations are serialized pass
 //     state and cannot be recovered from stage ASM. They remain the established
 //     ChroMapper parity state; the material values support the stencil mapping.
-Shader "ChroMapper/Stencil" {
-    Properties {
+Shader "ChroMapper/Stencil"
+{
+    Properties
+    {
         _StencilRefValue ("Stencil Ref Value", Float) = 0
         [Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Stencil Comp Func", Float) = 8
         [Enum(UnityEngine.Rendering.StencilOp)] _StencilPass ("Stencil Pass Op", Float) = 0
-        [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 2
+        [Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull", Float) = 2
     }
-    SubShader {
-        Tags {
+    SubShader
+    {
+        Tags
+        {
             "Queue" = "Geometry-1"
             "RenderType" = "Opaque"
         }
-        Pass {
+        Pass
+        {
             Name ""
             Blend Zero One, Zero One
             ZClip On
             ZWrite Off
-            Cull [_Cull]
+            Cull [_CullMode]
 
-            Stencil {
+            Stencil
+            {
                 Ref [_StencilRefValue]
                 Comp [_StencilComp]
                 Pass [_StencilPass]
@@ -45,8 +51,6 @@ Shader "ChroMapper/Stencil" {
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile _ STEREO_INSTANCING_ON
-
-            #include "UnityCG.cginc"
 
             struct appdata
             {
@@ -67,13 +71,13 @@ Shader "ChroMapper/Stencil" {
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
                 float4 worldPos;
-                worldPos  = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                worldPos = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
                 worldPos += unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx;
                 worldPos += unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz;
                 worldPos += unity_ObjectToWorld._m03_m13_m23_m33;
 
                 float4 clipPos;
-                clipPos  = worldPos.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                clipPos = worldPos.yyyy * unity_MatrixVP._m01_m11_m21_m31;
                 clipPos += unity_MatrixVP._m00_m10_m20_m30 * worldPos.xxxx;
                 clipPos += unity_MatrixVP._m02_m12_m22_m32 * worldPos.zzzz;
                 clipPos += unity_MatrixVP._m03_m13_m23_m33 * worldPos.wwww;

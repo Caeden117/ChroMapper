@@ -6,15 +6,15 @@ Shader "ChroMapper/Object/Obstacle Distortion"
     // 2. SCROLL_UV is retained for the ChroMapper editor scroll route.
     // 3. Rim and height fog are retained for the ChroMapper preview routes;
     //     the grab texture and its texel size remain owned by the grab controller.
-    // 4. BLOOM_FOG aliases the runtime-owned BLOOM_FOG route, and
+    // 4. BLOOM_FOG selects the runtime-owned bloom-fog route, and
     //     DEPTH_TEXTURE_ENABLED aliases the runtime-owned DEPTH_TEXTURE route.
     // 5. OVERDRAW_VIEW is intentionally omitted. It is a debug route in the
     //     source variants and has no ChroMapper implementation.
     // 6. Active ObstacleCoreHD formulas were recovered from non-XR binaries
     //     4cc00a1b29ccdbb and 2626bb764be28656.
     // 7. _UVScale, tint, add color, and cutout controls are per-instance data.
-    // 8. FOG fades the displaced grab to the original grab by height
-    //     and distance. USE_DISTORTED_TEXTURE_ONLY does not bypass this fade.
+    // 8. FOG fades the displaced grab from the bloom pre-pass by height and
+    //     distance. Without BLOOM_FOG, it fades from the fixed height-fog color.
     Properties
     {
         _MainTex ("Displacement Texture", 2D) = "white" {}
@@ -106,8 +106,8 @@ Shader "ChroMapper/Object/Obstacle Distortion"
             #pragma shader_feature_local_fragment HEIGHT_FOG
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/Camera.hlsl"
-            #include "../ShaderLibrary/Fog.hlsl"
+            #include "../ShaderLibrary/Core/Camera.hlsl"
+            #include "../ShaderLibrary/Families/BloomFogComposition.hlsl"
             #include "../ShaderLibrary/Cutout.hlsl"
 
             sampler2D _MainTex;
@@ -265,12 +265,18 @@ Shader "ChroMapper/Object/Obstacle Distortion"
                 #if defined(USE_DISTORTED_TEXTURE_ONLY)
                 originalColor.a = 0;
                 #if defined(FOG)
-                float distanceVisibility = 1.0 - CalculateCustomFogFactor(
-                    distanceSquared(i.worldPos), _FogStartOffset, _FogScale);
                 float heightVisibility = CalculateCustomHeightFogFactor(
                     i.worldPos, _FogHeightOffset, _FogHeightScale);
-                float4 color = lerp(originalColor, distortedColor,
-                                    distanceVisibility * heightVisibility);
+                #if defined(BLOOM_FOG)
+                float distanceVisibility = 1.0 - CalculateCustomFogFactor(
+                    distanceSquared(i.worldPos), _FogStartOffset, _FogScale);
+                float4 color = lerp(
+                    SampleBloomPrePass(i.screenPos), distortedColor,
+                    distanceVisibility * heightVisibility);
+                #else
+                float4 color = lerp(
+                    float4(0.1, 0.1, 0.1, 0.0), distortedColor, heightVisibility);
+                #endif
                 #else
                 float4 color = distortedColor;
                 #endif

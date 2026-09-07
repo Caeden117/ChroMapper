@@ -58,10 +58,10 @@
             #pragma shader_feature_local_fragment HEIGHT_FOG
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/Camera.hlsl"
-            #include "../ShaderLibrary/Fog.hlsl"
-            #include "../ShaderLibrary/CustomBloom.hlsl"
-            #include "../ShaderLibrary/ObjectShared.hlsl"
+            #include "../ShaderLibrary/Core/Camera.hlsl"
+            #include "../ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "../ShaderLibrary/Common/Bloom.hlsl"
+            #include "../ShaderLibrary/Common/ObjectShared.hlsl"
 
             // Define instanced properties
             UNITY_INSTANCING_BUFFER_START(Props)
@@ -149,7 +149,7 @@
                 float4 tex = tex2D(_MainTex, i.uv);
                 float4 albedo = float4(color.rgb, edgeFade * tex.a * color.a);
 
-                #if defined(FOG)
+                #if defined(FOG) && defined(BLOOM_FOG)
                 // Recovered PRECISE_FOG + _FOGTYPE_ALPHA fragment (fragment-5500cb795b66e75f):
                 // the shared distance fog factor (CalculateCustomFogFactor; the per-frame
                 // globals _CustomFogAttenuation/_CustomFogOffset are set by
@@ -163,6 +163,10 @@
                                                        albedo.a * fogTransmission * fogTransmission, 0.6,
                                                        _BaseColorBoost,
                                                        _BaseColorBoostThreshold);
+                #else
+                albedo.rgb = CalculateBloomComposition(
+                    albedo.rgb, albedo.a, albedo.a, 0.6,
+                    _BaseColorBoost, _BaseColorBoostThreshold);
                 #endif
 
                 #if defined(CM_PREVIEW_MODE)

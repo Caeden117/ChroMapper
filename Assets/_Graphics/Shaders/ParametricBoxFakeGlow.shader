@@ -2,16 +2,16 @@
 Shader "ChroMapper/Parametric Box Fake Glow"
 {
     // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // PFG1. The 1.42.2 Custom/ParametricBoxFakeGlow Properties block is
-    //       authoritative. Color, size, cutout animation, clipping, and noise
+    // PFG1. The 1.44.3 Custom/ParametricBoxFakeGlow Properties block is
+    //       authoritative. Color, size, cutout, clipping, and noise
     //       inputs are runtime/instanced uniforms and remain unexposed.
     // PFG2 [139018e71a01a3e2]: POSITION, UV0, and NORMAL are the only mesh
-    //       inputs. The face-relative box deformation keeps _SizeParams.w as a
-    //       constant border width; UV0 passes through without _MainTex_ST.
-    // PFG3 [1afc20561ed2144b]: CUTOUT additionally scales local XY by
-    //       1 - _Cutout * _AnimationSpawned before the object transform.
+    //       inputs. Face-relative deformation starts at -sign(position) and keeps
+    //       _SizeParams.w as a constant border width. UV0 has no _MainTex_ST.
+    // PFG3 [1afc20561ed2144b]: CUTOUT scales local XY by 1 - _Cutout squared
+    //       before the object transform. This shader does not use _AnimationSpawned.
     // PFG4 [139018e71a01a3e2]: angle fade is saturate(abs(dot(normalized
-    //       camera-to-vertex, normalized world normal)) * _AngleDisappearParam).
+    //       camera-to-vertex, normalized world normal) * _AngleDisappearParam)).
     // PFG5 [e329b30d3474ad13,d2a5af8334ac0b36]: texture alpha is squared.
     //       Alpha then uses the shared cubic height ramp, angle fade, and color
     //       alpha. BLOOM_FOG also multiplies the shared distance transmission.
@@ -87,17 +87,16 @@ Shader "ChroMapper/Parametric Box Fake Glow"
             #pragma multi_compile _ POST_BLOOM
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomBloom.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Bloom.hlsl"
             #include "ShaderLibrary/Cutout.hlsl"
-            #include "ShaderLibrary/ParametricShared.hlsl"
+            #include "ShaderLibrary/Families/ParametricShared.hlsl"
 
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _SizeParams)
                 UNITY_DEFINE_INSTANCED_PROP(float, _Cutout)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _CutoutTexOffset)
-                UNITY_DEFINE_INSTANCED_PROP(float, _AnimationSpawned)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             struct appdata
@@ -148,8 +147,7 @@ Shader "ChroMapper/Parametric Box Fake Glow"
 
                 #if defined(CUTOUT)
                 float cutout = UNITY_ACCESS_INSTANCED_PROP(Props, _Cutout);
-                float animationSpawned = UNITY_ACCESS_INSTANCED_PROP(Props, _AnimationSpawned);
-                i.vertex.xy *= 1.0 - cutout * animationSpawned;
+                i.vertex.xy *= 1.0 - cutout * cutout;
                 #endif
 
                 o.vertex = UnityObjectToClipPos(i.vertex);
@@ -163,7 +161,7 @@ Shader "ChroMapper/Parametric Box Fake Glow"
                 float3 worldNormal = UnityObjectToWorldNormal(i.normal);
                 // DXBC 139018e7: angle factor is multiplied before interpolation;
                 // the fragment route only multiplies by instanced color alpha.
-                o.uv.z = min(abs(dot(viewDirection, worldNormal)) * _AngleDisappearParam, 1.0);
+                o.uv.z = min(abs(dot(viewDirection, worldNormal) * _AngleDisappearParam), 1.0);
 
                 return o;
             }

@@ -26,7 +26,7 @@ Shader "ChroMapper/Object/Event"
             #pragma multi_compile_instancing
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
+            #include "../ShaderLibrary/Core/Tonemapping.hlsl"
 
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _ColorA)

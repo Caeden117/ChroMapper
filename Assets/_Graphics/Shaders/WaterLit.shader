@@ -2,7 +2,7 @@
 Shader "ChroMapper/Water Lit"
 {
     // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // W1. The 1.42.2 Custom/WaterLit Properties block is authoritative. Legacy
+    // W1. The 1.44.3 Custom/WaterLit Properties block is authoritative. Legacy
     //     ToggleHeader/EnumHeader attributes are represented by Unity Toggle and
     //     KeywordEnum attributes; importer aliases retain _NormalTex and _BlendMode*.
     // W2 [8c86fd4f73cdeee5,9699ed0481a680f5,d1b639b649b39f9e,a8f2be99be4aa923]:
@@ -19,15 +19,14 @@ Shader "ChroMapper/Water Lit"
     //     meshes provide normals/UV0/tangents; FlatClose/Far also provide UV1 for
     //     LIGHTMAP. World tangent and bitangent are formed per vertex and
     //     interpolated separately. Gaga Logo does not need its absent tangent/UV1.
-    // W5. The game samples two custom packed reflection cubes. ChroMapper uses the
-    //     Unity probe fallback in LitReflection.hlsl while that packed bake pipeline
-    //     remains disabled; its roughness and metallic composition match this route.
-    //     Lightmap diffuse is decoded from two runtime textures and multiplied by
-    //     4.594793 * 0.96 * (1-metallic) * color.
+    // W5. The game samples two custom packed reflection cubes. ChroMapper retains
+    //     the Unity probe fallback until Billie and Gaga have packed probe assets;
+    //     their current ReflectionProbeData references are null. Lightmap diffuse
+    //     uses the exact 4.59479332 * (1-metallic) * color factor.
     // W6. Water fog offsets distance by lerp(_FogStartOffset,
     //     _FallingFogStartOffset, 1-saturate(normal.y)); bloom height fog changes
     //     RGB only. Noise adds (blueNoise.r - 0.5) / 255 after fog.
-    // W7. OVERDRAW_VIEW and unsupported source keyword routes remain omitted.
+    // W7. OVERDRAW_VIEW is a diagnostic source route and remains omitted.
     //     Stage binaries cannot prove ShaderLab state; authoritative state properties
     //     drive blend, cull, Z-write, and stencil here.
     Properties
@@ -89,7 +88,7 @@ Shader "ChroMapper/Water Lit"
         [Toggle(POINT_LIGHT_IS_LOCAL)] _PointLightPositionLocal ("Make Position Local", Float) = 0
         _PrivatePointLightPosition ("Light World Position", Vector) = (0,0,0,1)
         [Toggle(DIFFUSE_TEXTURE)] _EnableDiffuseTexture ("Enable Albedo Texture", Float) = 0
-        _DiffuseTexture ("Diffuse Texture", 2D) = "white" {}
+        _DiffuseTex ("Diffuse Texture", 2D) = "white" {}
         [Toggle(SPECULAR)] _EnableSpecular ("Enable Specular", Float) = 1
         _SpecularIntensity ("Specular Intensity", float) = 1
 
@@ -120,8 +119,8 @@ Shader "ChroMapper/Water Lit"
         [Toggle(ENABLE_RIM_DIM)] _EnableRimDim ("Reflection Rim Dim", Float) = 0
         _RimScale ("Rim Scale", Float) = 1
         _RimOffset ("Rim Offset", Float) = 1
-        _RimCameraDistanceOffset ("Rim Camera Distance Offset", Float) = 2
-        _RimCameraDistanceScale ("Rim Camera Distance Scale", Float) = 0.3
+        _RimDistanceOffset ("Rim Camera Distance Offset", Float) = 2
+        _RimDistanceScale ("Rim Camera Distance Scale", Float) = 0.3
         _RimDarkening ("Rim Darkenning", Float) = 0
         [Toggle(INVERT_RIM_DIM)] _InvertRimDim ("Invert Rim Dim", Float) = 0
 
@@ -137,7 +136,7 @@ Shader "ChroMapper/Water Lit"
         _DirtDetailIntensity ("Dirt Detail Intensity", Float) = 1
 
         [Header(Other)]
-        [KeywordEnum(None, 90_CW, 90_CCW, 180_CW)] _Rotate_UV ("Rotate UVs", Float) = 0
+        [KeywordEnum(None, 90_CW, 90_CCW, 180_CW)] _RotateUV ("Rotate UVs", Float) = 0
 
         [Toggle(FOG)] _EnableFog ("Enable Fog", float) = 1
         _FogStartOffset ("Fog Start Offset", float) = 0
@@ -151,7 +150,7 @@ Shader "ChroMapper/Water Lit"
         [Toggle(LINEAR_TO_GAMMA)] _LinearToGamma ("LinearToGamma", Float) = 0
 
         [Header(Settings)]
-        [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", float) = 2
+        [Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull", float) = 2
         [Toggle] _ZWrite ("Z Write", float) = 1
         _StencilRefValue ("Stencil Ref Value", float) = 0
         [Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Stencil Comp Func", float) = 8
@@ -170,7 +169,7 @@ Shader "ChroMapper/Water Lit"
 
         LOD 200
         Blend [_BlendModeSrc] [_BlendModeDst], [_BlendModeSrcA] [_BlendModeDstA]
-        Cull [_Cull]
+        Cull [_CullMode]
         ZTest LEqual
         ZWrite [_ZWrite]
 
@@ -207,10 +206,10 @@ Shader "ChroMapper/Water Lit"
 
             #include "UnityCG.cginc"
             #define _FOGTYPE_COLOR
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/LitReflection.hlsl"
-            #include "ShaderLibrary/CustomTonemapping.hlsl"
-            #include "ShaderLibrary/PostProcess.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Reflection.hlsl"
+            #include "ShaderLibrary/Core/Tonemapping.hlsl"
+            #include "ShaderLibrary/Common/PostProcess.hlsl"
 
             float _Metallic;
             float _Smoothness;
@@ -285,8 +284,8 @@ Shader "ChroMapper/Water Lit"
                 v2f o;
 
                 UNITY_SETUP_INSTANCE_ID(i);
-                UNITY_TRANSFER_INSTANCE_ID(i, o);
                 UNITY_INITIALIZE_OUTPUT(v2f, o);
+                UNITY_TRANSFER_INSTANCE_ID(i, o);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
                 o.vertex = UnityObjectToClipPos(i.vertex);
@@ -334,9 +333,14 @@ Shader "ChroMapper/Water Lit"
                 #endif
                 float fallingNormalScale = 1.0 + _NormalScaleVertical * (1.0 - worldNormal.y);
                 normalTangent.xy *= fallingNormalScale;
-                normalTangent = normalize(normalTangent);
                 float3x3 tbn = float3x3(i.worldTangent, i.worldBitangent, worldNormal);
+                #if defined(SHADER_API_D3D11)
+                // D3D11 originals preserve mapped magnitude until the _NormalScale blend.
+                float3 mappedWorldNormal = mul(normalTangent, tbn);
+                #else
+                normalTangent = normalize(normalTangent);
                 float3 mappedWorldNormal = normalize(mul(normalTangent, tbn));
+                #endif
                 worldNormal = normalize(lerp(worldNormal, mappedWorldNormal, _NormalScale));
                 #endif
 
@@ -346,10 +350,38 @@ Shader "ChroMapper/Water Lit"
                 SurfaceData reflectionSurface = InitializeSurfaceData(
                     worldPos, worldNormal, i.uv, i.uv, albedo,
                     _Metallic, _Smoothness);
-                lighting += ResolveUnityReflectionProbe(
-                    reflectionSurface, worldNormal, _ReflectionProbeIntensity,
-                    _ReflectionProbeBoxProjectionSizeOffset,
-                    _ReflectionProbeBoxProjectionPositionOffset);
+                {
+                    float3 reflectionDirection = CalculateViewReflectionDirection(
+                        reflectionSurface.worldPosition, worldNormal);
+                #if defined(REFLECTION_PROBE_BOX_PROJECTION)
+                float3 boundsMin = unity_SpecCube0_BoxMin.xyz;
+                float3 boundsMax = unity_SpecCube0_BoxMax.xyz;
+                float3 probePosition = unity_SpecCube0_ProbePosition.xyz;
+                #if defined(REFLECTION_PROBE_BOX_PROJECTION_OFFSET)
+                boundsMin -= _ReflectionProbeBoxProjectionSizeOffset;
+                boundsMax += _ReflectionProbeBoxProjectionSizeOffset;
+                probePosition += _ReflectionProbeBoxProjectionPositionOffset;
+                #endif
+                if (unity_SpecCube0_ProbePosition.w > 0.0)
+                {
+                    reflectionDirection = BoxProjectReflectionDirection(
+                        reflectionDirection, reflectionSurface.worldPosition,
+                        boundsMin, boundsMax, probePosition);
+                }
+                #endif
+
+                float roughness = 1.0 - reflectionSurface.smoothness;
+                float reflectionLod = roughness * (1.7 - 0.7 * roughness) * 6.0;
+                half4 encodedReflection = UNITY_SAMPLE_TEXCUBE_LOD(
+                    unity_SpecCube0, reflectionDirection, reflectionLod);
+                float3 reflection = DecodeHDR(encodedReflection, unity_SpecCube0_HDR);
+                reflection *= _ReflectionProbeIntensity;
+                reflection *= 1.0 + reflectionSurface.metallic *
+                    (reflectionSurface.baseColor.rgb - 1.0);
+                reflection *= 2.0 * (reflectionSurface.metallic * 0.8 + 0.2);
+                reflection *= reflectionSurface.smoothness;
+                lighting += reflection;
+                }
                 #endif
 
                 #if defined(LIGHTMAP)
@@ -362,7 +394,7 @@ Shader "ChroMapper/Water Lit"
                     lightmap2.r * _LightmapLightBakeIdD +
                     lightmap2.g * _LightmapLightBakeIdE +
                     lightmap2.b * _LightmapLightBakeIdF;
-                lighting += decodedLightmap * 4.594793 * 0.96 * (1.0 - _Metallic) * albedo.rgb;
+                lighting += decodedLightmap * 4.59479332 * (1.0 - _Metallic) * albedo.rgb;
                 #endif
 
                 albedo.rgb = lighting;
@@ -372,8 +404,8 @@ Shader "ChroMapper/Water Lit"
                 #endif
 
                 #if defined(BLOOM_FOG) && defined(FOG)
-                float fogStartOffset = CalculateWaterLitFogStartOffset(
-                    worldNormal.y, _FogStartOffset, _FallingFogStartOffset);
+                float fogStartOffset = mad(
+                    1.0 - saturate(worldNormal.y), _FallingFogStartOffset, _FogStartOffset);
                 #if defined(HEIGHT_FOG)
                 albedo = ApplyBloomHeightFog(albedo, i.screenPos, worldPos, fogStartOffset, _FogScale,
                                              _FogHeightOffset,
@@ -381,6 +413,12 @@ Shader "ChroMapper/Water Lit"
                 #else
                 albedo = ApplyBloomFog(albedo, i.screenPos, worldPos, fogStartOffset, _FogScale);
                 #endif
+                #elif defined(FOG) && defined(HEIGHT_FOG) && defined(SHADER_API_D3D11)
+                // D3D11 originals retain this literal-endpoint height fog when bloom is off.
+                // Remove or extend this guard only with equivalent evidence for another backend.
+                float heightFogFactor = CalculateCustomHeightFogFactor(
+                    worldPos, _FogHeightOffset, _FogHeightScale);
+                albedo.rgb = (1.0 - heightFogFactor) * (float3(0.1, 0.1, 0.1) - albedo.rgb) + albedo.rgb;
                 #endif
 
                 #if defined(NOISE_DITHERING)

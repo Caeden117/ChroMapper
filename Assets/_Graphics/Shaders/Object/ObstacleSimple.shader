@@ -48,7 +48,7 @@
             #pragma shader_feature_local_fragment CUTOUT
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
+            #include "../ShaderLibrary/Core/Tonemapping.hlsl"
 
             uniform float _MainAlpha = 0.5;
             uniform sampler3D _CutoutTex;

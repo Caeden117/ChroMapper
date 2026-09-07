@@ -1,84 +1,7 @@
 ﻿// Replacement for the Beat Saber game shader Custom/SimpleLit.
 Shader "ChroMapper/Lit"
 {
-    // AUDIT FINDINGS (Beat Saber 1.44.3 Custom/SimpleLit)
-    // L1. The available Beat Saber 1.44.3 SimpleLit source is property authority:
-    //     323 parsed entries, including five dummy exporter entries (318 visual
-    //     candidates); no cbuffer-slot map; runtime/global/instanced values are separate.
-    // L2. The global matrix reaudit covers 44 matrices, 290 Lit routes, 169
-    //     canonical states, and 1,160 exact mono/stereo stage records.
-    // L3. All 12 unique Prodigy material keyword sets match exact mono and stereo
-    //     recovered variants. The broader active inventory is audited separately.
-    // L4. Packed two-cubemap reflection decode and precise/box/static branches
-    //     match fragments f17d95c14fbc4b50 and 0d8c27ddf7367213.
-    // L5. ENABLE_* material names normalize to local names. In particular,
-    //     EMISSION_ANGLE_DISAPPEAR and RIM_DIM must not retain that prefix.
-    // L6. DISSOLVE_TEXTURE is a child selector. It remains inert unless the
-    //     semantic parent DISSOLVE is enabled.
-    // L7. Reflected parallax uses the reflected view vector for layer offsets;
-    //     fragment f1e81f219d9acd53 is the active representative.
-    // L8. MAIN_EFFECT_ENABLED maps to runtime POST_BLOOM. MainEffect emission,
-    //     vertex, and rim routes use plain color in that pass; Always remains
-    //     boosted (ordinary/main pair 832a5dd8ecd7ba66/004fd6e6d2dd6194).
-    // L9. Flipbook fragment 50b2435217bbd95d reads instanced emission brightness.
-    //     Stereo payload and eye restoration are required by fog and dithering.
-    // L10. OVERDRAW_VIEW and inactive unsupported compiled families are omitted.
-    // L11. All nine unique Coldplay material keyword sets match exact mono and
-    //      stereo recovered rows. The sphere and ribbon displacement families
-    //      use the dedicated predicates and vertex paths below.
-    // L12. All eight unique Grid material keyword sets match exact mono and
-    //      stereo recovered rows. The Grid 3D lookup route uses the vertex
-    //      transform and emission-modulation path below.
-    // L13. All ten unique Halloween 2 material keyword sets match exact mono
-    //      and stereo recovered rows. Existing rim, precise-probe, mesh-packing,
-    //      depth-softened fog, and emission routes cover them.
-    // L14. All ten unique Metallica Lit keyword sets match exact mono and stereo
-    //      recovered rows. DISSOLVE_TEXTURE and DISSOLVE_COLOR are inert child
-    //      selectors unless the semantic parent DISSOLVE is enabled.
-    // L15. All ten unique Monstercat 2 Lit keyword sets match exact mono and
-    //      stereo recovered rows. Existing emission distortion, spherical-normal,
-    //      ACES, reflection, fog, dither, and fake-mirror stages cover them.
-    // L16. All ten unique Britney Lit keyword sets match exact mono and stereo
-    //      recovered rows. Existing color-fog, masked-emission, reflection,
-    //      lighting, ACES, height-fog, and dither stages cover them.
-    // L17. All ten unique Collider Lit keyword sets match exact mono and stereo
-    //      recovered rows. Existing two-sided lighting, packed reflection,
-    //      masked emission, ACES, height-fog, and dither stages cover them.
-    // L18. All 12 unique Hip Hop Lit keyword sets match exact mono and stereo
-    //      recovered rows. Hip Hop adds no new Lit predicate or formula.
-    // L19. All eight unique Daft Punk Lit keyword sets match exact mono and
-    //      stereo recovered rows. Camera-dependent Lit calculations use the
-    //      existing stereo-aware camera-position helper.
-    // L20. All four unique Lattice Lit keyword sets match exact mono and stereo
-    //      recovered rows. Lattice adds no new Lit predicate or formula.
-    // L21. All 12 unique Rolling Stones Lit keyword sets match exact mono and
-    //      stereo recovered rows. Existing packed parallax, fog, reflection,
-    //      emission, and stereo camera routes cover them.
-    // L22. All seven unique Queen Lit keyword sets match exact mono and stereo
-    //      recovered rows. Queen adds no new Lit predicate or formula.
-    // L23. Linkin Park 2, Panic 2, and Dragons 2 Lit routes match exact mono and
-    //      stereo rows. Their remaining corrections are material state only.
-    // L24. Rock Mixtape, The Weeknd, and Lizzo Lit routes match exact mono and
-    //      stereo rows. Their remaining corrections are material state only.
-    // L25. The Second, EDM, Pyro, and Weave Lit routes match exact mono and
-    //      stereo rows. Pyro adds generic flat-spectrogram displacement.
-    // L26. Gaga and original Halloween (Spooky) Lit routes match exact mono and
-    //      stereo rows. They add no new executable Lit predicate.
-    // L27. Billie and Skrillex Lit routes match exact mono and stereo rows. They
-    //      add no new executable Lit predicate or formula.
-    // L28. Interscope and Kaleidoscope Lit routes match exact mono and stereo
-    //      rows. They add no new executable Lit predicate or formula.
-    // L29. BTS and original Linkin Park Lit routes match exact mono and stereo
-    //      rows. They add no new executable Lit predicate or formula.
-    // L30. These 13 legacy environment scopes match exact Lit rows. Green Day
-    //      Grenade is separate coverage. They require no new Lit predicate.
-    // L31. The global reaudit restores fragment-stage rim distance, Grid base-2
-    //      lookup math, secondary-source gates, early
-    //      mesh packing, and precise-normal normalization in both stages.
-    // L32. Recovered dissolve-color routes apply blue-noise dithering before the
-    //      final dissolve edge-color blend.
-    // L33. Additive-offset UV selection is inert in represented routes. Flexible
-    //      and iridescent parallax keep separate recovered color epilogues.
+    // See LIT_REAUDIT.md for the audited contracts and evidence.
     Properties
     {
         _Color ("Color", Vector) = (1,1,1,1)
@@ -552,10 +475,8 @@ Shader "ChroMapper/Lit"
             #pragma multi_compile_fragment _ BLOOM_FOG
             #pragma multi_compile_fragment _ POST_BLOOM
 
-            #include "UnityCG.cginc"
-            #include "ShaderLibrary/CustomTonemapping.hlsl"
-            #include "Packages/com.llealloo.audiolink/Runtime/Shaders/AudioLink.cginc"
 
+            // Payload and feature macros
             // Payload requirements use canonical source feature selectors.
             #define USE_UV_SCALE defined(_SECONDARY_UVS_EXTERNAL_SCALE) || defined(_SECONDARY_UVS_OBJECT_SPACE)
             #define USE_SECONDARY_UV_SOURCE USE_UV_SCALE || defined(_SECONDARY_UVS_IMPORT)
@@ -597,6 +518,34 @@ Shader "ChroMapper/Lit"
                   !defined(_VERTEX_WHITEBOOSTTYPE_ALWAYS) && \
                  !defined(_CUSTOM_TIME_SONG_TIME) && !defined(MESH_PACKING) && \
                  !defined(_SPECTROGRAM_FLAT) && !defined(_SPECTROGRAM_FULL)
+            #define USE_VERTEX_EMISSION (defined(_VERTEXMODE_EMISSION) || \
+                defined(_VERTEXMODE_SPECIAL) || defined(_VERTEXMODE_EMISSIVE_MULT_ADD))
+            #define USE_VERTEX_COLOR (USE_VERTEX_EMISSION || defined(_VERTEXMODE_COLOR) || \
+                defined(_VERTEXMODE_METALSMOOTHNESS) || defined(_VERTEXMODE_DISPLACEMENT))
+            #if defined(PRIVATE_POINT_LIGHT) && !defined(INSTANCED_PRIVATE_POINT_LIGHT)
+            #define USE_UNIFORM_PRIVATE_POINT_COLOR 1
+            #else
+            #define USE_UNIFORM_PRIVATE_POINT_COLOR 0
+            #endif
+            #define ENABLE_EMISSION_TEXTURE defined(_EMISSIONTEXTURE_SIMPLE) || defined(_EMISSIONTEXTURE_PULSE) || defined(_EMISSIONTEXTURE_FLIPBOOK)
+            #define USE_EMISSION_TEXTURE !defined(_EMISSION_TEXTURE_SOURCE_MPM_G) && (defined(_EMISSIONTEXTURE_SIMPLE) || defined(_EMISSIONTEXTURE_FLIPBOOK))
+            #define USE_EMISSION_TEXTURE_COLOR ENABLE_EMISSION_TEXTURE
+            // USE_EMISSION_GRADIENT_TEXTURE removed — gradient is now handled inside USE_EMISSION_TEXTURE_COLOR
+            #define USE_EMISSION_MASK defined(_EMISSIONTEXTURE_PULSE) || defined(_EMISSIONTEXTURE_SIMPLE)
+            #define USE_FOG_SUPPRESSION defined(_EMISSIONTEXTURE_SIMPLE) || defined(_EMISSIONTEXTURE_PULSE) || defined(_EMISSIONTEXTURE_FLIPBOOK) || defined(_VERTEXMODE_EMISSION) || defined(_VERTEXMODE_SPECIAL)
+            #define USE_WORLD_NORMAL defined(DIFFUSE) || defined(SPECULAR) || \
+                defined(PARALLAX_IRIDESCENCE) || defined(_PARALLAX_FLEXIBLE_REFLECTED) || \
+                defined(PRIVATE_POINT_LIGHT) || \
+                defined(REFLECTION_TEXTURE) || defined(REFLECTION_PROBE) || defined(REFLECTION_STATIC) || \
+                defined(_VERTEXMODE_DISPLACEMENT) || \
+                defined(USE_SPHERICAL_NORMAL_OFFSET) || \
+                defined(EMISSION_ANGLE_DISAPPEAR) || \
+                defined(RIM_DIM) || defined(UV_COLOR_SEGMENTS) || \
+                defined(_RIMLIGHT_LERP) || defined(_RIMLIGHT_ADDITIVE) || \
+                defined(TEXTURE3D_LOOKUP) || \
+                USE_NORMAL_MAP_PAYLOAD || USE_ANTIFLICKER_NORMAL_PAYLOAD
+
+            // Uniform declarations
             // USE_SECONDARY_UV
             // USE_UV_SCALE
             float4 _UVScale;
@@ -647,15 +596,6 @@ Shader "ChroMapper/Lit"
             float _GlobalRandomValue;
             #endif
 
-            #define USE_VERTEX_EMISSION (defined(_VERTEXMODE_EMISSION) || \
-                defined(_VERTEXMODE_SPECIAL) || defined(_VERTEXMODE_EMISSIVE_MULT_ADD))
-            #define USE_VERTEX_COLOR (USE_VERTEX_EMISSION || defined(_VERTEXMODE_COLOR) || \
-                defined(_VERTEXMODE_METALSMOOTHNESS) || defined(_VERTEXMODE_DISPLACEMENT))
-            #if defined(PRIVATE_POINT_LIGHT) && !defined(INSTANCED_PRIVATE_POINT_LIGHT)
-            #define USE_UNIFORM_PRIVATE_POINT_COLOR 1
-            #else
-            #define USE_UNIFORM_PRIVATE_POINT_COLOR 0
-            #endif
             // USE_VERTEX_EMISSION
             float _EmissionThreshold;
             float _EmissionStrength;
@@ -663,8 +603,6 @@ Shader "ChroMapper/Lit"
             float _QuestWhiteboostMultiplier;
             // --
 
-            #define ENABLE_EMISSION_TEXTURE defined(_EMISSIONTEXTURE_SIMPLE) || defined(_EMISSIONTEXTURE_PULSE) || defined(_EMISSIONTEXTURE_FLIPBOOK)
-            #define USE_EMISSION_TEXTURE !defined(_EMISSION_TEXTURE_SOURCE_MPM_G) && (defined(_EMISSIONTEXTURE_SIMPLE) || defined(_EMISSIONTEXTURE_FLIPBOOK))
             // USE_EMISSION_TEXTURE
             sampler2D _EmissionTex;
             float4 _EmissionTex_ST;
@@ -677,14 +615,11 @@ Shader "ChroMapper/Lit"
             float _EmissionThresholdAngle;
             // --
 
-            #define USE_EMISSION_TEXTURE_COLOR ENABLE_EMISSION_TEXTURE
-            // USE_EMISSION_GRADIENT_TEXTURE removed — gradient is now handled inside USE_EMISSION_TEXTURE_COLOR
             sampler2D _EmissionGradientTex;
             float4 _EmissionGradientTex_ST;
             // --
             // _EMISSIONBLOOMTYPE_GRADIENT
             float _EmissionGradientPanningSpeed;
-            float _EmissionGradientIntensity;
             // --
 
             sampler2D _PulseMask;
@@ -703,7 +638,6 @@ Shader "ChroMapper/Lit"
             float _EmissionTexBloomIntensity;
             float _EmissionTexWhiteBoostMultiplier;
 
-            #define USE_EMISSION_MASK defined(_EMISSIONTEXTURE_PULSE) || defined(_EMISSIONTEXTURE_SIMPLE)
             // USE_EMISSION_MASK
             // EMISSION_MASK
             sampler2D _EmissionMask;
@@ -758,11 +692,6 @@ Shader "ChroMapper/Lit"
             float3 _SphericalNormalOffsetCenter;
             float _SphericalNormalOffsetIntensity;
 
-            // _VERTEXMODE_DISPLACEMENT
-            float _DisplacementStrength;
-            float4 _DisplacementAxisMultiplier;
-            // --
-
             // VERTEXDISPLACEMENT_MASK
             #if defined(VERTEXDISPLACEMENT_MASK)
             #if defined(_VERTEXDISPLACEMENT_MASK_SOURCE_3D_TEXTURE)
@@ -779,14 +708,6 @@ Shader "ChroMapper/Lit"
             float _VertexDisplacementMaskMultiplier;
             float _VertexDisplacementMaskOffset;
 
-            inline float ComposeVertexDisplacementMask(float displacementScale, float mask)
-            {
-                // The recovered active source route uses scalar mode 0. Its mask
-                // composition multiplies the displacement scale by the sampled mask.
-                return _VertexDisplacementMaskMode == 0.0
-                           ? displacementScale * mask
-                           : displacementScale + mask;
-            }
             #endif
             // --
 
@@ -816,7 +737,6 @@ Shader "ChroMapper/Lit"
             // DISTORTION_SIMPLE
             sampler2D _DistortionTex;
             float4 _DistortionTex_ST;
-            float _DistortionStrength;
             float2 _DistortionPanning;
             float2 _DistortionAxes;
             // --
@@ -825,7 +745,6 @@ Shader "ChroMapper/Lit"
             sampler2D _ParallaxMap;
             float4 _ParallaxMap_ST;
             float2 _ParallaxTexSpeed;
-            float4 _ParallaxColor;
             float _ParallaxIntensity;
             float _ParallaxIntensity_Step;
             float _StartOffset;
@@ -833,13 +752,10 @@ Shader "ChroMapper/Lit"
             float _Layers;
             float _IridescenceTiling;
             float3 _IridescenceAxesMultiplier;
-            float _IridescenceColorInfluence;
             // _EMISSION_TEXTURE_SOURCE_SDF
             float4 _SDFPointArray[3];
             float3 _SDFNoisePanning;
             float3 _SDFNoiseOffset;
-            float _SDFNoiseIntensity;
-            float _SDFNoiseScale;
             float _SDFPointIntensity;
             float _SDFNegativeIntensity;
             sampler3D _SDFNoiseTex;
@@ -874,7 +790,6 @@ Shader "ChroMapper/Lit"
             float _GroundFadeOffset;
             // --
 
-            #define USE_FOG_SUPPRESSION defined(_EMISSIONTEXTURE_SIMPLE) || defined(_EMISSIONTEXTURE_PULSE) || defined(_EMISSIONTEXTURE_FLIPBOOK) || defined(_VERTEXMODE_EMISSION) || defined(_VERTEXMODE_SPECIAL)
             // BLOOM_FOG && FOG
             float _FogStartOffset;
             float _FogScale;
@@ -900,13 +815,11 @@ Shader "ChroMapper/Lit"
             #if defined(DISSOLVE) || defined(DISSOLVE_TEXTURE)
             float3 _DissolveAxisVector;
             float _DissolveOffset;
-            float _DissolveProgress;
             float _DissolveStartValue;
             float _DissolveEndValue;
             float _DissolveReverse;
             float _CutColorFalloff;
             float _CutColorBacksideFalloff;
-            float4 _DissolveColor;
             float _DissolveColorIntensity;
             sampler2D _DissolveTexture;
             float4 _DissolveTexture_ST;
@@ -930,7 +843,21 @@ Shader "ChroMapper/Lit"
             #endif
 
 
-            #if defined(UNITY_INSTANCING_ENABLED)
+            // Shared includes
+            #include "UnityCG.cginc"
+            #include "ShaderLibrary/Core/Data.hlsl"
+            #include "ShaderLibrary/Core/Camera.hlsl"
+            #include "ShaderLibrary/Common/Time.hlsl"
+            #include "ShaderLibrary/Common/Lighting.hlsl"
+            #include "ShaderLibrary/Common/Reflection.hlsl"
+            #include "ShaderLibrary/Common/Bloom.hlsl"
+            #include "ShaderLibrary/Common/PostProcess.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Core/Tonemapping.hlsl"
+
+            // Instancing declarations
+            // Props supports per-renderer MPB overrides. UNITY_ACCESS_INSTANCED_PROP
+            // provides the direct-name fallback when instancing is off.
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _NominalDiffuseLevel)
@@ -942,120 +869,444 @@ Shader "ChroMapper/Lit"
                 UNITY_DEFINE_INSTANCED_PROP(float, _SecondaryEmissionMaskIntensity)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _InstancedSecondaryTiling)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _InstancedSecondaryOffset)
-            #if !USE_UNIFORM_PRIVATE_POINT_COLOR
-            UNITY_DEFINE_INSTANCED_PROP(float4, _PrivatePointLightColor)
-            #endif
-            UNITY_DEFINE_INSTANCED_PROP(float, _OcclusionDetailIntensity)
-            UNITY_DEFINE_INSTANCED_PROP(float, _TimeOffset)
-            UNITY_DEFINE_INSTANCED_PROP(float, _MeshPackingId)
-            #if defined(_EMISSIONTEXTURE_FLIPBOOK)
-            UNITY_DEFINE_INSTANCED_PROP(float, _StartTime)
-            #endif
-            UNITY_DEFINE_INSTANCED_PROP(float4, _DisplacementAxisMultiplier)
-            UNITY_DEFINE_INSTANCED_PROP(float, _DisplacementStrength)
-            UNITY_DEFINE_INSTANCED_PROP(float, _EmissionGradientIntensity)
-            UNITY_DEFINE_INSTANCED_PROP(float, _SDFNoiseIntensity)
-            UNITY_DEFINE_INSTANCED_PROP(float, _SDFNoiseScale)
-            UNITY_DEFINE_INSTANCED_PROP(float, _DistortionStrength)
-            #if defined(_RIMLIGHT_LERP) || defined(_RIMLIGHT_ADDITIVE)
-            UNITY_DEFINE_INSTANCED_PROP(float4, _RimLightColor)
-            #endif
-            #if defined(COLOR_ARRAY)
-            UNITY_DEFINE_INSTANCED_PROP(float, _ColorsArrayOffset)
-            #endif
-            #if defined(TEXTURE3D_LOOKUP)
-            UNITY_DEFINE_INSTANCED_PROP(float4, _LookupGridElementIndex)
-            UNITY_DEFINE_INSTANCED_PROP(float4, _LookupGridObjectSpacePivot)
-            #endif
-            #if defined(_HOLOGRAM_GRID) || defined(_HOLOGRAM_SCANLINE) || defined(_HOLOGRAM_LEGACY)
-            UNITY_DEFINE_INSTANCED_PROP(float4, _HologramColor)
-            UNITY_DEFINE_INSTANCED_PROP(float, _HologramFill)
-            UNITY_DEFINE_INSTANCED_PROP(float, _HologramPhaseOffset)
-            UNITY_DEFINE_INSTANCED_PROP(float, _HologramStripeSpeed)
-            UNITY_DEFINE_INSTANCED_PROP(float, _HaltScan)
-            #endif
-            UNITY_INSTANCING_BUFFER_END(Props)
-            #else
-            CBUFFER_START(UnityPerMaterial)
-                float4 _Color;
-                float4 _NominalDiffuseLevel;
-                float4 _EmissionColor;
-                float4 _EmissionTexColor;
-                float _EmissionBrightness;
-                float _EmissionGradientPosition;
-                float _EmissionMaskIntensity;
-                float _SecondaryEmissionMaskIntensity;
-                float4 _InstancedSecondaryTiling;
-                float4 _InstancedSecondaryOffset;
-                float4 _PrivatePointLightColor;
-                float _OcclusionDetailIntensity;
-                float _TimeOffset;
-                float _MeshPackingId;
-                #if defined(_RIMLIGHT_LERP) || defined(_RIMLIGHT_ADDITIVE)
-                float4 _RimLightColor;
+                #if !USE_UNIFORM_PRIVATE_POINT_COLOR
+                UNITY_DEFINE_INSTANCED_PROP(float4, _PrivatePointLightColor)
                 #endif
+                UNITY_DEFINE_INSTANCED_PROP(float, _OcclusionDetailIntensity)
+                UNITY_DEFINE_INSTANCED_PROP(float, _TimeOffset)
+                UNITY_DEFINE_INSTANCED_PROP(float, _MeshPackingId)
                 #if defined(_EMISSIONTEXTURE_FLIPBOOK)
-                float _StartTime;
+                UNITY_DEFINE_INSTANCED_PROP(float, _StartTime)
+                #endif
+                UNITY_DEFINE_INSTANCED_PROP(float4, _DisplacementAxisMultiplier)
+                UNITY_DEFINE_INSTANCED_PROP(float, _DisplacementStrength)
+                UNITY_DEFINE_INSTANCED_PROP(float, _EmissionGradientIntensity)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SDFNoiseIntensity)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SDFNoiseScale)
+                UNITY_DEFINE_INSTANCED_PROP(float, _DistortionStrength)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _ParallaxColor)
+                UNITY_DEFINE_INSTANCED_PROP(float, _IridescenceColorInfluence)
+                UNITY_DEFINE_INSTANCED_PROP(float, _DissolveProgress)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _DissolveColor)
+                #if defined(_RIMLIGHT_LERP) || defined(_RIMLIGHT_ADDITIVE)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _RimLightColor)
                 #endif
                 #if defined(COLOR_ARRAY)
-                float _ColorsArrayOffset;
+                UNITY_DEFINE_INSTANCED_PROP(float, _ColorsArrayOffset)
                 #endif
                 #if defined(TEXTURE3D_LOOKUP)
-                float4 _LookupGridElementIndex;
-                float4 _LookupGridObjectSpacePivot;
+                UNITY_DEFINE_INSTANCED_PROP(float4, _LookupGridElementIndex)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _LookupGridObjectSpacePivot)
                 #endif
                 #if defined(_HOLOGRAM_GRID) || defined(_HOLOGRAM_SCANLINE) || defined(_HOLOGRAM_LEGACY)
-                float4 _HologramColor;
-                float _HologramFill;
-                float _HologramPhaseOffset;
-                float _HologramStripeSpeed;
-                float _HaltScan;
+                UNITY_DEFINE_INSTANCED_PROP(float4, _HologramColor)
+                UNITY_DEFINE_INSTANCED_PROP(float, _HologramFill)
+                UNITY_DEFINE_INSTANCED_PROP(float, _HologramPhaseOffset)
+                UNITY_DEFINE_INSTANCED_PROP(float, _HologramStripeSpeed)
+                UNITY_DEFINE_INSTANCED_PROP(float, _HaltScan)
                 #endif
-            CBUFFER_END
-            #endif
-            #if defined(UNITY_INSTANCING_ENABLED) && USE_UNIFORM_PRIVATE_POINT_COLOR
+            UNITY_INSTANCING_BUFFER_END(Props)
+            #if USE_UNIFORM_PRIVATE_POINT_COLOR
             float4 _PrivatePointLightColor;
             #endif
 
-            #if defined(UNITY_INSTANCING_ENABLED)
-            // This exact source family keeps brightness shared while its color, mask, and time controls are instanced.
-            float _EmissionBrightness;
+            // Lit-local UV and surface helpers
+            inline float2 TransformSecondaryUv(SurfaceData surface, float4 texture_ST)
+            {
+                return surface.uv1 * texture_ST.xy * surface.secondaryUvTiling +
+                    texture_ST.zw + surface.secondaryUvOffset;
+            }
+
+            inline float2 TransformScrollingSecondaryUv(
+                SurfaceData surface, float4 texture_ST, float2 speed, float time)
+            {
+                float2 scale = texture_ST.xy * surface.secondaryUvTiling;
+                return surface.uv1 * scale + texture_ST.zw + surface.secondaryUvOffset +
+                    time * speed * scale;
+            }
+
+            inline void ResolveSurfaceMaterial(
+                inout SurfaceData surface, float4 vertexColor,
+                float metallic, float smoothness, float2 inputUvMultiplier,
+                sampler2D metalSmoothnessTex, float4 metalSmoothnessTex_ST,
+                sampler2D dirtTex, float4 dirtTex_ST, float occlusionIntensity,
+                sampler2D dirtDetailTex, float4 dirtDetailTex_ST,
+                float occlusionDetailIntensity)
+            {
+                #if defined(_VERTEXMODE_METALSMOOTHNESS)
+                surface.metallic = vertexColor.r * metallic;
+                surface.smoothness = vertexColor.a * smoothness;
+                #elif defined(_VERTEXMODE_SPECIAL)
+                surface.metallic = vertexColor.r;
+                surface.smoothness = vertexColor.a;
+                #endif
+
+                #if defined(METAL_SMOOTHNESS_TEXTURE)
+                #if defined(SECONDARY_UVS_MPM) && USE_SECONDARY_UV
+                float2 mpmUv = TransformSecondaryUv(surface, metalSmoothnessTex_ST);
+                #else
+                float2 mpmBaseUv = surface.uv0 * inputUvMultiplier;
+                float2 mpmUv = mpmBaseUv * metalSmoothnessTex_ST.xy + metalSmoothnessTex_ST.zw;
+                #endif
+                surface.mpm = tex2D(metalSmoothnessTex, mpmUv);
+
+                #if defined(_METALLIC_TEXTURE_MPM_R)
+                surface.metallic = surface.mpm.r * metallic;
+                #elif defined(_METALLIC_TEXTURE_SOURCE_MPM_R)
+                surface.metallic = surface.mpm.r;
+                #elif defined(_METALLIC_TEXTURE_SOURCE_MPM_A)
+                surface.metallic = surface.mpm.a;
+                #endif
+
+                #if defined(_SMOOTHNESS_TEXTURE_MPM_A)
+                surface.smoothness = surface.mpm.a * smoothness;
+                #elif defined(_SMOOTHNESS_TEXTURE_MPM_G_ROUGHNESS)
+                surface.smoothness = 1.0 - (1.0 - surface.mpm.g) * smoothness;
+                #elif defined(_SMOOTHNESS_TEXTURE_SOURCE_MPM_A)
+                surface.smoothness = surface.mpm.a;
+                #elif defined(_SMOOTHNESS_TEXTURE_SOURCE_MPM_G_ROUGHNESS)
+                surface.smoothness = surface.mpm.g;
+                #endif
+                #endif
+
+                #if defined(OCCLUSION)
+                #if defined(_OCCLUSION_SOURCE_MPM_B) && defined(METAL_SMOOTHNESS_TEXTURE)
+                float primaryOcclusionSample = surface.mpm.b;
+                #else
+                #if defined(SECONDARY_UVS_OCCLUSION) && USE_SECONDARY_UV
+                float2 occlusionUv = TransformSecondaryUv(surface, dirtTex_ST);
+                #else
+                float2 occlusionBaseUv = surface.uv0 * inputUvMultiplier;
+                float2 occlusionUv = occlusionBaseUv * dirtTex_ST.xy + dirtTex_ST.zw;
+                #endif
+                float primaryOcclusionSample = tex2D(dirtTex, occlusionUv).r;
+                #endif
+                surface.occlusion = occlusionIntensity * primaryOcclusionSample +
+                    (1.0 - occlusionIntensity);
+                #endif
+
+                #if defined(OCCLUSION_DETAIL)
+                #if defined(SECONDARY_UVS_OCCLUSION_DETAIL) && USE_SECONDARY_UV
+                float2 detailUv = TransformSecondaryUv(surface, dirtDetailTex_ST);
+                #else
+                float2 detailBaseUv = surface.uv0 * inputUvMultiplier;
+                float2 detailUv = detailBaseUv * dirtDetailTex_ST.xy + dirtDetailTex_ST.zw;
+                #endif
+                surface.occlusionDetail = occlusionDetailIntensity *
+                    tex2D(dirtDetailTex, detailUv).r + (1.0 - occlusionDetailIntensity);
+                #endif
+            }
+
+            // Lit-local parallax helpers
+            // _PARALLAX_FLEXIBLE_REFLECTED selects the reflected-direction variant.
+            inline float4 ApplyParallax(
+                float4 result, SurfaceData surface, float4 vertexColor,
+                float2 inputUvMultiplier, float timeOffset, float2 parallaxTexSpeed,
+                float parallaxIntensity, float parallaxIntensityStep,
+                float layers, float startOffset, float offsetStep,
+                float iridescenceColorInfluence,
+                sampler2D parallaxTex, float4 parallaxTex_ST,
+                sampler2D parallaxMaskingTex, float4 parallaxMaskingTex_ST,
+                float parallaxMaskSpeed, float parallaxMaskIntensity,
+                float3 iridescenceAxesMultiplier, float iridescenceTiling,
+                float4 parallaxColor)
+            {
+                float2 baseUv = surface.uv0 * inputUvMultiplier;
+                float4 timeValue = GetTime(timeOffset);
+                float3 cameraPosition = GetStereoAwareCameraPosition();
+                float3 directionToCamera = normalize(surface.worldPosition - cameraPosition);
+                #if defined(_PARALLAX_FLEXIBLE_REFLECTED)
+                float3 parallaxDirection = directionToCamera -
+                    2.0 * dot(directionToCamera, surface.normalWS) * surface.normalWS;
+                #else
+                float3 parallaxDirection = directionToCamera;
+                #endif
+
+                float3 hueShift;
+                {
+                    #if defined(_PARALLAX_FLEXIBLE_REFLECTED)
+                    float3 iridescenceDirection = directionToCamera -
+                        2.0 * dot(directionToCamera, surface.normalWS) * surface.normalWS;
+                    #else
+                    float3 iridescenceDirection = directionToCamera;
+                    #endif
+
+                    #if defined(PARALLAX_IRIDESCENCE)
+                    float iridescenceDot = dot(iridescenceDirection, iridescenceAxesMultiplier);
+                    iridescenceDot = frac(iridescenceDot * iridescenceTiling);
+                    hueShift = iridescenceDot.xxx * 6.0 + float3(0.0, 4.0, 2.0);
+                    hueShift = frac(hueShift * (1.0 / 6.0)) * 6.0 - 3.0;
+                    hueShift = saturate(abs(hueShift) - 1.0);
+                    float3 hueShiftSquared = hueShift * hueShift;
+                    hueShift = (-hueShift * 2.0 + 3.0) * hueShiftSquared;
+                    #else
+                    hueShift = float3(1.0, 1.0, 1.0);
+                    #endif
+                }
+
+                #if defined(SECONDARY_UVS_PARALLAX) && USE_SECONDARY_UV
+                float2 parallaxUv = TransformSecondaryUv(surface, parallaxTex_ST);
+                #else
+                float2 parallaxUv = baseUv * parallaxTex_ST.xy + parallaxTex_ST.zw;
+                #endif
+                parallaxUv += timeValue.x * parallaxTexSpeed * parallaxTex_ST.xy;
+
+                float3 layerColor = float3(0.0, 0.0, 0.0);
+                for (float layer = 0.0; layer < layers; layer += 1.0)
+                {
+                    float layerIndex = floor(layer);
+                    float offset = offsetStep * layerIndex + startOffset;
+                    float2 sampleUv = offset.xx * parallaxDirection.xy + parallaxUv;
+                    float4 parallaxSample = tex2D(parallaxTex, sampleUv);
+
+                    float3 layerIridescence;
+                    if (layerIndex <= 0.1) layerIridescence = hueShift.xyz;
+                    else if (layerIndex <= 1.1) layerIridescence = hueShift.zxy;
+                    else if (layerIndex <= 2.1) layerIridescence = hueShift.yzx;
+                    else if (layerIndex <= 3.1) layerIridescence = hueShift.xzy;
+                    else layerIridescence = hueShift.yzx;
+
+                    float intensity = (parallaxIntensityStep * layerIndex + parallaxIntensity) *
+                        parallaxSample.x;
+                    layerColor += intensity * layerIridescence;
+                }
+                #if defined(_PARALLAX_MASKING_VERTEX_COLOR)
+                layerColor *= vertexColor.g;
+                #elif defined(_PARALLAX_MASKING_TEXTURE)
+                float4 maskSample = tex2D(
+                    parallaxMaskingTex,
+                    TRANSFORM_TEX(baseUv, parallaxMaskingTex) + parallaxMaskSpeed * timeValue.y);
+                layerColor = lerp(layerColor, layerColor * maskSample.r, parallaxMaskIntensity);
+                #endif
+                #if defined(PARALLAX_IRIDESCENCE)
+                float grayscaleLayer = (layerColor.r + layerColor.g + layerColor.b) * 0.5;
+                float3 blended = iridescenceColorInfluence.xxx *
+                    (grayscaleLayer.xxx * parallaxColor.rgb - layerColor) + layerColor;
+                result.rgb += blended * parallaxColor.a;
+                #else
+                result.rgb += layerColor * parallaxColor.rgb;
+                #endif
+                return result;
+            }
+
+            // Lit-local reflection helpers
+            inline float CalculateLitReflectionTextureRimDim(
+                float3 worldPosition, float rimFactor,
+                float rimDistanceOffset, float rimDistanceScale, float rimScale)
+            {
+                float3 cameraPosition = GetStereoAwareCameraPosition();
+                float cameraDistance = length(worldPosition - cameraPosition);
+                float rimDistance = max(cameraDistance - rimDistanceOffset, 0.0) *
+                    rimDistanceScale + rimScale;
+                return rimDistance * rimFactor;
+            }
+
+            // Lit-local emission helpers
+            inline EmissionData InitializeEmissionData()
+            {
+                EmissionData emission;
+                emission.color = 0.0;
+                emission.bloomAlpha = 0.0;
+                return emission;
+            }
+
+            inline float4 ResolveTime(float timeOffset)
+            {
+                return GetTime(timeOffset);
+            }
+
+            inline EmissionData ResolveVertexEmission(
+                float4 vertexColor, float4 emissionColor,
+                float emissionThreshold, float emissionStrength,
+                float baseColorBoost, float baseColorBoostThreshold,
+                float questWhiteboostMultiplier, float emissionBloomIntensity)
+            {
+                float threshold = saturate((vertexColor.g - emissionThreshold) /
+                    (1.0 - emissionThreshold));
+                threshold = threshold * threshold * (3.0 - 2.0 * threshold) * emissionStrength;
+                EmissionData emission = InitializeEmissionData();
+                #if defined(_VERTEX_WHITEBOOSTTYPE_ALWAYS) || \
+                    (defined(_VERTEX_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM))
+                float4 squaredEmissionColor = emissionColor * emissionColor;
+                float whiteBoost = CalculateWhiteBoost(
+                    threshold * squaredEmissionColor.a * vertexColor.a, 1.0,
+                    baseColorBoost, baseColorBoostThreshold);
+                emission.color = saturate(squaredEmissionColor.rgb * threshold + whiteBoost) *
+                    questWhiteboostMultiplier;
+                #else
+                emission.color = emissionColor.rgb * emissionColor.a * threshold;
+                #endif
+                emission.bloomAlpha = vertexColor.a * vertexColor.a * emissionColor.a *
+                    emissionBloomIntensity;
+                return emission;
+            }
+
+            inline EmissionData ResolvePlainEmission(
+                float2 emissionInput, float4 emissionColor, float emissionTexBloomIntensity)
+            {
+                EmissionData emission = InitializeEmissionData();
+                emission.color = emissionInput.r * emissionColor.rgb * emissionColor.a;
+                emission.bloomAlpha = emissionInput.g * emissionInput.g * emissionColor.a *
+                    3.5 * emissionTexBloomIntensity;
+                return emission;
+            }
+
+            // Lit-local hologram helpers
+            inline float ResolveHologramTime(float4 timeValue, float4 timeHelperOffset)
+            {
+                return timeHelperOffset.w + timeValue.w;
+            }
+
+            inline float4 ApplyHologram(
+                float4 result, float3 worldPosition, float3 objectPosition, float4 timeValue,
+                float4 timeHelperOffset, float gridSize, float scanDistance,
+                float holoIntensity, float haltScan, float stripeSpeed, float phaseOffset,
+                float fill, float3 hologramColor)
+            {
+                #if defined(_HOLOGRAM_GRID)
+                {
+                    float time = ResolveHologramTime(timeValue, timeHelperOffset);
+                    time = haltScan > 0.5 ? 0.0 : time;
+
+                    float3 gridPhase = time * float3(0.0, stripeSpeed, stripeSpeed * 0.5);
+                    float3 cameraPosition = GetStereoAwareCameraPosition();
+                    float cameraDistance = length(worldPosition - cameraPosition);
+                    float distanceFactor = saturate(cameraDistance * 0.1333333);
+                    distanceFactor = 1.0 - (1.0 - distanceFactor) * (1.0 - distanceFactor);
+                    float resolvedGridSize = gridSize - distanceFactor * 10.0;
+                    float colorScale = 1.0 - distanceFactor * 0.6;
+
+                    float3 gridPosition = float3(abs(objectPosition.x), objectPosition.yz);
+                    float3 gridWave = cos(frac(-gridPosition * resolvedGridSize - gridPhase) +
+                        fill);
+                    float grid = gridWave.x * gridWave.y * gridWave.z;
+
+                    float scanPosition = (worldPosition.y - unity_ObjectToWorld._m13 +
+                        phaseOffset * scanDistance) / scanDistance;
+                    float scan = frac(-time * stripeSpeed + scanPosition);
+                    float leadingInput = max((0.02499998 - scan) * 40.00004, 0.0);
+                    float trailingInput = max((0.975 - scan) * -40.0, 0.0);
+                    float leading = 1.0 - leadingInput * leadingInput *
+                        (3.0 - 2.0 * leadingInput);
+                    float trailing = trailingInput * trailingInput *
+                        (3.0 - 2.0 * trailingInput);
+                    float envelope = (leading + trailing) * 0.25 + 1.0;
+                    float scanGrid = saturate((1.0 - scan) * leading + grid);
+                    float hologram = envelope - scanGrid;
+
+                    result.rgb += hologram * colorScale * holoIntensity * hologramColor;
+                }
+                #elif defined(_HOLOGRAM_SCANLINE)
+                {
+                    float time = ResolveHologramTime(timeValue, timeHelperOffset);
+                    float scanTime = haltScan > 0.5 ? -0.0 : -time * stripeSpeed;
+                    float scanPosition = (worldPosition.y - unity_ObjectToWorld._m13 +
+                        phaseOffset * scanDistance) / scanDistance;
+                    float scan = min(
+                        (1.0 - frac(scanTime + scanPosition)) * 1.666667, 1.0);
+                    scan = 1.0 - scan * scan * (3.0 - 2.0 * scan);
+                    result.rgb += scan * holoIntensity * hologramColor;
+                }
+                result.a = 0.0;
+                #elif defined(_HOLOGRAM_LEGACY)
+                {
+                    float time = ResolveHologramTime(timeValue, timeHelperOffset);
+                    float4 relativePosition = worldPosition.yxyz -
+                        unity_ObjectToWorld._m13_m03_m13_m23;
+                    float4 scaledPosition = relativePosition * gridSize;
+
+                    float3 wavePosition = scaledPosition.yzw -
+                        time * float3(0.0, 1.0, 0.0);
+                    float3 waves = sin(frac(wavePosition) * 3.141593) * 1.2;
+                    float pulsePosition = frac((scaledPosition.x * 0.33 + time) * 0.2);
+                    pulsePosition = min(pulsePosition * 2.0, 1.0);
+                    float pulseEdge = min(pulsePosition * 20.0, 1.0);
+                    pulseEdge = pulseEdge * pulseEdge * (3.0 - 2.0 * pulseEdge);
+                    float pulse = pulseEdge * (1.0 - pulsePosition);
+
+                    float modulation = cos(time * 2.0 + relativePosition.y +
+                        relativePosition.z - relativePosition.w * 7.0) * 0.4 + 0.8;
+                    float hologram =
+                        (waves.x * waves.y * waves.z * modulation + pulse) * pulse;
+                    result.rgb += hologram * hologramColor;
+                }
+                #endif
+                return result;
+            }
+
+            // Lit-local rim helpers
+            inline float CalculateRimLightMask(
+                float3 worldPosition, float3 normalWS, float rimLightEdgeStart,
+                float3 rimPerpendicularAxis)
+            {
+                float3 cameraPosition = GetStereoAwareCameraPosition();
+                float3 viewDirection = normalize(worldPosition - cameraPosition);
+                float rimLight = 1.0 - abs(dot(normalWS, viewDirection));
+                rimLight = smoothstep(0.0, 1.0, saturate(
+                                          (rimLight - rimLightEdgeStart) / max(1.0 - rimLightEdgeStart, 0.00001)));
+                #if defined(DIRECTIONAL_RIM)
+                float3 directionalAxis = normalize(
+                    rimPerpendicularAxis + (dot(rimPerpendicularAxis, rimPerpendicularAxis) < 0.00001
+                                                ? float3(0.0, 1.0, 0.0)
+                                                : float3(0.0, 0.0, 0.0)));
+                rimLight *= 1.0 - abs(dot(normalWS, directionalAxis));
+                #endif
+                return rimLight;
+            }
+
+            inline float3 ResolveRimLightTarget(
+                float3 rimColor, float rimScale, float rimLight,
+                float rimLightWhiteboostMultiplier,
+                float baseColorBoost, float baseColorBoostThreshold)
+            {
+                float3 target = rimColor * rimScale;
+                #if defined(_RIM_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM)
+                float whiteBoost = CalculateWhiteBoost(
+                    rimLight, rimScale, baseColorBoost, baseColorBoostThreshold);
+                target = saturate(target + whiteBoost) * rimLightWhiteboostMultiplier;
+                #endif
+                return target;
+            }
+
+            inline float4 ApplyRimLight(
+                float4 result, float3 worldPosition, float3 normalWS,
+                float rimLightEdgeStart, float4 rimLightColor,
+                float rimLightIntensity, float rimLightBloomIntensity,
+                float3 rimPerpendicularAxis, float rimLightWhiteboostMultiplier,
+                float baseColorBoost, float baseColorBoostThreshold)
+            {
+                float rimLight = CalculateRimLightMask(
+                    worldPosition, normalWS, rimLightEdgeStart, rimPerpendicularAxis);
+                float rimLightScale = rimLightColor.a * rimLightIntensity;
+                float3 rimTarget = ResolveRimLightTarget(
+                    rimLightColor.rgb, rimLightScale, rimLight,
+                    rimLightWhiteboostMultiplier, baseColorBoost, baseColorBoostThreshold);
+                result.rgb = lerp(result.rgb, rimTarget, rimLight);
+                result.a = rimLightScale * rimLight * rimLightBloomIntensity;
+                return result;
+            }
+
+            // Lit-local height-fog helpers
+            inline float4 ApplyHeightFogCurve(float4 result, float exactHeightInput)
+            {
+                float exactHeightFog = CalculateHeightFogFactor(exactHeightInput);
+                return exactHeightFog.xxxx *
+                    (float4(0.1, 0.1, 0.1, 0.0) - result) + result;
+            }
+
+            // Lit-local vertex-displacement helpers
+            #if defined(VERTEXDISPLACEMENT_MASK)
+            inline float ComposeVertexDisplacementMask(float displacementScale, float mask)
+            {
+                // The recovered active source route uses scalar mode 0. Its mask
+                // composition multiplies the displacement scale by the sampled mask.
+                return _VertexDisplacementMaskMode == 0.0
+                           ? displacementScale * mask
+                           : displacementScale + mask;
+            }
             #endif
 
-            #define USE_WORLD_NORMAL defined(DIFFUSE) || defined(SPECULAR) || \
-                defined(PARALLAX_IRIDESCENCE) || defined(_PARALLAX_FLEXIBLE_REFLECTED) || \
-                defined(PRIVATE_POINT_LIGHT) || \
-                defined(REFLECTION_TEXTURE) || defined(REFLECTION_PROBE) || defined(REFLECTION_STATIC) || \
-                defined(_VERTEXMODE_DISPLACEMENT) || \
-                defined(USE_SPHERICAL_NORMAL_OFFSET) || \
-                defined(EMISSION_ANGLE_DISAPPEAR) || \
-                defined(RIM_DIM) || defined(UV_COLOR_SEGMENTS) || \
-                defined(_RIMLIGHT_LERP) || defined(_RIMLIGHT_ADDITIVE) || \
-                defined(TEXTURE3D_LOOKUP) || \
-                USE_NORMAL_MAP_PAYLOAD || USE_ANTIFLICKER_NORMAL_PAYLOAD
-
-            #include "ShaderLibrary/Data.hlsl"
-            #include "ShaderLibrary/Camera.hlsl"
-            #include "ShaderLibrary/Surface.hlsl"
-            #include "ShaderLibrary/Dissolve.hlsl"
-            #include "ShaderLibrary/Iridescence.hlsl"
-            #include "ShaderLibrary/Parallax.hlsl"
-            #include "ShaderLibrary/CustomLighting.hlsl"
-            #include "ShaderLibrary/LitReflection.hlsl"
-            #include "ShaderLibrary/Emission.hlsl"
-            #include "ShaderLibrary/Hologram.hlsl"
-            #include "ShaderLibrary/PostProcess.hlsl"
-            #include "ShaderLibrary/RimLight.hlsl"
-            // ------------------------------------------------------------------
-            // Lit.shader vertex program (appdata / v2f / vert).
-            // Inlined from the former ShaderLibrary/LitVertex.hlsl: this vertex
-            // plumbing is Lit.shader-specific (its payload macros and properties
-            // are defined in this shader's body), so it lives here, not in the
-            // shared ShaderLibrary.
-            // ------------------------------------------------------------------
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomTime.hlsl"
-
+            // Vertex payload and program
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -1216,14 +1467,16 @@ Shader "ChroMapper/Lit"
                 #   if defined(DISPLACEMENT_BIDIRECTIONAL)
                 dispDir = dispDir * 2.0 - 1.0;
                 #   endif
-                dispDir *= _DisplacementAxisMultiplier.xyz;
+                dispDir *= UNITY_ACCESS_INSTANCED_PROP(
+                    Props, _DisplacementAxisMultiplier).xyz;
                 #else
                 // Default: displace along vertex normal, magnitude from blue channel
                 dispDir = i.normal * i.color.b;
                 #   if defined(DISPLACEMENT_BIDIRECTIONAL)
                 dispDir = dispDir * 2.0 - 1.0;
                 #   endif
-                dispDir *= _DisplacementAxisMultiplier.xyz;
+                dispDir *= UNITY_ACCESS_INSTANCED_PROP(
+                    Props, _DisplacementAxisMultiplier).xyz;
                 #endif
 
                 float spectrogramScale = 1.0;
@@ -1237,10 +1490,10 @@ Shader "ChroMapper/Lit"
                 spectrogramScale = _SpectrogramData[bin];
                 #endif
 
-                float _dispScale = _DisplacementStrength * (spectrogramScale);
+                float _dispScale = UNITY_ACCESS_INSTANCED_PROP(Props, _DisplacementStrength) * (spectrogramScale);
 
                 #if defined(VERTEXDISPLACEMENT_MASK)
-                {
+                { 
                 #if defined(_VERTEXDISPLACEMENT_MASK_SOURCE_3D_TEXTURE)
                 // 3D texture mask — matches decompiled SimpleLit exactly:
                 // sample world-space position scaled/panned/offset into the 3D tex,
@@ -1257,8 +1510,8 @@ Shader "ChroMapper/Lit"
                         + _VertexDisplacementMaskOffset.xxx;
                     _dispScale = ComposeVertexDisplacementMask(_dispScale, _dmVal.x);
                 }
-            #elif defined(_VERTEXDISPLACEMENT_MASK_SOURCE_EMISSION_TEXTURE)
-            {
+                #elif defined(_VERTEXDISPLACEMENT_MASK_SOURCE_EMISSION_TEXTURE)
+                { 
                 #if defined(_CUSTOM_TIME_FREEZE)
                 float _dmTime = UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset) * 0.05;
                 #else
@@ -1270,10 +1523,10 @@ Shader "ChroMapper/Lit"
                 _dispScale = ComposeVertexDisplacementMask(
                     _dispScale,
                     _VertexDisplacementMaskMultiplier * _dmSample + _VertexDisplacementMaskOffset);
-                }
+                        }
                 #else
                 // 2D texture mask — matches SimpleLit VERTEXDISPLACEMENT_MASK path
-                {
+                { 
                 #if defined(_CUSTOM_TIME_FREEZE)
                 float _dmTime = UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset) * 0.05;
                 #else
@@ -1445,7 +1698,8 @@ Shader "ChroMapper/Lit"
                     cameraPosition - o.worldPos.xyz);
                 float emissionAngleDot = abs(dot(o.worldNormal, emissionViewDirection));
                 o.emissionAngle = smoothstep(0.0, 1.0, saturate(
-                                                 (emissionAngleDot - 0.05) / (_EmissionThresholdAngle
+                                                 (emissionAngleDot - 0.05) / (
+                                                     _EmissionThresholdAngle
                                                      - 0.05)));
                 #endif
                 #if defined(REFLECTION_TEXTURE)
@@ -1480,7 +1734,7 @@ Shader "ChroMapper/Lit"
                 return o;
             }
 
-
+            // Fragment program
             float4 frag(v2f i, float facing : VFACE) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(i);
@@ -1509,10 +1763,24 @@ Shader "ChroMapper/Lit"
                 // Always start from black — baseColor contributes only via diffuse/ambient,
                 // matching SimpleLit's behaviour so objects are pitch dark without emission or lights.
                 float4 albedo = 0;
-                baseColor = ResolveSurfaceBaseColor(
-                    i.uv.xy, baseColor, _InputUvMultiplier, _Smoothness,
-                    _AlbedoMultiplier, _DiffuseTex, _DiffuseTex_ST,
-                    _MetalSmoothnessTex, _MetalSmoothnessTex_ST);
+                {
+                    #if defined(DIFFUSE_TEXTURE)
+                    float2 baseUv = i.uv.xy * _InputUvMultiplier;
+                    #if defined(METAL_SMOOTHNESS_TEXTURE) && defined(_DIFFUSE_TEXTURE_SOURCE_MPM_R)
+                    float2 mpmUv = baseUv * _MetalSmoothnessTex_ST.xy +
+                        _MetalSmoothnessTex_ST.zw;
+                    baseColor.rgb *= tex2D(_MetalSmoothnessTex, mpmUv).r;
+                    #elif defined(METAL_SMOOTHNESS_TEXTURE) && defined(_DIFFUSE_TEXTURE_SOURCE_MPM_A_SMOOTHNESS)
+                    float2 mpmUv = baseUv * _MetalSmoothnessTex_ST.xy +
+                        _MetalSmoothnessTex_ST.zw;
+                    baseColor.rgb *= tex2D(_MetalSmoothnessTex, mpmUv).a * _Smoothness;
+                    #else
+                    float2 diffuseUv = baseUv * _DiffuseTex_ST.xy + _DiffuseTex_ST.zw;
+                    baseColor.rgb *= tex2D(_DiffuseTex, diffuseUv).rgb;
+                    #endif
+                    baseColor.rgb *= _AlbedoMultiplier;
+                    #endif
+                }
 
                 float3 worldPos = i.worldPos;
 
@@ -1522,14 +1790,51 @@ Shader "ChroMapper/Lit"
                 #if defined(DISSOLVE)
                 float dissolveTime = ResolveTime(
                     UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset)).y;
-                float dissolveFactor = ResolveDissolve(
-                    worldPos, i.uv.xy, dissolveTime, facing,
-                    _DissolveAxisVector, _DissolveOffset, _DissolveProgress,
-                    _DissolveStartValue, _DissolveEndValue, _DissolveReverse,
-                    _CutColorFalloff, _CutColorBacksideFalloff,
-                    _DissolveColor.a,
-                    _DissolveTexture, _DissolveTexture_ST,
-                    _DissolveTextureSpeed, _DissolveTextureInfluence);
+                float dissolveFactor;
+                {
+                    float3 axis = normalize(_DissolveAxisVector);
+                #if defined(DISSOLVE_PROGRESS)
+                float dissolveProgress = UNITY_ACCESS_INSTANCED_PROP(
+                    Props, _DissolveProgress);
+                float direction = dissolveProgress < -0.001 ? -1.0 : 1.0;
+                axis *= direction;
+                float threshold = abs(dissolveProgress) *
+                    (_DissolveEndValue - _DissolveStartValue) + _DissolveStartValue;
+                #else
+                float threshold = _DissolveOffset;
+                #endif
+
+                #if defined(_DISSOLVE_SPACE_WORLD_CENTERED)
+                float3 localOffset = worldPos - unity_ObjectToWorld._m03_m13_m23;
+                #else
+                float3 localOffset = worldPos;
+                #endif
+                float projected = dot(localOffset, axis);
+                float dissolveValue = projected - threshold;
+                #if defined(DISSOLVE_TEXTURE)
+                float2 dissolveUv = i.uv.xy * _DissolveTexture_ST.xy +
+                    _DissolveTexture_ST.zw;
+                dissolveUv += dissolveTime.xx * _DissolveTextureSpeed *
+                    _DissolveTexture_ST.xy;
+                float textureOffset = tex2D(_DissolveTexture, dissolveUv).r * 2.0 - 1.0;
+                dissolveValue += textureOffset * _DissolveTextureInfluence;
+                #endif
+                dissolveValue *= (_DissolveReverse > 0.5) ? -1.0 : 1.0;
+
+                if (dissolveValue < 0.0)
+                    discard;
+
+                #if defined(DISSOLVE_COLOR)
+                float facingMultiplier = facing > 0.0 ? 1.0 : _CutColorBacksideFalloff;
+                float edgeFalloff = saturate(
+                    -dissolveValue * _CutColorFalloff * facingMultiplier + 1.0);
+                edgeFalloff = edgeFalloff * edgeFalloff * edgeFalloff;
+                dissolveFactor = edgeFalloff *
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _DissolveColor).a;
+                #else
+                dissolveFactor = 0.0;
+                #endif
+                }
                 #endif
                 #if USE_WORLD_NORMAL
                 #if defined(PRECISE_NORMAL)
@@ -1541,10 +1846,18 @@ Shader "ChroMapper/Lit"
                 float3 worldNormal = 1;
                 #endif
                 #if USE_NORMAL_MAP_PAYLOAD
-                worldNormal = ResolveSurfaceNormal(
-                    i.uv.xy, worldNormal, i.tangentWS, i.bitangentWS,
-                    _InputUvMultiplier, _NormalTex, _NormalTex_ST,
-                    _NormalScale);
+                {
+                    float2 normalUv = i.uv.xy * _InputUvMultiplier;
+                    normalUv = normalUv * _NormalTex_ST.xy + _NormalTex_ST.zw;
+                    float4 normalSample = tex2D(_NormalTex, normalUv);
+                    float2 normalXY = float2(
+                        normalSample.a * normalSample.r, normalSample.g) * 2.0 - 1.0;
+                    float normalZ = sqrt(1.0 - min(dot(normalXY, normalXY), 1.0));
+                    normalXY *= _NormalScale;
+                    worldNormal = normalize(
+                        normalXY.x * i.tangentWS + normalXY.y * i.bitangentWS +
+                        normalZ * worldNormal);
+                }
                 #endif
 
                 // Composable lighting boundary. The canonical structures feed the
@@ -1570,41 +1883,129 @@ Shader "ChroMapper/Lit"
                     _InputUvMultiplier, _MetalSmoothnessTex,
                     _MetalSmoothnessTex_ST, _DirtTex, _DirtTex_ST,
                     _OcclusionIntensity, _DirtDetailTex, _DirtDetailTex_ST,
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _OcclusionDetailIntensity),
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionMaskIntensity));
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _OcclusionDetailIntensity));
                 #else
                 ResolveSurfaceMaterial(
                     composableSurface, 1.0, _Metallic, _Smoothness,
                     _InputUvMultiplier, _MetalSmoothnessTex,
                     _MetalSmoothnessTex_ST, _DirtTex, _DirtTex_ST,
                     _OcclusionIntensity, _DirtDetailTex, _DirtDetailTex_ST,
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _OcclusionDetailIntensity),
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionMaskIntensity));
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _OcclusionDetailIntensity));
                 #endif
-                // The lighting library takes per-material inputs as arguments
-                // instead of reading uniforms it cannot assume are declared.
-                #if defined(UNITY_INSTANCING_ENABLED)
                 float3 nominalDiffuseLevel =
                     UNITY_ACCESS_INSTANCED_PROP(Props, _NominalDiffuseLevel).rgb;
-                #else
-                float3 nominalDiffuseLevel = _NominalDiffuseLevel.rgb;
-                #endif
-                #if defined(UNITY_INSTANCING_ENABLED) && !USE_UNIFORM_PRIVATE_POINT_COLOR
+                #if !USE_UNIFORM_PRIVATE_POINT_COLOR
                 float3 privatePointLightColor =
                     UNITY_ACCESS_INSTANCED_PROP(Props, _PrivatePointLightColor).rgb;
                 #else
                 float3 privatePointLightColor = _PrivatePointLightColor.rgb;
                 #endif
-                float3 ambientLight = CalculateAmbient(
-                    nominalDiffuseLevel, _AmbientMinimalValue, _AmbientMultiplier);
-                LightingData composableLighting = ResolveLitDirectLighting(
-                    composableSurface, ambientLight, privatePointLightColor,
-                    _LightMap1, _LightMap2,
-                    _LightmapLightBakeIdA, _LightmapLightBakeIdB,
-                    _LightmapLightBakeIdC, _LightmapLightBakeIdD,
-                    _LightmapLightBakeIdE, _LightmapLightBakeIdF,
-                    _BothSidesDiffuseMultiplier, _SpecularIntensity,
-                    _GroundFadeScale, _GroundFadeOffset);
+                float3 ambientLight = max(
+                    _AmbientMultiplier * nominalDiffuseLevel, _AmbientMinimalValue);
+                LightingData composableLighting;
+                {
+                    composableLighting.directDiffuse = 0.0;
+                    composableLighting.directSpecular = 0.0;
+                    composableLighting.reflection = 0.0;
+                    composableLighting.ambient = 0.0;
+                    float3 directBaseColor = composableSurface.baseColor.rgb;
+                    float groundFade = 1.0;
+                    #if defined(GROUND_FADE)
+                    groundFade = 1.0 - saturate(
+                        -composableSurface.worldPosition.y * _GroundFadeScale +
+                        _GroundFadeOffset);
+                    directBaseColor *= groundFade;
+                    #endif
+                    #if defined(_PROBE_CALCULATION_PRECISE)
+                    float minimumColor = min(directBaseColor.r,
+                                             min(directBaseColor.g, directBaseColor.b));
+                    float maximumColor = max(directBaseColor.r,
+                                             max(directBaseColor.g,
+                                                 directBaseColor.b));
+                    float saturation = (maximumColor - minimumColor) / maximumColor;
+                    composableLighting.ambient = directBaseColor * ambientLight *
+                        ((saturation + 1.0) * (1.0 - composableSurface.metallic));
+                    #else
+                    composableLighting.ambient = directBaseColor * ambientLight;
+                    #endif
+
+                    float3 diffuseLights = 0.0;
+                    #if defined(DIFFUSE)
+                    #if defined(LIGHT_FALLOFF)
+                    diffuseLights = CalculateLightFalloffDiffuse(
+                        composableSurface.worldPosition, composableSurface.normalWS);
+                    #else
+                    diffuseLights = CalculateLightDiffuse(
+                        composableSurface.normalWS, _BothSidesDiffuseMultiplier);
+                    #endif
+                    #endif
+                    #if defined(PRIVATE_POINT_LIGHT)
+                    { 
+                    #if defined(POINT_LIGHT_IS_LOCAL)
+                    float3 lightPosition = mul(
+                        unity_ObjectToWorld,
+                        float4(_PrivatePointLightPosition.xyz, 1.0)).xyz;
+                    #else
+                    float3 lightPosition = _PrivatePointLightPosition.xyz;
+                    #endif
+                    float3 lightVector = lightPosition - composableSurface.worldPosition;
+                    float distanceSquared = max(dot(lightVector, lightVector), 0.00001);
+                    float3 lightDirection = lightVector / sqrt(distanceSquared);
+                    #if defined(BOTH_SIDES_DIFFUSE)
+                    float diffuse = abs(dot(composableSurface.normalWS, lightDirection));
+                    #else
+                    float diffuse = max(dot(composableSurface.normalWS, lightDirection), 0.0);
+                    #endif
+                    diffuseLights += diffuse * privatePointLightColor *
+                        _PrivatePointLightIntensity / distanceSquared;
+                    }
+                    #endif
+
+                    float3 directColor = diffuseLights * directBaseColor;
+                    #if defined(DIFFUSE) && defined(SPECULAR)
+                    composableLighting.directDiffuse = directColor *
+                        (0.96 * (1.0 - composableSurface.metallic));
+                    #else
+                    composableLighting.directDiffuse = directColor *
+                        (1.0 - composableSurface.metallic);
+                    #endif
+                    #if defined(SPECULAR)
+                    #if defined(DIFFUSE)
+                    float3 specularColor = 0.04 + composableSurface.metallic *
+                        (directColor - 0.04);
+                    #else
+                    float3 specularColor = 0.04 + composableSurface.metallic *
+                        (directBaseColor - 0.04);
+                    #endif
+                    #if defined(LIGHT_FALLOFF)
+                    float3 specularLights = CalculateLightFalloffSpecular(
+                        composableSurface.worldPosition, composableSurface.normalWS,
+                        composableSurface.smoothness);
+                    #else
+                    float3 specularLights = CalculateLightSpecular(
+                        composableSurface.worldPosition, composableSurface.normalWS,
+                        composableSurface.smoothness);
+                    #endif
+                    composableLighting.directSpecular = specularLights * specularColor *
+                        (_SpecularIntensity * groundFade);
+                    #if defined(OCCLUSION)
+                    composableLighting.directSpecular *= composableSurface.occlusion;
+                    #endif
+                    #endif
+                    #if defined(LIGHTMAP)
+                    float3 lightmap1 = tex2D(_LightMap1, composableSurface.lightmapUv).rgb;
+                    float3 lightmap2 = tex2D(_LightMap2, composableSurface.lightmapUv).rgb;
+                    float3 decodedLightmap =
+                        lightmap1.r * _LightmapLightBakeIdA +
+                        lightmap1.g * _LightmapLightBakeIdB +
+                        lightmap1.b * _LightmapLightBakeIdC +
+                        lightmap2.r * _LightmapLightBakeIdD +
+                        lightmap2.g * _LightmapLightBakeIdE +
+                        lightmap2.b * _LightmapLightBakeIdF;
+                    composableLighting.directDiffuse += decodedLightmap * 4.594793 *
+                        (1.0 - composableSurface.metallic) * directBaseColor;
+                    #endif
+                }
                 float3 composableReflectionNormal = worldNormal;
                 #if USE_ANTIFLICKER_NORMAL_PAYLOAD && \
                     !defined(_VERTEXMODE_METALSMOOTHNESS)
@@ -1617,11 +2018,30 @@ Shader "ChroMapper/Lit"
                     CalculateLitReflectionTextureRimDim(
                         worldPos, i.reflectionTextureRimFactor,
                         _RimDistanceOffset, _RimDistanceScale, _RimScale);
-                composableLighting.reflection = ResolveLitReflectionTexture(
-                    composableSurface, i.reflectionTextureDirection,
-                    composableReflectionTextureRimDim,
-                    _EnvironmentReflectionCube, _ReflectionTexIntensity,
-                    _RimSmoothness, _RimDarkening);
+                {
+                    float smoothness = composableSurface.smoothness;
+                #if defined(RIM_DIM)
+                smoothness = saturate(
+                    smoothness - composableReflectionTextureRimDim * _RimSmoothness);
+                #endif
+
+                float roughness = 1.0 - smoothness;
+                float reflectionLod = roughness * (1.7 - 0.7 * roughness) * 6.0;
+                float3 reflection = texCUBElod(
+                    _EnvironmentReflectionCube,
+                    float4(i.reflectionTextureDirection, reflectionLod)).rgb;
+                reflection *= _ReflectionTexIntensity;
+                #if defined(MULTIPLY_REFLECTIONS)
+                reflection *= 1.0 + composableSurface.metallic *
+                    (composableSurface.baseColor.rgb - 1.0);
+                #endif
+                reflection *= 2.0 * (composableSurface.metallic * 0.8 + 0.2);
+                reflection *= smoothness;
+                #if defined(RIM_DIM)
+                reflection *= 1.0 - composableReflectionTextureRimDim * _RimDarkening;
+                #endif
+                composableLighting.reflection = reflection;
+                }
                 #else
                 #if defined(RIM_DIM)
                 float composableRimDim = CalculateLitReflectionTextureRimDim(
@@ -1630,31 +2050,127 @@ Shader "ChroMapper/Lit"
                 #else
                 float composableRimDim = 0.0;
                 #endif
-                composableLighting.reflection = ResolveLitReflection(
-                    composableSurface, composableReflectionNormal,
-                    composableRimDim,
+                #if !defined(REFLECTION_PROBE)
+                composableLighting.reflection = 0.0;
+                #else
+                {
+                    float smoothness = composableSurface.smoothness;
+                #if defined(RIM_DIM)
+                smoothness = saturate(smoothness - composableRimDim * _RimSmoothness);
+                #endif
+                #if defined(SPECULAR_ANTIFLICKER)
+                float3 cameraPosition = GetStereoAwareCameraPosition();
+                float cameraDistance = length(
+                    composableSurface.worldPosition - cameraPosition);
+                float weight = saturate(
+                        (_AntiflickerDistanceOffset - cameraDistance) *
+                        _AntiflickerDistanceScale) *
+                    _AntiflickerStrength;
+                float3 normalDx = ddx(composableReflectionNormal);
+                float3 normalDy = ddy(composableReflectionNormal);
+                float gradient = min(
+                    max(dot(normalDx, normalDx), dot(normalDy, normalDy)), 1.0);
+                float filteredSmoothness = min(
+                    1.0 - pow(gradient, 0.333), smoothness);
+                smoothness += weight * (filteredSmoothness - smoothness);
+                #endif
+                #if defined(REFLECTION_STATIC)
+                float3 reflectionDirection =
+                    composableSurface.worldPosition + composableReflectionNormal;
+                #else
+                float3 reflectionDirection = CalculateViewReflectionDirection(
+                    composableSurface.worldPosition, composableReflectionNormal);
+                #endif
+
+                #if defined(REFLECTION_PROBE_BOX_PROJECTION)
+                float3 boundsMin = _ReflectionProbeBoundsMin;
+                float3 boundsMax = _ReflectionProbeBoundsMax;
+                float3 probePosition = _ReflectionProbePosition;
+                #if defined(REFLECTION_PROBE_BOX_PROJECTION_OFFSET)
+                boundsMin -= _ReflectionProbeBoxProjectionSizeOffset;
+                boundsMax += _ReflectionProbeBoxProjectionSizeOffset;
+                probePosition += _ReflectionProbeBoxProjectionPositionOffset;
+                #endif
+                reflectionDirection = BoxProjectReflectionDirection(
+                    reflectionDirection, composableSurface.worldPosition,
+                    boundsMin, boundsMax, probePosition);
+                #endif
+
+                float3 reflection = SampleReflectionProbePair(
+                    reflectionDirection, smoothness,
                     _ReflectionProbeTexture1, _ReflectionProbeTexture2,
                     _LightProbeLightBakeIdA, _LightProbeLightBakeIdB,
                     _LightProbeLightBakeIdC, _LightProbeLightBakeIdD,
                     _LightProbeLightBakeIdE, _LightProbeLightBakeIdF,
-                    _ReflectionProbeIntensity,
-                    _ReflectionProbeGrayscale,
-                    _ColoredMetalMultiplier,
-                    _WhiteOffset,
-                    _ReflectionProbeBoundsMin, _ReflectionProbeBoundsMax,
-                    _ReflectionProbePosition,
-                    _ReflectionProbeBoxProjectionSizeOffset,
-                    _ReflectionProbeBoxProjectionPositionOffset,
-                    _RimSmoothness, _RimDarkening,
-                    _AntiflickerDistanceOffset, _AntiflickerDistanceScale,
-                    _AntiflickerStrength,
-                    _GroundFadeScale, _GroundFadeOffset);
+                    _ReflectionProbeIntensity);
+                #if defined(_PROBE_CALCULATION_PRECISE)
+                float grayscale = dot(float3(0.33, 0.33, 0.33), reflection);
+                float metallicScale = composableSurface.metallic *
+                    composableSurface.metallic * 2.5 + 1.0;
+                float3 grayscaleDelta = grayscale * metallicScale - reflection;
+                float scaledGrayscale = grayscale * metallicScale;
+                float minimumColor = min(
+                    composableSurface.baseColor.r,
+                    min(composableSurface.baseColor.g, composableSurface.baseColor.b));
+                float maximumColor = max(
+                    composableSurface.baseColor.r,
+                    max(composableSurface.baseColor.g, composableSurface.baseColor.b));
+                float saturation = (maximumColor - minimumColor) / maximumColor;
+                float metallicSaturation = saturation * composableSurface.metallic;
+                float grayscaleFactor = max(
+                    metallicSaturation, _ReflectionProbeGrayscale);
+                float coloredMetalScale =
+                    metallicSaturation * _ColoredMetalMultiplier + 1.0;
+                reflection += grayscaleFactor * grayscaleDelta;
+                float metallicFactor = saturate(
+                    composableSurface.metallic -
+                    scaledGrayscale * scaledGrayscale * 0.1);
+                metallicFactor *= max(saturation, 0.95);
+                #if defined(MULTIPLY_REFLECTIONS)
+                reflection *= 1.0 + metallicFactor *
+                    (composableSurface.baseColor.rgb * coloredMetalScale - 1.0);
+                float whiteFactor = (1.0 - saturation) * (1.0 + saturation) *
+                    _WhiteOffset * max(_ColoredMetalMultiplier, 1.0);
+                reflection *= max(
+                    whiteFactor * composableSurface.baseColor.rgb *
+                    composableSurface.metallic, 1.0);
+                #endif
+                reflection *= smoothness;
+                #if defined(RIM_DIM)
+                reflection *= 1.0 - composableRimDim * _RimDarkening;
+                #endif
+                composableLighting.reflection = reflection;
+                #else
+                float groundFade = 1.0;
+                float3 reflectionBaseColor = composableSurface.baseColor.rgb;
+                #if defined(GROUND_FADE)
+                groundFade = 1.0 - saturate(
+                    -composableSurface.worldPosition.y * _GroundFadeScale +
+                    _GroundFadeOffset);
+                reflectionBaseColor *= groundFade;
+                #endif
+                #if defined(MULTIPLY_REFLECTIONS)
+                reflection *= 1.0 + composableSurface.metallic *
+                    (reflectionBaseColor - 1.0);
+                #endif
+                reflection *= 2.0 * (composableSurface.metallic * 0.8 + 0.2);
+                reflection *= smoothness * groundFade;
+                #if defined(RIM_DIM)
+                reflection *= 1.0 - composableRimDim * _RimDarkening;
+                #endif
+                composableLighting.reflection = reflection;
+                #endif
+                }
+                #endif
                 #endif
                 EmissionData composableEmission = InitializeEmissionData();
                 float4 composableTime = ResolveTime(
                     UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset));
 
-                albedo += ComposeLitLighting(composableLighting);
+                albedo += float4(
+                    composableLighting.reflection + composableLighting.ambient +
+                    (composableLighting.directDiffuse + composableLighting.directSpecular),
+                    0.0);
 
                 #if defined(_HOLOGRAM_GRID) || defined(_HOLOGRAM_SCANLINE) || defined(_HOLOGRAM_LEGACY)
                 #if defined(_HOLOGRAM_GRID)
@@ -1687,9 +2203,14 @@ Shader "ChroMapper/Lit"
                 #endif
 
                 #if defined(DISTANCE_DARKENING)
-                albedo.rgb *= CalculateSourceDistanceDarkening(
-                    worldPos, _DarkeningCenter, _DarkeningDirection,
-                    _DarkeningScale, _DarkeningIntensity);
+                {
+                    float3 offset = _DarkeningCenter - worldPos;
+                    float weightedDistance = dot(
+                        offset * offset,
+                        _DarkeningDirection * float3(0.0001, 0.0001, 0.0001));
+                    albedo.rgb *= 1.0 - saturate(weightedDistance * _DarkeningScale) *
+                        _DarkeningIntensity;
+                }
                 #endif
 
                 #if defined(OCCLUSION) && defined(OCCLUSION_BEFORE_EMISSION)
@@ -1711,42 +2232,48 @@ Shader "ChroMapper/Lit"
                     _InputUvMultiplier, UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset),
                     _ParallaxTexSpeed, _ParallaxIntensity, _ParallaxIntensity_Step,
                     _Layers, _StartOffset, _OffsetStep,
-                    _IridescenceColorInfluence,
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _IridescenceColorInfluence),
                     _ParallaxMap, _ParallaxMap_ST,
                     _ParallaxMaskingMap, _ParallaxMaskingMap_ST,
                     _ParallaxMaskSpeed, _ParallaxMaskIntensity,
                     _IridescenceAxesMultiplier, _IridescenceTiling,
-                    _ParallaxColor);
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _ParallaxColor));
                 #else
                 albedo = ApplyParallax(
                     albedo, composableSurface, 1.0.xxxx,
                     _InputUvMultiplier, UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset),
                     _ParallaxTexSpeed, _ParallaxIntensity, _ParallaxIntensity_Step,
                     _Layers, _StartOffset, _OffsetStep,
-                    _IridescenceColorInfluence,
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _IridescenceColorInfluence),
                     _ParallaxMap, _ParallaxMap_ST,
                     _ParallaxMaskingMap, _ParallaxMaskingMap_ST,
                     _ParallaxMaskSpeed, _ParallaxMaskIntensity,
                     _IridescenceAxesMultiplier, _IridescenceTiling,
-                    _ParallaxColor);
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _ParallaxColor));
                 #endif
                 #endif
 
                 #if USE_EMISSION_TEXTURE_COLOR
                 #if defined(_EMISSIONTEXTURE_FLIPBOOK)
-                composableEmission = ResolveFlipbookEmission(
-                    i.flipbookUv, i.flipbookFrameSelector,
-                    _EmissionTex, _EmissionTex_ST,
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionBrightness),
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionTexColor),
-                    _EmissionTexBloomIntensity);
-                albedo = ComposeEmission(albedo, composableEmission);
+                {
+                    float2 emissionUv = i.flipbookUv * _EmissionTex_ST.xy +
+                        _EmissionTex_ST.zw;
+                    float emissionInput = dot(
+                            tex2D(_EmissionTex, emissionUv), i.flipbookFrameSelector) *
+                        UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionBrightness);
+                    composableEmission = ResolvePlainEmission(
+                        emissionInput.xx,
+                        UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionTexColor),
+                        _EmissionTexBloomIntensity);
+                }
+                albedo.rgb += composableEmission.color;
+                albedo.a = composableEmission.bloomAlpha;
                 #if USE_VERTEX_EMISSION
-                EmissionData flipbookVertexEmission = ResolveVertexEmission(i.color, i.emission,
-                                                                            _EmissionThreshold, _EmissionStrength,
-                                                                            _BaseColorBoost, _BaseColorBoostThreshold,
-                                                                            _QuestWhiteboostMultiplier,
-                                                                            _EmissionBloomIntensity);
+                EmissionData flipbookVertexEmission = ResolveVertexEmission(
+                    i.color, i.emission,
+                    _EmissionThreshold, _EmissionStrength,
+                    _BaseColorBoost, _BaseColorBoostThreshold,
+                    _QuestWhiteboostMultiplier, _EmissionBloomIntensity);
                 albedo.rgb += flipbookVertexEmission.color;
                 albedo.a += flipbookVertexEmission.bloomAlpha;
                 #endif
@@ -1766,37 +2293,238 @@ Shader "ChroMapper/Lit"
                 #else
                 float composableLookupEmission = 1.0;
                 #endif
-                composableEmission = ResolveFeatureEmission(
-                    composableSurface, composableTime, composableColorArrayId,
-                    composableEmissionAngle, composableLookupEmission,
-                    _InputUvMultiplier, _EmissionBrightness,
-                    _EmissionTex, _EmissionTex_ST, _EmissionTexSpeed,
-                    _PulseMask, _PulseMask_ST,
-                    _PulseWidth, _PulseSpeed, _PulseSmooth,
-                    _EmissionTexBloomIntensity,
-                    _DistortionTex, _DistortionTex_ST, _DistortionPanning,
-                    _DistortionAxes,
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _DistortionStrength),
-                    _EmissionMask, _EmissionMask_ST, _EmissionMaskSpeed,
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionMaskIntensity),
-                    _SecondaryEmissionMask, _SecondaryEmissionMask_ST,
-                    _SecondaryEmissionMaskSpeed,
+                {
+                    float2 emissionInput = 0.0;
+                #if defined(_EMISSION_TEXTURE_SOURCE_MPM_G) && defined(METAL_SMOOTHNESS_TEXTURE)
+                emissionInput = composableSurface.mpm.gg;
+                #elif defined(_EMISSION_TEXTURE_SOURCE_SDF)
+                {
+                    float sdfMask = 1.0;
+                    float sdfAccumulator = 0.0;
+                    for (int pointIndex = 0; pointIndex < 3; pointIndex++)
+                    {
+                        float3 pointOffset = composableSurface.worldPosition -
+                            _SDFPointArray[pointIndex].xyz;
+                        float distanceSquared = dot(pointOffset, pointOffset);
+                        float pointDistance = exp2(log2(distanceSquared) * 0.25);
+                        float isPositive = _SDFPointArray[pointIndex].w > 0.0
+                                               ? 1.0
+                                               : 0.0;
+                        float isNegative = _SDFPointArray[pointIndex].w < 0.0
+                                               ? 1.0
+                                               : 0.0;
+                        float pointSign = floor(isNegative - isPositive);
+                        float pointIntensity = pointSign < 0.0
+                                                   ? _SDFNegativeIntensity
+                                                   : _SDFPointIntensity;
+                        float pointDistanceField = max(
+                            abs(_SDFPointArray[pointIndex].w) - pointDistance, 0.0);
+                        float accumulated =
+                            pointDistanceField * pointIntensity + sdfAccumulator;
+                        float occlusion = saturate(
+                            -pointDistanceField * pointIntensity + 1.0);
+                        float masked = sdfMask * occlusion;
+                        if (pointSign >= 0.0)
+                            sdfAccumulator = accumulated;
+                        else
+                            sdfMask = masked;
+                    }
+                    float sdfNoiseScale = UNITY_ACCESS_INSTANCED_PROP(
+                        Props, _SDFNoiseScale);
+                    float3 noiseUv = sdfNoiseScale.xxx *
+                        composableSurface.worldPosition;
+                    noiseUv += _SDFNoisePanning * composableTime.y + _SDFNoiseOffset;
+                    float sdfEmission = sdfAccumulator * sdfMask +
+                        tex3D(_SDFNoiseTex, noiseUv).r *
+                        UNITY_ACCESS_INSTANCED_PROP(Props, _SDFNoiseIntensity);
+                    emissionInput = sdfEmission.xx;
+                }
+                #elif defined(_EMISSIONTEXTURE_PULSE)
+                { 
+                #if defined(SECONDARY_UVS_PULSE) && USE_SECONDARY_UV
+                float2 pulseUv = TransformSecondaryUv(
+                    composableSurface, _PulseMask_ST);
+                #else
+                float2 baseUv = composableSurface.uv0 * _InputUvMultiplier;
+                float2 pulseUv = baseUv * _PulseMask_ST.xy + _PulseMask_ST.zw;
+                #endif
+                float pulseTexture = tex2D(_PulseMask, pulseUv).r;
+                #if defined(INVERT_PULSE)
+                pulseTexture = 1.0 - pulseTexture;
+                #endif
+                float pulsePhase = frac(
+                    pulseTexture - composableTime.x * _PulseSpeed);
+                float pulseDistance = min(pulsePhase, 1.0 - pulsePhase);
+                float pulse = 1.0 - smoothstep(
+                    max(_PulseWidth, 0.0),
+                    max(_PulseWidth + _PulseSmooth, 0.00001),
+                    pulseDistance);
+                #if defined(PULSE_MULTIPLY_TEXTURE)
+                pulse *= pulseTexture;
+                #endif
+                emissionInput = pulse.xx;
+                    }
+                #elif defined(_EMISSIONTEXTURE_SIMPLE)
+                #if defined(DISTORTION_SIMPLE) && \
+                        defined(_DISTORTION_TARGET_EMISSIONTEX)
+                { 
+                #if defined(SECONDARY_UVS_EMISSION) && USE_SECONDARY_UV
+                float2 distortionUv = TransformScrollingSecondaryUv(
+                    composableSurface, _DistortionTex_ST,
+                    _DistortionPanning * 0.1, composableTime.y);
+                #else
+                float2 baseUv = composableSurface.uv0 * _InputUvMultiplier;
+                float2 distortionUv = baseUv * _DistortionTex_ST.xy +
+                    _DistortionTex_ST.zw;
+                distortionUv += composableTime.yy * _DistortionPanning *
+                    _DistortionTex_ST.xy * 0.1;
+                #endif
+                float2 distortion = tex2D(_DistortionTex, distortionUv).rg;
+                distortion = distortion *
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _DistortionStrength) *
+                    0.1 * _DistortionAxes * 2.0 - 1.0;
+                #if defined(SECONDARY_UVS_EMISSION) && USE_SECONDARY_UV
+                float2 emissionUv = TransformScrollingSecondaryUv(
+                    composableSurface, _EmissionTex_ST,
+                    _EmissionTexSpeed, composableTime.x);
+                emissionUv += distortion * _EmissionTex_ST.xy *
+                    composableSurface.secondaryUvTiling;
+                #else
+                float2 emissionUv = (baseUv + distortion) * _EmissionTex_ST.xy +
+                    _EmissionTex_ST.zw;
+                emissionUv += composableTime.xx * _EmissionTexSpeed *
+                    _EmissionTex_ST.xy;
+                #endif
+                emissionInput = tex2D(_EmissionTex, emissionUv).rg;
+                    }
+                #else
+                { 
+                #if defined(SECONDARY_UVS_EMISSION) && USE_SECONDARY_UV
+                float2 emissionUv = TransformScrollingSecondaryUv(
+                    composableSurface, _EmissionTex_ST,
+                    _EmissionTexSpeed, composableTime.x);
+                #else
+                float2 baseUv = composableSurface.uv0 * _InputUvMultiplier;
+                float2 emissionUv = baseUv * _EmissionTex_ST.xy +
+                    _EmissionTex_ST.zw;
+                emissionUv += composableTime.xx * _EmissionTexSpeed *
+                    _EmissionTex_ST.xy;
+                #endif
+                emissionInput = tex2D(_EmissionTex, emissionUv).rg;
+                    }
+                #endif
+                #endif
+
+                #if defined(EMISSION_ANGLE_DISAPPEAR)
+                emissionInput *= composableEmissionAngle;
+                #endif
+
+                #if defined(_EMISSION_ALPHA_SOURCE_COPY_EMISSION)
+                emissionInput.y = emissionInput.x;
+                #elif defined(_EMISSION_ALPHA_SOURCE_MPM_R) && defined(METAL_SMOOTHNESS_TEXTURE)
+                emissionInput.y = composableSurface.mpm.r;
+                #endif
+                #if defined(EMISSION_MASK)
+                { 
+                #if defined(SECONDARY_UVS_EMISSION_MASK) && USE_SECONDARY_UV
+                float2 maskUv = TransformScrollingSecondaryUv(
+                    composableSurface, _EmissionMask_ST,
+                    _EmissionMaskSpeed, composableTime.x);
+                #else
+                float2 maskBaseUv = composableSurface.uv0 * _InputUvMultiplier;
+                float2 maskUv = maskBaseUv * _EmissionMask_ST.xy +
+                    _EmissionMask_ST.zw;
+                maskUv += composableTime.xx * _EmissionMaskSpeed *
+                    _EmissionMask_ST.xy;
+                #endif
+                float2 mask = tex2D(_EmissionMask, maskUv).rg;
+                float emissionMaskIntensity = UNITY_ACCESS_INSTANCED_PROP(
+                    Props, _EmissionMaskIntensity);
+                #if defined(_MASKBLEND_ADD)
+                emissionInput += mask * emissionMaskIntensity;
+                #elif defined(_MASKBLEND_MASKED_ADD)
+                emissionInput += emissionInput * mask * emissionMaskIntensity;
+                #else
+                emissionInput *= mask * emissionMaskIntensity +
+                    (1.0 - emissionMaskIntensity);
+                #endif
+                    }
+                #endif
+                #if defined(SECONDARY_EMISSION_MASK)
+                { 
+                #if defined(SECONDARY_UVS_EMISSION_MASK2) && USE_SECONDARY_UV
+                float2 maskUv = TransformScrollingSecondaryUv(
+                    composableSurface, _SecondaryEmissionMask_ST,
+                    _SecondaryEmissionMaskSpeed, composableTime.x);
+                #else
+                float2 maskBaseUv = composableSurface.uv0 * _InputUvMultiplier;
+                float2 maskUv = maskBaseUv * _SecondaryEmissionMask_ST.xy +
+                    _SecondaryEmissionMask_ST.zw;
+                maskUv += composableTime.xx * _SecondaryEmissionMaskSpeed *
+                    _SecondaryEmissionMask_ST.xy;
+                #endif
+                float2 mask = tex2D(_SecondaryEmissionMask, maskUv).rg;
+                float secondaryEmissionMaskIntensity =
                     UNITY_ACCESS_INSTANCED_PROP(
-                        Props, _SecondaryEmissionMaskIntensity),
-                    UNITY_ACCESS_INSTANCED_PROP(
-                        Props, _EmissionGradientPosition),
-                    _EmissionGradientPanningSpeed,
-                    _EmissionGradientTex, _EmissionGradientTex_ST,
-                    UNITY_ACCESS_INSTANCED_PROP(
-                        Props, _EmissionGradientIntensity),
-                    _SDFPointArray, _SDFNegativeIntensity, _SDFPointIntensity,
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _SDFNoiseScale),
-                    _SDFNoisePanning, _SDFNoiseOffset,
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _SDFNoiseIntensity),
-                    _SDFNoiseTex,
-                    _ColorsArray, UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionTexColor),
-                    _EmissionTexWhiteBoostMultiplier, _BaseColorBoost,
-                    _BaseColorBoostThreshold);
+                        Props, _SecondaryEmissionMaskIntensity);
+                #if defined(_SECONDARY_MASK_BLEND_ADD)
+                emissionInput += mask * secondaryEmissionMaskIntensity;
+                #elif defined(_SECONDARY_MASK_BLEND_MASKED_ADD)
+                emissionInput += emissionInput * mask *
+                    secondaryEmissionMaskIntensity;
+                #else
+                emissionInput *= mask * secondaryEmissionMaskIntensity +
+                    (1.0 - secondaryEmissionMaskIntensity);
+                #endif
+                    }
+                #endif
+                emissionInput *= UNITY_ACCESS_INSTANCED_PROP(
+                    Props, _EmissionBrightness);
+
+                #if defined(COLOR_ARRAY)
+                float emissionColorIndex = round(
+                    composableColorArrayId.x * 10.0 + composableColorArrayId.y);
+                float4 emissionColor = _ColorsArray[emissionColorIndex];
+                #else
+                float4 emissionColor = UNITY_ACCESS_INSTANCED_PROP(
+                    Props, _EmissionTexColor);
+                #endif
+                #if defined(TEXTURE3D_LOOKUP) && defined(TEXTURE3D_EMISSION)
+                emissionColor.a *= composableLookupEmission;
+                #endif
+
+                #if defined(_EMISSIONCOLORTYPE_GRADIENT)
+                composableEmission = InitializeEmissionData();
+                float gradientPhase = frac(
+                    _EmissionGradientPanningSpeed * composableTime.x +
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionGradientPosition));
+                float2 gradientUv = float2(emissionInput.y, gradientPhase) *
+                    _EmissionGradientTex_ST.xy;
+                float3 gradient = tex2D(_EmissionGradientTex, gradientUv).rgb;
+                float gradientIntensity = UNITY_ACCESS_INSTANCED_PROP(
+                    Props, _EmissionGradientIntensity);
+                composableEmission.color = gradientIntensity *
+                    saturate(emissionInput.x * gradient);
+                composableEmission.bloomAlpha =
+                    _EmissionTexBloomIntensity * gradientIntensity;
+                #elif defined(_EMISSIONCOLORTYPE_WHITEBOOST) || \
+                        (defined(_EMISSIONCOLORTYPE_MAINEFFECT) && !defined(POST_BLOOM))
+                float3 emissionRgb = emissionInput.r * emissionColor.rgb;
+                float bloomValue = emissionInput.g * emissionInput.g * emissionColor.a;
+                float bloomAlpha = bloomValue * 3.5 * _EmissionTexBloomIntensity;
+                emissionRgb = CalculateBloomComposition(
+                    emissionRgb, emissionColor.a, bloomValue,
+                    _EmissionTexWhiteBoostMultiplier,
+                    _BaseColorBoost, _BaseColorBoostThreshold);
+                float4 configured = float4(emissionRgb, bloomAlpha);
+                composableEmission = InitializeEmissionData();
+                composableEmission.color = configured.rgb;
+                composableEmission.bloomAlpha = configured.a;
+                #else
+                composableEmission = ResolvePlainEmission(
+                    emissionInput, emissionColor, _EmissionTexBloomIntensity);
+                #endif
+                }
                 albedo.rgb += composableEmission.color;
                 albedo.a += composableEmission.bloomAlpha;
                 #endif
@@ -1813,13 +2541,20 @@ Shader "ChroMapper/Lit"
                 #endif
 
                 #if defined(_RIMLIGHT_ADDITIVE)
-                albedo = ApplyAdditiveRimLight(
-                    albedo, worldPos, worldNormal,
-                    _RimLightEdgeStart,
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _RimLightColor),
-                    _RimLightIntensity, _RimLightBloomIntensity,
-                    _RimPerpendicularAxis, _RimLightWhiteboostMultiplier,
-                    _BaseColorBoost, _BaseColorBoostThreshold);
+                {
+                    float rimLight = CalculateRimLightMask(
+                        worldPos, worldNormal, _RimLightEdgeStart,
+                        _RimPerpendicularAxis);
+                    float4 rimLightColor = UNITY_ACCESS_INSTANCED_PROP(
+                        Props, _RimLightColor);
+                    float rimLightScale = rimLightColor.a * _RimLightIntensity;
+                    float3 rimTarget = ResolveRimLightTarget(
+                        rimLightColor.rgb, rimLightScale, rimLight,
+                        _RimLightWhiteboostMultiplier,
+                        _BaseColorBoost, _BaseColorBoostThreshold);
+                    albedo.rgb += rimTarget * rimLight * rimLightScale;
+                    albedo.a = rimLight * rimLightScale * _RimLightBloomIntensity;
+                }
                 #endif
 
                 #if defined(OCCLUSION) && !defined(OCCLUSION_BEFORE_EMISSION)
@@ -1852,11 +2587,18 @@ Shader "ChroMapper/Lit"
                 #endif
 
                 #if defined(HIGHLIGHT_SELECTION)
-                albedo = ApplyHighlightSelection(
-                    albedo, worldPos, composableTime, i.highlightSelection);
+                {
+                    float pulse = frac(
+                        composableTime.w * 0.15 + worldPos.x * 0.2 + worldPos.y);
+                    pulse = max(1.0 - pulse * 5.0, 0.0);
+                    pulse = pulse * pulse * (3.0 - 2.0 * pulse);
+                    pulse *= saturate(100.0 - 100.0 * pulse);
+                    pulse = saturate(0.4 * pulse * pulse * i.highlightSelection);
+                    albedo.rgb += pulse;
+                }
                 #endif
 
-                #if defined(COLOR_BY_FOG) && \
+                #if defined(COLOR_BY_FOG) && !(defined(BLOOM_FOG) && defined(FOG)) && \
                     !defined(_HOLOGRAM_GRID) && !defined(_HOLOGRAM_LEGACY)
                 albedo = ApplyColorFog(
                     albedo, worldPos, _ColorFogMultiplier, _ColorFogMax,
@@ -1864,19 +2606,54 @@ Shader "ChroMapper/Lit"
                     _FogHeightScale, _FogHeightOffset);
                 #endif
 
-                // Terminal fog composition — bloom fog, height fog, and blue-noise
-                // dithering are applied as separate passes so the fog handling
-                // lives in Fog.hlsl and PostProcess.hlsl.
-                #if defined(BLOOM_FOG) && defined(FOG) && \
-                    !defined(_HOLOGRAM_GRID) && !defined(_HOLOGRAM_LEGACY)
+                // Terminal fog composition keeps bloom fog, height fog, and blue-noise
+                // dithering in separate passes.
+                #if defined(BLOOM_FOG) && defined(FOG)
                 #if defined(HEIGHT_FOG)
                 float customFogFactor = CalculateCustomFogFactor(
                     distanceSquared(worldPos), _FogStartOffset, _FogScale);
-                float customHeightFogFactor = CalculateBloomFogHeightFactor(
-                    worldPos, _FogHeightOffset, _FogHeightScale,
-                    _FogSoften, _FogSoftenOffset);
+                #if defined(HEIGHT_FOG_DEPTH_SOFTEN)
+                float cameraDistance = length(worldPos - GetStereoAwareCameraPosition());
+                float heightInput = worldPos.y *
+                    (_FogHeightScale / (cameraDistance * _FogSoften * 0.01));
+                heightInput += _FogHeightOffset -
+                    cameraDistance * _FogSoftenOffset * 0.001;
+                #else
+                float heightInput = worldPos.y * _FogHeightScale + _FogHeightOffset;
+                #endif
+                heightInput -=
+                    CUSTOM_FOG_HEIGHT_FOG_HEIGHT_NAME + CUSTOM_FOG_HEIGHT_FOG_START_Y_NAME;
+                heightInput = clamp(
+                    heightInput / CUSTOM_FOG_HEIGHT_FOG_HEIGHT_NAME, 0.0, 1.0);
+                float customHeightFogFactor =
+                    heightInput * heightInput * (3.0 - 2.0 * heightInput);
+                #if defined(COLOR_BY_FOG)
+                {
+                    float3 bloomColor = SampleBloomPrePass(i.screenPos).rgb;
+                    float3 colorFog = bloomColor * _ColorFogMultiplier;
+                #if defined(FOG_COLOR_HIGHLIGHT)
+                float bloomMaximum = max(
+                    bloomColor.r, max(bloomColor.g, bloomColor.b));
+                float highlight = bloomMaximum * bloomMaximum;
+                highlight *= bloomMaximum;
+                highlight *= _ColorFogHighlightMultiplier;
+                highlight = min(highlight * bloomMaximum, _ColorFogMax);
+                colorFog = min(colorFog * (1.0 + highlight), _ColorFogMax);
+                #else
+                colorFog = min(colorFog, _ColorFogMax);
+                #endif
+
+                float4 fogTarget = min(float4(colorFog, 0.0), _ColorFogMax);
+                float4 fogSource = float4(
+                    albedo.rgb * _ColorFogInfluence + colorFog, albedo.a);
+                float blendFactor =
+                    1.0 - customHeightFogFactor * (1.0 - customFogFactor);
+                albedo = fogSource + blendFactor * (fogTarget - fogSource);
+                }
+                #else
                 albedo = ApplyBloomHeightFogCalculatedFactor(
                     albedo, i.screenPos, customFogFactor, customHeightFogFactor);
+                #endif
                 #else
                 albedo = ApplyBloomFog(
                     albedo, i.screenPos, worldPos, _FogStartOffset, _FogScale);
@@ -1885,13 +2662,21 @@ Shader "ChroMapper/Lit"
                     !defined(COLOR_BY_FOG) && \
                     !defined(_HOLOGRAM_GRID) && !defined(_HOLOGRAM_LEGACY)
                 #if defined(HEIGHT_FOG_DEPTH_SOFTEN)
-                albedo = ApplySoftenedHeightFog(
-                    albedo, worldPos,
-                    _FogHeightScale, _FogHeightOffset,
-                    _FogSoften, _FogSoftenOffset);
+                {
+                    float cameraDistance = length(
+                        worldPos - GetStereoAwareCameraPosition());
+                    float exactHeightInput = worldPos.y *
+                        (_FogHeightScale / (cameraDistance * _FogSoften * 0.01));
+                    exactHeightInput += _FogHeightOffset -
+                        cameraDistance * _FogSoftenOffset * 0.001;
+                    albedo = ApplyHeightFogCurve(albedo, exactHeightInput);
+                }
                 #else
-                albedo = ApplyHeightFog(
-                    albedo, worldPos, _FogHeightScale, _FogHeightOffset);
+                {
+                    float exactHeightInput =
+                        worldPos.y * _FogHeightScale + _FogHeightOffset;
+                    albedo = ApplyHeightFogCurve(albedo, exactHeightInput);
+                }
                 #endif
                 #endif
 
@@ -1908,7 +2693,8 @@ Shader "ChroMapper/Lit"
                 #if defined(DISSOLVE) && defined(DISSOLVE_COLOR)
                 albedo.rgb = lerp(
                     albedo.rgb,
-                    _DissolveColorIntensity * _DissolveColor.rgb,
+                    _DissolveColorIntensity *
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _DissolveColor).rgb,
                     dissolveFactor);
                 #endif
                 return albedo;

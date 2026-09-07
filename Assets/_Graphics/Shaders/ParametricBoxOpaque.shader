@@ -40,7 +40,10 @@ Shader "ChroMapper/Parametric Box Opaque"
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags
+        {
+            "RenderType"="Opaque"
+        }
         LOD 200
         Cull Back
         ZTest LEqual
@@ -63,11 +66,11 @@ Shader "ChroMapper/Parametric Box Opaque"
             #pragma multi_compile _ POST_BLOOM
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Camera.hlsl"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomBloom.hlsl"
-            #include "ShaderLibrary/PostProcess.hlsl"
-            #include "ShaderLibrary/ParametricShared.hlsl"
+            #include "ShaderLibrary/Core/Camera.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Bloom.hlsl"
+            #include "ShaderLibrary/Common/PostProcess.hlsl"
+            #include "ShaderLibrary/Families/ParametricShared.hlsl"
 
             sampler2D _GlobalBlueNoiseTex;
             float2 _GlobalBlueNoiseParams;
@@ -109,6 +112,7 @@ Shader "ChroMapper/Parametric Box Opaque"
                 o.vertex = UnityObjectToClipPos(i.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, i.vertex).xyz;
                 o.screenPos = ComputeScreenPosCustom(o.vertex);
+
                 o.noiseScreenPos = BuildNoiseScreenPosition(
                     o.screenPos, o.vertex, _GlobalBlueNoiseParams,
                     _GlobalRandomValue, unity_ObjectToWorld._m03_m13);
@@ -154,7 +158,7 @@ Shader "ChroMapper/Parametric Box Opaque"
                 // without MAIN_EFFECT_ENABLED; POST_BLOOM disables that term.
                 #if !defined(POST_BLOOM)
                 rgb = CalculateBloomComposition(color.rgb, alpha, alpha, 1,
-                                                 _BaseColorBoost, _BaseColorBoostThreshold);
+                                                _BaseColorBoost, _BaseColorBoostThreshold);
                 #endif
                 // Blue-noise sampling is unconditional in game routes
                 // 814cc149/e98a1337; the shader has no NOISE_DITHERING keyword.

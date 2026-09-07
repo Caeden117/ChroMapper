@@ -1,6 +1,6 @@
 // ChroMapper post-bloom compositor. Replacement for the Beat Saber game
 // shader Hidden/MainEffect.
-Shader "Hidden/PostBloom"
+Shader "ChroMapper/Post Process/Post Bloom"
 {
     // AUDIT FINDINGS (Beat Saber 1.44.3 Hidden/MainEffect)
     // ME1. The recovered corpus contains 16 keyword variants over 7 unique
@@ -38,116 +38,120 @@ Shader "Hidden/PostBloom"
     }
 
     HLSLINCLUDE
-    #include "UnityCG.cginc"
-    #include "../ShaderLibrary/CustomBloom.hlsl"
-    #include "../ShaderLibrary/BloomShared.hlsl"
+#ifndef CHROMAPPER_RECOVERED_POST_BLOOM_PASS_INCLUDED
+#define CHROMAPPER_RECOVERED_POST_BLOOM_PASS_INCLUDED
 
-    struct AppData
-    {
-        float4 vertex : POSITION;
-        float2 texcoord : TEXCOORD0;
-        UNITY_VERTEX_INPUT_INSTANCE_ID
-    };
+#include "UnityCG.cginc"
+#include "../ShaderLibrary/Common/Bloom.hlsl"
 
-    struct VaryingsDefault
-    {
-        float4 vertex : SV_POSITION;
-        // xy carries the main UV. zw duplicates it for the conditionally
-        // flipped bloom coordinate (ME5).
-        float4 texcoord : TEXCOORD1;
-        UNITY_VERTEX_OUTPUT_STEREO
-    };
+struct AppData
+{
+    float4 vertex : POSITION;
+    float2 texcoord : TEXCOORD0;
+    UNITY_VERTEX_INPUT_INSTANCE_ID
+};
 
-    VaryingsDefault VertDefault(AppData input)
-    {
-        VaryingsDefault output;
-        UNITY_SETUP_INSTANCE_ID(input);
-        UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-        output.vertex = UnityObjectToClipPos(input.vertex);
-        output.texcoord = float4(input.texcoord.xy, input.texcoord.xy);
-        return output;
-    }
+struct VaryingsDefault
+{
+    float4 vertex : SV_POSITION;
+    // xy carries the main UV. zw duplicates it for the conditionally
+    // flipped bloom coordinate (ME5).
+    float4 texcoord : TEXCOORD1;
+    UNITY_VERTEX_OUTPUT_STEREO
+};
+
+VaryingsDefault VertDefault(AppData input)
+{
+    VaryingsDefault output;
+    UNITY_SETUP_INSTANCE_ID(input);
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+    output.vertex = UnityObjectToClipPos(input.vertex);
+    output.texcoord = float4(input.texcoord.xy, input.texcoord.xy);
+    return output;
+}
+
+#if defined(STEREO_INSTANCING_ON)
+Texture2DArray _MainTex;
+SamplerState sampler_MainTex;
+Texture2DArray _PostBloomTexture;
+SamplerState sampler_PostBloomTexture;
+#else
+Texture2D _MainTex;
+SamplerState sampler_MainTex;
+Texture2D _PostBloomTexture;
+SamplerState sampler_PostBloomTexture;
+#endif
+Texture2D _GlobalBlueNoiseTex;
+SamplerState sampler_GlobalBlueNoiseTex;
+
+float4 _PostBloomSourceTexelSize;
+float2 _GlobalBlueNoiseParams;
+float _GlobalRandomValue;
+float _BloomIntensity;
+float _Fade;
+
+float4 FragMainEffect(VaryingsDefault input) : SV_Target
+{
+    UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+    float2 texelSize = _PostBloomSourceTexelSize.xy;
+    float2 uv = input.texcoord.xy;
+
+    // Recovered bloom coordinate: same x as the main UV, y inverted when
+    // the source render target is flagged flipped by its texel size (ME5).
+    float2 bloomUv = input.texcoord.zw;
+    bloomUv.y = _PostBloomSourceTexelSize.y < 0.0 ? 1.0 - bloomUv.y : bloomUv.y;
 
     #if defined(STEREO_INSTANCING_ON)
-    Texture2DArray _MainTex;
-    SamplerState sampler_MainTex;
-    Texture2DArray _PostBloomTexture;
-    SamplerState sampler_PostBloomTexture;
+    float3 mainCoord = float3(uv, unity_StereoEyeIndex);
+    float3 bloomCoord = float3(bloomUv, unity_StereoEyeIndex);
+    float4 center = _MainTex.Sample(sampler_MainTex, mainCoord);
+    float alpha =
+        _MainTex.Sample(sampler_MainTex, mainCoord + float3(texelSize * float2(-0.5, 0.5), 0.0)).a +
+        _MainTex.Sample(sampler_MainTex, mainCoord + float3(texelSize * float2(0.0, -0.5), 0.0)).a +
+        _MainTex.Sample(sampler_MainTex, mainCoord + float3(texelSize * float2(0.5, 0.5), 0.0)).a +
+        center.a;
+    float3 bloom = _PostBloomTexture.Sample(
+        sampler_PostBloomTexture, bloomCoord).rgb * _BloomIntensity;
     #else
-    Texture2D _MainTex;
-    SamplerState sampler_MainTex;
-    Texture2D _PostBloomTexture;
-    SamplerState sampler_PostBloomTexture;
+    float4 center = _MainTex.Sample(sampler_MainTex, uv);
+    float alpha =
+        _MainTex.Sample(sampler_MainTex, uv + texelSize * float2(-0.5, 0.5)).a +
+        _MainTex.Sample(sampler_MainTex, uv + texelSize * float2(0.0, -0.5)).a +
+        _MainTex.Sample(sampler_MainTex, uv + texelSize * float2(0.5, 0.5)).a +
+        center.a;
+    float3 bloom = _PostBloomTexture.Sample(
+        sampler_PostBloomTexture, bloomUv).rgb * _BloomIntensity;
     #endif
-    Texture2D _GlobalBlueNoiseTex;
-    SamplerState sampler_GlobalBlueNoiseTex;
 
-    float4 _PostBloomSourceTexelSize;
-    float2 _GlobalBlueNoiseParams;
-    float _GlobalRandomValue;
-    float _BloomIntensity;
-    float _Fade;
+    // Four-tap alpha average, squared into the white boost (base fragment
+    // r0.w chain: mean, square, mad with boost and threshold).
+    alpha *= 0.25;
+    alpha *= alpha;
+    float whiteBoost = alpha * _BaseColorBoost - _BaseColorBoostThreshold;
+    float3 scene = saturate(center.rgb + whiteBoost);
 
-    float4 FragMainEffect(VaryingsDefault input) : SV_Target
-    {
-        UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-        float2 texelSize = _PostBloomSourceTexelSize.xy;
-        float2 uv = input.texcoord.xy;
+    // Blue-noise dither with the recovered pre-offset (ME4).
+    float2 noiseUv = (uv + float2(0.1, 0.2)) * _GlobalBlueNoiseParams
+        + _GlobalRandomValue;
+    float dither =
+        (_GlobalBlueNoiseTex.SampleLevel(sampler_GlobalBlueNoiseTex, noiseUv, 0.0).r - 0.5)
+        / 255.0;
 
-        // Recovered bloom coordinate: same x as the main UV, y inverted when
-        // the source render target is flagged flipped by its texel size (ME5).
-        float2 bloomUv = input.texcoord.zw;
-        bloomUv.y = _PostBloomSourceTexelSize.y < 0.0 ? 1.0 - bloomUv.y : bloomUv.y;
+    // Recovered order: bloom + dither, plus scene, times fade (ME9).
+    float3 outputRgb = bloom + dither;
+    outputRgb += scene;
+    outputRgb *= _Fade;
 
-        #if defined(STEREO_INSTANCING_ON)
-        float3 mainCoord = float3(uv, unity_StereoEyeIndex);
-        float3 bloomCoord = float3(bloomUv, unity_StereoEyeIndex);
-        float4 center = _MainTex.Sample(sampler_MainTex, mainCoord);
-        float alpha =
-            _MainTex.Sample(sampler_MainTex, mainCoord + float3(texelSize * float2(-0.5, 0.5), 0.0)).a +
-            _MainTex.Sample(sampler_MainTex, mainCoord + float3(texelSize * float2(0.0, -0.5), 0.0)).a +
-            _MainTex.Sample(sampler_MainTex, mainCoord + float3(texelSize * float2(0.5, 0.5), 0.0)).a +
-            center.a;
-        float3 bloom = _PostBloomTexture.Sample(
-            sampler_PostBloomTexture, bloomCoord).rgb * _BloomIntensity;
-        #else
-        float4 center = _MainTex.Sample(sampler_MainTex, uv);
-        float alpha =
-            _MainTex.Sample(sampler_MainTex, uv + texelSize * float2(-0.5, 0.5)).a +
-            _MainTex.Sample(sampler_MainTex, uv + texelSize * float2(0.0, -0.5)).a +
-            _MainTex.Sample(sampler_MainTex, uv + texelSize * float2(0.5, 0.5)).a +
-            center.a;
-        float3 bloom = _PostBloomTexture.Sample(
-            sampler_PostBloomTexture, bloomUv).rgb * _BloomIntensity;
-        #endif
+    float outputAlpha = center.a;
+    // The clear route writes one and only applies without LIV_MR (ME2/ME3).
+    #if defined(CLEAR_SCREEN_ALPHA) && !defined(LIV_MR)
+    outputAlpha = 1.0;
+    #endif
 
-        // Four-tap alpha average, squared into the white boost (base fragment
-        // r0.w chain: mean, square, mad with boost and threshold).
-        alpha *= 0.25;
-        alpha *= alpha;
-        float whiteBoost = alpha * _BaseColorBoost - _BaseColorBoostThreshold;
-        float3 scene = saturate(center.rgb + whiteBoost);
+    return float4(outputRgb, outputAlpha);
+}
 
-        // Blue-noise dither with the recovered pre-offset (ME4).
-        float2 noiseUv = (uv + float2(0.1, 0.2)) * _GlobalBlueNoiseParams
-            + _GlobalRandomValue;
-        float dither =
-            (_GlobalBlueNoiseTex.SampleLevel(sampler_GlobalBlueNoiseTex, noiseUv, 0.0).r - 0.5)
-            / 255.0;
-
-        // Recovered order: bloom + dither, plus scene, times fade (ME9).
-        float3 outputRgb = bloom + dither;
-        outputRgb += scene;
-        outputRgb *= _Fade;
-
-        float outputAlpha = center.a;
-        // The clear route writes one and only applies without LIV_MR (ME2/ME3).
-        #if defined(CLEAR_SCREEN_ALPHA) && !defined(LIV_MR)
-        outputAlpha = 1.0;
-        #endif
-
-        return float4(outputRgb, outputAlpha);
-    }
+#endif
     ENDHLSL
 
     SubShader

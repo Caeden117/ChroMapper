@@ -21,9 +21,9 @@
 //     _GlobalBlueNoiseParams, then uses PostProcess.hlsl; the additive term is
 //     (blueNoise - 0.5) / 255 (fragment-19822184).
 // O8. Ordinary fog is 1 - heightFade (fragment-72154a52). O9. BLOOM_FOG samples
-//     through Fog.hlsl/SampleBloomPrePass and uses 1 - heightFade * distanceFade
-//     (fragment-119bc5fd), with the recovered distance ordering unchanged.
-// O10. The recovered route has no ACES operation (ACES is a no-op here).
+//     _BloomPrePassTexture directly at screenPos.xy / screenPos.w and uses
+//     1 - heightFade * distanceFade (fragment-119bc5fd).
+// O10. ACES runs after lit saturation and before fog and dither.
 // O11. Alpha is always zero (fragment-40070c00). O12. The debug/white-boost
 //     route is omitted because it is absent from the recovered keyword matrix.
 // Vertex (recovered):
@@ -69,7 +69,7 @@ Shader "ChroMapper/Clouds Opaque"
         [ShowIfAny(FOG)] _HeightFogOffset ("Height Fog Offset", float) = 1
 
         [Space(20)]
-        [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", float) = 2
+        [Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull", float) = 2
 
         [Space(20)]
         [Toggle(DIFFUSE)] _EnableDiffuse ("Enable Diffuse", float) = 1
@@ -87,7 +87,7 @@ Shader "ChroMapper/Clouds Opaque"
             "Queue"="Geometry"
         }
 
-        Cull [_Cull]
+        Cull [_CullMode]
         ZWrite On
         ZTest LEqual
 
@@ -106,27 +106,29 @@ Shader "ChroMapper/Clouds Opaque"
             #pragma shader_feature_local_fragment FOG
             #pragma shader_feature_local_fragment NOISE_DITHERING
             #pragma multi_compile_fragment _ BLOOM_FOG
+            #pragma multi_compile_fragment _ ACES_TONE_MAPPING
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Camera.hlsl"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomLighting.hlsl"
-            #include "ShaderLibrary/PostProcess.hlsl"
+            #include "ShaderLibrary/Core/Camera.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Lighting.hlsl"
+            #include "ShaderLibrary/Core/Tonemapping.hlsl"
+            #include "ShaderLibrary/Common/PostProcess.hlsl"
 
             struct appdata
             {
                 float4 vertex : POSITION;
-                float2 uv     : TEXCOORD0;
-                float4 color  : COLOR;
+                float2 uv : TEXCOORD0;
+                float4 color : COLOR;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             struct v2f
             {
-                float2 uv       : TEXCOORD0;
-                float4 color    : TEXCOORD1;
-                float3 world    : TEXCOORD2;
-                float3 nor      : TEXCOORD3;
+                float2 uv : TEXCOORD0;
+                float4 color : TEXCOORD1;
+                float3 world : TEXCOORD2;
+                float3 nor : TEXCOORD3;
                 float4 screenPos : TEXCOORD4;
                 float4 noiseScreenPos : TEXCOORD5;
                 float4 position : SV_POSITION;
@@ -150,6 +152,11 @@ Shader "ChroMapper/Clouds Opaque"
             float _FogStartOffset;
             float _FogScale;
             float _HeightFogOffset;
+
+            #if defined(SHADER_STAGE_VERTEX) && defined(SHADER_API_D3D11) && defined(WORLD_NOISE)
+            float _GlobalRandomValue;
+            #endif
+
             v2f vert(appdata v)
             {
                 v2f o;
@@ -160,9 +167,13 @@ Shader "ChroMapper/Clouds Opaque"
 
                 // vertex-1effd9ad (1effd9ad): phase, swirl, world-noise sample,
                 // and the pre-noise world position passed to the fragment.
-                #if defined(WORLD_NOISE)
+                #if defined(SHADER_API_D3D11) || defined(WORLD_NOISE)
                 float phase = sin(v.vertex.z * 12.345);
+                #if defined(SHADER_API_D3D11)
+                float wave = sign(phase) * (phase * 0.5 + 1.0);
+                #else
                 float wave = sign(-phase) * (phase * 0.5 + 1.0) * _WorldNoiseIntensityScale;
+                #endif
 
                 // The swirl rides _Time.y + _TimeHelperOffset.y (cb0[15].y +
                 // cb0[159].y in the recovered vertex).
@@ -187,13 +198,32 @@ Shader "ChroMapper/Clouds Opaque"
                     (_Time.x + _TimeHelperOffset.x);
                 float2 nuv = world.xz * _NoiseTex_ST.xy + _NoiseTex_ST.zw + scroll;
                 float noise = tex2Dlod(_NoiseTex, float4(nuv, 0, 0)).x;
+                #if defined(SHADER_API_D3D11)
+                float displacement = noise * _WorldNoiseIntensityScale + _WorldNoiseIntensityOffset;
+                world = mul(unity_ObjectToWorld,
+                            float4(pos.x, pos.y + displacement, pos.z, 1.0)).xyz;
+                #else
                 world.y += noise * _WorldNoiseScale + _WorldNoiseIntensityOffset;
+                #endif
                 #endif
 
                 o.position = mul(unity_MatrixVP, float4(world, 1.0));
                 o.screenPos = ComputeScreenPosCustom(o.position);
-                o.noiseScreenPos = ScaleNoiseScreenPosition(
-                    o.screenPos, _GlobalBlueNoiseParams);
+                #if defined(SHADER_STAGE_VERTEX) && defined(SHADER_API_D3D11) && defined(WORLD_NOISE) \
+                    && !defined(UNITY_STEREO_MULTIVIEW_ENABLED) \
+                    && !defined(UNITY_PROCEDURAL_INSTANCING_ENABLED) \
+                    && !defined(UNITY_PRETRANSFORM_TO_DISPLAY_ORIENTATION) \
+                    && ((defined(STEREO_INSTANCING_ON) && defined(UNITY_STEREO_INSTANCING_ENABLED)) \
+                        || (!defined(UNITY_SINGLE_PASS_STEREO) && !defined(STEREO_INSTANCING_ON) \
+                            && !defined(UNITY_STEREO_INSTANCING_ENABLED)))
+                o.noiseScreenPos = ComputeNonStereoScreenPos(o.position);
+                o.noiseScreenPos.xy = o.noiseScreenPos.xy * _GlobalBlueNoiseParams
+                    + o.position.w * _GlobalRandomValue;
+                o.noiseScreenPos.xy += float2(unity_ObjectToWorld._m03, unity_ObjectToWorld._m13);
+                #else
+                o.noiseScreenPos = o.screenPos;
+                o.noiseScreenPos.xy *= _GlobalBlueNoiseParams;
+                #endif
                 return o;
             }
 
@@ -202,7 +232,7 @@ Shader "ChroMapper/Clouds Opaque"
                 UNITY_SETUP_INSTANCE_ID(i);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
                 float3 cameraPosition = _WorldSpaceCameraPos;
-                #if defined(UNITY_SINGLE_PASS_STEREO) || defined(STEREO_INSTANCING_ON) || defined(STEREO_MULTIVIEW_ON)
+                #if defined(UNITY_SINGLE_PASS_STEREO) || defined(STEREO_INSTANCING_ON) || defined(UNITY_STEREO_MULTIVIEW_ENABLED)
                 cameraPosition = unity_StereoWorldSpaceCameraPos[unity_StereoEyeIndex];
                 #endif
                 float3 d = i.world - cameraPosition;
@@ -212,7 +242,7 @@ Shader "ChroMapper/Clouds Opaque"
                 float dist2 = dot(d, d);
                 float distFade = 1.0 / (1.0 +
                     max(0.0, max(0.0, dist2 - _CustomFogOffset) *
-                    _CustomFogAttenuation - _FogStartOffset) * _FogScale);
+                        _CustomFogAttenuation - _FogStartOffset) * _FogScale);
 
                 // recovered: t = clamp((world.y + _HeightFogOffset - band) / band),
                 // then smoothstep-style t*t*(3-2t)
@@ -222,7 +252,11 @@ Shader "ChroMapper/Clouds Opaque"
                     i.world, _HeightFogOffset, 1.0);
                 float fade = 1.0 - distFade * hFade;
 
+                #if defined(SHADER_API_D3D11) && defined(DIFFUSE) && defined(INVERT_DIFFUSE_NORMAL)
+                float3 normal = i.nor;
+                #else
                 float3 normal = normalize(i.nor);
+                #endif
                 #if defined(INVERT_DIFFUSE_NORMAL)
                 normal = -normal;
                 #endif
@@ -231,8 +265,12 @@ Shader "ChroMapper/Clouds Opaque"
                 // fragment-119bc5fd (119bc5fd): the game sums five directional
                 // lights against the inverted world normal; no ambient term.
                 color *= CalculateLightDiffuse(normal);
-                #endif
                 color = saturate(color);
+                #endif
+
+                #if defined(ACES_TONE_MAPPING)
+                color = ApplyAcesTonemapping(float4(color, 0.0)).rgb;
+                #endif
 
                 #if defined(FOG)
                 #if defined(BLOOM_FOG)
@@ -250,9 +288,9 @@ Shader "ChroMapper/Clouds Opaque"
                 // of fog; PostProcess.hlsl supplies the /255 term.
                 float4 result = ApplyNoiseDither(
                     float4(color, 0), i.noiseScreenPos, _GlobalBlueNoiseTex);
-            #else
+                #else
                 float4 result = float4(color, 0);
-            #endif
+                #endif
 
                 // fragment-40070c00: all cloud routes clear alpha.
                 return result;

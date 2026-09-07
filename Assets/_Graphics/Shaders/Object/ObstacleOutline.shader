@@ -24,7 +24,7 @@ Shader "ChroMapper/Object/Obstacle Outline"
         [Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull Mode", Float) = 0
 
         [Space]
-        [KeywordEnum(None, Deferred, Mixed)] _BloomType ("Bloom Type", Float) = 1
+        [KeywordEnum(None, MainEffect, Always)] _WhiteBoostType ("Bloom Type", Float) = 1
 
         [Space]
         [Toggle(CUTOUT)] _EnableCutout ("Enable Cutout", Float) = 0
@@ -69,18 +69,16 @@ Shader "ChroMapper/Object/Obstacle Outline"
             #pragma multi_compile_instancing
 
             #pragma shader_feature_local_fragment CUTOUT
-            #pragma shader_feature_local_fragment _ _BLOOMTYPE_DEFERRED _BLOOMTYPE_MIXED
-            // Global: the post-process bloom runs (mirrors the game's MAIN_EFFECT_ENABLED gate).
+            #pragma shader_feature_local_fragment _ _WHITEBOOSTTYPE_MAINEFFECT _WHITEBOOSTTYPE_ALWAYS
             #pragma multi_compile _ POST_BLOOM
 
             #pragma multi_compile_fragment _ BLOOM_FOG
             #pragma multi_compile_fragment _ CM_PREVIEW_MODE
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/Fog.hlsl"
-            #include "../ShaderLibrary/CustomBloom.hlsl"
+            #include "../ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "../ShaderLibrary/Common/Bloom.hlsl"
             #include "../ShaderLibrary/Cutout.hlsl"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
 
             sampler3D _CutoutTex;
             float _CutoutTexScale;
@@ -179,12 +177,13 @@ Shader "ChroMapper/Object/Obstacle Outline"
                                             _FogHeightOffset, _FogHeightScale);
                 #endif
 
-                #if defined(_BLOOMTYPE_MIXED) || (defined(_BLOOMTYPE_DEFERRED) && !defined(POST_BLOOM))
+                #if defined(_WHITEBOOSTTYPE_ALWAYS) || (defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM))
                 // ParametricBoxFrameHD keeps base RGB unpremultiplied and uses
                 // twice the color alpha as its white-boost input.
                 color.rgb = CalculateBloomComposition(color.rgb, 1, color.a, 1,
-                                                      _BaseColorBoost, _BaseColorBoostThreshold);
-                #elif defined(_BLOOMTYPE_DEFERRED)
+                                                      _BaseColorBoost,
+                                                      _BaseColorBoostThreshold);
+                #elif defined(_WHITEBOOSTTYPE_MAINEFFECT)
                 // POST_BLOOM on mirrors MAIN_EFFECT_ENABLED: the white boost is
                 // omitted and the unpremultiplied frame color is preserved.
                 #endif

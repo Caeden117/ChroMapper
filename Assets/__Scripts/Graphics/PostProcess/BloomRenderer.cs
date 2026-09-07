@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 // it to produce the bloom-only texture.
 //
 // The bloom pyramid mirrors the game's PyramidBloomRendererSO.RenderBloom and the
-// previous CustomBloomRenderer (see Assets/_Graphics/Shaders/README.md): a configured-width pyramid
+// previous bloom renderer (see Assets/_Graphics/Shaders/README.md): a configured-width pyramid
 // with an alpha-gated prefilter, 13-tap downsampling, and tent upsampling,
 // and a separate scene compositor. The driver
 // mirrors RenderBloom: the iteration/LOD formula, the per-level

@@ -2,7 +2,7 @@
 Shader "ChroMapper/Parametric Slice Billboard"
 {
     // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // PSB1. The 1.42.2 Custom/Parametric3SliceSprite Properties block is
+    // PSB1. The 1.44.3 Custom/Parametric3SliceSprite Properties block is
     //       authoritative. _Color, _SizeParams, and _AlphaWidth are instanced
     //       runtime inputs and therefore remain unexposed.
     // PSB2. The vertex splits the source at UV.y 0.1, 0.5, and 0.9, applies
@@ -11,8 +11,8 @@ Shader "ChroMapper/Parametric Slice Billboard"
     // PSB3. Source alpha is the selected alpha width cubed times _Color.a.
     //       SQUARE_ALPHA squares it before world noise and squared texture alpha.
     // PSB4. Fog can run before or after texture/noise. Bloom fog divides its
-    //       distance scale by pre-square source alpha; height fog uses the shared
-    //       cubic ramp. ENABLE_BLOOM_FOG maps to the global BLOOM_FOG keyword.
+    //       distance scale by pre-square source alpha. Non-bloom height fog uses
+    //       the inverse cubic ramp. ENABLE_BLOOM_FOG maps to BLOOM_FOG.
     // PSB5. MainEffect white boost is disabled by MAIN_EFFECT_ENABLED; Always is
     //       not. ChroMapper maps the global route to POST_BLOOM.
     // PSB6. Noise dithering adds masked blue noise after bloom composition. Its
@@ -54,7 +54,7 @@ Shader "ChroMapper/Parametric Slice Billboard"
         _BloomMultiplier ("Bloom Multiplier", Float) = 1
 
         [Space] [Header(Other)] [Space] [Toggle(SQUARE_ALPHA)] _SquareAlpha ("Square Alpha", Float) = 0
-        [Toggle(ANGLE_DISAPPEAR)] _AngleDisappear ("Angle Disappear", Float) = 10
+        [Toggle(ANGLE_DISAPPEAR)] _EnableEmissionAngleDisappear ("Angle Disappear", Float) = 10
         [Toggle(NOISE_DITHERING)] _EnableNoiseDithering ("Noise Dithering", Float) = 0
         [Toggle(Y_AXIS_BILLBOARD)] _EnableYAxisBillboard ("Y Axis Billboard", Float) = 1
 
@@ -104,10 +104,10 @@ Shader "ChroMapper/Parametric Slice Billboard"
             #pragma multi_compile_instancing
             #pragma multi_compile _ STEREO_INSTANCING_ON
 
-            #pragma shader_feature_local_vertex ALPHA_WIDTH_SCALE
+            #pragma shader_feature_local ALPHA_WIDTH_SCALE
             #pragma shader_feature_local_fragment SQUARE_ALPHA
             #pragma shader_feature_local_fragment ANGLE_DISAPPEAR
-            #pragma shader_feature_local_vertex Y_AXIS_BILLBOARD
+            #pragma shader_feature_local Y_AXIS_BILLBOARD
             #pragma shader_feature_local_fragment _ _WHITEBOOSTTYPE_MAINEFFECT _WHITEBOOSTTYPE_ALWAYS
             // Global: the post-process bloom runs (mirrors the game's MAIN_EFFECT_ENABLED gate).
             #pragma multi_compile _ POST_BLOOM
@@ -123,15 +123,15 @@ Shader "ChroMapper/Parametric Slice Billboard"
             #pragma multi_compile_fragment _ BLOOM_FOG
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/Camera.hlsl"
-            #include "ShaderLibrary/Fog.hlsl"
-            #include "ShaderLibrary/CustomBloom.hlsl"
-            #include "ShaderLibrary/ParametricShared.hlsl"
-            #include "ShaderLibrary/PostProcess.hlsl"
+            #include "ShaderLibrary/Core/Camera.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Bloom.hlsl"
+            #include "ShaderLibrary/Families/ParametricShared.hlsl"
+            #include "ShaderLibrary/Common/PostProcess.hlsl"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float _CapUVSize; // Fixed: was incorrectly declared as float2
+            float _CapUVSize; // Scalar ShaderLab property; adjusts only the cap UV's Y coordinate.
 
             float _BloomMultiplier;
             float _BloomWhiteMultiplier;
@@ -181,8 +181,6 @@ Shader "ChroMapper/Parametric Slice Billboard"
             float SliceFogFactor(float3 worldPos, float alphaDivisor)
             {
                 #if defined(HEIGHT_FOG)
-                // Game 4c799b9d: the non-bloom height-fog route multiplies the
-                // smooth ramp itself (not its inverse).
                 float heightFade = CalculateParametricHeightRamp(
                     worldPos.y, _FogHeightScale, _FogHeightOffset,
                     _CustomFogHeightFogHeight, _CustomFogHeightFogStartY);
@@ -198,7 +196,7 @@ Shader "ChroMapper/Parametric Slice Billboard"
                 return heightFade * distanceInverse;
                 #else
                 #if defined(HEIGHT_FOG)
-                return heightFade;
+                return 1.0 - heightFade;
                 #else
                 return 1.0;
                 #endif
@@ -268,7 +266,6 @@ Shader "ChroMapper/Parametric Slice Billboard"
                 float localY = (i.vertex.y - sizeParams.z) * sizeParams.y +
                     (capVertex ? (i.vertex.y - 0.5) * sizeParams.w : 0.0);
                 float capDirection = (i.uv.y < 0.5 ? 1.0 : 0.0) - (i.uv.y > 0.5 ? 1.0 : 0.0);
-                // DXBC 19215f1: non-cap bands use the cap UV extent directly.
                 float adjustedUvY = i.uv.y + (capVertex ? 0.0 : (0.36 - _CapUVSize) * capDirection);
 
                 float3 localPosition = float3(localX, localY, i.vertex.z);
@@ -279,7 +276,7 @@ Shader "ChroMapper/Parametric Slice Billboard"
                 float2 cameraXZ = normalize(cameraObject.xz);
                 float2 selectedLocalXZ = float2(localX, i.vertex.z);
                 float billboardZ = dot(float2(cameraXZ.x, -cameraXZ.y), selectedLocalXZ);
-                float billboardX = dot(float2(-cameraXZ.y, cameraXZ.x), selectedLocalXZ);
+                float billboardX = dot(float2(-cameraXZ.y, -cameraXZ.x), selectedLocalXZ);
                 localPosition.xz = float2(billboardX, billboardZ);
                 #endif
 
@@ -346,6 +343,20 @@ Shader "ChroMapper/Parametric Slice Billboard"
                 float textureAlpha = tex2D(_MainTex, adjustedUv).a;
                 alpha *= textureAlpha * textureAlpha;
 
+                // Original D3D11 MainEffect billboard routes apply the interpolated
+                // angle fade once to source alpha and once after texture alpha.
+                #if defined(SHADER_API_D3D11) && defined(Y_AXIS_BILLBOARD) && \
+                    defined(ANGLE_DISAPPEAR) && defined(_WHITEBOOSTTYPE_MAINEFFECT) && \
+                    !defined(POST_BLOOM) && !defined(ALPHA_WIDTH_SCALE) && \
+                    !defined(SQUARE_ALPHA) && !defined(FOG) && !defined(HEIGHT_FOG) && \
+                    !defined(USE_FOG_FOR_LIGHTS) && !defined(WORLD_NOISE) && \
+                    !defined(WORLD_SPACE_FADE) && !defined(WORLD_NOISE_WARP) && \
+                    !defined(NOISE_DITHERING) && !defined(UNITY_SINGLE_PASS_STEREO) && \
+                    !defined(STEREO_MULTIVIEW_ON) && !defined(STEREO_CUBEMAP_RENDER_ON) && \
+                    !defined(UNITY_STEREO_MULTIVIEW_ENABLED)
+                alpha *= i.angleFade;
+                #endif
+
                 #if !defined(USE_FOG_FOR_LIGHTS) && defined(FOG)
                 alpha *= SliceFogFactor(i.worldPos, preFogAlpha);
                 #endif
@@ -370,8 +381,11 @@ Shader "ChroMapper/Parametric Slice Billboard"
                 // dominate very faint premultiplied pixels. Fade only that low-
                 // alpha tail while retaining full dithering above ~3% opacity.
                 float ditherMask = alpha >= 0.001 ? saturate(alpha * 32.0) : 0.0;
-                rgb = ApplyNoiseDitherMasked(
-                    rgb, i.noiseScreenPos, _GlobalBlueNoiseTex, ditherMask);
+                {
+                    float2 noiseUv = i.noiseScreenPos.xy / i.noiseScreenPos.ww;
+                    float noise = tex2D(_GlobalBlueNoiseTex, noiseUv).r - 0.5;
+                    rgb = rgb + noise.xxx * (1.0 / 255.0) * ditherMask;
+                }
                 #endif
 
                 // DXBC 5550caa4 carries bloom in alpha and has no ACES transform.

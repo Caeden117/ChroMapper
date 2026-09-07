@@ -49,21 +49,55 @@ the `Shader` declaration in the project shader file.
 ## Include ownership
 
 Keep feature order in the consuming shader when order affects the result.
+Single-shader helpers stay inline unless they form an intentionally retained
+domain library, such as easing or bloom filtering.
 
-| Project include | Responsibility |
-| --- | --- |
-| `Camera.hlsl` | Stereo-aware camera position and screen coordinates |
-| `ObjectShared.hlsl` | Object rotation, timeline whitening, and ordered dither |
-| `ParametricShared.hlsl` | Height, distance, noise, fade, and rim calculations |
-| `BloomShared.hlsl` | Bloom pyramid filters, merge, exposure, and tone mapping |
-| `PostProcess.hlsl` | Distance darkening, blue-noise dither, and screen helpers |
-| `CustomBloom.hlsl` | White boost, bloom composition, and emission composition |
-| `Fog.hlsl` | Distance fog, height fog, color fog, and bloom-fog blending |
-| `CustomLighting.hlsl` | Ambient, direct, specular, falloff, and lightmap lighting |
-| `LitReflection.hlsl` | Reflection direction, projection, and composition |
-| `Emission.hlsl` | Emission timing, masks, gradients, and bloom alpha |
-| `Dissolve.hlsl` | Dissolve coordinates, progress, discard, and edge color |
-| `Surface.hlsl` | Base color, texture, normal, occlusion, and lightmap inputs |
+The current layout separates Core, Common, Families, shader-local implementations,
+and root hold. The ownership records below describe the historical recovered
+layout, not the current disk state:
+
+- [`ShaderLibrary/README.md`](ShaderLibrary/README.md)
+- [`Audit/Recovered/RecoveredShaderModuleOwnership.md`](Audit/Recovered/RecoveredShaderModuleOwnership.md)
+- [`Audit/Recovered/RecoveredShaderModuleOwnership.json`](Audit/Recovered/RecoveredShaderModuleOwnership.json)
+
+| Project include | Owner | Responsibility |
+| --- | --- | --- |
+| `ShaderLibrary/Core/Camera.hlsl` | Core | Stereo-aware camera position and screen coordinates |
+| `ShaderLibrary/Core/Data.hlsl` | Core | Pipeline data types and surface defaults |
+| `ShaderLibrary/Core/Tonemapping.hlsl` | Core | ACES tone mapping |
+| `ShaderLibrary/Core/Easings.hlsl` | Core | Gradient easing curves selected by shader easing ID |
+| `ShaderLibrary/Common/Bloom.hlsl` | Common | White boost and bloom composition |
+| `ShaderLibrary/Common/Fog.hlsl` | Common | Distance fog, height fog, and color fog |
+| `ShaderLibrary/Common/Lighting.hlsl` | Common | Shared diffuse, specular, and falloff lighting |
+| `ShaderLibrary/Common/ObjectShared.hlsl` | Common | Shared object-rotation transforms |
+| `ShaderLibrary/Common/PostProcess.hlsl` | Common | Blue-noise dither and screen-position helpers |
+| `ShaderLibrary/Common/Reflection.hlsl` | Common | Reflection-probe decoding, sampling, and projection |
+| `ShaderLibrary/Common/Time.hlsl` | Common | Standard, song, and frozen time vectors |
+| `ShaderLibrary/Families/BloomFogComposition.hlsl` | BloomFog family | Prepass sampling and bloom-fog composition |
+| `ShaderLibrary/Families/ParametricShared.hlsl` | Parametric family | Height, distance, noise, and fade calculations |
+| `ShaderLibrary/Families/BloomShared.hlsl` | PostProcess family | Bloom pyramid filters, merge, exposure, and tone mapping |
+| `ShaderLibrary/Families/SpectrogramShared.hlsl` | Spectrogram family | Spectrogram-data index helpers |
+| `ShaderLibrary/Cutout.hlsl` | Root hold | Cutout helpers with UNVERIFIED provenance |
+| `ShaderLibrary/Blurs.hlsl` | Root hold | Legacy sampler2D blur variants; no static project consumers are known |
+
+The Fog split keeps `ApplyColorFog` in `ShaderLibrary/Common/Fog.hlsl`. It
+places prepass globals and six composition functions in
+`ShaderLibrary/Families/BloomFogComposition.hlsl`. The family file includes the
+common Fog file.
+
+The Fog include contract covers 18 consumers, all of which include the family
+file directly. Four adapters do not call composition functions: ObjectArc,
+ParametricBoxFakeGlow, ParametricBoxTransparent, and ParametricSliceBillboard.
+They retain the family include because a
+historical comparison found that a generic-only include changed 152 successful
+D3D11 byte arrays. That result is historical audit evidence, not current
+compiler-fidelity validation.
+
+The particle implementation is inline in `Assets/_Graphics/Shaders/Particles.shader`.
+Preserve its preprocessor section order because regions cross section boundaries.
+
+The historical ownership records retain the former module layout for audit
+purposes only.
 
 ## Keyword and property rules
 
@@ -134,16 +168,28 @@ height-only route keeps its no-bloom behavior.
 `2004` and `2005`. Review keyword and property values only when a note contract
 changes. Do not change prefab renderer overrides in this shader work.
 
+## MIPMAP_BIAS and view-angle fade
+
+`MIPMAP_BIAS` controls only biased texture sampling. It does not add view-angle fade or a normal payload. `VIEW_ALIGN_DISAPPEAR` owns angle fade.
+
 ## Bloom and post process
 
 Main bloom uses the runtime-observed high-quality route with a 13-tap filter
-and 928-pixel base width. `CustomBloom.shader` and `BloomShared.hlsl` serve
+and 928-pixel base width. `Bloom.shader` and `BloomShared.hlsl` serve
 camera bloom and bloom fog. Runtime controllers own global values, temporary
 targets, camera state, and keyword lifetime.
 
 Settings expose independent Bloom, BloomFog, ChromaticAberration, and
 ScreenDisplacement controls. Each controller restores its camera state, globals,
 layers, and keywords when disabled.
+
+## Environment shader audits
+
+The consolidated audits cover 44 environments. They contain the durable route,
+material, selector, stage, runtime, and regeneration contracts.
+
+- [`LIT_REAUDIT.md`](LIT_REAUDIT.md): 290 Lit routes, 169 documented canonical states, 1,160 stage records, and 4,604 pass-0 DXBC blobs.
+- [`PARTICLE_REAUDIT.md`](PARTICLE_REAUDIT.md): 345 particle routes, 103 canonical states, 1,380 stage records, 130 vertex binaries, and 204 fragment binaries.
 
 ## Maintenance checklist
 

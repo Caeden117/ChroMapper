@@ -2,7 +2,10 @@ Shader "Custom/GrabPassTexture1"
 {
     SubShader
     {
-        Tags { "RenderType" = "Opaque" }
+        Tags
+        {
+            "RenderType" = "Opaque"
+        }
 
         GrabPass
         {
