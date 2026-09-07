@@ -26,6 +26,8 @@ public class BloomfogRendererSO : ScriptableObject
     private Mesh bloomfogMesh;
     private Matrix4x4 renderedViewMatrix;
     private Matrix4x4 renderedProjectionMatrix;
+    private Vector2 renderedTextureToScreenRatio;
+    private Vector2 renderedEyeOffsets;
     private bool hasRenderedMatrices;
 
     public void Initialize()
@@ -100,7 +102,8 @@ public class BloomfogRendererSO : ScriptableObject
         Vector2 eyeOffsets)
     {
         if (bloomfogCommandBuffer == null || bloomfogMesh == null) Initialize();
-        Shader.SetGlobalVector(stereoCameraEyeOffsets, eyeOffsets);
+        Shader.SetGlobalVector(stereoCameraEyeOffsets, Vector2.zero);
+        Shader.SetGlobalVector(customFogTextureToScreenRatio, Vector2.one);
 
         // Adjust projection matrix to account for FOV
         textureToScreenRatio.x = Mathf.Clamp01(
@@ -111,7 +114,6 @@ public class BloomfogRendererSO : ScriptableObject
         projectionMatrix.m02 *= textureToScreenRatio.x;
         projectionMatrix.m11 *= textureToScreenRatio.y;
         projectionMatrix.m12 *= textureToScreenRatio.y;
-        Shader.SetGlobalVector(customFogTextureToScreenRatio, textureToScreenRatio);
 
         bloomfogCommandBuffer.Clear();
         bloomfogCommandBuffer.SetRenderTarget(tex);
@@ -134,6 +136,8 @@ public class BloomfogRendererSO : ScriptableObject
 
         renderedViewMatrix = viewMatrix;
         renderedProjectionMatrix = projectionMatrix;
+        renderedTextureToScreenRatio = textureToScreenRatio;
+        renderedEyeOffsets = eyeOffsets;
         hasRenderedMatrices = true;
 
         foreach (var bloomPrePassBeforeBlur in BloomPrePassNonLightPass.BloomPrePassBeforeBlurList)
@@ -150,6 +154,13 @@ public class BloomfogRendererSO : ScriptableObject
         {
             bloomPrePassAfterBlur.Render(tex, renderedViewMatrix, renderedProjectionMatrix);
         }
+    }
+
+    internal void PublishGlobals()
+    {
+        if (!hasRenderedMatrices) return;
+        Shader.SetGlobalVector(customFogTextureToScreenRatio, renderedTextureToScreenRatio);
+        Shader.SetGlobalVector(stereoCameraEyeOffsets, renderedEyeOffsets);
     }
 
     private void RenderQuads(Matrix4x4 view, Matrix4x4 projection, float lineWidth)
