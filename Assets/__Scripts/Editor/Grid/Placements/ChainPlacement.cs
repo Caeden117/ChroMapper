@@ -20,8 +20,6 @@ public class ChainPlacement : BasePlacement<BaseChain, ChainContainer, ChainGrid
     [NonSerialized] public float Squish = Settings.Instance.DefaultChainSquish;
     [NonSerialized] public int SliceCount = Settings.Instance.DefaultChainSliceCount;
 
-    private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
-
     /// <summary>
     ///     Perform all check for spawning a chain. Maybe should swap `n1` and `n2` when `n2` is actually pointing to `n1`
     /// </summary>
@@ -40,7 +38,7 @@ public class ChainPlacement : BasePlacement<BaseChain, ChainContainer, ChainGrid
 
     public int SpawnChainFromSelection()
     {
-        var allNotes = SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
+        var allNotes = SelectionController.SelectedObjects.Where(IsColorNote).Cast<BaseNote>().ToList();
         allNotes.Sort((a, b) => a.JsonTime.CompareTo(b.JsonTime));
 
         if (Settings.Instance.MapVersion == 2 && allNotes.Count > 1)
@@ -80,7 +78,7 @@ public class ChainPlacement : BasePlacement<BaseChain, ChainContainer, ChainGrid
 
                 if (head.JsonTime > tail.JsonTime + 0.001f) (head, tail) = (tail, head);
 
-                var misaligned = !HeadPointsTowardTail(head, tail);
+                var misaligned = !CommonBeatmapUtils.HeadPointsTowardTail(head, tail);
 
                 if (Mathf.Abs(head.JsonTime - tail.JsonTime) < 0.001f && misaligned)
                     (head, tail) = (tail, head);
@@ -182,102 +180,23 @@ public class ChainPlacement : BasePlacement<BaseChain, ChainContainer, ChainGrid
             }
 
             delta.Normalize();
-            var tailCutVector = AngleToVector(GetAngle(tail.CutDirection));
+            var tailCutVector = CommonBeatmapUtils.AngleToVector(CommonBeatmapUtils.GetAngle(tail.CutDirection));
 
             const float ReflectDotCoeff = 2.5f;
             var headCutVector = -(tailCutVector - ReflectDotCoeff * Vector2.Dot(tailCutVector, delta) * delta).normalized;
-            var headAngle = VectorToAngle(headCutVector);
-            var headCutDirection = AngleToCutDirection(headAngle, out _);
+            var headAngle = CommonBeatmapUtils.VectorToAngle(headCutVector);
+            var headCutDirection = CommonBeatmapUtils.AngleToCutDirection(headAngle, out _);
 
             chain = new BaseChain(head, tail)
             {
                 CutDirection = (int)headCutDirection
             };
-            dotHeadAngle = GetAngle((int)headCutDirection);
+            dotHeadAngle = CommonBeatmapUtils.GetAngle((int)headCutDirection);
             return true;
         }
 
         chain = new BaseChain(head, tail);
         return true;
     }
-
-    private static readonly float[] CutDirectionAngles =
-    {
-        180f, 0f, 270f, 90f, 225f, 135f, 315f, 45f, 0f
-    };
-
-    private static float GetAngle(int cutDirection)
-    {
-        if (cutDirection < 0 || cutDirection >= CutDirectionAngles.Length)
-            throw new ArgumentOutOfRangeException(nameof(cutDirection));
-        return CutDirectionAngles[cutDirection];
-    }
-
-    private static Vector2 AngleToVector(float angle)
-    {
-        angle *= Mathf.Deg2Rad;
-        return new Vector2(Mathf.Sin(angle), -Mathf.Cos(angle));
-    }
-
-    private static float VectorToAngle(Vector2 vector)
-    {
-        vector.Normalize();
-        return Mathf.Atan2(vector.x, -vector.y) * Mathf.Rad2Deg;
-    }
-
-    private static NoteCutDirection AngleToCutDirection(float angle, out float angleOffset, bool useAny = false)
-    {
-        if (useAny)
-        {
-            angleOffset = angle;
-            return NoteCutDirection.Any;
-        }
-
-        angle = Mathf.Repeat(angle, 360f);
-
-        var bestDir = 0;
-        var bestDelta = float.MaxValue;
-        for (var i = 0; i < CutDirectionAngles.Length; i++)
-        {
-            var delta = Mathf.DeltaAngle(angle, CutDirectionAngles[i]);
-            if (Mathf.Abs(delta) < Mathf.Abs(bestDelta))
-            {
-                bestDelta = delta;
-                bestDir = i;
-            }
-        }
-
-        angleOffset = angle - CutDirectionAngles[bestDir];
-        return (NoteCutDirection)bestDir;
-    }
-
-    private static float GetOverallCutAngle(BaseNote note)
-    {
-        var angle = GetAngle(note.CutDirection);
-        if (note.AngleOffset != 0) angle += note.AngleOffset;
-        return angle;
-    }
-
-    private static Vector2 GetOverallCutVector(BaseNote note)
-    {
-        var angle = GetOverallCutAngle(note);
-        return AngleToVector(angle);
-    }
-
-    private static bool HeadPointsTowardTail(BaseNote head, BaseNote tail)
-    {
-        var headDir = head.CutDirection == (int)NoteCutDirection.Any ? Vector2.zero : GetOverallCutVector(head);
-        var tailDir = tail.CutDirection == (int)NoteCutDirection.Any ? Vector2.zero : GetOverallCutVector(tail);
-        if (Vector2.Dot(headDir, tailDir) < -0.9f)
-            return false;
-
-        var averageDir = (headDir + tailDir).normalized;
-        // if both are dots, averageDir is zero; treat as not misaligned so no swap
-        if (averageDir.sqrMagnitude < 0.001f) return true;
-
-        var headDot = Vector2.Dot(head.GetPosition(), averageDir);
-        var tailDot = Vector2.Dot(tail.GetPosition(), averageDir);
-
-        return headDot < tailDot;
-    }
 }
+
