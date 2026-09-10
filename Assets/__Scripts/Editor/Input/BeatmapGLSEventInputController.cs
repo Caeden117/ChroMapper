@@ -52,7 +52,7 @@ public abstract class BeatmapGLSEventInputController<TData> : BeatmapInputContro
             ? cachedContainer.EventData
             : null;
         BeatmapRaycastCache.Invalidate();
-        if (!TryRaycastHoveredEvent(out var currentContainer))
+        if (!RaycastFirstObject(out var currentContainer))
         {
             return false;
         }
@@ -73,14 +73,11 @@ public abstract class BeatmapGLSEventInputController<TData> : BeatmapInputContro
         return true;
     }
 
-    protected virtual bool TryRaycastHoveredEvent(out GLSEventContainer currentContainer) =>
-        RaycastFirstObject(out currentContainer);
-
     // Clone-producing commands synchronously rebuild the pool, so reacquire and highlight the physical target after that rebuild too.
     protected void RefreshHoveredVisualAfterMutation()
     {
         BeatmapRaycastCache.Invalidate();
-        if (TryRaycastHoveredEvent(out var currentContainer))
+        if (RaycastFirstObject(out var currentContainer))
         {
             SetHoveredContainer(currentContainer);
         }

@@ -8,9 +8,8 @@ using UnityEngine.InputSystem;
 public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitchVersionActions
 {
     private const string BeatToTheFutureRequirement = "BeatToTheFuture";
-    private const string MappingExtensionsRequirement = "Mapping Extensions";
-    private const string NoodleExtensionsRequirement = "Noodle Extensions";
 
+    // TODO: Localization — move the migration warning into the Mapper string table before stable.
     private const string MappingExtensionsWallPromptMessage =
         "Mapping Extensions is no longer supported in latest Beat Saber versions, and appears unmaintained " +
         "moving forward (so likely never will be). Do you want to convert your modded walls from " +
@@ -59,13 +58,11 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
 
     private void OnChangeToV3WithVNJS(bool includeVNJSEvents)
     {
-        var songContainer = BeatSaberSongContainer.Instance;
-        songContainer.Map.SaveVNJSEventsInV3 = includeVNJSEvents;
-
-        if (includeVNJSEvents
-            && !songContainer.MapDifficultyInfo.CustomRequirements.Contains(BeatToTheFutureRequirement))
+        BeatSaberSongContainer.Instance.Map.SaveVNJSEventsInV3 = includeVNJSEvents;
+        if (includeVNJSEvents)
         {
-            songContainer.MapDifficultyInfo.CustomRequirements.Add(BeatToTheFutureRequirement);
+            ContinueChangeToV3AfterUpperWalls();
+            return;
         }
 
         ContinueChangeToV3();
@@ -73,7 +70,6 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
 
     private void OnChangeToV3WithBeatToTheFuture()
     {
-        AddRequirement(BeatToTheFutureRequirement);
         ContinueChangeToV3AfterUpperWalls();
     }
 
@@ -97,7 +93,6 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
             wall.WriteCustom();
         }
 
-        AddRequirement(NoodleExtensionsRequirement);
         ContinueChangeToV3AfterUpperWalls();
     }
 
@@ -154,13 +149,6 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
             wall.WriteCustom();
         }
 
-        var requirements = songContainer.MapDifficultyInfo.CustomRequirements;
-        if (!songContainer.Map.IsMappingExtensions(allowV4UpperWallsInV3: true))
-        {
-            requirements.RemoveAll(x => x == MappingExtensionsRequirement);
-        }
-
-        AddRequirement(NoodleExtensionsRequirement);
         OnChangeVersion(3);
     }
 
@@ -210,18 +198,10 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
 
     private static bool IsV4UpperWall(int posY) => posY is 3 or 4;
 
-    private static void AddRequirement(string requirement)
-    {
-        var requirements = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomRequirements;
-        if (!requirements.Contains(requirement))
-        {
-            requirements.Add(requirement);
-        }
-    }
-
     // V4 VNJS needs an explicit compatibility decision because ordinary V3 players do not understand the OEM arrays.
     private void PromptChangeToV3()
     {
+        // TODO: Localization — translate this compatibility prompt's title, body, and footer labels before stable.
         var dialogBox = PersistentUI
             .Instance
             .CreateNewDialogBox()
@@ -240,6 +220,7 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
 
     private void PromptV4UpperWallConversion()
     {
+        // TODO: Localization — translate this conversion prompt's title, body, and fallback label before stable.
         var dialogBox = PersistentUI
             .Instance
             .CreateNewDialogBox()
@@ -263,6 +244,7 @@ public class BeatmapVersionSwitchInputController : MonoBehaviour, CMInput.ISwitc
     // choice while MappingExtensionsWallMigrationUsesUnsupportedModWarning protects the exact requested wording.
     private void PromptMappingExtensionsWallMigration()
     {
+        // TODO: Localization — translate the title and footer labels along with MappingExtensionsWallPromptMessage.
         var dialogBox = PersistentUI
             .Instance
             .CreateNewDialogBox()

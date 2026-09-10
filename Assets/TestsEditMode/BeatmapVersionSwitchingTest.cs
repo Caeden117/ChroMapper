@@ -160,6 +160,8 @@ namespace TestsEditMode
                 {
                     InvokePrivateConversion(controller, "OnChangeToV3WithBeatToTheFuture");
 
+                    RefreshRequirementsAfterConversion(songContainer);
+
                     Assert.AreEqual(3, Settings.Instance.MapVersion);
                     Assert.AreEqual(posY, wall.PosY);
                     Assert.Contains("BeatToTheFuture", songContainer.MapDifficultyInfo.CustomRequirements);
@@ -183,6 +185,8 @@ namespace TestsEditMode
                 (controller, songContainer, difficulty, wall) =>
                 {
                     InvokePrivateConversion(controller, "OnChangeToV3WithNoodleExtensions");
+
+                    RefreshRequirementsAfterConversion(songContainer);
 
                     Assert.AreEqual(3, Settings.Instance.MapVersion);
                     Assert.AreEqual(0, wall.PosY);
@@ -358,6 +362,8 @@ namespace TestsEditMode
 
                     InvokePrivateConversion(controller, "OnConvertMappingExtensionsWallsToNoodleExtensions");
 
+                    RefreshRequirementsAfterConversion(songContainer);
+
                     Assert.AreEqual(originalShape.Position, testWall.CustomCoordinate[0].AsFloat, 0.0001f);
                     Assert.AreEqual(originalShape.StartHeight, testWall.CustomCoordinate[1].AsFloat, 0.0001f);
                     Assert.AreEqual(originalShape.Width, testWall.CustomSize[0].AsFloat, 0.0001f);
@@ -386,6 +392,8 @@ namespace TestsEditMode
                     songContainer.MapDifficultyInfo.CustomRequirements.Add("Mapping Extensions");
 
                     InvokePrivateConversion(controller, "OnKeepMappingExtensionsWalls");
+
+                    RefreshRequirementsAfterConversion(songContainer);
 
                     Assert.AreEqual(1500, testWall.PosX);
                     Assert.AreEqual(1500, testWall.Width);
@@ -418,6 +426,8 @@ namespace TestsEditMode
                     songContainer.MapDifficultyInfo.CustomRequirements.Add("Noodle Extensions");
 
                     InvokePrivateConversion(controller, "OnConvertMappingExtensionsWallsToNoodleExtensions");
+
+                    RefreshRequirementsAfterConversion(songContainer);
 
                     Assert.IsTrue(testWall.IsNoodleExtensions());
                     Assert.IsTrue(secondModdedWall.IsNoodleExtensions());
@@ -488,6 +498,10 @@ namespace TestsEditMode
 
             var songContainerObject = new GameObject("BeatSaberSongContainer test");
             var songContainer = songContainerObject.AddComponent<BeatSaberSongContainer>();
+            songContainer.Info = new BaseInfo
+            {
+                Directory = PathUtils.Combine(Application.temporaryCachePath, nameof(BeatmapVersionSwitchingTest))
+            };
             songContainer.Map = difficulty;
             songContainer.MapDifficultyInfo = new InfoDifficulty(new InfoDifficultySet());
 
@@ -511,6 +525,25 @@ namespace TestsEditMode
                 instanceProperty.SetValue(null, previousSongContainer);
                 UnityEngine.Object.DestroyImmediate(controllerObject);
                 UnityEngine.Object.DestroyImmediate(songContainerObject);
+            }
+        }
+
+        // EditMode does not run the application bootstrap; reproduce save-time checking with the production registry and restore shared state.
+        private static void RefreshRequirementsAfterConversion(BeatSaberSongContainer songContainer)
+        {
+            var originalAutomatic = Settings.Instance.AutomaticModRequirements;
+            var originalChecks = RequirementCheck.requirementsAndSuggestions.ToArray();
+            try
+            {
+                Settings.Instance.AutomaticModRequirements = true;
+                RequirementCheck.Setup();
+                songContainer.MapDifficultyInfo.RefreshRequirementsAndWarnings(songContainer.Map);
+            }
+            finally
+            {
+                Settings.Instance.AutomaticModRequirements = originalAutomatic;
+                RequirementCheck.requirementsAndSuggestions.Clear();
+                RequirementCheck.requirementsAndSuggestions.UnionWith(originalChecks);
             }
         }
 

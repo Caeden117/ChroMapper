@@ -79,7 +79,23 @@ namespace Tests.Placement
             var prompt = GetBeatToTheFutureRequirementPrompt();
             ClickFooterButton(prompt, 0);
 
-            // Sequential assertions keep the acceptance contract compatible with the project's NUnit API.
+            // PR #669 requires metadata ownership to remain with the requirement checker, even after explicit placement consent.
+            Assert.That(
+                BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomRequirements,
+                Does.Not.Contain(BeatToTheFutureRequirement));
+            var automaticRequirements = Settings.Instance.AutomaticModRequirements;
+            try
+            {
+                Settings.Instance.AutomaticModRequirements = true;
+                BeatSaberSongContainer.Instance.MapDifficultyInfo.RefreshRequirementsAndWarnings(
+                    BeatSaberSongContainer.Instance.Map);
+            }
+            finally
+            {
+                Settings.Instance.AutomaticModRequirements = automaticRequirements;
+            }
+
+            // The normal save-time refresh must still detect the accepted VNJS event and add its dependency.
             Assert.That(
                 BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomRequirements,
                 Does.Contain(BeatToTheFutureRequirement));

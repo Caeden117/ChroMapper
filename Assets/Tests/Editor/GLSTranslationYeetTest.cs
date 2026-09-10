@@ -364,8 +364,7 @@ namespace Tests.Editor
             // Inject the scene-owned precision dependency before exercising the inherited production callback.
             public void SetPrecision(ScrollPrecisionController value) => ScrollPrecisionController = value;
 
-            // Return the exact inner node while retaining production ownership validation and group replacement.
-            protected override bool TryRaycastHoveredEvent(out GLSEventContainer currentContainer)
+            protected override bool RaycastFirstObject(out GLSEventContainer currentContainer)
             {
                 currentContainer = RaycastTarget;
                 return currentContainer != null;
@@ -376,8 +375,7 @@ namespace Tests.Editor
         {
             public GLSGroupContainer RaycastTarget;
 
-            // Return the primary or ghost outer preview selected by each regression case.
-            protected override bool TryRaycastHoveredPreview(out GLSGroupContainer container)
+            protected override bool RaycastFirstObject(out GLSGroupContainer container)
             {
                 container = RaycastTarget;
                 return container != null;

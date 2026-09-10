@@ -121,26 +121,19 @@ namespace Tests.Editor
             }
         }
 
-        // Exercise the authored composite instead of manufacturing CallbackContext so Shift+scroll binding regressions fail with the controller tests.
+        // Isolate the authored composite from host focus and physical devices so the raycast refactor retains deterministic input coverage.
         private static void SendShiftScroll(CMInput.IGLSColorObjectsActions controller)
         {
             var sharedInput = CMInputCallbackInstaller.InputInstance;
             Assert.NotNull(sharedInput);
             var sharedMapWasEnabled = sharedInput.GLSColorObjects.enabled;
             sharedInput.GLSColorObjects.Disable();
+            // The fixture owns device state while these tests drive same-frame Shift+scroll callbacks.
+            var inputFixture = new InputTestFixture();
+            inputFixture.Setup();
             var input = new CMInput();
-            var keyboard = Keyboard.current;
-            var mouse = Mouse.current;
-            var addedKeyboard = keyboard == null;
-            var addedMouse = mouse == null;
-            if (addedKeyboard)
-            {
-                keyboard = InputSystem.AddDevice<Keyboard>();
-            }
-            if (addedMouse)
-            {
-                mouse = InputSystem.AddDevice<Mouse>();
-            }
+            var keyboard = InputSystem.AddDevice<Keyboard>();
+            var mouse = InputSystem.AddDevice<Mouse>();
 
             try
             {
@@ -155,19 +148,10 @@ namespace Tests.Editor
             }
             finally
             {
-                InputSystem.QueueStateEvent(mouse, new MouseState());
-                InputSystem.QueueStateEvent(keyboard, new KeyboardState());
-                InputSystem.Update();
+                // Dispose the isolated actions before restoring the original runtime and shared application map.
                 input.GLSColorObjects.Disable();
                 input.Dispose();
-                if (addedMouse)
-                {
-                    InputSystem.RemoveDevice(mouse);
-                }
-                if (addedKeyboard)
-                {
-                    InputSystem.RemoveDevice(keyboard);
-                }
+                inputFixture.TearDown();
                 if (sharedMapWasEnabled)
                 {
                     sharedInput.GLSColorObjects.Enable();
@@ -235,8 +219,8 @@ namespace Tests.Editor
         {
             public GLSEventContainer RaycastTarget;
 
-            // Return the exact inner node under test while retaining the production callback, ownership checks, command, and refresh.
-            protected override bool TryRaycastHoveredEvent(out GLSEventContainer firstObject)
+            // Override shared picking so removing the redundant GLS wrapper preserves callback and parent-replacement coverage.
+            protected override bool RaycastFirstObject(out GLSEventContainer firstObject)
             {
                 firstObject = RaycastTarget;
                 return firstObject != null;
@@ -247,8 +231,8 @@ namespace Tests.Editor
         {
             public GLSGroupContainer RaycastTarget;
 
-            // Return either the primary or ghost outer preview selected by the individual regression test.
-            protected override bool TryRaycastHoveredPreview(out GLSGroupContainer firstObject)
+            // Override shared picking so primary and ghost regressions do not need a separate GLS-only test seam.
+            protected override bool RaycastFirstObject(out GLSGroupContainer firstObject)
             {
                 firstObject = RaycastTarget;
                 return firstObject != null;

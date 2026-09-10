@@ -87,6 +87,7 @@ public class NJSEventPlacement : BasePlacement<BaseNJSEvent, NJSEventContainer, 
 
     private void CreateAndOpenBeatToTheFutureDialogue()
     {
+        // TODO: Localization — translate this compatibility prompt's title, body, and footer labels before stable.
         var requirementDialogue = PersistentUI
             .Instance
             .CreateNewDialogBox()
@@ -98,20 +99,9 @@ public class NJSEventPlacement : BasePlacement<BaseNJSEvent, NJSEventContainer, 
                 "Variable Note Jump Speed events in V3 maps require BeatToTheFuture. " +
                 "Do you want to add the BeatToTheFuture requirement and place this NJS event?");
 
-        requirementDialogue.AddFooterButton(AcceptBeatToTheFutureRequirementAndPlace, "Yes");
+        requirementDialogue.AddFooterButton(HandleApplyNoDialogue, "Yes");
         requirementDialogue.AddFooterButton(null, "No");
         requirementDialogue.Open();
-    }
-
-    private void AcceptBeatToTheFutureRequirementAndPlace()
-    {
-        var requirements = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomRequirements;
-        if (!requirements.Contains("BeatToTheFuture"))
-        {
-            requirements.Add("BeatToTheFuture");
-        }
-
-        base.HandleApply();
     }
 
     // V2 has no NJS serialization path, while V3 and V4 both support the initialized placement lane.
