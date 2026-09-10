@@ -127,6 +127,118 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
     public void UseOriginalGroupForNextReplacement(BaseEventBoxGroup originalGroup) =>
         nextReplacementOriginalGroupData = originalGroup;
 
+    // A view-only XYZ lane becomes real when it gets its first node added.
+    public void PlaceInDisplayOnlyLane(BaseGLSEvent sourceEvent, BaseEventBox displayBox)
+    {
+        var liveGroup = glsEventGridProvider.GroupContext;
+        if (liveGroup == null || displayBox == null)
+        {
+            return;
+        }
+
+        var newGroup = BeatmapFactory.Clone(liveGroup);
+        if (!GLSCommonCommand.TryMaterializeAutomaticAxisLane(
+                newGroup,
+                displayBox,
+                out var newBox,
+                out var newBoxIndex))
+        {
+            return;
+        }
+
+        var newEvent = BeatmapFactory.Clone(sourceEvent);
+        newEvent.EventBoxGroupData = newGroup;
+        newEvent.EventBoxData = newBox;
+        newEvent.BoxIndex = newBoxIndex;
+        newBox.SetEvents(new[] { newEvent });
+
+        // Sorting changes existing box indexes, so finalize all ownership before pruning and publishing the replacement group.
+        GLSCommonCommand.RebindGroup(newGroup);
+        newGroup.PruneEmptyAutomaticAxisLanes();
+
+        var action = new BeatmapGLSEventBoxModifiedAction(
+            newGroup,
+            liveGroup,
+            "Placed a GLS Event in a new axis lane.");
+        BeatmapActionContainer.AddAction(action, true);
+    }
+
+    public void MoveToDisplayOnlyLane(
+        BaseGLSEvent movedEvent,
+        BaseGLSEvent originalEvent,
+        BaseEventBox displayBox,
+        BaseEventBoxGroup originalGroup)
+    {
+        var liveGroup = glsEventGridProvider.GroupContext;
+        if (liveGroup == null
+            || originalEvent == null
+            || originalGroup == null
+            || liveGroup.GetType() != originalGroup.GetType()
+            || originalEvent.BoxIndex < 0
+            || originalEvent.BoxIndex >= originalGroup.ReadOnlyBoxes.Count)
+        {
+            return;
+        }
+
+        var newGroup = BeatmapFactory.Clone(originalGroup);
+        var sourceBox = newGroup.ReadOnlyBoxes[originalEvent.BoxIndex];
+        var sourceEventIndex = -1;
+        for (var eventIndex = 0; eventIndex < sourceBox.ReadOnlyEvents.Count; eventIndex++)
+        {
+            if (Math.Abs(sourceBox.ReadOnlyEvents[eventIndex].RelativeJsonTime - originalEvent.RelativeJsonTime)
+                < BeatmapObjectContainerCollection.Epsilon)
+            {
+                sourceEventIndex = eventIndex;
+                break;
+            }
+        }
+
+        if (sourceEventIndex < 0)
+        {
+            return;
+        }
+
+        if (!GLSCommonCommand.TryMaterializeAutomaticAxisLane(
+                newGroup,
+                displayBox,
+                out var newBox,
+                out var newBoxIndex))
+        {
+            return;
+        }
+
+        var remainingEvents = new BaseGLSEvent[sourceBox.ReadOnlyEvents.Count - 1];
+        for (var sourceIndex = 0; sourceIndex < sourceEventIndex; sourceIndex++)
+        {
+            remainingEvents[sourceIndex] = sourceBox.ReadOnlyEvents[sourceIndex];
+        }
+        for (var sourceIndex = sourceEventIndex + 1; sourceIndex < sourceBox.ReadOnlyEvents.Count; sourceIndex++)
+        {
+            remainingEvents[sourceIndex - 1] = sourceBox.ReadOnlyEvents[sourceIndex];
+        }
+        sourceBox.SetEvents(remainingEvents);
+
+        var newEvent = BeatmapFactory.Clone(movedEvent);
+        newEvent.EventBoxGroupData = newGroup;
+        newEvent.EventBoxData = newBox;
+        newEvent.BoxIndex = newBoxIndex;
+        newBox.SetEvents(new[] { newEvent });
+
+        // Materialization reorders boxes and a drag may vacate its source, so rebind first and let pruning repair removals.
+        GLSCommonCommand.RebindGroup(newGroup);
+        newGroup.PruneEmptyAutomaticAxisLanes();
+        movedEvent.RelativeJsonTime = originalEvent.RelativeJsonTime;
+        movedEvent.EventBoxGroupData = liveGroup;
+        movedEvent.EventBoxData = liveGroup.ReadOnlyBoxes[originalEvent.BoxIndex];
+        movedEvent.BoxIndex = originalEvent.BoxIndex;
+        movedEvent.RecomputeSongBpmTime();
+        var action = new BeatmapGLSEventBoxModifiedAction(
+            newGroup,
+            liveGroup,
+            "Moved a GLS Event into a new axis lane.");
+        BeatmapActionContainer.AddAction(action, true);
+    }
+
     // Rejected drags need an action-free rollback because their live parent temporarily contains the dragged child's invalid offset.
     public void RestoreRejectedDrag(BaseEventBoxGroup originalGroup)
     {
@@ -250,8 +362,7 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
             newGroup.ReadOnlyBoxes[boxEvents.Key].SetEvents(boxEvents.ToArray());
         // co-variant deez
 
-        // Rebuild the maintained preview ordering once at this mutation boundary so render refreshes never need to rescan the group.
-        newGroup.ResortOrderedEvents();
+        newGroup.PruneEmptyAutomaticAxisLanes();
         return newGroup;
     }
 
@@ -335,6 +446,8 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
     protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         var c = con as GLSEventContainer;
+        // Keep finalized node rendering aligned with the provider's merged authored/ghost XYZ headers.
+        c.DisplayLaneIndex = glsEventGridProvider.GetDisplayedLaneIndex(((BaseGLSEvent)obj).BoxIndex);
         con.UpdateGridPosition();
 
         glsEventAppearance.SetAppearance(c, true, eventGridContainer.IsBoostAt(obj.JsonTime));

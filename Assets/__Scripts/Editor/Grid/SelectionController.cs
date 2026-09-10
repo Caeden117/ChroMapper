@@ -861,21 +861,17 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         foreach (var obj in newObjects.Cast<BaseEventBoxGroup>())
         {
             if (!newOrderToId.TryGetValue(oldIdToOrder[obj.ID] + offsetOrder, out var newId)) continue;
+            var trackDefinition = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(newId);
             switch (obj)
             {
                 case BaseLightColorEventBoxGroup:
-                    if (!beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(newId).ColorTrack) continue;
+                    if (!trackDefinition.ColorTrack) continue;
                     break;
-                case BaseLightRotationEventBoxGroup:
-                    if (!beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(newId).RotationTracks.Any(x => x))
-                        continue;
-                    break;
-                case BaseLightTranslationEventBoxGroup:
-                    if (!beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(newId).TranslationTracks.Any(x => x))
-                        continue;
+                case ILightTransformEventBoxGroup transformGroup:
+                    if (!transformGroup.GetEnabledAxes(trackDefinition).Any(x => x)) continue;
                     break;
                 case BaseVfxEventEventBoxGroup:
-                    if (!beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(newId).FloatFXTrack) continue;
+                    if (!trackDefinition.FloatFXTrack) continue;
                     break;
             }
 
@@ -905,31 +901,43 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         var minOrder = newObjects.AsValueEnumerable().Cast<BaseGLSEvent>().Select(x => x.BoxIndex).Min();
 
         var offsetTime = 0f;
-        var offsetOrder = 0;
+        BaseGLSEvent pastePlacement = null;
         if (!glsEventColorPlacement.IsIdle && glsEventColorPlacement.QueuedData != null)
         {
-            var colorPlacement = glsEventColorPlacement.QueuedData;
-            offsetTime = colorPlacement.RelativeJsonTime;
-            offsetOrder = colorPlacement.BoxIndex - minOrder;
+            pastePlacement = glsEventColorPlacement.QueuedData;
         }
         else if (!glsEventRotationPlacement.IsIdle && glsEventRotationPlacement.QueuedData != null)
         {
-            var rotationPlacement = glsEventRotationPlacement.QueuedData;
-            offsetTime = rotationPlacement.RelativeJsonTime;
-            offsetOrder = rotationPlacement.BoxIndex - minOrder;
+            pastePlacement = glsEventRotationPlacement.QueuedData;
         }
         else if (!glsEventTranslationPlacement.IsIdle && glsEventTranslationPlacement.QueuedData != null)
         {
-            var translationPlacement = glsEventTranslationPlacement.QueuedData;
-            offsetTime = translationPlacement.RelativeJsonTime;
-            offsetOrder = translationPlacement.BoxIndex - minOrder;
+            pastePlacement = glsEventTranslationPlacement.QueuedData;
         }
         else if (!glsEventFloatFXPlacement.IsIdle && glsEventFloatFXPlacement.QueuedData != null)
         {
-            var floatPlacement = glsEventFloatFXPlacement.QueuedData;
-            offsetTime = floatPlacement.RelativeJsonTime;
-            offsetOrder = floatPlacement.BoxIndex - minOrder;
+            pastePlacement = glsEventFloatFXPlacement.QueuedData;
         }
+
+        var destinationBoxIndex = minOrder;
+        if (pastePlacement != null)
+        {
+            offsetTime = pastePlacement.RelativeJsonTime;
+            destinationBoxIndex = pastePlacement.BoxIndex;
+        }
+        
+        // materialize a hovered ghost before applying lane offsets.
+        if (destinationBoxIndex < 0
+            && !GLSCommonCommand.TryMaterializeAutomaticAxisLane(
+                newGroup,
+                pastePlacement.EventBoxData,
+                out _,
+                out destinationBoxIndex))
+        {
+            return new HashSet<BaseObject>();
+        }
+
+        var offsetOrder = destinationBoxIndex - minOrder;
 
         var sourceJsonTime = newObjects.AsValueEnumerable().Cast<BaseGLSEvent>().Min(x => x.JsonTime);
 
@@ -999,8 +1007,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
         }
 
-        // Inner GLS paste edits the open parent group, so offset its original beat for generic Paste instead of moving it to the playhead.
         newGroup.JsonTime = context.JsonTime - atsc.CurrentJsonTime;
+        GLSCommonCommand.RebindGroup(newGroup);
         var result = new HashSet<BaseObject> { BeatmapFactory.Clone(newGroup) };
         return result;
     }
@@ -1365,7 +1373,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         // Spatial lane shifts do not change object time or rotation, so existing track attachments remain valid.
     }
 
-    private static List<BeatmapAction> CreateShiftedGlsEventActions(
+    private List<BeatmapAction> CreateShiftedGlsEventActions(
         int laneOffset,
         List<BaseGLSEvent> shiftedGlsEvents)
     {
@@ -1380,24 +1388,41 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var groupEvents = groupEntry.Value;
             var editedGroup = BeatmapFactory.Clone(originalGroup);
             var sourceIndex = new GLSEventLookupIndex(originalGroup);
-            var eventsByBox = new List<BaseGLSEvent>[editedGroup.ReadOnlyBoxes.Count];
+            var eventsByBox = new Dictionary<BaseEventBox, List<BaseGLSEvent>>(editedGroup.ReadOnlyBoxes.Count + 1);
             for (var boxIndex = 0; boxIndex < editedGroup.ReadOnlyBoxes.Count; boxIndex++)
             {
-                var events = editedGroup.ReadOnlyBoxes[boxIndex].ReadOnlyEvents;
+                var box = editedGroup.ReadOnlyBoxes[boxIndex];
+                var events = box.ReadOnlyEvents;
                 var copiedEvents = new List<BaseGLSEvent>(events.Count);
                 for (var eventIndex = 0; eventIndex < events.Count; eventIndex++)
                 {
                     copiedEvents.Add(events[eventIndex]);
                 }
 
-                eventsByBox[boxIndex] = copiedEvents;
+                eventsByBox.Add(box, copiedEvents);
             }
 
-            var laneCount = eventsByBox.Length;
-            if (laneCount == 0)
+            var useDisplayedLanes = ReferenceEquals(glsEventGridProvider.GroupContext, originalGroup);
+            var displayedLaneCount = useDisplayedLanes
+                ? glsEventGridProvider.DisplayedLaneCount
+                : editedGroup.ReadOnlyBoxes.Count;
+            if (displayedLaneCount == 0)
+            {
                 continue;
+            }
 
-            var eventsToShift = new List<(int SourceBox, BaseGLSEvent EditedEvent)>(groupEvents.Count);
+            var displayedToEditedBox = new BaseEventBox[displayedLaneCount];
+            for (var displayedLane = 0; displayedLane < displayedLaneCount; displayedLane++)
+            {
+                var authoredBoxIndex = useDisplayedLanes
+                    ? glsEventGridProvider.GetAuthoredBoxIndex(displayedLane)
+                    : displayedLane;
+                displayedToEditedBox[displayedLane] = authoredBoxIndex >= 0
+                    ? editedGroup.ReadOnlyBoxes[authoredBoxIndex]
+                    : null;
+            }
+
+            var eventsToShift = new List<(BaseEventBox SourceBox, int SourceDisplayLane, BaseGLSEvent EditedEvent)>(groupEvents.Count);
             foreach (var originalEvent in groupEvents)
             {
                 if (!sourceIndex.TryGetCloneEvent(
@@ -1405,20 +1430,45 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                         editedGroup,
                         out var location,
                         out var editedEvent)
-                    || location.BoxIndex >= laneCount)
+                    || location.BoxIndex >= editedGroup.ReadOnlyBoxes.Count)
                 {
                     continue;
                 }
 
-                eventsToShift.Add((location.BoxIndex, editedEvent));
+                var sourceDisplayLane = useDisplayedLanes
+                    ? glsEventGridProvider.GetDisplayedLaneIndex(location.BoxIndex)
+                    : location.BoxIndex;
+                eventsToShift.Add((editedGroup.ReadOnlyBoxes[location.BoxIndex], sourceDisplayLane, editedEvent));
             }
 
             var changed = false;
-            foreach (var (sourceBox, editedEvent) in eventsToShift)
+            foreach (var (sourceBox, sourceDisplayLane, editedEvent) in eventsToShift)
             {
-                var destinationBox = Mathf.Clamp(sourceBox + laneOffset, 0, laneCount - 1);
-                if (destinationBox == sourceBox)
+                var destinationDisplayLane = Mathf.Clamp(
+                    sourceDisplayLane + laneOffset,
+                    0,
+                    displayedLaneCount - 1);
+                if (destinationDisplayLane == sourceDisplayLane)
+                {
                     continue;
+                }
+
+                var destinationBox = displayedToEditedBox[destinationDisplayLane];
+                if (destinationBox == null)
+                {
+                    if (!glsEventGridProvider.TryGetDisplayedBox(destinationDisplayLane, out var displayBox)
+                        || !GLSCommonCommand.TryMaterializeAutomaticAxisLane(
+                            editedGroup,
+                            displayBox,
+                            out destinationBox,
+                            out _))
+                    {
+                        continue;
+                    }
+
+                    displayedToEditedBox[destinationDisplayLane] = destinationBox;
+                    eventsByBox.Add(destinationBox, new List<BaseGLSEvent>());
+                }
 
                 eventsByBox[sourceBox].Remove(editedEvent);
                 eventsByBox[destinationBox].Add(editedEvent);
@@ -1429,29 +1479,23 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 continue;
 
             // A group replacement clears all child selection, including selected nodes already at a lane boundary.
-            foreach (var (_, editedEvent) in eventsToShift)
+            foreach (var (_, _, editedEvent) in eventsToShift)
             {
                 shiftedGlsEvents.Add(editedEvent);
             }
 
-            // Rebind every child after changing box ownership so the replacement group and outer previews share valid lanes.
-            for (var boxIndex = 0; boxIndex < laneCount; boxIndex++)
+            // Write each mutable lane once before stable axis sorting and shared ownership finalization.
+            for (var boxIndex = 0; boxIndex < editedGroup.ReadOnlyBoxes.Count; boxIndex++)
             {
                 var box = editedGroup.ReadOnlyBoxes[boxIndex];
                 // Sort the owned mutable lane buffer in place before serializing it back to the cloned event box.
-                eventsByBox[boxIndex].Sort(static (left, right) => left.RelativeJsonTime.CompareTo(right.RelativeJsonTime));
-                box.SetEvents(eventsByBox[boxIndex].ToArray());
-                foreach (var evt in box.ReadOnlyEvents)
-                {
-                    evt.EventBoxData = box;
-                    evt.EventBoxGroupData = editedGroup;
-                    evt.BoxIndex = boxIndex;
-                    evt.JsonTime = editedGroup.JsonTime + evt.RelativeJsonTime;
-                }
+                var boxEvents = eventsByBox[box];
+                boxEvents.Sort(static (left, right) => left.RelativeJsonTime.CompareTo(right.RelativeJsonTime));
+                box.SetEvents(boxEvents.ToArray());
             }
 
-            ResortGlsGroupEvents(editedGroup);
-            editedGroup.SaveCustom();
+            GLSCommonCommand.RebindGroup(editedGroup);
+            editedGroup.PruneEmptyAutomaticAxisLanes();
             actions.Add(new BeatmapGLSEventBoxModifiedAction(
                 editedGroup,
                 originalGroup,
@@ -1459,26 +1503,6 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         }
 
         return actions;
-    }
-
-    private static void ResortGlsGroupEvents(BaseEventBoxGroup group)
-    {
-        // The base type exposes boxes polymorphically; each concrete generic group owns the ordered-preview cache.
-        switch (group)
-        {
-            case BaseLightColorEventBoxGroup colorGroup:
-                colorGroup.ResortOrderedEvents();
-                break;
-            case BaseLightRotationEventBoxGroup rotationGroup:
-                rotationGroup.ResortOrderedEvents();
-                break;
-            case BaseLightTranslationEventBoxGroup translationGroup:
-                translationGroup.ResortOrderedEvents();
-                break;
-            case BaseVfxEventEventBoxGroup floatFxGroup:
-                floatFxGroup.ResortOrderedEvents();
-                break;
-        }
     }
 
     private void ShiftCustomCoordinates(BaseGrid gridObject, int leftRight, int upDown)

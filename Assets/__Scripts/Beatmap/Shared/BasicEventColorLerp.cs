@@ -39,6 +39,25 @@ namespace Beatmap.Shared
             };
         }
 
+        public static Color ApplyBrightness(Color color, float brightness)
+        {
+            color.a *= brightness;
+            return color;
+        }
+
+        public static Color InterpolateWithBrightness(
+            Color start,
+            float startBrightness,
+            Color end,
+            float endBrightness,
+            float t,
+            BasicEventColorLerpType lerpType) =>
+            Interpolate(
+                ApplyBrightness(start, startBrightness),
+                ApplyBrightness(end, endBrightness),
+                t,
+                lerpType);
+
         // Legacy Chroma compatibility requires treating normalized hue as an ordinary scalar, including its green detours.
         private static Color LerpLegacyHsv(Color start, Color end, float t)
         {

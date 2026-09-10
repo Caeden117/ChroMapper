@@ -166,6 +166,13 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
         // The state caches serialized lerpType classification so the per-frame tween never compares strings.
         tween.ColorLerpType = stateData.ColorLerpType;
         tween.Easing = stateData.Easing;
+        tween.ColorEasing = stateData.HasChromaGradient
+            ? stateData.GradientEasing
+            : stateData.Easing;
+        // Chroma composes endpoints only when color and brightness share the ordinary Basic Event timeline.
+        tween.ComposeAlphaAtColorEndpoints = !stateData.HasChromaGradient
+            && Mathf.Approximately(stateData.StartTimeColor, stateData.StartTime)
+            && Mathf.Approximately(stateData.EndTimeColor, stateData.EndTimeAlpha);
     }
 
     public void UpdateStartAndEndColor(LightColorTween tween, BasicLightStateData stateData)
@@ -313,6 +320,7 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
                     state.HasChromaGradient = false;
                     // Clear the removed gradient's interpolation mode before ordinary transition linking classifies it again.
                     state.ColorLerpType = BasicEventColorLerpType.RGB;
+                    state.GradientEasing = null;
                     state.StartTimeColor = state.StartTime;
                     state.EndTimeColor = state.EndTime;
 
@@ -375,9 +383,9 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
         stateData.EndTimeColor = chromaGradientData.EndTime;
         stateData.StartChromaColor = chromaGradientData.StartColor;
         stateData.EndChromaColor = chromaGradientData.EndColor;
-        stateData.Easing = chromaGradientData.Easing;
-        // Legacy gradient preview uses the same source-event lerpType classification as ordinary transition ribbons.
-        stateData.ColorLerpType = BasicEventColorLerp.FromSerializedName(chromaGradientData.Base.CustomLerpType);
+        // BasicEventChromaColorParityTest proves Chroma applies gradient easing only to its RGB color interpolation.
+        stateData.GradientEasing = chromaGradientData.Easing;
+        stateData.ColorLerpType = BasicEventColorLerpType.RGB;
         // Cache the classification on the state so later insertion remains O(1) without rescanning gradient data.
         stateData.HasChromaGradient = true;
     }
@@ -640,6 +648,7 @@ public class BasicLightStateData : BasicEventStateData
     public float EndAlpha;
 
     public Func<float, float> Easing = global::Easing.Linear;
+    public Func<float, float> GradientEasing;
     public BasicEventColorLerpType ColorLerpType;
 
     // Preserve authored gradient timing and colors across subsequent event insertion without querying the gradient list.

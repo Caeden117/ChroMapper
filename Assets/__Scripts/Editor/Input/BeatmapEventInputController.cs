@@ -385,6 +385,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         // Both LightIdTransitionRibbon interruption regressions require hover editing to validate the rendered endpoint.
         var transitionTarget = e.GetEffectiveNextLightEvent();
         if (TrackDefinition.GetBasicOrDefault(e.EventData.Type).Kind != BasicEventKind.Lights
+            || e.EventData.CustomLightGradient != null  // Keep RGB-only legacy Chroma gradients immutable by this shortcut.
             || e.EventData.IsFade
             || e.EventData.IsFlash
             || transitionTarget == null

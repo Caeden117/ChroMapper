@@ -151,17 +151,7 @@ public class MirrorSelection : MonoBehaviour
         return BuildMirrorMap(selectedGroups);
     }
 
-    // Mirror the lane filter in place so existing GLS event references remain valid.
-    private void MirrorEventBoxGroupPositions(BaseLightColorEventBoxGroup group) => MirrorEventBoxGroupPositions(group.ReadOnlyBoxes);
-
-    // Mirror the lane filter in place so existing GLS event references remain valid.
-    private void MirrorEventBoxGroupPositions(BaseLightRotationEventBoxGroup group) => MirrorEventBoxGroupPositions(group.ReadOnlyBoxes);
-
-    // Mirror the lane filter in place so existing GLS event references remain valid.
-    private void MirrorEventBoxGroupPositions(BaseLightTranslationEventBoxGroup group) => MirrorEventBoxGroupPositions(group.ReadOnlyBoxes);
-
-    // Mirror the lane filter in place so existing GLS event references remain valid.
-    private void MirrorEventBoxGroupPositions(BaseVfxEventEventBoxGroup group) => MirrorEventBoxGroupPositions(group.ReadOnlyBoxes);
+    private void MirrorEventBoxGroupPositions(BaseEventBoxGroup group) => MirrorEventBoxGroupPositions(group.ReadOnlyBoxes);
 
     // Change filters instead of swapping boxes because events retain their BoxIndex and EventBoxData references.
     private void MirrorEventBoxGroupPositions(IReadOnlyList<BaseEventBox> boxes)

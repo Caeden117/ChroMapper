@@ -347,32 +347,12 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
 
     private void NJSEventSetEase(NJSEventContainer njsEventContainer, int ease)
     {
-        if (njsEventContainer.NJSData.Easing == ease) return;
-        var original = BeatmapFactory.Clone(njsEventContainer.ObjectData);
-        njsEventContainer.NJSData.Easing = ease;
-        njsEventContainer.UpdateNJSText();
-        BeatmapActionContainer.AddAction(
-            new BeatmapObjectModifiedAction(
-                njsEventContainer.ObjectData,
-                njsEventContainer.ObjectData,
-                original,
-                "Modified NJS Event Easing",
-                mergeType: ActionMergeType.ModifyNJSEventEase));
+        VNJSEventCommand.SetEasing(njsEventContainer, ease);
     }
 
     private void NJSEventSetExtension(NJSEventContainer njsEventContainer, int ext)
     {
-        if (njsEventContainer.NJSData.UsePrevious == ext) return;
-        var original = BeatmapFactory.Clone(njsEventContainer.ObjectData);
-        njsEventContainer.NJSData.UsePrevious = ext;
-        njsEventContainer.UpdateNJSText();
-        BeatmapActionContainer.AddAction(
-            new BeatmapObjectModifiedAction(
-                njsEventContainer.ObjectData,
-                njsEventContainer.ObjectData,
-                original,
-                "Modified NJS Event Extension",
-                mergeType: ActionMergeType.ModifyNJSEventExtension));
+        VNJSEventCommand.SetExtension(njsEventContainer, ext);
     }
 
     public void NotifyExtensionChanged(int value)

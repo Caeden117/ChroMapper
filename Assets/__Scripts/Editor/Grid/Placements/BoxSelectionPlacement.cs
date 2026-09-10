@@ -42,6 +42,8 @@ public class BoxSelectionPlacement : BasePlacement<BaseObstacle, ObstacleContain
     [SerializeField] public CreateEventTypeLabels Labels;
     [SerializeField] private BeatmapRuntimeContext beatmapContext;
     [SerializeField] private GLSGroupGridProvider glsGroupGridProvider;
+    // Inner box selection must use the same cached authored-to-display lane mapping as GLS node rendering.
+    [SerializeField] private GLSEventGridProvider glsEventGridProvider;
     private readonly Dictionary<int, Dictionary<Type, float>> glsGroupCondition = new();
 
     private readonly HashSet<BaseObject> selected = new();
@@ -435,12 +437,12 @@ public class BoxSelectionPlacement : BasePlacement<BaseObstacle, ObstacleContain
                     0.5f);
                 break;
             case BaseEventBoxGroup glsGroup:
-                // Use the shared lane-center calculation for primary and preview GLS nodes.
                 position = GetGlsGroupSelectionPosition(glsGroup);
                 break;
             case BaseGLSEvent glsEvent:
-                // Test inner GLS events at their rendered lane centers so an adjacent lane cannot match the box edge.
-                position = GetGlsEventSelectionPosition(glsEvent.BoxIndex, BoundsPosition.x);
+                position = GetGlsEventSelectionPosition(
+                    glsEventGridProvider.GetDisplayedLaneIndex(glsEvent.BoxIndex),
+                    BoundsPosition.x);
                 break;
             default:
                 Debug.LogWarning($"Unsupported object type {bo.GetType()} in box selection");

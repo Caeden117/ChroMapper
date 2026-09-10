@@ -8,95 +8,127 @@ using UnityEngine.InputSystem;
 
 public static class GLSCommonCommand
 {
-    // Apply the dedicated authored axis action without inspecting or overlapping physical modifier state.
     public static void CycleEventAxis(InputAction.CallbackContext context, BaseGLSEvent evt)
     {
-        if (!context.performed || evt == null)
+        if (!context.performed
+            || evt is not (BaseLightRotationBase or BaseLightTranslationBase))
+        {
             return;
+        }
 
         var direction = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
         if (direction == 0)
-            return;
-
-        switch (evt)
         {
-            case BaseLightRotationBase rotation:
-                CycleRotationEventAxis(rotation, direction);
-                break;
-            case BaseLightTranslationBase translation:
-                CycleTranslationEventAxis(translation, direction);
-                break;
+            return;
         }
+
+        CycleTransformEventAxis(evt, direction);
     }
 
-    // Move a rotation event between axis tracks while preserving every sibling on the source track.
-    private static void CycleRotationEventAxis(BaseLightRotationBase evt, int direction)
+    private static void CycleTransformEventAxis(BaseGLSEvent evt, int direction)
     {
-        if (evt.EventBoxGroupData is not BaseLightRotationEventBoxGroup originalGroup
-            || evt.EventBoxData is not BaseLightRotationEventBox
+        if (evt.EventBoxGroupData is not ILightTransformEventBoxGroup originalGroup
+            || evt.EventBoxData is not BaseLightTransformEventBox sourceBox
+            || !sourceBox.AcceptsEvent(evt)
             || !TryFindEventIndex(evt, out var eventIndex))
         {
-            Debug.LogError("[GLSAxisScroll] Rotation event has invalid group or box ownership.");
+            var eventType = evt is BaseLightRotationBase ? "Rotation" : "Translation";
+            Debug.LogError($"[GLSAxisScroll] {eventType} event has invalid group or box ownership.");
             return;
         }
 
-        var editedGroup = BeatmapFactory.Clone(originalGroup);
-        var sourceBox = editedGroup.Boxes[evt.BoxIndex];
-        var targetAxis = CycleAxis(sourceBox.Axis, direction);
-        MoveEventToAxisTrack(
-            editedGroup.Boxes,
-            evt.BoxIndex,
-            eventIndex,
-            targetAxis,
-            static box => box.Axis,
-            static (box, axis) => box.Axis = axis);
-
-        RebindGroup(editedGroup);
-        TriggerModifyEventBoxAction(originalGroup, editedGroup, ActionMergeType.ModifyGLSEventAxis);
-    }
-
-    // Move a translation event between axis tracks while preserving every sibling on the source track.
-    private static void CycleTranslationEventAxis(BaseLightTranslationBase evt, int direction)
-    {
-        if (evt.EventBoxGroupData is not BaseLightTranslationEventBoxGroup originalGroup
-            || evt.EventBoxData is not BaseLightTranslationEventBox
-            || !TryFindEventIndex(evt, out var eventIndex))
+        if (!TryFindOpenAxis(
+                originalGroup.TransformBoxes,
+                evt.BoxIndex,
+                evt.RelativeJsonTime,
+                direction,
+                out var targetAxis))
         {
-            Debug.LogError("[GLSAxisScroll] Translation event has invalid group or box ownership.");
+            WarnNoOpenAxis();
             return;
         }
 
-        var editedGroup = BeatmapFactory.Clone(originalGroup);
-        var sourceBox = editedGroup.Boxes[evt.BoxIndex];
-        var targetAxis = CycleAxis(sourceBox.Axis, direction);
-        MoveEventToAxisTrack(
-            editedGroup.Boxes,
-            evt.BoxIndex,
-            eventIndex,
-            targetAxis,
-            static box => box.Axis,
-            static (box, axis) => box.Axis = axis);
+        var originalGroupData = evt.EventBoxGroupData;
+        var editedGroupData = BeatmapFactory.Clone(originalGroupData);
+        var editedGroup = (ILightTransformEventBoxGroup)editedGroupData;
+        MoveEventToAxisTrack(editedGroup, evt.BoxIndex, eventIndex, targetAxis);
 
-        RebindGroup(editedGroup);
-        TriggerModifyEventBoxAction(originalGroup, editedGroup, ActionMergeType.ModifyGLSEventAxis);
+        RebindGroup(editedGroupData);
+        TriggerModifyEventBoxAction(originalGroupData, editedGroupData, ActionMergeType.ModifyGLSEventAxis);
     }
 
-    // Reuse an existing destination-axis track, creating one only when the destination axis does not exist.
-    private static (bool createdDestination, bool removedSource) MoveEventToAxisTrack<TBox>(
-        List<TBox> boxes,
+    // Treat an axis as occupied when any of its filter lanes already owns a node at the moving node's relative beat.
+    private static bool TryFindOpenAxis(
+        IReadOnlyList<BaseLightTransformEventBox> boxes,
+        int sourceBoxIndex,
+        float relativeJsonTime,
+        int direction,
+        out int targetAxis)
+    {
+        var sourceAxis = boxes[sourceBoxIndex].Axis;
+        var axisDirection = Math.Sign(direction);
+        for (var axisOffset = 1; axisOffset < 3; axisOffset++)
+        {
+            var candidateAxis = (sourceAxis + (axisDirection * axisOffset) + 6) % 3;
+            var occupied = false;
+            for (var boxIndex = 0; boxIndex < boxes.Count && !occupied; boxIndex++)
+            {
+                if (boxes[boxIndex].Axis != candidateAxis)
+                {
+                    continue;
+                }
+
+                occupied = ContainsEventAtRelativeTime(boxes[boxIndex].ReadOnlyEvents, relativeJsonTime);
+            }
+
+            if (!occupied)
+            {
+                targetAxis = candidateAxis;
+                return true;
+            }
+        }
+
+        targetAxis = sourceAxis;
+        return false;
+    }
+
+    private static bool ContainsEventAtRelativeTime(IReadOnlyList<BaseGLSEvent> events, float relativeJsonTime)
+    {
+        var eventIndex = events.BinarySearchBy(relativeJsonTime, static evt => evt.RelativeJsonTime);
+        if (eventIndex >= 0)
+        {
+            return true;
+        }
+
+        var insertionIndex = ~eventIndex;
+        return (insertionIndex < events.Count
+                && Math.Abs(events[insertionIndex].RelativeJsonTime - relativeJsonTime)
+                < BeatmapObjectContainerCollection.Epsilon)
+            || (insertionIndex > 0
+                && Math.Abs(events[insertionIndex - 1].RelativeJsonTime - relativeJsonTime)
+                < BeatmapObjectContainerCollection.Epsilon);
+    }
+
+    private static void WarnNoOpenAxis()
+    {
+        const string message = "No open axis to shift to on this beat.";
+        PersistentUI.Instance.DisplayMessage(message, PersistentUI.DisplayMessageType.Bottom);
+    }
+
+    // Reuse an existing destination-axis track through the common transform-group contract without changing concrete box types.
+    private static (bool createdDestination, bool removedSource) MoveEventToAxisTrack(
+        ILightTransformEventBoxGroup group,
         int sourceBoxIndex,
         int eventIndex,
-        int targetAxis,
-        Func<TBox, int> getAxis,
-        Action<TBox, int> setAxis)
-        where TBox : BaseEventBox
+        int targetAxis)
     {
+        var boxes = group.TransformBoxes;
         var sourceBox = boxes[sourceBoxIndex];
         var movedEvent = sourceBox.ReadOnlyEvents[eventIndex];
-        TBox targetBox = null;
+        BaseLightTransformEventBox targetBox = null;
         for (var boxIndex = 0; boxIndex < boxes.Count; boxIndex++)
         {
-            if (boxIndex != sourceBoxIndex && getAxis(boxes[boxIndex]) == targetAxis)
+            if (boxIndex != sourceBoxIndex && boxes[boxIndex].Axis == targetAxis)
             {
                 targetBox = boxes[boxIndex];
                 break;
@@ -106,9 +138,8 @@ public static class GLSCommonCommand
         var createdDestination = targetBox == null;
         if (createdDestination)
         {
-            // Clone track configuration only when the destination axis does not exist yet.
-            targetBox = BeatmapFactory.Clone(sourceBox);
-            setAxis(targetBox, targetAxis);
+            targetBox = (BaseLightTransformEventBox)sourceBox.Clone();
+            targetBox.Axis = targetAxis;
             targetBox.SetEvents(new BaseGLSEvent[] { movedEvent });
         }
         else
@@ -140,39 +171,12 @@ public static class GLSCommonCommand
 
         sourceBox.SetEvents(remainingEvents);
         var removedSource = sourceBox.ReadOnlyEvents.Count == 0;
-        // Vacated source tracks disappear before the newly-created destination track is appended.
         if (removedSource)
-            boxes.RemoveAt(sourceBoxIndex);
+            group.RemoveTransformBoxAt(sourceBoxIndex);
         if (createdDestination)
-            boxes.Add(targetBox);
-        // Keep event-box tracks in stable X/Y/Z order regardless of which direction created the destination.
-        SortAxisTracks(boxes, getAxis);
+            group.TryAddTransformBox(targetBox);
+        group.SortAxisTracks();
         return (createdDestination, removedSource);
-    }
-
-    // Preserve relative order within each axis while normalizing the three axis groups.
-    private static void SortAxisTracks<TBox>(List<TBox> boxes, Func<TBox, int> getAxis)
-    {
-        var orderedBoxes = new List<TBox>(boxes.Count);
-        for (var axis = (int)Axis.X; axis <= (int)Axis.Z; axis++)
-        {
-            for (var boxIndex = 0; boxIndex < boxes.Count; boxIndex++)
-            {
-                if (getAxis(boxes[boxIndex]) == axis)
-                    orderedBoxes.Add(boxes[boxIndex]);
-            }
-        }
-
-        // Preserve malformed or future axis values after the supported X/Y/Z tracks instead of dropping data.
-        for (var boxIndex = 0; boxIndex < boxes.Count; boxIndex++)
-        {
-            var axis = getAxis(boxes[boxIndex]);
-            if (axis < (int)Axis.X || axis > (int)Axis.Z)
-                orderedBoxes.Add(boxes[boxIndex]);
-        }
-
-        boxes.Clear();
-        boxes.AddRange(orderedBoxes);
     }
 
     // Resolve the cloned child by stable box and event indexes without scanning the beatmap.
@@ -200,17 +204,18 @@ public static class GLSCommonCommand
         return false;
     }
 
-    // Keep wheel direction reversible while wrapping through the three supported axes.
-    private static int CycleAxis(int currentAxis, int direction) =>
-        (currentAxis + Math.Sign(direction) + 3) % 3;
-
-    // Rebind every edited child after a box split so inner lanes and outer previews share valid ownership.
-    private static void RebindGroup<TBox>(BaseEventBoxGroup<TBox> group)
-        where TBox : BaseEventBox
+    // Every GLS group already exposes base-typed boxes, so ownership finalization needs no concrete group dispatch.
+    internal static void RebindGroup(BaseEventBoxGroup group)
     {
-        for (var boxIndex = 0; boxIndex < group.Boxes.Count; boxIndex++)
+        // Preserve the previous supported-group boundary while collapsing rotation and translation through their common contract.
+        if (group is not (BaseLightColorEventBoxGroup or ILightTransformEventBoxGroup or BaseVfxEventEventBoxGroup))
         {
-            var box = group.Boxes[boxIndex];
+            return;
+        }
+
+        for (var boxIndex = 0; boxIndex < group.ReadOnlyBoxes.Count; boxIndex++)
+        {
+            var box = group.ReadOnlyBoxes[boxIndex];
             foreach (var evt in box.ReadOnlyEvents)
             {
                 evt.EventBoxData = box;
@@ -222,6 +227,45 @@ public static class GLSCommonCommand
 
         group.ResortOrderedEvents();
         group.SaveCustom();
+    }
+
+    internal static bool TryMaterializeAutomaticAxisLane(
+        BaseEventBoxGroup group,
+        BaseEventBox displayBox,
+        out BaseEventBox materializedBox,
+        out int materializedBoxIndex)
+    {
+        // The common transform contract validates concrete compatibility before adding and sorting a cloned display lane.
+        if (group is not ILightTransformEventBoxGroup transformGroup
+            || displayBox is not BaseLightTransformEventBox transformBox)
+        {
+            materializedBox = null;
+            materializedBoxIndex = -1;
+            return false;
+        }
+
+        materializedBox = (BaseEventBox)transformBox.Clone();
+        if (!transformGroup.TryAddTransformBox((BaseLightTransformEventBox)materializedBox))
+        {
+            materializedBox = null;
+            materializedBoxIndex = -1;
+            return false;
+        }
+        transformGroup.SortAxisTracks();
+
+        // Resolve the stable index once after sorting so callers never assume a materialized lane was appended.
+        for (var boxIndex = 0; boxIndex < group.ReadOnlyBoxes.Count; boxIndex++)
+        {
+            if (ReferenceEquals(group.ReadOnlyBoxes[boxIndex], materializedBox))
+            {
+                materializedBoxIndex = boxIndex;
+                return true;
+            }
+        }
+
+        materializedBox = null;
+        materializedBoxIndex = -1;
+        return false;
     }
 
     public static (BaseEventBoxGroup group, TEvent evt) CopyGroupFrom<TEvent>(TEvent evt)

@@ -14,6 +14,8 @@ namespace Tests.Infrastructure
         public IEnumerator LoadMap()
         {
             yield return TestUtils.LoadMap(3);
+            // Speeds up some tests by multiple seconds. Which does beg some questions that I don't want to find the answer to right now lmao
+            PersistentUI.Instance.EnableTransitions = false;
             yield return OnMapLoaded();
         }
 

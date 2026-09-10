@@ -113,6 +113,31 @@ namespace Tests.Editor
                 "Alt+Scroll from legacy HSV must return to RGB without exposing trueHSV.");
         }
 
+        // Chroma always evaluates legacy lightGradient payloads in RGB, so their ribbon must not accept transition-only lerpType edits.
+        [UnityTest]
+        public IEnumerator AltScrollOnLegacyGradientRibbonDoesNotChangeLerpType()
+        {
+            PrepareRibbonAppearance();
+            var sourceData = CreateLightEvent(2f, LightValue.RedOn, EventTypeValue.Event2);
+            sourceData.CustomLightGradient = new ChromaLightGradient(
+                new Color(1f, 0f, 0.6f, 0.4f),
+                new Color(0f, 1f, 0.2f, 0.8f),
+                2f,
+                "easeLinear");
+            var source = PlaceUtils.Place(sourceData);
+            var endpoint = PlaceLightEvent(4f, LightValue.BlueTransition);
+            yield return null;
+
+            PrepareRibbonShortcutInput(source, endpoint);
+            ScrollRibbonWithModifiers(UnityEngine.InputSystem.Key.LeftAlt);
+            source = RefreshLightEvent(source);
+
+            Assert.That(
+                source.CustomLerpType,
+                Is.Null,
+                "Alt+Scroll over a legacy lightGradient ribbon must not author transition-only lerpType data.");
+        }
+
         [UnityTest]
         public IEnumerator AltScrollOnTransitionRibbonFromZeroBrightnessOnLightChangesLerpType()
         {

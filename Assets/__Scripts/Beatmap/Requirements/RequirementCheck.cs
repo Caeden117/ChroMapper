@@ -20,6 +20,7 @@ public abstract class RequirementCheck
     internal static void Setup()
     {
         requirementsAndSuggestions.Clear();
+        RegisterRequirement(new BeatToTheFutureReq());
         RegisterRequirement(new ChromaReq());
         RegisterRequirement(new ChromaGLSReq());
         RegisterRequirement(new LegacyChromaReq());

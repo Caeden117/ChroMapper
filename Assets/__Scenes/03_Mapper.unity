@@ -44901,6 +44901,7 @@ MonoBehaviour:
   Labels: {fileID: 322207091}
   beatmapContext: {fileID: 127874572}
   glsGroupGridProvider: {fileID: 788356228}
+  glsEventGridProvider: {fileID: 986915610}
 --- !u!1 &860592925
 GameObject:
   m_ObjectHideFlags: 0

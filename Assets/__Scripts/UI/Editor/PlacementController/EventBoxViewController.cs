@@ -225,8 +225,8 @@ public class EventBoxViewController : MonoBehaviour
 
     private void ConfigureAxisActions(BaseEventBoxGroup group)
     {
-        // FloatFX and color boxes have no axis data, so never let axis-only operations rebuild their lane layout.
-        var supportsAxes = group is BaseLightRotationEventBoxGroup || group is BaseLightTranslationEventBoxGroup;
+        // FloatFX and color boxes do not implement the shared transform-group contract used by axis-only operations.
+        var supportsAxes = group is ILightTransformEventBoxGroup;
         addAxesEventBoxButton.Selectable.interactable = supportsAxes;
         addIdsAndAxesEventBoxButton.Selectable.interactable = supportsAxes;
         sortAxesEventBoxButton.Selectable.interactable = supportsAxes;
@@ -249,22 +249,21 @@ public class EventBoxViewController : MonoBehaviour
     private void HandleAddIdsEventBox()
     {
         if (groupContext == null) return;
-        var td = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(groupContext.ID);
-        GLSEventBoxCommand.AddAllIdsEventBox(groupContext, td, GetGroupSize(groupContext));
+        GLSEventBoxCommand.AddAllIdsEventBox(groupContext, GetGroupSize(groupContext));
     }
 
     private void HandleAddAxesEventBox()
     {
-        // Axis generation is meaningful only for transform GLS boxes; FloatFX must retain its ordinary filter lanes.
-        if (groupContext is not (BaseLightRotationEventBoxGroup or BaseLightTranslationEventBoxGroup)) return;
+        // Axis generation is meaningful only for groups implementing the shared transform contract.
+        if (groupContext is not ILightTransformEventBoxGroup) return;
         var td = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(groupContext.ID);
         GLSEventBoxCommand.AddAllAxesEventBox(groupContext, td);
     }
 
     private void HandleAddIdsAndAxesEventBox()
     {
-        // Axis generation is meaningful only for transform GLS boxes; FloatFX must retain its ordinary filter lanes.
-        if (groupContext is not (BaseLightRotationEventBoxGroup or BaseLightTranslationEventBoxGroup)) return;
+        // Axis generation is meaningful only for groups implementing the shared transform contract.
+        if (groupContext is not ILightTransformEventBoxGroup) return;
         var td = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(groupContext.ID);
         GLSEventBoxCommand.AddAllAxesAndIdsEventBox(groupContext, td, GetGroupSize(groupContext));
     }
@@ -598,6 +597,20 @@ public class EventBoxViewController : MonoBehaviour
         easeTypeDropdown.SetValueWithoutNotify(box.Easing);
 
         var td = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(groupContext.ID);
+        // Axis visibility, values, and track availability are identical for every transform box.
+        if (box is BaseLightTransformEventBox transformBox
+            && groupContext is ILightTransformEventBoxGroup transformGroup)
+        {
+            var enabledAxes = transformGroup.GetEnabledAxes(td);
+            axisObject.SetActive(true);
+            axisXToggle.SetValueWithoutNotify(transformBox.Axis == (int)Axis.X);
+            axisYToggle.SetValueWithoutNotify(transformBox.Axis == (int)Axis.Y);
+            axisZToggle.SetValueWithoutNotify(transformBox.Axis == (int)Axis.Z);
+            axisXToggle.Selectable.interactable = enabledAxes[0];
+            axisYToggle.Selectable.interactable = enabledAxes[1];
+            axisZToggle.Selectable.interactable = enabledAxes[2];
+        }
+
         switch (box)
         {
             case BaseLightColorEventBox lceb:
@@ -612,41 +625,19 @@ public class EventBoxViewController : MonoBehaviour
                         lceb.BrightnessDistribution * 100f);
                 affectFirstToggle.SetValueWithoutNotify(lceb.BrightnessAffectFirst == 1);
                 break;
-            case BaseLightRotationEventBox lreb:
-                axisObject.SetActive(true);
-                axisXToggle.SetValueWithoutNotify(lreb.Axis == (int)Axis.X);
-                axisYToggle.SetValueWithoutNotify(lreb.Axis == (int)Axis.Y);
-                axisZToggle.SetValueWithoutNotify(lreb.Axis == (int)Axis.Z);
-                axisXToggle.Selectable.interactable = td.RotationTracks[0];
-                axisYToggle.Selectable.interactable = td.RotationTracks[1];
-                axisZToggle.Selectable.interactable = td.RotationTracks[2];
+            case BaseLightTransformEventBox currentTransformBox: 
+                // Rotation and Translation
                 valueDistributionStepToggle.SetValueWithoutNotify(
-                    lreb.RotationDistributionType == (int)DistributionType.Step);
+                    currentTransformBox.ValueDistributionType == (int)DistributionType.Step);
                 valueDistributionWaveToggle.SetValueWithoutNotify(
-                    lreb.RotationDistributionType == (int)DistributionType.Wave);
+                    currentTransformBox.ValueDistributionType == (int)DistributionType.Wave);
                 valueDistributionInput
-                    .WithScrollPrecision(scrollPrecisionController.GetCurrentRotationPrecision)
+                    .WithScrollPrecision(currentTransformBox is BaseLightRotationEventBox
+                        ? scrollPrecisionController.GetCurrentRotationPrecision
+                        : scrollPrecisionController.GetCurrentTranslationPrecision)
                     .SetValueWithoutNotify(
-                        lreb.RotationDistribution);
-                affectFirstToggle.SetValueWithoutNotify(lreb.RotationAffectFirst == 1);
-                break;
-            case BaseLightTranslationEventBox lteb:
-                axisObject.SetActive(true);
-                axisXToggle.SetValueWithoutNotify(lteb.Axis == (int)Axis.X);
-                axisYToggle.SetValueWithoutNotify(lteb.Axis == (int)Axis.Y);
-                axisZToggle.SetValueWithoutNotify(lteb.Axis == (int)Axis.Z);
-                axisXToggle.Selectable.interactable = td.TranslationTracks[0];
-                axisYToggle.Selectable.interactable = td.TranslationTracks[1];
-                axisZToggle.Selectable.interactable = td.TranslationTracks[2];
-                valueDistributionStepToggle.SetValueWithoutNotify(
-                    lteb.TranslationDistributionType == (int)DistributionType.Step);
-                valueDistributionWaveToggle.SetValueWithoutNotify(
-                    lteb.TranslationDistributionType == (int)DistributionType.Wave);
-                valueDistributionInput
-                    .WithScrollPrecision(scrollPrecisionController.GetCurrentTranslationPrecision)
-                    .SetValueWithoutNotify(
-                        lteb.TranslationDistribution * 100f);
-                affectFirstToggle.SetValueWithoutNotify(lteb.TranslationAffectFirst == 1);
+                        currentTransformBox.ValueDistribution * currentTransformBox.ValueDistributionDisplayScale);
+                affectFirstToggle.SetValueWithoutNotify(currentTransformBox.AffectFirst == 1);
                 break;
             case BaseVfxEventEventBox ffeb:
                 axisObject.SetActive(false);

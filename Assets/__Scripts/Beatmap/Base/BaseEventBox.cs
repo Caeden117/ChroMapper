@@ -35,6 +35,12 @@ namespace Beatmap.Base
         public int BeatDistributionType { get; set; }
 
         public int Easing { get; set; }
+
+        /// <summary>
+        /// Is it a temp ghost lane for ease of placement for rotation / translation XYZ?
+        /// We don't serialize these, they only exist once used.
+        /// </summary>
+        public bool IsAutomaticAxisLane { get; set; }
         
         public abstract IReadOnlyList<BaseGLSEvent> ReadOnlyEvents { get; }
         public abstract void ClearEvents();
@@ -124,5 +130,57 @@ namespace Beatmap.Base
 
         public virtual Axis GetAxis() => Axis.X;
 
+    }
+
+    // Rotation and translation boxes share XYZ lane behavior while retaining their typed event arrays and JSON properties.
+    public abstract class BaseLightTransformEventBox : BaseEventBox
+    {
+        protected BaseLightTransformEventBox()
+        {
+        }
+
+        protected BaseLightTransformEventBox(
+            BaseIndexFilter indexFilter,
+            float beatDistribution,
+            int beatDistributionType,
+            int axis,
+            int flip) : base(indexFilter, beatDistribution, beatDistributionType)
+        {
+            Axis = axis;
+            Flip = flip;
+        }
+
+        protected BaseLightTransformEventBox(
+            BaseIndexFilter indexFilter,
+            float beatDistribution,
+            int beatDistributionType,
+            int easing,
+            int axis,
+            int flip) : base(indexFilter, beatDistribution, beatDistributionType, easing)
+        {
+            Axis = axis;
+            Flip = flip;
+        }
+
+        protected BaseLightTransformEventBox(BaseLightTransformEventBox other) : base(
+            other.IndexFilter.Clone() as BaseIndexFilter,
+            other.BeatDistribution,
+            other.BeatDistributionType,
+            other.Easing)
+        {
+            Axis = other.Axis;
+            Flip = other.Flip;
+            IsAutomaticAxisLane = other.IsAutomaticAxisLane;
+        }
+
+        public int Axis { get; set; }
+        public int Flip { get; set; }
+        public abstract float ValueDistribution { get; set; }
+        public abstract int ValueDistributionType { get; set; }
+        public abstract int AffectFirst { get; set; }
+        public abstract float ValueDistributionDisplayScale { get; }
+        public abstract bool AcceptsEvent(BaseGLSEvent evt);
+
+        public override Axis GetAxis() => (Axis)Axis;
     }
 }

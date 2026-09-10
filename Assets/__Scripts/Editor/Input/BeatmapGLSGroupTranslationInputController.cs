@@ -17,6 +17,12 @@ public class
         GLSEventHoverMutation.AdjustTranslation(context, TryGetHoveredEvent(context, out var evt) ? evt : null, Precision);
     }
 
+    public void OnYEETTranslationHover(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        var resolved = TryGetHoveredEvent(context, out var evt) ? evt : null;
+        GLSEventHoverMutation.ToggleTranslationYeet(context, resolved);
+    }
+
     // Use the explicit modifier action because the Alt-only value action is suppressed by more-specific chords.
     public void OnTweakEasingHover(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {

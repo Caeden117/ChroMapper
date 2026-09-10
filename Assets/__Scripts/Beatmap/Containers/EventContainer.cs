@@ -241,6 +241,8 @@ namespace Beatmap.Containers
             Color? endColor = null,
             string easing = "easeLinear",
             BasicEventColorLerpType colorLerpType = BasicEventColorLerpType.RGB,
+            float startBrightness = 1f,
+            float endBrightness = 1f,
             bool allowNonLight = false,
             BaseEvent transitionTarget = null)
         {
@@ -260,8 +262,16 @@ namespace Beatmap.Containers
                 }
 
                 lightGradientController.SetVisible(true);
-                // Authored legacy gradients use the same lerpType modes as destination-owned Basic Event ribbons.
-                lightGradientController.UpdateGradientData(EventData.CustomLightGradient, colorLerpType);
+                var gradient = new ChromaLightGradient(
+                    BasicEventColorLerp.ApplyBrightness(
+                        EventData.CustomLightGradient.StartColor,
+                        EventData.FloatValue),
+                    BasicEventColorLerp.ApplyBrightness(
+                        EventData.CustomLightGradient.EndColor,
+                        EventData.FloatValue),
+                    EventData.CustomLightGradient.Duration,
+                    EventData.CustomLightGradient.EasingType);
+                lightGradientController.UpdateGradientData(gradient, BasicEventColorLerpType.RGB);
                 lightGradientController.UpdateDuration(EventData.CustomLightGradient.Duration);
             }
             else
@@ -275,8 +285,8 @@ namespace Beatmap.Containers
                 // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt uses the effective endpoint for ribbon length.
                 var renderedTransitionTarget = transitionTarget ?? EventData.Next;
                 var transition = new ChromaLightGradient(
-                    startColor.Value,
-                    endColor.Value,
+                    BasicEventColorLerp.ApplyBrightness(startColor.Value, startBrightness),
+                    BasicEventColorLerp.ApplyBrightness(endColor.Value, endBrightness),
                     renderedTransitionTarget?.SongBpmTime - EventData.SongBpmTime ?? 0f,
                     easing);
                 lightGradientController.SetVisible(true);

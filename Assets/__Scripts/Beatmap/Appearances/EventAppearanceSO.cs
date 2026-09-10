@@ -185,6 +185,8 @@ namespace Beatmap.Appearances
                 color = e.EventData.CustomColor.Value;
             }
 
+            var ribbonStartColor = color;
+
             // Display floatValue only where used
             if (trackDef.Kind == BasicEventKind.Lights
                 && e.EventData.Value != 0)
@@ -244,6 +246,7 @@ namespace Beatmap.Appearances
 
             // At this point, next Event must be a light event.
             Color? nextColor = null;
+            Color? ribbonEndColor = null;
             // Surface serialized Basic Event easing even without a following transition.
             var easing = e.EventData.CustomEasing ?? "easeLinear";
             // Fall back to the serialized easing suffix so unknown custom easing labels stay inspectable.
@@ -267,6 +270,8 @@ namespace Beatmap.Appearances
                     nextColor = nextEvent.CustomColor.Value;
                 }
 
+                ribbonEndColor = nextColor;
+
                 // for clarity sake, we don't want this to be the same as off color
                 var clampedOffColor = Color.Lerp(OffColor, nextColor.Value, 0.25f);
                 nextColor = Color.Lerp(clampedOffColor, nextColor.Value, nextEvent.FloatValue);
@@ -277,6 +282,8 @@ namespace Beatmap.Appearances
             {
                 easing = e.EventData.CustomLightGradient.EasingType;
                 easingLabel = easing == "easeLinear" ? null : GetShortEasingName(easing);
+                // Chroma legacy gradients are RGB-only and must not surface ordinary transition lerpType metadata.
+                colorLerpType = BasicEventColorLerpType.RGB;
             }
 
             // Distinguish compatibility HSV from conventional angular HSV without changing serialized names.
@@ -294,10 +301,12 @@ namespace Beatmap.Appearances
             {
                 // LightIdTransitionRibbonStopsAtAllLightsNonTransitionInterrupt keeps color and length on one endpoint.
                 e.UpdateGradientRendering(
-                    color,
-                    nextColor,
+                    ribbonStartColor,
+                    ribbonEndColor,
                     easing,
                     colorLerpType,
+                    e.EventData.FloatValue,
+                    nextEvent?.FloatValue ?? 1f,
                     transitionTarget: nextEvent);
             }
 

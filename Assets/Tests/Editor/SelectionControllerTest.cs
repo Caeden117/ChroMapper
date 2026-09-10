@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
@@ -790,6 +791,52 @@ namespace Tests.Editor
             Assert.AreEqual(2, redoneGroup.ReadOnlyBoxes[1].ReadOnlyEvents.Count);
         }
 
+        // Ctrl+Right must materialize a visible automatic Y lane, move the selected node there, and retire the vacated automatic X box.
+        [Test]
+        public void ShiftSelectionMovesTranslationNodeFromAutomaticXIntoGhostY()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var source = new BaseLightTranslationBase { RelativeJsonTime = 0.5f, Translation = 25 };
+            var group = new BaseLightTranslationEventBoxGroup
+            {
+                JsonTime = 2,
+                ID = 1,
+                Boxes =
+                {
+                    new BaseLightTranslationEventBox
+                    {
+                        Axis = 0,
+                        IsAutomaticAxisLane = true,
+                        Events = new[] { source }
+                    }
+                }
+            };
+            // Match real placement ownership so this regression reaches Ctrl+Arrow's displayed-lane boundary logic.
+            group.NormalizeLoadedEventConflicts();
+            PlaceGlsGroup(group);
+            SelectionController.Select(group.Boxes[0].Events[0]);
+
+            selectionController.ShiftSelection(1, 0);
+
+            var provider = Object.FindAnyObjectByType<GLSEventGridProvider>();
+            var editedGroup = provider.GroupContext as BaseLightTranslationEventBoxGroup;
+            Assert.AreEqual(1, editedGroup.Boxes.Count);
+            Assert.AreEqual(1, editedGroup.Boxes[0].Axis);
+            Assert.True(editedGroup.Boxes[0].IsAutomaticAxisLane);
+            Assert.AreEqual(1, editedGroup.Boxes[0].Events.Length);
+            Assert.AreEqual(25, editedGroup.Boxes[0].Events[0].Translation);
+            Assert.AreEqual(0, editedGroup.Boxes[0].Events[0].BoxIndex);
+            Assert.AreSame(editedGroup.Boxes[0], editedGroup.Boxes[0].Events[0].EventBoxData);
+            Assert.AreSame(editedGroup, editedGroup.Boxes[0].Events[0].EventBoxGroupData);
+            var selectedEvent = SelectionController.SelectedObjects.OfType<BaseLightTranslationBase>().Single();
+            Assert.AreSame(editedGroup.Boxes[0].Events[0], selectedEvent);
+            Assert.True(provider.TryGetDisplayedBox(0, out var emptyXAxis));
+            Assert.AreEqual(0, (int)emptyXAxis.GetAxis());
+            Assert.True(emptyXAxis.IsAutomaticAxisLane);
+            Assert.AreEqual(0, emptyXAxis.ReadOnlyEvents.Count);
+            Assert.False(editedGroup.ReadOnlyBoxes.Contains(emptyXAxis));
+        }
+
         // Selecting an outer GLS group beside its inner node must not apply two competing parent replacements during mirror.
         [Test]
         public void MirrorSkipsSelectedGlsParentOwnedBySelectedInnerNode()
@@ -847,6 +894,205 @@ namespace Tests.Editor
             }
             finally
             {
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        // Alt-drag hover must move the visible dragged node into a ghost Y lane before release materializes that destination.
+        [Test]
+        public void AltDragHoverPreviewsTranslationNodeInAutomaticYAxisLane()
+        {
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var originalMode = editModeContext.EditingMode;
+            editModeContext.EditingMode = EditingMode.EventBox;
+            var hitParent = new GameObject("GLS translation ghost-lane drag surface");
+            var hitObject = new GameObject("GLS translation ghost-lane drag hit");
+            hitObject.transform.SetParent(hitParent.transform);
+            GLSEventContainer dragContainer = null;
+            GLSEventTranslationPlacement placement = null;
+            try
+            {
+                var source = new BaseLightTranslationBase { RelativeJsonTime = 0.5f, Translation = 25 };
+                var group = new BaseLightTranslationEventBoxGroup
+                {
+                    JsonTime = 2,
+                    ID = 1,
+                    Boxes =
+                    {
+                        new BaseLightTranslationEventBox
+                        {
+                            Axis = 0,
+                            IsAutomaticAxisLane = true,
+                            Events = new[] { source }
+                        }
+                    }
+                };
+                group.NormalizeLoadedEventConflicts();
+                PlaceGlsGroup(group);
+                var eventCollection = BeatmapObjectContainerCollection
+                    .GetCollectionForType<GLSEventGridContainer>(ObjectType.GLSEvent);
+                placement = Object.FindObjectsByType<GLSEventTranslationPlacement>(
+                        FindObjectsInactive.Include,
+                        FindObjectsSortMode.None)
+                    .Where(candidate => candidate.ObjectContainerCollection == eventCollection)
+                    .OrderByDescending(candidate => candidate.isActiveAndEnabled)
+                    .FirstOrDefault();
+                Assert.NotNull(placement);
+                // Initialize the placement-owned hover container before drag, matching PlacementProvider's editor lifecycle.
+                placement.Initialize(null);
+                dragContainer = eventCollection.CreateContainer() as GLSEventContainer;
+                Assert.NotNull(dragContainer);
+                dragContainer.ObjectData = group.Boxes[0].Events[0];
+                dragContainer.Setup();
+                dragContainer.UpdateGridPosition();
+                Assert.NotNull(placement.StartDrag(dragContainer.gameObject));
+                placement.Bounds = new Bounds(new Vector3(1.5f, 0.5f, 0f), new Vector3(3f, 1f, 100f));
+                var localPoint = new Vector3(
+                    1.5f,
+                    0f,
+                    source.SongBpmTime * EditorScaleController.EditorScale);
+                var worldPoint = placement.PlacementTrack.TransformPoint(localPoint);
+
+                placement.UpdateState(
+                    new Intersections.IntersectionHit(
+                        hitObject,
+                        new Bounds(Vector3.zero, Vector3.one),
+                        new Ray(worldPoint, Vector3.forward),
+                        0f),
+                    PlacementInputState.Drag);
+
+                Assert.AreEqual(1, (int)placement.DraggedObjectData.EventBoxData.GetAxis());
+                Assert.AreEqual(-1, placement.DraggedObjectData.BoxIndex);
+                Assert.True(dragContainer.gameObject.activeSelf);
+                Assert.That(dragContainer.transform.localPosition.x, Is.EqualTo(1.5f).Within(0.00001f));
+            }
+            finally
+            {
+                if (placement != null && placement.IsDragging)
+                {
+                    placement.FinishDrag();
+                }
+
+                if (dragContainer != null)
+                {
+                    Object.DestroyImmediate(dragContainer.gameObject);
+                }
+
+                Object.DestroyImmediate(hitParent);
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        // Pasting onto the ghost Y lane between populated X/Z must materialize Y and retain sorted, valid ownership.
+        [Test]
+        public void PastingNodeIntoMiddleTranslationGhostKeepsXyzLaneOrder()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var originalMode = editModeContext.EditingMode;
+            editModeContext.EditingMode = EditingMode.EventBox;
+            var group = new BaseLightTranslationEventBoxGroup
+            {
+                JsonTime = 151,
+                ID = 151,
+                Boxes =
+                {
+                    new BaseLightTranslationEventBox
+                    {
+                        Axis = 0,
+                        Events = new[] { new BaseLightTranslationBase { Translation = 10 } }
+                    },
+                    new BaseLightTranslationEventBox
+                    {
+                        Axis = 2,
+                        Events = new[] { new BaseLightTranslationBase { Translation = 30 } }
+                    }
+                }
+            };
+            group.NormalizeLoadedEventConflicts();
+            PlaceGlsGroup(group);
+            var provider = Object.FindAnyObjectByType<GLSEventGridProvider>();
+            Assert.True(provider.TryGetDisplayedBox(1, out var emptyYAxis));
+            var placement = ConfigureTranslationPasteLane(selectionController, group, emptyYAxis, 1);
+
+            try
+            {
+                SelectionController.Select(group.Boxes[0].Events[0]);
+                selectionController.Copy();
+
+                selectionController.Paste();
+
+                var editedGroup = provider.GroupContext as BaseLightTranslationEventBoxGroup;
+                CollectionAssert.AreEqual(new[] { 0, 1, 2 }, editedGroup.Boxes.Select(box => box.Axis));
+                CollectionAssert.AreEqual(
+                    new[] { 10f, 10f, 30f },
+                    editedGroup.Boxes.SelectMany(box => box.Events).Select(evt => evt.Translation));
+                Assert.That(editedGroup.Boxes[1].Events[0].RelativeJsonTime, Is.EqualTo(1f));
+                AssertValidGlsEventOwnership(editedGroup);
+            }
+            finally
+            {
+                placement.State = PlacementState.Idle;
+                SelectionController.CopiedObjects.Clear();
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        // Copying an X node onto an authored Y lane must target the hovered lane and cursor beat, not retain X ownership.
+        [Test]
+        public void PastingXAxisNodeIntoAuthoredTranslationYAxisUsesCursorPosition()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var originalMode = editModeContext.EditingMode;
+            editModeContext.EditingMode = EditingMode.EventBox;
+            var group = new BaseLightTranslationEventBoxGroup
+            {
+                JsonTime = 152,
+                ID = 152,
+                Boxes =
+                {
+                    new BaseLightTranslationEventBox
+                    {
+                        Axis = 0,
+                        Events = new[] { new BaseLightTranslationBase { Translation = 10 } }
+                    },
+                    new BaseLightTranslationEventBox
+                    {
+                        Axis = 1,
+                        Events = new[] { new BaseLightTranslationBase { Translation = 20 } }
+                    },
+                    new BaseLightTranslationEventBox
+                    {
+                        Axis = 2,
+                        Events = new[] { new BaseLightTranslationBase { Translation = 30 } }
+                    }
+                }
+            };
+            group.NormalizeLoadedEventConflicts();
+            PlaceGlsGroup(group);
+            var provider = Object.FindAnyObjectByType<GLSEventGridProvider>();
+            Assert.True(provider.TryGetDisplayedBox(1, out var yAxis));
+            var placement = ConfigureTranslationPasteLane(selectionController, group, yAxis, 1);
+
+            try
+            {
+                SelectionController.Select(group.Boxes[0].Events[0]);
+                selectionController.Copy();
+
+                selectionController.Paste();
+
+                var editedGroup = provider.GroupContext as BaseLightTranslationEventBoxGroup;
+                CollectionAssert.AreEqual(new[] { 0, 1, 2 }, editedGroup.Boxes.Select(box => box.Axis));
+                Assert.AreEqual(2, editedGroup.Boxes[1].Events.Length);
+                Assert.AreEqual(10, editedGroup.Boxes[1].Events[1].Translation);
+                Assert.That(editedGroup.Boxes[1].Events[1].RelativeJsonTime, Is.EqualTo(1f));
+                AssertValidGlsEventOwnership(editedGroup);
+            }
+            finally
+            {
+                placement.State = PlacementState.Idle;
+                SelectionController.CopiedObjects.Clear();
                 editModeContext.EditingMode = originalMode;
             }
         }
@@ -999,15 +1245,90 @@ namespace Tests.Editor
             Assert.IsEmpty(SelectionController.SelectedObjects);
         }
 
+        // Paste regressions isolate one active GLS placement so retained scene state cannot select another node subtype or lane.
+        private static GLSEventTranslationPlacement ConfigureTranslationPasteLane(
+            SelectionController selectionController,
+            BaseLightTranslationEventBoxGroup group,
+            BaseEventBox lane,
+            float relativeJsonTime)
+        {
+            foreach (var candidate in Object.FindObjectsByType<GLSEventColorPlacement>(
+                         FindObjectsInactive.Include,
+                         FindObjectsSortMode.None))
+            {
+                candidate.State = PlacementState.Idle;
+            }
+            foreach (var candidate in Object.FindObjectsByType<GLSEventRotationPlacement>(
+                         FindObjectsInactive.Include,
+                         FindObjectsSortMode.None))
+            {
+                candidate.State = PlacementState.Idle;
+            }
+            foreach (var candidate in Object.FindObjectsByType<GLSEventTranslationPlacement>(
+                         FindObjectsInactive.Include,
+                         FindObjectsSortMode.None))
+            {
+                candidate.State = PlacementState.Idle;
+            }
+            foreach (var candidate in Object.FindObjectsByType<GLSEventFloatFXPlacement>(
+                         FindObjectsInactive.Include,
+                         FindObjectsSortMode.None))
+            {
+                candidate.State = PlacementState.Idle;
+            }
+
+            // Drive the exact serialized placement read by SelectionController; scenes may contain inactive sibling instances.
+            var placementField = typeof(SelectionController).GetField(
+                "glsEventTranslationPlacement",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(placementField);
+            var placement = placementField.GetValue(selectionController) as GLSEventTranslationPlacement;
+            Assert.NotNull(placement);
+            placement.QueuedData.EventBoxGroupData = group;
+            placement.QueuedData.EventBoxData = lane;
+            placement.QueuedData.BoxIndex = -1;
+            for (var boxIndex = 0; boxIndex < group.ReadOnlyBoxes.Count; boxIndex++)
+            {
+                if (ReferenceEquals(group.ReadOnlyBoxes[boxIndex], lane))
+                {
+                    placement.QueuedData.BoxIndex = boxIndex;
+                    break;
+                }
+            }
+            placement.QueuedData.RelativeJsonTime = relativeJsonTime;
+            placement.QueuedData.RecomputeSongBpmTime();
+            placement.State = PlacementState.Active;
+            return placement;
+        }
+
+        // Parent replacement is valid only when every pasted child points at its exact new group, box, and stable box index.
+        private static void AssertValidGlsEventOwnership(BaseEventBoxGroup group)
+        {
+            for (var boxIndex = 0; boxIndex < group.ReadOnlyBoxes.Count; boxIndex++)
+            {
+                var box = group.ReadOnlyBoxes[boxIndex];
+                foreach (var evt in box.ReadOnlyEvents)
+                {
+                    Assert.AreSame(group, evt.EventBoxGroupData);
+                    Assert.AreSame(box, evt.EventBoxData);
+                    Assert.AreEqual(boxIndex, evt.BoxIndex);
+                }
+            }
+        }
+
         // Place the parent through its real collection so replacement actions update the open GLS child context.
-        private static BaseLightColorEventBoxGroup PlaceGlsGroup(BaseLightColorEventBoxGroup group)
+        private static TGroup PlaceGlsGroup<TGroup>(TGroup group)
+            where TGroup : BaseEventBoxGroup
         {
             // Factory-created groups need the same map/time initialization as normal map-load objects before pool range queries can render them.
             group.SetMap(BeatSaberSongContainer.Instance.Map);
             group.RecomputeSongBpmTime();
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(group.ObjectType);
             collection.SpawnObject(group, false, false, true);
-            Object.FindAnyObjectByType<GLSEventGridProvider>().GroupContext = group;
+            var provider = Object.FindAnyObjectByType<GLSEventGridProvider>();
+            // Batch tests can inherit deferred retirement metadata; clear it so replacement resolves against this test's group.
+            provider.LastContext = null;
+            provider.GroupContext = group;
             return group;
         }
 

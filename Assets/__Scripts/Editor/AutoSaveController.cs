@@ -357,7 +357,7 @@ public class AutoSaveController : MonoBehaviour, CMInput.ISavingActions
                     stringBuilder.AppendLine("* Rotation Properties (v4)");
                 }
 
-                if (map.NJSEvents.Any())
+                if (!map.SaveVNJSEventsInV3 && map.NJSEvents.Any())
                 {
                     stringBuilder.AppendLine("* NJS Events (v4)");
                 }

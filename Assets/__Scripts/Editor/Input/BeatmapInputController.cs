@@ -179,7 +179,7 @@ public class BeatmapInputController<TContainer> : MonoBehaviour, CMInput.IBeatma
 
     protected virtual bool GetComponentFromTransform(GameObject t, out TContainer obj) => t.TryGetComponent(out obj);
 
-    protected bool RaycastFirstObject(out TContainer firstObject)
+    protected virtual bool RaycastFirstObject(out TContainer firstObject)
     {
         if (!BeatmapRaycastCache.HasRaycastThisFrame)
         {

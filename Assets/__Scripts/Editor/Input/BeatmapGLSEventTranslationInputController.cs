@@ -62,6 +62,16 @@ public class BeatmapGLSEventTranslationInputController : BeatmapGLSEventInputCon
         }
     }
 
+    public void OnYEETTranslationHover(InputAction.CallbackContext context)
+    {
+        TryGetHoveredEvent(context, out var evt);
+        GLSEventHoverMutation.ToggleTranslationYeet(context, evt);
+        if (evt != null)
+        {
+            RefreshHoveredVisualAfterMutation();
+        }
+    }
+
     // Use the explicit Ctrl+Alt action because the Alt-only value action is suppressed by more-specific chords.
     public void OnTweakEasingHover(InputAction.CallbackContext context)
     {

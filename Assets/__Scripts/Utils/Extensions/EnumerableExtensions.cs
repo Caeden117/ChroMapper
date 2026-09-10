@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -39,7 +39,60 @@ public static class IEnumerableExtensions
         return BinarySearchBy(span, value, getter);
     }
 
-    public static int BinarySearchBy<TValue, TComparison>(this Span<TValue> span, TComparison value, Func<TValue, TComparison> getter) where TComparison : IComparable<TComparison>
+    public static int BinarySearchBy<TValue, TComparison>(
+        this IReadOnlyList<TValue> list,
+        TComparison value,
+        Func<TValue, TComparison> getter)
+        where TComparison : IComparable<TComparison>
+    {
+        if (list is List<TValue> concreteList)
+        {
+            return BinarySearchBy(concreteList.AsSpan(), value, getter);
+        }
+
+        if (list is TValue[] array)
+        {
+            ReadOnlySpan<TValue> span = array;
+            return BinarySearchBy(span, value, getter);
+        }
+
+        var min = 0;
+        var max = list.Count - 1;
+        while (min <= max)
+        {
+            var mid = min + ((max - min) / 2);
+            var comparison = value.CompareTo(getter(list[mid]));
+            if (comparison == 0)
+            {
+                return mid;
+            }
+
+            if (comparison > 0)
+            {
+                min = mid + 1;
+            }
+            else
+            {
+                max = mid - 1;
+            }
+        }
+
+        return ~min;
+    }
+
+    // Mutable spans share the read-only implementation so array covariance is never exposed to write access.
+    public static int BinarySearchBy<TValue, TComparison>(
+        this Span<TValue> span,
+        TComparison value,
+        Func<TValue, TComparison> getter)
+        where TComparison : IComparable<TComparison> =>
+        BinarySearchBy((ReadOnlySpan<TValue>)span, value, getter);
+
+    public static int BinarySearchBy<TValue, TComparison>(
+        this ReadOnlySpan<TValue> span,
+        TComparison value,
+        Func<TValue, TComparison> getter)
+        where TComparison : IComparable<TComparison>
     {
         var min = 0;
         var max = span.Length - 1;
