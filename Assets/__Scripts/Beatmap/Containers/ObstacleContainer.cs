@@ -6,7 +6,8 @@ namespace Beatmap.Containers
 {
     public class ObstacleContainer : ObjectContainer
     {
-        private const float addColorMultiplier = 0.1f;
+        // Match the shipped obstacle prefab override, not the native constructor default.
+        private const float addColorMultiplier = 0.2f;
         private const float coreLerpToWhiteFactor = 0.75f;
         private const float obstacleEdgeSize = 0.05f;
 

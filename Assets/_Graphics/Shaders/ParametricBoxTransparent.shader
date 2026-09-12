@@ -1,32 +1,20 @@
 // Replacement for the Beat Saber game shader Custom/TransparentNeonLight.
 Shader "ChroMapper/Parametric Box Transparent"
 {
-    // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // PBT1. The 1.42.2 Custom/TransparentNeonLight Properties block is
-    //       authoritative. _Color and _AlphaWidth remain instanced runtime
-    //       values; shared fog, time, noise, bloom, and probe inputs are globals.
-    // PBT2. POSITION drives all routes. REFLECTION_PROBE also reads NORMAL.
-    //       The vertex selects _AlphaWidth zw/x y by position.y > 0.5, scales
-    //       local XZ by that width, and interpolates the selected alpha factor.
-    // PBT3 [10c6243ca42145bf,fb0a3537aa32426e]: source alpha is selected width
-    //       alpha cubed times _Color.a. WORLD_NOISE multiplies sampled 3D alpha,
-    //       intensity, optional warp, scrolling time, and optional world fade.
-    //       The result is then squared.
-    // PBT4. HEIGHT_FOG multiplies the squared alpha by the shared cubic height
-    //       ramp. BLOOM_FOG additionally multiplies distance transmission using
-    //       the pre-square source alpha as its divisor.
-    // PBT5 [866b14486d5d6356,032dfb9c99253066]: reflection uses the normalized
-    //       world normal and view ray, roughness-adjusted mip, and both packed
-    //       probes. It saturates after decode and again after reflection intensity.
-    // PBT6. Reflection is added independently of source alpha, scaled by squared
-    //       fog transmission and _GlassOpacity. Output alpha retains source fog.
-    // PBT7. MAIN_EFFECT_ENABLED disables source white boost; ChroMapper maps it
-    //       to POST_BLOOM and reuses CalculateBloomComposition.
-    // PBT8. No 1.44.3 binary contains SPECULAR, NORMAL_MAP, ENABLE_RIM_DIM, or
-    //       INVERT_RIM_DIM. Their authoritative controls remain exposed but inert.
-    //       OVERDRAW_VIEW remains intentionally omitted.
-    // PBT9. Stage binaries cannot prove ShaderLab state. Established transparent
-    //       blend/cull/stencil controls, LEqual, and ZWrite Off remain.
+    // _Color and _AlphaWidth are instanced runtime values. Shared fog, time, noise, bloom, and probe inputs are globals.
+    // POSITION drives all routes. REFLECTION_PROBE also reads NORMAL.
+    // The vertex selects _AlphaWidth zw/xy by position.y > 0.5 and scales local XZ by that width.
+    // Source alpha is the selected width alpha cubed times _Color.a.
+    // WORLD_NOISE multiplies sampled 3D alpha, intensity, optional warp, scrolling time, and optional world fade before squaring the result.
+    // HEIGHT_FOG multiplies squared alpha by the cubic height ramp.
+    // BLOOM_FOG also multiplies distance transmission, with pre-square source alpha as its divisor.
+    // Reflection uses the normalized world normal and view ray, roughness-adjusted mip, and both packed probes.
+    // Reflection saturates after decode and again after reflection intensity.
+    // Reflection is independent of source alpha, scaled by squared fog transmission and _GlassOpacity.
+    // Output alpha retains source fog.
+    // MAIN_EFFECT_ENABLED disables source white boost. ChroMapper maps it to POST_BLOOM and reuses CalculateBloomComposition.
+    // SPECULAR, NORMAL_MAP, ENABLE_RIM_DIM, and INVERT_RIM_DIM controls remain exposed but inactive.
+    // OVERDRAW_VIEW is intentionally omitted.
     Properties
     {
         _FogStartOffset ("Fog Start Offset", float) = 1
@@ -189,12 +177,8 @@ Shader "ChroMapper/Parametric Box Transparent"
                 o.vertex = UnityObjectToClipPos(i.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, i.vertex).xyz;
                 #if defined(REFLECTION_PROBE)
-                #if defined(SHADER_API_D3D11)
                 // The original D3D11 vertex transports the model normal without normalization.
                 o.worldNormal = mul((float3x3)unity_ObjectToWorld, i.normal);
-                #else
-                o.worldNormal = normalize(UnityObjectToWorldNormal(i.normal));
-                #endif
                 #endif
                 return o;
             }

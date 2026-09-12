@@ -207,8 +207,28 @@
                 UNITY_TRANSFER_INSTANCE_ID(i, o);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
+                float4 lightingPosition = i.vertex;
+                float4 clipPosition = i.vertex;
+                #if defined(FAKE_MIRROR_TRANSPARENCY)
+                float cutout = UNITY_ACCESS_INSTANCED_PROP(Props, _Cutout);
+                #if defined(PLANE_CUT)
+                // Project the LW lighting surface first; collapse only clip geometry.
+                float4 cutPlane = UNITY_ACCESS_INSTANCED_PROP(Props, _CutPlane);
+                float planeDistance = dot(i.vertex.xyz, cutPlane.xyz) + cutPlane.w;
+                planeDistance -= cutout * (_NoteSize + cutPlane.w);
+                lightingPosition.xyz -= min(planeDistance, 0.0) * cutPlane.xyz;
+                float planeCollapse = saturate((cutout - 0.5) * 2.0);
+                planeCollapse = planeCollapse * planeCollapse * (3.0 - 2.0 * planeCollapse);
+                clipPosition.xyz = (1.0 - planeCollapse) * lightingPosition.xyz +
+                    planeCollapse * cutPlane.xyz * _NoteSize;
+                #else
+                // LW cutout shrinks geometry, not the position used for lighting.
+                clipPosition.xyz *= 1.0 - cutout;
+                #endif
+                #endif
+
                 float3 cameraPosition = GetStereoAwareCameraPosition();
-                float3 worldPosition = mul(unity_ObjectToWorld, i.vertex).xyz;
+                float3 worldPosition = mul(unity_ObjectToWorld, lightingPosition).xyz;
                 float3 worldNormal = normalize(UnityObjectToWorldNormal(i.normal));
                 float3 V = normalize(worldPosition - cameraPosition);
                 float distanceToCamera = length(worldPosition - cameraPosition);
@@ -223,9 +243,9 @@
                     _RimCameraDistanceScale);
                 #endif
 
-                o.vertex = UnityObjectToClipPos(i.vertex);
+                o.vertex = UnityObjectToClipPos(clipPosition);
                 o.uv = i.uv;
-                o.localPos = i.vertex;
+                o.localPos = lightingPosition;
                 o.worldPos = float4(worldPosition, distanceToCamera);
                 o.reflectionData = float4(
                     AdaptEnvironmentReflectionDirection(worldReflectionDirection), rimFactor);
@@ -257,9 +277,10 @@
                     if (splitCoordinate > 0.0)
                         color.rgb = strobeColor.rgb;
                 }
-                // _ColorMultiplier is an editor MPB contract for both base and strobe RGB.
-                // Keep the selected color alpha unchanged for the recovered output math.
-                color.rgb *= UNITY_ACCESS_INSTANCED_PROP(Props, _ColorMultiplier);
+                // Native _FinalColorMul maps to this editor MPB. Preserve its base/strobe
+                // RGB contract, including HD edge brightness; LW also scales alpha below.
+                float colorMultiplier = UNITY_ACCESS_INSTANCED_PROP(Props, _ColorMultiplier);
+                color.rgb *= colorMultiplier;
                 float4 interfaceColor = UNITY_ACCESS_INSTANCED_PROP(Props, _OverNoteInterfaceColor);
                 float isTranslucent = UNITY_ACCESS_INSTANCED_PROP(Props, _AlwaysTranslucent);
                 float animation = UNITY_ACCESS_INSTANCED_PROP(Props, _AnimationSpawned);
@@ -271,8 +292,11 @@
                 color.rgb *= tex2D(_MainTex, TRANSFORM_TEX(i.uv, _MainTex)).rgb;
 
                 float cutoutMask = 0.0;
+                #if defined(FAKE_MIRROR_TRANSPARENCY)
+                float planeColorMultiplier = 1.0;
+                #endif
 
-                #if defined(CUTOUT)
+                #if defined(CUTOUT) && !defined(FAKE_MIRROR_TRANSPARENCY)
                 float3 objectOrigin = mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz;
                 float3 cutoutPosition = (i.worldPos.xyz - objectOrigin + cutoutTexOffset.xyz) *
                     _CutoutTexScale;
@@ -285,16 +309,19 @@
                 #endif
 
                 #if defined(PLANE_CUT)
-                // The recovered plane route subtracts the cutout-scaled plane
-                // threshold before its discard and edge smoothstep. Keep this
-                // branch independent of CUTOUT; the source variant contract does
-                // not justify an additional family constraint.
+                // Both families subtract the cutout-scaled threshold. HD discards
+                // the cut side; LW dims it and moves it outside the white edge.
                 float4 cutPlane = UNITY_ACCESS_INSTANCED_PROP(Props, _CutPlane);
                 float planeDistance = dot(i.localPos.xyz, cutPlane.xyz) + cutPlane.w;
                 float planeThreshold = cutout * (_NoteSize + cutPlane.w);
                 planeDistance -= planeThreshold;
+                #if defined(FAKE_MIRROR_TRANSPARENCY)
+                planeColorMultiplier = planeDistance >= 0.001 ? 1.0 : 0.1;
+                planeDistance += planeDistance <= 0.001 ? 1.0 : 0.0;
+                #else
                 if (planeDistance < 0.0)
                     discard;
+                #endif
 
                 float planeEdge = saturate(
                     (planeDistance - (_CutPlaneEdgeGlowWidth + 0.005)) /
@@ -317,8 +344,8 @@
                                     (isTranslucent >= 1.0 || i.rotatedPos.w <= 0.0)
                                         ? translucentAlpha
                                         : 1.0;
-                // Dither is a ChroMapper editor adapter. Source CUTOUT/PLANE_CUT
-                // discard and mask evaluation above always happen first.
+                // Dither is a ChroMapper editor adapter, after family-specific
+                // cutout/plane evaluation.
                 if (editorAlpha < 1.0)
                 {
                     const float thresholds[16] =
@@ -336,13 +363,17 @@
                     clip(dither);
                 }
 
-                float frontBack = isFrontFace ? 1.0 : 0.2592592537;
                 float4 result = 0.0;
-                float reflectionFactor = frontBack *
-                    (1.0 - i.reflectionData.w * _RimDarkening);
+                float reflectionFactor = 1.0 - i.reflectionData.w * _RimDarkening;
+                float reflectionFaceSign = 1.0;
+                #if !defined(FAKE_MIRROR_TRANSPARENCY)
+                // The standard route is HD. Only the existing mirror route selects LW.
+                reflectionFactor *= isFrontFace ? 1.0 : 0.2592592537;
+                reflectionFaceSign = isFrontFace ? 1.0 : -1.0;
+                #endif
+                float3 reflected = reflectionFactor * color.rgb;
 
                 #if defined(REFLECTION_MAP)
-                float reflectionFaceSign = isFrontFace ? 1.0 : -1.0;
                 float3 environmentReflectionDirection =
                     reflectionFaceSign * i.reflectionData.xyz;
                 float x = i.reflectionData.w + 1.0 - _Smoothness +
@@ -351,33 +382,41 @@
                 float4 environment = texCUBElod(
                     _EnvironmentReflectionCube,
                     float4(environmentReflectionDirection, reflectionLod));
-                // cb105.z in HD binary 17ebe636fa11ba31... and the corresponding
-                // LW slot in 7bb6ae1661a9efa2... prove that _FinalColorMul scales
-                // the recovered reflection/color factor before cutout edge mixing.
-                float3 reflected = reflectionFactor * color.rgb * environment.rgb;
+                reflected *= environment.rgb;
+                #endif
+
+                #if defined(FAKE_MIRROR_TRANSPARENCY)
+                // LW scales RGBA by rim and mapped color gain before premultiplication.
+                result.a = color.a * reflectionFactor * colorMultiplier;
+                result.rgb = reflected * result.a;
+                #if defined(PLANE_CUT)
+                float3 planeBaseMix = 1.0.xxx - reflected * result.a;
+                result.rgb = planeColorMultiplier * (cutoutMask * planeBaseMix + result.rgb);
+                #endif
+                #else
+                #if defined(REFLECTION_MAP)
                 float3 weightedReflection = reflected * color.a;
                 float3 baseMix = color.rgb - weightedReflection;
                 result.rgb = cutoutMask * baseMix + weightedReflection;
                 #else
-                // Recovered no-reflection family: F0 is front/back dependent,
-                // and color is the recovered _Color slot.
-                result.rgb = frontBack * color.rgb * color.a * reflectionFactor;
+                result.rgb = reflected * color.a;
                 #endif
                 // HD alpha is the deferred bloom/cut-edge mask.
-                result.a = max(result.a, cutoutMask);
+                result.a = cutoutMask;
+                #endif
 
                 #if defined(ACES_TONE_MAPPING)
                 result = ApplyAcesTonemapping(result);
                 #endif
 
-                #if defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM)
+                #if defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM) && !defined(FAKE_MIRROR_TRANSPARENCY)
                 result.rgb = CalculateBloomComposition(
                     result.rgb, result.a, result.a, 1.0,
                     _BaseColorBoost, _BaseColorBoostThreshold);
                 #endif
 
                 float distanceSquared = i.worldPos.w * i.worldPos.w;
-                #if defined(BLOOM_FOG) && (defined(_FOGTYPE_LERP) || defined(_FOGTYPE_COLOR) || defined(_FOGTYPE_ALPHA) || defined(HEIGHT_FOG))
+                #if defined(BLOOM_FOG) && defined(_FOGTYPE_LERP)
                 float fogTransmission = 1.0 - CalculateCustomFogFactor(
                     distanceSquared, _FogStartOffset, _FogScale);
                 float fogBlend = 1.0 - fogTransmission;
@@ -394,10 +433,8 @@
                 float4 bloomfogCol = fogBlend * (-result + bloomPrepassCol) + result;
                 float sourceAlpha = result.a;
                 result = BlendFogColor(result, bloomfogCol);
-                #if !defined(_FOGTYPE_ALPHA)
                 result.a = sourceAlpha;
-                #endif
-                #elif defined(HEIGHT_FOG)
+                #elif defined(HEIGHT_FOG) && defined(_FOGTYPE_LERP)
                 // The recovered no-bloom height route has no texture dependency.
                 // It fades toward the observed constant height-fog color.
                 float heightFogAmount = 1.0 - CalculateCustomHeightFogFactor(
@@ -406,12 +443,9 @@
                 #endif
 
                 #if defined(FAKE_MIRROR_TRANSPARENCY)
-                // LW f30427033415f21d... applies the mirror multiplier at the final
-                // premultiplied-output stage, after ACES and fog. Rebuild LW source
-                // alpha from its color/reflection path instead of HD's edge mask.
-                result.a = color.a * reflectionFactor *
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _ColorMultiplier) *
-                    _FakeMirrorTransparencyMultiplier;
+                // Preserve LW color-derived alpha through ACES/fog, then premultiply.
+                // Native _FakeMirrorTransparency is fixed at 1 by this editor adapter.
+                result.a *= _FakeMirrorTransparencyMultiplier;
                 result.rgb *= result.a;
                 #endif
 

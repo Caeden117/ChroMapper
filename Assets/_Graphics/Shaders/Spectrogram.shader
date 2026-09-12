@@ -1,23 +1,16 @@
 ﻿// Replacement for the Beat Saber game shader Custom/Spectrogram.
 Shader "ChroMapper/Spectrogram"
 {
-    // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // S1. The 1.44.3 Custom/Spectrogram Properties block is authoritative.
-    //     ToggleHeader is represented by Unity's standard Toggle attribute.
-    // S2 [vertex-bead5cceaf6dbed1]: UV.x selects uint(max(uv.x * 63, 0)).
-    //     The vertex offset is -uv.y * (1-sample) * _PeakOffset.xyz before the
-    //     object-to-world and clip transforms. POSITION, NORMAL, and UV0 suffice.
-    // S3 [89358b18acd1d3a4,bdc55897e4e396fb]: DIFFUSE, SPECULAR, and
-    //     LIGHT_FALLOFF use the shared five-light equations. The unusual specular
-    //     color is metallic * (diffuseLighting * color - 0.04) + 0.04.
-    // S4 [a629dbe44112ae87,477dc738c669dabd]: height fog is always evaluated.
-    //     ENABLE_BLOOM_FOG maps to ChroMapper's BLOOM_FOG global and combines the
-    //     height-retained and distance-retained factors before sampling bloom fog.
-    // S5. Blue-noise dithering is unconditional in every non-OVERDRAW fragment:
-    //     rgb += (blueNoise.r - 0.5) / 255. Output alpha is always zero.
-    // S6. No white-boost or NOISE_DITHERING keyword variant exists. OVERDRAW_VIEW
-    //     is a diagnostic family and remains omitted. Stage binaries cannot prove
-    //     ShaderLab render state.
+    // ToggleHeader uses Unity's standard Toggle attribute.
+    // UV.x selects uint(max(uv.x * 63, 0)).
+    // The vertex offset is -uv.y * (1-sample) * _PeakOffset.xyz before object-to-world and clip transforms.
+    // POSITION, NORMAL, and UV0 supply the mesh inputs.
+    // DIFFUSE, SPECULAR, and LIGHT_FALLOFF use the shared five-light equations.
+    // Specular color is metallic * (diffuseLighting * color - 0.04) + 0.04.
+    // Height fog is always evaluated. ENABLE_BLOOM_FOG maps to ChroMapper's BLOOM_FOG global.
+    // It combines height-retained and distance-retained factors before sampling bloom fog.
+    // Blue-noise dithering is unconditional: rgb += (blueNoise.r - 0.5) / 255. Output alpha is always zero.
+    // White-boost, NOISE_DITHERING keyword variants, and the OVERDRAW_VIEW diagnostic route are omitted.
     Properties
     {
         _Color ("Color", Vector) = (1,1,1,1)
@@ -56,6 +49,24 @@ Shader "ChroMapper/Spectrogram"
         ZTest LEqual
         ZWrite [_ZWrite]
 
+        HLSLINCLUDE
+        #include "UnityCG.cginc"
+        #include "ShaderLibrary/Families/SpectrogramShared.hlsl"
+
+        float _SpectrogramData[64];
+        float3 _PeakOffset;
+
+        // The camera depth texture uses the caster, not the visible pass.
+        // Both passes must deform the input mesh before their own projection.
+        inline float4 DeformSpectrogramVertex(float4 position, float2 uv)
+        {
+            uint index = CalculateSpectrogramIndex(uv.x);
+            position.xyz = position.xyz - uv.y *
+                (1.0 - _SpectrogramData[index]) * _PeakOffset.xyz;
+            return position;
+        }
+        ENDHLSL
+
         Pass
         {
             HLSLPROGRAM
@@ -71,15 +82,10 @@ Shader "ChroMapper/Spectrogram"
             #pragma multi_compile_fragment _ ACES_TONE_MAPPING
             #pragma multi_compile _ STEREO_INSTANCING_ON
 
-            #include "UnityCG.cginc"
             #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
             #include "ShaderLibrary/Common/Lighting.hlsl"
             #include "ShaderLibrary/Core/Tonemapping.hlsl"
             #include "ShaderLibrary/Common/PostProcess.hlsl"
-            #include "ShaderLibrary/Families/SpectrogramShared.hlsl"
-
-            float _SpectrogramData[64];
-            float3 _PeakOffset;
 
             float _Smoothness;
             float _Metallic;
@@ -122,9 +128,7 @@ Shader "ChroMapper/Spectrogram"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 UNITY_TRANSFER_INSTANCE_ID(i, o);
 
-                uint index = CalculateSpectrogramIndex(i.uv.x);
-                i.vertex.xyz = i.vertex.xyz - i.uv.y *
-                    (1.0 - _SpectrogramData[index]) * _PeakOffset.xyz;
+                i.vertex = DeformSpectrogramVertex(i.vertex, i.uv);
 
                 o.vertex = UnityObjectToClipPos(i.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, i.vertex).xyz;
@@ -187,6 +191,53 @@ Shader "ChroMapper/Spectrogram"
                 albedo.a = 0;
 
                 return albedo;
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "SHADOWCASTER"
+            Tags { "LightMode"="ShadowCaster" }
+            ZWrite On
+            ZTest LEqual
+
+            HLSLPROGRAM
+            #pragma vertex vertShadowCaster
+            #pragma fragment fragShadowCaster
+            #pragma multi_compile_shadowcaster
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ STEREO_INSTANCING_ON
+
+            struct appdataShadowCaster
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float2 uv : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct v2fShadowCaster
+            {
+                V2F_SHADOW_CASTER;
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
+
+            v2fShadowCaster vertShadowCaster(appdataShadowCaster v)
+            {
+                v2fShadowCaster o;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2fShadowCaster, o);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+                v.vertex = DeformSpectrogramVertex(v.vertex, v.uv);
+                TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+                return o;
+            }
+
+            float4 fragShadowCaster(v2fShadowCaster i) : SV_Target
+            {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                SHADOW_CASTER_FRAGMENT(i)
             }
             ENDHLSL
         }

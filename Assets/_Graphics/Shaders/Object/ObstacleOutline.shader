@@ -1,18 +1,10 @@
 Shader "ChroMapper/Object/Obstacle Outline"
 {
-    // AUDIT FINDINGS
-    // 1. Source comparison: this editor adapter keeps the source outline's
-    //    face-normal UV frame and bloom composition, but does not replace the
-    //    game's ObstacleCore or add unowned selection animation.
-    // 2. Cube contract: the editor supplies Unity's built-in cube mesh with 24
-    //    face-local vertices/normals and 0..1 UVs. Face dimensions are selected
-    //    by normal: +/-X -> ZY, +/-Y -> XZ, and +/-Z -> XY.
-    // 3. Adapter-only properties: _Color, _WorldScale, _SizeParams, _Cutout,
-    //    and _CutoutTexOffset are instanced inputs written by editor MPBs.
-    //    Fog controls remain because the owned CM_PREVIEW_MODE+BLOOM_FOG route
-    //    passes them to the shared bloom-fog calculation.
-    // 4. OVERDRAW_VIEW is intentionally omitted; no editor owner or render
-    //    path requires that source debug variant.
+    // This ParametricBoxFrameHD adapter builds face strips from cube UVs instead of deforming a parametric beam mesh.
+    // The editor supplies Unity's built-in cube with 24 face-local vertices/normals and 0..1 UVs.
+    // Face dimensions depend on the normal: +/-X -> ZY, +/-Y -> XZ, and +/-Z -> XY.
+    // Editor MPBs write the instanced _Color, _WorldScale, _SizeParams, _Cutout, and _CutoutTexOffset inputs.
+    // CM_PREVIEW_MODE applies native height fog. BLOOM_FOG selects the bloom pre-pass target instead of fixed gray.
     Properties
     {
         _FogStartOffset ("Fog Start Offset", Float) = 1
@@ -146,8 +138,7 @@ Shader "ChroMapper/Object/Obstacle Outline"
 
                 // Preserve the existing cube-mesh frame construction while exposing the HD contract.
                 float4 sizeParams = UNITY_ACCESS_INSTANCED_PROP(Props, _SizeParams);
-                // _SizeParams.w is the source half edge width; the UV frame
-                // needs the full physical edge width on this cube contract.
+                // The source half edge width equals the outer-face strip width on this cube.
                 float frameWidth = max(sizeParams.w, 0.0001);
                 float2 distanceFromEdge = 0.5 - abs(0.5 - i.uv);
                 clip(frameWidth - min(distanceFromEdge.x * faceScale.x,
@@ -169,12 +160,19 @@ Shader "ChroMapper/Object/Obstacle Outline"
                 color.a = 0;
                 #else
                 // ParametricBoxFrameHD stores bloom intensity in twice the color alpha.
-                color.a = max(color.a, 0) * 2;
+                color.a *= 2;
                 #endif
 
-                #if defined(CM_PREVIEW_MODE) && defined(BLOOM_FOG)
+                #if defined(CM_PREVIEW_MODE)
+                #if defined(BLOOM_FOG)
                 color = ApplyBloomHeightFog(color, i.screenPos, i.worldPos, _FogStartOffset, _FogScale,
                                             _FogHeightOffset, _FogHeightScale);
+                #else
+                // The native no-bloom-fog route still fades toward gray by height.
+                float heightFog = 1 - CalculateCustomHeightFogFactor(i.worldPos, _FogHeightOffset,
+                                                                     _FogHeightScale);
+                color = heightFog * (float4(0.1, 0.1, 0.1, 0) - color) + color;
+                #endif
                 #endif
 
                 #if defined(_WHITEBOOSTTYPE_ALWAYS) || (defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM))

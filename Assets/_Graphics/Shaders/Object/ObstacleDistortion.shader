@@ -1,20 +1,13 @@
 Shader "ChroMapper/Object/Obstacle Distortion"
 {
-    // AUDIT FINDINGS (Beat Saber 1.42.2 / 1.44.3)
-    // 1. ScreenDisplacementHD is authoritative for the game-facing property
-    //     surface, labels, order, and defaults.
-    // 2. SCROLL_UV is retained for the ChroMapper editor scroll route.
-    // 3. Rim and height fog are retained for the ChroMapper preview routes;
-    //     the grab texture and its texel size remain owned by the grab controller.
-    // 4. BLOOM_FOG selects the runtime-owned bloom-fog route, and
-    //     DEPTH_TEXTURE_ENABLED aliases the runtime-owned DEPTH_TEXTURE route.
-    // 5. OVERDRAW_VIEW is intentionally omitted. It is a debug route in the
-    //     source variants and has no ChroMapper implementation.
-    // 6. Active ObstacleCoreHD formulas were recovered from non-XR binaries
-    //     4cc00a1b29ccdbb and 2626bb764be28656.
-    // 7. _UVScale, tint, add color, and cutout controls are per-instance data.
-    // 8. FOG fades the displaced grab from the bloom pre-pass by height and
-    //     distance. Without BLOOM_FOG, it fades from the fixed height-fog color.
+    // Material properties follow ScreenDisplacementHD labels, order, and defaults.
+    // SCROLL_UV supports the ChroMapper editor scroll route. Preview routes retain rim and height fog.
+    // The grab controller owns the grab texture and its texel size.
+    // BLOOM_FOG selects the runtime bloom-fog route. DEPTH_TEXTURE_ENABLED aliases DEPTH_TEXTURE.
+    // The OVERDRAW_VIEW debug route has no ChroMapper implementation.
+    // _UVScale, tint, add color, and cutout controls are per-instance data.
+    // FOG fades the displaced grab from the bloom pre-pass by height and distance.
+    // Without BLOOM_FOG, it fades from the fixed height-fog color.
     Properties
     {
         _MainTex ("Displacement Texture", 2D) = "white" {}
@@ -228,7 +221,7 @@ Shader "ChroMapper/Object/Obstacle Distortion"
 
                 #if defined(VIEW_ANGLE_AFFECTS_DISTORTION)
                 float3 viewDirection = normalize(_WorldSpaceCameraPos - i.worldPos);
-                float viewFactor = saturate(sqrt(abs(dot(viewDirection, normalize(i.worldNormal))))
+                float viewFactor = saturate(sqrt(abs(dot(viewDirection, i.worldNormal)))
                     * _ViewAngleDistortionParam);
                 displacement *= viewFactor;
                 #endif
@@ -238,15 +231,43 @@ Shader "ChroMapper/Object/Obstacle Distortion"
                 float2 distortedUv = (i.screenPos.xy + displacement) / i.screenPos.w;
 
                 #if defined(DEPTH_AWARE_DISTORTION) && (defined(DEPTH_TEXTURE) || defined(DEPTH_TEXTURE_ENABLED))
-                float2 depthUv = min(
-                    distortedUv,
-                    1.0 - 0.5 * _CameraDepthTexture_TexelSize.xy);
+                float2 depthDisplacement = displacement;
+                depthDisplacement.y *= abs(_CameraDepthTexture_TexelSize.y)
+                    * _CameraDepthTexture_TexelSize.z;
+                float2 screenPixelSize = rcp(_ScreenParams.xy);
+                float2 depthUv = (i.screenPos.xy + depthDisplacement) / i.screenPos.w;
+                if (screenPixelSize.y < 0.0)
+                    depthUv.y = 1.0 - depthUv.y;
+                depthUv = (floor(depthUv * _ScreenParams.xy) + 0.5) * abs(screenPixelSize);
+                depthUv = min(depthUv, 1.0 - 0.5 * _CameraDepthTexture_TexelSize.xy);
                 #if defined(UNITY_SINGLE_PASS_STEREO) || defined(STEREO_INSTANCING_ON) || defined(STEREO_MULTIVIEW_ON)
                 depthUv = UnityStereoTransformScreenSpaceTex(depthUv);
                 #endif
-                float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, depthUv));
-                float surfaceDepth = LinearEyeDepth(i.screenPos.z / i.screenPos.w);
-                distortedUv = lerp(screenUv, distortedUv, step(surfaceDepth - 0.01, sceneDepth));
+                float rawSceneDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, depthUv);
+                float sceneDepth;
+                if (unity_OrthoParams.w > 0.5)
+                {
+
+
+
+                #if defined(UNITY_REVERSED_Z)
+                rawSceneDepth = 1.0 - rawSceneDepth;
+                #endif
+                sceneDepth = lerp(_ProjectionParams.y, _ProjectionParams.z, rawSceneDepth);
+                }
+                else
+                {
+                    sceneDepth = LinearEyeDepth(rawSceneDepth);
+                }
+                float eyeDepth = -mul(UNITY_MATRIX_V, float4(i.worldPos, 1.0)).z;
+                // Native clip-Z conversion measures near-to-far distance on a far-sized interval.
+                float surfaceDepth = max((eyeDepth - _ProjectionParams.y)
+                                         * _ProjectionParams.z / (_ProjectionParams.z - _ProjectionParams.y), 0.0);
+                float depthAttenuation = saturate(sceneDepth - surfaceDepth);
+                distortedUv = (i.screenPos.xy + depthDisplacement * depthAttenuation) / i.screenPos.w;
+                if (screenPixelSize.y < 0.0)
+                    distortedUv.y = 1.0 - distortedUv.y;
+                distortedUv = (floor(distortedUv * _ScreenParams.xy) + 0.5) * abs(screenPixelSize);
                 #endif
 
                 #if defined(CLIP_LOW_ALPHA)
@@ -257,13 +278,11 @@ Shader "ChroMapper/Object/Obstacle Distortion"
                 float2 grabUvMax = 1.0 - 0.5 * _ScreenDisplacementGrabTexture_TexelSize.xy;
                 distortedUv = min(distortedUv, grabUvMax);
 
-                float4 originalColor = tex2D(_ScreenDisplacementGrabTexture, screenUv);
                 float4 distortedColor = tex2D(_ScreenDisplacementGrabTexture, distortedUv)
                     * tintColor + addColor;
-                distortedColor.a *= _DisplacementAlphaMul;
 
                 #if defined(USE_DISTORTED_TEXTURE_ONLY)
-                originalColor.a = 0;
+                distortedColor.a *= _DisplacementAlphaMul;
                 #if defined(FOG)
                 float heightVisibility = CalculateCustomHeightFogFactor(
                     i.worldPos, _FogHeightOffset, _FogHeightScale);
@@ -281,8 +300,10 @@ Shader "ChroMapper/Object/Obstacle Distortion"
                 float4 color = distortedColor;
                 #endif
                 #else
-                float4 color = lerp(
-                    originalColor, distortedColor, saturate(displacementControlAlpha));
+                float4 originalColor = tex2D(_ScreenDisplacementGrabTexture, min(screenUv, grabUvMax));
+                float blendFactor = mad(displacementControlAlpha, 1.01, -0.01);
+                float4 color = originalColor + blendFactor * (distortedColor - originalColor);
+                color.a *= _DisplacementAlphaMul;
                 #endif
 
                 #if defined(RIM_DIM)

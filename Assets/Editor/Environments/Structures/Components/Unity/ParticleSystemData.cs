@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public class ParticleSystemData : EnvironmentComponentData<ParticleSystem>
 {
     public bool UseAutoRandomSeed;
-    public int RandomSeed;
+    public uint RandomSeed;
 
     public MainModuleData MainModule;
     public EmissionModuleData EmissionModule;
@@ -33,7 +33,7 @@ public class ParticleSystemData : EnvironmentComponentData<ParticleSystem>
     public override void FillComponents(GameObject self, ParticleSystem comp, CreateContainer container)
     {
         comp.useAutoRandomSeed = UseAutoRandomSeed;
-        comp.randomSeed = (uint)RandomSeed;
+        comp.randomSeed = RandomSeed;
 
         MainModule?.CopyTo(comp.main);
 

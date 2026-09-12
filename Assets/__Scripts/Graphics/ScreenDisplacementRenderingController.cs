@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 
-// Built-in pipeline equivalent of Beat Saber 1.44.2's URP screen-displacement
+// Built-in pipeline equivalent of the URP screen-displacement
 // passes. Registered displacement renderers are excluded from the normal
 // camera pass and drawn after the other transparent objects.
 public sealed class ScreenDisplacementRenderingController : MonoBehaviour
@@ -232,12 +232,13 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         instanceMatrices[index] = renderer.transform.localToWorldMatrix;
         sourcePropertyBlock.Clear();
         renderer.GetPropertyBlock(sourcePropertyBlock);
+        // Preserve the active-space RGB stored by SetColor when uploading raw vector arrays.
         instanceColors[index] = sourcePropertyBlock.HasProperty(colorId)
-            ? sourcePropertyBlock.GetColor(colorId) : material.GetColor(colorId);
+            ? sourcePropertyBlock.GetVector(colorId) : (Vector4)material.GetColor(colorId);
         instanceTintColors[index] = sourcePropertyBlock.HasProperty(tintColorId)
-            ? sourcePropertyBlock.GetColor(tintColorId) : material.GetColor(tintColorId);
+            ? sourcePropertyBlock.GetVector(tintColorId) : (Vector4)material.GetColor(tintColorId);
         instanceAddColors[index] = sourcePropertyBlock.HasProperty(addColorId)
-            ? sourcePropertyBlock.GetColor(addColorId) : material.GetColor(addColorId);
+            ? sourcePropertyBlock.GetVector(addColorId) : (Vector4)material.GetColor(addColorId);
         instanceCutouts[index] = sourcePropertyBlock.HasProperty(cutoutId)
             ? sourcePropertyBlock.GetFloat(cutoutId) : material.GetFloat(cutoutId);
         instanceCutoutTexOffsets[index] = sourcePropertyBlock.HasProperty(cutoutTexOffsetId)

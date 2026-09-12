@@ -1,5 +1,5 @@
-#ifndef CHROMAPPER_RECOVERED_BLOOM_FOG_COMPOSITION_INCLUDED
-#define CHROMAPPER_RECOVERED_BLOOM_FOG_COMPOSITION_INCLUDED
+#ifndef BLOOM_FOG_COMPOSITION_INCLUDED
+#define BLOOM_FOG_COMPOSITION_INCLUDED
 
 #include "../Common/Fog.hlsl"
 
@@ -60,4 +60,4 @@ inline float4 ApplyBloomHeightFog(float4 col, float4 screenPos, float3 worldPos,
         CalculateCustomHeightFogFactor(worldPos, fogHeightOffset, fogHeightScale));
 }
 
-#endif // CHROMAPPER_RECOVERED_BLOOM_FOG_COMPOSITION_INCLUDED
+#endif

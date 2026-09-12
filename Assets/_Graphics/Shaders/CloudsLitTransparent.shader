@@ -1,60 +1,31 @@
 // ChroMapper/Clouds Lit Transparent
 // Replacement for the Beat Saber game shader Custom/CloudsLitTransparent
 // (billie environment clouds).
-// Recovered and verified against the 1.44.3 DXBC
-// (billieenvironment_scenes_all bundle), the compiled variant matching the
-// BillieClouds material keyword set:
-//   fragment-732b1e460d13565d.asm, vertex-5fb9ced67522fa87.asm
 //
-// AUDIT FINDINGS
-// LT1. Properties above are the authoritative ChroMapper material contract.
-// LT2. The converted BillieClouds FBX dump has Position, Normal, Tangent,
-//      Color, TexCoord0, and TexCoord1. Color.rgb has exactly three one-hot
-//      rotation-layer weights; TexCoord0/uv0 is the main cloud UV. TexCoord1 is
-//      not the rotation-weight channel.
-// LT3. Rotation uses _Time.x + _TimeHelperOffset.x; the vertex wave uses
-//      _Time.z + _TimeHelperOffset.z. Evidence: vertex-5fb9ced67522fa87.asm.
-// LT4. Distortion samples first at scrolled _DistortTex UV, then offsets the
-//      diffuse-ST UV with d.r/d.a. Evidence: fragment-732b1e460d13565d.asm.
-// LT5. DIFFUSE is a five-light front-lobe sum; BACK_LIGHTING adds the reversed
-//      five-light sum times _BackLightingBoost * base.g. Evidence: fragment-
-//      732b1e460d13565d.asm.
-// LT6. The diffuse blue channel tints RGB; alpha remains base.a times fades.
-//      Evidence: fragment-732b1e460d13565d.asm.
-// LT7. The instance-aware bake payload is the existing `_Color` property.
-//      Evidence: direct, instanced, and Meta fragment differentials.
-// LT8. Bottom fade is squared saturated range. D3D11 runway fade uses the
-//      strict world.z > 0 gate from the original fragment tokens.
-// LT9. The captured no-feature route returns the instance-aware `_Color` value.
-// LT10. ACES uses Tonemapping.hlsl::ApplyAcesTonemapping; the route
-//       remains keyworded. Evidence: fragment-c0bbcfd6116001fd.asm.
-// LT11. Bloom and main-effect routes are no-ops here; no source route was found.
-// LT12. Unsupported game keywords and debug routes are intentionally omitted;
-//       do not infer or add speculative variants.
-// LT13. Visible skew was caused by the old two-channel adapter losing the blue
-//       COLOR weight.
-// LT14. Fragment lighting reads directional-light RGB without an alpha gate and
-//       consumes the trusted interpolated lighting vector without normalization.
-// LT15. RGB and alpha use separate authored blend factors. Billie uses
-//       SrcAlpha/OneMinusSrcAlpha for RGB and Zero/One for alpha. Preserving
-//       destination alpha prevents an unlit cloud mask from whitening in the
-//       alpha-driven bloom post-process.
+// The BillieClouds mesh supplies Position, Normal, Tangent, Color, TexCoord0, and TexCoord1.
+// COLOR.rgb supplies three one-hot rotation-layer weights. TexCoord0/uv0 is the main cloud UV, not the weight channel.
+// TexCoord1 does not carry rotation-layer weights.
+// The instance-aware _Color property supplies the bake payload and the no-feature output.
+// ACES remains keyworded. Bloom, main-effect, and unsupported debug routes are omitted.
+// Fragment lighting reads directional-light RGB without an alpha gate or normalization of the interpolated lighting vector.
+// Billie uses SrcAlpha/OneMinusSrcAlpha for RGB and Zero/One for alpha.
+// Preserving destination alpha prevents an unlit cloud mask from whitening in the alpha-driven bloom post-process.
 //
-// Vertex (recovered, ALIGN_NORMALS_TO_WORLD_ORIGIN variant):
+// Vertex (ALIGN_NORMALS_TO_WORLD_ORIGIN variant):
 //   angle  = (weights.xyz · _RotateLayerSpeeds.xyz) *
 //            (_Time.x + _TimeHelperOffset.x) * deg2rad
-//            (per-particle rotation layers; recovered adds a small time offset
-//            cb0[159].x on top of _Time.x, which is 0 for the Billie material.
+//            (per-particle rotation layers with a time offset from _TimeHelperOffset.x,
+//            which is 0 for the Billie material.
 //            The converted mesh supplies these weights through COLOR.rgb and
 //            the main UV through TexCoord0/uv0.)
 //   pos    = world pos rotated around the world Y axis: x' = c*x - s*z,
 //            z' = s*x + c*z                    (swirl of the cloud sheet)
-//   pos.y += sin(worldPos.x * _VertexWaveFrequency + _Time.z + helper.z) (asm 28-30:
-//            * _VertexWaveAmplitude                      third time slot)
+//   pos.y += sin(worldPos.x * _VertexWaveFrequency + _Time.z + helper.z)
+//            * _VertexWaveAmplitude
 //   out: v1 = rotated world pos (runway fade), v2 = world-origin normal
 //        (i.e. -normalize(world xz), built from the world X/Z only, lit like a
 //        plane facing away from origin)
-// Fragment (recovered):
+// Fragment:
 //   scroll   = (_Time.x + _TimeHelperOffset.x) * _DistortTexSpeed.xy * _DistortTex_ST.xy
 //   uvDistort = uv * _DistortTex_ST + ST + scroll
 //   d        = tex2D(_DistortTex, uvDistort)
@@ -68,7 +39,7 @@
 //   bottom   = saturate((world.y - min) / (max - min)) ^ 2   (square, not smoothstep)
 //   runway   = 1 - saturate(gate * _RunwayFadeScale / dist + _RunwayFadeOffset)
 //              with dist = len(world.x, world.y-1, gate),
-//              gate = (world.z > 0) ? 1 : 0   (D3D11 positive half only;
+//              gate = (world.z > 0) ? 1 : 0   (positive half only;
 //              on the other side the offset alone drives the fade)  (FADE_RUNWAY)
 //   color    = base.b * light * tint.rgb * bottom     (blue channel tints the whole)
 //   alpha    = base.a * runway * bottom * tint.a
@@ -224,11 +195,7 @@ Shader "ChroMapper/Clouds Lit Transparent"
                 float3 pos = wp;
                 #if defined(_VERTEXMODE_ROTATELAYERS)
                 float layerA = dot(v.rotationWeights, _RotateLayerSpeeds.xyz);
-                #if defined(SHADER_API_D3D11)
                 float angle = layerA * (_Time.x + _TimeHelperOffset.x) * 0.01745329424738884;
-                #else
-                float angle = layerA * (_Time.x + _TimeHelperOffset.x) * 0.0174532925199433;
-                #endif
                 pos = RotateObjectPositionY(wp, angle);
                 #endif
 
@@ -242,7 +209,7 @@ Shader "ChroMapper/Clouds Lit Transparent"
 
                 // The game has separate aligned and non-aligned normal routes.
                 #if defined(ALIGN_NORMALS_TO_WORLD_ORIGIN)
-                #if defined(SHADER_STAGE_VERTEX) && defined(SHADER_API_D3D11) \
+                #if defined(SHADER_STAGE_VERTEX) \
                     && defined(_VERTEXMODE_ROTATELAYERS) && defined(VERTEX_WAVE) \
                     && !defined(UNITY_PASS_META) \
                     && !defined(UNITY_STEREO_MULTIVIEW_ENABLED) \
@@ -322,16 +289,12 @@ Shader "ChroMapper/Clouds Lit Transparent"
                     defined(DIFFUSE_TEXTURE) && defined(DISTORT_TEXTURE) && \
                     defined(FADE_BOTTOM) && defined(FADE_RUNWAY)
                 // The authority applies runway attenuation after ACES.
-                { 
-                #if defined(SHADER_API_D3D11)
-                float gate = i.world.z > 0.0 ? 1.0 : 0.0;
-                #else
-                float gate = i.world.z < 0.0 ? 1.0 : 0.0;
-                #endif
-                float3 distanceVector = float3(
-                    i.world.x, i.world.y - 1.0, gate);
-                albedo.a *= 1.0 - saturate(
-                    gate * _RunwayFadeScale / length(distanceVector) + _RunwayFadeOffset);
+                {
+                    float gate = i.world.z > 0.0 ? 1.0 : 0.0;
+                    float3 distanceVector = float3(
+                        i.world.x, i.world.y - 1.0, gate);
+                    albedo.a *= 1.0 - saturate(
+                        gate * _RunwayFadeScale / length(distanceVector) + _RunwayFadeOffset);
                 }
                 #endif
                 return albedo;

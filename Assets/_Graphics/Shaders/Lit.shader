@@ -1,10 +1,9 @@
 ﻿// Replacement for the Beat Saber game shader Custom/SimpleLit.
 Shader "ChroMapper/Lit"
 {
-    // See LIT_REAUDIT.md for the audited contracts and evidence.
     Properties
     {
-        _Color ("Color", Vector) = (1,1,1,1)
+        _Color ("Color", Color) = (1,1,1,1)
         [Toggle(AVATAR_COMPUTE_SKINNING)] _AvatarComputeSkinning ("Avatar Compute Skinning", Float) = 0
         [KeywordEnum(None, Import, External Scale, Object Space, Additive Offset)] _Secondary_UVs ("Secondary UVs", Float) = 0
         [ShowIfAny(_SECONDARY_UVS_IMPORT)] _InstancedSecondaryTiling ("Secondary UV Tiling", Vector) = (1,1,0,0)
@@ -28,7 +27,7 @@ Shader "ChroMapper/Lit"
         [Space(12)] [Toggle(PRECISE_NORMAL)] _PreciseNormal ("Precise Normal", Float) = 0
         [Space(18)] [KeywordEnum(None, Color, Emission, MetalSmoothness, Special, Displacement, Emissive Mult Add)] _VertexMode ("Vertex Color Mode", Float) = 0
         [Space(14)] [ShowIfAny(_VERTEXMODE_EMISSION, _VERTEXMODE_SPECIAL, _VERTEXMODE_EMISSIVE_MULT_ADD)] _EmissionThreshold ("Emission Threshold", Range(0, 1)) = 0
-        [ShowIfAny(_VERTEXMODE_EMISSION, _VERTEXMODE_SPECIAL, _VERTEXMODE_EMISSIVE_MULT_ADD)] _EmissionColor ("Emission Color", Vector) = (1,1,1,0)
+        [ShowIfAny(_VERTEXMODE_EMISSION, _VERTEXMODE_SPECIAL, _VERTEXMODE_EMISSIVE_MULT_ADD)] _EmissionColor ("Emission Color", Color) = (1,1,1,0)
         [ShowIfAny(_VERTEXMODE_EMISSION, _VERTEXMODE_SPECIAL, _VERTEXMODE_EMISSIVE_MULT_ADD)] _EmissionStrength ("Emission Strength", Float) = 1
         [ShowIfAny(_VERTEXMODE_EMISSION, _VERTEXMODE_SPECIAL, _VERTEXMODE_EMISSIVE_MULT_ADD)] _EmissionBloomIntensity ("Bloom Intensity", Float) = 1
         [EnumShowIfAny(3, None, MainEffect, Always, _VERTEXMODE_EMISSION, _VERTEXMODE_SPECIAL, _VERTEXMODE_EMISSIVE_MULT_ADD)] _Vertex_WhiteBoostType ("Vertex Color Treatment", Float) = 0
@@ -60,7 +59,7 @@ Shader "ChroMapper/Lit"
         [ToggleShowIfAny(EMISSION_ANGLE_DISAPPEAR, _EMISSIONTEXTURE_SIMPLE, _EMISSIONTEXTURE_PULSE, _EMISSIONTEXTURE_FLIPBOOK)] _EnableEmissionAngleDisappear ("Angle Disappear", Float) = 0
         [ShowIfAny(1, EMISSION_ANGLE_DISAPPEAR, _EMISSIONTEXTURE_SIMPLE, _EMISSIONTEXTURE_PULSE, _EMISSIONTEXTURE_FLIPBOOK)] _EmissionThresholdAngle ("Threshold Angle", Float) = 0
         [Space(6)] [EnumShowIfAny(4, Flat, Whiteboost, Gradient, MainEffect, _EMISSIONTEXTURE_SIMPLE, _EMISSIONTEXTURE_PULSE, _EMISSIONTEXTURE_FLIPBOOK)] _EmissionColorType ("Emission Color Treatment", Float) = 0
-        [ShowIfAny(1, 0_EMISSIONCOLORTYPE_GRADIENT, _EMISSIONTEXTURE_SIMPLE, _EMISSIONTEXTURE_PULSE, _EMISSIONTEXTURE_FLIPBOOK)] _EmissionTexColor ("Emission Color", Vector) = (1,1,1,1)
+        [ShowIfAny(1, 0_EMISSIONCOLORTYPE_GRADIENT, _EMISSIONTEXTURE_SIMPLE, _EMISSIONTEXTURE_PULSE, _EMISSIONTEXTURE_FLIPBOOK)] _EmissionTexColor ("Emission Color", Color) = (1,1,1,1)
         [ShowIfAny(1, _EMISSIONCOLORTYPE_GRADIENT, _EMISSIONTEXTURE_SIMPLE, _EMISSIONTEXTURE_PULSE, _EMISSIONTEXTURE_FLIPBOOK)] _EmissionGradientTex ("Gradient LUT", 2D) = "white" {}
         [ShowIfAny(_EMISSIONCOLORTYPE_GRADIENT)] _EmissionGradientPosition ("LUT Position", Float) = 0.5
         [ShowIfAny(_EMISSIONCOLORTYPE_GRADIENT)] _EmissionGradientPanningSpeed ("LUT Panning", Float) = 0
@@ -97,7 +96,7 @@ Shader "ChroMapper/Lit"
         [Space(12)] [KeywordEnum(None, Flexible, RGB)] _Parallax ("Parallax Emission", Float) = 0
         [ToggleShowIfAny(_PARALLAX_FLEXIBLE_REFLECTED, 0_PARALLAX_NONE)] _EnableReflectedDir ("Reflected Direction", Float) = 0
         [EnumShowIfAny(2, Planar, Warped, 0_PARALLAX_NONE)] _Parallax_Projection ("Parallax Projection", Float) = 0
-        [ShowIfAny(0_PARALLAX_NONE)] _ParallaxColor ("Parallax Color", Vector) = (1,1,1,1)
+        [ShowIfAny(0_PARALLAX_NONE)] _ParallaxColor ("Parallax Color", Color) = (1,1,1,1)
         [ShowIfAny(0_PARALLAX_NONE)] _ParallaxMap ("Parallax Map", 2D) = "black" {}
         [ToggleShowIfAny(SECONDARY_UVS_PARALLAX, 2, 0_SECONDARY_UVS_NONE, 0_PARALLAX_NONE)] _SecondaryUVsParallax ("Parallax Texture Secondary UVs", Float) = 0
         [VectorShowIfAny(2, 0_PARALLAX_NONE)] _ParallaxTexSpeed ("Parallax Speed", Vector) = (0,0,0,0)
@@ -119,13 +118,13 @@ Shader "ChroMapper/Lit"
         [ToggleShowIfAny(DIRECTIONAL_RIM, _RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _EnableDirectionalRim ("Make Rim Directional", Float) = 0
         [VectorShowIfAny(3, 1, DIRECTIONAL_RIM, _RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _RimPerpendicularAxis ("Rim Perpendicular Axis", Vector) = (0,1,0,0)
         [ShowIfAny(_RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _RimLightEdgeStart ("Rim Light Edge Start", Float) = 0.5
-        [ShowIfAny(_RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _RimLightColor ("Rim Light Color", Vector) = (1,1,1,0)
+        [ShowIfAny(_RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _RimLightColor ("Rim Light Color", Color) = (1,1,1,0)
         [ShowIfAny(_RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _RimLightIntensity ("Rim Light Intensity", Float) = 1
         [ShowIfAny(_RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _RimLightBloomIntensity ("Rim Light Bloom Intensity", Float) = 1
         [EnumShowIfAny(3, None, MainEffect, Always, _RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _Rim_WhiteBoostType ("Rimlight Color Treatment", Float) = 0
         [ShowIfAny(_RIMLIGHT_LERP, _RIMLIGHT_ADDITIVE)] _RimLightWhiteboostMultiplier ("Rim Light Whiteboost Multiplier", Float) = 1
         [Header(LIGHTNING)] [Header(Ambient)] [Space(8)] _AmbientMinimalValue ("Ambient Minimum", Range(0, 1)) = 0
-        _NominalDiffuseLevel ("Ambient Color", Vector) = (0,0,0,0)
+        _NominalDiffuseLevel ("Ambient Color", Color) = (0,0,0,0)
         _AmbientMultiplier ("Ambient Color Multiplier", Float) = 1
         [Space(18)] [Toggle(DIFFUSE)] _EnableDiffuse ("Diffuse", Float) = 1
         [ToggleShowIfAny(LIGHT_FALLOFF, DIFFUSE, SPECULAR)] _EnableLightFalloff ("Light Falloff", Float) = 0
@@ -134,7 +133,7 @@ Shader "ChroMapper/Lit"
         [ShowIfAny(2, BOTH_SIDES_DIFFUSE, DIFFUSE)] _BothSidesDiffuseMultiplier ("Far Side Multiplier", Float) = 1
         [Space(12)] [Toggle(PRIVATE_POINT_LIGHT)] _PrivatePointLight ("Private Point Light", Float) = 0
         [ToggleShowIfAny(INSTANCED_PRIVATE_POINT_LIGHT, PRIVATE_POINT_LIGHT)] _InstancedPrivatePointLightColor ("Instance Color", Float) = 0
-        [ShowIfAny(PRIVATE_POINT_LIGHT)] [HDR] _PrivatePointLightColor ("Color", Vector) = (1,0,0,0)
+        [ShowIfAny(PRIVATE_POINT_LIGHT)] [HDR] _PrivatePointLightColor ("Color", Color) = (1,0,0,0)
         [ToggleShowIfAny(POINT_LIGHT_IS_LOCAL, PRIVATE_POINT_LIGHT)] _PointLightPositionLocal ("Make Position Local", Float) = 0
         [ShowIfAny(PRIVATE_POINT_LIGHT)] _PrivatePointLightIntensity ("Intensity Multiplier", Float) = 1
         [ShowIfAny(PRIVATE_POINT_LIGHT)] _PrivatePointLightPosition ("Light World Position", Vector) = (0,0,0,1)
@@ -221,7 +220,7 @@ Shader "ChroMapper/Lit"
         [VectorShowIfAny(3, DISTANCE_DARKENING)] _DarkeningDirection ("Axes", Vector) = (1,1,1,1)
         [Space(12)] [KeywordEnum(None, Grid, Scanline, Legacy)] _Hologram ("Hologram Effect", Float) = 0
         [ToggleShowIfAny(HOLOGRAM_MATERIALIZATION, _HOLOGRAM_GRID)] _UseHologramMaterialization ("Materialization", Float) = 0
-        [ShowIfAny(_HOLOGRAM_GRID, _HOLOGRAM_SCANLINE, _HOLOGRAM_LEGACY)] _HologramColor ("Hologram Color", Vector) = (1,1,1,1)
+        [ShowIfAny(_HOLOGRAM_GRID, _HOLOGRAM_SCANLINE, _HOLOGRAM_LEGACY)] _HologramColor ("Hologram Color", Color) = (1,1,1,1)
         [ShowIfAny(_HOLOGRAM_GRID, _HOLOGRAM_LEGACY)] _HologramGridSize ("Hologram Grid Size", Float) = 3
         [ShowIfAny(_HOLOGRAM_GRID)] _HologramFill ("Hologram Fill", Float) = -0.6
         [ShowIfAny(_HOLOGRAM_GRID, _HOLOGRAM_SCANLINE)] _HologramStripeSpeed ("Hologram Stripe Speed", Float) = 1.43
@@ -243,7 +242,7 @@ Shader "ChroMapper/Lit"
         [ToggleShowIfAny(CLOSE_TO_CAMERA_CUTOUT, CUTOUT_TYPE_HD_DISSOLVE, CUTOUT_TYPE_LW_SCALE)] _EnableCloseToCameraCutout ("Close to Camera Cutout", Float) = 0
         [ShowIfAny(1, CLOSE_TO_CAMERA_CUTOUT, CUTOUT_TYPE_HD_DISSOLVE, CUTOUT_TYPE_LW_SCALE)] _CloseToCameraCutoutOffset ("Close to Camera Cutout Offset", Float) = 0.5
         [ShowIfAny(1, CLOSE_TO_CAMERA_CUTOUT, CUTOUT_TYPE_HD_DISSOLVE, CUTOUT_TYPE_LW_SCALE)] _CloseToCameraCutoutScale ("Close to Camera Cutout Scale", Float) = 0.5
-        [ShowIfAny(CUTOUT_TYPE_HD_DISSOLVE, CUTOUT_TYPE_LW_SCALE, NOTE_PLANE_CUT_HD_DISSOLVE NOTE_PLANE_CUT_LW_SNAP)] _GlowCutoutColor ("Cut/Cutout Glow Color", Vector) = (1,1,1,1)
+        [ShowIfAny(CUTOUT_TYPE_HD_DISSOLVE, CUTOUT_TYPE_LW_SCALE, NOTE_PLANE_CUT_HD_DISSOLVE NOTE_PLANE_CUT_LW_SNAP)] _GlowCutoutColor ("Cut/Cutout Glow Color", Color) = (1,1,1,1)
         [Space(12)] [Toggle(DISSOLVE)] _EnableDissolve ("Dissolve", Float) = 0
         [EnumShowIfAny(3, Clip, Fade, Both, DISSOLVE)] _DissolveAlpha ("Alpha Aproach", Float) = 0
         [ShowIfAny(1, DISSOLVE, _DISSOLVEALPHA_FADE, _DISSOLVEALPHA_BOTH)] _AlphaMultiplier ("Alpha Multiplier", Float) = 1
@@ -262,7 +261,7 @@ Shader "ChroMapper/Lit"
         [ShowIfAny(3, DISSOLVE, DISSOLVE_PROGRESS, 0_DISSOLVEAXIS_AVATAR)] _DissolveEndValue ("Dissolve End Value", Float) = 10
         [ShowIfAny(3, DISSOLVE, DISSOLVE_PROGRESS, 0_DISSOLVEAXIS_AVATAR)] _DissolveProgress ("Dissolve Progress", Range(-1, 1)) = 0
         [ToggleShowIfAny(DISSOLVE_COLOR, 1, DISSOLVE)] _UseDissolveColor ("Dissolve Color", Float) = 0
-        [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _DissolveColor ("Dissolve Color", Vector) = (0,1,1,0)
+        [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _DissolveColor ("Dissolve Color", Color) = (0,1,1,0)
         [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _DissolveColorIntensity ("Color Intensity", Float) = 1
         [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _CutColorFalloff ("Cut Falloff Scale", Float) = 4
         [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _CutColorBacksideFalloff ("Backface Falloff Multiplier", Float) = 0.07
@@ -440,8 +439,8 @@ Shader "ChroMapper/Lit"
             #pragma shader_feature_local_fragment DISSOLVE_PROGRESS
             #pragma shader_feature_local_fragment DISSOLVE_COLOR
 
-            // Source-exact selectors dropped or merged by the generated material UI.
-            // They are declared independently so source-signature collisions remain distinct.
+            // Selectors dropped or merged by the generated material UI are declared
+            // independently so feature-signature collisions remain distinct.
             #pragma shader_feature_local COLOR_BY_FOG
             #pragma shader_feature_local DIRECTIONAL_RIM
             #pragma shader_feature_local DISSOLVE_TEXTURE
@@ -474,19 +473,20 @@ Shader "ChroMapper/Lit"
 
             #pragma multi_compile_fragment _ BLOOM_FOG
             #pragma multi_compile_fragment _ POST_BLOOM
+            #pragma multi_compile_fragment _ OVERDRAW_VIEW
 
 
             // Payload and feature macros
-            // Payload requirements use canonical source feature selectors.
-            #define USE_UV_SCALE defined(_SECONDARY_UVS_EXTERNAL_SCALE) || defined(_SECONDARY_UVS_OBJECT_SPACE)
-            #define USE_SECONDARY_UV_SOURCE USE_UV_SCALE || defined(_SECONDARY_UVS_IMPORT)
-            #define USE_SECONDARY_UV_CONSUMER defined(SECONDARY_UVS_EMISSION) || \
+            // Payload requirements use the canonical feature selectors.
+            #define USE_UV_SCALE (defined(_SECONDARY_UVS_EXTERNAL_SCALE) || defined(_SECONDARY_UVS_OBJECT_SPACE))
+            #define USE_SECONDARY_UV_SOURCE (USE_UV_SCALE || defined(_SECONDARY_UVS_IMPORT))
+            #define USE_SECONDARY_UV_CONSUMER (defined(SECONDARY_UVS_EMISSION) || \
                 defined(SECONDARY_UVS_PULSE) || \
                 defined(SECONDARY_UVS_EMISSION_MASK) || defined(SECONDARY_UVS_EMISSION_MASK2) || \
                 defined(SECONDARY_UVS_PARALLAX) || defined(SECONDARY_UVS_MPM) || \
                 defined(SECONDARY_UVS_OCCLUSION) || \
-                defined(SECONDARY_UVS_OCCLUSION_DETAIL)
-            #define USE_SECONDARY_UV USE_SECONDARY_UV_SOURCE && USE_SECONDARY_UV_CONSUMER
+                defined(SECONDARY_UVS_OCCLUSION_DETAIL))
+            #define USE_SECONDARY_UV (USE_SECONDARY_UV_SOURCE && USE_SECONDARY_UV_CONSUMER)
             #define USE_NOISE_SCREEN_POSITION defined(NOISE_DITHERING)
             #define USE_NORMAL_MAP_PAYLOAD defined(NORMAL_MAP)
             #define USE_ANTIFLICKER_NORMAL_PAYLOAD defined(SPECULAR_ANTIFLICKER)
@@ -711,10 +711,9 @@ Shader "ChroMapper/Lit"
             #endif
             // --
 
-            // _SPECTROGRAM_FULL
+            #if defined(_SPECTROGRAM_FULL) && !defined(_SPECTROGRAM_FLAT)
             float _SpectrogramData[64];
-            float _Spectrogram;
-            // --
+            #endif
 
             // RIM_DIM
             float _RimScale;
@@ -869,6 +868,9 @@ Shader "ChroMapper/Lit"
                 UNITY_DEFINE_INSTANCED_PROP(float, _SecondaryEmissionMaskIntensity)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _InstancedSecondaryTiling)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _InstancedSecondaryOffset)
+                #if defined(_SECONDARY_UVS_ADDITIVE_OFFSET)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _AdditiveUVOffset)
+                #endif
                 #if !USE_UNIFORM_PRIVATE_POINT_COLOR
                 UNITY_DEFINE_INSTANCED_PROP(float4, _PrivatePointLightColor)
                 #endif
@@ -880,6 +882,9 @@ Shader "ChroMapper/Lit"
                 #endif
                 UNITY_DEFINE_INSTANCED_PROP(float4, _DisplacementAxisMultiplier)
                 UNITY_DEFINE_INSTANCED_PROP(float, _DisplacementStrength)
+                #if defined(_SPECTROGRAM_FLAT)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SpectrogramData)
+                #endif
                 UNITY_DEFINE_INSTANCED_PROP(float, _EmissionGradientIntensity)
                 UNITY_DEFINE_INSTANCED_PROP(float, _SDFNoiseIntensity)
                 UNITY_DEFINE_INSTANCED_PROP(float, _SDFNoiseScale)
@@ -961,7 +966,7 @@ Shader "ChroMapper/Lit"
                 #if defined(_SMOOTHNESS_TEXTURE_MPM_A)
                 surface.smoothness = surface.mpm.a * smoothness;
                 #elif defined(_SMOOTHNESS_TEXTURE_MPM_G_ROUGHNESS)
-                surface.smoothness = 1.0 - (1.0 - surface.mpm.g) * smoothness;
+                surface.smoothness = (1.0 - surface.mpm.g) * smoothness;
                 #elif defined(_SMOOTHNESS_TEXTURE_SOURCE_MPM_A)
                 surface.smoothness = surface.mpm.a;
                 #elif defined(_SMOOTHNESS_TEXTURE_SOURCE_MPM_G_ROUGHNESS)
@@ -990,6 +995,9 @@ Shader "ChroMapper/Lit"
                 float2 detailUv = TransformSecondaryUv(surface, dirtDetailTex_ST);
                 #else
                 float2 detailBaseUv = surface.uv0 * inputUvMultiplier;
+                #if defined(_SECONDARY_UVS_ADDITIVE_OFFSET) && defined(SECONDARY_UVS_OCCLUSION_DETAIL)
+                detailBaseUv += UNITY_ACCESS_INSTANCED_PROP(Props, _AdditiveUVOffset).xy;
+                #endif
                 float2 detailUv = detailBaseUv * dirtDetailTex_ST.xy + dirtDetailTex_ST.zw;
                 #endif
                 surface.occlusionDetail = occlusionDetailIntensity *
@@ -1061,10 +1069,11 @@ Shader "ChroMapper/Lit"
 
                     float3 layerIridescence;
                     if (layerIndex <= 0.1) layerIridescence = hueShift.xyz;
-                    else if (layerIndex <= 1.1) layerIridescence = hueShift.zxy;
-                    else if (layerIndex <= 2.1) layerIridescence = hueShift.yzx;
+                    else if (layerIndex <= 1.1) layerIridescence = hueShift.yzx;
+                    else if (layerIndex <= 2.1) layerIridescence = hueShift.zyx;
                     else if (layerIndex <= 3.1) layerIridescence = hueShift.xzy;
-                    else layerIridescence = hueShift.yzx;
+                    else if (layerIndex <= 4.1) layerIridescence = hueShift.yxz;
+                    else layerIridescence = hueShift.zxy;
 
                     float intensity = (parallaxIntensityStep * layerIndex + parallaxIntensity) *
                         parallaxSample.x;
@@ -1127,17 +1136,22 @@ Shader "ChroMapper/Lit"
                 EmissionData emission = InitializeEmissionData();
                 #if defined(_VERTEX_WHITEBOOSTTYPE_ALWAYS) || \
                     (defined(_VERTEX_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM))
-                float4 squaredEmissionColor = emissionColor * emissionColor;
+                float4 weightedEmissionColor = emissionColor.a * emissionColor;
                 float whiteBoost = CalculateWhiteBoost(
-                    threshold * squaredEmissionColor.a * vertexColor.a, 1.0,
+                    threshold * weightedEmissionColor.a * vertexColor.a, 1.0,
                     baseColorBoost, baseColorBoostThreshold);
-                emission.color = saturate(squaredEmissionColor.rgb * threshold + whiteBoost) *
+                emission.color = saturate(weightedEmissionColor.rgb * threshold + whiteBoost) *
                     questWhiteboostMultiplier;
                 #else
                 emission.color = emissionColor.rgb * emissionColor.a * threshold;
                 #endif
+                #if defined(_VERTEXMODE_EMISSIVE_MULT_ADD)
+                emission.bloomAlpha = vertexColor.g * vertexColor.g * emissionColor.a *
+                    emissionBloomIntensity;
+                #else
                 emission.bloomAlpha = vertexColor.a * vertexColor.a * emissionColor.a *
                     emissionBloomIntensity;
+                #endif
                 return emission;
             }
 
@@ -1151,27 +1165,22 @@ Shader "ChroMapper/Lit"
                 return emission;
             }
 
-            // Lit-local hologram helpers
-            inline float ResolveHologramTime(float4 timeValue, float4 timeHelperOffset)
-            {
-                return timeHelperOffset.w + timeValue.w;
-            }
-
+            // Lit-local hologram helper
             inline float4 ApplyHologram(
                 float4 result, float3 worldPosition, float3 objectPosition, float4 timeValue,
-                float4 timeHelperOffset, float gridSize, float scanDistance,
+                float gridSize, float scanDistance,
                 float holoIntensity, float haltScan, float stripeSpeed, float phaseOffset,
                 float fill, float3 hologramColor)
             {
                 #if defined(_HOLOGRAM_GRID)
                 {
-                    float time = ResolveHologramTime(timeValue, timeHelperOffset);
+                    float time = timeValue.w;
                     time = haltScan > 0.5 ? 0.0 : time;
 
                     float3 gridPhase = time * float3(0.0, stripeSpeed, stripeSpeed * 0.5);
                     float3 cameraPosition = GetStereoAwareCameraPosition();
                     float cameraDistance = length(worldPosition - cameraPosition);
-                    float distanceFactor = saturate(cameraDistance * 0.1333333);
+                    float distanceFactor = saturate(cameraDistance * asfloat(0x3e088889));
                     distanceFactor = 1.0 - (1.0 - distanceFactor) * (1.0 - distanceFactor);
                     float resolvedGridSize = gridSize - distanceFactor * 10.0;
                     float colorScale = 1.0 - distanceFactor * 0.6;
@@ -1184,13 +1193,13 @@ Shader "ChroMapper/Lit"
                     float scanPosition = (worldPosition.y - unity_ObjectToWorld._m13 +
                         phaseOffset * scanDistance) / scanDistance;
                     float scan = frac(-time * stripeSpeed + scanPosition);
-                    float leadingInput = max((0.02499998 - scan) * 40.00004, 0.0);
+                    float leadingInput = max((asfloat(0x3cccccc0) - scan) * 40.00004, 0.0);
                     float trailingInput = max((0.975 - scan) * -40.0, 0.0);
                     float leading = 1.0 - leadingInput * leadingInput *
                         (3.0 - 2.0 * leadingInput);
                     float trailing = trailingInput * trailingInput *
                         (3.0 - 2.0 * trailingInput);
-                    float envelope = (leading + trailing) * 0.25 + 1.0;
+                    float envelope = (trailing - leading) * 0.25 + 1.25;
                     float scanGrid = saturate((1.0 - scan) * leading + grid);
                     float hologram = envelope - scanGrid;
 
@@ -1198,29 +1207,29 @@ Shader "ChroMapper/Lit"
                 }
                 #elif defined(_HOLOGRAM_SCANLINE)
                 {
-                    float time = ResolveHologramTime(timeValue, timeHelperOffset);
+                    float time = timeValue.w;
                     float scanTime = haltScan > 0.5 ? -0.0 : -time * stripeSpeed;
                     float scanPosition = (worldPosition.y - unity_ObjectToWorld._m13 +
                         phaseOffset * scanDistance) / scanDistance;
                     float scan = min(
-                        (1.0 - frac(scanTime + scanPosition)) * 1.666667, 1.0);
+                        (1.0 - frac(scanTime + scanPosition)) * asfloat(0x3fd55555), 1.0);
                     scan = 1.0 - scan * scan * (3.0 - 2.0 * scan);
                     result.rgb += scan * holoIntensity * hologramColor;
                 }
                 result.a = 0.0;
                 #elif defined(_HOLOGRAM_LEGACY)
                 {
-                    float time = ResolveHologramTime(timeValue, timeHelperOffset);
+                    float time = timeValue.w;
                     float4 relativePosition = worldPosition.yxyz -
                         unity_ObjectToWorld._m13_m03_m13_m23;
                     float4 scaledPosition = relativePosition * gridSize;
 
                     float3 wavePosition = scaledPosition.yzw -
                         time * float3(0.0, 1.0, 0.0);
-                    float3 waves = sin(frac(wavePosition) * 3.141593) * 1.2;
+                    float3 waves = sin(frac(wavePosition) * asfloat(0x40490fdb)) * 1.2;
                     float pulsePosition = frac((scaledPosition.x * 0.33 + time) * 0.2);
                     pulsePosition = min(pulsePosition * 2.0, 1.0);
-                    float pulseEdge = min(pulsePosition * 20.0, 1.0);
+                    float pulseEdge = min(pulsePosition * asfloat(0x419ffffe), 1.0);
                     pulseEdge = pulseEdge * pulseEdge * (3.0 - 2.0 * pulseEdge);
                     float pulse = pulseEdge * (1.0 - pulsePosition);
 
@@ -1243,7 +1252,7 @@ Shader "ChroMapper/Lit"
                 float3 viewDirection = normalize(worldPosition - cameraPosition);
                 float rimLight = 1.0 - abs(dot(normalWS, viewDirection));
                 rimLight = smoothstep(0.0, 1.0, saturate(
-                                          (rimLight - rimLightEdgeStart) / max(1.0 - rimLightEdgeStart, 0.00001)));
+                                          (rimLight - rimLightEdgeStart) / (1.0 - rimLightEdgeStart)));
                 #if defined(DIRECTIONAL_RIM)
                 float3 directionalAxis = normalize(
                     rimPerpendicularAxis + (dot(rimPerpendicularAxis, rimPerpendicularAxis) < 0.00001
@@ -1294,12 +1303,37 @@ Shader "ChroMapper/Lit"
                     (float4(0.1, 0.1, 0.1, 0.0) - result) + result;
             }
 
+            inline float4 ApplyLitColorFog(
+                float4 result, float3 worldPosition,
+                float colorFogMultiplier, float colorFogMax,
+                float colorFogHighlightMultiplier, float colorFogInfluence,
+                float fogHeightScale, float fogHeightOffset)
+            {
+                #if defined(FOG_COLOR_HIGHLIGHT)
+                float colorFogHighlight = min(
+                    asfloat(0x38d1b718u) * colorFogHighlightMultiplier,
+                    colorFogMax);
+                #else
+                float colorFogHighlight = 0.0;
+                #endif
+                float4 fogTarget = min(
+                    float4(0.1, 0.1, 0.1, 0.0) * colorFogMultiplier *
+                        (1.0 + colorFogHighlight),
+                    colorFogMax);
+                float4 colorFogResult = float4(
+                    result.rgb * colorFogInfluence + fogTarget.rgb, result.a);
+                float exactHeightInput =
+                    worldPosition.y * fogHeightScale + fogHeightOffset;
+                float exactHeightFog = CalculateHeightFogFactor(exactHeightInput);
+                return exactHeightFog.xxxx *
+                    (fogTarget - colorFogResult) + colorFogResult;
+            }
+
             // Lit-local vertex-displacement helpers
             #if defined(VERTEXDISPLACEMENT_MASK)
             inline float ComposeVertexDisplacementMask(float displacementScale, float mask)
             {
-                // The recovered active source route uses scalar mode 0. Its mask
-                // composition multiplies the displacement scale by the sampled mask.
+                // Scalar mode 0 multiplies the displacement scale by the sampled mask.
                 return _VertexDisplacementMaskMode == 0.0
                            ? displacementScale * mask
                            : displacementScale + mask;
@@ -1466,6 +1500,8 @@ Shader "ChroMapper/Lit"
                 dispDir = i.color.xyz;
                 #   if defined(DISPLACEMENT_BIDIRECTIONAL)
                 dispDir = dispDir * 2.0 - 1.0;
+                #   elif !defined(_SPECTROGRAM_FLAT) && !defined(_SPECTROGRAM_FULL) && !defined(VERTEXDISPLACEMENT_MASK)
+                dispDir *= UNITY_ACCESS_INSTANCED_PROP(Props, _DisplacementStrength);
                 #   endif
                 dispDir *= UNITY_ACCESS_INSTANCED_PROP(
                     Props, _DisplacementAxisMultiplier).xyz;
@@ -1481,9 +1517,8 @@ Shader "ChroMapper/Lit"
 
                 float spectrogramScale = 1.0;
                 #if defined(_SPECTROGRAM_FLAT)
-                // Flat spectrogram displacement uses the scalar supplied by the
-                // material's Spectrogram Row component.
-                spectrogramScale = _Spectrogram;
+                // SpectrogramRow uploads this scalar through MPB.SetFloat.
+                spectrogramScale = UNITY_ACCESS_INSTANCED_PROP(Props, _SpectrogramData);
                 #elif defined(_SPECTROGRAM_FULL)
                 // ChroMapper's spectrogram producer uploads 64 scalar bins.
                 uint bin = min((uint)(saturate(i.uv3.x) * 64.0), 63u);
@@ -1495,7 +1530,7 @@ Shader "ChroMapper/Lit"
                 #if defined(VERTEXDISPLACEMENT_MASK)
                 { 
                 #if defined(_VERTEXDISPLACEMENT_MASK_SOURCE_3D_TEXTURE)
-                // 3D texture mask — matches decompiled SimpleLit exactly:
+                // 3D texture mask:
                 // sample world-space position scaled/panned/offset into the 3D tex,
                 // then multiply+offset the result to get a scalar mask.
                 {
@@ -1525,7 +1560,7 @@ Shader "ChroMapper/Lit"
                     _VertexDisplacementMaskMultiplier * _dmSample + _VertexDisplacementMaskOffset);
                         }
                 #else
-                // 2D texture mask — matches SimpleLit VERTEXDISPLACEMENT_MASK path
+                // 2D texture mask for the VERTEXDISPLACEMENT_MASK path.
                 { 
                 #if defined(_CUSTOM_TIME_FREEZE)
                 float _dmTime = UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset) * 0.05;
@@ -1735,8 +1770,20 @@ Shader "ChroMapper/Lit"
             }
 
             // Fragment program
+            #if defined(OVERDRAW_VIEW)
+            float _TrueOverdrawOn;
+            float _OpaqueOverdrawOn;
+            float4 _OverdrawColor;
+            #endif
+
             float4 frag(v2f i, float facing : VFACE) : SV_Target
             {
+                #if defined(OVERDRAW_VIEW)
+                precise float overdraw = _TrueOverdrawOn * _OpaqueOverdrawOn;
+                overdraw *= asfloat(0x3dcccccdu);
+                precise float4 overdrawColor = overdraw * _OverdrawColor;
+                return overdrawColor;
+                #else
                 UNITY_SETUP_INSTANCE_ID(i);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
 
@@ -1760,8 +1807,8 @@ Shader "ChroMapper/Lit"
                 baseColor *= i.color;
                 #endif
 
-                // Always start from black — baseColor contributes only via diffuse/ambient,
-                // matching SimpleLit's behaviour so objects are pitch dark without emission or lights.
+                // Always start from black: baseColor contributes only via diffuse/ambient,
+                // so objects are pitch dark without emission or lights.
                 float4 albedo = 0;
                 {
                     #if defined(DIFFUSE_TEXTURE)
@@ -1778,15 +1825,13 @@ Shader "ChroMapper/Lit"
                     float2 diffuseUv = baseUv * _DiffuseTex_ST.xy + _DiffuseTex_ST.zw;
                     baseColor.rgb *= tex2D(_DiffuseTex, diffuseUv).rgb;
                     #endif
-                    baseColor.rgb *= _AlbedoMultiplier;
                     #endif
                 }
 
                 float3 worldPos = i.worldPos;
 
-                // DISSOLVE_TEXTURE and DISSOLVE_COLOR are child selectors. Metallica
-                // fragments 42d6f6a3521f71bc and 71020a0dc3f18c79 prove that they
-                // are inert unless the semantic parent DISSOLVE is enabled.
+                // DISSOLVE_TEXTURE and DISSOLVE_COLOR are child selectors and remain
+                // inert unless the semantic parent DISSOLVE is enabled.
                 #if defined(DISSOLVE)
                 float dissolveTime = ResolveTime(
                     UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset)).y;
@@ -1860,8 +1905,8 @@ Shader "ChroMapper/Lit"
                 }
                 #endif
 
-                // Composable lighting boundary. The canonical structures feed the
-                // single feature-composed output path in source order.
+                // Composable lighting boundary. The structures feed the single
+                // feature-composed output path in composition order.
                 SurfaceData composableSurface = InitializeSurfaceData(
                     worldPos, worldNormal, i.uv.xy, uv2, baseColor,
                     _Metallic, _Smoothness);
@@ -1929,14 +1974,20 @@ Shader "ChroMapper/Lit"
                     composableLighting.ambient = directBaseColor * ambientLight;
                     #endif
 
+                    float3 directDiffuseNormal = composableSurface.normalWS;
+                    #if USE_ANTIFLICKER_NORMAL_PAYLOAD && !USE_NORMAL_MAP_PAYLOAD
+                    directDiffuseNormal = dot(worldNormal, worldNormal) >= 1.01
+                                              ? i.antiflickerNormal
+                                              : worldNormal;
+                    #endif
                     float3 diffuseLights = 0.0;
                     #if defined(DIFFUSE)
                     #if defined(LIGHT_FALLOFF)
                     diffuseLights = CalculateLightFalloffDiffuse(
-                        composableSurface.worldPosition, composableSurface.normalWS);
+                        composableSurface.worldPosition, directDiffuseNormal);
                     #else
                     diffuseLights = CalculateLightDiffuse(
-                        composableSurface.normalWS, _BothSidesDiffuseMultiplier);
+                        directDiffuseNormal, _BothSidesDiffuseMultiplier);
                     #endif
                     #endif
                     #if defined(PRIVATE_POINT_LIGHT)
@@ -1952,9 +2003,9 @@ Shader "ChroMapper/Lit"
                     float distanceSquared = max(dot(lightVector, lightVector), 0.00001);
                     float3 lightDirection = lightVector / sqrt(distanceSquared);
                     #if defined(BOTH_SIDES_DIFFUSE)
-                    float diffuse = abs(dot(composableSurface.normalWS, lightDirection));
+                    float diffuse = abs(dot(directDiffuseNormal, lightDirection));
                     #else
-                    float diffuse = max(dot(composableSurface.normalWS, lightDirection), 0.0);
+                    float diffuse = max(dot(directDiffuseNormal, lightDirection), 0.0);
                     #endif
                     diffuseLights += diffuse * privatePointLightColor *
                         _PrivatePointLightIntensity / distanceSquared;
@@ -2002,13 +2053,14 @@ Shader "ChroMapper/Lit"
                         lightmap2.r * _LightmapLightBakeIdD +
                         lightmap2.g * _LightmapLightBakeIdE +
                         lightmap2.b * _LightmapLightBakeIdF;
-                    composableLighting.directDiffuse += decodedLightmap * 4.594793 *
+                    float3 lightmapBaseColor =
                         (1.0 - composableSurface.metallic) * directBaseColor;
+                    composableLighting.directDiffuse +=
+                        (decodedLightmap * 4.5947933) * lightmapBaseColor;
                     #endif
                 }
                 float3 composableReflectionNormal = worldNormal;
-                #if USE_ANTIFLICKER_NORMAL_PAYLOAD && \
-                    !defined(_VERTEXMODE_METALSMOOTHNESS)
+                #if USE_ANTIFLICKER_NORMAL_PAYLOAD
                 composableReflectionNormal = dot(worldNormal, worldNormal) >= 1.01
                                                  ? i.antiflickerNormal
                                                  : worldNormal;
@@ -2126,15 +2178,13 @@ Shader "ChroMapper/Lit"
                     composableSurface.metallic -
                     scaledGrayscale * scaledGrayscale * 0.1);
                 metallicFactor *= max(saturation, 0.95);
-                #if defined(MULTIPLY_REFLECTIONS)
                 reflection *= 1.0 + metallicFactor *
                     (composableSurface.baseColor.rgb * coloredMetalScale - 1.0);
-                float whiteFactor = (1.0 - saturation) * (1.0 + saturation) *
+                float whiteFactor = (1.0 - saturation) *
                     _WhiteOffset * max(_ColoredMetalMultiplier, 1.0);
                 reflection *= max(
                     whiteFactor * composableSurface.baseColor.rgb *
                     composableSurface.metallic, 1.0);
-                #endif
                 reflection *= smoothness;
                 #if defined(RIM_DIM)
                 reflection *= 1.0 - composableRimDim * _RimDarkening;
@@ -2176,7 +2226,7 @@ Shader "ChroMapper/Lit"
                 #if defined(_HOLOGRAM_GRID)
                 albedo = ApplyHologram(
                     albedo, worldPos, i.hologramObjectPosition, composableTime,
-                    _TimeHelperOffset, _HologramGridSize, _HologramScanDistance,
+                    _HologramGridSize, _HologramScanDistance,
                     _HoloIntensity,
                     UNITY_ACCESS_INSTANCED_PROP(Props, _HaltScan),
                     UNITY_ACCESS_INSTANCED_PROP(Props, _HologramStripeSpeed),
@@ -2186,7 +2236,7 @@ Shader "ChroMapper/Lit"
                 #elif defined(_HOLOGRAM_SCANLINE)
                 albedo = ApplyHologram(
                     albedo, worldPos, 0.0.xxx, composableTime,
-                    _TimeHelperOffset, 0.0, _HologramScanDistance,
+                    0.0, _HologramScanDistance,
                     _HoloIntensity,
                     UNITY_ACCESS_INSTANCED_PROP(Props, _HaltScan),
                     UNITY_ACCESS_INSTANCED_PROP(Props, _HologramStripeSpeed),
@@ -2196,7 +2246,7 @@ Shader "ChroMapper/Lit"
                 #else
                 albedo = ApplyHologram(
                     albedo, worldPos, 0.0.xxx, composableTime,
-                    _TimeHelperOffset, _HologramGridSize, 0.0, 0.0,
+                    _HologramGridSize, 0.0, 0.0,
                     0.0, 0.0, 0.0, 0.0,
                     UNITY_ACCESS_INSTANCED_PROP(Props, _HologramColor));
                 #endif
@@ -2216,7 +2266,7 @@ Shader "ChroMapper/Lit"
                 #if defined(OCCLUSION) && defined(OCCLUSION_BEFORE_EMISSION)
                 albedo.rgb *= composableSurface.occlusion;
                 #endif
-                #if defined(OCCLUSION_DETAIL)
+                #if defined(OCCLUSION_DETAIL) && defined(OCCLUSION_BEFORE_EMISSION)
                 albedo.rgb *= composableSurface.occlusionDetail;
                 #endif
 
@@ -2313,7 +2363,7 @@ Shader "ChroMapper/Lit"
                         float isNegative = _SDFPointArray[pointIndex].w < 0.0
                                                ? 1.0
                                                : 0.0;
-                        float pointSign = floor(isNegative - isPositive);
+                        float pointSign = floor(isPositive - isNegative);
                         float pointIntensity = pointSign < 0.0
                                                    ? _SDFNegativeIntensity
                                                    : _SDFPointIntensity;
@@ -2405,6 +2455,9 @@ Shader "ChroMapper/Lit"
                     _EmissionTexSpeed, composableTime.x);
                 #else
                 float2 baseUv = composableSurface.uv0 * _InputUvMultiplier;
+                #if defined(_SECONDARY_UVS_ADDITIVE_OFFSET) && defined(SECONDARY_UVS_EMISSION)
+                baseUv += UNITY_ACCESS_INSTANCED_PROP(Props, _AdditiveUVOffset).xy;
+                #endif
                 float2 emissionUv = baseUv * _EmissionTex_ST.xy +
                     _EmissionTex_ST.zw;
                 emissionUv += composableTime.xx * _EmissionTexSpeed *
@@ -2480,6 +2533,9 @@ Shader "ChroMapper/Lit"
                 #endif
                 emissionInput *= UNITY_ACCESS_INSTANCED_PROP(
                     Props, _EmissionBrightness);
+                #if defined(_VERTEXMODE_EMISSIVE_MULT_ADD)
+                emissionInput *= i.color.a;
+                #endif
 
                 #if defined(COLOR_ARRAY)
                 float emissionColorIndex = round(
@@ -2558,10 +2614,10 @@ Shader "ChroMapper/Lit"
                 #endif
 
                 #if defined(OCCLUSION) && !defined(OCCLUSION_BEFORE_EMISSION)
-                albedo.rgb *= composableSurface.occlusion;
-                #if defined(_RIMLIGHT_ADDITIVE)
-                albedo.a *= composableSurface.occlusion;
+                albedo *= composableSurface.occlusion;
                 #endif
+                #if defined(OCCLUSION_DETAIL) && !defined(OCCLUSION_BEFORE_EMISSION)
+                albedo *= composableSurface.occlusionDetail;
                 #endif
 
                 #if defined(_RIMLIGHT_LERP)
@@ -2600,7 +2656,7 @@ Shader "ChroMapper/Lit"
 
                 #if defined(COLOR_BY_FOG) && !(defined(BLOOM_FOG) && defined(FOG)) && \
                     !defined(_HOLOGRAM_GRID) && !defined(_HOLOGRAM_LEGACY)
-                albedo = ApplyColorFog(
+                albedo = ApplyLitColorFog(
                     albedo, worldPos, _ColorFogMultiplier, _ColorFogMax,
                     _ColorFogHighlightMultiplier, _ColorFogInfluence,
                     _FogHeightScale, _FogHeightOffset);
@@ -2688,7 +2744,7 @@ Shader "ChroMapper/Lit"
                 #endif
                 #endif
 
-                // Recovered dissolve-color routes apply the final edge-color
+                // Dissolve-color routes apply the final edge-color
                 // blend after fog and blue-noise dithering.
                 #if defined(DISSOLVE) && defined(DISSOLVE_COLOR)
                 albedo.rgb = lerp(
@@ -2698,6 +2754,76 @@ Shader "ChroMapper/Lit"
                     dissolveFactor);
                 #endif
                 return albedo;
+                #endif
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "META"
+            Tags { "LightMode"="META" }
+            Cull Off
+            ZWrite On
+            ZTest LEqual
+            Blend One Zero, One Zero
+            BlendOp Add, Add
+            ColorMask RGBA
+
+            HLSLPROGRAM
+            #pragma target 3.5
+            #pragma vertex LitMetaVertex
+            #pragma fragment LitMetaFragment
+            #pragma multi_compile _ STEREO_INSTANCING_ON
+
+            #include "UnityCG.cginc"
+            #include "UnityMetaPass.cginc"
+
+            float4 _Color;
+            float4 _MainTex_ST;
+            float4 _DetailAlbedoMap_ST;
+            float _UVSec;
+
+            struct LitMetaAttributes
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float2 uv0 : TEXCOORD0;
+                float2 uv1 : TEXCOORD1;
+                float2 uv2 : TEXCOORD2;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct LitMetaVaryings
+            {
+                float4 position : SV_POSITION;
+                float4 uv : TEXCOORD0;
+            };
+
+            LitMetaVaryings LitMetaVertex(LitMetaAttributes v)
+            {
+                LitMetaVaryings o;
+                // The META stereo program reads VP[0], not the instance eye.
+                #if defined(UNITY_STEREO_INSTANCING_ENABLED)
+                unity_StereoEyeIndex = 0;
+                #endif
+                o.position = UnityMetaVertexPosition(v.vertex, v.uv1, v.uv2,
+                    unity_LightmapST, unity_DynamicLightmapST);
+                o.uv.xy = v.uv0 * _MainTex_ST.xy + _MainTex_ST.zw;
+                float2 detailUV = _UVSec == 0.0 ? v.uv0 : v.uv1;
+                o.uv.zw = detailUV * _DetailAlbedoMap_ST.xy + _DetailAlbedoMap_ST.zw;
+                return o;
+            }
+
+            float4 LitMetaFragment() : SV_Target
+            {
+                float outputBoost = saturate(unity_OneOverOutputBoost);
+                float3 albedo = exp2(log2(_Color.rgb) * outputBoost);
+                albedo = min(albedo, unity_MaxOutputValue);
+                float4 result = unity_MetaFragmentControl.x
+                    ? float4(albedo, 1.0) : float4(0.0, 0.0, 0.0, 0.0);
+                return unity_MetaFragmentControl.y
+                    ? float4(0.0, 0.0, 0.0, 1.0) : result;
             }
             ENDHLSL
         }

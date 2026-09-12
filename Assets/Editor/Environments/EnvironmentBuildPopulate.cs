@@ -23,14 +23,16 @@ public class EnvironmentBuildPopulate
         // Abort before marking entries unused so a path regression cannot silently empty the generated libraries.
         if (envDataPaths.Count == 0)
         {
-            const string message = "Populate Build Data found no environment JSON assets; generated libraries were not changed.";
+            const string message =
+                "Populate Build Data found no environment JSON assets; generated libraries were not changed.";
             Debug.LogError(message);
             throw new InvalidOperationException(message);
         }
 
         // Unity asset loading requires normalized project-relative paths on every host platform.
         var library =
-            AssetDatabase.LoadAssetAtPath<EnvironmentLibrarySO>(PathUtils.Combine(editorPath, "EnvironmentLibrarySO.asset"));
+            AssetDatabase.LoadAssetAtPath<EnvironmentLibrarySO>(
+                PathUtils.Combine(editorPath, "EnvironmentLibrarySO.asset"));
 
         // Fail explicitly instead of producing a partial refresh when the library asset cannot be resolved.
         if (library == null)
@@ -75,8 +77,7 @@ public class EnvironmentBuildPopulate
         library.Materials.MarkForChange();
         library.Textures.MarkForChange();
         library.Sprites.MarkForChange();
-        foreach (var s in library.Shaders)
-            s.keywords.Clear();
+        foreach (var s in library.Shaders) s.keywords.Clear();
 
         foreach (var data in environmentData)
         {
@@ -157,7 +158,8 @@ public class EnvironmentBuildPopulate
                 .ToList();
 
         var usedMaterialName = new Dictionary<string, int>();
-        var collidingMaterialHashes = library.Materials.list
+        var collidingMaterialHashes = library
+            .Materials.list
             .Where(source => source?.Materials != null)
             .SelectMany(source => source.Materials.Where(variant => variant != null).Select(_ => source.Hash))
             .GroupBy(hash => hash)
@@ -185,8 +187,7 @@ public class EnvironmentBuildPopulate
                         : baseName;
                     var environments = variant.Environments ?? new List<string>();
                     if (environments.Count == 0)
-                        throw new InvalidOperationException(
-                            $"Material '{source.Hash}' has no associated environment.");
+                        throw new InvalidOperationException($"Material '{source.Hash}' has no associated environment.");
                     if (environments.Count > 1)
                     {
                         var targetPath = PathUtils.Combine(Constants.MaterialsPath, $"{name}.mat");
@@ -247,21 +248,22 @@ public class EnvironmentBuildPopulate
         library.Materials.RebuildLookup();
         var resolvedMaterialCount = library.Materials.ResolvedMaterialCount;
         Debug.Log(
-            $"Populated environment libraries: {resolvedMeshCount}/{library.Meshes.list.Count} meshes and " +
-            $"{resolvedMaterialCount}/{library.Materials.MaterialVariantCount} materials and " +
-            $"{resolvedTextureCount}/{library.Textures.list.Count} textures resolved.");
+            $"Populated environment libraries: {resolvedMeshCount}/{library.Meshes.list.Count} meshes and "
+            + $"{resolvedMaterialCount}/{library.Materials.MaterialVariantCount} materials and "
+            + $"{resolvedTextureCount}/{library.Textures.list.Count} textures resolved.");
         if (resolvedMaterialCount == 0)
         {
             const string message = "Populate Build Data produced no usable material references.";
             Debug.LogError(message);
             throw new InvalidOperationException(message);
         }
+
         AssetDatabase.SaveAssets();
     }
 
     private static bool IsInternalErrorMaterial(string materialName, string shaderName) =>
-        string.Equals(shaderName, "Hidden/InternalErrorShader", StringComparison.Ordinal) ||
-        materialName?.StartsWith("Hidden/InternalErrorShader", StringComparison.Ordinal) == true;
+        string.Equals(shaderName, "Hidden/InternalErrorShader", StringComparison.Ordinal)
+        || materialName?.StartsWith("Hidden/InternalErrorShader", StringComparison.Ordinal) == true;
 
     private static bool TryGetShader(List<ShaderEntry> list, string shaderName, out Shader shader)
     {

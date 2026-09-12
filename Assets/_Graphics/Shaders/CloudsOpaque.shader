@@ -1,32 +1,17 @@
 // ChroMapper/Clouds Opaque
 // Replacement for the Beat Saber game shader Custom/CloudsOpaque (BTS clouds).
-// Recovered from the 1.44.3 DXBC (bts_environment bundle):
-//   fragment-119bc5fdf0893e09.hlsl (+ dither variant 485a517d5978ccac)
-//   vertex-1effd9ad752a9c6e.glsl
 //
-// AUDIT FINDINGS (2026-08-16):
-// O1. The strict Properties block is the authoritative material-property source;
-//     _Offset is retained because material evidence contains it, although no
-//     recovered program operand references it.
-// O2. Normalized keywords are DIFFUSE, BOTH_SIDES_DIFFUSE, WORLD_NOISE,
-//     INVERT_DIFFUSE_NORMAL, FOG, NOISE_DITHERING, and BLOOM_FOG.
-// O3. DIFFUSE uses the shared five-light route (CalculateLightDiffuse), including
-//     BOTH_SIDES and INVERT; no private or ambient light route is present.
-// O4. vertex-1effd9ad maps _Speed to the swirl phase: _Speed * (_Time.y +
-//     _TimeHelperOffset.y). O5. _WorldNoiseScrolling.xy scrolls directly with
-//     (_Time.x + _TimeHelperOffset.x), without _Speed.
-// O6. Fog and the normal use the pre-noise world position; only clip position
-//     receives world-noise displacement.
-// O7. NOISE_DITHERING scales projected coordinates in the vertex with
-//     _GlobalBlueNoiseParams, then uses PostProcess.hlsl; the additive term is
-//     (blueNoise - 0.5) / 255 (fragment-19822184).
-// O8. Ordinary fog is 1 - heightFade (fragment-72154a52). O9. BLOOM_FOG samples
-//     _BloomPrePassTexture directly at screenPos.xy / screenPos.w and uses
-//     1 - heightFade * distanceFade (fragment-119bc5fd).
-// O10. ACES runs after lit saturation and before fog and dither.
-// O11. Alpha is always zero (fragment-40070c00). O12. The debug/white-boost
-//     route is omitted because it is absent from the recovered keyword matrix.
-// Vertex (recovered):
+// _Offset remains available for material compatibility but has no shader consumer.
+// DIFFUSE uses the shared five-light route, including BOTH_SIDES and INVERT, without private or ambient lighting.
+// The swirl phase uses _Speed * (_Time.y + _TimeHelperOffset.y).
+// _WorldNoiseScrolling.xy scrolls with (_Time.x + _TimeHelperOffset.x), without _Speed.
+// Fog and the normal use the pre-noise world position. Only clip position receives world-noise displacement.
+// NOISE_DITHERING scales projected coordinates with _GlobalBlueNoiseParams and adds (blueNoise - 0.5) / 255.
+// Ordinary fog is 1 - heightFade.
+// BLOOM_FOG samples _BloomPrePassTexture at screenPos.xy / screenPos.w and uses 1 - heightFade * distanceFade.
+// ACES runs after lit saturation and before fog and dither. Alpha is always zero.
+// Debug and white-boost routes are omitted.
+// Vertex:
 //   phase  = sin(v.vertex.z * 12.345)
 //   wave   = sign(-phase) * (phase * 0.5 + 1.0) * _WorldNoiseIntensityScale
 //   angle  = (v.vertex.x + wave * _Speed *
@@ -39,7 +24,7 @@
 //   scroll = _WorldNoiseScrolling.xy * (_Time.x + _TimeHelperOffset.x)
 // Outputs world position, inverted world-origin normal (-normalize(world)), the
 // main texture UV, and projected coordinates for fog and blue-noise sampling.
-// Fragment (recovered):
+// Fragment:
 //   distFade = 1 / (1 + max(0, max(0, dist2 - customOffset) *
 //                customAttenuation - _FogStartOffset) * _FogScale)
 //   heightFade = smoothstep vertical band using the custom height globals
@@ -153,7 +138,7 @@ Shader "ChroMapper/Clouds Opaque"
             float _FogScale;
             float _HeightFogOffset;
 
-            #if defined(SHADER_STAGE_VERTEX) && defined(SHADER_API_D3D11) && defined(WORLD_NOISE)
+            #if defined(SHADER_STAGE_VERTEX) && defined(WORLD_NOISE)
             float _GlobalRandomValue;
             #endif
 
@@ -167,22 +152,14 @@ Shader "ChroMapper/Clouds Opaque"
 
                 // vertex-1effd9ad (1effd9ad): phase, swirl, world-noise sample,
                 // and the pre-noise world position passed to the fragment.
-                #if defined(SHADER_API_D3D11) || defined(WORLD_NOISE)
                 float phase = sin(v.vertex.z * 12.345);
-                #if defined(SHADER_API_D3D11)
                 float wave = sign(phase) * (phase * 0.5 + 1.0);
-                #else
-                float wave = sign(-phase) * (phase * 0.5 + 1.0) * _WorldNoiseIntensityScale;
-                #endif
 
                 // The swirl rides _Time.y + _TimeHelperOffset.y (cb0[15].y +
                 // cb0[159].y in the recovered vertex).
                 float angle = (v.vertex.x + wave * _Speed *
                     (_Time.y + _TimeHelperOffset.y)) / v.vertex.z;
                 float3 pos = float3(sin(angle) * v.vertex.z, v.vertex.y, cos(angle) * v.vertex.z);
-                #else
-                float3 pos = v.vertex.xyz;
-                #endif
 
                 // recovered: the fog position and the normal use the pre-noise
                 // world position; only the clip position is noise-displaced
@@ -198,24 +175,14 @@ Shader "ChroMapper/Clouds Opaque"
                     (_Time.x + _TimeHelperOffset.x);
                 float2 nuv = world.xz * _NoiseTex_ST.xy + _NoiseTex_ST.zw + scroll;
                 float noise = tex2Dlod(_NoiseTex, float4(nuv, 0, 0)).x;
-                #if defined(SHADER_API_D3D11)
                 float displacement = noise * _WorldNoiseIntensityScale + _WorldNoiseIntensityOffset;
                 world = mul(unity_ObjectToWorld,
                             float4(pos.x, pos.y + displacement, pos.z, 1.0)).xyz;
-                #else
-                world.y += noise * _WorldNoiseScale + _WorldNoiseIntensityOffset;
-                #endif
                 #endif
 
                 o.position = mul(unity_MatrixVP, float4(world, 1.0));
                 o.screenPos = ComputeScreenPosCustom(o.position);
-                #if defined(SHADER_STAGE_VERTEX) && defined(SHADER_API_D3D11) && defined(WORLD_NOISE) \
-                    && !defined(UNITY_STEREO_MULTIVIEW_ENABLED) \
-                    && !defined(UNITY_PROCEDURAL_INSTANCING_ENABLED) \
-                    && !defined(UNITY_PRETRANSFORM_TO_DISPLAY_ORIENTATION) \
-                    && ((defined(STEREO_INSTANCING_ON) && defined(UNITY_STEREO_INSTANCING_ENABLED)) \
-                        || (!defined(UNITY_SINGLE_PASS_STEREO) && !defined(STEREO_INSTANCING_ON) \
-                            && !defined(UNITY_STEREO_INSTANCING_ENABLED)))
+                #if defined(SHADER_STAGE_VERTEX) && defined(WORLD_NOISE)
                 o.noiseScreenPos = ComputeNonStereoScreenPos(o.position);
                 o.noiseScreenPos.xy = o.noiseScreenPos.xy * _GlobalBlueNoiseParams
                     + o.position.w * _GlobalRandomValue;
@@ -252,7 +219,7 @@ Shader "ChroMapper/Clouds Opaque"
                     i.world, _HeightFogOffset, 1.0);
                 float fade = 1.0 - distFade * hFade;
 
-                #if defined(SHADER_API_D3D11) && defined(DIFFUSE) && defined(INVERT_DIFFUSE_NORMAL)
+                #if defined(DIFFUSE) && defined(INVERT_DIFFUSE_NORMAL)
                 float3 normal = i.nor;
                 #else
                 float3 normal = normalize(i.nor);

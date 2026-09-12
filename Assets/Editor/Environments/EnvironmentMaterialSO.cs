@@ -130,7 +130,6 @@ public class EnvironmentMaterialSO : ScriptableObject
                 $"Environment '{environment}' has multiple material definitions for hash '{material.Hash}'.");
 
         var source = list.FirstOrDefault(candidate => candidate != null
-            && !candidate.Unused
             && candidate.Hash == material.Hash);
         if (source == null)
         {
@@ -149,17 +148,24 @@ public class EnvironmentMaterialSO : ScriptableObject
                 $"Material hash '{material.Hash}' has conflicting source metadata: "
                 + $"'{source.Name}'/'{source.Shader}' and '{material.Name}'/'{material.Shader}'.");
         }
+        else
+        {
+            // Revive the existing entry so RemoveUnused keeps reused materials
+            // instead of discarding them and forcing full regeneration.
+            source.Unused = false;
+        }
 
         source.Materials ??= new List<MaterialVariant>();
         var variantHash = GetVariantHash(material);
         var variant = source.Materials.FirstOrDefault(candidate =>
-            candidate != null && !candidate.Unused && candidate.Hash == variantHash);
+            candidate != null && candidate.Hash == variantHash);
         if (variant == null)
         {
             source.Materials.Add(CreateVariant(material, environment, variantHash));
             return;
         }
 
+        variant.Unused = false;
         variant.Keywords ??= new List<string>();
         if (material.Keywords != null)
             variant.Keywords.AddRange(material.Keywords.Where(keyword => !variant.Keywords.Contains(keyword)));

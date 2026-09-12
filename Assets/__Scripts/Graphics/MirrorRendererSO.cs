@@ -6,6 +6,8 @@ using UnityEngine;
 public class MirrorRendererSO : ScriptableObject
 {
     private const int mirrorBloomResolution = 512;
+    private const string depthTextureKeyword = "DEPTH_TEXTURE";
+    private const string nativeDepthTextureKeyword = "DEPTH_TEXTURE_ENABLED";
 
     public enum MirrorQuality
     {
@@ -105,9 +107,19 @@ public class MirrorRendererSO : ScriptableObject
         var sourceBloomFogState = bloomfogRenderingController == null
             ? default
             : bloomfogRenderingController.CaptureGlobalState();
+        var depthTextureWasEnabled = Shader.IsKeywordEnabled(depthTextureKeyword);
+        var nativeDepthTextureWasEnabled = Shader.IsKeywordEnabled(nativeDepthTextureKeyword);
 
         try
         {
+            // Depth keywords are global, but the mirror may not produce a depth texture.
+            // Suppress both supported aliases through the reflection prepass and scene draw.
+            if ((mirrorCamera.depthTextureMode & DepthTextureMode.Depth) == 0)
+            {
+                Shader.DisableKeyword(depthTextureKeyword);
+                Shader.DisableKeyword(nativeDepthTextureKeyword);
+            }
+
             if (bloomfogRenderingController != null
                 && bloomfogRenderingController.CanRenderReflections)
             {
@@ -131,6 +143,11 @@ public class MirrorRendererSO : ScriptableObject
         }
         finally
         {
+            if (depthTextureWasEnabled) Shader.EnableKeyword(depthTextureKeyword);
+            else Shader.DisableKeyword(depthTextureKeyword);
+            if (nativeDepthTextureWasEnabled) Shader.EnableKeyword(nativeDepthTextureKeyword);
+            else Shader.DisableKeyword(nativeDepthTextureKeyword);
+
             GL.invertCulling = previousInvertCulling;
             if (bloomfogRenderingController != null)
                 bloomfogRenderingController.RestoreGlobalState(sourceBloomFogState);

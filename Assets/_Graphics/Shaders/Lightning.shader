@@ -128,14 +128,8 @@ Shader "ChroMapper/Lightning"
                 float2 sourcePathUv = i.pathUv;
 
                 // Original D3D vertices use separate width and noise-X controls.
-                // Preserve other backends until original evidence covers them.
-                #if defined(SHADER_API_D3D11)
                 float widthScale = _Extrude;
                 float noiseXStrength = _XNoiseOffsetStrength;
-                #else
-                float widthScale = _XNoiseOffsetStrength;
-                float noiseXStrength = _Extrude;
-                #endif
 
                 float3 localPath;
                 #if defined(ENABLE_TARGET_POINT)

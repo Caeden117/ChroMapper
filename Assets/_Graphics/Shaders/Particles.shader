@@ -1,10 +1,9 @@
 ﻿// Replacement for the Beat Saber game shader Custom/CustomParticles.
 Shader "ChroMapper/Particles"
 {
-    // See PARTICLE_REAUDIT.md for the audited contracts and evidence.
     Properties
     {
-        [BigHeader(COLOR)] [Space(18)] _Color ("Base Color", Vector) = (1,1,1,1)
+        [BigHeader(COLOR)] [Space(18)] _Color ("Base Color", Color) = (1,1,1,1)
         [Space(18)] [Toggle(COLOR_BY_FOG)] _EnableObstacle ("Color by Fog", Float) = 0
         // Keep the serialized enum values; Texture has no implemented shader route.
         // Primary Mask uses _FOG_MASK_SOURCE_PRIMARY_MASK with the mask feature enabled.
@@ -15,7 +14,7 @@ Shader "ChroMapper/Particles"
         [ToggleShowIfAny(FOG_COLOR_HIGHLIGHT, COLOR_BY_FOG)] _FogColorHighlight ("Use Fog Highlight", Float) = 0
         [ShowIfAny(2, COLOR_BY_FOG, FOG_COLOR_HIGHLIGHT)] _ObstacleFogHighlightMultiplier ("Fog Highlight Multiplier", Float) = 30000
         [Space(12)] [Toggle(SECONDARY_COLOR)] _EnableSecondaryColor ("Use Secondary Color", Float) = 0
-        [ShowIfAny(SECONDARY_COLOR)] _SecondaryColor ("Secondary Color", Vector) = (1,1,1,1)
+        [ShowIfAny(SECONDARY_COLOR)] _SecondaryColor ("Secondary Color", Color) = (1,1,1,1)
         [ShowIfAny(SECONDARY_COLOR)] _SecondaryColorTex ("Secondary Color Texture", 2D) = "white" {}
         [ShowIfAny(SECONDARY_COLOR)] _SecondaryColorPanning ("Secondary Color Panning", Vector) = (0,0,0,0)
         [Space(12)] [Toggle(COLOR_GRADIENT)] _UseColorGradient ("Use Color Gradient", Float) = 0
@@ -168,7 +167,7 @@ Shader "ChroMapper/Particles"
         [ToggleShowIfAny(DISSOLVE_PROGRESS_FROM_VERTEX_ALPHA, 3, DISSOLVE, DISSOLVE_PROGRESS)] _DissolveProgressFromVertexAlpha ("Get Progress from Vertex Alpha", Float) = 0
         [ShowIfAny(3, DISSOLVE, 0DISSOLVE_PROGRESS_FROM_VERTEX_ALPHA, DISSOLVE_PROGRESS)] _DissolveProgress ("Dissolve Progress", Range(-1, 1)) = 0
         [SpaceShowIfAny(24, 1, DISSOLVE)] [ToggleShowIfAny(DISSOLVE_COLOR, 1, DISSOLVE)] _UseDissolveColor ("Use Dissolve Color", Float) = 0
-        [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _DissolveColor ("Dissolve Color", Vector) = (0,1,1,0)
+        [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _DissolveColor ("Dissolve Color", Color) = (0,1,1,0)
         [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _DissolveColorIntensity ("Color Intensity", Float) = 1
         [ShowIfAny(2, DISSOLVE, DISSOLVE_COLOR)] _CutColorFalloff ("Cut Falloff Scale", Float) = 4
         [FloatToggleShowIfAny(DISSOLVE, DISSOLVE_COLOR)] _MultiplyDissolveGridByAlpha ("Multiply by Alpha", Float) = 0
@@ -194,7 +193,7 @@ Shader "ChroMapper/Particles"
         [ShowIfAny(FAKE_MIRROR_TRANSPARENCY)] _FakeMirrorTransparency ("Mirror Transparency Multiplier", Float) = 1
         [Space(12)] [Toggle(NOTE_VERTEX_DISTORTION)] _EnableVertexDistortion ("Note Vertex Distortion", Float) = 0
         [Space(12)] [Toggle(HOLOGRAM)] _EnableHologram ("Legacy Hologram", Float) = 0
-        [ShowIfAny(HOLOGRAM)] _HologramColor ("Hologram Color", Vector) = (1,1,1,1)
+        [ShowIfAny(HOLOGRAM)] _HologramColor ("Hologram Color", Color) = (1,1,1,1)
         [BigHeader(ALPHA HANDLING)] [Space(18)] _AlphaMultiplier ("Alpha Multiplier", Float) = 1
         [Space(12)] [Toggle(SQUARE_ALPHA)] _SquareAlpha ("Square Alpha", Float) = 1
         [Space(12)] [Toggle(FILL_ALPHA)] _EnableFillAlpha ("Enable Fill Alpha", Float) = 0
@@ -296,8 +295,8 @@ Shader "ChroMapper/Particles"
             #pragma shader_feature_local WORLDSPACE_PANNING
 
             #pragma shader_feature_local VERTEX_COLOR
-            // Vertex binary 680a9e19 forwards raw alpha; fragment a07d89c2
-            // squares the interpolated factor. Compile this keyword in both stages.
+            // The vertex stage forwards raw alpha, and the fragment stage squares
+            // the interpolated factor. Compile this keyword in both stages.
             #pragma shader_feature_local VERTEX_SQUARE_ALPHA
             #pragma shader_feature_local_vertex VERTEX_RED_IS_ALPHA
             #pragma shader_feature_local_vertex _ _VERTEXCHANNELS_A
@@ -368,10 +367,10 @@ Shader "ChroMapper/Particles"
             #pragma shader_feature_local_fragment PRECISE_FOG
 
             #pragma shader_feature_local_fragment _ _WHITEBOOSTTYPE_MAINEFFECT _WHITEBOOSTTYPE_ALWAYS
-            // Global: the post-process bloom runs (mirrors the game's MAIN_EFFECT_ENABLED gate).
+            // Global: post-process bloom replaces the material white boost, matching the MAIN_EFFECT_ENABLED gate.
             #pragma multi_compile _ POST_BLOOM
-            // DEPTH_TEXTURE is ChroMapper's runtime alias; DEPTH_TEXTURE_ENABLED is
-            // Beat Saber 1.44.3's global. Compile both names for the same depth route.
+            // DEPTH_TEXTURE is ChroMapper's runtime alias for DEPTH_TEXTURE_ENABLED.
+            // Compile both names for the same depth route.
             #pragma multi_compile _ DEPTH_TEXTURE DEPTH_TEXTURE_ENABLED
             #pragma shader_feature_local_fragment REMAP_WHITEBOOST_START
 
@@ -382,6 +381,7 @@ Shader "ChroMapper/Particles"
             #pragma shader_feature_local_fragment HEIGHT_FOG
 
             #pragma multi_compile_fragment _ BLOOM_FOG
+            #pragma multi_compile_fragment _ OVERDRAW_VIEW
             #define FOG (defined(_FOGTYPE_LERP) || defined(_FOGTYPE_COLOR) || defined(_FOGTYPE_ALPHA))
 
             #include "UnityCG.cginc"
@@ -390,6 +390,11 @@ Shader "ChroMapper/Particles"
             #include "ShaderLibrary/Common/Time.hlsl"
             #include "ShaderLibrary/Families/SpectrogramShared.hlsl"
             #include "ShaderLibrary/Common/PostProcess.hlsl"
+
+            #if defined(OVERDRAW_VIEW)
+            float _TransparentOverdrawOn;
+            float4 _OverdrawColor;
+            #endif
 
             // SECONDARY_COLOR
             sampler2D _SecondaryColorTex;
@@ -408,8 +413,7 @@ Shader "ChroMapper/Particles"
             float _SpectrogramBaseValue;
             float _SpectrogramRange;
             // Global 64-sample spectrogram data, uploaded by the Spectrogram
-            // component (Shader.SetGlobalFloatArray). The game 1.44.3 particle
-            // shader reads the same 64-bin layout from its constant buffer.
+            // component through Shader.SetGlobalFloatArray.
             float _SpectrogramData[64];
             // --
 
@@ -604,12 +608,92 @@ Shader "ChroMapper/Particles"
                 float _FogHeightScale;
             CBUFFER_END
 
+            // Base-only fragment behavior excludes active color/alpha processors,
+            // not geometry/UV keywords that leave this fragment formula unchanged.
+            #if !defined(MAIN_TEXTURE) && \
+                !defined(MASK) && \
+                !defined(MASK2) && \
+                !defined(COLOR_ARRAY) && \
+                !defined(SECONDARY_COLOR) && \
+                !defined(COLOR_GRADIENT) && \
+                !defined(DISSOLVE) && \
+                !defined(_CUTOUTTYPE_WORLDSPACE_NOISE) && \
+                !defined(PLANE_CLIPPING) && \
+                !defined(CLOSE_TO_CAMERA_DISAPPEAR) && \
+                !defined(VIEW_ALIGN_DISAPPEAR) && \
+                !defined(NOISE_DITHERING) && \
+                !defined(HOLOGRAM) && \
+                !defined(COLOR_BY_FOG) && \
+                !defined(SQUARE_ALPHA) && \
+                !defined(FAKE_MIRROR_TRANSPARENCY) && \
+                !defined(FILL_ALPHA) && \
+                !defined(_OVERRIDE_FINAL_ALPHA_COLOR_BASED) && \
+                !defined(_WHITEBOOSTTYPE_ALWAYS) && \
+                !defined(_WHITEBOOSTTYPE_MAINEFFECT) && \
+                !defined(VERTEX_COLOR) && \
+                !defined(SPECTROGRAM_COLOR) && \
+                !defined(LIFETIME) && \
+                !defined(OVERDRAW_VIEW) && \
+                !((defined(_FOGTYPE_ALPHA) || defined(_FOGTYPE_COLOR) || defined(_FOGTYPE_LERP)) && (defined(HEIGHT_FOG) || defined(BLOOM_FOG))) && \
+                !(defined(SOFT_PARTICLES) && (defined(DEPTH_TEXTURE) || defined(DEPTH_TEXTURE_ENABLED))) && \
+                !(defined(VERTEX_FLIPBOOK) && defined(VERTEX_FLIPBOOK_FADE))
+            #define PARTICLES_BASE_COLOR_ONLY 1
+            #endif
+
+            #if defined(FILL_ALPHA) && \
+                defined(COLOR_BY_FOG) && \
+                defined(FOG_COLOR_HIGHLIGHT) && \
+                defined(_FOG_MASK_SOURCE_PRIMARY_MASK) && \
+                defined(_FOGTYPE_ALPHA) && \
+                defined(_WHITEBOOSTTYPE_ALWAYS) && \
+                defined(REMAP_WHITEBOOST_START) && \
+                defined(_CUTOUTTYPE_WORLDSPACE_NOISE) && \
+                defined(MAIN_TEXTURE) && \
+                defined(_ALPHACHANNEL_RED) && \
+                defined(MASK) && \
+                defined(MASK_RED_IS_ALPHA) && \
+                defined(_OVERRIDE_FINAL_ALPHA_COLOR_BASED) && \
+                !defined(MASK2) && \
+                !defined(_MASKBLEND_ADD) && \
+                !defined(_MASKBLEND_MASKED_ADD) && \
+                !defined(TEXTURE_FLIPBOOK) && \
+                !defined(COLOR_ARRAY) && \
+                !defined(SECONDARY_COLOR) && \
+                !defined(VERTEX_COLOR) && \
+                !defined(FAKE_MIRROR_TRANSPARENCY) && \
+                !defined(OVERDRAW_VIEW)
+            #define PARTICLES_NATIVE_FILL 1
+            #endif
+
+            #if defined(PARTICLES_NATIVE_FILL)
+            inline float ParticleRecoveredColorFogHighlight(float multiplier, float highlightMultiplier, float fogMax)
+            {
+                float small = min(highlightMultiplier * asfloat(0x38d1b718u), fogMax);
+                float scaled = multiplier * asfloat(0x3dcccccdu);
+                return min(mad(scaled, small, scaled), fogMax);
+            }
+
+            inline float3 ParticleRecoveredBloomFogColor(float3 bloomRgb, float multiplier,
+                                                         float highlightMultiplier, float fogMax)
+            {
+                float maximum = max(bloomRgb.b, bloomRgb.g);
+                maximum = max(maximum, bloomRgb.r);
+                float power = maximum * maximum;
+                power = maximum * power;
+                power *= highlightMultiplier;
+                power *= maximum;
+                float highlight = min(power, fogMax);
+                float3 scaled = bloomRgb * multiplier;
+                return min(mad(scaled, highlight, scaled), fogMax);
+            }
+            #endif
+
             inline float CalculateParticleHeightFogClearFactor(float3 worldPosition)
             {
                 float heightInput = worldPosition.y * _FogHeightScale + _FogHeightOffset;
                 #if defined(PRECISE_FOG)
-                // The source PRECISE_FOG route evaluates this curve per fragment. ChroMapper
-                // already carries worldPosition to the fragment stage, so use the exact curve here.
+                // The PRECISE_FOG route evaluates this curve per fragment. ChroMapper
+                // already carries worldPosition to the fragment stage, so evaluate the curve here.
                 heightInput -= _CustomFogHeightFogHeight + _CustomFogHeightFogStartY;
                 heightInput = saturate(heightInput / _CustomFogHeightFogHeight);
                 return 1.0 - heightInput * heightInput * (3.0 - 2.0 * heightInput);
@@ -730,8 +814,8 @@ Shader "ChroMapper/Particles"
                 o.localPos = i.vertex.xyz;
 
                 #if defined(_BILLBOARD_FULL)
-                // The source FULL route uses the camera basis directly. ChroMapper can match
-                // this route because the editor mesh supplies a local vertex position.
+                // The FULL route uses the camera basis directly because the editor mesh
+                // supplies a local vertex position.
                 // Transform only the object origin to view space (not the vertex)
                 float4 viewOrigin = mul(UNITY_MATRIX_V, float4(worldOrigin, 1));
                 // Only offset XY in view space — zero Z so depth stays anchored at the object origin.
@@ -743,8 +827,8 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 #if defined(_BILLBOARD_CAMERA_FACING)
-                // Game 1.44.3 (vertex 8d1fba3a): orthonormal basis derived from
-                // the object's view-space direction. The quad maps X to the
+                // Use an orthonormal basis derived from the object's view-space
+                // direction. The quad maps X to the
                 // right vector and Y to the up vector, scaled by _BillboardScale,
                 // and is projected from view space.
                 float4 cameraFacingViewOrigin = mul(UNITY_MATRIX_V, float4(worldOrigin, 1));
@@ -760,8 +844,8 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 #if defined(_BILLBOARD_Y_AXIS)
-                // Game 1.44.3 (vertex f676b0af): transform the per-eye camera
-                // into object space and rotate the vertex XZ toward it.
+                // Transform the per-eye camera into object space and rotate the
+                // vertex XZ toward it.
                 float3 yAxisCameraObject = mul(
                     unity_WorldToObject,
                     float4(GetStereoAwareCameraPosition(), 1.0)).xyz;
@@ -777,8 +861,11 @@ Shader "ChroMapper/Particles"
 
                 #if defined(SPATIAL_DISPLACEMENT)
                 float4 time = GetTime(UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset));
+                float2 displacementPanningOffset =
+                    _DisplacementPanning.xy * time.y * _DisplacementPanningSpeed;
+                displacementPanningOffset *= _DisplacementTex_ST.xy;
                 float2 dispUV = TRANSFORM_TEX(i.uv1, _DisplacementTex)
-                    + _DisplacementPanning.xy * time.y * _DisplacementPanningSpeed;
+                    + displacementPanningOffset;
                 float3 dispSample = tex2Dlod(_DisplacementTex, float4(dispUV, 0, 0)).xyz * 2.0 - 1.0;
 
                 float3 bitangent = i.tangent.yzx * i.normal.zxy - i.normal.yzx * i.tangent.zxy;
@@ -788,8 +875,8 @@ Shader "ChroMapper/Particles"
                 dispDir = normalize(dispDir);
 
                 #if defined(_SPECTROGRAM_FULL)
-                // Game 1.44.3 (vertex f2f5f1a8): the spectrogram value comes from
-                // the 64-bin audio array (index = uv3.x * 63). ChroMapper uses the
+                // The spectrogram value comes from the 64-bin audio array
+                // (index = uv3.x * 63). ChroMapper uses the
                 // same 64-sample _SpectrogramData global as Spectrogram.shader.
                 float spectrogramIndex =
                     i.uv3.x * UNITY_ACCESS_INSTANCED_PROP(Props, _UV3Scale) +
@@ -820,7 +907,7 @@ Shader "ChroMapper/Particles"
                 #if defined(MAIN_TEXTURE)
                 {
                 #if defined(WORLDSPACE_PANNING_MAIN)
-                // The recovered route projects _UVScale onto the tangent basis.
+                // Project _UVScale onto the tangent basis.
                 float3 worldspaceBitangent =
                     i.tangent.yzx * i.normal.zxy - i.normal.yzx * i.tangent.zxy;
                 float2 worldspaceProjection = abs(float2(
@@ -831,13 +918,13 @@ Shader "ChroMapper/Particles"
                 worldspacePan *= worldspaceProjection;
                 worldspaceUv += worldspacePan;
 
-                float3 worldToObjectRow = unity_WorldToObject._m30_m31_m32;
+                float3 worldToObjectTranslation = unity_WorldToObject._m03_m13_m23;
                 float2 worldspaceSpeedProjection;
                 worldspaceSpeedProjection.y = dot(
                     abs(i.normal.xyz),
-                    worldToObjectRow.yzy * float3(-1.0, 1.0, 1.0));
+                    worldToObjectTranslation.yzy * float3(-1.0, 1.0, 1.0));
                 worldspaceSpeedProjection.x = dot(
-                    abs(i.normal.yzx), worldToObjectRow.xxz);
+                    abs(i.normal.yzx), worldToObjectTranslation.xxz);
                 worldspaceUv += worldspaceSpeedProjection * _WorldspacePanningSpeed;
                 o.uv.xy = worldspaceUv + _UVManualOffset.xy;
                 #else
@@ -851,20 +938,34 @@ Shader "ChroMapper/Particles"
                 #if defined(_SECONDARY_UVS_IMPORT)
                 o.uv.zw = i.uv2.xy;
                 #elif defined(_SECONDARY_UVS_EXTERNAL_SCALE)
-                // Recovered external-scale route has no TEXCOORD1 input. It derives
+                // The external-scale route has no TEXCOORD1 input. It derives
                 // the secondary coordinates from the primary UV and the external
-                // scale/manual offset controls (vertex 2c574604de1e85ca...).
+                // scale/manual offset controls.
                 o.uv.zw = i.uv1.xy * _UVScale.xy + _UVManualOffset.xy;
                 #endif
                 #if defined(MAIN_TEXTURE) && defined(SECONDARY_UVS_MAIN) && \
                     !defined(WORLDSPACE_PANNING_MAIN) && \
                     (defined(_SECONDARY_UVS_IMPORT) || defined(_SECONDARY_UVS_EXTERNAL_SCALE))
+                #if defined(_SECONDARY_UVS_EXTERNAL_SCALE) && defined(DISTORTION_SIMPLE) && \
+                    defined(WORLDSPACE_PANNING_DISTORTION)
+                // Project main UV scale and panning onto the delivered tangent basis.
+                float3 mainBitangent =
+                    i.tangent.yzx * i.normal.zxy - i.normal.yzx * i.tangent.zxy;
+                float2 mainProjectedScale = abs(float2(
+                    dot(_UVScale.xyz, i.tangent.xyz),
+                    dot(_UVScale.xyz, mainBitangent))) * _MainTex_ST.xy;
+                float2 mainProjectedUv = i.uv1.xy * mainProjectedScale + _MainTex_ST.zw;
+                float2 mainProjectedPan = time.y * _UvPanning.xy;
+                mainProjectedUv += mainProjectedPan * mainProjectedScale;
+                o.uv.xy = mainProjectedUv + _UVManualOffset.xy;
+                #else
                 o.uv.xy = o.uv.zw * _MainTex_ST.xy + _MainTex_ST.zw
                     + time.y * _UvPanning.xy * _MainTex_ST.xy;
                 #endif
+                #endif
                 #if defined(MASK) && defined(MASK2)
-                // Vertex 6017450af174125e supplies independent main, mask,
-                // mask-2, and distortion coordinates for layered-mask materials.
+                // Supply independent main, mask, mask-2, and distortion coordinates
+                // for layered-mask materials.
                 float layeredTime = GetTime(
                     UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset)).y;
                 #if defined(MAIN_TEXTURE) && !defined(SECONDARY_UVS_MAIN)
@@ -908,14 +1009,8 @@ Shader "ChroMapper/Particles"
                     + time.y * _Mask2Panning.xy * _Mask2Tex_ST.xy;
                 #endif
                 #if defined(SECONDARY_COLOR)
-                // Game 1.44.3 (vertex 610b0183): the secondary-color sample UV is
-                // the raw main (or imported secondary) UV transformed by the
-                // secondary texture's own ST, plus time panning.
-                #if defined(_SECONDARY_UVS_IMPORT)
-                o.secondaryUv = i.uv2.xy;
-                #else
+                // Secondary color samples raw TEXCOORD0.
                 o.secondaryUv = i.uv1.xy;
-                #endif
                 #endif
                 #if defined(DISTORTION_SIMPLE) && !(defined(MASK) && defined(MASK2))
                 #if defined(SECONDARY_UVS_DISTORTION) && \
@@ -926,7 +1021,7 @@ Shader "ChroMapper/Particles"
                 float2 distortionBaseUv = i.uv1.xy;
                 #endif
                 #if defined(WORLDSPACE_PANNING_DISTORTION)
-                // The recovered route uses the same basis and matrix term as main UVs.
+                // Use the same projected tangent basis as main UVs.
                 float3 distortionBitangent =
                     i.tangent.yzx * i.normal.zxy - i.normal.yzx * i.tangent.zxy;
                 float2 distortionProjection = abs(float2(
@@ -938,14 +1033,16 @@ Shader "ChroMapper/Particles"
                 distortionPan *= distortionProjection;
                 distortionUv += distortionPan * 0.1;
 
-                float3 worldToObjectRow = unity_WorldToObject._m30_m31_m32;
+                #if defined(WORLDSPACE_PANNING)
+                float3 worldToObjectTranslation = unity_WorldToObject._m03_m13_m23;
                 float2 worldspaceSpeedProjection;
                 worldspaceSpeedProjection.y = dot(
                     abs(i.normal.xyz),
-                    worldToObjectRow.yzy * float3(-1.0, 1.0, 1.0));
+                    worldToObjectTranslation.yzy * float3(-1.0, 1.0, 1.0));
                 worldspaceSpeedProjection.x = dot(
-                    abs(i.normal.yzx), worldToObjectRow.xxz);
+                    abs(i.normal.yzx), worldToObjectTranslation.xxz);
                 distortionUv += worldspaceSpeedProjection * _WorldspacePanningSpeed;
+                #endif
                 o.distortionUv = distortionUv + _UVManualOffset.xy;
                 #else
                 o.distortionUv = distortionBaseUv * _DistortionTex_ST.xy + _DistortionTex_ST.zw
@@ -962,8 +1059,7 @@ Shader "ChroMapper/Particles"
                     o.screenPos, o.vertex, _GlobalBlueNoiseParams,
                     _GlobalRandomValue, unity_ObjectToWorld._m03_m13);
                 #endif
-                // Vertex evidence 28ca48d558555d4a32f7f720ed95a43535436a9ee91ac9adeb6a094d4bd65cab
-                // carries particle eye depth only when soft particles have depth support.
+                // Carry particle eye depth only when soft particles have depth support.
                 #if defined(SOFT_PARTICLES) && (defined(DEPTH_TEXTURE) || defined(DEPTH_TEXTURE_ENABLED))
                 o.screenPos.z = -mul(UNITY_MATRIX_V, float4(o.worldPos, 1.0)).z;
                 #endif
@@ -972,8 +1068,8 @@ Shader "ChroMapper/Particles"
                 // CustomParticles uses packed RGBA frames inside each atlas cell. The
                 // frame fraction blends adjacent channels; it does not select a whole
                 // atlas image as a conventional flipbook does.
-                // Game vertex 5ef6afe6d212829d: the initial cells play once. After
-                // the atlas end, only the remaining cells loop. This timing belongs
+                // The initial cells play once. After the atlas end, only the
+                // remaining cells loop. This timing belongs
                 // to packed texture flipbooks, not to a specific environment.
                 float flipbookTime = (
                     GetTime(UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset)).y -
@@ -994,7 +1090,7 @@ Shader "ChroMapper/Particles"
                 float flipbookFraction = frac(flipbookFrame);
                 float flipbookColumn = fmod(flipbookCell, _FlipbookColumns);
                 float flipbookRow = floor(flipbookCell / _FlipbookColumns);
-                // All recovered packed-flipbook vertices bypass _MainTex_ST and
+                // Packed-flipbook vertices bypass _MainTex_ST and
                 // panning. Build the atlas coordinates from the raw input UV.
                 o.uv.xy = float2(
                     (i.uv1.x + flipbookColumn) / _FlipbookColumns,
@@ -1021,8 +1117,8 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 #if defined(VERTEX_FLIPBOOK)
-                // The source route uses vertex color red as the frame, green as a
-                // per-particle phase offset, and advances that phase by its own speed.
+                // Vertex color red selects the frame. Green supplies a per-particle
+                // phase offset that advances at its own speed.
                 // It is independent from the texture-atlas flipbook speed above.
                 float vfCount = max(_VertexFlipbookCount, 1.0001);
                 float vfRange = max(vfCount - 1.0, 0.0001);
@@ -1067,21 +1163,23 @@ Shader "ChroMapper/Particles"
                 o.color.a *= lifetime * lifetime;
                 #endif
                 #if defined(SPECTROGRAM_COLOR)
-                // Game 1.44.3 (vertex d2178af6c7f7f78f): calculate the bar
-                // factor per vertex and carry it with the raw color factor.
-                float spectrogramIndex =
-                    i.uv3.x * UNITY_ACCESS_INSTANCED_PROP(Props, _UV3Scale) +
-                    UNITY_ACCESS_INSTANCED_PROP(Props, _UV3Offset);
-                float binValue = _SpectrogramData[CalculateSpectrogramIndex(spectrogramIndex)];
-                float rangeDivisor = 1.0 / max(binValue - _SpectrogramRange * binValue, 0.0001);
+                uint spectrogramIndex = (uint)(i.uv3.x * 63.0);
+                float binValue = _SpectrogramData[spectrogramIndex];
+                float rangeDivisor = 1.0 / (binValue - _SpectrogramRange * binValue);
                 float t = saturate(rangeDivisor * (i.uv3.y - _SpectrogramRange * binValue));
                 float sm = t * t * (3.0 - 2.0 * t);
                 float brightness = max(sm * binValue * 1.5, _SpectrogramBaseValue);
-                o.color *= (float)(binValue >= i.uv3.y) * brightness;
+                float spectrogramFactor = (float)(binValue >= i.uv3.y) * brightness;
+                #if !defined(VERTEX_COLOR) && !defined(LIFETIME) && !defined(VERTEX_FLIPBOOK)
+                // Preserve delivered color when no independent vertex-color or fade stage is active.
+                o.color = i.color * spectrogramFactor;
+                #else
+                o.color *= spectrogramFactor;
+                #endif
                 #endif
                 #if defined(MESH_PACKING)
-                // Game 1.44.3 stores the packed sub-mesh id in the additional UV stream,
-                // and the active id is supplied per draw.
+                // The packed sub-mesh id is stored in the additional UV stream, and
+                // the active id is supplied per draw.
                 // ChroMapper draws each material separately, so the material property
                 // fills the per-draw id role.
                 float packingCull = abs(i.uv2.y - UNITY_ACCESS_INSTANCED_PROP(Props, _MeshPackingId)) > 0.1;
@@ -1115,10 +1213,16 @@ Shader "ChroMapper/Particles"
                 UNITY_SETUP_INSTANCE_ID(i);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
 
+                #if defined(OVERDRAW_VIEW)
+                // Diagnostic output bypasses every fragment sample and discard.
+                precise float overdrawScale = _TransparentOverdrawOn * asfloat(0x3dcccccdu);
+                precise float4 overdrawColor = overdrawScale * _OverdrawColor;
+                return overdrawColor;
+                #else
                 float4 time = GetTime(UNITY_ACCESS_INSTANCED_PROP(Props, _TimeOffset));
 
                 #if defined(PLANE_CLIPPING)
-                // Fragment 4eed5d58254824a2...: discard the negative half-space.
+                // Discard the negative half-space.
                 if (dot(i.worldPos - _ClippingPlanePosition.xyz,
                         _ClippingPlaneNormal.xyz) < 0.0)
                     discard;
@@ -1126,8 +1230,7 @@ Shader "ChroMapper/Particles"
 
                 float worldNoiseCutoutFactor = 1.0;
                 #if defined(_CUTOUTTYPE_WORLDSPACE_NOISE)
-                // Fragments 5431f008df503651... and 4eed5d58254824a2...:
-                // object-relative world position, 1.1 threshold bias, then the
+                // Use object-relative world position, a 1.1 threshold bias, then the
                 // cubic smoothstep ramp over _CutoutGradientWidth.
                 float3 cutoutPosition = i.worldPos - unity_ObjectToWorld._m03_m13_m23;
                 float cutoutNoise = tex3D(
@@ -1135,7 +1238,7 @@ Shader "ChroMapper/Particles"
                     (cutoutPosition + _CutoutTexOffset.xyz) * _CutoutTexScale).a;
                 float cutoutDistance = cutoutNoise - 1.1 * _Cutout + 0.1;
                 if (cutoutDistance < 0.0) discard;
-                float cutoutRamp = saturate(cutoutDistance / max(_CutoutGradientWidth, 1e-6));
+                float cutoutRamp = saturate(cutoutDistance / _CutoutGradientWidth);
                 worldNoiseCutoutFactor = cutoutRamp * cutoutRamp * (3.0 - 2.0 * cutoutRamp);
                 #endif
 
@@ -1148,8 +1251,8 @@ Shader "ChroMapper/Particles"
                 #endif
                 #if defined(SECONDARY_COLOR) && !defined(COLOR_ARRAY)
                 {
-                    // Game 1.44.3 (fragment 2999a954): the material color becomes
-                    // the secondary blend, and the alpha factor is the maximum of
+                    // The material color becomes the secondary blend, and the alpha
+                    // factor is the maximum of
                     // the two color alphas.
                     float secBlend = saturate(tex2D(_SecondaryColorTex, i.secondaryUv).r);
                     float4 secondaryColor = UNITY_ACCESS_INSTANCED_PROP(Props, _SecondaryColor);
@@ -1180,7 +1283,11 @@ Shader "ChroMapper/Particles"
                 #if defined(MAIN_TEXTURE)
                 float mainTextureBlue = 1.0;
                 #if defined(PIXELATE)
-                float2 uv = floor(i.uv.xy * _PixelateResolution) / _PixelateResolution;
+                float2 effectiveResolution = _PixelateResolution;
+                #if defined(TEXTURE_FLIPBOOK)
+                effectiveResolution *= float2(_FlipbookColumns, _FlipbookRows);
+                #endif
+                float2 uv = floor(i.uv.xy * effectiveResolution) / effectiveResolution;
                 #else
                 // Step 1: start from interpolated UV
                 float2 uv = i.uv.xy;
@@ -1188,7 +1295,7 @@ Shader "ChroMapper/Particles"
                 #if defined(DISTORTION_SIMPLE)
                 {
                 #if defined(MASK) && defined(MASK2)
-                // Fragment db5d6342028cbf16 scales the sampled flow before
+                // Scale the sampled flow before
                 // its signed offset; the -1 term is not scaled.
                 float2 distortionSample = tex2D(
                     _DistortionTex, i.layeredDistortionUv).rg;
@@ -1206,7 +1313,7 @@ Shader "ChroMapper/Particles"
                 #endif
                 #if defined(CUSTOM_WRAPPING)
                 {
-                    // Fragment 641ba0cb: preserve the signed wrapping period.
+                    // Preserve the signed wrapping period.
                     float2 customPadding = _CustomPadding + 1.0;
                     float2 biasedUv = customPadding * 10.0 + uv;
                     float2 wrappingProduct = customPadding * biasedUv;
@@ -1224,13 +1331,13 @@ Shader "ChroMapper/Particles"
                 #if defined(TEXTURE_FLIPBOOK)
                 {
                     // Each atlas cell contains up to four frames in RGBA. The vertex
-                    // stage supplies the channel blend weights decoded from the source
+                    // stage supplies the decoded channel blend weights for the
                     // flipbook route.
                     float4 flipbookSample = tex2D(_MainTex, uv);
                     mainTextureBlue = flipbookSample.b;
                     float flipbookValue = dot(flipbookSample, i.flipbookWeights);
                 #if defined(_CUTOUTTYPE_ALPHA_CLIP)
-                // Alpha-clip variants compare source alpha times effective color
+                // Alpha-clip variants compare texture alpha times effective color
                 // alpha before masks, fades, fog, dither, and alpha processing.
                 if (flipbookValue* color.a < _Cutout) discard;
                 #endif
@@ -1246,8 +1353,12 @@ Shader "ChroMapper/Particles"
                 float4 _texSample = tex2D(_MainTex, uv);
                 #endif
                 mainTextureBlue = _texSample.b;
+                #if defined(_CUTOUTTYPE_ALPHA_CLIP)
                 albedo.rgb *= _texSample.rgb * _BaseLayer;
-                #if defined(_ALPHACHANNEL_RED)
+                #else
+                albedo.rgb *= _texSample.rgb;
+                #endif
+                #if defined(_ALPHACHANNEL_RED) && defined(_CUTOUTTYPE_ALPHA_CLIP)
                 #if defined(_CUTOUTTYPE_ALPHA_CLIP)
                 if (_texSample.r * color.a < _Cutout) discard;
                 #endif
@@ -1289,14 +1400,19 @@ Shader "ChroMapper/Particles"
                 float2 maskUv = i.maskUv;
                 #endif
                 float2 maskSampleUv = maskUv;
-                // Britney orphan-mask evidence fff04977a2ce473345eff9e1bc27c9b117137b252b2c3b227e87c3bbc6aff6ec
-                // has no distortion sample: the mask target requires the simple-distortion parent.
+                // The mask target requires the simple-distortion parent; without it,
+                // the orphan-mask route has no distortion sample.
                 float4 _maskSample = tex2D(_MaskTex, maskSampleUv);
                 float maskStrength = UNITY_ACCESS_INSTANCED_PROP(Props, _MaskStrength);
                 #if defined(MASK_RED_IS_ALPHA)
                 float maskValue = _maskSample.r;
                 #else
                 float maskValue = _maskSample.a;
+                #endif
+                #if defined(PARTICLES_NATIVE_FILL)
+                float particleFillMaskedMaterialAlpha =
+                    mad(maskStrength, maskValue - 1.0, 1.0) *
+                    UNITY_ACCESS_INSTANCED_PROP(Props, _Color).a;
                 #endif
                 #if defined(_MASKBLEND_ADD)
                 albedo.a += maskValue * maskStrength * color.a;
@@ -1331,7 +1447,7 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 #if defined(COLOR_GRADIENT)
-                // Recovered fragments sample the gradient after both mask layers.
+                // Sample the gradient after both mask layers.
                 // The LUT uses the unsaturated accumulated alpha and CustomTime.x.
                 float2 gradientUv = float2(
                     albedo.a,
@@ -1340,7 +1456,7 @@ Shader "ChroMapper/Particles"
                 albedo.rgb *= gradient.rgb;
                 #endif
 
-                // Dissolve applies the recovered axis factor to the existing alpha chain.
+                // Dissolve applies the axis factor to the existing alpha chain.
                 #if defined(DISSOLVE)
                 {
                     float3 axis = normalize(_DissolveAxisVector.xyz);
@@ -1349,7 +1465,7 @@ Shader "ChroMapper/Particles"
                 dissolvePosition = i.worldPos;
                 #endif
                 #if defined(_DISSOLVE_SPACE_WORLD_CENTERED)
-                // The source centered route subtracts the object's world translation
+                // The centered route subtracts the object's world translation
                 // (cb1[3]), not the camera position.
                 dissolvePosition -= unity_ObjectToWorld._m03_m13_m23;
                 #endif
@@ -1359,13 +1475,11 @@ Shader "ChroMapper/Particles"
                 albedo.a *= t;
                 }
                 #endif
-                // Lifetime / soft particles / close-to-camera: alpha-chain gates decoded
-                // from LIFETIME (e7fc61bdf833e455), SOFT_PARTICLES (ebdcf1970fae8aeb)
-                // and CLOSE_TO_CAMERA_DISAPPEAR (db0bff392a1dacb8) fragments.
-                // Britney no-global evidence ebdcf1970fae8aebda52d280eda3714430d252c10ecdd4fadb74b064ec9666f7
-                // has no depth sample. Depth-enabled evidence f316ae8ed7c1d00d20b76511973fd04e3dc11c374e9ab3f4728b9e6db89901d0
-                // recovers depth-texture clamp, viewport scaling, biased sampling, reciprocal decode,
-                // particle-eye-depth subtraction, and saturated _SoftFactor fading.
+                // Lifetime, soft-particle, and close-to-camera features gate the alpha chain.
+                // Without the depth global, soft particles do not sample depth. The
+                // depth-enabled route clamps the texture, scales the viewport, uses
+                // biased sampling and reciprocal decode, subtracts particle eye depth,
+                // and saturates the _SoftFactor fade.
                 #if defined(SOFT_PARTICLES) && (defined(DEPTH_TEXTURE) || defined(DEPTH_TEXTURE_ENABLED))
                 {
                     float2 projectedUv = i.screenPos.xy / i.screenPos.w;
@@ -1374,7 +1488,7 @@ Shader "ChroMapper/Particles"
                 #if defined(UNITY_SINGLE_PASS_STEREO) || defined(STEREO_INSTANCING_ON) || defined(STEREO_MULTIVIEW_ON)
                 projectedUv = UnityStereoTransformScreenSpaceTex(projectedUv);
                 #endif
-                // The recovered SampleBias value is neutral in ChroMapper's
+                // The SampleBias value is neutral in ChroMapper's
                 // full-resolution built-in depth route. Use Unity's depth macro
                 // so stereo texture-array sampling remains platform-safe.
                 float rawDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, projectedUv);
@@ -1385,8 +1499,8 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 #if defined(CLOSE_TO_CAMERA_DISAPPEAR)
-                // Game 1.44.3 (fragment db0bff39): linear gate on view-space
-                // eye depth, not Euclidean distance and not smoothstepped.
+                // Use a linear gate on view-space eye depth, not Euclidean distance
+                // and not a smoothstep.
                 float eyeDepth = -mul(UNITY_MATRIX_V, float4(i.worldPos, 1.0)).z;
                 float fade = saturate((eyeDepth - _CloseCameraDisappearDistance)
                     * _CloseCameraDisappearWidth);
@@ -1400,17 +1514,20 @@ Shader "ChroMapper/Particles"
                     alignment *= alignment;
                 float viewAlign = alignment * _ViewAlignFactor + _ViewAlignOffset;
                 if (_ViewAlignFactor < 0.0) viewAlign += 1.0;
-                // Fragment e17f3714 clamps only the upper bound. Negative
+                // Clamp only the upper bound. Negative
                 // factors remain available to the later alpha stages.
                 albedo.a *= min(viewAlign, 1.0);
                 #endif
 
                 #if !defined(_CUTOUTTYPE_ALPHA_CLIP)
                 albedo.a *= _AlphaMultiplier;
+                #if defined(PARTICLES_BASE_COLOR_ONLY)
+                albedo.a *= _BaseLayer;
+                #endif
                 albedo.a *= worldNoiseCutoutFactor;
 
                 #if defined(SQUARE_ALPHA)
-                // The source square route is saturate(alpha) * alpha, not alpha squared.
+                // The square route is saturate(alpha) * alpha, not alpha squared.
                 albedo.a *= saturate(albedo.a);
                 #endif
                 #endif
@@ -1425,26 +1542,43 @@ Shader "ChroMapper/Particles"
                     && !defined(PARTICLES_DITHER_AFTER_COLOR_FOG) && !defined(BLOOM_FOG) \
                     && !defined(HOLOGRAM)
                 // Screen-space dither noise added to color before premultiply
-                // (game: noise.r - 0.5 * 1/255, added pre-bloom).
+                // (noise.r - 0.5 * 1/255, added pre-bloom).
                 albedo = ApplyNoiseDither(
                     albedo, i.noiseScreenPos, _GlobalBlueNoiseTex);
                 #endif
 
                 #if defined(HOLOGRAM)
-                // Game 1.44.3 (fragment 26e48514): the pattern uses world
-                // position relative to the object's translation.
-                float hTime = time.w;
-                float3 lp = i.worldPos - unity_ObjectToWorld._m03_m13_m23;
-                float bandIn = min(frac((hTime + lp.y * 0.99) * 0.2) * 2.0, 1.0);
-                float bandS = min(bandIn * 20.0, 1.0);
-                float band = bandS * bandS * (3.0 - 2.0 * bandS) * (1.0 - bandIn);
-                float3 gridArg = lp * 3.0 - hTime * float3(0.0, 1.0, 0.0);
-                float grid = sin(frac(gridArg.x) * 3.14159)
-                    * sin(frac(gridArg.y) * 3.14159)
-                    * sin(frac(gridArg.z) * 3.14159);
-                grid *= 1.2 * 1.2 * 1.2;
-                float wave = cos(hTime * 2.0 + lp.x + lp.y - lp.z * 7.0) * 0.4 + 0.8;
-                albedo.rgb += band * (band + grid * wave) * _HologramColor.rgb;
+                float hologramTime = time.w;
+                float3 objectRelativePosition = i.worldPos - unity_ObjectToWorld._m03_m13_m23;
+                float bandPhase = mad(objectRelativePosition.y, asfloat(0x3f7d70a4u), hologramTime);
+                float bandScaledPhase = bandPhase * asfloat(0x3e4ccccdu);
+                float bandFraction = frac(bandScaledPhase);
+                float bandDouble = bandFraction + bandFraction;
+                float bandInput = min(bandDouble, 1.0);
+                float bandEdge = bandInput * asfloat(0x419ffffeu);
+                float bandComplement = -bandInput + 1.0;
+                float bandSaturation = min(bandEdge, 1.0);
+                float bandPolynomial = mad(bandSaturation, asfloat(0xc0000000u), 3.0);
+                float bandSquare = bandSaturation * bandSaturation;
+                float bandSmooth = bandSquare * bandPolynomial;
+                float band = bandSmooth * bandComplement;
+                float gridX = mad(-hologramTime, 0.0, objectRelativePosition.x * 3.0);
+                float gridY = mad(-hologramTime, 1.0, objectRelativePosition.y * 3.0);
+                float gridZ = mad(-hologramTime, 0.0, objectRelativePosition.z * 3.0);
+                float gridSineX = sin(frac(gridX) * asfloat(0x40490fdbu)) * asfloat(0x3f99999au);
+                float gridSineY = sin(frac(gridY) * asfloat(0x40490fdbu)) * asfloat(0x3f99999au);
+                float gridSineZ = sin(frac(gridZ) * asfloat(0x40490fdbu)) * asfloat(0x3f99999au);
+                float gridXY = gridSineX * gridSineY;
+                // Keep the per-axis amplitudes from folding into a different coefficient.
+                precise float grid = gridSineZ * gridXY;
+                float waveXY = objectRelativePosition.x + objectRelativePosition.y;
+                float wavePosition = mad(-objectRelativePosition.z, 7.0, waveXY);
+                float wavePhase = mad(hologramTime, 2.0, wavePosition);
+                float wave = mad(cos(wavePhase), asfloat(0x3ecccccdu), asfloat(0x3f4ccccdu));
+                float combinedPattern = mad(grid, wave, band);
+                float hologramContribution = combinedPattern * band;
+                float3 hologramRgb = hologramContribution * _HologramColor.rgb;
+                albedo.rgb = albedo.rgb + hologramRgb;
                 #endif
 
                 #if defined(HOLOGRAM) && defined(NOISE_DITHERING) \
@@ -1458,11 +1592,16 @@ Shader "ChroMapper/Particles"
                 #if defined(COLOR_BY_FOG)
                 #if defined(_FOG_MASK_SOURCE_PRIMARY_MASK) && defined(MASK) && \
                     defined(_FOGTYPE_ALPHA) && defined(FOG_COLOR_HIGHLIGHT)
-                // The represented particle route applies the primary mask only
+                // This particle route applies the primary mask only
                 // to the base-color influence. It does not mask alpha or highlight.
                 float maskedColorFogInfluence = maskValue * _ObstacleColorInfluence;
                 #if defined(BLOOM_FOG)
                 float3 bloomPrepassRgb = SampleBloomPrePass(i.screenPos).rgb;
+                #if defined(PARTICLES_NATIVE_FILL)
+                float3 particleColorFogRgb = ParticleRecoveredBloomFogColor(
+                    bloomPrepassRgb, _ObstacleFogMultiplier,
+                    _ObstacleFogHighlightMultiplier, _ObstacleFogMax);
+                #else
                 float3 particleColorFogRgb =
                     bloomPrepassRgb * _ObstacleFogMultiplier;
                 float bloomMaximum = max(
@@ -1475,8 +1614,13 @@ Shader "ChroMapper/Particles"
                 particleColorFogRgb = min(
                     particleColorFogRgb * (1.0 + bloomHighlight),
                     _ObstacleFogMax);
+                #endif
                 albedo.rgb = mad(
                     albedo.rgb, maskedColorFogInfluence, particleColorFogRgb);
+                #else
+                #if defined(PARTICLES_NATIVE_FILL)
+                float particleColorFogHighlight = ParticleRecoveredColorFogHighlight(
+                    _ObstacleFogMultiplier, _ObstacleFogHighlightMultiplier, _ObstacleFogMax);
                 #else
                 float resolvedColorFogMultiplier = min(
                     0.0001 * _ObstacleFogMultiplier, _ObstacleFogMax);
@@ -1484,12 +1628,18 @@ Shader "ChroMapper/Particles"
                     0.1 * _ObstacleFogHighlightMultiplier *
                     (1.0 + resolvedColorFogMultiplier),
                     _ObstacleFogMax);
+                #endif
                 albedo.rgb = mad(
                     albedo.rgb,
                     maskedColorFogInfluence,
                     particleColorFogHighlight.xxx);
                 #if defined(HEIGHT_FOG)
+                #if defined(PARTICLES_NATIVE_FILL)
+                float particleFillFogAmount = 1.0 - CalculateParticleHeightFogClearFactor(i.worldPos);
+                albedo.a *= particleFillFogAmount;
+                #else
                 albedo.a *= 1.0 - CalculateParticleHeightFogClearFactor(i.worldPos);
+                #endif
                 #endif
                 #endif
                 #else
@@ -1508,18 +1658,18 @@ Shader "ChroMapper/Particles"
 
                 #if FOG && !defined(BLOOM_FOG) && defined(HEIGHT_FOG) && !defined(COLOR_BY_FOG)
 
-                // Source retained non-bloom fog routes use height fog only. Distance fog
+                // Non-bloom fog routes use height fog only. Distance fog
                 // is supplied by the separate BLOOM_FOG path and is not present in these variants.
                 float fogClearFactor = CalculateParticleHeightFogClearFactor(i.worldPos);
                 float fogAlphaFactor = 1.0 - fogClearFactor;
                 float whiteBoostFogFactor = 1.0;
                 #if defined(_FOGTYPE_LERP)
                 // LERP changes RGB only. Its clear factor still attenuates the
-                // white-boost input on the represented boost route.
+                // white-boost input on this boost route.
                 albedo.rgb = lerp(albedo.rgb, float3(0.1, 0.1, 0.1), fogClearFactor);
                 whiteBoostFogFactor = fogAlphaFactor;
                 #elif defined(_FOGTYPE_COLOR)
-                // The retained COLOR route uses the source 0.1 fog color and gates alpha.
+                // The COLOR route uses a 0.1 fog color and gates alpha.
                 albedo.rgb *= 0.1;
                 albedo.a *= fogAlphaFactor;
                 #if defined(PARTICLES_DITHER_AFTER_COLOR_FOG)
@@ -1534,7 +1684,7 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 #if defined(BLOOM_FOG)
-                // Bloom fog is part of the source alpha and color chain before
+                // Bloom fog is part of the alpha and color chain before
                 // dithering, white boost, and final premultiplication.
                 #if defined(PRECISE_FOG)
                 float bloomFogDistanceSquared = distanceSquared(i.worldPos);
@@ -1565,14 +1715,17 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 #if defined(_CUTOUTTYPE_ALPHA_CLIP)
-                // Alpha-clip fragments 953990a3053f67d9 and 40d13975545fd678:
-                // early source-alpha clip, fog, optional dither, alpha multiplier,
+                // Alpha-clip routes apply an early texture-alpha clip, fog, optional
+                // dither, alpha multiplier,
                 // optional square alpha, then final premultiplication.
                 #if defined(NOISE_DITHERING)
                 albedo = ApplyNoiseDither(
                     albedo, i.noiseScreenPos, _GlobalBlueNoiseTex);
                 #endif
                 albedo.a *= _AlphaMultiplier;
+                #if defined(PARTICLES_BASE_COLOR_ONLY)
+                albedo.a *= _BaseLayer;
+                #endif
                 albedo.a *= worldNoiseCutoutFactor;
                 #if defined(SQUARE_ALPHA)
                 albedo.a *= saturate(albedo.a);
@@ -1580,16 +1733,35 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 float bloomValue = albedo.a;
+                float whiteboostMultiplier = _QuestWhiteboostMultiplier;
                 #if FOG && !defined(BLOOM_FOG) && defined(HEIGHT_FOG) && \
                     !defined(COLOR_BY_FOG) && defined(_FOGTYPE_LERP)
+                #if defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(_WHITEBOOSTTYPE_ALWAYS) && \
+                    !defined(POST_BLOOM) && !defined(REMAP_WHITEBOOST_START) && !defined(OVERDRAW_VIEW)
+                float boostInput = sqrt(bloomValue * _QuestWhiteboostMultiplier * whiteBoostFogFactor);
+                whiteboostMultiplier = 1.0;
+                #else
                 float boostInput = bloomValue * whiteBoostFogFactor;
+                #endif
+                #elif FOG && defined(BLOOM_FOG) && defined(HEIGHT_FOG) && defined(_FOGTYPE_LERP) && \
+                    defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(_WHITEBOOSTTYPE_ALWAYS) && \
+                    !defined(POST_BLOOM) && !defined(REMAP_WHITEBOOST_START) && !defined(OVERDRAW_VIEW) && \
+                    !defined(COLOR_BY_FOG) && !defined(HOLOGRAM) && !defined(FILL_ALPHA) && !defined(PRECISE_FOG) && \
+                    !defined(FAKE_MIRROR_TRANSPARENCY) && !defined(_OVERRIDE_FINAL_ALPHA_COLOR_BASED)
+                float boostInput = sqrt(bloomValue * _QuestWhiteboostMultiplier * fogAmount);
+                whiteboostMultiplier = 1.0;
                 #else
                 float boostInput = bloomValue;
                 #endif
-                float whiteboostMultiplier = _QuestWhiteboostMultiplier;
                 #if defined(REMAP_WHITEBOOST_START)
-                boostInput = (bloomValue * _QuestWhiteboostMultiplier - _WhiteBoostRemapStart)
-                    / max(1.0 - _WhiteBoostRemapStart, 1e-4);
+                float particleRemapDivisor = 1.0 - _WhiteBoostRemapStart;
+                // Preserve the existing fallback at the singular endpoint only.
+                // The formula covers finite, nonzero divisors.
+                particleRemapDivisor = particleRemapDivisor == 0.0
+                                           ? asfloat(0x38d1b717u)
+                                           : particleRemapDivisor;
+                boostInput = mad(bloomValue, _QuestWhiteboostMultiplier, -_WhiteBoostRemapStart)
+                    / particleRemapDivisor;
                 boostInput = max(boostInput, 0.0);
                 whiteboostMultiplier = 1.0;
                 #endif
@@ -1602,18 +1774,22 @@ Shader "ChroMapper/Particles"
                 albedo.a = bloomValue;
                 #endif
                 #elif defined(_WHITEBOOSTTYPE_MAINEFFECT)
-                // POST_BLOOM on: the post-process bloom provides the glow, so the
-                // Deferred route compiles the boost out (game: MAIN_EFFECT_ENABLED on,
-                // DXBC e025580b). Plain premultiplied composition, alpha scaled
-                // like the Mixed route.
+                // POST_BLOOM supplies the glow, so the deferred route omits white boost.
+                // It uses plain premultiplied composition with alpha scaled like the Mixed route.
                 albedo = CalculateBloomPostComposition(albedo.rgb, bloomValue, _BloomMultiplier);
                 #else
+                #if (defined(MAIN_TEXTURE) || defined(PARTICLES_BASE_COLOR_ONLY)) && \
+                    !defined(FILL_ALPHA) && !defined(FAKE_MIRROR_TRANSPARENCY) && \
+                    !defined(_OVERRIDE_FINAL_ALPHA_COLOR_BASED) && !defined(OVERDRAW_VIEW)
+                albedo.rgb *= albedo.a;
+                #else
                 albedo.rgb *= abs(albedo.a);
+                #endif
                 #endif
 
                 #if defined(FAKE_MIRROR_TRANSPARENCY)
                 // Fake mirror transparency: premultiplied output becomes a dark glass
-                // quad. The game squares the main transparency slot into alpha and RGB.
+                // quad. Square the main transparency slot into alpha and RGB.
                 float total = _FakeMirrorTransparency * _FakeMirrorTransparency *
                     _BloomMultiplier;
                 albedo.rgb *= total;
@@ -1621,7 +1797,25 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 #if defined(FILL_ALPHA)
-                // Fragment 5431f008: fill is an RGB floor, not a replacement alpha.
+                #if defined(PARTICLES_NATIVE_FILL)
+                float fillCoverage = worldNoiseCutoutFactor * particleFillMaskedMaterialAlpha;
+                fillCoverage *= _FillAlpha;
+                float fillMaskFactor = _FillMask == 1.0 ? mainTextureBlue : 1.0;
+                fillCoverage *= fillMaskFactor;
+                #if defined(BLOOM_FOG)
+                // Same fog-amount cutpoint as the alpha chain, including distance.
+                fillCoverage *= fogAmount;
+                #elif defined(HEIGHT_FOG)
+                fillCoverage *= particleFillFogAmount;
+                #endif
+                float3 fillColor = UNITY_ACCESS_INSTANCED_PROP(Props, _Color).rgb;
+                if (_FillColor != 0.0)
+                    fillColor = _FillColor == 1.0
+                                    ? albedo.rgb
+                                    : (_FillColor == 2.0 ? float3(0, 0, 0) : float3(1, 1, 1));
+                albedo.rgb = max(albedo.rgb, fillColor * fillCoverage);
+                #else
+                // Fill is an RGB floor, not a replacement alpha.
                 float fillCoverage = _FillAlpha * worldNoiseCutoutFactor;
                 #if defined(MAIN_TEXTURE)
                 if (_FillMask > 0.5)
@@ -1640,6 +1834,7 @@ Shader "ChroMapper/Particles"
                     fillColor = float3(1, 1, 1);
                 albedo.rgb = max(albedo.rgb, fillColor * fillCoverage);
                 #endif
+                #endif
 
                 #if defined(_OVERRIDE_FINAL_ALPHA_COLOR_BASED)
                 // Final alpha uses the base per-draw color, not composed output RGB.
@@ -1649,6 +1844,7 @@ Shader "ChroMapper/Particles"
                 #endif
 
                 return albedo;
+                #endif
             }
             ENDHLSL
         }

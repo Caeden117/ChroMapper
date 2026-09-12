@@ -1,25 +1,17 @@
 ﻿// Replacement for the Beat Saber game shader Custom/Parametric3SliceSprite.
 Shader "ChroMapper/Parametric Slice Billboard"
 {
-    // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // PSB1. The 1.44.3 Custom/Parametric3SliceSprite Properties block is
-    //       authoritative. _Color, _SizeParams, and _AlphaWidth are instanced
-    //       runtime inputs and therefore remain unexposed.
-    // PSB2. The vertex splits the source at UV.y 0.1, 0.5, and 0.9, applies
-    //       independent cap/body widths, extends cap geometry, and optionally
-    //       rotates local XZ around object-space Y to face the active camera.
-    // PSB3. Source alpha is the selected alpha width cubed times _Color.a.
-    //       SQUARE_ALPHA squares it before world noise and squared texture alpha.
-    // PSB4. Fog can run before or after texture/noise. Bloom fog divides its
-    //       distance scale by pre-square source alpha. Non-bloom height fog uses
-    //       the inverse cubic ramp. ENABLE_BLOOM_FOG maps to BLOOM_FOG.
-    // PSB5. MainEffect white boost is disabled by MAIN_EFFECT_ENABLED; Always is
-    //       not. ChroMapper maps the global route to POST_BLOOM.
-    // PSB6. Noise dithering adds masked blue noise after bloom composition. Its
-    //       screen position is offset per frame and by object translation.
-    //       Output alpha is final source alpha times _BloomMultiplier.
-    // PSB7. OVERDRAW_VIEW and inactive ENABLE_MAIN_EFFECT_WHITE_BOOST routes are
-    //       intentionally omitted. Stage binaries cannot prove ShaderLab state.
+    // _Color, _SizeParams, and _AlphaWidth are instanced runtime inputs, not material properties.
+    // The vertex splits the source at UV.y 0.1, 0.5, and 0.9 and applies independent cap/body widths.
+    // It extends cap geometry and optionally rotates local XZ around object-space Y to face the active camera.
+    // Source alpha is the selected alpha width cubed times _Color.a.
+    // SQUARE_ALPHA squares it before world noise and squared texture alpha.
+    // Fog can run before or after texture/noise. Bloom fog divides its distance scale by pre-square source alpha.
+    // Non-bloom height fog uses the cubic ramp itself. ENABLE_BLOOM_FOG maps to BLOOM_FOG.
+    // MAIN_EFFECT_ENABLED disables MainEffect white boost, but not Always white boost. ChroMapper maps the global route to POST_BLOOM.
+    // Noise dithering adds masked blue noise after bloom composition. Its screen position includes frame and object-translation offsets.
+    // Output alpha is final source alpha times _BloomMultiplier.
+    // OVERDRAW_VIEW and inactive ENABLE_MAIN_EFFECT_WHITE_BOOST routes are intentionally omitted.
     Properties
     {
         _MainTex ("Main Texture", 2D) = "white" {}
@@ -195,11 +187,7 @@ Shader "ChroMapper/Parametric Slice Billboard"
                     alphaDivisor, _CustomFogOffset, _CustomFogAttenuation);
                 return heightFade * distanceInverse;
                 #else
-                #if defined(HEIGHT_FOG)
-                return 1.0 - heightFade;
-                #else
-                return 1.0;
-                #endif
+                return heightFade;
                 #endif
             }
 
@@ -266,6 +254,7 @@ Shader "ChroMapper/Parametric Slice Billboard"
                 float localY = (i.vertex.y - sizeParams.z) * sizeParams.y +
                     (capVertex ? (i.vertex.y - 0.5) * sizeParams.w : 0.0);
                 float capDirection = (i.uv.y < 0.5 ? 1.0 : 0.0) - (i.uv.y > 0.5 ? 1.0 : 0.0);
+                // Retain the editor's empirical cap-profile adjustment; its visual necessity is unresolved.
                 float adjustedUvY = i.uv.y + (capVertex ? 0.0 : (0.36 - _CapUVSize) * capDirection);
 
                 float3 localPosition = float3(localX, localY, i.vertex.z);
@@ -345,7 +334,7 @@ Shader "ChroMapper/Parametric Slice Billboard"
 
                 // Original D3D11 MainEffect billboard routes apply the interpolated
                 // angle fade once to source alpha and once after texture alpha.
-                #if defined(SHADER_API_D3D11) && defined(Y_AXIS_BILLBOARD) && \
+                #if defined(Y_AXIS_BILLBOARD) && \
                     defined(ANGLE_DISAPPEAR) && defined(_WHITEBOOSTTYPE_MAINEFFECT) && \
                     !defined(POST_BLOOM) && !defined(ALPHA_WIDTH_SCALE) && \
                     !defined(SQUARE_ALPHA) && !defined(FOG) && !defined(HEIGHT_FOG) && \

@@ -1,30 +1,20 @@
 ﻿// Replacement for the Beat Saber game shader Custom/Mirror.
 Shader "ChroMapper/Mirror"
 {
-    // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // M1. The 1.42.2 Custom/Mirror Properties block is authoritative. Runtime
-    //     lightmap textures/bake IDs remain uniforms, not material properties.
-    // M2 [vertex-c51879856e2e11c7]: POSITION and UV0 drive all normal routes;
-    //     LIGHTMAP also reads UV1. Normal UV and scrolling are calculated with
-    //     (_Time.x + _TimeHelperOffset.x) before interpolation.
-    // M3 [8d8f776efaca7ef8,f6c1f193c04091cf]: normal red is multiplied by alpha,
-    //     then XY is unpacked to [-1,1]. Detail scale tiles its UV and detail
-    //     intensity blends the two unpacked XY values before bump distortion.
-    // M4. Reflection UV is projected screen UV minus bumped XY multiplied by
-    //     (worldPos-cameraPos).y / distance. _ReflectionIntensity is squared and
-    //     scales the complete sampled RGBA value.
-    // M5 [c8c83176642bd0a5,f6c1f193c04091cf]: supported composition is optional
-    //     DIFFUSE or LIGHTMAP plus reflection. Reflection alpha is retained.
-    //     SPECULAR remains exposed by the property contract but has no 1.44 binary.
-    // M6 [a2cdd3ecb791db4e]: game ENABLE_DIRT is normalized to ChroMapper's DIRT;
-    //     dirt = 1 + intensity * (sample - 1), multiplied into the full result.
-    // M7 [705d3d71f8b20274]: ENABLE_BLOOM_FOG maps to BLOOM_FOG and lerps full
-    //     RGBA. Blue-noise dithering is unconditional and adds (noise-0.5)/255.
-    // M8. BEATGAMES_STEREO_PASS targets the game's stereo reflection atlas;
-    //     ChroMapper instead renders a per-camera reflection texture. That route,
-    //     general INSTANCING_ON, white boost, and OVERDRAW_VIEW remain omitted.
-    // M9. Stage binaries cannot prove ShaderLab state. Established opaque queue,
-    //     back-face culling, LEqual, ZWrite On, and stencil controls remain.
+    // Runtime lightmap textures and bake IDs remain uniforms, not material properties.
+    // POSITION and UV0 drive all normal routes. LIGHTMAP also reads UV1.
+    // Normal UV and scrolling use (_Time.x + _TimeHelperOffset.x) before interpolation.
+    // Normal red is multiplied by alpha before XY is unpacked to [-1,1].
+    // Detail scale tiles its UV. Detail intensity blends the unpacked XY values before bump distortion.
+    // Reflection UV is projected screen UV minus bumped XY times (worldPos-cameraPos).y / distance.
+    // Squared _ReflectionIntensity scales the complete sampled RGBA value.
+    // Composition supports optional DIFFUSE or LIGHTMAP plus reflection, including reflection alpha.
+    // SPECULAR controls remain exposed but inactive.
+    // ENABLE_DIRT maps to DIRT: dirt = 1 + intensity * (sample - 1), multiplied into the full result.
+    // ENABLE_BLOOM_FOG maps to BLOOM_FOG and lerps full RGBA.
+    // Blue-noise dithering is unconditional and adds (noise-0.5)/255.
+    // ChroMapper uses a per-camera reflection texture instead of the BEATGAMES_STEREO_PASS atlas.
+    // That atlas route, general INSTANCING_ON, white boost, and OVERDRAW_VIEW remain omitted.
     Properties
     {
         _NormalTex ("Normal Texture", 2D) = "white" {}
@@ -224,7 +214,7 @@ Shader "ChroMapper/Mirror"
                 eyeCameraPosition = unity_StereoWorldSpaceCameraPos[unity_StereoEyeIndex];
                 #endif
                 float3 toCamera = i.worldPos - eyeCameraPosition;
-                float viewY = toCamera.y / max(length(toCamera), 1e-16);
+                float viewY = toCamera.y / length(toCamera);
                 float2 reflectionUV = i.reflectionPos.xy / i.reflectionPos.w -
                     reflectionNormalXY * viewY;
                 float reflectionIntensity = _ReflectionIntensity * _ReflectionIntensity;
@@ -246,12 +236,8 @@ Shader "ChroMapper/Mirror"
                     lightmap2.r * _LightmapLightBakeIdD +
                     lightmap2.g * _LightmapLightBakeIdE +
                     lightmap2.b * _LightmapLightBakeIdF;
-                // Original D3D lightmaps use 0x4093088c; preserve other backends until their coefficients are verified.
-                #if defined(SHADER_API_D3D11)
+                // Original D3D lightmaps use 0x4093088c.
                 const float mirrorLightmapDecodeScale = 4.5947933;
-                #else
-                const float mirrorLightmapDecodeScale = 4.594793;
-                #endif
                 lighting += decodedLightmap * mirrorLightmapDecodeScale * (1 - _Metallic) * _TintColor.rgb;
                 #endif
 

@@ -1,34 +1,19 @@
 ﻿// Replacement for the Beat Saber game shader Custom/WaterLit.
 Shader "ChroMapper/Water Lit"
 {
-    // AUDIT FINDINGS (Beat Saber 1.44.3)
-    // W1. The 1.44.3 Custom/WaterLit Properties block is authoritative. Legacy
-    //     ToggleHeader/EnumHeader attributes are represented by Unity Toggle and
-    //     KeywordEnum attributes; importer aliases retain _NormalTex and _BlendMode*.
-    // W2 [8c86fd4f73cdeee5,9699ed0481a680f5,d1b639b649b39f9e,a8f2be99be4aa923]:
-    //     Billie and Gaga use only reflection, optional normal/detail normal,
-    //     optional custom lightmap, Z fade, ACES, bloom height fog, and dithering.
-    //     No DIFFUSE, SPECULAR, white-boost, emission, decal, or vertex-color
-    //     implementation is present in the recovered 1.44.3 binaries.
-    // W3 [8c86fd4f73cdeee5]: normal UVs are (uv + scroll * gameTime) * ST.xy.
-    //     Detail scale tiles its UV; detail intensity blends two unpacked normals.
-    //     _NormalScale blends the final mapped world normal, while
-    //     _NormalScaleVertical scales tangent XY by 1 + value * (1 - normal.y).
-    // W4 [d6f92261fee467f2,3e6ecc087bb208b2]: POSITION, NORMAL, TEXCOORD0,
-    //     optional TEXCOORD1, and TANGENT are the only mesh inputs. The Billie
-    //     meshes provide normals/UV0/tangents; FlatClose/Far also provide UV1 for
-    //     LIGHTMAP. World tangent and bitangent are formed per vertex and
-    //     interpolated separately. Gaga Logo does not need its absent tangent/UV1.
-    // W5. The game samples two custom packed reflection cubes. ChroMapper retains
-    //     the Unity probe fallback until Billie and Gaga have packed probe assets;
-    //     their current ReflectionProbeData references are null. Lightmap diffuse
-    //     uses the exact 4.59479332 * (1-metallic) * color factor.
-    // W6. Water fog offsets distance by lerp(_FogStartOffset,
-    //     _FallingFogStartOffset, 1-saturate(normal.y)); bloom height fog changes
-    //     RGB only. Noise adds (blueNoise.r - 0.5) / 255 after fog.
-    // W7. OVERDRAW_VIEW is a diagnostic source route and remains omitted.
-    //     Stage binaries cannot prove ShaderLab state; authoritative state properties
-    //     drive blend, cull, Z-write, and stencil here.
+    // Importer aliases retain _NormalTex and _BlendMode* property bindings.
+    // Normal UVs are (uv + scroll * gameTime) * ST.xy. Detail scale tiles its UV,
+    // and detail intensity blends two unpacked normals. _NormalScale blends the
+    // final mapped world normal, while _NormalScaleVertical scales tangent XY by
+    // 1 + value * (1 - normal.y).
+    // World tangent and bitangent are formed per vertex and interpolated separately.
+    // Water uses the packed reflection cubes when BakedReflectionProbe publishes a
+    // complete pair, otherwise retaining the Unity probe fallback. Lightmap diffuse
+    // uses the 4.59479332 * (1-metallic) * color factor.
+    // Falling fog adds _FallingFogStartOffset * (1-saturate(normal.y)) to _FogStartOffset.
+    // Bloom height fog changes RGB only. Noise adds
+    // (blueNoise.r - 0.5) / 255 after fog.
+    // Material properties drive blend, cull, Z-write, and stencil state.
     Properties
     {
         _Color ("Color", Vector) = (1,1,1,1)
@@ -215,6 +200,18 @@ Shader "ChroMapper/Water Lit"
             float _Smoothness;
             float _SpecularIntensity;
             float _ReflectionProbeIntensity;
+            float _HasBakedReflectionProbeData;
+            samplerCUBE _ReflectionProbeTexture1;
+            samplerCUBE _ReflectionProbeTexture2;
+            float3 _ReflectionProbeBoundsMin;
+            float3 _ReflectionProbeBoundsMax;
+            float3 _ReflectionProbePosition;
+            float4 _LightProbeLightBakeIdA;
+            float4 _LightProbeLightBakeIdB;
+            float4 _LightProbeLightBakeIdC;
+            float4 _LightProbeLightBakeIdD;
+            float4 _LightProbeLightBakeIdE;
+            float4 _LightProbeLightBakeIdF;
             float3 _ReflectionProbeBoxProjectionSizeOffset;
             float3 _ReflectionProbeBoxProjectionPositionOffset;
 
@@ -334,13 +331,8 @@ Shader "ChroMapper/Water Lit"
                 float fallingNormalScale = 1.0 + _NormalScaleVertical * (1.0 - worldNormal.y);
                 normalTangent.xy *= fallingNormalScale;
                 float3x3 tbn = float3x3(i.worldTangent, i.worldBitangent, worldNormal);
-                #if defined(SHADER_API_D3D11)
-                // D3D11 originals preserve mapped magnitude until the _NormalScale blend.
+                // Preserve mapped magnitude until the _NormalScale blend.
                 float3 mappedWorldNormal = mul(normalTangent, tbn);
-                #else
-                normalTangent = normalize(normalTangent);
-                float3 mappedWorldNormal = normalize(mul(normalTangent, tbn));
-                #endif
                 worldNormal = normalize(lerp(worldNormal, mappedWorldNormal, _NormalScale));
                 #endif
 
@@ -350,6 +342,34 @@ Shader "ChroMapper/Water Lit"
                 SurfaceData reflectionSurface = InitializeSurfaceData(
                     worldPos, worldNormal, i.uv, i.uv, albedo,
                     _Metallic, _Smoothness);
+                if (_HasBakedReflectionProbeData > 0.5)
+                {
+                    float3 reflectionDirection = CalculateViewReflectionDirection(worldPos, worldNormal);
+                #if defined(REFLECTION_PROBE_BOX_PROJECTION)
+                    float3 boundsMin = _ReflectionProbeBoundsMin;
+                    float3 boundsMax = _ReflectionProbeBoundsMax;
+                    float3 probePosition = _ReflectionProbePosition;
+                #if defined(REFLECTION_PROBE_BOX_PROJECTION_OFFSET)
+                    boundsMin -= _ReflectionProbeBoxProjectionSizeOffset;
+                    boundsMax += _ReflectionProbeBoxProjectionSizeOffset;
+                    probePosition += _ReflectionProbeBoxProjectionPositionOffset;
+                #endif
+                    reflectionDirection = BoxProjectReflectionDirection(
+                        reflectionDirection, worldPos, boundsMin, boundsMax, probePosition);
+                #endif
+                    float3 reflection = SampleReflectionProbePair(
+                        reflectionDirection, _Smoothness,
+                        _ReflectionProbeTexture1, _ReflectionProbeTexture2,
+                        _LightProbeLightBakeIdA, _LightProbeLightBakeIdB,
+                        _LightProbeLightBakeIdC, _LightProbeLightBakeIdD,
+                        _LightProbeLightBakeIdE, _LightProbeLightBakeIdF,
+                        _ReflectionProbeIntensity);
+                    reflection *= 1.0 + _Metallic * (albedo.rgb - 1.0);
+                    reflection *= 2.0 * (_Metallic * 0.8 + 0.2);
+                    reflection *= _Smoothness;
+                    lighting += reflection;
+                }
+                else
                 {
                     float3 reflectionDirection = CalculateViewReflectionDirection(
                         reflectionSurface.worldPosition, worldNormal);
@@ -413,9 +433,8 @@ Shader "ChroMapper/Water Lit"
                 #else
                 albedo = ApplyBloomFog(albedo, i.screenPos, worldPos, fogStartOffset, _FogScale);
                 #endif
-                #elif defined(FOG) && defined(HEIGHT_FOG) && defined(SHADER_API_D3D11)
-                // D3D11 originals retain this literal-endpoint height fog when bloom is off.
-                // Remove or extend this guard only with equivalent evidence for another backend.
+                #elif defined(FOG) && defined(HEIGHT_FOG)
+                // Retain literal-endpoint height fog when bloom is off.
                 float heightFogFactor = CalculateCustomHeightFogFactor(
                     worldPos, _FogHeightOffset, _FogHeightScale);
                 albedo.rgb = (1.0 - heightFogFactor) * (float3(0.1, 0.1, 0.1) - albedo.rgb) + albedo.rgb;
@@ -426,6 +445,58 @@ Shader "ChroMapper/Water Lit"
                 #endif
 
                 return albedo;
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "SHADOWCASTER"
+            Tags { "LightMode"="ShadowCaster" }
+            Blend Off
+            ZWrite [_ZWrite]
+            ZTest LEqual
+
+            HLSLPROGRAM
+            #pragma vertex vertShadowCaster
+            #pragma fragment fragShadowCaster
+            #pragma multi_compile_shadowcaster
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ STEREO_INSTANCING_ON
+
+            #include "UnityCG.cginc"
+
+            float _ZWrite;
+
+            struct appdataShadowCaster
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct v2fShadowCaster
+            {
+                V2F_SHADOW_CASTER;
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
+
+            v2fShadowCaster vertShadowCaster(appdataShadowCaster v)
+            {
+                v2fShadowCaster o;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2fShadowCaster, o);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+                TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+                return o;
+            }
+
+            float4 fragShadowCaster(v2fShadowCaster i) : SV_Target
+            {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                // Transparent water must not occlude depth or color-encoded cube shadows.
+                if (_ZWrite == 0.0) discard;
+                SHADOW_CASTER_FRAGMENT(i)
             }
             ENDHLSL
         }
