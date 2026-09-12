@@ -15,14 +15,22 @@ public class LightPairSinMoveEventEffectData : EnvironmentComponentData<LightPai
     public override void FillComponents(GameObject self, LightPairSinMove comp, CreateContainer container)
     {
         comp.enabled = true;
+        var effect = self.AddComponent<LightPairSinMoveEffect>();
+        effect.Visual = comp;
         if (EventTypeL != -1)
-            comp.LeftEffect = container.Descriptor.BasicEventEffectManager.GetOrRegister<LightRotationEffect>(EventTypeL);
+        {
+            effect.LeftEventType = EventTypeL;
+            container.Descriptor.BasicEventEffectManager.Register(EventTypeL, effect);
+        }
         if (EventTypeR != -1)
-            comp.RightEffect = container.Descriptor.BasicEventEffectManager.GetOrRegister<LightRotationEffect>(EventTypeR);
+        {
+            effect.RightEventType = EventTypeR;
+            container.Descriptor.BasicEventEffectManager.Register(EventTypeR, effect);
+        }
         if (SwitchOverrideRandomValuesEvent != -1)
         {
-            comp.SwitchEffect =
-                container.Descriptor.BasicEventEffectManager.GetOrRegister<GenericCallbackEventEffect>(SwitchOverrideRandomValuesEvent);
+            effect.SwitchEventType = SwitchOverrideRandomValuesEvent;
+            container.Descriptor.BasicEventEffectManager.Register(SwitchOverrideRandomValuesEvent, effect);
         }
 
         var lT = container.GetComponentOrNull<Transform>(TransformL);

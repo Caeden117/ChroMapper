@@ -4,6 +4,7 @@ using System.Text;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
+using Beatmap.Shared;
 using UnityEngine;
 
 namespace Beatmap.Appearances
@@ -49,7 +50,8 @@ namespace Beatmap.Appearances
         public void SetAppearance(
             EventContainer e,
             bool final = true,
-            bool boost = false)
+            bool boost = false,
+            BaseEvent transitionTarget = null)
         {
             var color = Color.white;
             var trackDef = e.TrackDefinitions.GetBasicOrDefault(e.EventData.Type);
@@ -107,6 +109,10 @@ namespace Beatmap.Appearances
             if (trackDef.Kind != BasicEventKind.Lights)
             {
                 e.UseBlockModel = true;
+                // DenseNormalLanesForwardUnloadAndBackwardScrubReloadEveryNodeAndRibbon exposed that non-light nodes
+                // inherited _FadeSize from a prior pooled owner. Initialize the one per-container property here; Color
+                // Boost retains its intentionally narrower override below without any pool scan or cache rebuild.
+                e.ChangeFadeSize(0.75f, false);
                 if (e.EventData.Type == (int)EventTypeValue.ColorBoostEventType)
                 {
                     if (e.EventData.Value == 1)
@@ -145,10 +151,9 @@ namespace Beatmap.Appearances
                     e.ChangeColorB(OtherColor, false);
                 }
 
-                if (trackDef.Kind == BasicEventKind.IntValue && e.EventData.CustomLockRotation == true)
-                    e.UpdateGradientRendering(OtherColor, OtherColor, allowNonLight: true);
-                else
-                    e.UpdateGradientRendering();
+                // Heck lockRotation only suppresses the reset performed by its attached laser-speed event, so it has
+                // no transition endpoint and must not create a ribbon or an interaction collider toward the next event.
+                e.UpdateGradientRendering();
 
                 if (trackDef.Kind != BasicEventKind.IntValue)
                 {
@@ -179,6 +184,8 @@ namespace Beatmap.Appearances
             {
                 color = e.EventData.CustomColor.Value;
             }
+
+            var ribbonStartColor = color;
 
             // Display floatValue only where used
             if (trackDef.Kind == BasicEventKind.Lights
@@ -239,12 +246,15 @@ namespace Beatmap.Appearances
 
             // At this point, next Event must be a light event.
             Color? nextColor = null;
+            Color? ribbonEndColor = null;
             // Surface serialized Basic Event easing even without a following transition.
             var easing = e.EventData.CustomEasing ?? "easeLinear";
             // Fall back to the serialized easing suffix so unknown custom easing labels stay inspectable.
             var easingLabel = e.EventData.CustomEasing != null ? GetShortEasingName(easing) : null;
-            var useHsv = e.EventData.CustomLerpType == "HSV";
-            var nextEvent = e.EventData.Next;
+            // Classify serialized lerpType once for node labels and ribbon shader dispatch.
+            var colorLerpType = BasicEventColorLerp.FromSerializedName(e.EventData.CustomLerpType);
+            // PasteUndo_OnIntoOnTransition previews have no grid owner, so only finalized callers override EventData.Next.
+            var nextEvent = transitionTarget ?? e.EventData.Next;
             if (!e.EventData.IsFade && !e.EventData.IsFlash && nextEvent != null && nextEvent.IsTransition)
             {
                 if (nextEvent.IsBlue)
@@ -260,6 +270,8 @@ namespace Beatmap.Appearances
                     nextColor = nextEvent.CustomColor.Value;
                 }
 
+                ribbonEndColor = nextColor;
+
                 // for clarity sake, we don't want this to be the same as off color
                 var clampedOffColor = Color.Lerp(OffColor, nextColor.Value, 0.25f);
                 nextColor = Color.Lerp(clampedOffColor, nextColor.Value, nextEvent.FloatValue);
@@ -270,18 +282,32 @@ namespace Beatmap.Appearances
             {
                 easing = e.EventData.CustomLightGradient.EasingType;
                 easingLabel = easing == "easeLinear" ? null : GetShortEasingName(easing);
-                useHsv = e.EventData.CustomLerpType == "HSV";
+                // Chroma legacy gradients are RGB-only and must not surface ordinary transition lerpType metadata.
+                colorLerpType = BasicEventColorLerpType.RGB;
             }
 
-            // Display lerp type when it's not the default (RGB)
-            var lerpTypeLabel = e.EventData.CustomLerpType == "HSV" ? "HSV" : null;
+            // Distinguish compatibility HSV from conventional angular HSV without changing serialized names.
+            var lerpTypeLabel = colorLerpType switch
+            {
+                BasicEventColorLerpType.LegacyHSV => "LHSV",
+                BasicEventColorLerpType.TrueHSV => "HSV",
+                _ => null
+            };
 
             var lightText = GetLightText(e.EventData, GetLightValueText(e.EventData), easingLabel, lerpTypeLabel);
             e.UpdateTextDisplay(lightText.Length > 0, lightText);
 
             if (Settings.Instance.VisualizeChromaGradients)
             {
-                e.UpdateGradientRendering(color, nextColor, easing, useHsv);
+                // LightIdTransitionRibbonStopsAtAllLightsNonTransitionInterrupt keeps color and length on one endpoint.
+                e.UpdateGradientRendering(
+                    ribbonStartColor,
+                    ribbonEndColor,
+                    easing,
+                    colorLerpType,
+                    e.EventData.FloatValue,
+                    nextEvent?.FloatValue ?? 1f,
+                    transitionTarget: nextEvent);
             }
 
             e.UpdateMaterials();
@@ -369,8 +395,15 @@ namespace Beatmap.Appearances
                 lines.AppendLine(rotationLine);
             }
             if (data.CustomStep.HasValue) lines.AppendLine($"Z{FormatFloat(data.CustomStep.Value)}");
-            if (data.CustomProp.HasValue) lines.AppendLine($"P{FormatFloat(data.CustomProp.Value)}");
-            if (data.CustomSpeed.HasValue) lines.AppendLine($"S{FormatFloat(data.CustomSpeed.Value)}");
+            // Propagation always retains thousandths because small differences materially alter repeated assignments.
+            if (data.CustomProp.HasValue) lines.AppendLine($"P{FormatFloat(data.CustomProp.Value, "0.###")}");
+            // BasicEventAppearanceTest's low/high-propagation speed regressions require
+            // speed precision to depend only on speed magnitude, never propagation.
+            if (data.CustomSpeed.HasValue)
+            {
+                var speed = FormatRingSpeed(data.CustomSpeed.Value);
+                lines.AppendLine($"S{speed}");
+            }
             return lines.ToString().TrimEnd('\r', '\n');
         }
 
@@ -378,21 +411,32 @@ namespace Beatmap.Appearances
         {
             // SmoothStepRingZoom only applies to The Second's ring and uses i as its integer fallback.
             if (isSmoothStepRingZoom)
-                return $"Z{FormatFloat(data.CustomStep ?? data.Value)}";
+                return $"Z{FormatFloat(data.CustomStep ?? data.Value, "0.###")}";
 
             var lines = new StringBuilder();
-            if (data.CustomStep.HasValue) lines.AppendLine($"Z{FormatFloat(data.CustomStep.Value)}");
-            if (data.CustomSpeed.HasValue) lines.Append($"S{FormatFloat(data.CustomSpeed.Value)}");
+            // Ring zoom step retains thousandths so the node label reflects the dedicated fine precision ladder.
+            if (data.CustomStep.HasValue) lines.AppendLine($"Z{FormatFloat(data.CustomStep.Value, "0.###")}");
+            // RingZoomSpeedBelowOneDisplaysThreeDecimals requires zoom and rotation to
+            // share the same magnitude-based ring-speed precision rule.
+            if (data.CustomSpeed.HasValue) lines.Append($"S{FormatRingSpeed(data.CustomSpeed.Value)}");
             return lines.ToString().TrimEnd('\r', '\n');
         }
 
         private static string DirectionText(int direction) => direction == 1 ? "CW" : "CCW";
 
+        // Ring speed labels use thousandths below one and hundredths otherwise, avoiding
+        // separate rotation/zoom formatters that can drift back out of sync.
+        private static string FormatRingSpeed(float value) =>
+            FormatFloat(value, Mathf.Abs(value) < 1f ? "0.###" : "0.##");
+
         private static string FormatFloat(float value)
         {
             var magnitude = Mathf.Abs(value);
             var format = magnitude > 100f ? "0.##" : magnitude > 10f ? "0.#" : "0.##";
-            return value.ToString(format, CultureInfo.InvariantCulture);
+            return FormatFloat(value, format);
         }
+
+        private static string FormatFloat(float value, string format) =>
+            value.ToString(format, CultureInfo.InvariantCulture);
     }
 }

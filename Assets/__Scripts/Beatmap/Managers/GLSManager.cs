@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
 using UnityEngine;
 
@@ -34,10 +33,11 @@ public class GLSManager : BeatmapObjectManager<BaseEventBoxGroup>
 
     public override void UpdateTime(bool isPlaying, float time)
     {
-        foreach (var manager in
-            Context.Descriptor.BasicEventEffectManager.EventTypeToEffects.Values.SelectMany(managers =>
-                managers))
-            manager.UpdateTime(isPlaying, time);
+        // A paired movement timeline can appear in three event-type buckets; update
+        // the unique manager list to avoid tripling its snapshot evaluation cost.
+        var effects = Context.Descriptor.BasicEventEffectManager.Effects;
+        for (var i = 0; i < effects.Count; i++)
+            effects[i].UpdateTime(isPlaying, time);
     }
 
     // TODO: probably do more generic on descriptor side

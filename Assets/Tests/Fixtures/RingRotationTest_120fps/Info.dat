@@ -1,0 +1,84 @@
+{
+  "_version" : "2.1.0",
+  "_songName" : "RingRotationTesting",
+  "_songSubName" : "",
+  "_songAuthorName" : "",
+  "_levelAuthorName" : "",
+  "_beatsPerMinute" : 158,
+  "_songTimeOffset" : 0,
+  "_shuffle" : 0,
+  "_shufflePeriod" : 0,
+  "_previewStartTime" : 12,
+  "_previewDuration" : 10,
+  "_songFilename" : "song.ogg",
+  "_coverImageFilename" : "cover.png",
+  "_environmentName" : "KaleidoscopeEnvironment",
+  "_allDirectionsEnvironmentName" : "GlassDesertEnvironment",
+  "_environmentNames" : [
+    "KaleidoscopeEnvironment"
+  ],
+  "_colorSchemes" : [
+  ],
+  "_difficultyBeatmapSets" : [
+    {
+      "_beatmapCharacteristicName" : "Standard",
+      "_difficultyBeatmaps" : [
+        {
+          "_difficulty" : "ExpertPlus",
+          "_difficultyRank" : 9,
+          "_beatmapFilename" : "ExpertPlusStandard.dat",
+          "_noteJumpMovementSpeed" : 16,
+          "_noteJumpStartBeatOffset" : 0,
+          "_beatmapColorSchemeIdx" : 0,
+          "_environmentNameIdx" : 0,
+          "_customData" : {
+            "_suggestions" : [
+              "Chroma"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "_customData" : {
+    "_editors" : {
+      "_lastEditedBy" : "ChroMapper",
+      "ChroMapper" : {
+        "version" : "0.14.0",
+        "editorState" : {
+          "components" : {
+            "chromaPicker" : {
+              "presets" : {
+                "default" : [
+                  {"r":1,"g":1,"b":0,"a":1},
+                  {"r":0.778,"g":0,"b":1,"a":1}
+                ]
+              },
+              "selectedColor" : {"r":1,"g":0.826,"b":0,"a":1}
+            },
+            "colorEvent" : {"color":0,"brightness":1,"frequency":0,"strobeBrightness":0,"strobeFade":0,"easing":0,"usePrevious":0},
+            "editingMode" : {"mode":4},
+            "rotationGroup" : {"rotation":90,"loop":0,"direction":0,"easing":0,"usePrevious":0},
+            "rotationEvent" : {"rotation":90,"loop":0,"direction":0,"easing":0,"usePrevious":0},
+            "currentJsonTime" : {"value":0},
+            "easingMenu" : {"easing":0,"extension":0},
+            "basicEventPlacement" : {"value":7,"floatValue":1,"laserSpeed":"0"},
+            "glsGroupPage" : {"group":""},
+            "editingCamera" : {"position":[0.295,2.584,-5.132],"rotation":[-0.034,0.003,0,-0.999]},
+            "translationEvent" : {"translation":-0.5,"easing":0,"usePrevious":0},
+            "colorType" : {"type":0},
+            "floatFxGroup" : {"value":-0.5,"easing":0,"usePrevious":0},
+            "floatFxEvent" : {"value":-0.5,"easing":0,"usePrevious":0},
+            "gameplayPlacement" : {"arcHeadMultiplier":1,"arcTailMultiplier":1,"chainSquish":1,"chainSliceCount":5,"obstacleLaneExtend":0},
+            "colorGroup" : {"color":0,"brightness":1,"frequency":0,"strobeBrightness":0,"strobeFade":0,"easing":0,"usePrevious":0},
+            "translationGroup" : {"translation":-0.5,"easing":0,"usePrevious":0},
+            "strobePicker" : {"color":{"r":1,"g":0,"b":0.999,"a":1},"enabled":true},
+            "placementMode" : {"mode":0},
+            "basicEventFloatInput" : {"value":1},
+            "basicEventLightingMode" : {"mode":3}
+          }
+        }
+      }
+    }
+  }
+}

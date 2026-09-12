@@ -3,7 +3,7 @@ namespace Beatmap.Constants
     public static class RingEventHeightConstants
     {
         // Ring zoom: 100% height at this step value; 300% height at 3x this value.
-        public const float RingZoomHeightScaleStep = 4.0f;
+        public const float RingZoomHeightScaleStep = 2f;
 
         // Ring zoom box height cap as a multiplier of the normal block height.
         public const float RingZoomHeightMaxMultiplier = 3.0f;

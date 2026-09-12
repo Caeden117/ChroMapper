@@ -104,6 +104,18 @@ public class EventPlacement : BasePlacement<BaseEvent, EventContainer, EventGrid
     {
         base.HandleHitToPlacement(hit, localPoint);
 
+        // HoverPastingBasicEventsBeforeBeatZeroAnchorsEarliestAtBeatZero and
+        // HoverPastingLightIdEventOntoAllLightsBeforeBeatZeroClampsToBeatZero keep the visible Basic Event anchor and
+        // its queued paste data at the map boundary instead of allowing either to retain a negative hover beat.
+        if (QueuedData.JsonTime < 0f)
+        {
+            RoundedJsonTime = 0f;
+            QueuedData.JsonTime = 0f;
+            var clampedPosition = PlacementVisualContainer.transform.localPosition;
+            clampedPosition.z = 0f;
+            PlacementVisualContainer.transform.localPosition = clampedPosition;
+        }
+
         // The generic placement grid centers previews; lower this smaller model so Basic Event previews share finalized nodes' grounded base.
         var position = PlacementVisualContainer.transform.localPosition;
         position.y = EventAppearanceSO.GetGroundedNodeCenterY(false);

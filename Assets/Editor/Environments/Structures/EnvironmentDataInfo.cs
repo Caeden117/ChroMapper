@@ -37,7 +37,53 @@ public class EnvironmentDataInfo
 
 public class LightTrackDefinitions
 {
+    private const string BillieEnvironmentId = "BillieEnvironment";
     private const string TheSecondEnvironmentId = "TheSecondEnvironment";
+    private const string SkrillexEnvironmentId = "SkrillexEnvironment";
+
+    // BillieTrackDefinitionImportUsesCorrectedLaneOrder and SkrillexBasicEventLanesUseEnvironmentPresentationOrder
+    // keep each environment remap in one registry entry so adding another order does not also require a switch edit.
+    private static readonly Dictionary<string, Dictionary<int, int>> BasicEventPresentationOrders = new()
+    {
+        {
+            BillieEnvironmentId,
+            new Dictionary<int, int>
+            {
+                { 1, 0 },
+                { 6, 1 },
+                { 7, 2 },
+                { 0, 3 },
+                { 10, 4 },
+                { 11, 5 },
+                { 4, 6 },
+                { 2, 7 },
+                { 3, 8 },
+                { 5, 9 },
+                { 12, 10 },
+                { 13, 11 },
+                { 9, 12 },
+                { 8, 13 }
+            }
+        },
+        {
+            SkrillexEnvironmentId,
+            new Dictionary<int, int>
+            {
+                { 0, 0 },
+                { 2, 1 },
+                { 3, 2 },
+                { 6, 3 },
+                { 7, 4 },
+                { 1, 5 },
+                { 4, 6 },
+                { 5, 7 },
+                { 9, 8 },
+                { 8, 9 },
+                { 12, 10 },
+                { 13, 11 }
+            }
+        }
+    };
 
     // Basic Event Tracks
     [JsonProperty("eventTracks")] public List<BasicTrackDefinition> BasicLightTracks;
@@ -90,11 +136,16 @@ public class LightTrackDefinitions
             .Select(x =>
                 new TrackDefinitionBasic
                 {
-                    Name = x.TrackName,
+                    // SkrillexTrackDefinitionImportRewritesMixedRingLaneNames preserves the raw dump while correcting ChroMapper's mixed-lane labels.
+                    Name = GetBasicTrackName(environmentId, x.EventType, x.TrackName),
                     Type = x.EventType,
                     Kind = x.ToolbarType
                 })
             .ToList();
+
+        // BillieTrackDefinitionImportUsesCorrectedLaneOrder and SkrillexTrackDefinitionImportRewritesMixedRingLaneNames
+        // keep presentation corrections in the importer so runtime label creation remains environment-agnostic.
+        basicTracks = ApplyBasicTrackPresentationOrder(environmentId, basicTracks);
 
         // Infer Basic Event capabilities from the game components that register for each event type.
         foreach (var components in objects.Select(x => x.Components))
@@ -167,6 +218,41 @@ public class LightTrackDefinitions
                 })
             .ToList()
             .ForEach(copy.Register);
+    }
+
+    // Environment-specific aliases belong at import time so regenerated assets remain stable without editing authoritative exports.
+    private static string GetBasicTrackName(string environmentId, int eventType, string exportedName)
+    {
+        if (environmentId != SkrillexEnvironmentId)
+            return exportedName;
+
+        // SkrillexPanelSpeedLanesUseDescriptiveTrackName keeps regenerated labels aligned with the corrected asset.
+        return eventType switch
+        {
+            8 => "Ring 2 Rotation / Zoom",
+            9 => "Ring 1 Rotation / Zoom",
+            12 => "Left Panel Speed",
+            13 => "Right Panel Speed",
+            _ => exportedName
+        };
+    }
+
+    // Unknown future tracks retain their exported relative order after every explicitly ordered current lane.
+    private static List<TrackDefinitionBasic> ApplyBasicTrackPresentationOrder(
+        string environmentId,
+        List<TrackDefinitionBasic> tracks)
+    {
+        // The presentation-order registry makes environment selection a single lookup and leaves unknown exports unchanged.
+        if (!BasicEventPresentationOrders.TryGetValue(environmentId, out var presentationOrder))
+            return tracks;
+
+        return tracks
+            .Select((track, sourceIndex) => new { Track = track, SourceIndex = sourceIndex })
+            .OrderBy(entry => presentationOrder.TryGetValue(entry.Track.Type, out var order)
+                ? order
+                : presentationOrder.Count + entry.SourceIndex)
+            .Select(entry => entry.Track)
+            .ToList();
     }
 
     private static void AddComponent(

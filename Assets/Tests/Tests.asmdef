@@ -7,11 +7,13 @@
     "Plugins",
     "Unity.TextMeshPro",
     "Unity.InputSystem",
+    "Unity.InputSystem.TestFramework",
     "LiteNetLib",
     "TestsEditMode",
     "FileBrowser",
     "Input",
     "Intersections",
+    "EnvironmentInfo",
     "Nobi.UiRoundedCorners"
   ],
   "includePlatforms": [],

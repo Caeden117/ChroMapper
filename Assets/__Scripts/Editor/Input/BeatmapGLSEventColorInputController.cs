@@ -46,10 +46,13 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
         }
     }
 
-    // Keep the strobe-color hotkey routed through the picker so its persisted toggle and UI remain synchronized.
+    // GLS Color Objects remains enabled in every workspace, so restrict the shared C binding to GLS workspaces.
+    // Event Box is the inner Global Lights color-node view; excluding it prevented its strobe hotkey from working.
+    // The explicit modes keep Beatmap hotkeys from opening the strobe picker outside Global Lights.
     public void OnStrobeChromaColor(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed
+            && (EditContext.EditingMode == EditingMode.GLS || EditContext.EditingMode == EditingMode.EventBox))
         {
             StrobeColorPickerController.ToggleEnabled();
         }
@@ -208,7 +211,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
     // Keep hover value mutations under the Tweak prefix in keybind settings.
     public void OnTweakBrightnessHover(InputAction.CallbackContext context)
     {
-        // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.
         TryGetHoveredEvent(context, out var evt);
         GLSEventHoverMutation.AdjustColorBrightness(context, evt, ScrollPrecisionController);
         if (evt != null)
@@ -219,7 +221,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
 
     public void NotifyBrightnessChanged(float value)
     {
-        // Retain placement-restored state until an inactive GLS view subscribes during Start.
         currentBrightness = value;
         EasingInputController.NotifyExtensionChanged(0);
         OnBrightnessChanged?.Invoke(value);
@@ -227,7 +228,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
 
     public void NotifyFadeChanged(int value)
     {
-        // Retain placement-restored state until an inactive GLS view subscribes during Start.
         currentFade = value;
         EasingInputController.NotifyExtensionChanged(0);
         OnFadeChanged?.Invoke(value);
@@ -260,7 +260,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
 
     public void OnTweakStrobeFrequencyHover(InputAction.CallbackContext context)
     {
-        // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.
         TryGetHoveredEvent(context, out var evt);
         GLSEventHoverMutation.AdjustColorFrequency(context, evt, ScrollPrecisionController);
         if (evt != null)
@@ -271,7 +270,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
 
     public void NotifyStrobeFrequencyChanged(int value)
     {
-        // Retain placement-restored state until an inactive GLS view subscribes during Start.
         currentStrobeFrequency = value;
         EasingInputController.NotifyExtensionChanged(0);
         OnStrobeFrequencyChanged?.Invoke(value);
@@ -292,7 +290,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
 
     public void OnTweakStrobeBrightnessHover(InputAction.CallbackContext context)
     {
-        // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.
         TryGetHoveredEvent(context, out var evt);
         GLSEventHoverMutation.AdjustColorStrobeBrightness(context, evt, ScrollPrecisionController);
         if (evt != null)
@@ -301,9 +298,17 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
         }
     }
 
+    public void OnToggleStrobeFadeHover(InputAction.CallbackContext context)
+    {
+        TryGetHoveredEvent(context, out var evt);
+        if (GLSEventHoverMutation.ToggleColorStrobeFade(context, evt))
+        {
+            RefreshHoveredVisualAfterMutation();
+        }
+    }
+
     public void OnTweakEasingHover(InputAction.CallbackContext context)
     {
-        // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.
         TryGetHoveredEvent(context, out var evt);
         GLSEventHoverMutation.AdjustColorEasing(context, evt);
         if (evt != null)
@@ -314,7 +319,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
 
     public void NotifyStrobeBrightnessChanged(float value)
     {
-        // Retain placement-restored state until an inactive GLS view subscribes during Start.
         currentStrobeBrightness = value;
         EasingInputController.NotifyExtensionChanged(0);
         OnStrobeBrightnessChanged?.Invoke(value);
@@ -327,7 +331,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
 
     public void OnMirrorHover(InputAction.CallbackContext context)
     {
-        // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.
         TryGetHoveredEvent(context, out var evt);
         GLSEventHoverMutation.MirrorColor(context, evt);
         if (evt != null)
@@ -340,7 +343,6 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
 
     public void NotifySoftStrobeChanged(int value)
     {
-        // Retain placement-restored state until an inactive GLS view subscribes during Start.
         currentSoftStrobe = value;
         EasingInputController.NotifyExtensionChanged(0);
         OnSoftStrobeChanged?.Invoke(value);

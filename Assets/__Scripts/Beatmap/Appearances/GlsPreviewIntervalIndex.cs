@@ -83,33 +83,20 @@ internal sealed class GlsPreviewIntervalIndex
         }
     }
 
-    // Share lazy event-cache initialization between interval construction and preview-time selection checks.
+    // Share lazy event-cache initialization through BaseEventBoxGroup instead of dispatching every concrete GLS type.
     public static bool TryGetOrderedEvents(
         BaseEventBoxGroup group,
         out IReadOnlyList<BaseGLSEvent> orderedEvents)
     {
-        switch (group)
+        if (group is not (BaseLightColorEventBoxGroup or ILightTransformEventBoxGroup or BaseVfxEventEventBoxGroup))
         {
-            case BaseLightColorEventBoxGroup colorGroup:
-                EnsureOrderedEvents(colorGroup);
-                orderedEvents = colorGroup.OrderedEvents;
-                return true;
-            case BaseLightRotationEventBoxGroup rotationGroup:
-                EnsureOrderedEvents(rotationGroup);
-                orderedEvents = rotationGroup.OrderedEvents;
-                return true;
-            case BaseLightTranslationEventBoxGroup translationGroup:
-                EnsureOrderedEvents(translationGroup);
-                orderedEvents = translationGroup.OrderedEvents;
-                return true;
-            case BaseVfxEventEventBoxGroup floatFxGroup:
-                EnsureOrderedEvents(floatFxGroup);
-                orderedEvents = floatFxGroup.OrderedEvents;
-                return true;
-            default:
-                orderedEvents = null;
-                return false;
+            orderedEvents = null;
+            return false;
         }
+
+        EnsureOrderedEvents(group);
+        orderedEvents = group.OrderedEvents;
+        return true;
     }
 
     private void EnsureCurrent<TGroup>(BeatmapObjectContainerCollection<TGroup> collection)
@@ -181,13 +168,11 @@ internal sealed class GlsPreviewIntervalIndex
         groupChangeSubscriptions.Add(group, onResorted);
     }
 
-    // Populate an unloaded group's sorted cache once; an authored empty group remains initialized after this call.
-    private static void EnsureOrderedEvents<TBox>(BaseEventBoxGroup<TBox> typedGroup)
-        where TBox : BaseEventBox
+    private static void EnsureOrderedEvents(BaseEventBoxGroup group)
     {
-        if (!typedGroup.OrderedEventsInitialized)
+        if (!group.OrderedEventsInitialized)
         {
-            typedGroup.ResortOrderedEvents();
+            group.ResortOrderedEvents();
         }
     }
 

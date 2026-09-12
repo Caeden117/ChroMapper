@@ -117,50 +117,41 @@ public class CustomColorsUIController : MonoBehaviour
 
     private void HandleColorSchemeChanged(ColorSchemeSO colorScheme)
     {
-        SetColorIfNotEqual(
+        SetColor(
             ref redNote,
             Context.ColorScheme.LeftNoteColor,
-            DefaultColors.LeftNote,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorLeft);
-        SetColorIfNotEqual(
+        SetColor(
             ref blueNote,
             Context.ColorScheme.RightNoteColor,
-            DefaultColors.RightNote,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorRight);
-        SetColorIfNotEqual(
+        SetColor(
             ref redLight,
             Context.ColorScheme.EnvironmentLeftColor,
-            DefaultColors.Left,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorLeft);
-        SetColorIfNotEqual(
+        SetColor(
             ref blueLight,
             Context.ColorScheme.EnvironmentRightColor,
-            DefaultColors.Right,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorRight);
-        SetColorIfNotEqual(
+        SetColor(
             ref whiteLight,
             Context.ColorScheme.EnvironmentWhiteColor,
-            DefaultColors.White,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorWhite);
-        SetColorIfNotEqual(
+        SetColor(
             ref redBoost,
             Context.ColorScheme.EnvironmentLeftBoostColor,
-            DefaultColors.Left,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostLeft);
-        SetColorIfNotEqual(
+        SetColor(
             ref blueBoost,
             Context.ColorScheme.EnvironmentRightBoostColor,
-            DefaultColors.Right,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostRight);
-        SetColorIfNotEqual(
+        SetColor(
             ref whiteBoost,
             Context.ColorScheme.EnvironmentWhiteBoostColor,
-            DefaultColors.White,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomEnvColorBoostWhite);
-        SetColorIfNotEqual(
+        SetColor(
             ref obstacle,
             Context.ColorScheme.ObstacleColor,
-            DefaultColors.Left,
             BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomColorObstacle);
 
         Context.ColorScheme.EnvironmentLeftColor = eventAppearance.RedColor = redLight.image.color;
@@ -175,16 +166,15 @@ public class CustomColorsUIController : MonoBehaviour
         obstacleAppearance.NormalColor = obstacle.image.color;
     }
 
-    private void SetColorIfNotEqual(
+    // A missing Chroma override must follow each newly active OEM palette instead of retaining the prior environment color.
+    private void SetColor(
         ref CustomColorButton colorButton,
         Color platformDefault,
-        Color @default,
         Color? savedColor)
     {
+        // The environment palette has already populated these swatches before Info.dat colors arrive, so always replace it unless this difficulty has a custom Chroma override.
         var uiElement = colorButton.image;
-        if (uiElement.color == @default && uiElement.color != platformDefault)
-            uiElement.color = platformDefault.WithAlpha(1);
-        uiElement.color = savedColor ?? uiElement.color;
+        uiElement.color = (savedColor ?? platformDefault).WithAlpha(1f);
     }
 
     public void UpdateRedNote()

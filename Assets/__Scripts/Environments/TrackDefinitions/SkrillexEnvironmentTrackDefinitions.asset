@@ -17,16 +17,24 @@ MonoBehaviour:
     Type: 0
     Kind: 2
     Components: 0
-  - Name: Top Lanes and 1st Ring Set
-    Type: 1
-    Kind: 2
-    Components: 0
   - Name: Left Lasers
     Type: 2
     Kind: 2
     Components: 0
   - Name: Right Lasers
     Type: 3
+    Kind: 2
+    Components: 0
+  - Name: Left Panel
+    Type: 6
+    Kind: 2
+    Components: 0
+  - Name: Right Panel
+    Type: 7
+    Kind: 2
+    Components: 0
+  - Name: Top Lanes and 1st Ring Set
+    Type: 1
     Kind: 2
     Components: 0
   - Name: Bottom Lanes and 2nd Ring Set
@@ -37,27 +45,19 @@ MonoBehaviour:
     Type: 5
     Kind: 3
     Components: 0
-  - Name: Left Panel
-    Type: 6
-    Kind: 2
-    Components: 0
-  - Name: Right Panel
-    Type: 7
-    Kind: 2
-    Components: 0
-  - Name: Ring Rotation
-    Type: 8
-    Kind: 1
-    Components: 3
-  - Name: Laser Mode
+  - Name: "Ring 1 Rotation / Zoom"
     Type: 9
     Kind: 1
     Components: 3
-  - Name: Left Laser & Panel Speed
+  - Name: "Ring 2 Rotation / Zoom"
+    Type: 8
+    Kind: 1
+    Components: 3
+  - Name: Left Panel Speed
     Type: 12
     Kind: 5
     Components: 12
-  - Name: Right Laser & Panel Speed
+  - Name: Right Panel Speed
     Type: 13
     Kind: 5
     Components: 20

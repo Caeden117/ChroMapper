@@ -68,6 +68,20 @@ public static class GLSEventHoverMutation
         GLSEventColorCommand.SetStrobeBrightness(evt, Mathf.Max(0f, value));
     }
 
+    public static bool ToggleColorStrobeFade(InputAction.CallbackContext context, BaseLightColorBase evt)
+    {
+        // Shift+scroll must not also toggle other chords. Something needs to be fixed in unity (version upgrade...?) to make these no longer necessary.
+        if (!context.performed
+            || evt == null
+            || Keyboard.current.ctrlKey.isPressed
+            || Keyboard.current.altKey.isPressed)
+        {
+            return false;
+        }
+
+        return GLSEventColorCommand.SetStrobeFade(evt, evt.StrobeFade == 1 ? 0 : 1) != null;
+    }
+
     // The authored input action owns chord disambiguation; this helper only applies its resolved mutation.
     public static void AdjustColorEasing(InputAction.CallbackContext context, BaseLightColorBase evt)
     {
@@ -116,8 +130,25 @@ public static class GLSEventHoverMutation
     public static void AdjustTranslation(InputAction.CallbackContext context, BaseLightTranslationBase evt, ScrollPrecisionController precision)
     {
         if (!context.performed || evt == null) return;
+        // Adjusting a YEETed node un-yeets it before adjusting. Otherwise you'd just be invisibly messing with your un-yeet value while just showing YEET the whole time.
+        if (GLSEventTranslationCommand.IsYeet(evt.Translation))
+        {
+            GLSEventTranslationCommand.SetValue(evt, evt.Translation + GLSEventTranslationCommand.YeetOffset);
+            return;
+        }
+
         var value = Mathf.Round((evt.Translation + (context.GetScrollDirection(Settings.Instance.InvertScrollEventValue) * (precision.GetCurrentTranslationPrecision() / 100f))) * 1_000f) / 1_000f;
         GLSEventTranslationCommand.SetValue(evt, value);
+    }
+
+    public static void ToggleTranslationYeet(InputAction.CallbackContext context, BaseLightTranslationBase evt)
+    {
+        if (!context.performed || evt == null)
+        {
+            return;
+        }
+
+        GLSEventTranslationCommand.ToggleYeet(evt);
     }
 
     public static void AdjustTranslationEasing(InputAction.CallbackContext context, BaseLightTranslationBase evt)

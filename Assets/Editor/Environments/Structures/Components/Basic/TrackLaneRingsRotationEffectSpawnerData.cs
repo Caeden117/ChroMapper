@@ -17,7 +17,7 @@ public class TrackLaneRingsRotationEffectSpawnerData : EnvironmentComponentData<
     {
         container.Descriptor.BasicEventEffectManager.Register(EventType, comp);
 
-        comp.Effect = container
+        comp.Visual = container
             .GetComponentOrNull<TrackLaneRingsRotation>(TrackLaneRingsRotationEffect);
         comp.Rotation = Rotation;
         comp.Step = RotationStep;

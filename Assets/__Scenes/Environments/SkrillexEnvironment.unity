@@ -1364,6 +1364,7 @@ GameObject:
   - component: {fileID: 36636466}
   - component: {fileID: 36636468}
   - component: {fileID: 36636469}
+  - component: {fileID: 2100000000}
   m_Layer: 7
   m_Name: SinMoveLasersPair
   m_TagString: Untagged
@@ -1413,9 +1414,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 936050547}
   - Transform: {fileID: 1084182850}
@@ -4576,6 +4574,7 @@ GameObject:
   - component: {fileID: 132386104}
   - component: {fileID: 132386106}
   - component: {fileID: 132386107}
+  - component: {fileID: 2099999999}
   m_Layer: 7
   m_Name: SinMoveLasersPair (10)
   m_TagString: Untagged
@@ -4626,9 +4625,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 518731500}
   - Transform: {fileID: 672776447}
@@ -5115,6 +5111,7 @@ GameObject:
   - component: {fileID: 148822461}
   - component: {fileID: 148822463}
   - component: {fileID: 148822464}
+  - component: {fileID: 2099999998}
   m_Layer: 7
   m_Name: SinMoveLasersPair (16)
   m_TagString: Untagged
@@ -5165,9 +5162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1342380674}
   - Transform: {fileID: 615901297}
@@ -7239,6 +7233,7 @@ GameObject:
   - component: {fileID: 202420171}
   - component: {fileID: 202420173}
   - component: {fileID: 202420174}
+  - component: {fileID: 2099999997}
   m_Layer: 7
   m_Name: SinMoveLasersPair (13)
   m_TagString: Untagged
@@ -7289,9 +7284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1873392814}
   - Transform: {fileID: 1039778924}
@@ -8901,6 +8893,7 @@ GameObject:
   - component: {fileID: 250724062}
   - component: {fileID: 250724064}
   - component: {fileID: 250724065}
+  - component: {fileID: 2099999996}
   m_Layer: 7
   m_Name: SinMoveLasersPair (17)
   m_TagString: Untagged
@@ -8951,9 +8944,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 164293466}
   - Transform: {fileID: 1837151745}
@@ -9699,6 +9689,7 @@ GameObject:
   - component: {fileID: 263586883}
   - component: {fileID: 263586885}
   - component: {fileID: 263586886}
+  - component: {fileID: 2099999995}
   m_Layer: 7
   m_Name: SinMoveLasersPair (11)
   m_TagString: Untagged
@@ -9749,9 +9740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 553477498}
   - Transform: {fileID: 2109181010}
@@ -10065,6 +10053,7 @@ GameObject:
   - component: {fileID: 278573369}
   - component: {fileID: 278573371}
   - component: {fileID: 278573372}
+  - component: {fileID: 2099999994}
   m_Layer: 7
   m_Name: SinMoveLasersPair (3)
   m_TagString: Untagged
@@ -10115,9 +10104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 180189402}
   - Transform: {fileID: 35433088}
@@ -11665,6 +11651,7 @@ GameObject:
   - component: {fileID: 335666206}
   - component: {fileID: 335666208}
   - component: {fileID: 335666209}
+  - component: {fileID: 2099999993}
   m_Layer: 7
   m_Name: SinMoveLasersPair (18)
   m_TagString: Untagged
@@ -11715,9 +11702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 609035308}
   - Transform: {fileID: 251945259}
@@ -17590,6 +17574,7 @@ GameObject:
   - component: {fileID: 476920137}
   - component: {fileID: 476920139}
   - component: {fileID: 476920140}
+  - component: {fileID: 2099999992}
   m_Layer: 7
   m_Name: SinMoveLasersPair (5)
   m_TagString: Untagged
@@ -17640,9 +17625,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 407581164}
   - Transform: {fileID: 1152372548}
@@ -20717,6 +20699,7 @@ GameObject:
   - component: {fileID: 521496320}
   - component: {fileID: 521496322}
   - component: {fileID: 521496323}
+  - component: {fileID: 2099999991}
   m_Layer: 7
   m_Name: SinMoveLasersPair (1)
   m_TagString: Untagged
@@ -20767,9 +20750,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1800739505}
   - Transform: {fileID: 1331439866}
@@ -27596,8 +27576,6 @@ GameObject:
   - component: {fileID: 671147853}
   - component: {fileID: 671147852}
   - component: {fileID: 671147848}
-  - component: {fileID: 671147851}
-  - component: {fileID: 671147850}
   - component: {fileID: 671147849}
   m_Layer: 0
   m_Name: BasicEventEffectController
@@ -27620,6 +27598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Atsc: {fileID: 0}
   ID: 8
+  Visual: {fileID: 1327708375}
 --- !u!114 &671147849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27634,34 +27613,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Atsc: {fileID: 0}
   ID: 9
---- !u!114 &671147850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 671147847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atsc: {fileID: 0}
-  ID: 13
---- !u!114 &671147851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 671147847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atsc: {fileID: 0}
-  ID: 12
 --- !u!114 &671147852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27676,6 +27627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Atsc: {fileID: 0}
   ID: 9
+  Visual: {fileID: 1981965448}
 --- !u!114 &671147853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28354,12 +28306,128 @@ MonoBehaviour:
     Manager: {fileID: 671147852}
   - Type: 8
     Manager: {fileID: 671147848}
-  - Type: 12
-    Manager: {fileID: 671147851}
-  - Type: 13
-    Manager: {fileID: 671147850}
   - Type: 9
     Manager: {fileID: 671147849}
+  - Type: 12
+    Manager: {fileID: 2100000000}
+  - Type: 13
+    Manager: {fileID: 2100000000}
+  - Type: 9
+    Manager: {fileID: 2100000000}
+  - Type: 12
+    Manager: {fileID: 2099999999}
+  - Type: 13
+    Manager: {fileID: 2099999999}
+  - Type: 9
+    Manager: {fileID: 2099999999}
+  - Type: 12
+    Manager: {fileID: 2099999998}
+  - Type: 13
+    Manager: {fileID: 2099999998}
+  - Type: 9
+    Manager: {fileID: 2099999998}
+  - Type: 12
+    Manager: {fileID: 2099999997}
+  - Type: 13
+    Manager: {fileID: 2099999997}
+  - Type: 9
+    Manager: {fileID: 2099999997}
+  - Type: 12
+    Manager: {fileID: 2099999996}
+  - Type: 13
+    Manager: {fileID: 2099999996}
+  - Type: 9
+    Manager: {fileID: 2099999996}
+  - Type: 12
+    Manager: {fileID: 2099999995}
+  - Type: 13
+    Manager: {fileID: 2099999995}
+  - Type: 9
+    Manager: {fileID: 2099999995}
+  - Type: 12
+    Manager: {fileID: 2099999994}
+  - Type: 13
+    Manager: {fileID: 2099999994}
+  - Type: 9
+    Manager: {fileID: 2099999994}
+  - Type: 12
+    Manager: {fileID: 2099999993}
+  - Type: 13
+    Manager: {fileID: 2099999993}
+  - Type: 9
+    Manager: {fileID: 2099999993}
+  - Type: 12
+    Manager: {fileID: 2099999992}
+  - Type: 13
+    Manager: {fileID: 2099999992}
+  - Type: 9
+    Manager: {fileID: 2099999992}
+  - Type: 12
+    Manager: {fileID: 2099999991}
+  - Type: 13
+    Manager: {fileID: 2099999991}
+  - Type: 9
+    Manager: {fileID: 2099999991}
+  - Type: 12
+    Manager: {fileID: 2099999990}
+  - Type: 13
+    Manager: {fileID: 2099999990}
+  - Type: 9
+    Manager: {fileID: 2099999990}
+  - Type: 12
+    Manager: {fileID: 2099999989}
+  - Type: 13
+    Manager: {fileID: 2099999989}
+  - Type: 9
+    Manager: {fileID: 2099999989}
+  - Type: 12
+    Manager: {fileID: 2099999988}
+  - Type: 13
+    Manager: {fileID: 2099999988}
+  - Type: 9
+    Manager: {fileID: 2099999988}
+  - Type: 12
+    Manager: {fileID: 2099999987}
+  - Type: 13
+    Manager: {fileID: 2099999987}
+  - Type: 9
+    Manager: {fileID: 2099999987}
+  - Type: 12
+    Manager: {fileID: 2099999986}
+  - Type: 13
+    Manager: {fileID: 2099999986}
+  - Type: 9
+    Manager: {fileID: 2099999986}
+  - Type: 12
+    Manager: {fileID: 2099999985}
+  - Type: 13
+    Manager: {fileID: 2099999985}
+  - Type: 9
+    Manager: {fileID: 2099999985}
+  - Type: 12
+    Manager: {fileID: 2099999984}
+  - Type: 13
+    Manager: {fileID: 2099999984}
+  - Type: 9
+    Manager: {fileID: 2099999984}
+  - Type: 12
+    Manager: {fileID: 2099999983}
+  - Type: 13
+    Manager: {fileID: 2099999983}
+  - Type: 9
+    Manager: {fileID: 2099999983}
+  - Type: 12
+    Manager: {fileID: 2099999982}
+  - Type: 13
+    Manager: {fileID: 2099999982}
+  - Type: 9
+    Manager: {fileID: 2099999982}
+  - Type: 12
+    Manager: {fileID: 2099999981}
+  - Type: 13
+    Manager: {fileID: 2099999981}
+  - Type: 9
+    Manager: {fileID: 2099999981}
 --- !u!1 &672020484
 GameObject:
   m_ObjectHideFlags: 0
@@ -29213,6 +29281,7 @@ GameObject:
   - component: {fileID: 682007099}
   - component: {fileID: 682007101}
   - component: {fileID: 682007102}
+  - component: {fileID: 2099999990}
   m_Layer: 7
   m_Name: SinMoveLasersPair (12)
   m_TagString: Untagged
@@ -29263,9 +29332,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 397274764}
   - Transform: {fileID: 1089938002}
@@ -29411,6 +29477,7 @@ GameObject:
   - component: {fileID: 684761811}
   - component: {fileID: 684761813}
   - component: {fileID: 684761814}
+  - component: {fileID: 2099999989}
   m_Layer: 7
   m_Name: SinMoveLasersPair (14)
   m_TagString: Untagged
@@ -29461,9 +29528,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1257301781}
   - Transform: {fileID: 1857835528}
@@ -30274,6 +30338,7 @@ GameObject:
   - component: {fileID: 736481321}
   - component: {fileID: 736481323}
   - component: {fileID: 736481324}
+  - component: {fileID: 2099999988}
   m_Layer: 7
   m_Name: SinMoveLasersPair (6)
   m_TagString: Untagged
@@ -30324,9 +30389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1089676798}
   - Transform: {fileID: 404279735}
@@ -39449,6 +39511,7 @@ GameObject:
   - component: {fileID: 994845189}
   - component: {fileID: 994845191}
   - component: {fileID: 994845192}
+  - component: {fileID: 2099999987}
   m_Layer: 7
   m_Name: SinMoveLasersPair (7)
   m_TagString: Untagged
@@ -39499,9 +39562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 755367254}
   - Transform: {fileID: 1811685431}
@@ -46305,6 +46365,7 @@ GameObject:
   - component: {fileID: 1134248767}
   - component: {fileID: 1134248769}
   - component: {fileID: 1134248770}
+  - component: {fileID: 2099999986}
   m_Layer: 7
   m_Name: SinMoveLasersPair (2)
   m_TagString: Untagged
@@ -46355,9 +46416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 2046470925}
   - Transform: {fileID: 972541375}
@@ -56838,6 +56896,7 @@ GameObject:
   - component: {fileID: 1367100910}
   - component: {fileID: 1367100912}
   - component: {fileID: 1367100913}
+  - component: {fileID: 2099999985}
   m_Layer: 7
   m_Name: SinMoveLasersPair (15)
   m_TagString: Untagged
@@ -56888,9 +56947,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1366874317}
   - Transform: {fileID: 826919481}
@@ -58565,6 +58621,7 @@ GameObject:
   - component: {fileID: 1430146834}
   - component: {fileID: 1430146836}
   - component: {fileID: 1430146837}
+  - component: {fileID: 2099999984}
   m_Layer: 7
   m_Name: SinMoveLasersPair (8)
   m_TagString: Untagged
@@ -58615,9 +58672,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1207226816}
   - Transform: {fileID: 55356431}
@@ -62520,6 +62574,7 @@ GameObject:
   - component: {fileID: 1551430470}
   - component: {fileID: 1551430472}
   - component: {fileID: 1551430473}
+  - component: {fileID: 2099999983}
   m_Layer: 7
   m_Name: SinMoveLasersPair (19)
   m_TagString: Untagged
@@ -62570,9 +62625,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 2133252302}
   - Transform: {fileID: 533244623}
@@ -65201,6 +65253,7 @@ GameObject:
   - component: {fileID: 1627678503}
   - component: {fileID: 1627678505}
   - component: {fileID: 1627678506}
+  - component: {fileID: 2099999982}
   m_Layer: 7
   m_Name: SinMoveLasersPair (9)
   m_TagString: Untagged
@@ -65251,9 +65304,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1006085839}
   - Transform: {fileID: 430040052}
@@ -73655,6 +73705,7 @@ GameObject:
   - component: {fileID: 1853118404}
   - component: {fileID: 1853118406}
   - component: {fileID: 1853118407}
+  - component: {fileID: 2099999981}
   m_Layer: 7
   m_Name: SinMoveLasersPair (4)
   m_TagString: Untagged
@@ -73705,9 +73756,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a31f19007f4d1385aaa7bd4bc04944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 671147851}
-  RightEffect: {fileID: 671147850}
-  SwitchEffect: {fileID: 671147849}
   Transforms:
   - Transform: {fileID: 1493416963}
   - Transform: {fileID: 1834272642}
@@ -86690,6 +86738,366 @@ MonoBehaviour:
   UseCollision: 0
   CollisionHeight: 0
   UpdateTransform: 1
+--- !u!114 &2100000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36636465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 36636469}
+--- !u!114 &2099999999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132386103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 132386107}
+--- !u!114 &2099999998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148822460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 148822464}
+--- !u!114 &2099999997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202420170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 202420174}
+--- !u!114 &2099999996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250724061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 250724065}
+--- !u!114 &2099999995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263586882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 263586886}
+--- !u!114 &2099999994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278573368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 278573372}
+--- !u!114 &2099999993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335666205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 335666209}
+--- !u!114 &2099999992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476920136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 476920140}
+--- !u!114 &2099999991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521496319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 521496323}
+--- !u!114 &2099999990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682007098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 682007102}
+--- !u!114 &2099999989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684761810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 684761814}
+--- !u!114 &2099999988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736481320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 736481324}
+--- !u!114 &2099999987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994845188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 994845192}
+--- !u!114 &2099999986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134248766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 1134248770}
+--- !u!114 &2099999985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367100909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 1367100913}
+--- !u!114 &2099999984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430146833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 1430146837}
+--- !u!114 &2099999983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551430469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 1551430473}
+--- !u!114 &2099999982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627678502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 1627678506}
+--- !u!114 &2099999981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853118403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0eca1840c64696468de606d617f9d12, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairSinMoveEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: 9
+  Visual: {fileID: 1853118407}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

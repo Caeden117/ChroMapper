@@ -207,19 +207,35 @@ namespace Beatmap.Base
                     && (CustomData[CustomKeyWorldRotation].IsArray || CustomData[CustomKeyWorldRotation].IsNumber))
                 || (CustomData.HasKey(CustomKeySize) && CustomData[CustomKeySize].IsArray));
 
-        public override bool IsMappingExtensions()
+        public override bool IsMappingExtensions() => IsMappingExtensions(allowV4UpperWallsInV3: false);
+
+        public bool IsMappingExtensions(bool allowV4UpperWallsInV3)
         {
             var vanillaYLimit = Settings.Instance.MapVersion == 4 ? 4 : 2;
+            var hasUnsupportedPosY = PosY < 0 || PosY > vanillaYLimit;
+            if (allowV4UpperWallsInV3
+                && Settings.Instance.MapVersion == 3
+                && PosY is 3 or 4)
+            {
+                hasUnsupportedPosY = false;
+            }
+
             return PosX <= -1000
                 || PosX >= 1000
-                || PosY < 0
-                || PosY > vanillaYLimit
+                || hasUnsupportedPosY
                 || Width <= -1000
                 || Width >= 1000
                 || Height <= -1000
                 || Height > 5
+                || Type > 1
                 || (Settings.Instance.MapVersion == 2 && (PosX < 0 || PosX > 3));
         }
+
+        // MappingExtensionsWallEncodingTriggersMigrationPrompt covers every legacy wall encoding while excluding
+        // existing Noodle walls and BeatToTheFuture's raw V3 y=3/4 lanes from the obsolete-mod migration.
+        public bool IsMappingExtensionsWallForMigration()
+            => !IsNoodleExtensions()
+                && (Type > 1 || IsMappingExtensions(allowV4UpperWallsInV3: true));
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {

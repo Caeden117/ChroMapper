@@ -169,10 +169,9 @@ public class AudioTimeSyncController : MonoBehaviour,
         get
         {
             if (IsPlaying) return false;
-            return Mathf.Approximately(
-                currentJsonTime,
-                (float)Math.Round(currentJsonTime * gridMeasureSnapping, MidpointRounding.AwayFromZero)
-                / gridMeasureSnapping);
+            // Grid lines are relative to VisualBeatOrigin, so snapped-state detection must use the same interval
+            // calculation as cursor restoration and SnapToGrid instead of assuming every grid begins at beat zero.
+            return Mathf.Approximately(currentJsonTime, GetNearestGridLineJsonTime(currentJsonTime));
         }
     }
 
@@ -263,15 +262,27 @@ public class AudioTimeSyncController : MonoBehaviour,
         Settings.ClearSettingNotifications("SongVolume");
     }
 
-    // Save the current map-time cursor from the controller that owns it.
-    public void CaptureEditorState(SimpleJSON.JSONObject data) => data["value"] = CurrentJsonTime;
+    // Save the timeline denominator beside the cursor so each map restores the grid on which that cursor was authored.
+    public void CaptureEditorState(SimpleJSON.JSONObject data)
+    {
+        data["value"] = CurrentJsonTime;
+        data["gridMeasureSnapping"] = GridMeasureSnapping;
+    }
 
-    // Move through the regular controller path so track positions and time listeners stay synchronized.
+    // Restore grid precision before resolving the cursor so Info.dat float noise snaps to this map's authored interval.
     public void LoadEditorState(SimpleJSON.JSONNode data)
     {
+        if (data.HasKey("gridMeasureSnapping"))
+        {
+            GridMeasureSnapping = Math.Max(1, data["gridMeasureSnapping"].AsInt);
+        }
+
         if (data.HasKey("value"))
         {
-            MoveToJsonTime(data["value"].AsFloat);
+            // RestoringEditorCursorAfterCloningRingDoesNotUsePreCloneRotationSnapshot moves once at the final snapped
+            // time so lighting never renders the serialized epsilon-offset cursor as an intermediate state.
+            var snappedJsonTime = GetNearestGridLineJsonTime(data["value"].AsFloat);
+            MoveToJsonTime(snappedJsonTime);
         }
     }
 
@@ -314,6 +325,13 @@ public class AudioTimeSyncController : MonoBehaviour,
     {
         if (!KeybindsController.IsMouseInWindow
             || customStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
+        {
+            return;
+        }
+
+        if (controlSnap
+            && preciselyControlSnap
+            && IsCursorIntervalOwnedByHoveredObject())
         {
             return;
         }
@@ -369,9 +387,8 @@ public class AudioTimeSyncController : MonoBehaviour,
             return;
         }
 
-        // GLS and Basic Event hover edits own Ctrl+Shift+Scroll instead of the global cursor interval.
-        if (GLSEventInputHoverTracker.IsHovering
-            || BeatmapEventInputController.IsCursorIntervalOwnedByPointer())
+        // VNJS, GLS and Basic Event hover edits own [Ctrl+]Shift+Scroll instead of the global cursor interval.
+        if (IsCursorIntervalOwnedByHoveredObject())
         {
             return;
         }
@@ -388,6 +405,13 @@ public class AudioTimeSyncController : MonoBehaviour,
             var addition = scrollDirection > 1 ? 1 : -1;
             GridMeasureSnapping = Mathf.Clamp(GridMeasureSnapping + addition, 1, 64);
         }
+    }
+
+    private static bool IsCursorIntervalOwnedByHoveredObject()
+    {
+        return GLSEventInputHoverTracker.IsHovering
+            || BeatmapEventInputController.IsCursorIntervalOwnedByPointer()
+            || BeatmapNJSEventInputController.IsCursorIntervalOwnedByPointer();
     }
 
     public void OnChangePrecisionModifier(InputAction.CallbackContext context) => controlSnap = context.performed;
@@ -547,16 +571,22 @@ public class AudioTimeSyncController : MonoBehaviour,
         SongAudioSource.time = CurrentSeconds;
     }
 
-    public void SnapToGrid(bool positionValidated = false)
+    // Cursor restore and interactive snapping must resolve exactly the same visual-origin-relative interval line.
+    private float GetNearestGridLineJsonTime(float jsonTime)
     {
         var offsetTime = VisualBeatOriginJsonTime;
-
-        var jsonTime = (float)Math.Round(
-                (CurrentJsonTime - offsetTime) * GridMeasureSnapping,
+        var snappedJsonTime = (float)Math.Round(
+                (jsonTime - offsetTime) * GridMeasureSnapping,
                 MidpointRounding.AwayFromZero)
             / GridMeasureSnapping;
 
-        jsonTime += offsetTime;
+        return snappedJsonTime + offsetTime;
+    }
+
+    public void SnapToGrid(bool positionValidated = false)
+    {
+        // Keep manual snapping on the shared interval calculation used by editor-state restoration.
+        var jsonTime = GetNearestGridLineJsonTime(CurrentJsonTime);
 
         currentJsonTime = jsonTime;
         currentSongBpmTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(jsonTime);

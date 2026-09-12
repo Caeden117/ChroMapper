@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Beatmap.Enums;
 using SimpleJSON;
 using ZLinq;
 
@@ -37,6 +39,8 @@ namespace Beatmap.Base
 
         // Shared GLS mutation code receives the non-generic group base, so expose its required ordering refresh polymorphically.
         public abstract void ResortOrderedEvents();
+
+        public abstract void PruneEmptyAutomaticAxisLanes();
 
         // Keep event invocation in the declaring base type so generic groups can invalidate their data-only indexes.
         protected void NotifyOrderedEventsResorted() => OnOrderedEventsResorted?.Invoke(this);
@@ -89,6 +93,54 @@ namespace Beatmap.Base
             OrderedEventsInitialized = true;
             // Refresh only indexes that own this group instead of coupling selection to rendered containers.
             NotifyOrderedEventsResorted();
+        }
+
+        public override void PruneEmptyAutomaticAxisLanes()
+        {
+            var hasPermanentOrPopulatedBox = false;
+            for (var boxIndex = 0; boxIndex < Boxes.Count; boxIndex++)
+            {
+                var box = Boxes[boxIndex];
+                if (!box.IsAutomaticAxisLane || box.ReadOnlyEvents.Count > 0)
+                {
+                    hasPermanentOrPopulatedBox = true;
+                    break;
+                }
+            }
+
+            var retainedAutomaticIndex = hasPermanentOrPopulatedBox
+                ? -1
+                : Boxes.Count - 1;
+            // Most GLS mutations do not remove a lane, so remember whether indexes actually shifted before touching every child.
+            var removedBox = false;
+            for (var boxIndex = Boxes.Count - 1; boxIndex >= 0; boxIndex--)
+            {
+                var box = Boxes[boxIndex];
+                if (box.IsAutomaticAxisLane
+                    && box.ReadOnlyEvents.Count == 0
+                    && boxIndex != retainedAutomaticIndex)
+                {
+                    Boxes.RemoveAt(boxIndex);
+                    removedBox = true;
+                }
+            }
+
+            if (removedBox)
+            {
+                for (var boxIndex = 0; boxIndex < Boxes.Count; boxIndex++)
+                {
+                    var box = Boxes[boxIndex];
+                    foreach (var evt in box.ReadOnlyEvents)
+                    {
+                        evt.EventBoxData = box;
+                        evt.EventBoxGroupData = this;
+                        evt.BoxIndex = boxIndex;
+                        evt.JsonTime = JsonTime + evt.RelativeJsonTime;
+                    }
+                }
+            }
+
+            ResortOrderedEvents();
         }
 
         // Deserialization has complete group ownership here, so normalize each filter lane once and report accurate outer/inner beats.
@@ -165,5 +217,157 @@ namespace Beatmap.Base
         }
 
         public override IReadOnlyList<BaseEventBox> ReadOnlyBoxes => Boxes;
+    }
+
+    public interface ILightTransformEventBoxGroup
+    {
+        IReadOnlyList<BaseLightTransformEventBox> TransformBoxes { get; }
+        bool[] GetEnabledAxes(TrackDefinitionGLS trackDefinition);
+        BaseLightTransformEventBox CreateTransformBox(int axis);
+        bool TryAddTransformBox(BaseLightTransformEventBox box);
+        void InsertDefaultTransformBox(int index);
+        void ClearTransformBoxes();
+        void RemoveTransformBoxAt(int index);
+        void RemoveEmptyTransformBoxes();
+        void SortTransformBoxesByIds();
+        void SwapTransformBoxes(int firstIndex, int secondIndex);
+        void DuplicateTransformBox(int index);
+        void SortAxisTracks();
+        void SortAxesNumerically();
+    }
+
+    // Rotation and translation groups share box lifecycle and axis ordering
+    public abstract class BaseLightTransformEventBoxGroup<TBox> : BaseEventBoxGroup<TBox>,
+        ILightTransformEventBoxGroup where TBox : BaseLightTransformEventBox
+    {
+        protected BaseLightTransformEventBoxGroup()
+        {
+        }
+
+        protected BaseLightTransformEventBoxGroup(float time, int id, JSONNode customData = null) : base(
+            time,
+            id,
+            customData)
+        {
+        }
+
+        public IReadOnlyList<BaseLightTransformEventBox> TransformBoxes => Boxes;
+
+        public abstract bool[] GetEnabledAxes(TrackDefinitionGLS trackDefinition);
+
+        protected abstract TBox CreateTransformBoxCore(int axis);
+
+        public BaseLightTransformEventBox CreateTransformBox(int axis) => CreateTransformBoxCore(axis);
+
+        public bool TryAddTransformBox(BaseLightTransformEventBox box)
+        {
+            if (box is not TBox typedBox)
+            {
+                return false;
+            }
+
+            Boxes.Add(typedBox);
+            return true;
+        }
+
+        public void InsertDefaultTransformBox(int index) => Boxes.Insert(index, CreateTransformBoxCore((int)Axis.X));
+
+        public void ClearTransformBoxes() => Boxes.Clear();
+
+        public void RemoveTransformBoxAt(int index) => Boxes.RemoveAt(index);
+
+        public void RemoveEmptyTransformBoxes() =>
+            Boxes = Boxes.Where(box => box.ReadOnlyEvents.Count != 0).ToList();
+
+        public void SortTransformBoxesByIds() =>
+            Boxes = Boxes
+                .OrderByDescending(box => box.IndexFilter.Type == (int)IndexFilterType.Division
+                    ? box.IndexFilter.Param0
+                    : box.IndexFilter.Param1)
+                .ThenBy(box => box.IndexFilter.Type == (int)IndexFilterType.Division
+                    ? box.IndexFilter.Param1
+                    : box.IndexFilter.Param0)
+                .ToList();
+
+        public void SwapTransformBoxes(int firstIndex, int secondIndex) =>
+            (Boxes[firstIndex], Boxes[secondIndex]) = (Boxes[secondIndex], Boxes[firstIndex]);
+
+        public void DuplicateTransformBox(int index)
+        {
+            var duplicate = (TBox)Boxes[index].Clone();
+            duplicate.ClearEvents();
+            Boxes.Insert(index + 1, duplicate);
+        }
+
+        public void SortAxisTracks()
+        {
+            var orderedBoxes = new List<TBox>(Boxes.Count);
+            for (var axis = (int)Axis.X; axis <= (int)Axis.Z; axis++)
+            {
+                for (var boxIndex = 0; boxIndex < Boxes.Count; boxIndex++)
+                {
+                    if (Boxes[boxIndex].Axis == axis)
+                    {
+                        orderedBoxes.Add(Boxes[boxIndex]);
+                    }
+                }
+            }
+
+            for (var boxIndex = 0; boxIndex < Boxes.Count; boxIndex++)
+            {
+                var axis = Boxes[boxIndex].Axis;
+                if (axis < (int)Axis.X || axis > (int)Axis.Z)
+                {
+                    orderedBoxes.Add(Boxes[boxIndex]);
+                }
+            }
+
+            // No realloc
+            Boxes.Clear();
+            Boxes.AddRange(orderedBoxes);
+        }
+
+        // The explicit Sort Axes command retains its previous full numeric ordering, including malformed future values.
+        public void SortAxesNumerically() => Boxes = Boxes.OrderBy(box => box.Axis).ToList();
+
+        protected void CloneTransformBoxesFrom(BaseLightTransformEventBoxGroup<TBox> other)
+        {
+            Boxes = other.Boxes.AsValueEnumerable().Select(x => (TBox)x.Clone()).ToList();
+            for (var boxIndex = 0; boxIndex < Boxes.Count; boxIndex++)
+            {
+                var box = Boxes[boxIndex];
+                foreach (var evt in box.ReadOnlyEvents)
+                {
+                    evt.EventBoxData = box;
+                    evt.EventBoxGroupData = this;
+                    evt.BoxIndex = boxIndex;
+                    evt.JsonTime = evt.RelativeJsonTime + JsonTime;
+                }
+            }
+        }
+
+        public override void SetMap(BaseDifficulty map = null)
+        {
+            base.SetMap(map);
+            foreach (var box in Boxes)
+            {
+                foreach (var evt in box.ReadOnlyEvents)
+                {
+                    evt.SetMap(map);
+                }
+            }
+        }
+
+        public override void RecomputeSongBpmTime()
+        {
+            base.RecomputeSongBpmTime();
+            foreach (var box in Boxes)
+            {
+                foreach (var evt in box.ReadOnlyEvents)
+                {
+                    evt.RecomputeSongBpmTime();
+                }
+            }
+        }
     }
 }

@@ -94,8 +94,8 @@ public class CreateNewSong : MonoBehaviour
 
         var standardSet = new InfoDifficultySet { Characteristic = "Standard" };
         song.DifficultySets.Add(standardSet);
+
+        song.Save();
         BeatSaberSongContainer.Instance.SelectSongForEditing(song);
-        PersistentUI.Instance.ShowDialogBox("SongSelectMenu", "newmap.message", null,
-            PersistentUI.DialogBoxPresetType.Ok);
     }
 }

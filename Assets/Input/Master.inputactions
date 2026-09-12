@@ -4892,6 +4892,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Tweak VNJS Easing",
+                    "type": "Value",
+                    "id": "c332510c-aba5-4222-b67c-a042d20c831b",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -4925,6 +4934,50 @@
                     "processors": "",
                     "groups": "ChroMapper Default",
                     "action": "Tweak NJS Value",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Ctrl + Shift + Scroll",
+                    "id": "28f4b04d-9f32-4ccf-b710-129b2f27d3fb",
+                    "path": "TwoModifiers",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tweak VNJS Easing",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier1",
+                    "id": "27a1064f-f652-4c46-972b-16a952973f96",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak VNJS Easing",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "modifier2",
+                    "id": "c55c4eaf-e259-4206-9375-620ce5649edd",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak VNJS Easing",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "287a0210-3040-45e3-a35a-0275e055b265",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "ChroMapper Default",
+                    "action": "Tweak VNJS Easing",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
@@ -5468,6 +5521,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Toggle Strobe Fade (Hover)",
+                    "type": "Value",
+                    "id": "6c2f6ca1-ec7c-4b16-ae82-e2d3259f65cb",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Tweak Easing (Hover)",
                     "type": "Value",
                     "id": "9cfcd847-c28a-48ad-9e05-6cf5fdf3f171",
@@ -5972,6 +6034,39 @@
                     "action": "Tweak Easing (Hover)",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "Shift + Scroll",
+                    "id": "b0c17794-e783-4d7c-a565-a60024d64d51",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Strobe Fade (Hover)",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "0d4c8ce9-f792-4c87-9389-913fab57372b",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Strobe Fade (Hover)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "411995af-1652-4d23-9318-1777024779fc",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Strobe Fade (Hover)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -6470,6 +6565,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "YEET Translation (Hover)",
+                    "type": "Button",
+                    "id": "3d4587dc-8e26-4ce2-98c8-804559e48ba6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -6646,6 +6750,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Tweak Easing (Hover)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Shift + Z",
+                    "id": "f9843408-bca3-4361-a921-e3111a1bb4e7",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "YEET Translation (Hover)",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "cecf7d25-7082-4ef1-a6a4-03c2e758f2e9",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "YEET Translation (Hover)",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "c37f5384-b680-4728-b9e2-8a333530f047",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "YEET Translation (Hover)",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

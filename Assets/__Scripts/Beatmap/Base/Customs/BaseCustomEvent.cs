@@ -141,6 +141,18 @@ namespace Beatmap.Base.Customs
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
+        // ClosingNodeEditorCommitsAnimateTrackJson requires Apply to copy custom-event fields that BaseObject does not own.
+        public override void Apply(BaseObject originalData)
+        {
+            base.Apply(originalData);
+
+            if (originalData is BaseCustomEvent customEvent)
+            {
+                Type = customEvent.Type;
+                Data = customEvent.SaveCustom().Clone();
+            }
+        }
+
         public override bool HasMatchingTrack(string filter) =>
             base.HasMatchingTrack(filter)
             || DataChildrenTracks switch {

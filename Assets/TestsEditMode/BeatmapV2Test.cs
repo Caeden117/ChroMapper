@@ -183,6 +183,41 @@ namespace TestsEditMode
             Assert.AreEqual(123.456f, output["_customData"]["_time"].AsFloat, 0.001);
         }
 
+        // The reported map and node editor contain the same V2 gradient payload, so preserve omitted opaque alpha and
+        // explicit zero alpha through production parsing and serialization before preview-cache tests consume the event.
+        [Test]
+        public void LegacyAlphaZeroLightGradientRoundTripsWithoutConversion()
+        {
+            var gradientJson = JSONNode.Parse(@"
+            {
+                ""_time"": 32,
+                ""_type"": 2,
+                ""_value"": 1,
+                ""_floatValue"": 1,
+                ""_customData"": {
+                    ""_lightGradient"": {
+                        ""_duration"": 0.25,
+                        ""_startColor"": [0.298, 1, 0.584, 0],
+                        ""_endColor"": [0.298, 1, 0.584],
+                        ""_easing"": ""easeLinear""
+                    }
+                }
+            }");
+
+            var evt = V2Event.GetFromJson(gradientJson);
+
+            Assert.That(evt.Value, Is.EqualTo((int)LightValue.BlueOn));
+            Assert.That(evt.CustomLightGradient, Is.Not.Null);
+            Assert.That(evt.CustomLightGradient.Duration, Is.EqualTo(0.25f));
+            Assert.That(evt.CustomLightGradient.StartColor, Is.EqualTo(new Color(0.298f, 1f, 0.584f, 0f)));
+            Assert.That(evt.CustomLightGradient.EndColor, Is.EqualTo(new Color(0.298f, 1f, 0.584f, 1f)));
+
+            var output = V2Event.ToJson(evt);
+            Assert.That(output["_value"].AsInt, Is.EqualTo((int)LightValue.BlueOn));
+            Assert.That(output["_customData"]["_lightGradient"]["_startColor"][3].AsFloat, Is.EqualTo(0f));
+            Assert.That(output["_customData"]["_lightGradient"]["_endColor"].Count, Is.EqualTo(3));
+        }
+
         private static void AssertDifficulty(BaseDifficulty difficulty)
         {
             Assert.AreEqual(2, difficulty.Notes.Count);

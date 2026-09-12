@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
 {
+    // A missing strobe payload should place a visible, opaque color instead of silently falling back to black.
+    private static readonly Color DefaultStrobeColor = Color.red;
+
     public static StrobeColorPickerController Instance { get; private set; }
 
     [SerializeField] private ColorPicker picker;
@@ -186,7 +189,7 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
     {
         if (data["color"].IsObject)
         {
-            SetLoadedColor(data["color"].ReadColor(Color.black));
+            SetLoadedColor(data["color"].ReadColor(DefaultStrobeColor));
         }
 
         if (data.HasKey("enabled"))
@@ -270,11 +273,16 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
         pickerTileColor.color = color.WithAlpha(IsEnabled ? 1f : 0.3f);
     }
 
-    private static Color LoadColor() => new(
-        Settings.Instance.GLSStrobeColorR,
-        Settings.Instance.GLSStrobeColorG,
-        Settings.Instance.GLSStrobeColorB,
-        Settings.Instance.GLSStrobeColorA);
+    private static Color LoadColor()
+    {
+        var color = new Color(
+            Settings.Instance.GLSStrobeColorR,
+            Settings.Instance.GLSStrobeColorG,
+            Settings.Instance.GLSStrobeColorB,
+            Settings.Instance.GLSStrobeColorA);
+        // Legacy empty picker state is transparent black; normalize it to the visible strobe default.
+        return color.a <= 0f ? DefaultStrobeColor : color;
+    }
 }
 
 public class StrobeColorPickerTileClickHandler : MonoBehaviour, IPointerClickHandler

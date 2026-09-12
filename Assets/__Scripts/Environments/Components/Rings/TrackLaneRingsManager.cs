@@ -6,6 +6,7 @@ public class TrackLaneRingsManager : MonoBehaviour
     public List<TrackLaneRing> Rings;
     public float RingPositionStep;
     public bool SpawnAsChildren;
+    public bool UseCached;
     private AudioTimeSyncController atsc;
 
     private bool hasAtsc;
@@ -43,16 +44,23 @@ public class TrackLaneRingsManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (UseCached)
+            return;
+
         var fdt = TimeHelper.FixedDeltaTime;
         var len = Rings.Count;
-        for (var i = 0; i < len; i++) Rings[i].FixedUpdateRing(fdt);
+        for (var i = 0; i < len; i++)
+            Rings[i].FixedUpdateRing(fdt);
     }
 
     private void LateUpdate()
     {
+        if (UseCached || !hasAtsc)
+            return;
+
         var intF = TimeHelper.InterpolationFactor;
-        if (!hasAtsc) return;
         var len = Rings.Count;
-        for (var i = 0; i < len; i++) Rings[i].LateUpdateRing(intF);
+        for (var i = 0; i < len; i++)
+            Rings[i].LateUpdateRing(intF);
     }
 }

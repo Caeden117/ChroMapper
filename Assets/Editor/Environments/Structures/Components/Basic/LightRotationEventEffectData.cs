@@ -9,13 +9,14 @@ public class LightRotationEventEffectData : EnvironmentComponentData<LightRotati
     public override void FillComponents(GameObject self, LightRotation comp, CreateContainer container)
     {
         comp.enabled = true;
-        comp.Effect =
-            container.Descriptor.BasicEventEffectManager.GetOrRegister<LightRotationEffect>(
-                EventType);
-
         comp.Transform = self.transform;
         comp.StartRotation = self.transform.rotation;
         comp.RotationVector = RotationVector;
         comp.SpeedMultiplier = RotationSpeedMultiplier;
+
+        var effect = self.AddComponent<LightRotationEffect>();
+        effect.Visual = comp;
+        effect.SpeedMultiplier = RotationSpeedMultiplier;
+        container.Descriptor.BasicEventEffectManager.Register(EventType, effect);
     }
 }

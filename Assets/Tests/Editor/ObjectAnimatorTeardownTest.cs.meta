@@ -1,0 +1,4 @@
+# ObjectAnimatorTeardownTest.cs covers mapper-scene parent-before-child destruction ordering.
+fileFormatVersion: 2
+guid: 225d0545bb254d8fa5f2467c54e59aa3
+timeCreated: 1788105600

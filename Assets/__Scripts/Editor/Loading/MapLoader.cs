@@ -54,6 +54,18 @@ public class MapLoader : MonoBehaviour
         manager.RefreshTracks();
     }
 
+    // RestoringEditorCursorAfterCloningRingDoesNotUsePreCloneRotationSnapshot requires movement snapshots to observe
+    // every ring appended by environment enhancement spawning before AudioTimeSyncController renders saved map time.
+    public void HardRefreshBeforeEditorStateRestore(EnvironmentDescriptor descriptor)
+    {
+        HardRefresh();
+
+        if (Settings.Instance.Load_Others && map.EnvironmentEnhancements.Count > 0)
+        {
+            descriptor.Reinitialize();
+        }
+    }
+
     public void LoadObjects<T>(List<T> objects) where T : BaseObject
     {
         var collection =

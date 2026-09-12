@@ -11,6 +11,51 @@ namespace Tests.Placement
 {
     public class ContainerCollectionTest : TestBase
     {
+        // Missing values must return the complement of their insertion index so every range caller gets stable boundaries.
+        [TestCase(new[] { 2 }, 60, 1)]
+        [TestCase(new[] { 2, 60 }, 85, 2)]
+        [TestCase(new[] { 2, 80, 95 }, 40, 1)]
+        public void BinarySearchBy_MissingValueReturnsComplementOfInsertionIndex(
+            int[] values,
+            int searchedValue,
+            int expectedInsertionIndex)
+        {
+            var result = values.ToList().BinarySearchBy(searchedValue, value => value);
+
+            Assert.That(result, Is.LessThan(0));
+            Assert.That(~result, Is.EqualTo(expectedInsertionIndex));
+        }
+
+        // A visual range beyond all map objects must not retain the collection-wide final object.
+        [Test]
+        public void RefreshPool_WindowAfterFinalObjectLoadsNoContainers()
+        {
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var finalNote = PlaceUtils.Place(new BaseNote { JsonTime = 2 });
+
+            noteGridContainer.RefreshPool(59.5f, 60.5f, true);
+
+            Assert.That(noteGridContainer.LoadedContainers.ContainsKey(finalNote), Is.False);
+        }
+
+        // A visual range between distant objects must not include the object immediately preceding its lower bound.
+        [Test]
+        public void RefreshPool_WindowBetweenObjectsLoadsNoOutOfRangeContainers()
+        {
+            var noteGridContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var precedingNote = PlaceUtils.Place(new BaseNote { JsonTime = 2 });
+            var followingNote = PlaceUtils.Place(new BaseNote { JsonTime = 80 });
+            var finalGuard = PlaceUtils.Place(new BaseNote { JsonTime = 95 });
+
+            noteGridContainer.RefreshPool(35f, 45f, true);
+
+            Assert.That(noteGridContainer.LoadedContainers.ContainsKey(precedingNote), Is.False);
+            Assert.That(noteGridContainer.LoadedContainers.ContainsKey(followingNote), Is.False);
+            Assert.That(noteGridContainer.LoadedContainers.ContainsKey(finalGuard), Is.False);
+        }
+
         [Test]
         public void GetBetween()
         {

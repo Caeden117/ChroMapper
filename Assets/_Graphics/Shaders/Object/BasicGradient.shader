@@ -194,19 +194,29 @@ Shader "ChroMapper/Object/Basic Gradient"
                     break;
                 }
 
-                // Mirror LightColorTween's shortest-path hue interpolation for HSV Basic Event transitions.
+                // Match BasicEventColorLerp: mode 1 preserves legacy scalar HSV and mode 2 uses shortest-path trueHSV.
                 float4 color;
-                if (UNITY_ACCESS_INSTANCED_PROP(Props, _UseHSV) != 0)
+                int colorLerpType = UNITY_ACCESS_INSTANCED_PROP(Props, _UseHSV);
+                if (colorLerpType != 0)
                 {
                     float4 startHsv = float4(RGBToHSV(startColor.rgb), startColor.a);
                     float4 endHsv = float4(RGBToHSV(endColor.rgb), endColor.a);
-                    // Match Mathf.LerpAngle by applying the shortest signed hue delta from the starting hue.
-                    float hueDelta = frac(endHsv.x - startHsv.x);
-                    if (hueDelta > 0.5f) hueDelta -= 1.0f;
-                    // LightColorTween uses Mathf.LerpAngle, which clamps overshooting easing values for hue only.
-                    float hueT = saturate(t);
+                    float hue;
+                    if (colorLerpType == 1)
+                    {
+                        // Existing HSV data linearly interpolates normalized hue even when that takes the long arc through green.
+                        hue = lerp(startHsv.x, endHsv.x, t);
+                    }
+                    else
+                    {
+                        // trueHSV mirrors Mathf.LerpAngle's shortest signed delta and hue-only easing clamp.
+                        float hueDelta = frac(endHsv.x - startHsv.x);
+                        if (hueDelta > 0.5f) hueDelta -= 1.0f;
+                        hue = frac(startHsv.x + (hueDelta * saturate(t)));
+                    }
+
                     float3 hsv = float3(
-                        frac(startHsv.x + (hueDelta * hueT)),
+                        hue,
                         lerp(startHsv.y, endHsv.y, t),
                         lerp(startHsv.z, endHsv.z, t));
                     color = float4(HSVToRGB(hsv), lerp(startHsv.a, endHsv.a, t));

@@ -69,7 +69,9 @@ public class LoadInitialMap : MonoBehaviour
         UpdateObjectContainerColors();
 
         loader.UpdateMapData(BeatSaberSongContainer.Instance.Map);
-        loader.HardRefresh();
+        // RestoringEditorCursorAfterCloningRingDoesNotUsePreCloneRotationSnapshot requires cloned managed rings to
+        // resize movement snapshots before the saved cursor asks LightshowController to render them.
+        loader.HardRefreshBeforeEditorStateRestore(context.Descriptor);
         yield return null;
         // Dispatch owner-specific metadata only after map refresh has finished writing controller defaults.
         EditorStateService.LoadMapData(BeatSaberSongContainer.Instance.Info);

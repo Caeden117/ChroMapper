@@ -13686,6 +13686,7 @@ GameObject:
   - component: {fileID: 223371903}
   - component: {fileID: 223371901}
   - component: {fileID: 223371904}
+  - component: {fileID: 2100000000}
   m_Layer: 0
   m_Name: LightWrapper1
   m_TagString: Untagged
@@ -13734,7 +13735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2772c06dbfc4ed981503a291d586a5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Effect: {fileID: 1597274059}
   Transform: {fileID: 223371903}
   StartRotation: {x: -0, y: -0, z: -0, w: 1}
   RotationVector: {x: 0.5565387, y: -0.24192187, z: -0.79481965}
@@ -22794,6 +22794,7 @@ GameObject:
   - component: {fileID: 401498983}
   - component: {fileID: 401498985}
   - component: {fileID: 401498986}
+  - component: {fileID: 2099999999}
   m_Layer: 0
   m_Name: LightWrapper0
   m_TagString: Untagged
@@ -22842,7 +22843,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2772c06dbfc4ed981503a291d586a5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Effect: {fileID: 1597274060}
   Transform: {fileID: 401498983}
   StartRotation: {x: -0, y: -0, z: -0, w: 1}
   RotationVector: {x: -0.5565387, y: -0.24192187, z: -0.79481965}
@@ -79384,8 +79384,6 @@ GameObject:
   - component: {fileID: 1597274062}
   - component: {fileID: 1597274061}
   - component: {fileID: 1597274058}
-  - component: {fileID: 1597274060}
-  - component: {fileID: 1597274059}
   m_Layer: 0
   m_Name: BasicEventEffectController
   m_TagString: Untagged
@@ -79407,34 +79405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Atsc: {fileID: 0}
   ID: 9
---- !u!114 &1597274059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597274057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atsc: {fileID: 0}
-  ID: 13
---- !u!114 &1597274060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597274057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atsc: {fileID: 0}
-  ID: 12
+  Visual: {fileID: 581721152}
 --- !u!114 &1597274061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80344,10 +80315,10 @@ MonoBehaviour:
     Manager: {fileID: 1523909036}
   - Type: 9
     Manager: {fileID: 1597274058}
-  - Type: 12
-    Manager: {fileID: 1597274060}
   - Type: 13
-    Manager: {fileID: 1597274059}
+    Manager: {fileID: 2100000000}
+  - Type: 12
+    Manager: {fileID: 2099999999}
 --- !u!1 &1609603842
 GameObject:
   m_ObjectHideFlags: 0
@@ -105663,6 +105634,38 @@ MonoBehaviour:
   BloomFog: {fileID: 2147112697}
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   CollisionLength: 3.4028235e+38
+--- !u!114 &2100000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223371900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  SpeedMultiplier: 2
+  Visual: {fileID: 223371904}
+--- !u!114 &2099999999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401498982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightRotationEffect
+  Atsc: {fileID: 0}
+  ID: 12
+  SpeedMultiplier: -2
+  Visual: {fileID: 401498986}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

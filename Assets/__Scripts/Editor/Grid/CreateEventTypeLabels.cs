@@ -82,25 +82,32 @@ public class CreateEventTypeLabels : MonoBehaviour
         bool matchingKind,
         ref int lane)
     {
+        // SkrillexBasicEventLanesUseEnvironmentPresentationOrder relies on generated track-definition order so the
+        // runtime label builder remains environment-agnostic and newly generated assets reproduce the same lanes.
         foreach (var entry in context.TrackDefinitions.Basic)
         {
             var definition = entry.Value;
             if ((definition.Kind == selectedKind) != matchingKind)
                 continue;
 
-            AddLabel(lane++, definition.Type, null, definition.Name);
-            // Name filters only create lanes for tracks that consume ring-rotation filters.
-            if (!definition.Components.HasFlag(BasicEventComponent.RingRotation)
-                || NameFilterIndex == null
-                || !NameFilterIndex.TryGetFilters(definition.Type, out var filters))
-            {
-                continue;
-            }
+            AddBasicLabel(definition, ref lane);
+        }
+    }
 
-            foreach (var filter in filters.Keys)
-            {
-                AddLabel(lane++, definition.Type, filter, filter);
-            }
+    private void AddBasicLabel(TrackDefinitionBasic definition, ref int lane)
+    {
+        AddLabel(lane++, definition.Type, null, definition.Name);
+        // Name filters remain adjacent to their reordered base lane so event-to-lane mappings retain their identities.
+        if (!definition.Components.HasFlag(BasicEventComponent.RingRotation)
+            || NameFilterIndex == null
+            || !NameFilterIndex.TryGetFilters(definition.Type, out var filters))
+        {
+            return;
+        }
+
+        foreach (var filter in filters.Keys)
+        {
+            AddLabel(lane++, definition.Type, filter, filter);
         }
     }
 

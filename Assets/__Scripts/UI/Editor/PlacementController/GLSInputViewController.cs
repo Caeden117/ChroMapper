@@ -44,9 +44,9 @@ public class GLSInputViewController : MonoBehaviour
             translationViewController.Extend(true);
             floatFXViewController.Extend(true);
 
+            // TODO support here when adding easings to GLS color fade in ChromaGLS
             easingViewController.Show(
-                glsEventGridProvider.GroupContext is BaseLightRotationEventBoxGroup
-                    or BaseLightTranslationEventBoxGroup
+                glsEventGridProvider.GroupContext is ILightTransformEventBoxGroup
                     or BaseVfxEventEventBoxGroup);
             easingViewController.Extend(true);
         }

@@ -20,15 +20,17 @@ public class LightGradientController : MonoBehaviour
     // Only Basic Event transition ribbons create a collider; GLS ribbons retain their existing input behavior.
     public bool IsInteractiveBasicEventRibbon => interactionCollider != null;
 
-    public void UpdateGradientData(ChromaLightGradient gradient, bool useHsv = false)
+    public void UpdateGradientData(
+        ChromaLightGradient gradient,
+        BasicEventColorLerpType colorLerpType = BasicEventColorLerpType.RGB)
     {
         materialPropertyBlock ??= new MaterialPropertyBlock();
 
         materialPropertyBlock.SetColor(colorA, gradient.StartColor);
         materialPropertyBlock.SetColor(colorB, gradient.EndColor);
         materialPropertyBlock.SetInt(easingId, Easing.EasingShaderId(gradient.EasingType));
-        // Match Basic Light runtime interpolation when a transition requests HSV color lerping.
-        materialPropertyBlock.SetInt(useHsvId, useHsv ? 1 : 0);
+        // The shader uses the shared enum values to distinguish legacy scalar HSV from true angular HSV.
+        materialPropertyBlock.SetInt(useHsvId, (int)colorLerpType);
         
         meshRenderer.SetPropertyBlock(materialPropertyBlock);
     }

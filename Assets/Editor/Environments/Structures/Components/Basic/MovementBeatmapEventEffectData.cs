@@ -17,9 +17,6 @@ public class MovementBeatmapEventEffectData : EnvironmentComponentData<Movement>
     {
         comp.enabled = true;
         
-        comp.Effect = container.Descriptor.BasicEventEffectManager.GetOrRegister<GenericCallbackEventEffect>(
-            EventType);
-
         comp.Transforms = Transforms
             .Select(y =>
                 container.TryGetGameObjectOrNull(y, self, out var g) ? g.transform : null)
@@ -28,5 +25,9 @@ public class MovementBeatmapEventEffectData : EnvironmentComponentData<Movement>
         foreach (var t in comp.Transforms) t.gameObject.GetComponent<ChromaIDMarker>().MarkUse = true;
         comp.TransitionSpeed = TransitionSpeed;
         comp.MovementData = MovementData.Select(x => x.LocalPositionOffset).ToArray();
+
+        var effect = self.AddComponent<MovementEffect>();
+        effect.Visual = comp;
+        container.Descriptor.BasicEventEffectManager.Register(EventType, effect);
     }
 }

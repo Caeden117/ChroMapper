@@ -15444,6 +15444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 269604415}
   - component: {fileID: 269604416}
+  - component: {fileID: 2099999998}
   m_Layer: 0
   m_Name: SmallTrackLaneRingsGroup
   m_TagString: Untagged
@@ -19731,6 +19732,7 @@ GameObject:
   - component: {fileID: 367803994}
   - component: {fileID: 367803996}
   - component: {fileID: 367803997}
+  - component: {fileID: 2100000000}
   m_Layer: 0
   m_Name: DirectionalLightRightWrapper
   m_TagString: Untagged
@@ -19779,7 +19781,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2772c06dbfc4ed981503a291d586a5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Effect: {fileID: 829442015}
   Transform: {fileID: 367803994}
   StartRotation: {x: 0.059277695, y: -0.006851066, z: 0.12967533, w: 0.9897593}
   RotationVector: {x: -0.5565387, y: -0.24192187, z: -0.79481965}
@@ -42747,8 +42748,6 @@ GameObject:
   - component: {fileID: 829442018}
   - component: {fileID: 829442017}
   - component: {fileID: 829442016}
-  - component: {fileID: 829442015}
-  - component: {fileID: 829442014}
   m_Layer: 0
   m_Name: BasicEventEffectController
   m_TagString: Untagged
@@ -42756,34 +42755,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &829442014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 829442013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atsc: {fileID: 0}
-  ID: 13
---- !u!114 &829442015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 829442013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atsc: {fileID: 0}
-  ID: 12
 --- !u!114 &829442016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42967,9 +42938,11 @@ MonoBehaviour:
   - Type: 4
     Manager: {fileID: 829442016}
   - Type: 12
-    Manager: {fileID: 829442015}
+    Manager: {fileID: 2100000000}
   - Type: 13
-    Manager: {fileID: 829442014}
+    Manager: {fileID: 2099999999}
+  - Type: 9
+    Manager: {fileID: 2099999998}
 --- !u!1 &832410219
 GameObject:
   m_ObjectHideFlags: 0
@@ -48976,6 +48949,7 @@ GameObject:
   - component: {fileID: 939987949}
   - component: {fileID: 939987947}
   - component: {fileID: 939987950}
+  - component: {fileID: 2099999999}
   m_Layer: 0
   m_Name: DirectionalLightLeftWrapper
   m_TagString: Untagged
@@ -49024,7 +48998,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2772c06dbfc4ed981503a291d586a5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Effect: {fileID: 829442014}
   Transform: {fileID: 939987949}
   StartRotation: {x: 0.000049557028, y: 0.0019697289, z: 0.063691765, w: -0.9979677}
   RotationVector: {x: 0.5565387, y: -0.24192187, z: -0.79481965}
@@ -111152,6 +111125,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChromaID: TheSecondEnvironment.[0]Environment.[24]SmallTrackLaneRingsGroup.[3]SmallTrackLaneRing.[0]RotationXTransform.[0]AdditionalRotation.[0]Ring
+--- !u!114 &2100000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367803993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightRotationEffect
+  Atsc: {fileID: 0}
+  ID: 12
+  SpeedMultiplier: -2
+  Visual: {fileID: 367803997}
+--- !u!114 &2099999999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939987946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  SpeedMultiplier: 2
+  Visual: {fileID: 939987950}
+--- !u!114 &2099999998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269604414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c78cd423185a4a5aafba4a24235d11e3, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::SmoothStepPositionGroupEventEffect
+  Atsc: {fileID: 0}
+  ID: 9
+  Elements: []
+  ClampValue: 1
+  MinValue: 0
+  MaxValue: 9
+  BaseOffset: {x: 0, y: 0, z: 0}
+  MovementVector: {x: 0, y: 0, z: 1}
+  StepSize: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

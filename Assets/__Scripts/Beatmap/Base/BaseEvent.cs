@@ -280,9 +280,12 @@ namespace Beatmap.Base
                 || (CustomData.HasKey(CustomKeyNameFilter) && CustomData[CustomKeyNameFilter].IsString)
                 || (CustomData.HasKey("_reset") && CustomData["_reset"].IsBoolean)
                 || (CustomData.HasKey("_counterSpin") && CustomData["_counterSpin"].IsBoolean)
-                || (CustomData.HasKey(CustomKeyPropMult) && CustomData[CustomKeyPropMult].IsNumber)
-                || (CustomData.HasKey(CustomKeyStepMult) && CustomData[CustomKeyStepMult].IsNumber)
-                || (CustomData.HasKey(CustomKeySpeedMult) && CustomData[CustomKeySpeedMult].IsNumber)
+                // Heck only reads underscore-prefixed multiplier and precise-speed fields from V2 maps.
+                || (Settings.Instance.MapVersion == 2
+                    && ((CustomData.HasKey(CustomKeyPropMult) && CustomData[CustomKeyPropMult].IsNumber)
+                        || (CustomData.HasKey(CustomKeyStepMult) && CustomData[CustomKeyStepMult].IsNumber)
+                        || (CustomData.HasKey(CustomKeySpeedMult) && CustomData[CustomKeySpeedMult].IsNumber)
+                        || (CustomData.HasKey(CustomKeyPreciseSpeed) && CustomData[CustomKeyPreciseSpeed].IsNumber)))
                 || (CustomData.HasKey(CustomKeyStep) && CustomData[CustomKeyStep].IsNumber)
                 || (CustomData.HasKey(CustomKeyProp) && CustomData[CustomKeyProp].IsNumber)
                 || (CustomData.HasKey(CustomKeySpeed) && CustomData[CustomKeySpeed].IsNumber)
@@ -390,6 +393,20 @@ namespace Beatmap.Base
             CustomStep = (CustomData?.HasKey(CustomKeyStep) ?? false) ? CustomData?[CustomKeyStep].AsFloat : null;
             CustomProp = (CustomData?.HasKey(CustomKeyProp) ?? false) ? CustomData?[CustomKeyProp].AsFloat : null;
             CustomSpeed = (CustomData?.HasKey(CustomKeySpeed) ?? false) ? CustomData?[CustomKeySpeed].AsFloat : null;
+            // Legacy Chroma fields are V2-only; treating unknown V3/V4 underscore keys as active changes mod behavior.
+            var parseLegacyMovement = Settings.Instance.MapVersion == 2;
+            CustomStepMult = parseLegacyMovement && (CustomData?.HasKey(CustomKeyStepMult) ?? false)
+                ? CustomData?[CustomKeyStepMult].AsFloat
+                : null;
+            CustomPropMult = parseLegacyMovement && (CustomData?.HasKey(CustomKeyPropMult) ?? false)
+                ? CustomData?[CustomKeyPropMult].AsFloat
+                : null;
+            CustomSpeedMult = parseLegacyMovement && (CustomData?.HasKey(CustomKeySpeedMult) ?? false)
+                ? CustomData?[CustomKeySpeedMult].AsFloat
+                : null;
+            CustomPreciseSpeed = parseLegacyMovement && (CustomData?.HasKey(CustomKeyPreciseSpeed) ?? false)
+                ? CustomData?[CustomKeyPreciseSpeed].AsFloat
+                : null;
             CustomRingRotation = (CustomData?.HasKey(CustomKeyRingRotation) ?? false)
                 ? CustomData?[CustomKeyRingRotation].AsFloat
                 : null;
@@ -448,6 +465,26 @@ namespace Beatmap.Base
                 node[CustomKeySpeed] = CustomSpeed;
             else
                 node.Remove(CustomKeySpeed);
+            // Preserve raw unknown V3/V4 keys, but actively round-trip legacy movement fields for V2 only.
+            if (Settings.Instance.MapVersion == 2)
+            {
+                if (CustomStepMult != null)
+                    node[CustomKeyStepMult] = CustomStepMult;
+                else
+                    node.Remove(CustomKeyStepMult);
+                if (CustomPropMult != null)
+                    node[CustomKeyPropMult] = CustomPropMult;
+                else
+                    node.Remove(CustomKeyPropMult);
+                if (CustomSpeedMult != null)
+                    node[CustomKeySpeedMult] = CustomSpeedMult;
+                else
+                    node.Remove(CustomKeySpeedMult);
+                if (CustomPreciseSpeed != null)
+                    node[CustomKeyPreciseSpeed] = CustomPreciseSpeed;
+                else
+                    node.Remove(CustomKeyPreciseSpeed);
+            }
             if (CustomRingRotation != null)
                 node[CustomKeyRingRotation] = CustomRingRotation;
             else

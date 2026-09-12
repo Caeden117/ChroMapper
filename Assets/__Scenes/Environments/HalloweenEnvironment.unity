@@ -868,6 +868,7 @@ GameObject:
   - component: {fileID: 44027158}
   - component: {fileID: 44027160}
   - component: {fileID: 44027161}
+  - component: {fileID: 2100000000}
   m_Layer: 7
   m_Name: RotatingLasersPair (23)
   m_TagString: Untagged
@@ -917,9 +918,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 107953448}
   - Transform: {fileID: 301802384}
@@ -2775,6 +2773,7 @@ GameObject:
   - component: {fileID: 192398220}
   - component: {fileID: 192398222}
   - component: {fileID: 192398223}
+  - component: {fileID: 2099999999}
   m_Layer: 7
   m_Name: RotatingLasersPair (20)
   m_TagString: Untagged
@@ -2824,9 +2823,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 1018429231}
   - Transform: {fileID: 1963399310}
@@ -5094,6 +5090,7 @@ GameObject:
   - component: {fileID: 344150793}
   - component: {fileID: 344150795}
   - component: {fileID: 344150796}
+  - component: {fileID: 2099999998}
   m_Layer: 7
   m_Name: RotatingLasersPair (21)
   m_TagString: Untagged
@@ -5143,9 +5140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 2114132767}
   - Transform: {fileID: 345769709}
@@ -11533,6 +11527,7 @@ GameObject:
   - component: {fileID: 755523344}
   - component: {fileID: 755523346}
   - component: {fileID: 755523347}
+  - component: {fileID: 2099999997}
   m_Layer: 7
   m_Name: RotatingLasersPair (19)
   m_TagString: Untagged
@@ -11582,9 +11577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 1227051414}
   - Transform: {fileID: 131568455}
@@ -16749,6 +16741,7 @@ GameObject:
   - component: {fileID: 1057356225}
   - component: {fileID: 1057356227}
   - component: {fileID: 1057356228}
+  - component: {fileID: 2099999996}
   m_Layer: 7
   m_Name: RotatingLasersPair (13)
   m_TagString: Untagged
@@ -16798,9 +16791,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 1202234446}
   - Transform: {fileID: 1628548369}
@@ -17342,6 +17332,7 @@ GameObject:
   - component: {fileID: 1080603419}
   - component: {fileID: 1080603421}
   - component: {fileID: 1080603422}
+  - component: {fileID: 2099999995}
   m_Layer: 7
   m_Name: RotatingLasersPair (10)
   m_TagString: Untagged
@@ -17391,9 +17382,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 2087513676}
   - Transform: {fileID: 142312762}
@@ -22071,6 +22059,7 @@ GameObject:
   - component: {fileID: 1322988035}
   - component: {fileID: 1322988037}
   - component: {fileID: 1322988038}
+  - component: {fileID: 2099999994}
   m_Layer: 7
   m_Name: RotatingLasersPair (7)
   m_TagString: Untagged
@@ -22120,9 +22109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 973659366}
   - Transform: {fileID: 2135383897}
@@ -22337,6 +22323,7 @@ GameObject:
   - component: {fileID: 1345666926}
   - component: {fileID: 1345666928}
   - component: {fileID: 1345666929}
+  - component: {fileID: 2099999993}
   m_Layer: 7
   m_Name: RotatingLasersPair (11)
   m_TagString: Untagged
@@ -22386,9 +22373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 969440968}
   - Transform: {fileID: 1723832774}
@@ -23289,6 +23273,7 @@ GameObject:
   - component: {fileID: 1398949608}
   - component: {fileID: 1398949610}
   - component: {fileID: 1398949611}
+  - component: {fileID: 2099999992}
   m_Layer: 7
   m_Name: RotatingLasersPair (15)
   m_TagString: Untagged
@@ -23338,9 +23323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 1695885649}
   - Transform: {fileID: 1947479782}
@@ -23527,6 +23509,7 @@ GameObject:
   - component: {fileID: 1420789602}
   - component: {fileID: 1420789604}
   - component: {fileID: 1420789605}
+  - component: {fileID: 2099999991}
   m_Layer: 7
   m_Name: RotatingLasersPair (17)
   m_TagString: Untagged
@@ -23576,9 +23559,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 1788879273}
   - Transform: {fileID: 177978438}
@@ -27510,8 +27490,6 @@ GameObject:
   - component: {fileID: 1605999252}
   - component: {fileID: 1605999251}
   - component: {fileID: 1605999250}
-  - component: {fileID: 1605999257}
-  - component: {fileID: 1605999249}
   m_Layer: 0
   m_Name: BasicEventEffectController
   m_TagString: Untagged
@@ -27519,20 +27497,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1605999249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1605999248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atsc: {fileID: 0}
-  ID: 13
 --- !u!114 &1605999250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27780,20 +27744,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 555672474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1605999257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1605999248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fda73c3d66b34ff28e3d7dbcadacdb3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Atsc: {fileID: 0}
-  ID: 12
 --- !u!114 &1605999258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27820,9 +27770,73 @@ MonoBehaviour:
   - Type: 4
     Manager: {fileID: 1605999250}
   - Type: 12
-    Manager: {fileID: 1605999257}
+    Manager: {fileID: 2100000000}
   - Type: 13
-    Manager: {fileID: 1605999249}
+    Manager: {fileID: 2100000000}
+  - Type: 12
+    Manager: {fileID: 2099999999}
+  - Type: 13
+    Manager: {fileID: 2099999999}
+  - Type: 12
+    Manager: {fileID: 2099999998}
+  - Type: 13
+    Manager: {fileID: 2099999998}
+  - Type: 12
+    Manager: {fileID: 2099999997}
+  - Type: 13
+    Manager: {fileID: 2099999997}
+  - Type: 12
+    Manager: {fileID: 2099999996}
+  - Type: 13
+    Manager: {fileID: 2099999996}
+  - Type: 12
+    Manager: {fileID: 2099999995}
+  - Type: 13
+    Manager: {fileID: 2099999995}
+  - Type: 12
+    Manager: {fileID: 2099999994}
+  - Type: 13
+    Manager: {fileID: 2099999994}
+  - Type: 12
+    Manager: {fileID: 2099999993}
+  - Type: 13
+    Manager: {fileID: 2099999993}
+  - Type: 12
+    Manager: {fileID: 2099999992}
+  - Type: 13
+    Manager: {fileID: 2099999992}
+  - Type: 12
+    Manager: {fileID: 2099999991}
+  - Type: 13
+    Manager: {fileID: 2099999991}
+  - Type: 12
+    Manager: {fileID: 2099999990}
+  - Type: 13
+    Manager: {fileID: 2099999990}
+  - Type: 12
+    Manager: {fileID: 2099999989}
+  - Type: 13
+    Manager: {fileID: 2099999989}
+  - Type: 12
+    Manager: {fileID: 2099999988}
+  - Type: 13
+    Manager: {fileID: 2099999988}
+  - Type: 12
+    Manager: {fileID: 2099999987}
+  - Type: 13
+    Manager: {fileID: 2099999987}
+  - Type: 12
+    Manager: {fileID: 2099999986}
+  - Type: 13
+    Manager: {fileID: 2099999986}
+  - Type: 12
+    Manager: {fileID: 2099999985}
+  - Type: 13
+    Manager: {fileID: 2099999985}
+  - Type: 12
+    Manager: {fileID: 2099999984}
+  - Type: 13
+    Manager: {fileID: 2099999984}
 --- !u!1 &1608001185
 GameObject:
   m_ObjectHideFlags: 0
@@ -29146,6 +29160,7 @@ GameObject:
   - component: {fileID: 1671328294}
   - component: {fileID: 1671328296}
   - component: {fileID: 1671328297}
+  - component: {fileID: 2099999990}
   m_Layer: 7
   m_Name: RotatingLasersPair (12)
   m_TagString: Untagged
@@ -29195,9 +29210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 1110474296}
   - Transform: {fileID: 1163407218}
@@ -29758,6 +29770,7 @@ GameObject:
   - component: {fileID: 1721769697}
   - component: {fileID: 1721769699}
   - component: {fileID: 1721769700}
+  - component: {fileID: 2099999989}
   m_Layer: 7
   m_Name: RotatingLasersPair (22)
   m_TagString: Untagged
@@ -29807,9 +29820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 781378730}
   - Transform: {fileID: 682061862}
@@ -30648,6 +30658,7 @@ GameObject:
   - component: {fileID: 1765770814}
   - component: {fileID: 1765770816}
   - component: {fileID: 1765770817}
+  - component: {fileID: 2099999988}
   m_Layer: 7
   m_Name: RotatingLasersPair (18)
   m_TagString: Untagged
@@ -30697,9 +30708,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 506351021}
   - Transform: {fileID: 1018561603}
@@ -30965,6 +30973,7 @@ GameObject:
   - component: {fileID: 1810685574}
   - component: {fileID: 1810685576}
   - component: {fileID: 1810685577}
+  - component: {fileID: 2099999987}
   m_Layer: 7
   m_Name: RotatingLasersPair (14)
   m_TagString: Untagged
@@ -31014,9 +31023,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 1173188805}
   - Transform: {fileID: 728925146}
@@ -34300,6 +34306,7 @@ GameObject:
   - component: {fileID: 2028117630}
   - component: {fileID: 2028117632}
   - component: {fileID: 2028117633}
+  - component: {fileID: 2099999986}
   m_Layer: 7
   m_Name: RotatingLasersPair (16)
   m_TagString: Untagged
@@ -34349,9 +34356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 436103027}
   - Transform: {fileID: 1973969039}
@@ -35065,6 +35069,7 @@ GameObject:
   - component: {fileID: 2065251756}
   - component: {fileID: 2065251758}
   - component: {fileID: 2065251759}
+  - component: {fileID: 2099999985}
   m_Layer: 7
   m_Name: RotatingLasersPair (9)
   m_TagString: Untagged
@@ -35114,9 +35119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 7602500}
   - Transform: {fileID: 1208390873}
@@ -35236,6 +35238,7 @@ GameObject:
   - component: {fileID: 2071965776}
   - component: {fileID: 2071965778}
   - component: {fileID: 2071965779}
+  - component: {fileID: 2099999984}
   m_Layer: 7
   m_Name: RotatingLasersPair (8)
   m_TagString: Untagged
@@ -35285,9 +35288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3b05adbc13e0040a12695193e61ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftEffect: {fileID: 1605999257}
-  RightEffect: {fileID: 1605999249}
-  SwitchEffect: {fileID: 0}
   Transforms:
   - Transform: {fileID: 1293827512}
   - Transform: {fileID: 258752152}
@@ -37078,6 +37078,312 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChromaID: HalloweenEnvironment.[0]Environment.[181]RotatingLasersPair (7).[1]BaseR
+--- !u!114 &2100000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44027157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 44027161}
+--- !u!114 &2099999999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192398219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 192398223}
+--- !u!114 &2099999998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344150792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 344150796}
+--- !u!114 &2099999997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755523343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 755523347}
+--- !u!114 &2099999996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057356224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1057356228}
+--- !u!114 &2099999995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080603418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1080603422}
+--- !u!114 &2099999994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322988034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1322988038}
+--- !u!114 &2099999993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345666925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1345666929}
+--- !u!114 &2099999992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398949607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1398949611}
+--- !u!114 &2099999991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420789601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1420789605}
+--- !u!114 &2099999990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671328293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1671328297}
+--- !u!114 &2099999989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721769696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1721769700}
+--- !u!114 &2099999988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765770813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1765770817}
+--- !u!114 &2099999987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810685573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 1810685577}
+--- !u!114 &2099999986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028117629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 2028117633}
+--- !u!114 &2099999985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065251755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 2065251759}
+--- !u!114 &2099999984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071965775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e58f524d7c94e56a2d478c63a0bef46, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Main::LightPairRotationEffect
+  Atsc: {fileID: 0}
+  ID: 13
+  LeftEventType: 12
+  RightEventType: 13
+  SwitchEventType: -1
+  Visual: {fileID: 2071965779}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

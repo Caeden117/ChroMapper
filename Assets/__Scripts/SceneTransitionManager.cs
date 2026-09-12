@@ -29,6 +29,17 @@ public class SceneTransitionManager : MonoBehaviour
         Instance = this;
     }
 
+    private void OnDestroy()
+    {
+        // Not sure if this fixes anything IRL but fixes some test inconsistencies
+        if (object.ReferenceEquals(Instance, this))
+        {
+            Instance = null;
+            IsLoading = false;
+            externalRoutines.Clear();
+        }
+    }
+
     public void LoadScene(string scene, params IEnumerator[] routines)
     {
         if (IsLoading) return;

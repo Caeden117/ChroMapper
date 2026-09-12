@@ -48,6 +48,7 @@ namespace Beatmap.Helper
                     return null;
             }
 
+            difficulty.RuntimeLevelCustomData = info.CustomData;
             difficulty.BootstrapBpmEvents(info.BeatsPerMinute);
             difficulty.RecomputeAllObjectSongBpmTimes();
             return difficulty;

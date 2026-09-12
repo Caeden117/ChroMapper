@@ -9,7 +9,10 @@ using Beatmap.Enums;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, CMInput.IEventGridActions
+// Persist Basic Event light-ID page state through the same EditorData lifecycle used by GLS pages.
+public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
+                                  CMInput.IEventGridActions,
+                                  IEditorStateProvider
 {
     public enum PropMode
     {
@@ -30,6 +33,18 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
     // Isolate boost ordering and predecessor queries from the grid's rendering and invalidation responsibilities.
     private readonly ColorBoostEventIndex boostEventIndex = new();
 
+    // Index only rendered Basic Event spans so chunk refreshes never scan the complete light-event map.
+    private readonly TransitionIntervalIndex<BaseEvent> transitionRibbonIntervals = new();
+
+    // Reuse the overlap result as both a retention set and creation list without allocating on viewport refreshes.
+    private readonly HashSet<BaseEvent> visibleTransitionRibbonSources = new();
+
+    // Reuse ID deduplication while one All Lights edit invalidates the latest scoped source in each affected lane.
+    private readonly HashSet<int> interruptedRibbonLightIds = new();
+
+    // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt needs logarithmic lookup of the next unscoped interrupt.
+    private readonly Dictionary<int, List<BaseEvent>> allLightsInterruptsByType = new();
+
     // Let GLS preview collections repaint only the palette interval changed by a boost node edit.
     public event Action<float, float> OnBoostAppearanceRangeInvalidated;
 
@@ -48,6 +63,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
         set
         {
             allLightEvents = value;
+            // Rebuild the compact interrupt index once when a map load replaces every per-type event list.
+            RebuildAllLightsInterruptIndex();
             foreach (var p in allLightEvents)
             {
                 var lightList = p.Value;
@@ -57,6 +74,9 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 else
                     LinkEventsForVanilla(lightList);
             }
+
+            // Rebuild once after bulk relinking so every indexed interval reflects the new authoritative successor.
+            InitializeTransitionRibbonIntervals();
         }
     }
 
@@ -64,6 +84,9 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
     private PropMode propagationEditing = PropMode.Off;
 
     public override ObjectType ContainerType => ObjectType.Event;
+
+    // Isolate the Basic Event light-ID page from placement and GLS component state.
+    public string StateKey => "basicEventLightIdPage";
 
     public PropMode PropagationEditing
     {
@@ -156,6 +179,38 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
         return mode == PropMode.Prop ? "_propID" : null;
     }
 
+    // Preserve the last light-ID page even from another Basic Event page,
+    // while recording whether it was active at save time.
+    public void CaptureEditorState(SimpleJSON.JSONObject data)
+    {
+        var lightIdPageActive = PropagationEditing == PropMode.Light;
+        data["eventType"] = EventTypeToPropagate;
+        data["active"] = lightIdPageActive;
+    }
+
+    // Restore after environment setup so the saved event type resolves against authoritative light managers.
+    public void LoadEditorState(SimpleJSON.JSONNode data)
+    {
+        if (!data.HasKey("eventType"))
+        {
+            return;
+        }
+
+        var eventType = data["eventType"].AsInt;
+        if (!TypeToManager.ContainsKey(eventType))
+        {
+            return;
+        }
+
+        EventTypeToPropagate = eventType;
+        // Metadata written before inactive-page tracking only contained an event type because light-ID mode was active.
+        var lightIdPageActive = !data.HasKey("active") || data["active"].AsBool;
+        if (lightIdPageActive)
+        {
+            PropagationEditing = PropMode.Light;
+        }
+    }
+
     private void HandleEnvironmentLoaded(EnvironmentDescriptor descriptor)
     {
         // Bind the map-scoped index before the environment reset asks labels to render propagation-off lanes.
@@ -165,6 +220,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
             .BasicEventEffectManager.GetEffects<BasicLightEffect>()
             .ToDictionary(x => x.type, x => x.effect);
         PropagationEditing = PropMode.Off;
+        // Register after environment setup so stale metadata cannot restore before light managers are authoritative.
+        EditorStateService.Register(this);
     }
 
     internal override void SubscribeToCallbacks()
@@ -180,6 +237,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
 
     internal override void UnsubscribeToCallbacks()
     {
+        // Remove the destroyed grid from save-time EditorData capture.
+        EditorStateService.Unregister(this);
         BeatmapContext.OnEnvironmentLoaded -= HandleEnvironmentLoaded;
         SpawnCallbackController.OnEventPassedThreshold -= SpawnCallback;
         SpawnCallbackController.OnRecursiveEventCheckFinished -= OnRecursiveCheckFinished;
@@ -211,7 +270,14 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 && !inCollection)
             {
                 RemoveLinkedLightEvents(e);
-                if (AllLightEvents.TryGetValue(e.Type, out var events)) events.Remove(e);
+                if (AllLightEvents.TryGetValue(e.Type, out var events))
+                {
+                    events.Remove(e);
+                    // Keep the compact All Lights index synchronized with authoritative event removal.
+                    RemoveFromAllLightsInterruptIndex(e);
+                    // LightIdTransitionRibbonStopsAtAllLightsNonTransitionInterrupt requires restoring affected scoped lanes.
+                    RefreshScopedRibbonSourcesInterruptedByAllLights(e, events);
+                }
             }
 
             MarkEventToBeRelinked(e);
@@ -252,8 +318,10 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
                 && !inCollection)
             {
                 RemoveLinkedLightEvents(e);
-                LinkLightEvents(e);
+                // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt requires querying the new chronological interrupt.
                 AddToAllLightEvents(e);
+                LinkLightEvents(e);
+                RefreshScopedRibbonSourcesInterruptedByAllLights(e, AllLightEvents[e.Type]);
                 lightEventsWithKnownPrevNext.Add(e);
             }
         }
@@ -283,10 +351,15 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
 
         e.Prev = previousEvent;
         e.Next = nextEvent;
+        // Only the inserted source and its predecessor can gain or lose a transition successor.
+        UpdateTransitionRibbonInterval(previousEvent);
+        UpdateTransitionRibbonInterval(e);
     }
 
     private void RemoveLinkedLightEvents(BaseEvent e)
     {
+        // Remove the departing source before its predecessor is rewired to the following event.
+        transitionRibbonIntervals.Remove(e);
         // Update appearance of previous event
         if (e.Prev != null)
         {
@@ -297,6 +370,9 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
 
             if (LoadedContainers.TryGetValue(e.Prev, out var prevContainer))
                 (prevContainer as EventContainer).RefreshAppearance();
+
+            // The predecessor now owns either a different transition interval or no ribbon at all.
+            UpdateTransitionRibbonInterval(e.Prev);
         }
     }
 
@@ -304,13 +380,150 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
     {
         if (AllLightEvents.TryGetValue(e.Type, out var events))
         {
-            if (e.Prev == null)
-                events.Add(e);
-            else
-                events.Insert(events.IndexOf(e.Prev) + 1, e);
+            // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt cannot use an ID-specific Prev as global order.
+            events.Insert(FindFirstEventAfter(events, e.JsonTime), e);
         }
         else
             AllLightEvents.Add(e.Type, new List<BaseEvent> { e });
+
+        // Keep effective scoped-lane successor queries logarithmic after incremental placement.
+        AddToAllLightsInterruptIndex(e);
+    }
+
+    private void RebuildAllLightsInterruptIndex()
+    {
+        // Map-load rebuilds materialize only All Lights nodes while preserving each authoritative list's chronology.
+        allLightsInterruptsByType.Clear();
+        foreach (var pair in allLightEvents)
+        {
+            var events = pair.Value;
+            for (var eventIndex = 0; eventIndex < events.Count; eventIndex++)
+            {
+                var evt = events[eventIndex];
+                if (evt.CustomLightID == null || evt.CustomLightID.Length == 0)
+                    AddToAllLightsInterruptIndex(evt);
+            }
+        }
+    }
+
+    private void AddToAllLightsInterruptIndex(BaseEvent evt)
+    {
+        // Scoped events cannot interrupt every lane and therefore do not belong in the compact index.
+        if (evt.CustomLightID != null && evt.CustomLightID.Length > 0)
+            return;
+
+        if (!allLightsInterruptsByType.TryGetValue(evt.Type, out var interrupts))
+        {
+            interrupts = new List<BaseEvent>();
+            allLightsInterruptsByType.Add(evt.Type, interrupts);
+        }
+
+        interrupts.Insert(FindFirstEventAfter(interrupts, evt.JsonTime), evt);
+    }
+
+    private void RemoveFromAllLightsInterruptIndex(BaseEvent evt)
+    {
+        // Removal is edit-boundary work; the small per-type interrupt list avoids touching every scoped event.
+        if ((evt.CustomLightID != null && evt.CustomLightID.Length > 0)
+            || !allLightsInterruptsByType.TryGetValue(evt.Type, out var interrupts))
+        {
+            return;
+        }
+
+        interrupts.Remove(evt);
+        if (interrupts.Count == 0)
+            allLightsInterruptsByType.Remove(evt.Type);
+    }
+
+    private void RefreshScopedRibbonSourcesInterruptedByAllLights(BaseEvent interrupt, List<BaseEvent> events)
+    {
+        // OEM transitions are already refreshed through LinkLightEvents' single chronological Prev/Next lane. The
+        // LightIdTransitionRibbon interruption regressions need this additional scan only when Chroma splits that lane
+        // by light ID, because one All Lights event can then invalidate several otherwise-unlinked scoped predecessors.
+        if (!Settings.Instance.EmulateChromaAdvanced
+            || !Settings.Instance.LightIDTransitionSupport
+            || (interrupt.CustomLightID != null && interrupt.CustomLightID.Length > 0))
+        {
+            return;
+        }
+
+        interruptedRibbonLightIds.Clear();
+        var eventIndex = FindFirstEventAfter(events, interrupt.JsonTime) - 1;
+        for (; eventIndex >= 0; eventIndex--)
+        {
+            var source = events[eventIndex];
+            if (source.JsonTime >= interrupt.JsonTime)
+                continue;
+
+            var sourceLightIds = source.CustomLightID;
+            if (sourceLightIds == null || sourceLightIds.Length == 0)
+                break;
+
+            // Only the latest source for an ID can gain or lose this All Lights endpoint.
+            if (!interruptedRibbonLightIds.Add(sourceLightIds[0]))
+                continue;
+
+            UpdateTransitionRibbonInterval(source);
+            if (LoadedContainers.TryGetValue(source, out var sourceContainer))
+                (sourceContainer as EventContainer).RefreshAppearance();
+        }
+    }
+
+    // Bulk relinks already visit every light event, so rebuild the data-only interval tree once at that edit boundary.
+    private void InitializeTransitionRibbonIntervals()
+    {
+        transitionRibbonIntervals.Clear();
+        foreach (var lightEvents in allLightEvents.Values)
+        {
+            for (var eventIndex = 0; eventIndex < lightEvents.Count; eventIndex++)
+            {
+                UpdateTransitionRibbonInterval(lightEvents[eventIndex]);
+            }
+        }
+    }
+
+    // Replace only one source interval because insertion and deletion can change at most two successor links.
+    private void UpdateTransitionRibbonInterval(BaseEvent source)
+    {
+        if (source == null)
+        {
+            return;
+        }
+
+        if (TryGetTransitionRibbonEndSongBpmTime(source, out var endSongBpmTime))
+        {
+            // AddOrReplace evicts the old key in the same lookup path before installing its updated interval.
+            transitionRibbonIntervals.AddOrReplace(source, source.SongBpmTime, endSongBpmTime);
+            return;
+        }
+
+        transitionRibbonIntervals.Remove(source);
+    }
+
+    // Mirror the two Basic Event appearance paths so the index retains exactly the span rendered by the source node.
+    private bool TryGetTransitionRibbonEndSongBpmTime(BaseEvent source, out float endSongBpmTime)
+    {
+        endSongBpmTime = 0f;
+        if (source.CustomLightGradient != null)
+        {
+            // Retain the exact SongBpmTime length rendered by LightGradientController for authored gradients.
+            endSongBpmTime = source.SongBpmTime + source.CustomLightGradient.Duration;
+            return endSongBpmTime >= source.SongBpmTime;
+        }
+
+        // LightIdTransitionRibbonStopsAtAllLightsNonTransitionInterrupt requires the index to stop at All Lights.
+        var nextEvent = GetEffectiveNextLightEvent(source);
+        if (source.IsFade
+            || source.IsFlash
+            || nextEvent == null
+            || !nextEvent.IsTransition)
+        {
+            return false;
+        }
+
+        // Synthesized Basic Event ribbons end at the linked transition in the same event/light-ID lane.
+        endSongBpmTime = nextEvent.SongBpmTime;
+        return endSongBpmTime >= source.SongBpmTime;
     }
 
     private BaseEvent GetPreviousEventWithSameLightIDOrDefault(BaseEvent e)
@@ -337,6 +550,40 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
         }
 
         return events.Find(x => x.JsonTime > e.JsonTime);
+    }
+
+    public BaseEvent GetEffectiveNextLightEvent(BaseEvent source)
+    {
+        // Both LightIdTransitionRibbon interruption regressions share this effective endpoint without changing preview links.
+        if (source == null
+            || !Settings.Instance.EmulateChromaAdvanced
+            || !Settings.Instance.LightIDTransitionSupport
+            || source.CustomLightID == null
+            || source.CustomLightID.Length == 0)
+        {
+            return source?.Next;
+        }
+
+        // Existing Prev/Next linking already provides the next same-ID node in O(1).
+        var sameIdNext = source.Next;
+        if (!allLightsInterruptsByType.TryGetValue(source.Type, out var interrupts))
+            return sameIdNext;
+
+        var interruptIndex = FindFirstEventAfter(interrupts, source.JsonTime);
+        if (interruptIndex >= interrupts.Count)
+            return sameIdNext;
+
+        var allLightsNext = interrupts[interruptIndex];
+        return sameIdNext == null || allLightsNext.JsonTime < sameIdNext.JsonTime
+            ? allLightsNext
+            : sameIdNext;
+    }
+
+    private static int FindFirstEventAfter(List<BaseEvent> events, float jsonTime)
+    {
+        // LightIdTransitionRibbonStopsAtAllLightsNonTransitionInterrupt requires the shared upper-bound helper so
+        // stacked events remain ordered without maintaining a second manual binary-search implementation here.
+        return events.AsSpan().UpperBoundBy(jsonTime, evt => evt.JsonTime);
     }
 
     // TODO: bleh, who cares about prop ID anyway
@@ -420,7 +667,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
             return true;
         }
 
-        var nextEvent = @event.Next;
+        // Ribbon retention must use the same All Lights-aware endpoint as appearance and interaction.
+        var nextEvent = GetEffectiveNextLightEvent(@event);
         if (BeatmapContext.TrackDefinitions.GetBasicOrDefault(@event.Type).Kind != BasicEventKind.Lights
             || @event.IsFade
             || @event.IsFlash
@@ -463,8 +711,34 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
 
     public override void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)
     {
+        // Query once so base recycling and missing-source creation share one allocation-free overlap result.
+        visibleTransitionRibbonSources.Clear();
+        if (Settings.Instance.VisualizeChromaGradients && isActiveAndEnabled)
+        {
+            transitionRibbonIntervals.GetSourcesAt(lowerBound, visibleTransitionRibbonSources);
+        }
+
         base.RefreshPool(lowerBound, upperBound, forceRefresh);
+
+        // Recreate only sources whose point node is offscreen but whose ribbon crosses the lower pool boundary.
+        foreach (var source in visibleTransitionRibbonSources)
+        {
+            if (source.HasMatchingTrack(TrackFilterID))
+            {
+                CreateContainerFromPool(source);
+            }
+        }
+
         boostEventIndex.RefreshDependentAppearances(this, RaiseBoostAppearanceRangeInvalidated);
+    }
+
+    protected override bool ShouldRetainContainerOutsideBounds(
+        BaseObject obj,
+        float lowerBound,
+        float upperBound)
+    {
+        // The overlap query already proved the source interval crosses this refresh's lower boundary.
+        return obj is BaseEvent evt && visibleTransitionRibbonSources.Contains(evt);
     }
 
     private void RaiseBoostAppearanceRangeInvalidated(float startJsonTime, float endJsonTime) =>
@@ -475,10 +749,12 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>, C
         var eventContainer = con as EventContainer;
         // Rebind pooled and cloned event containers to the active environment metadata whenever they receive event data.
         eventContainer.TrackDefinitions = BeatmapContext.TrackDefinitions;
+        // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt resolves endpoints for pooled finalized visuals.
         eventAppearance.SetAppearance(
             eventContainer,
             true,
-            IsBoostAt(obj.JsonTime));
+            IsBoostAt(obj.JsonTime),
+            GetEffectiveNextLightEvent(eventContainer.EventData));
         var e = obj as BaseEvent;
         if (PropagationEditing != PropMode.Off && e.Type != EventTypeToPropagate) con.SafeSetActive(false);
     }

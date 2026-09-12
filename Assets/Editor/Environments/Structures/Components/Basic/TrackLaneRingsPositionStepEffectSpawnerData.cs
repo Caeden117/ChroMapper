@@ -13,14 +13,15 @@ public class TrackLaneRingsPositionStepEffectSpawnerData : EnvironmentComponentD
         TrackLaneRingsPositionSpawner comp,
         CreateContainer container)
     {
-        comp.EffectManager =
-            container.Descriptor.BasicEventEffectManager.GetOrRegister<TrackLaneRingsPositionEffect>(
-                EventType);
-
         comp.RingManager = container
             .GetComponentOrNull<TrackLaneRingsManager>(TrackLaneRingsManager);
         comp.MinPositionStep = MinPositionStep;
         comp.MaxPositionStep = MaxPositionStep;
         comp.MoveSpeed = MoveSpeed;
+
+        var effect = self.AddComponent<TrackLaneRingsPositionEffect>();
+        effect.Visual = comp;
+        comp.EffectManager = effect;
+        container.Descriptor.BasicEventEffectManager.Register(EventType, effect);
     }
 }

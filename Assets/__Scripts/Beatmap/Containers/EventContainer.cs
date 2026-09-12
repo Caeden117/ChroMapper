@@ -70,7 +70,8 @@ namespace Beatmap.Containers
             
             if (AlternateShader == vm.AlternateShader) return;
             AlternateShader = vm.AlternateShader;
-            if (EventData != null) RefreshAppearance();
+            // Placement previews are styled by EventPlacement and have no EventGridContainer for final-node boost/transition queries.
+            if (EventData != null && eventGridContainer != null) RefreshAppearance();
         }
 
         public static EventContainer SpawnEvent(
@@ -239,8 +240,11 @@ namespace Beatmap.Containers
             Color? startColor = null,
             Color? endColor = null,
             string easing = "easeLinear",
-            bool useHsv = false,
-            bool allowNonLight = false)
+            BasicEventColorLerpType colorLerpType = BasicEventColorLerpType.RGB,
+            float startBrightness = 1f,
+            float endBrightness = 1f,
+            bool allowNonLight = false,
+            BaseEvent transitionTarget = null)
         {
             // Use dev's singular serialized track-definition field.
             if (!allowNonLight && TrackDefinitions.GetBasicOrDefault(EventData.Type).Kind != BasicEventKind.Lights)
@@ -258,7 +262,16 @@ namespace Beatmap.Containers
                 }
 
                 lightGradientController.SetVisible(true);
-                lightGradientController.UpdateGradientData(EventData.CustomLightGradient);
+                var gradient = new ChromaLightGradient(
+                    BasicEventColorLerp.ApplyBrightness(
+                        EventData.CustomLightGradient.StartColor,
+                        EventData.FloatValue),
+                    BasicEventColorLerp.ApplyBrightness(
+                        EventData.CustomLightGradient.EndColor,
+                        EventData.FloatValue),
+                    EventData.CustomLightGradient.Duration,
+                    EventData.CustomLightGradient.EasingType);
+                lightGradientController.UpdateGradientData(gradient, BasicEventColorLerpType.RGB);
                 lightGradientController.UpdateDuration(EventData.CustomLightGradient.Duration);
             }
             else
@@ -269,14 +282,16 @@ namespace Beatmap.Containers
                     return;
                 }
 
+                // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt uses the effective endpoint for ribbon length.
+                var renderedTransitionTarget = transitionTarget ?? EventData.Next;
                 var transition = new ChromaLightGradient(
-                    startColor.Value,
-                    endColor.Value,
-                    EventData.Next?.SongBpmTime - EventData.SongBpmTime ?? 0f,
+                    BasicEventColorLerp.ApplyBrightness(startColor.Value, startBrightness),
+                    BasicEventColorLerp.ApplyBrightness(endColor.Value, endBrightness),
+                    renderedTransitionTarget?.SongBpmTime - EventData.SongBpmTime ?? 0f,
                     easing);
                 lightGradientController.SetVisible(true);
-                // Basic Event transitions can explicitly interpolate through HSV instead of RGB.
-                lightGradientController.UpdateGradientData(transition, useHsv);
+                // Basic Event ribbons preserve both legacy normalized HSV and the opt-in true angular HSV path.
+                lightGradientController.UpdateGradientData(transition, colorLerpType);
                 lightGradientController.UpdateDuration(transition.Duration);
             }
         }
@@ -303,6 +318,12 @@ namespace Beatmap.Containers
                 scaleFactor = 0.5f;
             }
 
+            // TheSecondRingZoomFontShrinksForLongRenderedStep scales single-line zoom labels from their rendered length so signed thousandths remain inside the node.
+            if (lineCount == 1 && IsRingZoomEvent && text.Length > 3)
+            {
+                scaleFactor *= 3f / text.Length;
+            }
+
             // Give single-line decimal speeds extra width without compounding the multiline label reduction.
             if (lineCount == 1 && IsLaserSpeedEvent && EventData.CustomSpeed.HasValue
                 && !Mathf.Approximately(EventData.CustomSpeed.Value, Mathf.Round(EventData.CustomSpeed.Value)))
@@ -314,8 +335,15 @@ namespace Beatmap.Containers
 
         public void RefreshAppearance()
         {
-            // Targeted event refreshes must resolve the boost state just like pooled container setup.
-            eventAppearance.SetAppearance(this, true, eventGridContainer.IsBoostAt(EventData.JsonTime));
+            // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt resolves the finalized container's grid endpoint.
+            eventAppearance.SetAppearance(
+                this,
+                true,
+                eventGridContainer.IsBoostAt(EventData.JsonTime),
+                eventGridContainer.GetEffectiveNextLightEvent(EventData));
         }
+
+        // Both LightIdTransitionRibbon interruption regressions require one endpoint for appearance and hover editing.
+        public BaseEvent GetEffectiveNextLightEvent() => eventGridContainer.GetEffectiveNextLightEvent(EventData);
     }
 }

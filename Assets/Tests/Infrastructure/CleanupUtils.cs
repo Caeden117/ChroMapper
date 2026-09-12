@@ -41,9 +41,9 @@ namespace Tests.Infrastructure
             if (type == ObjectType.GLSEvent)
                 return;
 
-            // Delete ordinary objects from one snapshot; callbacks may replace collection identities while teardown runs.
-            foreach (var obj in container.LoadedObjects.ToArray())
-                container.DeleteObject(obj);
+            // RotationCallbackProperties and NJSEventsStats require the original deletion actions to invalidate
+            // their state providers, while indexed tail removal still avoids stale-key searches and list shifts.
+            container.DeleteAllObjectsFromEnd();
         }
     }
 }

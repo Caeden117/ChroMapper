@@ -7,7 +7,7 @@ using SimpleJSON;
 
 namespace Beatmap.Base
 {
-    public class BaseLightTranslationEventBox : BaseEventBox
+    public class BaseLightTranslationEventBox : BaseLightTransformEventBox
     {
         public BaseLightTranslationEventBox()
         {
@@ -27,13 +27,13 @@ namespace Beatmap.Base
             BaseLightTranslationBase[] events) : base(
             indexFilter,
             beatDistribution,
-            beatDistributionType)
+            beatDistributionType,
+            axis,
+            flip)
         {
             TranslationDistribution = translationDistribution;
             TranslationDistributionType = translationDistributionType;
             TranslationAffectFirst = translationAffectFirst;
-            Axis = axis;
-            Flip = flip;
             // Group-level load finalization removes conflicts after parent beat and lane ownership are available for diagnostics.
             Events = events;
         }
@@ -52,37 +52,52 @@ namespace Beatmap.Base
             indexFilter,
             beatDistribution,
             beatDistributionType,
-            easing)
+            easing,
+            axis,
+            flip)
         {
             TranslationDistribution = translationDistribution;
             TranslationDistributionType = translationDistributionType;
             TranslationAffectFirst = translationAffectFirst;
-            Axis = axis;
-            Flip = flip;
             // Group-level load finalization removes conflicts after parent beat and lane ownership are available for diagnostics.
             Events = events;
         }
 
-        protected BaseLightTranslationEventBox(BaseLightTranslationEventBox other) : base(
-            other.IndexFilter.Clone() as BaseIndexFilter,
-            other.BeatDistribution,
-            other.BeatDistributionType,
-            other.Easing)
+        protected BaseLightTranslationEventBox(BaseLightTranslationEventBox other) : base(other)
         {
             TranslationDistribution = other.TranslationDistribution;
             TranslationDistributionType = other.TranslationDistributionType;
             TranslationAffectFirst = other.TranslationAffectFirst;
-            Axis = other.Axis;
-            Flip = other.Flip;
             Events = other.Events.Select(x => x.Clone()).Cast<BaseLightTranslationBase>().ToArray();
         }
 
         public float TranslationDistribution { get; set; }
         public int TranslationDistributionType { get; set; }
         public int TranslationAffectFirst { get; set; }
-        public int Axis { get; set; }
-        public int Flip { get; set; }
         public BaseLightTranslationBase[] Events { get; set; }
+
+        // Map to shared transform interface
+        public override float ValueDistribution
+        {
+            get => TranslationDistribution;
+            set => TranslationDistribution = value;
+        }
+
+        public override int ValueDistributionType
+        {
+            get => TranslationDistributionType;
+            set => TranslationDistributionType = value;
+        }
+
+        public override int AffectFirst
+        {
+            get => TranslationAffectFirst;
+            set => TranslationAffectFirst = value;
+        }
+
+        public override float ValueDistributionDisplayScale => 100f;
+
+        public override bool AcceptsEvent(BaseGLSEvent evt) => evt is BaseLightTranslationBase;
 
         public override JSONNode ToJson() =>
             Settings.Instance.MapVersion switch
@@ -100,6 +115,5 @@ namespace Beatmap.Base
         public override void SetEvents(BaseGLSEvent[] data) =>
             Events = ResolveSameBeatConflicts(data).OfType<BaseLightTranslationBase>().ToArray();
 
-        public override Axis GetAxis() => (Axis)Axis;
     }
 }

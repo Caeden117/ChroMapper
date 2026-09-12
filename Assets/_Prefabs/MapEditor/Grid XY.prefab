@@ -139,6 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Grid: {fileID: 208360489342016741}
   Interface: {fileID: 1042025239826905601}
+  IntersectionCollider: {fileID: 4465953081972859820}
   gridColor: {r: 1, g: 1, b: 1, a: 1}
   interfaceColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   opaqueInterface: {fileID: 2100000, guid: 06df152e309d6ed43b13c9d0f7cc1c8f, type: 2}

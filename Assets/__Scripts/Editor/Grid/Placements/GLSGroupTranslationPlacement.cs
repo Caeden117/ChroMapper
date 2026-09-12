@@ -70,7 +70,11 @@ public class
             {
                 Boxes = new()
                 {
-                    new BaseLightTranslationEventBox { Events = new[] { new BaseLightTranslationBase() } }
+                    new BaseLightTranslationEventBox
+                    {
+                        IsAutomaticAxisLane = true,
+                        Events = new[] { new BaseLightTranslationBase() }
+                    }
                 }
             });
 }

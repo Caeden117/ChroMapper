@@ -13,12 +13,12 @@ public class SmoothStepPositionGroupEventEffectData : EnvironmentComponentData<S
         SmoothStepPositionGroupEventEffect comp,
         CreateContainer container)
     {
-        comp.GroupMinY = GroupMinY;
-        comp.GroupMaxY = GroupMaxY;
-        comp.GroupStepSize = GroupStepSize;
-        comp.GroupStartPos = GroupStartPos;
-        comp.GroupEasing = GroupEasing;
-        comp.SetElements(self.transform);
+        comp.ClampValue = true;
+        comp.MinValue = GroupMinY;
+        comp.MaxValue = GroupMaxY;
+        comp.BaseOffset = Vector3.zero;
+        comp.MovementVector = Vector3.forward;
+        comp.StepSize = GroupStepSize;
 
         container.Descriptor.BasicEventEffectManager.Register(9, comp);
     }

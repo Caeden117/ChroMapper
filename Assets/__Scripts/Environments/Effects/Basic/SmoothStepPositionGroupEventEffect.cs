@@ -1,109 +1,114 @@
-using System;
-using System.Linq;
 using Beatmap.Base;
-using Beatmap.Enums;
 using UnityEngine;
 
-public class SmoothStepPositionGroupEventEffect : BasicEventEffect<SmoothStepPositionGroupStateData>
+// TheSecondRingZoom* reproduces Beat Saber's group-spacing Event 9 effect while accepting Chroma's fractional step.
+public class SmoothStepPositionGroupEventEffect : BasicMovementEffect<SmoothStepPositionGroupStateData>
 {
-    public int GroupMinY;
-    public int GroupMaxY;
-    public float GroupStepSize;
-    public Vector3 GroupStartPos;
-    public string GroupEasing;
+    public Transform[] Elements;
+    public bool ClampValue;
+    public float MinValue;
+    public float MaxValue;
+    public Vector3 BaseOffset;
+    public Vector3 MovementVector = Vector3.forward;
+    public float StepSize;
 
-    private readonly BasicEventStateChunksContainer<SmoothStepPositionGroupStateData> container = new();
+    private Vector3[] initialPositions;
     private readonly Vector3Tween tween = new();
-    private Transform[] elements = Array.Empty<Transform>();
-    private Vector3 baseOffset;
-    private Vector3 movementVector;
 
-    public void SetElements(Transform group)
+    private void Awake()
     {
-        elements = group.Cast<Transform>().ToArray();
-        movementVector = Vector3.forward;
-        baseOffset = Vector3.forward;
+        // TheSecondRingZoomZeroIntegerRetainsSerializedPositiveSpacing replaces the omitted serialized Z value
+        // instead of adding an offset, so a future EnvironmentData baseOffset.z=1 remains one rather than becoming two.
+        BaseOffset.z = 1f;
 
-        if (elements.Length > 1)
+        // The Second uses a plain ordered child group rather than TrackLaneRingsManager/TrackLaneRing components.
+        Elements = new Transform[transform.childCount];
+        initialPositions = new Vector3[transform.childCount];
+        for (var i = 0; i < transform.childCount; i++)
         {
-            var authoredStep = elements[1].localPosition - elements[0].localPosition;
-            if (authoredStep.sqrMagnitude > 0f)
-            {
-                movementVector = authoredStep.normalized;
-                baseOffset = movementVector;
-            }
+            Elements[i] = transform.GetChild(i);
+            initialPositions[i] = Elements[i].localPosition;
         }
 
-        if (Enum.TryParse(GroupEasing, out EaseType easing)) tween.Easing = Easing.FromID((int)easing);
-    }
-
-    private void Awake() => tween.Easing = Easing.Cubic.InOut;
-
-    public override void Initialize() => InitializeStates(container);
-
-    public override void Refresh() => UpdateObject();
-
-    public override void UpdateTime(bool isPlaying, float currentTime)
-    {
-        if (!container.IsCurrentOrFindState(currentTime, isPlaying)) UpdateObject();
-        if (tween.UpdateTime(currentTime)) SetPosition(tween.Current);
-    }
-
-    private void UpdateObject()
-    {
-        var state = container.CurrentState;
-        tween.StartTime = state.StartTime;
-        tween.StartValue = state.StartOffset;
-        tween.EndTime = state.EndTime;
-        tween.EndValue = state.EndOffset;
-        SetPosition(tween.UpdateTime(Atsc.CurrentSongBpmTime) ? tween.Current : tween.StartValue);
-    }
-
-    private void SetPosition(Vector3 offset)
-    {
-        for (var i = 0; i < elements.Length; i++) elements[i].localPosition = i * offset;
-    }
-
-    private Vector3 GetPositionForValue(int value)
-    {
-        value = Mathf.Clamp(value, GroupMinY, GroupMaxY);
-        return baseOffset + (movementVector * (GroupStepSize * value));
+        tween.Easing = Easing.Cubic.InOut;
     }
 
     protected override SmoothStepPositionGroupStateData CreateState(BaseEvent data) => new(data);
 
-    public override void InsertData(BaseEvent data)
+    protected override void ComputeSnapshot(
+        SmoothStepPositionGroupStateData previous,
+        SmoothStepPositionGroupStateData current)
     {
-        var state = CreateState(data);
-        state.StartTime = data.SongBpmTime;
-        state.StartOffset = GetPositionForValue(data.Value);
-        HandleInsertState(container, state);
+        // TheSecondRingZoomNegativeCustomFloatStepUsesSerializedOffsetAndBypassesIntegerClamp requires Chroma steps to bypass the OEM integer clamp.
+        var hasCustomStep = current.Base.CustomStep.HasValue;
+        var value = hasCustomStep
+            ? current.Base.CustomStep.Value
+            : current.Base.Value;
+        current.Position = IsStartSentinel(current)
+            ? Vector3.zero
+            : GetPositionForValue(value, !hasCustomStep);
     }
 
-    protected override void OnInsertUpdateFromNextState(
-        SmoothStepPositionGroupStateData newState,
-        SmoothStepPositionGroupStateData nextState) => newState.EndOffset = nextState.StartOffset;
-
-    protected override void OnInsertUpdateToPreviousState(
-        SmoothStepPositionGroupStateData newState,
-        SmoothStepPositionGroupStateData prevState) => prevState.EndOffset = newState.StartOffset;
-
-    public override void RemoveData(BaseEvent reference, BaseEvent original)
+    protected override void ApplyVisual(
+        float beat,
+        float seconds,
+        SmoothStepPositionGroupStateData current,
+        SmoothStepPositionGroupStateData next)
     {
-        var state = HandleRemoveState(container, reference, original);
-        if (container.CurrentState == state) container.SetStateAt(reference.SongBpmTime);
+        // The start sentinel represents the untouched environment before Event 9 first fires, not a tween toward that event.
+        if (IsStartSentinel(current))
+        {
+            RestoreInitialPositions();
+            return;
+        }
+
+        if (next == null)
+        {
+            SetPosition(current.Position);
+            return;
+        }
+
+        tween.StartValue = current.Position;
+        tween.EndValue = next.Position;
+        tween.StartTime = current.StartTime;
+        tween.EndTime = next.StartTime;
+        tween.UpdateTime(beat);
+        SetPosition(tween.Current);
     }
 
-    protected override void OnRemoveUpdatePreviousAndNextState(
-        SmoothStepPositionGroupStateData currState,
-        SmoothStepPositionGroupStateData prevState,
-        SmoothStepPositionGroupStateData nextState) => prevState.EndOffset = nextState.StartOffset;
+    // The negative-step regressions keep i inside OEM bounds and reserve the extended signed domain for customData.step.
+    private Vector3 GetPositionForValue(float value, bool applyIntegerClamp)
+    {
+        // TheSecondRingZoomNegativeIntegerValueRespectsClampWithoutCustomStep requires every i value to use the serialized 0..9 clamp.
+        if (ClampValue && applyIntegerClamp)
+        {
+            value = Mathf.Clamp(value, MinValue, MaxValue);
+        }
+
+        return BaseOffset + (MovementVector * (StepSize * value));
+    }
+
+    private void SetPosition(Vector3 position)
+    {
+        for (var i = 0; i < Elements.Length; i++)
+        {
+            Elements[i].localPosition = i * position;
+        }
+    }
+
+    private void RestoreInitialPositions()
+    {
+        for (var i = 0; i < Elements.Length; i++)
+        {
+            Elements[i].localPosition = initialPositions[i];
+        }
+    }
 }
 
-public class SmoothStepPositionGroupStateData : BasicEventStateData
+// TheSecondRingZoom* stores the exact per-node spacing vector used by deterministic scrubbing.
+public class SmoothStepPositionGroupStateData : BasicMovementStateData
 {
-    public Vector3 StartOffset;
-    public Vector3 EndOffset;
+    public Vector3 Position;
 
     public SmoothStepPositionGroupStateData(BaseEvent data) : base(data)
     {

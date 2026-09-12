@@ -1,30 +1,28 @@
 using System.Collections.Generic;
-using Beatmap.Base;
-using Beatmap.Enums;
 using UnityEngine;
 
 /// <summary>
-///     Indexes active GLS color-ribbon source intervals by song time.
+///     Indexes transition source intervals by song time.
 /// </summary>
 /// <remarks>
-///     A ribbon starts at a color source and ends at its following interpolated color event. Grid pool refreshes need
-///     only the ribbons crossing the lower viewport boundary; scanning every color-filter timeline during scrolling was
+///     A rendered transition starts at a source and ends at its following interpolated event. Grid pool refreshes need
+///     only transitions crossing the lower viewport boundary; scanning every timeline during scrolling would be
 ///     proportional to the entire map. This augmented treap keeps each source interval's subtree maximum end time,
-///     allowing a boundary query to prune branches that cannot overlap and return only visible-crossing ribbon sources.
+///     allowing a boundary query to prune branches that cannot overlap and return only crossing sources.
 ///     <para>
-///     <see cref="GLSEventCommon"/> owns timeline matching and calls <see cref="ReplaceSequence"/> whenever an edited
-///     filter sequence is rewired. This class deliberately stores no Unity objects and owns no beatmap mutation.
+///     Callers own timeline matching and update only sources whose successor changed. This class stores source-keyed
+///     data and owns no beatmap mutation or pooled visual state.
 ///     </para>
 ///     <para>
-///     Do not store these intervals on GLS preview nodes: previews are pooled Unity visuals and are deliberately
-///     recycled when their source leaves the viewport. The index must outlive those visuals so it can determine that
-///     an offscreen source still has a ribbon crossing the boundary and therefore needs its preview recreated.
+///     Do not store these intervals on preview nodes: previews are pooled visuals and are deliberately recycled when
+///     their source leaves the viewport. The index must outlive those visuals so it can determine that an offscreen
+///     source still has a transition crossing the boundary and therefore needs its preview recreated.
 ///     </para>
 /// </remarks>
-internal sealed class GLSColorTransitionIntervalIndex
+internal sealed class TransitionIntervalIndex<TSource> where TSource : class
 {
     // Resolve source replacement/removal without searching the time tree a second time.
-    private readonly Dictionary<BaseLightColorBase, TransitionInterval> intervalsBySource = new();
+    private readonly Dictionary<TSource, TransitionInterval> intervalsBySource = new();
     // The root is ordered by source time; each node caches the farthest transition end below it.
     private IntervalNode root;
     // Equal-time events need a stable, unique secondary key because all can be valid indexed sources.
@@ -42,50 +40,17 @@ internal sealed class GLSColorTransitionIntervalIndex
         nextId = 0;
     }
 
-    /// <summary>
-    ///     Replaces indexed intervals for one rewired filter sequence.
-    /// </summary>
-    /// <param name="events">Every event identity owned by the sequence, including sources whose link was removed.</param>
-    /// <param name="followingEvents">The sequence's newly computed source-to-following-event links.</param>
-    public void ReplaceSequence(
-        IList<BaseLightColorBase> events,
-        IDictionary<BaseLightColorBase, BaseLightColorBase> followingEvents)
-    {
-        for (var eventIndex = 0; eventIndex < events.Count; eventIndex++)
-        {
-            Remove(events[eventIndex]);
-        }
-
-        foreach (var followingEvent in followingEvents)
-        {
-            var transition = followingEvent.Value;
-            if (transition.UsePrevious == 0 && transition.Easing != (int)EaseType.None)
-            {
-                Add(followingEvent.Key, transition);
-            }
-        }
-    }
-
-    /// <summary>
-    ///     Appends sources whose interval satisfies <c>sourceTime &lt; boundary &lt;= transitionEndTime</c>.
-    /// </summary>
-    /// <remarks>
-    ///     Callers clear and reuse their result collection. This method allocates nothing on the refresh path.
-    /// </remarks>
-    public void GetSourcesAt(float boundary, ICollection<BaseLightColorBase> sources)
-    {
-        GetSourcesAt(root, boundary, sources);
-    }
-
-    private void Add(BaseLightColorBase source, BaseLightColorBase transition)
+    // Replace one source interval without searching or rebuilding unrelated transition lanes.
+    public void AddOrReplace(TSource source, float start, float end)
     {
         Remove(source);
-        var interval = new TransitionInterval(source, transition.SongBpmTime, ++nextId);
+        var interval = new TransitionInterval(source, start, end, ++nextId);
         intervalsBySource.Add(source, interval);
         root = Insert(root, new IntervalNode(interval, NextPriority()));
     }
 
-    private void Remove(BaseLightColorBase source)
+    // A deleted or rewired source no longer owns its former viewport-retention interval.
+    public void Remove(TSource source)
     {
         if (!intervalsBySource.TryGetValue(source, out var interval))
         {
@@ -94,6 +59,17 @@ internal sealed class GLSColorTransitionIntervalIndex
 
         intervalsBySource.Remove(source);
         root = Remove(root, interval);
+    }
+
+    /// <summary>
+    ///     Appends sources whose interval satisfies <c>sourceTime &lt; boundary &lt;= transitionEndTime</c>.
+    /// </summary>
+    /// <remarks>
+    ///     Callers clear and reuse their result collection. This method allocates nothing on the refresh path.
+    /// </remarks>
+    public void GetSourcesAt(float boundary, ICollection<TSource> sources)
+    {
+        GetSourcesAt(root, boundary, sources);
     }
 
     private static IntervalNode Insert(IntervalNode node, IntervalNode inserted)
@@ -196,7 +172,7 @@ internal sealed class GLSColorTransitionIntervalIndex
     private static void GetSourcesAt(
         IntervalNode node,
         float boundary,
-        ICollection<BaseLightColorBase> sources)
+        ICollection<TSource> sources)
     {
         if (node == null || node.MaxEnd < boundary)
         {
@@ -248,15 +224,15 @@ internal sealed class GLSColorTransitionIntervalIndex
     // Immutable interval data remains valid while its treap node is being rotated or merged.
     private readonly struct TransitionInterval
     {
-        public TransitionInterval(BaseLightColorBase source, float end, long id)
+        public TransitionInterval(TSource source, float start, float end, long id)
         {
             Source = source;
-            Start = source.SongBpmTime;
+            Start = start;
             End = end;
             Id = id;
         }
 
-        public BaseLightColorBase Source { get; }
+        public TSource Source { get; }
         public float Start { get; }
         public float End { get; }
         public long Id { get; }

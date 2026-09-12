@@ -7,7 +7,7 @@ using SimpleJSON;
 
 namespace Beatmap.Base
 {
-    public class BaseLightTranslationEventBoxGroup : BaseEventBoxGroup<BaseLightTranslationEventBox>
+    public class BaseLightTranslationEventBoxGroup : BaseLightTransformEventBoxGroup<BaseLightTranslationEventBox>
     {
         public override ObjectType ObjectType { get; set; } = ObjectType.GLSTranslation;
 
@@ -27,33 +27,14 @@ namespace Beatmap.Base
             other.ID,
             other.CustomData?.Clone())
         {
-            Boxes = other.Boxes.Select(x => x.Clone()).Cast<BaseLightTranslationEventBox>().ToList();
-            for (var index = 0; index < Boxes.Count; index++)
-            {
-                var box = Boxes[index];
-                foreach (var evt in box.Events)
-                {
-                    evt.EventBoxData = box;
-                    evt.EventBoxGroupData = this;
-                    evt.BoxIndex = index;
-                    evt.JsonTime = evt.RelativeJsonTime + JsonTime;
-                }
-            }
+            CloneTransformBoxesFrom(other);
         }
 
         public BaseLightTranslationEventBoxGroup(JSONNode node) : this(BeatmapFactory.LightTranslationEventBoxGroups(node)) { }
 
-        public override void SetMap(BaseDifficulty map = null)
-        {
-            base.SetMap(map);
-            foreach (var evt in Boxes.SelectMany(box => box.Events)) evt.SetMap(map);
-        }
+        public override bool[] GetEnabledAxes(TrackDefinitionGLS trackDefinition) => trackDefinition.TranslationTracks;
 
-        public override void RecomputeSongBpmTime()
-        {
-            base.RecomputeSongBpmTime();
-            foreach (var evt in Boxes.SelectMany(box => box.Events)) evt.RecomputeSongBpmTime();
-        }
+        protected override BaseLightTranslationEventBox CreateTransformBoxCore(int axis) => new() { Axis = axis };
 
         public override string CustomKeyColor { get; } = "unusedKeyColor";
 

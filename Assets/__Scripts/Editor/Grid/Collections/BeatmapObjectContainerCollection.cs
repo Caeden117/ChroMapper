@@ -371,6 +371,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         bool deselect = true,
         bool triggerHandle = true);
 
+    // RefreshSpecialAngles mutates sort keys in place, so test teardown needs a collection-owned
+    // tail deletion path that does not binary-search an intentionally stale ordering.
+    public abstract void DeleteAllObjectsFromEnd(bool triggersAction = true);
+
     public abstract void SilentRemoveObject(BaseObject obj);
 
     protected void SetTrackFilter() =>
@@ -575,17 +579,9 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
         // Considering we're only concerned with time, we'll use a time-based comparer here.
         var span = MapObjects.AsSpan();
-        var startIdx = span.BinarySearchBy(jsonTime, obj => obj.JsonTime);
-        var endIdx = span.BinarySearchBy(jsonTime2, obj => obj.JsonTime);
-
-        if (startIdx < 0) startIdx = ~startIdx;
-        if (endIdx < 0) endIdx = ~endIdx;
-
-        // March indexes in case of same time with different properties
-        while (startIdx > 0 && span[startIdx].JsonTime >= jsonTime) startIdx--;
-        if (span[startIdx].JsonTime < jsonTime) startIdx++;
-
-        while (endIdx < span.Length && span[endIdx].JsonTime <= jsonTime2) endIdx++;
+        // ContainerCollectionTest.GetBetween needs inclusive stacked endpoints without a linear duplicate-time walk.
+        var startIdx = span.LowerBoundBy(jsonTime, obj => obj.JsonTime);
+        var endIdx = span.UpperBoundBy(jsonTime2, obj => obj.JsonTime);
 
         var length = endIdx - startIdx;
 
@@ -656,7 +652,8 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
                     case BaseObstacle obs
                         when obs.SongBpmTime > upperBound || obs.SongBpmTime + obs.Duration < lowerBound:
                     case BaseSlider slider when slider.SongBpmTime > upperBound || slider.TailSongBpmTime < lowerBound:
-                    case not null when obj.SongBpmTime > upperBound || obj.SongBpmTime < lowerBound:
+                    case not null when (obj.SongBpmTime > upperBound || obj.SongBpmTime < lowerBound)
+                        && !ShouldRetainContainerOutsideBounds(obj, lowerBound, upperBound):
                     case not null when !obj.HasMatchingTrack(TrackFilterID):
                         RecycleContainer(obj);
                         break;
@@ -669,16 +666,9 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         // lmao why do anything if we dont have objects to create containers for
         if (span.Length == 0) return;
 
-        // We need to copy GetBetween implementation:
-        //   - We are binary searching by SongBpmTime, not JsonTime (this should still be sorted since MapObjects is always sorted by JsonTime)
-        //   - We need access to startIdx later in this method
-        var startIdx = span.BinarySearchBy(lowerBound, obj => obj.SongBpmTime);
-        var endIdx = span.BinarySearchBy(upperBound, obj => obj.SongBpmTime);
-
-        if (startIdx < 0) startIdx = ~startIdx;
-        if (endIdx < 0) endIdx = ~endIdx;
-
-        while (endIdx < span.Length && span[endIdx].SongBpmTime <= upperBound) endIdx++;
+        // RefreshPool_Window* tests require exact inclusive bounds so distant neighbors never leak into the visual pool.
+        var startIdx = span.LowerBoundBy(lowerBound, obj => obj.SongBpmTime);
+        var endIdx = span.UpperBoundBy(upperBound, obj => obj.SongBpmTime);
 
         var length = endIdx - startIdx;
 
@@ -709,6 +699,11 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
                 CreateContainerFromPool(obj);
         }
     }
+
+    // Let duration-owning collections retain an offscreen source whose rendered interval still intersects the pool window.
+    //  EG transition ribbon endpoints should not unload while the ribbon is still visible.
+    protected virtual bool ShouldRetainContainerOutsideBounds(BaseObject obj, float lowerBound, float upperBound)
+        => false;
 
     /// <inheritdoc/>
     public override void DeleteObject(
@@ -748,6 +743,28 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
             return;
         }
 
+        // RefreshSpecialAngles teardown shares the indexed deletion workflow so ordinary deletion
+        // and direct tail cleanup retain identical recycling, action, index, and callback behavior.
+        DeleteObjectAt(
+            index,
+            triggersAction,
+            refreshesPool,
+            comment,
+            inCollectionOfDeletes,
+            deselect,
+            triggerHandle);
+    }
+
+    // RefreshSpecialAngles requires direct index removal when its deliberately mutated note keys leave MapObjects unsorted.
+    protected virtual void DeleteObjectAt(
+        int index,
+        bool triggersAction,
+        bool refreshesPool,
+        string comment,
+        bool inCollectionOfDeletes,
+        bool deselect,
+        bool triggerHandle)
+    {
         var deletedObj = MapObjects[index];
 
         RecycleContainer(deletedObj);
@@ -765,6 +782,25 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         if (refreshesPool) RefreshPool();
 
         OnObjectDeleted?.Invoke(deletedObj);
+    }
+
+    // RefreshSpecialAngles and UpToNRandomMapsInDefaultSongLocationsLoadWithoutExceptions require
+    // authoritative tail removal plus one final pool refresh, avoiding binary search and repeated O(n) list shifts.
+    public override void DeleteAllObjectsFromEnd(bool triggersAction = true)
+    {
+        while (MapObjects.Count > 0)
+        {
+            DeleteObjectAt(
+                MapObjects.Count - 1,
+                triggersAction,
+                refreshesPool: false,
+                "Delete all objects from end.",
+                inCollectionOfDeletes: true,
+                deselect: true,
+                triggerHandle: true);
+        }
+
+        DoPostObjectsDeleteWorkflow();
     }
 
     // Removes object from MapObjects while retaining container and data in it

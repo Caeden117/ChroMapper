@@ -22,6 +22,7 @@ public class StateChunksContainer<TState, TData> where TState : StateData<TData>
         statesByBase[state.Base] = state;
     }
 
+    // Cursor rounding belongs at load time; arbitrary paused lookups must preserve their exact time.
     public bool IsCurrentOrFindState(float time, bool playing) =>
         playing ? UseCurrentOrNextState(time) : UseCurrentOrFindState(time);
 

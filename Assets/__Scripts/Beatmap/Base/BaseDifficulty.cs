@@ -48,6 +48,8 @@ namespace Beatmap.Base
         public List<BaseRotationEvent> RotationEvents { get; set; } = new();
         public List<BaseNJSEvent> NJSEvents { get; set; } = new();
 
+        public bool SaveVNJSEventsInV3 { get; set; } = true;
+
         public List<BaseLightColorEventBoxGroup> LightColorEventBoxGroups { get; set; } = new();
         public List<BaseLightRotationEventBoxGroup> LightRotationEventBoxGroups { get; set; } = new();
         public List<BaseLightTranslationEventBoxGroup> LightTranslationEventBoxGroups { get; set; } = new();
@@ -56,6 +58,8 @@ namespace Beatmap.Base
 
         // Requirement checks need the already-loaded environment metadata without serializing or copying its asset.
         [NonSerialized] public TrackDefinitionsSO RuntimeTrackDefinitions;
+        // BeatToTheFuture accepts the Info.dat root declaration. Retain the loaded metadata for deterministic requirement checks.
+        [NonSerialized] public JSONNode RuntimeLevelCustomData;
 
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }
         public bool UseNormalEventsAsCompatibleEvents { get; set; } = true;
@@ -516,7 +520,9 @@ namespace Beatmap.Base
             return json;
         }
 
-        private bool IsEmpty() =>
+        // UpToNRandomMapsInDefaultSongLocationsLoadWithoutExceptions must choose a non-empty installed difficulty;
+        // expose the existing authoritative definition so the test does not duplicate map-format coverage.
+        public bool IsEmpty() =>
             BpmEvents.Count == 0
             && Notes.Count == 0
             && Obstacles.Count == 0
@@ -554,11 +560,17 @@ namespace Beatmap.Base
             || Chains.Any(x => x.IsNoodleExtensions())
             || Obstacles.Any(x => x.IsNoodleExtensions());
 
-        public bool IsMappingExtensions() =>
+        // Raw V4 upper-wall coordinates are the shared conversion and requirement signal, so expose one authoritative
+        // map-level query instead of duplicating the y=3/4 scan across editor and mod requirement paths.
+        public bool HasV4UpperWalls() => Obstacles.Any(x => x.PosY is 3 or 4);
+
+        public bool IsMappingExtensions() => IsMappingExtensions(false);
+
+        public bool IsMappingExtensions(bool allowV4UpperWallsInV3) =>
             Notes.Any(x => x.IsMappingExtensions())
             || Arcs.Any(x => x.IsMappingExtensions())
             || Chains.Any(x => x.IsMappingExtensions())
-            || Obstacles.Any(x => x.IsMappingExtensions());
+            || Obstacles.Any(x => x.IsMappingExtensions(allowV4UpperWallsInV3));
 
         public override JSONNode ToJson() => throw new NotImplementedException();
 

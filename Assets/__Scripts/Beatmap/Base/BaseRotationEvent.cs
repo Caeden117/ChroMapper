@@ -86,7 +86,10 @@ namespace Beatmap.Base
                 if (value is >= 1000 and <= 1720)
                     Rotation = value - 1360;
                 else
-                    Rotation = lightValueToRotationDegrees[Math.Clamp(value, 0, lightValueToRotationDegrees.Length)];
+                    // V2LegacyRotationEventLoadingTest covers legacy high values that must clamp to the last valid
+                    // rotation instead of using the array length as an out-of-range index and aborting the map load.
+                    Rotation = lightValueToRotationDegrees[
+                        Math.Clamp(value, 0, lightValueToRotationDegrees.Length - 1)];
             }
         }
 

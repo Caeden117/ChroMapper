@@ -192,20 +192,10 @@ namespace Beatmap.Containers
             if (!EventBoxGroupData.OrderedEventsInitialized)
                 EventBoxGroupData.ResortOrderedEvents();
 
-            switch (EventBoxGroupData)
+            // Preserve the supported preview families while sharing rotation and translation through the transform contract.
+            if (EventBoxGroupData is BaseLightColorEventBoxGroup or ILightTransformEventBoxGroup or BaseVfxEventEventBoxGroup)
             {
-                case BaseLightColorEventBoxGroup colorGroup:
-                    ConfigurePreviewNodes(colorGroup.OrderedEvents, isBoostAt);
-                    break;
-                case BaseLightRotationEventBoxGroup rotationGroup:
-                    ConfigurePreviewNodes(rotationGroup.OrderedEvents, isBoostAt);
-                    break;
-                case BaseLightTranslationEventBoxGroup translationGroup:
-                    ConfigurePreviewNodes(translationGroup.OrderedEvents, isBoostAt);
-                    break;
-                case BaseVfxEventEventBoxGroup floatFxGroup:
-                    ConfigurePreviewNodes(floatFxGroup.OrderedEvents, isBoostAt);
-                    break;
+                ConfigurePreviewNodes(EventBoxGroupData.OrderedEvents, isBoostAt);
             }
         }
 

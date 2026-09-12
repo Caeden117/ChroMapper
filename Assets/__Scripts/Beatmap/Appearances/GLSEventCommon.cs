@@ -16,7 +16,7 @@ public static class GLSEventCommon
     // Partition color-transition timelines by GLS group ID so unrelated light groups never share cache work.
     private static readonly Dictionary<int, ColorTransitionGroupCache> colorTransitionCaches = new();
     // Index only sources with active transition intervals so viewport retention never scans all color sequences.
-    private static readonly GLSColorTransitionIntervalIndex colorTransitionIntervals = new();
+    private static readonly TransitionIntervalIndex<BaseLightColorBase> colorTransitionIntervals = new();
     // Reuse the cross-group query buffer because color-pool refresh runs every viewport update.
     private static readonly List<BaseLightColorBase> colorTransitionQueryResults = new();
     // Reuse the event ordering comparer while inserting edited nodes into their cached timelines.
@@ -156,7 +156,9 @@ public static class GLSEventCommon
     {
         var sb = new StringBuilder();
 
-        sb.AppendLine((evt.Translation * 100f).ToString(CultureInfo.InvariantCulture));
+        sb.AppendLine(GLSEventTranslationCommand.IsYeet(evt.Translation)
+            ? "YEET"
+            : (evt.Translation * 100f).ToString(CultureInfo.InvariantCulture));
         sb.AppendLine(Easing.IDToShortName.GetValueOrDefault(evt.EaseType));
 
         return sb.ToString();
@@ -354,6 +356,29 @@ public static class GLSEventCommon
         }
     }
 
+    // Keep GLS transition qualification with its timeline owner while sharing the allocation-free interval tree.
+    private static void ReplaceColorTransitionSequence(
+        IList<BaseLightColorBase> events,
+        IDictionary<BaseLightColorBase, BaseLightColorBase> followingEvents)
+    {
+        for (var eventIndex = 0; eventIndex < events.Count; eventIndex++)
+        {
+            colorTransitionIntervals.Remove(events[eventIndex]);
+        }
+
+        foreach (var followingEvent in followingEvents)
+        {
+            var transition = followingEvent.Value;
+            if (transition.UsePrevious == 0 && transition.Easing != (int)EaseType.None)
+            {
+                colorTransitionIntervals.AddOrReplace(
+                    followingEvent.Key,
+                    followingEvent.Key.SongBpmTime,
+                    transition.SongBpmTime);
+            }
+        }
+    }
+
     // Build one chronological sequence per group ID and equivalent filter, including overlapping group ranges.
     private static void EnsureColorTransitionCache(BaseDifficulty map)
     {
@@ -452,6 +477,8 @@ public static class GLSEventCommon
 
                 foreach (var evt in box.Events)
                 {
+                    // Removed nodes are absent from the rewired sequence, so clear their old viewport-retention intervals first.
+                    colorTransitionIntervals.Remove(evt);
                     if (!sequence.Events.Remove(evt))
                     {
                         continue;
@@ -477,7 +504,7 @@ public static class GLSEventCommon
             {
                 sequence.Events.Sort(CompareColorEvents);
                 sequence.RewireAll();
-                colorTransitionIntervals.ReplaceSequence(sequence.Events, sequence.FollowingEvents);
+                ReplaceColorTransitionSequence(sequence.Events, sequence.FollowingEvents);
             }
         }
 
@@ -532,7 +559,7 @@ public static class GLSEventCommon
                 // Only the edited range and its immediately preceding matching-filter timestamp can change successor links.
                 modifiedSequence.Key.RewireRange(modifiedSequence.Value.Minimum, modifiedSequence.Value.Maximum);
                 // Reindex only changed filter timelines so scrolling never pays for edit-time cache maintenance.
-                colorTransitionIntervals.ReplaceSequence(
+                ReplaceColorTransitionSequence(
                     modifiedSequence.Key.Events,
                     modifiedSequence.Key.FollowingEvents);
             }

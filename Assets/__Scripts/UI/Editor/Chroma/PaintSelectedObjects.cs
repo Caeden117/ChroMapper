@@ -46,7 +46,7 @@ public class PaintSelectedObjects : MonoBehaviour
             var paintedEventCount = 0;
             foreach (var selectedEvent in selectedEvents)
             {
-                // GLS rotation, translation, and FloatFX nodes have no Chroma color payload to paint.
+                // Chroma color is supported by color nodes only; rotation, translation, and FloatFX nodes have no color payload.
                 if (selectedEvent is not BaseLightColorBase
                     || !eventLookup.TryGetCloneEvent(selectedEvent, editedGroup, out _, out var editedEvent)
                     || editedEvent is not BaseLightColorBase editedColorEvent)
@@ -73,10 +73,6 @@ public class PaintSelectedObjects : MonoBehaviour
 
         if (allActions.Count == 0) return;
 
-        // Capture affected pools before replacement actions update the selected object identities.
-        var affectedObjectTypes = new HashSet<ObjectType>();
-        foreach (var selectedObject in SelectionController.SelectedObjects)
-            affectedObjectTypes.Add(selectedObject.ObjectType);
         // The live objects were restored above, so perform the collection to install the edited snapshots.
         BeatmapActionContainer.AddAction(
             new ActionCollectionAction(
@@ -85,12 +81,6 @@ public class PaintSelectedObjects : MonoBehaviour
                 true,
                 "Painted a selection of objects."),
             true);
-
-        // Refresh visuals only after the edited snapshots become the authoritative live objects.
-        foreach (var objectType in affectedObjectTypes)
-            BeatmapObjectContainerCollection.GetCollectionForType(objectType).RefreshPool(true);
-
-        // BeatmapObjectManager callbacks already update lightshow caches after the performed paint action.
     }
 
     private bool DoPaint(BaseObject obj)

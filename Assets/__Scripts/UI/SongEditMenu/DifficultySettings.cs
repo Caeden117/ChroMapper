@@ -169,13 +169,54 @@ public class DifficultySettings
         var enhancements = new List<BaseEnvironmentEnhancement>();
         if (InfoDifficulty.CustomData != null)
         {
-            foreach (var ent in InfoDifficulty.CustomData["_environmentRemoval"])
-                enhancements.Add(Settings.Instance.MapVersion == 3 ? V3EnvironmentEnhancement.GetFromJson(ent.Value.Value) : V2EnvironmentEnhancement.GetFromJson(ent.Value.Value));
+            enhancements.AddRange(GetEnvironmentEnhancementsFromLegacyRemovals(
+                InfoDifficulty.CustomData["_environmentRemoval"],
+                Settings.Instance.MapVersion,
+                InfoDifficulty.Difficulty));
         }
 
         if (Map != null) enhancements.AddRange(Map.EnvironmentEnhancements.Select(it => it.Clone() as BaseEnvironmentEnhancement));
 
         return enhancements;
+    }
+
+    // Keep legacy-entry parsing independent of song-menu scene state so invalid data can be tested before it blocks a save.
+    internal static IEnumerable<BaseEnvironmentEnhancement> GetEnvironmentEnhancementsFromLegacyRemovals(
+        SimpleJSON.JSONNode environmentRemovals,
+        int mapVersion,
+        string difficultyName)
+    {
+        // ObjectRemovalRetainsItsChromaProperties requires passing the object node itself, while
+        // InvalidRemovalIsSkippedWithActionableError requires an explicit ordinal because JSONArray keys are empty.
+        var entryIndex = 0;
+        foreach (var ent in environmentRemovals)
+        {
+            var entry = ent.Value;
+            var currentEntryIndex = entryIndex++;
+            // SongCore stores legacy removals as string IDs, while Chroma stores environment enhancements as objects.
+            if (entry.IsString && !string.IsNullOrWhiteSpace(entry.Value))
+            {
+                yield return new BaseEnvironmentEnhancement(entry.Value);
+                continue;
+            }
+
+            if (entry.IsObject)
+            {
+                var enhancement = mapVersion == 3
+                    ? V3EnvironmentEnhancement.GetFromJson(entry)
+                    : V2EnvironmentEnhancement.GetFromJson(entry);
+                if (enhancement.Geometry != null || !string.IsNullOrWhiteSpace(enhancement.ID))
+                {
+                    yield return enhancement;
+                    continue;
+                }
+            }
+
+            UnityEngine.Debug.LogError(
+                $"[Environment Removal] Skipping invalid _environmentRemoval entry {currentEntryIndex} in difficulty " +
+                $"'{difficultyName}'. Entries must be non-empty legacy string IDs or Chroma environment " +
+                "enhancement objects. See https://heck.aeroluna.dev/environment/environment/.");
+        }
     }
 
     private string EnvironmentNameFromIndex => BeatSaberSongContainer.Instance.Info.EnvironmentNames

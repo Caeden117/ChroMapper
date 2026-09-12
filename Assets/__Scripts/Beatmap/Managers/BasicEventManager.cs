@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
 using UnityEngine;
 
@@ -40,10 +39,11 @@ public class BasicEventManager : BeatmapObjectManager<BaseEvent>
 
     public override void UpdateTime(bool isPlaying, float time)
     {
-        foreach (var manager in
-            Context.Descriptor.BasicEventEffectManager.EventTypeToEffects.Values.SelectMany(managers =>
-                managers))
-            manager.UpdateTime(isPlaying, time);
+        // Combined pair effects are registered under several event types; use the
+        // manager's unique list so one shared timeline is not evaluated repeatedly.
+        var effects = Context.Descriptor.BasicEventEffectManager.Effects;
+        for (var i = 0; i < effects.Count; i++)
+            effects[i].UpdateTime(isPlaying, time);
     }
 
     // Delegate changed collections to the manager's allocation-free enumerable dispatcher.

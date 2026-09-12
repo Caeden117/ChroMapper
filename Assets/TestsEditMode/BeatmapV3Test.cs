@@ -330,9 +330,13 @@ namespace TestsEditMode
             var difficulty = V3Difficulty.GetFromJson(JSONNode.Parse(fileJson), "");
             var outputJson = V3Difficulty.GetOutputJson(difficulty);
             var reparsed = V3Difficulty.GetFromJson(outputJson, "");
-            
+
+            // Saving must emit the synthetic beat-zero BPM without mutating the live map that
+            // editor actions and concurrent serializers continue to enumerate.
+            Assert.That(difficulty.BpmEvents, Has.Count.EqualTo(1));
+            Assert.That(difficulty.BpmEvents[0].JsonTime, Is.EqualTo(10f));
             reparsed.BpmEvents.RemoveAt(0); // Remove inserted bpm
-            
+
             AssertDifficulty(reparsed, true); // This should have the same stuff
             AssertDifficultyLightshow(difficulty);
             AssertDifficultyCustomProperties(difficulty);

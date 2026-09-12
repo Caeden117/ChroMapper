@@ -4978,6 +4978,15 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Tweak VNJS Easing"",
+                    ""type"": ""Value"",
+                    ""id"": ""c332510c-aba5-4222-b67c-a042d20c831b"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -5011,6 +5020,50 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""ChroMapper Default"",
                     ""action"": ""Tweak NJS Value"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Ctrl + Shift + Scroll"",
+                    ""id"": ""28f4b04d-9f32-4ccf-b710-129b2f27d3fb"",
+                    ""path"": ""TwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tweak VNJS Easing"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""27a1064f-f652-4c46-972b-16a952973f96"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak VNJS Easing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""c55c4eaf-e259-4206-9375-620ce5649edd"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak VNJS Easing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""287a0210-3040-45e3-a35a-0275e055b265"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""ChroMapper Default"",
+                    ""action"": ""Tweak VNJS Easing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -5554,6 +5607,15 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Toggle Strobe Fade (Hover)"",
+                    ""type"": ""Value"",
+                    ""id"": ""6c2f6ca1-ec7c-4b16-ae82-e2d3259f65cb"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Tweak Easing (Hover)"",
                     ""type"": ""Value"",
                     ""id"": ""9cfcd847-c28a-48ad-9e05-6cf5fdf3f171"",
@@ -6058,6 +6120,39 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""action"": ""Tweak Easing (Hover)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Shift + Scroll"",
+                    ""id"": ""b0c17794-e783-4d7c-a565-a60024d64d51"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Strobe Fade (Hover)"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""0d4c8ce9-f792-4c87-9389-913fab57372b"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Strobe Fade (Hover)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""411995af-1652-4d23-9318-1777024779fc"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Strobe Fade (Hover)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -6556,6 +6651,15 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""YEET Translation (Hover)"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d4587dc-8e26-4ce2-98c8-804559e48ba6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -6732,6 +6836,39 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Tweak Easing (Hover)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Shift + Z"",
+                    ""id"": ""f9843408-bca3-4361-a921-e3111a1bb4e7"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""YEET Translation (Hover)"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""cecf7d25-7082-4ef1-a6a4-03c2e758f2e9"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""YEET Translation (Hover)"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""c37f5384-b680-4728-b9e2-8a333530f047"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""YEET Translation (Hover)"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -8185,6 +8322,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         // NJS Event Objects
         m_NJSEventObjects = asset.FindActionMap("NJS Event Objects", throwIfNotFound: true);
         m_NJSEventObjects_TweakNJSValue = m_NJSEventObjects.FindAction("Tweak NJS Value", throwIfNotFound: true);
+        m_NJSEventObjects_TweakVNJSEasing = m_NJSEventObjects.FindAction("Tweak VNJS Easing", throwIfNotFound: true);
         // Switch Version
         m_SwitchVersion = asset.FindActionMap("Switch Version", throwIfNotFound: true);
         m_SwitchVersion_SwitchingVersion = m_SwitchVersion.FindAction("SwitchingVersion", throwIfNotFound: true);
@@ -8236,6 +8374,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         m_GLSColorObjects_TweakBrightnessHover = m_GLSColorObjects.FindAction("Tweak Brightness (Hover)", throwIfNotFound: true);
         m_GLSColorObjects_TweakStrobeFrequencyHover = m_GLSColorObjects.FindAction("Tweak Strobe Frequency (Hover)", throwIfNotFound: true);
         m_GLSColorObjects_TweakStrobeBrightnessHover = m_GLSColorObjects.FindAction("Tweak Strobe Brightness (Hover)", throwIfNotFound: true);
+        m_GLSColorObjects_ToggleStrobeFadeHover = m_GLSColorObjects.FindAction("Toggle Strobe Fade (Hover)", throwIfNotFound: true);
         m_GLSColorObjects_TweakEasingHover = m_GLSColorObjects.FindAction("Tweak Easing (Hover)", throwIfNotFound: true);
         // GLS Rotation Objects
         m_GLSRotationObjects = asset.FindActionMap("GLS Rotation Objects", throwIfNotFound: true);
@@ -8263,6 +8402,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         m_GLSTranslationObjects_TweakValueHover = m_GLSTranslationObjects.FindAction("Tweak Value (Hover)", throwIfNotFound: true);
         m_GLSTranslationObjects_TweakEasingHover = m_GLSTranslationObjects.FindAction("Tweak Easing (Hover)", throwIfNotFound: true);
         m_GLSTranslationObjects_TweakAxisHover = m_GLSTranslationObjects.FindAction("Tweak Axis (Hover)", throwIfNotFound: true);
+        m_GLSTranslationObjects_YEETTranslationHover = m_GLSTranslationObjects.FindAction("YEET Translation (Hover)", throwIfNotFound: true);
         // GLS FloatFX Objects
         m_GLSFloatFXObjects = asset.FindActionMap("GLS FloatFX Objects", throwIfNotFound: true);
         m_GLSFloatFXObjects_Valuen100 = m_GLSFloatFXObjects.FindAction("Value n100", throwIfNotFound: true);
@@ -13917,6 +14057,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_NJSEventObjects;
     private List<INJSEventObjectsActions> m_NJSEventObjectsActionsCallbackInterfaces = new List<INJSEventObjectsActions>();
     private readonly InputAction m_NJSEventObjects_TweakNJSValue;
+    private readonly InputAction m_NJSEventObjects_TweakVNJSEasing;
     /// <summary>
     /// Provides access to input actions defined in input action map "NJS Event Objects".
     /// </summary>
@@ -13932,6 +14073,10 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "NJSEventObjects/TweakNJSValue".
         /// </summary>
         public InputAction @TweakNJSValue => m_Wrapper.m_NJSEventObjects_TweakNJSValue;
+        /// <summary>
+        /// Provides access to the underlying input action "NJSEventObjects/TweakVNJSEasing".
+        /// </summary>
+        public InputAction @TweakVNJSEasing => m_Wrapper.m_NJSEventObjects_TweakVNJSEasing;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -13961,6 +14106,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @TweakNJSValue.started += instance.OnTweakNJSValue;
             @TweakNJSValue.performed += instance.OnTweakNJSValue;
             @TweakNJSValue.canceled += instance.OnTweakNJSValue;
+            @TweakVNJSEasing.started += instance.OnTweakVNJSEasing;
+            @TweakVNJSEasing.performed += instance.OnTweakVNJSEasing;
+            @TweakVNJSEasing.canceled += instance.OnTweakVNJSEasing;
         }
 
         /// <summary>
@@ -13975,6 +14123,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @TweakNJSValue.started -= instance.OnTweakNJSValue;
             @TweakNJSValue.performed -= instance.OnTweakNJSValue;
             @TweakNJSValue.canceled -= instance.OnTweakNJSValue;
+            @TweakVNJSEasing.started -= instance.OnTweakVNJSEasing;
+            @TweakVNJSEasing.performed -= instance.OnTweakVNJSEasing;
+            @TweakVNJSEasing.canceled -= instance.OnTweakVNJSEasing;
         }
 
         /// <summary>
@@ -14483,6 +14634,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_GLSColorObjects_TweakBrightnessHover;
     private readonly InputAction m_GLSColorObjects_TweakStrobeFrequencyHover;
     private readonly InputAction m_GLSColorObjects_TweakStrobeBrightnessHover;
+    private readonly InputAction m_GLSColorObjects_ToggleStrobeFadeHover;
     private readonly InputAction m_GLSColorObjects_TweakEasingHover;
     /// <summary>
     /// Provides access to input actions defined in input action map "GLS Color Objects".
@@ -14624,6 +14776,10 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @TweakStrobeBrightnessHover => m_Wrapper.m_GLSColorObjects_TweakStrobeBrightnessHover;
         /// <summary>
+        /// Provides access to the underlying input action "GLSColorObjects/ToggleStrobeFadeHover".
+        /// </summary>
+        public InputAction @ToggleStrobeFadeHover => m_Wrapper.m_GLSColorObjects_ToggleStrobeFadeHover;
+        /// <summary>
         /// Provides access to the underlying input action "GLSColorObjects/TweakEasingHover".
         /// </summary>
         public InputAction @TweakEasingHover => m_Wrapper.m_GLSColorObjects_TweakEasingHover;
@@ -14749,6 +14905,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @TweakStrobeBrightnessHover.started += instance.OnTweakStrobeBrightnessHover;
             @TweakStrobeBrightnessHover.performed += instance.OnTweakStrobeBrightnessHover;
             @TweakStrobeBrightnessHover.canceled += instance.OnTweakStrobeBrightnessHover;
+            @ToggleStrobeFadeHover.started += instance.OnToggleStrobeFadeHover;
+            @ToggleStrobeFadeHover.performed += instance.OnToggleStrobeFadeHover;
+            @ToggleStrobeFadeHover.canceled += instance.OnToggleStrobeFadeHover;
             @TweakEasingHover.started += instance.OnTweakEasingHover;
             @TweakEasingHover.performed += instance.OnTweakEasingHover;
             @TweakEasingHover.canceled += instance.OnTweakEasingHover;
@@ -14859,6 +15018,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @TweakStrobeBrightnessHover.started -= instance.OnTweakStrobeBrightnessHover;
             @TweakStrobeBrightnessHover.performed -= instance.OnTweakStrobeBrightnessHover;
             @TweakStrobeBrightnessHover.canceled -= instance.OnTweakStrobeBrightnessHover;
+            @ToggleStrobeFadeHover.started -= instance.OnToggleStrobeFadeHover;
+            @ToggleStrobeFadeHover.performed -= instance.OnToggleStrobeFadeHover;
+            @ToggleStrobeFadeHover.canceled -= instance.OnToggleStrobeFadeHover;
             @TweakEasingHover.started -= instance.OnTweakEasingHover;
             @TweakEasingHover.performed -= instance.OnTweakEasingHover;
             @TweakEasingHover.canceled -= instance.OnTweakEasingHover;
@@ -15146,6 +15308,7 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_GLSTranslationObjects_TweakValueHover;
     private readonly InputAction m_GLSTranslationObjects_TweakEasingHover;
     private readonly InputAction m_GLSTranslationObjects_TweakAxisHover;
+    private readonly InputAction m_GLSTranslationObjects_YEETTranslationHover;
     /// <summary>
     /// Provides access to input actions defined in input action map "GLS Translation Objects".
     /// </summary>
@@ -15189,6 +15352,10 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "GLSTranslationObjects/TweakAxisHover".
         /// </summary>
         public InputAction @TweakAxisHover => m_Wrapper.m_GLSTranslationObjects_TweakAxisHover;
+        /// <summary>
+        /// Provides access to the underlying input action "GLSTranslationObjects/YEETTranslationHover".
+        /// </summary>
+        public InputAction @YEETTranslationHover => m_Wrapper.m_GLSTranslationObjects_YEETTranslationHover;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -15239,6 +15406,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @TweakAxisHover.started += instance.OnTweakAxisHover;
             @TweakAxisHover.performed += instance.OnTweakAxisHover;
             @TweakAxisHover.canceled += instance.OnTweakAxisHover;
+            @YEETTranslationHover.started += instance.OnYEETTranslationHover;
+            @YEETTranslationHover.performed += instance.OnYEETTranslationHover;
+            @YEETTranslationHover.canceled += instance.OnYEETTranslationHover;
         }
 
         /// <summary>
@@ -15274,6 +15444,9 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
             @TweakAxisHover.started -= instance.OnTweakAxisHover;
             @TweakAxisHover.performed -= instance.OnTweakAxisHover;
             @TweakAxisHover.canceled -= instance.OnTweakAxisHover;
+            @YEETTranslationHover.started -= instance.OnYEETTranslationHover;
+            @YEETTranslationHover.performed -= instance.OnYEETTranslationHover;
+            @YEETTranslationHover.canceled -= instance.OnYEETTranslationHover;
         }
 
         /// <summary>
@@ -17458,6 +17631,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTweakNJSValue(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Tweak VNJS Easing" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTweakVNJSEasing(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Switch Version" which allows adding and removing callbacks.
@@ -17786,6 +17966,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTweakStrobeBrightnessHover(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "Toggle Strobe Fade (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleStrobeFadeHover(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "Tweak Easing (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -17962,6 +18149,13 @@ public partial class @CMInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTweakAxisHover(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "YEET Translation (Hover)" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnYEETTranslationHover(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "GLS FloatFX Objects" which allows adding and removing callbacks.

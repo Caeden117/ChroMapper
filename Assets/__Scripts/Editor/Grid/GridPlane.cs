@@ -5,6 +5,8 @@ public class GridPlane : MonoBehaviour
 {
     [SerializeField] public Renderer Grid;
     [SerializeField] public Renderer Interface;
+    // Grid hit surfaces are a core plane dependency, so callers should not rediscover the colocated collider at runtime.
+    [SerializeField] public IntersectionCollider IntersectionCollider;
 
     [Header("Visual")] [SerializeField] private Color gridColor = Color.white;
     [SerializeField] private Color interfaceColor = Color.gray;

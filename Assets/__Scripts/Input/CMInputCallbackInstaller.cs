@@ -163,6 +163,29 @@ public class CMInputCallbackInstaller : MonoBehaviour
     public static bool IsActionMapDisabled(Type actionMap) =>
         disabledEventHandlers.Any(x => x.InterfaceType == actionMap);
 
+    // Restore the shared callback registry between tests so queued UI blockers cannot leak into a later fixture.
+    public static void ResetTestState()
+    {
+        if (!TestMode)
+        {
+            return;
+        }
+
+        queuedToDisable.Clear();
+        queuedToEnable.Clear();
+        foreach (var eventHandler in disabledEventHandlers.ToArray())
+        {
+            eventHandler.Blockers.Clear();
+            if (eventHandler.IsDisabled)
+            {
+                eventHandler.EnableEventHandler();
+            }
+        }
+
+        disabledEventHandlers.Clear();
+        InputInstance?.Enable();
+    }
+
     // Here we find our GameObjects that need our input map, install it, and then enable the input map.
     // Then we wait to re-enable our input map.
     // GameObjects that require our Input Map should be present when the scene loads, not created dynamically.

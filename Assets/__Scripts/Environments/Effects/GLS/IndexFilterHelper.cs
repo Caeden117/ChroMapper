@@ -125,32 +125,46 @@ public static class IndexFilterHelper
 
     public static IndexFilter Convert(BaseIndexFilter indexFilter, int groupSize)
     {
-        var chunkSize = indexFilter.Chunks == 0 ? 1 : Mathf.CeilToInt(groupSize / (float)indexFilter.Chunks);
-        var offsetSize = Mathf.CeilToInt(groupSize / (float)chunkSize);
+        // EmptyGroupReturnsNoFilter prevents missing groups from producing NaN and billion-entry ranges; negative chunks are invalid too.
+        if (groupSize <= 0 || indexFilter.Chunks < 0)
+        {
+            return null;
+        }
+
+        // ValidFiltersPreserveSelectedElements keeps chunk counts integral, avoiding float rounding before range construction.
+        var chunkSize = indexFilter.Chunks == 0
+            ? 1
+            : DivideRoundUp(groupSize, indexFilter.Chunks);
+        var offsetSize = DivideRoundUp(groupSize, chunkSize);
         switch (indexFilter.Type)
         {
             case (int)IndexFilterType.Division:
                 var section = indexFilter.Param0;
                 var sId = indexFilter.Param1;
-                var offset = Mathf.CeilToInt(offsetSize / (float)section);
-                if (indexFilter.Reverse == 1)
+                // InvalidDivisionParametersReturnNoFilter rejects zero divisors and invalid section IDs before arithmetic can overflow.
+                if (section <= 0 || sId < 0 || sId >= section)
                 {
-                    var start = offsetSize - (offset * sId) - 1;
-                    return new IndexFilter(
-                        start,
-                        Mathf.Max(0, start - offset + 1),
-                        groupSize,
-                        (RandomType)indexFilter.Random,
-                        indexFilter.Seed,
-                        chunkSize,
-                        indexFilter.Limit,
-                        (LimitAlsoAffectType)indexFilter.LimitAffectsType);
+                    return null;
                 }
 
-                var start1 = offset * sId;
+                // EmptyTrailingDivisionSectionReturnsNoFilter bounds the section before multiplying, so empty slices cannot reverse into valid IDs.
+                var offset = DivideRoundUp(offsetSize, section);
+                if (sId > (offsetSize - 1) / offset)
+                {
+                    return null;
+                }
+
+                // ValidFiltersPreserveSelectedElements preserves reverse order and the short final section with an explicitly bounded count.
+                var sectionStart = offset * sId;
+                var sectionCount = Mathf.Min(offset, offsetSize - sectionStart);
+                var reverse = indexFilter.Reverse == 1;
+                var firstElement = reverse
+                    ? offsetSize - sectionStart - 1
+                    : sectionStart;
                 return new IndexFilter(
-                    start1,
-                    Mathf.Min(offsetSize - 1, start1 + offset - 1),
+                    firstElement,
+                    reverse ? -1 : 1,
+                    sectionCount,
                     groupSize,
                     (RandomType)indexFilter.Random,
                     indexFilter.Seed,
@@ -160,14 +174,21 @@ public static class IndexFilterHelper
             case (int)IndexFilterType.StepAndOffset:
                 var id = indexFilter.Param0;
                 var step = indexFilter.Param1;
-                var offsetStep = offsetSize - id;
-                if (offsetStep <= 0)
+                // InvalidStepAndOffsetParametersReturnNoFilter rejects negative offsets before subtraction and negative iteration counts.
+                if (id < 0 || id >= offsetSize || step < 0)
                 {
-                    Debug.LogWarning("Step and Offset has negative size.");
+                    // Preserve the invalid-filter skip, but include the serialized values needed to identify the authored GLS box.
+                    Debug.LogWarning(
+                        $"[GLS IndexFilter] Skipping invalid StepAndOffset filter: groupSize={groupSize}, " +
+                        $"chunks={indexFilter.Chunks}, chunkSize={chunkSize}, offsetSize={offsetSize}, " +
+                        $"offset={id}, step={step}, reverse={indexFilter.Reverse}, seed={indexFilter.Seed}.");
                     return null;
                 }
 
-                var count = step == 0 ? 1 : Mathf.CeilToInt(offsetStep / (float)step);
+                // ValidFiltersPreserveSelectedElements retains zero-step single selection while bounding all other ranges by the available chunks.
+                var count = step == 0
+                    ? 1
+                    : DivideRoundUp(offsetSize - id, step);
                 return indexFilter.Reverse == 1
                     ? new IndexFilter(
                         offsetSize - 1 - id,
@@ -193,4 +214,7 @@ public static class IndexFilterHelper
                 return null;
         }
     }
+
+    // Positive operands established by Convert avoid NaN, float rounding, and the overflow in (value + divisor - 1) / divisor.
+    private static int DivideRoundUp(int value, int divisor) => ((value - 1) / divisor) + 1;
 }

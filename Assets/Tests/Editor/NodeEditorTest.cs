@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.Base.Customs;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.V3;
@@ -134,6 +135,42 @@ namespace Tests.Editor
             Assert.AreEqual(
                 "{\"b\":2,\"et\":2,\"i\":0,\"f\":0.5,\"customData\":{\"matches\":{},\"differs\":{},\"typeDiffer\":{\"i\":{},\"s\":[],\"o\":true,\"a\":1},\"lenDiffer\":[1,2],\"updatedLenDiffer\":[1],\"updated\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedDiffer\":{\"i\":4,\"s\":\"q\",\"b\":false,\"a\":[3,2]},\"updatedTypeDiffer\":{\"i\":1,\"s\":\"s\",\"o\":{},\"a\":[1,2]}}}",
                 events[1].ToJson().ToString());
+        }
+
+        // ClosingNodeEditorCommitsAnimateTrackJson proves custom-event Data survives the same end-edit path as other objects.
+        [Test]
+        public void ClosingNodeEditorCommitsAnimateTrackJson()
+        {
+            var nodeEditor = Object.FindAnyObjectByType<NodeEditorController>();
+            var inputField = nodeEditor.GetComponentInChildren<TMP_InputField>();
+            var customEvent = BeatmapFactory.CustomEvent(JSON.Parse(
+                @"{ ""b"": 2, ""t"": ""AnimateTrack"", ""d"": { ""track"": ""animationTrack"", ""duration"": 1, ""position"": [[0, 0, 0, 0], [1, 0, 0, 1]] } }"));
+            BeatmapObjectContainerCollection
+                .GetCollectionForType<CustomEventGridContainer>(ObjectType.CustomEvent)
+                .SpawnObject(customEvent, false, false, true);
+            SelectionController.Select(customEvent);
+            nodeEditor.NodeEditor_StartEdit(inputField.text);
+
+            var editedJson =
+                @"{ ""b"": 2, ""t"": ""AnimateTrack"", ""d"": { ""track"": ""animationTrack"", ""duration"": 1, ""position"": [[0, 0, 0, 0], [2, 0, 0, 1]] } }";
+            inputField.SetTextWithoutNotify(editedJson);
+
+            try
+            {
+                inputField.onEndEdit.Invoke(inputField.text);
+                nodeEditor.Close();
+
+                var savedEvent = SelectionController.SelectedObjects.Single() as BaseCustomEvent;
+                Assert.IsNotNull(savedEvent, "The edited AnimateTrack event should remain selected after closing the node editor.");
+                StringAssert.Contains(
+                    "\"position\":[[0,0,0,0],[2,0,0,1]]",
+                    savedEvent.ToJson().ToString(),
+                    "Closing the node editor should preserve the edited AnimateTrack data.");
+            }
+            finally
+            {
+                NodeEditorController.IsActive = true;
+            }
         }
 
         [Test]

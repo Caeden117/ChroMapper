@@ -3,6 +3,7 @@
 
 # Kinda dumb but for whatever reason this package installs as a local package or something at build time, prob a unity quirk with analyzers which are a much more recent addition to .net than unity's build system
 Packages/Microsoft.Unity.Analyzer*
+ProfilerCaptures/*
 
 # User-specific files
 *.suo

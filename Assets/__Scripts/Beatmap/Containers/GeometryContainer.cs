@@ -49,14 +49,17 @@ namespace Beatmap.Containers
             {
                 // Continue with geometry generation if the Geometry object is defined
                 GeneratePrimitiveGeometry(container, eh, context);
+                // Primitive geometry is owned by this container, so its existing single-target animator remains valid.
+                container.Animator.AttachToGeometry(eh);
             }
             else
             {
-                // Otherwise, fallback to environment enhancement
-                GenerateEnvironmentEnhancement(container, eh, context);
+                // EnvironmentEnhancementWith*Track* regression tests require OEM hierarchies to remain intact; each
+                // matched object receives a data-only track controller instead of sharing the container transform.
+                GenerateEnvironmentEnhancement(container, eh, context, tracksManager);
+                container.Animator.enabled = false;
             }
 
-            container.Animator.AttachToGeometry(eh);
             container.gameObject.SetActive(true);
             container.UpdateCollisionGroups();
 
@@ -127,7 +130,8 @@ namespace Beatmap.Containers
         private static void GenerateEnvironmentEnhancement(
             GeometryContainer container,
             BaseEnvironmentEnhancement eh,
-            BeatmapRuntimeContext ctx)
+            BeatmapRuntimeContext ctx,
+            TracksManager tracksManager)
         {
             // Get descriptor of currently loaded environment
             var descriptor = ctx.Descriptor;
@@ -193,48 +197,37 @@ namespace Beatmap.Containers
                     descriptor.BloomFogParams.LegacyAutoExposure = bloomFog["legacyAutoExposure"];
             }
 
-            var adjustScale = BeatSaberSongContainer.Instance.Map.MajorVersion == 2
-                ? 1f / BeatmapConstant.LaneSize
+            // Cache the map-version decision once because every matched marker uses the same V2 unit conversion.
+            var v2 = BeatSaberSongContainer.Instance.Map.MajorVersion == 2;
+            var adjustScale = v2
+                ? BeatmapConstant.LaneSize
                 : 1f;
             // Apply enhancements to each target object (original or duplicates)
             foreach (var (original, target) in targetObjects)
             {
                 if (eh.Active != null) target.gameObject.SetActive(eh.Active.AsBool);
 
+                // Chroma applies authored enhancement transforms before attaching a track and never reparents the
+                // matched object, which preserves nested BigTrackLaneRing renderers in all four parity cases.
+                if (eh.Scale != null) target.transform.localScale = eh.Scale.Value;
+                if (eh.LocalPosition != null)
+                    target.transform.localPosition = eh.LocalPosition.Value * adjustScale;
+                else if (eh.Position != null) target.transform.position = eh.Position.Value * adjustScale;
+                if (eh.LocalRotation != null)
+                    target.transform.localRotation = Quaternion.Euler(eh.LocalRotation.Value);
+                else if (eh.Rotation != null) target.transform.rotation = Quaternion.Euler(eh.Rotation.Value);
+
+                // A track with no transform property must be inert; a present property is applied directly to each
+                // matched transform by its own animator, matching Chroma without flattening the OEM hierarchy.
                 if (eh.Track != null)
                 {
-                    // Parent to our animator but keep world transform
-                    target.transform.SetParent(container.Animator.AnimationThis.transform, true);
-
-                    container.Animator.AnimationThis.transform.SetPositionAndRotation(
-                        target.transform.position,
-                        target.transform.rotation);
-                    container.Animator.AnimationThis.transform.localScale = target.transform.localScale;
-
-                    target.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                    target.transform.localScale = Vector3.one;
-
-                    // Apply enhancement transforms
-                    if (eh.Scale != null) container.Animator.AnimationThis.transform.localScale = eh.Scale.Value;
-                    if (eh.LocalPosition != null)
-                        container.Animator.AnimationThis.transform.localPosition = eh.LocalPosition.Value * adjustScale;
-                    else if (eh.Position != null)
-                        container.Animator.AnimationThis.transform.position = eh.Position.Value * adjustScale;
-                    if (eh.LocalRotation != null)
-                        container.Animator.AnimationThis.transform.localRotation =
-                            Quaternion.Euler(eh.LocalRotation.Value);
-                    else if (eh.Rotation != null)
-                        container.Animator.AnimationThis.transform.rotation = Quaternion.Euler(eh.Rotation.Value);
-                }
-                else
-                {
-                    if (eh.Scale != null) target.transform.localScale = eh.Scale.Value;
-                    if (eh.LocalPosition != null)
-                        target.transform.localPosition = eh.LocalPosition.Value;
-                    else if (eh.Position != null) target.transform.position = eh.Position.Value;
-                    if (eh.LocalRotation != null)
-                        target.transform.localRotation = Quaternion.Euler(eh.LocalRotation.Value);
-                    else if (eh.Rotation != null) target.transform.rotation = Quaternion.Euler(eh.Rotation.Value);
+                    var animator = container.gameObject.AddComponent<ObjectAnimator>();
+                    animator.Context = ctx;
+                    animator.TracksManager = tracksManager;
+                    animator.AttachToEnvironmentObject(
+                        target.transform,
+                        eh.Track,
+                        v2);
                 }
 
                 if (eh.Duplicate != null) HandleDuplicateComponents(original.transform, target.transform);

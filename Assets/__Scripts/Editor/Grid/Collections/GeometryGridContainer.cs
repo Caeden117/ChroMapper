@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
 using Beatmap.Enums;
-using SimpleJSON;
 using UnityEngine;
 
 public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnvironmentEnhancement>
@@ -48,10 +45,15 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
     {
         if (force)
         {
-            foreach (var to_delete in LoadedContainers.Keys.ToList())
+            // UpToNRandomMapsInDefaultSongLocationsLoadWithoutExceptions exposed the forced geometry reset's
+            // repeated List.Remove scan; destroy each visual once, then clear both ownership indexes in bulk.
+            foreach (var container in LoadedContainers.Values)
             {
-                HandleObjectDelete(to_delete);
+                GameObject.DestroyImmediate(container.gameObject);
             }
+
+            LoadedContainers.Clear();
+            ObjectsWithContainers.Clear();
 
             foreach (var to_spawn in MapObjects)
             {
